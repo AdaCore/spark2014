@@ -1849,6 +1849,10 @@
 </theory>
 <theory name="Use_ordered_sets__from_cursors_to_model__L360s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Use_ordered_sets__my_sets__formal_model__e__sequenceDefault_Initial_Condition___object" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Use_ordered_sets__my_sets__formal_model__e__sequenceDefault_Initial_Condition___object___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Use_ordered_sets__my_sets__formal_model__m__setDefault_Initial_Condition___object" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Use_ordered_sets__my_sets__formal_model__m__setDefault_Initial_Condition___object___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -1860,10 +1864,6 @@
 <theory name="Use_ordered_sets__my_sets__formal_model__p__mapDefault_Initial_Condition___object" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Use_ordered_sets__my_sets__formal_model__p__mapDefault_Initial_Condition___object___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__sequenceDefault_Initial_Condition___object" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__sequenceDefault_Initial_Condition___object___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Use_ordered_sets__my_find__L_1__L3b__T4b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2200,1168 +2200,6 @@
 <theory name="Use_ordered_sets__double_size__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Use_ordered_sets__double_size__n___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__allocate__allocate__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__allocate__allocate__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__length__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__set_element__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__allocate__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__allocate__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__ceiling__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__ceiling__key" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__ceiling__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__ceiling__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__free__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__free__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__vet__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__vet__index" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__find__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__find__key" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__find__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__find__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_difference__B_3__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_difference__target" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_difference__source" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_difference__tgt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_difference__src" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_difference__compare" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__get__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__get__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_difference__2__R1122s__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_difference__2__B_4__l_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_difference__2__B_4__r_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_difference__2__B_4__dst_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_difference__2__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_difference__2__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets__is_equivalent__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets__is_equivalent__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets__is_equivalent__l_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets__is_equivalent__r_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except__L654s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection__L660s__item" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union__L657s__item" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets__is_equivalent_node_node__l" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets__is_equivalent_node_node__r" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__Ole__L_2__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__Ole__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__Ole__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__add__L_3__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__add__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__add__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__add__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__add__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__add__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__find__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__find__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__floor__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__floor__key" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__floor__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__floor__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__intersection__L_5__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__intersection__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__intersection__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__intersection__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__intersection__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__remove__L_7__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__remove__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__remove__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__remove__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__remove__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__L_2__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__L91s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__tc_check__t_counts" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__union__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__union__B_8__L_9__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__union__B_8__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__union__B_8__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__union__B_8__l" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__union__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__union__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__parent__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__left_son__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included__B_7__k" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included__L_6__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__right_son__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__color__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__empty_element_array_access" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_color__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_color__color" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__right_rotate__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__right_rotate__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__right_rotate__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__left_rotate__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__left_rotate__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__left_rotate__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__max__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__max__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__max__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__max__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_left__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_left__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_right__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_right__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_parent__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_parent__parent" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_fixup__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_fixup__w" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_fixup__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_fixup__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__next__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__next__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__next__B_11__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__next__B_11__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_swap__y_parent" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_swap__y_color" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_swap__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_swap__z" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_swap__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__min__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__min__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__min__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__min__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__Oeq__2__L_1__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__Oeq__2__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__Oeq__2__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__B_9__k" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__L_8__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__set__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__set__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__set__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__set__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Ole__L_1__i1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Ole__i2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Olt__L739s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Olt__L87s__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__L_1__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__L93s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__L_4__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__L97s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__L_2__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__B_3__k" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__find__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__find__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__Ole__L_2__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__Ole__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__Ole__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__union__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__union__B_8__L_9__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__union__B_8__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__union__B_8__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__union__B_8__l" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__union__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__union__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__intersection__L_5__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__intersection__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__intersection__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__intersection__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__intersection__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2__B_11__k" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2__L_10__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__Ole__L_2__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__Ole__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__Ole__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2__L_4__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2__B_5__k" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__clear_tree__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__find__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__find__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__find__2__L_4__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__find__2__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__find__2__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__get__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__get__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__to_count__idx" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__Oeq__2__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__Oeq__2__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__Oeq__2__L_1__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__add__L_3__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__add__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__add__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__add__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__add__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__add__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__rebalance_for_insert__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__rebalance_for_insert__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__rebalance_for_insert__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__rebalance_for_insert__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__remove__L_7__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__remove__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__remove__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__remove__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__remove__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__add__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__add__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__add__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__add__L_3__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__add__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__add__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__find__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__find__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__Ole__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__Ole__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__Ole__L_2__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__union__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__union__B_8__L_9__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__union__B_8__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__union__B_8__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__union__B_8__l" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__union__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__union__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__intersection__L_5__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__intersection__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__intersection__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__intersection__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__intersection__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__Oeq__2__L_1__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__Oeq__2__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__Oeq__2__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__set__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__set__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__set__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__set__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__to_index__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__remove__L_7__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__remove__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__remove__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__remove__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__remove__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__union__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__union__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__union__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__union__B_8__L_9__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__union__B_8__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__union__B_8__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__union__B_8__l" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__intersection__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__intersection__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__intersection__L_5__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__intersection__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__intersection__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__zero_counts__t_counts" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__te_check__t_counts" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__generic_equal__l_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__generic_equal__r_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__num_overlaps__L_6__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__num_overlaps__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__num_overlaps__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__num_overlaps__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__generic_read__len" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__generic_read__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__generic_read__last_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__set__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__set__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__set__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__set__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__upper_bound__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__upper_bound__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__upper_bound__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__upper_bound__key" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__generic_conditional_insert__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__generic_conditional_insert__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__generic_conditional_insert_with_hint__B_5__before" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__generic_conditional_insert_with_hint__B_6__after" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__generic_unconditional_insert__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__generic_unconditional_insert__before" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__generic_unconditional_insert__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__generic_unconditional_insert_with_hint__B_10__before" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_keys__generic_unconditional_insert_with_hint__B_11__after" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__length__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__2__R1193s__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__2__B_27__insert_right__hint" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__2__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__2__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__L_1__L3b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2__L9b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2__L14b__L15b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__L_3__L19b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__L_7__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__L186s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__L_4__L25b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__L_6__L31b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__L_6__L35b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7__L39b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7__L44b__L45b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__L_8__L49b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L53b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L57b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L61b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L340s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__insert_count__L342s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_model__L345s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_elements__L349s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_is_find__L_12__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_is_find__L_13__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_cursors__L351s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_elements__L355s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__model__r" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__model__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements__L198s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements__r" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positions__r" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positions__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positions__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Oeq__lst" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Oeq__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Oeq__enode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Oeq__L85s__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__to_set__R636s__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__to_set__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__to_set__inserted" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__copy__target" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__copy__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__copy__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__L_18__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__move__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__L_3__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__L95s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Ole__L744s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Ole__L89s__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_greater_element_node__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_greater_element_node__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__L_19__cu" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__B_21__pos" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__L_20__cu" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__2__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__2__inserted" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__L_5__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__L99s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_less_element_node__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_less_element_node__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__L_6__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__L103s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__L101s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__include__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__include__inserted" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__get__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__get__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__previous__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__previous__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__previous__B_13__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__previous__B_13__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__hint" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__inserted" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__item" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__exclude__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__Oeq__2__L_1__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__Oeq__2__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__Oeq__2__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__add__L_3__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__add__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__add__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__add__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__add__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__add__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__container" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__new_item" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__inserted" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__conditional_insert_sans_hint__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__conditional_insert_sans_hint__key" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__conditional_insert_sans_hint__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__conditional_insert_sans_hint__inserted" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__conditional_insert_sans_hint__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__conditional_insert_sans_hint__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete_first__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__remove__L_7__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__remove__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__remove__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__remove__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__remove__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__first_element__fst" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__set__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__set__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__set__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__containers__set__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete_last__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__new_node__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__L_17__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__L190s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__B_11__item" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__L_10__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__B_9__item" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__L_8__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__L188s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection__2__R558s__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union__2__R647s__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__insert_post__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__insert_post__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__insert_post__before" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__insert_post__z" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__L_14__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__L184s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__allocate__allocate__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__allocate__allocate__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__L_6__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__L182s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference__2__R403s__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__set_element__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__find__L_15__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__allocate__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_sans_hint__allocate__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__checks" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__t_check" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__local_insert_with_hint__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__local_insert_with_hint__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__local_insert_with_hint__key" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__local_insert_with_hint__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__local_insert_with_hint__inserted" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__local_insert_with_hint__B_5__before" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__local_insert_with_hint__B_6__after" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__adjust__control" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both__L667s__item" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__2__R633s__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__finalize__control" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__new_node__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__empty_element_array_access" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_less_node_node__l" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_less_node_node__r" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__initialize__2__busy" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__finalize__2__busy" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__initialize__3__lock" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_node_sans_free__z" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_node_sans_free__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_node_sans_free__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_node_sans_free__B_3__y_color" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_node_sans_free__B_2__y_color" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_node_sans_free__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__delete_node_sans_free__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__insert_post__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__insert_post__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__insert_post__before" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__insert_post__z" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__free__L_4__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__free__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_operations__free__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__finalize__3__lock" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__lock__t_counts" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__copy__2__source" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__copy__2__R1101s__target" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__unlock__t_counts" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__unbusy__t_counts" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous__B_35__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__tree_types__implementation__busy__t_counts" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__dst_set" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__dst_hint" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__src_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__dst_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__find__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__floor__B_5__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__insert_sans_hint__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__insert_sans_hint__key" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__insert_sans_hint__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__insert_sans_hint__inserted" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__insert_sans_hint__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__insert_sans_hint__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__ceiling__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__empty_element_array_access" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__allocate__allocate__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__allocate__allocate__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__find__2__L_4__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__find__2__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__find__2__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__to_count__idx" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__set_element__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__allocate__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert_with_hint__allocate__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__tgt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__src" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__compare" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__B_9__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__B_11__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__target" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__source" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__to_index__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__2__R1138s__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__2__B_12__l_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__2__B_12__r_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__2__B_12__dst_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__2__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_intersection__2__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_subset__B_14__subset_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_subset__B_14__set_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_subset__subset" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_subset__of_set" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_overlap__B_16__l_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_overlap__B_16__r_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_overlap__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_overlap__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__num_overlaps__L_6__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__num_overlaps__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__num_overlaps__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__num_overlaps__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_with_hint__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_with_hint__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_with_hint__key" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_with_hint__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_with_hint__inserted" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_with_hint__B_5__before" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_with_hint__B_6__after" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__iterate__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_containers__length__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__iterate__iterate__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__iterate__iterate__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__process__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__2__B_27__insert_right__iterate__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__find__2__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__find__2__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__find__2__L_4__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__to_count__idx" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__empty_element_array_access" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_post__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_post__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_post__before" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_post__z" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__2__B_27__insert_right__iterate__iterate__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__2__B_27__insert_right__iterate__iterate__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__2__B_27__insert_right__process__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__to_index__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_elements__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__num_overlaps__L_6__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__num_overlaps__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__num_overlaps__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__num_overlaps__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_elements__iterate__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_elements__iterate__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_sans_hint__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_sans_hint__key" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_sans_hint__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_sans_hint__inserted" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_sans_hint__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__2__local_insert_sans_hint__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__source_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__target_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__unconditional_insert_avec_hint__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__unconditional_insert_avec_hint__hint" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__unconditional_insert_avec_hint__key" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__unconditional_insert_avec_hint__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__unconditional_insert_avec_hint__B_10__before" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__unconditional_insert_avec_hint__B_11__after" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__tgt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__target" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__src" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__source" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__new_tgt_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__compare" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__B_21__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__2__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__2__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__2__R1178s__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__2__B_22__l_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__2__B_22__r_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_symmetric_difference__2__B_22__dst_node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__length__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__new_node__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__hint" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__target" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set_ops__set_union__source" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__find__2__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__find__2__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__find__2__L_4__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__to_count__idx" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__insert_post__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__insert_post__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__insert_post__before" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__insert_post__z" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__get__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__containers__get__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__to_index__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__num_overlaps__L_6__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__num_overlaps__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__num_overlaps__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_containers__num_overlaps__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__unconditional_insert_sans_hint__before" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__unconditional_insert_sans_hint__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__unconditional_insert_sans_hint__tree" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__unconditional_insert_sans_hint__key" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__unconditional_insert_sans_hint__node" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__append_element__unconditional_insert_sans_hint__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4817,10 +3655,10 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="20456"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="20456"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="25530"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="25530"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4829,7 +3667,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="14334"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="14334"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4862,7 +3700,7 @@
   <proof prover="1"><result status="valid" time="0.03" steps="27038"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="28089"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="28089"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4913,7 +3751,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="21059"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="21059"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4931,7 +3769,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="20753"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="20753"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4967,7 +3805,7 @@
   <proof prover="1"><result status="valid" time="0.02" steps="6395"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="23732"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="23732"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4976,7 +3814,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.03" steps="27494"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="27494"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="25376"/></proof>
@@ -4985,19 +3823,19 @@
   <proof prover="1"><result status="valid" time="0.02" steps="8511"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="31695"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="31695"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2264"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2264"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2342"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2342"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="loop invariant preservation">
   <proof prover="1"><result status="valid" time="0.03" steps="32412"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42755"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="42755"/></proof>
   </goal>
  </transf>
  </goal>
@@ -5006,12 +3844,12 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="225"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="225"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__apply_f__subprogram_def" sum="fa66bff5fca4806542d993a16e0d4bfe" expanded="true">
+<theory name="Use_ordered_sets__apply_f__subprogram_def" sum="fbe3ea381929ef28107175ff17fb8dc7" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="loop invariant init">
@@ -5024,88 +3862,116 @@
   <proof prover="1"><result status="valid" time="0.03" steps="33299"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="34021"/></proof>
+  <proof prover="0"><result status="unknown" time="0.06" steps="327"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="34021"/></proof>
+  <proof prover="0"><result status="unknown" time="0.06" steps="327"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="10015"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="10000"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="40861"/></proof>
+  <proof prover="0"><result status="unknown" time="0.08" steps="370"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.00" steps="2681"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2676"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="34848"/></proof>
+  <proof prover="0"><result status="unknown" time="0.09" steps="1002"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="10295"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="10280"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="41838"/></proof>
+  <proof prover="0"><result status="unknown" time="0.08" steps="1049"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2676"/></proof>
+  <proof prover="0"><result status="unknown" time="0.10" steps="318"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="37786"/></proof>
+  <proof prover="0"><result status="unknown" time="0.13" steps="2703"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="3146"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.03" steps="50272"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="49997"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.05" steps="137440"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="85274"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="73183"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="75740"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="3350"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="3343"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="3650"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="3643"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="43834"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="43762"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="43882"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="43810"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="3724"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="3717"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="4004"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="3997"/></proof>
   </goal>
   <goal name="WP_parameter def.24" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="47529"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="47457"/></proof>
   </goal>
   <goal name="WP_parameter def.25" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="47577"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="47505"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="3830"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="3823"/></proof>
   </goal>
   <goal name="WP_parameter def.27" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="4110"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="4103"/></proof>
   </goal>
   <goal name="WP_parameter def.28" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="49293"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="49221"/></proof>
   </goal>
   <goal name="WP_parameter def.29" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="49341"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="49269"/></proof>
   </goal>
   <goal name="WP_parameter def.30" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="79169"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.30.1" expl="postcondition">
+   <proof prover="0"><result status="unknown" time="0.42" steps="11194"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.30.2" expl="postcondition">
+   <proof prover="0"><result status="valid" time="0.05" steps="60"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.31" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="138778"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.31.1" expl="postcondition">
+   <proof prover="0"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.31.2" expl="postcondition">
+   <proof prover="0"><result status="valid" time="0.05" steps="56"/></proof>
+   </goal>
+  </transf>
   </goal>
  </transf>
  </goal>
@@ -5117,7 +3983,7 @@
   <proof prover="1"><result status="valid" time="0.03" steps="28214"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="25920"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="25920"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="8370"/></proof>
@@ -5129,13 +3995,13 @@
   <proof prover="1"><result status="valid" time="0.01" steps="2191"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2270"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2270"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="loop invariant preservation">
   <proof prover="1"><result status="valid" time="0.03" steps="38662"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="78584"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="78584"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="postcondition">
   <proof prover="1"><result status="valid" time="0.03" steps="33061"/></proof>
@@ -5150,28 +4016,28 @@
   <proof prover="1"><result status="valid" time="0.03" steps="25961"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="23673"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="23673"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="8002"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="29741"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="29741"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2093"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2093"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2172"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2172"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.03" steps="36416"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="36416"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="2481"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2481"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="72267"/></proof>
+  <proof prover="1"><result status="valid" time="0.06" steps="72267"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="postcondition">
   <proof prover="1"><result status="valid" time="0.03" steps="29768"/></proof>
@@ -5192,10 +4058,10 @@
   <proof prover="1"><result status="valid" time="0.03" steps="28414"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="2364"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2364"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="2646"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2646"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
   <proof prover="1"><result status="valid" time="0.03" steps="33003"/></proof>
@@ -5204,10 +4070,10 @@
   <proof prover="1"><result status="valid" time="0.03" steps="33051"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.00" steps="2764"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2764"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="3058"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="3058"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
   <proof prover="1"><result status="valid" time="0.03" steps="37510"/></proof>
@@ -5216,13 +4082,13 @@
   <proof prover="1"><result status="valid" time="0.03" steps="37558"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="30074"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="30074"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="2799"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2799"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="3099"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="3099"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition">
   <proof prover="1"><result status="valid" time="0.03" steps="37050"/></proof>
@@ -5231,19 +4097,19 @@
   <proof prover="1"><result status="valid" time="0.03" steps="37098"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="44206"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="44206"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__move__subprogram_def" sum="9cde93f5845c12e54cf83188238cb4af" expanded="true">
+<theory name="Use_ordered_sets__move__subprogram_def" sum="db159fc40446c5fd9f9bf58c60ce4122" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.01" steps="2412"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2412"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.03" steps="32739"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="32739"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="loop invariant init">
   <proof prover="1"><result status="valid" time="0.03" steps="32364"/></proof>
@@ -5255,123 +4121,164 @@
   <proof prover="1"><result status="valid" time="0.03" steps="33485"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="35685"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="34735"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2460"/></proof>
+  <proof prover="0"><result status="unknown" time="0.07" steps="334"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="37246"/></proof>
+  <proof prover="0"><result status="unknown" time="0.14" steps="2850"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2824"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="50938"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="53923"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.03" steps="48296"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="51760"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="58464"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="73455"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="65267"/></proof>
+  <proof prover="1"><result status="valid" time="0.08" steps="110691"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="91563"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.15.1" expl="postcondition">
+   <proof prover="0"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.15.2" expl="postcondition">
+   <proof prover="0"><result status="unknown" time="0.05" steps="337"/></proof>
+   <proof prover="1" timelimit="60"><result status="valid" time="0.04" steps="46403"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.16" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="46773"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="46648"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__move_2__subprogram_def" sum="519a4dd5c27ac0e153401d6645579dec" expanded="true">
+<theory name="Use_ordered_sets__move_2__subprogram_def" sum="36b0050161a58dbec9b5cc0ba8f02af4" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="loop invariant init">
   <proof prover="1"><result status="valid" time="0.03" steps="29980"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.01" steps="2308"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2308"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.03" steps="29257"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="29257"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="loop invariant init">
   <proof prover="1"><result status="valid" time="0.02" steps="7377"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="31680"/></proof>
+  <proof prover="0"><result status="unknown" time="0.06" steps="272"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="32981"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="32842"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="7928"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="7914"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="34454"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="34272"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="8924"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="8910"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="34067"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="34032"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="32989"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="32905"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="31628"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="31592"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="34871"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="34725"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="9076"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="9062"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="34571"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="34536"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.00" steps="2394"/></proof>
+  <proof prover="0"><result status="unknown" time="0.05" steps="271"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="34418"/></proof>
+  <proof prover="0"><result status="unknown" time="0.38" steps="16477"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.00" steps="2758"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.03" steps="41003"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="40907"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="56158"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="57159"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="100455"/></proof>
+  <proof prover="1"><result status="valid" time="0.07" steps="100653"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="91172"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="80662"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.11" steps="306907"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.23.1" expl="postcondition">
+   <proof prover="0"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.23.2" expl="postcondition">
+   <proof prover="0"><result status="unknown" time="0.05" steps="337"/></proof>
+   <proof prover="1" timelimit="60"><result status="valid" time="0.04" steps="41905"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.24" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="130291"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.24.1" expl="postcondition">
+   <proof prover="0"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.24.2" expl="postcondition">
+   <proof prover="0"><result status="valid" time="0.04" steps="106"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.25" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="45205"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="45080"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__move_3__subprogram_def" sum="a22a2efc9edbc5cf504d45993b923491" expanded="true">
+<theory name="Use_ordered_sets__move_3__subprogram_def" sum="60204d5014561a9c5f84ba972bd931b0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="loop invariant init">
@@ -5381,111 +4288,156 @@
   <proof prover="1"><result status="valid" time="0.03" steps="30303"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.02" steps="32047"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="32047"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="33654"/></proof>
+  <proof prover="0"><result status="unknown" time="0.06" steps="337"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="33473"/></proof>
+  <proof prover="0"><result status="unknown" time="0.05" steps="327"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="9296"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="9281"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="38223"/></proof>
+  <proof prover="0"><result status="unknown" time="0.08" steps="345"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="2555"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2550"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="9576"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="9561"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="39550"/></proof>
+  <proof prover="0"><result status="unknown" time="0.19" steps="2587"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2550"/></proof>
+  <proof prover="0"><result status="unknown" time="0.06" steps="318"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="35638"/></proof>
+  <proof prover="0"><result status="unknown" time="0.13" steps="2328"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2964"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="52462"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="52031"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="63172"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="66567"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="57036"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="59176"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="115150"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.17.1" expl="postcondition">
+   <proof prover="0"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.17.2" expl="postcondition">
+   <proof prover="0"><result status="unknown" time="0.07" steps="356"/></proof>
+   <proof prover="1" timelimit="60"><result status="valid" time="0.04" steps="44655"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.18" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="38784"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="38712"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__move_4__subprogram_def" sum="2cdfec576ddd4af120e3d2677e354174" expanded="true">
+<theory name="Use_ordered_sets__move_4__subprogram_def" sum="0ba7d0d290c87e47bf0afde681a4b780" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="loop invariant init">
   <proof prover="1"><result status="valid" time="0.03" steps="31395"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.02" steps="30385"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="30385"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="32897"/></proof>
+  <proof prover="0"><result status="unknown" time="0.06" steps="337"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="32717"/></proof>
+  <proof prover="0"><result status="unknown" time="0.06" steps="327"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="9080"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="9065"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="37538"/></proof>
+  <proof prover="0"><result status="unknown" time="0.06" steps="345"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="10091"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="10076"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="37677"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="37629"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2492"/></proof>
+  <proof prover="0"><result status="unknown" time="0.05" steps="318"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="34854"/></proof>
+  <proof prover="0"><result status="unknown" time="0.18" steps="3398"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2906"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.03" steps="50744"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="57851"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.03" steps="78779"/></proof>
+  <proof prover="1"><result status="valid" time="0.07" steps="98921"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="155561"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.14.1" expl="postcondition">
+   <proof prover="0"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.14.2" expl="postcondition">
+   <proof prover="0"><result status="unknown" time="0.06" steps="356"/></proof>
+   <proof prover="1" timelimit="60"><result status="valid" time="0.05" steps="49337"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.15" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="110345"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.15.1" expl="postcondition">
+   <proof prover="0"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.15.2" expl="postcondition">
+   <proof prover="0"><result status="valid" time="0.08" steps="109"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.16" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="37964"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="37892"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__double_size__subprogram_def" sum="7e22fe21af1cbb14a39321ceb14143e6" expanded="true">
+<theory name="Use_ordered_sets__double_size__subprogram_def" sum="b4846ebb638f23d213ea18e7c8985710" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="VC for def">
@@ -5501,10 +4453,10 @@
   <proof prover="1"><result status="valid" time="0.03" steps="37509"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.00" steps="2966"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2966"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="3046"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="3046"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="loop invariant init">
   <proof prover="1"><result status="valid" time="0.02" steps="9383"/></proof>
@@ -5513,10 +4465,10 @@
   <proof prover="1"><result status="valid" time="0.03" steps="35793"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.03" steps="35779"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="35779"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.02" steps="9461"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="9461"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="loop invariant init">
   <proof prover="1"><result status="valid" time="0.02" steps="9447"/></proof>
@@ -5525,213 +4477,277 @@
   <proof prover="1"><result status="valid" time="0.03" steps="36668"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="40871"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="40710"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.00" steps="2962"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="2958"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42602"/></proof>
+  <proof prover="0"><result status="unknown" time="0.07" steps="294"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="41047"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="41334"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="41242"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="39057"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="39009"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42056"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="42008"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="48823"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.00" steps="3334"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="3330"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="49178"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="49726"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.24" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="11573"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="11559"/></proof>
   </goal>
   <goal name="WP_parameter def.25" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="46320"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="46228"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="46077"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="46029"/></proof>
   </goal>
   <goal name="WP_parameter def.27" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="53463"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.28" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="40132"/></proof>
+  <proof prover="0"><result status="unknown" time="0.07" steps="301"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.29" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42164"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="41905"/></proof>
   </goal>
   <goal name="WP_parameter def.30" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="41200"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="41101"/></proof>
   </goal>
   <goal name="WP_parameter def.31" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="41450"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="41351"/></proof>
   </goal>
   <goal name="WP_parameter def.32" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="39668"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="39620"/></proof>
   </goal>
   <goal name="WP_parameter def.33" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="43453"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="43292"/></proof>
   </goal>
   <goal name="WP_parameter def.34" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="43132"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="43033"/></proof>
   </goal>
   <goal name="WP_parameter def.35" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42696"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="42648"/></proof>
   </goal>
   <goal name="WP_parameter def.36" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42466"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="42419"/></proof>
   </goal>
   <goal name="WP_parameter def.37" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="39802"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="40730"/></proof>
   </goal>
   <goal name="WP_parameter def.38" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="40551"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="40452"/></proof>
   </goal>
   <goal name="WP_parameter def.39" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="38734"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="38686"/></proof>
   </goal>
   <goal name="WP_parameter def.40" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42548"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="42387"/></proof>
   </goal>
   <goal name="WP_parameter def.41" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42175"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="42076"/></proof>
   </goal>
   <goal name="WP_parameter def.42" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42511"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="42412"/></proof>
   </goal>
   <goal name="WP_parameter def.43" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42398"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="42350"/></proof>
   </goal>
   <goal name="WP_parameter def.44" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42488"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="42440"/></proof>
   </goal>
   <goal name="WP_parameter def.45" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="39798"/></proof>
+  <proof prover="0"><result status="unknown" time="0.07" steps="286"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.46" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="41947"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="41688"/></proof>
   </goal>
   <goal name="WP_parameter def.47" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="39582"/></proof>
+  <proof prover="0"><result status="unknown" time="0.07" steps="274"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.48" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="2960"/></proof>
+  <proof prover="0"><result status="unknown" time="0.06" steps="273"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.49" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="46175"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.50" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="56130"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.51" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.00" steps="2982"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.52" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="46404"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.53" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42985"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.54" expl="precondition">
-  <proof prover="1"><result status="valid" time="4.08" steps="23330962"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.55" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="11698"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="11684"/></proof>
   </goal>
   <goal name="WP_parameter def.56" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="45835"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="48077"/></proof>
   </goal>
   <goal name="WP_parameter def.57" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.03" steps="53269"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="51899"/></proof>
   </goal>
   <goal name="WP_parameter def.58" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.06" steps="142785"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="unknown" time="2.83" steps="10447428"/></proof>
   </goal>
   <goal name="WP_parameter def.59" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.10" steps="341716"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.60" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.05" steps="115918"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="75875"/></proof>
   </goal>
   <goal name="WP_parameter def.61" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="81588"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="74199"/></proof>
   </goal>
   <goal name="WP_parameter def.62" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="1.34" steps="3613907"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
   </goal>
   <goal name="WP_parameter def.63" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="3762"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="3756"/></proof>
   </goal>
   <goal name="WP_parameter def.64" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="52198"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="52100"/></proof>
   </goal>
   <goal name="WP_parameter def.65" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="201213"/></proof>
+  <proof prover="1"><result status="valid" time="0.09" steps="165206"/></proof>
   </goal>
   <goal name="WP_parameter def.66" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="49685"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="49640"/></proof>
   </goal>
   <goal name="WP_parameter def.67" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="49671"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="49627"/></proof>
   </goal>
   <goal name="WP_parameter def.68" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="51404"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="51360"/></proof>
   </goal>
   <goal name="WP_parameter def.69" expl="precondition">
-  <proof prover="0" timelimit="10"><result status="valid" time="9.09" steps="137471"/></proof>
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.69.1" expl="precondition">
+   <proof prover="0"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.69.2" expl="precondition">
+   <proof prover="0"><result status="valid" time="0.05" steps="14"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.70" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="4138"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="4132"/></proof>
   </goal>
   <goal name="WP_parameter def.71" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="58823"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="58725"/></proof>
   </goal>
   <goal name="WP_parameter def.72" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="14487"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="14473"/></proof>
   </goal>
   <goal name="WP_parameter def.73" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="55200"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="55156"/></proof>
   </goal>
   <goal name="WP_parameter def.74" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="52259"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="52215"/></proof>
   </goal>
   <goal name="WP_parameter def.75" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="55526"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="55482"/></proof>
   </goal>
   <goal name="WP_parameter def.76" expl="precondition">
-  <proof prover="0" timelimit="10"><result status="valid" time="0.18" steps="3775"/></proof>
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.76.1" expl="precondition">
+   <proof prover="0"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.76.2" expl="precondition">
+   <proof prover="0"><result status="valid" time="0.06" steps="14"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.77" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="49768"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="49723"/></proof>
   </goal>
   <goal name="WP_parameter def.78" expl="postcondition">
-  <proof prover="0"><result status="valid" time="27.02" steps="485463"/></proof>
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.78.1" expl="postcondition">
+   <proof prover="0"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="unknown" time="11.86" steps="17341099"/></proof>
+   </goal>
+   <goal name="WP_parameter def.78.2" expl="postcondition">
+   <proof prover="0"><result status="valid" time="0.05" steps="5"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.79" expl="postcondition">
-  <proof prover="0"><result status="valid" time="38.99" steps="591133"/></proof>
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.79.1" expl="postcondition">
+   <proof prover="0"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.79.2" expl="postcondition">
+   <proof prover="0"><result status="valid" time="0.05" steps="14"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.80" expl="postcondition">
-  <proof prover="0"><result status="valid" time="40.74" steps="856470"/></proof>
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
+  <proof prover="0"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.80.1" expl="postcondition">
+   <proof prover="0"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.80.2" expl="postcondition">
+   <proof prover="0"><result status="valid" time="0.06" steps="14"/></proof>
+   </goal>
+  </transf>
   </goal>
  </transf>
  </goal>
@@ -5746,19 +4762,19 @@
   <proof prover="1"><result status="valid" time="0.03" steps="33638"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="42393"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="42393"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="49369"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="49369"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="64173"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="64173"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="3978"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="3978"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="4278"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="4278"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
   <proof prover="1"><result status="valid" time="0.03" steps="48689"/></proof>
@@ -5767,19 +4783,19 @@
   <proof prover="1"><result status="valid" time="0.03" steps="48737"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="52865"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="52865"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="91226"/></proof>
+  <proof prover="1"><result status="valid" time="0.06" steps="91226"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="200075"/></proof>
+  <proof prover="1"><result status="valid" time="0.12" steps="200075"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="141279"/></proof>
+  <proof prover="1"><result status="valid" time="0.09" steps="141279"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="184908"/></proof>
+  <proof prover="1"><result status="valid" time="0.11" steps="184908"/></proof>
   </goal>
  </transf>
  </goal>
@@ -5794,16 +4810,16 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5100"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5100"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="17939"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="17939"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="1280"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="1280"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="19028"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="19028"/></proof>
   </goal>
  </transf>
  </goal>
@@ -5812,7 +4828,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.00" steps="1260"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="1260"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="5204"/></proof>
@@ -5821,7 +4837,7 @@
   <proof prover="1"><result status="valid" time="0.02" steps="18271"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="16172"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="16172"/></proof>
   </goal>
  </transf>
  </goal>
@@ -5833,16 +4849,16 @@
   <proof prover="1"><result status="valid" time="0.02" steps="6548"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="22878"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="22878"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.00" steps="1776"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="1776"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="5664"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="21508"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="21508"/></proof>
   </goal>
  </transf>
  </goal>
@@ -5851,19 +4867,19 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.00" steps="1756"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="1756"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5550"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5550"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="6874"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="23911"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="23911"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="22626"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="22626"/></proof>
   </goal>
  </transf>
  </goal>
@@ -5875,7 +4891,7 @@
   <proof prover="1"><result status="valid" time="0.01" steps="1766"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.01" steps="1786"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="1786"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="5654"/></proof>
@@ -5890,7 +4906,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="VC for def">
-  <proof prover="1"><result status="valid" time="0.00" steps="1756"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="1756"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="5550"/></proof>

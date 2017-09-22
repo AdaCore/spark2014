@@ -138,77 +138,77 @@ use_lists.adb:15:19: info: initialization of "Cu.Node" proved
 use_lists.adb:24:30: info: initialization of "Cu.Node" proved
 use_lists.adb:26:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:26:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_lists.adb:27:26: info: precondition proved (Z3: 2 VC)
+use_lists.adb:27:26: medium: precondition might fail
 use_lists.adb:27:51: info: precondition proved (Z3: 2 VC)
 use_lists.adb:28:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:28:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_lists.adb:28:34: info: precondition proved (Z3: 1 VC)
+use_lists.adb:28:34: medium: precondition might fail
 use_lists.adb:28:56: info: initialization of "Cu.Node" proved
-use_lists.adb:28:74: info: overflow check proved (Z3: 1 VC)
-use_lists.adb:29:13: info: precondition proved (Z3: 1 VC)
+use_lists.adb:28:74: medium: overflow check might fail
+use_lists.adb:29:13: medium: precondition might fail
 use_lists.adb:29:26: info: initialization of "Cu.Node" proved
-use_lists.adb:30:13: info: precondition proved (Z3: 1 VC)
-use_lists.adb:30:25: info: precondition proved (Z3: 1 VC)
+use_lists.adb:30:13: medium: precondition might fail
+use_lists.adb:30:25: medium: precondition might fail
 use_lists.adb:30:38: info: initialization of "Cu.Node" proved
 use_lists.adb:30:42: info: overflow check proved (Z3: 1 VC)
-use_lists.adb:32:13: info: precondition proved (Z3: 1 VC)
-use_lists.adb:32:25: info: precondition proved (Z3: 1 VC)
+use_lists.adb:32:13: medium: precondition might fail
+use_lists.adb:32:25: medium: precondition might fail
 use_lists.adb:32:38: info: initialization of "Cu.Node" proved
-use_lists.adb:34:10: info: precondition proved (Z3: 1 VC)
+use_lists.adb:34:10: medium: precondition might fail
 use_lists.adb:34:20: info: initialization of "Cu.Node" proved
 use_lists.adb:41:29: info: initialization of "Cu.Node" proved
 use_lists.adb:42:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:42:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:44:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_lists.adb:44:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_lists.adb:44:32: info: precondition proved (Z3: 1 VC)
+use_lists.adb:44:32: medium: precondition might fail
 use_lists.adb:44:53: info: initialization of "Cu.Node" proved
-use_lists.adb:45:26: info: precondition proved (Z3: 2 VC)
-use_lists.adb:46:26: info: precondition proved (Z3: 2 VC)
+use_lists.adb:45:17: medium: loop invariant might fail after first iteration, cannot prove Is_Incr (Element (Model (L)'Loop_Entry, N), Element (Model (L), N)
+use_lists.adb:45:26: medium: precondition might fail
+use_lists.adb:46:26: medium: precondition might fail
 use_lists.adb:48:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_lists.adb:48:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_lists.adb:48:27: info: precondition proved (Z3: 1 VC)
+use_lists.adb:48:27: medium: precondition might fail
 use_lists.adb:48:48: info: initialization of "Cu.Node" proved
 use_lists.adb:49:17: info: precondition proved (Z3: 2 VC)
+use_lists.adb:49:17: medium: loop invariant might fail after first iteration, cannot prove Element (Model (L)'Loop_Entry, N) = Element (Model (L), N)
 use_lists.adb:49:48: info: range check proved (Z3: 1 VC)
 use_lists.adb:50:17: info: precondition proved (Z3: 2 VC)
 use_lists.adb:50:37: info: range check proved (Z3: 1 VC)
-use_lists.adb:51:13: info: precondition proved (Z3: 1 VC)
+use_lists.adb:51:13: medium: precondition might fail
 use_lists.adb:51:25: info: initialization of "Cu.Node" proved
-use_lists.adb:52:13: info: precondition proved (Z3: 1 VC)
+use_lists.adb:52:13: medium: precondition might fail
 use_lists.adb:52:33: info: initialization of "Cu.Node" proved
-use_lists.adb:52:37: info: precondition proved (Z3: 1 VC)
+use_lists.adb:52:37: medium: precondition might fail
 use_lists.adb:52:49: info: initialization of "Cu.Node" proved
 use_lists.adb:52:53: info: overflow check proved (Z3: 1 VC)
-use_lists.adb:54:10: info: precondition proved (Z3: 1 VC)
+use_lists.adb:54:10: medium: precondition might fail
 use_lists.adb:54:19: info: initialization of "Cu.Node" proved
 use_lists.adb:61:29: info: initialization of "Cu.Node" proved
 use_lists.adb:62:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:62:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:64:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_lists.adb:64:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_lists.adb:64:32: info: precondition proved (Z3: 1 VC)
+use_lists.adb:64:32: medium: precondition might fail
 use_lists.adb:64:53: info: initialization of "Cu.Node" proved
-use_lists.adb:65:26: info: precondition proved (Z3: 2 VC)
-use_lists.adb:66:26: info: precondition proved (Z3: 2 VC)
+use_lists.adb:65:17: medium: loop invariant might fail after first iteration, cannot prove Is_Incr (Element (Model (L)'Loop_Entry, N), Element (Model (L), N)
+use_lists.adb:65:26: medium: precondition might fail
+use_lists.adb:66:26: medium: precondition might fail
 use_lists.adb:68:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_lists.adb:68:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_lists.adb:68:27: info: precondition proved (Z3: 1 VC)
+use_lists.adb:68:27: medium: precondition might fail
 use_lists.adb:68:48: info: initialization of "Cu.Node" proved
 use_lists.adb:69:17: info: precondition proved (Z3: 2 VC)
+use_lists.adb:69:17: medium: loop invariant might fail after first iteration, cannot prove Element (Model (L)'Loop_Entry, N) = Element (Model (L), N)
 use_lists.adb:69:48: info: range check proved (Z3: 1 VC)
 use_lists.adb:70:17: info: precondition proved (Z3: 2 VC)
 use_lists.adb:70:37: info: range check proved (Z3: 1 VC)
 use_lists.adb:71:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:71:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_lists.adb:73:13: info: precondition proved (Z3: 1 VC)
+use_lists.adb:73:13: medium: precondition might fail
 use_lists.adb:73:25: info: initialization of "Cu.Node" proved
-use_lists.adb:74:13: info: precondition proved (Z3: 1 VC)
+use_lists.adb:74:13: medium: precondition might fail
 use_lists.adb:74:33: info: initialization of "Cu.Node" proved
-use_lists.adb:74:37: info: precondition proved (Z3: 1 VC)
+use_lists.adb:74:37: medium: precondition might fail
 use_lists.adb:74:49: info: initialization of "Cu.Node" proved
 use_lists.adb:74:53: info: overflow check proved (Z3: 1 VC)
-use_lists.adb:76:10: info: precondition proved (Z3: 1 VC)
+use_lists.adb:76:10: medium: precondition might fail
 use_lists.adb:76:19: info: initialization of "Cu.Node" proved
 use_lists.adb:84:21: info: initialization of "Lgth" proved
 use_lists.adb:85:33: info: loop invariant initialization proved (Z3: 1 VC)
@@ -241,17 +241,17 @@ use_lists.adb:107:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:107:68: info: overflow check proved (Z3: 1 VC)
 use_lists.adb:107:70: info: initialization of "N" proved
 use_lists.adb:109:13: info: loop invariant initialization proved (Z3: 2 VC)
-use_lists.adb:109:13: info: loop invariant preservation proved (Z3: 2 VC)
 use_lists.adb:109:31: info: initialization of "N" proved
-use_lists.adb:110:15: info: precondition proved (Z3: 2 VC)
+use_lists.adb:110:15: medium: loop invariant might fail after first iteration, cannot prove Element (Model (L), 2 * I) = Element (Model (L)'Loop_Entry, I)
+use_lists.adb:110:15: medium: precondition might fail
 use_lists.adb:110:37: info: overflow check proved (Z3: 1 VC)
 use_lists.adb:110:37: info: range check proved (Z3: 1 VC)
-use_lists.adb:110:44: info: precondition proved (Z3: 2 VC)
-use_lists.adb:111:17: info: precondition proved (Z3: 2 VC)
-use_lists.adb:111:39: info: overflow check proved (Z3: 1 VC)
+use_lists.adb:110:44: medium: precondition might fail
+use_lists.adb:111:17: medium: precondition might fail
+use_lists.adb:111:39: medium: overflow check might fail
 use_lists.adb:111:43: info: overflow check proved (Z3: 1 VC)
 use_lists.adb:111:43: info: range check proved (Z3: 1 VC)
-use_lists.adb:112:17: info: precondition proved (Z3: 2 VC)
+use_lists.adb:112:17: medium: precondition might fail
 use_lists.adb:114:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:114:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:114:26: info: initialization of "N" proved
@@ -262,17 +262,17 @@ use_lists.adb:115:39: info: range check proved (Z3: 1 VC)
 use_lists.adb:116:17: info: precondition proved (Z3: 2 VC)
 use_lists.adb:116:48: info: range check proved (Z3: 1 VC)
 use_lists.adb:117:33: info: loop invariant initialization proved (Z3: 1 VC)
-use_lists.adb:117:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_lists.adb:117:34: info: precondition proved (Z3: 1 VC)
+use_lists.adb:117:33: medium: loop invariant might fail after first iteration, cannot prove P.Get (Positions (L), Cu) = 2 * N + 1
+use_lists.adb:117:34: medium: precondition might fail
 use_lists.adb:117:55: info: initialization of "Cu.Node" proved
-use_lists.adb:117:63: info: overflow check proved (Z3: 1 VC)
+use_lists.adb:117:63: medium: overflow check might fail
 use_lists.adb:117:65: info: initialization of "N" proved
 use_lists.adb:117:67: info: overflow check proved (Z3: 1 VC)
-use_lists.adb:118:10: info: precondition proved (Z3: 2 VC)
+use_lists.adb:118:10: medium: precondition might fail
 use_lists.adb:118:21: info: initialization of "Cu.Node" proved
-use_lists.adb:118:25: info: precondition proved (Z3: 1 VC)
+use_lists.adb:118:25: medium: precondition might fail
 use_lists.adb:118:37: info: initialization of "Cu.Node" proved
-use_lists.adb:119:10: info: precondition proved (Z3: 1 VC)
+use_lists.adb:119:10: medium: precondition might fail
 use_lists.adb:119:19: info: initialization of "Cu.Node" proved
 use_lists.adb:120:15: info: initialization of "N" proved
 use_lists.adb:120:17: info: overflow check proved (Z3: 1 VC)
@@ -331,13 +331,13 @@ use_lists.ads:19:19: info: precondition proved (Z3: 1 VC)
 use_lists.ads:19:40: info: precondition proved (Z3: 1 VC)
 use_lists.ads:20:21: info: precondition proved (Z3: 1 VC)
 use_lists.ads:24:75: info: overflow check proved (Z3: 1 VC)
-use_lists.ads:28:14: info: postcondition proved (Z3: 2 VC)
+use_lists.ads:28:14: medium: postcondition might fail, cannot prove Length (L2) = Length (L1)
 use_lists.ads:30:24: info: precondition proved (Z3: 2 VC)
-use_lists.ads:31:24: info: precondition proved (Z3: 2 VC)
-use_lists.ads:36:14: info: postcondition proved (Z3: 2 VC)
+use_lists.ads:31:24: medium: precondition might fail
+use_lists.ads:38:15: medium: postcondition might fail, cannot prove Is_Incr (Element (Model (L)'Old, N), Element (Model (L), N)
 use_lists.ads:38:24: info: precondition proved (Z3: 2 VC)
 use_lists.ads:39:24: info: precondition proved (Z3: 2 VC)
-use_lists.ads:43:14: info: postcondition proved (Z3: 3 VC)
+use_lists.ads:45:15: medium: postcondition might fail, cannot prove Is_Incr (Element (Model (L)'Old, N), Element (Model (L), N)
 use_lists.ads:45:24: info: precondition proved (Z3: 2 VC)
 use_lists.ads:46:24: info: precondition proved (Z3: 2 VC)
 use_lists.ads:52:25: info: division check proved (Z3: 1 VC)
@@ -349,14 +349,14 @@ use_lists.ads:56:12: info: precondition proved (Z3: 2 VC)
 use_lists.ads:56:34: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:57:12: info: precondition proved (Z3: 2 VC)
 use_lists.ads:62:25: info: division check proved (Z3: 1 VC)
-use_lists.ads:63:14: info: postcondition proved (Z3: 3 VC)
+use_lists.ads:63:14: medium: postcondition might fail, cannot prove Length (L) = 2 * Length (L)'old
 use_lists.ads:63:29: info: overflow check proved (Z3: 1 VC)
-use_lists.ads:65:15: info: precondition proved (Z3: 2 VC)
+use_lists.ads:65:15: medium: precondition might fail
 use_lists.ads:65:37: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:65:41: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:65:41: info: range check proved (Z3: 1 VC)
 use_lists.ads:66:13: info: precondition proved (Z3: 2 VC)
-use_lists.ads:67:12: info: precondition proved (Z3: 2 VC)
+use_lists.ads:67:12: medium: precondition might fail
 use_lists.ads:67:34: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:67:34: info: range check proved (Z3: 1 VC)
 use_lists.ads:68:13: info: precondition proved (Z3: 2 VC)
@@ -415,130 +415,130 @@ use_maps.adb:15:25: info: initialization of "Cu.Node" proved
 use_maps.adb:24:29: info: initialization of "Cu.Node" proved
 use_maps.adb:25:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:25:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_maps.adb:25:47: info: precondition proved (Z3: 1 VC)
+use_maps.adb:25:47: medium: precondition might fail
 use_maps.adb:25:68: info: initialization of "Cu.Node" proved
 use_maps.adb:27:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:27:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_maps.adb:27:32: info: precondition proved (Z3: 1 VC)
+use_maps.adb:27:32: medium: precondition might fail
 use_maps.adb:27:53: info: initialization of "Cu.Node" proved
 use_maps.adb:28:16: info: precondition proved (Z3: 1 VC)
 use_maps.adb:28:16: info: precondition proved (Z3: 2 VC)
 use_maps.adb:29:20: info: precondition proved (Z3: 1 VC)
-use_maps.adb:30:23: info: precondition proved (Z3: 1 VC)
-use_maps.adb:30:49: info: precondition proved (Z3: 2 VC)
+use_maps.adb:30:23: medium: precondition might fail
+use_maps.adb:30:49: medium: precondition might fail
 use_maps.adb:32:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:32:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:32:13: info: precondition proved (Z3: 1 VC)
 use_maps.adb:32:13: info: precondition proved (Z3: 2 VC)
-use_maps.adb:33:38: info: precondition proved (Z3: 1 VC)
+use_maps.adb:33:38: medium: precondition might fail
 use_maps.adb:33:59: info: initialization of "Cu.Node" proved
 use_maps.adb:34:22: info: precondition proved (Z3: 1 VC)
-use_maps.adb:35:25: info: precondition proved (Z3: 1 VC)
-use_maps.adb:35:51: info: precondition proved (Z3: 2 VC)
+use_maps.adb:35:25: medium: precondition might fail
+use_maps.adb:35:51: medium: precondition might fail
 use_maps.adb:37:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:37:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_maps.adb:37:27: info: precondition proved (Z3: 1 VC)
+use_maps.adb:37:27: medium: precondition might fail
 use_maps.adb:37:48: info: initialization of "Cu.Node" proved
 use_maps.adb:38:44: info: precondition proved (Z3: 2 VC)
 use_maps.adb:38:60: info: range check proved (Z3: 1 VC)
-use_maps.adb:39:10: info: precondition proved (Z3: 1 VC)
-use_maps.adb:39:22: info: precondition proved (Z3: 1 VC)
+use_maps.adb:39:10: medium: precondition might fail
+use_maps.adb:39:22: medium: precondition might fail
 use_maps.adb:39:30: info: initialization of "Cu.Node" proved
-use_maps.adb:39:38: info: precondition proved (Z3: 1 VC)
+use_maps.adb:39:38: medium: precondition might fail
 use_maps.adb:39:50: info: initialization of "Cu.Node" proved
-use_maps.adb:40:16: info: precondition proved (Z3: 1 VC)
+use_maps.adb:40:16: medium: precondition might fail
 use_maps.adb:40:25: info: initialization of "Cu.Node" proved
 use_maps.adb:48:29: info: initialization of "Cu.Node" proved
 use_maps.adb:49:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:49:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_maps.adb:49:47: info: precondition proved (Z3: 1 VC)
+use_maps.adb:49:47: medium: precondition might fail
 use_maps.adb:49:68: info: initialization of "Cu.Node" proved
 use_maps.adb:51:13: info: loop invariant initialization proved (Z3: 2 VC)
 use_maps.adb:51:13: info: loop invariant preservation proved (Z3: 2 VC)
-use_maps.adb:51:32: info: precondition proved (Z3: 1 VC)
+use_maps.adb:51:32: medium: precondition might fail
 use_maps.adb:51:53: info: initialization of "Cu.Node" proved
-use_maps.adb:52:37: info: precondition proved (Z3: 2 VC)
+use_maps.adb:52:37: medium: precondition might fail
 use_maps.adb:53:22: info: precondition proved (Z3: 1 VC)
-use_maps.adb:53:35: info: precondition proved (Z3: 2 VC)
-use_maps.adb:54:20: info: precondition proved (Z3: 1 VC)
-use_maps.adb:54:33: info: precondition proved (Z3: 2 VC)
+use_maps.adb:53:35: medium: precondition might fail
+use_maps.adb:54:20: medium: precondition might fail
+use_maps.adb:54:33: medium: precondition might fail
 use_maps.adb:56:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:56:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:56:13: info: precondition proved (Z3: 1 VC)
 use_maps.adb:56:13: info: precondition proved (Z3: 2 VC)
-use_maps.adb:57:38: info: precondition proved (Z3: 1 VC)
+use_maps.adb:57:38: medium: precondition might fail
 use_maps.adb:57:59: info: initialization of "Cu.Node" proved
-use_maps.adb:58:40: info: precondition proved (Z3: 2 VC)
-use_maps.adb:59:10: info: precondition proved (Z3: 1 VC)
-use_maps.adb:59:22: info: precondition proved (Z3: 1 VC)
+use_maps.adb:58:40: medium: precondition might fail
+use_maps.adb:59:10: medium: precondition might fail
+use_maps.adb:59:22: medium: precondition might fail
 use_maps.adb:59:30: info: initialization of "Cu.Node" proved
-use_maps.adb:59:38: info: precondition proved (Z3: 1 VC)
+use_maps.adb:59:38: medium: precondition might fail
 use_maps.adb:59:50: info: initialization of "Cu.Node" proved
-use_maps.adb:60:16: info: precondition proved (Z3: 1 VC)
+use_maps.adb:60:16: medium: precondition might fail
 use_maps.adb:60:25: info: initialization of "Cu.Node" proved
 use_maps.adb:67:29: info: initialization of "Cu.Node" proved
 use_maps.adb:68:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:68:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:69:33: info: loop invariant initialization proved (Z3: 1 VC)
-use_maps.adb:69:33: info: loop invariant preservation proved (Z3: 1 VC)
+use_maps.adb:69:33: medium: loop invariant might fail after first iteration, cannot prove Positions (S) = Positions (S)'loop_entry
 use_maps.adb:70:33: info: loop invariant initialization proved (Z3: 1 VC)
-use_maps.adb:70:33: info: loop invariant preservation proved (Z3: 1 VC)
+use_maps.adb:70:33: medium: loop invariant might fail after first iteration, cannot prove Keys (S) = Keys (S)'loop_entry
 use_maps.adb:72:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_maps.adb:72:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_maps.adb:72:32: info: precondition proved (Z3: 1 VC)
+use_maps.adb:72:32: medium: precondition might fail
 use_maps.adb:72:53: info: initialization of "Cu.Node" proved
-use_maps.adb:73:15: info: precondition proved (Z3: 1 VC)
-use_maps.adb:73:28: info: precondition proved (Z3: 2 VC)
-use_maps.adb:74:20: info: precondition proved (Z3: 1 VC)
-use_maps.adb:74:52: info: precondition proved (Z3: 2 VC)
+use_maps.adb:73:15: medium: loop invariant might fail after first iteration, cannot prove Element (S, K.Get (Keys (S), I)) = F (Element (Model (S)'Loop_Entry, K.Get (Keys (S), I)
+use_maps.adb:73:15: medium: precondition might fail
+use_maps.adb:73:28: medium: precondition might fail
+use_maps.adb:74:20: medium: precondition might fail
+use_maps.adb:74:52: medium: precondition might fail
 use_maps.adb:76:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_maps.adb:76:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_maps.adb:76:27: info: precondition proved (Z3: 1 VC)
+use_maps.adb:76:27: medium: precondition might fail
 use_maps.adb:76:48: info: initialization of "Cu.Node" proved
 use_maps.adb:77:15: info: precondition proved (Z3: 1 VC)
+use_maps.adb:77:15: medium: loop invariant might fail after first iteration, cannot prove Element (Model (S)'Loop_Entry, K.Get (Keys (S), I)) = Element (S, K.Get (Keys (S), I)
 use_maps.adb:77:47: info: precondition proved (Z3: 2 VC)
 use_maps.adb:77:63: info: range check proved (Z3: 1 VC)
 use_maps.adb:78:15: info: precondition proved (Z3: 1 VC)
 use_maps.adb:78:28: info: precondition proved (Z3: 2 VC)
 use_maps.adb:78:44: info: range check proved (Z3: 1 VC)
-use_maps.adb:79:10: info: precondition proved (Z3: 1 VC)
-use_maps.adb:79:22: info: precondition proved (Z3: 1 VC)
+use_maps.adb:79:10: medium: precondition might fail
+use_maps.adb:79:22: medium: precondition might fail
 use_maps.adb:79:30: info: initialization of "Cu.Node" proved
-use_maps.adb:79:38: info: precondition proved (Z3: 1 VC)
+use_maps.adb:79:38: medium: precondition might fail
 use_maps.adb:79:50: info: initialization of "Cu.Node" proved
-use_maps.adb:80:16: info: precondition proved (Z3: 1 VC)
+use_maps.adb:80:16: medium: precondition might fail
 use_maps.adb:80:25: info: initialization of "Cu.Node" proved
 use_maps.adb:87:29: info: initialization of "Cu.Node" proved
 use_maps.adb:88:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:88:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:89:33: info: loop invariant initialization proved (Z3: 1 VC)
-use_maps.adb:89:33: info: loop invariant preservation proved (Z3: 1 VC)
+use_maps.adb:89:33: medium: loop invariant might fail after first iteration, cannot prove Positions (S) = Positions (S)'loop_entry
 use_maps.adb:90:33: info: loop invariant initialization proved (Z3: 1 VC)
-use_maps.adb:90:33: info: loop invariant preservation proved (Z3: 1 VC)
+use_maps.adb:90:33: medium: loop invariant might fail after first iteration, cannot prove Keys (S) = Keys (S)'loop_entry
 use_maps.adb:92:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_maps.adb:92:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_maps.adb:92:32: info: precondition proved (Z3: 1 VC)
+use_maps.adb:92:32: medium: precondition might fail
 use_maps.adb:92:53: info: initialization of "Cu.Node" proved
-use_maps.adb:93:15: info: precondition proved (Z3: 1 VC)
-use_maps.adb:93:28: info: precondition proved (Z3: 2 VC)
-use_maps.adb:94:20: info: precondition proved (Z3: 1 VC)
-use_maps.adb:94:52: info: precondition proved (Z3: 2 VC)
+use_maps.adb:93:15: medium: loop invariant might fail after first iteration, cannot prove Element (S, K.Get (Keys (S), I)) = F (Element (Model (S)'Loop_Entry, K.Get (Keys (S), I)
+use_maps.adb:93:15: medium: precondition might fail
+use_maps.adb:93:28: medium: precondition might fail
+use_maps.adb:94:20: medium: precondition might fail
+use_maps.adb:94:52: medium: precondition might fail
 use_maps.adb:96:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_maps.adb:96:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_maps.adb:96:27: info: precondition proved (Z3: 1 VC)
+use_maps.adb:96:27: medium: precondition might fail
 use_maps.adb:96:48: info: initialization of "Cu.Node" proved
 use_maps.adb:97:15: info: precondition proved (Z3: 1 VC)
+use_maps.adb:97:15: medium: loop invariant might fail after first iteration, cannot prove Element (Model (S)'Loop_Entry, K.Get (Keys (S), I)) = Element (S, K.Get (Keys (S), I)
 use_maps.adb:97:47: info: precondition proved (Z3: 2 VC)
 use_maps.adb:97:63: info: range check proved (Z3: 1 VC)
 use_maps.adb:98:17: info: precondition proved (Z3: 1 VC)
 use_maps.adb:98:30: info: precondition proved (Z3: 2 VC)
 use_maps.adb:98:46: info: range check proved (Z3: 1 VC)
-use_maps.adb:99:10: info: precondition proved (Z3: 1 VC)
-use_maps.adb:99:22: info: precondition proved (Z3: 1 VC)
+use_maps.adb:99:10: medium: precondition might fail
+use_maps.adb:99:22: medium: precondition might fail
 use_maps.adb:99:30: info: initialization of "Cu.Node" proved
-use_maps.adb:99:38: info: precondition proved (Z3: 1 VC)
+use_maps.adb:99:38: medium: precondition might fail
 use_maps.adb:99:50: info: initialization of "Cu.Node" proved
-use_maps.adb:100:16: info: precondition proved (Z3: 1 VC)
+use_maps.adb:100:16: medium: precondition might fail
 use_maps.adb:100:25: info: initialization of "Cu.Node" proved
 use_maps.adb:107:30: info: initialization of "Cu.Node" proved
 use_maps.adb:109:13: info: loop invariant initialization proved (Z3: 1 VC)
@@ -553,20 +553,20 @@ use_maps.adb:114:26: info: initialization of "Cu.Node" proved
 use_maps.adb:122:30: info: initialization of "Cu.Node" proved
 use_maps.adb:124:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:124:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_maps.adb:124:50: info: overflow check proved (Z3: 1 VC)
-use_maps.adb:124:53: info: precondition proved (Z3: 1 VC)
+use_maps.adb:124:50: medium: overflow check might fail
+use_maps.adb:124:53: medium: precondition might fail
 use_maps.adb:124:75: info: initialization of "Cu.Node" proved
 use_maps.adb:126:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_maps.adb:126:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:126:13: info: precondition proved (Z3: 1 VC)
 use_maps.adb:126:13: info: precondition proved (Z3: 2 VC)
+use_maps.adb:126:32: medium: loop invariant might fail after first iteration, cannot prove Prop (Element (Model (S1), K)
 use_maps.adb:126:38: info: precondition proved (Z3: 1 VC)
-use_maps.adb:127:10: info: precondition proved (Z3: 1 VC)
-use_maps.adb:127:23: info: precondition proved (Z3: 1 VC)
+use_maps.adb:127:10: medium: precondition might fail
+use_maps.adb:127:23: medium: precondition might fail
 use_maps.adb:127:32: info: initialization of "Cu.Node" proved
-use_maps.adb:127:37: info: precondition proved (Z3: 1 VC)
+use_maps.adb:127:37: medium: precondition might fail
 use_maps.adb:127:50: info: initialization of "Cu.Node" proved
-use_maps.adb:128:16: info: precondition proved (Z3: 1 VC)
+use_maps.adb:128:16: medium: precondition might fail
 use_maps.adb:128:26: info: initialization of "Cu.Node" proved
 use_maps.adb:134:07: info: precondition proved (Z3: 2 VC)
 use_maps.adb:135:07: info: precondition proved (Z3: 2 VC)
@@ -577,7 +577,7 @@ use_maps.ads:22:16: info: postcondition proved (Z3: 3 VC)
 use_maps.ads:24:28: info: precondition proved (Z3: 1 VC)
 use_maps.ads:30:12: info: postcondition proved (Z3: 2 VC)
 use_maps.ads:34:35: info: overflow check proved (Z3: 1 VC)
-use_maps.ads:38:14: info: postcondition proved (Z3: 3 VC)
+use_maps.ads:38:14: medium: postcondition might fail, cannot prove Length (R) = Length (S)
 use_maps.ads:39:11: info: precondition proved (Z3: 1 VC)
 use_maps.ads:39:11: info: precondition proved (Z3: 2 VC)
 use_maps.ads:40:16: info: precondition proved (Z3: 1 VC)
@@ -590,14 +590,14 @@ use_maps.ads:42:16: info: precondition proved (Z3: 1 VC)
 use_maps.ads:42:16: info: precondition proved (Z3: 2 VC)
 use_maps.ads:42:35: info: precondition proved (Z3: 1 VC)
 use_maps.ads:42:55: info: precondition proved (Z3: 1 VC)
-use_maps.ads:47:14: info: postcondition proved (Z3: 4 VC)
+use_maps.ads:47:14: medium: postcondition might fail, cannot prove Length (R) = Length (S)
 use_maps.ads:48:11: info: precondition proved (Z3: 1 VC)
 use_maps.ads:48:11: info: precondition proved (Z3: 2 VC)
 use_maps.ads:49:11: info: precondition proved (Z3: 1 VC)
 use_maps.ads:49:11: info: precondition proved (Z3: 2 VC)
 use_maps.ads:50:20: info: precondition proved (Z3: 1 VC)
 use_maps.ads:50:41: info: precondition proved (Z3: 1 VC)
-use_maps.ads:54:14: info: postcondition proved (Z3: 3 VC)
+use_maps.ads:54:14: medium: postcondition might fail, cannot prove Length (S) = Length (S)'old
 use_maps.ads:55:11: info: precondition proved (Z3: 1 VC)
 use_maps.ads:55:11: info: precondition proved (Z3: 2 VC)
 use_maps.ads:56:16: info: precondition proved (Z3: 1 VC)
@@ -610,11 +610,11 @@ use_maps.ads:59:16: info: precondition proved (Z3: 1 VC)
 use_maps.ads:59:16: info: precondition proved (Z3: 2 VC)
 use_maps.ads:60:22: info: precondition proved (Z3: 1 VC)
 use_maps.ads:60:42: info: precondition proved (Z3: 1 VC)
-use_maps.ads:64:14: info: postcondition proved (Z3: 3 VC)
+use_maps.ads:64:14: medium: postcondition might fail, cannot prove Length (S) = Length (S)'old
 use_maps.ads:66:11: info: precondition proved (Z3: 1 VC)
 use_maps.ads:66:11: info: precondition proved (Z3: 2 VC)
 use_maps.ads:67:15: info: precondition proved (Z3: 1 VC)
-use_maps.ads:67:36: info: precondition proved (Z3: 1 VC)
+use_maps.ads:67:36: medium: precondition might fail
 use_maps.ads:71:14: info: postcondition proved (Z3: 2 VC)
 use_maps.ads:72:09: info: precondition proved (Z3: 1 VC)
 use_maps.ads:72:09: info: precondition proved (Z3: 2 VC)
@@ -625,9 +625,9 @@ use_maps.ads:80:11: info: precondition proved (Z3: 1 VC)
 use_maps.ads:80:11: info: precondition proved (Z3: 2 VC)
 use_maps.ads:80:36: info: precondition proved (Z3: 1 VC)
 use_maps.ads:81:22: info: overflow check proved (Z3: 1 VC)
-use_maps.ads:82:14: info: postcondition proved (Z3: 1 VC)
 use_maps.ads:82:15: info: precondition proved (Z3: 1 VC)
 use_maps.ads:82:15: info: precondition proved (Z3: 2 VC)
+use_maps.ads:82:34: medium: postcondition might fail, cannot prove Prop (Element (S1, K)
 use_maps.ads:82:40: info: precondition proved (Z3: 1 VC)
 use_maps.ads:92:11: info: precondition proved (Z3: 1 VC)
 use_maps.ads:92:11: info: precondition proved (Z3: 2 VC)
@@ -687,126 +687,126 @@ use_ordered_maps.adb:15:25: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:24:29: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:25:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:25:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_maps.adb:25:47: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:25:47: medium: precondition might fail
 use_ordered_maps.adb:25:68: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:27:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:27:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_maps.adb:27:32: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:27:32: medium: precondition might fail
 use_ordered_maps.adb:27:53: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:28:16: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.adb:28:16: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:29:20: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:30:23: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:30:49: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.adb:30:23: medium: precondition might fail
+use_ordered_maps.adb:30:49: medium: precondition might fail
 use_ordered_maps.adb:32:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:32:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:32:13: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.adb:32:13: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:33:38: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:33:38: medium: precondition might fail
 use_ordered_maps.adb:33:59: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:34:22: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:35:25: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:35:51: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.adb:35:25: medium: precondition might fail
+use_ordered_maps.adb:35:51: medium: precondition might fail
 use_ordered_maps.adb:37:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:37:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_maps.adb:37:27: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:37:27: medium: precondition might fail
 use_ordered_maps.adb:37:48: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:38:44: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:38:60: info: range check proved (Z3: 1 VC)
-use_ordered_maps.adb:39:10: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:39:22: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:39:10: medium: precondition might fail
+use_ordered_maps.adb:39:22: medium: precondition might fail
 use_ordered_maps.adb:39:30: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:39:38: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:39:38: medium: precondition might fail
 use_ordered_maps.adb:39:50: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:40:16: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:40:16: medium: precondition might fail
 use_ordered_maps.adb:40:25: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:48:29: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:49:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:49:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_maps.adb:49:47: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:49:47: medium: precondition might fail
 use_ordered_maps.adb:49:68: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:51:13: info: loop invariant initialization proved (Z3: 2 VC)
 use_ordered_maps.adb:51:13: info: loop invariant preservation proved (Z3: 2 VC)
-use_ordered_maps.adb:51:32: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:51:32: medium: precondition might fail
 use_ordered_maps.adb:51:53: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:52:37: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.adb:52:37: medium: precondition might fail
 use_ordered_maps.adb:53:22: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:53:35: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:54:20: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:54:33: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.adb:53:35: medium: precondition might fail
+use_ordered_maps.adb:54:20: medium: precondition might fail
+use_ordered_maps.adb:54:33: medium: precondition might fail
 use_ordered_maps.adb:56:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:56:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:56:13: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.adb:56:13: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:57:38: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:57:38: medium: precondition might fail
 use_ordered_maps.adb:57:59: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:58:40: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:59:10: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:59:22: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:58:40: medium: precondition might fail
+use_ordered_maps.adb:59:10: medium: precondition might fail
+use_ordered_maps.adb:59:22: medium: precondition might fail
 use_ordered_maps.adb:59:30: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:59:38: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:59:38: medium: precondition might fail
 use_ordered_maps.adb:59:50: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:60:16: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:60:16: medium: precondition might fail
 use_ordered_maps.adb:60:25: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:67:29: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:68:33: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_maps.adb:68:33: info: loop invariant preservation proved (Z3: 1 VC)
+use_ordered_maps.adb:68:33: medium: loop invariant might fail after first iteration, cannot prove Positions (S) = Positions (S)'loop_entry
 use_ordered_maps.adb:69:33: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_maps.adb:69:33: info: loop invariant preservation proved (Z3: 1 VC)
+use_ordered_maps.adb:69:33: medium: loop invariant might fail after first iteration, cannot prove Keys (S) = Keys (S)'loop_entry
 use_ordered_maps.adb:71:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_maps.adb:71:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_maps.adb:71:32: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:71:32: medium: precondition might fail
 use_ordered_maps.adb:71:53: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:72:15: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:72:28: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:73:20: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:73:52: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.adb:72:15: medium: loop invariant might fail after first iteration, cannot prove Element (S, K.Get (Keys (S), I)) = F (Element (Model (S)'Loop_Entry, K.Get (Keys (S), I)
+use_ordered_maps.adb:72:15: medium: precondition might fail
+use_ordered_maps.adb:72:28: medium: precondition might fail
+use_ordered_maps.adb:73:20: medium: precondition might fail
+use_ordered_maps.adb:73:52: medium: precondition might fail
 use_ordered_maps.adb:75:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_maps.adb:75:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_maps.adb:75:27: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:75:27: medium: precondition might fail
 use_ordered_maps.adb:75:48: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:76:15: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:76:15: medium: loop invariant might fail after first iteration, cannot prove Element (Model (S)'Loop_Entry, K.Get (Keys (S), I)) = Element (S, K.Get (Keys (S), I)
 use_ordered_maps.adb:76:47: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:76:63: info: range check proved (Z3: 1 VC)
 use_ordered_maps.adb:77:15: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.adb:77:28: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:77:44: info: range check proved (Z3: 1 VC)
-use_ordered_maps.adb:78:10: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:78:22: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:78:10: medium: precondition might fail
+use_ordered_maps.adb:78:22: medium: precondition might fail
 use_ordered_maps.adb:78:30: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:78:38: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:78:38: medium: precondition might fail
 use_ordered_maps.adb:78:50: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:79:16: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:79:16: medium: precondition might fail
 use_ordered_maps.adb:79:25: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:86:29: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:87:33: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_maps.adb:87:33: info: loop invariant preservation proved (Z3: 1 VC)
+use_ordered_maps.adb:87:33: medium: loop invariant might fail after first iteration, cannot prove Positions (S) = Positions (S)'loop_entry
 use_ordered_maps.adb:88:33: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_maps.adb:88:33: info: loop invariant preservation proved (Z3: 1 VC)
+use_ordered_maps.adb:88:33: medium: loop invariant might fail after first iteration, cannot prove Keys (S) = Keys (S)'loop_entry
 use_ordered_maps.adb:90:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_maps.adb:90:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_maps.adb:90:32: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:90:32: medium: precondition might fail
 use_ordered_maps.adb:90:53: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:91:15: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:91:28: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:92:20: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:92:52: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.adb:91:15: medium: loop invariant might fail after first iteration, cannot prove Element (S, K.Get (Keys (S), I)) = F (Element (Model (S)'Loop_Entry, K.Get (Keys (S), I)
+use_ordered_maps.adb:91:15: medium: precondition might fail
+use_ordered_maps.adb:91:28: medium: precondition might fail
+use_ordered_maps.adb:92:20: medium: precondition might fail
+use_ordered_maps.adb:92:52: medium: precondition might fail
 use_ordered_maps.adb:94:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_maps.adb:94:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_maps.adb:94:27: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:94:27: medium: precondition might fail
 use_ordered_maps.adb:94:48: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:95:15: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:95:15: medium: loop invariant might fail after first iteration, cannot prove Element (Model (S)'Loop_Entry, K.Get (Keys (S), I)) = Element (S, K.Get (Keys (S), I)
 use_ordered_maps.adb:95:47: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:95:63: info: range check proved (Z3: 1 VC)
 use_ordered_maps.adb:96:17: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.adb:96:30: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:96:46: info: range check proved (Z3: 1 VC)
-use_ordered_maps.adb:97:10: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:97:22: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:97:10: medium: precondition might fail
+use_ordered_maps.adb:97:22: medium: precondition might fail
 use_ordered_maps.adb:97:30: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:97:38: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:97:38: medium: precondition might fail
 use_ordered_maps.adb:97:50: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:98:16: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:98:16: medium: precondition might fail
 use_ordered_maps.adb:98:25: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:105:30: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:107:13: info: loop invariant initialization proved (Z3: 1 VC)
@@ -821,20 +821,20 @@ use_ordered_maps.adb:112:26: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:120:30: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:122:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:122:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_maps.adb:122:50: info: overflow check proved (Z3: 1 VC)
-use_ordered_maps.adb:122:53: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:122:50: medium: overflow check might fail
+use_ordered_maps.adb:122:53: medium: precondition might fail
 use_ordered_maps.adb:122:75: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:124:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_maps.adb:124:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:124:13: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.adb:124:13: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.adb:124:32: medium: loop invariant might fail after first iteration, cannot prove Prop (Element (Model (S1), K)
 use_ordered_maps.adb:124:38: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:125:10: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:125:23: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:125:10: medium: precondition might fail
+use_ordered_maps.adb:125:23: medium: precondition might fail
 use_ordered_maps.adb:125:32: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:125:37: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:125:37: medium: precondition might fail
 use_ordered_maps.adb:125:50: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:126:16: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.adb:126:16: medium: precondition might fail
 use_ordered_maps.adb:126:26: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:132:07: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:133:07: info: precondition proved (Z3: 2 VC)
@@ -844,7 +844,7 @@ use_ordered_maps.ads:20:16: info: postcondition proved (Z3: 3 VC)
 use_ordered_maps.ads:22:28: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:28:12: info: postcondition proved (Z3: 2 VC)
 use_ordered_maps.ads:32:35: info: overflow check proved (Z3: 1 VC)
-use_ordered_maps.ads:36:14: info: postcondition proved (Z3: 3 VC)
+use_ordered_maps.ads:36:14: medium: postcondition might fail, cannot prove Length (R) = Length (S)
 use_ordered_maps.ads:37:11: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:37:11: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:38:16: info: precondition proved (Z3: 1 VC)
@@ -857,14 +857,14 @@ use_ordered_maps.ads:40:16: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:40:16: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:40:35: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:40:55: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.ads:45:14: info: postcondition proved (Z3: 4 VC)
+use_ordered_maps.ads:45:14: medium: postcondition might fail, cannot prove Length (R) = Length (S)
 use_ordered_maps.ads:46:11: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:46:11: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:47:11: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:47:11: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:48:20: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:48:41: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.ads:52:14: info: postcondition proved (Z3: 3 VC)
+use_ordered_maps.ads:52:14: medium: postcondition might fail, cannot prove Length (S) = Length (S)'old
 use_ordered_maps.ads:53:11: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:53:11: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:54:16: info: precondition proved (Z3: 1 VC)
@@ -877,11 +877,11 @@ use_ordered_maps.ads:57:16: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:57:16: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:58:22: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:58:42: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.ads:62:14: info: postcondition proved (Z3: 3 VC)
+use_ordered_maps.ads:62:14: medium: postcondition might fail, cannot prove Length (S) = Length (S)'old
 use_ordered_maps.ads:64:11: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:64:11: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:65:15: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.ads:65:36: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:65:36: medium: precondition might fail
 use_ordered_maps.ads:69:14: info: postcondition proved (Z3: 2 VC)
 use_ordered_maps.ads:70:09: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:70:09: info: precondition proved (Z3: 2 VC)
@@ -892,9 +892,9 @@ use_ordered_maps.ads:78:11: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:78:11: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:78:36: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:79:22: info: overflow check proved (Z3: 1 VC)
-use_ordered_maps.ads:80:14: info: postcondition proved (Z3: 1 VC)
 use_ordered_maps.ads:80:15: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:80:15: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.ads:80:34: medium: postcondition might fail, cannot prove Prop (Element (S1, K)
 use_ordered_maps.ads:80:40: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:90:34: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:91:14: info: postcondition proved (Z3: 5 VC)
@@ -950,23 +950,23 @@ use_ordered_sets.adb:14:25: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:23:29: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:24:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:24:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:24:48: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:24:48: medium: precondition might fail
 use_ordered_sets.adb:24:69: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:26:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:26:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:26:32: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:26:32: medium: precondition might fail
 use_ordered_sets.adb:26:53: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:27:32: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.adb:27:32: medium: precondition might fail
 use_ordered_sets.adb:29:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:29:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:29:13: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:30:36: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:30:36: medium: precondition might fail
 use_ordered_sets.adb:30:57: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:31:28: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:32:10: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:32:25: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:31:28: medium: precondition might fail
+use_ordered_sets.adb:32:10: medium: precondition might fail
+use_ordered_sets.adb:32:25: medium: precondition might fail
 use_ordered_sets.adb:32:37: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:33:16: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:33:16: medium: precondition might fail
 use_ordered_sets.adb:33:25: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:40:30: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:42:13: info: loop invariant initialization proved (Z3: 1 VC)
@@ -991,25 +991,25 @@ use_ordered_sets.adb:62:26: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:69:07: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.adb:76:30: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:78:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_sets.adb:78:13: info: loop invariant preservation proved (Z3: 1 VC)
+use_ordered_sets.adb:78:13: medium: loop invariant might fail after first iteration, cannot prove Length (S1) = Length (S1)'Loop_Entry - Length (S2)
 use_ordered_sets.adb:78:50: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.adb:79:33: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_sets.adb:79:33: info: loop invariant preservation proved (Z3: 1 VC)
+use_ordered_sets.adb:79:33: medium: loop invariant might fail after first iteration, cannot prove Model (S2) <= Model (S1)'loop_entry
 use_ordered_sets.adb:80:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:80:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:82:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:82:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:85:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:85:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:86:10: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:86:23: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:86:10: medium: precondition might fail
+use_ordered_sets.adb:86:23: medium: precondition might fail
 use_ordered_sets.adb:86:36: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:87:23: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:87:23: medium: precondition might fail
 use_ordered_sets.adb:87:36: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:96:30: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:97:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:97:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:97:34: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:97:34: medium: precondition might fail
 use_ordered_sets.adb:97:56: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:99:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:99:13: info: loop invariant preservation proved (Z3: 1 VC)
@@ -1023,43 +1023,43 @@ use_ordered_sets.adb:104:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:105:18: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.adb:106:18: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.adb:106:62: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.adb:107:10: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:107:23: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:107:10: medium: precondition might fail
+use_ordered_sets.adb:107:23: medium: precondition might fail
 use_ordered_sets.adb:107:36: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:108:23: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:108:23: medium: precondition might fail
 use_ordered_sets.adb:108:36: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:117:30: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:118:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:118:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:118:34: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:118:34: medium: precondition might fail
 use_ordered_sets.adb:118:56: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:118:74: info: overflow check proved (Z3: 1 VC)
+use_ordered_sets.adb:118:74: medium: overflow check might fail
 use_ordered_sets.adb:120:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:120:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:121:42: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.adb:121:42: medium: precondition might fail
 use_ordered_sets.adb:123:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:123:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:123:13: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:125:38: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:126:10: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:126:23: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:125:38: medium: precondition might fail
+use_ordered_sets.adb:126:10: medium: precondition might fail
+use_ordered_sets.adb:126:23: medium: precondition might fail
 use_ordered_sets.adb:126:36: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:127:16: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:127:16: medium: precondition might fail
 use_ordered_sets.adb:127:26: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:136:30: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:137:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:137:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:137:34: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:137:34: medium: precondition might fail
 use_ordered_sets.adb:137:56: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:137:74: info: overflow check proved (Z3: 1 VC)
+use_ordered_sets.adb:137:74: medium: overflow check might fail
 use_ordered_sets.adb:139:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:139:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:140:18: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:140:45: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:141:10: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:141:23: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:140:45: medium: precondition might fail
+use_ordered_sets.adb:141:10: medium: precondition might fail
+use_ordered_sets.adb:141:23: medium: precondition might fail
 use_ordered_sets.adb:141:36: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:142:16: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:142:16: medium: precondition might fail
 use_ordered_sets.adb:142:26: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:151:29: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:152:33: info: loop invariant initialization proved (Z3: 1 VC)
@@ -1067,21 +1067,21 @@ use_ordered_sets.adb:152:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:152:68: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.adb:152:70: info: initialization of "N" proved
 use_ordered_sets.adb:154:13: info: loop invariant initialization proved (Z3: 2 VC)
-use_ordered_sets.adb:154:13: info: loop invariant preservation proved (Z3: 2 VC)
 use_ordered_sets.adb:154:31: info: initialization of "N" proved
-use_ordered_sets.adb:155:14: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.adb:155:13: medium: loop invariant might fail after first iteration, cannot prove E.Get (Elements (S), 2 * I) = E.Get (Elements (S)'Loop_Entry, I) + 1
+use_ordered_sets.adb:155:14: medium: precondition might fail
 use_ordered_sets.adb:155:36: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.adb:155:36: info: range check proved (Z3: 1 VC)
-use_ordered_sets.adb:155:44: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:155:78: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.adb:156:18: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:156:40: info: overflow check proved (Z3: 1 VC)
+use_ordered_sets.adb:155:44: medium: precondition might fail
+use_ordered_sets.adb:155:78: medium: overflow check might fail
+use_ordered_sets.adb:156:18: medium: precondition might fail
+use_ordered_sets.adb:156:40: medium: overflow check might fail
 use_ordered_sets.adb:156:44: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.adb:156:44: info: range check proved (Z3: 1 VC)
-use_ordered_sets.adb:157:16: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.adb:157:16: medium: precondition might fail
 use_ordered_sets.adb:159:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:159:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:159:28: info: overflow check proved (Z3: 1 VC)
+use_ordered_sets.adb:159:28: medium: overflow check might fail
 use_ordered_sets.adb:159:30: info: initialization of "N" proved
 use_ordered_sets.adb:159:32: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.adb:160:18: info: precondition proved (Z3: 2 VC)
@@ -1099,22 +1099,22 @@ use_ordered_sets.adb:164:40: info: range check proved (Z3: 1 VC)
 use_ordered_sets.adb:165:16: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.adb:165:47: info: range check proved (Z3: 1 VC)
 use_ordered_sets.adb:166:33: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_sets.adb:166:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:166:34: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:166:33: medium: loop invariant might fail after first iteration, cannot prove P.Get (Positions (S), Cu) = 2 * N + 1
+use_ordered_sets.adb:166:34: medium: precondition might fail
 use_ordered_sets.adb:166:55: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:166:63: info: overflow check proved (Z3: 1 VC)
+use_ordered_sets.adb:166:63: medium: overflow check might fail
 use_ordered_sets.adb:166:65: info: initialization of "N" proved
 use_ordered_sets.adb:166:67: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.adb:167:25: info: assertion proved (Z3: 1 VC)
-use_ordered_sets.adb:167:42: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:167:25: medium: assertion might fail, cannot prove not Contains (S, Element (S, Cu) + 1)
+use_ordered_sets.adb:167:42: medium: precondition might fail
 use_ordered_sets.adb:167:54: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:167:58: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.adb:168:10: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:168:22: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:167:58: medium: overflow check might fail
+use_ordered_sets.adb:168:10: medium: precondition might fail
+use_ordered_sets.adb:168:22: medium: precondition might fail
 use_ordered_sets.adb:168:34: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:168:38: info: overflow check proved (Z3: 1 VC)
+use_ordered_sets.adb:168:38: medium: overflow check might fail
 use_ordered_sets.adb:169:16: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:169:25: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:169:25: medium: precondition might fail
 use_ordered_sets.adb:169:34: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:170:15: info: initialization of "N" proved
 use_ordered_sets.adb:170:17: info: overflow check proved (Z3: 1 VC)
@@ -1126,9 +1126,9 @@ use_ordered_sets.adb:180:07: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:15:12: info: postcondition proved (Z3: 2 VC)
 use_ordered_sets.ads:18:14: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:22:35: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.ads:26:14: info: postcondition proved (Z3: 2 VC)
 use_ordered_sets.ads:26:15: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:26:15: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.ads:26:33: medium: postcondition might fail, cannot prove M.Contains (Model (R), F (E)
 use_ordered_sets.ads:27:11: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:27:11: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:28:16: info: precondition proved (Z3: 1 VC)
@@ -1144,22 +1144,22 @@ use_ordered_sets.ads:49:22: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:50:14: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:50:15: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:50:15: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.ads:55:14: info: postcondition proved (Z3: 2 VC)
-use_ordered_sets.ads:61:14: info: postcondition proved (Z3: 3 VC)
-use_ordered_sets.ads:68:14: info: postcondition proved (Z3: 2 VC)
-use_ordered_sets.ads:73:14: info: postcondition proved (Z3: 3 VC)
+use_ordered_sets.ads:55:14: medium: postcondition might fail, cannot prove Model (S1)'Old = Model (S2)
+use_ordered_sets.ads:61:14: medium: postcondition might fail, cannot prove Model (S1)'Old = Model (S2)
+use_ordered_sets.ads:68:14: medium: postcondition might fail, cannot prove Model (S1)'Old = Model (S2)
+use_ordered_sets.ads:73:14: medium: postcondition might fail, cannot prove Model (S1)'Old = Model (S2)
 use_ordered_sets.ads:83:25: info: division check proved (Z3: 1 VC)
 use_ordered_sets.ads:84:07: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:84:07: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:84:27: info: division check proved (Z3: 1 VC)
-use_ordered_sets.ads:85:14: info: postcondition proved (CVC4: 3 VC)
+use_ordered_sets.ads:85:14: medium: postcondition might fail, cannot prove Length (S) = 2 * Length (S)'old
 use_ordered_sets.ads:85:29: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.ads:87:09: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+use_ordered_sets.ads:87:09: medium: precondition might fail
 use_ordered_sets.ads:87:31: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:87:35: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:87:35: info: range check proved (Z3: 1 VC)
 use_ordered_sets.ads:87:43: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.ads:88:13: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+use_ordered_sets.ads:88:13: medium: precondition might fail
 use_ordered_sets.ads:88:35: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:88:35: info: range check proved (Z3: 1 VC)
 use_ordered_sets.ads:89:13: info: precondition proved (Z3: 2 VC)
@@ -1204,24 +1204,24 @@ use_sets.adb:14:25: info: initialization of "Cu.Node" proved
 use_sets.adb:23:29: info: initialization of "Cu.Node" proved
 use_sets.adb:24:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:24:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_sets.adb:24:48: info: precondition proved (Z3: 1 VC)
+use_sets.adb:24:48: medium: precondition might fail
 use_sets.adb:24:69: info: initialization of "Cu.Node" proved
 use_sets.adb:26:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:26:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_sets.adb:26:32: info: precondition proved (Z3: 1 VC)
+use_sets.adb:26:32: medium: precondition might fail
 use_sets.adb:26:53: info: initialization of "Cu.Node" proved
-use_sets.adb:27:32: info: precondition proved (Z3: 2 VC)
+use_sets.adb:27:32: medium: precondition might fail
 use_sets.adb:29:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:29:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:29:13: info: precondition proved (Z3: 1 VC)
 use_sets.adb:29:13: info: precondition proved (Z3: 2 VC)
-use_sets.adb:30:36: info: precondition proved (Z3: 1 VC)
+use_sets.adb:30:36: medium: precondition might fail
 use_sets.adb:30:57: info: initialization of "Cu.Node" proved
-use_sets.adb:31:28: info: precondition proved (Z3: 2 VC)
-use_sets.adb:32:10: info: precondition proved (Z3: 1 VC)
-use_sets.adb:32:25: info: precondition proved (Z3: 1 VC)
+use_sets.adb:31:28: medium: precondition might fail
+use_sets.adb:32:10: medium: precondition might fail
+use_sets.adb:32:25: medium: precondition might fail
 use_sets.adb:32:37: info: initialization of "Cu.Node" proved
-use_sets.adb:33:16: info: precondition proved (Z3: 1 VC)
+use_sets.adb:33:16: medium: precondition might fail
 use_sets.adb:33:25: info: initialization of "Cu.Node" proved
 use_sets.adb:40:30: info: initialization of "Cu.Node" proved
 use_sets.adb:42:13: info: loop invariant initialization proved (Z3: 1 VC)
@@ -1248,39 +1248,39 @@ use_sets.adb:76:30: info: initialization of "Cu.Node" proved
 use_sets.adb:77:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:77:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:79:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_sets.adb:79:13: info: loop invariant preservation proved (Z3: 1 VC)
+use_sets.adb:79:13: medium: loop invariant might fail after first iteration, cannot prove Length (S1) = Length (S1)'Loop_Entry - Length (S2)
 use_sets.adb:79:50: info: overflow check proved (Z3: 1 VC)
 use_sets.adb:81:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_sets.adb:81:13: info: loop invariant preservation proved (Z3: 1 VC)
+use_sets.adb:81:13: medium: loop invariant might fail after first iteration, cannot prove Model (S2) <= Model (S1)'loop_entry
 use_sets.adb:83:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:83:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:85:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:85:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:87:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:87:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_sets.adb:88:10: info: precondition proved (Z3: 1 VC)
-use_sets.adb:88:23: info: precondition proved (Z3: 1 VC)
+use_sets.adb:88:10: medium: precondition might fail
+use_sets.adb:88:23: medium: precondition might fail
 use_sets.adb:88:36: info: initialization of "Cu.Node" proved
-use_sets.adb:89:23: info: precondition proved (Z3: 1 VC)
+use_sets.adb:89:23: medium: precondition might fail
 use_sets.adb:89:36: info: initialization of "Cu.Node" proved
 use_sets.adb:98:30: info: initialization of "Cu.Node" proved
 use_sets.adb:99:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:99:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_sets.adb:99:34: info: precondition proved (Z3: 1 VC)
+use_sets.adb:99:34: medium: precondition might fail
 use_sets.adb:99:56: info: initialization of "Cu.Node" proved
-use_sets.adb:99:74: info: overflow check proved (Z3: 1 VC)
+use_sets.adb:99:74: medium: overflow check might fail
 use_sets.adb:101:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:101:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_sets.adb:102:32: info: precondition proved (Z3: 2 VC)
+use_sets.adb:102:32: medium: precondition might fail
 use_sets.adb:104:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:104:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:104:13: info: precondition proved (Z3: 1 VC)
 use_sets.adb:104:13: info: precondition proved (Z3: 2 VC)
-use_sets.adb:106:38: info: precondition proved (Z3: 2 VC)
-use_sets.adb:107:10: info: precondition proved (Z3: 1 VC)
-use_sets.adb:107:23: info: precondition proved (Z3: 1 VC)
+use_sets.adb:106:38: medium: precondition might fail
+use_sets.adb:107:10: medium: precondition might fail
+use_sets.adb:107:23: medium: precondition might fail
 use_sets.adb:107:36: info: initialization of "Cu.Node" proved
-use_sets.adb:108:16: info: precondition proved (Z3: 1 VC)
+use_sets.adb:108:16: medium: precondition might fail
 use_sets.adb:108:26: info: initialization of "Cu.Node" proved
 use_sets.adb:115:07: info: precondition proved (Z3: 1 VC)
 use_sets.adb:116:07: info: precondition proved (Z3: 1 VC)
@@ -1292,9 +1292,9 @@ use_sets.ads:17:12: info: postcondition proved (Z3: 2 VC)
 use_sets.ads:20:14: info: postcondition proved (Z3: 1 VC)
 use_sets.ads:24:35: info: overflow check proved (Z3: 1 VC)
 use_sets.ads:24:35: info: range check proved (Z3: 1 VC)
-use_sets.ads:28:14: info: postcondition proved (Z3: 2 VC)
 use_sets.ads:28:15: info: precondition proved (Z3: 1 VC)
 use_sets.ads:28:15: info: precondition proved (Z3: 2 VC)
+use_sets.ads:28:33: medium: postcondition might fail, cannot prove Contains (R, F (E)
 use_sets.ads:29:11: info: precondition proved (Z3: 1 VC)
 use_sets.ads:29:11: info: precondition proved (Z3: 2 VC)
 use_sets.ads:29:30: info: precondition proved (Z3: 1 VC)
@@ -1310,8 +1310,8 @@ use_sets.ads:50:24: info: overflow check proved (Z3: 1 VC)
 use_sets.ads:51:14: info: postcondition proved (Z3: 1 VC)
 use_sets.ads:51:15: info: precondition proved (Z3: 1 VC)
 use_sets.ads:51:15: info: precondition proved (Z3: 2 VC)
-use_sets.ads:56:14: info: postcondition proved (Z3: 2 VC)
-use_sets.ads:62:14: info: postcondition proved (Z3: 2 VC)
+use_sets.ads:56:14: medium: postcondition might fail, cannot prove Model (S1)'Old = Model (S2)
+use_sets.ads:62:14: medium: postcondition might fail, cannot prove Model (S1)'Old = Model (S2)
 use_sets.ads:72:14: info: postcondition proved (Z3: 4 VC)
 use_sets.ads:72:43: info: overflow check proved (Z3: 1 VC)
 use_sets.ads:75:11: info: precondition proved (Z3: 1 VC)
