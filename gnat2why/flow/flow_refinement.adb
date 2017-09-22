@@ -678,13 +678,31 @@ package body Flow_Refinement is
          if Is_Constituent (Var) then
             pragma Assert (Var.Kind in Direct_Mapping | Record_Field);
             declare
-               State : constant Flow_Id := Encapsulating_State (Var);
+               Projected_Entity, Partial_Entity : Node_Sets.Set;
 
             begin
-               if State_Refinement_Is_Visible (State, Scope) then
+               --  Since we only up-project Flow_Ids with constituents that are
+               --  internally represented by Entity_Id, we can reuse the
+               --  existing logic for up-projecting those. For this we call the
+               --  variant for Node_Sets with singleton set; this gives a
+               --  singleton set a result (with either a projected or
+               --  unmodified constituent).
+               --
+               --  ??? repetition of code for Entity_Id/Entity_Name/Flow_Id and
+               --  their sets and maps deserves a non-trivial rewrite.
+
+               Up_Project (Node_Sets.To_Set (Get_Direct_Mapping_Id (Var)),
+                           Scope, Projected_Entity, Partial_Entity);
+
+               --  Either Projected_Entity is empty and Partial_Entity is a
+               --  singleton set, or the other way round.
+               pragma Assert
+                 (Projected_Entity.Length + Partial_Entity.Length = 1);
+
+               if Partial_Entity.Is_Empty then
                   Projected.Include (Var);
                else
-                  Partial.Include (State);
+                  Partial.Include (Encapsulating_State (Var));
                end if;
             end;
          else
