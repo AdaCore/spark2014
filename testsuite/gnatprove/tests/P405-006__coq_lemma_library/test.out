@@ -67,7 +67,7 @@ spark-floating_point_arithmetic_lemmas.ads:104:21: info: float overflow check pr
 spark-floating_point_arithmetic_lemmas.ads:104:36: info: division check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:104:36: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:104:36: info: float overflow check proved (Z3: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:104:36: info: float overflow check proved (Z3: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:104:36: info: float overflow check proved (altergo: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:117:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:117:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:117:19: info: division check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
@@ -77,7 +77,7 @@ spark-floating_point_arithmetic_lemmas.ads:117:19: info: float overflow check pr
 spark-floating_point_arithmetic_lemmas.ads:117:34: info: division check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:117:34: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:117:34: info: float overflow check proved (Z3: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:117:34: info: float overflow check proved (Z3: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:117:34: info: float overflow check proved (altergo: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-mod_arithmetic_lemmas.ads:48:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:48:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:48:19: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33

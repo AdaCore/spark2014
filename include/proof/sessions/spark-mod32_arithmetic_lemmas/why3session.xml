@@ -541,124 +541,124 @@
  </transf>
  </goal>
 </theory>
-<theory name="Spark__mod32_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" sum="f2061d8a10822f8c7ac085034076bee8" expanded="true">
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" sum="54ebfce3df5887faa1762783565be300" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.61"/></proof>
-  <proof prover="1"><result status="timeout" time="0.99" steps="16321"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.41"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__mod32_arithmetic_lemmas__lemma_div_then_mult_bounds__subprogram_def" sum="5dba312971a676a16375e0d1b282f60d" expanded="true">
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_div_then_mult_bounds__subprogram_def" sum="45891be1ebe4bc9131c216d70d644edb" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
-  <proof prover="1" timelimit="10"><result status="timeout" time="9.93" steps="86877"/></proof>
+  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
   <proof prover="2"><result status="timeout" time="5.00"/></proof>
-  <proof prover="3"><result status="valid" time="1.14" steps="16719"/></proof>
+  <proof prover="3"><result status="valid" time="4.04" steps="19506"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="1" timelimit="10"><result status="timeout" time="9.89" steps="108926"/></proof>
+  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
   <proof prover="2"><result status="timeout" time="5.00"/></proof>
-  <proof prover="3"><result status="valid" time="7.38" steps="109633"/></proof>
+  <proof prover="3"><result status="valid" time="5.93" steps="28017"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__subprogram_def" sum="a55722eabbc8c410f9d8052f4a1146f6" expanded="true">
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__subprogram_def" sum="050265ed8e710f10ceaf00305c13c6bd" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.69"/></proof>
-  <proof prover="1"><result status="timeout" time="0.98" steps="27757"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.49"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__subprogram_def" sum="104207483890a3b96339934c27589658" expanded="true">
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__subprogram_def" sum="02c673a45ba3ae53982a7195b8e496ca" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><result status="valid" time="0.69"/></proof>
-  <proof prover="1"><result status="timeout" time="0.98" steps="25887"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><result status="valid" time="0.54"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_protect__subprogram_def" sum="2cc15f29e344461b20c7c7f832b06323" expanded="true">
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_protect__subprogram_def" sum="d9ac620c97c50a23aa4bbea5635e0bd2" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_protect__pragargs__cmp.v"><result status="valid" time="0.63"/></proof>
-  <proof prover="1"><result status="timeout" time="0.98" steps="21858"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_protect__pragargs__cmp.v"><result status="valid" time="0.45"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_scale__subprogram_def" sum="2af971454d19eec0772a9778d52659d3" expanded="true">
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_scale__subprogram_def" sum="d7b833388d7899fda6946f1bd21800b8" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_scale__pragargs__cmp.v"><result status="valid" time="0.72"/></proof>
-  <proof prover="1"><result status="timeout" time="0.98" steps="14721"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_scale__pragargs__cmp.v"><result status="valid" time="0.54"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_then_div_is_ident__subprogram_def" sum="28ececa4d868d8508a94895bd4a896be" expanded="true">
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_then_div_is_ident__subprogram_def" sum="f763d09ca2f50882e42260b06ef8e8cc" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_then_div_is_ident__pragargs__cmp.v"><result status="valid" time="0.69"/></proof>
-  <proof prover="1"><result status="timeout" time="0.99" steps="6740"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_then_div_is_ident__pragargs__cmp.v"><result status="valid" time="0.54"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_then_mod_is_zero__subprogram_def" sum="8a90f64295a113f1043e0ef050563521" expanded="true">
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_then_mod_is_zero__subprogram_def" sum="a1e4c8feb689a17d9626c872012ca8d1" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_then_mod_is_zero__pragargs__cmp.v"><result status="valid" time="0.67"/></proof>
-  <proof prover="1"><result status="timeout" time="0.98" steps="7070"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_then_mod_is_zero__pragargs__cmp.v"><result status="valid" time="0.51"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>

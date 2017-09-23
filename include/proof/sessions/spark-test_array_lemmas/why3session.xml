@@ -223,78 +223,6 @@
 </theory>
 <theory name="Spark__test_array_lemmas__test_transitive_order_float__2__S21b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__L7b__L9b__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__L7b__L9b__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__L7b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__L7b__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__L5b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__L5b__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__L16b__L18b__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__L16b__L18b__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__L16b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__L16b__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__L14b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__L14b__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_int__L20s__L22s__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_int__L20s__L22s__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_int__L20s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_int__L20s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_int__L18s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_int__L18s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_float__L26s__L28s__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_float__L26s__L28s__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_float__L26s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_float__L26s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_float__L24s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_float__L24s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__L32s__L34s__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__L32s__L34s__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__L32s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__L32s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__L30s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__L30s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__L38s__L40s__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__L38s__L40s__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__L38s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__L38s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__L36s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__L36s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__short_short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -453,16 +381,16 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.04" steps="30"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="30"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="50"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="50"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="117"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="117"/></proof>
   </goal>
  </transf>
  </goal>
@@ -471,16 +399,16 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.10" steps="79"/></proof>
+  <proof prover="1"><result status="valid" time="0.08" steps="79"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.13" steps="102"/></proof>
+  <proof prover="1"><result status="valid" time="0.09" steps="102"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.18" steps="536"/></proof>
+  <proof prover="1"><result status="valid" time="0.12" steps="536"/></proof>
   </goal>
  </transf>
  </goal>
@@ -489,37 +417,37 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="79"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="79"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="116"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="116"/></proof>
   </goal>
  </transf>
  </goal>
@@ -528,37 +456,37 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.10" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.10" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.13" steps="131"/></proof>
+  <proof prover="1"><result status="valid" time="0.09" steps="131"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.18" steps="534"/></proof>
+  <proof prover="1"><result status="valid" time="0.14" steps="534"/></proof>
   </goal>
  </transf>
  </goal>
@@ -573,35 +501,35 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.04" steps="13"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-test_array_lemmas/Spark__test_array_lemmas__test_uint__lemma_transitive_order__pragargs__forall.v"><result status="valid" time="0.58"/></proof>
-  <proof prover="1"><result status="timeout" time="0.99" steps="35272"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-test_array_lemmas/Spark__test_array_lemmas__test_uint__lemma_transitive_order__pragargs__forall.v"><result status="valid" time="0.48"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>
@@ -616,35 +544,35 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="14"/></proof>
+  <proof prover="1"><result status="valid" time="0.06" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.10" steps="14"/></proof>
+  <proof prover="1"><result status="valid" time="0.06" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.09" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-test_array_lemmas/Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__pragargs__forall.v"><result status="valid" time="0.73"/></proof>
-  <proof prover="1"><result status="timeout" time="0.99" steps="20052"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-test_array_lemmas/Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__pragargs__forall.v"><result status="valid" time="0.67"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>
