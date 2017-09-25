@@ -603,7 +603,7 @@ package body Flow_Types is
       and then Ekind (F.Node) in E_Function);
 
    -----------------
-   -- Is_Constant --
+   -- Is_Internal --
    -----------------
 
    function Is_Internal (F : Flow_Id) return Boolean is
