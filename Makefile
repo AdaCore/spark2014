@@ -49,6 +49,7 @@ PROD=-XBuild=Production
 CP=cp -pr
 MV=mv -f
 GNATMAKE=gnatmake
+VERSION=0.0w
 
 # main target for developers
 all: gnat2why gnatprove why3 alt-ergo
@@ -123,11 +124,11 @@ install:
 doc: $(DOC)
 
 doc-nightly: $(DOC)
-	cd docs/ug; $(MAKE) generate-nightly
+	cd docs/ug; $(MAKE) generate-nightly VERSION=$(VERSION)
 
 $(DOC):
-	$(MAKE) -C docs/$@ latexpdf LATEXOPTS="-interaction=nonstopmode"
-	$(MAKE) -C docs/$@ html
+	$(MAKE) -C docs/$@ latexpdf LATEXOPTS="-interaction=nonstopmode" VERSION=$(VERSION)
+	$(MAKE) -C docs/$@ html VERSION=$(VERSION)
 	mkdir -p $(DOCDIR)/pdf
 	mkdir -p $(DOCDIR)/html/$@
 	$(CP) docs/$@/_build/latex/*.pdf $(DOCDIR)/pdf
@@ -171,3 +172,4 @@ clean:
 	$(MAKE) -C why3 clean
 	$(MAKE) -C alt-ergo clean
 	$(MAKE) -C include clean
+        rm -f docs/sphinx_support/confvars.py

@@ -64,19 +64,15 @@ def get_copyright():
 project = u'SPARK 2014 Reference Manual'
 copyright = get_copyright()
 
-def get_version():
-    """Extract the version from spark2014vsn.ads"""
-    for line in file("../../../spark2014vsn.ads").readlines():
-        if line.find("SPARK2014_Static_Version") and ":=" in line:
-            return line.split('"')[1].split(' ')[0]
-    raise Exception("Cannot find version number")
-
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = get_version()
+import confvars
+
+version = confvars.version
+
 # The full version, including alpha/beta/rc tags.
 release = version
 
