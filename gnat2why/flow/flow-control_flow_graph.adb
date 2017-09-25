@@ -6004,10 +6004,12 @@ package body Flow.Control_Flow_Graph is
             --  Such globals are global inputs *only*, as packages are only
             --  allowed to initialize their own state.
             declare
-               Global_Ins : Flow_Id_Sets.Set;
-               --  An entity might occur on several RHS of Initializes aspect,
-               --  so first collect all of them and then process with no
-               --  repetition.
+               Inputs_Seen : Flow_Id_Sets.Set;
+               --  An entity might occur on several RHS of Initializes aspect;
+               --  with this set we avoid duplicates.
+
+               Unused   : Flow_Id_Sets.Cursor;
+               Inserted : Boolean;
 
                DM : constant Dependency_Maps.Map :=
                  Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
@@ -6019,20 +6021,24 @@ package body Flow.Control_Flow_Graph is
                      The_Ins : Flow_Id_Sets.Set renames DM (C);
 
                   begin
-                     Global_Ins.Union (The_Ins);
+                     for Input of The_Ins loop
+                        Inputs_Seen.Insert (New_Item => Input,
+                                            Position => Unused,
+                                            Inserted => Inserted);
+
+                        if Inserted then
+                           Create_Initial_And_Final_Vertices
+                             (F             => Input,
+                              Mode          => Mode_In,
+                              Uninitialized => False,
+                              FA            => FA);
+                        end if;
+                     end loop;
 
                      if Present (The_Out) then
                         Package_Writes.Insert (The_Out);
                      end if;
                   end;
-               end loop;
-
-               for G of Global_Ins loop
-                  Create_Initial_And_Final_Vertices
-                    (F             => G,
-                     Mode          => Mode_In,
-                     Uninitialized => False,
-                     FA            => FA);
                end loop;
             end;
 
