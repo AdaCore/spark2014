@@ -1,4 +1,6 @@
 with External_Data;
+pragma Elaborate_All(External_Data);
+
 package Init_Data with
   SPARK_Mode
 is
