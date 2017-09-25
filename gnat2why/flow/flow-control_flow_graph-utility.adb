@@ -618,9 +618,6 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case F.Variant is
          when Initial_Value =>
-            A.Is_Initialized := not Uninit
-              and then Mode in Initialized_Global_Modes;
-
             if Is_Discriminant (F)
               or else Is_Bound (F)
               or else Is_Record_Tag (F)
@@ -629,9 +626,12 @@ package body Flow.Control_Flow_Graph.Utility is
                --  initialized imports.
                A.Is_Initialized := True;
                A.Is_Import      := True;
+            else
+               A.Is_Initialized := not Uninit
+                 and then Mode in Initialized_Global_Modes;
+               A.Is_Import      := A.Is_Initialized;
             end if;
 
-            A.Is_Import         := A.Is_Initialized;
             A.Variables_Defined :=
               Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
 
