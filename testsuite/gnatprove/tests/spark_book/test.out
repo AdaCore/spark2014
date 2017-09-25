@@ -24,7 +24,6 @@ aggregates.adb:17:14: info: initialization of "Approx" proved, in call inlined a
 aggregates.adb:29:24: info: initialization of "A" proved
 aggregates.adb:29:26: medium: float overflow check might fail
 aggregates.adb:29:28: info: initialization of "B" proved
-aggregates.adb:29:28: info: initialization of "C14b" proved
 average.adb:10:15: warning: assuming "Put_Line" has no effect on global items
 average.adb:10:15: warning: no Global contract available for "Put_Line"
 average.adb:11:23: warning: assuming "Get" has no effect on global items
@@ -546,7 +545,6 @@ dates.adb:17:15: info: division check proved (CVC4: 1 VC), in call inlined at da
 dates.adb:20:14: info: initialization of "Result" proved
 dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
 dates.adb:28:08: info: postcondition proved (CVC4: 12 VC)
-dates.adb:49:10: info: initialization of "C9b" proved
 dates.adb:54:14: info: initialization of "Length" proved
 dates.adb:65:14: info: initialization of "Result" proved
 dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
@@ -556,7 +554,6 @@ dates.adb:85:53: info: range check proved (CVC4: 1 VC)
 dates.adb:99:47: info: range check proved (CVC4: 1 VC)
 dates.adb:102:54: info: range check proved (CVC4: 1 VC)
 dates.adb:105:53: info: range check proved (CVC4: 1 VC)
-dates.adb:142:10: info: initialization of "C23b" proved
 dates.adb:224:14: info: range check proved (CVC4: 2 VC)
 dates.adb:224:47: info: initialization of "Steps" proved
 dates.adb:230:35: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -905,7 +902,6 @@ operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in c
 operator_overload.adb:18:30: info: initialization of "Right_Squared" proved
 operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:30
 operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:37
-operator_overload.adb:30:10: info: initialization of "C5b" proved
 operator_overload.adb:30:10: info: initialization of "P1.X_Coord" proved
 operator_overload.adb:30:10: info: initialization of "P1.Y_Coord" proved
 operator_overload.adb:30:10: info: initialization of "P2.X_Coord" proved
@@ -914,7 +910,6 @@ operator_overload.adb:31:07: warning: assuming "Put_Line" has no effect on globa
 operator_overload.adb:31:07: warning: no Global contract available for "Put_Line"
 operator_overload.adb:33:07: warning: assuming "Put_Line" has no effect on global items
 operator_overload.adb:33:07: warning: no Global contract available for "Put_Line"
-operator_overload.adb:37:07: info: initialization of "C12b" proved
 operator_overload.adb:37:07: info: initialization of "P1.X_Coord" proved
 operator_overload.adb:37:07: info: initialization of "P1.Y_Coord" proved
 operator_overload.adb:37:07: info: initialization of "P2.X_Coord" proved
@@ -952,7 +947,6 @@ palindrome.adb:26:14: warning: assuming "Put_Line" has no effect on global items
 palindrome.adb:26:14: warning: no Global contract available for "Put_Line"
 palindrome.adb:29:15: warning: assuming "Get_Line" has no effect on global items
 palindrome.adb:29:15: warning: no Global contract available for "Get_Line"
-palindrome.adb:32:07: info: initialization of "C10b" proved
 palindrome.adb:32:07: medium: range check might fail
 palindrome.adb:32:22: info: initialization of "Line" proved
 palindrome.adb:32:33: info: initialization of "Count" proved
