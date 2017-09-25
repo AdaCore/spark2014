@@ -7,8 +7,8 @@ preserved_components.adb:21:31: info: initialization of "M" proved
 preserved_components.adb:21:31: info: length check proved
 preserved_components.adb:21:34: info: length check proved
 preserved_components.adb:27:30: info: initialization of "M" proved
-preserved_components.adb:27:30: medium: assertion might fail, cannot prove M (K1, K2) (K3) = M'Loop_Entry (K1, K2) (K3) (e.g. when I = 0 and K1 = 0 and K2 = 0 and K3 = 0 and M = !)
+preserved_components.adb:27:30: medium: assertion might fail, cannot prove M (K1, K2) (K3) = M'Loop_Entry (K1, K2) (K3) (e.g. when I = 0 and K1 = 0 and K2 = 0 and K3 = 0)
 preserved_components.adb:27:48: info: initialization of "M" proved
 preserved_components.adb:33:30: info: initialization of "M" proved
-preserved_components.adb:33:30: medium: assertion might fail, cannot prove M (K1, K2) (K3) = M'Loop_Entry (K1, K2) (K3) (e.g. when K1 = 0 and K2 = 0 and K3 = 0 and M = !)
+preserved_components.adb:33:30: medium: assertion might fail, cannot prove M (K1, K2) (K3) = M'Loop_Entry (K1, K2) (K3) (e.g. when K1 = 0 and K2 = 0 and K3 = 0)
 preserved_components.adb:33:48: info: initialization of "M" proved

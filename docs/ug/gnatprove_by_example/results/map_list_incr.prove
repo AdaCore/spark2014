@@ -1,30 +1,30 @@
 map_list_incr.adb:6:12: info: precondition proved
-map_list_incr.adb:7:11: info: postcondition proved
 map_list_incr.adb:9:18: info: precondition proved
+map_list_incr.adb:9:18: medium: postcondition might fail, cannot prove Element (Model (L), I) = Element (Model (L'Old), I) + 1 (e.g. when I = 1)
 map_list_incr.adb:9:43: info: precondition proved
 map_list_incr.adb:9:70: info: overflow check proved
 map_list_incr.adb:13:26: info: initialization of "Cu.Node" proved
 map_list_incr.adb:14:30: info: loop invariant initialization proved
 map_list_incr.adb:14:30: info: loop invariant preservation proved
 map_list_incr.adb:16:10: info: loop invariant initialization proved
-map_list_incr.adb:16:10: info: loop invariant preservation proved
-map_list_incr.adb:16:29: info: precondition proved
+map_list_incr.adb:16:29: medium: precondition might fail (e.g. when Cu = (Node => 1) and No_Element = (Node => 0))
 map_list_incr.adb:16:50: info: initialization of "Cu.Node" proved
-map_list_incr.adb:17:12: info: precondition proved
-map_list_incr.adb:17:37: info: precondition proved
-map_list_incr.adb:17:71: info: overflow check proved
+map_list_incr.adb:17:12: medium: loop invariant might fail after first iteration, cannot prove Element (Model (L), I) = Element (Model (L'Loop_Entry), I) + 1 (e.g. when I = 2147483646)
+map_list_incr.adb:17:12: medium: precondition might fail
+map_list_incr.adb:17:37: medium: precondition might fail
+map_list_incr.adb:17:71: medium: overflow check might fail
 map_list_incr.adb:19:10: info: loop invariant initialization proved
-map_list_incr.adb:19:10: info: loop invariant preservation proved
-map_list_incr.adb:19:24: info: precondition proved
+map_list_incr.adb:19:24: medium: precondition might fail (e.g. when Cu = (Node => 1) and No_Element = (Node => 0))
 map_list_incr.adb:19:45: info: initialization of "Cu.Node" proved
 map_list_incr.adb:20:12: info: precondition proved
+map_list_incr.adb:20:12: medium: loop invariant might fail after first iteration, cannot prove Element (Model (L), I) = Element (Model (L'Loop_Entry), I) (e.g. when I = 1)
 map_list_incr.adb:20:32: info: range check proved
 map_list_incr.adb:20:37: info: precondition proved
 map_list_incr.adb:20:68: info: range check proved
-map_list_incr.adb:21:07: info: precondition proved
+map_list_incr.adb:21:07: medium: precondition might fail (e.g. when Cu = (Node => 1))
 map_list_incr.adb:21:27: info: initialization of "Cu.Node" proved
-map_list_incr.adb:21:31: info: precondition proved
+map_list_incr.adb:21:31: medium: precondition might fail (e.g. when Cu = (Node => 1))
 map_list_incr.adb:21:43: info: initialization of "Cu.Node" proved
-map_list_incr.adb:21:47: info: overflow check proved
-map_list_incr.adb:22:07: info: precondition proved
+map_list_incr.adb:21:47: medium: overflow check might fail
+map_list_incr.adb:22:07: medium: precondition might fail (e.g. when Cu = (Node => 1) and No_Element = (Node => 0))
 map_list_incr.adb:22:16: info: initialization of "Cu.Node" proved
