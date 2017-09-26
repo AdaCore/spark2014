@@ -1,0 +1,3 @@
+globs.adb:16:11: warning: unused assignment
+globs.adb:16:14: info: initialization of "X" constituent of "State" proved
+globs.ads:6:14: info: initialization of "X" constituent of "State" proved
