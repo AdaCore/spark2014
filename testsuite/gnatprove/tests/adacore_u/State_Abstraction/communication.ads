@@ -1,4 +1,5 @@
 with Abstraction_Ext; use Abstraction_Ext;
+pragma Elaborate_All(Abstraction_Ext);
 package Communication with SPARK_Mode,
   Abstract_State => State,
   Initializes    => (State => V_Ext)

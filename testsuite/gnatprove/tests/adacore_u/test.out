@@ -137,11 +137,11 @@ communication.adb:36:34: info: range check proved (CVC4: 1 VC)
 communication.adb:39:30: info: index check proved (CVC4: 2 VC)
 communication.adb:40:34: info: range check proved (CVC4: 1 VC)
 communication.adb:41:32: info: overflow check proved (CVC4: 1 VC)
-communication.ads:10:23: info: initialization of "Message" proved
-communication.ads:17:26: info: initialization of "E" proved
-communication.ads:18:33: medium: range check might fail (e.g. when Max = 0 and V_Ext = -1)
-communication.ads:20:07: info: range check proved (CVC4: 2 VC)
-communication.ads:21:07: medium: type "Buffer" is not fully initialized
+communication.ads:11:23: info: initialization of "Message" proved
+communication.ads:18:26: info: initialization of "E" proved
+communication.ads:19:33: medium: range check might fail (e.g. when Max = 0 and V_Ext = -1)
+communication.ads:21:07: info: range check proved (CVC4: 2 VC)
+communication.ads:22:07: medium: type "Buffer" is not fully initialized
 counting.adb:7:35: info: initialization of "Black_Counter" constituent of "State" proved
 counting.adb:13:38: info: overflow check proved (CVC4: 1 VC)
 counting.adb:18:35: info: initialization of "Red_Counter" constituent of "State" proved
