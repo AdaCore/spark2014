@@ -4261,15 +4261,11 @@ package body Flow.Control_Flow_Graph is
       --     * the globals have already been generated or
       --     * when the user has supplied them and we don't have to rely
       --       on the generated ones
-      if not FA.Generating_Globals
-        or else (Has_User_Supplied_Globals (Called_Thing)
-                   and then not Rely_On_Generated_Global (Called_Thing,
-                                                          FA.B_Scope))
-      then
-         Process_Subprogram_Globals (N,
-                                     Ins, Outs,
-                                     FA, CM, Ctx);
-      end if;
+      --  ??? for this decision we rely on condition hardcoded in Get_Globals,
+      --  just like we do in Do_Subprogram_Call when processing function calls
+      Process_Subprogram_Globals (N,
+                                  Ins, Outs,
+                                  FA, CM, Ctx);
 
       --  A magic null export is needed when:
       --    * there is a usable Depends => (null => ...);
