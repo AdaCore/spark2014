@@ -3558,11 +3558,9 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Boolean
    is
-      Body_E : constant Entity_Id := Get_Body_Entity (E);
    begin
-      return Present (Body_E)
-        and then Entity_Body_In_SPARK (E)
-        and then Is_Visible (Body_E, Scope)
+      return Entity_Body_In_SPARK (E)
+        and then Is_Visible (Get_Body_Entity (E), Scope)
         and then Refinement_Needed (E);
    end Rely_On_Generated_Global;
 
