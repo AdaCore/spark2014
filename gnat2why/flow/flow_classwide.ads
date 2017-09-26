@@ -31,9 +31,8 @@ with Types; use Types;
 package Flow_Classwide is
 
    function Is_Dispatching_Call (N : Node_Id) return Boolean
-   is (if Nkind (N) in N_Subprogram_Call
-       then Present (Controlling_Argument (N))
-       else False)
+   is (Nkind (N) in N_Subprogram_Call
+       and then Present (Controlling_Argument (N)))
    with Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  Checks if the given call node is dispatching
    --
