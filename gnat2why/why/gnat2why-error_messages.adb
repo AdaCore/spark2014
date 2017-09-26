@@ -777,11 +777,10 @@ package body Gnat2Why.Error_Messages is
       begin
          if Has_Field (File, "error") then
             declare
-               Msg : constant String := Get (Get (File, "error"));
+               Msg      : constant String := Get (Get (File, "error"));
                Internal : constant Boolean :=
-                 (if Has_Field (File, "internal") then
-                       Get (Get (File, "internal"))
-                  else False);
+                 Has_Field (File, "internal")
+                   and then Get (Get (File, "internal"));
             begin
                Handle_Error (Msg, Internal);
             end;
