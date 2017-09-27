@@ -26,7 +26,6 @@ with Flow_Error_Messages;  use Flow_Error_Messages;
 with Flow_Refinement;      use Flow_Refinement;
 with Flow_Types;           use Flow_Types;
 with Flow_Utility;         use Flow_Utility;
-with Sem_Util;             use Sem_Util;
 with Snames;               use Snames;
 
 package body Flow_Classwide is
@@ -298,11 +297,17 @@ package body Flow_Classwide is
                Outputs := Change_Variant (Globals.Writes, Normal_Use);
             end;
 
-            --  ... all parameters...
-            for P of Get_Formals (E) loop
+            --  ... all explicit parameters...
+            --
+            --  We ignore the implicit formal (i.e. the concurrent type),
+            --  because of AI12-0182, which says that "Class-wide aspects
+            --  cannot be given for protected operations or task entries,
+            --  regardless of whether the protected type or task type inherits
+            --  from an interface." Such aspects are rejected in the frontend.
+
+            for P of Get_Explicit_Formals (E) loop
                declare
-                  Formal : constant Flow_Id :=
-                    Direct_Mapping_Id (Unique_Entity (P));
+                  Formal : constant Flow_Id := Direct_Mapping_Id (P);
                   --  We do not need an In_View/Out_View here, so do not care
 
                begin
@@ -317,13 +322,8 @@ package body Flow_Classwide is
                         Inputs.Include (Formal);
                         Outputs.Include (Formal);
 
-                     --  ??? this is never executed; and what are the "others"?
-                     when others             =>
-                        Inputs.Include (Formal);
-
-                        if Ekind (E) /= E_Function then
-                           Outputs.Include (Formal);
-                        end if;
+                     when others =>
+                        raise Program_Error;
                   end case;
                end;
             end loop;

@@ -614,7 +614,8 @@ is
    --    view.
 
    function Get_Explicit_Formals (E : Entity_Id) return Node_Sets.Set
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
+   with Pre  => Ekind (E) in E_Entry | E_Function | E_Procedure,
+        Post => (for all F of Get_Explicit_Formals'Result => Is_Formal (F));
    --  Returns explicit formals of a subprogram or entry
 
    function Get_Implicit_Formal (E : Entity_Id) return Entity_Id
@@ -629,7 +630,11 @@ is
    --  @return the implicit formal parameter of E, if any
 
    function Get_Formals (E : Entity_Id) return Node_Sets.Set
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
+   with Pre  => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type,
+        Post => (for all F of Get_Formals'Result =>
+                    Is_Formal (F)
+                      or else
+                    Ekind (F) in E_Protected_Type | E_Task_Type);
    --  Returns all implicit and explicit formal parameters of an Entry or
    --  Subprogram. For tasks it returns all discriminants of the task and
    --  the task itself.

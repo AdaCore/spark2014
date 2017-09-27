@@ -983,12 +983,15 @@ package body Flow_Utility is
                   when E_Out_Parameter    =>
                      Globals.Writes.Insert (Formal_Param);
 
-                  when others             =>
+                  when E_Protected_Type | E_Task_Type =>
                      Globals.Reads.Insert (Formal_Param);
                      Globals.Proof_Ins.Insert (Formal_Param);
                      if Ekind (Subprogram) /= E_Function then
                         Globals.Writes.Insert (Formal_Param);
                      end if;
+
+                  when others =>
+                     raise Program_Error;
                end case;
             end;
          end loop;
