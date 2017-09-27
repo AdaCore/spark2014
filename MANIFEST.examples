@@ -10,9 +10,9 @@
 -- If this file is updated, then updates to the following should
 -- also be considered:
 --   1. The SPARK 2014 Toolset User's Guide
---   2. spark2014.py plug-in in GPS.  This controls which of these
---      examples are directly accessible to users from the GPS
---      Help/SPARK/Examples menu.
+--   2. SPARK plug-in in GPS (in spark/gnatprove_menus.xml). This controls
+--      which of these examples are directly accessible to users from
+--      the GPS Help/SPARK/Examples menu.
 --   3. As 2, but in GNATBench.
 --
 --
@@ -44,6 +44,7 @@ pair_insertion_sort
 patience
 prime_numbers
 railway_signaling
+red_black_trees
 ring_buffer
 search_linked_list
 segway
