@@ -1,3 +1,2 @@
-elab.ads:5:19: Program_Error would have been raised at run time
-elab.ads:5:19: cannot call "F" before body seen
-gnatprove: error during generation of Global contracts
+elab.ads:6:19: warning: Program_Error will be raised at run time
+elab.ads:6:19: warning: cannot call "F" before body seen
