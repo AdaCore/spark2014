@@ -1486,9 +1486,8 @@ package body Flow_Utility is
                          (Global_Node, Scope)
             then
                declare
-                  D_Map        : Dependency_Maps.Map;
-                  All_Inputs_F : Flow_Id_Sets.Set;
-                  All_Inputs_N : Node_Sets.Set;
+                  D_Map       : Dependency_Maps.Map;
+                  Input_Nodes : Node_Sets.Set;
 
                begin
                   --  Read the Refined_Depends aspect
@@ -1500,16 +1499,11 @@ package body Flow_Utility is
 
                   --  Gather all inputs
                   for Inputs of D_Map loop
-                     All_Inputs_F.Union (Inputs);
-                  end loop;
-
-                  --  Convert set of Flow_Ids to a set of Node_Ids
-                  for F of All_Inputs_F loop
-                     All_Inputs_N.Insert (Get_Direct_Mapping_Id (F));
+                     Input_Nodes.Union (To_Node_Set (Inputs));
                   end loop;
 
                   --  Do the trimming
-                  G_In.Intersection (All_Inputs_N);
+                  G_In.Intersection (Input_Nodes);
                end;
             end if;
 
