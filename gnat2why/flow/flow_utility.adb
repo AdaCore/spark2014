@@ -1484,7 +1484,7 @@ package body Flow_Utility is
             --  trimmed (based on a user-provided Refined_Depends aspect).
             if not Ignore_Depends
               and then Present (Depends_Node)
-              and then Pragma_Name (Global_Node) /= Name_Refined_Global
+              and then Pragma_Name (Global_Node)  = Name_Global
               and then Pragma_Name (Depends_Node) = Name_Refined_Depends
               and then Mentions_State_With_Visible_Refinement
                          (Global_Node, Scope)
