@@ -6,634 +6,652 @@
 <prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="120" steplimit="71000" memlimit="0"/>
 <prover id="2" name="CVC4_CE" version="1.5-gnatprove" timelimit="10" steplimit="71000" memlimit="0"/>
 <prover id="3" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="1730000" memlimit="0"/>
-<file name="../../../gnatprove/array_applications.mlw" expanded="true">
-<theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<file name="../../../gnatprove/array_applications.mlw">
+<theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_long_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_long_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__natural" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__natural" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__natural__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__natural__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__positive" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__positive" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__positive__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__positive__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Standard__character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__string" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Standard__wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_string" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Standard__wide_wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_string" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__duration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__duration" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_8" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_8" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_8__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_8__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_16" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_16" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_16__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_16__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_32" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_32" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_32__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_32__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_64" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_64" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_64__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_64__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__universal_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__universal_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__universal_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__universal_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__Tfibonacci_indexB" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__Tfibonacci_indexB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__Tfibonacci_indexB__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__Tfibonacci_indexB__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_index" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_index" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_index__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_index__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Standard__natural" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Standard__natural" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__Tfibonacci_arrayB" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__Tfibonacci_arrayB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_array" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_array" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__T4b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1__T4b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__T4b__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1__T4b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__L7b__T8b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1__L7b__T8b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__L5b__T6b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1__L5b__T6b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__T10b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__T10b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__T10b__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__T10b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__L13b__T14b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__L13b__T14b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__L11b__T12b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__L11b__T12b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__T16b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__T16b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__T16b__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__T16b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L21b__T22b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__L21b__T22b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L17b__T18b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__L17b__T18b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L23b__T24b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__L23b__T24b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L19b__T20b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__L19b__T20b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__T26b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__T26b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__T26b__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__T26b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L31b__T32b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L31b__T32b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L27b__T28b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L27b__T28b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L33b__T34b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L33b__T34b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L29b__T30b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L29b__T30b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__L7b__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1__L7b__j" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__L13b__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1__L7b__j___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L23b__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__L13b__j" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L21b__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__L13b__j___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L33b__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__L23b__j" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L31b__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__L23b__j___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__L21b__j" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__L21b__j___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L33b__j" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L33b__j___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_long_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L31b__j" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__natural___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L31b__j___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__positive___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__natural___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__positive___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__duration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_8___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_16___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_32___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_64___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__universal_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__duration___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_8___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_16___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_32___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_64___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__universal_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__Tfibonacci_indexB___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_index___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__Tfibonacci_arrayB___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_array___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__T4b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__L7b__T8b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__L5b__T6b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__Tfibonacci_indexB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__T10b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_index___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__L13b__T14b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__Tfibonacci_arrayB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__L11b__T12b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_array___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__T16b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1__T4b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L21b__T22b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1__L7b__T8b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L17b__T18b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit__L_1__L5b__T6b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L23b__T24b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__T10b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L19b__T20b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__L13b__T14b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__T26b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__L11b__T12b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L31b__T32b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__T16b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L27b__T28b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__L21b__T22b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L33b__T34b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__L17b__T18b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L29b__T30b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__L23b__T24b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit__L_3__L19b__T20b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__T26b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L31b__T32b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L27b__T28b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array_applications__package_def" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L33b__T34b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L29b__T30b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Array_applications__fibonacci_implicit___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Array_applications__fibonacci_implicit_ok___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Array_applications__fibonacci_explicit___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Array_applications__fibonacci_explicit_ok___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Array_applications__package_def" proved="true" sum="e284967f6dbb6592898a5ced2974229f">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Array_applications__fibonacci_implicit__subprogram_def" sum="b784c585c5f0c5fcf39ec727648aacc4" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+<theory name="Array_applications__fibonacci_implicit__subprogram_def" sum="b784c585c5f0c5fcf39ec727648aacc4">
+ <goal name="WP_parameter def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="loop invariant init">
+  <goal name="WP_parameter def.1" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" time="0.03" steps="224"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="loop invariant init">
+  <goal name="WP_parameter def.2" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.00" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="precondition">
+  <goal name="WP_parameter def.3" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.4" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.7" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.5" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.8" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="14"/></proof>
+  <goal name="WP_parameter def.6" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.9" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.10" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.11" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="175"/></proof>
-  <proof prover="1"><result status="unknown" time="0.77" steps="71013"/></proof>
-  </goal>
-  <goal name="WP_parameter def.12" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.13" expl="assertion">
+  <goal name="WP_parameter def.7" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.14" expl="precondition">
-  <proof prover="0"><result status="failure" time="0.36"/></proof>
-  <proof prover="1"><result status="unknown" time="1.15" steps="71018"/></proof>
-  <proof prover="3"><result status="valid" time="0.29" steps="1688544"/></proof>
+  <goal name="WP_parameter def.8" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.15" expl="loop invariant preservation">
-  <proof prover="0"><result status="valid" time="0.01" steps="77"/></proof>
-  <proof prover="1"><result status="unknown" time="1.53" steps="71021"/></proof>
+  <goal name="WP_parameter def.9" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.16" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.01" steps="13"/></proof>
+  <goal name="WP_parameter def.10" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.10" steps="244"/></proof>
+  <proof prover="1"><result status="unknown" time="1.52" steps="71013"/></proof>
   </goal>
-  <goal name="WP_parameter def.17" expl="loop invariant preservation">
+  <goal name="WP_parameter def.11" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.13" expl="precondition" proved="true">
+  <proof prover="0"><result status="failure" time="0.80"/></proof>
+  <proof prover="1"><result status="unknown" time="2.39" steps="71018"/></proof>
+  <proof prover="3"><result status="valid" time="0.91" steps="138373"/></proof>
+  </goal>
+  <goal name="WP_parameter def.14" expl="loop invariant preservation" proved="true">
+  <proof prover="0"><result status="failure" time="0.70"/></proof>
+  <proof prover="1"><result status="unknown" time="2.84" steps="71021"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="14451"/></proof>
+  </goal>
+  <goal name="WP_parameter def.15" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
   </goal>
-  <goal name="WP_parameter def.18" expl="postcondition">
-  <proof prover="0"><result status="failure" time="0.32"/></proof>
-  <proof prover="1"><result status="unknown" time="0.08" steps="3040"/></proof>
-  <proof prover="2"><result status="unknown" time="0.09" steps="2789"/></proof>
-  <proof prover="3"><result status="unknown" time="0.21" steps="733342"/></proof>
+  <goal name="WP_parameter def.16" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="13"/></proof>
+  </goal>
+  <goal name="WP_parameter def.17" expl="postcondition">
+  <proof prover="0"><result status="failure" time="0.69"/></proof>
+  <proof prover="1"><result status="unknown" time="0.15" steps="3040"/></proof>
+  <proof prover="2"><result status="unknown" time="0.16" steps="2789"/></proof>
+  <proof prover="3"><result status="unknown" time="0.44" steps="682931"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__subprogram_def" sum="217b905cbc69e2b18b77b783cb75a440" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="precondition">
+<theory name="Array_applications__fibonacci_implicit_ok__subprogram_def" proved="true" sum="217b905cbc69e2b18b77b783cb75a440">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.02" steps="224"/></proof>
+  <goal name="WP_parameter def.1" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" time="0.04" steps="224"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.2" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.3" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.4" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.5" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.7" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.6" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.8" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="14"/></proof>
+  <goal name="WP_parameter def.7" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.9" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.8" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.10" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="14"/></proof>
+  <goal name="WP_parameter def.9" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.11" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="175"/></proof>
-  <proof prover="1"><result status="unknown" time="0.83" steps="71013"/></proof>
+  <goal name="WP_parameter def.10" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.09" steps="244"/></proof>
+  <proof prover="1"><result status="unknown" time="1.63" steps="71013"/></proof>
   </goal>
-  <goal name="WP_parameter def.12" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.11" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.13" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="14"/></proof>
+  <goal name="WP_parameter def.12" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.14" expl="precondition">
-  <proof prover="0"><result status="failure" time="0.37"/></proof>
-  <proof prover="1"><result status="unknown" time="1.16" steps="71018"/></proof>
-  <proof prover="3"><result status="valid" time="0.29" steps="1688544"/></proof>
+  <goal name="WP_parameter def.13" expl="precondition" proved="true">
+  <proof prover="0"><result status="failure" time="0.80"/></proof>
+  <proof prover="1"><result status="unknown" time="2.44" steps="71018"/></proof>
+  <proof prover="3"><result status="valid" time="0.92" steps="138373"/></proof>
   </goal>
-  <goal name="WP_parameter def.15" expl="loop invariant preservation">
-  <proof prover="0"><result status="valid" time="0.01" steps="77"/></proof>
-  <proof prover="1"><result status="unknown" time="1.48" steps="71021"/></proof>
+  <goal name="WP_parameter def.14" expl="loop invariant preservation" proved="true">
+  <proof prover="0"><result status="failure" time="0.70"/></proof>
+  <proof prover="1"><result status="unknown" time="2.96" steps="71021"/></proof>
+  <proof prover="3"><result status="valid" time="0.03" steps="14451"/></proof>
   </goal>
-  <goal name="WP_parameter def.16" expl="loop invariant preservation">
+  <goal name="WP_parameter def.15" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
   </goal>
-  <goal name="WP_parameter def.17" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.01" steps="13"/></proof>
+  <goal name="WP_parameter def.16" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
   </goal>
-  <goal name="WP_parameter def.18" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.11" steps="6177"/></proof>
+  <goal name="WP_parameter def.17" expl="postcondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.18" steps="6177"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Array_applications__fibonacci_explicit__subprogram_def" sum="8295d3ebfd4085d651860b0e8703cecd" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.02" steps="224"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.01" steps="74"/></proof>
-  </goal>
-  <goal name="WP_parameter def.6" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.02" steps="232"/></proof>
-  </goal>
-  <goal name="WP_parameter def.7" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.8" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="1"><result status="valid" time="15.25" steps="26225"/></proof>
-  </goal>
-  <goal name="WP_parameter def.10" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.11" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.12" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.13" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.14" expl="precondition">
+<theory name="Array_applications__fibonacci_explicit__subprogram_def" sum="8295d3ebfd4085d651860b0e8703cecd">
+ <goal name="WP_parameter def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.15" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.16" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.17" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.18" expl="assertion">
+  <goal name="WP_parameter def.1" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.19" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.20" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="1207"/></proof>
-  </goal>
-  <goal name="WP_parameter def.21" expl="assertion">
+  <goal name="WP_parameter def.2" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.22" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
+  <goal name="WP_parameter def.3" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" time="0.04" steps="224"/></proof>
   </goal>
-  <goal name="WP_parameter def.23" expl="precondition">
-  <proof prover="1"><result status="valid" time="26.80" steps="36162"/></proof>
+  <goal name="WP_parameter def.4" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="74"/></proof>
   </goal>
-  <goal name="WP_parameter def.24" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
+  <goal name="WP_parameter def.5" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" time="0.05" steps="232"/></proof>
   </goal>
-  <goal name="WP_parameter def.25" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
-  </goal>
-  <goal name="WP_parameter def.26" expl="loop invariant preservation">
-  <proof prover="0"><result status="valid" time="0.03" steps="82"/></proof>
-  <proof prover="1"><result status="unknown" time="103.82" steps="71013"/></proof>
-  </goal>
-  <goal name="WP_parameter def.27" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.02" steps="208"/></proof>
-  </goal>
-  <goal name="WP_parameter def.28" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="439"/></proof>
-  </goal>
-  <goal name="WP_parameter def.29" expl="postcondition">
-  <proof prover="0"><result status="failure" time="0.34"/></proof>
-  <proof prover="1"><result status="unknown" time="17.71" steps="71013"/></proof>
-  <proof prover="2"><result status="highfailure" time="0.02" steps="163"/></proof>
-  <proof prover="3"><result status="unknown" time="0.46" steps="1730226"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Array_applications__fibonacci_explicit_ok__subprogram_def" sum="36cf1acea2a7dccaae25ec4f593556da" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.02" steps="224"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.01" steps="74"/></proof>
-  </goal>
-  <goal name="WP_parameter def.6" expl="loop invariant init">
-  <proof prover="1"><result status="valid" time="0.02" steps="232"/></proof>
-  </goal>
-  <goal name="WP_parameter def.7" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.8" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="1"><result status="valid" time="15.49" steps="26225"/></proof>
-  </goal>
-  <goal name="WP_parameter def.10" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.11" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.12" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.13" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.14" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.15" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.16" expl="assertion">
+  <goal name="WP_parameter def.6" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.17" expl="assertion">
+  <goal name="WP_parameter def.7" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="33.23" steps="26225"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.11" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.13" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.14" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.15" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.16" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.17" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.18" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.18" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.19" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.17" steps="1207"/></proof>
   </goal>
-  <goal name="WP_parameter def.19" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
+  <goal name="WP_parameter def.20" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.20" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="1207"/></proof>
+  <goal name="WP_parameter def.21" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.21" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <goal name="WP_parameter def.22" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="57.51" steps="36162"/></proof>
   </goal>
-  <goal name="WP_parameter def.22" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
+  <goal name="WP_parameter def.23" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="13"/></proof>
   </goal>
-  <goal name="WP_parameter def.23" expl="precondition">
-  <proof prover="1"><result status="valid" time="26.56" steps="36162"/></proof>
-  </goal>
-  <goal name="WP_parameter def.24" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
+  <goal name="WP_parameter def.24" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.25" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.01" steps="13"/></proof>
+  <proof prover="0"><result status="failure" time="0.48"/></proof>
+  <proof prover="1"><result status="unknown" time="165.80" steps="71013"/></proof>
+  <proof prover="2"><result status="highfailure" time="0.03" steps="451"/></proof>
+  <proof prover="3"><result status="unknown" time="2.28" steps="1730224"/></proof>
   </goal>
-  <goal name="WP_parameter def.26" expl="loop invariant preservation">
-  <proof prover="0"><result status="valid" time="0.03" steps="82"/></proof>
-  <proof prover="1"><result status="unknown" time="103.13" steps="71013"/></proof>
+  <goal name="WP_parameter def.26" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" time="0.05" steps="208"/></proof>
   </goal>
-  <goal name="WP_parameter def.27" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.02" steps="208"/></proof>
+  <goal name="WP_parameter def.27" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" time="0.08" steps="439"/></proof>
   </goal>
-  <goal name="WP_parameter def.28" expl="loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="439"/></proof>
+  <goal name="WP_parameter def.28" expl="postcondition">
+  <proof prover="0"><result status="failure" time="0.78"/></proof>
+  <proof prover="1"><result status="unknown" time="40.22" steps="71013"/></proof>
+  <proof prover="2"><result status="highfailure" time="0.04" steps="163"/></proof>
+  <proof prover="3"><result status="unknown" time="4.20" steps="1730218"/></proof>
   </goal>
-  <goal name="WP_parameter def.29" expl="postcondition">
-  <proof prover="0"><result status="failure" time="0.30"/></proof>
-  <proof prover="1"><result status="unknown" time="8.07" steps="71002"/></proof>
-  <proof prover="2"><result status="highfailure" time="0.02" steps="172"/></proof>
-  <proof prover="3"><result status="unknown" time="0.35" steps="1730226"/></proof>
+ </transf>
+ </goal>
+</theory>
+<theory name="Array_applications__fibonacci_explicit_ok__subprogram_def" sum="36cf1acea2a7dccaae25ec4f593556da">
+ <goal name="WP_parameter def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.1" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" time="0.04" steps="224"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="74"/></proof>
+  </goal>
+  <goal name="WP_parameter def.5" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" time="0.05" steps="232"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="33.09" steps="26225"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.11" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.13" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.14" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.15" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.16" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.17" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.18" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.19" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="0.16" steps="1207"/></proof>
+  </goal>
+  <goal name="WP_parameter def.20" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.21" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.22" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" time="55.12" steps="36162"/></proof>
+  </goal>
+  <goal name="WP_parameter def.23" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
+  </goal>
+  <goal name="WP_parameter def.24" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" time="0.03" steps="13"/></proof>
+  </goal>
+  <goal name="WP_parameter def.25" expl="loop invariant preservation">
+  <proof prover="0"><result status="failure" time="0.52"/></proof>
+  <proof prover="1"><result status="unknown" time="160.95" steps="71013"/></proof>
+  <proof prover="2"><result status="highfailure" time="0.03" steps="451"/></proof>
+  <proof prover="3"><result status="unknown" time="1.73" steps="1730224"/></proof>
+  </goal>
+  <goal name="WP_parameter def.26" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" time="0.06" steps="208"/></proof>
+  </goal>
+  <goal name="WP_parameter def.27" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" time="0.07" steps="439"/></proof>
+  </goal>
+  <goal name="WP_parameter def.28" expl="postcondition">
+  <proof prover="0"><result status="failure" time="0.84"/></proof>
+  <proof prover="1"><result status="unknown" time="17.61" steps="71002"/></proof>
+  <proof prover="2"><result status="highfailure" time="0.05" steps="172"/></proof>
+  <proof prover="3"><result status="unknown" time="2.94" steps="1730218"/></proof>
   </goal>
  </transf>
  </goal>

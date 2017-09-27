@@ -101,4 +101,3 @@ effects on parameters and Global variables of Skein.Skein_Start_New_Type fully e
  Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
 effects on parameters and Global variables of Skein.Zero_Pad fully established
 absence of run-time errors of Skein.Zero_Pad fully established
-

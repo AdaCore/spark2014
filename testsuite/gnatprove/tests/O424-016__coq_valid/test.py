@@ -1,10 +1,17 @@
 from test_support import *
 
+# This function edit the session by replacing the lines corresponding to the
+# failing coq proof (contains keyword edited="file.vc") with one that contains
+# a correct coq proof. (-> "result status = Valid"). We can then check that the
+# proof remains proven in the last run of prove_all.
 def edit_session():
     session = "proof/sessions/greatest_common_divisor/why3session.xml"
+    content = ""
     with open(session, 'r') as file:
-        content = file.read()
-    content = str.replace(content, "<unedited/>", '<result status="valid" time="1.23"/>')
+        for current_line in file.readlines():
+            if not current_line.rfind ("edited") == -1:
+                current_line = re.sub (r'<result status.*/>', '<result status="valid" time="1.23"/>', current_line)
+            content = content + current_line
     with open(session, 'w') as file:
         file.write(content)
 

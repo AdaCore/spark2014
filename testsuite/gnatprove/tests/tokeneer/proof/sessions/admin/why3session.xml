@@ -3,831 +3,831 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
 <prover id="0" name="CVC4" version="1.5-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
-<file name="../../../gnatprove/admin.mlw" expanded="true">
-<theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<file name="../../../gnatprove/admin.mlw" proved="true">
+<theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_long_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_long_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__natural" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__natural" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__natural__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__natural__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__positive" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__positive" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__positive__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__positive__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Standard__character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__string" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Standard__wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_string" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Standard__wide_wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_string" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__duration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__duration" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_8" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_8" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_8__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_8__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_16" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_16" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_16__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_16__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_32" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_32" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_32__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_32__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_64" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_64" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_64__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_64__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__universal_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__universal_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__universal_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__universal_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Privtypes__privileget" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Privtypes__privileget" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Privtypes__privileget__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Privtypes__privileget__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Privtypes__adminprivileget" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Privtypes__adminprivileget" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Privtypes__adminprivileget__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Privtypes__adminprivileget__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Privtypes__classt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Privtypes__classt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Privtypes__classt__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Privtypes__classt__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Privtypes__clearancet__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Privtypes__clearancet__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Privtypes__clearancet" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Privtypes__clearancet" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__Tunsigned32tB" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__Tunsigned32tB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__Tunsigned32tB__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__Tunsigned32tB__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__unsigned32t" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__unsigned32t" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__unsigned32t__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__unsigned32t__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__Tsigned32tB" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__Tsigned32tB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__Tsigned32tB__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__Tsigned32tB__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__signed32t" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__signed32t" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__signed32t__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__signed32t__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__TbytetB" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__TbytetB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__TbytetB__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__TbytetB__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__bytet" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__bytet" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__bytet__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__bytet__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__presencet" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__presencet" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__presencet__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__presencet__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__maxdatalength" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__maxdatalength" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__datalengtht" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__datalengtht" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__datalengtht__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__datalengtht__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__datai" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__datai" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__datai__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__datai__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__datatextt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__datatextt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__datat__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__datat__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__datat" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__datat" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opandnullt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opandnullt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opandnullt__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opandnullt__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opt__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opt__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__t__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__t__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__t" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__t" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__rolepresent__theadmin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__rolepresent__theadmin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__rolepresent__theadmin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__rolepresent__theadmin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__rolepresent" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__rolepresent" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__isdoingop__theadmin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__isdoingop__theadmin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__isdoingop__theadmin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__isdoingop__theadmin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__isdoingop" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__isdoingop" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__thecurrentop__theadmin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__thecurrentop__theadmin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__thecurrentop__theadmin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__thecurrentop__theadmin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__thecurrentop" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__thecurrentop" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp__keyedop" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__str_comp__keyedop" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp__keyedop___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__str_comp__keyedop___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp__op" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__str_comp__op" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp__op___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__str_comp__op___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__str_comp" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__allowedop__theadmin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__allowedop__theadmin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__allowedop__theadmin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__allowedop__theadmin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__allowedop__op" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__allowedop__op" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__allowedop__op___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__allowedop__op___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__ispresent__theadmin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__ispresent__theadmin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__ispresent__theadmin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__ispresent__theadmin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__ispresent" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__ispresent" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__allowedop" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__allowedop" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable__theadmin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable__theadmin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable__theadmin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable__theadmin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable__keyedop" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable__keyedop" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable__keyedop___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable__keyedop___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__logon__role" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__logon__role" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__logon__role___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__logon__role___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__startop__op" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__startop__op" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__startop__op___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__startop__op___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__securityofficerispresent__theadmin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__securityofficerispresent__theadmin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__securityofficerispresent__theadmin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__securityofficerispresent__theadmin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__securityofficerispresent" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__securityofficerispresent" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Bool" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Bool" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__TavailopstB" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__TavailopstB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__availopst" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__availopst" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Admin__availopst" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Admin__availopst" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__TprivtoavailopstB" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__TprivtoavailopstB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__privtoavailopst" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__privtoavailopst" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T23s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T23s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T23s__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T23s__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T24s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T24s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T17s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T17s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T17s__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T17s__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T18s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T18s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T19s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T19s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T19s__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T19s__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T20s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T20s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T21s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T21s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T21s__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T21s__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T22s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T22s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__isavailable" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__isavailable" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__maxdatalength" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__maxdatalength" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__datalengtht" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__datalengtht" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__datalengtht__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__datalengtht__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__datai" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__datai" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__datai__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__datai__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__datatextt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__datatextt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__datat__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__datat__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__datat" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__datat" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Admin__datat" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Admin__datat" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__ToptokeyedtB" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__ToptokeyedtB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__optokeyedt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__optokeyedt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T7b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T7b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T7b__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T7b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T8b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T8b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T3b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T3b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T4b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T4b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T5b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T5b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T6b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T6b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__optokeyed" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__optokeyed" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp__L13b__T14b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__str_comp__L13b__T14b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__inputs" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__inputs" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__inputs___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__inputs___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__read__datapresence" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__read__datapresence" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__read__datapresence___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__read__datapresence___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__read__data" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__read__data" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__read__data___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__read__data___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__init__theadmin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__init__theadmin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__init__theadmin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__init__theadmin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__logon__theadmin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__logon__theadmin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__logon__theadmin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__logon__theadmin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__logout__theadmin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__logout__theadmin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__logout__theadmin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__logout__theadmin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__startop__theadmin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__startop__theadmin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__startop__theadmin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__startop__theadmin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__finishop__theadmin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__finishop__theadmin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__finishop__theadmin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__finishop__theadmin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable__theop" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable__theop" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable__theop___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable__theop___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable__L_1__op" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable__L_1__op" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable__L_1__op___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable__L_1__op___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp__L10b__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__str_comp__L10b__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp__L10b__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__str_comp__L10b__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable__L12s__op" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable__L12s__op" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable__L12s__op___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable__L12s__op___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__setdata__keyeddata" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__keyeddatastoreT__setdata__keyeddata" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__setdata__keyeddata___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__keyeddatastoreT__setdata__keyeddata___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__setdata__length" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__keyeddatastoreT__setdata__length" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__setdata__length___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__keyeddatastoreT__setdata__length___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__getdata__keyeddata" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__keyeddatastoreT__getdata__keyeddata" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__getdata__keyeddata___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__keyeddatastoreT__getdata__keyeddata___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__getdata__length" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__keyeddatastoreT__getdata__length" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__getdata__length___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__keyeddatastoreT__getdata__length___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__getdata__presence" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__keyeddatastoreT__getdata__presence" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__getdata__presence___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__keyeddatastoreT__getdata__presence___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__read__localdata" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__read__localdata" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__read__localdata___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__read__localdata___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__read__locallength" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__read__locallength" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__read__locallength___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__read__locallength___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readerTK__readdata" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readerTK__readdata" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readerTK__readdata___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readerTK__readdata___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readerTK__datalength" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readerTK__datalength" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readerTK__datalength___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readerTK__datalength___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readerTK__readok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readerTK__readok" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readerTK__readok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readerTK__readok___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__read__buffer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__read__buffer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__read__buffer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__read__buffer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__read__len" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__read__len" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__read__len___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__read__len___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__read__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__read__ok" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__read__ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__read__ok___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__keyeddatastore" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__keyeddatastore" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__keyeddatastore___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__keyeddatastore___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__reader" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__reader" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__reader___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__reader___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readkeyboarddata__localkeyeddata" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readkeyboarddata__localkeyeddata" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readkeyboarddata__localkeyeddata___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readkeyboarddata__localkeyeddata___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readkeyboarddata__L_2__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readkeyboarddata__L_2__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readkeyboarddata__L_2__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readkeyboarddata__L_2__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readkeyboarddata__keyeddatapresence" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readkeyboarddata__keyeddatapresence" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readkeyboarddata__keyeddatapresence___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readkeyboarddata__keyeddatapresence___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readkeyboarddata__keyeddata" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readkeyboarddata__keyeddata" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readkeyboarddata__keyeddata___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readkeyboarddata__keyeddata___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readkeyboarddata__keyeddatalength" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readkeyboarddata__keyeddatalength" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__interfac__readkeyboarddata__keyeddatalength___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__interfac__readkeyboarddata__keyeddatalength___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_long_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__natural___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__natural___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__positive___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__positive___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__duration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__duration___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_8___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_8___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_16___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_16___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_32___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_32___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_64___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_64___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__universal_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__universal_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__init" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__init" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__finalise" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__finalise" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__read" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__read" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__poll" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__poll" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__init" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__init" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__logon" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__logon" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__logout" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__logout" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__startop" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__startop" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__finishop" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__finishop" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__isavailable__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__isavailable__aggregate_def" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___139" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___139" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___144" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___144" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___149" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___149" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__optokeyed__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__optokeyed__aggregate_def" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_162" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_162" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_163" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_163" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_164" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_164" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_165" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_165" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable__L_1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable__L_1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable__L_1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable__L_1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Privtypes__privileget___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Privtypes__privileget___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Privtypes__adminprivileget___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Privtypes__adminprivileget___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Privtypes__classt___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Privtypes__classt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Privtypes__clearancet___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Privtypes__clearancet___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__Tunsigned32tB___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__Tunsigned32tB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__unsigned32t___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__unsigned32t___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__Tsigned32tB___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__Tsigned32tB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__signed32t___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__signed32t___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__TbytetB___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__TbytetB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__bytet___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__bytet___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Basictypes__presencet___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Basictypes__presencet___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__datalengtht___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__datalengtht___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__datai___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__datai___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__datatextt___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__datatextt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__datat___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__datat___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opandnullt___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opandnullt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opt___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__t___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__t___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__TavailopstB___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__TavailopstB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__availopst___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__availopst___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__TprivtoavailopstB___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__TprivtoavailopstB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__privtoavailopst___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__privtoavailopst___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T23s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T23s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T24s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T24s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T17s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T17s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T18s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T18s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T19s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T19s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T20s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T20s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T21s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T21s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T22s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T22s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__datalengtht___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__datalengtht___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__datai___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__datai___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__datatextt___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__datatextt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__datat___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__datat___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__ToptokeyedtB___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__ToptokeyedtB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__optokeyedt___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__optokeyedt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T7b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T7b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T8b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T8b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T3b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T3b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T4b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T4b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T5b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T5b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__T6b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__T6b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp__L13b__T14b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__str_comp__L13b__T14b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__maxdatalength___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__maxdatalength___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__isavailable___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__isavailable___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__maxdatalength___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__maxdatalength___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__optokeyed___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__optokeyed___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__init___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__init___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__finalise___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__finalise___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__read___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__read___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__poll___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Keyboard__poll___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__rolepresent___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__rolepresent___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__isdoingop___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__isdoingop___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__thecurrentop___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__thecurrentop___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__str_comp___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__ispresent___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__ispresent___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__allowedop___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__allowedop___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__init___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__init___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__opisavailable___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__opisavailable___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__logon___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__logon___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__logout___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__logout___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__startop___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__startop___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__finishop___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__finishop___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__securityofficerispresent___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Admin__securityofficerispresent___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__package_def" sum="c54dad2bf12bade20aadb7c14bfaf889" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
+<theory name="Admin__package_def" proved="true" sum="c54dad2bf12bade20aadb7c14bfaf889">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Admin__t__default_checks" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
+<theory name="Admin__t__default_checks" proved="true" sum="e284967f6dbb6592898a5ced2974229f">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Admin__rolepresent__subprogram_def" sum="6e2a15d76e01de3e82be742c956ddaca" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
+<theory name="Admin__rolepresent__subprogram_def" proved="true" sum="6e2a15d76e01de3e82be742c956ddaca">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Admin__isdoingop__subprogram_def" sum="80f31c123433a98eea1aadb6c4e8c0d3" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
+<theory name="Admin__isdoingop__subprogram_def" proved="true" sum="80f31c123433a98eea1aadb6c4e8c0d3">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Admin__thecurrentop__subprogram_def" sum="14c3acd617fa6dea2975bec9aa543ba7" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="precondition">
+<theory name="Admin__thecurrentop__subprogram_def" proved="true" sum="14c3acd617fa6dea2975bec9aa543ba7">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="54"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admin__str_comp__subprogram_def" sum="cdb15c9a6a5adb5ac73c1cd8f6110d76" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="assertion">
-  <proof prover="0"><result status="valid" time="0.05" steps="97"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="assertion">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="assertion">
-  <proof prover="0"><result status="valid" time="0.05" steps="97"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Admin__ispresent__subprogram_def" sum="d177f2808bb2b7ffbc4c01503f9efd66" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
- </transf>
- </goal>
-</theory>
-<theory name="Admin__allowedop__subprogram_def" sum="c3586b84cd2b17b474fedb01e2206dd1" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="valid" time="0.02" steps="35"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="assertion">
-  <proof prover="0"><result status="valid" time="0.02" steps="35"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Admin__init__subprogram_def" sum="1493cdfbde7d2d977722a9c10f016e1b" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="32"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="32"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Admin__opisavailable__subprogram_def" sum="7ed8c63a65a127a2e8921d3f9bf99208" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="loop invariant init">
-  <proof prover="0"><result status="valid" time="0.05" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="assertion">
-  <proof prover="0"><result status="valid" time="0.07" steps="50"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="assertion">
-  <proof prover="0"><result status="valid" time="0.07" steps="50"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="loop invariant preservation">
+<theory name="Admin__str_comp__subprogram_def" proved="true" sum="cdb15c9a6a5adb5ac73c1cd8f6110d76">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.05" steps="5"/></proof>
+  <goal name="WP_parameter def.1" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" time="0.10" steps="97"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.05" steps="5"/></proof>
+  <goal name="WP_parameter def.2" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.7" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.05" steps="5"/></proof>
+  <goal name="WP_parameter def.3" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" time="0.09" steps="97"/></proof>
   </goal>
-  <goal name="WP_parameter def.8" expl="postcondition">
+ </transf>
+ </goal>
+</theory>
+<theory name="Admin__ispresent__subprogram_def" proved="true" sum="d177f2808bb2b7ffbc4c01503f9efd66">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+ </transf>
+ </goal>
+</theory>
+<theory name="Admin__allowedop__subprogram_def" proved="true" sum="c3586b84cd2b17b474fedb01e2206dd1">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" time="0.04" steps="35"/></proof>
+  </goal>
+  <goal name="WP_parameter def.1" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" time="0.04" steps="35"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Admin__init__subprogram_def" proved="true" sum="1493cdfbde7d2d977722a9c10f016e1b">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.02" steps="32"/></proof>
+  </goal>
+  <goal name="WP_parameter def.1" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.01" steps="32"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Admin__opisavailable__subprogram_def" proved="true" sum="7ed8c63a65a127a2e8921d3f9bf99208">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
+  <proof prover="0"><result status="valid" time="0.06" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.1" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" time="0.10" steps="50"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" time="0.11" steps="50"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="loop invariant preservation" proved="true">
+  <proof prover="0"><result status="valid" time="0.06" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.9" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.07" steps="95"/></proof>
+  <goal name="WP_parameter def.5" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.07" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.07" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.10" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.12" steps="95"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admin__logon__subprogram_def" sum="d4c7a43123247fe79d6df27f12f4c868" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="26"/></proof>
+<theory name="Admin__logon__subprogram_def" proved="true" sum="d4c7a43123247fe79d6df27f12f4c868">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.02" steps="26"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="32"/></proof>
+  <goal name="WP_parameter def.1" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.02" steps="32"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="postcondition">
+  <goal name="WP_parameter def.2" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="25"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admin__logout__subprogram_def" sum="80e0af5594550dd8af1a8971b843dd15" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="postcondition">
+<theory name="Admin__logout__subprogram_def" proved="true" sum="80e0af5594550dd8af1a8971b843dd15">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="postcondition">
+  <goal name="WP_parameter def.1" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admin__startop__subprogram_def" sum="00ffe1c18cba52a2a85fd6e8a8be6d0b" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="precondition">
+<theory name="Admin__startop__subprogram_def" proved="true" sum="00ffe1c18cba52a2a85fd6e8a8be6d0b">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.02" steps="25"/></proof>
+  </goal>
+  <goal name="WP_parameter def.1" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.02" steps="42"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="25"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="42"/></proof>
+  <goal name="WP_parameter def.3" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.02" steps="25"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="25"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="25"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="26"/></proof>
+  <goal name="WP_parameter def.4" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.02" steps="26"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admin__finishop__subprogram_def" sum="081af3bf9f7a08a9ef85c5ddb645be40" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="32"/></proof>
+<theory name="Admin__finishop__subprogram_def" proved="true" sum="081af3bf9f7a08a9ef85c5ddb645be40">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.02" steps="32"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="postcondition">
+  <goal name="WP_parameter def.1" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="42"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="25"/></proof>
+  <goal name="WP_parameter def.2" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" time="0.02" steps="25"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admin__securityofficerispresent__subprogram_def" sum="6e2a15d76e01de3e82be742c956ddaca" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
+<theory name="Admin__securityofficerispresent__subprogram_def" proved="true" sum="6e2a15d76e01de3e82be742c956ddaca">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>

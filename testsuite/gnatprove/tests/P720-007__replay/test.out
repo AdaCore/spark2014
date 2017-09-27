@@ -12,7 +12,7 @@ harness.adb:12:09: info: initialization of "R.Data" proved
 harness.adb:12:09: info: initialization of "R.First" proved
 harness.adb:12:09: info: initialization of "R.Length" proved
 harness.adb:13:19: info: initialization of "H" proved
-harness.adb:13:19: medium: assertion might fail
+harness.adb:13:19: medium: assertion might fail, cannot prove H = X
 harness.adb:14:04: medium: precondition might fail
 harness.adb:14:10: info: initialization of "R.Data" proved
 harness.adb:14:10: info: initialization of "R.First" proved
@@ -22,13 +22,13 @@ harness.adb:15:09: info: initialization of "R.Data" proved
 harness.adb:15:09: info: initialization of "R.First" proved
 harness.adb:15:09: info: initialization of "R.Length" proved
 harness.adb:16:19: info: initialization of "H" proved
-harness.adb:16:19: medium: assertion might fail
+harness.adb:16:19: medium: assertion might fail, cannot prove H = Y
 harness.adb:17:04: medium: precondition might fail
 harness.adb:17:09: info: initialization of "R.Data" proved
 harness.adb:17:09: info: initialization of "R.First" proved
 harness.adb:17:09: info: initialization of "R.Length" proved
 harness.adb:18:19: info: initialization of "H" proved
-harness.adb:18:19: medium: assertion might fail
+harness.adb:18:19: medium: assertion might fail, cannot prove H = Z
 ring_buf.adb:15:36: medium: divide by zero might fail
 ring_buf.adb:16:28: medium: range check might fail
 ring_buf.adb:23:32: medium: divide by zero might fail
@@ -36,13 +36,13 @@ ring_buf.adb:24:28: medium: range check might fail
 ring_buf.ads:39:21: info: initialization of "R.Data" proved
 ring_buf.ads:39:21: info: initialization of "R.First" proved
 ring_buf.ads:39:21: info: initialization of "R.Length" proved
-ring_buf.ads:40:19: medium: postcondition might fail
+ring_buf.ads:40:19: medium: postcondition might fail, cannot prove Is_Empty (R)
 ring_buf.ads:40:30: info: initialization of "R.Data" proved
 ring_buf.ads:40:30: info: initialization of "R.First" proved
 ring_buf.ads:40:30: info: initialization of "R.Length" proved
-ring_buf.ads:47:19: medium: postcondition might fail
+ring_buf.ads:47:19: medium: postcondition might fail, cannot prove R.Length = R.Length'Old + 1
 ring_buf.ads:49:43: info: initialization of "Element" proved
-ring_buf.ads:52:15: medium: postcondition might fail
+ring_buf.ads:52:15: medium: postcondition might fail, cannot prove R.Length = R.Length'Old - 1
 ring_buf.ads:52:52: medium: precondition might fail
 ring_buf.ads:52:67: info: initialization of "Element" proved
 harness.adb:3:11: warning: subprogram "Harness" has no effect

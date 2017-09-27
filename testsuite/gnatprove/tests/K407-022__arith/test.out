@@ -28,7 +28,7 @@ arith.adb:20:14: info: division check proved (CodePeer)
 arith.adb:20:14: info: overflow check proved (CodePeer)
 arith.adb:20:18: medium: overflow check might fail (e.g. when Tmp2 = 0)
 arith.adb:23:12: warning: possible reassociation due to missing parentheses
-arith.adb:23:14: medium: overflow check might fail
+arith.adb:23:14: medium: overflow check might fail (e.g. when Tmp1 = 0)
 arith.adb:23:17: warning: possible reassociation due to missing parentheses
 arith.adb:23:19: medium: overflow check might fail (e.g. when Tmp1 = 0 and X = -2147483648 and Y = 1)
 arith.adb:23:23: medium: overflow check might fail (e.g. when Tmp1 = 0)

@@ -21,7 +21,7 @@ fb20a00.adb:39:31: medium: overflow check might fail
 fb20a00.adb:39:39: info: range check proved (CodePeer)
 fb20a00.adb:39:46: info: overflow check proved (CodePeer)
 fb20a00.adb:42:17: info: initialization of "Pos" proved
-fb20a00.adb:42:21: medium: overflow check might fail
+fb20a00.adb:42:21: medium: overflow check might fail (e.g. when Pos = 0)
 fb20a00.adb:45:12: info: initialization of "Pos" proved
 fb20a00.adb:45:30: info: overflow check proved (CodePeer)
 fb20a00.adb:45:38: info: range check proved (CodePeer)

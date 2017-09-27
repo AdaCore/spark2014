@@ -1,2 +1,2 @@
-Darwin RLIMIT 1000
+ALL RLIMIT 1500
 !large SKIP part of large testsuite

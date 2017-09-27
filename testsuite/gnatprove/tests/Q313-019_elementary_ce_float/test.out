@@ -1,20 +1,20 @@
-float_example.adb:8:19: medium: postcondition might fail, cannot prove Minus_I'Result = A + B (e.g. when A = (fp #b1, #b00000000000, #x175eb88900840) and B = (fp #b1, #b00000000000, #x1d039aa088040) and Minus_I'Result = (fp #b0, #b00000000000, #x05a4e21787800))
-float_example.adb:8:38: medium: float overflow check might fail (e.g. when A = (fp #b0, #b11111111110, #x0800000000001) and B = (fp #b0, #b11111111110, #x32feeaf200000))
-float_example.adb:12:16: medium: float overflow check might fail (e.g. when A = (fp #b0, #b11111111110, #xc000000000000) and B = (fp #b1, #b11111111101, #x0000000000000))
-float_example.adb:17:14: medium: postcondition might fail, cannot prove Bounded_Add'Result < 7.0 (e.g. when Bounded_Add'Result = (fp #b0, #b10000000001, #xc006378ce0002))
-float_example.adb:21:16: medium: float overflow check might fail (e.g. when A = (fp #b1, #b11111111110, #x0000000000000) and B = (fp #b1, #b11111111110, #x8000007ffff20))
+float_example.adb:8:19: medium: postcondition might fail, cannot prove Minus_I'Result = A + B (e.g. when A = +zero and B = (fp #b0, #b10000000000, #x0000000000000) and Minus_I'Result = (fp #b1, #b10000000000, #x0000000000000))
+float_example.adb:8:38: medium: float overflow check might fail (e.g. when A = (fp #b1, #b11111111110, #xfffffffc0004b) and B = (fp #b1, #b11111011111, #xffffa80000000))
+float_example.adb:12:16: medium: float overflow check might fail (e.g. when A = (fp #b1, #b11111111110, #x7ffbffafeeeeb) and B = (fp #b0, #b11111111110, #x7ffbffafccccb))
+float_example.adb:17:14: medium: postcondition might fail, cannot prove Bounded_Add'Result < 7.0 (e.g. when Bounded_Add'Result = (fp #b0, #b10000000001, #xc000000000000))
+float_example.adb:21:16: medium: float overflow check might fail (e.g. when A = (fp #b1, #b11111111110, #xfffffffffec02) and B = (fp #b1, #b11111010110, #x3fdffffffffff))
 counterexample expected for check at float_example.adb:8
-  trace at float_example.adb:7 --> A = (fp #b1, #b00000000000, #x175eb88900840) and B = (fp #b1, #b00000000000, #x1d039aa088040) and Minus_I'Result = (fp #b0, #b00000000000, #x05a4e21787800)
-  trace at float_example.adb:8 --> A = (fp #b1, #b00000000000, #x175eb88900840) and B = (fp #b1, #b00000000000, #x1d039aa088040) and Minus_I'Result = (fp #b0, #b00000000000, #x05a4e21787800)
-  trace at float_example.adb:12 --> Minus_I'Result = (fp #b0, #b00000000000, #x05a4e21787800)
+  trace at float_example.adb:7 --> A = +zero and B = (fp #b0, #b10000000000, #x0000000000000) and Minus_I'Result = (fp #b1, #b10000000000, #x0000000000000)
+  trace at float_example.adb:8 --> A = +zero and B = (fp #b0, #b10000000000, #x0000000000000) and Minus_I'Result = (fp #b1, #b10000000000, #x0000000000000)
+  trace at float_example.adb:12 --> Minus_I'Result = (fp #b1, #b10000000000, #x0000000000000)
 counterexample expected for check at float_example.adb:12
-  trace at float_example.adb:7 --> A = (fp #b0, #b11111111110, #xc000000000000) and B = (fp #b1, #b11111111101, #x0000000000000)
-  trace at float_example.adb:12 --> A = (fp #b0, #b11111111110, #xc000000000000) and B = (fp #b1, #b11111111101, #x0000000000000)
+  trace at float_example.adb:7 --> A = (fp #b1, #b11111111110, #x7ffbffafeeeeb) and B = (fp #b0, #b11111111110, #x7ffbffafccccb)
+  trace at float_example.adb:12 --> A = (fp #b1, #b11111111110, #x7ffbffafeeeeb) and B = (fp #b0, #b11111111110, #x7ffbffafccccb)
 counterexample expected for check at float_example.adb:17
-  trace at float_example.adb:15 --> A = (fp #b0, #b10000000000, #xc0000009c0000) and B = (fp #b0, #b10000000000, #xc00c6f1000003) and Bounded_Add'Result = +zero
-  trace at float_example.adb:16 --> Bounded_Add'Result = (fp #b0, #b10000000001, #xc006378ce0002)
-  trace at float_example.adb:17 --> Bounded_Add'Result = (fp #b0, #b10000000001, #xc006378ce0002)
-  trace at float_example.adb:21 --> Bounded_Add'Result = (fp #b0, #b10000000001, #xc006378ce0002)
+  trace at float_example.adb:15 --> A = (fp #b0, #b10000000000, #xfffffffffffff) and B = (fp #b0, #b10000000000, #x8000000000001) and Bounded_Add'Result = NaN
+  trace at float_example.adb:16 --> Bounded_Add'Result = (fp #b0, #b10000000001, #xc000000000000)
+  trace at float_example.adb:17 --> Bounded_Add'Result = (fp #b0, #b10000000001, #xc000000000000)
+  trace at float_example.adb:21 --> Bounded_Add'Result = (fp #b0, #b10000000001, #xc000000000000)
 counterexample expected for check at float_example.adb:21
-  trace at float_example.adb:15 --> A = (fp #b1, #b11111111110, #x0000000000000) and B = (fp #b1, #b11111111110, #x8000007ffff20)
-  trace at float_example.adb:21 --> A = (fp #b1, #b11111111110, #x0000000000000) and B = (fp #b1, #b11111111110, #x8000007ffff20)
+  trace at float_example.adb:15 --> A = (fp #b1, #b11111111110, #xfffffffffec02) and B = (fp #b1, #b11111010110, #x3fdffffffffff)
+  trace at float_example.adb:21 --> A = (fp #b1, #b11111111110, #xfffffffffec02) and B = (fp #b1, #b11111010110, #x3fdffffffffff)

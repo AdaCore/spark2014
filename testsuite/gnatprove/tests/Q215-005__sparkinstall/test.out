@@ -1,4 +1,5 @@
 main bin/ dir
+gnat_server
 gnatprove
 libexec/spark/bin/ dir
 alt-ergo
