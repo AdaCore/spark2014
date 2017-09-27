@@ -124,7 +124,7 @@ invariants:
 
 Note that |GNATprove| will not generate a frame condition for a record component if
 the record variable is modified as a whole either through an assignment or
-through a procedure call, and so, even if the component happens to be preserved
+through a procedure call, et cetera, even if the component happens to be preserved
 by the modification.
 
 |GNATprove| can also infer preservation of unmodified array components for arrays
