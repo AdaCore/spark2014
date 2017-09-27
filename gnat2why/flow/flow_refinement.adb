@@ -89,11 +89,6 @@ package body Flow_Refinement is
 
       S : Flow_Scope renames Looking_From;
 
-      function Looking_From_Generic (S : Flow_Scope) return Boolean
-        is (Present (S)
-            and then Ekind (S.Ent) = E_Generic_Package);
-      --  Returns True iff we are looking from a generic scope
-
       Context : Flow_Scope;
    begin
       --  Go upwards from S (the scope we are in) and see if we end up in
@@ -170,7 +165,7 @@ package body Flow_Refinement is
          end case;
       end loop;
 
-      return (No (Context) and then not Looking_From_Generic (S))
+      return No (Context)
         or else Context = S
         or else (Context /= Target_Scope and then Is_Visible (Context, S));
    end Is_Visible;
@@ -641,46 +636,7 @@ package body Flow_Refinement is
                State : constant Entity_Id := Encapsulating_State (Var);
 
             begin
-               pragma Assert (if Present (Scope)
-                              and then Is_Visible (Var, Scope)
-                              and then not Is_Visible (State, Scope)
-                              then Is_Generic_Unit (Scope.Ent));
-               --  The only case where Var is visible from Scope and State
-               --  isn't is when we have a generic with an abstract state which
-               --  is used as a refinement for an abstract state for another
-               --  package where the generic is instantiated. In this case, in
-               --  fact, Encapsulating_State will return the abstract state of
-               --  the package where the instantiation happens but this is not
-               --  visible from the generic scope so we don't have to up
-               --  project to it.
-               --
-               --  For example:
-               --
-               --  generic
-               --  package Gen with Abstract_State => Gen_State
-               --     ...
-               --  end Gen;
-               --
-               --  -----------
-               --
-               --  package P with Abstract_State => State
-               --  ...
-               --  end P;
-               --
-               --  with Gen;
-               --  package body P
-               --     with Refined_State => (State => Instance.Gen_State)
-               --  is
-               --     package Instance is new Gen;
-               --  ...
-               --  end P;
-
-               if Is_Visible (Var, Scope)
-                 and then
-                   (not Is_Visible (State, Scope)
-                      or else
-                    State_Refinement_Is_Visible (State, Scope))
-               then
+               if State_Refinement_Is_Visible (State, Scope) then
                   Projected.Include (Var);
                else
                   Partial.Include (State);
@@ -707,16 +663,7 @@ package body Flow_Refinement is
                State : constant Entity_Name := GG_Encapsulating_State (Var);
 
             begin
-               pragma Assert (if Present (Folded_Scope)
-                              and then Is_Visible (Var, Folded_Scope)
-                              and then not Is_Visible (State, Folded_Scope)
-                              then Is_Generic_Unit (Folded_Scope.Ent));
-
-               if Is_Visible (Var, Folded_Scope)
-                 and then (not Is_Visible (State, Folded_Scope)
-                             or else
-                           State_Refinement_Is_Visible (State, Folded_Scope))
-               then
+               if State_Refinement_Is_Visible (State, Folded_Scope) then
                   Projected.Include (Var);
                else
                   Partial.Include (State);
@@ -744,16 +691,7 @@ package body Flow_Refinement is
                State : constant Flow_Id := Encapsulating_State (Var);
 
             begin
-               pragma Assert (if Present (Scope)
-                              and then Is_Visible (Var, Scope)
-                              and then not Is_Visible (State, Scope)
-                              then Is_Generic_Unit (Scope.Ent));
-
-               if Is_Visible (Var, Scope)
-                 and then (not Is_Visible (State, Scope)
-                             or else
-                           State_Refinement_Is_Visible (State, Scope))
-               then
+               if State_Refinement_Is_Visible (State, Scope) then
                   Projected.Include (Var);
                else
                   Partial.Include (State);

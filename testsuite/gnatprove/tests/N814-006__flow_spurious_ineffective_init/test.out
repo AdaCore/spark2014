@@ -1,22 +1,12 @@
-double_list.adb:16:04: info: initialization of "Memory" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.adb:17:04: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.adb:18:04: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.adb:19:04: info: initialization of "Free" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.adb:23:40: info: initialization of "Memory" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.adb:23:48: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.adb:23:55: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.adb:23:66: info: initialization of "Free" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.adb:25:26: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.adb:25:26: info: refined post proved (CVC4: 1 VC), in instantiation at list_handler.adb:11
-double_list.adb:36:28: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.adb:63:30: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
 double_list.adb:64:54: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
 double_list.adb:65:41: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
 double_list.adb:68:25: info: range check proved (CVC4: 1 VC), in instantiation at list_handler.adb:11
 double_list.ads:9:05: info: initial condition proved (CVC4: 1 VC), in instantiation at list_handler.adb:11
-double_list.ads:9:26: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.ads:18:16: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
+double_list.ads:9:31: high: "List_Handler.List" must be listed in the Initializes aspect of "Integer_List" (SPARK RM 7.1.5(11)), in instantiation at list_handler.adb:11
 double_list.ads:18:16: info: postcondition proved (CVC4: 1 VC), in instantiation at list_handler.adb:11
+double_list.ads:18:21: high: "List_Handler.List" must be listed in the Global aspect of "Clear" (SPARK RM 6.1.4(13)), in instantiation at list_handler.adb:11
 double_list.ads:22:29: info: initialization of "Status" proved, in instantiation at list_handler.adb:11
 list_handler.adb:24:13: info: initialization of "Current" proved
 list_handler.adb:25:56: info: initialization of "Current" proved
