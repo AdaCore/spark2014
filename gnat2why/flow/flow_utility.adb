@@ -958,7 +958,6 @@ package body Flow_Utility is
          --  Remove generic formals without variable input
          Remove_Constants (Globals.Proof_Ins, Only_Generic_Formals => True);
          Remove_Constants (Globals.Reads,     Only_Generic_Formals => True);
-         Remove_Constants (Globals.Writes,    Only_Generic_Formals => True);
 
          --  Change all variants to Normal_Use
          Globals.Proof_Ins := Change_Variant (Globals.Proof_Ins, Normal_Use);
@@ -1531,7 +1530,6 @@ package body Flow_Utility is
 
             Remove_Constants (Globals.Proof_Ins, Only_Generic_Formals => True);
             Remove_Constants (Globals.Reads,     Only_Generic_Formals => True);
-            Remove_Constants (Globals.Writes,    Only_Generic_Formals => True);
          end;
 
          Debug ("proof ins", Globals.Proof_Ins);
