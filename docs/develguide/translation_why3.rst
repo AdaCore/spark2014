@@ -22,7 +22,7 @@ and scoped, from the current and withed units.
 Visibility: Precision is maximal, based on current unit and spec of
 withed units only, both private and public declarations, stopping at
 SPARK boundaries. Example: private types, deferred constants, private
-expression functions, abstract states…
+expression functions, abstract states...
 
 .. code-block:: ada
 
@@ -205,7 +205,7 @@ range of the Ada type. It is encoded using an abstract type with
 of_rep and to_rep functions to convert to and from mathematical
 integers as well as a range axiom.
 
-As an example, let us look at the following type::
+As an example, let us look at the following type:
 
 .. code-block:: ada
 
@@ -287,7 +287,7 @@ contains exactly the values that are allowed by the modulus and the
 range if any. The closed form is linked to the representative type
 using a range predicate, as well as of_rep and to_rep functions to
 convert to and from bit-vectors. As an example, let us look at the
-following type::
+following type:
 
 .. code-block:: ada
 
@@ -369,7 +369,7 @@ only if the Ada standard is enforcing the IEEE 754 behavior.
 Then, like for integer types, a closed form is defined for static
 floating point types which only allows numbers in the specified range.
 
-As an example, let us look at the following type::
+As an example, let us look at the following type:
 
 .. code-block:: ada
 
@@ -425,7 +425,7 @@ use the projections of their base type.
 This specific translation is triggered when
 ``Gnat2why.Util.Type_Is_Modeled_As_Base`` returns ``True``. As an example, let
 us look at the translation of the following signed integer type
-declaration, where X is a non-static constant::
+declaration, where X is a non-static constant:
 
 .. code-block:: ada
 
@@ -491,7 +491,7 @@ An (n-dimensional) Ada array is translated in Why as an infinite
 (n-dimensional) functional map mapping representative values of the
 array index types to closed values of the component type along with
 values for index bounds. As an example, the objects of the following
-array type::
+array type:
 
 .. code-block:: ada
 
@@ -577,7 +577,7 @@ abstract maps (this theory is called theory of arrays), we have chosen
 to directly translate maps for arrays of dimension 1 to the built-in
 Map type in Why to benefit from this support.
 
-As an example, let us consider the following 1 dimensional array type::
+As an example, let us consider the following 1 dimensional array type:
 
 .. code-block:: ada
 
@@ -735,7 +735,7 @@ For statically constrained array types, no new type is introduced.
 Instead, constants are declared for the bounds and the underlying map
 type is reused as is.
 
-As an example, let us consider the following array type::
+As an example, let us consider the following array type:
 
 .. code-block:: ada
 
@@ -870,7 +870,7 @@ different component types can then be retrieved using the function
 Get_Array_Conversion_Name from Why.Gen.Arrays.
 
 As an example, assume we want to convert between the two following
-types::
+types:
 
 .. code-block:: ada
 
@@ -2060,7 +2060,7 @@ function is set to false. As an example, the following procedure:
    procedure P (X : in out Integer) with
      No_Return;
 
-Is translated as::
+is translated as::
 
      val p (x : int__ref) : unit
       requires { true }
