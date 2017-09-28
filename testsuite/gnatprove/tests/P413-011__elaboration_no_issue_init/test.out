@@ -1,8 +1,5 @@
-p1.adb:5:18: medium: assertion might fail, cannot prove P2.body2_elaborated (e.g. when Body2_Elaborated = False)
-p1.adb:5:20: high: "Body2_Elaborated" must be listed in the Initializes aspect of "P1" (SPARK RM 7.1.5(12))
-p1.ads:1:17: info: initial condition proved (CVC4: 1 VC)
-p1.ads:3:13: warning: subprogram "P" has no effect
-p2.adb:5:18: medium: assertion might fail, cannot prove P1.body1_elaborated (e.g. when Body1_Elaborated = False)
-p2.adb:5:20: high: "Body1_Elaborated" must be listed in the Initializes aspect of "P2" (SPARK RM 7.1.5(12))
-p2.ads:1:17: info: initial condition proved (CVC4: 1 VC)
-p2.ads:3:13: warning: subprogram "P" has no effect
+p2.adb:6:20:   body of unit "P2" elaborated
+p2.adb:6:20:   variable "Body2_Elaborated" assigned at line 6
+p2.adb:6:20: add pragma "Elaborate_Body" to spec "P2" to ensure full initialization
+p2.adb:6:20: variable "Body2_Elaborated" modified by elaboration code in package body
+gnatprove: error during generation of Global contracts

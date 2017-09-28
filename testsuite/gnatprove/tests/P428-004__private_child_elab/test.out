@@ -1,4 +1,5 @@
-p-q-r.ads:4:19: medium: assertion might fail, cannot prove P.Q.x (e.g. when X = False)
-p-q.adb:7:06: high: modification of "X" constituent of "P.State" in elaboration requires Elaborate_Body on package "Q"
-p-q.ads:5:04: info: initialization of "X" constituent of "P.State" proved
-p-q.ads:5:04: warning: initialization of X has no effect
+p-q.adb:7:06:   body of unit "Q" elaborated
+p-q.adb:7:06:   variable "X" assigned at line 7
+p-q.adb:7:06: add pragma "Elaborate_Body" to spec "Q" to ensure full initialization
+p-q.adb:7:06: variable "X" modified by elaboration code in package body
+gnatprove: error during generation of Global contracts
