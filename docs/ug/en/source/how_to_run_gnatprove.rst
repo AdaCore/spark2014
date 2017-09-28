@@ -542,6 +542,15 @@ user can display this counterexample in GPS by clicking on the icon to the left
 of the failed proof message, or to the left of the corresponding line in the
 editor. The counterexample is hidden again when re-clicking on the same icon.
 
+A monospace font with ligature like Fira Code
+(https://github.com/tonsky/FiraCode) or Hasklig
+(https://github.com/i-tu/Hasklig) can be separately installed and selected to
+make contracts more readable inside GPS or GNATbench. See the following
+screenshot which shows how symbols like :code:`=>` (arrow) or :code:`>=`
+(greater than or equal) are displayed in such a font:
+
+.. image:: /static/firacode.png
+
 .. _Running GNATprove from GNATbench:
 
 Running |GNATprove| from GNATbench
