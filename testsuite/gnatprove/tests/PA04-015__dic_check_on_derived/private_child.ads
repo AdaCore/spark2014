@@ -1,4 +1,4 @@
-with Generic_Child; pragma Elaborate_All (Generic_Child);
+with Generic_Child;
 package Private_Child with SPARK_Mode is
 
    type Root (C : Natural) is tagged null record;

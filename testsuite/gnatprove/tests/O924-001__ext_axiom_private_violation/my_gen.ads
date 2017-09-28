@@ -1,3 +1,3 @@
-with Gen; pragma Elaborate_All (Gen);
+with Gen;
 
 package My_Gen is new Gen;

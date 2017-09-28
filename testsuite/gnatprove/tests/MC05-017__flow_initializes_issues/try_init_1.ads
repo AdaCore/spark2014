@@ -1,4 +1,4 @@
-with P; pragma Elaborate_All (P);
+with P;
 
 package Try_Init_1
 with Initializes => (C => P.V)

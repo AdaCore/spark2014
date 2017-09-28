@@ -2,7 +2,7 @@ pragma SPARK_Mode;
 
 with SK;
 
-with Gen; pragma Elaborate_All (Gen);
+with Gen;
 
 package Test
 is

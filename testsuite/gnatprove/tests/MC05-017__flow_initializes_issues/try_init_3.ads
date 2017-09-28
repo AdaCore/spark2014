@@ -1,4 +1,4 @@
-with P; pragma Elaborate_All (P);
+with P;
 
 package Try_Init_3
 with Abstract_State => (X, Y),

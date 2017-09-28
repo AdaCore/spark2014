@@ -1,4 +1,4 @@
-with TPS; pragma Elaborate_All (TPS);
+with TPS;
 
 package ART is
 

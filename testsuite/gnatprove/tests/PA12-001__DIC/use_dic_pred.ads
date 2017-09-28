@@ -1,5 +1,5 @@
-with DIC_Pred; use DIC_Pred; pragma Elaborate_All (DIC_Pred);
-with Containers;             pragma Elaborate_All (Containers);
+with DIC_Pred; use DIC_Pred;
+with Containers;
 package Use_Dic_Pred with SPARK_Mode is
    X : T;
    Y : S;

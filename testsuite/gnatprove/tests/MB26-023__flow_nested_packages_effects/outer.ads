@@ -1,4 +1,4 @@
-with Init; pragma Elaborate_All (Init);
+with Init;
 
 package Outer
   with SPARK_Mode,

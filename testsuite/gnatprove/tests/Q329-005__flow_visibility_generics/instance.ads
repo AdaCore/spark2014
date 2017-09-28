@@ -1,2 +1,2 @@
-with Gen; pragma Elaborate_All (Gen);
+with Gen;
 package Instance is new Gen;

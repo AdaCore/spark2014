@@ -1,4 +1,4 @@
-with Use_Var; use Use_Var; pragma Elaborate_All (Use_Var);
+with Use_Var; use Use_Var;
 package Add_Field with SPARK_Mode is
 
    D : constant Integer := C;

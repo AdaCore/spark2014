@@ -1,4 +1,4 @@
-with Lib.MLM.G_MLMs; pragma Elaborate_All (Lib.MLM.G_MLMs);
+with Lib.MLM.G_MLMs;
 
 package Demo.Core is
 

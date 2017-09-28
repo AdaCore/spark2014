@@ -1,4 +1,4 @@
-with Traces; pragma Elaborate_All (Traces);
+with Traces;
 with Store;
 
 package Trace_Test
