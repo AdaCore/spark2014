@@ -85,10 +85,10 @@ install-all:
 	$(MAKE) install
 	$(MAKE) -C why3 install_spark2014_dev
 	$(MAKE) -C alt-ergo install
-        # Move internal binaries to libexec/spark/bin like the nighty build
-        # does (in anod scripts), as why3 executables expect this relative
-        # location to find the Why3 installation files in share. Do this for
-        # all internal binaries even if not strictly needed.
+	# Move internal binaries to libexec/spark/bin like the nighty build
+	# does (in anod scripts), as why3 executables expect this relative
+	# location to find the Why3 installation files in share. Do this for
+	# all internal binaries even if not strictly needed.
 	mkdir -p install/libexec/spark/bin
 	$(MV) install/bin/why3server install/libexec/spark/bin
 	$(MV) install/bin/why3realize install/libexec/spark/bin
@@ -99,10 +99,10 @@ install-all:
 	# installed
 	-$(MV) install/bin/why3ide install/libexec/spark/bin
 	$(MV) install/bin/alt-ergo install/libexec/spark/bin
-        # Create the fake prover scripts to help extract benchmarks.
+	# Create the fake prover scripts to help extract benchmarks.
 	$(CP) benchmark_script/fake_* install/libexec/spark/bin
-        # It is ok for developers to not have a local build of CVC4. In that
-        # case we don't want to have an error to be issued.
+	# It is ok for developers to not have a local build of CVC4. In that
+	# case we don't want to have an error to be issued.
 	$(MV) install/bin/cvc4 install/libexec/spark/bin 2> /dev/null || true
 
 install:
@@ -153,15 +153,15 @@ gnatprove-nightly:
 
 install-examples:
 	mkdir -p $(EXAMPLESDIR)
-        # install examples from the testsuite as identified in file
-        # MANIFEST.examples
+	# install examples from the testsuite as identified in file
+	# MANIFEST.examples
 	for dir in `grep -v "^--" MANIFEST.examples` ; do \
 	   $(CP) testsuite/gnatprove/tests/$$dir $(EXAMPLESDIR); \
 	done
 	find $(EXAMPLESDIR) -name test.py -exec rm -f {} \;
 	find $(EXAMPLESDIR) -name test.out -exec rm -f {} \;
-        # install examples in GNATprove-by-Example section of User's Guide
-        # a special example
+	# install examples in GNATprove-by-Example section of User's Guide
+	# a special example
 	$(CP) docs/ug/gnatprove_by_example/examples \
 	  $(EXAMPLESDIR)/gnatprove_by_example
 
