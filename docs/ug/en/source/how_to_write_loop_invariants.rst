@@ -307,7 +307,7 @@ and ``Right`` stay within the bounds of ``A`` inside the loop:
    :lines: 23-26
 
 With this simple loop invariant, |GNATprove| now reports that the
-check on lines 27 is now proved.
+check on line 26 is proved.
 |GNATprove| computes that the value assigned to ``Med`` in the loop is also
 within the bounds of ``A``.
 
