@@ -172,4 +172,4 @@ clean:
 	$(MAKE) -C why3 clean
 	$(MAKE) -C alt-ergo clean
 	$(MAKE) -C include clean
-        rm -f docs/sphinx_support/confvars.py
+	rm -f docs/sphinx_support/confvars.py
