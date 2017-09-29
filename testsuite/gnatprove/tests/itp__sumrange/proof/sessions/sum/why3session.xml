@@ -238,7 +238,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Sum__simple_sum__subprogram_def" proved="true" sum="d9a135a020720230b495427ddeb145ad">
+<theory name="Sum__simple_sum__subprogram_def" proved="true" sum="d6b3858e65c03a72a72a796f4fa5fa20">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -270,19 +270,19 @@
    <goal name="WP_parameter def.8.0" expl="loop invariant preservation" proved="true">
    <transf name="assert" proved="true" arg1="forall a x j. first1 &lt; j &lt;= last1 -&gt; first1 &lt; x &lt;= j -&gt; sum a (j-x) j = sum a (j-x) (j - 1) + to_rep1 (get a (j-1))">
     <goal name="WP_parameter def.8.0.0" proved="true">
-    <transf name="induction" proved="true" arg1="x" arg2="0">
+    <transf name="induction" proved="true" arg1="x">
      <goal name="WP_parameter def.8.0.0.0" proved="true">
-     <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+     <proof prover="2"><result status="valid" time="0.00" steps="1086"/></proof>
      </goal>
      <goal name="WP_parameter def.8.0.0.1" proved="true">
      <transf name="instantiate" proved="true" arg1="sum__def_axiom" arg2="a">
       <goal name="WP_parameter def.8.0.0.1.0" proved="true">
-      <transf name="replace" proved="true" arg1="(j - (x + 1))" arg2="((j - 1) - x)" arg3="G">
+      <transf name="replace" proved="true" arg1="(j - (x + 1))" arg2="((j - 1) - x)" arg3="in" arg4="G">
        <goal name="WP_parameter def.8.0.0.1.0.0" proved="true">
-       <proof prover="2"><result status="valid" time="0.01" steps="14595"/></proof>
+       <proof prover="2"><result status="valid" time="0.02" steps="14595"/></proof>
        </goal>
        <goal name="WP_parameter def.8.0.0.1.0.1" proved="true">
-       <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+       <proof prover="2"><result status="valid" time="0.01" steps="1208"/></proof>
        </goal>
       </transf>
       </goal>
@@ -323,19 +323,19 @@
   <goal name="WP_parameter def.10" expl="postcondition" proved="true">
   <transf name="assert" proved="true" arg1="forall a x j. first1 &lt; j &lt;= last1 -&gt; first1 &lt; x &lt;= j -&gt; sum a (j-x) j = sum a (j-x) (j - 1) + to_rep1 (get a (j-1))">
    <goal name="WP_parameter def.10.0" proved="true">
-   <transf name="induction" proved="true" arg1="x" arg2="0">
+   <transf name="induction" proved="true" arg1="x">
     <goal name="WP_parameter def.10.0.0" proved="true">
-    <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+    <proof prover="2"><result status="valid" time="0.01" steps="932"/></proof>
     </goal>
     <goal name="WP_parameter def.10.0.1" proved="true">
     <transf name="instantiate" proved="true" arg1="sum__def_axiom" arg2="a">
      <goal name="WP_parameter def.10.0.1.0" proved="true">
-     <transf name="replace" proved="true" arg1="(j - (x + 1))" arg2="((j - 1) - x)" arg3="G">
+     <transf name="replace" proved="true" arg1="(j - (x + 1))" arg2="((j - 1) - x)" arg3="in" arg4="G">
       <goal name="WP_parameter def.10.0.1.0.0" proved="true">
       <proof prover="2"><result status="valid" time="0.02" steps="10694"/></proof>
       </goal>
       <goal name="WP_parameter def.10.0.1.0.1" proved="true">
-      <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+      <proof prover="2"><result status="valid" time="0.01" steps="1056"/></proof>
       </goal>
      </transf>
      </goal>
