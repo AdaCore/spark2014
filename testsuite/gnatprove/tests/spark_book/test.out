@@ -590,23 +590,14 @@ display_control.ads:3:14: warning: subprogram "Bold_On" has no effect
 display_control.ads:7:14: warning: subprogram "Blink_On" has no effect
 display_control.ads:11:14: warning: subprogram "Normal" has no effect
 display_manager.ads:10:44: info: initialization of "Value" proved
-double_list.adb:17:04: info: initialization of "Memory" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.adb:18:04: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.adb:19:04: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.adb:20:04: info: initialization of "Free" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.adb:24:41: info: initialization of "Memory" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.adb:24:49: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.adb:24:56: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.adb:24:67: info: initialization of "Free" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.adb:36:28: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
 double_list.adb:62:30: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:8
 double_list.adb:63:46: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:8
 double_list.adb:64:33: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:8
 double_list.adb:67:25: info: range check proved (CVC4: 1 VC), in instantiation at list_handler.adb:8
 double_list.ads:9:05: info: initial condition proved (CVC4: 1 VC), in instantiation at list_handler.adb:8
-double_list.ads:9:26: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.ads:19:19: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.ads:9:31: high: "List_Handler.List" must be listed in the Initializes aspect of "Integer_List" (SPARK RM 7.1.5(11)), in instantiation at list_handler.adb:8
 double_list.ads:19:19: info: postcondition proved (CVC4: 1 VC), in instantiation at list_handler.adb:8
+double_list.ads:19:24: high: "List_Handler.List" must be listed in the Global aspect of "Clear" (SPARK RM 6.1.4(13)), in instantiation at list_handler.adb:8
 double_list.ads:23:29: info: initialization of "Status" proved, in instantiation at list_handler.adb:8
 elaboration_demo.adb:2:29: warning: unused initial value of "Size"
 elaboration_demo.adb:3:29: high: "Count" is not initialized in "Elaboration_Demo"
