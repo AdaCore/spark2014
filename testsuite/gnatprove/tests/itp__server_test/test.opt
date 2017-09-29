@@ -1,1 +1,2 @@
+ALL XFAIL under Q927-025
 !large SKIP part of large testuite
