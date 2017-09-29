@@ -4,11 +4,9 @@ package P is
       null;
    end record;
 
-   generic
-     Int : Integer;
-   package Gen
-   is
-      Max : Integer := Int;
+   package Inst is
+      Max : Integer := 30;
+
       type T is private;
 
       Null_T : constant T;
@@ -19,5 +17,4 @@ package P is
       Null_T : constant T := (Int => Max);
    end;
 
-   package Inst is new P.Gen (30);
 end;
