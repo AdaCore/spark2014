@@ -1,4 +1,4 @@
-aggregate.adb:5:28: info: division check proved (CVC4: 1 VC)
+aggregate.adb:5:28: info: division check proved (CodePeer)
 aggregate.adb:5:45: info: overflow check proved (CodePeer)
 aggregate.adb:6:18: info: initialization of "Agg" proved
 aggregate.adb:6:26: info: overflow check proved (CodePeer)
