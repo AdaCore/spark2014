@@ -5,13 +5,15 @@ p.adb:17:07: medium: assertion might fail
 p.adb:20:27: info: assertion proved (CodePeer)
 p.adb:20:69: info: overflow check proved (CodePeer)
 p.adb:22:21: warning: statement has no effect
-p.adb:23:30: info: loop invariant proved (CodePeer)
+p.adb:23:30: info: loop invariant initialization proved (CVC4: 1 VC)
+p.adb:23:30: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:24:07: warning: statement has no effect
 p.adb:27:07: warning: statement has no effect
 p.adb:30:27: info: assertion proved (CodePeer)
 p.adb:30:69: info: overflow check proved (CodePeer)
 p.adb:32:21: warning: statement has no effect
-p.adb:33:30: info: loop invariant proved (CodePeer)
+p.adb:33:30: info: loop invariant initialization proved (CVC4: 1 VC)
+p.adb:33:30: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:34:07: warning: statement has no effect
 p.adb:35:10: warning: statement has no effect
 p.adb:36:13: warning: statement has no effect
@@ -19,7 +21,8 @@ p.adb:41:27: info: assertion proved (CodePeer)
 p.adb:41:69: info: overflow check proved (CodePeer)
 p.adb:43:30: warning: statement has no effect
 p.adb:44:24: warning: statement has no effect
-p.adb:45:33: info: loop invariant proved (CodePeer)
+p.adb:45:33: info: loop invariant initialization proved (CVC4: 10 VC)
+p.adb:45:33: info: loop invariant preservation proved (CVC4: 10 VC)
 p.adb:46:10: warning: statement has no effect
 p.adb:47:13: warning: statement has no effect
 p.adb:48:16: warning: statement has no effect
