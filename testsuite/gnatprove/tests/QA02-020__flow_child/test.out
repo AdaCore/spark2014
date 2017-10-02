@@ -1,0 +1,1 @@
+p-child.adb:4:16: high: "P.State" must be listed in the Refined_Global aspect of "Flip" (SPARK RM 6.1.4(13))
