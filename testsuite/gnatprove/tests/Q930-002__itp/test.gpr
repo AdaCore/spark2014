@@ -1,0 +1,26 @@
+project Test is
+
+   for Languages use ("Ada");
+   for Main use ("demo.adb");
+
+   for Exec_Dir use ".";
+   for Object_Dir use "objs";
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use
+        ("-g",
+         "-gnatwa",
+         "-gnata",
+         "-gnato33",
+         "-fstack-check");
+   end Compiler;
+
+   package Prove is
+      for Switches use ("--level=0"); --  level 3 is required for proof
+   end Prove;
+
+end Test;
