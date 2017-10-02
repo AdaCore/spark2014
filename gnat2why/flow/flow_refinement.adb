@@ -553,7 +553,8 @@ package body Flow_Refinement is
        and then Is_Private_Descendant (S.Ent)
        and then Is_Visible (Private_Scope (Get_Flow_Scope (E)), S))
       or else
-      Is_Visible (Body_Scope (Get_Flow_Scope (E)), S));
+      (Entity_Body_In_SPARK (Scope (E))
+       and then Is_Visible (Body_Scope (Get_Flow_Scope (E)), S)));
 
    function State_Refinement_Is_Visible (EN : Entity_Name;
                                          S  : Flow_Scope)
