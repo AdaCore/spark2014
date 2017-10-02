@@ -115,8 +115,8 @@ test.adb:11:16: medium: postcondition might fail
 "limit_time" : 5 } , "obsolete" : false ,
 "proof_attempt" : {"proof_attempt" : "Done" ,
 "prover_result" : {"pr_answer" : "Valid" , "pr_model" : "" ,
-"pr_output" : "unsat/n(:rlimit-count 1877)/n" , "pr_status" : "WEXITED" ,
-"pr_steps" : 1877 , "pr_time" : 0.020000 } } ,
+"pr_output" : "unsat/n(:rlimit-count 2304)/n" , "pr_status" : "WEXITED" ,
+"pr_steps" : 2304 , "pr_time" : 0.020000 } } ,
 "update_info" : "Proof_status_change" } }>>>>
 {"node_ID" : 89 , "notification" : "Node_change" ,
 "update" : {"proved" : true ,
@@ -126,14 +126,14 @@ test.adb:11:16: medium: postcondition might fail
 "limit_time" : 5 } , "obsolete" : false ,
 "proof_attempt" : {"proof_attempt" : "Done" ,
 "prover_result" : {"pr_answer" : "Valid" , "pr_model" : "" ,
-"pr_output" : "unsat/n(:rlimit-count 1877)/n" , "pr_status" : "WEXITED" ,
-"pr_steps" : 1877 , "pr_time" : 0.020000 } } ,
+"pr_output" : "unsat/n(:rlimit-count 2304)/n" , "pr_status" : "WEXITED" ,
+"pr_steps" : 2304 , "pr_time" : 0.020000 } } ,
 "update_info" : "Proof_status_change" } }>>>>
 {"message" : {"mess_notif" : "Task_Monitor" , "monitor" : [0, 0, 0] } ,
 "notification" : "Message" }>>>>
 {"list_loc" : [] , "node_ID" : 89 , "notification" : "Task" ,
-"task" : "----------------------------- Local context ---------------------------/n/n----------------------------- Goal ---------------------------/n/ngoal WP_parameter def :/n  forall test__parity__result:int, result:int, test__parity__result1:int,/n   test__parity__result2:int, test__parity__result3:int,/n   test__parity__result4:int, test__parity__result5:int./n   forall result1:int./n    dynamic_property first last A /////n    A > 0 /////n    (((test__parity__result1 = test__parity__result2 /////n       test__parity__result3 = test__parity__result1) /////n      result = test__parity__result //// test__parity__result1 = A) /////n     mk int__ref test__parity__result4 = mk int__ref test__parity__result2 /////n     test__parity__result5 = test__parity__result3) /////n    result1 = test__parity__result4 ->/n    (exists x:int. (0 <= x //// x <= 255) //// (A = (x + x) //// A = ((x + x) + 1)))" }>>>>
+"task" : "----------------------------- Local context ---------------------------/n/n----------------------------- Goal ---------------------------/n/ngoal WP_parameter def :/n  forall test__parity__result:int, result:int, test__parity__result1:int,/n   test__parity__result2:int, test__parity__result3:int,/n   test__parity__result4:int, test__parity__result5:int./n   forall result1:int./n    dynamic_property first last A /////n    A > 0 /////n    (((test__parity__result1 = test__parity__result2 /////n       test__parity__result3 = test__parity__result1) /////n      result = test__parity__result //// test__parity__result1 = A) /////n     mk int__ref test__parity__result4 = mk int__ref test__parity__result2 /////n     test__parity__result5 = test__parity__result3) /////n    result1 = test__parity__result4 ->/n    (exists x:int. (0 <= x //// x <= 255) //// (A = (x + x) //// A = ((x + x) + 1)))/n/n" }>>>>
 {"list_loc" : [] , "node_ID" : 92 , "notification" : "Task" ,
-"task" : "----------------------------- Local context ---------------------------/n/nconstant Parity5 : int/n/nconstant result1 : int/n/nconstant Parity4 : int/n/nconstant Parity3 : int/n/nconstant Parity2 : int/n/nconstant Parity1 : int/n/nconstant Parity : int/n/nconstant result : int/n/naxiom H : dynamic_property first last A/n/naxiom H1 : A > 0/n/naxiom H2 : Parity4 = Parity3/n/naxiom H3 : Parity2 = Parity4/n/naxiom H4 : result1 = Parity5/n/naxiom H5 : Parity4 = A/n/naxiom H6 : mk int__ref Parity1 = mk int__ref Parity3/n/naxiom H7 : Parity = Parity2/n/naxiom H8 : result = Parity1/n/n----------------------------- Goal ---------------------------/n/ngoal WP_parameter def :/n  exists x:int. (0 <= x //// x <= 255) //// (A = (x + x) //// A = ((x + x) + 1))" }>>>>
-rlimit: Real time limit (20 s) exceeded
+"task" : "----------------------------- Local context ---------------------------/n/nconstant Parity5 : int/n/nconstant result1 : int/n/nconstant Parity4 : int/n/nconstant Parity3 : int/n/nconstant Parity2 : int/n/nconstant Parity1 : int/n/nconstant Parity : int/n/nconstant result : int/n/naxiom H : dynamic_property first last A/n/naxiom H1 : A > 0/n/naxiom H2 : Parity4 = Parity3/n/naxiom H3 : Parity2 = Parity4/n/naxiom H4 : result1 = Parity5/n/naxiom H5 : Parity4 = A/n/naxiom H6 : mk int__ref Parity1 = mk int__ref Parity3/n/naxiom H7 : Parity = Parity2/n/naxiom H8 : result = Parity1/n/n----------------------------- Goal ---------------------------/n/ngoal WP_parameter def :/n  exists x:int. (0 <= x //// x <= 255) //// (A = (x + x) //// A = ((x + x) + 1))/n/n" }>>>>
+rlimit: Real time limit (30 s) exceeded
 

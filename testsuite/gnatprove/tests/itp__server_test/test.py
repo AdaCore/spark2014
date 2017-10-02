@@ -7,6 +7,11 @@ are notifications written in JSON"""
 
 # This launches the itp_server
 def launch_server(limit_line="", input_file=""):
+
+    installdir = spark_install_path()
+    bindir = os.path.join(installdir, 'libexec', 'spark', 'bin')
+    Env().add_path(bindir)
+
     cmd = ["gnat_server"]
     cmd += ["--limit-line"]
     cmd += [limit_line]
@@ -14,10 +19,10 @@ def launch_server(limit_line="", input_file=""):
     # Create a pipe to give request to the process one by one. TODO check that
     # this works like this in python.
     read, write = os.pipe()
-    process = Run (cmd, cwd="gnatprove", input=read, bg=True, timeout=20)
+    process = Run (cmd, cwd="gnatprove", input=read, bg=True, timeout=30)
     with open ("test.in", "r") as in_file:
         for l in in_file:
-            time.sleep(1)
+            sleep(3)
             print(l)
             os.write(write, l)
     process.wait()
