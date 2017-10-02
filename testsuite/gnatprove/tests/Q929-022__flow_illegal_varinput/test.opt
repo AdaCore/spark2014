@@ -1,0 +1,1 @@
+ALL XFAIL missing detection of violation of SPARK RM 4.4.(2)
