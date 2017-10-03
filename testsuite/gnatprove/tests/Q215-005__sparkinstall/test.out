@@ -9,6 +9,7 @@ codepeer_be
 cvc4
 gcc
 gnat2why
+gnat_server
 gnatbind
 gnatls
 gnatwhy3
