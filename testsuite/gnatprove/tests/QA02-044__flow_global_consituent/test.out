@@ -1,0 +1,4 @@
+p.ads:8:04: info: initialization of "X" constituent of "State" proved
+p.ads:22:35: high: "P.State" must be listed in the Global aspect of "F5" (SPARK RM 6.1.4(13))
+p.ads:25:46: high: "P.State" must be listed in the Global aspect of "F7" (SPARK RM 6.1.4(13))
+p.ads:31:41: high: "P.State" must be listed in the Global aspect of "FB" (SPARK RM 6.1.4(13))
