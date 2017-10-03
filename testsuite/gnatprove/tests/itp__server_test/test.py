@@ -19,14 +19,17 @@ def launch_server(limit_line="", input_file=""):
     # Create a pipe to give request to the process one by one. TODO check that
     # this works like this in python.
     read, write = os.pipe()
-    process = Run (cmd, cwd="gnatprove", input=read, bg=True, timeout=30)
+    # Give the gnat_server time to end by itself. Thats why we send the
+    # exit request
+    process = Run (cmd, cwd="gnatprove", input=read, bg=True, timeout=400)
     with open ("test.in", "r") as in_file:
         for l in in_file:
-            sleep(3)
             print(l)
             os.write(write, l)
+            sleep(1)
     process.wait()
     s = process.out
+    s = re.sub('"pr_time" : ([0-9]*[.])?[0-9]+', '"pr_time" : Not displayed', s)
     return s
 
 prove_all(counterexample=False, prover=["cvc4"])

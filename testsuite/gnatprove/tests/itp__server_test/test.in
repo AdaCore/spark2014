@@ -1,5 +1,6 @@
 {"ide_request": "Command_req", "node_ID":89, "command" : "introduce_premises" }
-{"ide_request": "Command_req", "node_ID":89, "command" : "z3" }
 {"ide_request": "Get_first_unproven_node", "node_ID":89}
+{"ide_request": "Command_req", "node_ID":89, "command" : "z3" }
 {"ide_request": "Get_task", "node_ID":89, "do_intros": false, "loc": false}
 {"ide_request": "Get_task", "node_ID":92, "do_intros": false, "loc": false}
+{"ide_request": "Exit_req"}

@@ -1,13 +1,15 @@
 test.adb:11:16: medium: postcondition might fail
 {"ide_request": "Command_req", "node_ID":89, "command" : "introduce_premises" }
 
-{"ide_request": "Command_req", "node_ID":89, "command" : "z3" }
-
 {"ide_request": "Get_first_unproven_node", "node_ID":89}
+
+{"ide_request": "Command_req", "node_ID":89, "command" : "z3" }
 
 {"ide_request": "Get_task", "node_ID":89, "do_intros": false, "loc": false}
 
 {"ide_request": "Get_task", "node_ID":92, "do_intros": false, "loc": false}
+
+{"ide_request": "Exit_req"}
 
 {"infos" : {"commands" : ["list-transforms", "replay", "search",
 "list-provers", "print", "clean", "interrupt"] ,
@@ -78,7 +80,7 @@ test.adb:11:16: medium: postcondition might fail
 "proof_attempt" : {"proof_attempt" : "Done" ,
 "prover_result" : {"pr_answer" : "Unknown" , "pr_model" : "" ,
 "pr_output" : "" , "pr_status" : "WEXITED" , "pr_steps" : 14 ,
-"pr_time" : 0.000000 } } ,
+"pr_time" : Not displayed } } ,
 "update_info" : "Proof_status_change" } }>>>>
 {"detached" : false , "name" : "introduce_premises" , "node_ID" : 91 ,
 "node_type" : "NTransformation" , "notification" : "New_node" ,
@@ -92,6 +94,8 @@ test.adb:11:16: medium: postcondition might fail
 {"node_ID" : 92 , "notification" : "Node_change" ,
 "update" : {"proved" : false ,
 "update_info" : "Proved" } }>>>>
+{"node_ID1" : 89 , "node_ID2" : 92 ,
+"notification" : "Next_Unproven_Node_Id" }>>>>
 {"detached" : false , "name" : "Z3 4.5.1-gnatprove" , "node_ID" : 93 ,
 "node_type" : "NProofAttempt" , "notification" : "New_node" ,
 "parent_ID" : 89 }>>>>
@@ -116,7 +120,7 @@ test.adb:11:16: medium: postcondition might fail
 "proof_attempt" : {"proof_attempt" : "Done" ,
 "prover_result" : {"pr_answer" : "Valid" , "pr_model" : "" ,
 "pr_output" : "unsat/n(:rlimit-count 2304)/n" , "pr_status" : "WEXITED" ,
-"pr_steps" : 2304 , "pr_time" : 0.020000 } } ,
+"pr_steps" : 2304 , "pr_time" : Not displayed } } ,
 "update_info" : "Proof_status_change" } }>>>>
 {"node_ID" : 89 , "notification" : "Node_change" ,
 "update" : {"proved" : true ,
@@ -127,7 +131,7 @@ test.adb:11:16: medium: postcondition might fail
 "proof_attempt" : {"proof_attempt" : "Done" ,
 "prover_result" : {"pr_answer" : "Valid" , "pr_model" : "" ,
 "pr_output" : "unsat/n(:rlimit-count 2304)/n" , "pr_status" : "WEXITED" ,
-"pr_steps" : 2304 , "pr_time" : 0.020000 } } ,
+"pr_steps" : 2304 , "pr_time" : Not displayed } } ,
 "update_info" : "Proof_status_change" } }>>>>
 {"message" : {"mess_notif" : "Task_Monitor" , "monitor" : [0, 0, 0] } ,
 "notification" : "Message" }>>>>
@@ -135,5 +139,4 @@ test.adb:11:16: medium: postcondition might fail
 "task" : "----------------------------- Local context ---------------------------/n/n----------------------------- Goal ---------------------------/n/ngoal WP_parameter def :/n  forall test__parity__result:int, result:int, test__parity__result1:int,/n   test__parity__result2:int, test__parity__result3:int,/n   test__parity__result4:int, test__parity__result5:int./n   forall result1:int./n    dynamic_property first last A /////n    A > 0 /////n    (((test__parity__result1 = test__parity__result2 /////n       test__parity__result3 = test__parity__result1) /////n      result = test__parity__result //// test__parity__result1 = A) /////n     mk int__ref test__parity__result4 = mk int__ref test__parity__result2 /////n     test__parity__result5 = test__parity__result3) /////n    result1 = test__parity__result4 ->/n    (exists x:int. (0 <= x //// x <= 255) //// (A = (x + x) //// A = ((x + x) + 1)))/n/n" }>>>>
 {"list_loc" : [] , "node_ID" : 92 , "notification" : "Task" ,
 "task" : "----------------------------- Local context ---------------------------/n/nconstant Parity5 : int/n/nconstant result1 : int/n/nconstant Parity4 : int/n/nconstant Parity3 : int/n/nconstant Parity2 : int/n/nconstant Parity1 : int/n/nconstant Parity : int/n/nconstant result : int/n/naxiom H : dynamic_property first last A/n/naxiom H1 : A > 0/n/naxiom H2 : Parity4 = Parity3/n/naxiom H3 : Parity2 = Parity4/n/naxiom H4 : result1 = Parity5/n/naxiom H5 : Parity4 = A/n/naxiom H6 : mk int__ref Parity1 = mk int__ref Parity3/n/naxiom H7 : Parity = Parity2/n/naxiom H8 : result = Parity1/n/n----------------------------- Goal ---------------------------/n/ngoal WP_parameter def :/n  exists x:int. (0 <= x //// x <= 255) //// (A = (x + x) //// A = ((x + x) + 1))/n/n" }>>>>
-rlimit: Real time limit (30 s) exceeded
 
