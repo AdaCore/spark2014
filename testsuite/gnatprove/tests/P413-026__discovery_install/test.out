@@ -4,6 +4,7 @@ libexec/spark/bin/ dir
 alt-ergo
 gcc
 gnat2why
+gnat_server
 gnatbind
 gnatls
 gnatwhy3
