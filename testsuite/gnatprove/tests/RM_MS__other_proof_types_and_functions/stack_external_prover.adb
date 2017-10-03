@@ -5,10 +5,10 @@ is
    Stack_Size : constant := 100;
    type    Pointer_Range is range 0 .. Stack_Size;
    subtype Index_Range   is Pointer_Range range 1 .. Stack_Size;
-   type    Vector        is array(Index_Range) of Integer;
+   type    Vector        is array (Index_Range) of Integer;
 
    type Stack_Type is record
-      S : Vector;
+      S       : Vector;
       Pointer : Pointer_Range;
    end record;
 
@@ -17,7 +17,7 @@ is
                  Pointer => 0);
    My_Stack : Stack_Type;
 
-   procedure Push(X : in Integer)
+   procedure Push (X : in Integer)
      with Refined_Global => (In_Out => My_Stack)
    is
    begin
