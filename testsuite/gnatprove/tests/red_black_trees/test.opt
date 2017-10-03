@@ -1,3 +1,4 @@
 !large SKIP part of large testsuite
 inverse-prover SKIP too slow
+Darwin SKIP too slow
 ALL RLIMIT 5000
