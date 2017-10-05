@@ -1077,25 +1077,21 @@ package body Flow_Utility is
                    Use_Deduced_Globals => Use_Computed_Globals,
                    Ignore_Depends      => True);
 
-      --  Change variant of Globals.Proof_Ins to Normal_Use
       if not Globals.Proof_Ins.Is_Empty then
-         Globals.Proof_Ins := Change_Variant (Globals.Proof_Ins, Normal_Use);
-
          --  Create new dependency with "null => Globals.Proof_Ins" or extend
          --  the existing "null => ..." with Globals.Proof_Ins.
          declare
             Position : Dependency_Maps.Cursor;
-            Inserted : Boolean;
+            Unused   : Boolean;
 
          begin
             Depends.Insert (Key      => Null_Flow_Id,
-                            New_Item => Globals.Proof_Ins,
                             Position => Position,
-                            Inserted => Inserted);
+                            Inserted => Unused);
 
-            if not Inserted then
-               Depends (Position).Union (Globals.Proof_Ins);
-            end if;
+            --  Change variant of Globals.Proof_Ins to Normal_Use
+            Depends (Position).Union
+              (Change_Variant (Globals.Proof_Ins, Normal_Use));
          end;
       end if;
 
