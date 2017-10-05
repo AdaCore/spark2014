@@ -2571,7 +2571,7 @@ are imposed to prevent the reading of uninitialized library-level
 variables during library unit elaboration, and to prevent
 instantiation of a generic before its body has been elaborated.
 Finally, restrictions are imposed in order to ensure that the
-Initial_Condition (and Initializes aspect) of a library level package
+Initial_Condition (and Initializes aspect) of a library-level package
 can be meaningfully used.
 
 These restrictions are described in this section. Because all of these
@@ -2599,7 +2599,7 @@ global variables discussed later in this section.
 .. _tu-nt-elaboration_issues-02:
 
 2. A construct (specifically, a call to a subprogram or a read or write
-   of a variable) which occurs in elaboration code for a library level package
+   of a variable) which occurs in elaboration code for a library-level package
    is said to be *executable during elaboration*. If a subprogram call is
    executable during elaboration and the callee's body occurs in the same
    compilation_unit as the call, then any constructs occurring within that body
@@ -2887,7 +2887,7 @@ are imposed in |SPARK| which have the following consequences:
    unchanged. The Initial_Condition aspect is an assertion which is
    checked at the end of the elaboration of a package body (but occurs
    textually in the package spec; see :ref:`initial_condition_aspect`).
-   The initial condition of a library level package will remain true
+   The initial condition of a library-level package will remain true
    from this point until the invocation of the main subprogram
    (because none of the inputs used in computing the condition can
    change during this interval).  This means that a package's initial
@@ -2955,7 +2955,7 @@ are imposed in |SPARK| which have the following consequences:
    a procedure which takes an abstraction as an output) declared
    outside of the package. The output associated with a read of an
    external state with the property Effective_Reads is permitted.
-   [This rule applies to all packages: library level or not,
+   [This rule applies to all packages: library-level or not,
    instantiations or not.] The inputs and outputs of a package's
    elaboration (including the elaboration of any private descendants
    of a library unit package) shall be as described in the Initializes

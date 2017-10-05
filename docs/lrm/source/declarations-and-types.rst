@@ -150,7 +150,7 @@ Object Declarations
 ~~~~~~~~~~~~~~~~~~~
 
 The Boolean aspect Constant_After_Elaboration may be specified as part of
-the declaration of a library level variable.
+the declaration of a library-level variable.
 If the aspect is directly specified, the aspect_definition, if any,
 shall be a static [Boolean] expression. [As with most Boolean-valued
 aspects,] the aspect defaults to False if unspecified and to True if
