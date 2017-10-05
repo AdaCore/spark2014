@@ -200,7 +200,7 @@ package body Flow_Dependency_Maps is
          end case;
 
          --  Filter out generic formals without variable output
-         Remove_Constants (Inputs, Only_Generic_Formals => True);
+         Remove_Generic_In_Formals_Without_Variable_Input (Inputs);
 
          --  Assemble map
 

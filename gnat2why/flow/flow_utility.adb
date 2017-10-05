@@ -955,9 +955,10 @@ package body Flow_Utility is
                       Use_Deduced_Globals => Use_Computed_Globals,
                       Ignore_Depends      => True);
 
-         --  Remove generic formals without variable input
-         Remove_Constants (Globals.Proof_Ins, Only_Generic_Formals => True);
-         Remove_Constants (Globals.Reads,     Only_Generic_Formals => True);
+         Remove_Generic_In_Formals_Without_Variable_Input
+           (Globals.Proof_Ins);
+         Remove_Generic_In_Formals_Without_Variable_Input
+           (Globals.Reads);
 
          --  Change all variants to Normal_Use
          Globals.Proof_Ins := Change_Variant (Globals.Proof_Ins, Normal_Use);
@@ -1519,8 +1520,10 @@ package body Flow_Utility is
             --  Step 6: Remove generic formals without variable input
             ---------------------------------------------------------------
 
-            Remove_Constants (Globals.Proof_Ins, Only_Generic_Formals => True);
-            Remove_Constants (Globals.Reads,     Only_Generic_Formals => True);
+            Remove_Generic_In_Formals_Without_Variable_Input
+              (Globals.Proof_Ins);
+            Remove_Generic_In_Formals_Without_Variable_Input
+              (Globals.Reads);
          end;
 
          Debug ("proof ins", Globals.Proof_Ins);
@@ -3561,9 +3564,8 @@ package body Flow_Utility is
    ----------------------
 
    procedure Remove_Constants
-     (Objects              : in out Flow_Id_Sets.Set;
-      Skip                 :        Node_Sets.Set := Node_Sets.Empty_Set;
-      Only_Generic_Formals :        Boolean       := False)
+     (Objects : in out Flow_Id_Sets.Set;
+      Skip    :        Node_Sets.Set := Node_Sets.Empty_Set)
    is
       Constants : Flow_Id_Sets.Set;
       --  ??? list would be more efficient here, since we only Insert and
@@ -3580,16 +3582,13 @@ package body Flow_Utility is
                   if Ekind (E) = E_Constant
                     and then not Skip.Contains (E)
                     and then not Has_Variable_Input (E)
-                    and then (In_Generic_Actual (E)
-                              or else not Only_Generic_Formals)
                   then
                      Constants.Insert (F);
                   end if;
                end;
 
             when Magic_String =>
-               pragma Assert (not Only_Generic_Formals);
-               --  Filtering magic strings for generic formals is meaningless
+               null;
 
             when Synthetic_Null_Export =>
                null;
@@ -3601,6 +3600,33 @@ package body Flow_Utility is
 
       Objects.Difference (Constants);
    end Remove_Constants;
+
+   ------------------------------------------------------
+   -- Remove_Generic_In_Formals_Without_Variable_Input --
+   ------------------------------------------------------
+
+   procedure Remove_Generic_In_Formals_Without_Variable_Input
+     (Objects : in out Flow_Id_Sets.Set)
+   is
+      To_Be_Removed : Flow_Id_Sets.Set;
+   begin
+      for Obj of Objects loop
+         if Obj.Kind in Direct_Mapping | Record_Field then
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (Obj);
+            begin
+               if Ekind (E) = E_Constant
+                 and then In_Generic_Actual (E)
+                 and then not Has_Variable_Input (E)
+               then
+                  To_Be_Removed.Insert (Obj);
+               end if;
+            end;
+         end if;
+      end loop;
+
+      Objects.Difference (To_Be_Removed);
+   end Remove_Generic_In_Formals_Without_Variable_Input;
 
    --------------------
    -- Same_Component --

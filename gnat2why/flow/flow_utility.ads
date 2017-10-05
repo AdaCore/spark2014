@@ -69,15 +69,22 @@ is
    --  Compute a suitable hash for the given record component
 
    procedure Remove_Constants
-     (Objects              : in out Flow_Id_Sets.Set;
-      Skip                 :        Node_Sets.Set := Node_Sets.Empty_Set;
-      Only_Generic_Formals :        Boolean       := False);
+     (Objects : in out Flow_Id_Sets.Set;
+      Skip    :        Node_Sets.Set := Node_Sets.Empty_Set);
    --  Remove from Objects all constants (without variable input) that are not
    --  contained in Skip.
    --  @param Objects are the initial flow ids
    --  @param Skip are the nodes based on which filtering will occur
-   --  @param Only_Generic_Formals is True when we only want to remove generic
-   --    formals without variable input
+
+   procedure Remove_Generic_In_Formals_Without_Variable_Input
+     (Objects : in out Flow_Id_Sets.Set);
+   --  Remove generic IN formals without variable input from Objects; for SPARK
+   --  RM 6.1.4(18):
+   --
+   --    "If a global_item denotes a generic formal object of mode in, then the
+   --     corresponding global_item in an instance of the generic unit may
+   --     denote a constant which has no variable inputs. [...] Outside of the
+   --     instance, such a global_item is ignored."
 
    function Same_Component (C1, C2 : Entity_Id) return Boolean
    with Pre => Is_Initialized and then
