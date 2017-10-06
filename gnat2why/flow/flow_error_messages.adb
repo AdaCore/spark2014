@@ -259,7 +259,7 @@ package body Flow_Error_Messages is
       Tracefile    : String        := "";
       Continuation : Boolean := False)
    is
-      Msg2    : constant String :=
+      Msg2 : constant String :=
         Msg & (if SRM_Ref'Length > 0
                then " (SPARK RM " & SRM_Ref & ")"
                else "");
