@@ -107,7 +107,7 @@ package body Gnat2Why.Assumptions is
 
    function Entity_To_Subp (E : Entity_Id) return Subp_Type is
    begin
-      return Mk_Subp (Name => Subprogram_Full_Source_Name (E),
+      return Mk_Subp (Name => Full_Source_Name (E),
                       Sloc => Loc_To_Assume_Sloc (Sloc (E)));
    end Entity_To_Subp;
 

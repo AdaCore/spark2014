@@ -885,49 +885,15 @@ package body SPARK_Util is
    ----------------------
 
    function Full_Source_Name (E : Entity_Id) return String is
-
-      function Get_Scoped_Name (E : Entity_Id) return String;
-      --  Return the name of E prefixed by all the names of the scopes to which
-      --  E belongs, except for Standard.
-
-      ---------------------
-      -- Get_Scoped_Name --
-      ---------------------
-
-      function Get_Scoped_Name (E : Entity_Id) return String is
-         Name : constant String := Source_Name (E);
-      begin
-         if Has_Fully_Qualified_Name (E)
-           or else Scope (E) = Standard_Standard
-         then
-            return Name;
-         else
-            return Get_Scoped_Name (Scope (E)) & "." & Name;
-         end if;
-      end Get_Scoped_Name;
-
-   --  Start of processing for Full_Source_Name
+      Name : constant String := Source_Name (E);
 
    begin
-      if E = Standard_Standard then
-         return Get_Name_String (Name_Standard);
-
-      elsif Scope (E) = Standard_Standard
-        and then Ekind (E) not in E_Package | Subprogram_Kind
+      if Has_Fully_Qualified_Name (E)
+        or else Scope (E) = Standard_Standard
       then
-         return Get_Name_String (Name_Standard) & "." &
-           Get_Name_String (Chars (E));
-
-      elsif Ekind (E) = E_Enumeration_Literal then
-         return Unique_Name (Etype (E)) & "." & Get_Name_String (Chars (E));
-
+         return Name;
       else
-         --  Names of E_Subprogram_Body or E_Package_Body entities are not
-         --  reliable, as they may not include the overloading suffix. Instead,
-         --  get the name of the corresponding Unique_Entity. This is only
-         --  needed here, because Scope always returns the unique entity.
-
-         return Get_Scoped_Name (Unique_Entity (E));
+         return Full_Source_Name (Scope (E)) & "." & Name;
       end if;
    end Full_Source_Name;
 

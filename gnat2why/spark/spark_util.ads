@@ -195,12 +195,18 @@ package SPARK_Util is
    --     not correspond to unique name in GNAT AST.
 
    function Full_Source_Name (E : Entity_Id) return String
-     with Pre => Present (E) and then Nkind (E) in N_Has_Chars;
-   --  Intented for use in debug output only
+    with Pre => Present (E) and then Sloc (E) /= No_Location;
+   --  For an entity E, return its scoped name, e.g. for a subprogram
+   --  nested in
    --
-   --  @param E any entity
-   --  @return The qualified name of E as it appears in the source code, i.e.
-   --          with "." as the scope separator.
+   --    package body P is
+   --       procedure Lib_Level is
+   --          procedure Nested is
+   --          ...
+   --  return P.Lib_Level.Nested. Casing of names is taken as it appears in the
+   --  source.
+   --  @param E an entity
+   --  @return the fully scoped name of E as it appears in the source
 
    function Is_Declared_In_Unit
      (E     : Entity_Id;

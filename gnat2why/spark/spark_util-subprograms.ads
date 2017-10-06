@@ -396,20 +396,6 @@ package SPARK_Util.Subprograms is
    --  restrictive than Ada RM (which allows pretty much every subprogram to
    --  be main). See Ada 95 Quality and Style Guide, 7.1.4 for details.
 
-   function Subprogram_Full_Source_Name (E : Entity_Id) return String
-   with Pre => Present (E) and then Sloc (E) /= No_Location;
-   --  For a subprogram entity, return its scoped name, e.g. for subprogram
-   --  Nested in
-   --
-   --    package body P is
-   --       procedure Lib_Level is
-   --          procedure Nested is
-   --          ...
-   --  return P.Lib_Level.Nested. Casing of names is taken as it appears in the
-   --  source.
-   --  @param E subprogram
-   --  @return the fully scoped name of E as it appears in the source
-
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Function  |
                             E_Procedure |
