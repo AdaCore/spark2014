@@ -4422,12 +4422,12 @@ package body Flow.Analysis is
       function Msg_Attach_Node
         (Task_Name   : Entity_Name;
          Object_Name : Entity_Name)
-         return Node_Id;
-      --  Returns a node for attaching the error message. It is preferably the
-      --  entity designated by Task_Name. However, if it is declared in a body
-      --  of a with-ed package then we have no Node_Id for that; then we try
-      --  with the Object_Name; then the best we can get is the root node of
-      --  the current compilation unit.
+         return Entity_Id;
+      --  Returns an entity for attaching the error message. It is preferably
+      --  the entity designated by Task_Name. However, if it is declared in a
+      --  body of a with-ed package then we have no Entity_Id for that; then we
+      --  try with the Object_Name; then the best we can get is the root entity
+      --  of the current compilation unit.
 
       procedure Check_Ownership (Owning_Kind : Simple_Owning_Kind);
       --  Check ownership of a kind Owning_Kind of the Object by a
@@ -4458,16 +4458,16 @@ package body Flow.Analysis is
       function Msg_Attach_Node
         (Task_Name   : Entity_Name;
          Object_Name : Entity_Name)
-         return Node_Id
+         return Entity_Id
       is
-         Task_Node : constant Node_Id := Find_Entity (Task_Name);
+         Task_Node : constant Entity_Id := Find_Entity (Task_Name);
 
       begin
          if Present (Task_Node) then
             return Task_Node;
          else
             declare
-               Object_Node : constant Node_Id := Find_Entity (Object_Name);
+               Object_Node : constant Entity_Id := Find_Entity (Object_Name);
             begin
                if Present (Object_Node) then
                   return Object_Node;
@@ -4700,7 +4700,7 @@ package body Flow.Analysis is
                                    Msg_Owner  : String;
                                    SRM_Ref    : String)
       is
-         Msg_Node : constant Node_Id :=
+         Msg_Node : constant Entity_Id :=
            Msg_Attach_Node (Task_Name   => Owners.First_Element.Name,
                             Object_Name => Object);
 
