@@ -744,7 +744,7 @@ package body SPARK_Util is
    --------------------
 
    function Enclosing_Unit (E : Entity_Id) return Entity_Id is
-      S : Entity_Id := Unique_Entity (Scope (E));
+      S : Entity_Id := Scope (E);
       --  Start with unique entity to avoid bodies
 
    begin

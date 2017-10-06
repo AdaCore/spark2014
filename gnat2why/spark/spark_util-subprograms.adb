@@ -1215,7 +1215,7 @@ package body SPARK_Util.Subprograms is
       then
          return Name;
       else
-         return Subprogram_Full_Source_Name (Unique_Entity (Scope (E))) &
+         return Subprogram_Full_Source_Name (Scope (E)) &
            "." & Name;
       end if;
    end Subprogram_Full_Source_Name;
