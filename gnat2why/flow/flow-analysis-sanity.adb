@@ -1031,8 +1031,14 @@ package body Flow.Analysis.Sanity is
                when N_Object_Declaration =>
                   --  N is an object declared immediately within the private
                   --  part and we detect if is a constant with variable input.
+                  declare
+                     E : constant Entity_Id := Defining_Entity (N);
 
-                  Detect_Constant_With_Variable_Input (Defining_Entity (N));
+                  begin
+                     if not Is_Internal (E) then
+                        Detect_Constant_With_Variable_Input (E);
+                     end if;
+                  end;
 
                when N_Package_Declaration =>
                   --  N is a package declared immediately within the private

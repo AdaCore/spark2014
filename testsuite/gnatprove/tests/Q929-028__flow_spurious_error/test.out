@@ -1,2 +1,4 @@
-p.ads:22:38: indicator Part_Of is required in this context: constant with variable input "R2s" is declared in the private part of package "Inst" (SPARK RM 7.2.6(2))
-gnatprove: error during flow analysis and proof
+p.ads:18:33: info: initialization of "Max" proved
+p.ads:20:26: info: range check proved (CVC4: 1 VC)
+p.ads:22:30: info: discriminant check proved (CVC4: 1 VC)
+p.ads:22:38: info: initialization of "Max" proved

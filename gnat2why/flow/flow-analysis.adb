@@ -3209,6 +3209,7 @@ package body Flow.Analysis is
             while Present (Hidden_State) loop
                if Is_Object (Hidden_State)
                  and then Is_Variable (Direct_Mapping_Id (Hidden_State))
+                 and then not Is_Internal (Hidden_State)
                then
                   Error_Msg_Flow
                     (FA       => FA,
@@ -3265,6 +3266,7 @@ package body Flow.Analysis is
                if Is_Constant_Object (Hidden_State)
                  and then Has_Variable_Input (Hidden_State)
                  and then not All_Constituents.Contains (F)
+                 and then not Is_Internal (Hidden_State)
                then
                   Error_Msg_Flow
                     (FA       => FA,
