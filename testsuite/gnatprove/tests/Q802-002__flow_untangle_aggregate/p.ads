@@ -5,16 +5,13 @@ package P is
    end record;
 
    package Inst is
-      Max : Integer := 30;
 
       type T is private;
 
-      Null_T : constant T;
-
    private
-      type T is new Typ (Max);
+      type T is new Typ (30);
 
-      Null_T : constant T := (Int => Max);
+      Null_T : constant T := (Int => 30);
    end;
 
 end;
