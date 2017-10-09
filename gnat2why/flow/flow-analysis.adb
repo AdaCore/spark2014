@@ -1310,7 +1310,8 @@ package body Flow.Analysis is
    is
       procedure Check_If_From_Another_Non_Elaborated_CU
         (F : Flow_Id;
-         V : Flow_Graphs.Vertex_Id);
+         V : Flow_Graphs.Vertex_Id)
+      with Pre => F.Variant = Initial_Value;
       --  If F is used but is not declared in the compilation unit enclosing
       --  the currently analyzed entity AND the other compilation unit does not
       --  have an Elaborate[_All] then emit an error.
@@ -1324,9 +1325,11 @@ package body Flow.Analysis is
          V : Flow_Graphs.Vertex_Id)
       is
 
-         N     : constant Node_Id := (if F.Kind = Direct_Mapping
-                                      then Get_Direct_Mapping_Id (F)
-                                      else Empty);
+         E : constant Entity_Id := (if F.Kind = Direct_Mapping
+                                    then Get_Direct_Mapping_Id (F)
+                                    else Empty);
+
+         pragma Assert (if Present (E) then Ekind (E) = E_Abstract_State);
 
          V_Use : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
 
@@ -1345,7 +1348,7 @@ package body Flow.Analysis is
             begin
                if Key.Variant /= Final_Value
                  or else
-                   Change_Variant (Entire_Variable (Key), Normal_Use) /= F
+                   Change_Variant (Key, Initial_Value) /= F
                then
                   V_Use := Neighbour;
                   V_Error_Location := FA.Atr (Neighbour).Error_Location;
@@ -1354,16 +1357,16 @@ package body Flow.Analysis is
             end;
          end loop;
 
-         if Present (N)
+         if Present (E)
            and then V_Use /= Flow_Graphs.Null_Vertex
-           and then Is_Compilation_Unit (Scope (N))
-           and then Scope (N) not in FA.Analyzed_Entity | FA.Spec_Entity
+           and then Is_Compilation_Unit (Scope (E))
+           and then Scope (E) not in FA.Analyzed_Entity | FA.Spec_Entity
          then
             declare
                Current_Unit : constant Node_Id :=
                  Enclosing_Comp_Unit_Node (FA.Spec_Entity);
                Other_Unit   : constant Node_Id :=
-                 Enclosing_Comp_Unit_Node (Scope (N));
+                 Enclosing_Comp_Unit_Node (Scope (E));
 
                Found        : Boolean := False;
                --  Found will become True if we find a pragma Elaborate[_All]
@@ -1417,7 +1420,7 @@ package body Flow.Analysis is
                      N        => V_Error_Location,
                      F1       => F,
                      F2       => Direct_Mapping_Id (FA.Spec_Entity),
-                     F3       => Direct_Mapping_Id (Scope (N)),
+                     F3       => Direct_Mapping_Id (Scope (E)),
                      Severity => Medium_Check_Kind,
                      Tag      => Pragma_Elaborate_All_Needed);
                end if;
@@ -1436,19 +1439,12 @@ package body Flow.Analysis is
 
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            Key : Flow_Id renames FA.PDG.Get_Key (V);
-            F   : Flow_Id;
+            F : Flow_Id renames FA.PDG.Get_Key (V);
          begin
-            if Key.Variant = Initial_Value
-              and then Key.Kind /= Synthetic_Null_Export
+            if F.Variant = Initial_Value
+              and then Is_Abstract_State (F)
             then
-
-               --  Note the Flow_Id of the entire variable
-               F := Change_Variant (Entire_Variable (Key), Normal_Use);
-
-               if Is_Abstract_State (F) then
-                  Check_If_From_Another_Non_Elaborated_CU (F, V);
-               end if;
+               Check_If_From_Another_Non_Elaborated_CU (F, V);
             end if;
          end;
       end loop;
