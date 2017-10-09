@@ -7,7 +7,7 @@ package body Intra_Unit_Elaboration_Order_Examples is
    procedure P (I : in out Integer) is
    begin
       if I > 10 then
-         Q (I);  --  Q is still in the eartly call region and so this call is
+         Q (I);  --  Q is still in the early call region and so this call is
                  --  allowed
       end if;
    end P;
