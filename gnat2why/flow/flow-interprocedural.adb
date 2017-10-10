@@ -276,14 +276,21 @@ package body Flow.Interprocedural is
                end case;
             end loop;
 
-            if Ekind (Scope (Called_Thing)) = E_Protected_Type
-              and then Is_External_Call (N)
-            then
+            if Ekind (Scope (Called_Thing)) = E_Protected_Type then
                declare
                   Implicit : constant Entity_Id :=
-                    Get_Enclosing_Object (Prefix (Name (N)));
+                    (if Is_External_Call (N)
+                     then Get_Enclosing_Object (Prefix (Name (N)))
+                     else Scope (Called_Thing));
+                  --  If this is an external call then the implicit parameter
+                  --  is the the protected object. If this is an internal call
+                  --  we don't have a protected object but only the protected
+                  --  type itself and therefore this will be the implicit
+                  --  parameter.
 
-                  pragma Assert (Ekind (Implicit) = E_Variable);
+                  pragma Assert (Ekind (Implicit) = (if Is_External_Call (N)
+                                                     then E_Variable
+                                                     else E_Protected_Type));
 
                begin
                   The_In  := Direct_Mapping_Id (Implicit, In_View);
@@ -295,7 +302,8 @@ package body Flow.Interprocedural is
                   --  subprogram of the same object. External calls will be
                   --  rejected by the flow analysis later, but now we must
                   --  conservatively Include and not Insert the protected
-                  --  object.
+                  --  object. If the current implicit parameter is the
+                  --  protected type we still include it.
                   Globals.Reads.Include (The_In);
                   if Ekind (Called_Thing) /= E_Function then
                      Globals.Writes.Include (The_Out);

@@ -1103,6 +1103,7 @@ package body Flow_Utility is
 
       if Present (Callsite)
         and then Ekind (Sinfo.Scope (Subprogram)) = E_Protected_Type
+        and then Is_External_Call (Callsite)
       then
          declare
             The_PO : constant Entity_Id :=

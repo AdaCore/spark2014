@@ -1,0 +1,3 @@
+p.adb:5:17: medium: overflow check might fail
+p.ads:4:37: info: initialization of "Y" proved
+p.ads:7:37: info: initialization of "Y" proved
