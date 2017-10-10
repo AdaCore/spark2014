@@ -172,6 +172,7 @@ package Flow_Generated_Globals is
       Name                  : Entity_Name;
       Local                 : Boolean;
       Kind                  : Entity_Kind;
+      Is_Protected          : Boolean;
       Origin                : Globals_Origin_T;
 
       Globals               : Flow_Names;

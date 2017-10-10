@@ -2677,6 +2677,9 @@ package body Flow_Generated_Globals.Partial is
            ((Name                  => To_Entity_Name (E),
              Local                 => not Is_Visible_From_Other_Units (E),
              Kind                  => Ekind (E),
+             Is_Protected          => Ekind (E) in E_Function | E_Procedure
+                                        and then Ekind (Scope (E)) =
+                                                 E_Protected_Type,
              Origin                => Origin_Flow,      --  ??? dummy
              Globals               =>
                (Proper  =>

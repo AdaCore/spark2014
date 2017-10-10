@@ -92,9 +92,6 @@ package SPARK_Frame_Conditions is
    --  ??? This procedure only initializes maps and doesn't propagate anything;
    --  the name comes from the the previous design of the generated globals.
 
-   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean;
-   --  Return True if E_Name refers to entry or protected subprogram
-
    --  -----------------------------------------
    --  Mapping between Entities and Entity_Names
    --  -----------------------------------------

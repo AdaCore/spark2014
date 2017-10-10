@@ -27,7 +27,6 @@ with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                    use Ada.Text_IO;
 with Get_SPARK_Xrefs;
-with Lib.Xref;                       use Lib.Xref;
 with Namet;                          use Namet;
 with Osint;                          use Osint;
 with Sem_Aux;                        use Sem_Aux;
@@ -65,10 +64,6 @@ package body SPARK_Frame_Conditions is
    Reads        : Name_Graphs.Map;  --  Entities read in each scope
    Callers      : Name_Graphs.Map;  --  Callers for each subprogram
    Calls        : Name_Graphs.Map;  --  Subprograms called in each subprogram
-
-   Protected_Operations : Name_Sets.Set;
-   --  All protected operations, i.e. entries, protected functions and
-   --  protected procedures.
 
    -----------------------
    -- Local Subprograms --
@@ -303,13 +298,6 @@ package body SPARK_Frame_Conditions is
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean is
      (To_String (Ent) = SPARK_Xrefs.Name_Of_Heap_Variable);
 
-   ----------------------------
-   -- Is_Protected_Operation --
-   ----------------------------
-
-   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean
-     renames Protected_Operations.Contains;
-
    ----------------------
    -- Load_SPARK_Xrefs --
    ----------------------
@@ -502,10 +490,6 @@ package body SPARK_Frame_Conditions is
                      Scope_Specs.Insert (Sco,
                        Scope_Name'(File_Num  => Srec.Spec_File_Num,
                                    Scope_Num => Srec.Spec_Scope_Num));
-                  end if;
-
-                  if Srec.Stype = Xref_Entity_Letters (E_Entry) then
-                     Protected_Operations.Include (Ent);
                   end if;
                end;
             end loop;

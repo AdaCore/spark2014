@@ -306,6 +306,9 @@ package body Flow_Generated_Globals.Phase_2 is
    --  terribly painful, because they operate on containers with different
    --  items. Here it is intentionally undocumented; see phase 1 for comments.
 
+   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean;
+   --  Return True if E_Name refers to an entry or protected subprogram
+
    function Scope (EN : Entity_Name) return Entity_Name;
    --  Equivalent of Sinfo.Scope for entity names
 
@@ -2981,6 +2984,28 @@ package body Flow_Generated_Globals.Phase_2 is
          Outdent;
       end loop;
    end Print_Tasking_Info_Bag;
+
+   ----------------------------
+   -- Is_Protected_Operation --
+   ----------------------------
+
+   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean is
+      C : constant Phase_1_Info_Maps.Cursor := Phase_1_Info.Find (E_Name);
+   begin
+      if Phase_1_Info_Maps.Has_Element (C) then
+         declare
+            Info : Partial_Contract renames Phase_1_Info (C);
+         begin
+            return
+              (case Info.Kind is
+                  when Entry_Kind               => True,
+                  when E_Function | E_Procedure => Info.Is_Protected,
+                  when others                   => False);
+         end;
+      else
+         return False;
+      end if;
+   end Is_Protected_Operation;
 
    ----------------------
    -- Categorize_Calls --
