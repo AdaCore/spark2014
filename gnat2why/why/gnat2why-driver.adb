@@ -488,11 +488,20 @@ package body Gnat2Why.Driver is
 
       else
 
-         --  Compute basic globals
-         if Gnat2Why_Args.Flow_Generate_Contracts then
-            Compute_Global_Effects;
-            Timing_Phase_Completed (Timing, "globals (basic)");
-         end if;
+         --  ??? we don't really need frontend globals in phase 2, but
+         --  Compute_Global_Effects populates a table with ALI files and that
+         --  table is used in GG_Read (which needs to be called even if
+         --  --no-global-generation switch is used to get non-global effects,
+         --  like potentially blocking and termination statuses).
+         --
+         --  This functionality should be moved out of Compute_Global_Effects
+         --
+         --  Also, we use frontend globals for
+         --  SPARK_Frame_Conditions.Is_Protected_Operation
+         --
+         --  Also this functionality should be moved (to generated globals)
+         Compute_Global_Effects;
+         Timing_Phase_Completed (Timing, "globals (basic)");
 
          --  Read the generated globals from the ALI files
          GG_Read (GNAT_Root);
