@@ -292,13 +292,6 @@ package body Gnat2Why.Driver is
          Propagate_Through_Call_Graph;
       else
          Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => True);
-
-         --  Load SPARK cross-reference information from ALIs for all
-         --  dependent units.
-
-         for Index in ALIs.First .. ALIs.Last loop
-            Load_SPARK_Xrefs (Index);
-         end loop;
       end if;
 
    end Compute_Global_Effects;
