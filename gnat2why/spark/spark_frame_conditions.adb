@@ -26,9 +26,6 @@
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                    use Ada.Text_IO;
-with Get_SPARK_Xrefs;
-with Namet;                          use Namet;
-with Osint;                          use Osint;
 with Sem_Aux;                        use Sem_Aux;
 with Snames;                         use Snames;
 with SPARK_Xrefs;                    use SPARK_Xrefs;
@@ -71,8 +68,6 @@ package body SPARK_Frame_Conditions is
 
    procedure Add_To_Map (Map : in out Name_Graphs.Map; From, To : Entity_Name);
    --  Add the relation From -> To in map Map
-
-   procedure Load_SPARK_Xrefs (ALI_Filename : String);
 
    function Make_Entity_Name (Name : String_Ptr) return Entity_Name
    with Pre => Name /= null and then Name.all /= "";
@@ -302,106 +297,8 @@ package body SPARK_Frame_Conditions is
    -- Load_SPARK_Xrefs --
    ----------------------
 
-   procedure Load_SPARK_Xrefs (ALI_File : ALI_Id) is
-      ALI_File_Name : constant File_Name_Type :=
-        ALIs.Table (ALI_File).Afile;
-      ALI_File_Name_Str : constant String :=
-        Get_Name_String (Full_Lib_File_Name (ALI_File_Name));
+   procedure Load_SPARK_Xrefs is
    begin
-      Load_SPARK_Xrefs (ALI_File_Name_Str);
-   end Load_SPARK_Xrefs;
-
-   procedure Load_SPARK_Xrefs (ALI_Filename : String)
-   is
-      ALI_File : Ada.Text_IO.File_Type;
-      Line     : String (1 .. 1024);
-      Last     : Natural;
-      Index    : Natural;
-
-      function Getc return Character;
-      --  Consume and return next character from Line.
-      --  Load next line if at end of line. Return ^Z if at end of file.
-
-      function Nextc return Character;
-      --  Peek at next character in Line. Return ^Z if at end of file.
-
-      procedure Skipc;
-      --  Skip one character in Line
-
-      ----------
-      -- Getc --
-      ----------
-
-      function Getc return Character is
-         Next_Char : constant Character := Nextc;
-      begin
-         Index := Index + 1;
-         if Index > Last + 1 and then not End_Of_File (ALI_File) then
-            Get_Line (ALI_File, Line, Last);
-            Index := 1;
-         end if;
-         return Next_Char;
-      end Getc;
-
-      -----------
-      -- Nextc --
-      -----------
-
-      function Nextc return Character is
-      begin
-         if Index = Last + 1 then
-            return ASCII.LF;
-
-         elsif Index in Line'First .. Last then
-            return Line (Index);
-
-         else
-            return ASCII.SUB;
-         end if;
-      end Nextc;
-
-      -----------
-      -- Skipc --
-      -----------
-
-      procedure Skipc is
-         C : Character;
-         pragma Unreferenced (C);
-      begin
-         C := Getc;
-      end Skipc;
-
-      procedure Get_SPARK_From_ALI is new Get_SPARK_Xrefs;
-
-   --  Start of processing for Load_SPARK_Xrefs
-
-   begin
-      Open (ALI_File, In_File, ALI_Filename);
-
-      --  Skip lines until one that starts with 'F'
-      Skip_Non_SPARK_Lines : loop
-         if End_Of_File (ALI_File) then
-            --  No SPARK cross-reference information in this ALI
-
-            Close (ALI_File);
-            return;
-         end if;
-
-         Get_Line (ALI_File, Line, Last);
-         case Line (1) is
-            when 'F' =>
-               exit Skip_Non_SPARK_Lines;
-
-            when others =>
-               null;
-         end case;
-      end loop Skip_Non_SPARK_Lines;
-
-      Index := 1;
-
-      Get_SPARK_From_ALI;
-      Close (ALI_File);
-
       --  Walk low-level SPARK tables for this unit and populate high-level
       --  maps.
 

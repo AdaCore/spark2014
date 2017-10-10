@@ -31,7 +31,6 @@
 --  Internally, entities are represented as integers, to avoid costly repeated
 --  hashing of strings in computations over sets/maps of entities.
 
-with ALI;               use ALI;
 with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
@@ -64,8 +63,8 @@ package SPARK_Frame_Conditions is
                           | E_Task_Type;
    --  Get the variables written by subprogram E
 
-   procedure Load_SPARK_Xrefs (ALI_File : ALI_Id);
-   --  Extract xref information from an ALI file
+   procedure Load_SPARK_Xrefs;
+   --  Extract xref information from low-level data structures
 
    procedure Collect_Direct_Computed_Globals
      (E       :     Entity_Id;

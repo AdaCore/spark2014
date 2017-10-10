@@ -2,9 +2,3 @@ p.adb:28:14: medium: overflow check might fail
 p.adb:33:14: medium: overflow check might fail
 p.ads:3:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 p.ads:3:09: info: nontermination of task proved (CVC4: 1 VC)
-F 5*14 p__po 2|.2:4r33 7r7
-F 14*14 p__a 2|.3:13s19 .7:33s19 .8:38s7
-F 15*14 p__b 2|.8:38s10
-F 6*13 p__poT__dummy 2|.2:7s10
-F 3*14 p__wrapper .3:13s10 .8:38s13
-F 24*4 p__x .6:28m7 28r12 .7:33m7 33r12

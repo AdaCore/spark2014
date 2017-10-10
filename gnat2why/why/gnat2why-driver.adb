@@ -95,12 +95,9 @@ package body Gnat2Why.Driver is
    -- Local Subprograms --
    -----------------------
 
-   procedure Compute_Global_Effects (Current_Unit_Only : Boolean := False);
-   --  Make the computed global effects information available for all
-   --  subprograms.
-   --
-   --  If Current_Unit_Only is set then we do not pull in the ALIs of
-   --  dependent units.
+   procedure Compute_Global_Effects;
+   --  Pre-scan ALI files, so they can be easily iterated
+   --  ??? the current name comes from historic design
 
    procedure Complete_Declaration (E : Entity_Id);
    --  Generate completion for every subprogram or type entity in List_Entities
@@ -240,20 +237,17 @@ package body Gnat2Why.Driver is
    -- Compute_Global_Effects --
    ----------------------------
 
-   procedure Compute_Global_Effects (Current_Unit_Only : Boolean := False) is
+   procedure Compute_Global_Effects is
       Main_Lib_File : File_Name_Type;
       Text          : Text_Buffer_Ptr;
       Main_Lib_Id   : ALI_Id;
 
    begin
-
-      --  Compute the frame condition. This starts with identifying ALI files
-      --  for the current unit and all dependent (with'ed) units. Then SPARK
-      --  cross-reference information is loaded from all these files. Finally
-      --  the local SPARK cross-reference information is propagated to get
-      --  the frame condition. Note that the failure to read an ALI file is
-      --  ignored, as it can only correspond to the ALI file of an externally
-      --  built unit, for which we use the declared Global contracts.
+      --  Identify ALI files for the current unit and all dependent (with'ed)
+      --  units. Then the "generated globals" information is loaded from all
+      --  these files. Note that the failure to read an ALI file is ignored, as
+      --  it can only correspond to the ALI file of an externally built unit,
+      --  for which we use the declared Global contracts.
 
       Binderr.Initialize_Binderr;
       Initialize_ALI;
@@ -281,19 +275,7 @@ package body Gnat2Why.Driver is
          Directly_Scanned => True);
       Free (Text);
 
-      --  If Current_Unit_Only is set then we do NOT load the with'ed
-      --  ALI files.
-      if Current_Unit_Only then
-         Load_SPARK_Xrefs (Main_Lib_Id);
-
-         --  Compute the frame condition from raw SPARK cross-reference
-         --  information.
-
-         Propagate_Through_Call_Graph;
-      else
-         Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => True);
-      end if;
-
+      Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => True);
    end Compute_Global_Effects;
 
    ---------------------
@@ -473,7 +455,12 @@ package body Gnat2Why.Driver is
 
          --  Compute basic globals. These will be used for subprograms
          --  that are NOT in SPARK.
-         Compute_Global_Effects (Current_Unit_Only => True);
+         --  ??? those two calls is a minimal interface to the remains of the
+         --  "frontend globals"; they names are no longer adequate.
+
+         Load_SPARK_Xrefs;
+         Propagate_Through_Call_Graph;
+
          Timing_Phase_Completed (Timing, "globals (frontend)");
 
          Generate_Globals (GNAT_Root);
