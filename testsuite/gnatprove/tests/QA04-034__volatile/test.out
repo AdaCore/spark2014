@@ -1,0 +1,857 @@
+hw-dbc-transfer_rings.adb:119:13: info: initialization of "Toggle" proved
+hw-dbc-transfer_rings.adb:120:38: info: initialization of "Toggle" proved
+hw-dbc-transfer_rings.adb:121:13: info: initialization of "Toggle" proved
+hw-dbc-transfer_rings.adb:124:20: info: initialization of "Toggle" proved
+hw-dbc-transfer_rings.adb:128:31: info: initialization of "Toggle" proved
+hw-dbc-transfer_rings.adb:182:36: info: division check proved (CVC4: 1 VC)
+hw-dbc-transfer_rings.adb:185:39: info: division check proved (CVC4: 1 VC)
+hw-dbc-transfer_rings.adb:185:39: info: range check proved (CVC4: 2 VC)
+hw-dbc-transfer_rings.adb:189:16: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:193:16: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:196:21: info: initialization of "Invalid" proved
+hw-dbc-transfer_rings.adb:196:32: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:202:14: info: initialization of "Invalid" proved
+hw-dbc-transfer_rings.adb:203:41: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:219:50: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:254:31: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:255:39: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:256:36: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:258:34: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:259:33: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:260:33: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:275:07: info: precondition proved (CVC4: 3 VC)
+hw-dbc-transfer_rings.ads:17:24: warning: no procedure exists that can initialize abstract state "Transfer_Rings.State" constituent of "DbC.State"
+hw-dbc-transfer_rings.ads:55:19: info: division check proved (CVC4: 1 VC)
+hw-dbc-transfer_rings.ads:56:50: info: division check proved (CVC4: 1 VC)
+hw-dbc-transfer_rings.ads:66:19: info: division check proved (CVC4: 1 VC)
+hw-dbc-transfer_rings.ads:67:45: info: division check proved (CVC4: 1 VC)
+hw-mmio_range.ads:30:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:106
+hw-mmio_range.ads:34:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-dbc.ads:106
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:20:22: info: initialization of "Value" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:25:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:25:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:25:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:25:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:25:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:25:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:25:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:25:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:25:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:120 (e.g. when Byte_Offset = 2147483632 and Idx = XHCI_Extended_Caps)
+hw-mmio_regs.adb:25:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:133 (e.g. when Byte_Offset = 2147483644 and Idx = HC_Halted)
+hw-mmio_regs.adb:25:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:228 (e.g. when Byte_Offset = 2147483644 and Idx = Doorbell_Target)
+hw-mmio_regs.adb:25:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:120 (e.g. when Byte_Offset = 2147483632 and Idx = XHCI_Extended_Caps)
+hw-mmio_regs.adb:25:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:133 (e.g. when Byte_Offset = 2147483644 and Idx = HC_Halted)
+hw-mmio_regs.adb:25:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:228 (e.g. when Byte_Offset = 2147483644 and Idx = Doorbell_Target)
+hw-mmio_regs.adb:25:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:120 (e.g. when Byte_Offset = 2147483632 and Idx = XHCI_Extended_Caps)
+hw-mmio_regs.adb:25:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:133 (e.g. when Byte_Offset = 2147483644 and Idx = HC_Halted)
+hw-mmio_regs.adb:25:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:228 (e.g. when Byte_Offset = 2147483644 and Idx = Doorbell_Target)
+hw-mmio_regs.adb:25:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:120 (e.g. when Byte_Offset = 2147483632 and Idx = XHCI_Extended_Caps)
+hw-mmio_regs.adb:25:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:133 (e.g. when Byte_Offset = 2147483644 and Idx = HC_Halted)
+hw-mmio_regs.adb:25:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:228 (e.g. when Byte_Offset = 2147483644 and Idx = Doorbell_Target)
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:25:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:25:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:54: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:58: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:58: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:29:76: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:35:45: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:35:68: info: range check proved (CVC4: 2 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:35:68: info: range check proved (CVC4: 2 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:35:68: info: range check proved (CVC4: 2 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:35:68: info: range check proved (CVC4: 2 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:35:68: info: range check proved (CVC4: 2 VC), in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:35:68: medium: range check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:35:68: medium: range check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:35:68: medium: range check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:35:68: medium: range check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:35:68: medium: range check might fail, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:35:68: medium: range check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:35:68: medium: range check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:35:68: medium: range check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:35:68: medium: range check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:35:68: medium: range check might fail, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:38, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:41, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:44, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:35:72: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:47, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:59:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:59:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:59:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:59:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:59:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:59:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:59:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:59:23: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:59:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:120 (e.g. when Byte_Offset = 2147483632 and Idx = XHCI_Extended_Caps)
+hw-mmio_regs.adb:59:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:133 (e.g. when Byte_Offset = 2147483644 and Idx = HC_Halted)
+hw-mmio_regs.adb:59:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:228 (e.g. when Byte_Offset = 2147483644 and Idx = Doorbell_Target)
+hw-mmio_regs.adb:59:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:120 (e.g. when Byte_Offset = 2147483632 and Idx = XHCI_Extended_Caps)
+hw-mmio_regs.adb:59:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:133 (e.g. when Byte_Offset = 2147483644 and Idx = HC_Halted)
+hw-mmio_regs.adb:59:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:228 (e.g. when Byte_Offset = 2147483644 and Idx = Doorbell_Target)
+hw-mmio_regs.adb:59:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:120 (e.g. when Byte_Offset = 2147483632 and Idx = XHCI_Extended_Caps)
+hw-mmio_regs.adb:59:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:133 (e.g. when Byte_Offset = 2147483644 and Idx = HC_Halted)
+hw-mmio_regs.adb:59:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:228 (e.g. when Byte_Offset = 2147483644 and Idx = Doorbell_Target)
+hw-mmio_regs.adb:59:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:120 (e.g. when Byte_Offset = 2147483632 and Idx = XHCI_Extended_Caps)
+hw-mmio_regs.adb:59:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:133 (e.g. when Byte_Offset = 2147483644 and Idx = HC_Halted)
+hw-mmio_regs.adb:59:23: medium: overflow check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:228 (e.g. when Byte_Offset = 2147483644 and Idx = Doorbell_Target)
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:59:49: info: division check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:59:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:64:40: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:64:45: info: range check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:69:25: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:69:42: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:70:49: info: range check proved (CVC4: 2 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:70:49: info: range check proved (CVC4: 2 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:70:49: info: range check proved (CVC4: 2 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:70:49: info: range check proved (CVC4: 2 VC), in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:70:49: medium: range check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:75:22: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:75:36: info: initialization of "Mask" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:75:42: medium: range check might fail, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:81, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:84, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:87, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.adb:77:30: info: initialization of "Temp" proved, in instantiation at hw-mmio_regs.adb:90, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:34:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:34:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:34:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:34:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:34:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:36:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:36:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:36:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:36:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:36:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:36:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:36:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:36:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:36:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:36:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:38:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:38:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:38:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:120 (e.g. when Byte_Offset = 2147483632 and Idx = XHCI_Extended_Caps)
+hw-mmio_regs.ads:38:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:133 (e.g. when Byte_Offset = 2147483644 and Idx = HC_Halted)
+hw-mmio_regs.ads:38:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:228 (e.g. when Byte_Offset = 2147483640 and Idx = ERST_Size)
+hw-mmio_regs.ads:38:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:38:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:38:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:38:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:38:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:43:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:43:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:43:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:43:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:43:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:43:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:43:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:43:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:43:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:43:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:45:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:45:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:45:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:45:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:45:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:47:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:47:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:47:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:47:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:47:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:47:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:47:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:47:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:47:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:47:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:49:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:49:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:49:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:120 (e.g. when Byte_Offset = 2147483632 and Idx = XHCI_Extended_Caps)
+hw-mmio_regs.ads:49:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:133 (e.g. when Byte_Offset = 2147483644 and Idx = HC_Halted)
+hw-mmio_regs.ads:49:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:228 (e.g. when Byte_Offset = 2147483632 and Idx = ERST_Base_Lo)
+hw-mmio_regs.ads:49:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:49:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:49:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:49:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:49:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:54:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:54:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:54:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:54:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:54:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:54:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:54:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:54:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:54:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:54:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:56:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:56:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:56:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:56:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:56:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:58:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:58:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:58:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:58:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:58:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:58:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:58:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:58:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:58:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:58:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:60:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:60:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:60:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:120 (e.g. when Byte_Offset = 2147483632 and Idx = XHCI_Extended_Caps)
+hw-mmio_regs.ads:60:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:133 (e.g. when Byte_Offset = 2147483644 and Idx = HC_Halted)
+hw-mmio_regs.ads:60:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:228 (e.g. when Byte_Offset = 2147483640 and Idx = ERST_Size)
+hw-mmio_regs.ads:60:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:60:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:60:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:60:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:60:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:65:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:65:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:65:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:65:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:65:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:65:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:65:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:65:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:65:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:65:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:67:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:67:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:67:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:67:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:67:20: info: initialization of "Value" proved, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:69:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:69:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:69:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:69:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:69:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:69:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:69:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:69:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:69:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:69:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:71:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:71:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:71:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:120 (e.g. when Byte_Offset = 2147483632 and Idx = XHCI_Extended_Caps)
+hw-mmio_regs.ads:71:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:133 (e.g. when Byte_Offset = 2147483644 and Idx = HC_Halted)
+hw-mmio_regs.ads:71:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:228 (e.g. when Byte_Offset = 2147483640 and Idx = ERST_Size)
+hw-mmio_regs.ads:71:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:71:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:71:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:71:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:71:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:76:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:76:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:76:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:76:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:76:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:76:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:76:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:76:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:76:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:76:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:82:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:82:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:82:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:82:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:82:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:82:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:82:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:82:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:82:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:82:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:84:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:84:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:84:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:84:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:84:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:84:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:84:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:84:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:84:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:84:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:89:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:89:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:89:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:89:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:89:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:89:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:89:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:89:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:89:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:89:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:89:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:89:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:89:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:89:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:89:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:90:43: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:90:43: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:90:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:90:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:90:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:90:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:90:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:90:43: medium: overflow check might fail, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:90:43: medium: overflow check might fail, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:90:43: medium: overflow check might fail, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:90:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:90:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:90:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:90:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:90:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:90:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:90:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:90:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:90:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:90:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:90:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:90:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:90:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:90:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:90:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:94:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:94:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:94:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:94:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:94:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:94:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:94:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:94:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:94:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:94:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:96:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:96:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:96:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:96:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:96:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:96:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:96:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:96:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:96:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:96:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:101:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:101:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:101:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:101:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:101:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:101:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:101:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:101:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:101:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:101:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:101:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:101:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:101:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:101:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:101:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:102:43: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:102:43: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:102:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:102:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:102:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:102:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:102:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:102:43: medium: overflow check might fail, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:102:43: medium: overflow check might fail, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:102:43: medium: overflow check might fail, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:102:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:102:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:102:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:102:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:102:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:102:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:102:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:102:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:102:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:102:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:102:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:102:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:102:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:102:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:102:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:106:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:106:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:106:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:106:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:106:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:106:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:106:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:106:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:106:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:106:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:108:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:108:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:108:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:108:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:108:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:108:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:108:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:108:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:108:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:108:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:113:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:113:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:113:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:113:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:113:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:113:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:113:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:113:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:113:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:113:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:113:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:113:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:113:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:113:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:113:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:114:43: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:114:43: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:114:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:114:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:114:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:114:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:114:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:114:43: medium: overflow check might fail, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:114:43: medium: overflow check might fail, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:114:43: medium: overflow check might fail, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:114:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:114:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:114:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:114:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:114:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:114:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:114:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:114:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:114:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:114:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:114:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:114:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:114:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:114:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:114:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:118:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:118:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:118:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:118:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:118:30: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:118:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:118:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:118:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:118:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:118:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:120:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:120:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:120:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:120:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:120:30: medium: overflow check might fail, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:120:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:120:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:120:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:120:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:120:56: info: division check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:125:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:125:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:125:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:125:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:125:31: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:125:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:125:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:125:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:125:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:125:48: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:125:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:125:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:125:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:125:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:125:60: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:126:43: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:126:43: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:126:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:126:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:126:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:126:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:126:43: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:126:43: medium: overflow check might fail, in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:126:43: medium: overflow check might fail, in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:126:43: medium: overflow check might fail, in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:126:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:126:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:126:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:126:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:126:62: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:126:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:126:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:126:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:126:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:126:66: info: overflow check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw-mmio_regs.ads:126:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:120
+hw-mmio_regs.ads:126:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:133
+hw-mmio_regs.ads:126:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:142
+hw-mmio_regs.ads:126:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:152
+hw-mmio_regs.ads:126:66: info: range check proved (CVC4: 1 VC), in instantiation at hw-dbc.ads:228
+hw.ads:59:29: info: overflow check proved (CVC4: 1 VC)
+hw.ads:59:33: info: division check proved (CVC4: 1 VC)
+hw.ads:65:30: info: overflow check proved (CVC4: 1 VC)
+hw.ads:65:34: info: division check proved (CVC4: 1 VC)
+hw.ads:71:30: info: overflow check proved (CVC4: 1 VC)
+hw.ads:71:34: info: division check proved (CVC4: 1 VC)
+hw.ads:77:30: info: overflow check proved (CVC4: 1 VC)
+hw.ads:77:34: info: division check proved (CVC4: 1 VC)
