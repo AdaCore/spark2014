@@ -1,0 +1,5 @@
+project Test is
+   package Ide is
+      for Artifacts_Dir use "obj";
+   end Ide;
+end Test;
