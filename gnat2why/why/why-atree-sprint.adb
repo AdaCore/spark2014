@@ -296,15 +296,16 @@ package body Why.Atree.Sprint is
    -----------------------
 
    procedure Print_Binding_Ref (Node : W_Binding_Ref_Id) is
+      Name             : constant W_Identifier_Id := Get_Name (Node);
       Context          : constant W_Prog_Id := Get_Context (Node);
       Binding_Sequence : constant Boolean :=
         Get_Kind (+Context) = W_Binding_Ref;
    begin
       P (O, "let ");
-      Print_Node (+Get_Name (Node));
+      Print_Node (+Name);
       P (O, " = { ");
-      pragma Assert (Get_Typ (Node) /= Why_Empty);
-      Print_Node (+Get_Typ (Node));
+      pragma Assert (Get_Typ (Name) /= Why_Empty);
+      Print_Node (+Get_Typ (Name));
       P (O, "__content = ");
       Print_Node (+Get_Def (Node));
       PL (O, " } in ");

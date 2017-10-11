@@ -264,6 +264,14 @@ package body Gnat2Why.Expr is
    --    (<why_call> ;
    --     actual := to_actual_type_ (from_formal_type (!formal))
    --
+   --  For calls to volatile functions, this takes a different form to save
+   --  the result of the call and use it as the final value of the sequence:
+   --
+   --   let formal := ref (to_formal_type_ (from_actual_type (!actual))) in
+   --     let result = <why_call> in
+   --       (actual := to_actual_type_ (from_formal_type (!formal));
+   --        result)
+   --
    --  Nb_Of_Refs should be set to the number of such parameters in Ada_Call.
 
    function Is_Terminal_Node (N : Node_Id) return Boolean;
@@ -5078,7 +5086,15 @@ package body Gnat2Why.Expr is
    --  Start of processing for Insert_Ref_Context
 
    begin
-      Statement_Sequence_Append_To_Statements (Store, Why_Call);
+      --  In the case of a procedure or entry call, there is no value to return
+      --  as the final expression, so just append the call at the start of the
+      --  sequence (Store is empty at this point).
+
+      if Nkind (Ada_Call) in N_Procedure_Call_Statement
+                           | N_Entry_Call_Statement
+      then
+         Statement_Sequence_Append_To_Statements (Store, Why_Call);
+      end if;
 
       --  In the case of protected subprograms, there is an invisible first
       --  parameter, the protected object itself. We call "Compute_Arg" with
@@ -5093,13 +5109,35 @@ package body Gnat2Why.Expr is
       --  Set the pieces together
 
       Ref_Context := +Store;
+
+      --  In the case of a function call, there is value to return as the
+      --  final expression. Note that this can only occur for calls to volatile
+      --  functions, when one of the parameters is of a volatile type. Save the
+      --  result of the call at the start of the sequence (Ref_Context consists
+      --  in the sequence of post-call assignments and assumptions at this
+      --  point) and use it as the final value for the sequence.
+
+      if Nkind (Ada_Call) = N_Function_Call then
+         declare
+            Tmp : constant W_Identifier_Id :=
+              New_Temp_Identifier (Ada_Call, Get_Type (+Why_Call));
+         begin
+            Ref_Context :=
+              +New_Typed_Binding (Domain   => EW_Prog,
+                                  Name     => Tmp,
+                                  Def      => +Why_Call,
+                                  Context  =>
+                                    +Sequence (Ref_Context, +Tmp));
+         end;
+      end if;
+
       for J in Ref_Fetch'Range loop
          Ref_Context :=
            New_Binding_Ref
              (Name    => Ref_Tmp_Vars (J),
               Def     => Ref_Fetch (J),
               Context => Ref_Context,
-              Typ     => Get_Typ (Ref_Tmp_Vars (J)));
+              Typ     => Get_Type (+Ref_Context));
       end loop;
 
       for J in Let_Fetch'Range loop
@@ -12559,8 +12597,25 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      --  SPARK function cannot have side-effects
-      pragma Assert (Nb_Of_Refs = 0);
+      --  Volatile functions cannot have side-effects in SPARK, but translation
+      --  of a call to a volatile function may introduce references for
+      --  parameters of a volatile type. Insert these references here.
+
+      if Is_Volatile_Function (Subp) then
+         if Nb_Of_Refs = 0 then
+            return T;
+         else
+            return +Insert_Ref_Context
+              (Body_Params, Expr, +T, Nb_Of_Refs, Nb_Of_Lets);
+         end if;
+
+      --  SPARK function cannot have side-effects. Except for volatile
+      --  functions, this also means that no references should be
+      --  introduced for the call.
+
+      else
+         pragma Assert (Nb_Of_Refs = 0);
+      end if;
 
       return T;
    end Transform_Function_Call;
