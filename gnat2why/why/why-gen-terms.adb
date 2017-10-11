@@ -84,6 +84,10 @@ package body Why.Gen.Terms is
         (State : in out Search_State;
          Node  : W_Deref_Id);
 
+      procedure Binding_Ref_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Binding_Ref_Id);
+
       procedure Any_Expr_Pre_Op
         (State : in out Search_State;
          Node  : W_Any_Expr_Id);
@@ -108,6 +112,20 @@ package body Why.Gen.Terms is
          State.Found   := True;
          State.Control := Terminate_Immediately;
       end Deref_Pre_Op;
+
+      ------------------------
+      -- Binding_Ref_Pre_Op --
+      ------------------------
+
+      procedure Binding_Ref_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Binding_Ref_Id)
+      is
+         pragma Unreferenced (Node);
+      begin
+         State.Found   := True;
+         State.Control := Terminate_Immediately;
+      end Binding_Ref_Pre_Op;
 
       ---------------------
       -- Any_Expr_Pre_Op --
