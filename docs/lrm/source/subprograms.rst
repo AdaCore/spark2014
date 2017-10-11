@@ -614,7 +614,7 @@ is used purely for static analysis purposes and is not executed.
         attributes that are dependent on the value of the object and
         shall not be used are X'Old and X'Update] and
 
-      - is always fully initialized by a call of the subprogram. ;
+      - is always fully initialized by a call of the subprogram;
 
     * otherwise the ``global_item`` denotes both an input and an output, and
       has a ``mode_selector`` of In_Out.
