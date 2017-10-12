@@ -1423,6 +1423,7 @@ package body Gnat2Why.Expr.Loops.Inv is
             | N_Use_Package_Clause
             | N_Use_Type_Clause
             | N_Validate_Unchecked_Conversion
+            | N_Variable_Reference_Marker
          =>
             null;
 

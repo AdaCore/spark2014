@@ -6859,6 +6859,7 @@ package body Gnat2Why.Expr is
             when N_Call_Marker
                | N_Null_Statement
                | N_Freeze_Entity
+               | N_Variable_Reference_Marker
             =>
                null;
 
@@ -6918,6 +6919,7 @@ package body Gnat2Why.Expr is
             when N_Call_Marker
                | N_Null_Statement
                | N_Freeze_Entity
+               | N_Variable_Reference_Marker
             =>
                null;
 
@@ -15246,6 +15248,7 @@ package body Gnat2Why.Expr is
          when N_Call_Marker
             | N_Label
             | N_Null_Statement
+            | N_Variable_Reference_Marker
          =>
             return +Void;
 

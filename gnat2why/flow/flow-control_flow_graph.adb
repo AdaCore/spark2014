@@ -660,6 +660,7 @@ package body Flow.Control_Flow_Graph is
                           | N_Null_Statement
                           | N_Raise_Statement
                           | N_Raise_xxx_Error
+                          | N_Variable_Reference_Marker
                           | N_Exception_Declaration
                           | N_Exception_Renaming_Declaration;
    --  Deals with null and raise statements. We create a new vertex that has
@@ -4937,6 +4938,7 @@ package body Flow.Control_Flow_Graph is
 
          when N_Call_Marker
             | N_Null_Statement
+            | N_Variable_Reference_Marker
          =>
             Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
 
