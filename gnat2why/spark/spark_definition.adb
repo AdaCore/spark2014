@@ -1919,6 +1919,7 @@ package body SPARK_Definition is
             | N_With_Clause
             | N_Use_Type_Clause
             | N_Validate_Unchecked_Conversion
+            | N_Variable_Reference_Marker
          =>
             null;
 
@@ -2079,6 +2080,7 @@ package body SPARK_Definition is
                when N_Call_Marker
                   | N_Null_Statement
                   | N_Freeze_Entity
+                  | N_Variable_Reference_Marker
                =>
                   null;
 
