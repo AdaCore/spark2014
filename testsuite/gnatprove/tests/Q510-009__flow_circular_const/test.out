@@ -1,0 +1,14 @@
+error: elaboration circularity detected
+info:    "q (body)" must be elaborated before "p (spec)"
+info:       reason: implicit Elaborate_All in unit "p (spec)"
+info:       recompile "p (spec)" with -gnatel for full details
+info:          "q (body)"
+info:             must be elaborated along with its spec:
+info:          "q (spec)"
+info:             which is withed by:
+info:          "p (spec)"
+
+info:    "p (spec)" must be elaborated before "q (body)"
+info:       reason: with clause
+
+gnatmake: *** bind failed.
