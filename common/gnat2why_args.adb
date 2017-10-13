@@ -24,6 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Directories;           use Ada.Directories;
 with Ada.Text_IO;               use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.SHA1;
@@ -177,7 +178,7 @@ package body Gnat2Why_Args is
          Close (FT);
          Change_Dir (Cur_Dir);
 
-         return Obj_Dir & File_Name;
+         return Compose (Obj_Dir, File_Name);
       end Write_To_File;
 
       Obj : constant JSON_Value := Create_Object;

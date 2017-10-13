@@ -1275,6 +1275,15 @@ begin
    end if;
 
    declare
+      Object_Dir : constant String :=
+        Tree.Root_Project.Artifacts_Dir.Display_Full_Name;
+   begin
+      if not Exists (Object_Dir) then
+         Create_Directory (Object_Dir);
+      end if;
+   end;
+
+   declare
       Plan : constant Plan_Type :=
         (if CodePeer then (GS_ALI, GS_CodePeer, GS_Gnat2Why)
          else (GS_ALI, GS_Gnat2Why));
