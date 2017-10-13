@@ -4,7 +4,7 @@ with Gen;
 
 procedure User is
    X : Boolean := True;
-   package G is new Gen (X);
+   package G is new Gen (True);
 begin
    X := G.Y;
    pragma Assert (not X);
