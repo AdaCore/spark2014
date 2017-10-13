@@ -1,0 +1,3 @@
+addr.adb:6:46: info: index check proved (CVC4: 2 VC)
+addr.adb:8:33: high: "Val" is not initialized
+addr.adb:8:33: medium: range check might fail (e.g. when Val = 'NUL')

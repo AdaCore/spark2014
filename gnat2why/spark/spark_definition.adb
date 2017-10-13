@@ -2276,9 +2276,10 @@ package body SPARK_Definition is
                Error_Msg_F ("?attribute Valid is assumed to return True", N);
             end if;
 
+         --  Attribute Address is only allowed at the top level of an Address
+         --  aspect or attribute definition clause.
+
          when Attribute_Address =>
-            --  As per SPARK RM 15.2 attribute Address in only allowed in
-            --  attribute definition clauses.
             if Nkind (Parent (N)) /= N_Attribute_Definition_Clause then
                Violation_Detected := True;
                if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
