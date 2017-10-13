@@ -1,0 +1,2 @@
+p.adb:5:04: info: initialization of "Refined" constituent of "State" proved
+p.ads:5:13: warning: subprogram "Foo" has no effect
