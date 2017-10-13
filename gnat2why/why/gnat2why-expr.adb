@@ -10882,12 +10882,25 @@ package body Gnat2Why.Expr is
          declare
             Address : constant Node_Id :=
               Get_Rep_Item (Defining_Entity (Decl), Name_Address);
+            Expr    : Node_Id;
          begin
             if Present (Address) then
+               Expr := Expression (Address);
+
+               --  Attribute Address is only allowed at the top level of an
+               --  Address aspect or attribute definition clause. Skip it to
+               --  reach to the underlying name if present.
+
+               if Nkind (Expr) = N_Attribute_Reference
+                 and then Get_Attribute_Id (Attribute_Name (Expr))
+                   = Attribute_Address
+               then
+                  Expr := Prefix (Expr);
+               end if;
+
                declare
                   Why_Expr : constant W_Expr_Id :=
-                    Transform_Expr
-                      (Expression (Address), EW_Prog, Body_Params);
+                    Transform_Expr (Expr, EW_Prog, Body_Params);
                begin
                   R := +Sequence (New_Ignore (Prog => +Why_Expr), R);
                end;
