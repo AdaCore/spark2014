@@ -27,6 +27,7 @@ with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                    use Ada.Text_IO;
 with Sem_Aux;                        use Sem_Aux;
+with Sem_Util;                       use Sem_Util;
 with Snames;                         use Snames;
 with SPARK_Xrefs;                    use SPARK_Xrefs;
 
@@ -53,19 +54,19 @@ package body SPARK_Frame_Conditions is
    --  By default, propagate an error if a scope is missing, unless set to
    --  False for a degraded mode of operation in which such errors are ignored.
 
-   Scopes       : Name_Sets.Set;    --  All scope entities
+   Scopes  : Node_Sets.Set;    --  All scope entities
 
-   Defines      : Name_Graphs.Map;  --  Entities defined by each scope
-   Writes       : Name_Graphs.Map;  --  Entities written in each scope
-   Reads        : Name_Graphs.Map;  --  Entities read in each scope
-   Callers      : Name_Graphs.Map;  --  Callers for each subprogram
-   Calls        : Name_Graphs.Map;  --  Subprograms called in each subprogram
+   Defines : Node_Graphs.Map;  --  Entities defined by each scope
+   Writes  : Node_Graphs.Map;  --  Entities written in each scope
+   Reads   : Node_Graphs.Map;  --  Entities read in each scope
+   Callers : Node_Graphs.Map;  --  Callers for each subprogram
+   Calls   : Node_Graphs.Map;  --  Subprograms called in each subprogram
 
    -----------------------
    -- Local Subprograms --
    -----------------------
 
-   procedure Add_To_Map (Map : in out Name_Graphs.Map; From, To : Entity_Name);
+   procedure Add_To_Map (Map : in out Node_Graphs.Map; From, To : Entity_Id);
    --  Add the relation From -> To in map Map
 
    function Make_Entity_Name (Name : String_Ptr) return Entity_Name
@@ -73,20 +74,21 @@ package body SPARK_Frame_Conditions is
    --  Build a name for an entity, making sure the name is not empty
 
    procedure Set_Default_To_Empty
-     (Map  : in out Name_Graphs.Map;
-      Name : Entity_Name)
-   with Post => Map.Contains (Name);
-   --  Make sure that element Name has an entry in Map. If not already present,
+     (Map : in out Node_Graphs.Map;
+      Id  : Entity_Id)
+   with Post => Map.Contains (Id);
+
+   --  Make sure that element Id has an entry in Map. If not already present,
    --  add one which maps the element to the empty set.
 
    ----------------
    -- Add_To_Map --
    ----------------
 
-   procedure Add_To_Map (Map : in out Name_Graphs.Map; From, To : Entity_Name)
+   procedure Add_To_Map (Map : in out Node_Graphs.Map; From, To : Entity_Id)
    is
       Ignored  : Boolean;
-      Position : Name_Graphs.Cursor;
+      Position : Node_Graphs.Cursor;
 
    begin
       --  Try to insert a default value (i.e. empty set) and then update it
@@ -102,26 +104,26 @@ package body SPARK_Frame_Conditions is
 
    procedure Display_Maps is
 
-      use Name_Graphs;
+      use Node_Graphs;
 
-      procedure Display_Entity (E : Entity_Name);
-      procedure Display_One_Map (Map : Name_Graphs.Map; Name, Action : String);
-      procedure Display_One_Set (Set : Name_Sets.Set);
+      procedure Display_Entity (E : Entity_Id);
+      procedure Display_One_Map (Map : Node_Graphs.Map; Name, Action : String);
+      procedure Display_One_Set (Set : Node_Sets.Set);
 
       --------------------
       -- Display_Entity --
       --------------------
 
-      procedure Display_Entity (E : Entity_Name) is
+      procedure Display_Entity (E : Entity_Id) is
       begin
-         Put ("entity " & To_String (E));
+         Put ("entity " & Unique_Name (E));
       end Display_Entity;
 
       ---------------------
       -- Display_One_Map --
       ---------------------
 
-      procedure Display_One_Map (Map : Name_Graphs.Map; Name, Action : String)
+      procedure Display_One_Map (Map : Node_Graphs.Map; Name, Action : String)
       is
       begin
          Put_Line ("-- " & Name & " --");
@@ -137,7 +139,7 @@ package body SPARK_Frame_Conditions is
       -- Display_One_Set --
       ---------------------
 
-      procedure Display_One_Set (Set : Name_Sets.Set) is
+      procedure Display_One_Set (Set : Node_Sets.Set) is
       begin
          for Ent of Set loop
             Put ("  "); Display_Entity (Ent); New_Line;
@@ -176,14 +178,14 @@ package body SPARK_Frame_Conditions is
    -- Computed_Calls --
    --------------------
 
-   function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
+   function Computed_Calls (E : Entity_Id) return Node_Sets.Set
      renames Calls.Element;
 
    --------------------
    -- Computed_Reads --
    --------------------
 
-   function Computed_Reads (E : Entity_Id) return Name_Sets.Set
+   function Computed_Reads (E : Entity_Id) return Node_Sets.Set
    is
       pragma Assert (if Ekind (E) = E_Entry then No (Alias (E)));
       --  Alias is empty for entries and meaningless for entry families
@@ -194,10 +196,9 @@ package body SPARK_Frame_Conditions is
          then Ultimate_Alias (E)
          else E);
 
-      E_Name   : constant Entity_Name := To_Entity_Name (E_Alias);
-      Read_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
+      Read_Ids : Node_Sets.Set;
 
-      use type Name_Sets.Set;
+      use type Node_Sets.Set;
 
    begin
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
@@ -207,19 +208,19 @@ package body SPARK_Frame_Conditions is
         and then Ekind (E) /= E_Entry_Family
         and then Is_Abstract_Subprogram (E_Alias)
       then
-         return Name_Sets.Empty_Set;
+         return Node_Sets.Empty_Set;
       end if;
 
-      Read_Ids := Reads (E_Name);
+      Read_Ids := Reads (E_Alias);
 
-      return Read_Ids - Defines (E_Name);
+      return Read_Ids - Defines (E_Alias);
    exception
       when Constraint_Error =>
          if Propagate_Error_For_Missing_Scope then
             raise Constraint_Error with
-              ("missing effects for subprogram " & To_String (E_Name));
+              ("missing effects for subprogram " & Unique_Name (E_Alias));
          else
-            return Name_Sets.Empty_Set;
+            return Node_Sets.Empty_Set;
          end if;
    end Computed_Reads;
 
@@ -227,7 +228,7 @@ package body SPARK_Frame_Conditions is
    -- Computed_Writes --
    ---------------------
 
-   function Computed_Writes (E : Entity_Id) return Name_Sets.Set is
+   function Computed_Writes (E : Entity_Id) return Node_Sets.Set is
       pragma Assert (if Ekind (E) = E_Entry then No (Alias (E)));
       --  Alias is empty for entries and meaningless for entry families
 
@@ -237,10 +238,9 @@ package body SPARK_Frame_Conditions is
          then Ultimate_Alias (E)
          else E);
 
-      E_Name    : constant Entity_Name := To_Entity_Name (E_Alias);
-      Write_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
+      Write_Ids : Node_Sets.Set;
 
-      use type Name_Sets.Set;
+      use type Node_Sets.Set;
 
    begin
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
@@ -250,7 +250,7 @@ package body SPARK_Frame_Conditions is
         and then Ekind (E) /= E_Entry_Family
         and then Is_Abstract_Subprogram (E_Alias)
       then
-         return Name_Sets.Empty_Set;
+         return Node_Sets.Empty_Set;
       end if;
 
       --  Go through the reads and check if the entities corresponding to
@@ -258,30 +258,25 @@ package body SPARK_Frame_Conditions is
       --  then these entities are also writes.
       --  ??? call to Computed_Reads repeats what is already done here; this
       --  should be refactored.
-      for E_N of Computed_Reads (E) loop
-         declare
-            Read : constant Entity_Id := Find_Entity (E_N);
-         begin
-            --  ??? how about entities represented by entity names?
-            if Present (Read)
-              and then Ekind (Read) = E_Variable
-              and then Present (Get_Pragma (Read, Pragma_Effective_Reads))
-            then
-               Write_Ids.Insert (E_N);
-            end if;
-         end;
+      for Read of Computed_Reads (E) loop
+         if Present (Read)
+           and then Ekind (Read) = E_Variable
+           and then Present (Get_Pragma (Read, Pragma_Effective_Reads))
+         then
+            Write_Ids.Insert (Read);
+         end if;
       end loop;
 
-      Write_Ids.Union (Writes (E_Name));
+      Write_Ids.Union (Writes (E_Alias));
 
-      return Write_Ids - Defines (E_Name);
+      return Write_Ids - Defines (E_Alias);
    exception
       when Constraint_Error =>
          if Propagate_Error_For_Missing_Scope then
             raise Constraint_Error with
-              ("missing effects for subprogram " & To_String (E_Name));
+              ("missing effects for subprogram " & Unique_Name (E_Alias));
          else
-            return Name_Sets.Empty_Set;
+            return Node_Sets.Empty_Set;
          end if;
    end Computed_Writes;
 
@@ -291,6 +286,9 @@ package body SPARK_Frame_Conditions is
 
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean is
      (To_String (Ent) = SPARK_Xrefs.Name_Of_Heap_Variable);
+
+   function Is_Heap_Variable (E : Entity_Id) return Boolean is
+     (E = SPARK_Xrefs.Heap);
 
    ----------------------
    -- Load_SPARK_Xrefs --
@@ -310,7 +308,7 @@ package body SPARK_Frame_Conditions is
 
       package Scope_Entity is new Hashed_Maps
         (Key_Type        => Scope_Name,
-         Element_Type    => Entity_Name,
+         Element_Type    => Entity_Id,
          Hash            => Scope_Hash,
          Equivalent_Keys => "=");
       --  Map each scope to its entity representative
@@ -324,10 +322,10 @@ package body SPARK_Frame_Conditions is
 
       Scope_Entities : Scope_Entity.Map;
       Scope_Specs    : Scope_Spec.Map;
-      Current_Entity : Any_Entity_Name;
+      Current_Entity : Entity_Id;
 
       function Scope_Name_To_Scope_Entity
-        (N : Scope_Name) return Entity_Name;
+        (N : Scope_Name) return Entity_Id;
       --  Convert low-level numeric representation to symbol
 
       ---------------------------------
@@ -335,7 +333,7 @@ package body SPARK_Frame_Conditions is
       ---------------------------------
 
       function Scope_Name_To_Scope_Entity
-        (N : Scope_Name) return Entity_Name
+        (N : Scope_Name) return Entity_Id
       is
          C : constant Scope_Spec.Cursor := Scope_Specs.Find (N);
       begin
@@ -365,15 +363,13 @@ package body SPARK_Frame_Conditions is
                Sco  : constant Scope_Name :=
                  Scope_Name'(File_Num  => Srec.File_Num,
                              Scope_Num => Srec.Scope_Num);
-               Ent  : constant Entity_Name :=
-                 Make_Entity_Name (Srec.Scope_Name);
             begin
-               Scope_Entities.Insert (Sco, Ent);
+               Scope_Entities.Insert (Sco, Srec.Scope_Id);
 
                --  Record which entities are scopes, for default initializing
                --  maps in Propagate_Through_Call_Graph.
 
-               Scopes.Include (Ent);
+               Scopes.Include (Srec.Scope_Id);
 
                --  If present, use the body-to-spec information
 
@@ -389,7 +385,7 @@ package body SPARK_Frame_Conditions is
 
       --  Fill in high-level tables from xrefs
 
-      Current_Entity := Null_Entity_Name;
+      Current_Entity := Empty;
       for F in SPARK_File_Table.First .. SPARK_File_Table.Last
       loop
          for S in SPARK_File_Table.Table (F).From_Scope ..
@@ -399,7 +395,7 @@ package body SPARK_Frame_Conditions is
                Srec : SPARK_Scope_Record renames
                  SPARK_Scope_Table.Table (S);
 
-               Def_Scope_Ent : constant Entity_Name :=
+               Def_Scope_Ent : constant Entity_Id :=
                  Scope_Name_To_Scope_Entity
                    (Scope_Name'(File_Num  => Srec.File_Num,
                                 Scope_Num => Srec.Scope_Num));
@@ -414,10 +410,9 @@ package body SPARK_Frame_Conditions is
                      Xref : SPARK_Xref_Record renames
                        SPARK_Xref_Table.Table (X);
 
-                     Ref_Entity : constant Entity_Name :=
-                       Make_Entity_Name (Xref.Entity_Name);
+                     Ref_Entity : Entity_Id renames Xref.Entity;
 
-                     Ref_Scope_Ent : constant Entity_Name :=
+                     Ref_Scope_Ent : constant Entity_Id :=
                        Scope_Name_To_Scope_Entity
                          (Scope_Name'(File_Num  => Xref.File_Num,
                                       Scope_Num => Xref.Scope_Num));
@@ -446,7 +441,7 @@ package body SPARK_Frame_Conditions is
                         when 'm' =>
                            Add_To_Map (Writes, Ref_Scope_Ent, Ref_Entity);
                         when 's' =>
-                           Add_To_Map (Calls, Ref_Scope_Ent, Ref_Entity);
+                           Add_To_Map (Calls,   Ref_Scope_Ent, Ref_Entity);
                            Add_To_Map (Callers, Ref_Entity, Ref_Scope_Ent);
                         when others =>
                            raise Program_Error;
@@ -473,7 +468,7 @@ package body SPARK_Frame_Conditions is
 
    procedure Propagate_Through_Call_Graph
    is
-      use Name_Graphs;
+      use Node_Graphs;
 
    begin
       --  Set error propagation mode for missing scopes
@@ -515,15 +510,15 @@ package body SPARK_Frame_Conditions is
    --------------------------
 
    procedure Set_Default_To_Empty
-     (Map  : in out Name_Graphs.Map;
-      Name : Entity_Name)
+     (Map : in out Node_Graphs.Map;
+      Id  : Entity_Id)
    is
       Inserted : Boolean;
-      Position : Name_Graphs.Cursor;
+      Position : Node_Graphs.Cursor;
       --  Dummy variables required by the container API
 
    begin
-      Map.Insert (Key      => Name,
+      Map.Insert (Key      => Id,
                   Position => Position,
                   Inserted => Inserted);
       --  Attempt to map entity Ent to a default element (i.e. empty set)
@@ -535,8 +530,8 @@ package body SPARK_Frame_Conditions is
 
    procedure Collect_Direct_Computed_Globals
      (E       :     Entity_Id;
-      Inputs  : out Name_Sets.Set;
-      Outputs : out Name_Sets.Set)
+      Inputs  : out Node_Sets.Set;
+      Outputs : out Node_Sets.Set)
    is
       pragma Assert (if Ekind (E) = E_Entry then No (Alias (E)));
       --  Alias is empty for entries and meaningless for entry families
@@ -556,8 +551,8 @@ package body SPARK_Frame_Conditions is
         and then Is_Abstract_Subprogram (E_Alias)
       then
          --  Initialize to empty sets and return
-         Inputs  := Name_Sets.Empty_Set;
-         Outputs := Name_Sets.Empty_Set;
+         Inputs  := Node_Sets.Empty_Set;
+         Outputs := Node_Sets.Empty_Set;
 
          return;
       end if;

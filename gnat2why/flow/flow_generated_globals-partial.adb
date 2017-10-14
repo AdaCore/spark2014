@@ -409,9 +409,6 @@ package body Flow_Generated_Globals.Partial is
       Constant_Graph :        Constant_Graphs.Graph);
    --  Filter constants without variable from contract
 
-   function To_Node_Set (Names : Name_Sets.Set) return Node_Sets.Set;
-   --  Convert names to nodes
-
    function To_Names
      (Entries : Entry_Call_Sets.Set;
       Objects : Tasking_Info)
@@ -570,7 +567,7 @@ package body Flow_Generated_Globals.Partial is
          procedure Collect_Unsynchronized (Vars : Node_Sets.Set) is
          begin
             for E of Vars loop
-               if not (Is_Heap_Entity (E)
+               if not (Is_Heap_Variable (E)
                        or else Is_Synchronized_Object (E)
                        or else Is_Synchronized_State (E)
                        or else Is_Part_Of_Concurrent_Object (E))
@@ -1326,7 +1323,7 @@ package body Flow_Generated_Globals.Partial is
                         Term_Info.Set_Style (Bright);
                      end if;
 
-                     if Is_Heap_Entity (Var) then
+                     if Is_Heap_Variable (Var) then
                         Ada.Text_IO.Put (Name_Of_Heap_Variable);
                      else
                         Ada.Text_IO.Put (Full_Source_Name (Var));
@@ -1369,7 +1366,7 @@ package body Flow_Generated_Globals.Partial is
          --  Filter variables declared within E and the E itself (which occurs
          --  as a global when E is a single concurrent type). Heap is never a
          --  local variable, so it must be always kept while filtering.
-         if Is_Heap_Entity (N)
+         if Is_Heap_Variable (N)
            or else not (Is_In_Analyzed_Files (N)
                         and then Scope_Within_Or_Same (N, E))
          then
@@ -1685,18 +1682,16 @@ package body Flow_Generated_Globals.Partial is
    -- Frontend_Calls --
    --------------------
 
-   function Frontend_Calls (E : Entity_Id) return Node_Sets.Set is
-   begin
-      return To_Node_Set (Computed_Calls (To_Entity_Name (E)));
-   end Frontend_Calls;
+   function Frontend_Calls (E : Entity_Id) return Node_Sets.Set
+     renames Computed_Calls;
 
    ----------------------
    -- Frontend_Globals --
    ----------------------
 
    function Frontend_Globals (E : Entity_Id) return Global_Nodes is
-      Input_Names  : Name_Sets.Set;
-      Output_Names : Name_Sets.Set;
+      Inputs  : Node_Sets.Set;
+      Outputs : Node_Sets.Set;
 
       function Remove_Constants_Without_Variable_Input
         (Nodes : Node_Sets.Set)
@@ -1740,14 +1735,10 @@ package body Flow_Generated_Globals.Partial is
       --  Collect frontend globals using only info from the current compilation
       --  unit.
       --  ??? ignore calls, because they seem too over-aproximating
-      Collect_Direct_Computed_Globals (E, Input_Names, Output_Names);
+      Collect_Direct_Computed_Globals (E, Inputs, Outputs);
 
-      return (Inputs  =>
-                Remove_Constants_Without_Variable_Input
-                  (To_Node_Set (Input_Names)),
-              Outputs =>
-                Remove_Constants_Without_Variable_Input
-                  (To_Node_Set (Output_Names)),
+      return (Inputs  => Remove_Constants_Without_Variable_Input (Inputs),
+              Outputs => Remove_Constants_Without_Variable_Input (Outputs),
               Proof_Ins => <>);
 
    end Frontend_Globals;
@@ -2442,40 +2433,6 @@ package body Flow_Generated_Globals.Partial is
 
       return Result;
    end To_Names;
-
-   -----------------
-   -- To_Node_Set --
-   -----------------
-
-   function To_Node_Set (Names : Name_Sets.Set) return Node_Sets.Set is
-      Nodes : Node_Sets.Set;
-   begin
-      for Name of Names loop
-         declare
-            Node : constant Entity_Id := Find_Entity (Name);
-
-            --  pragma Assert (if No (Node) then Is_Heap_Variable (Name));
-            --  ??? temporarily replace pragma with an error message below
-
-         begin
-            if Present (Node) then
-               if not Is_Unchecked_Conversion_Instance (Node) then
-                  Nodes.Insert (Node);
-               end if;
-            else
-               if Is_Heap_Variable (Name) then
-                  Nodes.Insert (Empty);
-               else
-                  Ada.Text_IO.Put_Line ("no Entity_Id for " &
-                                          Common_Containers.To_String (Name));
-                  raise Program_Error;
-               end if;
-            end if;
-         end;
-      end loop;
-
-      return Nodes;
-   end To_Node_Set;
 
    ----------------------------
    -- Write_Constants_To_ALI --

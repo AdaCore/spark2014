@@ -41,13 +41,17 @@ package SPARK_Frame_Conditions is
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
    --  Return True iff Ent is the special variable "__HEAP"
 
+   function Is_Heap_Variable (E : Entity_Id) return Boolean
+   with Pre => Present (E);
+   --  Return True iff E is the special variable "__HEAP"
+
    procedure Display_Maps;
    --  Send maps to output for debug
 
-   function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set;
-   --  Get subprograms directly called by subprogram E_Name
+   function Computed_Calls (E : Entity_Id) return Node_Sets.Set;
+   --  Get subprograms directly called by subprogram E
 
-   function Computed_Reads (E : Entity_Id) return Name_Sets.Set
+   function Computed_Reads (E : Entity_Id) return Node_Sets.Set
    with Pre => Ekind (E) in Entry_Kind
                           | E_Function
                           | E_Procedure
@@ -56,7 +60,7 @@ package SPARK_Frame_Conditions is
    --  then include constants in the result (for flow analysis); if it is
    --  False then do not (for proof).
 
-   function Computed_Writes (E : Entity_Id) return Name_Sets.Set
+   function Computed_Writes (E : Entity_Id) return Node_Sets.Set
    with Pre => Ekind (E) in Entry_Kind
                           | E_Function
                           | E_Procedure
@@ -68,8 +72,8 @@ package SPARK_Frame_Conditions is
 
    procedure Collect_Direct_Computed_Globals
      (E       :     Entity_Id;
-      Inputs  : out Name_Sets.Set;
-      Outputs : out Name_Sets.Set)
+      Inputs  : out Node_Sets.Set;
+      Outputs : out Node_Sets.Set)
    with Pre  => Ekind (E) in Entry_Kind
                            | E_Function
                            | E_Procedure

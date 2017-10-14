@@ -34,6 +34,7 @@ with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Eval;                           use Sem_Eval;
 with Sem_Type;                           use Sem_Type;
 with SPARK_Definition;                   use SPARK_Definition;
+with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
 with Stringt;                            use Stringt;
@@ -1295,7 +1296,7 @@ package body SPARK_Util is
    ----------------------
 
    function Is_Global_Entity (E : Entity_Id) return Boolean is
-     (Is_Heap_Entity (E)
+     (Is_Heap_Variable (E)
         or else
       Ekind (E) in E_Abstract_State
                  | E_Loop_Parameter
