@@ -1,6 +1,6 @@
+with Types;
 package P
-  with Abstract_State => State,
-       Initializes    => State
+  with Initializes => Refined
 is
-  procedure Foo;
+   Refined : Types.T;
 end;
