@@ -406,6 +406,18 @@ The above flow dependencies can be read as "the output value of global variable
 ``Total`` depends on the input values of global variable ``Total`` and
 parameter ``Incr``".
 
+Outputs (both parameters and global variables) may have an implicit input part
+depending on their type:
+
+* an unconstrained array ``A`` has implicit input bounds ``A'First`` and
+  ``A'Last``
+* a discriminated record ``R`` has implicit input discriminants, for example
+  ``R.Discr``
+
+Thus, an output array ``A`` and an output discriminated record ``R`` may appear
+in input position inside a flow-dependency contract, to denote the input value
+of the bounds (for the array) or the discriminants (for the record).
+
 For protected subprograms, the protected object is considered as an implicit
 parameter of the subprogram which may be mentioned in the flow dependencies,
 under the name of the protected unit (type or object) being declared:

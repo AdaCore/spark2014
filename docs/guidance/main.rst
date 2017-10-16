@@ -206,6 +206,14 @@ thought of as Straw and Sticks levels. However, the adoption of SPARK
 allows us to get stronger guarantees, should the wolf in the fable adopt
 more aggressive means of attack than blowing.
 
+A pitfall when using tools for automating human tasks is to end up `pleasing
+the tool` rather than working around the tool limitations. Both flow analysis
+and proof, the two technologies used in SPARK, have known limitations. Users
+should refrain from changing the program for the only benefit of getting fewer
+messages from the tool. When relevant, users should justify tool messages
+through appropriate pragmas. See the sections on :ref:`Justifying Unproved
+Check Messages` and :ref:`Flow Analysis Warnings` for more details.
+
 In the following, we use "SPARK" to denote the SPARK language, and "GNATprove"
 to denote the formal verification tool in SPARK product.
 
@@ -702,7 +710,7 @@ accessors to query and update objects of type ``Ptr`` are grouped in package
       function Get (X : Ptr) return Integer is (X.all);
       procedure Set (X : Ptr; V : Integer) is
       begin
-             X.all := V;
+         X.all := V;
       end Set;
    end Ptr_Accesses;
 
@@ -713,6 +721,72 @@ accessors to query and update objects of type ``Ptr`` are grouped in package
       Set (Data2, Get (Data2) + Get (Data3));
       Set (Data3, 42);
    end Operate;
+
+Calls to subprograms through an access-to-subprogram variable can be isolated
+inside a wrapper subprogram as follows:
+
+.. code-block:: ada
+
+   Callback : Sub_T;
+
+   procedure Wrap (Arg1, Arg2 : T);
+
+   procedure Wrap (Arg1, Arg2 : T)
+     with SPARK_Mode => Off
+   is
+   begin
+      Callback.all (Arg1, Arg2);
+   end Wrap;
+
+Similarly for passing a subprogram in argument to a call as an an
+access-to-subprogram parameter, this can be isolated inside a wrapper
+subprogram as follows:
+
+.. code-block:: ada
+
+   procedure Proc (Arg1, Arg2 : T);
+   procedure Call_Sub (Sub : Sub_T);
+   procedure Wrap;
+
+   procedure Wrap
+     with SPARK_Mode => Off
+   is
+   begin
+      Call_Sub (Proc'Access);
+   end Wrap;
+
+The wrapper can even be made generic if some treatments need to be shared
+before and/or after the call. In that case, Ada rules prevent taking directly
+the address of the argument subprogram (procedure or function) inside the
+generic, so a local wrapper should be used and its address taken, as follows:
+
+.. code-block:: ada
+
+   procedure Proc (Arg1, Arg2 : T);
+   procedure Call_Sub (Sub : Sub_T);
+   procedure Wrap;
+
+   generic
+     with procedure P (Arg1, Arg2 : T);
+   procedure Wrap;
+
+   procedure Wrap
+     with SPARK_Mode => Off
+   is
+      procedure Local_Wrap (Arg1, Arg2 : T) is
+      begin
+         P (Arg1, Arg2);
+      end Local_Wrap;
+   begin
+      --  pre-treatments here
+      Call_Sub (Local_Wrap'Access);
+      --  post-treatments here
+   end Wrap;
+
+   procedure Wrap_Proc is new Wrap (Proc);
+
+Depending on how type ``Sub_T`` is defined, attribute ``Unchecked_Access`` may
+need to be used instead of attribute ``Access`` in the code above.
 
 .. rubric:: explicit dereference is not allowed in SPARK
 
@@ -1752,7 +1826,7 @@ Global Contract
 In addition to what's been presented so far, you may want to use flow
 analysis to verify specific data-dependency relations. This can be done by
 providing the tool with additional ``Global`` contracts stating the set of
-global variables accessed by a subprogram. You need to only supply those
+global variables accessed by a subprogram. You only need to supply 
 contracts that you want to verify. Other contracts will be automatically
 inferred by the tool. The simplest form of data dependency contract states
 that a subprogram is not allowed to either read or modify global variables:
@@ -1762,7 +1836,7 @@ that a subprogram is not allowed to either read or modify global variables:
    procedure Increment (X : in out Integer) with
       Global => null;
 
-This construction uses the Ada 2012 aspect syntax. You must place it on the
+This construct uses the Ada 2012 aspect syntax. You must place it on the
 subprogram declaration if any, otherwise on the subprogram body. You can
 use an alternative notation based on pragmas if compatibility with older
 versions of Ada is required:
@@ -1791,13 +1865,13 @@ the subprogram:
 The use of ``Global`` contracts is not mandatory. However, whenever a contract
 is provided, it must be correct and complete: that is, it must mention every
 global variable accessed by the subprogram with the correct mode. Similarly to
-subprogram parameter modes, global contracts are checked by the tool in flow
-analysis mode and checks and warnings are issued in case of non-conformance. To
-verify manually supplied global contracts, run GNATprove in flow analysis mode
-by selecting the :menuselection:`SPARK --> Examine File` menu, selecting the
-:guilabel:`flow` mode in the GPS panel, checking the :guilabel:`Do not report
-warnings` box, uncheck the :guilabel:`Report checks proved` box, and clicking
-:guilabel:`Execute`.
+subprogram parameter modes, data-dependency contracts are checked by the tool
+in flow analysis mode and checks and warnings are issued in case of
+non-conformance. To verify manually supplied data-dependency contracts, run
+GNATprove in flow analysis mode by selecting the :menuselection:`SPARK -->
+Examine File` menu, selecting the :guilabel:`flow` mode in the GPS panel,
+checking the :guilabel:`Do not report warnings` box, unchecking the
+:guilabel:`Report checks proved` box, and clicking :guilabel:`Execute`.
 
 Global contracts are described more completely in the SPARK User's Guide:
 http://docs.adacore.com/spark2014-docs/html/ug/en/source/subprogram_contracts.html#data-dependencies.
@@ -1918,6 +1992,107 @@ independently, every private variable must be linked to an abstract state
 using the ``Part_Of`` aspect. You can find information about state abstraction
 in the SPARK User's Guide:
 http://docs.adacore.com/spark2014-docs/html/ug/en/source/package_contracts.html#state-abstraction.
+
+.. _Depends Annotations:
+
+Depends Annotations
+-------------------
+
+In addition to what's been presented so far, you may want to use flow analysis
+to verify specific flow-dependency relations. This can be done by providing the
+tool with additional ``Depends`` contracts stating how outputs of a subprogram
+depend on its inputs. You need to only supply those contracts that you want to
+verify. The simplest form of flow-dependency contract states that all the
+outputs of a subprogram depend on all its inputs:
+
+.. code-block:: ada
+
+   procedure Increment (X : in out Integer) with
+      Depends => (X => X);
+
+This is the default contract that will be automatically inferred by the tool,
+if no explicit contract is specified. This construction uses the Ada 2012
+aspect syntax. You must place it on the subprogram declaration if any,
+otherwise on the subprogram body. You can use an alternative notation based on
+pragmas if compatibility with older versions of Ada is required:
+
+.. code-block:: ada
+
+   procedure Increment (X : in out Integer);
+   pragma Depends ((X => X));
+
+Note the double parentheses that are needed here, as the argument of the pragma
+has the syntax of an aggregate. This annotation is usually not useful on
+functions, as SPARK functions have only one output (its result), which in
+general depends on all its inputs. In its more complete form, the ``Depends``
+contract allows specifing precisely on which inputs each output depends:
+
+.. code-block:: ada
+
+   procedure P with
+      Depends =>
+         (X1 =>+ (X2, X3),
+         --  X1 output value depends on the input values of itself, X2 and X3
+          (Y1, Y2) => null,
+         --  Y1 and Y2 are outputs whose value does not depend on any input
+          null => (Z1, Z2, Z3));
+         --  the input values of Z1, Z2 and Z3 are ignored
+
+The use of ``Depends`` contracts is not mandatory. However, whenever a contract
+is provided, it must be correct and complete: that is, it must mention every
+flow dependency between inputs (both global variables and parameters) and
+outputs (both global variables and parameters). Similarly to subprogram
+parameter modes, flow-dependency contracts are checked by the tool in flow
+analysis mode and checks and warnings are issued in case of non-conformance. To
+verify manually supplied flow-dependency contracts, run GNATprove in flow
+analysis mode by selecting the :menuselection:`SPARK --> Examine File` menu,
+selecting the :guilabel:`flow` mode in the GPS panel, checking the
+:guilabel:`Do not report warnings` box, unchecking the :guilabel:`Report checks
+proved` box, and clicking :guilabel:`Execute`.
+
+Depends contracts are described more completely in the SPARK User's Guide:
+http://docs.adacore.com/spark2014-docs/html/ug/en/source/subprogram_contracts.html#flow-dependencies
+
+The Difference Between Outputs and Inputs-Outputs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Modes on parameters and data-dependency contracts in SPARK have a stricter
+meaning than in Ada. In SPARK, a parameter ``out`` or a global variable
+``Output`` should be completely initialized before returning from the
+subprogram. Thus, a parameter that is only partially initialized, or
+initialized only on some paths through the subprogram, should be marked ``in
+out`` (for a parameter) or ``In_Out`` (for a global variable) to be compatible
+with SPARK data initialization policy. For more details, see the SPARK User's
+Guide:
+http://docs.adacore.com/spark2014-docs/html/ug/en/source/language_restrictions.html#data-initialization-policy
+
+Implicit Inputs
+^^^^^^^^^^^^^^^
+
+Outputs (both parameters and global variables) may have an implicit input part
+depending on their type:
+
+* an unconstrained array ``A`` has implicit input bounds ``A'First`` and ``A'Last``
+* a discriminated record ``R`` has implicit input discriminants, for example
+  ``R.Discr``
+
+Thus, an output array ``A`` and an output discriminated record ``R`` may appear
+in input position inside a flow-dependency contract, to denote the input value
+of the bounds (for the array) or the discriminants (for the record). As a
+result, in most cases the flow-dependency contract should state that such an
+output depends on its value as input, even when all the (non-discriminant)
+components of the array or the record are written to inside the subprogram:
+
+.. code-block:: ada
+
+   procedure Erase (S : out String) with
+      Depends => (S => S)
+   is
+   begin
+      S := (others => ' ');
+   end Erase;
+
+Note that such implicit inputs can also be referred to in :ref:`Preconditions`.
 
 .. _Silver Level:
 
@@ -2727,6 +2902,118 @@ the main part of the program. This can be expressed with postconditions:
 In the code segment above, preconditions and postconditions are used to
 track the status of the data chunk ``C`` so that we can guarantee that
 transformations are performed in the specified order.
+
+Contract Cases
+--------------
+
+Contract cases allows to easily specify contracts with a set of disjoint and
+complete cases. Consider the postcondition of a majority voting procedure,
+which returns the value voted by a majority of voters, if any, and the special
+value ``None`` otherwise:
+
+.. code-block:: ada
+
+   type Vote is (None, Blue, White, Red);
+
+   function Majority_Voting1 (A, B, C : Vote) return Vote
+     with Post => (if A = B then
+                     Majority_Voting'Result = A
+                   elsif A = C then
+                     Majority_Voting'Result = A
+                   elsif B = C then
+                     Majority_Voting'Result = B
+                   else
+                     Majority_Voting'Result = None);
+
+This postcondition can be expressed as a set of distinct cases, which
+correspond to the conditions on the left of the arrow symbols inside the
+``Contract_Cases`` contract below:
+
+.. code-block:: ada
+
+   function Majority_Voting (A, B, C : Vote) return Vote
+     with Contract_Cases =>
+       (A = B                        => Majority_Voting'Result = A,
+        A /= B and A = C             => Majority_Voting'Result = A,
+        A /= B and B = C             => Majority_Voting'Result = B,
+        A /= B and A /= C and B /= C => Majority_Voting'Result = None);
+
+The benefit of expressing the postcondition with contract cases is that
+GNATprove additionally checks that cases really partition the input state, that
+is, they are disjoint and complete. Here the verification will succeed and
+GNATprove will issue 'info' messages::
+
+   info: disjoint contract cases proved
+   info: complete contract cases proved
+
+The cases can be more or less precise. For example, the contract above can be
+expressed with more cases as follows:
+
+.. code-block:: ada
+
+   function Majority_Voting (A, B, C : Vote) return Vote
+     with Contract_Cases =>
+       (A  = B and A  = C and B  = C => Majority_Voting'Result = A,
+        A  = B and A /= C and B /= C => Majority_Voting'Result = A,
+        A /= B and A  = C and B /= C => Majority_Voting'Result = A,
+        A /= B and A /= C and B  = C => Majority_Voting'Result = B,
+        A /= B and A /= C and B /= C => Majority_Voting'Result = None);
+
+See the SPARK User's Guide for more information on contract cases:
+http://docs.adacore.com/spark2014-docs/html/ug/en/source/subprogram_contracts.html#contract-cases
+
+Expression Functions
+--------------------
+
+It is usually convenient to give names to properties used in contracts. This
+can be done with expression functions, which are functions whose implementation
+is given by a simple expression. In the common case where types and state are
+defined privately, expression functions provide a convenient way to name
+properties that could not be expressed publicly otherwise. By defining such
+queries as expression functions in the private part of the package
+specification, instead of defining them as regular functions in the package
+body, GNATprove can take them into account for proof as if their implementation
+was inlined.
+
+For example, consider a version of the program presented for
+:ref:`Postconditions`, where the implementation of type ``Chunk`` is hidden
+from client code. The same contracts as before can be expressed by defining a
+function ``Get_Status`` to retrieve the value of the ``Stat`` component:
+
+.. code-block:: ada
+
+   type Status is (Raw, Sanitized, Normalized);
+   type Chunk is private;
+
+   function Get_Status (C : Chunk) return Status;
+
+   procedure Sanitize (C : in out Chunk)
+     with Pre  => Get_Status (C) = Raw,
+          Post => Get_Status (C) = Sanitized;
+
+   procedure Normalize (C : in out Chunk)
+     with Pre  => Get_Status (C) = Sanitized,
+          Post => Get_Status (C) = Normalized;
+
+   procedure Main_Treatment (C : in Chunk)
+     with Pre => Get_Status (C) = Normalized;
+
+``Get_Status`` is defined as an expression function in the private part of the
+package specification, after type ``Chunk`` has been defined:
+
+.. code-block:: ada
+
+   private
+
+   type Chunk is record
+      Data : String (1 .. 256);
+      Stat : Status;
+   end record;
+
+   function Get_Status (C : Chunk) return Status is (C.Stat);
+
+See the SPARK User's Guide for more information on expression functions:
+http://docs.adacore.com/spark2014-docs/html/ug/en/source/specification_features.html#expression-functions
 
 Ghost Code
 ----------
