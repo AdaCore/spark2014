@@ -318,8 +318,7 @@ package body SPARK_Util.Types is
       --  initialized component.
 
       function Get_DIC_Pragma (Typ : Entity_Id) return Node_Id
-      with Pre => Has_DIC (Typ) or else
-                  Has_Inherited_DIC (Typ);
+      with Pre => Has_DIC (Typ);
       --  Returns the unanalyzed pragma Default_Initial_Condition applying to a
       --  type.
 
@@ -333,14 +332,14 @@ package body SPARK_Util.Types is
       function Get_DIC_Pragma (Typ : Entity_Id) return Node_Id is
          Par : Entity_Id := Typ;
       begin
-         while Has_DIC (Par)
-           or else Has_Inherited_DIC (Par)
-         loop
-            if Has_DIC (Par) then
+         while Has_DIC (Par) loop
+            if Has_Own_DIC (Par) then
                return Get_Pragma (Typ, Pragma_Default_Initial_Condition);
             elsif Is_Private_Type (Par) and then Etype (Par) = Par then
+               pragma Assert (Has_Inherited_DIC (Par));
                Par := Etype (Full_View (Par));
             else
+               pragma Assert (Has_Inherited_DIC (Par));
                Par := Etype (Par);
             end if;
          end loop;
@@ -414,9 +413,8 @@ package body SPARK_Util.Types is
    --  Start of processing for Default_Initialization
 
    begin
-      --  For types that are not in SPARK we trust the declaration.
-      --  This means that if we find a Default_Initial_Condition
-      --  aspect we trust it.
+      --  For types that are not in SPARK we trust the declaration. This means
+      --  that if we find a Default_Initial_Condition aspect we trust it.
 
       if (not Entity_In_SPARK (Typ)
             or else Full_View_Not_In_SPARK (Typ))
@@ -425,10 +423,8 @@ package body SPARK_Util.Types is
          return Default_Initialization (Typ);
       end if;
 
-      --  For some subtypes we have to check for attributes
-      --  Has_DIC and Has_Inherited_DIC on
-      --  the base type instead. However, we want to skip Itypes while
-      --  doing so.
+      --  For some subtypes we have to check for attributes Has_DIC on the base
+      --  type instead. However, we want to skip Itypes while doing so.
 
       B_Type := Typ;
       if Ekind (B_Type) in Subtype_Kind then
@@ -436,8 +432,7 @@ package body SPARK_Util.Types is
                   or else Is_Itype (B_Type))
 
            --  Stop if we find either of the attributes
-           and then not (Has_DIC (B_Type)
-                           or else Has_Inherited_DIC (B_Type))
+           and then not Has_DIC (B_Type)
 
            --  Stop if we cannot make any progress
            and then not Is_Nouveau_Type (B_Type)
@@ -447,12 +442,11 @@ package body SPARK_Util.Types is
       end if;
 
       --  If we are considering implicit initializations and
-      --  Default_Initial_Condition was specified for the type, take
-      --  it into account.
+      --  Default_Initial_Condition was specified for the type, take it into
+      --  account.
 
       if not Explicit_Only
-        and then (Has_DIC (B_Type)
-                    or else Has_Inherited_DIC (B_Type))
+        and then Has_DIC (B_Type)
       then
          declare
             Prag : constant Node_Id := Get_DIC_Pragma (B_Type);
