@@ -107,6 +107,7 @@ package body Flow.Control_Flow_Graph is
    subtype Nodes_Ignored_By_Process_Statement is Node_Kind
      with Static_Predicate => Nodes_Ignored_By_Process_Statement in
                                 N_Abstract_Subprogram_Declaration |
+                                N_Call_Marker                     |
                                 N_Freeze_Entity                   |
                                 N_Freeze_Generic_Entity           |
                                 N_Generic_Instantiation           |
@@ -134,7 +135,8 @@ package body Flow.Control_Flow_Graph is
                                 N_Task_Type_Declaration           |
                                 N_Use_Package_Clause              |
                                 N_Use_Type_Clause                 |
-                                N_Validate_Unchecked_Conversion;
+                                N_Validate_Unchecked_Conversion   |
+                                N_Variable_Reference_Marker;
 
    package Vertex_Lists is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Flow_Graphs.Vertex_Id);
@@ -656,11 +658,9 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-   with Pre => Nkind (N) in N_Call_Marker
-                          | N_Null_Statement
+   with Pre => Nkind (N) in N_Null_Statement
                           | N_Raise_Statement
                           | N_Raise_xxx_Error
-                          | N_Variable_Reference_Marker
                           | N_Exception_Declaration
                           | N_Exception_Renaming_Declaration;
    --  Deals with null and raise statements. We create a new vertex that has
@@ -4968,10 +4968,7 @@ package body Flow.Control_Flow_Graph is
          when N_Loop_Statement =>
             Do_Loop_Statement (N, FA, CM, Ctx);
 
-         when N_Call_Marker
-            | N_Null_Statement
-            | N_Variable_Reference_Marker
-         =>
+         when N_Null_Statement =>
             Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
 
          when N_Package_Body      |
