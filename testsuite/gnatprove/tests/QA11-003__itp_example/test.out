@@ -15,6 +15,6 @@ test.adb:60:14: info: float overflow check proved (Z3: 1 VC)
 test.adb:61:14: info: initialization of "B" proved
 test.adb:69:17: medium: postcondition might fail, cannot prove Test_7'Result = 1 (e.g. when Test_7'Result = 0)
 test.adb:79:16: info: postcondition proved (Z3: 1 VC)
-test.adb:79:19: info: overflow check proved (CVC4: 1 VC)
+test.adb:79:19: medium: overflow check might fail (e.g. when X = 2)
 test.adb:79:24: info: overflow check proved (CVC4: 1 VC)
 test.adb:79:29: info: division check proved (CVC4: 1 VC)
