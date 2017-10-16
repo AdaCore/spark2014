@@ -56,9 +56,7 @@ package SPARK_Frame_Conditions is
                           | E_Function
                           | E_Procedure
                           | E_Task_Type;
-   --  Get the variables read by subprogram E. If Include_Constants is True
-   --  then include constants in the result (for flow analysis); if it is
-   --  False then do not (for proof).
+   --  Get the variables read by subprogram E
 
    function Computed_Writes (E : Entity_Id) return Node_Sets.Set
    with Pre => Ekind (E) in Entry_Kind
