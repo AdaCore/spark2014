@@ -1,0 +1,3 @@
+p.ads:7:37: medium: this interrupt might be reserved
+p.ads:12:37: medium: this interrupt might be reserved
+q.ads:4:45: medium: this interrupt might be reserved
