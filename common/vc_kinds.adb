@@ -40,6 +40,132 @@ package body VC_Kinds is
    procedure Get_Typed_Cntexmp_Value (V      : JSON_Value;
                                       Result : out Cntexmp_Value_Ptr);
 
+   -----------------
+   -- CWE_Message --
+   -----------------
+
+   function CWE_Message (Kind : VC_Kind) return String is
+      CWE_Id : constant String :=
+        (case Kind is
+         --  CWE-369: Divide By Zero
+
+         when VC_Division_Check            => "369",
+
+         --  CWE-120: Buffer Copy without Checking Size of Input ('Classic
+         --  Buffer Overflow')
+
+         when VC_Index_Check               => "120",
+
+         --  CWE-190: Integer Overflow or Wraparound
+
+         when VC_Overflow_Check            => "190",
+
+         --  CWE-739: CWE CATEGORY: CERT C Secure Coding Section 05 - Floating
+         --  Point (FLP)
+
+         when VC_FP_Overflow_Check         => "739",
+
+         --  CWE-682: Incorrect Calculation
+
+         when VC_Range_Check
+            | VC_Predicate_Check
+            | VC_Predicate_Check_On_Default_Value => "682",
+
+         --  CWE-136: CWE CATEGORY: Type Errors
+
+         when VC_Discriminant_Check
+            | VC_Tag_Check                 => "136",
+
+         --  CWE-835: Loop with Unreachable Exit Condition ('Infinite Loop')
+
+         when VC_Loop_Variant              => "835",
+
+         --  We did not find a relevant CWE for the following yet
+
+         when VC_Invariant_Check
+            | VC_Invariant_Check_On_Default_Value
+            | VC_Length_Check
+            | VC_Ceiling_Interrupt
+            | VC_Interrupt_Reserved
+            | VC_Ceiling_Priority_Protocol
+            | VC_Task_Termination
+            | VC_Initial_Condition
+            | VC_Default_Initial_Condition
+            | VC_Precondition
+            | VC_Precondition_Main
+            | VC_Postcondition
+            | VC_Refined_Post
+            | VC_Contract_Case
+            | VC_Disjoint_Contract_Cases
+            | VC_Complete_Contract_Cases
+            | VC_Loop_Invariant
+            | VC_Loop_Invariant_Init
+            | VC_Loop_Invariant_Preserv
+            | VC_Assert
+            | VC_Raise
+            | VC_Weaker_Pre
+            | VC_Trivial_Weaker_Pre
+            | VC_Stronger_Post
+            | VC_Weaker_Classwide_Pre
+            | VC_Stronger_Classwide_Post   => "");
+   begin
+      if CWE_Id = "" then
+         return "";
+      else
+         return " [CWE " & CWE_Id & "]";
+      end if;
+   end CWE_Message;
+
+   function CWE_Message (Kind : Flow_Tag_Kind) return String is
+      CWE_Id : constant String :=
+        (case Kind is
+         --  CWE-561: Dead Code
+
+         when Dead_Code                     => "561",
+
+         --  CWE-457: Use of Uninitialized Variable
+
+         when Default_Initialization_Mismatch
+            | Uninitialized                 => "457",
+
+         --  CWE-563: Assignment to Variable without Use ('Unused Variable')
+
+         when Unused
+            | Unused_Initial_Value          => "563",
+
+         when Empty_Tag
+            | Aliasing
+            | Depends_Null
+            | Depends_Missing
+            | Depends_Missing_Clause
+            | Depends_Wrong
+            | Global_Missing
+            | Global_Wrong
+            | Export_Depends_On_Proof_In
+            | Hidden_Unexposed_State
+            | Illegal_Update
+            | Impossible_To_Initialize_State
+            | Ineffective
+            | Initializes_Wrong
+            | Inout_Only_Read
+            | Missing_Return
+            | Not_Constant_After_Elaboration
+            | Pragma_Elaborate_All_Needed
+            | Pragma_Elaborate_Body_Needed
+            | Refined_State_Wrong
+            | Side_Effects
+            | Stable
+            | Non_Volatile_Function_With_Volatile_Effects
+            | Volatile_Function_Without_Volatile_Effects
+            | Reference_To_Non_CAE_Variable => "");
+   begin
+      if CWE_Id = "" then
+         return "";
+      else
+         return " [CWE " & CWE_Id & "]";
+      end if;
+   end CWE_Message;
+
    ---------------
    -- From_JSON --
    ---------------

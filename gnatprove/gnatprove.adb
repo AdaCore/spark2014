@@ -781,6 +781,7 @@ procedure Gnatprove with SPARK_Mode is
          Gnat2Why_Args.Why3_Args := Compute_Why3_Args;
          Gnat2Why_Args.Report_Mode := Report;
          Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
+         Gnat2Why_Args.CWE := CL_Switches.CWE;
          if CodePeer then
             Gnat2Why_Args.CP_Res_Dir :=
               To_Unbounded_String
