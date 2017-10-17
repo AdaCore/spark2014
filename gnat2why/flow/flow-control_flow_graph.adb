@@ -3311,7 +3311,9 @@ package body Flow.Control_Flow_Graph is
       --  Start of processing for Find_Tasks
 
       begin
-         if not Has_Task (T) then
+         if not Has_Task (T)
+           and then not Has_Protected (T)
+         then
             return;
 
          elsif Is_Task_Type (T) then
@@ -3328,6 +3330,46 @@ package body Flow.Control_Flow_Graph is
                                    then Size
                                    else 1),
                                 Node      => N));
+            end;
+
+         --  Attached interrupt handlers can be executed spontaneously, just
+         --  like task types, so we treat them in the same way.
+
+         elsif Is_Protected_Type (T)
+           and then Has_Attach_Handler (T)
+         then
+            declare
+               Prot_E : Entity_Id := First_Entity (T);
+               --  Iterator for entities of the protected object (including
+               --  protected components, but they are easy to ignore).
+               --
+               --  Note: unlike for derived types and subtypes of task types,
+               --  for protected types we don't need to look into the base
+               --  type, because by calling First_Entity/Next_Entity we
+               --  effectively iterate over the base type.
+
+            begin
+               while Present (Prot_E) loop
+                  --  The Ravenscar profile forbids the use of pragma
+                  --  Interrupt_Handler, so Is_Interrupt_Handler is equivalent
+                  --  to checking if pragma Attach_Handler is present (but
+                  --  slightly cheaper).
+
+                  if Ekind (Prot_E) = E_Procedure
+                    and then Entity_In_SPARK (Prot_E)
+                    and then Is_Interrupt_Handler (Prot_E)
+                  then
+                     GG_Register_Task_Object
+                       (Type_Name => To_Entity_Name (Prot_E),
+                        Object    => (Name      => Object_Name,
+                                      Instances =>
+                                        (if Size > 1 or else Size = -1
+                                         then Size
+                                         else 1),
+                                      Node      => N));
+                  end if;
+                  Next_Entity (Prot_E);
+               end loop;
             end;
 
          elsif Is_Record_Type (T) then
