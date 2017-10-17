@@ -1,0 +1,1 @@
+copy_values.adb:8:25: info: float overflow check proved (Z3: 1 VC)

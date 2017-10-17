@@ -356,6 +356,8 @@ module Float32
   axiom one_of_int: one = of_int RNA 1
 
   type t__ref = { mutable t__content "model_trace:" : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
 end
 
 module Float64
@@ -376,6 +378,8 @@ module Float64
   axiom one_of_int: one = of_int RNA 1
 
   type t__ref = { mutable t__content "model_trace:" : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
 end
 
 module FloatConv
