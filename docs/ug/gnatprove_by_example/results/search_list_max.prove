@@ -1,12 +1,12 @@
 search_list_max.adb:4:40: info: initialization of "Pos.Node" proved
 search_list_max.adb:4:58: info: initialization of "Max" proved
-search_list_max.adb:7:11: medium: postcondition might fail (e.g. when Max = 1)
 search_list_max.adb:7:12: info: precondition proved
 search_list_max.adb:7:35: info: initialization of "Max" proved
 search_list_max.adb:8:12: info: precondition proved
 search_list_max.adb:8:35: info: initialization of "Max" proved
 search_list_max.adb:9:27: info: initialization of "Pos.Node" proved
 search_list_max.adb:10:11: info: precondition proved
+search_list_max.adb:10:11: medium: postcondition might fail, cannot prove Element (L, Pos) = Max (e.g. when Max = 0 and Pos = (Node => 2))
 search_list_max.adb:10:23: info: initialization of "Pos.Node" proved
 search_list_max.adb:10:30: info: initialization of "Max" proved
 search_list_max.adb:15:11: info: initialization of "Cu.Node" proved
