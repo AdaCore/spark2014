@@ -218,8 +218,7 @@ package VC_Kinds is
    --  which should be positioned on the location of the call.
 
    SPARK_Suffix : constant String := "spark";
-   Flow_Suffix  : constant String := "flow";
-   Proof_Suffix : constant String := "proof";
+   --  Extension of the files where spark_report expects gnat2why results
 
    ------------
    -- Labels --

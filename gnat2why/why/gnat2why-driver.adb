@@ -84,6 +84,7 @@ with Why.Atree.Modules;               use Why.Atree.Modules;
 with Why.Atree.Sprint;                use Why.Atree.Sprint;
 with Why.Atree.Tables;
 with Why.Inter;                       use Why.Inter;
+with VC_Kinds;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
@@ -216,7 +217,7 @@ package body Gnat2Why.Driver is
       File_Name : constant String :=
         Ada.Directories.Compose
           (Name      => Unit_Name,
-           Extension => "spark");
+           Extension => VC_Kinds.SPARK_Suffix);
       Full : constant JSON_Value := Create_Object;
    begin
       Set_Field (Full, "spark", Create (Get_SPARK_JSON));
