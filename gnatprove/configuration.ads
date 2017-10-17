@@ -68,6 +68,7 @@ package Configuration is
       Cargs_List           : String_Lists.List;
       CodePeer             : aliased GNAT.Strings.String_Access;
       Coverage             : aliased Boolean;
+      CWE                  : aliased Boolean;
       D                    : aliased Boolean;
       Dbg_Proof_Only       : aliased Boolean;
       F                    : aliased Boolean;

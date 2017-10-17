@@ -145,9 +145,9 @@ package Gnat2Why_Args is
 
    Pedantic : Boolean := False;
 
-   --  Prevent loop unrolling
+   No_Loop_Unrolling : Boolean := False;  --  Prevent loop unrolling
 
-   No_Loop_Unrolling : Boolean := False;
+   CWE : Boolean := False;  --  Issue CWE Ids in messages
 
    --  Set the report mode (only failing VCs, all VCs, details)
 

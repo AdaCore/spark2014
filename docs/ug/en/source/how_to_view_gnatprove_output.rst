@@ -173,58 +173,69 @@ is about ``Y``, and that |GNATprove| was unable to prove that ``Y`` cannot be
 zero. The explanations in the table below should be read with the context that
 is given by the source location.
 
+When switch ``--cwe`` is used, a corresponding CWE id is included in the
+message when relevant. For example, on the example above, |GNATprove| will
+output a message such as::
+
+   file.adb:12:37: medium: divide by zero might fail [CWE 369]
+
+Note that CWE ids are only included in check messages and warnings, never in
+information messages about proved checks. For more information on CWE, see the
+MITRE Corporation's Common Weakness Enumeration (CWE) Compatibility and
+Effectiveness Program (`http://cwe.mitre.org/ <http://cwe.mitre.org/>`_).
+
 The following table shows the kinds of check messages issued by proof.
 
 .. UPDATES TO THIS TABLE SHOULD ALSO BE REFLECTED IN THE TABLE UNDER SECTION
 .. "Manual Proof in Command Line"
 
-.. tabularcolumns:: |l|p{3in}|
+.. tabularcolumns:: |l|l|p{3in}|
 
 .. csv-table::
-   :header: "Message Kind", "Explanation"
-   :widths: 1, 4
+   :header: "Message Kind", "CWE", "Explanation"
+   :widths: 1, 1, 4
 
    **run-time checks**
-   "divide by zero", "Check that the second operand of the division, mod or rem operation is different from zero."
-   "index check", "Check that the given index is within the bounds of the array."
-   "overflow check", "Check that the result of the given integer arithmetic operation is within the bounds of the base type."
-   "fp_overflow check", "Check that the result of the given floating point operation is within the bounds of the base type."
-   "range check", "Check that the given value is within the bounds of the expected scalar subtype."
-   "predicate check", "Check that the given value respects the applicable type predicate."
-   "predicate check on default value", "Check that the default value for the type respects the applicable type predicate."
-   "invariant check", "Check that the given value respects the applicable type invariant."
-   "invariant check on default value", "Check that the default value for the type respects the applicable type invariant."
-   "length check", "Check that the given array is of the length of the expected array subtype."
-   "discriminant check", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
-   "tag check",          "Check that the tag of the given tagged object has the expected value."
-   "ceiling priority in Interrupt_Priority", "Check that the ceiling priority specified for a protected object containing a procedure with an aspect Attach_Handler is in Interrupt_Priority"
-   "interrupt is reserved",   "Check that the interrupt specified by Attach_Handler is not reserved"
-   "ceiling priority protocol", "Check that the ceiling priority protocol is respected, i.e., when a task calls a protected operation, the active priority of the task is not higher than the priority of the protected object (ARM Annex D.3)"
-   "task termination",   "Check that the task does not terminate, as required by Ravenscar"
+   "divide by zero", "CWE `369 <http://cwe.mitre.org/data/definitions/369.html>`_", "Check that the second operand of the division, mod or rem operation is different from zero."
+   "index check", "CWE `120 <http://cwe.mitre.org/data/definitions/120.html>`_", "Check that the given index is within the bounds of the array."
+   "overflow check", "CWE `190 <http://cwe.mitre.org/data/definitions/190.html>`_", "Check that the result of the given integer arithmetic operation is within the bounds of the base type."
+   "fp_overflow check", "CWE `739 <http://cwe.mitre.org/data/definitions/739.html>`_", "Check that the result of the given floating point operation is within the bounds of the base type."
+   "range check", "CWE `682 <http://cwe.mitre.org/data/definitions/682.html>`_", "Check that the given value is within the bounds of the expected scalar subtype."
+   "predicate check", "CWE `682 <http://cwe.mitre.org/data/definitions/682.html>`_", "Check that the given value respects the applicable type predicate."
+   "predicate check on default value", "CWE `682 <http://cwe.mitre.org/data/definitions/682.html>`_", "Check that the default value for the type respects the applicable type predicate."
+   "invariant check",, "Check that the given value respects the applicable type invariant."
+   "invariant check on default value",, "Check that the default value for the type respects the applicable type invariant."
+   "length check",, "Check that the given array is of the length of the expected array subtype."
+   "discriminant check", "CWE `136 <http://cwe.mitre.org/data/definitions/136.html>`_", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
+   "tag check", "CWE `136 <http://cwe.mitre.org/data/definitions/136.html>`_", "Check that the tag of the given tagged object has the expected value."
+   "ceiling priority in Interrupt_Priority",, "Check that the ceiling priority specified for a protected object containing a procedure with an aspect Attach_Handler is in Interrupt_Priority"
+   "interrupt is reserved",, "Check that the interrupt specified by Attach_Handler is not reserved"
+   "ceiling priority protocol",, "Check that the ceiling priority protocol is respected, i.e., when a task calls a protected operation, the active priority of the task is not higher than the priority of the protected object (ARM Annex D.3)"
+   "task termination",, "Check that the task does not terminate, as required by Ravenscar"
 
    **assertions**
-   "initial condition", "Check that the initial condition of a package is true after elaboration."
-   "default initial condition", "Check that the default initial condition of a type is true after default initialization of an object of the type."
-   "precondition", "Check that the precondition aspect of the given call evaluates to True."
-   "call to nonreturning subprogram", "Check that the call to a subprogram called in case of error is unreachable."
-   "precondition of main", "Check that the precondition aspect of the given main procedure evaluates to True after elaboration."
-   "postcondition", "Check that the postcondition aspect of the subprogram evaluates to True."
-   "refined postcondition", "Check that the refined postcondition aspect of the subprogram evaluates to True."
-   "contract case", "Check that all cases of the contract case evaluate to true at the end of the subprogram."
-   "disjoint contract cases", "Check that the cases of the contract cases aspect are all mutually disjoint."
-   "complete contract cases", "Check that the cases of the contract cases aspect cover the state space that is allowed by the precondition aspect."
-   "loop invariant in first iteration", "Check that the loop invariant evaluates to True on the first iteration of the loop."
-   "loop invariant after first iteration", "Check that the loop invariant evaluates to True at each further iteration of the loop."
-   "loop variant", "Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop."
-   "assertion", "Check that the given assertion evaluates to True."
-   "raised exception", "Check that the raise statement can never be reached."
+   "initial condition",, "Check that the initial condition of a package is true after elaboration."
+   "default initial condition",, "Check that the default initial condition of a type is true after default initialization of an object of the type."
+   "precondition",, "Check that the precondition aspect of the given call evaluates to True."
+   "call to nonreturning subprogram",, "Check that the call to a subprogram called in case of error is unreachable."
+   "precondition of main",, "Check that the precondition aspect of the given main procedure evaluates to True after elaboration."
+   "postcondition",, "Check that the postcondition aspect of the subprogram evaluates to True."
+   "refined postcondition",, "Check that the refined postcondition aspect of the subprogram evaluates to True."
+   "contract case",, "Check that all cases of the contract case evaluate to true at the end of the subprogram."
+   "disjoint contract cases",, "Check that the cases of the contract cases aspect are all mutually disjoint."
+   "complete contract cases",, "Check that the cases of the contract cases aspect cover the state space that is allowed by the precondition aspect."
+   "loop invariant in first iteration",, "Check that the loop invariant evaluates to True on the first iteration of the loop."
+   "loop invariant after first iteration",, "Check that the loop invariant evaluates to True at each further iteration of the loop."
+   "loop variant", "CWE `835 <http://cwe.mitre.org/data/definitions/835.html>`_", "Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop."
+   "assertion",, "Check that the given assertion evaluates to True."
+   "raised exception",, "Check that the raise statement can never be reached."
 
    **Liskov Substitution Principle**
-   "precondition weaker than class-wide precondition", "Check that the precondition aspect of the subprogram is weaker than its class-wide precondition."
-   "precondition not True while class-wide precondition is True", "Check that the precondition aspect of the subprogram is True if its class-wide precondition is True."
-   "postcondition stronger than class-wide postcondition", "Check that the postcondition aspect of the subprogram is stronger than its class-wide postcondition."
-   "class-wide precondition weaker than overridden one", "Check that the class-wide precondition aspect of the subprogram is weaker than its overridden class-wide precondition."
-   "class-wide postcondition stronger than overridden one", "Check that the class-wide postcondition aspect of the subprogram is stronger than its overridden class-wide postcondition."
+   "precondition weaker than class-wide precondition",, "Check that the precondition aspect of the subprogram is weaker than its class-wide precondition."
+   "precondition not True while class-wide precondition is True",, "Check that the precondition aspect of the subprogram is True if its class-wide precondition is True."
+   "postcondition stronger than class-wide postcondition",, "Check that the postcondition aspect of the subprogram is stronger than its class-wide postcondition."
+   "class-wide precondition weaker than overridden one",, "Check that the class-wide precondition aspect of the subprogram is weaker than its overridden class-wide precondition."
+   "class-wide postcondition stronger than overridden one",, "Check that the class-wide postcondition aspect of the subprogram is stronger than its overridden class-wide postcondition."
 
 .. insert blank line to separate more clearly the two tables in the HTML output
 
@@ -233,44 +244,44 @@ The following table shows the kinds of check messages issued by proof.
 The following table shows all flow analysis messages, (E)rrors,
 (W)arnings and (C)hecks.
 
-.. tabularcolumns:: |p{3in}|l|p{3in}|
+.. tabularcolumns:: |p{3in}|l|l|p{3in}|
 
 .. csv-table::
-   :header: "Message Kind", "Class", "Explanation"
-   :widths: 1, 1, 6
+   :header: "Message Kind", "Class", "CWE", "Explanation"
+   :widths: 1, 1, 1, 6
 
-   "aliasing", "E", "Two formal or global parameter are aliased."
-   "function with side effects", "E", "A function with side effects has been detected."
-   "cannot depend on variable", "E", "Certain expressions (for example: discriminant specifications and component declarations) need to be variable free."
-   "missing global", "E", "Flow analysis has detected a global that was not mentioned on the Global or Initializes aspects"
-   "must be a global output", "E", "Flow analysis has detected an update of an in mode global."
-   "pragma Elaborate_All needed", "E", "A remote state abstraction is used during the package's elaboration. Elaborate_All required for the remote package."
-   "export must not depend on Proof_In", "E", "Flow analysis has detected an output of a subprogram that depends on a constant which is marked Proof_In."
-   "class-wide mode must also be a class-wide mode of overridden subprogram", "E", "Miss-match between Global contracts of overridding and overridden subprograms."
-   "class-wide dependency is not class-wide dependency of overridden subprogram", "E", "Miss-match between Depends contracts of overridding and overridden subprograms."
-   "volatile function", E, "A nonvolatile function may not have a volatile global."
-   "tasking exclusivity", E, "No two tasks may suspend on the same protected object or the same suspension object."
-   "tasking exclusivity", E, "No two tasks may read and write from the same unsynchronized object."
-   "missing dependency", "C", "A dependency is missing from the dependency relation."
-   "dependency relation", "C", "An out parameter or global is missing from the dependency relation."
-   "missing null dependency", "C", "A variable is missing from the null dependency."
-   "incorrect dependency", "C", "A stated dependency is not fulfilled."
-   "not initialized", "C", "Flow analysis has detected the use of an uninitialized variable."
-   "initialization must not depend on something", "C", "Wrong Initializes aspect detected."
-   "type is not fully initialized", "C", "A type promised to be default initialized but is not."
-   "needs to be a constituent of some state abstraction", "C", "Flow analysis detected a constituent that has to be exposed through some state abstraction."
-   "constant after elaboration", "C", "An object which is constant after elaboration must not be changed after elaboration and as such cannot be the output of any subprogram."
-   "is not modified", "W", "The variable is declared with mode in out, but is never modified, so could be declared with mode in."
-   "unused assignment", "W", "Flow analysis has detected an assignment to a variable which is not read after the assignment."
-   "initialization has no effect", "W", "Flow analysis has detected an object which is initialized, but never read."
-   "this statement is never reached", "W", "This statement will never be executed (dead code)."
-   "statement has no effect", "W", "Flow analysis has detected a statement which has no effect."
-   "unused initial value", "W", "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
-   "unused", "W", "A global or locally declared variable is never used."
-   "missing return", "W", "A return statement seems to be missing from the function."
-   "no procedure exists that can initialize abstract state", "W", "Flow analysis detected a state abstraction that is impossible to initialize."
-   "subprogram has no effect", "W", "A subprogram that has no exports has been detected."
-   "volatile function", E, "A volatile function that has no volatile globals does not have to be a volatile function."
+   "aliasing", "E",, "Two formal or global parameter are aliased."
+   "function with side effects", "E",, "A function with side effects has been detected."
+   "cannot depend on variable", "E",, "Certain expressions (for example: discriminant specifications and component declarations) need to be variable free."
+   "missing global", "E",, "Flow analysis has detected a global that was not mentioned on the Global or Initializes aspects"
+   "must be a global output", "E",, "Flow analysis has detected an update of an in mode global."
+   "pragma Elaborate_All needed", "E",, "A remote state abstraction is used during the package's elaboration. Elaborate_All required for the remote package."
+   "export must not depend on Proof_In", "E",, "Flow analysis has detected an output of a subprogram that depends on a constant which is marked Proof_In."
+   "class-wide mode must also be a class-wide mode of overridden subprogram", "E",, "Miss-match between Global contracts of overridding and overridden subprograms."
+   "class-wide dependency is not class-wide dependency of overridden subprogram", "E",, "Miss-match between Depends contracts of overridding and overridden subprograms."
+   "volatile function", E,, "A nonvolatile function may not have a volatile global."
+   "tasking exclusivity", E,, "No two tasks may suspend on the same protected object or the same suspension object."
+   "tasking exclusivity", E,, "No two tasks may read and write from the same unsynchronized object."
+   "missing dependency", "C",, "A dependency is missing from the dependency relation."
+   "dependency relation", "C",, "An out parameter or global is missing from the dependency relation."
+   "missing null dependency", "C",, "A variable is missing from the null dependency."
+   "incorrect dependency", "C",, "A stated dependency is not fulfilled."
+   "not initialized", "C", "CWE `457 <http://cwe.mitre.org/data/definitions/457.html>`_", "Flow analysis has detected the use of an uninitialized variable."
+   "initialization must not depend on something", "C",, "Wrong Initializes aspect detected."
+   "type is not fully initialized", "C", "CWE `457 <http://cwe.mitre.org/data/definitions/457.html>`_", "A type promised to be default initialized but is not."
+   "needs to be a constituent of some state abstraction", "C",, "Flow analysis detected a constituent that has to be exposed through some state abstraction."
+   "constant after elaboration", "C",, "An object which is constant after elaboration must not be changed after elaboration and as such cannot be the output of any subprogram."
+   "is not modified", "W",, "The variable is declared with mode in out, but is never modified, so could be declared with mode in."
+   "unused assignment", "W", "CWE `563 <http://cwe.mitre.org/data/definitions/563.html>`_", "Flow analysis has detected an assignment to a variable which is not read after the assignment."
+   "initialization has no effect", "W", "CWE `563 <http://cwe.mitre.org/data/definitions/563.html>`_", "Flow analysis has detected an object which is initialized, but never read."
+   "this statement is never reached", "W", "CWE `561 <http://cwe.mitre.org/data/definitions/561.html>`_", "This statement will never be executed (dead code)."
+   "statement has no effect", "W",, "Flow analysis has detected a statement which has no effect."
+   "unused initial value", "W", "CWE `563 <http://cwe.mitre.org/data/definitions/563.html>`_", "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
+   "unused", "W", "CWE `563 <http://cwe.mitre.org/data/definitions/563.html>`_", "A global or locally declared variable is never used."
+   "missing return", "W",, "A return statement seems to be missing from the function."
+   "no procedure exists that can initialize abstract state", "W",, "Flow analysis detected a state abstraction that is impossible to initialize."
+   "subprogram has no effect", "W",, "A subprogram that has no exports has been detected."
+   "volatile function", E,, "A volatile function that has no volatile globals does not have to be a volatile function."
 
 .. note::
 

@@ -727,6 +727,7 @@ package body Configuration is
          Memcached_Server  := CL_Switches.Memcached_Server;
          Why3_Config_File  := CL_Switches.Why3_Conf;
          No_Axiom_Guard    := CL_Switches.No_Axiom_Guard;
+         CWE               := CL_Switches.CWE;
 
          --  Subprograms with no contracts (and a few other criteria) may be
          --  inlined, as this can help provability. In particular it helps as
@@ -1346,6 +1347,11 @@ package body Configuration is
       --  explicitly ignored by the callback Handle_Switch
 
       Define_Switch (Config, "-aP=");
+
+      Define_Switch
+        (Config,
+         CL_Switches.CWE'Access,
+         Long_Switch => "--cwe");
 
       Define_Switch
          (Config,

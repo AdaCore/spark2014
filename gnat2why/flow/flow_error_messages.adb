@@ -260,9 +260,9 @@ package body Flow_Error_Messages is
       Continuation : Boolean := False)
    is
       Msg2 : constant String :=
-        Msg & (if SRM_Ref'Length > 0
-               then " (SPARK RM " & SRM_Ref & ")"
-               else "");
+        Msg &
+        (if CWE and Severity /= Info_Kind then CWE_Message (Tag) else "") &
+        (if SRM_Ref'Length > 0 then " (SPARK RM " & SRM_Ref & ")" else "");
 
       Attach_Node : constant Node_Id :=
         (if Instantiation_Location (Sloc (Original_Node (N))) = No_Location
@@ -586,7 +586,8 @@ package body Flow_Error_Messages is
       for Index in S'Range loop
          if S (Index) in '%' | '$' | '{' | '*' | '&' | '#' |
                          '}' | '@' | '^' | '>' | '!' | '?' |
-                         '<' | '`' | ''' | '\' | '|'
+                         '<' | '`' | ''' | '\' | '|' | '[' |
+                         ']'
            or else Is_Upper_Case_Letter (S (Index))
          then
             Append (R, "'");

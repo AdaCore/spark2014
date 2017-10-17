@@ -66,6 +66,7 @@ package body Gnat2Why_Args is
    Why3_Args_Name               : constant String := "why3_args";
    Why3_Dir_Name                : constant String := "why3_dir";
    CP_Dir_Name                  : constant String := "codepeer_dir";
+   CWE_Name                     : constant String := "cwe";
 
    ----------
    -- Init --
@@ -102,6 +103,7 @@ package body Gnat2Why_Args is
          Append (File_Text, Get_Line (File));
       end loop;
       V := Read (File_Text);
+
       Global_Gen_Mode         := Get_Opt_Bool (V, Global_Gen_Mode_Name);
       Check_Mode              := Get_Opt_Bool (V, Check_Mode_Name);
       Check_All_Mode          := Get_Opt_Bool (V, Check_All_Mode_Name);
@@ -117,6 +119,8 @@ package body Gnat2Why_Args is
       Pedantic                := Get_Opt_Bool (V, Pedantic_Name);
       No_Loop_Unrolling       := Get_Opt_Bool (V, No_Loop_Unrolling_Name);
       Ide_Mode                := Get_Opt_Bool (V, Ide_Mode_Name);
+      CWE                     := Get_Opt_Bool (V, CWE_Name);
+
       if Has_Field (V, Report_Mode_Name) then
          Report_Mode :=
            Report_Mode_Type'Value (Get (Get (V, Report_Mode_Name)));
@@ -214,6 +218,8 @@ package body Gnat2Why_Args is
       Set_Field (Obj, Limit_Line_Name, Limit_Line);
       Set_Field (Obj, Why3_Dir_Name, Why3_Dir);
       Set_Field (Obj, CP_Dir_Name, CP_Res_Dir);
+      Set_Field (Obj, CWE_Name, CWE);
+
       declare
          A : JSON_Array := Empty_Array;
       begin

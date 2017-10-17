@@ -208,6 +208,10 @@ package VC_Kinds is
       --  that does not have Constant_After_Elaboration set.
      );
 
+   function CWE_Message (Kind : VC_Kind) return String;
+   function CWE_Message (Kind : Flow_Tag_Kind) return String;
+   --  Return the CWE numbering as a message string for a given kind
+
    function Locate_On_First_Token (V : VC_Kind) return Boolean is
      (case V is when VC_RTE_Kind    => False,
                 when VC_Assert_Kind => V /= VC_Precondition,
