@@ -419,7 +419,7 @@ package body SPARK_Frame_Conditions is
 
                      if Current_Entity /= Ref_Entity
                        and then not Is_Heap_Variable (Ref_Entity)
-                       and then Xref.Rtype in 'c' | 'r' | 'm'
+                       and then Xref.Rtype in 'r' | 'm'
                      then
                         Add_To_Map (Defines,
                                     Def_Scope_Ent,
@@ -430,13 +430,11 @@ package body SPARK_Frame_Conditions is
 
                      case Xref.Rtype is
                         when 'r' =>
-                           Add_To_Map (Reads, Ref_Scope_Ent, Ref_Entity);
-                        when 'c' =>
-                           Add_To_Map (Reads, Ref_Scope_Ent, Ref_Entity);
+                           Add_To_Map (Reads,  Ref_Scope_Ent, Ref_Entity);
                         when 'm' =>
                            Add_To_Map (Writes, Ref_Scope_Ent, Ref_Entity);
                         when 's' =>
-                           Add_To_Map (Calls,   Ref_Scope_Ent, Ref_Entity);
+                           Add_To_Map (Calls,  Ref_Scope_Ent, Ref_Entity);
                         when others =>
                            raise Program_Error;
                      end case;
