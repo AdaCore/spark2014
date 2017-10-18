@@ -71,7 +71,6 @@ package body SPARK_Frame_Conditions is
      (Map : in out Node_Graphs.Map;
       Id  : Entity_Id)
    with Post => Map.Contains (Id);
-
    --  Make sure that element Id has an entry in Map. If not already present,
    --  add one which maps the element to the empty set.
 
@@ -166,89 +165,6 @@ package body SPARK_Frame_Conditions is
 
    function Computed_Calls (E : Entity_Id) return Node_Sets.Set
      renames Calls.Element;
-
-   --------------------
-   -- Computed_Reads --
-   --------------------
-
-   function Computed_Reads (E : Entity_Id) return Node_Sets.Set
-   is
-      pragma Assert (if Ekind (E) = E_Entry then No (Alias (E)));
-      --  Alias is empty for entries and meaningless for entry families
-
-      E_Alias : constant Entity_Id :=
-        (if Ekind (E) in E_Function | E_Procedure
-           and then Present (Alias (E))
-         then Ultimate_Alias (E)
-         else E);
-
-      Read_Ids : Node_Sets.Set;
-
-      use type Node_Sets.Set;
-
-   begin
-      --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
-      --  those, instead return empty sets.
-
-      if Is_Subprogram_Or_Entry (E)
-        and then Ekind (E) /= E_Entry_Family
-        and then Is_Abstract_Subprogram (E_Alias)
-      then
-         return Node_Sets.Empty_Set;
-      end if;
-
-      Read_Ids := Reads (E_Alias);
-
-      return Read_Ids - Defines (E_Alias);
-   end Computed_Reads;
-
-   ---------------------
-   -- Computed_Writes --
-   ---------------------
-
-   function Computed_Writes (E : Entity_Id) return Node_Sets.Set is
-      pragma Assert (if Ekind (E) = E_Entry then No (Alias (E)));
-      --  Alias is empty for entries and meaningless for entry families
-
-      E_Alias : constant Entity_Id :=
-        (if Ekind (E) in E_Function | E_Procedure
-           and then Present (Alias (E))
-         then Ultimate_Alias (E)
-         else E);
-
-      Write_Ids : Node_Sets.Set;
-
-      use type Node_Sets.Set;
-
-   begin
-      --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
-      --  those, which do not have effects, instead return the empty set.
-
-      if Is_Subprogram_Or_Entry (E)
-        and then Ekind (E) /= E_Entry_Family
-        and then Is_Abstract_Subprogram (E_Alias)
-      then
-         return Node_Sets.Empty_Set;
-      end if;
-
-      --  Go through the reads and check if the entities corresponding to
-      --  variables (not constants) have pragma Effective_Reads set. If so,
-      --  then these entities are also writes.
-      --  ??? call to Computed_Reads repeats what is already done here; this
-      --  should be refactored.
-      for Read of Computed_Reads (E) loop
-         if Present (Read)
-           and then Ekind (Read) = E_Variable
-           and then Present (Get_Pragma (Read, Pragma_Effective_Reads))
-         then
-            Write_Ids.Insert (Read);
-         end if;
-      end loop;
-
-      Write_Ids.Union (Writes (E_Alias));
-
-      return Write_Ids - Defines (E_Alias);
-   end Computed_Writes;
 
    ----------------------
    -- Is_Heap_Variable --
@@ -398,6 +314,8 @@ package body SPARK_Frame_Conditions is
          then Ultimate_Alias (E)
          else E);
 
+      use type Node_Sets.Set;
+
    begin
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, instead return empty sets.
@@ -413,8 +331,19 @@ package body SPARK_Frame_Conditions is
          return;
       end if;
 
-      Inputs  := Computed_Reads (E);
-      Outputs := Computed_Writes (E);
+      Inputs  := Reads  (E_Alias) - Defines (E_Alias);
+      Outputs := Writes (E_Alias) - Defines (E_Alias);
+
+      --  Go through the reads and check if the entities corresponding to
+      --  variables (not constants) have pragma Effective_Reads set. If so,
+      --  then these entities are also writes.
+      for Input of Inputs loop
+         if Ekind (Input) = E_Variable
+           and then Present (Get_Pragma (Input, Pragma_Effective_Reads))
+         then
+            Outputs.Include (Input);
+         end if;
+      end loop;
 
       --  Add variables written to variables read
       --  ??? for composite variables fine, but why for simple ones?

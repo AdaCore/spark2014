@@ -51,20 +51,6 @@ package SPARK_Frame_Conditions is
    function Computed_Calls (E : Entity_Id) return Node_Sets.Set;
    --  Get subprograms directly called by subprogram E
 
-   function Computed_Reads (E : Entity_Id) return Node_Sets.Set
-   with Pre => Ekind (E) in Entry_Kind
-                          | E_Function
-                          | E_Procedure
-                          | E_Task_Type;
-   --  Get the variables read by subprogram E
-
-   function Computed_Writes (E : Entity_Id) return Node_Sets.Set
-   with Pre => Ekind (E) in Entry_Kind
-                          | E_Function
-                          | E_Procedure
-                          | E_Task_Type;
-   --  Get the variables written by subprogram E
-
    procedure Load_SPARK_Xrefs;
    --  Extract xref information from low-level data structures
 
