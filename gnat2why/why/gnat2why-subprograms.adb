@@ -677,7 +677,7 @@ package body Gnat2Why.Subprograms is
                  Domain => EW_Prog,
                  Args   =>
                    (1 =>
-                      Transform_Expr (Att_Val, EW_Int_Type, EW_Term, Params)),
+                      Transform_Expr (Att_Val, EW_Int_Type, EW_Prog, Params)),
                  Typ    => EW_Bool_Type));
 
          Pred    : constant W_Pred_Id :=
