@@ -15715,38 +15715,38 @@ package body Gnat2Why.Expr is
          --  value stored in Id at this index.
 
          if Len > 0 then
-            for I in 1 .. Len loop
-               declare
-                  Arr_Val : constant W_Expr_Id :=
-                    New_Array_Access
-                      (Ada_Node => Empty,
-                       Ar       => +Call,
-                       Index    =>
-                         (1 => New_Discrete_Constant
-                            (Value => UI_From_Int (I - 1 + Low_Bound),
-                             Typ   => B_Ty)),
-                       Domain   => EW_Term);
-                  Char   : constant W_Expr_Id :=
-                    New_Integer_Constant
-                      (Value => UI_From_CC
-                         (Get_Char_Code (Value_String (Positive (I)))));
-
-               begin
-                  Def :=
-                    +New_And_Expr
-                    (Left   => +Def,
-                     Right  =>
+            declare
+               Expr_Ar : W_Expr_Array (1 .. Positive (Len));
+            begin
+               for I in 1 .. Len loop
+                  declare
+                     Arr_Val : constant W_Expr_Id :=
+                       New_Array_Access
+                         (Ada_Node => Empty,
+                          Ar       => +Call,
+                          Index    =>
+                            (1 => New_Discrete_Constant
+                               (Value => UI_From_Int (I - 1 + Low_Bound),
+                                Typ   => B_Ty)),
+                          Domain   => EW_Term);
+                     Char   : constant W_Expr_Id :=
+                       New_Integer_Constant
+                         (Value => UI_From_CC
+                            (Get_Char_Code (Value_String (Positive (I)))));
+                  begin
+                     Expr_Ar (Positive (I)) :=
                        New_Comparison
                          (Symbol => Why_Eq,
                           Left   => Insert_Simple_Conversion
-                            (Domain         => EW_Term,
-                             Expr           => Arr_Val,
-                             To             => EW_Int_Type),
+                            (Domain => EW_Term,
+                             Expr   => Arr_Val,
+                             To     => EW_Int_Type),
                           Right  => Char,
-                          Domain => EW_Pred),
-                     Domain => EW_Pred);
-               end;
-            end loop;
+                          Domain => EW_Pred);
+                  end;
+               end loop;
+               Def := +New_And_Expr (Expr_Ar, EW_Pred);
+            end;
          end if;
 
          --  Emit an axiom containing all the assumptions
