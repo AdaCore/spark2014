@@ -364,12 +364,12 @@ package body SPARK_Frame_Conditions is
                  Scope_Name'(File_Num  => Srec.File_Num,
                              Scope_Num => Srec.Scope_Num);
             begin
-               Scope_Entities.Insert (Sco, Srec.Scope_Id);
+               Scope_Entities.Insert (Sco, Srec.Entity);
 
                --  Record which entities are scopes, for default initializing
                --  maps in Propagate_Through_Call_Graph.
 
-               Scopes.Include (Srec.Scope_Id);
+               Scopes.Include (Srec.Entity);
 
                --  If present, use the body-to-spec information
 
