@@ -413,10 +413,8 @@ package body SPARK_Frame_Conditions is
                      Ref_Entity : Entity_Id renames Xref.Entity;
 
                      Ref_Scope_Ent : constant Entity_Id :=
-                       Scope_Name_To_Scope_Entity
-                         (Scope_Name'(File_Num  => Xref.File_Num,
-                                      Scope_Num => Xref.Scope_Num));
-                     --  Scope being referenced
+                       Unique_Entity (Xref.Ref_Scope);
+                     --  Scope where the reference occurs
 
                   begin
                      --  Register the definition on first occurence of
