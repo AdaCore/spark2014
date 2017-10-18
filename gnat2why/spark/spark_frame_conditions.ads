@@ -87,12 +87,6 @@ package SPARK_Frame_Conditions is
    --  The Inputs set will contain both variables that are either read or
    --  written (since the Computed Globals are an over-approximation).
 
-   procedure Propagate_Through_Call_Graph;
-   --  Propagate reads and writes through the call-graph defined by calls and
-   --  callers.
-   --  ??? This procedure only initializes maps and doesn't propagate anything;
-   --  the name comes from the the previous design of the generated globals.
-
    --  -----------------------------------------
    --  Mapping between Entities and Entity_Names
    --  -----------------------------------------

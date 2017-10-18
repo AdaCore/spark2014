@@ -51,8 +51,6 @@ package body SPARK_Frame_Conditions is
    -- Local Variables --
    ---------------------
 
-   Scopes  : Node_Sets.Set;    --  All scope entities
-
    Defines : Node_Graphs.Map;  --  Entities defined by each scope
    Writes  : Node_Graphs.Map;  --  Entities written in each scope
    Reads   : Node_Graphs.Map;  --  Entities read in each scope
@@ -81,17 +79,11 @@ package body SPARK_Frame_Conditions is
    -- Add_To_Map --
    ----------------
 
-   procedure Add_To_Map (Map : in out Node_Graphs.Map; From, To : Entity_Id)
-   is
-      Ignored  : Boolean;
-      Position : Node_Graphs.Cursor;
-
+   procedure Add_To_Map (Map : in out Node_Graphs.Map; From, To : Entity_Id) is
    begin
-      --  Try to insert a default value (i.e. empty set) and then update it
-      Map.Insert (Key      => From,
-                  Position => Position,
-                  Inserted => Ignored);
-      Map (Position).Include (To);
+      if not Is_Generic_Unit (From) then
+         Map (From).Include (To);
+      end if;
    end Add_To_Map;
 
    ------------------
@@ -300,11 +292,14 @@ package body SPARK_Frame_Conditions is
          loop
             declare
                Srec : SPARK_Scope_Record renames SPARK_Scope_Table.Table (S);
+               U    : constant Entity_Id := Unique_Entity (Srec.Entity);
+               --  ??? Unique_Entity is required here for subprograms declared
+               --  by stubs; probably frontend xrefs should special-case them.
             begin
-               --  Record which entities are scopes, for default initializing
-               --  maps in Propagate_Through_Call_Graph.
-
-               Scopes.Include (Srec.Entity);
+               Set_Default_To_Empty (Defines, U);
+               Set_Default_To_Empty (Writes,  U);
+               Set_Default_To_Empty (Reads,   U);
+               Set_Default_To_Empty (Calls,   U);
             end;
          end loop;
       end loop;
@@ -369,22 +364,6 @@ package body SPARK_Frame_Conditions is
 
    function Make_Entity_Name (Name : String_Ptr) return Entity_Name is
      (To_Entity_Name (Name.all));
-
-   ----------------------------------
-   -- Propagate_Through_Call_Graph --
-   ----------------------------------
-
-   procedure Propagate_Through_Call_Graph is
-   begin
-      --  Initialize all maps so that each subprogram has an entry in each map
-
-      for Scope of Scopes loop
-         Set_Default_To_Empty (Defines, Scope);
-         Set_Default_To_Empty (Writes,  Scope);
-         Set_Default_To_Empty (Reads,   Scope);
-         Set_Default_To_Empty (Calls,   Scope);
-      end loop;
-   end Propagate_Through_Call_Graph;
 
    ---------------------
    -- Register_Entity --

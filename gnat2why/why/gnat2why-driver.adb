@@ -454,13 +454,10 @@ package body Gnat2Why.Driver is
 
       if Gnat2Why_Args.Global_Gen_Mode then
 
-         --  Compute basic globals. These will be used for subprograms
-         --  that are NOT in SPARK.
-         --  ??? those two calls is a minimal interface to the remains of the
-         --  "frontend globals"; they names are no longer adequate.
+         --  Load frontend cross-references (for subprograms with SPARK_Mode =>
+         --  Off).
 
          Load_SPARK_Xrefs;
-         Propagate_Through_Call_Graph;
 
          Timing_Phase_Completed (Timing, "globals (frontend)");
 
