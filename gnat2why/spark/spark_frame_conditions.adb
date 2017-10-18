@@ -59,7 +59,6 @@ package body SPARK_Frame_Conditions is
    Defines : Node_Graphs.Map;  --  Entities defined by each scope
    Writes  : Node_Graphs.Map;  --  Entities written in each scope
    Reads   : Node_Graphs.Map;  --  Entities read in each scope
-   Callers : Node_Graphs.Map;  --  Callers for each subprogram
    Calls   : Node_Graphs.Map;  --  Subprograms called in each subprogram
 
    -----------------------
@@ -156,8 +155,6 @@ package body SPARK_Frame_Conditions is
       Display_One_Map (Writes, "Variables written by subprograms", "writes");
       New_Line;
       Display_One_Map (Calls, "Subprograms called", "calls");
-      New_Line;
-      Display_One_Map (Callers, "Callers of subprograms", "is called by");
    end Display_Maps;
 
    -----------------
@@ -440,7 +437,6 @@ package body SPARK_Frame_Conditions is
                            Add_To_Map (Writes, Ref_Scope_Ent, Ref_Entity);
                         when 's' =>
                            Add_To_Map (Calls,   Ref_Scope_Ent, Ref_Entity);
-                           Add_To_Map (Callers, Ref_Entity, Ref_Scope_Ent);
                         when others =>
                            raise Program_Error;
                      end case;
@@ -464,22 +460,11 @@ package body SPARK_Frame_Conditions is
    -- Propagate_Through_Call_Graph --
    ----------------------------------
 
-   procedure Propagate_Through_Call_Graph
-   is
-      use Node_Graphs;
-
+   procedure Propagate_Through_Call_Graph is
    begin
       --  Set error propagation mode for missing scopes
 
       Propagate_Error_For_Missing_Scope := False;
-
-      --  Declare missing scopes, which occurs for generic instantiations (see
-      --  K523-007) until a proper treatment of generics. We take into account
-      --  all subprograms called.
-
-      for C in Callers.Iterate loop
-         Scopes.Include (Key (C));
-      end loop;
 
       --  Initialize all maps so that each subprogram has an entry in each map.
       --  This is not needed for File_Defines.
@@ -488,7 +473,6 @@ package body SPARK_Frame_Conditions is
          Set_Default_To_Empty (Defines, Scope);
          Set_Default_To_Empty (Writes,  Scope);
          Set_Default_To_Empty (Reads,   Scope);
-         Set_Default_To_Empty (Callers, Scope);
          Set_Default_To_Empty (Calls,   Scope);
       end loop;
    end Propagate_Through_Call_Graph;
