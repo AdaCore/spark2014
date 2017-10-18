@@ -51,10 +51,6 @@ package body SPARK_Frame_Conditions is
    -- Local Variables --
    ---------------------
 
-   Propagate_Error_For_Missing_Scope : Boolean := True;
-   --  By default, propagate an error if a scope is missing, unless set to
-   --  False for a degraded mode of operation in which such errors are ignored.
-
    Scopes  : Node_Sets.Set;    --  All scope entities
 
    Defines : Node_Graphs.Map;  --  Entities defined by each scope
@@ -212,14 +208,6 @@ package body SPARK_Frame_Conditions is
       Read_Ids := Reads (E_Alias);
 
       return Read_Ids - Defines (E_Alias);
-   exception
-      when Constraint_Error =>
-         if Propagate_Error_For_Missing_Scope then
-            raise Constraint_Error with
-              ("missing effects for subprogram " & Unique_Name (E_Alias));
-         else
-            return Node_Sets.Empty_Set;
-         end if;
    end Computed_Reads;
 
    ---------------------
@@ -268,14 +256,6 @@ package body SPARK_Frame_Conditions is
       Write_Ids.Union (Writes (E_Alias));
 
       return Write_Ids - Defines (E_Alias);
-   exception
-      when Constraint_Error =>
-         if Propagate_Error_For_Missing_Scope then
-            raise Constraint_Error with
-              ("missing effects for subprogram " & Unique_Name (E_Alias));
-         else
-            return Node_Sets.Empty_Set;
-         end if;
    end Computed_Writes;
 
    ----------------------
@@ -396,12 +376,7 @@ package body SPARK_Frame_Conditions is
 
    procedure Propagate_Through_Call_Graph is
    begin
-      --  Set error propagation mode for missing scopes
-
-      Propagate_Error_For_Missing_Scope := False;
-
-      --  Initialize all maps so that each subprogram has an entry in each map.
-      --  This is not needed for File_Defines.
+      --  Initialize all maps so that each subprogram has an entry in each map
 
       for Scope of Scopes loop
          Set_Default_To_Empty (Defines, Scope);
