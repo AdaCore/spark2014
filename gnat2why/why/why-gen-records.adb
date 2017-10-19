@@ -1545,40 +1545,54 @@ package body Why.Gen.Records is
 
                --  Compare Fields
 
-               for Comp of Get_Component_Set (E) loop
-                  declare
-                     Fields_Id      : constant W_Identifier_Id :=
-                       To_Ident (WNE_Rec_Split_Fields);
-                     Field_Id       : constant W_Identifier_Id :=
-                       To_Why_Id (Comp, Local => True, Rec => E);
-                     Comparison     : constant W_Pred_Id :=
-                       New_Field_Equality
-                         (Field_Id     => Field_Id,
-                          Enclosing_Id => Fields_Id,
-                          Is_Private   => Ekind (Comp) in Type_Kind,
-                          Field_Type   => (if Ekind (Comp) in Type_Kind then
-                                              Comp
-                                           else Retysp (Etype (Comp))));
-                     Always_Present : constant Boolean :=
-                       Count_Discriminants (E) = 0
-                       or else Ekind (Comp) /= E_Component;
-                  begin
-                     Condition :=
-                       +New_And_Then_Expr
-                       (Domain => EW_Pred,
-                        Left   => +Condition,
-                        Right  =>
-                          (if Always_Present then +Comparison
-                           else
-                              New_Connection
-                             (Domain => EW_Pred,
-                              Op     => EW_Imply,
-                              Left   =>
-                                +Discriminant_Check_Pred_Call
-                                (Comp, A_Ident),
-                              Right  => +Comparison)));
-                  end;
-               end loop;
+               declare
+                  Comp_Set : Node_Sets.Set renames Get_Component_Set (E);
+               begin
+                  if not Comp_Set.Is_Empty then
+                     declare
+                        Conjuncts : W_Expr_Array
+                          (1 .. Positive (Comp_Set.Length));
+                        I : Positive := 1;
+                     begin
+                        for Comp of Comp_Set loop
+                           declare
+                              Fields_Id      : constant W_Identifier_Id :=
+                                To_Ident (WNE_Rec_Split_Fields);
+                              Field_Id       : constant W_Identifier_Id :=
+                                To_Why_Id (Comp, Local => True, Rec => E);
+                              Comparison     : constant W_Pred_Id :=
+                                New_Field_Equality
+                                  (Field_Id     => Field_Id,
+                                   Enclosing_Id => Fields_Id,
+                                   Is_Private   => Ekind (Comp) in Type_Kind,
+                                   Field_Type   =>
+                                     (if Ekind (Comp) in Type_Kind then
+                                           Comp
+                                      else Retysp (Etype (Comp))));
+                              Always_Present : constant Boolean :=
+                                Count_Discriminants (E) = 0
+                                or else Ekind (Comp) /= E_Component;
+                           begin
+                              Conjuncts (I) :=
+                                (if Always_Present then +Comparison
+                                 else
+                                    New_Connection
+                                   (Domain => EW_Pred,
+                                    Op     => EW_Imply,
+                                    Left   =>
+                                      +Discriminant_Check_Pred_Call
+                                      (Comp, A_Ident),
+                                    Right  => +Comparison));
+                              I := I + 1;
+                           end;
+                        end loop;
+                        Condition :=
+                          +New_And_Expr (+Condition,
+                                         New_And_Expr (Conjuncts, EW_Pred),
+                                         EW_Pred);
+                     end;
+                  end if;
+               end;
 
                --  For simple private types, equality i san uninterpreted
                --  function. For now, it is as good as using equality on
