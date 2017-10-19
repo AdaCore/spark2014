@@ -290,7 +290,7 @@
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" time="0.05" steps="440"/></proof>
-  <proof prover="1" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="unknown" time="0.32"/></proof>
+  <proof prover="1" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="unknown" time="0.40"/></proof>
   </goal>
  </transf>
  </goal>
@@ -305,7 +305,7 @@
   <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="13"/></proof>
   </goal>
  </transf>
  </goal>
@@ -317,11 +317,11 @@
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.00" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
   <proof prover="0"><result status="unknown" time="0.02" steps="28"/></proof>
-  <proof prover="1" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid" time="0.36"/></proof>
+  <proof prover="1" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid" time="0.34"/></proof>
   </goal>
  </transf>
  </goal>
@@ -341,7 +341,7 @@
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" time="0.02" steps="405"/></proof>
-  <proof prover="1" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><result status="unknown" time="0.30"/></proof>
+  <proof prover="1" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><result status="unknown" time="0.32"/></proof>
   </goal>
  </transf>
  </goal>
@@ -350,7 +350,7 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.00" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" time="0.04" steps="585"/></proof>
@@ -365,7 +365,7 @@
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" time="0.05" steps="550"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="550"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" time="0.04" steps="509"/></proof>
