@@ -3674,6 +3674,8 @@ package body Flow.Control_Flow_Graph is
             end if;
          end;
 
+         pragma Assert (not Inits.Is_Empty);
+
       --  We have no initializing expression so we fall back to the default
       --  initialization (if any).
 
@@ -3693,15 +3695,14 @@ package body Flow.Control_Flow_Graph is
          end loop;
 
          if Inits.Is_Empty then
-            --  We did not have anything with a default initial value,
-            --  so we just create a null vertex here.
+            --  We did not have anything with a default initial value, so we
+            --  just create a null vertex here.
             Add_Vertex (FA,
                         Direct_Mapping_Id (N),
                         Null_Node_Attributes,
                         V);
             Inits.Append (V);
          end if;
-
       end if;
 
       --  If this type has a Default_Initial_Condition then we need to
@@ -3717,16 +3718,6 @@ package body Flow.Control_Flow_Graph is
                                            Aspect => DIC);
             end if;
          end;
-      end if;
-
-      if Inits.Is_Empty then
-         --  For some null records, nothing might happen, so we create a
-         --  dummy vertex.
-         Add_Vertex (FA,
-                     Direct_Mapping_Id (N),
-                     Null_Node_Attributes,
-                     V);
-         Inits.Append (V);
       end if;
 
       V := Flow_Graphs.Null_Vertex;
