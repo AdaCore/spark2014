@@ -308,10 +308,6 @@
 </theory>
 <theory name="Admin__str_comp__L13b__T14b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keyboard__inputs" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__inputs___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Keyboard__read__datapresence" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Keyboard__read__datapresence___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
@@ -348,93 +344,7 @@
 </theory>
 <theory name="Admin__opisavailable__L_1__op___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp__L10b__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Admin__str_comp__L10b__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Admin__opisavailable__L12s__op" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Admin__opisavailable__L12s__op___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__setdata__keyeddata" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__setdata__keyeddata___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__setdata__length" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__setdata__length___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__getdata__keyeddata" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__getdata__keyeddata___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__getdata__length" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__getdata__length___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__getdata__presence" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__keyeddatastoreT__getdata__presence___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__read__localdata" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__read__localdata___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__read__locallength" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__read__locallength___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readerTK__readdata" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readerTK__readdata___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readerTK__datalength" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readerTK__datalength___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readerTK__readok" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readerTK__readok___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__read__buffer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__read__buffer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__read__len" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__read__len___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__read__ok" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__read__ok___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__keyeddatastore" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__keyeddatastore___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__reader" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__reader___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readkeyboarddata__localkeyeddata" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readkeyboarddata__localkeyeddata___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readkeyboarddata__L_2__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readkeyboarddata__L_2__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readkeyboarddata__keyeddatapresence" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readkeyboarddata__keyeddatapresence___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readkeyboarddata__keyeddata" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readkeyboarddata__keyeddata___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readkeyboarddata__keyeddatalength" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Keyboard__interfac__readkeyboarddata__keyeddatalength___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Keyboard__inputs" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Standard__short_short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -672,29 +582,29 @@
  </transf>
  </goal>
 </theory>
-<theory name="Admin__thecurrentop__subprogram_def" proved="true" sum="14c3acd617fa6dea2975bec9aa543ba7">
+<theory name="Admin__thecurrentop__subprogram_def" proved="true" sum="3fa02d8b5d0b82e5297af192e1575327">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.01" steps="54"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="54"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admin__str_comp__subprogram_def" proved="true" sum="cdb15c9a6a5adb5ac73c1cd8f6110d76">
+<theory name="Admin__str_comp__subprogram_def" proved="true" sum="c26f383bfac656877e2b3914632907ca">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" time="0.10" steps="97"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" time="0.09" steps="97"/></proof>
+  <proof prover="0"><result status="valid" time="0.11" steps="97"/></proof>
   </goal>
  </transf>
  </goal>
@@ -705,19 +615,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Admin__allowedop__subprogram_def" proved="true" sum="c3586b84cd2b17b474fedb01e2206dd1">
+<theory name="Admin__allowedop__subprogram_def" proved="true" sum="f234e4a01d963eb1a30c9e5a287e810b">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" time="0.04" steps="35"/></proof>
+  <proof prover="0"><result status="valid" time="0.05" steps="35"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" time="0.04" steps="35"/></proof>
+  <proof prover="0"><result status="valid" time="0.05" steps="35"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admin__init__subprogram_def" proved="true" sum="1493cdfbde7d2d977722a9c10f016e1b">
+<theory name="Admin__init__subprogram_def" proved="true" sum="cc3a89066a37dadc172612a7f1814e89">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
@@ -729,40 +639,40 @@
  </transf>
  </goal>
 </theory>
-<theory name="Admin__opisavailable__subprogram_def" proved="true" sum="7ed8c63a65a127a2e8921d3f9bf99208">
+<theory name="Admin__opisavailable__subprogram_def" proved="true" sum="e49ec24ae6b81e01abab5e72bdbfbedd">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" time="0.10" steps="50"/></proof>
+  <proof prover="0"><result status="valid" time="0.14" steps="50"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" time="0.11" steps="50"/></proof>
+  <proof prover="0"><result status="valid" time="0.14" steps="50"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.09" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.09" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.10" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.13" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.12" steps="95"/></proof>
+  <proof prover="0"><result status="valid" time="0.13" steps="95"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admin__logon__subprogram_def" proved="true" sum="d4c7a43123247fe79d6df27f12f4c868">
+<theory name="Admin__logon__subprogram_def" proved="true" sum="d5e19d9297ad3076e6289dc8594beaa5">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
@@ -772,12 +682,12 @@
   <proof prover="0"><result status="valid" time="0.02" steps="32"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.01" steps="25"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="25"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admin__logout__subprogram_def" proved="true" sum="80e0af5594550dd8af1a8971b843dd15">
+<theory name="Admin__logout__subprogram_def" proved="true" sum="30183523ab8c145e523faba53a876667">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
@@ -789,7 +699,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Admin__startop__subprogram_def" proved="true" sum="00ffe1c18cba52a2a85fd6e8a8be6d0b">
+<theory name="Admin__startop__subprogram_def" proved="true" sum="3b2b0fb629c5c45a81ac0fa58a0dd68c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -799,7 +709,7 @@
   <proof prover="0"><result status="valid" time="0.02" steps="42"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.01" steps="25"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="25"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" time="0.02" steps="25"/></proof>
@@ -810,14 +720,14 @@
  </transf>
  </goal>
 </theory>
-<theory name="Admin__finishop__subprogram_def" proved="true" sum="081af3bf9f7a08a9ef85c5ddb645be40">
+<theory name="Admin__finishop__subprogram_def" proved="true" sum="cd8304798d83dda9566c0dede80df605">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" time="0.02" steps="32"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.01" steps="42"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="42"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" time="0.02" steps="25"/></proof>

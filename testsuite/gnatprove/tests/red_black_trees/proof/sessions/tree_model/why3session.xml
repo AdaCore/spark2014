@@ -782,494 +782,6 @@
 </theory>
 <theory name="Tree_model__d_seq__sequenceDefault_Initial_Condition___object___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Tree_model__v_set__included_except__L253s__e" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__included_except__L253s__e___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__find__2__L_4__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__find__2__L_4__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__find__2__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__find__2__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__find__2__e" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__find__2__e___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__includes_intersection__L259s__item" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__includes_intersection__L259s__item___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__to_count__idx" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__to_count__idx___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__included_in_union__L256s__item" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__included_in_union__L256s__item___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__Ole__c1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__Ole__c1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__Ole__c2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__Ole__c2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__Ole__L_2__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__Ole__L_2__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__equal_except__L_3__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__equal_except__L_3__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__equal_except__L52s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__equal_except__L52s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__add__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__add__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__add__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__add__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__add__e" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__add__e___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__add__L_3__j" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__add__L_3__j___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__add__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__add__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__add__p" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__add__p___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__find__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__find__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__find__e" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__find__e___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__find__2__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__find__2__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__find__2__e" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__find__2__e___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__find__2__L_4__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__find__2__L_4__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__Ole__L46s__n" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__Ole__L46s__n___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__Ole__L149s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__Ole__L149s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__to_index__position" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__to_index__position___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__to_count__idx" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__to_count__idx___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__intersection__L_5__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__intersection__L_5__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__intersection__p" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__intersection__p___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__intersection__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__intersection__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__intersection__c1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__intersection__c1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__intersection__c2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__intersection__c2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__range_equal__L_5__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__range_equal__L_5__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__range_equal__L56s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__range_equal__L56s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__range_shifted__L60s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__range_shifted__L60s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__range_shifted__L58s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__range_shifted__L58s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__range_shifted__L_6__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__range_shifted__L_6__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__remove__L_7__j" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__remove__L_7__j___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__remove__p" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__remove__p___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__remove__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__remove__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__remove__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__remove__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__remove__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__remove__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__n" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__n___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__B_8__L_9__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__B_8__L_9__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__B_8__p" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__B_8__p___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__B_8__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__B_8__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__B_8__l" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__B_8__l___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__c1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__c1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__c2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__union__c2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__num_overlaps__L_6__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__num_overlaps__L_6__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__num_overlaps__p" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__num_overlaps__p___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__num_overlaps__c1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__num_overlaps__c1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__num_overlaps__c2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__num_overlaps__c2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__to_index__position" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__to_index__position___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__get__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__get__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__get__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__get__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__Oeq__2__L_1__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__Oeq__2__L_1__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__Oeq__2__c1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__Oeq__2__c1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__Oeq__2__c2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__Oeq__2__c2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__add__L_3__j" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__add__L_3__j___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__add__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__add__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__add__p" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__add__p___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__add__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__add__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__add__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__add__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__add__e" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__add__e___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__Olt__L44s__n" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__Olt__L44s__n___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__Olt__L144s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__Olt__L144s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__num_overlaps__c1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__num_overlaps__c1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__num_overlaps__c2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__num_overlaps__c2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__num_overlaps__L_6__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__num_overlaps__L_6__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__num_overlaps__p" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__num_overlaps__p___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__contains__L_2__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__contains__L_2__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__contains__L48s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__contains__L48s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__length__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__length__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__constant_range__L_1__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__constant_range__L_1__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__constant_range__L50s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__constant_range__L50s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__equal_except__2__L_4__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__equal_except__2__L_4__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__equal_except__2__L54s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__equal_except__2__L54s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__remove__L_7__j" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__remove__L_7__j___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__remove__p" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__remove__p___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__remove__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__remove__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__remove__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__remove__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__remove__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__remove__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__set__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__set__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__set__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__set__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__set__e" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__set__e___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__set__result" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__set__result___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__find__e" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__find__e___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__find__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__find__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__length__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__length__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__Ole__c1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__Ole__c1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__Ole__c2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__Ole__c2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__Ole__L_2__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__Ole__L_2__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__B_8__p" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__B_8__p___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__B_8__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__B_8__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__B_8__l" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__B_8__l___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__c1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__c1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__c2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__c2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__n" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__n___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__B_8__L_9__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__union__B_8__L_9__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__intersection__c1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__intersection__c1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__intersection__c2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__intersection__c2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__intersection__L_5__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__intersection__L_5__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__intersection__p" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__intersection__p___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__intersection__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__intersection__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__Oeq__L141s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__Oeq__L141s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__not_in_both__L266s__item" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__not_in_both__L266s__item___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__get__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__get__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__get__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__get__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__Oeq__L42s__n" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__Oeq__L42s__n___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__Oeq__2__c1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__Oeq__2__c1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__Oeq__2__c2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__Oeq__2__c2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__Oeq__2__L_1__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__Oeq__2__L_1__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__set__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__set__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__set__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__set__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__set__e" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__set__e___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__set__result" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__set__result___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__is_concat__L138s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__is_concat__L138s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__is_concat__L136s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__is_concat__L136s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__is_concat__L134s__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__is_concat__L134s__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__empty_element_array_access" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__v_set__containers__empty_element_array_access___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__empty_element_array_access" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Tree_model__d_seq__containers__empty_element_array_access___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Standard__short_short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Standard__short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
@@ -1574,23 +1086,23 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__range_shifted__subprogram_def" proved="true" sum="e4d8e123ef6bdc1b9301d319c593f46e">
+<theory name="Tree_model__d_seq__range_shifted__subprogram_def" proved="true" sum="5ac22067ca4500106e8d1dc57863a737">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1607,11 +1119,11 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__add__2__subprogram_def" proved="true" sum="6ed254eeb503c00cb7bc16ad0edd4b7c">
+<theory name="Tree_model__d_seq__add__2__subprogram_def" proved="true" sum="cf79c986afe259f255ef096bcbe404bc">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.00" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1646,23 +1158,23 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__is_concat__subprogram_def" proved="true" sum="c8b78af305ad97aaaccecc21718ad068">
+<theory name="Tree_model__is_concat__subprogram_def" proved="true" sum="bebf5b4d177a042d8269673f3187905b">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="8"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.00" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="13"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
@@ -1671,31 +1183,31 @@
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="14"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="13"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="13"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="14"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="13"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" time="0.02" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
@@ -1712,19 +1224,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__is_add__subprogram_def" proved="true" sum="152f2ad62bd81cd06362ac2d2d4970a9">
+<theory name="Tree_model__is_add__subprogram_def" proved="true" sum="d96fb931a7bafb2ec9c1981641897597">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__preserve_equal__subprogram_def" proved="true" sum="c044cde1abe5b96df52cc4ad841ad7fc">
+<theory name="Tree_model__preserve_equal__subprogram_def" proved="true" sum="7f1dc0dd2a6faf4bb8e0eb21647a58ba">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
@@ -1733,17 +1245,17 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__preserve_concat__subprogram_def" proved="true" sum="b63d10067e393ebe613b482c33ba0e81">
+<theory name="Tree_model__preserve_concat__subprogram_def" proved="true" sum="c653ac9f99d01c3d49397eb9fb822979">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.05" steps="1250"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="1250"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1880,14 +1392,14 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__union__subprogram_def" proved="true" sum="d19a6f353edaf5b6fe3a0e8edb3cd5df">
+<theory name="Tree_model__v_set__union__subprogram_def" proved="true" sum="d15d8fea02cfb8e5d93a4bb11dd5ca63">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.02" steps="9"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="9"/></proof>
   </goal>
  </transf>
  </goal>

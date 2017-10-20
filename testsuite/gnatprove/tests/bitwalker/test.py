@@ -6,6 +6,5 @@ def replay():
               procs=10,
               steps=5000)
 
-prove_all(no_fail=True,
-          opt=["--replay", "--no-axiom-guard"],
+prove_all(opt=["--replay", "--no-axiom-guard"],
           prover=["cvc4", "z3", "altergo"])
