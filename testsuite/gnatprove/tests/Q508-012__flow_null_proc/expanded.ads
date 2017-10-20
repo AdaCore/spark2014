@@ -6,4 +6,4 @@ package Expanded is
 
    task Single_Task_Type;
 
-end Test;
+end Expanded;

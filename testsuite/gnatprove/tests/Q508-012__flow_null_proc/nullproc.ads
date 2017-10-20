@@ -6,4 +6,4 @@ package Nullproc is
 
    task Single_Task_Type;
 
-end Test;
+end Nullproc;
