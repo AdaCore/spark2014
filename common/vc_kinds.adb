@@ -37,8 +37,7 @@ package body VC_Kinds is
    function From_JSON (V : JSON_Value) return CEE_Kind;
    function From_JSON (V : JSON_Value) return Cntexmp_Type;
 
-   procedure Get_Typed_Cntexmp_Value (V      : JSON_Value;
-                                      Result : out Cntexmp_Value_Ptr);
+   function Get_Typed_Cntexmp_Value (V : JSON_Value) return Cntexmp_Value;
 
    -----------------
    -- CWE_Message --
@@ -327,18 +326,17 @@ package body VC_Kinds is
    -- Get_Typed_Cntexmp_Value --
    -----------------------------
 
-   procedure Get_Typed_Cntexmp_Value (V      : JSON_Value;
-                                      Result : out Cntexmp_Value_Ptr) is
+   function Get_Typed_Cntexmp_Value (V : JSON_Value) return Cntexmp_Value is
       T : constant Cntexmp_Type := From_JSON (V);
    begin
       case T is
          when Cnt_Integer   =>
-            Result := new Cntexmp_Value'(T => Cnt_Integer,
-                                         I => Get (V, "val"));
+            return (T => Cnt_Integer,
+                    I => Get (V, "val"));
 
          when Cnt_Decimal   =>
-            Result := new Cntexmp_Value'(T => Cnt_Decimal,
-                                         D => Get (V, "val"));
+            return (T => Cnt_Decimal,
+                    D => Get (V, "val"));
 
          --  Float values are complex so they are sent as JSON records. Example
          --  of values are infinities, zeroes, etc
@@ -346,60 +344,60 @@ package body VC_Kinds is
             declare
                Val        : constant JSON_Value := Get (V, "val");
                Float_Type : constant String := Get (Val, "cons");
-               Value      : Float_Value_Ptr;
             begin
                if Float_Type = "Plus_infinity" then
-                  Value := new Float_Value'(F_Type => Float_Plus_Infinity);
-                  Result := new Cntexmp_Value'(T => Cnt_Float,
-                                               F => Value);
+                  return (T => Cnt_Float,
+                          F =>
+                             new Float_Value'(F_Type => Float_Plus_Infinity));
 
                elsif Float_Type = "Minus_infinity" then
-                  Value := new Float_Value'(F_Type => Float_Minus_Infinity);
-                  Result := new Cntexmp_Value'(T => Cnt_Float,
-                                               F => Value);
+                  return (T => Cnt_Float,
+                          F =>
+                             new Float_Value'(F_Type => Float_Minus_Infinity));
 
                elsif Float_Type = "Plus_zero" then
-                  Value := new Float_Value'(F_Type => Float_Plus_Zero);
-                  Result := new Cntexmp_Value'(T => Cnt_Float,
-                                               F => Value);
+                  return (T => Cnt_Float,
+                          F =>
+                             new Float_Value'(F_Type => Float_Plus_Zero));
 
                elsif Float_Type = "Minus_zero" then
-                  Value := new Float_Value'(F_Type => Float_Minus_Zero);
-                  Result := new Cntexmp_Value'(T => Cnt_Float,
-                                               F => Value);
+                  return (T => Cnt_Float,
+                          F =>
+                             new Float_Value'(F_Type => Float_Minus_Zero));
 
                elsif Float_Type = "Not_a_number" then
-                  Value := new Float_Value'(F_Type => Float_NaN);
-                  Result := new Cntexmp_Value'(T => Cnt_Float,
-                                               F => Value);
+                  return (T => Cnt_Float,
+                          F =>
+                             new Float_Value'(F_Type => Float_NaN));
 
                elsif Float_Type = "Float_value" then
-                  Value :=
-                    new Float_Value'(F_Type        => Float_Val,
-                                     F_Sign        =>
-                                       Get (Val, "sign"),
-                                     F_Exponent    =>
-                                       Get (Val, "exponent"),
-                                     F_Significand =>
-                                       Get (Val, "significand"));
-                  Result :=
-                    new Cntexmp_Value'(T => Cnt_Float,
-                                       F => Value);
+                  return (T => Cnt_Float,
+                          F =>
+                             new Float_Value'(F_Type        => Float_Val,
+                                              F_Sign        =>
+                                                Get (Val, "sign"),
+                                              F_Exponent    =>
+                                                Get (Val, "exponent"),
+                                              F_Significand =>
+                                                Get (Val, "significand")));
 
+               else
+                  return (T => Cnt_Invalid,
+                          S => Null_Unbounded_String);
                end if;
             end;
 
          when Cnt_Boolean   =>
-            Result := new Cntexmp_Value'(T  => Cnt_Boolean,
-                                         Bo => Get (V, "val"));
+            return (T  => Cnt_Boolean,
+                    Bo => Get (V, "val"));
 
          when Cnt_Bitvector =>
-            Result := new Cntexmp_Value'(T => Cnt_Bitvector,
-                                         B => Get (V, "val"));
+            return (T => Cnt_Bitvector,
+                    B => Get (V, "val"));
 
          when Cnt_Unparsed  =>
-            Result := new Cntexmp_Value'(T => Cnt_Unparsed,
-                                         U => Get (V, "val"));
+            return (T => Cnt_Unparsed,
+                    U => Get (V, "val"));
 
          when Cnt_Record    =>
             declare
@@ -417,9 +415,10 @@ package body VC_Kinds is
                   declare
                      Json_Element : constant JSON_Value :=
                                       Get (JS_Array_Discr, Index);
-                     Elem_Ptr     : Cntexmp_Value_Ptr;
+                     Elem_Ptr     : constant Cntexmp_Value_Ptr :=
+                                      new Cntexmp_Value'(
+                                       Get_Typed_Cntexmp_Value (Json_Element));
                   begin
-                     Get_Typed_Cntexmp_Value (Json_Element, Elem_Ptr);
                      Discr_Value_List.Insert (Index'Image, Elem_Ptr);
                   end;
                end loop;
@@ -428,22 +427,23 @@ package body VC_Kinds is
                   declare
                      Json_Element : constant JSON_Value :=
                                       Get (JS_Array_Field, Index);
-                     Elem_Ptr     : Cntexmp_Value_Ptr;
+                     Elem_Ptr     : constant Cntexmp_Value_Ptr :=
+                                      new Cntexmp_Value'(
+                                       Get_Typed_Cntexmp_Value (Json_Element));
                   begin
-                     Get_Typed_Cntexmp_Value (Json_Element, Elem_Ptr);
                      Field_Value_List.Insert (Index'Image, Elem_Ptr);
                   end;
                end loop;
-               Result := new Cntexmp_Value'(T  => Cnt_Record,
-                                            Fi => Field_Value_List,
-                                            Di => Discr_Value_List);
+               return (T  => Cnt_Record,
+                       Fi => Field_Value_List,
+                       Di => Discr_Value_List);
             end;
 
          when Cnt_Array     =>
             declare
                JS_Array     : constant JSON_Array := Get (V, "val");
                Indice_Array : Cntexmp_Value_Array.Map;
-               Other_Ptr    : Cntexmp_Value_Ptr := new Cntexmp_Value;
+               Other_Ptr    : Cntexmp_Value_Ptr := null;
 
             begin
                for Index in 1 .. Length (JS_Array) loop
@@ -457,17 +457,19 @@ package body VC_Kinds is
                            V : constant JSON_Value :=
                              Get (Json_Element, "others");
                         begin
-                           Get_Typed_Cntexmp_Value (V, Other_Ptr);
+                           pragma Assert (Other_Ptr = null);
+                           Other_Ptr := new Cntexmp_Value'(
+                                              Get_Typed_Cntexmp_Value (V));
                         end;
                      else
                         declare
                            Indice   : constant String :=
                                         Get (Json_Element, "indice");
-                           Elem_Ptr : Cntexmp_Value_Ptr :=
-                                        new Cntexmp_Value;
+                           Elem_Ptr : constant Cntexmp_Value_Ptr :=
+                                        new Cntexmp_Value'(
+                                          Get_Typed_Cntexmp_Value
+                                            (Get (Json_Element, "value")));
                         begin
-                           Get_Typed_Cntexmp_Value
-                             (Get (Json_Element, "value"), Elem_Ptr);
                            Cntexmp_Value_Array.Insert
                              (Indice_Array, Indice, Elem_Ptr);
                         end;
@@ -475,20 +477,27 @@ package body VC_Kinds is
 
                   end;
                end loop;
-               Result := new Cntexmp_Value'(T             => Cnt_Array,
-                                            Array_Indices => Indice_Array,
-                                            Array_Others  => Other_Ptr);
+               if Other_Ptr = null then
+                  Other_Ptr :=
+                    new Cntexmp_Value'(T => Cnt_Invalid,
+                                       S => Null_Unbounded_String);
+
+               end if;
+               return (T             => Cnt_Array,
+                       Array_Indices => Indice_Array,
+                       Array_Others  => Other_Ptr);
             end;
 
-         when Cnt_Invalid => Result.all := (T => Cnt_Invalid,
-                                            S => Null_Unbounded_String);
+         when Cnt_Invalid =>
+            return (T => Cnt_Invalid,
+                    S => Null_Unbounded_String);
       end case;
    end Get_Typed_Cntexmp_Value;
 
    function From_JSON (V : JSON_Value) return Cntexample_Elt is
-      Cnt_Value : Cntexmp_Value_Ptr;
+      Cnt_Value : constant Cntexmp_Value_Ptr :=
+        new Cntexmp_Value'(Get_Typed_Cntexmp_Value (Get (V, "value")));
    begin
-      Get_Typed_Cntexmp_Value (Get (V, "value"), Cnt_Value);
       return
         Cntexample_Elt'(Kind        => From_JSON (Get (V, "kind")),
                         Name        => Get (Get (V, "name")),
@@ -498,7 +507,7 @@ package body VC_Kinds is
 
    function From_JSON (V : JSON_Value) return Cntexample_Elt_Lists.List is
       Res : Cntexample_Elt_Lists.List := Cntexample_Elt_Lists.Empty_List;
-      Ar  : constant JSON_Array     := Get (V);
+      Ar  : constant JSON_Array       := Get (V);
    begin
       for Var_Index in Positive range 1 .. Length (Ar) loop
          declare

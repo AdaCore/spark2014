@@ -325,10 +325,10 @@ package VC_Kinds is
       end case;
    end record;
 
-   type Float_Value_Ptr is access Float_Value;
+   type Float_Value_Ptr is not null access constant Float_Value;
 
    type Cntexmp_Value;
-   type Cntexmp_Value_Ptr is access Cntexmp_Value;
+   type Cntexmp_Value_Ptr is access constant Cntexmp_Value;
 
    package Cntexmp_Value_Array is
       new Ada.Containers.Indefinite_Ordered_Maps
@@ -339,13 +339,12 @@ package VC_Kinds is
 
    type Cntexmp_Value (T : Cntexmp_Type := Cnt_Invalid) is record
       case T is
-         when Cnt_Integer   => I   : Unbounded_String;
-         when Cnt_Decimal   => D   : Unbounded_String;
-         when Cnt_Float     =>
-            F                      : Float_Value_Ptr;
-         when Cnt_Boolean   => Bo  : Boolean;
-         when Cnt_Bitvector => B   : Unbounded_String;
-         when Cnt_Unparsed  => U   : Unbounded_String;
+         when Cnt_Integer   => I  : Unbounded_String;
+         when Cnt_Decimal   => D  : Unbounded_String;
+         when Cnt_Float     => F  : Float_Value_Ptr;
+         when Cnt_Boolean   => Bo : Boolean;
+         when Cnt_Bitvector => B  : Unbounded_String;
+         when Cnt_Unparsed  => U  : Unbounded_String;
          when Cnt_Record    =>
             Fi                    : Cntexmp_Value_Array.Map;
             Di                    : Cntexmp_Value_Array.Map;
