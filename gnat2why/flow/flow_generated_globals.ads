@@ -23,7 +23,6 @@
 
 --  This package implements writing, reading and computing global contracts
 
-with Ada.Containers.Doubly_Linked_Lists;
 with Atree;                              use Atree;
 with Common_Containers;                  use Common_Containers;
 with Einfo;                              use Einfo;
@@ -157,16 +156,6 @@ package Flow_Generated_Globals is
 
    type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
    --  Tasking objects accessed by a given entity
-
-   type Name_Constant_Callees is record
-      Const   : Entity_Name;
-      Callees : Name_Lists.List;
-   end record;
-   --  Constants and subprograms called (directly or indirectly) from their
-   --  initialization expressions.
-
-   package Name_Constant_Callees_List is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Name_Constant_Callees);
 
    type Partial_Contract is record
       Name                  : Entity_Name;

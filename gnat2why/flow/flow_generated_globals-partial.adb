@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;            use Ada.Strings.Unbounded;
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                      use Ada.Text_IO;
 with Common_Iterators;                 use Common_Iterators;

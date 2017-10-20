@@ -23,7 +23,6 @@
 
 with GNAT.Regpat;                use GNAT.Regpat;
 with Serialisation;              use Serialisation;
-with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;                use Ada.Text_IO;
