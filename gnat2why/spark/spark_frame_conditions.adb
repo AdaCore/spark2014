@@ -26,10 +26,11 @@
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                    use Ada.Text_IO;
-with Lib.Xref;
+with Lib.Xref;                       use Lib.Xref;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Util;                       use Sem_Util;
 with Snames;                         use Snames;
+with SPARK_Util;                     use SPARK_Util;
 with SPARK_Xrefs;                    use SPARK_Xrefs;
 
 package body SPARK_Frame_Conditions is
@@ -51,7 +52,6 @@ package body SPARK_Frame_Conditions is
    -- Local Variables --
    ---------------------
 
-   Defines : Node_Graphs.Map;  --  Entities defined by each scope
    Writes  : Node_Graphs.Map;  --  Entities written in each scope
    Reads   : Node_Graphs.Map;  --  Entities read in each scope
    Calls   : Node_Graphs.Map;  --  Subprograms called in each subprogram
@@ -67,12 +67,11 @@ package body SPARK_Frame_Conditions is
    with Pre => Name /= null and then Name.all /= "";
    --  Build a name for an entity, making sure the name is not empty
 
-   procedure Set_Default_To_Empty
-     (Map : in out Node_Graphs.Map;
-      Id  : Entity_Id)
-   with Post => Map.Contains (Id);
-   --  Make sure that element Id has an entry in Map. If not already present,
-   --  add one which maps the element to the empty set.
+   function Get_Frontend_Xrefs
+     (Map : Node_Graphs.Map;
+      Key : Entity_Id)
+      return Node_Sets.Set;
+   --  Returns nodes stored in Map for Key or an empty set if Key is not in Map
 
    ----------------
    -- Add_To_Map --
@@ -81,7 +80,17 @@ package body SPARK_Frame_Conditions is
    procedure Add_To_Map (Map : in out Node_Graphs.Map; From, To : Entity_Id) is
    begin
       if not Is_Generic_Unit (From) then
-         Map (From).Include (To);
+         declare
+            Inserted : Boolean;
+            Position : Node_Graphs.Cursor;
+
+         begin
+            Map.Insert (Key      => From,
+                        Position => Position,
+                        Inserted => Inserted);
+
+            Map (Position).Include (To);
+         end;
       end if;
    end Add_To_Map;
 
@@ -136,8 +145,6 @@ package body SPARK_Frame_Conditions is
    --  Start of processing for Display_Maps
 
    begin
-      Display_One_Map (Defines, "Variables defined by subprograms", "defines");
-      New_Line;
       Display_One_Map (Reads, "Variables read by subprograms", "reads");
       New_Line;
       Display_One_Map (Writes, "Variables written by subprograms", "writes");
@@ -159,12 +166,30 @@ package body SPARK_Frame_Conditions is
               else Empty);
    end Find_Entity;
 
+   ------------------------
+   -- Get_Frontend_Xrefs --
+   ------------------------
+
+   function Get_Frontend_Xrefs
+     (Map : Node_Graphs.Map;
+      Key : Entity_Id)
+      return Node_Sets.Set
+   is
+      C : constant Node_Graphs.Cursor := Map.Find (Key);
+
+   begin
+      return
+        (if Node_Graphs.Has_Element (C)
+         then Map (C)
+         else Node_Sets.Empty_Set);
+   end Get_Frontend_Xrefs;
+
    --------------------
    -- Computed_Calls --
    --------------------
 
-   function Computed_Calls (E : Entity_Id) return Node_Sets.Set
-     renames Calls.Element;
+   function Computed_Calls (E : Entity_Id) return Node_Sets.Set is
+     (Get_Frontend_Xrefs (Calls, E));
 
    ----------------------
    -- Is_Heap_Variable --
@@ -182,82 +207,73 @@ package body SPARK_Frame_Conditions is
 
    procedure Load_SPARK_Xrefs is
 
-      function Def_Scope_Ent (E : Entity_Id) return Entity_Id;
-      --  For entity E, which represents an object, returns the entity of the
-      --  unit where that object is declared.
+      function Ignore_Object_Reference
+        (E       : Entity_Id;
+         Context : Entity_Id)
+         return Boolean;
+      --  Returns True if reference to E from within Context should be ignored;
+      --  this happens either when E is declared within the Context itself (so
+      --  does not contribute to the Global contract) or when it is a
+      --  quantified loop variable (that also does contribute to the Global
+      --  contract) that is likely to badly handled if it appear inside
+      --  expression functions.
 
-      -------------------
-      -- Def_Scope_Ent --
-      -------------------
+      procedure Load_SPARK_Xref (Index : Int; Xref : SPARK_Xref_Record);
+      --  Load a single frontend reference into backend data structures
 
-      function Def_Scope_Ent (E : Entity_Id) return Entity_Id is
-        (Unique_Entity
-          (Lib.Xref.SPARK_Specific.
-             Enclosing_Subprogram_Or_Library_Package (E)));
+      procedure Load is new
+        SPARK_Specific.Iterate_SPARK_Xrefs (Load_SPARK_Xref);
+      --  Load all frontend cross-references
 
-      Current_Entity : Entity_Id := Empty;
+      -----------------------------
+      -- Ignore_Object_Reference --
+      -----------------------------
+
+      function Ignore_Object_Reference
+        (E       : Entity_Id;
+         Context : Entity_Id)
+         return Boolean
+      is
+      begin
+         return Scope_Within (E, Context)
+           or else (Ekind (E) in E_Loop_Parameter | E_Variable
+                    and then Is_Quantified_Loop_Param (E));
+      end Ignore_Object_Reference;
+
+      ---------------------
+      -- Load_SPARK_Xref --
+      ---------------------
+
+      procedure Load_SPARK_Xref (Index : Int; Xref : SPARK_Xref_Record) is
+         pragma Unreferenced (Index);
+
+         Ref_Entity : constant Entity_Id := Unique_Entity (Xref.Entity);
+         Ref_Scope  : constant Entity_Id := Unique_Entity (Xref.Ref_Scope);
+         --  Referenced entity and scope where the reference occurs
+
+      begin
+         --  Register xref according to type
+
+         case Xref.Rtype is
+            when 'r' =>
+               if not Ignore_Object_Reference (Ref_Entity, Ref_Scope) then
+                  Add_To_Map (Reads,  Ref_Scope, Ref_Entity);
+               end if;
+            when 'm' =>
+               if not Ignore_Object_Reference (Ref_Entity, Ref_Scope) then
+                  Add_To_Map (Writes, Ref_Scope, Ref_Entity);
+               end if;
+            when 's' =>
+               Add_To_Map (Calls,  Ref_Scope, Ref_Entity);
+            when others =>
+               raise Program_Error;
+         end case;
+      end Load_SPARK_Xref;
 
    --  Start of processing for Load_SPARK_Xrefs
 
    begin
-      --  Iterate over scopes in this compilation unit
-
-      for S in SPARK_Scope_Table.First .. SPARK_Scope_Table.Last loop
-         declare
-            Srec : SPARK_Scope_Record renames SPARK_Scope_Table.Table (S);
-            U    : constant Entity_Id := Unique_Entity (Srec.Entity);
-            --  ??? Unique_Entity is required here for subprograms declared
-            --  by stubs; probably frontend xrefs should special-case them.
-         begin
-            Set_Default_To_Empty (Defines, U);
-            Set_Default_To_Empty (Writes,  U);
-            Set_Default_To_Empty (Reads,   U);
-            Set_Default_To_Empty (Calls,   U);
-         end;
-      end loop;
-
-      --  Fill in high-level tables from xrefs
-
-      for X in SPARK_Xref_Table.First .. SPARK_Xref_Table.Last loop
-         Do_One_Xref : declare
-
-            Xref : SPARK_Xref_Record renames SPARK_Xref_Table.Table (X);
-
-            Ref_Entity : Entity_Id renames Xref.Entity;
-            --  Referenced entity
-
-            Ref_Scope_Ent : constant Entity_Id :=
-              Unique_Entity (Xref.Ref_Scope);
-            --  Scope where the reference occurs
-
-         begin
-            --  Register the definition on first occurence of variables
-
-            if Current_Entity /= Ref_Entity
-              and then not Is_Heap_Variable (Ref_Entity)
-              and then Xref.Rtype in 'r' | 'm'
-            then
-               Add_To_Map (Defines,
-                           Def_Scope_Ent (Ref_Entity),
-                           Ref_Entity);
-            end if;
-
-            --  Register xref according to type
-
-            case Xref.Rtype is
-               when 'r' =>
-                  Add_To_Map (Reads,  Ref_Scope_Ent, Ref_Entity);
-               when 'm' =>
-                  Add_To_Map (Writes, Ref_Scope_Ent, Ref_Entity);
-               when 's' =>
-                  Add_To_Map (Calls,  Ref_Scope_Ent, Ref_Entity);
-               when others =>
-                  raise Program_Error;
-            end case;
-
-            Current_Entity := Ref_Entity;
-         end Do_One_Xref;
-      end loop;
+      Load;
    end Load_SPARK_Xrefs;
 
    ----------------------
@@ -277,25 +293,6 @@ package body SPARK_Frame_Conditions is
       Name_To_Entity.Include (E_Name, E);
    end Register_Entity;
 
-   --------------------------
-   -- Set_Default_To_Empty --
-   --------------------------
-
-   procedure Set_Default_To_Empty
-     (Map : in out Node_Graphs.Map;
-      Id  : Entity_Id)
-   is
-      Inserted : Boolean;
-      Position : Node_Graphs.Cursor;
-      --  Dummy variables required by the container API
-
-   begin
-      Map.Insert (Key      => Id,
-                  Position => Position,
-                  Inserted => Inserted);
-      --  Attempt to map entity Ent to a default element (i.e. empty set)
-   end Set_Default_To_Empty;
-
    -------------------------------------
    -- Collect_Direct_Computed_Globals --
    -------------------------------------
@@ -314,15 +311,13 @@ package body SPARK_Frame_Conditions is
          then Ultimate_Alias (E)
          else E);
 
-      use type Node_Sets.Set;
-
    begin
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, instead return empty sets.
 
       if Is_Subprogram_Or_Entry (E)
-        and then Ekind (E) /= E_Entry_Family
-        and then Is_Abstract_Subprogram (E_Alias)
+          and then Ekind (E) /= E_Entry_Family
+          and then Is_Abstract_Subprogram (E_Alias)
       then
          --  Initialize to empty sets and return
          Inputs  := Node_Sets.Empty_Set;
@@ -331,8 +326,8 @@ package body SPARK_Frame_Conditions is
          return;
       end if;
 
-      Inputs  := Reads  (E_Alias) - Defines (E_Alias);
-      Outputs := Writes (E_Alias) - Defines (E_Alias);
+      Inputs  := Get_Frontend_Xrefs (Reads,  E_Alias);
+      Outputs := Get_Frontend_Xrefs (Writes, E_Alias);
 
       --  Go through the reads and check if the entities corresponding to
       --  variables (not constants) have pragma Effective_Reads set. If so,
