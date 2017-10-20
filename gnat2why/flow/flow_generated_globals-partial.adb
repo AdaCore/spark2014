@@ -1734,11 +1734,10 @@ package body Flow_Generated_Globals.Partial is
    begin
       --  Collect frontend globals using only info from the current compilation
       --  unit.
-      --  ??? ignore calls, because they seem too over-aproximating
       Collect_Direct_Computed_Globals (E, Inputs, Outputs);
 
-      return (Inputs  => Remove_Constants_Without_Variable_Input (Inputs),
-              Outputs => Remove_Constants_Without_Variable_Input (Outputs),
+      return (Inputs    => Remove_Constants_Without_Variable_Input (Inputs),
+              Outputs   => Remove_Constants_Without_Variable_Input (Outputs),
               Proof_Ins => <>);
 
    end Frontend_Globals;
