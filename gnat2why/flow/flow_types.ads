@@ -258,6 +258,7 @@ package Flow_Types is
           (for all G of Global_Names.Proof_Ins =>
               not Global_Names.Inputs.Contains (G) and then
                  not Global_Names.Outputs.Contains (G));
+
    type Type_Aspect is (No_Aspect,
                         DIC,
                         Predicate,
