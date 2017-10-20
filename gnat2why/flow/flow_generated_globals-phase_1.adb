@@ -59,6 +59,9 @@ package body Flow_Generated_Globals.Phase_1 is
    Task_Instances : Task_Instances_Lists.List;
    --  Instances of task types
 
+   package Partial_Contract_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Partial_Contract);
+
    Entity_Infos : Partial_Contract_Lists.List;
    --  Entity-specific information as discovered by their analysis
    --

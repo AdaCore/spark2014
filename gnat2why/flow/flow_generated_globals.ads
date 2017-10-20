@@ -190,9 +190,6 @@ package Flow_Generated_Globals is
    --  serialisation procedure (in the body of flow_generated_globals), and
    --  update Null_Partial_Contract.
 
-   package Partial_Contract_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Partial_Contract);
-
    ----------------------------------------------------------------------
    --  Protected types instances
    ----------------------------------------------------------------------
