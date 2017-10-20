@@ -1345,7 +1345,6 @@ package body Flow is
 
    procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
       Success : Boolean;
-      Unused  : Partial_Contract_Lists.List;
 
       function Has_Effects (FA : Flow_Analysis_Graphs) return Boolean
         with Pre => FA.Kind in Kind_Subprogram | Kind_Task;
