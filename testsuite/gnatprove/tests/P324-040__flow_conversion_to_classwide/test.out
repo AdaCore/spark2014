@@ -1,0 +1,1 @@
+q.adb:5:21: high: "C" must be listed in the Global aspect of "Q" (SPARK RM 6.1.4(13))
