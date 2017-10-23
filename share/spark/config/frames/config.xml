@@ -3,6 +3,7 @@
  <configuration>
   <compilers>
    <compiler name="GNAT" />
+   <compiler name="GNAT_C" />
   </compilers>
   <config>
    package Compiler is
