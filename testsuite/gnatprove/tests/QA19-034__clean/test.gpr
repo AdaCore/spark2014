@@ -1,0 +1,10 @@
+project Test is
+
+   for Object_Dir use "obj2";
+
+   package Ide is
+      for Vcs_Kind use "git";
+      for Artifacts_Dir use "obj1";
+   end Ide;
+
+end Test;
