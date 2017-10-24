@@ -1,4 +1,4 @@
-part_of_illegal-pr_child-pr_grandchild.ads:3:49: indicator Part_Of must denote abstract state or public descendant of "Pr_Child" (SPARK RM 7.2.6(3))
+part_of_illegal-pr_child-pr_grandchild.ads:3:49: indicator Part_Of must denote abstract state of "Pr_Child" or of its public descendant (SPARK RM 7.2.6(3))
 part_of_illegal-pr_child.ads:12:60: "Grandchild_State" not declared in "Pr_Grandchild"
 part_of_illegal-pr_child.ads:12:60: "Grandchild_State" not declared in "Pr_Grandchild"
 part_of_illegal-pr_child.ads:12:60: indicator Part_Of must denote abstract state, single protected type or single task type
