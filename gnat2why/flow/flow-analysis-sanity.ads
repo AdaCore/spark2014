@@ -65,22 +65,6 @@ private package Flow.Analysis.Sanity is
    --  Checks if the generated Refined_Global contract is correct with respect
    --  to the user-provided Global contract.
 
-   procedure Check_Part_Of
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean);
-   --  The front-end enforces Part_Of on hidden state in all cases except for
-   --  constants, since it cannot tell between a constant with variable input
-   --  (which needs Part_Of) and one without (which does not).
-   --
-   --  This checks if there is any missing Part_Of indicator for constants with
-   --  variable input that are:
-   --  * declared immidiately within the private part of a given package
-   --  * part of the visible state of a package that is declared immediately
-   --    within the private part of a given package.
-   --
-   --  Note that deferred constants are exempt since they are visible and thus
-   --  are not hidden state.
-
    procedure Check_Side_Effects_In_Protected_Functions
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean);

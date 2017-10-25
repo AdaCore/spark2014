@@ -15,9 +15,9 @@ private
    is
       Max3 : constant Natural := V_Ext; -- needs Part_Of
       Max4 : constant Natural := V_Ext; -- needs Part_Of
-      Max5 : constant Natural;
+      Max5 : constant Natural;          -- needs Part_Of
    private
-      Max5 : constant Natural := V_Ext; -- doesn't need Part_Of because deferred
+      Max5 : constant Natural := V_Ext;
       package R
         with Abstract_State => (Bla2 with Part_Of => Bla)
       is

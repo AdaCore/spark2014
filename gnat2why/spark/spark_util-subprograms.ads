@@ -470,4 +470,9 @@ package SPARK_Util.Subprograms is
    --  @return True iff Decl belongs to the list of visible declarations of a
    --     package.
 
+   function In_Body_Declarations (Decl : Node_Id) return Boolean;
+   --  @param Decl declaration node
+   --  @return True iff Decl belongs to the list of declarations of a package
+   --     body.
+
 end SPARK_Util.Subprograms;

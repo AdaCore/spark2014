@@ -228,9 +228,6 @@ begin
    end loop;
 
    Prove_Init (Model.Available);
-   pragma Annotate (GNATprove, False_Positive,
-                    "needs to be a constituent of some state abstraction",
-                    "known issue with generation of Initializes");
    pragma Assert
      (Data (Get (Model.Available, Integer (Length (Model.Available)))).Next = No_Resource);
 end List_Mod_Allocator;

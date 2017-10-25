@@ -35,7 +35,6 @@ with Sem_Type;                    use Sem_Type;
 with Sem_Util;                    use Sem_Util;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
-with Stand;                       use Stand;
 
 with Common_Iterators;            use Common_Iterators;
 with Gnat2Why.Annotate;           use Gnat2Why.Annotate;
@@ -655,7 +654,6 @@ package body Flow.Analysis is
          Sanity.Check_Generated_Refined_Global'Access,
          Sanity.Check_Illegal_Writes'Access,
          Sanity.Check_All_Variables_Known'Access,
-         Sanity.Check_Part_Of'Access,
          Sanity.Check_Side_Effects_In_Protected_Functions'Access);
    begin
       for C of Sanity_Checks loop
@@ -3133,195 +3131,198 @@ package body Flow.Analysis is
    ---------------------------------
 
    procedure Find_Hidden_Unexposed_State (FA : in out Flow_Analysis_Graphs) is
+      Pkg_Spec : constant Node_Id := Package_Specification (FA.Spec_Entity);
+      Pkg_Body : constant Node_Id := Package_Body (FA.Spec_Entity);
 
-      function Enclosing_Package_Has_State (E : Entity_Id) return Boolean;
-      --  Returns True if there is an enclosing package of E (not
-      --  necessarily direcly) which has a state abstraction.
+      procedure Check_Hidden_State_Variables_And_Missing_Part_Of
+        (E : Entity_Id)
+        with Pre => Ekind (E) in E_Constant | E_Variable
+                    and not Is_Internal (E)
+                    and not Is_Part_Of_Concurrent_Object (E);
+      --  Emits a message if:
+      --  * a state variable is not mentioned as a constituent of an abstract
+      --    state when it should be;
+      --  * a state variable is missing the Part_Of indicator which is required
+      --    by SPARK RM 7.2.6(2-3).
 
-      procedure Warn_About_Hidden_States (E : Entity_Id)
-      with Pre => Ekind (E) = E_Package;
-      --  Issues a medium check per hidden state found in package E
+      procedure Traverse_Declarations (L : List_Id);
 
-      procedure Warn_About_Unreferenced_Constants (E : Entity_Id)
-      with Pre => Ekind (E) = E_Package;
-      --  Issues a high check for every constant with variable input
-      --  which is not exposed through a state abstraction.
+      ------------------------------------------------------
+      -- Check_Hidden_State_Variables_And_Missing_Part_Of --
+      ------------------------------------------------------
 
-      ---------------------------------
-      -- Enclosing_Package_Has_State --
-      ---------------------------------
-
-      function Enclosing_Package_Has_State (E : Entity_Id) return Boolean is
-         Scop : Entity_Id := E;
+      procedure Check_Hidden_State_Variables_And_Missing_Part_Of
+        (E : Entity_Id)
+      is
+         State : constant Entity_Id := Encapsulating_State (E);
       begin
-         loop
-            --  If we find a package then we look if it has abstract state
-
-            pragma Assert (Ekind (Scop) /= E_Generic_Package);
-
-            if Ekind (Scop) = E_Package
-              and then Present (Abstract_States (Scop))
-            then
-               return True;
-
-            --  If we find a public child then we return False
-
-            elsif Is_Child_Unit (Scop)
-              and then not Is_Private_Descendant (Scop)
-            then
-               return False;
-
-            end if;
-
-            Scop := Scope (Scop);
-
-            --  If we reach Standard_Standard then there is no enclosing
-            --  package which has state.
-
-            exit when Scop = Standard_Standard;
-         end loop;
-
-         return False;
-      end Enclosing_Package_Has_State;
-
-      ------------------------------
-      -- Warn_About_Hidden_States --
-      ------------------------------
-
-      procedure Warn_About_Hidden_States (E : Entity_Id) is
-
-         procedure Warn_On_Non_Constant (First_Ent : Entity_Id);
-         --  Goes through a list of entities and issues medium checks
-         --  for any non-constant variables.
-
-         --------------------------
-         -- Warn_On_Non_Constant --
-         --------------------------
-
-         procedure Warn_On_Non_Constant (First_Ent : Entity_Id) is
-            Hidden_State : Entity_Id;
-         begin
-            Hidden_State := First_Ent;
-            while Present (Hidden_State) loop
-               if Is_Object (Hidden_State)
-                 and then Is_Variable (Direct_Mapping_Id (Hidden_State))
-                 and then not Is_Internal (Hidden_State)
-               then
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "& needs to be a constituent of " &
-                                   "some state abstraction",
-                     N        => Hidden_State,
-                     F1       => Direct_Mapping_Id (Hidden_State),
-                     Tag      => Hidden_Unexposed_State,
-                     Severity => Medium_Check_Kind);
-               end if;
-
-               Next_Entity (Hidden_State);
-            end loop;
-         end Warn_On_Non_Constant;
-
-      --  Start of processing for Warn_About_Hidden_States
-
-      begin
-         --  Warn about hidden states that lie in the private part
-         Warn_On_Non_Constant (First_Private_Entity (E));
-
-         --  Warn about hidden states that lie in the body
-         if Present (Body_Entity (E)) then
-            Warn_On_Non_Constant (First_Entity (Body_Entity (E)));
+         --  Find state variable that is a Part_Of some state, but not listed
+         --  in its refinement.
+         if Is_Constituent (E)
+           and then Refinement_Exists (State)
+           and then not Find_In_Refinement (State, E)
+         then
+            Error_Msg_Flow
+              (FA       => FA,
+               Msg      => "& needs to be listed in the refinement of &",
+               N        => E,
+               F1       => Direct_Mapping_Id (E),
+               F2       => Direct_Mapping_Id (State),
+               Tag      => Hidden_Unexposed_State,
+               Severity => Medium_Check_Kind);
          end if;
-      end Warn_About_Hidden_States;
 
-      ---------------------------------------
-      -- Warn_About_Unreferenced_Constants --
-      ---------------------------------------
+         --  Detect hidden variables in the private part of a package or in the
+         --  package body that are not part of any refinement.
+         if Ekind (E) = E_Variable
+           and then not Is_Constituent (E)
+           and then not In_Visible_Declarations (Enclosing_Declaration (E))
+         then
+            Error_Msg_Flow
+              (FA       => FA,
+               Msg      => "& needs to be a constituent of some state " &
+                             "abstraction",
+               N        => E,
+               F1       => Direct_Mapping_Id (E),
+               Tag      => Hidden_Unexposed_State,
+               Severity => Medium_Check_Kind);
+         end if;
 
-      procedure Warn_About_Unreferenced_Constants (E : Entity_Id) is
-         Refined_State_N  : constant Node_Id :=
-           Get_Pragma (Body_Entity (E), Pragma_Refined_State);
+         --  Look for constants with variable inputs without Part_Of that are
+         --  declared:
+         --  * in the private part of a package
+         --  * in the visible part of a package declared immediately within
+         --    the private part of a package
+         --  * in the visible part of a private child.
+         --  Those do require a Part_Of indicator as per SPARK RM 7.2.6(2-3).
+         --
+         --  ??? Note that here we don't use Is_Constituent but we directly
+         --  check for a Part_Of indicator because at the moment Is_Constituent
+         --  will return True when a constant declared in the private part of
+         --  package is listed in the Refined_State but is missing a Part_Of
+         --  indicator (and therefore Get_Pragma will return False). The
+         --  condition with Get_Pragma could be replaced by Is_Constituent once
+         --  the front end ticket (about fixing the above) will be addressed.
+         if Ekind (E) = E_Constant
+           and then not Present (Get_Pragma (E, Pragma_Part_Of))
+           and then not In_Body_Declarations (Enclosing_Declaration (E))
+         then
+            declare
+               S : constant Entity_Id := Scope (E);
 
-         All_Constituents : Flow_Id_Sets.Set;
+               Msg : constant String :=
+                 (if Is_Private_Descendant (S)
+                  then "visible part of the private child"
+                  else "private part of package");
 
-         procedure Warn_On_Unexposed_Constant (First_Ent : Entity_Id);
-         --  Goes through a list of entities and issues medium checks
-         --  for any unexposed constants with variable inputs.
+               SRM_Ref : constant String :=
+                 (if Is_Private_Descendant (S)
+                  then "7.2.6(3)"
+                  else "7.2.6(2)");
 
-         --------------------------------
-         -- Warn_On_Unexposed_Constant --
-         --------------------------------
+            begin
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "indicator Part_Of is required in this "
+                                & "context: & is declared in the "
+                                & Msg & " &",
+                  SRM_Ref  => SRM_Ref,
+                  N        => E,
+                  Severity => Error_Kind,
+                  F1       => Direct_Mapping_Id (E),
+                  F2       => Direct_Mapping_Id (FA.Spec_Entity));
+            end;
+         end if;
+      end Check_Hidden_State_Variables_And_Missing_Part_Of;
 
-         procedure Warn_On_Unexposed_Constant (First_Ent : Entity_Id) is
-            Hidden_State : Entity_Id;
-            F            : Flow_Id;
-         begin
-            Hidden_State := First_Ent;
-            while Present (Hidden_State) loop
-               F := Direct_Mapping_Id (Hidden_State);
+      ---------------------------
+      -- Traverse_Declarations --
+      ---------------------------
 
-               if Is_Constant_Object (Hidden_State)
-                 and then Has_Variable_Input (Hidden_State)
-                 and then not All_Constituents.Contains (F)
-                 and then not Is_Internal (Hidden_State)
-               then
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "& needs to be a constituent of " &
-                                   "some state abstraction",
-                     N        => Hidden_State,
-                     F1       => F,
-                     Tag      => Hidden_Unexposed_State,
-                     Severity => Medium_Check_Kind);
-               end if;
-
-               Next_Entity (Hidden_State);
-            end loop;
-         end Warn_On_Unexposed_Constant;
-
-      --  Start of processing for Warn_About_Unreferenced_Constants
-
+      procedure Traverse_Declarations (L : List_Id) is
+         N : Node_Id := First (L);
       begin
+         while Present (N) loop
+            case Nkind (N) is
+               when N_Object_Declaration =>
+                  declare
+                     E : constant Entity_Id := Defining_Entity (N);
 
-         --  Sanity check that we do have a Refined_State aspect
-         pragma Assert (Present (Refined_State_N));
+                  begin
+                     if ((Ekind (E) = E_Constant
+                          and then Has_Variable_Input (E))
+                         or else Ekind (E) = E_Variable)
+                       and then not Is_Internal (E)
+                       and then not Is_Part_Of_Concurrent_Object (E)
+                     then
+                        --  Detect which of the state variables are hidden or
+                        --  are missing a Part_Of indicator and emit a message.
+                        Check_Hidden_State_Variables_And_Missing_Part_Of (E);
+                     end if;
+                  end;
 
-         --  Collect constituents mentioned in the Refined_State aspect
-         for Constituents of Parse_Refined_State (Refined_State_N) loop
-            All_Constituents.Union (Constituents);
+               --  N is a nested package. If the relative part is in SPARK, we
+               --  recursively traverse its visible, private and body
+               --  declarations.
+               when N_Package_Declaration =>
+                  declare
+                     E        : constant Entity_Id := Defining_Entity (N);
+
+                     Pkg_Spec : constant Node_Id := Package_Specification (E);
+                     Pkg_Body : constant Node_Id := Package_Body (E);
+
+                  begin
+                     if Entity_Spec_In_SPARK (E) then
+                        Traverse_Declarations
+                          (Visible_Declarations (Pkg_Spec));
+
+                        --  The following is for packages that have hidden
+                        --  states not exposed through an abstract state. The
+                        --  case where they have abstract states will be
+                        --  checked when analyzing the package itself.
+                        if No (Abstract_States (E))
+                          and then Private_Spec_In_SPARK (E)
+                        then
+                           Traverse_Declarations
+                             (Private_Declarations (Pkg_Spec));
+
+                           if Entity_Body_In_SPARK (E) then
+                              Traverse_Declarations (Declarations (Pkg_Body));
+                           end if;
+                        end if;
+                     end if;
+                  end;
+
+               when others =>
+                  null;
+            end case;
+
+            Next (N);
          end loop;
-
-         --  Detect unexposed constants with variable input hidden in the
-         --  private part of the package spec and in package body declarations.
-         Warn_On_Unexposed_Constant (First_Private_Entity (E));
-         Warn_On_Unexposed_Constant (First_Entity (Body_Entity (E)));
-      end Warn_About_Unreferenced_Constants;
+      end Traverse_Declarations;
 
    --  Start of processing for Find_Hidden_Unexposed_State
 
    begin
-      if Present (Abstract_States (FA.Spec_Entity)) then
-         --  If the package has a non-null abstract state aspect then issue
-         --  high checks for every constant with variable input that is part of
-         --  the package's hidden state and is not exposed through a state
-         --  abstraction.
-         --  For a null abstract state the front end will check the absence of
-         --  state variables.
-         if not Has_Null_Abstract_State (FA.Spec_Entity)
-           and then Entity_Body_In_SPARK (FA.Spec_Entity)
-         then
-            Warn_About_Unreferenced_Constants (FA.Spec_Entity);
-         end if;
+      --  If the analyzed package has abstract states then traverse its private
+      --  and body declarations.
+      if Present (Abstract_States (FA.Spec_Entity))
+        and then Private_Spec_In_SPARK (FA.Spec_Entity)
+      then
+         Traverse_Declarations (Private_Declarations (Pkg_Spec));
 
-      else
-         --  If the package does not have an abstract state aspect and an
-         --  enclosing package introduces a state abstraction then issue a
-         --  medium check per hidden state.
-
-         if Enclosing_Package_Has_State (FA.Spec_Entity) then
-            Warn_About_Hidden_States (FA.Spec_Entity);
+         if Entity_Body_In_SPARK (FA.Spec_Entity) then
+            Traverse_Declarations (Declarations (Pkg_Body));
          end if;
       end if;
 
+      --  Traverse declarations from the visible part of a private child.
+      --  This is to enforce SPARK RM 7.2.6(3).
+      if Is_Child_Unit (FA.Spec_Entity)
+        and then Is_Private_Descendant (FA.Spec_Entity)
+      then
+         Traverse_Declarations (Visible_Declarations (Pkg_Spec));
+      end if;
    end Find_Hidden_Unexposed_State;
 
    -----------------------------------------

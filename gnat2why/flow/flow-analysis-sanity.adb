@@ -24,16 +24,13 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
-with Nlists;                 use Nlists;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
-with Snames;                 use Snames;
 
 with Checked_Types;          use Checked_Types;
 with Common_Iterators;       use Common_Iterators;
 with Gnat2Why_Args;
-with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with SPARK_Util;             use SPARK_Util;
@@ -986,125 +983,6 @@ package body Flow.Analysis.Sanity is
          end if;
       end loop;
    end Check_Generated_Refined_Global;
-
-   -------------------
-   -- Check_Part_Of --
-   -------------------
-
-   procedure Check_Part_Of
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean)
-   is
-
-      procedure Check (L : List_Id);
-      --  We perform the check for the elements of a list L, which can be the
-      --  list of either private or visible declarations of a package. In more
-      --  detail: because we want to detect any non deferred constant with
-      --  variable inputs declared immediately within the private part of a
-      --  package or in the visible part of a package declared in the private
-      --  part of another package, then, depending on these two cases, L will
-      --  be:
-      --  * the list of private declarations, if the package under analysis
-      --    has a private part.
-      --  * the list of visible declarations, if the package under analysis
-      --    is present in the list of private declarations of another package.
-      --
-      --  For each element E of the list L, in case E is an object declaration
-      --  we detect if it is a constant with variable input, if it is a package
-      --  declaration we recursively check the same for each of its visible
-      --  variables.
-
-      procedure Detect_Constant_With_Variable_Input (E : Entity_Id);
-      --  If entity E is a non deferred constant with variable input which does
-      --  not have a Part_Of indicator then we issue an Error message.
-
-      -----------
-      -- Check --
-      -----------
-
-      procedure Check (L : List_Id)
-      is
-         N : Node_Id := First (L);
-      begin
-         while Present (N) loop
-            case Nkind (N) is
-               when N_Object_Declaration =>
-                  --  N is an object declared immediately within the private
-                  --  part and we detect if is a constant with variable input.
-                  declare
-                     E : constant Entity_Id := Defining_Entity (N);
-
-                  begin
-                     if not Is_Internal (E) then
-                        Detect_Constant_With_Variable_Input (E);
-                     end if;
-                  end;
-
-               when N_Package_Declaration =>
-                  --  N is a package declared immediately within the private
-                  --  part. If it is in SPARK, we recursively check its visible
-                  --  declarations.
-
-                  declare
-                     Nested_Spec : constant Node_Id := Specification (N);
-
-                  begin
-                     if Entity_Spec_In_SPARK (Defining_Entity (N)) then
-                        Check (Visible_Declarations (Nested_Spec));
-                     end if;
-                  end;
-
-               when others =>
-                  null;
-            end case;
-
-            Next (N);
-         end loop;
-      end Check;
-
-      -----------------------------------------
-      -- Detect_Constant_With_Variable_Input --
-      -----------------------------------------
-
-      procedure Detect_Constant_With_Variable_Input (E : Entity_Id)
-      is
-         function Is_Deferred_Constant (E : Entity_Id) return Boolean
-         is (Is_Full_View (E) or else Present (Full_View (E)));
-      begin
-         if Ekind (E) = E_Constant
-           and then Has_Variable_Input (E)
-           and then not Present (Get_Pragma (E, Pragma_Part_Of))
-           and then not Is_Deferred_Constant (E)
-         then
-            Sane := False;
-
-            Error_Msg_Flow
-              (FA       => FA,
-               Msg      => "indicator Part_Of is required in this context: " &
-                           "& is declared in the private part of package &",
-               SRM_Ref  => "7.2.6(2)",
-               N        => E,
-               Severity => Error_Kind,
-               F1       => Direct_Mapping_Id (E),
-               F2       => Direct_Mapping_Id (FA.Spec_Entity));
-         end if;
-      end Detect_Constant_With_Variable_Input;
-
-   --  Start of processing for Check_Part_Of
-
-   begin
-      Sane := True;
-
-      --  We make sure we are looking at a package specification with a state
-      --  abstraction otherwise the item cannot act as a Part_Of constituent.
-
-      if Ekind (FA.Spec_Entity) = E_Package
-        and then Present (Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State))
-      then
-         Check (Private_Declarations (Package_Specification (FA.Spec_Entity)));
-      end if;
-
-   end Check_Part_Of;
 
    -----------------------------------------------
    -- Check_Side_Effects_In_Protected_Functions --

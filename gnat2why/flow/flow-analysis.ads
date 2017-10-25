@@ -106,19 +106,30 @@ package Flow.Analysis is
    --  precomputed dependency map)
 
    procedure Find_Hidden_Unexposed_State (FA : in out Flow_Analysis_Graphs);
-   --  This procedure performs two checks:
+   --  This procedure looks for hidden state variables and missing Part_Of
+   --  indicators. Also detects hideen state that has a Part_Of indicator but
+   --  is not mentioned in any refinement.
    --
-   --    * It issues medium checks for hidden states that are not
-   --      constituents of any state abstractions even though an
-   --      enclosing package declares a state abstraction.
+   --  In particular:
    --
-   --    * It issues medium checks for hidden states that are not
-   --      constituents of any state abstractions even though
-   --      the enclosing package declares a state abstraction.
-   --      The front end performs this check for variables but
-   --      not for constants with variable input.
+   --  1. It issues a medium check for Part_Of constituents that are not listed
+   --     in the refinement (when there is one).
    --
-   --  Complexity is O(N)
+   --  2. It issues a medium check for hidden states in the package body that
+   --     are not constituents of any state abstraction.
+   --
+   --  3. It emits an error if there is any missing Part_Of indicator for
+   --     constants with variable input (SPARK RM 7.2.6(2-3)) that
+   --     are:
+   --     * declared immidiately within the private part of a given package;
+   --     * part of the visible state of a package that is declared immediately
+   --       within the private part of a given package;
+   --     * part of the visible state of a private child.
+   --
+   --  Note that the front-end enforces Part_Of on hidden state in all cases
+   --  except for constants, since it cannot tell between a constant with
+   --  variable input (which needs Part_Of) and one without (which does not)
+   --  and this is why we have this check here.
 
    procedure Find_Impossible_To_Initialize_State
      (FA : in out Flow_Analysis_Graphs)
@@ -156,7 +167,7 @@ package Flow.Analysis is
 
    procedure Check_Consistent_AS_For_Private_Child
      (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+   with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
    --  Check if the refinement of the parent package contains the state of the
    --  private child with Part_Of aspect.
 

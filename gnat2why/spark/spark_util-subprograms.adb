@@ -918,6 +918,20 @@ package body SPARK_Util.Subprograms is
         and then List_Containing (Decl) = Visible_Declarations (Par);
    end In_Visible_Declarations;
 
+   --------------------------
+   -- In_Body_Declarations --
+   --------------------------
+
+   function In_Body_Declarations (Decl : Node_Id) return Boolean is
+      Par : constant Node_Id := Parent (Decl);
+   begin
+      return
+        Present (Par)
+        and then Nkind (Par) = N_Package_Body
+        and then Is_List_Member (Decl)
+        and then List_Containing (Decl) = Declarations (Par);
+   end In_Body_Declarations;
+
    ----------------------------------------
    -- Is_Invisible_Dispatching_Operation --
    ----------------------------------------

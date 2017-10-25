@@ -1497,8 +1497,8 @@ package body Flow is
                      if not Gnat2Why_Args.Prove_Mode then
                         Analysis.Find_Ineffective_Statements (FA);
                         Analysis.Find_Dead_Code (FA);
+                        Analysis.Find_Hidden_Unexposed_State (FA);
                         if Have_Full_Package_Code then
-                           Analysis.Find_Hidden_Unexposed_State (FA);
                            Analysis.Find_Impossible_To_Initialize_State (FA);
                         end if;
                      end if;
