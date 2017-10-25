@@ -836,7 +836,7 @@ package body SPARK_Util.Types is
       return Node_Id
    is
       Current : Entity_Id := First_Discriminant (Ty);
-      Elmt    : Elmt_Id := First_Elmt (Stored_Constraint (Ty));
+      Elmt    : Elmt_Id := First_Elmt (Discriminant_Constraint (Ty));
    begin
       while Current /= Discr loop
          Current := Next_Discriminant (Current);

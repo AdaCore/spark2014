@@ -3036,7 +3036,7 @@ package body Why.Gen.Records is
       Args      : W_Expr_Array (1 .. Num_Discr + 1);
       Count     : Natural := 1;
       Discr     : Entity_Id := First_Discriminant (Check_Ty);
-      Elmt      : Elmt_Id := First_Elmt (Stored_Constraint (Check_Ty));
+      Elmt      : Elmt_Id := First_Elmt (Discriminant_Constraint (Check_Ty));
 
    begin
       Args (Num_Discr + 1) := +Expr;
