@@ -4021,9 +4021,7 @@ package body Flow.Analysis is
             --  Complain about actual inputs that are not mentioned in the
             --  Initializes.
             for Actual_In of All_Actual_Ins loop
-               if not All_Contract_Ins.Contains (Actual_In)
-                 and then not All_Contract_Outs.Contains (Actual_In)
-               then
+               if not All_Contract_Ins.Contains (Actual_In) then
                   declare
                      Tracefile : constant String := Fresh_Trace_File;
                   begin
