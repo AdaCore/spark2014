@@ -1,5 +1,5 @@
 dynamic.adb:4:33: info: overflow check proved (CodePeer)
-dynamic.adb:5:07: warning: initialization of M has no effect
+dynamic.adb:5:07: warning: initialization of "M" has no effect
 dynamic.adb:5:24: info: overflow check proved (CodePeer)
 dynamic.adb:6:15: info: range check proved (CVC4: 2 VC)
 dynamic.adb:7:15: info: range check proved (CVC4: 2 VC)
@@ -7,13 +7,13 @@ dynamic.adb:9:15: info: range check proved (CVC4: 2 VC)
 dynamic.adb:10:15: info: range check proved (CVC4: 2 VC)
 dynamic.adb:11:15: info: range check proved (CVC4: 2 VC)
 dynamic.adb:14:12: info: range check proved (CVC4: 2 VC)
-dynamic.adb:16:07: warning: initialization of OA has no effect
+dynamic.adb:16:07: warning: initialization of "OA" has no effect
 dynamic.adb:16:17: info: range check proved (CodePeer)
-dynamic.adb:17:07: warning: initialization of OB has no effect
+dynamic.adb:17:07: warning: initialization of "OB" has no effect
 dynamic.adb:17:17: info: range check proved (CodePeer)
-dynamic.adb:19:07: warning: initialization of OE has no effect
+dynamic.adb:19:07: warning: initialization of "OE" has no effect
 dynamic.adb:19:17: info: range check proved (CodePeer)
-dynamic.adb:20:07: warning: initialization of OF_O has no effect
+dynamic.adb:20:07: warning: initialization of "OF_O" has no effect
 dynamic.adb:20:19: medium: range check might fail (e.g. when OF_O = 0)
 dynamic.adb:21:17: info: range check proved (CodePeer)
 dynamic.adb:24:09: warning: unused assignment

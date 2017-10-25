@@ -1,4 +1,4 @@
-task_types.adb:4:07: warning: initialization of X has no effect
+task_types.adb:4:07: warning: initialization of "X" has no effect
 task_types.adb:6:18: warning: statement has no effect
 task_types.adb:7:12: warning: unused assignment
 task_types.adb:7:15: info: initialization of "X" proved

@@ -31,10 +31,10 @@ pkg_a.adb:16:09: medium: precondition might fail
 pkg_a.adb:16:23: high: "X" is not initialized
 pkg_a.adb:17:06: warning: unused assignment
 pkg_a.ads:2:36: warning: no procedure exists that can initialize abstract state "Pkg_A.State_B"
-pkg_a.ads:3:08: warning: initialization of C is not mentioned in Initializes contract
+pkg_a.ads:3:08: warning: initialization of "C" constituent of "State_B" is not mentioned in Initializes contract
 pkg_a.ads:8:04: high: "X" is not initialized in "Pkg_A"
 pkg_a.ads:10:04: info: initialization of "Z" proved
-pkg_a.ads:10:04: warning: initialization of Z has no effect
+pkg_a.ads:10:04: warning: initialization of "Z" has no effect
 pkg_a.ads:13:04: info: initialization of "Q" proved
 pkg_b.adb:10:14: high: "Y" must be listed in the Initializes aspect of "Pkg_B" (SPARK RM 7.1.5(12))
 pkg_c.adb:15:12: high: cannot write "X" during elaboration of "Pkg_C" (SPARK RM 7.7.1(6))
@@ -48,7 +48,7 @@ pkg_e.adb:7:03: info: initialization of "Y" constituent of "Meant_To_Be_Init" pr
 pkg_e.adb:14:06: warning: unused assignment
 pkg_e.adb:14:09: info: initialization of "Y" constituent of "Meant_To_Be_Init" proved
 pkg_e.ads:3:27: warning: no procedure exists that can initialize abstract state "Pkg_E.Meant_To_Be_Unint"
-pkg_e.ads:4:08: warning: initialization of Vis_D is not mentioned in Initializes contract
+pkg_e.ads:4:08: warning: initialization of "Vis_D" is not mentioned in Initializes contract
 pkg_e.ads:8:03: high: "Vis_A" is not initialized in "Pkg_E"
 pkg_e.ads:9:03: info: initialization of "Vis_B" proved
 uninitialized.adb:8:40: info: initialization of "Var" constituent of "State" proved

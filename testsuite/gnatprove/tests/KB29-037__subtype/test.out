@@ -1,6 +1,6 @@
 main.adb:4:22: info: predicate check proved (CVC4: 1 VC)
 main.adb:6:04: info: initialization of "Z" proved
-main.adb:6:04: warning: initialization of Z has no effect
+main.adb:6:04: warning: initialization of "Z" has no effect
 main.adb:6:13: info: predicate check proved (CVC4: 1 VC)
 main.adb:7:04: info: initialization of "TV" proved
 main.adb:7:14: medium: predicate check might fail (e.g. when Global = 1 and TV = 0)

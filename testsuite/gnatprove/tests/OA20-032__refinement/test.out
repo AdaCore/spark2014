@@ -3,7 +3,7 @@ patris.adb:42:04: info: initialization of "Level_Nbr" constituent of "Score_Stat
 patris.adb:43:04: info: initialization of "Line_Counter" constituent of "Score_State" proved
 patris.adb:46:04: info: initialization of "Best_Score_Nbr" constituent of "Best_Score_State" proved
 patris.adb:49:04: info: initialization of "Cur_Board" constituent of "Game_State" proved
-patris.adb:49:04: warning: initialization of Cur_Board has no effect
+patris.adb:49:04: warning: initialization of "Cur_Board" constituent of "Game_State" has no effect
 patris.adb:50:04: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
 patris.adb:50:04: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
 patris.adb:50:04: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
@@ -13,7 +13,7 @@ patris.adb:51:04: info: initialization of "Next_Piece.S" constituent of "Game_St
 patris.adb:51:04: info: initialization of "Next_Piece.X" constituent of "Game_State" proved
 patris.adb:51:04: info: initialization of "Next_Piece.Y" constituent of "Game_State" proved
 patris.adb:52:04: info: initialization of "Cur_State" constituent of "Game_State" proved
-patris.adb:52:04: warning: initialization of Cur_State has no effect
+patris.adb:52:04: warning: initialization of "Cur_State" constituent of "Game_State" has no effect
 patris.adb:53:04: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
 patris.adb:54:04: info: initialization of "Speed_Up" constituent of "Game_State" proved
 patris.adb:67:49: warning: assuming "Rand" has no effect on global items

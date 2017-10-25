@@ -24,7 +24,7 @@ tictactoe.adb:58:52: info: initialization of "P.Y" proved
 tictactoe.adb:66:07: info: precondition proved (CVC4: 2 VC)
 tictactoe.adb:66:12: info: initialization of "P.X" proved
 tictactoe.adb:66:12: info: initialization of "P.Y" proved
-tictactoe.adb:96:07: warning: initialization of P has no effect
+tictactoe.adb:96:07: warning: initialization of "P" has no effect
 tictactoe.adb:112:29: info: initialization of "P.X" proved
 tictactoe.adb:112:34: info: initialization of "P.Y" proved
 tictactoe.adb:113:28: info: initialization of "Score" proved

@@ -1,5 +1,5 @@
-task_non_term.adb:4:07: warning: initialization of A has no effect
-task_non_term.adb:5:07: warning: initialization of F has no effect
+task_non_term.adb:4:07: warning: initialization of "A" has no effect
+task_non_term.adb:5:07: warning: initialization of "F" has no effect
 task_non_term.adb:8:13: info: initialization of "F" proved
 task_non_term.adb:8:22: warning: statement has no effect
 task_non_term.adb:9:14: warning: unused assignment

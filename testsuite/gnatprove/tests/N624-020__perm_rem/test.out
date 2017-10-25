@@ -370,7 +370,7 @@ perm.adb:320:16: info: precondition proved (CVC4: 3 VC)
 perm.adb:320:34: info: precondition proved (CVC4: 3 VC)
 perm.adb:320:52: info: precondition proved (CVC4: 3 VC)
 perm.adb:325:14: info: precondition proved (CVC4: 5 VC)
-perm.adb:329:07: warning: initialization of H has no effect
+perm.adb:329:07: warning: initialization of "H" has no effect
 perm.adb:329:26: info: precondition proved (CVC4: 3 VC)
 perm.adb:330:31: medium: precondition might fail
 perm.adb:331:35: info: precondition proved (CVC4: 3 VC)

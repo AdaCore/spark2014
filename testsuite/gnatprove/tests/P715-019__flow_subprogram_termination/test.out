@@ -20,7 +20,7 @@ container.adb:34:13: info: loop variant proved (CVC4: 1 VC), in call inlined at 
 container.adb:34:47: info: initialization of "Int" proved, in call inlined at container.adb:45
 container.adb:35:13: warning: statement has no effect, in call inlined at container.adb:45
 container.adb:35:23: info: initialization of "Int" proved, in call inlined at container.adb:45
-container.adb:42:07: warning: initialization of Int has no effect
+container.adb:42:07: warning: initialization of "Int" has no effect
 container.adb:45:07: info: initialization of "Cont.A" proved
 container.adb:51:10: info: initialization of "X" proved
 container.adb:53:10: info: initialization of "X" proved

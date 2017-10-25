@@ -25,7 +25,7 @@ aggregates.adb:81:12: info: initialization of "Tmp.Y" proved
 aggregates.adb:95:23: info: initialization of "Output.X" proved
 aggregates.adb:95:23: info: initialization of "Output.Y" proved
 aggregates.adb:95:23: info: initialization of "Output.Z" proved
-aggregates.adb:99:07: warning: initialization of Tmp has no effect
+aggregates.adb:99:07: warning: initialization of "Tmp" has no effect
 aggregates.adb:107:23: info: initialization of "Output.C1.X" proved
 aggregates.adb:107:23: info: initialization of "Output.C1.Y" proved
 aggregates.adb:107:23: info: initialization of "Output.C1.Z" proved

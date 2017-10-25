@@ -8,7 +8,7 @@ raise_statements.adb:64:19: info: initialization of "O" proved
 raise_statements.adb:65:09: medium: missing dependency "null => A"
 raise_statements.adb:65:26: medium: incorrect dependency "O => A"
 raise_statements.adb:71:10: medium: exception might be raised
-raise_statements.ads:2:08: warning: initialization of G2 is not mentioned in Initializes contract
+raise_statements.ads:2:08: warning: initialization of "G2" is not mentioned in Initializes contract
 raise_statements.ads:4:04: info: initialization of "G" proved
 raise_statements.ads:12:32: info: initialization of "G" proved
 raise_statements.ads:23:32: info: initialization of "G" proved

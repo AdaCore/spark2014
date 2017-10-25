@@ -603,9 +603,9 @@ elaboration_demo.adb:2:29: warning: unused initial value of "Size"
 elaboration_demo.adb:3:29: high: "Count" is not initialized in "Elaboration_Demo"
 elaboration_demo.adb:3:29: warning: unused variable "Count"
 elaboration_demo.adb:4:04: info: range check proved (CVC4: 2 VC)
-elaboration_demo.adb:4:04: warning: initialization of Line has no effect
+elaboration_demo.adb:4:04: warning: initialization of "Line" has no effect
 elaboration_demo.adb:4:34: info: length check proved (CVC4: 1 VC)
-elaboration_demo.adb:5:04: warning: initialization of Guess has no effect
+elaboration_demo.adb:5:04: warning: initialization of "Guess" has no effect
 elaboration_demo.adb:5:26: medium: float overflow check might fail
 elaboration_demo.adb:5:61: info: precondition proved (CVC4: 1 VC)
 elaboration_demo.adb:5:74: info: division check proved (CVC4: 1 VC)
@@ -831,7 +831,7 @@ hierarchical_state_demo_nested.adb:49:25: info: range check proved (CVC4: 1 VC)
 hierarchical_state_demo_nested.adb:49:34: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo_nested.adb:49:43: info: division check proved (CVC4: 1 VC)
 hierarchical_state_demo_nested.ads:7:28: info: initialization of "Success" proved
-initializer_demo.adb:6:07: warning: initialization of Sum has no effect
+initializer_demo.adb:6:07: warning: initialization of "Sum" has no effect
 initializer_demo.adb:10:17: info: initialization of "Sum" proved
 initializer_demo.adb:10:21: medium: overflow check might fail
 initializer_demo.adb:12:14: info: initialization of "Sum" proved

@@ -1,6 +1,6 @@
 repro.adb:153:04: warning: analyzing unreferenced procedure "CreateObject"
 repro.adb:153:27: warning: unused initial value of "Template"
 repro.adb:154:27: info: initialization of "ReturnValue" proved
-repro.adb:156:07: warning: initialization of LocalTemplate has no effect
+repro.adb:156:07: warning: initialization of "LocalTemplate" has no effect
 repro.adb:165:07: warning: unused variable "UnusedObjectHandle"
 repro.adb:167:22: high: "LocalReturnValue" is not initialized

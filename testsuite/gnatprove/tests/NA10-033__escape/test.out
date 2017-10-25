@@ -1,4 +1,4 @@
-escape.adb:6:07: warning: initialization of Count_Bs has no effect
+escape.adb:6:07: warning: initialization of "Count_Bs" has no effect
 escape.adb:8:24: warning: statement has no effect
 escape.adb:9:10: warning: statement has no effect
 escape.adb:10:22: warning: unused assignment

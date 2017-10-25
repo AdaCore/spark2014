@@ -41,7 +41,7 @@ dynamic_preds.adb:92:28: medium: overflow check might fail (e.g. when Result = (
 dynamic_preds.adb:94:14: info: initialization of "Result.A" proved
 dynamic_preds.adb:94:14: info: initialization of "Result.B" proved
 dynamic_preds.adb:94:14: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:98:07: warning: initialization of Result has no effect
+dynamic_preds.adb:98:07: warning: initialization of "Result" has no effect
 dynamic_preds.adb:100:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds.adb:101:28: info: overflow check proved (CVC4: 1 VC)
 dynamic_preds.adb:101:28: medium: predicate check might fail

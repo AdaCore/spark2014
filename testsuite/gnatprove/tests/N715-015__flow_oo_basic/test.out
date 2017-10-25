@@ -25,6 +25,7 @@ tests.adb:191:12: info: initialization of "Obj.Round" proved
 tests.adb:191:12: info: initialization of "Obj.X" proved
 tests.adb:191:12: info: initialization of "Obj.Y" proved
 tests.adb:196:23: info: initialization of "N" proved
+tests.adb:202:07: warning: initialization of "Obj" has no effect
 tests.adb:209:12: info: initialization of "Obj.Round" proved
 tests.adb:209:12: info: initialization of "Obj.X" proved
 tests.adb:209:12: info: initialization of "Obj.Y" proved
@@ -123,6 +124,7 @@ tests.adb:493:23: info: initialization of "O3" proved
 tests.adb:494:23: info: initialization of "O4" proved
 tests.adb:495:23: info: initialization of "O5" proved
 tests.adb:497:21: medium: missing dependency "O1 => A"
+tests.adb:509:07: warning: initialization of "Y" has no effect
 tests.adb:516:13: info: initialization of "X.X" proved
 tests.adb:516:13: info: initialization of "X.Y" proved
 tests.adb:520:13: info: initialization of "Y.X" proved

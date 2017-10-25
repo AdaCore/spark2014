@@ -1,4 +1,4 @@
 inits_aspect.adb:5:04: info: initialization of "X" constituent of "S" proved
-inits_aspect.ads:4:03: warning: initialization of Y is not mentioned in Initializes contract
+inits_aspect.ads:4:03: warning: initialization of "Y" is not mentioned in Initializes contract
 inits_pragma.adb:6:04: info: initialization of "X" constituent of "S" proved
-inits_pragma.ads:6:04: warning: initialization of Y is not mentioned in Initializes contract
+inits_pragma.ads:6:04: warning: initialization of "Y" is not mentioned in Initializes contract

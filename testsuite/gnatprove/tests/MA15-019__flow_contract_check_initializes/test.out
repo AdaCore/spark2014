@@ -35,7 +35,7 @@ initializes_legal.ads:17:04: info: initialization of "X" proved
 initializes_illegal.adb:5:04: high: "Y" constituent of "SA" is not initialized in "Initializes_Illegal"
 initializes_illegal.adb:5:04: high: initialization of "Initializes_Illegal.SA" is specified at initializes_illegal.ads:7
 initializes_illegal.adb:5:07: info: initialization of "Z" constituent of "SA" proved
-initializes_illegal.ads:7:08: warning: initialization of W is not mentioned in Initializes contract
+initializes_illegal.ads:7:08: warning: initialization of "W" is not mentioned in Initializes contract
 initializes_illegal.ads:7:27: medium: initialization of V must not depend on A (SPARK RM 7.1.5(11))
 initializes_illegal.ads:8:27: medium: initialization of "X" does not depend on "A" (SPARK RM 7.1.5(11))
 initializes_illegal.ads:9:27: medium: initialization of Initializes_Illegal.SA must not depend on A (SPARK RM 7.1.5(11))

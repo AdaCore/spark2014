@@ -24,7 +24,6 @@
 with Ada.Text_IO;
 
 with Elists;                      use Elists;
-with Errout;                      use Errout;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Output;                      use Output;
@@ -1833,8 +1832,6 @@ package body Flow.Analysis is
                   elsif Nkind (N) = N_Object_Declaration then
                      if not Constant_Present (N) then
                         --  This warning is ignored for local constants
-                        Get_Name_String (Chars (Defining_Identifier (N)));
-                        Adjust_Name_Case (Sloc (N));
 
                         if FA.Kind in Kind_Package | Kind_Package_Body
                           and then No (Find_In_Initializes
@@ -1843,11 +1840,12 @@ package body Flow.Analysis is
                            Error_Msg_Flow
                              (FA        => FA,
                               Tracefile => Tracefile,
-                              Msg       => "initialization of " &
-                                           Name_Buffer (1 .. Name_Len) &
+                              Msg       => "initialization of &" &
                                            " is not mentioned in " &
                                            "Initializes contract",
                               N         => FA.Initializes_N,
+                              F1        =>
+                                Direct_Mapping_Id (Defining_Entity (N)),
                               Tag       => Tag,
                               Severity  => Warning_Kind,
                               Vertex    => V);
@@ -1855,10 +1853,11 @@ package body Flow.Analysis is
                            Error_Msg_Flow
                              (FA        => FA,
                               Tracefile => Tracefile,
-                              Msg       => "initialization of " &
-                                           Name_Buffer (1 .. Name_Len) &
+                              Msg       => "initialization of &" &
                                            " has no effect",
                               N         => Error_Location (FA.PDG, FA.Atr, V),
+                              F1        =>
+                                Direct_Mapping_Id (Defining_Entity (N)),
                               Tag       => Tag,
                               Severity  => Warning_Kind,
                               Vertex    => V);

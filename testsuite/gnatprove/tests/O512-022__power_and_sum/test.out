@@ -42,8 +42,8 @@ power_and_sum.adb:25:22: info: assertion proved (CVC4: 1 VC)
 power_and_sum.adb:25:24: info: initialization of "TotalSum" proved
 power_and_sum.adb:26:17: info: initialization of "TotalSum" proved
 power_and_sum.adb:26:17: info: range check proved (CVC4: 1 VC)
-power_and_sum.adb:31:07: warning: initialization of J has no effect
-power_and_sum.adb:33:07: warning: initialization of InnerSum has no effect
+power_and_sum.adb:31:07: warning: initialization of "J" has no effect
+power_and_sum.adb:33:07: warning: initialization of "InnerSum" has no effect
 power_and_sum.adb:35:13: info: initialization of "I" proved
 power_and_sum.adb:36:33: info: loop invariant initialization proved (CVC4: 1 VC)
 power_and_sum.adb:36:33: info: loop invariant preservation proved (CVC4: 1 VC)

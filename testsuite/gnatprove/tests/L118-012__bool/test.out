@@ -1,4 +1,4 @@
-c41321a.adb:5:21: warning: initialization of DERIVED_FALSE is not mentioned in Initializes contract
+c41321a.adb:5:21: warning: initialization of "DERIVED_FALSE" is not mentioned in Initializes contract
 c41321a.adb:8:11: info: initialization of "DERIVED_TRUE" proved
 c41321a.adb:15:18: info: initialization of "DBOOL_TRUE" proved
 c41321a.adb:15:31: info: initialization of "DERIVED_TRUE" proved

@@ -5,10 +5,10 @@ outer.adb:18:51: medium: overflow check might fail
 outer.adb:18:65: medium: overflow check might fail
 outer.adb:22:18: info: initialization of "Nested.State" proved
 outer.adb:22:18: info: initialization of "Used" proved
-outer.adb:27:14: warning: initialization of Nested_Var is not mentioned in Initializes contract
-outer.adb:27:14: warning: initialization of Unused is not mentioned in Initializes contract
+outer.adb:27:14: warning: initialization of "Nested_Var" is not mentioned in Initializes contract
+outer.adb:27:14: warning: initialization of "Unused" is not mentioned in Initializes contract
 outer.adb:29:10: info: initialization of "Used" proved
-outer.adb:30:10: warning: initialization of Unused has no effect
+outer.adb:30:10: warning: initialization of "Unused" has no effect
 outer.adb:39:51: medium: overflow check might fail
 outer.adb:39:65: medium: overflow check might fail
 outer.adb:41:22: warning: unused assignment
@@ -17,8 +17,8 @@ outer.adb:45:18: info: initialization of "Nested_Var" proved
 outer.adb:45:18: info: initialization of "Used" proved
 outer.adb:57:25: info: assertion proved (CVC4: 1 VC), in instantiation at outer.adb:60
 outer.adb:57:25: info: initialization of "Unused" proved, in instantiation at outer.adb:60
-outer.adb:67:14: warning: initialization of Nested_Var is not mentioned in Initializes contract
-outer.adb:67:14: warning: initialization of Nested_Var2 is not mentioned in Initializes contract
+outer.adb:67:14: warning: initialization of "Nested_Var" is not mentioned in Initializes contract
+outer.adb:67:14: warning: initialization of "Nested_Var2" is not mentioned in Initializes contract
 outer.adb:69:10: info: initialization of "Used" proved
 outer.adb:78:51: medium: overflow check might fail
 outer.adb:78:65: medium: overflow check might fail

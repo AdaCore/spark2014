@@ -1,4 +1,4 @@
-bug0.adb:5:07: warning: initialization of Old has no effect
+bug0.adb:5:07: warning: initialization of "Old" has no effect
 bug0.adb:7:22: info: assertion proved (CVC4: 1 VC)
 bug0.adb:7:22: info: initialization of "Old" proved
 bug0.ads:4:19: warning: "S" is not modified, could be IN

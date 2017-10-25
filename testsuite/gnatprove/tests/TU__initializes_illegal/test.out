@@ -20,9 +20,9 @@ initializes_illegal_4.adb:22:17: warning: unused assignment
 initializes_illegal_4.adb:22:20: info: initialization of "Body_Var" constituent of "State" proved
 initializes_illegal_4.adb:30:35: medium: overflow check might fail (e.g. when G_Var = -2147483648 and G_Var2 = 1)
 initializes_illegal_4.ads:17:29: warning: no procedure exists that can initialize abstract state "Pac1.State"
-initializes_illegal_4.ads:18:11: warning: initialization of Z is not mentioned in Initializes contract
+initializes_illegal_4.ads:18:11: warning: initialization of "Z" constituent of "State" is not mentioned in Initializes contract
 initializes_illegal_4.ads:33:37: warning: no procedure exists that can initialize abstract state "Pac2.State2"
-initializes_illegal_4.ads:34:11: warning: initialization of Var2 is not mentioned in Initializes contract
+initializes_illegal_4.ads:34:11: warning: initialization of "Var2" is not mentioned in Initializes contract
 initializes_illegal_4.ads:36:07: info: initialization of "Var" proved
 initializes_illegal_4.ads:49:29: info: initialization of "G_Var" proved
 initializes_illegal_4.ads:53:07: info: initialization of "G_Var" proved

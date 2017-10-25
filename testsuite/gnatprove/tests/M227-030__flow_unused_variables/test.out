@@ -16,4 +16,4 @@ test.adb:50:23: info: initialization of "B" proved
 test.adb:52:07: warning: unused variable "L"
 test.adb:58:04: warning: analyzing unreferenced procedure "Test_06"
 test.adb:59:23: info: initialization of "B" proved
-test.adb:61:07: warning: initialization of L has no effect
+test.adb:61:07: warning: initialization of "L" has no effect

@@ -2,7 +2,7 @@ fileio.adb:6:10: info: initialization of "Z" proved
 fileio.adb:7:10: medium: exception might be raised
 fileio.adb:9:14: medium: overflow check might fail
 fileio.adb:10:14: medium: overflow check might fail
-fileio.adb:14:07: warning: initialization of Z has no effect
+fileio.adb:14:07: warning: initialization of "Z" has no effect
 fileio.adb:17:10: info: initialization of "Z" proved
 fileio.adb:18:10: medium: exception might be raised
 fileio.adb:20:14: medium: overflow check might fail
