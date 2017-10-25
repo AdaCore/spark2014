@@ -2045,15 +2045,24 @@ package body Flow.Analysis is
       -- AS_In_Generated_Initializes --
       ---------------------------------
 
-      function AS_In_Generated_Initializes (Var : Flow_Id)
-        return Boolean is
-        (FA.Kind in Kind_Package | Kind_Package_Body
-            and then Is_Constituent (Var)
-            and then Mentioned_On_Generated_Initializes
-                       (Direct_Mapping_Id
-                          (Encapsulating_State
-                             (Get_Direct_Mapping_Id
-                                (Var)))));
+      function AS_In_Generated_Initializes (Var : Flow_Id) return Boolean is
+      begin
+         if FA.Kind in Kind_Package | Kind_Package_Body
+           and Var.Kind in Direct_Mapping | Record_Field
+         then
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (Var);
+            begin
+               return Is_Constituent (E)
+                 and then
+                   Mentioned_On_Generated_Initializes
+                     (Direct_Mapping_Id
+                        (Encapsulating_State (E)));
+            end;
+         else
+            return False;
+         end if;
+      end AS_In_Generated_Initializes;
 
       ---------------------
       -- Consider_Vertex --
