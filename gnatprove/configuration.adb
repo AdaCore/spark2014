@@ -1429,6 +1429,11 @@ package body Configuration is
 
       Define_Switch
         (Config,
+         CL_Switches.Debug_Save_VCs'Access,
+         Long_Switch => "--debug-save-vcs");
+
+      Define_Switch
+        (Config,
          CL_Switches.Pedantic'Access,
          Long_Switch => "--pedantic");
 

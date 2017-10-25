@@ -54,6 +54,7 @@ gnatprove basic switches:
 
 gnatprove advanced switches:
  -d, --debug          Debug mode
+ --debug-save-vcs     Do not delete intermediate files for provers
  --flow-debug         Extra debugging for flow analysis (requires graphviz)
  --limit-line=f:l     Limit analysis to given file and line
  --limit-line=f:l:c:k Limit analysis to given file, line, column and kind of

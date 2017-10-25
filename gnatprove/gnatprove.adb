@@ -424,6 +424,10 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--debug");
       end if;
 
+      if CL_Switches.Debug_Save_VCs then
+         Args.Append ("--debug-save-vcs");
+      end if;
+
       if Force then
          Args.Append ("--force");
       end if;
