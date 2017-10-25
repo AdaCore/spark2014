@@ -16168,7 +16168,7 @@ package body Gnat2Why.Expr is
             Discr : Entity_Id := First_Discriminant (Ty_Ext);
             Elmt  : Elmt_Id :=
               (if Is_Constrained (Ty_Ext) then
-                    First_Elmt (Stored_Constraint (Ty_Ext))
+                    First_Elmt (Discriminant_Constraint (Ty_Ext))
                else No_Elmt);
          begin
             while Present (Discr) loop
