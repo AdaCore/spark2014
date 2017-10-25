@@ -3002,6 +3002,11 @@ package body Gnat2Why.Subprograms is
             Ref_Allowed => True,
             Old_Allowed => True);
       begin
+         if Ekind (E) = E_Procedure
+           and then Null_Present (Subprogram_Specification (E))
+         then
+            return +Void;
+         end if;
          return
            Sequence
              ((1 => New_Comment
