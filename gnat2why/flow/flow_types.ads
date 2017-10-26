@@ -466,9 +466,16 @@ package Flow_Types is
    --  and variant) attached.
 
    function Flow_Id_To_String (F : Flow_Id) return String
-     with Pre => Is_Easily_Printable (F);
+   with Pre => Is_Easily_Printable (F)
+                 and then
+               (if Is_Internal (F)
+                then Is_Type (Get_Direct_Mapping_Id (F))
+                or else Is_Predicate_Function (Get_Direct_Mapping_Id (F)));
    --  Convert a flow id to a human readable string. This is used for emitting
    --  error messages.
+   --  ??? At the moment we are checking whether F is a predicate function but
+   --  this will have to be removed as soon as we will not create graphs for
+   --  type predicates.
 
    function Is_Easily_Printable (F : Flow_Id) return Boolean;
    --  Check if F can be printed without resorting to Sprint

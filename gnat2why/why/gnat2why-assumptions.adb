@@ -26,7 +26,6 @@
 
 with Ada.Containers.Hashed_Maps;
 with Atree;                      use Atree;
-with Einfo;                      use Einfo;
 with Sinput;                     use Sinput;
 with Snames;                     use Snames;
 with SPARK_Util;                 use SPARK_Util;

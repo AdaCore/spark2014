@@ -28,6 +28,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Sets;
 with Assumption_Types;                   use Assumption_Types;
 with Assumptions;                        use Assumptions;
+with Einfo;                              use Einfo;
 with GNATCOLL.JSON;
 with Types;                              use Types;
 
@@ -79,7 +80,12 @@ package Gnat2Why.Assumptions is
    function Get_Assume_JSON return GNATCOLL.JSON.JSON_Value;
    --  Save assumptions output to file "unit.assum"
 
-   function Entity_To_Subp (E : Entity_Id) return Subp_Type;
+   function Entity_To_Subp (E : Entity_Id) return Subp_Type
+   with Pre => (if Is_Internal (E)
+                then Is_Type (E) or else Is_Predicate_Function (E));
    --  Transform an entity into a tuple (name, sloc)
+   --  ??? At the moment we are checking whether E is a predicate function but
+   --  this will have to be removed as soon as we will not create graphs for
+   --  type predicates.
 
 end Gnat2Why.Assumptions;
