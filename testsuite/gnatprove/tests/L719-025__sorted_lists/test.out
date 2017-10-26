@@ -24,14 +24,15 @@ sorted_lists.adb:9:37: info: initialization of "Current.Node" proved
 sorted_lists.adb:10:09: info: precondition proved (CVC4: 2 VC)
 sorted_lists.adb:12:13: info: initialization of "Current.Node" proved
 sorted_lists.adb:12:13: info: loop invariant initialization proved (CVC4: 1 VC)
-sorted_lists.adb:12:13: medium: loop invariant might fail after first iteration, cannot prove Current = First (Container) or else Element (Container, Previous (Container, Current)) < New_Item (e.g. when New_Item = 2)
-sorted_lists.adb:13:13: medium: precondition might fail
-sorted_lists.adb:13:33: medium: precondition might fail (e.g. when Current = (Node => 1) and No_Element = (Node => 0))
-sorted_lists.adb:14:10: medium: precondition might fail (e.g. when Current = (Node => 2) and No_Element = (Node => 0))
+sorted_lists.adb:12:13: info: loop invariant preservation proved (CVC4: 1 VC)
+sorted_lists.adb:13:13: info: precondition proved (CVC4: 1 VC)
+sorted_lists.adb:13:33: info: precondition proved (CVC4: 1 VC)
+sorted_lists.adb:14:10: info: precondition proved (CVC4: 1 VC)
 sorted_lists.adb:14:27: info: initialization of "Current.Node" proved
 sorted_lists.adb:17:07: info: precondition proved (CVC4: 2 VC)
 sorted_lists.adb:17:26: info: initialization of "Current.Node" proved
 sorted_lists.ads:22:25: info: initialization of "Position.Node" proved
+sorted_lists.ads:25:08: info: postcondition proved (CVC4: 4 VC; Z3: 1 VC)
 sorted_lists.ads:25:32: info: initialization of "Position.Node" proved
 sorted_lists.ads:26:06: info: precondition proved (CVC4: 1 VC)
 sorted_lists.ads:26:26: info: initialization of "Position.Node" proved
@@ -46,4 +47,3 @@ sorted_lists.ads:31:39: info: overflow check proved (CVC4: 1 VC)
 sorted_lists.ads:31:39: info: range check proved (CVC4: 1 VC)
 sorted_lists.ads:31:46: info: precondition proved (CVC4: 2 VC)
 sorted_lists.ads:31:78: info: range check proved (CVC4: 1 VC)
-sorted_lists.ads:33:51: medium: postcondition might fail, cannot prove My_Sort.Is_Sorted (Container)

@@ -50,6 +50,10 @@ package Why.Gen.Expr is
    function Is_True_Boolean (P : W_Expr_Id) return Boolean;
    --  Check if the given program is the program "true"
 
+   function Is_Essentially_Void (W : W_Prog_Id) return Boolean;
+   --  Check if the given program is "void" or similarly effectless (label
+   --  nodes).
+
    function Bool_True (D : EW_Domain) return W_Expr_Id is
      (New_Literal (Value => EW_True, Domain => D));
    function Bool_False (D : EW_Domain) return W_Expr_Id is
