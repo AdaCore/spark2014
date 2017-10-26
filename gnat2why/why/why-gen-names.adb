@@ -649,7 +649,7 @@ package body Why.Gen.Names is
    -- NID --
    ---------
 
-   function NID (Name : String) return Name_Id renames Name_Find;
+   function NID (Name : String) return Valid_Name_Id renames Name_Find;
 
    -------------------------
    -- New_Temp_Identifier --

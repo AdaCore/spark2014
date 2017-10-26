@@ -35,7 +35,7 @@ package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
    --  to create identifiers from their string representation
 
-   function NID (Name : String) return Name_Id;
+   function NID (Name : String) return Valid_Name_Id;
    --  Return Name_Id for Name
 
    function Conversion_Name
