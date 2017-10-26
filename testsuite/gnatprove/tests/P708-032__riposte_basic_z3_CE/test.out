@@ -1,8 +1,8 @@
 basic.adb:6:19: info: postcondition proved (CVC4: 1 VC)
-basic.adb:9:16: medium: range check might fail (e.g. when A = 255 and B = 1)
+basic.adb:9:16: medium: range check might fail (e.g. when A = 1 and B = 255)
 basic.adb:13:19: info: postcondition proved (CVC4: 1 VC)
 basic.adb:13:36: info: overflow check proved (CVC4: 1 VC)
-basic.adb:16:16: medium: overflow check might fail (e.g. when A = 2147483647 and B = 1)
+basic.adb:16:16: medium: overflow check might fail (e.g. when A = 1 and B = 2147483647)
 basic.adb:20:19: info: postcondition proved (CVC4: 3 VC)
 basic.adb:31:30: info: assertion proved (CVC4: 2 VC)
 basic.adb:31:46: info: initialization of "R" proved
@@ -41,11 +41,11 @@ basic.adb:117:22: info: postcondition proved (CVC4: 1 VC)
 basic.adb:120:22: info: assertion proved
 basic.adb:121:22: info: assertion proved (CVC4: 1 VC)
 counterexample expected for check at basic.adb:9
-  trace at basic.adb:5 --> A = 255 and B = 1
-  trace at basic.adb:9 --> A = 255 and B = 1
+  trace at basic.adb:5 --> A = 1 and B = 255
+  trace at basic.adb:9 --> A = 1 and B = 255
 counterexample expected for check at basic.adb:16
-  trace at basic.adb:12 --> A = 2147483647 and B = 1
-  trace at basic.adb:16 --> A = 2147483647 and B = 1
+  trace at basic.adb:12 --> A = 1 and B = 2147483647
+  trace at basic.adb:16 --> A = 1 and B = 2147483647
 counterexample expected for check at basic.adb:65
   trace at basic.adb:62 --> X = 1
   trace at basic.adb:65 --> X = 7 and X'Old = 1
@@ -57,5 +57,4 @@ counterexample expected for check at basic.adb:88
   trace at basic.adb:87 --> A = -1 and B = -2 and Int_Min_B'Result = -1 and R = -1
   trace at basic.adb:88 --> A = -1 and B = -2 and Int_Min_B'Result = -1
   trace at basic.adb:93 --> R = -1
-  trace at basic.adb:95 --> R = -2
   trace at basic.adb:97 --> Int_Min_B'Result = -1
