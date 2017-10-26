@@ -75,7 +75,9 @@ is
    --  forall x, (x ^ 3 - x) mod 3 = 0
    procedure Little_Fermat3 (X: Long_Integer)
      with Ghost,
-       Pre => 0 <= X and X <= 2**20,
+     -- We want it to work on any 32 bits machine not only on 64 bits. That's
+     -- why we use 2**10.
+       Pre => 0 <= X and X <= 2**10,
        Post => (X ** 3 - X) mod 3 = 0
    is
    begin
