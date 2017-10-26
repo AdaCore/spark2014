@@ -580,7 +580,9 @@ package body Gnat2Why.Expr.Loops is
                --  always correct.
 
                Impl_Pred : constant W_Pred_Id :=
-                 (if Initial_Prog = +Void then Cond_Pred else True_Pred);
+                 (if Is_Essentially_Void (Initial_Prog)
+                  then Cond_Pred
+                  else True_Pred);
 
                Impl_Inv  : constant W_Pred_Id :=
                  +New_And_Expr (Left   => +Dyn_Types_Inv,

@@ -2138,6 +2138,15 @@ package body Why.Gen.Expr is
       end if;
    end Is_Choice_Of_Unconstrained_Array_Update;
 
+   -------------------------
+   -- Is_Essentially_Void --
+   -------------------------
+
+   function Is_Essentially_Void (W : W_Prog_Id) return Boolean is
+   begin
+      return (W = +Void or else Get_Kind (+W) = W_Label);
+   end Is_Essentially_Void;
+
    ----------------------
    -- Is_False_Boolean --
    ----------------------
