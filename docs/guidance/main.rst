@@ -3522,7 +3522,8 @@ standard. It describes in particular where the SPARK technology fits best and
 how it can best be used to meet various requirements of the standard. See:
 http://www.adacore.com/knowledge/technical-papers/adacore-technologies-for-cenelec-en-501282011/
 
-A similar document "AdaCore Technologies for DO-178C/ED-12C" will be available
-soon, presenting the usage of AdaCore's technology in conjunction with the
-DO-178C/ED-12C standard, and describing in particular the use of SPARK in
-relation with the Formal Methods supplement DO-333/ED-216.
+The document "AdaCore Technologies for DO-178C/ED-12C" similarly presents the
+usage of AdaCore's technology in conjunction with the DO-178C/ED-12C standard,
+and describes in particular the use of SPARK in relation with the Formal
+Methods supplement DO-333/ED-216. See:
+http://www.adacore.com/knowledge/technical-papers/tech-do-178c
