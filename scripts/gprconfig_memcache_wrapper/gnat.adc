@@ -1,0 +1,10 @@
+pragma Restrictions (No_Tasking);
+pragma Restrictions (No_Asynchronous_Control);
+pragma Restrictions (Max_Asynchronous_Select_Nesting => 0);
+pragma Restrictions (No_Abort_Statements);
+
+pragma Restrictions (No_Implicit_Dynamic_Code);
+
+--  Dependency on Ada.Real_Time forces the use of GNAT tasking runtime,
+--  which adds extra checks for each memory allocation and deallocation.
+pragma Restrictions (No_Dependence => Ada.Real_Time);
