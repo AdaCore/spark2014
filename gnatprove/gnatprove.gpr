@@ -22,7 +22,7 @@ project GNATprove is
                  "spark_memcached_wrapper.adb",
                  "spark_codepeer_wrapper.adb");
 
-   Common_Switches := ("-gnat2012", "-gnatyg", "-g");
+   Common_Switches := ("-gnatyg", "-g");
 
    package Builder is
       for Executable ("gnatprove.adb") use "gnatprove";
