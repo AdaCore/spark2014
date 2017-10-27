@@ -23,6 +23,7 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
+with Lib;                                use Lib;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
 with Rtsfind;                            use Rtsfind;
@@ -3874,24 +3875,18 @@ package body Flow.Control_Flow_Graph is
                Final_V_Id : Flow_Graphs.Vertex_Id :=
                  FA.CFG.Get_Vertex (Final_F_Id);
             begin
-               --  Both the Refined_State aspect of the Analyzed_Entity and the
-               --  Abstract_State aspect of the nested packages add vertices
-               --  for state abstractions so we have to be careful not to add
-               --  something that already exists.
-               if Final_V_Id = Flow_Graphs.Null_Vertex then
-                  Create_Initial_And_Final_Vertices (State, Variable_Kind, FA);
+               Create_Initial_And_Final_Vertices (State, Variable_Kind, FA);
 
-                  if FA.Kind in Kind_Package | Kind_Package_Body then
-                     Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
+               if FA.Kind in Kind_Package | Kind_Package_Body then
+                  Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
 
-                     declare
-                        Final_Atr : V_Attributes renames FA.Atr (Final_V_Id);
-                     begin
-                        Final_Atr.Is_Export := Final_Atr.Is_Export
-                          or else
-                            Is_Initialized_At_Elaboration (State, FA.B_Scope);
-                     end;
-                  end if;
+                  declare
+                     Final_Atr : V_Attributes renames FA.Atr (Final_V_Id);
+                  begin
+                     Final_Atr.Is_Export := Final_Atr.Is_Export
+                       or else
+                         Is_Initialized_At_Elaboration (State, FA.B_Scope);
+                  end;
                end if;
             end;
 
@@ -6083,8 +6078,12 @@ package body Flow.Control_Flow_Graph is
             end;
 
             --  If a Refined_State aspect exists then gather all constituents
-            --  that are abstract states and create initial and final vertices
-            --  for them.
+            --  that are abstract states declared in other (private child)
+            --  units and create initial and final vertices for them.
+
+            --  ??? we should do the same for other constituents, i.e.
+            --  variables and constants with variable input, declared in
+            --  private child unit.
 
             if FA.Kind = Kind_Package_Body then
                declare
@@ -6099,10 +6098,17 @@ package body Flow.Control_Flow_Graph is
                begin
                   for Constituents of DM loop
                      for Constituent of Constituents loop
-                        if Is_Abstract_State (Constituent) then
+                        if Is_Abstract_State (Constituent)
+                           and then
+                          not Entity_Is_In_Main_Unit
+                            (Get_Direct_Mapping_Id (Constituent))
+                        then
                            --  Found a constituent that is a (nested) abstract
                            --  state. We now create Initial and Final vertices
                            --  for it.
+
+                           --  ??? we should also set Is_Export flag, just like
+                           --  when processing constituents from the same unit.
 
                            Create_Initial_And_Final_Vertices
                              (E             => Get_Direct_Mapping_Id

@@ -4,6 +4,7 @@ pack-inner.adb:8:42: info: initialization of "Inner_Body_Var" constituent of "In
 pack-inner.adb:8:58: info: initialization of "Inner_Var" constituent of "Pack.State2" proved
 pack.adb:5:04: info: initialization of "A" constituent of "State1" proved
 pack.adb:5:07: info: initialization of "B" constituent of "State1" proved
+pack.adb:8:29: info: initialization of "Inner.Inner_State" constituent of "Pack.State2" proved
 pack.adb:12:07: info: initialization of "Inner_Var" constituent of "Pack.State2" proved
 pack.adb:12:07: info: initialization of "Var" proved
 pack.adb:24:41: info: initialization of "A" constituent of "State1" proved

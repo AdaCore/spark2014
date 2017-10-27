@@ -5,12 +5,15 @@ flo_review_tests.adb:18:14: info: initialization of "M" proved
 init.ads:5:04: info: initialization of "Var" proved
 outer.adb:12:04: info: initialization of "Foo" constituent of "State" proved
 outer.adb:15:30: info: initialization of "Foo" constituent of "State" proved
+outer.adb:15:30: info: initialization of "Inner.Inner_State" constituent of "Outer.State" proved
+outer.adb:16:30: info: initialization of "Inner.Inner_State_2" constituent of "Outer.State" proved
 outer.adb:22:07: info: initialization of "X" constituent of "Outer.State" proved
 outer.adb:27:10: info: initialization of "Nested_In_Spec_Var" constituent of "Outer.State" proved
 outer.adb:37:07: info: initialization of "Y" constituent of "Outer.State" proved
 outer.adb:37:10: info: initialization of "Z" constituent of "Outer.State" proved
 outer.adb:43:07: info: initialization of "W" constituent of "Outer.State" proved
 outer.adb:49:58: medium: overflow check might fail
+outer.adb:59:32: info: initialization of "Nested_In_Body.Deep_State" constituent of "Inner.Inner_State" proved
 outer.adb:63:10: info: initialization of "Deep_Var" constituent of "Inner.Inner_State" proved
 outer.adb:69:07: info: initialization of "Y" constituent of "Inner_State" proved
 outer.adb:70:07: info: initialization of "Z" constituent of "Inner_State_2" proved
