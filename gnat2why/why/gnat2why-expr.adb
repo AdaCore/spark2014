@@ -2745,7 +2745,7 @@ package body Gnat2Why.Expr is
             Elmt    : Elmt_Id :=
               (if Discrs > 0
                and then Is_Constrained (Ty_Ext) then
-                    First_Elmt (Stored_Constraint (Ty_Ext))
+                    First_Elmt (Discriminant_Constraint (Ty_Ext))
                else No_Elmt);
             T_Comp  : W_Expr_Id;
             I       : Positive := 1;
