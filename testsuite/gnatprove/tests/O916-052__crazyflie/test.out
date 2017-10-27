@@ -1,5 +1,5 @@
 console_pack.adb:23:10: info: no contextual analysis of "Console_Send_Message" (call returns unconstrained type)
-console_pack.adb:39:07: warning: initialization of Free_Bytes_In_Packet has no effect
+console_pack.adb:39:07: warning: initialization of "Free_Bytes_In_Packet" has no effect
 console_pack.adb:46:17: info: initialization of "Free_Bytes_In_Packet" proved
 console_pack.adb:47:35: warning: unused assignment to "Has_Succeed"
 console_pack.ads:12:29: info: initialization of "Has_Succeed" proved
