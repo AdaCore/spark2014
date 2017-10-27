@@ -443,7 +443,15 @@ package body Flow.Control_Flow_Graph is
    procedure Create_Initial_And_Final_Vertices
      (E    : Entity_Id;
       Kind : Var_Kind;
-      FA   : in out Flow_Analysis_Graphs);
+      FA   : in out Flow_Analysis_Graphs)
+   with Pre => Ekind (E) in E_Abstract_State
+                          | E_Loop_Parameter
+                          | E_Variable
+                          | E_Constant
+                          | E_Function
+                          | Formal_Kind
+                          | E_Protected_Type
+                          | E_Task_Type;
    --  Create the 'initial and 'final vertices for the given entity and link
    --  them up to the start and end vertices.
 
