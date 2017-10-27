@@ -1,7 +1,9 @@
-dispatch_in_contract.adb:5:20: info: overflow check proved
-dispatch_in_contract.adb:10:20: info: overflow check proved
-dispatch_in_contract.adb:11:20: info: overflow check proved
-dispatch_in_contract.adb:16:20: info: overflow check proved
-dispatch_in_contract.adb:17:20: info: overflow check proved
-dispatch_in_contract.ads:20:19: medium: class-wide precondition might be stronger than overridden one
-dispatch_in_contract.ads:28:19: medium: class-wide precondition might be stronger than overridden one
+dispatch_in_contract.adb:5:20: info: overflow check proved (CVC4: 1 VC)
+dispatch_in_contract.adb:10:20: info: overflow check proved (CVC4: 1 VC)
+dispatch_in_contract.adb:11:20: info: overflow check proved (CVC4: 1 VC)
+dispatch_in_contract.adb:16:20: info: overflow check proved (CVC4: 1 VC)
+dispatch_in_contract.adb:17:20: info: overflow check proved (CVC4: 1 VC)
+dispatch_in_contract.ads:20:19: info: class-wide precondition is weaker than overridden one (CVC4: 2 VC)
+dispatch_in_contract.ads:28:19: info: class-wide precondition is weaker than overridden one (CVC4: 2 VC)
+main.adb:3:04: high: "C1" must be listed in the Global aspect of "Main" (SPARK RM 6.1.4(13))
+main.adb:5:04: info: precondition proved (CVC4: 1 VC)

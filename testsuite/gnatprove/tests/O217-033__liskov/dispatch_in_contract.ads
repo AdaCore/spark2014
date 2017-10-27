@@ -17,7 +17,7 @@ package Dispatch_In_Contract with SPARK_Mode is
       (O.F1 < Integer'Last and then O.F2 < Integer'Last);
 
    procedure Incr (O : in out Child) with
-     Pre'Class => Less_Than_Max (O) and then O.F2 < Integer'Last; --@WEAKER_CLASSWIDE_PRE:FAIL.
+     Pre'Class => Less_Than_Max (O) and then O.F2 < Integer'Last;
 
    type Grand_Child is new Child with null record;
 
