@@ -121,7 +121,7 @@ echo.adb:32:18: info: precondition of main program proved (CVC4: 1 VC)
 echo.adb:36:14: info: function contract not available for proof ("End_Of_File" might not return)
 echo.adb:37:30: info: loop invariant initialization proved (CVC4: 1 VC)
 echo.adb:37:30: info: loop invariant preservation proved (CVC4: 1 VC)
-echo.adb:38:07: medium: precondition might fail
+echo.adb:38:07: info: precondition proved (CVC4: 1 VC)
 echo.adb:41:13: info: precondition proved (CVC4: 1 VC)
 echo.adb:41:18: info: initialization of "C.Item" proved
 echo.adb:41:19: info: discriminant check proved (CVC4: 1 VC)
