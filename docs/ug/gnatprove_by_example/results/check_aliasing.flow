@@ -1,5 +1,5 @@
 check_aliasing.adb:3:11: medium: "Glob" might not be initialized after elaboration of main program "Check_Aliasing"
-check_aliasing.adb:6:04: warning: initialization of Z has no effect
+check_aliasing.adb:6:04: warning: initialization of "Z" has no effect
 check_aliasing.adb:8:22: info: initialization of "X" proved
 check_aliasing.adb:8:33: info: initialization of "X" proved
 check_aliasing.adb:8:57: high: formal parameter "Out_2" and global "Glob" are aliased (SPARK RM 6.4.2)
