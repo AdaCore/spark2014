@@ -96,15 +96,15 @@ iommu.adb:174:14: info: initialization of "Value.Unused" proved
 iommu.adb:190:14: info: initialization of "Value.MAX" proved
 iommu.adb:190:14: info: initialization of "Value.MIN" proved
 iommu.adb:190:14: info: initialization of "Value.Reserved" proved
-iommu.ads:389:13: "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Version"
-iommu.ads:393:13: "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Capability"
-iommu.ads:397:13: "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Extended_Capability"
-iommu.ads:401:13: "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Global_Status"
-iommu.ads:413:13: "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Context_Command"
-iommu.ads:421:13: "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Recording"
-iommu.ads:429:13: "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Status"
-iommu.ads:437:13: "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Control"
-iommu.ads:445:13: "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Address"
-iommu.ads:453:13: "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Data"
-iommu.ads:461:13: "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_IOTLB_Invalidate"
+iommu.ads:389:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Version"
+iommu.ads:393:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Capability"
+iommu.ads:397:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Extended_Capability"
+iommu.ads:401:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Global_Status"
+iommu.ads:413:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Context_Command"
+iommu.ads:421:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Fault_Recording"
+iommu.ads:429:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Fault_Status"
+iommu.ads:437:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Fault_Event_Control"
+iommu.ads:445:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Fault_Event_Address"
+iommu.ads:453:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Fault_Event_Data"
+iommu.ads:461:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_IOTLB_Invalidate"
 gnatprove: error during flow analysis and proof

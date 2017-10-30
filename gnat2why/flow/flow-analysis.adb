@@ -4374,9 +4374,10 @@ package body Flow.Analysis is
          Globals : Global_Flow_Ids;
 
       begin
-         --  Populate global sets
+         --  Populate global sets using (possibly generated) Global from the
+         --  function specification.
          Get_Globals (Subprogram => FA.Analyzed_Entity,
-                      Scope      => FA.B_Scope,
+                      Scope      => FA.S_Scope,
                       Classwide  => False,
                       Globals    => Globals);
 

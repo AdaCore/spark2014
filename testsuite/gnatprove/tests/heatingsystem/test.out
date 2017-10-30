@@ -17,7 +17,6 @@ advancebutton.adb:86:34: info: range check proved (altergo: 1 VC)
 advancebutton.adb:98:41: info: initialization of "AdvPressed" constituent of "State" proved
 advancebutton.adb:105:21: info: initialization of "Pressed" proved
 advancebutton.adb:106:21: info: initialization of "Pressed" proved
-advancebutton.ads:25:13: warning: volatile function "CurrentMode" has no volatile effects
 advancebutton.ads:37:27: info: initialization of "Result" proved
 advancebutton.ads:45:26: info: initialization of "Result" proved
 advancebutton.ads:55:26: info: initialization of "Result" proved

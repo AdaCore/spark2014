@@ -6,5 +6,4 @@ device.adb:62:41: medium: "Register" constituent of "State" might not be written
 device.adb:77:23: info: initialization of "OK" proved
 device.adb:82:04: warning: no check message justified by this pragma
 device.ads:11:23: info: initialization of "OK" proved
-device.ads:15:13: warning: volatile function "Last_Written" has no volatile effects
 gnatprove: error during flow analysis and proof

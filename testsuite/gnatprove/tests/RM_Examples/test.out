@@ -112,7 +112,6 @@ externals.adb:89:20: warning: unused assignment
 externals.adb:92:13: warning: statement has no effect
 externals.adb:92:23: info: initialization of "Status" proved
 externals.ads:10:20: info: initialization of "Combined_Value" proved
-externals.ads:24:13: warning: volatile function "Last_Value_Sent" has no volatile effects
 hal.adb:76:20: info: initialization of "Current_Status" proved
 hal.adb:78:13: info: initialization of "Next_Byte" proved
 hal.adb:94:41: info: initialization of "Write_FIFO" constituent of "Serial_Out" proved
