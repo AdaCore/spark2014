@@ -4381,9 +4381,14 @@ package body Flow.Analysis is
                       Classwide  => False,
                       Globals    => Globals);
 
-         --  Check globals for volatiles and emit messages if needed
-         Check_Set_For_Volatiles
-           (Globals.Proof_Ins or Globals.Reads or Globals.Writes);
+         --  Check globals for volatiles and emit messages if needed. Sets
+         --  Proof_Ins and Reads are disjoint, so it is more efficient to
+         --  process them separately instead of computing union; Writes of a
+         --  function, after sanity checks, are known to be empty.
+
+         Check_Set_For_Volatiles (Globals.Proof_Ins);
+         Check_Set_For_Volatiles (Globals.Reads);
+         pragma Assert (Globals.Writes.Is_Empty);
       end;
 
       --  Warn about volatile function without volatile effects
