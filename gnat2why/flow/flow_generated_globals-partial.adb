@@ -2518,10 +2518,12 @@ package body Flow_Generated_Globals.Partial is
 
          procedure Register_Object (Obj : Entity_Id) is
          begin
-            if Is_Ghost_Entity (Obj) then
-               Visible_Pkg_Ghost_State.Insert (Obj);
-            else
-               Visible_Pkg_State.Insert (Obj);
+            if not Is_Internal (Obj) then
+               if Is_Ghost_Entity (Obj) then
+                  Visible_Pkg_Ghost_State.Insert (Obj);
+               else
+                  Visible_Pkg_State.Insert (Obj);
+               end if;
             end if;
          end Register_Object;
 
