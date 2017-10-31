@@ -1732,9 +1732,12 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
 
 .. _tu-cbatu-ghost_entities-21:
 
-21. An output of a non-ghost subprogram other than a ghost global or an
-    abstract state shall not depend on a ghost input. [It is intended that this
-    follows as a consequence of other rules.]
+21. An output of a non-ghost subprogram other than a state abstraction
+    or a ghost global shall not depend on a ghost input. [It is intended
+    that this follows as a consequence of other rules. Although a
+    non-ghost state abstraction output which depends on a ghost input may
+    have a non-ghost constituent, other rules prevent such a non-ghost
+    constituent from depending on the ghost input.]
 
 .. _tu-fe-ghost_entities-22:
 
