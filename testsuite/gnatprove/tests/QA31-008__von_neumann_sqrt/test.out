@@ -1,0 +1,92 @@
+p.adb:23:33: info: loop invariant initialization proved (CVC4: 2 VC)
+p.adb:23:33: info: loop invariant preservation proved (CVC4: 2 VC)
+p.adb:23:34: info: initialization of "Lower" proved
+p.adb:23:40: info: overflow check proved (CVC4: 1 VC)
+p.adb:24:34: info: initialization of "Upper" proved
+p.adb:24:40: medium: overflow check might fail (e.g. when Upper = 46340)
+p.adb:26:20: info: initialization of "Lower" proved
+p.adb:26:32: info: initialization of "Upper" proved
+p.adb:27:21: info: initialization of "Lower" proved
+p.adb:27:29: info: initialization of "Upper" proved
+p.adb:27:36: info: division check proved (CVC4: 1 VC)
+p.adb:28:14: info: initialization of "Middle" proved
+p.adb:28:21: info: overflow check proved (CVC4: 1 VC)
+p.adb:29:22: info: initialization of "Middle" proved
+p.adb:31:22: info: initialization of "Middle" proved
+p.adb:34:14: info: initialization of "Lower" proved
+p.adb:72:22: info: assertion proved (altergo: 1 VC)
+p.adb:72:22: info: initialization of "UX" proved
+p.adb:76:14: info: initialization of "M" proved
+p.adb:77:15: info: initialization of "I" proved
+p.adb:78:15: info: initialization of "Y" proved
+p.adb:78:20: info: initialization of "M" proved
+p.adb:79:15: info: initialization of "Y" proved
+p.adb:79:17: info: division check proved (CVC4: 2 VC)
+p.adb:80:14: info: initialization of "UX" proved
+p.adb:80:20: info: initialization of "B" proved
+p.adb:81:19: info: initialization of "UX" proved
+p.adb:81:24: info: initialization of "B" proved
+p.adb:82:19: info: initialization of "Y" proved
+p.adb:82:24: info: initialization of "M" proved
+p.adb:86:33: info: range check proved (CVC4: 2 VC)
+p.adb:86:39: info: initialization of "I" proved
+p.adb:87:30: info: range check proved (CVC4: 2 VC)
+p.adb:87:60: info: initialization of "Bits" proved
+p.adb:87:60: info: range check proved (CVC4: 2 VC)
+p.adb:88:30: info: range check proved (CVC4: 2 VC)
+p.adb:88:43: info: initialization of "Y" proved
+p.adb:88:54: info: initialization of "Bits" proved
+p.adb:88:54: info: range check proved (CVC4: 2 VC)
+p.adb:89:30: info: range check proved (CVC4: 2 VC)
+p.adb:89:43: info: initialization of "UX" proved
+p.adb:89:55: info: initialization of "Bits" proved
+p.adb:89:55: info: range check proved (CVC4: 2 VC)
+p.adb:91:36: info: initialization of "I" proved
+p.adb:91:36: info: loop invariant initialization proved (CVC4: 2 VC)
+p.adb:91:36: info: loop invariant preservation proved (CVC4: 2 VC)
+p.adb:92:36: info: initialization of "M" proved
+p.adb:92:36: info: loop invariant initialization proved (CVC4: 1 VC)
+p.adb:92:36: info: loop invariant preservation proved (CVC4: 1 VC)
+p.adb:92:56: medium: range check might fail (e.g. when I = 0)
+p.adb:92:62: info: initialization of "I" proved
+p.adb:93:36: info: initialization of "Y" proved
+p.adb:93:36: info: loop invariant initialization proved (CVC4: 1 VC)
+p.adb:93:36: medium: loop invariant might fail after first iteration, cannot prove Y mod M = 0 (e.g. when M = 1073741824 and Y = 0)
+p.adb:93:38: info: division check proved (Z3: 1 VC)
+p.adb:93:42: info: initialization of "M" proved
+p.adb:94:36: info: initialization of "Left_Y" proved
+p.adb:94:36: info: loop invariant initialization proved (CVC4: 1 VC)
+p.adb:94:36: medium: loop invariant might fail after first iteration, cannot prove Left_Y < 2 ** I (e.g. when I = 1 and Left_Y = 0)
+p.adb:94:58: info: initialization of "I" proved
+p.adb:94:58: medium: range check might fail (e.g. when I = 0)
+p.adb:95:36: info: initialization of "UX" proved
+p.adb:95:36: info: loop invariant initialization proved (CVC4: 1 VC)
+p.adb:95:36: medium: loop invariant might fail after first iteration, cannot prove UX mod M = U64 (X) mod M (e.g. when M = 1073741824 and UX = 0 and X = 0)
+p.adb:95:39: info: division check proved (Z3: 1 VC)
+p.adb:95:43: info: initialization of "M" proved
+p.adb:95:55: info: division check proved (Z3: 1 VC)
+p.adb:96:36: info: initialization of "Left_UX" proved
+p.adb:96:36: info: loop invariant initialization proved (CVC4: 1 VC)
+p.adb:96:36: medium: loop invariant might fail after first iteration, cannot prove Left_UX = Left_X - Left_Y * Left_Y (e.g. when Left_UX = 0 and Left_X = 0 and Left_Y = 0)
+p.adb:96:46: info: initialization of "Left_X" proved
+p.adb:96:55: info: initialization of "Left_Y" proved
+p.adb:97:36: info: initialization of "Left_Y" proved
+p.adb:97:36: info: loop invariant initialization proved (CVC4: 1 VC)
+p.adb:97:36: medium: loop invariant might fail after first iteration, cannot prove Left_Y * Left_Y <= Left_X (e.g. when Left_X = 0 and Left_Y = 0)
+p.adb:97:55: info: initialization of "Left_X" proved
+p.adb:98:36: info: loop invariant initialization proved (CVC4: 1 VC)
+p.adb:98:36: medium: loop invariant might fail after first iteration, cannot prove U64(Left_Y + 1) * U64(Left_Y + 1) > Left_X (e.g. when Left_X = 0 and Left_Y = 0)
+p.adb:98:40: info: initialization of "Left_Y" proved
+p.adb:98:76: info: initialization of "Left_X" proved
+p.adb:100:15: info: initialization of "M" proved
+p.adb:100:17: info: division check proved (CVC4: 1 VC)
+p.adb:103:26: info: initialization of "Y" proved
+p.adb:103:26: medium: range check might fail (e.g. when Sqrt_Von_Neumann'Result = 0 and Y = 0)
+p.ads:9:19: info: postcondition proved (CVC4: 2 VC)
+p.ads:9:39: info: overflow check proved (CVC4: 1 VC)
+p.ads:10:44: medium: overflow check might fail (e.g. when Sqrt_Binary'Result = 46339)
+p.ads:14:19: medium: postcondition might fail, cannot prove Sqrt_Von_Neumann'Result * Sqrt_Von_Neumann'Result) <= X (e.g. when Sqrt_Von_Neumann'Result = 0 and X = 0)
+p.ads:14:44: info: overflow check proved (altergo: 1 VC)
+p.ads:16:49: medium: overflow check might fail (e.g. when Sqrt_Von_Neumann'Result = 0)
+test_sqrt.adb:10:15: warning: assuming "Put_Line" has no effect on global items
+test_sqrt.adb:10:15: warning: no Global contract available for "Put_Line"
