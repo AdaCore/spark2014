@@ -440,13 +440,7 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_Get_Initializes --
    ------------------------
 
-   function GG_Get_Initializes
-     (E : Entity_Id;
-      S : Flow_Scope)
-      return Dependency_Maps.Map
-   is
-      pragma Unreferenced (S);  --  ??? to be removed in a follow-up commit
-
+   function GG_Get_Initializes (E : Entity_Id) return Dependency_Maps.Map is
       C : constant Entity_Contract_Maps.Cursor :=
         Global_Contracts.Find (To_Entity_Name (E));
       --  Position of the generated contract for E, if any

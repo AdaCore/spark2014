@@ -10768,7 +10768,7 @@ package body Gnat2Why.Expr is
                then
                   declare
                      Init_Map : constant Dependency_Maps.Map :=
-                       Parse_Initializes (E, Get_Flow_Scope (E));
+                       Parse_Initializes (E);
 
                      Vars : Name_Sets.Set := GG_Get_Local_Variables (E);
                      --  Local variables declared in E and not initialized by E

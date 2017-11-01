@@ -864,7 +864,7 @@ package body Gnat2Why.Subprograms is
 
                declare
                   Init_Map : constant Dependency_Maps.Map :=
-                    Parse_Initializes (E, Get_Flow_Scope (E));
+                    Parse_Initializes (E);
 
                begin
                   for S of Init_Map loop
@@ -1257,8 +1257,7 @@ package body Gnat2Why.Subprograms is
 
       if not Is_Wrapper_Package (E) then
          declare
-            Init_Map : constant Dependency_Maps.Map :=
-              Parse_Initializes (E, Get_Flow_Scope (E));
+            Init_Map : constant Dependency_Maps.Map := Parse_Initializes (E);
 
          begin
             for Cu in Init_Map.Iterate loop

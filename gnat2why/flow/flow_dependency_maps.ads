@@ -52,10 +52,7 @@ package Flow_Dependency_Maps is
    function Parse_Depends (N : Node_Id) return Dependency_Maps.Map
    with Pre => Get_Pragma_Id (N) in Pragma_Depends | Pragma_Refined_Depends;
 
-   function Parse_Initializes
-     (P : Entity_Id;
-      S : Flow_Scope)
-      return Dependency_Maps.Map
+   function Parse_Initializes (P : Entity_Id) return Dependency_Maps.Map
    with Pre  => Ekind (P) = E_Package,
         Post => (for all C in Parse_Initializes'Result.Iterate =>
                     Dependency_Maps.Key (C).Kind in Direct_Mapping

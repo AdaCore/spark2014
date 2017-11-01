@@ -1085,8 +1085,7 @@ package body Flow_Refinement is
       --  ??? a simple traversal like in Find_Global better fits here
 
       declare
-         M : constant Dependency_Maps.Map :=
-           Parse_Initializes (P, Get_Flow_Scope (P));
+         M : constant Dependency_Maps.Map := Parse_Initializes (P);
 
       begin
          for Initialized_Var in M.Iterate loop

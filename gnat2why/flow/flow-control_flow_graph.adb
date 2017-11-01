@@ -3964,8 +3964,7 @@ package body Flow.Control_Flow_Graph is
 
       Pkg_Body_Declarations : constant List_Id := Declarations (Pkg_Body);
 
-      DM : constant Dependency_Maps.Map :=
-        Parse_Initializes (Package_Spec, Get_Flow_Scope (Package_Spec));
+      DM : constant Dependency_Maps.Map := Parse_Initializes (Package_Spec);
       --  ??? This needs to take into account initializes from gg
 
       V : Flow_Graphs.Vertex_Id;
@@ -6047,7 +6046,7 @@ package body Flow.Control_Flow_Graph is
                Inserted : Boolean;
 
                DM : constant Dependency_Maps.Map :=
-                 Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
+                 Parse_Initializes (FA.Spec_Entity);
 
             begin
                for C in DM.Iterate loop

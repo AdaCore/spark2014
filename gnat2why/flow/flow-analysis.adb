@@ -2263,10 +2263,8 @@ package body Flow.Analysis is
          Results : Node_Sets.Set;
 
          Initializes : constant Dependency_Maps.Map :=
-           Parse_Initializes (FA.Spec_Entity, Null_Flow_Scope);
-         --  Initializes aspect parsed into Flow_Ids; the second parameter is
-         --  irrelevant, as Parse_Initializes only uses it when dealing with a
-         --  generated contract.
+           Parse_Initializes (FA.Spec_Entity);
+         --  Initializes aspect parsed into Flow_Ids
 
       begin
          for Clause in Initializes.Iterate loop
@@ -2432,7 +2430,7 @@ package body Flow.Analysis is
         (Var : Flow_Id)
          return Boolean
       is
-         (GG_Get_Initializes (FA.Spec_Entity, FA.S_Scope).Contains (Var));
+         (GG_Get_Initializes (FA.Spec_Entity).Contains (Var));
 
       ------------------------------------
       -- Might_Be_Defined_In_Other_Path --
@@ -3300,8 +3298,7 @@ package body Flow.Analysis is
    procedure Find_Impossible_To_Initialize_State
      (FA : in out Flow_Analysis_Graphs)
    is
-      DM : constant Dependency_Maps.Map :=
-        Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
+      DM : constant Dependency_Maps.Map := Parse_Initializes (FA.Spec_Entity);
 
       Outputs_Of_Procs : Flow_Id_Sets.Set;
       --  Abstracts states that are written by procedures declared in package
@@ -3882,9 +3879,7 @@ package body Flow.Analysis is
             Filename => Tracefile);
       end Write_Tracefile;
 
-      DM : constant Dependency_Maps.Map :=
-        Parse_Initializes (FA.Spec_Entity,
-                           Null_Flow_Scope);
+      DM : constant Dependency_Maps.Map := Parse_Initializes (FA.Spec_Entity);
 
    --  Start of processing for Check_Initializes_Contract
 

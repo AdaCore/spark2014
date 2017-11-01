@@ -143,8 +143,7 @@ package body Flow is
       if FA.Kind in Kind_Package | Kind_Package_Body then
          declare
             M : constant Dependency_Maps.Map :=
-              GG_Get_Initializes (FA.Spec_Entity,
-                                  FA.S_Scope);
+              GG_Get_Initializes (FA.Spec_Entity);
          begin
             if not M.Is_Empty then
                Write_Str ("Initializes =>");

@@ -131,16 +131,10 @@ package Flow_Generated_Globals.Phase_2 is
    --  @return a set of Entity_Names with all the state abstractions
    --    that the Generated Globals know of.
 
-   function GG_Get_Initializes
-     (E : Entity_Id;
-      S : Flow_Scope)
-      return Dependency_Maps.Map
+   function GG_Get_Initializes (E : Entity_Id) return Dependency_Maps.Map
    with Pre => GG_Has_Been_Generated and then
                Ekind (E) = E_Package;
    --  @param E is the package whose generated Initializes aspect we want
-   --  @param S is the Flow_Scope at which we need to up project the results
-   --  @return the generated initializes if it exists or an empty dependency
-   --    map otherwise.
 
    function GG_Get_Local_Variables
      (E : Entity_Id)

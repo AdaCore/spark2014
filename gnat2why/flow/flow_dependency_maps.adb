@@ -236,11 +236,7 @@ package body Flow_Dependency_Maps is
    -- Parse_Initializes --
    -----------------------
 
-   function Parse_Initializes
-     (P : Entity_Id;
-      S : Flow_Scope)
-      return Dependency_Maps.Map
-   is
+   function Parse_Initializes (P : Entity_Id) return Dependency_Maps.Map is
       Initializes  : constant Node_Id  := Get_Pragma (P, Pragma_Initializes);
       Abstr_States : constant Elist_Id := Abstract_States (P);
 
@@ -255,7 +251,7 @@ package body Flow_Dependency_Maps is
       --  phase has been completed then look for the generated initializes.
 
       elsif GG_Has_Been_Generated then
-         M := GG_Get_Initializes (P, S);
+         M := GG_Get_Initializes (P);
 
       --  There is neither a user-provided nor a generated initializes aspect
       --  so we just leave the empty dependency map as it is.
