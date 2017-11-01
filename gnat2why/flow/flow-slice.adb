@@ -336,12 +336,9 @@ package body Flow.Slice is
       -------------------------------
 
       procedure Get_Local_Definite_Writes is
-         All_Local_Variables : constant Node_Sets.Set :=
-           FA.GG.Local_Variables or FA.GG.Local_Ghost_Variables;
-
       begin
          --  Detect initialized local variables
-         for LV of All_Local_Variables loop
+         for LV of FA.GG.Local_Variables loop
 
             --  Null abstract states and abstract states with null refinements
             --  are trivially initialized but are not detected by the condition

@@ -5819,11 +5819,7 @@ package body Flow.Control_Flow_Graph is
         and then FA.Is_Generative
         and then Is_Package_State (E)
       then
-         if Is_Ghost_Entity (E) then
-            FA.GG.Local_Ghost_Variables.Insert (E);
-         else
-            FA.GG.Local_Variables.Insert (E);
-         end if;
+         FA.GG.Local_Variables.Insert (E);
       end if;
    end Register_Own_Variable;
 

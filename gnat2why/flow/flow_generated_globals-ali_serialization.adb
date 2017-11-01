@@ -206,8 +206,8 @@ package body Flow_Generated_Globals.ALI_Serialization is
       Serialize (A, V.Globals.Calls.Proof_Calls,       "calls_proof");
       Serialize (A, V.Globals.Calls.Definite_Calls,    "calls");
       Serialize (A, V.Globals.Calls.Conditional_Calls, "calls_conditional");
-      Serialize (A, V.Local_Variables,         "local_var");
-      Serialize (A, V.Local_Ghost_Variables,   "local_ghost");
+
+      Serialize (A, V.Local_Variables, "local_var");
 
       if V.Kind in Entry_Kind
                  | E_Function

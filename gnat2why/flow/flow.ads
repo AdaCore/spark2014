@@ -117,8 +117,9 @@ package Flow is
       --  Non-local variables and parameters other than those of the analyzed
       --  entity.
 
-      Local_Variables       : Node_Sets.Set;
-      Local_Ghost_Variables : Node_Sets.Set;
+      Local_Variables : Node_Sets.Set;
+      --  Only for packages; represents the refined view of what can appear on
+      --  the LHS of the generated Initializes contract.
    end record;
 
    type Entry_Call is record

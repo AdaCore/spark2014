@@ -70,8 +70,7 @@ package Flow.Slice is
                 and then Inputs_Proof.Intersection
                            (Inputs or Outputs).Is_Empty
                 and then Local_Definite_Writes.Is_Subset
-                           (Of_Set => FA.GG.Local_Variables or
-                                      FA.GG.Local_Ghost_Variables);
+                           (Of_Set => FA.GG.Local_Variables);
    --  Computes globals (and procedure calls) from the given graphs
    --  ??? this name has nothing to do with "computed globals" (aka Yannick's)
    --

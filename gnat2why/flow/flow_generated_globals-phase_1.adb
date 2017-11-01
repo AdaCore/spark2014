@@ -286,10 +286,7 @@ package body Flow_Generated_Globals.Phase_1 is
          Process_Volatiles_And_States (GI.Globals.Proper.Proof_Ins);
          Process_Volatiles_And_States (GI.Globals.Proper.Inputs);
          Process_Volatiles_And_States (GI.Globals.Proper.Outputs);
-         Process_Volatiles_And_States (GI.Local_Variables,
-                                       Local_Vars => True);
-         Process_Volatiles_And_States (GI.Local_Ghost_Variables,
-                                       Local_Vars => True);
+         Process_Volatiles_And_States (GI.Local_Variables, Local_Vars => True);
 
          --  In phase 2 we only need to know the initialization status of
          --  proof_ins and inputs; outputs are irrelevant.

@@ -158,22 +158,21 @@ package Flow_Generated_Globals is
    --  Tasking objects accessed by a given entity
 
    type Partial_Contract is record
-      Name                  : Entity_Name;
-      Local                 : Boolean;
-      Kind                  : Entity_Kind;
-      Is_Protected          : Boolean;
-      Origin                : Globals_Origin_T;
+      Name            : Entity_Name;
+      Local           : Boolean;
+      Kind            : Entity_Kind;
+      Is_Protected    : Boolean;
+      Origin          : Globals_Origin_T;
 
-      Globals               : Flow_Names;
+      Globals         : Flow_Names;
 
-      Local_Variables       : Name_Sets.Set; --  Flow
-      Local_Ghost_Variables : Name_Sets.Set; --  Flow
+      Local_Variables : Name_Sets.Set;
 
-      Tasking               : Name_Tasking_Info;
+      Tasking         : Name_Tasking_Info;
 
-      Has_Terminate         : Boolean;
-      Nonreturning          : Boolean;
-      Nonblocking           : Boolean;
+      Has_Terminate   : Boolean;
+      Nonreturning    : Boolean;
+      Nonblocking     : Boolean;
    end record;
    --  IMPORTANT: If you add fields to this, make sure to also update the
    --  serialisation procedure (in the body of flow_generated_globals), and

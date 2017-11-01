@@ -196,8 +196,7 @@ package body Flow_Generated_Globals.Partial is
       --
       --  ### What is the TN for this?
 
-      Local_Variables       : Global_Set;
-      Local_Ghost_Variables : Global_Set;
+      Local_Variables : Global_Set;
 
       --  ### Intention for these is to only capture the obvious (for
       --  example, has loop at end, aspect no_return, etc.). This is
@@ -460,8 +459,7 @@ package body Flow_Generated_Globals.Partial is
             Conditional_Calls     => Contr.Globals.Calls.Conditional_Calls,
             Local_Definite_Writes => Contr.Globals.Initializes.Refined);
 
-         Contr.Local_Variables       := FA.GG.Local_Variables;
-         Contr.Local_Ghost_Variables := FA.GG.Local_Ghost_Variables;
+         Contr.Local_Variables := FA.GG.Local_Variables;
 
       else
          case Ekind (E) is
@@ -1401,10 +1399,6 @@ package body Flow_Generated_Globals.Partial is
 
       Original : Flow_Nodes renames Full_Contract.Globals;
 
-      function Local_Pkg_Variables return Node_Sets.Set
-      with Pre => Ekind (Folded) = E_Package;
-      --  Entities allowed in the Initialized aspect
-
       function Callee_Globals
         (Callee : Entity_Id;
          Caller : Entity_Id)
@@ -1604,16 +1598,6 @@ package body Flow_Generated_Globals.Partial is
               Outputs   => Down_Project (G.Outputs,   Analyzed_View));
       end Down_Project;
 
-      -------------------------
-      -- Local_Pkg_Variables --
-      -------------------------
-
-      function Local_Pkg_Variables return Node_Sets.Set is
-         Contr : Contract renames Contracts (Folded);
-      begin
-         return Contr.Local_Variables or Contr.Local_Ghost_Variables;
-      end Local_Pkg_Variables;
-
       --  Local variables
 
       Update : Flow_Nodes;
@@ -1636,7 +1620,7 @@ package body Flow_Generated_Globals.Partial is
               Original.Initializes.Refined or
                 ((Update.Refined.Outputs - Update.Refined.Inputs)
                    and
-                 Local_Pkg_Variables);
+                 Full_Contract.Local_Variables);
 
             Up_Project (Update.Initializes.Refined, Folded_Scope,
                         Projected, Partial);
@@ -2488,8 +2472,7 @@ package body Flow_Generated_Globals.Partial is
    is
       Contr : Contract renames Contracts (E);
 
-      Visible_Pkg_State       : Global_Set;
-      Visible_Pkg_Ghost_State : Global_Set;
+      Visible_Pkg_State : Global_Set;
       --  Objects that may appear on the LHS of an Initializes contract;
       --  only used when E represents a package.
       --  ??? this is just to keep the current code in phase-2 working;
@@ -2519,11 +2502,7 @@ package body Flow_Generated_Globals.Partial is
          procedure Register_Object (Obj : Entity_Id) is
          begin
             if not Is_Internal (Obj) then
-               if Is_Ghost_Entity (Obj) then
-                  Visible_Pkg_Ghost_State.Insert (Obj);
-               else
-                  Visible_Pkg_State.Insert (Obj);
-               end if;
+               Visible_Pkg_State.Insert (Obj);
             end if;
          end Register_Object;
 
@@ -2660,7 +2639,6 @@ package body Flow_Generated_Globals.Partial is
                      To_Name_Set (Contr.Globals.Calls.Conditional_Calls))),
 
              Local_Variables       => To_Name_Set (Visible_Pkg_State),
-             Local_Ghost_Variables => To_Name_Set (Visible_Pkg_Ghost_State),
 
              Has_Terminate         => Contr.Has_Terminate,
              Nonreturning          => Contr.Nonreturning,

@@ -482,15 +482,9 @@ package body Flow_Generated_Globals.Phase_2 is
         Phase_1_Info.Find (To_Entity_Name (E));
 
    begin
-      if Phase_1_Info_Maps.Has_Element (C) then
-         declare
-            Info : Partial_Contract renames Phase_1_Info (C);
-         begin
-            return Info.Local_Variables or Info.Local_Ghost_Variables;
-         end;
-      else
-         return Name_Sets.Empty_Set;
-      end if;
+      return (if Phase_1_Info_Maps.Has_Element (C)
+              then Phase_1_Info (C).Local_Variables
+              else Name_Sets.Empty_Set);
    end GG_Get_Local_Variables;
 
    -------------------
@@ -1847,9 +1841,7 @@ package body Flow_Generated_Globals.Phase_2 is
                     Original.Initializes;
 
                begin
-                  Update.Initializes :=
-                    True_Outputs
-                      and (P.Local_Variables or P.Local_Ghost_Variables);
+                  Update.Initializes := True_Outputs and P.Local_Variables;
 
                   Initialized_Vars_And_States.Union (Update.Initializes);
 
@@ -1858,7 +1850,6 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  Now we remove those reads and what remains is the RHS of
                   --  the generated Initializes contract.
                   Update.Proper.Inputs.Difference (P.Local_Variables);
-                  Update.Proper.Inputs.Difference (P.Local_Ghost_Variables);
                end;
             end if;
 
