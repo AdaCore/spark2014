@@ -228,9 +228,6 @@ package body Flow_Generated_Globals.Phase_2 is
    Debug_GG_Read_Timing              : constant Boolean := False;
    --  Enables timing information for gg_read
 
-   Debug_Print_Generated_Initializes : constant Boolean := False;
-   --  Enables printing of the generated initializes aspects
-
    ----------------------------------------------------------------------
    --  State information
    ----------------------------------------------------------------------
@@ -248,21 +245,6 @@ package body Flow_Generated_Globals.Phase_2 is
    ----------------------------------------------------------------------
    --  Initializes information
    ----------------------------------------------------------------------
-
-   type Initializes_Info is record
-      LHS       : Name_Sets.Set;
-      LHS_Proof : Name_Sets.Set;
-      RHS       : Name_Sets.Set;
-      RHS_Proof : Name_Sets.Set;
-   end record;
-
-   package Initializes_Aspects_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Name,
-      Element_Type    => Initializes_Info,
-      Hash            => Name_Hash,
-      Equivalent_Keys => "=");
-
-   Initializes_Aspects : Initializes_Aspects_Maps.Map;
 
    Initialized_Vars_And_States : Name_Sets.Set;
    --  Variables and state abstractions know to be initialized
@@ -325,21 +307,6 @@ package body Flow_Generated_Globals.Phase_2 is
    --  will be either an explicit instance or the implicit environment task
    --  for the "main" subprogram.
 
-   procedure Up_Project
-     (Most_Refined      : Name_Sets.Set;
-      Final_View        : out Name_Sets.Set;
-      Scope             : Flow_Scope;
-      Reads             : in out Flow_Id_Sets.Set;
-      Processing_Writes : Boolean := False)
-   with Pre  => (if not Processing_Writes then Reads.Is_Empty),
-        Post => (if not Processing_Writes then Reads.Is_Empty);
-   --  Distinguishes between simple vars and constituents. For constituents,
-   --  it checks if they are visible and if they are NOT it checks if their
-   --  encapsulating state is. If the encapsulating state is visible then
-   --  return that (otherwise repeat the process). When Processing_Writes is
-   --  set, we also check if all constituents are used and if they are not we
-   --  also add them on the Reads set.
-
    function Generated_Calls (Caller : Entity_Name) return Name_Sets.Set;
    --  Returns callees of a Caller
 
@@ -372,12 +339,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
    procedure Print_Tasking_Info_Bag (P : Phase);
    --  Display the tasking-related information
-
-   procedure Print_Generated_Initializes_Aspects;
-   --  Prints all the generated initializes aspects
-
-   procedure Print_Name_Set (Header : String; Set : Name_Sets.Set);
-   --  Print Header followed by elements of Set
 
    ---------------------
    -- Generated_Calls --
@@ -484,89 +445,30 @@ package body Flow_Generated_Globals.Phase_2 is
       S : Flow_Scope)
       return Dependency_Maps.Map
    is
-      C : constant Initializes_Aspects_Maps.Cursor :=
-        Initializes_Aspects.Find (To_Entity_Name (E));
-      --  Position of the Initializes aspect for E, if any
+      pragma Unreferenced (S);  --  ??? to be removed in a follow-up commit
+
+      C : constant Entity_Contract_Maps.Cursor :=
+        Global_Contracts.Find (To_Entity_Name (E));
+      --  Position of the generated contract for E, if any
 
    begin
-      if Initializes_Aspects_Maps.Has_Element (C) then
-         --  Retrieve the relevant Name_Dependency_Map, up project it to S and
-         --  then convert it into a Dependency_Map.
+      if Entity_Contract_Maps.Has_Element (C) then
          declare
-            LHS_Scope : constant Flow_Scope := Get_Flow_Scope (E);
+            Final : Flow_Names renames Global_Contracts (C);
 
-            II : Initializes_Info renames Initializes_Aspects (C);
+            RHS : constant Flow_Id_Sets.Set :=
+              To_Flow_Id_Set (Final.Proper.Inputs);
 
-            All_LHS_UP   : Name_Sets.Set;
-            LHS_UP       : Name_Sets.Set;
-            LHS_Proof_UP : Name_Sets.Set;
-            RHS_UP       : Name_Sets.Set;
-            RHS_Proof_UP : Name_Sets.Set;
-
-            To_Remove    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-            --  This set will hold the names of non fully initialized states.
-            --  These will have to be removed from the left hand side sets.
-
-            FS_LHS       : Flow_Id_Sets.Set;
-            FS_LHS_Proof : Flow_Id_Sets.Set;
-            FS_RHS       : Flow_Id_Sets.Set;
-            FS_RHS_Proof : Flow_Id_Sets.Set;
-            --  These will hold the final flow sets that will be used to
-            --  populate the dependency map.
-
-            Unused : Flow_Id_Sets.Set;
+            DM : Dependency_Maps.Map;
 
          begin
-            --  Up project left hand side
-            Up_Project (Most_Refined      => II.LHS or II.LHS_Proof,
-                        Final_View        => All_LHS_UP,
-                        Scope             => LHS_Scope,
-                        Reads             => To_Remove,
-                        Processing_Writes => True);
+            for LHS of Final.Initializes loop
+               DM.Insert
+                 (Key      => Get_Flow_Id (LHS),
+                  New_Item => RHS);
+            end loop;
 
-            Up_Project (Most_Refined => II.LHS,
-                        Final_View   => LHS_UP,
-                        Scope        => LHS_Scope,
-                        Reads        => Unused);
-
-            Up_Project (Most_Refined => II.LHS_Proof,
-                        Final_View   => LHS_Proof_UP,
-                        Scope        => LHS_Scope,
-                        Reads        => Unused);
-
-            --  Up project right hand side
-            Up_Project (Most_Refined => II.RHS,
-                        Final_View   => RHS_UP,
-                        Scope        => S,
-                        Reads        => Unused);
-
-            Up_Project (Most_Refined => II.RHS_Proof,
-                        Final_View   => RHS_Proof_UP,
-                        Scope        => S,
-                        Reads        => Unused);
-
-            --  Populate and return DM
-            FS_LHS       := To_Flow_Id_Set (LHS_UP);
-            FS_LHS_Proof := To_Flow_Id_Set (LHS_Proof_UP);
-            FS_RHS       := To_Flow_Id_Set (RHS_UP);
-            FS_RHS_Proof := To_Flow_Id_Set (RHS_Proof_UP);
-
-            --  Remove state abstractions that are only partially initialized
-            --  from the left hand side.
-            FS_LHS.Difference (To_Remove);
-            FS_LHS_Proof.Difference (To_Remove);
-
-            return DM : Dependency_Maps.Map do
-               --  Add regular variables
-               for F of FS_LHS loop
-                  DM.Insert (F, FS_RHS);
-               end loop;
-
-               --  Add proof variables
-               for F of FS_LHS_Proof loop
-                  DM.Insert (F, FS_RHS_Proof);
-               end loop;
-            end return;
+            return DM;
          end;
 
       --  If we have no info for this package then we also did not generate the
@@ -605,119 +507,6 @@ package body Flow_Generated_Globals.Phase_2 is
    begin
       return Match (Predefined, To_String (EN));
    end Is_Predefined;
-
-   ----------------
-   -- Up_Project --
-   ----------------
-
-   procedure Up_Project
-     (Most_Refined      : Name_Sets.Set;
-      Final_View        : out Name_Sets.Set;
-      Scope             : Flow_Scope;
-      Reads             : in out Flow_Id_Sets.Set;
-      Processing_Writes : Boolean := False)
-   is
-      Abstract_States : Name_Sets.Set := Name_Sets.Empty_Set;
-
-      function Fully_Refine (EN : Entity_Name) return Name_Sets.Set;
-      --  Returns the most refined constituents of variable or state
-      --  abstraction.
-
-      ------------------
-      -- Fully_Refine --
-      ------------------
-
-      function Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
-         Refined : Name_Sets.Set;
-
-         procedure Refine (State : Entity_Name);
-         --  Recursively refine state into its constituents
-
-         ------------
-         -- Refine --
-         ------------
-
-         procedure Refine (State : Entity_Name) is
-            Constituents : constant Name_Graphs.Cursor :=
-              State_Comp_Map.Find (State);
-         begin
-            if Name_Graphs.Has_Element (Constituents) then
-               for Constituent of State_Comp_Map (Constituents) loop
-                  Refine (Constituent);
-               end loop;
-            else
-               Refined.Insert (State);
-            end if;
-         end Refine;
-
-      --  Start of processing for Fully_Refine
-
-      begin
-         Refine (EN);
-
-         return Refined;
-      end Fully_Refine;
-
-   --  Start of processing for Up_Project
-
-   begin
-      --  Initialize Final_View
-      Final_View := Name_Sets.Empty_Set;
-
-      for N of Most_Refined loop
-
-         --  We climb the hierarchy of abstract states until we find a visible
-         --  one (because of scope visibility rules) or a one without enclosing
-         --  abstract state (because it must be visible anyway).
-
-         declare
-            Var_Name   : Entity_Name := N;
-            Var_Entity : Entity_Id;
-
-            Enclosing_State : Any_Entity_Name;
-
-            function Is_Abstract_State return Boolean is
-              (Var_Name /= N);
-            --  If the visible name is different from the original one, then
-            --  the original one must have been hidden in an abstract state.
-
-         begin
-            loop
-               Var_Entity      := Find_Entity (Var_Name);
-               Enclosing_State := GG_Encapsulating_State (Var_Name);
-
-               if Enclosing_State = Null_Entity_Name
-                 or else (Present (Var_Entity)
-                          and then Is_Visible (Var_Entity, Scope))
-               then
-                  exit;
-               end if;
-
-               Var_Name := Enclosing_State;
-            end loop;
-
-            Final_View.Include (Var_Name);
-
-            if Processing_Writes and then Is_Abstract_State
-            then
-               Abstract_States.Include (Var_Name);
-            end if;
-         end;
-      end loop;
-
-      --  If we Write some but not all constituents of a state abstraction then
-      --  this state abstraction is also a Read.
-      for AS of Abstract_States loop
-         declare
-            Constituents : constant Name_Sets.Set := Fully_Refine (AS);
-
-         begin
-            if not Constituents.Is_Subset (Of_Set => Most_Refined) then
-               Reads.Include (Get_Flow_Id (AS, In_View));
-            end if;
-         end;
-      end loop;
-   end Up_Project;
 
    -------------
    -- GG_Read --
@@ -2063,32 +1852,19 @@ package body Flow_Generated_Globals.Phase_2 is
                     (Update.Proper.Outputs - Update.Proper.Inputs) or
                     Original.Initializes;
 
-                  II : constant Initializes_Info :=
-                    (LHS       => True_Outputs and P.Local_Variables,
-                     LHS_Proof => True_Outputs and P.Local_Ghost_Variables,
-                     RHS       => Update.Proper.Inputs - P.Local_Variables,
-                     RHS_Proof => Update.Proper.Proof_Ins -
-                                  P.Local_Ghost_Variables);
-                  --  The name dependency map for the Folded package
-                  --
-                  --  LHS and LHS_Proof represent the left hand side of the
-                  --  generated initializes aspect. RHS and RHS_Proof
-                  --  represent the right hand side of the generated
-                  --  Initializes aspect.
-
                begin
-                  --  Invariant: LHS and LHS_Proof are disjoint and do not
-                  --  overlap with Initialized_Vars_And_States.
-                  Initialized_Vars_And_States.Union (II.LHS);
-                  Initialized_Vars_And_States.Union (II.LHS_Proof);
+                  Update.Initializes :=
+                    True_Outputs
+                      and (P.Local_Variables or P.Local_Ghost_Variables);
 
-                  --  ??? here we put the contract into the old-gg container;
-                  --  this should be removed as part of moving synthesis of the
-                  --  Initializes contract to the new-gg (but this can be done
-                  --  merely as a refactoring)
-                  Initializes_Aspects.Insert (P.Name, II);
+                  Initialized_Vars_And_States.Union (Update.Initializes);
 
-                  Update.Initializes := II.LHS or II.LHS_Proof;
+                  --  We needed reads of the local variables in the package
+                  --  elaboration to know which of the writes are pure outputs.
+                  --  Now we remove those reads and what remains is the RHS of
+                  --  the generated Initializes contract.
+                  Update.Proper.Inputs.Difference (P.Local_Variables);
+                  Update.Proper.Inputs.Difference (P.Local_Ghost_Variables);
                end;
             end if;
 
@@ -2466,10 +2242,6 @@ package body Flow_Generated_Globals.Phase_2 is
       --  this is to use the generated globals instead of the computed globals
       --  when we call Get_Globals from within Has_Variable_Input.
       GG_Generated := True;
-
-      --  Now that the globals are generated, we use them to also generate the
-      --  initializes aspects.
-      Print_Generated_Initializes_Aspects;
 
       --  Put tasking-related information back to the bag
       Process_Tasking_Graph;
@@ -2904,47 +2676,6 @@ package body Flow_Generated_Globals.Phase_2 is
    --------------------------------------------------------------------------
    --  Debug output routines
    --------------------------------------------------------------------------
-
-   -----------------------------------------
-   -- Print_Generated_Initializes_Aspects --
-   -----------------------------------------
-
-   procedure Print_Generated_Initializes_Aspects is
-   begin
-      if Debug_Print_Generated_Initializes then
-         Write_Line ("Synthesized initializes aspects:");
-         for Init in Initializes_Aspects.Iterate loop
-            declare
-               Pkg : Entity_Name renames Initializes_Aspects_Maps.Key (Init);
-               II  : Initializes_Info renames Initializes_Aspects (Init);
-
-            begin
-               Indent;
-               Write_Line ("Package " & To_String (Pkg)  & ":");
-               Indent;
-               Print_Name_Set ("LHS      : ", II.LHS);
-               Print_Name_Set ("LHS_Proof: ", II.LHS_Proof);
-               Print_Name_Set ("RHS      : ", II.RHS);
-               Print_Name_Set ("RHS_Proof: ", II.RHS_Proof);
-               Outdent;
-               Outdent;
-            end;
-         end loop;
-      end if;
-   end Print_Generated_Initializes_Aspects;
-
-   --------------------
-   -- Print_Name_Set --
-   --------------------
-
-   procedure Print_Name_Set (Header : String; Set : Name_Sets.Set) is
-   begin
-      Write_Line (Header);
-      for Name of Set loop
-         Write_Line ("   " & To_String (Name));
-         --  ??? use Indent/Outdent instead of fixed amount of spaces
-      end loop;
-   end Print_Name_Set;
 
    ----------------------------
    -- Print_Tasking_Info_Bag --
