@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---                            GNATPROVE COMPONENTS                          --
+--                           GNATPROVE COMPONENTS                           --
 --                                                                          --
---                              H A S H C O N S                             --
+--                             H A S H _ C O N S                            --
 --                                                                          --
---                                 B o d y                                  --
+--                                  B o d y                                 --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                     Copyright (C) 2010-2017, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -50,7 +50,7 @@ package body Hash_Cons is
         To_Integer (A.all'Address) mod 2147483647;
       --  ??? why 2147483647?
    begin
-      return (Hash_Type (Addr));
+      return Hash_Type (Addr);
    end Hash;
 
    ---------------

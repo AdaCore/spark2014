@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---                            GNATPROVE COMPONENTS                          --
+--                           GNATPROVE COMPONENTS                           --
 --                                                                          --
---                              H A S H C O N S                             --
+--                             H A S H _ C O N S                            --
 --                                                                          --
---                                 S p e c                                  --
+--                                  S p e c                                 --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                     Copyright (C) 2010-2017, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
