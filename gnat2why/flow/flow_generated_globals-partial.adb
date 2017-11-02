@@ -26,6 +26,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                      use Ada.Text_IO;
 with Common_Iterators;                 use Common_Iterators;
+with Flow_Dependency_Maps;             use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_1;   use Flow_Generated_Globals.Phase_1;
 with Flow_Refinement;                  use Flow_Refinement;
@@ -473,7 +474,28 @@ package body Flow_Generated_Globals.Partial is
                Contr.Globals.Refined := Contract_Globals (E, Refined => True);
 
             when E_Package =>
-               null;
+
+               --  We want to store objects from the LHSs of explicit
+               --  Initializes contracts in the ALI file to know that are
+               --  claimed to be initializes even if they are only known by
+               --  Entity_Name.
+
+               for Clause in Parse_Initializes (E).Iterate loop
+                  declare
+                     LHS : constant Entity_Id :=
+                       Get_Direct_Mapping_Id (Dependency_Maps.Key (Clause));
+                  begin
+                     --  Ignore constants without variable inputs, because they
+                     --  would violate a type predicate on generated contract
+                     --  before being stripped from there.
+
+                     if Ekind (LHS) /= E_Constant
+                       or else Has_Variable_Input (LHS)
+                     then
+                        Contr.Globals.Initializes.Proper.Insert (LHS);
+                     end if;
+                  end;
+               end loop;
 
             when E_Protected_Type =>
                null; --  ??? do nothing for now
@@ -1611,41 +1633,52 @@ package body Flow_Generated_Globals.Partial is
 
       Up_Project (Update.Refined, Update.Proper, Folded_Scope);
 
-         --  Handle package Initializes aspect
+      --  Handle package Initializes aspect
       if Ekind (Folded) = E_Package then
-         declare
-            Projected, Partial : Node_Sets.Set;
-         begin
-            Update.Initializes.Refined :=
-              Original.Initializes.Refined or
-                ((Update.Refined.Outputs - Update.Refined.Inputs)
-                   and
-                 Full_Contract.Local_Variables);
 
-            Up_Project (Update.Initializes.Refined, Folded_Scope,
-                        Projected, Partial);
+         --  For package with explicit Initializes bypass the up-projection
+         --  ??? at least until we make the up-projection for packages as
+         --  robust as it is for subprograms (where such a bypass is not
+         --  needed and explicit contracts are passed without modification).
 
-            for State of Partial loop
-               if Is_Fully_Contained (State, Update.Initializes.Refined) then
-                  Projected.Include (State);
-               end if;
-            end loop;
+         if Present (Get_Pragma (Folded, Pragma_Initializes)) then
+            Update.Initializes.Proper := Original.Initializes.Proper;
+         else
+            declare
+               Projected, Partial : Node_Sets.Set;
+            begin
+               Update.Initializes.Refined :=
+                 Original.Initializes.Refined or
+                 ((Update.Refined.Outputs - Update.Refined.Inputs)
+                    and
+                  Full_Contract.Local_Variables);
 
-            --  Add states that are trivially initialized because they have
-            --  null refinements (their initialization is missed while looking
-            --  at the initialization of the constituents).
-            for State of Iter (Abstract_States (Folded)) loop
-               if not Is_Null_State (State)
-                 and then Entity_Body_In_SPARK (Folded)
-                 and then Has_Null_Refinement (State)
-               then
-                  Projected.Insert (State);
-               end if;
-            end loop;
+               Up_Project (Update.Initializes.Refined, Folded_Scope,
+                           Projected, Partial);
 
-            Node_Sets.Move (Target => Update.Initializes.Proper,
-                            Source => Projected);
-         end;
+               for State of Partial loop
+                  if Is_Fully_Contained (State, Update.Initializes.Refined)
+                  then
+                     Projected.Include (State);
+                  end if;
+               end loop;
+
+               --  Add states that are trivially initialized because they
+               --  have null refinements (their initialization is missed
+               --  while looking at the initialization of the constituents).
+               for State of Iter (Abstract_States (Folded)) loop
+                  if not Is_Null_State (State)
+                    and then Entity_Body_In_SPARK (Folded)
+                    and then Has_Null_Refinement (State)
+                  then
+                     Projected.Insert (State);
+                  end if;
+               end loop;
+
+               Node_Sets.Move (Target => Update.Initializes.Proper,
+                               Source => Projected);
+            end;
+         end if;
       end if;
 
       Filter_Local (Analyzed, Update.Calls.Proof_Calls);
@@ -2601,9 +2634,7 @@ package body Flow_Generated_Globals.Partial is
 
       if Ekind (E) /= E_Protected_Type then
 
-         if Ekind (E) = E_Package
-           and then No (Get_Pragma (E, Pragma_Initializes))
-         then
+         if Ekind (E) = E_Package then
             Collect_Pkg_State;
          end if;
 
