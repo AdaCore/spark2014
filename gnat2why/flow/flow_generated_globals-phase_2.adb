@@ -465,10 +465,11 @@ package body Flow_Generated_Globals.Phase_2 is
             return DM;
          end;
 
-      --  If we have no info for this package then we also did not generate the
-      --  initializes aspect for it.
+      --  ??? proof asks for generated initializes on wrapper packages;
+      --  to be fixed in a separate commit.
 
       else
+         pragma Assert (Is_Wrapper_Package (E));
          return Dependency_Maps.Empty_Map;
       end if;
    end GG_Get_Initializes;

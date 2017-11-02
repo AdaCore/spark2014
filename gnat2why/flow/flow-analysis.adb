@@ -2430,7 +2430,9 @@ package body Flow.Analysis is
         (Var : Flow_Id)
          return Boolean
       is
-         (GG_Get_Initializes (FA.Spec_Entity).Contains (Var));
+         (No (Get_Pragma (FA.Spec_Entity, Pragma_Initializes))
+            and then
+          GG_Get_Initializes (FA.Spec_Entity).Contains (Var));
 
       ------------------------------------
       -- Might_Be_Defined_In_Other_Path --

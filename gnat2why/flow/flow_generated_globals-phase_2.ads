@@ -26,6 +26,7 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Ordered_Multisets;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
 with Sinfo;                              use Sinfo;
+with Snames;                             use Snames;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
 
@@ -133,7 +134,8 @@ package Flow_Generated_Globals.Phase_2 is
 
    function GG_Get_Initializes (E : Entity_Id) return Dependency_Maps.Map
    with Pre => GG_Has_Been_Generated and then
-               Ekind (E) = E_Package;
+               Ekind (E) = E_Package and then
+               No (Get_Pragma (E, Pragma_Initializes));
    --  @param E is the package whose generated Initializes aspect we want
 
    function GG_Get_Local_Variables
