@@ -1,0 +1,1 @@
+function Proxy return Integer;
