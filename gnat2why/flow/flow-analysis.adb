@@ -1973,10 +1973,6 @@ package body Flow.Analysis is
    is
       Tracefile : constant String := Fresh_Trace_File;
 
-      function AS_In_Generated_Initializes (Var : Flow_Id) return Boolean;
-      --  Check if Var is a constituent of an abstract state that is mentioned
-      --  in a generated Initializes aspect.
-
       function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Returns True iff V should be considered for uninitialized variables
 
@@ -2039,29 +2035,6 @@ package body Flow.Analysis is
       --  Sets Found when the variable corresponding to V_Initial is defined on
       --  a path that leads to V_Use. V_Error is the vertex where the message
       --  should be emitted.
-
-      ---------------------------------
-      -- AS_In_Generated_Initializes --
-      ---------------------------------
-
-      function AS_In_Generated_Initializes (Var : Flow_Id) return Boolean is
-      begin
-         if FA.Kind in Kind_Package | Kind_Package_Body
-           and Var.Kind in Direct_Mapping | Record_Field
-         then
-            declare
-               E : constant Entity_Id := Get_Direct_Mapping_Id (Var);
-            begin
-               return Is_Constituent (E)
-                 and then
-                   Mentioned_On_Generated_Initializes
-                     (Direct_Mapping_Id
-                        (Encapsulating_State (E)));
-            end;
-         else
-            return False;
-         end if;
-      end AS_In_Generated_Initializes;
 
       ---------------------
       -- Consider_Vertex --
@@ -2777,8 +2750,7 @@ package body Flow.Analysis is
                       (Change_Variant (Var_Used, Final_Value));
 
                begin
-                  if (FA.Atr (Initial_Value_Of_Var_Used).Is_Initialized
-                      and then not AS_In_Generated_Initializes (Var_Used))
+                  if FA.Atr (Initial_Value_Of_Var_Used).Is_Initialized
 
                     --  Skip this check for objects written when elaborating a
                     --  package, unless they appear in the explicit Initializes
