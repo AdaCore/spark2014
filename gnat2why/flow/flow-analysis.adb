@@ -1506,20 +1506,8 @@ package body Flow.Analysis is
         (V : Flow_Graphs.Vertex_Id)
          return Boolean
       is
-      begin
-         for Var_Def of FA.Atr (V).Variables_Defined loop
-            declare
-               Initial_Var : constant Flow_Id :=
-                 Change_Variant (Var_Def, Final_Value);
-            begin
-               if Has_Async_Readers (Initial_Var) then
-                  return True;
-               end if;
-            end;
-         end loop;
-
-         return False;
-      end Defines_Async_Reader_Var;
+        (for some Var_Def of FA.Atr (V).Variables_Defined =>
+           Has_Async_Readers (Var_Def));
 
       -----------------------
       -- Find_Masking_Code --
@@ -4307,7 +4295,7 @@ package body Flow.Analysis is
       procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set) is
       begin
          for F of FS loop
-            if Is_Volatile (Change_Variant (F, Normal_Use)) then
+            if Is_Volatile (F) then
                --  We just found a volatile effect
                Volatile_Effect_Found := True;
 
