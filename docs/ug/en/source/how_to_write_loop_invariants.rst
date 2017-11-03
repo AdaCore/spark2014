@@ -150,13 +150,6 @@ assertion on line 33:
    :language: none
    :linenos:
 
-.. note::
-
-   The generation of loop invariants for unmodified components of record
-   variables is available starting with SPARK Pro 17. The generation of loop
-   invariants for unmodified array components for arrays up to the current loop
-   index is available starting with SPARK Pro 18 wavefronts.
-
 The Four Properties of a Good Loop Invariant
 --------------------------------------------
 

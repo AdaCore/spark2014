@@ -10,6 +10,7 @@ begin
          A(J) := 0;
       end if;
       pragma Loop_Invariant (for all K in A'First .. J => A(K) = (if A'Loop_Entry(K) <= Threshold then 0 else A'Loop_Entry(K)));
-      pragma Loop_Invariant (for all K in J + 1 .. A'Last => A(K) = A'Loop_Entry(K));
+      --  The following loop invariant is generated automatically by GNATprove:
+      --  pragma Loop_Invariant (for all K in J + 1 .. A'Last => A(K) = A'Loop_Entry(K));
    end loop;
 end Update_Arr_Zero;
