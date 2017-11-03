@@ -205,14 +205,17 @@ of array ``A`` is incremented by one:
    :language: ada
    :linenos:
 
-The first loop invariant expresses that all elements up to the current loop
-index ``J`` have been incremented. The second loop invariant expresses that
-other elements have not been modified (using :ref:`Attribute Loop_Entry`). With
-this combined loop invariant, |GNATprove| is able to prove the postcondition of
-``Map_Arr_Incr``, namely that all elements of the array have been incremented:
+The loop invariant expresses that all elements up to the current loop index
+``J`` have been incremented (using :ref:`Attribute Loop_Entry`). With this loop
+invariant, |GNATprove| is able to prove the postcondition of ``Map_Arr_Incr``,
+namely that all elements of the array have been incremented:
 
 .. literalinclude:: results/map_arr_incr.prove
    :language: none
+
+Note that the commented loop invariant expressing that other elements have not
+been modified is not needed, as it is an example of :ref:`Automatically
+Generated Loop Invariants`.
 
 Consider now a variant of the same initialization loop over a vector:
 
@@ -594,15 +597,18 @@ array ``A`` that have a value smaller than a given ``Threshold``:
    :linenos:
 
 The loop invariant expresses that all elements up to the current loop index
-``J`` have been zeroed out if initially smaller than ``Threshold``, and that
-elements that follow the current loop index have not been modified. With this
-loop invariant, |GNATprove| is able to prove the postcondition of
-``Update_Arr_Zero``, namely that all elements initially smaller than
-``Threshold`` have been zeroed out, and that other elements have not been
-modified:
+``J`` have been zeroed out if initially smaller than ``Threshold`` (using
+:ref:`Attribute Loop_Entry`). With this loop invariant, |GNATprove| is able to
+prove the postcondition of ``Update_Arr_Zero``, namely that all elements
+initially smaller than ``Threshold`` have been zeroed out, and that other
+elements have not been modified:
 
 .. literalinclude:: results/update_arr_zero.prove
    :language: none
+
+Note that the commented loop invariant expressing that other elements have not
+been modified is not needed, as it is an example of :ref:`Automatically
+Generated Loop Invariants`.
 
 Consider now a variant of the same update loop over a vector:
 

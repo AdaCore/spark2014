@@ -9,6 +9,7 @@ begin
    for J in A'Range loop
       A(J) := A(J) + 1;
       pragma Loop_Invariant (for all K in A'First .. J => A(K) = A'Loop_Entry(K) + 1);
-      pragma Loop_Invariant (for all K in J + 1 .. A'Last => A(K) = A'Loop_Entry(K));
+      --  The following loop invariant is generated automatically by GNATprove:
+      --  pragma Loop_Invariant (for all K in J + 1 .. A'Last => A(K) = A'Loop_Entry(K));
    end loop;
 end Map_Arr_Incr;
