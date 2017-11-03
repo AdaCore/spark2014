@@ -465,12 +465,15 @@ package body Flow_Types is
          when Synthetic_Null_Export =>
             return True;
          when Magic_String =>
-            return Is_Volatile (F)
+            return GG_Is_Volatile (F.Name)
               and then GG_Has_Async_Readers (F.Name);
          when others =>
-            return Is_Volatile (F)
-              and then Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
-                                            Pragma_Async_Readers);
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               return Has_Volatile (E)
+                 and then Has_Volatile_Flavor (E, Pragma_Async_Readers);
+            end;
       end case;
    end Has_Async_Readers;
 
@@ -484,12 +487,15 @@ package body Flow_Types is
          when Synthetic_Null_Export =>
             return False;
          when Magic_String =>
-            return Is_Volatile (F)
+            return GG_Is_Volatile (F.Name)
               and then GG_Has_Async_Writers (F.Name);
          when others =>
-            return Is_Volatile (F)
-              and then Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
-                                            Pragma_Async_Writers);
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               return Has_Volatile (E)
+                 and then Has_Volatile_Flavor (E, Pragma_Async_Writers);
+            end;
       end case;
    end Has_Async_Writers;
 
@@ -503,12 +509,15 @@ package body Flow_Types is
          when Synthetic_Null_Export =>
             return False;
          when Magic_String =>
-            return Is_Volatile (F)
+            return GG_Is_Volatile (F.Name)
               and then GG_Has_Effective_Reads (F.Name);
          when others =>
-            return Is_Volatile (F)
-               and then Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
-                                             Pragma_Effective_Reads);
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               return Has_Volatile (E)
+                 and then Has_Volatile_Flavor (E, Pragma_Effective_Reads);
+            end;
       end case;
    end Has_Effective_Reads;
 
@@ -522,12 +531,15 @@ package body Flow_Types is
          when Synthetic_Null_Export =>
             return True;
          when Magic_String =>
-            return Is_Volatile (F)
+            return GG_Is_Volatile (F.Name)
               and then GG_Has_Effective_Writes (F.Name);
          when others =>
-            return Is_Volatile (F)
-              and then Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
-                                            Pragma_Effective_Writes);
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               return Has_Volatile (E)
+                 and then Has_Volatile_Flavor (E, Pragma_Effective_Writes);
+            end;
       end case;
    end Has_Effective_Writes;
 
