@@ -7,7 +7,7 @@ pragma Warnings (Off, "no Global contract available for *");
 
 package Professionals
   with Abstract_State => State
-is
+is pragma Elaborate_Body;
    type Professions is (Unemployed,
                         Programmer,
                         Soldier,

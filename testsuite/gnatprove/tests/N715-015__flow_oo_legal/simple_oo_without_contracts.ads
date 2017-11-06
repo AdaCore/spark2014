@@ -1,4 +1,4 @@
-package Simple_OO_Without_Contracts is
+package Simple_OO_Without_Contracts is pragma Elaborate_Body;
    G1, G2, G3, G4 : Integer := 0;
 
    type T is tagged record

@@ -1,6 +1,6 @@
 package Tagged_Discr with
   SPARK_Mode
-is
+is pragma Elaborate_Body;
    type E is (A, B, C, D);
 
    type T (Discr : E) is tagged record

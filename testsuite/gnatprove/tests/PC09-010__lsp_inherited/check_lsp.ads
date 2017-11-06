@@ -1,4 +1,4 @@
-package Check_LSP with SPARK_Mode is
+package Check_LSP with SPARK_Mode is pragma Elaborate_Body;
    package P_Overridden is
       type Root is tagged record
          F : Integer;

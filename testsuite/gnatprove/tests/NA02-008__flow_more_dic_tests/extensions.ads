@@ -1,6 +1,6 @@
 with Tagged_DIC; use Tagged_DIC;
 
-package Extensions is
+package Extensions is pragma Elaborate_Body;
    type Priv_Ext is new Root with private;
 
    function Gimme_One return Priv_Ext;

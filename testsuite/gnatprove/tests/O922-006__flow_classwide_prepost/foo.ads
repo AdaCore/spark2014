@@ -1,4 +1,4 @@
-package Foo is
+package Foo is pragma Elaborate_Body;
 
    type Point is tagged record
       X : Integer;

@@ -1,4 +1,4 @@
-package Simple_Illegal_With_Contracts is
+package Simple_Illegal_With_Contracts is pragma Elaborate_Body;
    type Level_0_T (D : Integer) is tagged record
       A : Integer;
       case D is

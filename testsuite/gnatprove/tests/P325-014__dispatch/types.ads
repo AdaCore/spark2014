@@ -1,4 +1,4 @@
-package Types is
+package Types is pragma Elaborate_Body;
 
    type T1 is tagged record J : Integer; end record;
    function Check (X : T1) return Boolean is (True);

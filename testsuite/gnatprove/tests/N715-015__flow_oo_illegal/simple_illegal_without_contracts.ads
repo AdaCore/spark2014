@@ -1,4 +1,4 @@
- package Simple_Illegal_Without_Contracts is
+ package Simple_Illegal_Without_Contracts is pragma Elaborate_Body;
    type Level_0_T (D : Integer) is tagged record
       A : Integer;
       case D is
@@ -44,4 +44,3 @@
 
    procedure P (Par : in out Level_2_1_T);
 end Simple_Illegal_Without_Contracts;
-

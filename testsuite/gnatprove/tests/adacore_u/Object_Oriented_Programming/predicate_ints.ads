@@ -1,7 +1,7 @@
 package Predicate_Ints
   with SPARK_Mode
 is
-
+   pragma Elaborate_Body;
    type Int is tagged record
       Min, Max, Value : Integer;
    end record;

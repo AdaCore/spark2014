@@ -1,4 +1,4 @@
-package Dispatch_In_Contract with SPARK_Mode is
+package Dispatch_In_Contract with SPARK_Mode is pragma Elaborate_Body;
    type Root is tagged record
       F1 : Integer;
    end record;

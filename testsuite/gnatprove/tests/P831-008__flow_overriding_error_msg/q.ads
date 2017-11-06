@@ -1,6 +1,6 @@
 with P; use P;
 package Q
-is
+is pragma Elaborate_Body;
    function Heap return Boolean;
 
    type S is new T with record

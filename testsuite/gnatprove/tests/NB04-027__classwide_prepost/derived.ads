@@ -1,6 +1,6 @@
 with Object; use Object;
 
-package Derived is
+package Derived is pragma Elaborate_Body;
 
    type D is new T with null record;
 

@@ -1,5 +1,5 @@
 with Base; use Base;
-package Derived is
+package Derived is pragma Elaborate_Body;
    type Derived_T is new Base_T with record
       B : Boolean;
    end record;

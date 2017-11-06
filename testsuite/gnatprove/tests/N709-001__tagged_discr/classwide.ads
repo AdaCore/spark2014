@@ -1,6 +1,6 @@
 package Classwide with
   SPARK_Mode
-is
+is pragma Elaborate_Body;
    type T is tagged record
       Z : Boolean;
       X : Integer;

@@ -1,6 +1,6 @@
 with Object;
 
-package Rectangle is
+package Rectangle is pragma Elaborate_Body;
    type T is new Object.T with private;
 
    procedure Get_Area (Rec : in out T; Result : out Natural);
