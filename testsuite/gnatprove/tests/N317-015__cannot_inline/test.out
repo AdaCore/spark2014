@@ -6,7 +6,7 @@ cannot_inline.adb:15:17: warning: subprogram "Local" has no effect
 cannot_inline.adb:26:10: info: no contextual analysis of "Has_Local_Subprogram_In_Block" (nested subprogram)
 cannot_inline.adb:26:20: warning: subprogram "Local" has no effect
 cannot_inline.adb:42:17: warning: subprogram "Proc" has no effect
-cannot_inline.adb:46:17: warning: subprogram "Other" has no effect
-cannot_inline.adb:47:10: info: no contextual analysis of "Other" (nested package instantiation)
+cannot_inline.adb:53:17: warning: subprogram "Other" has no effect
+cannot_inline.adb:54:10: info: no contextual analysis of "Other" (nested package instantiation)
 cannot_inline.ads:5:14: warning: subprogram "Test" has no effect
 cannot_inline_off.ads:5:14: warning: subprogram "Test" has no effect
