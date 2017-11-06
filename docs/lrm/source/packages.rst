@@ -2457,6 +2457,16 @@ is of type T (or a descendant thereof) can be assumed to satisfy T's invariant.
    of the immediate scope of T, or if the input in question is subject
    to rule 4 and constant for the caller.]
 
+.. _tu-type_invariants-09:
+
+9. At the end of the elaboration of a package (i.e., at the point where the
+   Initial_Condition, if any, is checked) a verification condition is
+   introduced for the objects (both variables and constants) declared within
+   the package. [If one chooses to think of package elaboration as being
+   performed by a notional parameterless "elaboration" subprogram, then this
+   rule (very roughly speaking) says that the global outputs of this notional
+   subprogram follow much the same rules as for other subprograms.]
+
 .. _tu-type_invariants-ram-03:
 
 **Ramification:** In determining whether a dispatching call is a call
