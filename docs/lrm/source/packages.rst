@@ -2635,6 +2635,11 @@ global variables discussed later in this section.
 
    d. L1 is preelaborable and L2's library unit is not.
 
+   e. L2 semantically depends on some library_item L3 such that the
+      elaboration of the body of L1 is known to precede the
+      elaboration of L3.
+      [See Ada RM 10.1.1 for definition of semantic dependence.]
+
 .. _etu-elaboration_issues-ss:
 
 .. centered:: **Legality Rules**
