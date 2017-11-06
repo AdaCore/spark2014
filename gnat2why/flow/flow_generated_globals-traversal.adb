@@ -44,12 +44,9 @@ package body Flow_Generated_Globals.Traversal is
    generic
       with procedure Process (N : Node_Id) is <>;
    procedure Traverse_Compilation_Unit (CU : Node_Id);
-   --  Call Process on all declarations within compilation unit CU. Unlike in
-   --  standard front end traversal traverses into stubs, but not into generic
-   --  units and stops while hitting the SPARK_Mode boundary.
-   --
-   --  ??? shamelessly stolen from Lib.Xref.SPARK_Specific which does not
-   --  respect the SPARK_Mode boundary.
+   --  Call Process on all declarations within compilation unit CU. Unlike the
+   --  standard frontend traversal, this one traverses into stubs, but not into
+   --  generic units.
 
    ----------------
    -- Build_Tree --

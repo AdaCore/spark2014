@@ -39,9 +39,6 @@ package Flow_Generated_Globals.Traversal is
                   Next        => Next_Cursor,
                   Has_Element => Has_Element,
                   Element     => Get_Element);
-   --  Variables and Ghost_Variables for packages are objects that can appear
-   --  in the (synthesized) Initialized aspect; for other scopes they are
-   --  constants with (possibly) variable input.
    --  ??? add some type predicate
 
    function First_Cursor (Cont : Nested) return Node_Lists.Cursor;
