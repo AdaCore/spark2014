@@ -6,7 +6,3 @@ map_arr_incr.adb:11:30: info: loop invariant preservation proved
 map_arr_incr.adb:11:61: info: index check proved
 map_arr_incr.adb:11:79: info: index check proved
 map_arr_incr.adb:11:82: info: overflow check proved
-map_arr_incr.adb:12:30: info: loop invariant initialization proved
-map_arr_incr.adb:12:30: info: loop invariant preservation proved
-map_arr_incr.adb:12:64: info: index check proved
-map_arr_incr.adb:12:82: info: index check proved
