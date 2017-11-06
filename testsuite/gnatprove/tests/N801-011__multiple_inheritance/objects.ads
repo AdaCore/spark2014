@@ -1,6 +1,6 @@
-package Objects with pragma Elaborate_Body;
+package Objects with
   SPARK_Mode
-is
+is pragma Elaborate_Body;
    type Init_Phase is
      (Not_Started, Database_In_Place, Object_Pool_In_Place, Ended);
 
