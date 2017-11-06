@@ -661,9 +661,7 @@ is
    procedure Message (T   : Token;
                       Msg : String)
    with Refined_Global => (Input => (Name_Table,
-                                     The_Filename),
-                           Proof_In => (Current_Read,
-                                        Next_Read))
+                                     The_Filename))
    is
    begin
       Put (To_String (The_Filename));

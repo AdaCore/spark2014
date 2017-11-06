@@ -57,7 +57,6 @@ with SPARK_Definition;                 use SPARK_Definition;
 with SPARK_Util;                       use SPARK_Util;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with Sprint;                           use Sprint;
-with VC_Kinds;                         use VC_Kinds;
 with Why;
 
 use type Ada.Containers.Count_Type;
@@ -1344,26 +1343,6 @@ package body Flow is
 
    procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
       Success : Boolean;
-
-      function Has_Effects (FA : Flow_Analysis_Graphs) return Boolean
-        with Pre => FA.Kind in Kind_Subprogram | Kind_Task;
-      --  Returns True iff FA represents a task or a subprogram with effects.
-      --  Certain analysis are only enabled if this is the case; otherwise we
-      --  would spam the user with error messages for almost every statement.
-
-      -----------------
-      -- Has_Effects --
-      -----------------
-
-      function Has_Effects (FA : Flow_Analysis_Graphs) return Boolean is
-        (FA.Kind = Kind_Task
-           or else
-         (for some F of FA.All_Vars =>
-             FA.Atr (FA.CFG.Get_Vertex
-                        (Change_Variant (F, Final_Value))).Is_Export));
-
-   --  Start of processing for Flow_Analyse_CUnit
-
    begin
 
       --  Check that classwide contracts conform to the legality rules laid
@@ -1420,30 +1399,8 @@ package body Flow is
                   --  aspects.
                   if not Gnat2Why_Args.Prove_Mode then
                      Analysis.Find_Unwritten_Exports (FA);
-
-                     if Has_Effects (FA) then
-                        Analysis.Find_Ineffective_Imports_And_Unused_Objects
-                          (FA);
-                        Analysis.Find_Ineffective_Statements (FA);
-                     else
-                        if not FA.Is_Main
-                          and then not Is_Error_Signaling_Procedure
-                                         (FA.Analyzed_Entity)
-                          and then not Has_User_Supplied_Globals
-                                         (FA.Analyzed_Entity)
-                          and then not Is_Ghost_Entity (FA.Analyzed_Entity)
-                        then
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              --  ??? another message for entries and tasks
-                              Msg      => "subprogram & has no effect",
-                              N        => FA.Analyzed_Entity,
-                              F1       => Direct_Mapping_Id
-                                (FA.Analyzed_Entity),
-                              Tag      => Ineffective,
-                              Severity => Warning_Kind);
-                        end if;
-                     end if;
+                     Analysis.Find_Ineffective_Imports_And_Unused_Objects (FA);
+                     Analysis.Find_Ineffective_Statements (FA);
                      Analysis.Find_Dead_Code (FA);
                      Analysis.Check_Depends_Contract (FA);
                   end if;

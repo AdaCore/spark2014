@@ -9,6 +9,7 @@ test.adb:28:12: called subprogram "Initialise" requires GLOBAL aspect to make st
 test.adb:28:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.y" visible
 test.adb:31:14: low: unused global "Z"
 test.adb:31:14: warning: "Z" is not modified, could be INPUT
+test.adb:38:14: low: unused global "Z"
 test.adb:46:04: warning: analyzing unreferenced procedure "Test_04"
 test.adb:46:14: info: initialization of "Z" proved
 test.adb:57:17: called subprogram "Get_X" requires GLOBAL aspect to make state "other.x" visible

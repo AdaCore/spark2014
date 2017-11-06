@@ -147,7 +147,7 @@ lexer.adb:568:13: info: initialization of "First_Col" proved
 lexer.adb:568:13: info: initialization of "First_Line" proved
 lexer.adb:568:13: info: precondition proved (CVC4: 1 VC)
 lexer.adb:578:14: info: range check proved (CVC4: 1 VC)
-lexer.adb:586:12: info: precondition proved (CVC4: 1 VC)
+lexer.adb:584:12: info: precondition proved (CVC4: 1 VC)
 lexer.ads:76:17: info: initialization of "Current_Read.C" constituent of "State" proved
 lexer.ads:76:17: info: initialization of "Next_Read.C" constituent of "State" proved
 lexer.ads:76:17: info: postcondition proved (CVC4: 1 VC)

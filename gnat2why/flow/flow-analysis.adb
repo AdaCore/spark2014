@@ -118,6 +118,33 @@ package body Flow.Analysis is
    --  Returns True iff E is a parameter of a formal subprogram of a generic
    --  unit and the formal subprogram has null default.
 
+   function Has_Effects (FA : Flow_Analysis_Graphs) return Boolean
+   with Pre => FA.Kind in Kind_Subprogram | Kind_Task;
+   --  Returns True iff FA represents a task or a subprogram with effects.
+   --  Certain analysis are only enabled if this is the case; otherwise we
+   --  would spam the user with error messages for almost every statement.
+
+   procedure Warn_On_Subprogram_With_No_Effect
+     (FA : in out Flow_Analysis_Graphs)
+   with Pre => FA.Kind in Kind_Subprogram
+               and then not Has_Effects (FA);
+   --  Issue a warning if the subprogram has no effects. The message is
+   --  suppressed if the subprogram is:
+   --  * a ghost entity
+   --  * is marked No_Return and is considered to always terminate abnormally
+   --  * is annotated with globals by the user.
+
+   -----------------
+   -- Has_Effects --
+   -----------------
+
+   function Has_Effects (FA : Flow_Analysis_Graphs) return Boolean is
+     (FA.Kind = Kind_Task
+      or else
+        (for some V of FA.CFG.Get_Collection (FA.End_Vertex,
+                                              Flow_Graphs.Out_Neighbours)
+         => FA.Atr (V).Is_Export));
+
    --------------------
    -- Error_Location --
    --------------------
@@ -329,6 +356,29 @@ package body Flow.Analysis is
    begin
       return G.Get_Vertex (Change_Variant (F, Final_Value));
    end Get_Final_Vertex;
+
+   ---------------------------------------
+   -- Warn_On_Subprogram_With_No_Effect --
+   ---------------------------------------
+
+   procedure Warn_On_Subprogram_With_No_Effect
+     (FA : in out Flow_Analysis_Graphs)
+   is
+   begin
+      if not FA.Is_Main
+        and then not Is_Error_Signaling_Procedure (FA.Analyzed_Entity)
+        and then not Has_User_Supplied_Globals (FA.Analyzed_Entity)
+        and then not Is_Ghost_Entity (FA.Analyzed_Entity)
+      then
+         Error_Msg_Flow
+           (FA       => FA,
+            Msg      => "subprogram & " & "has no effect",
+            N        => FA.Analyzed_Entity,
+            F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+            Tag      => Ineffective,
+            Severity => Warning_Kind);
+      end if;
+   end Warn_On_Subprogram_With_No_Effect;
 
    ------------------------
    -- First_Variable_Use --
@@ -957,6 +1007,53 @@ package body Flow.Analysis is
       --  Checks if the given vertex V is a final-use vertex, branches to
       --  exceptional path or is useful for proof.
 
+      function Components_Are_Entire_Variables (Set : Flow_Id_Sets.Set)
+                                                return Boolean
+      with Ghost;
+
+      procedure Collect_Imports_And_Objects
+        (Suppressed         : out Flow_Id_Sets.Set;
+         Considered_Imports : out Flow_Id_Sets.Set;
+         Considered_Objects : out Flow_Id_Sets.Set;
+         Used               : out Flow_Id_Sets.Set;
+         Effective          : out Flow_Id_Sets.Set)
+      with Post =>
+          Components_Are_Entire_Variables (Suppressed)
+          and then Components_Are_Entire_Variables (Considered_Objects)
+          and then Components_Are_Entire_Variables (Considered_Imports)
+          and then Components_Are_Entire_Variables (Used)
+          and then Components_Are_Entire_Variables (Effective)
+          and then Effective.Is_Subset (Of_Set => Considered_Imports)
+          and then Used.Is_Subset (Of_Set => Considered_Objects);
+      --  Collect objects and imports that we need for the analysis. The
+      --  parameters have the following meanings:
+      --  * Suppressed will contain entire variables appearing in a
+      --    "null => Blah" dependency relation; for these we suppress the
+      --    ineffective import warning.
+      --  * Considered_Imports and Considered_Objects will contain entire
+      --    variables considered for each of the two analysis.
+      --  * Used will contain entire variables used at least once (even if this
+      --    use is not effective).
+      --  * Effective will containt entire variables whose at least part is
+      --    used (for example an individual component of a record, or the
+      --    bounds of an unconstrained array) to determine the final value of
+      --    at least one export.
+
+      procedure Warn_On_Unused_Objects (Unused : Flow_Id_Sets.Set);
+      --  Issue a warning on unused objects
+
+      procedure Warn_On_Ineffective_Imports (Ineffective : Flow_Id_Sets.Set);
+      --  Issue a warning on ineffective imports
+
+      -------------------------------------
+      -- Components_Are_Entire_Variables --
+      -------------------------------------
+
+      function Components_Are_Entire_Variables  (Set : Flow_Id_Sets.Set)
+                                                 return Boolean
+      is
+         (for all Component of Set => Is_Entire_Variable (Component));
+
       ------------------
       -- Is_Final_Use --
       ------------------
@@ -973,25 +1070,320 @@ package body Flow.Analysis is
               or else Atr.Is_Assertion;
       end Is_Final_Use;
 
-      Suppressed         : Flow_Id_Sets.Set;
-      --  Entire variables appearing in a "null => Blah" dependency relation;
-      --  for these we suppress the ineffective import warning.
+      ---------------------------------
+      -- Collect_Imports_And_Objects --
+      ---------------------------------
 
-      Considered_Imports : Flow_Id_Sets.Set;
-      Considered_Objects : Flow_Id_Sets.Set;
-      --  Entire variables considered for each of the two analyses
+      procedure Collect_Imports_And_Objects
+        (Suppressed         : out Flow_Id_Sets.Set;
+         Considered_Imports : out Flow_Id_Sets.Set;
+         Considered_Objects : out Flow_Id_Sets.Set;
+         Used               : out Flow_Id_Sets.Set;
+         Effective          : out Flow_Id_Sets.Set)
+      is
+      begin
+         --  Initialize sets
+         Suppressed         := Flow_Id_Sets.Empty_Set;
+         Considered_Imports := Flow_Id_Sets.Empty_Set;
+         Considered_Objects := Flow_Id_Sets.Empty_Set;
+         Used               := Flow_Id_Sets.Empty_Set;
+         Effective          := Flow_Id_Sets.Empty_Set;
 
-      Used               : Flow_Id_Sets.Set;
-      --  Entire bariables used at least once (even if this use is not
-      --  effective).
+         if FA.Kind = Kind_Subprogram
+           and then Present (FA.Depends_N)
+         then
 
-      Effective          : Flow_Id_Sets.Set;
-      --  Entire variables whose at least part is used (for example an
-      --  individual component of a record, or the bounds of an unconstrained
-      --  array) to determine the final value of at least one export.
+            --  We look at the null depends (if one exists). For any variables
+            --  mentioned there, we suppress the ineffective import warning by
+            --  putting them to Suppressed.
 
-      Unused             : Flow_Id_Sets.Set;
-      Ineffective        : Flow_Id_Sets.Set;
+            declare
+               Dependency_Map : Dependency_Maps.Map;
+               Null_Position  : Dependency_Maps.Cursor;
+
+            begin
+               Get_Depends (Subprogram => FA.Analyzed_Entity,
+                            Scope      => FA.B_Scope,
+                            Classwide  => False,
+                            Depends    => Dependency_Map);
+
+               Null_Position := Dependency_Map.Find (Null_Flow_Id);
+
+               if Dependency_Maps.Has_Element (Null_Position) then
+                  Flow_Id_Sets.Move (Target => Suppressed,
+                                     Source => Dependency_Map (Null_Position));
+               end if;
+            end;
+         end if;
+
+         --  Detect imports that do not contribute to at least one export and
+         --  objects that are never used.
+
+         pragma Assert_And_Cut (Considered_Imports.Is_Empty and then
+                                Considered_Objects.Is_Empty and then
+                                Used.Is_Empty               and then
+                                Effective.Is_Empty);
+
+         for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            declare
+               Var : Flow_Id      renames FA.PDG.Get_Key (V);
+               Atr : V_Attributes renames FA.Atr (V);
+
+            begin
+               if Var.Variant = Initial_Value
+                 and then Var.Kind /= Synthetic_Null_Export
+               then
+                  declare
+                     Entire_Var : constant Flow_Id :=
+                       Change_Variant (Entire_Variable (Var), Normal_Use);
+                     --  The entire variable
+
+                     Bound_Or_Discr : constant Boolean :=
+                       Is_Bound (Var) or else Is_Discriminant (Var);
+                     --  If this is an array bound or a discriminant, we only
+                     --  consider it if it is actually used. It is OK to not
+                     --  explicitly use it.
+
+                  begin
+                     --  Using bounds or discriminants marks the entire
+                     --  variable as used; not using them has no effect.
+                     --  However, this only applies to out parameters; for in
+                     --  out parameters the value of the entire variable itself
+                     --  has to be used and uses of bounds and discriminants
+                     --  are completely ignored.
+
+                     if Bound_Or_Discr
+                       and then Atr.Mode = Mode_In_Out
+                     then
+                        null;
+                     else
+                        --  Determine effective and considered imports
+
+                        if Atr.Is_Initialized and Atr.Is_Import then
+
+                           --  Check if we're effective. If not, note that we
+                           --  at least partially have used the entire
+                           --  variable.
+
+                           if FA.PDG.Non_Trivial_Path_Exists
+                             (V, Is_Final_Use'Access)
+                           then
+                              Considered_Imports.Include (Entire_Var);
+                              Effective.Include (Entire_Var);
+                           else
+                              if not Bound_Or_Discr then
+                                 Considered_Imports.Include (Entire_Var);
+                              end if;
+                           end if;
+                        end if;
+
+                        --  Determine used and considered objects
+
+                        if FA.PDG.Out_Neighbour_Count (V) = 1 then
+                           declare
+                              Final_V : constant Flow_Graphs.Vertex_Id :=
+                                FA.PDG.Child (V);
+                           begin
+                              if FA.PDG.Get_Key (Final_V).Variant /=
+                                   Final_Value
+                                or else
+                                  FA.PDG.In_Neighbour_Count (Final_V) > 1
+                              then
+                                 Considered_Objects.Include (Entire_Var);
+                                 Used.Include (Entire_Var);
+                              else
+                                 if not Bound_Or_Discr then
+                                    Considered_Objects.Include (Entire_Var);
+                                 end if;
+                              end if;
+                           end;
+                        else
+                           Considered_Objects.Include (Entire_Var);
+                           Used.Include (Entire_Var);
+                        end if;
+                     end if;
+                  end;
+               end if;
+            end;
+         end loop;
+      end Collect_Imports_And_Objects;
+
+      ----------------------------
+      -- Warn_On_Unused_Objects --
+      ----------------------------
+
+      procedure Warn_On_Unused_Objects (Unused : Flow_Id_Sets.Set)
+      is
+      begin
+         for F of Unused loop
+            declare
+               V : constant Flow_Graphs.Vertex_Id :=
+                 Get_Initial_Vertex (FA.PDG, F);
+
+            begin
+               if FA.Atr (V).Is_Global then
+                  --  In generative mode we inhibit messages on globals
+                  if not FA.Is_Generative then
+                     declare
+                        Is_Var : constant Boolean := Is_Variable (F);
+                        --  Issue a different errors for variables and
+                        --  constants
+
+                        Msg : constant String :=
+                          (if Is_Var
+                           then "unused global &"
+                           else "& cannot appear in Globals");
+
+                        Severity : constant Msg_Severity :=
+                          (if Is_Var
+                           then Low_Check_Kind
+                           else Medium_Check_Kind);
+
+                     begin
+                        --  We prefer the report the error on the subprogram,
+                        --  not on the global.
+
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => Msg,
+                           N        => Find_Global (FA.Analyzed_Entity, F),
+                           F1       => F,
+                           Tag      => VC_Kinds.Unused,
+                           Severity => Severity,
+                           Vertex   => V);
+                     end;
+                  end if;
+               else
+                  --  We suppress this warning when:
+                  --  * we are dealing with a concurrent type or a component of
+                  --    a concurrent type
+                  --  * we are dealing with a null record
+                  --  * the variable has been marked either as Unreferenced or
+                  --    Unmodified or Unused
+                  --  * the variable is a formal parameter of a null subprogram
+                  --    of a generic unit.
+                  declare
+                     E     : constant Entity_Id := Get_Direct_Mapping_Id (F);
+                     E_Typ : constant Entity_Id := Etype (E);
+
+                     Msg : constant String :=
+                       (if Ekind (Scope (E)) = E_Function
+                        and then Is_Predicate_Function (Scope (E))
+                        then "& is not used in its predicate"
+                        else "unused variable &");
+
+                  begin
+                     if Is_Concurrent_Type (E_Typ)
+                       or else Belongs_To_Concurrent_Type (F)
+                       or else (Is_Type (E_Typ)
+                                and then Is_Empty_Record_Type (E_Typ))
+                       or else Has_Pragma_Un (E)
+                       or else Is_Param_Of_Null_Subp_Of_Generic (E)
+                     then
+                        null;
+
+                     else
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => Msg,
+                           N        => Error_Location (FA.PDG, FA.Atr, V),
+                           F1       => F,
+                           Tag      => VC_Kinds.Unused,
+                           Severity => Warning_Kind);
+                     end if;
+                  end;
+               end if;
+            end;
+         end loop;
+      end Warn_On_Unused_Objects;
+
+      ---------------------------------
+      -- Warn_On_Ineffective_Imports --
+      ---------------------------------
+
+      procedure Warn_On_Ineffective_Imports (Ineffective : Flow_Id_Sets.Set) is
+      begin
+         for F of Ineffective loop
+            declare
+               V   : constant Flow_Graphs.Vertex_Id :=
+                 Get_Initial_Vertex (FA.PDG, F);
+               Atr : V_Attributes renames FA.Atr (V);
+
+            begin
+               if F.Kind = Direct_Mapping
+                 and then (Has_Pragma_Un (Get_Direct_Mapping_Id (F))
+                           or else
+                             (In_Generic_Actual (Get_Direct_Mapping_Id (F))
+                              and then
+                              Scope_Within_Or_Same
+                                (Scope (Get_Direct_Mapping_Id (F)),
+                                 FA.Spec_Entity)))
+               then
+                  --  This variable is marked with a pragma Unreferenced,
+                  --  pragma Unused or pragma Unmodified so we do not warn
+                  --  here; also, we do not warn for ineffective declarations
+                  --  of constants in wrapper packages of generic subprograms.
+                  --  ??? maybe we want a separate check for them.
+                  null;
+               elsif Atr.Mode = Mode_Proof then
+                  --  Proof_Ins are never ineffective imports, for now
+                  null;
+               elsif Atr.Is_Global then
+                  if FA.Kind = Kind_Subprogram
+                    and then not FA.Is_Generative
+                  then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      =>
+                          (if Present (FA.B_Scope)
+                           and then Is_Abstract_State (F)
+                           and then FA.B_Scope.Part /= Body_Part
+                           and then State_Refinement_Is_Visible
+                             (F, Body_Scope (FA.B_Scope))
+                           then "non-visible constituents of & are not used " &
+                                "- consider moving the subprogram to the " &
+                                "package body and adding a Refined_Global"
+                           else "unused initial value of &"),
+                        N        => Find_Global (FA.Analyzed_Entity, F),
+                        F1       => F,
+                        F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Tag      => Unused_Initial_Value,
+                        Severity => Warning_Kind,
+                        Vertex   => V);
+                  end if;
+               else
+                  --  We suppress this warning when we are dealing with a
+                  --  concurrent type or a component of a concurrent type or a
+                  --  null record.
+                  if F.Kind = Direct_Mapping
+                    and then
+                      (Is_Concurrent_Type (Etype (Get_Direct_Mapping_Id (F)))
+                       or else
+                       Belongs_To_Concurrent_Type (F)
+                       or else
+                         (Is_Type (Etype (Get_Direct_Mapping_Id (F)))
+                          and then
+                          Is_Empty_Record_Type
+                            (Etype (Get_Direct_Mapping_Id (F)))))
+                  then
+                     null;
+
+                  else
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "unused initial value of &",
+                        --  ??? find_import
+                        N        => Error_Location (FA.PDG, FA.Atr, V),
+                        F1       => F,
+                        F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Tag      => Unused_Initial_Value,
+                        Severity => Warning_Kind,
+                        Vertex   => V);
+                  end if;
+               end if;
+            end;
+         end loop;
+      end Warn_On_Ineffective_Imports;
 
    --  Start of processing for Find_Ineffective_Imports_And_Unused_Objects
 
@@ -1004,298 +1396,51 @@ package body Flow.Analysis is
          return;
       end if;
 
-      --  We look at the null depends (if one exists). For any variables
-      --  mentioned there, we suppress the ineffective import warning by
-      --  putting them to Suppressed.
+      --  If this subprogram has effects or is annotated with globals by the
+      --  user then we continue the analysis.
 
-      if FA.Kind = Kind_Subprogram and then Present (FA.Depends_N) then
+      if Has_Effects (FA)
+        or else Has_User_Supplied_Globals (FA.Analyzed_Entity)
+      then
          declare
-            Dependency_Map : Dependency_Maps.Map;
-            Null_Position  : Dependency_Maps.Cursor;
+            Suppressed         : Flow_Id_Sets.Set;
+            Considered_Imports : Flow_Id_Sets.Set;
+            Considered_Objects : Flow_Id_Sets.Set;
+            Used               : Flow_Id_Sets.Set;
+            Effective          : Flow_Id_Sets.Set;
+
+            Unused             : Flow_Id_Sets.Set;
 
          begin
-            Get_Depends (Subprogram => FA.Analyzed_Entity,
-                         Scope      => FA.B_Scope,
-                         Classwide  => False,
-                         Depends    => Dependency_Map);
+            Collect_Imports_And_Objects (Suppressed,
+                                         Considered_Imports,
+                                         Considered_Objects,
+                                         Used,
+                                         Effective);
 
-            Null_Position := Dependency_Map.Find (Null_Flow_Id);
+            --  We warn on unused objects
+            Unused := Considered_Objects - Used;
 
-            if Dependency_Maps.Has_Element (Null_Position) then
-               Flow_Id_Sets.Move (Target => Suppressed,
-                                  Source => Dependency_Map (Null_Position));
+            Warn_On_Unused_Objects (Unused);
+
+            --  If this subprogram has effects then we also want to find
+            --  ineffective imports.
+
+            if Has_Effects (FA) then
+               --  We warn on ineffective imports. From all the imports we
+               --  exclude items which are suppressed by a null derives,
+               --  which have been flagged as unused and which are effective
+               --  imports.
+
+               Warn_On_Ineffective_Imports
+                 (Considered_Imports - (Effective or Suppressed or Unused));
             end if;
          end;
+
+      elsif not Has_Effects (FA) then
+         Warn_On_Subprogram_With_No_Effect (FA);
+         return;
       end if;
-
-      pragma Assert_And_Cut (True);
-
-      --  Detect imports that do not contribute to at least one export and
-      --  objects that are never used.
-
-      pragma Assert (Considered_Imports.Is_Empty and then
-                     Considered_Objects.Is_Empty and then
-                     Used.Is_Empty               and then
-                     Effective.Is_Empty);
-
-      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         declare
-            Var : Flow_Id      renames FA.PDG.Get_Key (V);
-            Atr : V_Attributes renames FA.Atr (V);
-
-         begin
-            if Var.Variant = Initial_Value
-              and then Var.Kind /= Synthetic_Null_Export
-            then
-               declare
-                  Entire_Var : constant Flow_Id :=
-                    Change_Variant (Entire_Variable (Var), Normal_Use);
-                  --  The entire variable
-
-                  Bound_Or_Discr : constant Boolean :=
-                    Is_Bound (Var) or else Is_Discriminant (Var);
-                  --  If this is an array bound or a discriminant, we only
-                  --  consider it if it is actually used. It is OK to not
-                  --  explicitly use it.
-
-               begin
-                  --  Using bounds or discriminants marks the entire variable
-                  --  as used; not using them has no effect. However, this
-                  --  only applies to out parameters; for in out parameters the
-                  --  value of the entire variable itself has to be used and
-                  --  uses of bounds and discriminants are completely ignored.
-
-                  if Bound_Or_Discr
-                    and then Atr.Mode = Mode_In_Out
-                  then
-                     null;
-                  else
-                     --  Determine effective and considered imports
-
-                     if Atr.Is_Initialized and Atr.Is_Import then
-
-                        --  Check if we're effective. If not, note that we at
-                        --  least partially have used the entire variable.
-
-                        if FA.PDG.Non_Trivial_Path_Exists
-                          (V, Is_Final_Use'Access)
-                        then
-                           Considered_Imports.Include (Entire_Var);
-                           Effective.Include (Entire_Var);
-                        else
-                           if not Bound_Or_Discr then
-                              Considered_Imports.Include (Entire_Var);
-                           end if;
-                        end if;
-                     end if;
-
-                     --  Determine used and considered objects
-
-                     if FA.PDG.Out_Neighbour_Count (V) = 1 then
-                        declare
-                           Final_V : constant Flow_Graphs.Vertex_Id :=
-                             FA.PDG.Child (V);
-                        begin
-                           if FA.PDG.Get_Key (Final_V).Variant /= Final_Value
-                             or else FA.PDG.In_Neighbour_Count (Final_V) > 1
-                           then
-                              Considered_Objects.Include (Entire_Var);
-                              Used.Include (Entire_Var);
-                           else
-                              if not Bound_Or_Discr then
-                                 Considered_Objects.Include (Entire_Var);
-                              end if;
-                           end if;
-                        end;
-                     else
-                        Considered_Objects.Include (Entire_Var);
-                        Used.Include (Entire_Var);
-                     end if;
-                  end if;
-               end;
-            end if;
-         end;
-      end loop;
-
-      pragma Assert_And_Cut
-        (Effective.Is_Subset (Of_Set => Considered_Imports) and then
-         Used.Is_Subset      (Of_Set => Considered_Objects));
-
-      --  Issue error messages. We can't do this when detecting, because
-      --  detecting works on record components and we care about entire
-      --  variables.
-
-      --  First we deal with unused objects
-
-      Unused := Considered_Objects - Used;
-
-      for F of Unused loop
-         declare
-            V : constant Flow_Graphs.Vertex_Id :=
-              Get_Initial_Vertex (FA.PDG, F);
-
-         begin
-            if FA.Atr (V).Is_Global then
-               --  In generative mode we inhibit messages on globals
-               if not FA.Is_Generative then
-                  declare
-                     Is_Var : constant Boolean := Is_Variable (F);
-                     --  Issue a different errors for variables and constants
-
-                     Msg : constant String :=
-                       (if Is_Var
-                        then "unused global &"
-                        else "& cannot appear in Globals");
-
-                     Severity : constant Msg_Severity :=
-                       (if Is_Var
-                        then Low_Check_Kind
-                        else Medium_Check_Kind);
-
-                  begin
-                     --  We prefer the report the error on the subprogram, not
-                     --  on the global.
-
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => Msg,
-                        N        => Find_Global (FA.Analyzed_Entity, F),
-                        F1       => F,
-                        Tag      => VC_Kinds.Unused,
-                        Severity => Severity,
-                        Vertex   => V);
-                  end;
-               end if;
-            else
-               --  We suppress this warning when:
-               --  * we are dealing with a concurrent type or a component of a
-               --    concurrent type
-               --  * we are dealing with a null record
-               --  * the variable has been marked either as Unreferenced or
-               --    Unmodified or Unused
-               --  * the variable is a formal parameter of a null subprogram of
-               --    a generic unit.
-               declare
-                  E     : constant Entity_Id := Get_Direct_Mapping_Id (F);
-                  E_Typ : constant Entity_Id := Etype (E);
-
-                  Msg : constant String :=
-                    (if Ekind (Scope (E)) = E_Function
-                     and then Is_Predicate_Function (Scope (E))
-                     then "& is not used in its predicate"
-                     else "unused variable &");
-
-               begin
-                  if Is_Concurrent_Type (E_Typ)
-                    or else Belongs_To_Concurrent_Type (F)
-                    or else (Is_Type (E_Typ)
-                             and then Is_Empty_Record_Type (E_Typ))
-                    or else Has_Pragma_Un (E)
-                    or else Is_Param_Of_Null_Subp_Of_Generic (E)
-                  then
-                     null;
-
-                  else
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => Msg,
-                        N        => Error_Location (FA.PDG, FA.Atr, V),
-                        F1       => F,
-                        Tag      => VC_Kinds.Unused,
-                        Severity => Warning_Kind);
-                  end if;
-               end;
-            end if;
-         end;
-      end loop;
-
-      --  Finally we deal with ineffective imports. We exclude items which are
-      --  suppressed by a null derives and which have previously been flagged
-      --  as unused. In the loop below we further exclude objects that are
-      --  marked by a pragma Unreferenced or a pragma Unmodified or a pragma
-      --  Unused.
-
-      Ineffective := Considered_Imports - (Effective or Suppressed or Unused);
-
-      for F of Ineffective loop
-         declare
-            V   : constant Flow_Graphs.Vertex_Id :=
-              Get_Initial_Vertex (FA.PDG, F);
-            Atr : V_Attributes renames FA.Atr (V);
-
-         begin
-            if F.Kind = Direct_Mapping
-              and then (Has_Pragma_Un (Get_Direct_Mapping_Id (F))
-                          or else
-                        (In_Generic_Actual (Get_Direct_Mapping_Id (F)) and then
-                         Scope_Within_Or_Same
-                           (Scope (Get_Direct_Mapping_Id (F)),
-                            FA.Spec_Entity)))
-            then
-               --  This variable is marked with a pragma Unreferenced, pragma
-               --  Unused or pragma Unmodified so we do not warn here; also, we
-               --  do not warn for ineffective declarations of constants in
-               --  wrapper packages of generic subprograms. ??? maybe we want a
-               --  separate check for them.
-               null;
-            elsif Atr.Mode = Mode_Proof then
-               --  Proof_Ins are never ineffective imports, for now
-               null;
-            elsif Atr.Is_Global then
-               if FA.Kind = Kind_Subprogram
-                 and then not FA.Is_Generative
-               then
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      =>
-                       (if Present (FA.B_Scope)
-                        and then Is_Abstract_State (F)
-                        and then FA.B_Scope.Part /= Body_Part
-                        and then State_Refinement_Is_Visible
-                                   (F, Body_Scope (FA.B_Scope))
-                        then "non-visible constituents of & are not used " &
-                              "- consider moving the subprogram to the " &
-                              "package body and adding a Refined_Global"
-                        else "unused initial value of &"),
-                     N        => Find_Global (FA.Analyzed_Entity, F),
-                     F1       => F,
-                     F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                     Tag      => Unused_Initial_Value,
-                     Severity => Warning_Kind,
-                     Vertex   => V);
-               end if;
-            else
-               --  We suppress this warning when we are dealing with a
-               --  concurrent type or a component of a concurrent type or a
-               --  null record.
-               if F.Kind = Direct_Mapping
-                   and then
-                  (Is_Concurrent_Type (Etype (Get_Direct_Mapping_Id (F)))
-                     or else
-                   Belongs_To_Concurrent_Type (F)
-                     or else
-                   (Is_Type (Etype (Get_Direct_Mapping_Id (F)))
-                      and then
-                      Is_Empty_Record_Type
-                        (Etype (Get_Direct_Mapping_Id (F)))))
-               then
-                  null;
-
-               else
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "unused initial value of &",
-                     --  ??? find_import
-                     N        => Error_Location (FA.PDG, FA.Atr, V),
-                     F1       => F,
-                     F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                     Tag      => Unused_Initial_Value,
-                     Severity => Warning_Kind,
-                     Vertex   => V);
-               end if;
-            end if;
-         end;
-      end loop;
    end Find_Ineffective_Imports_And_Unused_Objects;
 
    --------------------------------------------
@@ -1685,6 +1830,13 @@ package body Flow.Analysis is
    --  Start of processing for Find_Ineffective_Statements
 
    begin
+      if FA.Kind in Kind_Subprogram | Kind_Task
+        and then not Has_Effects (FA)
+      then
+         Warn_On_Subprogram_With_No_Effect (FA);
+         return;
+      end if;
+
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             use Attribute_Maps;

@@ -62,7 +62,8 @@ package Flow.Analysis is
    --  Complexity is O(N)
 
    procedure Find_Ineffective_Imports_And_Unused_Objects
-     (FA : in out Flow_Analysis_Graphs);
+     (FA : in out Flow_Analysis_Graphs)
+   with Pre => FA.Kind in Kind_Subprogram | Kind_Task;
    --  Find all ineffective initial values and all unused objects.
    --
    --  Complexity is O(N^2) and O(N) respectively.
