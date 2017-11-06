@@ -1,4 +1,4 @@
-package Objects with
+package Objects with pragma Elaborate_Body;
   SPARK_Mode
 is
    type Init_Phase is

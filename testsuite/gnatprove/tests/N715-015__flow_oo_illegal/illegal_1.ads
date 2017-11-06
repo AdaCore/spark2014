@@ -1,6 +1,6 @@
 with Root;
 
-package Illegal_1 is
+package Illegal_1 is pragma Elaborate_Body;
    G : Integer := 0;
 
    type Extended_T is new Root.Object_T with record

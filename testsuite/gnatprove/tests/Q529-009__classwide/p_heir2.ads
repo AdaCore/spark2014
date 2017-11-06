@@ -3,7 +3,7 @@ with P_Parent; use P_Parent;
 
 package P_Heir2
 with SPARK_Mode
-is
+is pragma Elaborate_Body;
 
    type T_Heir2 is new T_Parent with private;
 

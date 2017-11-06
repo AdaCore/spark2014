@@ -1,4 +1,4 @@
-package Wrong_LSP with SPARK_Mode is
+package Wrong_LSP with SPARK_Mode is pragma Elaborate_Body;
    type Root is tagged record
       F1 : Natural;
    end record;

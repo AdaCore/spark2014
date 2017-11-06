@@ -1,6 +1,6 @@
 package Ints
   with SPARK_Mode
-is
+is pragma Elaborate_Body;
 
    type Int is tagged record
       Min, Max, Value : Integer;

@@ -43,18 +43,18 @@ is
    end Has_Pending_Instantiations;
 
    package body Has_Pending_Instantiations is
-      procedure Other is
-         package One is new P (1);
-      begin
-         null;
-      end Other;
-
       package body P is
          function Get return Integer is
          begin
             return V;
          end Get;
       end P;
+
+      procedure Other is
+         package One is new P (1);
+      begin
+         null;
+      end Other;
 
       procedure Proc is
       begin

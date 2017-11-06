@@ -3,7 +3,7 @@ with Unit1; use Unit1;
 package Unit2 with
   SPARK_Mode
 is
-
+   pragma Elaborate_Body;
    type T2 is new T1 with record
       C2 : Integer;
    end record;
