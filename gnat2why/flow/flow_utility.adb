@@ -734,11 +734,10 @@ package body Flow_Utility is
                            if Is_Visible (Get_Root_Component (Ptr), Scope) then
                               --  Here we union disjoint sets, so possibly we
                               --  could optimize this.
-                              Results.Union (Flatten_Variable
-                                             ((if Is_Concurrent_Type (T)
-                                                then Direct_Mapping_Id (Ptr)
-                                                else Add_Component (F, Ptr)),
-                                                Scope));
+                              Results.Union
+                                (Flatten_Variable
+                                   (Add_Component (F, Ptr)), Scope);
+
                            else
                               Contains_Non_Visible := True;
                            end if;
