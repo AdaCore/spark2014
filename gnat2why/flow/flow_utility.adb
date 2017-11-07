@@ -736,7 +736,7 @@ package body Flow_Utility is
                               --  could optimize this.
                               Results.Union
                                 (Flatten_Variable
-                                   (Add_Component (F, Ptr)), Scope);
+                                   (Add_Component (F, Ptr), Scope));
 
                            else
                               Contains_Non_Visible := True;
