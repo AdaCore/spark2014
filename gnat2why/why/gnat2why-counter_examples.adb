@@ -173,9 +173,10 @@ package body Gnat2Why.Counter_Examples is
       with Pre => Is_Type (T);
       --  Returns True iff a component or discriminant of type T has name F
 
-      function Refine
+      function Refine_Aux
         (Cnt_Value : Cntexmp_Value_Ptr;
-         AST_Type  : Entity_Id)
+         AST_Type  : Entity_Id;
+         Is_Index  : Boolean := False)
          return Unbounded_String;
       --  Mutually recursive function with the local Refine_Value, which trims
       --  space on both ends of the result.
@@ -192,7 +193,8 @@ package body Gnat2Why.Counter_Examples is
 
       function Refine_Value
         (Cnt_Value : Cntexmp_Value_Ptr;
-         AST_Type  : Entity_Id)
+         AST_Type  : Entity_Id;
+         Is_Index  : Boolean := False)
          return Unbounded_String;
       --  Mutually recursive function with the local Refine, which does the
       --  actual conversion.
@@ -242,13 +244,14 @@ package body Gnat2Why.Counter_Examples is
          return False;
       end Contains;
 
-      ------------
-      -- Refine --
-      ------------
+      ----------------
+      -- Refine_Aux --
+      ----------------
 
-      function Refine
+      function Refine_Aux
         (Cnt_Value : Cntexmp_Value_Ptr;
-         AST_Type  : Entity_Id)
+         AST_Type  : Entity_Id;
+         Is_Index  : Boolean := False)
          return Unbounded_String
       is
          Why3_Type : constant Cntexmp_Type := Cnt_Value.all.T;
@@ -309,7 +312,11 @@ package body Gnat2Why.Counter_Examples is
 
                   exception
                      when Constraint_Error =>
-                        return Cnt_Value.I;
+                        if Is_Index then
+                           return Null_Unbounded_String;
+                        else
+                           return Cnt_Value.I;
+                        end if;
                   end;
 
                --  ??? only integer types are expected in that last case
@@ -417,7 +424,7 @@ package body Gnat2Why.Counter_Examples is
                               Append (S,
                                       Field_Name & " => " &
                                         Replace_Question_Mark (
-                                          Refine (Mdiscr, Field_Type)));
+                                          Refine_Aux (Mdiscr, Field_Type)));
                            end if;
                         end;
 
@@ -450,7 +457,7 @@ package body Gnat2Why.Counter_Examples is
 
                               Append (S, Field_Name & " => " &
                                          Replace_Question_Mark
-                                           (Refine (Mfield, Field_Type)));
+                                           (Refine_Aux (Mfield, Field_Type)));
                            end if;
                         end;
 
@@ -497,7 +504,7 @@ package body Gnat2Why.Counter_Examples is
                   return Null_Unbounded_String;
                end if;
          end case;
-      end Refine;
+      end Refine_Aux;
 
       ------------------
       -- Refine_Array --
@@ -523,11 +530,17 @@ package body Gnat2Why.Counter_Examples is
                                                    I => To_Unbounded_String
                                                      (Indice));
                Ind_Printed  : constant Unbounded_String :=
-                                Refine_Value (Ind_Val, Indice_Type);
+                                Refine_Value (Ind_Val, Indice_Type, True);
                Elem_Printed : constant Unbounded_String :=
                                 Refine_Value (Elem, Element_Type);
             begin
-               Append (S, Ind_Printed & " => " & Elem_Printed & ", ");
+
+               --  The other case happen when the index has an enumeration type
+               --  and the value for this index given by cvc4 is outside of the
+               --  range of the enumeration type.
+               if Ind_Printed /= Null_Unbounded_String then
+                  Append (S, Ind_Printed & " => " & Elem_Printed & ", ");
+               end if;
             end;
          end loop;
 
@@ -543,10 +556,12 @@ package body Gnat2Why.Counter_Examples is
 
       function Refine_Value
         (Cnt_Value : Cntexmp_Value_Ptr;
-         AST_Type  : Entity_Id)
+         AST_Type  : Entity_Id;
+         Is_Index  : Boolean := False)
          return Unbounded_String
       is
-         Res : constant Unbounded_String := Refine (Cnt_Value, AST_Type);
+         Res : constant Unbounded_String :=
+                 Refine_Aux (Cnt_Value, AST_Type, Is_Index);
       begin
          return Trim (Res, Both);
       end Refine_Value;
