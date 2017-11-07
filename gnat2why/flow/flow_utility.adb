@@ -744,7 +744,7 @@ package body Flow_Utility is
                         end loop;
                      end if;
 
-                     if Ekind (T) in Private_Kind then
+                     if Is_Private_Type (T) then
                         Contains_Non_Visible := True;
                      end if;
 
