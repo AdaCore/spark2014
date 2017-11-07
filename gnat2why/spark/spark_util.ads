@@ -152,6 +152,29 @@ package SPARK_Util is
    --    is used to create a suitable pre- or postcondition expression for
    --    analyzing dispatching calls.
 
+   function Canonical_Entity
+     (Ref     : Entity_Id;
+      Context : Entity_Id)
+      return Entity_Id
+   with Pre => Ekind (Context) in Entry_Kind
+                                | E_Function
+                                | E_Package
+                                | E_Procedure
+                                | E_Protected_Type
+                                | E_Task_Type
+                                | Record_Kind;
+   --  Subsidiary to the parsing of flow contracts, i.e. [Refined_]Depends,
+   --  [Refined_] Global and Initializes, and default expressions.
+   --
+   --  If entity Ref denotes the current instance of a concurrent type, as seen
+   --  from Context, then returns the entity of that concurrent type;
+   --  otherwise, returns Unique_Entity of E.
+   --
+   --  Note: this routine converts references to the current instance of a
+   --  concurrent type within a single concurrent unit from E_Variable (which
+   --  is more convenient for the frontend) to the type entity (which is more
+   --  convenient to the SPARK backend).
+
    function Dispatching_Contract (C : Node_Id) return Node_Id;
    --  @param C expression of a classwide pre- or postcondition
    --  @return the dispatching expression previously stored for C, or Empty if

@@ -752,20 +752,6 @@ is
    --  Similar to Is_Null_Record_Type, but also returns true if this is a null
    --  extension of a null record type (or extension).
 
-   function Canonical_Entity
-     (Ref     : Entity_Id;
-      Context : Entity_Id)
-      return Entity_Id
-   with Pre => Ekind (Context) in Entry_Kind
-                                | E_Function
-                                | E_Package
-                                | E_Procedure
-                                | E_Task_Type;
-   --  Subsidiary to the parsing of contracts [Refined_]Depends, [Refined_]
-   --  Global and Initializes. If entity Ref denotes the current instance of
-   --  a concurrent type, as seen from Context, then returns the entity of that
-   --  concurrent type; otherwise, returns Unique_Entity of E.
-
 private
    Init_Done : Boolean := False;
 

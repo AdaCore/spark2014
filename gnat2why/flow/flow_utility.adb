@@ -5007,23 +5007,4 @@ package body Flow_Utility is
       return False;
    end Is_Empty_Record_Type;
 
-   ----------------------
-   -- Canonical_Entity --
-   ----------------------
-
-   function Canonical_Entity
-     (Ref     : Entity_Id;
-      Context : Entity_Id)
-      return Entity_Id
-   is
-   begin
-      if Is_Single_Concurrent_Object (Ref)
-        and then Is_CCT_Instance (Ref_Id => Etype (Ref), Context_Id => Context)
-      then
-         return Etype (Ref);
-      else
-         return Unique_Entity (Ref);
-      end if;
-   end Canonical_Entity;
-
 end Flow_Utility;

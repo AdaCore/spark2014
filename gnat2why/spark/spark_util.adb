@@ -337,6 +337,25 @@ package body SPARK_Util is
       return File_Name (Sloc (CU));
    end Body_File_Name;
 
+   ----------------------
+   -- Canonical_Entity --
+   ----------------------
+
+   function Canonical_Entity
+     (Ref     : Entity_Id;
+      Context : Entity_Id)
+      return Entity_Id
+   is
+   begin
+      if Is_Single_Concurrent_Object (Ref)
+        and then Is_CCT_Instance (Ref_Id => Etype (Ref), Context_Id => Context)
+      then
+         return Etype (Ref);
+      else
+         return Unique_Entity (Ref);
+      end if;
+   end Canonical_Entity;
+
    ----------------------------------
    -- Candidate_For_Loop_Unrolling --
    ----------------------------------
