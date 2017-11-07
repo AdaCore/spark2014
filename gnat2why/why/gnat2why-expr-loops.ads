@@ -25,11 +25,13 @@
 
 package Gnat2Why.Expr.Loops is
 
-   function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id;
+   function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id
+   with Pre => Nkind (Stmt) = N_Exit_Statement;
 
-   function Transform_Loop_Statement (Stmt : Node_Id) return W_Prog_Id;
+   function Transform_Loop_Statement (Stmt : Node_Id) return W_Prog_Id
+   with Pre => Nkind (Stmt) = N_Loop_Statement;
 
    function Is_In_Loop_Initial_Statements return Boolean with Ghost;
-   --  return True when analyzing the initial statements of a loop.
+   --  Return True when analyzing the initial statements of a loop
 
 end Gnat2Why.Expr.Loops;
