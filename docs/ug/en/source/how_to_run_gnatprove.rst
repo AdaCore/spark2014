@@ -611,13 +611,13 @@ When editing an Ada file, |GNATprove| can also be run from a
 ----------------------------
 
 When automated provers fail to prove some condition that is valid, the validity
-may be proved using a manual prover.
+may be proved using manual proof inside GPS or an external interactive prover.
 
 In the appendix, section :ref:`Alternative_Provers`, is explained how to use
 different provers than the one |GNATprove| uses as default.
 
-Manual Proof in Command Line
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Calling an Interactive Prover From the Command Line
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When the prover used by |GNATprove| is configured as interactive, for each
 analysed condition, either:
@@ -699,8 +699,8 @@ failing condition reported by |GNATprove|:
    "class-wide postcondition might be weaker than overridden one",              "VC_STRONGER_CLASSWIDE_POST"
 
 
-Manual proof in GPS
-^^^^^^^^^^^^^^^^^^^
+Calling an Interactive Prover From GPS
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 After running |GNATprove| with proof mode, the menu
 :menuselection:`SPARK --> Prove Check` is available by right-clicking on a
@@ -719,3 +719,46 @@ Once the editor is closed, GPS re-executes
 :menuselection:`SPARK --> Prove Check`. The user should verify the same
 alternative prover as before is still specified. After execution, GPS will
 offer to re-edit the file if the proof fails.
+
+
+Manual Proof Within GPS
+^^^^^^^^^^^^^^^^^^^^^^^
+
+After running |GNATprove| with proof mode, the menu
+:menuselection:`SPARK --> Start Manual Proof` is available by right-clicking on
+a check message in the location tab.
+
+The manual proof interface immediately starts. It will change the GPS
+window by adding a Manual Proof console, a Proof Tree and the current
+Verification Condition being dealt with.
+This is an experimental system that allows the user to directly visualize the
+condition given to the prover. We provide safe transformations that can be
+used to help the prover. For example, you can directly provide a value to an
+existential in the goal, perform an induction on an integer or instantiate
+hypothesis with values that should be used by the prover.
+
+At first, you can type ``help`` in the Manual Proof console. This will return
+the available commands. The most useful commands to the beginner are
+``list-provers`` and ``list-transforms``.
+``list-provers`` returns the list of provers available on your machine. You can
+use any of them on your goal by typing its name in the console. For example,
+one can type ``z3`` to launch ``z3`` on the current Verification Condition.
+``list-transforms`` returns a list of transformations that can be used on the
+Verification Condition.
+You can then try transformations like ``assert (0 = 0)``. It will add two
+subgoals in the Proof Tree, one
+asking you to prove ``0 = 0`` and one assuming ``0 = 0`` to prove the current
+condition. The first one is easy, ``CVC4`` should be able to solve it. The
+corresponding part of the Proof Tree switched to green because ``CVC4`` proved
+the subgoal.
+
+Once the goal is completely proved, you will get a popup window asking you if
+you want
+to save the session and exit. Answer yes and run |GNATprove| again on your
+file. The condition that was failing before should now be reported as checked.
+If you want to exit manual proof, you can select
+:menuselection:`SPARK --> Exit Manual Proof` in the menu. It is recommended to
+close it using the menu because it makes sure to close everything related to
+manual proof.
+
+More details on how to use it are available in :ref:`Manual Proof Using GPS`.
