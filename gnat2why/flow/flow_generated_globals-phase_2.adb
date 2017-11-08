@@ -1822,7 +1822,7 @@ package body Flow_Generated_Globals.Phase_2 is
          --  Start of processing for Fold
 
          begin
-            --  First we resolve globals coming from the globals...
+            --  First we resolve globals coming from the callees...
             Update := (Refined => Collect (Folded),
                        others  => <>);
 
