@@ -65,6 +65,7 @@ with Osint;                           use Osint;
 with Output;                          use Output;
 with Outputs;                         use Outputs;
 with Sem;
+with Sem_Aux;                         use Sem_Aux;
 with Sem_Util;                        use Sem_Util;
 with Sinfo;                           use Sinfo;
 with Sinput;                          use Sinput;
@@ -334,6 +335,7 @@ package body Gnat2Why.Driver is
 
             if Ekind (E) in E_Protected_Type | E_Task_Type
               and then Entity_Spec_In_SPARK (E)
+              and then not Is_Derived_Type (E)
             then
                case Ekind (E) is
                   when E_Protected_Type =>
