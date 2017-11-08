@@ -110,12 +110,6 @@ package Flow_Refinement is
    --  Return True iff the implementation (and thus refined global or depends)
    --  of subprogram E is visible from S.
 
-   function Subprogram_Refinement_Is_Visible (EN : Entity_Name;
-                                              S  : Flow_Scope)
-                                              return Boolean;
-   --  Return True iff the implementation (and thus refined global or depends)
-   --  of subprogram EN is visible from S.
-
    function State_Refinement_Is_Visible (E : Checked_Entity_Id;
                                          S : Flow_Scope)
                                          return Boolean

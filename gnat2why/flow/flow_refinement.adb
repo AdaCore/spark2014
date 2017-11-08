@@ -531,16 +531,6 @@ package body Flow_Refinement is
         and then Is_Visible (Get_Flow_Scope (Body_E), S);
    end Subprogram_Refinement_Is_Visible;
 
-   function Subprogram_Refinement_Is_Visible (EN : Entity_Name;
-                                              S  : Flow_Scope)
-                                              return Boolean
-   is
-      E : constant Entity_Id := Find_Entity (EN);
-   begin
-      return (Present (E)
-              and then Subprogram_Refinement_Is_Visible (E, S));
-   end Subprogram_Refinement_Is_Visible;
-
    ---------------------------------
    -- State_Refinement_Is_Visible --
    ---------------------------------
