@@ -11,7 +11,7 @@ Generated contracts for f_6
          A.State_A
    Refined_Global =>
       Input =>
-         G
+         A.State_A
 Generated contracts for p_1
    Global =>
       In_Out =>
