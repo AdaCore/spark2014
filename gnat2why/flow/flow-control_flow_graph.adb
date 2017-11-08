@@ -2533,9 +2533,7 @@ package body Flow.Control_Flow_Graph is
       -- Loop_Might_Exit_Early --
       ---------------------------
 
-      function Loop_Might_Exit_Early (N : Node_Id) return Boolean
-      is
-         Contains_Abort : Boolean := False;
+      function Loop_Might_Exit_Early (N : Node_Id) return Boolean is
 
          function Proc_Search (N : Node_Id) return Traverse_Result;
 
@@ -2550,20 +2548,20 @@ package body Flow.Control_Flow_Graph is
                when N_Simple_Return_Statement   |
                     N_Extended_Return_Statement |
                     N_Exit_Statement            =>
-                  Contains_Abort := True;
                   return Abandon;
                when others =>
                   return OK;
             end case;
          end Proc_Search;
 
-         procedure Do_Search is new Traverse_Proc (Proc_Search);
+         function Do_Search is new Traverse_Func (Proc_Search);
+         --  Returns Abandon when Proc_Search returns it for any of the
+         --  traversed nodes.
 
       --  Start of processing for Loop_Might_Exit_Early
 
       begin
-         Do_Search (N);
-         return Contains_Abort;
+         return Do_Search (N) = Abandon;
       end Loop_Might_Exit_Early;
 
       -----------------------------------
