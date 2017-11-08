@@ -136,6 +136,10 @@ package Report_Database is
    procedure Add_Claim_With_Assumptions (Claim : Token; S : Token_Sets.Set);
    --  Register that claim C ultimately only depends on assumptions S
 
+   function Has_Unproved_Check return Boolean is
+      (for some Check_Kind in Summary'Range =>
+          Summary (Check_Kind).Unproved > 0);
+
    procedure Reset_All_Results;
    --  Resets the results, removing all information on units and subprograms
 

@@ -677,10 +677,22 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--output-header");
       end if;
 
-      Call_Exit_On_Failure
-        (Command   => "spark_report",
-         Arguments => Args,
-         Verbose   => Verbose);
+      declare
+         Status : Integer;
+      begin
+         Call_With_Status (Command   => "spark_report",
+                           Arguments => Args,
+                           Status    => Status,
+                           Verbose   => Verbose,
+                           Free_Args => False);
+
+         --  There were unproved checks. Return from gnatprove with a non-zero
+         --  error status, but do not issue a failure message.
+
+         if Status = Unproved_Checks_Error_Status then
+            GNAT.OS_Lib.OS_Exit (1);
+         end if;
+      end;
 
       if not Debug then
          GNAT.OS_Lib.Delete_File (Obj_Dir_Fn, Success);

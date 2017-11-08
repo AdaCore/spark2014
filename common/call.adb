@@ -173,11 +173,13 @@ package body Call is
                         Status,
                         Verbose => Verbose,
                         Free_Args => False);
+
       if Status /= 0 then
          Print_Command_Line (Command, Arguments);
          Ada.Text_IO.Put_Line (" failed.");
          GNAT.OS_Lib.OS_Exit (1);
       end if;
+
       Free_Argument_List (Arguments);
    end Call_Exit_On_Failure;
 

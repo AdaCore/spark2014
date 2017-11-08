@@ -28,6 +28,10 @@ with String_Utils; use String_Utils;
 
 package Call is
 
+   Unproved_Checks_Error_Status : constant := 42;
+   --  Error status to communicate from spark_report to gnatprove that some
+   --  checks were not proved. An arbitrary value of 42 is picked.
+
    procedure Abort_With_Message (Msg : String) with
      No_Return;
    --  Print the Msg to Standard Error and Exit with Error code 1

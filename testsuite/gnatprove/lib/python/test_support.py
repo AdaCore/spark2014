@@ -564,7 +564,7 @@ def strip_provers_output_from_testout():
 
 def gnatprove(opt=["-P", "test.gpr"], no_fail=False, no_output=False,
               filter_output=None, cache_allowed=True, subdue_flow=False,
-              sort_output=True):
+              sort_output=True, exit_status=None):
     """Invoke gnatprove, and in case of success return list of output lines
 
     PARAMETERS
@@ -573,6 +573,7 @@ def gnatprove(opt=["-P", "test.gpr"], no_fail=False, no_output=False,
     no_fail: if set, then we make sure no unproved checks are in the output
     subdue_flow: if set, then we silence a bunch of flow warnings and the
                  check about unused globals (so we can set no_fail)
+    exit_status: if set, expected value of the exit status from gnatprove
     """
     # generate an empty project file if not present already
     if not os.path.isfile("test.gpr"):
@@ -617,6 +618,10 @@ def gnatprove(opt=["-P", "test.gpr"], no_fail=False, no_output=False,
     # Replace line above by the one below for testing the scripts without
     # running the tool:
     # process = open("test.out", 'r').read()
+
+    # Check that the exit status is as expected
+    if exit_status is not None and process.status != exit_status:
+        print "Unexpected exit status of", process.status
 
     # Check marks in source code and print the command output sorted
     strlist = str.splitlines(process.out)

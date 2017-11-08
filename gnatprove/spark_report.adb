@@ -1007,4 +1007,10 @@ begin
    end if;
    Print_Analysis_Report (Handle);
    Close (Handle);
+
+   --  Communicate to gnatprove that there were some unproved checks
+
+   if Has_Unproved_Check then
+      GNAT.OS_Lib.OS_Exit (Unproved_Checks_Error_Status);
+   end if;
 end SPARK_Report;
