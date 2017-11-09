@@ -137,7 +137,7 @@ package Configuration is
    end Prj_Attr;
 
    type GP_Mode is (GPM_Check, GPM_Check_All, GPM_Flow, GPM_Prove, GPM_All);
-   --  The four feature modes of GNATprove:
+   --  The feature modes of GNATprove are:
    --  * GPM_Check     : Check SPARK rules
    --  * GPM_Check_All : Check all SPARK rules, including the ones checked
    --                    during flow analysis.
