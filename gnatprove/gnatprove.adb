@@ -518,13 +518,6 @@ procedure Gnatprove with SPARK_Mode is
 
       end case;
 
-      if Status /= 0
-        and then (Configuration.Mode = GPM_Check
-                  or else Configuration.Mode = GPM_Check_All)
-      then
-         Status := 0;
-      end if;
-
       if Status /= 0 then
          Abort_With_Message
            ("gnatprove: error during " & Text_Of_Step (Plan (Step)));
