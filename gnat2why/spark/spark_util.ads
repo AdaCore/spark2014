@@ -444,13 +444,13 @@ package SPARK_Util is
    --  Check whether a loop is a candidate for loop unrolling
 
    function Full_Entry_Name (N : Node_Id) return String
-     with Pre => Nkind (N) in N_Selected_Component
-                            | N_Expanded_Name
+     with Pre => Nkind (N) in N_Expanded_Name
+                            | N_Identifier
                             | N_Indexed_Component
-                            | N_Defining_Identifier
-                            | N_Identifier;
-   --  @param N is a component of the whole prefix for an entry call
-   --  @return the full name for an entry call
+                            | N_Selected_Component;
+   --  @param N is a prefix of an entry call; it denotes either a stand-alone
+   --     protected object or a protected component within a composite object
+   --  @return a name that uniquely identifies the prefix
 
    function Generic_Actual_Subprograms (E : Entity_Id) return Node_Sets.Set
    with Pre  => Is_Generic_Instance (E),
