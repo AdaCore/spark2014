@@ -605,16 +605,14 @@ package body Flow.Control_Flow_Graph.Utility is
    function Make_Global_Variable_Attributes
      (F      : Flow_Id;
       Mode   : Param_Mode;
-      Uninit : Boolean           := False;
-      E_Loc  : Node_Or_Entity_Id := Empty)
+      Uninit : Boolean := False)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Error_Location := E_Loc;
-      A.Is_Global      := True;
-      A.Is_Constant    := Mode in In_Global_Modes;
-      A.Mode           := Mode;
+      A.Is_Global   := True;
+      A.Is_Constant := Mode in In_Global_Modes;
+      A.Mode        := Mode;
 
       case F.Variant is
          when Initial_Value =>

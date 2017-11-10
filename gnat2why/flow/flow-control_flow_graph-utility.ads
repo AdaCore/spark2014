@@ -201,8 +201,7 @@ package Flow.Control_Flow_Graph.Utility is
    function Make_Global_Variable_Attributes
      (F      : Flow_Id;
       Mode   : Param_Mode;
-      Uninit : Boolean           := False;
-      E_Loc  : Node_Or_Entity_Id := Empty)
+      Uninit : Boolean := False)
       return V_Attributes
    with Pre  => F.Variant in Initial_Or_Final_Variant,
         Post => not Make_Global_Variable_Attributes'Result.Is_Null_Node and
