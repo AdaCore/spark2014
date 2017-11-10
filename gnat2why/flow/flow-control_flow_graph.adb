@@ -437,14 +437,9 @@ package body Flow.Control_Flow_Graph is
    --           /     \
    --      R.A.X       R.A.Y*
 
-   type Var_Kind is (Variable_Kind,
-                     Parameter_Kind,
-                     Discriminant_Kind);
-
    procedure Create_Initial_And_Final_Vertices
-     (E    : Entity_Id;
-      Kind : Var_Kind;
-      FA   : in out Flow_Analysis_Graphs)
+     (E  : Entity_Id;
+      FA : in out Flow_Analysis_Graphs)
    with Pre => Ekind (E) in E_Abstract_State
                           | E_Loop_Parameter
                           | E_Variable
@@ -1217,11 +1212,38 @@ package body Flow.Control_Flow_Graph is
    ---------------------------------------
 
    procedure Create_Initial_And_Final_Vertices
-     (E    : Entity_Id;
-      Kind : Var_Kind;
-      FA   : in out Flow_Analysis_Graphs)
+     (E  : Entity_Id;
+      FA : in out Flow_Analysis_Graphs)
    is
-      M : Param_Mode;
+      M : constant Param_Mode :=
+        (case Ekind (E) is
+            when E_In_Parameter =>
+               Mode_In,
+
+            when E_In_Out_Parameter
+               | E_Task_Type
+            =>
+               Mode_In_Out,
+
+            when E_Function
+               | E_Out_Parameter
+            =>
+               Mode_Out,
+
+            when E_Protected_Type =>
+               (if Ekind (FA.Analyzed_Entity) = E_Function
+                then Mode_In
+                else Mode_In_Out),
+
+            when E_Abstract_State
+               | E_Constant
+               | E_Loop_Parameter
+               | E_Variable
+            =>
+               Mode_Invalid,
+
+            when others =>
+               raise Program_Error);
 
       procedure Process (F : Flow_Id)
       with Pre => F.Kind in Direct_Mapping | Record_Field
@@ -1290,56 +1312,6 @@ package body Flow.Control_Flow_Graph is
          --  We ignore non-local constants (for now)
          return;
       end if;
-
-      case Ekind (E) is
-         when E_Out_Parameter =>
-            pragma Assert (Kind = Parameter_Kind);
-            M := Mode_Out;
-
-         when E_In_Out_Parameter =>
-            pragma Assert (Kind = Parameter_Kind);
-            M := Mode_In_Out;
-
-         when E_In_Parameter =>
-            pragma Assert (Kind = Parameter_Kind);
-            M := Mode_In;
-
-         when E_Discriminant =>
-            pragma Assert (Kind in Discriminant_Kind | Parameter_Kind);
-            M := Mode_In;
-
-         when E_Task_Type | E_Protected_Type =>
-            pragma Assert (Kind = Parameter_Kind);
-            if Ekind (FA.Analyzed_Entity) = E_Function then
-               M := Mode_In;
-            else
-               M := Mode_In_Out;
-            end if;
-
-         when others =>
-            pragma Assert (Kind in Parameter_Kind | Variable_Kind);
-            case Kind is
-               when Parameter_Kind =>
-                  if In_Generic_Actual (E) then
-                     case Nkind (Parent (E)) is
-                        when N_Object_Declaration          =>
-                           M := Mode_In;
-                        when N_Object_Renaming_Declaration =>
-                           M := Mode_In_Out;
-                        when others                        =>
-                           raise Why.Unexpected_Node;
-                     end case;
-                  elsif Ekind (FA.Analyzed_Entity) = E_Function then
-                     M := Mode_In;
-                  else
-                     M := Mode_In_Out;
-                  end if;
-               when Variable_Kind =>
-                  M := Mode_Invalid;
-               when others =>
-                  raise Program_Error;
-            end case;
-      end case;
 
       declare
          FS : constant Flow_Id_Sets.Set := Flatten_Variable (E, FA.B_Scope);
@@ -2444,7 +2416,7 @@ package body Flow.Control_Flow_Graph is
       begin
          --  We have a new variable here which we have not picked up
          --  in Create, so we should set it up.
-         Create_Initial_And_Final_Vertices (LP, Variable_Kind, FA);
+         Create_Initial_And_Final_Vertices (LP, FA);
 
          --  Work out which of the three variants (empty, full,
          --  unknown) we have...
@@ -2903,7 +2875,7 @@ package body Flow.Control_Flow_Graph is
          Funcs : Node_Sets.Set;
       begin
          --  Set up parameter variable
-         Create_Initial_And_Final_Vertices (Param, Variable_Kind, FA);
+         Create_Initial_And_Final_Vertices (Param, FA);
 
          --  Create vertex for the container expression. We also define the
          --  loop parameter here.
@@ -3530,7 +3502,7 @@ package body Flow.Control_Flow_Graph is
                else
                   Register_Own_Variable (FA, E);
                   FA.Local_Constants.Insert (E);
-                  Create_Initial_And_Final_Vertices (E, Variable_Kind, FA);
+                  Create_Initial_And_Final_Vertices (E, FA);
                end if;
 
             else
@@ -3539,8 +3511,8 @@ package body Flow.Control_Flow_Graph is
                if Present (Full_View (E)) then
                   Register_Own_Variable (FA, Full_View (E));
                   FA.Local_Constants.Insert (Full_View (E));
-                  Create_Initial_And_Final_Vertices (Full_View (E),
-                                                     Variable_Kind, FA);
+                  Create_Initial_And_Final_Vertices (Full_View (E), FA);
+
                   Add_Dummy_Vertex (N, FA, CM);
                   return;
 
@@ -3550,14 +3522,14 @@ package body Flow.Control_Flow_Graph is
                   pragma Assert (Is_Imported (E));
                   Register_Own_Variable (FA, E);
                   FA.Local_Constants.Insert (E);
-                  Create_Initial_And_Final_Vertices (E, Variable_Kind, FA);
+                  Create_Initial_And_Final_Vertices (E, FA);
 
                end if;
             end if;
 
          when E_Variable =>
             Register_Own_Variable (FA, E);
-            Create_Initial_And_Final_Vertices (E, Variable_Kind, FA);
+            Create_Initial_And_Final_Vertices (E, FA);
 
          when others =>
             raise Program_Error;
@@ -3870,7 +3842,7 @@ package body Flow.Control_Flow_Graph is
                Final_V_Id : Flow_Graphs.Vertex_Id :=
                  FA.CFG.Get_Vertex (Final_F_Id);
             begin
-               Create_Initial_And_Final_Vertices (State, Variable_Kind, FA);
+               Create_Initial_And_Final_Vertices (State, FA);
 
                if FA.Kind in Kind_Package | Kind_Package_Body then
                   Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
@@ -5882,7 +5854,7 @@ package body Flow.Control_Flow_Graph is
       case FA.Kind is
          when Kind_Subprogram =>
             for Param of Get_Formals (FA.Analyzed_Entity) loop
-               Create_Initial_And_Final_Vertices (Param, Parameter_Kind, FA);
+               Create_Initial_And_Final_Vertices (Param, FA);
             end loop;
 
          when Kind_Task =>
@@ -5892,8 +5864,7 @@ package body Flow.Control_Flow_Graph is
             --    * variables that are Part_Of tasks,
             --    * discriminants of tasks (but these are only considered to be
             --      formal in parameters)
-            Create_Initial_And_Final_Vertices
-              (FA.Analyzed_Entity, Parameter_Kind, FA);
+            Create_Initial_And_Final_Vertices (FA.Analyzed_Entity, FA);
 
          when Kind_Package | Kind_Package_Body =>
             null;
@@ -6092,9 +6063,8 @@ package body Flow.Control_Flow_Graph is
                               --  same unit.
 
                               Create_Initial_And_Final_Vertices
-                                (E    => Constit_Ent,
-                                 Kind => Variable_Kind,
-                                 FA   => FA);
+                                (E  => Constit_Ent,
+                                 FA => FA);
                            end if;
                         end;
                      end loop;
@@ -6107,9 +6077,7 @@ package body Flow.Control_Flow_Graph is
       --  If we are dealing with a function, we use its entity as a vertex for
       --  the returned value.
       if Ekind (FA.Analyzed_Entity) = E_Function then
-         Create_Initial_And_Final_Vertices (FA.Analyzed_Entity,
-                                            Variable_Kind,
-                                            FA);
+         Create_Initial_And_Final_Vertices (FA.Analyzed_Entity, FA);
       end if;
 
       --  If you're now wondering where we deal with locally declared
