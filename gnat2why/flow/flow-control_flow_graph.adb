@@ -6368,45 +6368,48 @@ package body Flow.Control_Flow_Graph is
             end if;
          end loop;
 
+         --  For callees that might have outputs, i.e. procedures and entries,
+         --  and specifically those whose Global/Depends contract have not been
+         --  "inlined" when building the CFG, we need extra vertices to decide
+         --  which of them are called definitively (so that we know that their
+         --  outputs will be definitely written) as opposed to conditional (so
+         --  that we model such outputs as read-writes).
+
          for E of FA.Direct_Calls loop
-            declare
-               F : constant Flow_Id := Direct_Mapping_Id (E);
-               V : Flow_Graphs.Vertex_Id;
-               A : V_Attributes;
-            begin
-               if not FA.CFG.Contains (Change_Variant (F, Initial_Value)) then
-                  --  If the 'Initial and 'Final vertices do not already exist
-                  --  then we create them.
+            if Ekind (E) in E_Procedure | E_Entry
+              and then (not Has_User_Supplied_Globals (E)
+                        or else Rely_On_Generated_Global (E, FA.B_Scope))
+            then
+               declare
+                  F_Initial : constant Flow_Id :=
+                    Direct_Mapping_Id (E, Initial_Value);
+                  F_Final   : constant Flow_Id :=
+                    Direct_Mapping_Id (E, Final_Value);
 
+                  V : Flow_Graphs.Vertex_Id;
+
+               begin
                   --  Setup the n'initial vertex
-                  A := Make_Variable_Attributes (F_Ent => Change_Variant
-                                                           (F, Initial_Value),
-                                                 Mode  => Mode_In_Out,
-                                                 E_Loc => E);
-
                   Add_Vertex
                     (FA,
-                     Change_Variant (F, Initial_Value),
-                     A,
+                     F_Initial,
+                     Make_Variable_Attributes (F_Ent => F_Initial,
+                                               Mode  => Mode_In_Out,
+                                               E_Loc => E),
                      V);
                   Linkup (FA, V, FA.Start_Vertex);
-
-                  Create_Record_Tree (Change_Variant (F, Initial_Value),
-                                      A,
-                                      FA);
 
                   --  Setup the n'final vertex
                   Add_Vertex
                     (FA,
-                     Change_Variant (F, Final_Value),
-                     Make_Variable_Attributes (F_Ent => Change_Variant
-                                                 (F, Final_Value),
+                     F_Final,
+                     Make_Variable_Attributes (F_Ent => F_Final,
                                                Mode  => Mode_In_Out,
                                                E_Loc => E),
                      V);
                   Linkup (FA, FA.End_Vertex, V);
-               end if;
-            end;
+               end;
+            end if;
 
             --  Calls to entries and to predefined potentially blocking
             --  subprograms make this entity potentially blocking. We do

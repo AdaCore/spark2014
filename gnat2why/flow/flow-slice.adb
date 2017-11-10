@@ -314,20 +314,26 @@ package body Flow.Slice is
       procedure Get_Definite_Calls (Calls : out Node_Sets.Set) is
       begin
          --  Collect those directly called subprograms whose corresponding
-         --  'Initial vertex has no Out_Neighbours.
+         --  'Initial vertex has no Out_Neighbours. Those vertices were created
+         --  while post-processing the CFG, but only for callees that can write
+         --  global objects (i.e. procedures and entries) and only those, whose
+         --  Global/Depends contracts have not been "inlined" when building the
+         --  CFG (and this was checked while collecting the Unresolved set).
 
          pragma Assert (Calls.Is_Empty);
 
          for G of Unresolved loop
-            declare
-               V_Initial : Flow_Graphs.Vertex_Id renames
-                 FA.PDG.Get_Vertex (Direct_Mapping_Id (G, Initial_Value));
+            if Ekind (G) in E_Procedure | E_Entry then
+               declare
+                  V_Initial : Flow_Graphs.Vertex_Id renames
+                    FA.PDG.Get_Vertex (Direct_Mapping_Id (G, Initial_Value));
 
-            begin
-               if FA.PDG.Out_Neighbour_Count (V_Initial) = 0 then
-                  Calls.Insert (G);
-               end if;
-            end;
+               begin
+                  if FA.PDG.Out_Neighbour_Count (V_Initial) = 0 then
+                     Calls.Insert (G);
+                  end if;
+               end;
+            end if;
          end loop;
       end Get_Definite_Calls;
 
