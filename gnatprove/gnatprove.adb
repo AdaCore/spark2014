@@ -633,7 +633,7 @@ procedure Gnatprove with SPARK_Mode is
         Ada.Directories.Compose (Obj_Dir, "gnatprove.alfad");
 
       Success      : Boolean;
-
+      Status       : Integer;
       Args         : String_Lists.List;
 
    begin
@@ -677,22 +677,11 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--output-header");
       end if;
 
-      declare
-         Status : Integer;
-      begin
-         Call_With_Status (Command   => "spark_report",
-                           Arguments => Args,
-                           Status    => Status,
-                           Verbose   => Verbose,
-                           Free_Args => False);
-
-         --  There were unproved checks. Return from gnatprove with a non-zero
-         --  error status, but do not issue a failure message.
-
-         if Status = Unproved_Checks_Error_Status then
-            GNAT.OS_Lib.OS_Exit (1);
-         end if;
-      end;
+      Call_With_Status (Command   => "spark_report",
+                        Arguments => Args,
+                        Status    => Status,
+                        Verbose   => Verbose,
+                        Free_Args => False);
 
       if not Debug then
          GNAT.OS_Lib.Delete_File (Obj_Dir_Fn, Success);
@@ -720,6 +709,13 @@ procedure Gnatprove with SPARK_Mode is
                Put_Line ("Summary logged in " & SPARK_Report_File (Obj_Dir));
             end if;
          end;
+      end if;
+
+      --  There were unproved checks. Return from gnatprove with a non-zero
+      --  error status, but do not issue a failure message.
+
+      if Status = Unproved_Checks_Error_Status then
+         GNAT.OS_Lib.OS_Exit (1);
       end if;
    end Generate_SPARK_Report;
 
