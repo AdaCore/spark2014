@@ -6066,12 +6066,8 @@ package body Flow.Control_Flow_Graph is
             end;
 
             --  If a Refined_State aspect exists then gather all constituents
-            --  that are abstract states declared in other (private child)
-            --  units and create initial and final vertices for them.
-
-            --  ??? we should do the same for other constituents, i.e.
-            --  variables and constants with variable input, declared in
-            --  private child unit.
+            --  declared in other (private child) units and create initial and
+            --  final vertices for them.
 
             if FA.Kind = Kind_Package_Body then
                declare
@@ -6086,24 +6082,21 @@ package body Flow.Control_Flow_Graph is
                begin
                   for Constituents of DM loop
                      for Constituent of Constituents loop
-                        if Is_Abstract_State (Constituent)
-                           and then
-                          not Entity_Is_In_Main_Unit
-                            (Get_Direct_Mapping_Id (Constituent))
-                        then
-                           --  Found a constituent that is a (nested) abstract
-                           --  state. We now create Initial and Final vertices
-                           --  for it.
+                        declare
+                           Constit_Ent : constant Entity_Id :=
+                              Get_Direct_Mapping_Id (Constituent);
+                        begin
+                           if not Entity_Is_In_Main_Unit (Constit_Ent) then
+                              --  ??? we should also set Is_Export flag, just
+                              --  like when processing constituents from the
+                              --  same unit.
 
-                           --  ??? we should also set Is_Export flag, just like
-                           --  when processing constituents from the same unit.
-
-                           Create_Initial_And_Final_Vertices
-                             (E             => Get_Direct_Mapping_Id
-                                                 (Constituent),
-                              Kind          => Variable_Kind,
-                              FA            => FA);
-                        end if;
+                              Create_Initial_And_Final_Vertices
+                                (E    => Constit_Ent,
+                                 Kind => Variable_Kind,
+                                 FA   => FA);
+                           end if;
+                        end;
                      end loop;
                   end loop;
                end;

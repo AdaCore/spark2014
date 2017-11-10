@@ -1,2 +1,4 @@
 p-c.ads:2:04: info: initialization of "X" constituent of "P.S" proved
-p.adb:5:12: high: "X" constituent of "P.S" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(12))
+p.adb:5:12: high: "X" constituent of "P.S" is not initialized
+p.adb:5:12: high: initialization of "P.S" is specified at p.ads:1
+p.ads:3:04: info: initialization of "Z" proved
