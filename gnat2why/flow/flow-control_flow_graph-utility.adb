@@ -603,9 +603,8 @@ package body Flow.Control_Flow_Graph.Utility is
    -------------------------------------
 
    function Make_Global_Variable_Attributes
-     (F      : Flow_Id;
-      Mode   : Param_Mode;
-      Uninit : Boolean := False)
+     (F    : Flow_Id;
+      Mode : Param_Mode)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -625,8 +624,7 @@ package body Flow.Control_Flow_Graph.Utility is
                A.Is_Initialized := True;
                A.Is_Import      := True;
             else
-               A.Is_Initialized := not Uninit
-                 and then Mode in Initialized_Global_Modes;
+               A.Is_Initialized := Mode in Initialized_Global_Modes;
                A.Is_Import      := A.Is_Initialized;
             end if;
 

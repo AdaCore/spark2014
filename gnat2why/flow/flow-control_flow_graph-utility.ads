@@ -199,9 +199,8 @@ package Flow.Control_Flow_Graph.Utility is
    --     * Variables_Defined or Variables_Used
 
    function Make_Global_Variable_Attributes
-     (F      : Flow_Id;
-      Mode   : Param_Mode;
-      Uninit : Boolean := False)
+     (F    : Flow_Id;
+      Mode : Param_Mode)
       return V_Attributes
    with Pre  => F.Variant in Initial_Or_Final_Variant,
         Post => not Make_Global_Variable_Attributes'Result.Is_Null_Node and
@@ -213,9 +212,6 @@ package Flow.Control_Flow_Graph.Utility is
    --     * Is_Global (always true)
    --     * Is_Export
    --     * Variables_Defined or Variables_Used
-   --
-   --  If uninit is set then the vertex is always marked as
-   --  uninitialized (unless the global is a disciminant).
 
    function Make_Default_Initialization_Attributes
      (FA    : Flow_Analysis_Graphs;

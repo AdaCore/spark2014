@@ -457,10 +457,9 @@ package body Flow.Control_Flow_Graph is
    --  them up to the start and end vertices.
 
    procedure Create_Initial_And_Final_Vertices
-     (F             : Flow_Id;
-      Mode          : Param_Mode;
-      Uninitialized : Boolean;
-      FA            : in out Flow_Analysis_Graphs)
+     (F    : Flow_Id;
+      Mode : Param_Mode;
+      FA   : in out Flow_Analysis_Graphs)
    with Pre => F.Kind in Direct_Mapping | Magic_String
                and then F.Variant = Normal_Use;
    --  Create the 'initial and 'final vertices for the given global and link
@@ -1359,10 +1358,9 @@ package body Flow.Control_Flow_Graph is
    end Create_Initial_And_Final_Vertices;
 
    procedure Create_Initial_And_Final_Vertices
-     (F             : Flow_Id;
-      Mode          : Param_Mode;
-      Uninitialized : Boolean;
-      FA            : in out Flow_Analysis_Graphs)
+     (F    : Flow_Id;
+      Mode : Param_Mode;
+      FA   : in out Flow_Analysis_Graphs)
    is
       procedure Process (F : Flow_Id)
       with Pre => F.Kind in Direct_Mapping | Record_Field | Magic_String
@@ -1378,9 +1376,8 @@ package body Flow.Control_Flow_Graph is
 
          Initial_Atr : constant V_Attributes :=
            Make_Global_Variable_Attributes
-             (F      => F_Initial,
-              Mode   => Mode,
-              Uninit => Uninitialized);
+             (F    => F_Initial,
+              Mode => Mode);
 
          Final_Atr : constant V_Attributes :=
            Make_Global_Variable_Attributes
@@ -6012,8 +6009,7 @@ package body Flow.Control_Flow_Graph is
                         then
                            pragma Assert (FA.Kind = Kind_Task);
                         else
-                           Create_Initial_And_Final_Vertices
-                             (G, Mode, False, FA);
+                           Create_Initial_And_Final_Vertices (G, Mode, FA);
                         end if;
                      end;
                   end loop;
@@ -6056,10 +6052,9 @@ package body Flow.Control_Flow_Graph is
 
                         if Inserted then
                            Create_Initial_And_Final_Vertices
-                             (F             => Input,
-                              Mode          => Mode_In,
-                              Uninitialized => False,
-                              FA            => FA);
+                             (F    => Input,
+                              Mode => Mode_In,
+                              FA   => FA);
                         end if;
                      end loop;
 
@@ -6364,7 +6359,7 @@ package body Flow.Control_Flow_Graph is
                (if Ekind (E) in E_In_Parameter | E_Constant
                 then Mode_In
                 else Mode_In_Out),
-               False, FA);
+               FA);
 
             --  Collect unsynchronized accesses by excluding states and objects
             --  that are synchronized or are Part_Of single concurrent objects.
