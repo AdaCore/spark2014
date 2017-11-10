@@ -594,6 +594,7 @@ double_list.adb:62:30: info: initialization of "New_Pointer" proved, in instanti
 double_list.adb:63:46: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:8
 double_list.adb:64:33: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:8
 double_list.adb:67:25: info: range check proved (CVC4: 1 VC), in instantiation at list_handler.adb:8
+double_list.ads:7:26: info: initialization of "Integer_List.Internal_List" constituent of "List_Handler.List" proved, in instantiation at list_handler.adb:8
 double_list.ads:9:05: info: initial condition proved (CVC4: 1 VC), in instantiation at list_handler.adb:8
 double_list.ads:9:31: high: "List_Handler.List" must be listed in the Initializes aspect of "Integer_List" (SPARK RM 7.1.5(11)), in instantiation at list_handler.adb:8
 double_list.ads:19:19: info: postcondition proved (CVC4: 1 VC), in instantiation at list_handler.adb:8
@@ -815,6 +816,7 @@ hierarchical_state_demo.adb:20:34: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo.adb:20:43: info: division check proved (CVC4: 1 VC)
 hierarchical_state_demo.ads:7:28: info: initialization of "Success" proved
 hierarchical_state_demo_nested.adb:5:04: info: initialization of "Count" constituent of "Top_State" proved
+hierarchical_state_demo_nested.adb:8:30: info: initialization of "A_Pack.State" constituent of "Hierarchical_State_Demo_Nested.Top_State" proved
 hierarchical_state_demo_nested.adb:20:07: info: initialization of "Total" constituent of "State" proved
 hierarchical_state_demo_nested.adb:27:34: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo_nested.adb:28:22: info: overflow check proved (CVC4: 1 VC)
