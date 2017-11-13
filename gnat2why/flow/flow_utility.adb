@@ -616,8 +616,8 @@ package body Flow_Utility is
                end if;
 
                T         := Get_Type (F, Scope);
-               Classwide := Ekind (T) in Class_Wide_Kind;
-               while Ekind (T) in Class_Wide_Kind loop
+               Classwide := Is_Class_Wide_Type (T);
+               while Is_Class_Wide_Type (T) loop
                   T := Get_Type (Etype (T), Scope);
                end loop;
 
