@@ -524,10 +524,9 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case F_Ent.Variant is
          when Initial_Value =>
-            A.Is_Initialized := Ekind (Entire_Var) in E_In_Out_Parameter |
-                                                      E_In_Parameter     |
-                                                      E_Loop_Parameter
-              or else A.Mode in Initialized_Global_Modes
+
+            A.Is_Initialized := A.Mode in Mode_In | Mode_In_Out
+              or else Ekind (Entire_Var) = E_Loop_Parameter
               or else In_Generic_Actual (Entire_Var);
 
             --  Is_Import is True for:
