@@ -317,37 +317,8 @@ package body SPARK_Util.Types is
       --  fully default initialized component and/or one not fully default
       --  initialized component.
 
-      function Get_DIC_Pragma (Typ : Entity_Id) return Node_Id
-      with Pre => Has_DIC (Typ);
-      --  Returns the unanalyzed pragma Default_Initial_Condition applying to a
-      --  type.
-
       procedure Process_Component (Rec_Prot_Comp : Entity_Id);
       --  Process component Rec_Prot_Comp of a record or protected type
-
-      --------------------
-      -- Get_DIC_Pragma --
-      --------------------
-
-      function Get_DIC_Pragma (Typ : Entity_Id) return Node_Id is
-         Par : Entity_Id := Typ;
-      begin
-         while Has_DIC (Par) loop
-            if Has_Own_DIC (Par) then
-               return Get_Pragma (Typ, Pragma_Default_Initial_Condition);
-            elsif Is_Private_Type (Par) and then Etype (Par) = Par then
-               pragma Assert (Has_Inherited_DIC (Par));
-               Par := Etype (Full_View (Par));
-            else
-               pragma Assert (Has_Inherited_DIC (Par));
-               Par := Etype (Par);
-            end if;
-         end loop;
-
-         --  We should not reach here
-
-         raise Program_Error;
-      end Get_DIC_Pragma;
 
       -----------------------
       -- Process_Component --
@@ -407,7 +378,6 @@ package body SPARK_Util.Types is
       --  Local variables
 
       Comp   : Entity_Id;
-      B_Type : Entity_Id;
       Result : Default_Initialization_Kind;
 
    --  Start of processing for Default_Initialization
@@ -423,34 +393,19 @@ package body SPARK_Util.Types is
          return Default_Initialization (Typ);
       end if;
 
-      --  For some subtypes we have to check for attributes Has_DIC on the base
-      --  type instead. However, we want to skip Itypes while doing so.
-
-      B_Type := Typ;
-      if Ekind (B_Type) in Subtype_Kind then
-         while (Ekind (B_Type) in Subtype_Kind
-                  or else Is_Itype (B_Type))
-
-           --  Stop if we find either of the attributes
-           and then not Has_DIC (B_Type)
-
-           --  Stop if we cannot make any progress
-           and then not Is_Nouveau_Type (B_Type)
-         loop
-            B_Type := Etype (B_Type);
-         end loop;
-      end if;
-
       --  If we are considering implicit initializations and
       --  Default_Initial_Condition was specified for the type, take it into
       --  account.
 
       if not Explicit_Only
-        and then Has_DIC (B_Type)
+        and then Has_DIC (Typ)
       then
          declare
-            Prag : constant Node_Id := Get_DIC_Pragma (B_Type);
+            DIC_Typ : constant Entity_Id := Find_DIC_Type (Typ);
+            Prag    : constant Node_Id   :=
+              Get_Pragma (DIC_Typ, Pragma_Default_Initial_Condition);
             Expr : Node_Id;
+
          begin
             --  The pragma has an argument. If NULL, this indicates a value of
             --  the type is not default initialized. Otherwise, a value of the
