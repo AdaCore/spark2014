@@ -3,17 +3,18 @@ other.ads:4:14: info: initialization of "Y" proved
 test.adb:9:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:9:14: info: initialization of "other.x" proved
 test.adb:9:14: info: initialization of "other.y" proved
-test.adb:20:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.x" visible
-test.adb:20:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.y" visible
-test.adb:28:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.x" visible
-test.adb:28:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.y" visible
+test.adb:20:12: high: "other.x" must be listed in the Depends aspect of "Test_02" (SPARK RM 6.1.4(13))
+test.adb:20:12: high: "other.y" must be listed in the Depends aspect of "Test_02" (SPARK RM 6.1.4(13))
+test.adb:28:12: high: "other.x" must be listed in the Depends aspect of "Test_03" (SPARK RM 6.1.4(13))
+test.adb:28:12: high: "other.y" must be listed in the Depends aspect of "Test_03" (SPARK RM 6.1.4(13))
 test.adb:31:14: low: unused global "Z"
 test.adb:31:14: warning: "Z" is not modified, could be INPUT
 test.adb:38:14: low: unused global "Z"
 test.adb:46:04: warning: analyzing unreferenced procedure "Test_04"
 test.adb:46:14: info: initialization of "Z" proved
-test.adb:57:17: called subprogram "Get_X" requires GLOBAL aspect to make state "other.x" visible
-test.adb:65:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.x" visible
-test.adb:65:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.y" visible
-test.adb:73:17: called subprogram "Get_X" requires GLOBAL aspect to make state "other.x" visible
-gnatprove: error during flow analysis and proof
+test.adb:57:17: high: "other.x" must be listed in the Depends aspect of "Test_05" (SPARK RM 6.1.4(13))
+test.adb:65:12: high: "other.x" must be listed in the Global aspect of "Test_06" (SPARK RM 6.1.4(13))
+test.adb:65:12: high: "other.y" must be listed in the Global aspect of "Test_06" (SPARK RM 6.1.4(13))
+test.adb:73:17: high: "other.x" must be listed in the Global aspect of "Test_07" (SPARK RM 6.1.4(13))
+test.adb:73:24: medium: overflow check might fail
+test.adb:73:38: medium: overflow check might fail

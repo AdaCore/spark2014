@@ -1,2 +1,1 @@
-user.adb:7:09: called subprogram "Call_Get" requires GLOBAL aspect to make state "pack.b" visible
-gnatprove: error during flow analysis and proof
+user.adb:7:09: high: "pack.b" must be listed in the Global aspect of "User" (SPARK RM 6.1.4(13))

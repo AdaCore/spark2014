@@ -1,4 +1,5 @@
 impure_package.adb:8:16: medium: overflow check might fail
 impure_procedure.adb:5:11: medium: overflow check might fail
-call.adb:30:23: called subprogram "Pure_Function" requires GLOBAL aspect to make state "state.y" visible
-gnatprove: error during flow analysis and proof
+call.adb:23:51: medium: precondition might fail
+call.adb:23:51: medium: range check might fail
+call.adb:30:23: high: "state.y" must be listed in the Global aspect of "Call" (SPARK RM 6.1.4(13))

@@ -654,6 +654,7 @@ package body Flow.Analysis.Sanity is
                   case Var.Kind is
                      when Direct_Mapping
                         | Record_Field
+                        | Magic_String
                      =>
                         Error_Msg_Flow
                           (FA       => FA,
@@ -670,9 +671,6 @@ package body Flow.Analysis.Sanity is
                            Severity => High_Check_Kind,
                            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                            Vertex   => V);
-
-                     when Magic_String =>
-                        Global_Required (FA, Var);
 
                      when others =>
                         raise Program_Error;
