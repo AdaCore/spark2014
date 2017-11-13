@@ -5,7 +5,7 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -31,8 +31,6 @@ package Assumption_Types is
 
    type Subp_Type is private;
    type Unit_Type is private;
-
-   Null_Subp : constant Subp_Type;
 
    type Base_Sloc is record
       File : Symbol;
@@ -80,7 +78,5 @@ private
    end record;
 
    type Subp_Type is access constant Subp_Type_Rec;
-
-   Null_Subp : constant Subp_Type := null;
 
 end Assumption_Types;
