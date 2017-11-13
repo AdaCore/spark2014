@@ -1579,25 +1579,30 @@ package body Flow_Utility is
                   end if;
 
                   for Input of Inputs loop
-                     if Present (Input) then
-                        declare
-                           E : constant Entity_Id :=
-                             Get_Direct_Mapping_Id (Input);
-                        begin
-                           if not Params.Contains (E) then
-                              Globals.Reads.Include
-                                (Change_Variant (Input, In_View));
+                     pragma Assert (Input.Kind in Null_Value
+                                                | Magic_String
+                                                | Direct_Mapping);
+                     --  Unlike Output, which is either a Null_Value or a
+                     --  Direct_Mapping, Input might be also a Magic_String,
+                     --  when an extra "null => proof_in" dependency is added
+                     --  from a generated Refined_Global.
 
-                              --  A volatile with effective reads is always
-                              --  an output as well (this should be recorded
-                              --  in the depends, but the front-end does not
-                              --  enforce this).
-                              if Has_Effective_Reads (Input) then
-                                 Globals.Writes.Include
-                                   (Change_Variant (Input, Out_View));
-                              end if;
-                           end if;
-                        end;
+                     if Input.Kind = Magic_String
+                       or else
+                        (Input.Kind = Direct_Mapping
+                           and then
+                         not Params.Contains (Get_Direct_Mapping_Id (Input)))
+                     then
+                        Globals.Reads.Include
+                          (Change_Variant (Input, In_View));
+
+                        --  A volatile with effective reads is always an output
+                        --  as well (this should be recorded in the depends,
+                        --  but the front-end does not enforce this).
+                        if Has_Effective_Reads (Input) then
+                           Globals.Writes.Include
+                             (Change_Variant (Input, Out_View));
+                        end if;
                      end if;
                   end loop;
                end;

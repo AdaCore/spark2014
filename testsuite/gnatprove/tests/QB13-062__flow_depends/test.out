@@ -1,0 +1,2 @@
+main.adb:11:22: called subprogram "Read" requires GLOBAL aspect to make state "remote.x" visible
+gnatprove: error during flow analysis and proof
