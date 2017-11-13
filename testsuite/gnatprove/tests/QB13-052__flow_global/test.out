@@ -1,2 +1,1 @@
-p.adb:6:04: called subprogram "Flip" requires GLOBAL aspect to make state "state.x" visible
-gnatprove: error during flow analysis and proof
+p.adb:6:04: high: cannot write "state.x" during elaboration of "P" (SPARK RM 7.7.1(6))
