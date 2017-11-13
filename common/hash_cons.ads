@@ -27,7 +27,7 @@ with Ada.Containers;
 
 generic
    type Elt_Type is private;
-   type Access_Type is access constant Elt_Type;
+   type Access_Type is not null access constant Elt_Type;
    with function Hash (E : Elt_Type) return Ada.Containers.Hash_Type;
    with function "=" (E1, E2 : Elt_Type) return Boolean;
 package Hash_Cons is

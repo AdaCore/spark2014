@@ -77,6 +77,6 @@ private
       Sloc : My_Sloc;
    end record;
 
-   type Subp_Type is access constant Subp_Type_Rec;
+   type Subp_Type is not null access constant Subp_Type_Rec;
 
 end Assumption_Types;

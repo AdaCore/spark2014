@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -60,32 +60,33 @@ package body Assumptions.Search is
       Unverified_Claims : Token_Sets.Set := Token_Sets.Empty_Set;
       Seen              : Token_Sets.Set := Token_Sets.Empty_Set;
 
-      Cur_Token : Token;
-      Map_Cur   : Goal_Maps.Cursor;
-
-      Unused   : Token_Sets.Cursor;
-      Inserted : Boolean;
-
    begin
       while not Needed_Claims.Is_Empty loop
-         Cur_Token := Needed_Claims (Needed_Claims.First);
+         declare
+            Cur_Token : constant Token :=
+              Needed_Claims (Needed_Claims.First);
 
-         Map_Cur := Goals.Find (Cur_Token);
+            Map_Cur : constant Goal_Maps.Cursor := Goals.Find (Cur_Token);
 
-         if Goal_Maps.Has_Element (Map_Cur) then
-            Seen.Insert (New_Item => Cur_Token,
-                         Position => Unused,
-                         Inserted => Inserted);
+            Unused   : Token_Sets.Cursor;
+            Inserted : Boolean;
 
-            if Inserted then
-               Needed_Claims.Union (Goals (Map_Cur));
+         begin
+
+            if Goal_Maps.Has_Element (Map_Cur) then
+               Seen.Insert (New_Item => Cur_Token,
+                            Position => Unused,
+                            Inserted => Inserted);
+
+               if Inserted then
+                  Needed_Claims.Union (Goals (Map_Cur));
+               end if;
+            else
+               Unverified_Claims.Include (Cur_Token);
             end if;
-         else
-            Unverified_Claims.Include (Cur_Token);
-         end if;
 
-         Needed_Claims.Delete (Cur_Token);
-
+            Needed_Claims.Delete (Cur_Token);
+         end;
       end loop;
 
       return Unverified_Claims;
