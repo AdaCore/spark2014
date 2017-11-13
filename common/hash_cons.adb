@@ -23,34 +23,37 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
-with System.Storage_Elements;
+with Ada.Containers.Hashed_Sets;
 
 package body Hash_Cons is
 
-   package Cons_Maps is new
-     Ada.Containers.Hashed_Maps
-       (Key_Type        => Elt_Type,
-        Element_Type    => Access_Type,
-        Hash            => Hash,
-        Equivalent_Keys => "=",
-        "="             => "=");
+   function Equivalent_Elements (Left, Right : Access_Type) return Boolean;
 
-   Cons_Table : Cons_Maps.Map := Cons_Maps.Empty_Map;
+   package Cons_Sets is new
+     Ada.Containers.Hashed_Sets
+       (Element_Type        => Access_Type,
+        Hash                => Hash,
+        Equivalent_Elements => Equivalent_Elements,
+        "="                 => "=");
+
+   Cons_Table : Cons_Sets.Set := Cons_Sets.Empty_Set;
+
+   -------------------------
+   -- Equivalent_Elements --
+   -------------------------
+
+   function Equivalent_Elements (Left, Right : Access_Type) return Boolean is
+   begin
+      return Left.all = Right.all;
+   end Equivalent_Elements;
 
    ----------
    -- Hash --
    ----------
 
    function Hash (A : Access_Type) return Ada.Containers.Hash_Type is
-      use Ada.Containers;
-      use System.Storage_Elements;
-
-      Addr : constant Integer_Address :=
-        To_Integer (A.all'Address) mod 2147483647;
-      --  ??? why 2147483647?
    begin
-      return Hash_Type (Addr);
+      return Hash (A.all);
    end Hash;
 
    ---------------
@@ -58,8 +61,8 @@ package body Hash_Cons is
    ---------------
 
    function Hash_Cons (E : Elt_Type) return Access_Type is
-      use Cons_Maps;
-      C : constant Cursor := Cons_Table.Find (E);
+      use Cons_Sets;
+      C : constant Cursor := Cons_Table.Find (E'Unrestricted_Access);
    begin
       if Has_Element (C) then
          return Element (C);
@@ -67,7 +70,7 @@ package body Hash_Cons is
          declare
             N_Ptr : constant Access_Type := new Elt_Type'(E);
          begin
-            Cons_Table.Insert (E, N_Ptr);
+            Cons_Table.Insert (N_Ptr);
             return N_Ptr;
          end;
       end if;
