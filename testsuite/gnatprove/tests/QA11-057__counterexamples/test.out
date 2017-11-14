@@ -1,0 +1,7 @@
+absolute_values.adb:5:13: info: postcondition proved (CVC4: 1 VC)
+absolute_values.adb:5:37: info: overflow check proved (CVC4: 1 VC)
+absolute_values.adb:11:14: medium: overflow check might fail (e.g. when Absolute_Value'Result = 0 and X = -2147483648)
+counterexample expected for check at absolute_values.adb:11
+  trace at absolute_values.adb:1 --> Absolute_Value'Result = 0 and X = -2147483648
+  trace at absolute_values.adb:9 --> Absolute_Value'Result = 0
+  trace at absolute_values.adb:11 --> Absolute_Value'Result = 0 and X = -2147483648
