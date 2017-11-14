@@ -702,7 +702,8 @@ package body Flow.Analysis.Sanity is
       function Extended_Set_Contains
         (F  : Flow_Id;
          FS : Flow_Id_Sets.Set)
-         return Boolean;
+         return Boolean
+      with Pre => F.Kind = Direct_Mapping;
       --  Returns True iff F is either directly contained in FS or it is a
       --  state abstraction that encloses an element of FS.
       --  The purpose of this function is to allow user contracts to mention
@@ -734,10 +735,10 @@ package body Flow.Analysis.Sanity is
          --  Check if F is a state abstraction that encapsulates a constituent
          --  mentioned in FS.
 
-         if Is_Abstract_State (F) then
-            declare
-               State : constant Entity_Id := Get_Direct_Mapping_Id (F);
-            begin
+         declare
+            State : constant Entity_Id := Get_Direct_Mapping_Id (F);
+         begin
+            if Ekind (State) = E_Abstract_State then
                for Var of FS loop
                   case Var.Kind is
                      when Direct_Mapping =>
@@ -764,8 +765,8 @@ package body Flow.Analysis.Sanity is
                   end case;
 
                end loop;
-            end;
-         end if;
+            end if;
+         end;
 
          return False;
       end Extended_Set_Contains;
