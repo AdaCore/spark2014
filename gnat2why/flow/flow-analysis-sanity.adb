@@ -778,29 +778,30 @@ package body Flow.Analysis.Sanity is
       is
          E : constant Entity_Id := Get_Direct_Mapping_Id (F);
       begin
-         if Ekind (E) = E_Abstract_State then
+         if Ekind (E) = E_Abstract_State
+           and then not Has_Null_Refinement (E)
+         then
             declare
-               Constit             : Flow_Id;
                Writes_At_Least_One : Boolean := False;
                One_Is_Missing      : Boolean := False;
             begin
-               for RC of Iter (Refinement_Constituents (E)) loop
+               for Constituent of Iter (Refinement_Constituents (E)) loop
                   --  Check that at least one constituent is written
-                  if Nkind (RC) /= N_Null then
-                     Constit := Direct_Mapping_Id (RC, Out_View);
 
-                     if Actual_Globals.Writes.Contains (Constit) then
-                        Writes_At_Least_One := True;
-                     else
-                        One_Is_Missing := True;
-                     end if;
+                  if Actual_Globals.Writes.Contains
+                    (Direct_Mapping_Id (Constituent, Out_View))
+                  then
+                     Writes_At_Least_One := True;
+                  else
+                     One_Is_Missing := True;
                   end if;
                end loop;
 
                return Writes_At_Least_One and One_Is_Missing;
             end;
 
-         --  Trivially False when we are not dealing with a state abstraction
+         --  Trivially False when we are not dealing with a non-null state
+         --  abstraction.
 
          else
             return False;
