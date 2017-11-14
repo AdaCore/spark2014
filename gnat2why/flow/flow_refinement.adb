@@ -593,7 +593,7 @@ package body Flow_Refinement is
                                 return Boolean
    is
      (case State.Kind is
-         when Direct_Mapping | Record_Field =>
+         when Direct_Mapping =>
             Is_Fully_Contained (State.Node, To_Node_Set (Outputs)),
          when others =>
             raise Program_Error);
