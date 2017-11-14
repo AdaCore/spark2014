@@ -712,8 +712,8 @@ package body Flow.Analysis.Sanity is
       --  @param FS is the Flow_Set in which we look
       --  @return whether FS contains F or a contituent of F
 
-      function State_Partially_Written (F : Flow_Id) return Boolean;
-      --  Returns True if F represents a state abstraction that is partially
+      function State_Partially_Written (E : Entity_Id) return Boolean;
+      --  Returns True if E represents a state abstraction that is partially
       --  written.
 
       ---------------------------
@@ -774,9 +774,7 @@ package body Flow.Analysis.Sanity is
       -- State_Partially_Written --
       -----------------------------
 
-      function State_Partially_Written (F : Flow_Id) return Boolean
-      is
-         E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+      function State_Partially_Written (E : Entity_Id) return Boolean is
       begin
          if Ekind (E) = E_Abstract_State
            and then not Has_Null_Refinement (E)
@@ -894,7 +892,7 @@ package body Flow.Analysis.Sanity is
                end if;
 
             elsif not User_Globals.Reads.Contains (Change_Variant (W, In_View))
-              and then State_Partially_Written (W)
+              and then State_Partially_Written (E)
             then
                --  The synthesized Refined_Global is not fully written
                Sane := False;
@@ -929,7 +927,7 @@ package body Flow.Analysis.Sanity is
 
       for R of User_Globals.Reads loop
          if not Extended_Set_Contains (R, Projected_Actual_Globals.Reads)
-           and then not State_Partially_Written (R)
+           and then not State_Partially_Written (Get_Direct_Mapping_Id (R))
            --  Don't issue this error if we are dealing with a partially
            --  written state abstraction.
          then
