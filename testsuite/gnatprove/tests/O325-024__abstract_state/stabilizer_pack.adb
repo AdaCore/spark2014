@@ -15,8 +15,8 @@ is
    --  Private procedures and functions
 
    procedure Stabilizer_Alt_Hold_Update is
-      Asl_Tmp             : Float;
-      Asl_Long_Tmp        : Float;
+      Asl_Tmp      : Float;
+      Asl_Long_Tmp : Float;
    begin
       Asl_Tmp := Asl * Asl_Alpha + Asl_Raw * (1.0 - Asl_Alpha);
       Asl_Long_Tmp := Asl_Long * Asl_Alpha_Long
