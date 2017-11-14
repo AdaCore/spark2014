@@ -893,9 +893,7 @@ package body Flow.Analysis.Sanity is
                      Tag      => Global_Wrong);
                end if;
 
-            elsif Ekind (E) = E_Abstract_State
-              and then not User_Globals.Reads.Contains
-                (Change_Variant (W, In_View))
+            elsif not User_Globals.Reads.Contains (Change_Variant (W, In_View))
               and then State_Partially_Written (W)
             then
                --  The synthesized Refined_Global is not fully written
