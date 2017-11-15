@@ -280,6 +280,14 @@ procedure SPARK_CodePeer_Wrapper is
       Append_Arg ("--codepeer");
       Append_Arg ("--restricted-to-languages=ada");
 
+      --  Do not assume that the first bounds of an array index is within the
+      --  bounds of the index subtype. It might be only within the bounds of
+      --  the base type, like an empty string with bounds 0 and -1. This is an
+      --  unsound assumption that is made by CodePeer to avoid false positives,
+      --  that is not valid for use in GNATprove.
+
+      Append_Arg ("-gnatd.7");
+
       if Num_Procs /= null then
          Append_Arg ("-j" & Num_Procs.all);
       end if;
