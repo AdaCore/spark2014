@@ -952,47 +952,39 @@ package body Flow_Refinement is
 
       procedure Expand (E : Entity_Id) is
       begin
-         if Present (E) then
-            if Ekind (E) = E_Abstract_State then
-               declare
-                  Pkg : constant Entity_Id := Scope (E);
+         if Ekind (E) = E_Abstract_State then
+            declare
+               Pkg : constant Entity_Id := Scope (E);
 
-                  procedure Expand (L : Elist_Id);
-                  --  Expand each constituent of L if there are no hidden
-                  --  constituents, otherwise include the abstract state E
-                  --  into P.
+               procedure Expand (L : Elist_Id);
+               --  Expand each constituent of L if there are no hidden
+               --  constituents, otherwise include the abstract state E into P.
 
-                  procedure Expand (L : Elist_Id) is
-                  begin
-                     for C of Iter (L) loop
-                        if Nkind (C) /= N_Null then
-                           if Is_Visible (C, S) then
-                              Expand (C);
-                           else
-                              P.Include (E);
-                              return;
-                           end if;
-                        end if;
-                     end loop;
-                  end Expand;
-
+               procedure Expand (L : Elist_Id) is
                begin
-                  if Entity_Body_In_SPARK (Pkg)
-                    and then State_Refinement_Is_Visible (E, S)
-                  then
-                     Expand (Refinement_Constituents (E));
-                     Expand (Part_Of_Constituents (E));
-                     --  ??? do the same as in Expand_Abstract_State
-                  else
-                     P.Include (E);
-                  end if;
-               end;
+                  for C of Iter (L) loop
+                     if Nkind (C) /= N_Null then
+                        if Is_Visible (C, S) then
+                           Expand (C);
+                        else
+                           P.Include (E);
+                           return;
+                        end if;
+                     end if;
+                  end loop;
+               end Expand;
 
-            else
-               P.Include (E);
-            end if;
-
-         --  Empty E represent the HEAP entity
+            begin
+               if Entity_Body_In_SPARK (Pkg)
+                 and then State_Refinement_Is_Visible (E, S)
+               then
+                  Expand (Refinement_Constituents (E));
+                  Expand (Part_Of_Constituents (E));
+                  --  ??? do the same as in Expand_Abstract_State
+               else
+                  P.Include (E);
+               end if;
+            end;
 
          else
             P.Include (E);
