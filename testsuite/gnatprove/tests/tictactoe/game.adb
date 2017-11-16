@@ -6,10 +6,10 @@ procedure Game
 is
    Player_Turn : Boolean := True;
 begin
-   Initialize; -- bug, forget the initialization?
+   Initialize;
 
-   while not Is_Full -- bug, forget is full should kill the is_free proof?
-     and then Won = Empty -- bug = or else => and then
+   while not Is_Full
+     and then Won = Empty
    loop
       if Player_Turn then
          Put_Line ("Player");

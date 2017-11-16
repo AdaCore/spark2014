@@ -398,6 +398,18 @@ complete program, including the BSP to run it on the ATMEL SAM4S board, is
 available online (see
 http://blog.adacore.com/tetris-in-spark-on-arm-cortex-m4).
 
+.. rubric:: ``tictactoe``
+
+This program implements a game of tic-tac-toe. A human player and the computer
+take turns. Subprograms ``Player_Play`` and ``Computer_Play`` in
+``tictactoe.ads`` have partial contracts stating that the number of free slots
+decreases by one after each play.
+
+|GNATprove| proves all absence of run-time errors on this program, and that the
+subprogram contracts are correctly implemented. Interestingly, no loop
+invariants are needed, although the program contains many loops, thanks to the
+use of :ref:`Automatic Unrolling of Simple For-Loops` in |GNATprove|.
+
 .. rubric:: ``traffic_light``
 
 This program implements two small simulators of traffic lights:

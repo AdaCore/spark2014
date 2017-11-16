@@ -54,6 +54,7 @@ spark_io
 string_search
 tetris
 text_io_get_line
+tictactoe
 thumper
 tokeneer
 traffic_light

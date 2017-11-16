@@ -1,0 +1,13 @@
+project Tictactoe is
+
+   for Main use ("game.adb");
+
+   package Builder is
+      for Global_Configuration_Pragmas use "spark.adc";
+   end Builder;
+
+   package Prove is
+      for Switches use ("--level=2");
+   end Prove;
+
+end Tictactoe;

@@ -9,7 +9,7 @@ is
    end record;
 
    procedure Play (P : Position; V : Slot)
-     with Pre => My_Board (P.X)(P.Y) = Empty and V /= Empty, -- bug, forget the V /= Empty
+     with Pre => My_Board (P.X)(P.Y) = Empty and V /= Empty,
      Post => Num_Free_Slots = Num_Free_Slots'Old - 1;
 
    procedure Initialize is
@@ -21,13 +21,11 @@ is
       P : Position;
    begin
       loop
---         pragma Loop_Invariant (My_Board = My_Board'Loop_Entry);
-
          declare
             S : String := Get_Line;
             Found : Boolean := True;
          begin
-            if S'Length >= 1 then -- todo - bug if length = 0?
+            if S'Length >= 1 then
                declare
                   C : Character := S (S'First);
                begin
@@ -97,17 +95,11 @@ is
       Found : Boolean := False;
    begin
       Search_Loop : for Target_Score in Target_Scores'Range loop
---         pragma Loop_Invariant (My_Board = My_Board'Loop_Entry);
 
          for S of All_Solutions loop
---            pragma Loop_Invariant (not Found);
---            pragma Loop_Invariant (My_Board = My_Board'Loop_Entry);
-
             Score := 0;
 
             for I in S'Range loop
---               pragma Loop_Invariant (Score <= I * 10);
-
                P := S (I);
                if My_Board (P.X)(P.Y) = Computer then
                   Score := Score + 1;
@@ -118,8 +110,6 @@ is
 
             if Score = Target_Scores(Target_Score) then
                for PP of S loop
---                  pragma Loop_Invariant (My_Board = My_Board'Loop_Entry);
-
                   if My_Board (PP.X)(PP.Y) = Empty then
                      Found := True;
                      P := PP;
@@ -143,13 +133,7 @@ is
                Play((I, J), Computer);
                return;
             end if;
-
---              pragma Loop_Invariant (My_Board = My_Board'Loop_Entry);
---              pragma Loop_Invariant (Count_Free_Slots(I,J) = 0);
          end loop;
-
---           pragma Loop_Invariant (My_Board = My_Board'Loop_Entry);
---           pragma Loop_Invariant (Count_Free_Slots(I,3) = 0);
       end loop;
    end Computer_Play;
 
@@ -178,8 +162,6 @@ is
          Score := 0;
 
          for I in S'Range loop
---            pragma Loop_Invariant (Score <= I * 10);
-
             P := S (I);
 
             if My_Board (P.X)(P.Y) = Computer then

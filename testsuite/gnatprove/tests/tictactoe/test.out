@@ -1,0 +1,54 @@
+game.adb:14:10: info: initialization of "Player_Turn" proved
+game.adb:16:10: info: precondition proved (CVC4: 2 VC)
+game.adb:19:10: info: precondition proved (CVC4: 2 VC)
+game.adb:23:26: info: initialization of "Player_Turn" proved
+tictactoe.adb:13:14: info: postcondition proved (Z3: 1 VC)
+tictactoe.adb:30:36: info: initialization of "S" proved
+tictactoe.adb:30:40: info: index check proved (CVC4: 2 VC)
+tictactoe.adb:33:24: info: initialization of "C" proved
+tictactoe.adb:56:22: info: initialization of "Found" proved
+tictactoe.adb:56:47: info: initialization of "P.X" proved
+tictactoe.adb:56:52: info: initialization of "P.Y" proved
+tictactoe.adb:64:07: info: precondition proved (CVC4: 2 VC)
+tictactoe.adb:64:12: info: initialization of "P.X" proved
+tictactoe.adb:64:12: info: initialization of "P.Y" proved
+tictactoe.adb:94:07: warning: initialization of "P" has no effect
+tictactoe.adb:104:29: info: initialization of "P.X" proved
+tictactoe.adb:104:34: info: initialization of "P.Y" proved
+tictactoe.adb:105:28: info: initialization of "Score" proved
+tictactoe.adb:105:34: info: overflow check proved (CVC4: 48 VC)
+tictactoe.adb:106:32: info: initialization of "P.X" proved
+tictactoe.adb:106:37: info: initialization of "P.Y" proved
+tictactoe.adb:107:28: info: initialization of "Score" proved
+tictactoe.adb:107:34: info: overflow check proved (CVC4: 48 VC)
+tictactoe.adb:111:16: info: initialization of "Score" proved
+tictactoe.adb:111:24: info: initialization of "Target_Scores" proved
+tictactoe.adb:123:10: info: initialization of "Found" proved
+tictactoe.adb:124:10: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+tictactoe.adb:124:16: info: initialization of "P.X" proved
+tictactoe.adb:124:16: info: initialization of "P.Y" proved
+tictactoe.adb:128:22: info: assertion proved (CVC4: 1 VC)
+tictactoe.adb:133:16: info: precondition proved (CVC4: 18 VC)
+tictactoe.adb:167:26: info: initialization of "P.X" proved
+tictactoe.adb:167:31: info: initialization of "P.Y" proved
+tictactoe.adb:168:25: info: initialization of "Score" proved
+tictactoe.adb:168:31: info: overflow check proved (CVC4: 24 VC)
+tictactoe.adb:169:29: info: initialization of "P.X" proved
+tictactoe.adb:169:34: info: initialization of "P.Y" proved
+tictactoe.adb:170:25: info: initialization of "Score" proved
+tictactoe.adb:170:31: info: overflow check proved (CVC4: 24 VC)
+tictactoe.adb:174:13: info: initialization of "Score" proved
+tictactoe.adb:176:16: info: initialization of "Score" proved
+tictactoe.ads:16:26: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:17:50: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:18:50: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:20:29: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:21:53: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:23:16: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:25:29: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:26:53: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:31:07: info: range check proved (CVC4: 1 VC)
+tictactoe.ads:36:19: info: postcondition proved (CVC4: 1 VC)
+tictactoe.ads:40:14: info: postcondition proved (CVC4: 1 VC)
+tictactoe.ads:44:14: info: postcondition proved (Z3: 1 VC)
+tictactoe.ads:46:14: warning: subprogram "Display" has no effect

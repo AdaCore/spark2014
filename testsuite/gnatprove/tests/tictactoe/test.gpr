@@ -1,0 +1,7 @@
+with "tictactoe";
+
+project Test is
+   for Source_Dirs use ();
+   package Builder renames Tictactoe.Builder;
+   package Prove renames Tictactoe.Prove;
+end Test;
