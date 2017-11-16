@@ -803,7 +803,6 @@ package body Flow.Analysis.Sanity is
       Sane := True;
 
       if FA.Kind /= Kind_Subprogram
-        or else Is_Expression_Function (FA.Analyzed_Entity)
         or else No (FA.Global_N)
         or else not FA.Is_Generative
         or else Present (FA.Refined_Global_N)

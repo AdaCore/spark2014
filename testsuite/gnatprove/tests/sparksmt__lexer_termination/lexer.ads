@@ -65,7 +65,7 @@ is
    function Invariant return Boolean is
       (Names.Invariant and Local_Invariant)
    with Ghost,
-        Global => (Proof_In => (State, Name_Table));
+        Global => (Input => (State, Name_Table));
    --  The combined invariant we care about and maintain, as seen by the
    --  lexer.
 
