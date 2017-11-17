@@ -398,13 +398,6 @@ package Gnat2Why.Util is
    --  In the translation to Why, use Count_Discriminants instead of
    --  Has_Discriminant to avoid counting hidden discriminants.
 
-   function Expression_Depends_On_Variables (N : Node_Id) return Boolean;
-   --  Returns whether the expression E depends on a variable, either directly,
-   --  or through the read effects of a function call. This is used to
-   --  decide in which output Why file the axiom for the corresponding
-   --  constant (for an initialization expression) or the corresponding
-   --  aggregate/slice/string literal should be declared.
-
    function Is_Initialized
      (Obj   : Entity_Id;
       Scope : Entity_Id)
