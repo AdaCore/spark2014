@@ -2729,10 +2729,10 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
-  <proof prover="0"><result status="unknown" time="0.54"/></proof>
-  <proof prover="1"><result status="unknown" time="0.09" steps="418"/></proof>
-  <proof prover="2"><result status="unknown" time="0.10" steps="418"/></proof>
-  <proof prover="3"><result status="unknown" time="0.13" steps="112299"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="418"/></proof>
+  <proof prover="2"><result status="unknown" steps="418"/></proof>
+  <proof prover="3"><result status="unknown" steps="112299"/></proof>
   </goal>
  </transf>
  </goal>
@@ -2741,10 +2741,10 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
-  <proof prover="0"><result status="unknown" time="0.54"/></proof>
-  <proof prover="1"><result status="unknown" time="0.09" steps="434"/></proof>
-  <proof prover="2"><result status="unknown" time="0.10" steps="434"/></proof>
-  <proof prover="3"><result status="unknown" time="0.14" steps="119507"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="434"/></proof>
+  <proof prover="2"><result status="unknown" steps="434"/></proof>
+  <proof prover="3"><result status="unknown" steps="119507"/></proof>
   </goal>
  </transf>
  </goal>

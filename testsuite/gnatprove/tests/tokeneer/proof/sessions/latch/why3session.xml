@@ -3401,28 +3401,28 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
-  <proof prover="0"><result status="unknown" time="1.57"/></proof>
-  <proof prover="1"><result status="unknown" time="0.07" steps="26"/></proof>
-  <proof prover="2"><result status="unknown" time="0.07" steps="33"/></proof>
-  <proof prover="3"><result status="unknown" time="0.10" steps="75946"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="26"/></proof>
+  <proof prover="2"><result status="unknown" steps="33"/></proof>
+  <proof prover="3"><result status="unknown" steps="75946"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.07" steps="34"/></proof>
+  <proof prover="1"><result status="valid" steps="34"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.07" steps="45"/></proof>
+  <proof prover="1"><result status="valid" steps="45"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.06" steps="41"/></proof>
+  <proof prover="1"><result status="valid" steps="41"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.06" steps="28"/></proof>
+  <proof prover="1"><result status="valid" steps="28"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.06" steps="27"/></proof>
+  <proof prover="1"><result status="valid" steps="27"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3431,19 +3431,19 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.62"/></proof>
-  <proof prover="1"><result status="unknown" time="0.04" steps="18"/></proof>
-  <proof prover="2"><result status="unknown" time="0.04" steps="19"/></proof>
-  <proof prover="3"><result status="unknown" time="0.09" steps="72264"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="18"/></proof>
+  <proof prover="2"><result status="unknown" steps="19"/></proof>
+  <proof prover="3"><result status="unknown" steps="72264"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.05" steps="26"/></proof>
+  <proof prover="1"><result status="valid" steps="26"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.04" steps="28"/></proof>
+  <proof prover="1"><result status="valid" steps="28"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.04" steps="26"/></proof>
+  <proof prover="1"><result status="valid" steps="26"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3452,10 +3452,10 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.03" steps="52"/></proof>
+  <proof prover="1"><result status="valid" steps="52"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.03" steps="102"/></proof>
+  <proof prover="1"><result status="valid" steps="102"/></proof>
   </goal>
  </transf>
  </goal>

@@ -2755,22 +2755,22 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
-  <proof prover="0"><result status="unknown" time="0.62"/></proof>
-  <proof prover="1"><result status="unknown" time="0.10" steps="407"/></proof>
-  <proof prover="2"><result status="unknown" time="0.11" steps="407"/></proof>
-  <proof prover="3"><result status="unknown" time="0.12" steps="99860"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="407"/></proof>
+  <proof prover="2"><result status="unknown" steps="407"/></proof>
+  <proof prover="3"><result status="unknown" steps="99860"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="0"><result status="unknown" time="1.29"/></proof>
-  <proof prover="1"><result status="timeout" time="20.00"/></proof>
-  <proof prover="2"><result status="timeout" time="10.00"/></proof>
-  <proof prover="3"><result status="unknown" time="0.20" steps="195006"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="3"><result status="unknown" steps="195006"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="0"><result status="unknown" time="1.36"/></proof>
-  <proof prover="1"><result status="timeout" time="20.00"/></proof>
-  <proof prover="2"><result status="timeout" time="10.00"/></proof>
-  <proof prover="3"><result status="unknown" time="0.29" steps="238383"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="3"><result status="unknown" steps="238383"/></proof>
   </goal>
  </transf>
  </goal>
