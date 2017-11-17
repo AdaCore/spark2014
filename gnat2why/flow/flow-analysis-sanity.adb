@@ -98,10 +98,6 @@ package body Flow.Analysis.Sanity is
       --  Checks that for a generic instance there is no Actual with variable
       --  inputs corresponding to a Formal object declaration with mode in.
 
-      function Global_Reads (N : Node_Id) return Ordered_Flow_Id_Sets.Set;
-      --  Wrapper around Get_Globals that only returns global reads and proof
-      --  reads.
-
       function Variables (N : Node_Id) return Ordered_Flow_Id_Sets.Set
       is
         (To_Ordered_Flow_Id_Set
@@ -124,22 +120,6 @@ package body Flow.Analysis.Sanity is
                            Use_Computed_Globals         => True,
                            Expand_Synthesized_Constants => True)));
       --  As above
-
-      ------------------
-      -- Global_Reads --
-      ------------------
-
-      function Global_Reads (N : Node_Id) return Ordered_Flow_Id_Sets.Set
-      is
-         Globals : Global_Flow_Ids;
-
-      begin
-         Get_Globals (Subprogram => N,
-                      Scope      => FA.B_Scope,
-                      Classwide  => False,
-                      Globals    => Globals);
-         return To_Ordered_Flow_Id_Set (Globals.Reads or Globals.Proof_Ins);
-      end Global_Reads;
 
       ----------------------
       -- Check_Expression --
@@ -208,13 +188,22 @@ package body Flow.Analysis.Sanity is
                   Typ : constant Type_Id := Defining_Identifier (N);
 
                begin
-                  if Has_Predicates (Typ)
-                    and then Present (Predicate_Function (Typ))
-                  then
-                     Check_Variable_Inputs
-                       (Flow_Ids => Global_Reads (Predicate_Function (Typ)),
-                        Err_Desc => "predicate",
-                        Err_Node => Typ);
+                  if Has_Predicates (Typ) then
+                     declare
+                        Predicate_Func : constant Entity_Id :=
+                          Predicate_Function (Typ);
+
+                     begin
+                        if Present (Predicate_Func) then
+                           Check_Variable_Inputs
+                             (Flow_Ids =>
+                                Variables
+                                  (Get_Expr_From_Return_Only_Func
+                                       (Predicate_Func)),
+                              Err_Desc => "predicate",
+                              Err_Node => Typ);
+                        end if;
+                     end;
                   end if;
 
                   --  Has_Invariants_In_SPARK operates on the public view of a
@@ -426,7 +415,8 @@ package body Flow.Analysis.Sanity is
                begin
                   if Ekind (Typ) in Record_Kind then
                      Check_Variable_Inputs
-                       (Flow_Ids => Global_Reads (FA.Spec_Entity),
+                       (Flow_Ids => Variables
+                          (Get_Expr_From_Return_Only_Func (FA.Spec_Entity)),
                         Err_Desc => "user-defined equality",
                         Err_Node => FA.Spec_Entity);
                   end if;
