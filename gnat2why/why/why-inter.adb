@@ -656,10 +656,7 @@ package body Why.Inter is
 
          when E_Function =>
             return
-              (if Flow_Utility.Has_Proof_Global_Reads  (E, Classwide => True)
-                   or else
-                  Flow_Utility.Has_Proof_Global_Writes (E, Classwide => True)
-               --  ??? separateof calls to Has_Proof_Global_* are inefficient
+              (if Flow_Utility.Has_Proof_Globals (E)
                then WF_Context
                else WF_Pure);
 
