@@ -1,0 +1,1 @@
+records.adb:10:22: medium: assertion might fail, cannot prove '(5, 6) = (a => 1), (b => 1)
