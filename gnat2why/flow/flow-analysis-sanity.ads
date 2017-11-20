@@ -63,7 +63,7 @@ private package Flow.Analysis.Sanity is
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean);
    --  Checks if the generated Refined_Global contract is correct with respect
-   --  to the user-provided Global contract.
+   --  to the user-provided Global/Depends contract.
 
    procedure Check_Side_Effects_In_Protected_Functions
      (FA   : in out Flow_Analysis_Graphs;

@@ -797,43 +797,46 @@ package body Flow.Analysis.Sanity is
          end if;
       end State_Partially_Written;
 
+      --  Local variables:
+
+      Error_Loc : constant Node_Id :=
+        (if Ekind (FA.Spec_Entity) = E_Package
+         then Empty
+         else (if Present (FA.Global_N)
+               then FA.Global_N
+               else FA.Depends_N));
+      --  Location for posting errors; it is either the Global (preferred) or
+      --  the Depends contract, just like in Get_Global routine, which prefers
+      --  the Global but uses the Depends as a fallback.
+
    --  Start of processing for Check_Generated_Refined_Global
 
    begin
       Sane := True;
 
-      if FA.Kind /= Kind_Subprogram
-        or else No (FA.Global_N)
-        or else not FA.Is_Generative
-        or else Present (FA.Refined_Global_N)
-        or else not Mentions_State_With_Visible_Refinement (FA.Global_N,
-                                                            FA.B_Scope)
+      --  Only apply this check to entities with user supplied abstract
+      --  Global/Depends and generated Refined_Global.
+
+      if not (Ekind (FA.Spec_Entity) /= E_Package
+                and then Has_User_Supplied_Globals (FA.Spec_Entity)
+                and then FA.Is_Generative)
       then
-         --  We have no work to do when:
-         --
-         --    1) we are not dealing with a subprogram
-         --
-         --    2) the user has not specified a Global aspect
-         --
-         --    3) there is a user-provided Refined_Global contract or the
-         --       Global contract does not reference a state abstraction with
-         --       visible refinement.
          return;
       end if;
 
-      --  Read the Global contract (user globals)
+      --  Read the user Global/Depends contract
       Get_Globals (Subprogram => FA.Analyzed_Entity,
                    Scope      => FA.S_Scope,
                    Classwide  => False,
                    Globals    => User_Globals);
 
-      --  Read the Generated Globals (actual globals)
+      --  Read the generated Global
       Get_Globals (Subprogram => FA.Analyzed_Entity,
                    Scope      => FA.B_Scope,
                    Classwide  => False,
                    Globals    => Actual_Globals);
 
-      --  Up project actual globals
+      --  Up project generated Global to the scope of the user ones
       Up_Project (Actual_Globals, Projected_Actual_Globals, FA.S_Scope);
 
       --  Compare writes
@@ -844,7 +847,7 @@ package body Flow.Analysis.Sanity is
             Error_Msg_Flow
               (FA       => FA,
                Msg      => "& must be a global output of &",
-               N        => FA.Global_N,
+               N        => Error_Loc,
                Severity => High_Check_Kind,
                F1       => W,
                F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
@@ -872,7 +875,7 @@ package body Flow.Analysis.Sanity is
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "global output & of & not written",
-                     N        => FA.Global_N,
+                     N        => Error_Loc,
                      Severity => Error_Kind,
                      F1       => W,
                      F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
@@ -888,7 +891,7 @@ package body Flow.Analysis.Sanity is
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "global output & of & not fully written",
-                  N        => FA.Global_N,
+                  N        => Error_Loc,
                   Severity => Error_Kind,
                   F1       => W,
                   F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
@@ -905,7 +908,7 @@ package body Flow.Analysis.Sanity is
             Error_Msg_Flow
               (FA       => FA,
                Msg      => "& must be a global input of &",
-               N        => FA.Global_N,
+               N        => Error_Loc,
                Severity => Medium_Check_Kind,
                F1       => R,
                F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
@@ -924,7 +927,7 @@ package body Flow.Analysis.Sanity is
             Error_Msg_Flow
               (FA       => FA,
                Msg      => "global input & of & not read",
-               N        => FA.Global_N,
+               N        => Error_Loc,
                Severity => Low_Check_Kind,
                F1       => R,
                F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
@@ -940,7 +943,7 @@ package body Flow.Analysis.Sanity is
             Error_Msg_Flow
               (FA       => FA,
                Msg      => "& must be a global Proof_In of &",
-               N        => FA.Global_N,
+               N        => Error_Loc,
                Severity => Medium_Check_Kind,
                F1       => P,
                F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
@@ -956,7 +959,7 @@ package body Flow.Analysis.Sanity is
             Error_Msg_Flow
               (FA       => FA,
                Msg      => "global Proof_In & of & not read",
-               N        => FA.Global_N,
+               N        => Error_Loc,
                Severity => Error_Kind,
                F1       => P,
                F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
