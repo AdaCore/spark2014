@@ -1,0 +1,2 @@
+p.ads:10:13: high: "X" must be listed in the Global aspect of "Wrapper1" (SPARK RM 6.1.4(13))
+p.ads:11:92: warning: unused initial value of "X"
