@@ -813,11 +813,9 @@ package body Flow.Analysis.Sanity is
          --
          --    1) we are not dealing with a subprogram
          --
-         --    2) we are dealing with an expression function
+         --    2) the user has not specified a Global aspect
          --
-         --    3) the user has not specified a Global aspect
-         --
-         --    4) there is a user-provided Refined_Global contract or the
+         --    3) there is a user-provided Refined_Global contract or the
          --       Global contract does not reference a state abstraction with
          --       visible refinement.
          return;
