@@ -9,6 +9,9 @@ gnatprove: $(ALL_PROVE_MSG)
 # expected errors from gnatprove:
 EXPECTED_ERRORS=linear_search_ada linear_search_flow
 
+# expected check messages from gnatprove:
+EXPECTED_CHECKS=binary_search_no_loopinv binary_search_post_assert binary_search_range linear_search_contract linear_search_loopinv linear_search_loopinv_ok linear_search_prove linear_search_spark
+
 # success expected for all other examples
 
 $(RESULTS)/%.prove: force
@@ -21,6 +24,12 @@ $(RESULTS)/%.prove: force
 	   if [ "$$t" = $* ]; then \
 		c=true; \
 		echo "failure expected ($$t)"; \
+	   fi; \
+	done && \
+	for t in $(EXPECTED_CHECKS); do \
+	   if [ "$$t" = $* ]; then \
+		c=true; \
+		echo "check messages expected ($$t)"; \
 	   fi; \
 	done && \
 	res=`gnatprove -f -q -j0 -P search.gpr --warnings=on --timeout=60`; \
