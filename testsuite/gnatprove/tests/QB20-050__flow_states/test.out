@@ -1,6 +1,4 @@
 p.adb:4:10: info: initialization of "X" constituent of "SR" proved
+p.adb:8:28: medium: assertion might fail, cannot prove X
 p.ads:3:38: info: initialization of "Q.SQ" constituent of "P.SP" proved
 p.ads:5:41: info: initialization of "R.SR" constituent of "Q.SQ" proved
-p.ads:7:30: global Proof_In "P.SP" of "Flip" not read
-p.ads:7:30: medium: "R.SR" constituent of "Q.SQ" must be a global Proof_In of "Flip"
-gnatprove: error during flow analysis and proof

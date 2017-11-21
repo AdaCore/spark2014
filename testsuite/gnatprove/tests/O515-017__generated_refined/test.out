@@ -1,3 +1,1 @@
-justifinit.ads:6:11: global output "Justifinit.State" of "P" not fully written
-justifinit.ads:6:11: medium: "Justifinit.State" must be a global input of "P"
-gnatprove: error during flow analysis and proof
+justifinit.ads:6:11: medium: "Justifinit.State" must be a global In_Out of "P"

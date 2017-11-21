@@ -5,12 +5,11 @@ bad_refinement.adb:50:12: high: "Z" constituent of "State2" must be listed in th
 bad_refinement.ads:6:11: low: global input "Bad_Refinement.State" of "Liar" not read
 bad_refinement.ads:6:11: medium: "Bad_Refinement.State2" must be a global input of "Liar"
 bad_refinement.ads:9:11: medium: "Bad_Refinement.State" must be a global input of "Liar2"
-bad_refinement.ads:12:11: high: "Bad_Refinement.State" must be a global output of "Liar3"
+bad_refinement.ads:12:11: high: "Bad_Refinement.State" must be a global In_Out of "Liar3"
 bad_refinement.ads:12:11: low: global input "Bad_Refinement.State" of "Liar3" not read
 bad_refinement.ads:15:11: low: global input "Bad_Refinement.State" of "Liar4" not read
 bad_refinement.ads:15:11: medium: "Bad_Refinement.State2" must be a global input of "Liar4"
-bad_refinement.ads:18:11: global output "Bad_Refinement.State2" of "Liar5" not fully written
-bad_refinement.ads:18:11: medium: "Bad_Refinement.State2" must be a global input of "Liar5"
+bad_refinement.ads:18:11: medium: "Bad_Refinement.State2" must be a global In_Out of "Liar5"
 bad_refinement.ads:21:21: info: initialization of "I" proved
 bad_refinement.ads:21:24: info: initialization of "J" proved
 bad_refinement.ads:23:11: medium: incorrect dependency "I => Bad_Refinement.State"
@@ -53,13 +52,13 @@ lots_of_tests.adb:207:07: high: "A" constituent of "State" must be listed in the
 lots_of_tests.ads:5:04: info: initialization of "G1" proved
 lots_of_tests.ads:5:08: info: initialization of "G2" proved
 lots_of_tests.ads:7:28: info: initialization of "X" proved
-lots_of_tests.ads:10:11: low: global input "Lots_Of_Tests.State3" of "Internal_User_Of_No_Contracts_OK" not read
+lots_of_tests.ads:9:48: info: initialization of "X" proved
 lots_of_tests.ads:13:11: low: global input "G2" of "Internal_User_Of_No_Contracts_BAD" not read
-lots_of_tests.ads:13:11: low: global input "Lots_Of_Tests.State3" of "Internal_User_Of_No_Contracts_BAD" not read
 lots_of_tests.ads:13:11: medium: "G1" must be a global input of "Internal_User_Of_No_Contracts_BAD"
 lots_of_tests.ads:13:11: medium: "Lots_Of_Tests.State" must be a global input of "Internal_User_Of_No_Contracts_BAD"
 lots_of_tests.ads:13:11: medium: "Lots_Of_Tests.State2" must be a global input of "Internal_User_Of_No_Contracts_BAD"
-lots_of_tests.ads:26:11: low: global input "Lots_Of_Tests.State3" of "Dep" not read
+lots_of_tests.ads:25:14: info: initialization of "G2" proved
+lots_of_tests.ads:25:32: info: initialization of "Y" proved
 lots_of_tests.ads:29:52: info: initialization of "Y" proved
 lots_of_tests.ads:34:11: low: global input "G1" of "Internal_User_Of_Dep_BAD" not read
 lots_of_tests.ads:34:11: medium: "Lots_Of_Tests.State2" must be a global input of "Internal_User_Of_Dep_BAD"
@@ -75,7 +74,6 @@ lots_of_tests.ads:96:14: info: initialization of "B" constituent of "State" prov
 lots_of_tests.ads:105:14: info: initialization of "A" constituent of "State" proved
 lots_of_tests.ads:105:14: info: initialization of "B" constituent of "State" proved
 refinement_needed.adb:14:17: medium: overflow check might fail
-refinement_needed.ads:13:11: low: global input "Refinement_Needed.State2" of "Bar" not read
 user.ads:4:36: info: initialization of "X" proved
 user.ads:7:14: info: initialization of "Lots_Of_Tests.State3" proved
 user.ads:10:40: info: initialization of "Y" proved

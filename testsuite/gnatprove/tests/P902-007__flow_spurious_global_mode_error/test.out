@@ -1,1 +1,1 @@
-foo.ads:7:09: medium: "Foo.State" must be a global input of "Test"
+foo.ads:7:09: medium: "Foo.State" must be a global In_Out of "Test"

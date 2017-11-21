@@ -29,7 +29,6 @@ with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 
 with Checked_Types;          use Checked_Types;
-with Common_Iterators;       use Common_Iterators;
 with Gnat2Why_Args;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
@@ -679,126 +678,6 @@ package body Flow.Analysis.Sanity is
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean)
    is
-
-      --  Globals provided by the user
-      User_Globals   : Global_Flow_Ids;
-
-      --  Globals calculated by the tools
-      Actual_Globals : Global_Flow_Ids;
-
-      --  Calculated globals projected upwards
-      Projected_Actual_Globals : Global_Flow_Ids;
-
-      function Extended_Set_Contains
-        (F  : Flow_Id;
-         FS : Flow_Id_Sets.Set)
-         return Boolean
-      with Pre => F.Kind = Direct_Mapping;
-      --  Returns True iff F is either directly contained in FS or it is a
-      --  state abstraction that encloses an element of FS.
-      --  The purpose of this function is to allow user contracts to mention
-      --  either a state abstraction, or the constituents thereof when both
-      --  are visible.
-      --  @param F is the Flow_Id that we look for
-      --  @param FS is the Flow_Set in which we look
-      --  @return whether FS contains F or a contituent of F
-
-      function State_Partially_Written (E : Entity_Id) return Boolean;
-      --  Returns True if E represents a state abstraction that is partially
-      --  written.
-
-      ---------------------------
-      -- Extended_Set_Contains --
-      ---------------------------
-
-      function Extended_Set_Contains
-        (F  : Flow_Id;
-         FS : Flow_Id_Sets.Set)
-         return Boolean
-      is
-      begin
-         --  Return True if F is directly contained in FS
-         if FS.Contains (F) then
-            return True;
-         end if;
-
-         --  Check if F is a state abstraction that encapsulates a constituent
-         --  mentioned in FS.
-
-         declare
-            State : constant Entity_Id := Get_Direct_Mapping_Id (F);
-         begin
-            if Ekind (State) = E_Abstract_State then
-               for Var of FS loop
-                  case Var.Kind is
-                     when Direct_Mapping =>
-                        declare
-                           Encapsulator : constant Entity_Id :=
-                             Encapsulating_State
-                               (Get_Direct_Mapping_Id (Var));
-
-                        begin
-                           if Present (Encapsulator)
-                             and then Encapsulator = State
-                           then
-                              return True;
-                           end if;
-                        end;
-
-                     when Magic_String =>
-                        --  ??? can we get here?
-                        null;
-
-                     when others =>
-                        raise Program_Error;
-
-                  end case;
-
-               end loop;
-            end if;
-         end;
-
-         return False;
-      end Extended_Set_Contains;
-
-      -----------------------------
-      -- State_Partially_Written --
-      -----------------------------
-
-      function State_Partially_Written (E : Entity_Id) return Boolean is
-      begin
-         if Ekind (E) = E_Abstract_State
-           and then not Has_Null_Refinement (E)
-         then
-            declare
-               Writes_At_Least_One : Boolean := False;
-               One_Is_Missing      : Boolean := False;
-            begin
-               for Constituent of Iter (Refinement_Constituents (E)) loop
-                  --  Check that at least one constituent is written
-
-                  if Actual_Globals.Writes.Contains
-                    (Direct_Mapping_Id (Constituent, Out_View))
-                  then
-                     Writes_At_Least_One := True;
-                  else
-                     One_Is_Missing := True;
-                  end if;
-               end loop;
-
-               return Writes_At_Least_One and One_Is_Missing;
-            end;
-
-         --  Trivially False when we are not dealing with a non-null state
-         --  abstraction.
-
-         else
-            return False;
-         end if;
-      end State_Partially_Written;
-
-      --  Local variables:
-
       Error_Loc : constant Node_Id :=
         (if Ekind (FA.Spec_Entity) = E_Package
          then Empty
@@ -808,6 +687,135 @@ package body Flow.Analysis.Sanity is
       --  Location for posting errors; it is either the Global (preferred) or
       --  the Depends contract, just like in Get_Global routine, which prefers
       --  the Global but uses the Depends as a fallback.
+
+      procedure Check (Generated :     Flow_Id_Sets.Set;
+                       User      :     Flow_Id_Sets.Set;
+                       Missing   : out Flow_Id_Sets.Set;
+                       Unused    : out Flow_Id_Sets.Set)
+      with Post => Missing.Is_Subset (Of_Set => Generated) and then
+                   Unused.Is_Subset (Of_Set => User);
+      --  Compute missing and unused user globals based on generated and those
+      --  provided by the user.
+
+      procedure Error_Msg (Msg : String; Severity : Msg_Severity; F : Flow_Id);
+      --  Wrapper to simplify reporting errors about missing and unused globals
+
+      function Find_In (User : Flow_Id_Sets.Set; G : Flow_Id) return Flow_Id
+      with Post => (if Present (Find_In'Result)
+                    then User.Contains (Find_In'Result));
+      --  If a generated global G is represented by User ones, either directly
+      --  or via an abstract state, then return the representative user global;
+      --  otherwise, return Null_Flow_Id.
+
+      function Is_Dummy_Abstract_State (F : Flow_Id) return Boolean;
+      --  Returns True if F is an abstract state that can be determined
+      --  to have no constituents. Such abstract states are most likely
+      --  just placeholders and will be later removed or populated with
+      --  constituents.
+
+      -----------
+      -- Check --
+      -----------
+
+      procedure Check (Generated :     Flow_Id_Sets.Set;
+                       User      :     Flow_Id_Sets.Set;
+                       Missing   : out Flow_Id_Sets.Set;
+                       Unused    : out Flow_Id_Sets.Set)
+      is
+      begin
+         Missing := Flow_Id_Sets.Empty_Set;
+         Unused  := User;
+
+         for A of Generated loop
+            declare
+               U : constant Flow_Id := Find_In (User, A);
+
+            begin
+               if Present (U) then
+                  Unused.Exclude (U);
+               else
+                  Missing.Insert (A);
+               end if;
+            end;
+         end loop;
+      end Check;
+
+      ---------------
+      -- Error_Msg --
+      ---------------
+
+      procedure Error_Msg (Msg : String; Severity : Msg_Severity; F : Flow_Id)
+      is
+      begin
+         Sane := False;
+
+         Error_Msg_Flow
+           (FA       => FA,
+            Msg      => Msg,
+            N        => Error_Loc,
+            Severity => Severity,
+            F1       => F,
+            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+            Tag      => Global_Missing);
+      end Error_Msg;
+
+      -------------
+      -- Find_In --
+      -------------
+
+      function Find_In (User : Flow_Id_Sets.Set; G : Flow_Id) return Flow_Id is
+      begin
+         if User.Contains (G) then
+            return G;
+         elsif Is_Constituent (G) then
+            return Find_In (User, Encapsulating_State (G));
+         else
+            return Null_Flow_Id;
+         end if;
+      end Find_In;
+
+      -----------------------------
+      -- Is_Dummy_Abstract_State --
+      -----------------------------
+
+      function Is_Dummy_Abstract_State (F : Flow_Id) return Boolean is
+      begin
+         if F.Kind = Direct_Mapping then
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               return Ekind (E) = E_Abstract_State
+                 and then (Is_Null_State (E)
+                           or else
+                             (State_Refinement_Is_Visible (E, FA.B_Scope)
+                              and then Has_Null_Refinement (E)));
+            end;
+         else
+            return False;
+         end if;
+      end Is_Dummy_Abstract_State;
+
+      --  Local variables:
+
+      User_Global : Global_Flow_Ids;
+      --  Global contract provided by the user
+
+      Generated_Refined_Global : Global_Flow_Ids;
+      --  Refined_Global contract generated by the flow analysis
+
+      Generated_Global : Global_Flow_Ids;
+      --  Generated Global contract up-projected to the spec scope
+
+      Unused_Inputs    : Flow_Id_Sets.Set;
+      Unused_Outputs   : Flow_Id_Sets.Set;
+      Unused_Proof_Ins : Flow_Id_Sets.Set;
+
+      Missing_Inputs    : Flow_Id_Sets.Set;
+      Missing_Outputs   : Flow_Id_Sets.Set;
+      Missing_Proof_Ins : Flow_Id_Sets.Set;
+      --  Unused and missing user globals; Input/Output/Proof_In are stored
+      --  in individual containers to not worry about the type predicate of
+      --  Global_Flow_Ids.
 
    --  Start of processing for Check_Generated_Refined_Global
 
@@ -824,148 +832,103 @@ package body Flow.Analysis.Sanity is
          return;
       end if;
 
-      --  Read the user Global/Depends contract
-      Get_Globals (Subprogram => FA.Analyzed_Entity,
-                   Scope      => FA.S_Scope,
-                   Classwide  => False,
-                   Globals    => User_Globals);
+      --  Read the user Global/Depends contract; Use_Deduced_Globals is False
+      --  to prevent trimming based on generated (refined) globals.
+      Get_Globals (Subprogram          => FA.Analyzed_Entity,
+                   Scope               => FA.S_Scope,
+                   Classwide           => False,
+                   Globals             => User_Global,
+                   Use_Deduced_Globals => False);
 
       --  Read the generated Global
       Get_Globals (Subprogram => FA.Analyzed_Entity,
                    Scope      => FA.B_Scope,
                    Classwide  => False,
-                   Globals    => Actual_Globals);
+                   Globals    => Generated_Refined_Global);
 
-      --  Up project generated Global to the scope of the user ones
-      Up_Project (Actual_Globals, Projected_Actual_Globals, FA.S_Scope);
+      --  Up project actual globals
+      Up_Project (Generated_Refined_Global, Generated_Global, FA.S_Scope);
 
-      --  Compare writes
-      for W of Projected_Actual_Globals.Writes loop
-         if not User_Globals.Writes.Contains (W) then
-            Sane := False;
+      --  Detect insonsistent globals
 
-            Error_Msg_Flow
-              (FA       => FA,
-               Msg      => "& must be a global output of &",
-               N        => Error_Loc,
-               Severity => High_Check_Kind,
-               F1       => W,
-               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag      => Global_Missing);
-         end if;
+      Check (Generated => Generated_Global.Reads,
+             User      => User_Global.Reads,
+             Missing   => Missing_Inputs,
+             Unused    => Unused_Inputs);
+
+      Check (Generated => Generated_Global.Writes,
+             User      => User_Global.Writes,
+             Missing   => Missing_Outputs,
+             Unused    => Unused_Outputs);
+
+      Check (Generated => Generated_Global.Proof_Ins,
+             User      => User_Global.Proof_Ins,
+             Missing   => Missing_Proof_Ins,
+             Unused    => Unused_Proof_Ins);
+
+      --  Flag missing user globals
+
+      for Missing of Missing_Inputs loop
+         Error_Msg
+           (Msg      => "& must be a global " &
+                        (if Present
+                           (Find_In (User_Global.Writes,
+                                     Change_Variant (Missing, Out_View)))
+                         then "In_Out of &"
+                         else "input of &"),
+            Severity => Medium_Check_Kind,
+            F        => Missing);
       end loop;
 
-      for W of User_Globals.Writes loop
-         declare
-            E : constant Entity_Id := Get_Direct_Mapping_Id (W);
-         begin
-            if not Extended_Set_Contains (W, Projected_Actual_Globals.Writes)
-            then
-               --  Don't issue this error for state abstractions that have a
-               --  null refinement.
-               --  ??? Has_Non_Null_Refinement ignores the SPARK_Mode barrier
-               --  and only works for abstract states for the current
-               --  compilation unit.
-               if Ekind (E) /= E_Abstract_State
-                 or else Has_Non_Null_Refinement (E)
-                 or else Part_Of_Constituents (E) /= No_Elist
-               then
-                  Sane := False;
-
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "global output & of & not written",
-                     N        => Error_Loc,
-                     Severity => Error_Kind,
-                     F1       => W,
-                     F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                     Tag      => Global_Wrong);
-               end if;
-
-            elsif not User_Globals.Reads.Contains (Change_Variant (W, In_View))
-              and then State_Partially_Written (E)
-            then
-               --  The synthesized Refined_Global is not fully written
-               Sane := False;
-
-               Error_Msg_Flow
-                 (FA       => FA,
-                  Msg      => "global output & of & not fully written",
-                  N        => Error_Loc,
-                  Severity => Error_Kind,
-                  F1       => W,
-                  F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag      => Global_Wrong);
-            end if;
-         end;
+      for Missing of Missing_Outputs loop
+         Error_Msg
+           (Msg      => "& must be a global " &
+                        (if Present
+                           (Find_In (User_Global.Reads,
+                                     Change_Variant (Missing, In_View)))
+                         then "In_Out of &"
+                         else "output of &"),
+            Severity => High_Check_Kind,
+            F        => Missing);
       end loop;
 
-      --  Compare reads
-      for R of Projected_Actual_Globals.Reads loop
-         if not User_Globals.Reads.Contains (R) then
-            Sane := False;
+      for Missing of Missing_Proof_Ins loop
+         Error_Msg
+           (Msg      => "& must be a global Proof_In of &",
+            Severity => Medium_Check_Kind,
+            F        => Missing);
 
-            Error_Msg_Flow
-              (FA       => FA,
-               Msg      => "& must be a global input of &",
-               N        => Error_Loc,
-               Severity => Medium_Check_Kind,
-               F1       => R,
-               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag      => Global_Missing);
-         end if;
       end loop;
 
-      for R of User_Globals.Reads loop
-         if not Extended_Set_Contains (R, Projected_Actual_Globals.Reads)
-           and then not State_Partially_Written (Get_Direct_Mapping_Id (R))
-           --  Don't issue this error if we are dealing with a partially
-           --  written state abstraction.
-         then
-            Sane := False;
+      --  Flag extra user globals
 
-            Error_Msg_Flow
-              (FA       => FA,
-               Msg      => "global input & of & not read",
-               N        => Error_Loc,
+      for Unused of Unused_Inputs loop
+         if not Is_Dummy_Abstract_State (Unused) then
+            Error_Msg
+              (Msg      => "global input & of & not read",
                Severity => Low_Check_Kind,
-               F1       => R,
-               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag      => Global_Wrong);
+               F        => Unused);
          end if;
       end loop;
 
-      --  Compare Proof_Ins
-      for P of Projected_Actual_Globals.Proof_Ins loop
-         if not User_Globals.Proof_Ins.Contains (P) then
-            Sane := False;
-
-            Error_Msg_Flow
-              (FA       => FA,
-               Msg      => "& must be a global Proof_In of &",
-               N        => Error_Loc,
-               Severity => Medium_Check_Kind,
-               F1       => P,
-               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag      => Global_Missing);
-         end if;
-      end loop;
-
-      for P of User_Globals.Proof_Ins loop
-         if not Extended_Set_Contains (P, Projected_Actual_Globals.Proof_Ins)
-         then
-            Sane := False;
-
-            Error_Msg_Flow
-              (FA       => FA,
-               Msg      => "global Proof_In & of & not read",
-               N        => Error_Loc,
+      for Unused of Unused_Outputs loop
+         if not Is_Dummy_Abstract_State (Unused) then
+            Error_Msg
+              (Msg      => "global output & of & not written",
                Severity => Error_Kind,
-               F1       => P,
-               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag      => Global_Wrong);
+               F        => Unused);
          end if;
       end loop;
+
+      for Unused of Unused_Proof_Ins loop
+         if not Is_Dummy_Abstract_State (Unused) then
+            Error_Msg
+              (Msg      => "global Proof_In & of & not read",
+               Severity => Error_Kind,
+               F        => Unused);
+         end if;
+      end loop;
+
    end Check_Generated_Refined_Global;
 
    -----------------------------------------------
