@@ -1,16 +1,16 @@
-polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
+polyorb_hi-epoch.ads:44:11: global output "Epoch.Elaborated_Variables" of "System_Startup_Time" not written
 polyorb_hi-messages.adb:72:57: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:73:07: info: range check proved (CVC4: 2 VC)
 polyorb_hi-messages.adb:73:44: info: length check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:76:12: info: precondition proved (CVC4: 2 VC)
 polyorb_hi-messages.adb:78:36: info: initialization of "R" proved
-polyorb_hi-messages.adb:78:39: info: length check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:78:39: info: precondition proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:78:52: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:79:10: info: index check proved (CVC4: 2 VC)
 polyorb_hi-messages.adb:79:27: info: initialization of "R" proved
 polyorb_hi-messages.adb:80:10: info: index check proved (CVC4: 2 VC)
 polyorb_hi-messages.adb:80:27: info: initialization of "R" proved
+polyorb_hi-messages.adb:81:07: info: range check proved (CVC4: 4 VC)
 polyorb_hi-messages.adb:81:44: info: precondition proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:81:62: info: initialization of "R" proved
 polyorb_hi-messages.adb:81:62: info: length check proved (CVC4: 1 VC)
@@ -18,10 +18,13 @@ polyorb_hi-messages.adb:81:65: info: length check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:83:14: info: initialization of "R" proved
 polyorb_hi-messages.adb:92:51: medium: array index check might fail (e.g. when M = (others => 0) and M'First = 5 and M'Last = 0)
 polyorb_hi-messages.adb:105:32: info: range check proved (CVC4: 1 VC)
+polyorb_hi-messages.adb:105:42: medium: range check might fail (e.g. when Item'First = -9223372036854775807 and Item'Last = 0)
 polyorb_hi-messages.adb:105:51: info: precondition proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:107:12: info: length check proved (CVC4: 1 VC)
+polyorb_hi-messages.adb:113:29: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:116:29: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:116:41: info: overflow check proved (CVC4: 1 VC)
+polyorb_hi-messages.adb:119:07: info: range check proved (CVC4: 4 VC)
 polyorb_hi-messages.adb:119:27: info: initialization of "Last" proved
 polyorb_hi-messages.adb:120:09: info: initialization of "Item" proved
 polyorb_hi-messages.adb:120:09: info: length check proved (CVC4: 1 VC)
@@ -31,22 +34,24 @@ polyorb_hi-messages.adb:120:57: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:122:23: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:123:39: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:123:39: info: range check proved (CVC4: 1 VC)
+polyorb_hi-messages.adb:155:14: medium: range check might fail (e.g. when Item = (others => 0) and Item'First = -9223372036854775807 and Item'Last = 0)
+polyorb_hi-messages.adb:156:16: info: range check proved (CVC4: 4 VC)
 polyorb_hi-messages.adb:156:57: info: overflow check proved (CVC4: 1 VC)
+polyorb_hi-messages.adb:156:63: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:156:72: info: length check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:156:75: info: length check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:157:37: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:157:37: info: range check proved (CVC4: 1 VC)
-polyorb_hi-messages.adb:169:57: info: length check proved (CVC4: 1 VC)
-polyorb_hi-messages.adb:178:14: info: length check proved (CVC4: 1 VC)
+polyorb_hi-messages.adb:157:43: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:179:55: info: range check proved (CVC4: 1 VC)
-polyorb_hi-messages.ads:60:32: info: length check proved (CVC4: 1 VC)
 polyorb_hi-messages.ads:77:07: info: initialization of "Item" proved
 polyorb_hi-messages.ads:78:07: info: initialization of "Last" proved
 polyorb_hi-messages.ads:91:26: info: initialization of "M.Content" proved
 polyorb_hi-messages.ads:91:26: info: initialization of "M.First" proved
 polyorb_hi-messages.ads:91:26: info: initialization of "M.Last" proved
 polyorb_hi-messages.ads:98:40: info: precondition proved (CVC4: 1 VC)
-polyorb_hi-messages.ads:99:17: medium: postcondition might fail, cannot prove Payload'Result'Length = Length (M) (e.g. when Payload'Result'First = 1 and Payload'Result'Last = 19 and Payload'Result = (others => 0))
+polyorb_hi-messages.ads:99:17: medium: postcondition might fail, cannot prove Payload'Result'Length = Length (M) (e.g. when M = (Content => (others => 0), First => 0, Last => 1) and Payload'Result = (others => 0))
+polyorb_hi-messages.ads:99:32: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.ads:99:42: info: precondition proved (CVC4: 1 VC)
 polyorb_hi-messages.ads:103:44: info: precondition proved (CVC4: 1 VC)
 polyorb_hi-messages.ads:112:48: info: precondition proved (CVC4: 1 VC)
@@ -54,12 +59,9 @@ polyorb_hi-messages.ads:136:63: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.ads:144:13: info: range check proved (CVC4: 4 VC)
 polyorb_hi-messages.ads:147:16: info: precondition proved (CVC4: 2 VC)
 polyorb_hi-output.adb:61:39: info: range check proved (CVC4: 2 VC)
-polyorb_hi-output.adb:111:10: info: initialization of "Start_Time" proved
-polyorb_hi-output.adb:114:27: info: initialization of "Start_Time" proved
-polyorb_hi-output.adb:116:14: info: initialization of "Elapsed" proved
-polyorb_hi-output.adb:171:51: info: length check proved (CVC4: 1 VC)
-polyorb_hi-output.adb:172:34: info: length check proved (CVC4: 1 VC)
+polyorb_hi-output.adb:110:07: high: "Epoch.Elaborated_Variables" must be a global output of "Build_Timestamp" (SPARK RM 6.1.4(16))
 polyorb_hi-output.adb:182:13: info: initialization of "Index" proved
+polyorb_hi-output.adb:183:13: info: range check proved (CVC4: 4 VC)
 polyorb_hi-output.adb:183:21: info: initialization of "Index" proved
 polyorb_hi-output.adb:183:30: info: initialization of "Index" proved
 polyorb_hi-output.adb:183:41: info: initialization of "Output" proved
@@ -78,465 +80,33 @@ polyorb_hi-output.adb:202:26: info: range check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:202:34: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:202:38: info: range check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:202:50: info: length check proved (CVC4: 1 VC)
+polyorb_hi-output.adb:204:07: info: range check proved (CVC4: 4 VC)
+polyorb_hi-output.adb:204:23: info: range check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:204:32: info: initialization of "S" proved
 polyorb_hi-output.adb:204:32: info: length check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:204:35: info: length check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:204:35: info: range check proved (CVC4: 4 VC)
+polyorb_hi-output.adb:205:07: info: range check proved (CVC4: 4 VC)
+polyorb_hi-output.adb:205:12: info: range check proved (CVC4: 1 VC)
+polyorb_hi-output.adb:205:20: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:205:35: info: initialization of "S" proved
 polyorb_hi-output.adb:205:35: info: length check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:205:38: info: length check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:205:38: info: range check proved (CVC4: 4 VC)
 polyorb_hi-output.adb:207:14: info: initialization of "S" proved
-polyorb_hi-periodic_task.adb:72:21: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.adb:72:21: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.adb:74:19: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.adb:74:19: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.adb:78:28: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.adb:78:28: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.adb:92:13: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.adb:92:13: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.adb:108:22: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.adb:108:22: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.adb:110:31: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.adb:110:31: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:50:04: warning: formal object "Task_Deadline" is not referenced
-polyorb_hi-periodic_task.ads:62:19: warning: subprogram "Activate_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:62:19: warning: subprogram "Activate_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:66:19: warning: subprogram "Recover_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:66:19: warning: subprogram "Recover_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: info: ceiling priority protocol is respected (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: info: ceiling priority protocol is respected (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: info: initialization of "The_Periodic_Task" proved, in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: info: initialization of "The_Periodic_Task" proved, in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: info: nontermination of task proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: info: nontermination of task proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-protocols.adb:51:44: side effects of function "Send" are not modeled in SPARK
-polyorb_hi-protocols.ads:44:13: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
-polyorb_hi-thread_interrogators.adb:51:28: warning: "Deployment" is already use-visible through previous use clause at polyorb_hi-thread_interrogators.ads:39
-polyorb_hi-thread_interrogators.adb:68:07: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:68:07: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:70:07: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:70:07: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:71:07: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:71:07: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:72:07: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:72:07: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:73:07: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:73:07: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:74:07: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:74:07: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:94:39: info: range check proved (CVC4: 2 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:94:39: info: range check proved (CVC4: 2 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:96:25: info: initialization of "P" proved, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:96:25: info: initialization of "P" proved, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:100:29: info: initialization of "P" proved, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:100:29: info: initialization of "P" proved, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:100:48: info: initialization of "Valid" proved, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:100:48: info: initialization of "Valid" proved, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:366:14: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:366:14: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:371:27: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:371:27: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:394:14: info: discriminant check proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:394:14: info: discriminant check proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:394:38: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:394:38: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:475:07: warning: statement has no effect, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:475:07: warning: statement has no effect, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:475:10: info: initialization of "Valid" proved, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:475:10: info: initialization of "Valid" proved, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:495:14: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:495:14: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:504:17: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:504:17: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.ads:133:18: warning: function "Send" is not referenced
-polyorb_hi-thread_interrogators.ads:161:14: warning: subprogram "Receive_Input" has no effect, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.ads:161:14: warning: subprogram "Receive_Input" has no effect, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.ads:167:43: info: initialization of "T_Port.Data_Sink_DATA" proved, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.ads:167:43: info: initialization of "T_Port.Data_Source_DATA" proved, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.ads:174:44: info: initialization of "Sender" proved, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.ads:174:44: info: initialization of "Sender" proved, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.ads:181:43: info: initialization of "Count" proved, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.ads:181:43: info: initialization of "Count" proved, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.ads:191:40: info: initialization of "Port" proved, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.ads:191:40: info: initialization of "Port" proved, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.ads:197:30: info: initialization of "Port" proved, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.ads:197:30: info: initialization of "Port" proved, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.ads:197:52: info: initialization of "Valid" proved, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.ads:197:52: info: initialization of "Valid" proved, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:42:04: info: initialization of "Global_Data_Queue" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:42:04: info: initialization of "Global_Data_Queue" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:43:09: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:43:09: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:58:04: info: initialization of "Firsts" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:58:04: info: initialization of "Firsts" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:58:33: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:58:33: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:59:04: info: initialization of "Lasts" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:59:04: info: initialization of "Lasts" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:59:33: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:59:33: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:65:04: info: initialization of "Empties" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:65:04: info: initialization of "Empties" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:65:31: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:65:31: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:68:04: info: initialization of "Global_Data_History" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:68:04: info: initialization of "Global_Data_History" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:68:49: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:68:49: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:71:04: info: initialization of "GH_First" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:71:04: info: initialization of "GH_First" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:72:04: info: initialization of "GH_Last" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:72:04: info: initialization of "GH_Last" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:82:04: info: initialization of "Most_Recent_Values" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:82:04: info: initialization of "Most_Recent_Values" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:83:09: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:83:09: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:84:04: info: initialization of "Time_Stamps" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:84:04: info: initialization of "Time_Stamps" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:84:39: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:84:39: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:86:04: info: initialization of "Initialized" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:86:04: info: initialization of "Initialized" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:86:35: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:86:35: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:90:04: info: initialization of "Value_Put" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:90:04: info: initialization of "Value_Put" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:90:33: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:90:33: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:94:04: info: initialization of "N_Empties" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:94:04: info: initialization of "N_Empties" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:113:10: info: initialization of "Valid" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:113:10: info: initialization of "Valid" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:146:22: medium: assertion might fail, cannot prove Is_In (P_Kind), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102 (e.g. when T = Data_Source and Thread_Port_Kinds = (0 => 8, others => 0))
-polyorb_hi-unprotected_queue.adb:146:22: medium: assertion might fail, cannot prove Is_In (P_Kind), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193 (e.g. when T = Data_Sink and Thread_Port_Kinds = (0 => 2, others => 0))
-polyorb_hi-unprotected_queue.adb:184:39: medium: overflow check might fail, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102 (e.g. when N_Empties = 2147483647)
-polyorb_hi-unprotected_queue.adb:184:39: medium: overflow check might fail, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193 (e.g. when N_Empties = 2147483647)
-polyorb_hi-unprotected_queue.adb:190:40: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:190:40: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:190:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:190:49: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:190:49: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:190:49: medium: array index check might fail, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102 (e.g. when P = (From => pr_A_Producer_K, Payload => (others => 0)))
-polyorb_hi-unprotected_queue.adb:196:41: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:196:41: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:196:48: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:196:48: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:224:22: medium: assertion might fail, cannot prove Is_In (P_Kind), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102 (e.g. when T = Data_Source and Thread_Port_Kinds = (0 => 8, others => 0))
-polyorb_hi-unprotected_queue.adb:224:22: medium: assertion might fail, cannot prove Is_In (P_Kind), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193 (e.g. when T = Data_Sink and Thread_Port_Kinds = (0 => 2, others => 0))
-polyorb_hi-unprotected_queue.adb:245:40: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:245:40: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:245:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:245:49: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:245:49: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:245:49: medium: array index check might fail, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:258:14: info: initialization of "P.From" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:258:14: info: initialization of "P.From" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:258:14: info: initialization of "P.Payload" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:258:14: info: initialization of "P.Payload" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:309:34: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:309:34: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:325:22: medium: assertion might fail, cannot prove Is_In (P_Kind), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102 (e.g. when Thread_Interface = (Port => ?, Data_Source_DATA => 0) and Thread_Port_Kinds = (0 => 8, others => 0))
-polyorb_hi-unprotected_queue.adb:325:22: medium: assertion might fail, cannot prove Is_In (P_Kind), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193 (e.g. when Thread_Interface = (Port => ?, Data_Sink_DATA => 0) and Thread_Port_Kinds = (0 => 2, others => 0))
-polyorb_hi-unprotected_queue.adb:349:53: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:349:53: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:349:62: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:349:62: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:349:62: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:349:62: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:366:59: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:366:59: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:366:66: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:366:66: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:373:39: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:373:39: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:373:39: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:373:39: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:376:39: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:376:39: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:376:44: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:376:44: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:377:34: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:377:34: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:382:31: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:382:31: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:393:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:393:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:393:49: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:393:49: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:394:42: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:394:42: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:394:47: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:394:47: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:401:52: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:401:52: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:401:61: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:401:61: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:401:61: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:401:61: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:415:39: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:415:39: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:415:39: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:415:39: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:418:39: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:418:39: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:418:44: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:418:44: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:419:34: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:419:34: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:424:31: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:424:31: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:428:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:428:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:428:49: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:428:49: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:429:42: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:429:42: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:429:47: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:429:47: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:435:41: info: precondition proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:435:41: info: precondition proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:437:28: info: raise statement proved unreachable (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:437:28: info: raise statement proved unreachable (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:452:35: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:452:35: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:453:51: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:453:51: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:454:30: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:454:30: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:454:44: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:454:44: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:454:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:454:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:454:49: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:454:49: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:455:33: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:455:33: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:455:38: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:455:38: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:458:25: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:458:25: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:459:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:459:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:462:62: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:462:62: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:462:62: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:462:62: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:464:54: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:464:54: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:464:54: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:464:54: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:465:33: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:465:33: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:465:47: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:465:47: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:465:52: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:465:52: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:465:52: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:465:52: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:466:36: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:466:36: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:466:41: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:466:41: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:476:45: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:476:45: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:484:49: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:484:49: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:484:56: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:484:56: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:487:43: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:487:43: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:487:52: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:487:52: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:487:52: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:487:52: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:504:26: info: initialization of "Replace" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:504:26: info: initialization of "Replace" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:511:25: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:511:25: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:512:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:512:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:513:47: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:513:47: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:513:47: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:513:47: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:514:33: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:514:33: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:514:38: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:514:38: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:517:44: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:517:44: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:517:44: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:517:44: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:520:35: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:520:35: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:520:35: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:520:35: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:520:48: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:520:48: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:520:48: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:520:48: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:521:33: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:521:33: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:521:38: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:521:38: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:523:47: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:523:47: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:527:25: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:527:25: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:530:44: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:530:44: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:530:44: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:530:44: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:531:59: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:531:59: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:531:59: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:531:59: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:532:36: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:532:36: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:532:41: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:532:41: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:534:50: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:534:50: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:534:50: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:534:50: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:537:41: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:537:41: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:537:41: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:537:41: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:537:54: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:537:54: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:537:54: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:537:54: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:538:39: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:538:39: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:538:44: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:538:44: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:539:41: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:539:41: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:546:22: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:546:22: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:547:29: info: division check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:547:29: info: division check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:547:29: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:547:29: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:547:36: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:547:36: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:557:32: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:557:32: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:557:32: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:557:32: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:557:37: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:557:37: info: initialization of "Frst" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:614:05: warning: constant "Thread_Interface" is not referenced
-polyorb_hi-unprotected_queue.adb:615:32: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:615:32: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:616:07: warning: "PT" is not modified, could be declared constant
-polyorb_hi-unprotected_queue.adb:627:22: info: initialization of "PT" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:627:22: info: initialization of "PT" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:638:31: info: initialization of "PT" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:638:31: info: initialization of "PT" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:639:24: info: initialization of "PT" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:639:24: info: initialization of "PT" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:658:22: medium: assertion might fail, cannot prove Is_In (P_Kind), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102 (e.g. when T = Data_Source and Thread_Port_Kinds = (0 => 8, others => 2))
-polyorb_hi-unprotected_queue.adb:658:22: medium: assertion might fail, cannot prove Is_In (P_Kind), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193 (e.g. when T = Data_Sink and Thread_Port_Kinds = (others => 2))
-polyorb_hi-unprotected_queue.adb:712:30: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:712:30: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:712:38: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:712:38: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:712:45: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:712:45: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:784:44: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:784:44: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:784:53: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:784:53: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:784:53: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:784:53: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:835:45: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:835:45: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:835:54: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:835:54: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:835:54: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:835:54: medium: array index check might fail, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:842:46: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:842:46: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:842:55: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:842:55: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:842:55: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:842:55: medium: array index check might fail, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:856:14: info: initialization of "S.From" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:856:14: info: initialization of "S.From" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:856:14: info: initialization of "S.Payload" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:856:14: info: initialization of "S.Payload" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:940:38: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:940:38: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:940:47: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:940:47: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:940:47: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:940:47: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:986:38: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:986:38: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:986:47: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:986:47: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:986:47: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:986:47: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:987:39: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:987:39: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:987:48: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:987:48: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:987:48: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:987:48: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:988:37: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:988:37: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:988:46: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:988:46: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:988:46: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:988:46: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:1025:37: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:1025:37: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:1025:44: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:1025:44: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:1046:37: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:1046:37: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:1046:44: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.adb:1046:44: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.ads:124:04: info: range check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.ads:124:04: info: range check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.ads:124:04: medium: range check might fail, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.ads:124:04: medium: range check might fail, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.ads:126:39: info: division check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.ads:126:39: info: division check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.ads:128:47: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.ads:128:47: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.ads:181:07: info: initialization of "P" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.ads:181:07: info: initialization of "P" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.ads:182:07: info: initialization of "Valid" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.ads:182:07: info: initialization of "Valid" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.ads:188:22: info: initialization of "P.From" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.ads:188:22: info: initialization of "P.From" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.ads:188:22: info: initialization of "P.Payload" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.ads:188:22: info: initialization of "P.Payload" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.ads:188:49: info: initialization of "Not_Empty" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.ads:188:49: info: initialization of "Not_Empty" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.ads:212:40: info: initialization of "Not_Empty" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-unprotected_queue.ads:212:40: info: initialization of "Not_Empty" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-utils.adb:39:43: info: length check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:42:33: info: initialization of "R" proved
-polyorb_hi-utils.adb:42:33: info: length check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:46:25: info: range check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:47:16: info: index check proved (CVC4: 2 VC)
 polyorb_hi-utils.adb:47:19: info: initialization of "R" proved
 polyorb_hi-utils.adb:47:33: info: index check proved (CVC4: 2 VC)
 polyorb_hi-utils.adb:47:33: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:55:33: info: initialization of "R" proved
-polyorb_hi-utils.adb:55:33: info: length check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:56:34: info: range check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:59:34: info: initialization of "R" proved
 polyorb_hi-utils.adb:59:37: info: length check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:59:37: info: range check proved (CVC4: 4 VC)
 polyorb_hi-utils.adb:59:59: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:60:33: info: initialization of "R" proved
-polyorb_hi-utils.adb:60:33: info: length check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:89:20: info: division check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:89:32: info: division check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:125:16: info: index check proved (CVC4: 2 VC)
@@ -544,95 +114,35 @@ polyorb_hi-utils.adb:126:23: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:131:14: info: initialization of "Last" proved
 polyorb_hi-utils.ads:89:19: info: postcondition proved (CVC4: 1 VC)
 polyorb_hi-utils.ads:138:09: info: range check proved (CVC4: 4 VC)
-polyorb_hi_generated-activity.adb:58:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:62:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:63:37: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:67:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:71:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:75:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:79:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:95:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:99:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:112:28: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:114:29: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:115:28: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:116:30: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:117:36: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:118:20: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:120:25: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:121:23: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:158:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:162:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:163:37: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:167:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:171:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:175:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:179:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:186:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:190:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:203:28: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:205:29: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:206:28: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:207:30: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:208:36: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:209:20: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:211:25: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:212:23: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:234:29: info: initialization of "Data_Source_V" proved
-polyorb_hi_generated-activity.adb:240:15: info: initialization of "Error_Ufc" proved
-polyorb_hi_generated-activity.adb:259:10: info: initialization of "GC" proved
-polyorb_hi_generated-activity.adb:264:23: info: initialization of "Result_U.Data_Sink_DATA" proved
-polyorb_hi_generated-activity.adb:264:31: info: discriminant check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:271:20: info: initialization of "Data_Sink_V" proved
-polyorb_hi_generated-activity.adb:296:13: info: range check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:414:13: info: range check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:467:13: info: range check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.adb:585:13: info: range check proved (CVC4: 1 VC)
-polyorb_hi_generated-activity.ads:46:05: info: initialization of "Result" proved
-polyorb_hi_generated-activity.ads:52:13: warning: subprogram "Receive_Input" has no effect
-polyorb_hi_generated-activity.ads:59:05: info: initialization of "Result.Data_Source_DATA" proved
-polyorb_hi_generated-activity.ads:65:05: info: initialization of "Result" proved
-polyorb_hi_generated-activity.ads:71:05: info: initialization of "Result" proved
-polyorb_hi_generated-activity.ads:77:05: info: initialization of "Result" proved
-polyorb_hi_generated-activity.ads:94:05: info: initialization of "Port" proved
-polyorb_hi_generated-activity.ads:100:45: info: initialization of "Result" proved
+polyorb_hi_generated-activity.adb:98:03: "Producer_Destinations" is not allowed in SPARK
+polyorb_hi_generated-activity.adb:98:03: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi_generated-activity.adb:100:39: attribute "Address" is only permitted in SPARK inside an attribute definition clause
+polyorb_hi_generated-activity.adb:121:23: "Producer_Destinations" is not allowed in SPARK
+polyorb_hi_generated-activity.adb:121:23: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi_generated-activity.adb:225:05: warning: use clause for type "Error_Kind" defined at polyorb_hi-errors.ads:34 has no effect
+polyorb_hi_generated-activity.adb:251:05: warning: use clause for type "Error_Kind" defined at polyorb_hi-errors.ads:34 has no effect
+polyorb_hi_generated-activity.adb:300:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:316:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:333:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:351:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:368:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:386:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:402:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:421:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:439:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:471:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:487:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:504:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:522:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:540:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:557:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:573:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:592:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:610:05: warning: use clause for package "Deployment" has no effect
 polyorb_hi_generated-activity.ads:102:03: warning: in instantiation at polyorb_hi-periodic_task.ads:74
 polyorb_hi_generated-activity.ads:102:03: warning: pragma "Storage_Size" ignored (not yet supported)
-polyorb_hi_generated-activity.ads:135:05: info: initialization of "Result" proved
-polyorb_hi_generated-activity.ads:141:13: warning: subprogram "Receive_Input" has no effect
-polyorb_hi_generated-activity.ads:148:05: info: initialization of "Result.Data_Sink_DATA" proved
-polyorb_hi_generated-activity.ads:154:05: info: initialization of "Result" proved
-polyorb_hi_generated-activity.ads:160:05: info: initialization of "Result" proved
-polyorb_hi_generated-activity.ads:166:05: info: initialization of "Result" proved
-polyorb_hi_generated-activity.ads:183:05: info: initialization of "Port" proved
-polyorb_hi_generated-activity.ads:190:06: info: initialization of "Result" proved
 polyorb_hi_generated-activity.ads:192:03: warning: in instantiation at polyorb_hi-periodic_task.ads:74
 polyorb_hi_generated-activity.ads:192:03: warning: pragma "Storage_Size" ignored (not yet supported)
-polyorb_hi_generated-deployment.ads:55:06: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:56:08: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:58:08: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:98:06: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:127:06: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:128:08: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:130:08: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:132:08: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:134:08: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:173:06: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:199:06: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:200:08: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:202:08: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:204:08: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:206:08: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-marshallers.adb:21:13: info: range check proved (CVC4: 1 VC)
-polyorb_hi_generated-marshallers.adb:31:13: info: discriminant check proved (CVC4: 1 VC)
-polyorb_hi_generated-marshallers.adb:77:13: info: range check proved (CVC4: 1 VC)
-polyorb_hi_generated-marshallers.adb:107:12: info: discriminant check proved (CVC4: 2 VC)
-polyorb_hi_generated-marshallers.adb:110:29: info: initialization of "Data_Sink_DATA" proved
-polyorb_hi_generated-marshallers.ads:23:05: high: "Data.Data_Source_DATA" is not initialized in "Unmarshall"
-polyorb_hi_generated-marshallers.ads:33:05: info: initialization of "Data" proved
-polyorb_hi_generated-marshallers.ads:44:05: medium: "Data.Data_Sink_DATA" might not be initialized in "Unmarshall"
-polyorb_hi_generated-naming.ads:18:04: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-subprograms.ads:14:05: info: initialization of "Data_Source" proved
 polyorb_hi_generated-transport.adb:41:07: info: initialization of "Msg" proved
 polyorb_hi_generated-transport.adb:47:07: info: initialization of "Msg" proved
 polyorb_hi_generated-transport.adb:50:09: info: initialization of "Value" proved
@@ -645,18 +155,9 @@ polyorb_hi_generated-transport.adb:87:14: info: no contextual analysis of "Produ
 polyorb_hi_generated-transport.adb:87:14: side effects of function "Producer_Consumer_Producer_Send" are not modeled in SPARK
 polyorb_hi_generated-transport.adb:100:03: info: no contextual analysis of "Producer_Consumer_Producer_Send" (multiple returns)
 polyorb_hi_generated-transport.adb:117:44: side effects of function "Send" are not modeled in SPARK
-polyorb_hi_generated-transport.adb:152:09: info: initialization of "Thread_Interface_Ufc.Data_Sink_DATA" proved
-polyorb_hi_generated-transport.adb:154:09: info: initialization of "Time_Stamp_Ufc" proved
+polyorb_hi_generated-transport.adb:150:36: high: "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.elaborated_variables" must be listed in the Global aspect of "Producer_Consumer_Result_Consumer_Deliver" (SPARK RM 6.1.4(13))
+polyorb_hi_generated-transport.adb:150:36: high: "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq_s" must be listed in the Global aspect of "Producer_Consumer_Result_Consumer_Deliver" (SPARK RM 6.1.4(13))
 polyorb_hi_generated-transport.ads:20:12: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
-pr_a.adb:20:11: medium: "gnat.sockets.no_inet_addr" might not be initialized after elaboration of main program "pr_A"
 pr_a.adb:20:11: medium: "polyorb_hi.transport_low_level.nodes" might not be initialized after elaboration of main program "pr_A"
 pr_a.adb:22:20: info: range check proved (CVC4: 2 VC)
-producer_consumer.adb:51:04: info: no contextual analysis of "Get_Node" (unconstrained return type)
-producer_consumer.adb:68:28: info: overflow check proved (CVC4: 1 VC)
-producer_consumer.adb:71:17: low: range check might fail
-producer_consumer.adb:72:17: low: range check might fail (e.g. when Data_Source = 1001)
-producer_consumer.adb:72:37: info: initialization of "Data_Source" proved
-producer_consumer.adb:82:17: low: range check might fail
-producer_consumer.adb:83:17: low: range check might fail (e.g. when Data_Sink = 0)
-producer_consumer.ads:38:27: info: initialization of "Data_Source" proved
 gnatprove: error during flow analysis and proof
