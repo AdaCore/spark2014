@@ -1,0 +1,3 @@
+p.adb:2:04: info: initialization of "X" constituent of "S" proved
+p.adb:3:04: info: initialization of "Y" constituent of "S" proved
+p.ads:2:42: low: global input "P.S" of "Get_Half" not read
