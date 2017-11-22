@@ -60,13 +60,15 @@ package Flow_Generated_Globals.Phase_1 is
    --  Register information needed later to compute globals. It also stores
    --  information related to volatiles and remote states.
 
-   procedure GG_Register_Max_Queue_Length (EN     : Entity_Name;
-                                           Length : Nat)
+   procedure GG_Register_Max_Queue_Length (E : String; Length : Nat)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
-   --  Register the value of Max_Queue_Length for an entry
+   --  Register the value of Max_Queue_Length for an entry (which is
+   --  represented as a string that uniquely identifies different entries
+   --  belonging to the same an object, i.e. (in the regexp syntax)
+   --  "(package__)+object(__component)*__entry".
 
-   procedure GG_Register_Protected_Object (PO   : Entity_Name;
+   procedure GG_Register_Protected_Object (PO   : Entity_Id;
                                            Prio : Priority_Value)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
@@ -81,8 +83,9 @@ package Flow_Generated_Globals.Phase_1 is
    --  depending on the caller (as opposed to always returning the most
    --  refined view). It also stores information related to external states.
 
-   procedure GG_Register_Task_Object (Type_Name : Entity_Name;
-                                      Object    : Task_Object)
+   procedure GG_Register_Task_Object (Typ       : Entity_Id;
+                                      Object    : Entity_Id;
+                                      Instances : Instance_Number)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register an instance of a task object

@@ -3134,8 +3134,6 @@ package body Flow.Control_Flow_Graph is
 
       Typ : constant Entity_Id := Etype (E);
 
-      Object_Name : constant Entity_Name := To_Entity_Name (E);
-
       Expr : constant Node_Id := Expression (N);
       --  Object's initialization expression
 
@@ -3217,7 +3215,7 @@ package body Flow.Control_Flow_Graph is
 
                Ent : Entity_Id := First_Entity (T);
             begin
-               GG_Register_Protected_Object (Object_Name, Priority);
+               GG_Register_Protected_Object (E, Priority);
 
                --  Register value of Max_Queue_Length for an entry
                while Present (Ent) loop
@@ -3230,8 +3228,7 @@ package body Flow.Control_Flow_Graph is
 
                      begin
                         GG_Register_Max_Queue_Length
-                          (To_Entity_Name
-                             (Prefix & "__" & Get_Name_String (Chars (Ent))),
+                          (Prefix & "__" & Get_Name_String (Chars (Ent)),
                            Max_Queue_Length);
                      end;
                   end if;
@@ -3327,20 +3324,14 @@ package body Flow.Control_Flow_Graph is
             return;
 
          elsif Is_Task_Type (T) then
-            declare
-               --  For discriminated tasks record the number of instances of
-               --  the base type.
-               TN : constant Entity_Name := To_Entity_Name (Etype (T));
-            begin
-               GG_Register_Task_Object
-                 (Type_Name => TN,
-                  Object    => (Name      => Object_Name,
-                                Instances =>
-                                  (if Size > 1 or else Size = -1
-                                   then Size
-                                   else 1),
-                                Node      => N));
-            end;
+            --  For discriminated tasks record the number of instances of
+            --  the base type.
+            GG_Register_Task_Object
+              (Typ       => Etype (T),
+               Object    => E,
+               Instances => (if Size > 1 or else Size = -1
+                             then Size
+                             else 1));
 
          --  Attached interrupt handlers can be executed spontaneously, just
          --  like task types, so we treat them in the same way.
@@ -3370,13 +3361,11 @@ package body Flow.Control_Flow_Graph is
                     and then Is_Interrupt_Handler (Prot_E)
                   then
                      GG_Register_Task_Object
-                       (Type_Name => To_Entity_Name (Prot_E),
-                        Object    => (Name      => Object_Name,
-                                      Instances =>
-                                        (if Size > 1 or else Size = -1
-                                         then Size
-                                         else 1),
-                                      Node      => N));
+                       (Typ       => Prot_E,
+                        Object    => E,
+                        Instances => (if Size > 1 or else Size = -1
+                                      then Size
+                                      else 1));
                   end if;
                   Next_Entity (Prot_E);
                end loop;
@@ -3831,7 +3820,7 @@ package body Flow.Control_Flow_Graph is
             Find_Tasks (T, Size => 0);
 
             --  Register priorities of protected components
-            Find_Protected_Components (T, Prefix => To_String (Object_Name));
+            Find_Protected_Components (T, Prefix => Unique_Name (E));
          end;
       end if;
    end Do_Object_Declaration;

@@ -269,10 +269,10 @@ package body Flow_Generated_Globals.ALI_Serialization is
             Serialize (A, V.The_Constituents);
 
          when EK_Remote_States =>
-            Serialize (A, V.The_Remote_States, "RS");
+            Serialize (A, V.The_Remote_States);
 
          when EK_Predef_Init_Vars =>
-            Serialize (A, V.The_Predef_Init_Vars, "PIV");
+            Serialize (A, V.The_Predef_Init_Vars);
 
          when EK_Ghost_Entities =>
             Serialize (A, V.The_Ghost_Entities, "GHOST");
