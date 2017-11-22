@@ -3554,18 +3554,18 @@
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="0"><result status="unknown" steps="312"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
   <proof prover="0"><result status="unknown" steps="312"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="10082"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
   <proof prover="0"><result status="unknown" steps="355"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="VC for def" proved="true">
   <proof prover="1"><result status="valid" steps="2622"/></proof>
@@ -3581,26 +3581,26 @@
   </goal>
   <goal name="WP_parameter def.11" expl="precondition">
   <proof prover="0"><result status="unknown" steps="393"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="11023"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition">
   <proof prover="0"><result status="unknown" steps="440"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition">
   <proof prover="0"><result status="unknown" steps="296"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="precondition">
   <proof prover="0"><result status="unknown" steps="1358"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="precondition">
   <proof prover="0"><result status="unknown" steps="10953"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="49527"/></proof>
@@ -3649,11 +3649,11 @@
   </goal>
   <goal name="WP_parameter def.32" expl="postcondition">
   <proof prover="0"><result status="unknown" steps="3486"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.32.0" expl="postcondition">
    <proof prover="0"><result status="unknown" steps="4663"/></proof>
-   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.32.1" expl="postcondition" proved="true">
    <proof prover="0"><result status="valid" steps="47"/></proof>
@@ -3662,11 +3662,11 @@
   </goal>
   <goal name="WP_parameter def.33" expl="postcondition">
   <proof prover="0"><result status="unknown" steps="6427"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.33.0" expl="postcondition">
-   <proof prover="0"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.33.1" expl="postcondition" proved="true">
    <proof prover="0"><result status="valid" steps="43"/></proof>
@@ -3828,26 +3828,26 @@
   </goal>
   <goal name="WP_parameter def.7" expl="precondition">
   <proof prover="0"><result status="unknown" steps="309"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
   <proof prover="0"><result status="unknown" steps="1167"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
   <proof prover="0"><result status="unknown" steps="19457"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="42582"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="loop invariant preservation">
-  <proof prover="0"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="loop invariant preservation">
-  <proof prover="0"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="54079"/></proof>
@@ -3860,11 +3860,11 @@
   </goal>
   <goal name="WP_parameter def.16" expl="postcondition">
   <proof prover="0"><result status="unknown" steps="243241"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.16.0" expl="postcondition">
-   <proof prover="0"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.16.1" expl="postcondition" proved="true">
    <proof prover="0"><result status="unknown" steps="243"/></proof>
@@ -3892,18 +3892,18 @@
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="0"><result status="unknown" steps="343"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
   <proof prover="0"><result status="unknown" steps="333"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="9385"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
   <proof prover="0"><result status="unknown" steps="355"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="VC for def" proved="true">
   <proof prover="1"><result status="valid" steps="2496"/></proof>
@@ -3922,19 +3922,19 @@
   </goal>
   <goal name="WP_parameter def.12" expl="precondition">
   <proof prover="0"><result status="unknown" steps="436"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition">
   <proof prover="0"><result status="unknown" steps="296"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition">
   <proof prover="0"><result status="unknown" steps="1241"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="precondition">
   <proof prover="0"><result status="unknown" steps="9785"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="51261"/></proof>
@@ -3947,11 +3947,11 @@
   </goal>
   <goal name="WP_parameter def.19" expl="postcondition">
   <proof prover="0"><result status="unknown" steps="19651"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.19.0" expl="postcondition">
    <proof prover="0"><result status="unknown" steps="297017"/></proof>
-   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.19.1" expl="postcondition" proved="true">
    <proof prover="0"><result status="unknown" steps="262"/></proof>
