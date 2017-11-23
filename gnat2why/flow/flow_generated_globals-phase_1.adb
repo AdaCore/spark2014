@@ -126,21 +126,22 @@ package body Flow_Generated_Globals.Phase_1 is
    -----------------------------
 
    procedure GG_Register_Global_Info
-     (E               : Entity_Id;
-      Local           : Boolean;
-      Is_Protected    : Boolean;
-      Origin          : Globals_Origin_T;
+     (E                : Entity_Id;
+      Local            : Boolean;
+      Is_Protected     : Boolean;
+      Is_Library_Level : Boolean;
+      Origin           : Globals_Origin_T;
 
-      Globals         : Flow_Nodes;
+      Globals          : Flow_Nodes;
 
-      Local_Variables : Node_Sets.Set;
+      Local_Variables  : Node_Sets.Set;
 
-      Entries_Called  : Entry_Call_Sets.Set;
-      Tasking         : Tasking_Info;
+      Entries_Called   : Entry_Call_Sets.Set;
+      Tasking          : Tasking_Info;
 
-      Has_Terminate   : Boolean;
-      Nonreturning    : Boolean;
-      Nonblocking     : Boolean)
+      Has_Terminate    : Boolean;
+      Nonreturning     : Boolean;
+      Nonblocking      : Boolean)
    is
       procedure Process_Volatiles_And_States
         (Objects    : Node_Sets.Set;
@@ -288,6 +289,9 @@ package body Flow_Generated_Globals.Phase_1 is
       Serialize (Ekind (E));
       if Ekind (E) in E_Function | E_Procedure then
          Serialize (Is_Protected);
+      end if;
+      if Ekind (E) in E_Package then
+         Serialize (Is_Library_Level);
       end if;
       Serialize (Origin);
       Serialize (Globals.Proper,  "proper_");  -- ??? replace _ with :

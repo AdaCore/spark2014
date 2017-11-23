@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---                           GNAT2WHY COMPONENTS                            --
+--                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---  F L O W . G E N E R A T E D _ G L O B A L S . S E R I A L I Z A T I O N --
+--  F L O W . G E N E R A T E D _ G L O B A L S . P H A S E _ 2 . R E A D   --
 --                                                                          --
---                                S p e c                                   --
+--                                  S p e c                                 --
 --                                                                          --
---               Copyright (C) 2016-2018, Altran UK Limited                 --
+--                   Copyright (C) 2018, Altran UK Limited                  --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -21,28 +21,33 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package implements serialization, i.e. writing and reading, of global
---  contracts from an abstract "archive".
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 
-package Flow_Generated_Globals.ALI_Serialization is
+package Flow_Generated_Globals.Phase_2.Read is
 
-   type ALI_Entry_Kind is (EK_Error,
-                           EK_End_Marker,
-                           EK_State_Map,
-                           EK_Remote_States,
-                           EK_Predef_Init_Vars,
-                           EK_Ghost_Entities,
-                           EK_CAE_Entities,
-                           EK_Volatiles,
-                           EK_Globals,
-                           EK_Constant_Calls,
-                           EK_Protected_Instance,
-                           EK_Task_Instance,
-                           EK_Max_Queue_Length,
-                           EK_Direct_Calls);
-   --  Kinds of the information stored between gnat2why phases, where the info
-   --  is written (phase 1) and read (phase 2). Almost no other types are
-   --  shared between writing (which takes Entity_Ids) and reading (which gives
-   --  Entity_Names).
+   procedure New_GG_Line (Line : String)
+   with Pre => Head (Line, 3) = "GG ";
+   --  Prepare to read a new ALI line with a GG info
 
-end Flow_Generated_Globals.ALI_Serialization;
+   procedure Terminate_GG_Line;
+   --  Terminates reading of an ALI line with a GG info
+
+   --  Serialization for individual data types; these calls should be preceded
+   --  with New_GG_Line and finally followed by Terminate_GG_Line. While those
+   --  subprograms are for reading data items, not writing, we still use the
+   --  general "serialize" name to keep the reading/writing code exactly same.
+   --
+   --  ??? enforce sequencing with a Pre/Post contracts and a ghost variable
+
+   procedure Serialize (E : out Entity_Name);
+
+   procedure Serialize (Names : in out Name_Sets.Set; Label : String := "")
+   with Post => Names'Old.Is_Subset (Names);
+
+   procedure Serialize (N : out Int);
+
+   generic
+      type T is (<>);
+   procedure Serialize_Discrete (A : out T; Label : String := "");
+
+end Flow_Generated_Globals.Phase_2.Read;

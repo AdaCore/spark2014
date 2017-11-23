@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with GNAT.Regpat;                use GNAT.Regpat;
-with Serialisation;              use Serialisation;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;                use Ada.Text_IO;
@@ -49,6 +48,8 @@ with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 
 with Flow_Generated_Globals.ALI_Serialization;
 use Flow_Generated_Globals.ALI_Serialization;
+
+with Flow_Generated_Globals.Phase_2.Read;
 
 package body Flow_Generated_Globals.Phase_2 is
 
@@ -1025,10 +1026,92 @@ package body Flow_Generated_Globals.Phase_2 is
          -------------------
 
          procedure Parse_GG_Line (Line : String) is
-            A : Archive (Serialisation.Input) :=
-              From_String (Line (Line'First + 3 .. Line'Last));
 
-            V : ALI_Entry := (Kind => EK_Error);
+            use Flow_Generated_Globals.Phase_2.Read;
+
+            procedure Serialize is new Serialize_Discrete (ALI_Entry_Kind);
+
+            procedure Serialize (V : out Partial_Contract);
+
+            ---------------
+            -- Serialize --
+            ---------------
+
+            procedure Serialize (V : out Partial_Contract) is
+
+               procedure Serialize is new Serialize_Discrete (Entity_Kind);
+               procedure Serialize is new Serialize_Discrete (Boolean);
+               procedure Serialize is new Serialize_Discrete
+                 (Globals_Origin_T);
+
+               procedure Serialize (G : out Global_Names; Label : String);
+               procedure Serialize (V : out Name_Tasking_Info);
+
+               ---------------
+               -- Serialize --
+               ---------------
+
+               procedure Serialize (G : out Global_Names; Label : String) is
+               begin
+                  Serialize (G.Proof_Ins, Label & "proof_in");
+                  Serialize (G.Inputs,    Label & "input");
+                  Serialize (G.Outputs,   Label & "output");
+               end Serialize;
+
+               procedure Serialize (V : out Name_Tasking_Info) is
+               begin
+                  for Kind in Tasking_Info_Kind loop
+                     Serialize (V (Kind), Kind'Img);
+                  end loop;
+               end Serialize;
+
+            --  Start of processing for Serialize
+
+            begin
+               Serialize (V.Local, "local");
+               Serialize (V.Kind);
+               if V.Kind in E_Function | E_Procedure then
+                  Serialize (V.Is_Protected);
+               else
+                  --  Dummy value to ensure that the OUT parameter is written
+                  V.Is_Protected := False;
+               end if;
+               if V.Kind = E_Package then
+                  Serialize (V.Is_Library_Level);
+               else
+                  --  Dummy value to ensure that the OUT parameter is written
+                  V.Is_Library_Level := False;
+               end if;
+               Serialize (V.Origin);
+               Serialize (V.Globals.Proper,  "proper_");
+               Serialize (V.Globals.Refined, "refined_");
+               if V.Kind = E_Package then
+                  Serialize (V.Globals.Initializes, "initializes");
+               end if;
+               Serialize (V.Globals.Calls.Proof_Calls,
+                          "calls_proof");
+               Serialize (V.Globals.Calls.Definite_Calls,
+                          "calls");
+               Serialize (V.Globals.Calls.Conditional_Calls,
+                          "calls_conditional");
+
+               Serialize (V.Local_Variables, "local_var");
+
+               if V.Kind in Entry_Kind
+                          | E_Function
+                          | E_Procedure
+                          | E_Task_Type
+                          | E_Package
+               then
+                  --  ??? use Is_Proper_Callee here
+                  if V.Kind /= E_Task_Type then
+                     Serialize (V.Has_Terminate);
+                     Serialize (V.Nonreturning);
+                     Serialize (V.Nonblocking);
+                  end if;
+                  Serialize (V.Tasking);
+               end if;
+            end Serialize;
 
             procedure Clear (G : in out Flow_Names);
             pragma Unreferenced (Clear);
@@ -1054,11 +1137,16 @@ package body Flow_Generated_Globals.Phase_2 is
                G.Calls.Definite_Calls.Clear;
             end Clear;
 
+            --  Local variables
+
+            K : ALI_Entry_Kind;
+
          --  Parse_GG_Line
 
          begin
-            Serialize (A, V);
-            case V.Kind is
+            New_GG_Line (Line);
+            Serialize (K);
+            case K is
                when EK_Error =>
                   Corrupted_ALI_File ("parse error");
 
@@ -1071,116 +1159,123 @@ package body Flow_Generated_Globals.Phase_2 is
 
                when EK_State_Map =>
                   declare
-                     State    : Name_Graphs.Cursor;
-                     Inserted : Boolean;
+                     State : Entity_Name;
 
-                     C : Name_Lists.Cursor;
-                     --  Cursor to iterate over original constituents; it is
-                     --  required because it is not possible to iterate over
-                     --  a component of a discriminated record.
+                     State_Pos : Name_Graphs.Cursor;
+                     Inserted  : Boolean;
 
                   begin
-                     State_Comp_Map.Insert (Key      => V.The_State,
-                                            Position => State,
+                     Serialize (State);
+                     State_Comp_Map.Insert (Key      => State,
+                                            Position => State_Pos,
                                             Inserted => Inserted);
                      pragma Assert (Inserted);
 
-                     C := V.The_Constituents.First;
-                     while Name_Lists.Has_Element (C) loop
-                        State_Comp_Map (State).Insert (V.The_Constituents (C));
+                     Serialize (State_Comp_Map (State_Pos));
 
-                        Comp_State_Map.Insert (V.The_Constituents (C),
-                                               V.The_State);
-
-                        Name_Lists.Next (C);
+                     for Constituent of State_Comp_Map (State_Pos) loop
+                        Comp_State_Map.Insert (Constituent, State);
                      end loop;
+
+                     State_Abstractions.Include (State);
                   end;
 
-                  State_Abstractions.Include (V.The_State);
-
                when EK_Remote_States =>
-                  State_Abstractions.Union (V.The_Remote_States);
+                  Serialize (State_Abstractions);
 
                when EK_Predef_Init_Vars =>
-                  Initialized_Vars_And_States.Union
-                    (V.The_Predef_Init_Vars);
+                  Serialize (Initialized_Vars_And_States);
 
                when EK_Ghost_Entities =>
-                  Ghost_Entities.Union (V.The_Ghost_Entities);
+                  Serialize (Ghost_Entities);
 
                when EK_CAE_Entities =>
-                  CAE_Entities.Union (V.The_CAE_Entities);
+                  Serialize (CAE_Entities);
 
                when EK_Volatiles =>
-                  Async_Writers_Vars.Union (V.The_Async_Writers);
-                  Volatile_Vars.Union (V.The_Async_Writers);
-
-                  Async_Readers_Vars.Union (V.The_Async_Readers);
-                  Volatile_Vars.Union (V.The_Async_Readers);
-
-                  Effective_Reads_Vars.Union (V.The_Effective_Reads);
-                  Volatile_Vars.Union (V.The_Effective_Reads);
-
-                  Effective_Writes_Vars.Union (V.The_Effective_Writes);
-                  Volatile_Vars.Union (V.The_Effective_Writes);
+                  Serialize (Async_Readers_Vars,    "AR");
+                  Serialize (Async_Writers_Vars,    "AW");
+                  Serialize (Effective_Reads_Vars,  "ER");
+                  Serialize (Effective_Writes_Vars, "EW");
 
                when EK_Globals =>
                   --  ??? this line should be loaded only when
                   --  For_Current_Unit or else not V.The_Global_Info.Local
+                  declare
+                     Entity : Entity_Name;
 
-                  --  Move global information to separate container
-                  Global_Contracts.Insert
-                    (Key      => V.The_Global_Info.Name,
-                     New_Item => V.The_Global_Info.Globals);
+                     Pos      : Phase_1_Info_Maps.Cursor;
+                     Inserted : Boolean;
 
-                  --  ??? Clear the original map as a sanity check
-                  --  Clear (V.The_Global_Info.Globals);
+                  begin
+                     Serialize (Entity);
 
-                  Phase_1_Info.Insert (Key      => V.The_Global_Info.Name,
-                                       New_Item => V.The_Global_Info);
+                     --  Move global information to separate container
+                     Phase_1_Info.Insert
+                       (Key      => Entity,
+                        Position => Pos,
+                        Inserted => Inserted);
 
-                  for Kind in Tasking_Info_Kind loop
-                     if not V.The_Global_Info.Tasking (Kind).Is_Empty then
-                        Tasking_Info_Bag (GG_Phase_1, Kind).Insert
-                          (V.The_Global_Info.Name,
-                           V.The_Global_Info.Tasking (Kind));
+                     pragma Assert (Inserted);
+
+                     Serialize (Phase_1_Info (Pos));
+
+                     Global_Contracts.Insert
+                       (Key      => Entity,
+                        New_Item => Phase_1_Info (Pos).Globals);
+
+                     --  ??? Clear the original map as a sanity check
+                     --  Clear (Phase_1_Info (Entity_Pos).Globals);
+
+                     for Kind in Tasking_Info_Kind loop
+                        if not Phase_1_Info (Pos).Tasking (Kind).Is_Empty then
+                           Tasking_Info_Bag (GG_Phase_1, Kind).Insert
+                             (Entity,
+                              Phase_1_Info (Pos).Tasking (Kind));
+                        end if;
+                     end loop;
+
+                     if Present (Root_Entity)
+                       and then Is_Subprogram (Root_Entity)
+                       and then Might_Be_Main (Root_Entity)
+                       and then Phase_1_Info (Pos).Kind = E_Package
+                       and then Phase_1_Info (Pos).Is_Library_Level
+                     then
+                        Directly_Called_POs_In_Elaborations.Union
+                          (Phase_1_Info (Pos).Tasking (Locks));
                      end if;
-                  end loop;
-
-                  if Present (Root_Entity)
-                    and then Is_Subprogram (Root_Entity)
-                    and then Might_Be_Main (Root_Entity)
-                    and then V.The_Global_Info.Kind = E_Package
-                    and then V.The_Global_Info.Is_Library_Level
-                  then
-                     Directly_Called_POs_In_Elaborations.Union
-                       (V.The_Global_Info.Tasking (Locks));
-                  end if;
+                  end;
 
                when EK_Constant_Calls =>
                   declare
-                     Const : Name_Graphs.Cursor;
+                     Const_Pos : Name_Graphs.Cursor;
                      --  Position of the caller in the direct calls graph
 
                      Inserted : Boolean;
 
-                     Call : Name_Lists.Cursor := V.The_Calls.First;
+                     Const : Entity_Name;
 
                   begin
-                     Constant_Calls.Insert (Key      => V.The_Constant,
-                                            Position => Const,
+                     Serialize (Const);
+                     Constant_Calls.Insert (Key      => Const,
+                                            Position => Const_Pos,
                                             Inserted => Inserted);
 
                      pragma Assert (Inserted);
 
-                     while Name_Lists.Has_Element (Call) loop
-                        Constant_Calls (Const).Insert (V.The_Calls (Call));
-                        Name_Lists.Next (Call);
-                     end loop;
+                     Serialize (Constant_Calls (Const_Pos));
                   end;
 
                when EK_Protected_Instance =>
                   declare
+                     Variable   : Entity_Name;
+                     Prio_Kind  : Priority_Kind;
+                     Prio_Value : Int;
+
+                     procedure Serialize is new
+                       Flow_Generated_Globals.Phase_2.Read.Serialize_Discrete
+                         (Priority_Kind);
+
                      C : Entity_Name_To_Priorities_Maps.Cursor;
                      --  Position of a list of protected components of a global
                      --  variable and their priorities.
@@ -1188,51 +1283,85 @@ package body Flow_Generated_Globals.Phase_2 is
                      Dummy : Boolean;
                      --  Flag that indicates if a key was inserted or if
                      --  it already existed in a map. It is required by
-                     --  the hashed-maps API, but not used here.
 
                   begin
+                     Serialize (Variable);
+                     Serialize (Prio_Kind);
+                     if Prio_Kind = Static then
+                        Serialize (Prio_Value);
+                     else
+                        Prio_Value := 0;
+                     end if;
+
                      --  Find a list of protected components of a global
                      --  variable; if it does not exist then initialize with
                      --  an empty list.
                      Protected_Objects.Insert
-                       (Key      => V.The_Variable,
+                       (Key      => Variable,
                         Position => C,
                         Inserted => Dummy);
 
-                     Protected_Objects (C).Append (V.The_Priority);
+                     Protected_Objects (C).Append
+                       (Priority_Value'(Kind  => Prio_Kind,
+                                        Value => Prio_Value));
                   end;
 
                when EK_Task_Instance =>
-                  Register_Task_Object (V.The_Type, V.The_Object);
+                  declare
+                     Typ       : Entity_Name;
+                     Object    : Entity_Name;
+                     Instances : Instance_Number;
+
+                  begin
+                     Serialize (Typ);
+                     Serialize (Object);
+                     Serialize (Instances);
+
+                     Register_Task_Object
+                       (Typ,
+                        Task_Object'(Name      => Object,
+                                     Instances => Instances,
+                                     Node      => Find_Entity (Object)));
+                  end;
 
                when EK_Max_Queue_Length =>
-                  Max_Queue_Length_Map.Insert
-                    (Key      => V.The_Entry,
-                     New_Item => V.The_Max_Queue_Length);
+                  declare
+                     Entry_Name       : Entity_Name;
+                     Max_Queue_Length : Nat;
+
+                  begin
+                     Serialize (Entry_Name);
+                     Serialize (Max_Queue_Length);
+
+                     Max_Queue_Length_Map.Insert
+                       (Key      => Entry_Name,
+                        New_Item => Max_Queue_Length);
+                  end;
 
                when EK_Direct_Calls =>
                   declare
-                     Caller : Name_Graphs.Cursor;
+                     Caller : Entity_Name;
+
+                     Caller_Pos : Name_Graphs.Cursor;
                      --  Position of the caller in the direct calls graph
 
                      Inserted : Boolean;
 
-                     Callee : Name_Lists.Cursor := V.The_Callees.First;
-
                   begin
-                     Direct_Calls.Insert (Key      => V.The_Caller,
-                                          Position => Caller,
+                     Serialize (Caller);
+
+                     Direct_Calls.Insert (Key      => Caller,
+                                          Position => Caller_Pos,
                                           Inserted => Inserted);
 
                      pragma Assert (Inserted);
 
-                     while Name_Lists.Has_Element (Callee) loop
-                        Direct_Calls (Caller).Insert (V.The_Callees (Callee));
-                        Name_Lists.Next (Callee);
-                     end loop;
+                     Serialize (Direct_Calls (Caller_Pos));
                   end;
 
             end case;
+
+            Terminate_GG_Line;
          end Parse_GG_Line;
 
       --  Start of processing for Load_GG_Info_From_ALI
@@ -1391,6 +1520,11 @@ package body Flow_Generated_Globals.Phase_2 is
            (ALI_File_Name     => ALIs.Table (Index).Afile,
             For_Current_CUnit => Index = ALIs.First);
       end loop;
+
+      Volatile_Vars.Union (Async_Readers_Vars);
+      Volatile_Vars.Union (Async_Writers_Vars);
+      Volatile_Vars.Union (Effective_Reads_Vars);
+      Volatile_Vars.Union (Effective_Writes_Vars);
 
       GG_State_Constituents := True;
 
