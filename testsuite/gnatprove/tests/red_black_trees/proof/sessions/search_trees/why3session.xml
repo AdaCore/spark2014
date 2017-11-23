@@ -2,8 +2,8 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.5-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.5-gnatprove" timelimit="60" steplimit="0" memlimit="0"/>
+<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="60" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/search_trees.mlw">
 <theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -2136,13 +2136,13 @@
   <proof prover="0"><result status="valid" steps="32"/></proof>
   </goal>
   <goal name="WP_parameter def.34" expl="check" proved="true">
-  <proof prover="0"><result status="valid" steps="2482"/></proof>
+  <proof prover="0"><result status="valid" steps="1243"/></proof>
   </goal>
   <goal name="WP_parameter def.35" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="788"/></proof>
   </goal>
   <goal name="WP_parameter def.36" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="225950"/></proof>
+  <proof prover="0"><result status="valid" steps="225820"/></proof>
   </goal>
   <goal name="WP_parameter def.37" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="6324"/></proof>
@@ -2325,10 +2325,10 @@
   <proof prover="0"><result status="valid" steps="232"/></proof>
   </goal>
   <goal name="WP_parameter def.43" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="6139"/></proof>
+  <proof prover="0"><result status="valid" steps="5940"/></proof>
   </goal>
   <goal name="WP_parameter def.44" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="6284"/></proof>
+  <proof prover="0"><result status="valid" steps="6270"/></proof>
   </goal>
   <goal name="WP_parameter def.45" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="22"/></proof>
@@ -2415,7 +2415,7 @@
   <proof prover="0"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="WP_parameter def.73" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="643"/></proof>
+  <proof prover="0"><result status="valid" steps="638"/></proof>
   </goal>
   <goal name="WP_parameter def.74" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="655"/></proof>
@@ -2442,7 +2442,7 @@
   <proof prover="0"><result status="valid" steps="144"/></proof>
   </goal>
   <goal name="WP_parameter def.82" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3870"/></proof>
+  <proof prover="0"><result status="valid" steps="4019"/></proof>
   </goal>
   <goal name="WP_parameter def.83" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -2454,7 +2454,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.86" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="8131"/></proof>
+  <proof prover="0"><result status="valid" steps="8083"/></proof>
   </goal>
   <goal name="WP_parameter def.87" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -2532,16 +2532,16 @@
   <proof prover="0"><result status="valid" steps="185"/></proof>
   </goal>
   <goal name="WP_parameter def.112" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="3790"/></proof>
+  <proof prover="0"><result status="valid" steps="3757"/></proof>
   </goal>
   <goal name="WP_parameter def.113" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="112484"/></proof>
+  <proof prover="0"><result status="valid" steps="121546"/></proof>
   </goal>
   <goal name="WP_parameter def.114" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="3936"/></proof>
   </goal>
   <goal name="WP_parameter def.115" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="3898"/></proof>
+  <proof prover="0"><result status="valid" steps="4044"/></proof>
   </goal>
   <goal name="WP_parameter def.116" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="6049"/></proof>
@@ -2598,7 +2598,7 @@
   <proof prover="0"><result status="valid" steps="784"/></proof>
   </goal>
   <goal name="WP_parameter def.134" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="31795"/></proof>
+  <proof prover="0"><result status="valid" steps="47728"/></proof>
   </goal>
   <goal name="WP_parameter def.135" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="24867"/></proof>
@@ -2817,7 +2817,7 @@
   <proof prover="0"><result status="valid" steps="2525"/></proof>
   </goal>
   <goal name="WP_parameter def.207" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="180358"/></proof>
+  <proof prover="0"><result status="valid" steps="189286"/></proof>
   </goal>
   <goal name="WP_parameter def.208" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="2184"/></proof>
@@ -2835,7 +2835,7 @@
   <proof prover="0"><result status="valid" steps="713"/></proof>
   </goal>
   <goal name="WP_parameter def.213" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="53354"/></proof>
+  <proof prover="0"><result status="valid" steps="52910"/></proof>
   </goal>
   <goal name="WP_parameter def.214" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="2164"/></proof>
@@ -2849,9 +2849,9 @@
  </transf>
  </goal>
 </theory>
-<theory name="Search_trees__left_rotate__subprogram_def" proved="true" sum="6427ca6cba1a952b3dad40bfee038716">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+<theory name="Search_trees__left_rotate__subprogram_def" sum="6427ca6cba1a952b3dad40bfee038716">
+ <goal name="WP_parameter def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
@@ -2991,7 +2991,7 @@
   <proof prover="0"><result status="valid" steps="173"/></proof>
   </goal>
   <goal name="WP_parameter def.46" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="4887"/></proof>
+  <proof prover="0"><result status="valid" steps="4892"/></proof>
   </goal>
   <goal name="WP_parameter def.47" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="189"/></proof>
@@ -3087,8 +3087,7 @@
   <proof prover="0"><result status="valid" steps="1051"/></proof>
   </goal>
   <goal name="WP_parameter def.78" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
-  <proof prover="1"><result status="valid" steps="646103"/></proof>
+  <proof prover="0"><result status="valid" steps="428810"/></proof>
   </goal>
   <goal name="WP_parameter def.79" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -3127,7 +3126,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.91" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3833"/></proof>
+  <proof prover="0"><result status="valid" steps="3828"/></proof>
   </goal>
   <goal name="WP_parameter def.92" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="367"/></proof>
@@ -3160,14 +3159,14 @@
   <proof prover="0"><result status="valid" steps="1407"/></proof>
   </goal>
   <goal name="WP_parameter def.102" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="51035"/></proof>
+  <proof prover="0"><result status="valid" steps="51364"/></proof>
   </goal>
   <goal name="WP_parameter def.103" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.104" expl="assertion" proved="true">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="valid" steps="49091935"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="49091935"/></proof>
   </goal>
   <goal name="WP_parameter def.105" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="454"/></proof>
@@ -3209,12 +3208,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.118" expl="precondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="9751543"/></proof>
   </goal>
   <goal name="WP_parameter def.119" expl="precondition" proved="true">
-  <proof prover="0" timelimit="60"><result status="valid" steps="523602"/></proof>
-  <proof prover="1"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="valid" steps="547183"/></proof>
   </goal>
   <goal name="WP_parameter def.120" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="259"/></proof>
@@ -3229,7 +3227,7 @@
   <proof prover="0"><result status="valid" steps="256"/></proof>
   </goal>
   <goal name="WP_parameter def.124" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="4317"/></proof>
+  <proof prover="0"><result status="valid" steps="4316"/></proof>
   </goal>
   <goal name="WP_parameter def.125" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="271"/></proof>
@@ -3262,7 +3260,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.135" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3807"/></proof>
+  <proof prover="0"><result status="valid" steps="3798"/></proof>
   </goal>
   <goal name="WP_parameter def.136" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="576"/></proof>
@@ -3298,7 +3296,7 @@
   <proof prover="0"><result status="valid" steps="922"/></proof>
   </goal>
   <goal name="WP_parameter def.147" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="87035"/></proof>
+  <proof prover="0"><result status="valid" steps="87251"/></proof>
   </goal>
   <goal name="WP_parameter def.148" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -3313,13 +3311,13 @@
   <proof prover="0"><result status="valid" steps="626"/></proof>
   </goal>
   <goal name="WP_parameter def.152" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="122970"/></proof>
+  <proof prover="0"><result status="valid" steps="122106"/></proof>
   </goal>
   <goal name="WP_parameter def.153" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="1182"/></proof>
   </goal>
   <goal name="WP_parameter def.154" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="4700609"/></proof>
   </goal>
   <goal name="WP_parameter def.155" expl="precondition" proved="true">
@@ -3356,10 +3354,10 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.166" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="37501"/></proof>
+  <proof prover="0"><result status="valid" steps="37543"/></proof>
   </goal>
   <goal name="WP_parameter def.167" expl="precondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="4500859"/></proof>
   </goal>
   <goal name="WP_parameter def.168" expl="precondition" proved="true">
@@ -3393,20 +3391,20 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.178" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="35768"/></proof>
+  <proof prover="0"><result status="valid" steps="35594"/></proof>
   </goal>
   <goal name="WP_parameter def.179" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.180" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5286"/></proof>
+  <proof prover="0"><result status="valid" steps="5277"/></proof>
   </goal>
   <goal name="WP_parameter def.181" expl="precondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="3333210"/></proof>
   </goal>
   <goal name="WP_parameter def.182" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="31509"/></proof>
+  <proof prover="0"><result status="valid" steps="32146"/></proof>
   </goal>
   <goal name="WP_parameter def.183" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="802"/></proof>
@@ -3424,10 +3422,10 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.188" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="7523"/></proof>
+  <proof prover="0"><result status="valid" steps="6828"/></proof>
   </goal>
   <goal name="WP_parameter def.189" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="339556"/></proof>
+  <proof prover="0"><result status="valid" steps="336675"/></proof>
   </goal>
   <goal name="WP_parameter def.190" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -3451,44 +3449,43 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.197" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="10398"/></proof>
+  <proof prover="0"><result status="valid" steps="10480"/></proof>
   </goal>
   <goal name="WP_parameter def.198" expl="precondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
-  <proof prover="1"><result status="valid" steps="3366934"/></proof>
+  <proof prover="0"><result status="valid" steps="401687"/></proof>
   </goal>
   <goal name="WP_parameter def.199" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="1882"/></proof>
   </goal>
   <goal name="WP_parameter def.200" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1444"/></proof>
+  <proof prover="0"><result status="valid" steps="1440"/></proof>
   </goal>
   <goal name="WP_parameter def.201" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1520"/></proof>
+  <proof prover="0"><result status="valid" steps="1514"/></proof>
   </goal>
   <goal name="WP_parameter def.202" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.203" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="92689"/></proof>
+  <proof prover="0"><result status="valid" steps="95459"/></proof>
   </goal>
   <goal name="WP_parameter def.204" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.205" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9909"/></proof>
+  <proof prover="0"><result status="valid" steps="10035"/></proof>
   </goal>
   <goal name="WP_parameter def.206" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.207" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1865"/></proof>
+  <proof prover="0"><result status="valid" steps="1857"/></proof>
   </goal>
   <goal name="WP_parameter def.208" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.209" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2598"/></proof>
+  <proof prover="0"><result status="valid" steps="2538"/></proof>
   </goal>
   <goal name="WP_parameter def.210" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -3512,32 +3509,31 @@
   <proof prover="0"><result status="valid" steps="12685"/></proof>
   </goal>
   <goal name="WP_parameter def.217" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
-  <proof prover="1"><result status="valid" steps="610585"/></proof>
+  <proof prover="0"><result status="valid" steps="627909"/></proof>
   </goal>
   <goal name="WP_parameter def.218" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.219" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9918"/></proof>
+  <proof prover="0"><result status="valid" steps="10039"/></proof>
   </goal>
   <goal name="WP_parameter def.220" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.221" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1865"/></proof>
+  <proof prover="0"><result status="valid" steps="1857"/></proof>
   </goal>
   <goal name="WP_parameter def.222" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.223" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2598"/></proof>
+  <proof prover="0"><result status="valid" steps="2590"/></proof>
   </goal>
   <goal name="WP_parameter def.224" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.225" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1707"/></proof>
+  <proof prover="0"><result status="valid" steps="1712"/></proof>
   </goal>
   <goal name="WP_parameter def.226" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="267"/></proof>
@@ -3546,7 +3542,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.228" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="14587"/></proof>
+  <proof prover="0"><result status="valid" steps="14686"/></proof>
   </goal>
   <goal name="WP_parameter def.229" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -3573,35 +3569,35 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.237" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="17222"/></proof>
+  <proof prover="0"><result status="valid" steps="17227"/></proof>
   </goal>
   <goal name="WP_parameter def.238" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="26873525"/></proof>
   </goal>
   <goal name="WP_parameter def.239" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.240" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="10228"/></proof>
+  <proof prover="0"><result status="valid" steps="10365"/></proof>
   </goal>
   <goal name="WP_parameter def.241" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.242" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1871"/></proof>
+  <proof prover="0"><result status="valid" steps="1863"/></proof>
   </goal>
   <goal name="WP_parameter def.243" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.244" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2818"/></proof>
+  <proof prover="0"><result status="valid" steps="2807"/></proof>
   </goal>
   <goal name="WP_parameter def.245" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.246" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1875"/></proof>
+  <proof prover="0"><result status="valid" steps="1880"/></proof>
   </goal>
   <goal name="WP_parameter def.247" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="269"/></proof>
@@ -3610,7 +3606,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.249" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="16621"/></proof>
+  <proof prover="0"><result status="valid" steps="16725"/></proof>
   </goal>
   <goal name="WP_parameter def.250" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -3625,63 +3621,64 @@
   <proof prover="0"><result status="valid" steps="1771"/></proof>
   </goal>
   <goal name="WP_parameter def.254" expl="assertion" proved="true">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   <transf name="split_disj" proved="true" >
    <goal name="WP_parameter def.254.0" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.254.1" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.254.2" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.254.3" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.254.4" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="valid" steps="66432635"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="valid" steps="66432635"/></proof>
    </goal>
    <goal name="WP_parameter def.254.5" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.254.6" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.254.7" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="57699"/></proof>
+   <proof prover="0"><result status="valid" steps="58105"/></proof>
    </goal>
   </transf>
   </goal>
-  <goal name="WP_parameter def.255" expl="assertion" proved="true">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <transf name="split_disj" proved="true" >
+  <goal name="WP_parameter def.255" expl="assertion">
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  <transf name="split_disj" >
    <goal name="WP_parameter def.255.0" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.255.1" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.255.2" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.255.3" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
-   <goal name="WP_parameter def.255.4" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="592768"/></proof>
+   <goal name="WP_parameter def.255.4" expl="assertion">
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.255.5" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.255.6" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.255.7" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="57700"/></proof>
+   <proof prover="0"><result status="valid" steps="58285"/></proof>
    </goal>
   </transf>
   </goal>
@@ -3689,19 +3686,19 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.257" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1874"/></proof>
+  <proof prover="0"><result status="valid" steps="1866"/></proof>
   </goal>
   <goal name="WP_parameter def.258" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="10263"/></proof>
+  <proof prover="0"><result status="valid" steps="10400"/></proof>
   </goal>
   <goal name="WP_parameter def.259" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1537"/></proof>
+  <proof prover="0"><result status="valid" steps="1531"/></proof>
   </goal>
   <goal name="WP_parameter def.260" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1373"/></proof>
+  <proof prover="0"><result status="valid" steps="1379"/></proof>
   </goal>
   <goal name="WP_parameter def.261" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1774"/></proof>
+  <proof prover="0"><result status="valid" steps="1768"/></proof>
   </goal>
   <goal name="WP_parameter def.262" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -3710,37 +3707,37 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.264" expl="precondition" proved="true">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   <transf name="split_disj" proved="true" >
    <goal name="WP_parameter def.264.0" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.264.1" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.264.2" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.264.3" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.264.4" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="565270"/></proof>
+   <proof prover="0"><result status="valid" steps="664730"/></proof>
    </goal>
    <goal name="WP_parameter def.264.5" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.264.6" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.264.7" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="65632"/></proof>
+   <proof prover="0"><result status="valid" steps="64694"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="WP_parameter def.265" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1609"/></proof>
+  <proof prover="0"><result status="valid" steps="1614"/></proof>
   </goal>
   <goal name="WP_parameter def.266" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="261"/></proof>
@@ -3755,7 +3752,7 @@
   <proof prover="0"><result status="valid" steps="260"/></proof>
   </goal>
   <goal name="WP_parameter def.270" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="14579"/></proof>
+  <proof prover="0"><result status="valid" steps="14595"/></proof>
   </goal>
   <goal name="WP_parameter def.271" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="275"/></proof>
@@ -3770,7 +3767,7 @@
   <proof prover="0"><result status="valid" steps="76"/></proof>
   </goal>
   <goal name="WP_parameter def.275" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="54542"/></proof>
+  <proof prover="0"><result status="valid" steps="54902"/></proof>
   </goal>
   <goal name="WP_parameter def.276" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -3779,18 +3776,18 @@
   <proof prover="0"><result status="valid" steps="76"/></proof>
   </goal>
   <goal name="WP_parameter def.278" expl="precondition" proved="true">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="valid" steps="84341083"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="84341083"/></proof>
   </goal>
   <goal name="WP_parameter def.279" expl="precondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="1467989"/></proof>
   </goal>
   <goal name="WP_parameter def.280" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="94"/></proof>
   </goal>
   <goal name="WP_parameter def.281" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="77326"/></proof>
+  <proof prover="0"><result status="valid" steps="77283"/></proof>
   </goal>
   <goal name="WP_parameter def.282" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -3931,7 +3928,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.328" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="13640"/></proof>
+  <proof prover="0"><result status="valid" steps="13270"/></proof>
   </goal>
   <goal name="WP_parameter def.329" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -3964,7 +3961,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.339" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="15003"/></proof>
+  <proof prover="0"><result status="valid" steps="14995"/></proof>
   </goal>
   <goal name="WP_parameter def.340" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="14"/></proof>
@@ -4003,7 +4000,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.352" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="15003"/></proof>
+  <proof prover="0"><result status="valid" steps="14995"/></proof>
   </goal>
   <goal name="WP_parameter def.353" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -4039,7 +4036,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.364" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="18923"/></proof>
+  <proof prover="0"><result status="valid" steps="18939"/></proof>
   </goal>
   <goal name="WP_parameter def.365" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -4078,7 +4075,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.377" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="18923"/></proof>
+  <proof prover="0"><result status="valid" steps="18953"/></proof>
   </goal>
   <goal name="WP_parameter def.378" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -4423,118 +4420,117 @@
   <proof prover="0"><result status="valid" steps="10172"/></proof>
   </goal>
   <goal name="WP_parameter def.492" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="23676"/></proof>
+  <proof prover="0"><result status="valid" steps="23670"/></proof>
   </goal>
   <goal name="WP_parameter def.493" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="348988"/></proof>
+  <proof prover="0"><result status="valid" steps="348003"/></proof>
   </goal>
   <goal name="WP_parameter def.494" expl="postcondition" proved="true">
-  <proof prover="0" timelimit="60"><result status="valid" steps="689007"/></proof>
-  <proof prover="1"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="valid" steps="718928"/></proof>
   </goal>
   <goal name="WP_parameter def.495" expl="postcondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="6623643"/></proof>
   </goal>
   <goal name="WP_parameter def.496" expl="postcondition" proved="true">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   <transf name="split_disj" proved="true" >
    <goal name="WP_parameter def.496.0" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="26001"/></proof>
+   <proof prover="0"><result status="valid" steps="26349"/></proof>
    </goal>
    <goal name="WP_parameter def.496.1" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.2" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.3" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.4" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.5" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.6" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="14763"/></proof>
+   <proof prover="0"><result status="valid" steps="14771"/></proof>
    </goal>
    <goal name="WP_parameter def.496.7" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.8" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.9" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="801222"/></proof>
+   <proof prover="0"><result status="valid" steps="804273"/></proof>
    </goal>
    <goal name="WP_parameter def.496.10" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.11" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.12" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.13" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.14" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.15" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="415206"/></proof>
+   <proof prover="0"><result status="valid" steps="417012"/></proof>
    </goal>
    <goal name="WP_parameter def.496.16" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.17" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.18" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.19" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.20" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.21" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.22" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.23" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.24" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.25" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.26" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.27" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.28" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.29" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.30" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.496.31" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
   </transf>
   </goal>
@@ -4551,7 +4547,7 @@
   <proof prover="0"><result status="valid" steps="5163"/></proof>
   </goal>
   <goal name="WP_parameter def.501" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="143993"/></proof>
+  <proof prover="0"><result status="valid" steps="143135"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4722,7 +4718,7 @@
   <proof prover="0"><result status="valid" steps="9247"/></proof>
   </goal>
   <goal name="WP_parameter def.54" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="185537"/></proof>
+  <proof prover="0"><result status="valid" steps="185554"/></proof>
   </goal>
   <goal name="WP_parameter def.55" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -4737,7 +4733,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.59" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2402"/></proof>
+  <proof prover="0"><result status="valid" steps="2503"/></proof>
   </goal>
   <goal name="WP_parameter def.60" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -4779,7 +4775,7 @@
   <proof prover="0"><result status="valid" steps="212"/></proof>
   </goal>
   <goal name="WP_parameter def.73" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="12829"/></proof>
+  <proof prover="0"><result status="valid" steps="12799"/></proof>
   </goal>
   <goal name="WP_parameter def.74" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="230"/></proof>
@@ -4800,8 +4796,7 @@
   <proof prover="0"><result status="valid" steps="1045"/></proof>
   </goal>
   <goal name="WP_parameter def.80" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
-  <proof prover="1"><result status="valid" steps="556009"/></proof>
+  <proof prover="0"><result status="valid" steps="407096"/></proof>
   </goal>
   <goal name="WP_parameter def.81" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -4873,13 +4868,13 @@
   <proof prover="0"><result status="valid" steps="1400"/></proof>
   </goal>
   <goal name="WP_parameter def.104" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="51276"/></proof>
+  <proof prover="0"><result status="valid" steps="50927"/></proof>
   </goal>
   <goal name="WP_parameter def.105" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.106" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="96637"/></proof>
+  <proof prover="0"><result status="valid" steps="95770"/></proof>
   </goal>
   <goal name="WP_parameter def.107" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="447"/></proof>
@@ -4912,11 +4907,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.117" expl="precondition" proved="true">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="valid" steps="79196451"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="79196451"/></proof>
   </goal>
   <goal name="WP_parameter def.118" expl="precondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="12146962"/></proof>
   </goal>
   <goal name="WP_parameter def.119" expl="precondition" proved="true">
@@ -4965,7 +4960,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.134" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3578"/></proof>
+  <proof prover="0"><result status="valid" steps="3569"/></proof>
   </goal>
   <goal name="WP_parameter def.135" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="591"/></proof>
@@ -4974,7 +4969,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.137" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3982"/></proof>
+  <proof prover="0"><result status="valid" steps="3986"/></proof>
   </goal>
   <goal name="WP_parameter def.138" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="1016"/></proof>
@@ -4992,7 +4987,7 @@
   <proof prover="0"><result status="valid" steps="1005"/></proof>
   </goal>
   <goal name="WP_parameter def.143" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1092"/></proof>
+  <proof prover="0"><result status="valid" steps="1093"/></proof>
   </goal>
   <goal name="WP_parameter def.144" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5001,7 +4996,7 @@
   <proof prover="0"><result status="valid" steps="878"/></proof>
   </goal>
   <goal name="WP_parameter def.146" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="48204"/></proof>
+  <proof prover="0"><result status="valid" steps="47925"/></proof>
   </goal>
   <goal name="WP_parameter def.147" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5019,14 +5014,14 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.152" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="10517025"/></proof>
   </goal>
   <goal name="WP_parameter def.153" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="620"/></proof>
   </goal>
   <goal name="WP_parameter def.154" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="74434"/></proof>
+  <proof prover="0"><result status="valid" steps="76703"/></proof>
   </goal>
   <goal name="WP_parameter def.155" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="1177"/></proof>
@@ -5047,7 +5042,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.161" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1169"/></proof>
+  <proof prover="0"><result status="valid" steps="1170"/></proof>
   </goal>
   <goal name="WP_parameter def.162" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="1181"/></proof>
@@ -5068,11 +5063,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.168" expl="precondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="11044214"/></proof>
   </goal>
   <goal name="WP_parameter def.169" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="30610"/></proof>
+  <proof prover="0"><result status="valid" steps="30663"/></proof>
   </goal>
   <goal name="WP_parameter def.170" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="306"/></proof>
@@ -5096,29 +5091,28 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.177" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="4714"/></proof>
+  <proof prover="0"><result status="valid" steps="4705"/></proof>
   </goal>
   <goal name="WP_parameter def.178" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="4761"/></proof>
+  <proof prover="0"><result status="valid" steps="4752"/></proof>
   </goal>
   <goal name="WP_parameter def.179" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.180" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="28200"/></proof>
+  <proof prover="0"><result status="valid" steps="28079"/></proof>
   </goal>
   <goal name="WP_parameter def.181" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.182" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="4717"/></proof>
+  <proof prover="0"><result status="valid" steps="4708"/></proof>
   </goal>
   <goal name="WP_parameter def.183" expl="precondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
-  <proof prover="1"><result status="valid" steps="3267548"/></proof>
+  <proof prover="0"><result status="valid" steps="462454"/></proof>
   </goal>
   <goal name="WP_parameter def.184" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="24817"/></proof>
+  <proof prover="0"><result status="valid" steps="25695"/></proof>
   </goal>
   <goal name="WP_parameter def.185" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="809"/></proof>
@@ -5136,10 +5130,10 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.190" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="6391"/></proof>
+  <proof prover="0"><result status="valid" steps="6825"/></proof>
   </goal>
   <goal name="WP_parameter def.191" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="257864"/></proof>
+  <proof prover="0"><result status="valid" steps="262874"/></proof>
   </goal>
   <goal name="WP_parameter def.192" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5151,7 +5145,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.195" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9146"/></proof>
+  <proof prover="0"><result status="valid" steps="9159"/></proof>
   </goal>
   <goal name="WP_parameter def.196" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5163,43 +5157,43 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.199" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9991"/></proof>
+  <proof prover="0"><result status="valid" steps="10073"/></proof>
   </goal>
   <goal name="WP_parameter def.200" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="325410"/></proof>
+  <proof prover="0"><result status="valid" steps="336199"/></proof>
   </goal>
   <goal name="WP_parameter def.201" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="1884"/></proof>
   </goal>
   <goal name="WP_parameter def.202" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1468"/></proof>
+  <proof prover="0"><result status="valid" steps="1450"/></proof>
   </goal>
   <goal name="WP_parameter def.203" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1585"/></proof>
+  <proof prover="0"><result status="valid" steps="1579"/></proof>
   </goal>
   <goal name="WP_parameter def.204" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.205" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="85286"/></proof>
+  <proof prover="0"><result status="valid" steps="87197"/></proof>
   </goal>
   <goal name="WP_parameter def.206" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.207" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9503"/></proof>
+  <proof prover="0"><result status="valid" steps="9639"/></proof>
   </goal>
   <goal name="WP_parameter def.208" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.209" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1893"/></proof>
+  <proof prover="0"><result status="valid" steps="1885"/></proof>
   </goal>
   <goal name="WP_parameter def.210" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.211" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2644"/></proof>
+  <proof prover="0"><result status="valid" steps="2636"/></proof>
   </goal>
   <goal name="WP_parameter def.212" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5220,29 +5214,28 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.218" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="12286"/></proof>
+  <proof prover="0"><result status="valid" steps="12291"/></proof>
   </goal>
   <goal name="WP_parameter def.219" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
-  <proof prover="1"><result status="valid" steps="611916"/></proof>
+  <proof prover="0"><result status="valid" steps="512268"/></proof>
   </goal>
   <goal name="WP_parameter def.220" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.221" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9512"/></proof>
+  <proof prover="0"><result status="valid" steps="9648"/></proof>
   </goal>
   <goal name="WP_parameter def.222" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.223" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1893"/></proof>
+  <proof prover="0"><result status="valid" steps="1885"/></proof>
   </goal>
   <goal name="WP_parameter def.224" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.225" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2644"/></proof>
+  <proof prover="0"><result status="valid" steps="2583"/></proof>
   </goal>
   <goal name="WP_parameter def.226" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5257,25 +5250,25 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.230" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="13802"/></proof>
+  <proof prover="0"><result status="valid" steps="13787"/></proof>
   </goal>
   <goal name="WP_parameter def.231" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.232" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9783"/></proof>
+  <proof prover="0"><result status="valid" steps="9921"/></proof>
   </goal>
   <goal name="WP_parameter def.233" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.234" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1899"/></proof>
+  <proof prover="0"><result status="valid" steps="1891"/></proof>
   </goal>
   <goal name="WP_parameter def.235" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.236" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3023"/></proof>
+  <proof prover="0"><result status="valid" steps="2866"/></proof>
   </goal>
   <goal name="WP_parameter def.237" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5290,7 +5283,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.241" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="14545"/></proof>
+  <proof prover="0"><result status="valid" steps="14652"/></proof>
   </goal>
   <goal name="WP_parameter def.242" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5326,25 +5319,25 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.253" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9848"/></proof>
+  <proof prover="0"><result status="valid" steps="9986"/></proof>
   </goal>
   <goal name="WP_parameter def.254" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.255" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1902"/></proof>
+  <proof prover="0"><result status="valid" steps="1894"/></proof>
   </goal>
   <goal name="WP_parameter def.256" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.257" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3049"/></proof>
+  <proof prover="0"><result status="valid" steps="2889"/></proof>
   </goal>
   <goal name="WP_parameter def.258" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.259" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1912"/></proof>
+  <proof prover="0"><result status="valid" steps="1917"/></proof>
   </goal>
   <goal name="WP_parameter def.260" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="340"/></proof>
@@ -5353,7 +5346,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.262" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="15191"/></proof>
+  <proof prover="0"><result status="valid" steps="15307"/></proof>
   </goal>
   <goal name="WP_parameter def.263" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5383,20 +5376,20 @@
   <proof prover="0"><result status="valid" steps="366"/></proof>
   </goal>
   <goal name="WP_parameter def.272" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="5071770"/></proof>
   </goal>
   <goal name="WP_parameter def.273" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.274" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1908"/></proof>
+  <proof prover="0"><result status="valid" steps="1900"/></proof>
   </goal>
   <goal name="WP_parameter def.275" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.276" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1629"/></proof>
+  <proof prover="0"><result status="valid" steps="1623"/></proof>
   </goal>
   <goal name="WP_parameter def.277" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5405,19 +5398,19 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.279" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1908"/></proof>
+  <proof prover="0"><result status="valid" steps="1900"/></proof>
   </goal>
   <goal name="WP_parameter def.280" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9862"/></proof>
+  <proof prover="0"><result status="valid" steps="10009"/></proof>
   </goal>
   <goal name="WP_parameter def.281" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1608"/></proof>
+  <proof prover="0"><result status="valid" steps="1602"/></proof>
   </goal>
   <goal name="WP_parameter def.282" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="1400"/></proof>
   </goal>
   <goal name="WP_parameter def.283" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1821"/></proof>
+  <proof prover="0"><result status="valid" steps="1815"/></proof>
   </goal>
   <goal name="WP_parameter def.284" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5426,65 +5419,39 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.286" expl="precondition">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.286.0" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.286.1" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.286.2" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.286.3" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.286.4" expl="precondition">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.286.5" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.286.6" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.286.7" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="62648"/></proof>
+   <proof prover="0"><result status="valid" steps="65406"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="WP_parameter def.287" expl="precondition" proved="true">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <transf name="split_disj" proved="true" >
-   <goal name="WP_parameter def.287.0" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
-   </goal>
-   <goal name="WP_parameter def.287.1" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
-   </goal>
-   <goal name="WP_parameter def.287.2" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
-   </goal>
-   <goal name="WP_parameter def.287.3" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
-   </goal>
-   <goal name="WP_parameter def.287.4" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="621209"/></proof>
-   </goal>
-   <goal name="WP_parameter def.287.5" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
-   </goal>
-   <goal name="WP_parameter def.287.6" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
-   </goal>
-   <goal name="WP_parameter def.287.7" expl="precondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="62655"/></proof>
-   </goal>
-  </transf>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="115168969"/></proof>
   </goal>
   <goal name="WP_parameter def.288" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="325"/></proof>
@@ -5499,7 +5466,7 @@
   <proof prover="0"><result status="valid" steps="324"/></proof>
   </goal>
   <goal name="WP_parameter def.292" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="14023"/></proof>
+  <proof prover="0"><result status="valid" steps="13993"/></proof>
   </goal>
   <goal name="WP_parameter def.293" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="339"/></proof>
@@ -5511,13 +5478,13 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.296" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="93191"/></proof>
+  <proof prover="0"><result status="valid" steps="94476"/></proof>
   </goal>
   <goal name="WP_parameter def.297" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="503"/></proof>
   </goal>
   <goal name="WP_parameter def.298" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="35614725"/></proof>
   </goal>
   <goal name="WP_parameter def.299" expl="precondition" proved="true">
@@ -5530,7 +5497,7 @@
   <proof prover="0"><result status="valid" steps="74"/></proof>
   </goal>
   <goal name="WP_parameter def.302" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="75185"/></proof>
+  <proof prover="0"><result status="valid" steps="76587"/></proof>
   </goal>
   <goal name="WP_parameter def.303" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5539,17 +5506,17 @@
   <proof prover="0"><result status="valid" steps="74"/></proof>
   </goal>
   <goal name="WP_parameter def.305" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="7482"/></proof>
+  <proof prover="0"><result status="valid" steps="7480"/></proof>
   </goal>
   <goal name="WP_parameter def.306" expl="precondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="2170767"/></proof>
   </goal>
   <goal name="WP_parameter def.307" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="85"/></proof>
   </goal>
   <goal name="WP_parameter def.308" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="70506"/></proof>
+  <proof prover="0"><result status="valid" steps="71009"/></proof>
   </goal>
   <goal name="WP_parameter def.309" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5690,7 +5657,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.355" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="13439"/></proof>
+  <proof prover="0"><result status="valid" steps="13065"/></proof>
   </goal>
   <goal name="WP_parameter def.356" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5723,7 +5690,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.366" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="15551"/></proof>
+  <proof prover="0"><result status="valid" steps="15525"/></proof>
   </goal>
   <goal name="WP_parameter def.367" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="14"/></proof>
@@ -5762,7 +5729,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.379" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="15551"/></proof>
+  <proof prover="0"><result status="valid" steps="15525"/></proof>
   </goal>
   <goal name="WP_parameter def.380" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5798,7 +5765,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.391" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="18938"/></proof>
+  <proof prover="0"><result status="valid" steps="18525"/></proof>
   </goal>
   <goal name="WP_parameter def.392" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5837,7 +5804,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.404" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="18938"/></proof>
+  <proof prover="0"><result status="valid" steps="18525"/></proof>
   </goal>
   <goal name="WP_parameter def.405" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -6179,20 +6146,19 @@
   <proof prover="0"><result status="valid" steps="3836"/></proof>
   </goal>
   <goal name="WP_parameter def.518" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="10081"/></proof>
+  <proof prover="0"><result status="valid" steps="10084"/></proof>
   </goal>
   <goal name="WP_parameter def.519" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="23090"/></proof>
+  <proof prover="0"><result status="valid" steps="23209"/></proof>
   </goal>
   <goal name="WP_parameter def.520" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="181054"/></proof>
+  <proof prover="0"><result status="valid" steps="179872"/></proof>
   </goal>
   <goal name="WP_parameter def.521" expl="postcondition" proved="true">
-  <proof prover="0" timelimit="60"><result status="valid" steps="510647"/></proof>
-  <proof prover="1"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="valid" steps="518188"/></proof>
   </goal>
   <goal name="WP_parameter def.522" expl="postcondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="6295512"/></proof>
   </goal>
   <goal name="WP_parameter def.523" expl="postcondition" proved="true">
@@ -6211,7 +6177,7 @@
   <proof prover="0"><result status="valid" steps="4960"/></proof>
   </goal>
   <goal name="WP_parameter def.528" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="117481"/></proof>
+  <proof prover="0"><result status="valid" steps="117613"/></proof>
   </goal>
  </transf>
  </goal>
@@ -6292,23 +6258,23 @@
   <proof prover="0"><result status="valid" steps="129"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition">
-  <proof prover="0" timelimit="60"><result status="unknown" steps="1666"/></proof>
-  <proof prover="1" timelimit="60"><result status="unknown" steps="652734"/></proof>
+  <proof prover="0"><result status="unknown" steps="1329"/></proof>
+  <proof prover="1"><result status="unknown" steps="652734"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="166"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="check" proved="true">
-  <proof prover="0"><result status="valid" steps="1112"/></proof>
+  <proof prover="0"><result status="valid" steps="1056"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="284"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="2826"/></proof>
+  <proof prover="0"><result status="valid" steps="2801"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="2875"/></proof>
+  <proof prover="0"><result status="valid" steps="2720"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="403"/></proof>
@@ -6320,7 +6286,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="1083"/></proof>
+  <proof prover="0"><result status="valid" steps="1058"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -6368,33 +6334,33 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.38" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1077"/></proof>
+  <proof prover="0"><result status="valid" steps="1052"/></proof>
   </goal>
   <goal name="WP_parameter def.39" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="357"/></proof>
   </goal>
   <goal name="WP_parameter def.40" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2133"/></proof>
+  <proof prover="0"><result status="valid" steps="2108"/></proof>
   </goal>
   <goal name="WP_parameter def.41" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2071"/></proof>
+  <proof prover="0"><result status="valid" steps="2046"/></proof>
   </goal>
   <goal name="WP_parameter def.42" expl="postcondition">
-  <proof prover="0" timelimit="60"><result status="unknown" steps="15709"/></proof>
-  <proof prover="1" timelimit="60"><result status="unknown" steps="7999279"/></proof>
+  <proof prover="0"><result status="unknown" steps="15684"/></proof>
+  <proof prover="1"><result status="unknown" steps="7999279"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.42.0" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.42.1" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.42.2" expl="postcondition">
-   <proof prover="0" timelimit="60"><result status="unknown" steps="12784"/></proof>
-   <proof prover="1" timelimit="60"><result status="unknown" steps="4902710"/></proof>
+   <proof prover="0"><result status="unknown" steps="12774"/></proof>
+   <proof prover="1"><result status="unknown" steps="4902710"/></proof>
    </goal>
    <goal name="WP_parameter def.42.3" expl="postcondition" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
   </transf>
   </goal>
@@ -6666,10 +6632,10 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.87" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="217782"/></proof>
+  <proof prover="0"><result status="valid" steps="217803"/></proof>
   </goal>
   <goal name="WP_parameter def.88" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="217702"/></proof>
+  <proof prover="0"><result status="valid" steps="217717"/></proof>
   </goal>
   <goal name="WP_parameter def.89" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="2006"/></proof>
@@ -6678,11 +6644,11 @@
   <proof prover="0"><result status="valid" steps="2018"/></proof>
   </goal>
   <goal name="WP_parameter def.91" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="1063081"/></proof>
   </goal>
   <goal name="WP_parameter def.92" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="1135861"/></proof>
   </goal>
   <goal name="WP_parameter def.93" expl="precondition" proved="true">
@@ -6713,11 +6679,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.102" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="5213578"/></proof>
   </goal>
   <goal name="WP_parameter def.103" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="1322727"/></proof>
   </goal>
   <goal name="WP_parameter def.104" expl="precondition" proved="true">
@@ -6808,7 +6774,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.133" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="69645"/></proof>
+  <proof prover="0"><result status="valid" steps="71190"/></proof>
   </goal>
   <goal name="WP_parameter def.134" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -6826,11 +6792,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.139" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="462900"/></proof>
   </goal>
   <goal name="WP_parameter def.140" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="460736"/></proof>
   </goal>
   <goal name="WP_parameter def.141" expl="loop invariant init" proved="true">
@@ -6915,7 +6881,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.168" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="163276"/></proof>
+  <proof prover="0"><result status="valid" steps="162969"/></proof>
   </goal>
   <goal name="WP_parameter def.169" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -6933,332 +6899,332 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.174" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="12109101"/></proof>
   </goal>
   <goal name="WP_parameter def.175" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="5233827"/></proof>
   </goal>
   <goal name="WP_parameter def.176" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="4147"/></proof>
+  <proof prover="0"><result status="valid" steps="4137"/></proof>
   </goal>
   <goal name="WP_parameter def.177" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="4159"/></proof>
+  <proof prover="0"><result status="valid" steps="4149"/></proof>
   </goal>
   <goal name="WP_parameter def.178" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="31928197"/></proof>
   </goal>
   <goal name="WP_parameter def.179" expl="loop invariant preservation">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.179.0" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="valid" steps="4495437"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="valid" steps="4495437"/></proof>
    </goal>
    <goal name="WP_parameter def.179.1" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="valid" steps="3532912"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="valid" steps="3532912"/></proof>
    </goal>
    <goal name="WP_parameter def.179.2" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.3" expl="loop invariant preservation">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.179.4" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.5" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.6" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.7" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.8" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.9" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="valid" steps="4577798"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="valid" steps="4577798"/></proof>
    </goal>
    <goal name="WP_parameter def.179.10" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="valid" steps="12778142"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="valid" steps="12778142"/></proof>
    </goal>
    <goal name="WP_parameter def.179.11" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
-   <goal name="WP_parameter def.179.12" expl="loop invariant preservation">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   <goal name="WP_parameter def.179.12" expl="loop invariant preservation" proved="true">
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="valid" steps="141189982"/></proof>
    </goal>
    <goal name="WP_parameter def.179.13" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.14" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.15" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.16" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.17" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.18" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.19" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.20" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.21" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.22" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.23" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.24" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.25" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.26" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.27" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="valid" steps="19768894"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="valid" steps="19768894"/></proof>
    </goal>
    <goal name="WP_parameter def.179.28" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="valid" steps="16790948"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="valid" steps="16790948"/></proof>
    </goal>
    <goal name="WP_parameter def.179.29" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.30" expl="loop invariant preservation">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.179.31" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.32" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.33" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.34" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.35" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.36" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.37" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.38" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.39" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.40" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.41" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.42" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.43" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.44" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.45" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.46" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.47" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.48" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.49" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.50" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.51" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.52" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.53" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.54" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.55" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.56" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.57" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.58" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.59" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.60" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.61" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.62" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.63" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.64" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.65" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.66" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.67" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.68" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.69" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.70" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.71" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.72" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.73" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.74" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.75" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.76" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.77" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.78" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.79" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.80" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.81" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.82" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.83" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.84" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.85" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.86" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.87" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.88" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.89" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.90" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.91" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.92" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.93" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.94" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.95" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.96" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.97" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.179.98" expl="loop invariant preservation" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
   </transf>
   </goal>
@@ -7290,11 +7256,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.189" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="7637922"/></proof>
   </goal>
   <goal name="WP_parameter def.190" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="1687895"/></proof>
   </goal>
   <goal name="WP_parameter def.191" expl="precondition" proved="true">
@@ -7346,19 +7312,19 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.207" expl="postcondition" proved="true">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="valid" steps="80810146"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="80810146"/></proof>
   </goal>
   <goal name="WP_parameter def.208" expl="postcondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="26743488"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Search_trees__prove_plug_order__subprogram_def" sum="78dfc65a96562cd1c438aac11ee174f2">
- <goal name="WP_parameter def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
+<theory name="Search_trees__prove_plug_order__subprogram_def" proved="true" sum="78dfc65a96562cd1c438aac11ee174f2">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
@@ -7531,7 +7497,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.57" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="125236"/></proof>
+  <proof prover="0"><result status="valid" steps="125224"/></proof>
   </goal>
   <goal name="WP_parameter def.58" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -7549,12 +7515,10 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.63" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
-  <proof prover="1"><result status="valid" steps="1055769"/></proof>
+  <proof prover="0"><result status="valid" steps="838383"/></proof>
   </goal>
   <goal name="WP_parameter def.64" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
-  <proof prover="1"><result status="valid" steps="957234"/></proof>
+  <proof prover="0"><result status="valid" steps="798910"/></proof>
   </goal>
   <goal name="WP_parameter def.65" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -7607,59 +7571,59 @@
   <goal name="WP_parameter def.81" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.82" expl="assertion">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <transf name="split_disj" >
+  <goal name="WP_parameter def.82" expl="assertion" proved="true">
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  <transf name="split_disj" proved="true" >
    <goal name="WP_parameter def.82.0" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="17499"/></proof>
+   <proof prover="0"><result status="valid" steps="17499"/></proof>
    </goal>
    <goal name="WP_parameter def.82.1" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.82.2" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.82.3" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.82.4" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="valid" steps="964496"/></proof>
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="valid" steps="964496"/></proof>
    </goal>
    <goal name="WP_parameter def.82.5" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.82.6" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.82.7" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.82.8" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.82.9" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.82.10" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.82.11" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
-   <goal name="WP_parameter def.82.12" expl="assertion">
-   <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-   <proof prover="1" timelimit="60"><result status="timeout" time="60.00"/></proof>
+   <goal name="WP_parameter def.82.12" expl="assertion" proved="true">
+   <proof prover="0"><result status="timeout"/></proof>
+   <proof prover="1"><result status="valid" steps="126306817"/></proof>
    </goal>
    <goal name="WP_parameter def.82.13" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.82.14" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.82.15" expl="assertion" proved="true">
-   <proof prover="0" timelimit="60"><result status="valid" steps="5"/></proof>
+   <proof prover="0"><result status="valid" steps="5"/></proof>
    </goal>
   </transf>
   </goal>
@@ -7679,10 +7643,10 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.88" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="234194"/></proof>
+  <proof prover="0"><result status="valid" steps="234244"/></proof>
   </goal>
   <goal name="WP_parameter def.89" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="229006"/></proof>
+  <proof prover="0"><result status="valid" steps="229010"/></proof>
   </goal>
   <goal name="WP_parameter def.90" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -7721,7 +7685,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.102" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="48264"/></proof>
+  <proof prover="0"><result status="valid" steps="42359"/></proof>
   </goal>
   <goal name="WP_parameter def.103" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -7772,11 +7736,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.119" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="1220876"/></proof>
   </goal>
   <goal name="WP_parameter def.120" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="4289793"/></proof>
   </goal>
   <goal name="WP_parameter def.121" expl="precondition" proved="true">
@@ -7804,11 +7768,11 @@
   <proof prover="0"><result status="valid" steps="8204"/></proof>
   </goal>
   <goal name="WP_parameter def.129" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="425911"/></proof>
   </goal>
   <goal name="WP_parameter def.130" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="429069"/></proof>
   </goal>
   <goal name="WP_parameter def.131" expl="precondition" proved="true">
@@ -7905,11 +7869,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.162" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="1132757"/></proof>
   </goal>
   <goal name="WP_parameter def.163" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="5658672"/></proof>
   </goal>
   <goal name="WP_parameter def.164" expl="precondition" proved="true">
@@ -7931,8 +7895,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.170" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
-  <proof prover="1"><result status="valid" steps="2548434"/></proof>
+  <proof prover="0"><result status="valid" steps="323590"/></proof>
   </goal>
   <goal name="WP_parameter def.171" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -7965,7 +7928,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.181" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="10732260"/></proof>
   </goal>
   <goal name="WP_parameter def.182" expl="precondition" proved="true">
@@ -7984,11 +7947,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.187" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="4385649"/></proof>
   </goal>
   <goal name="WP_parameter def.188" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="6907178"/></proof>
   </goal>
   <goal name="WP_parameter def.189" expl="precondition" proved="true">
@@ -8028,7 +7991,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.201" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="67135"/></proof>
+  <proof prover="0"><result status="valid" steps="67129"/></proof>
   </goal>
   <goal name="WP_parameter def.202" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -8079,11 +8042,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.218" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="4483250"/></proof>
   </goal>
   <goal name="WP_parameter def.219" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="177380"/></proof>
+  <proof prover="0"><result status="valid" steps="173962"/></proof>
   </goal>
   <goal name="WP_parameter def.220" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -8110,20 +8073,20 @@
   <proof prover="0"><result status="valid" steps="19339"/></proof>
   </goal>
   <goal name="WP_parameter def.228" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="3676177"/></proof>
   </goal>
   <goal name="WP_parameter def.229" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="9357647"/></proof>
   </goal>
   <goal name="WP_parameter def.230" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="7553950"/></proof>
   </goal>
   <goal name="WP_parameter def.231" expl="loop invariant preservation" proved="true">
-  <proof prover="0" timelimit="60"><result status="timeout" time="60.00"/></proof>
-  <proof prover="1" timelimit="60"><result status="valid" steps="73570753"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="73570753"/></proof>
   </goal>
   <goal name="WP_parameter def.232" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -8153,11 +8116,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.241" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="7832781"/></proof>
   </goal>
   <goal name="WP_parameter def.242" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="856463"/></proof>
   </goal>
   <goal name="WP_parameter def.243" expl="precondition" proved="true">
@@ -8245,7 +8208,7 @@
   <proof prover="0"><result status="valid" steps="1194"/></proof>
   </goal>
   <goal name="WP_parameter def.24" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="374806"/></proof>
+  <proof prover="0"><result status="valid" steps="374800"/></proof>
   </goal>
   <goal name="WP_parameter def.25" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -8278,7 +8241,7 @@
   <proof prover="0"><result status="valid" steps="78796"/></proof>
   </goal>
   <goal name="WP_parameter def.35" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="79352"/></proof>
+  <proof prover="0"><result status="valid" steps="79341"/></proof>
   </goal>
   <goal name="WP_parameter def.36" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -8473,7 +8436,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.41" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="208048"/></proof>
   </goal>
   <goal name="WP_parameter def.42" expl="precondition" proved="true">
@@ -8483,7 +8446,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.44" expl="postcondition" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="488207"/></proof>
   </goal>
  </transf>
@@ -8664,7 +8627,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.57" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="1268557"/></proof>
   </goal>
   <goal name="WP_parameter def.58" expl="precondition" proved="true">
@@ -8692,7 +8655,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.66" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="157433"/></proof>
   </goal>
   <goal name="WP_parameter def.67" expl="precondition" proved="true">
@@ -8741,11 +8704,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.82" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="3646936"/></proof>
   </goal>
   <goal name="WP_parameter def.83" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="603017"/></proof>
   </goal>
   <goal name="WP_parameter def.84" expl="precondition" proved="true">
@@ -8836,17 +8799,17 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.113" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="6390"/></proof>
+  <proof prover="0"><result status="valid" steps="6415"/></proof>
   </goal>
   <goal name="WP_parameter def.114" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="6467"/></proof>
+  <proof prover="0"><result status="valid" steps="6510"/></proof>
   </goal>
   <goal name="WP_parameter def.115" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="3168037"/></proof>
   </goal>
   <goal name="WP_parameter def.116" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="1048925"/></proof>
   </goal>
   <goal name="WP_parameter def.117" expl="precondition" proved="true">
@@ -8976,7 +8939,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.159" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="1018260"/></proof>
   </goal>
   <goal name="WP_parameter def.160" expl="precondition" proved="true">
@@ -9004,7 +8967,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.168" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="9554"/></proof>
+  <proof prover="0"><result status="valid" steps="9466"/></proof>
   </goal>
   <goal name="WP_parameter def.169" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="105"/></proof>
@@ -9052,11 +9015,11 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.184" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="4016883"/></proof>
   </goal>
   <goal name="WP_parameter def.185" expl="assertion" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="4421121"/></proof>
   </goal>
   <goal name="WP_parameter def.186" expl="precondition" proved="true">
@@ -9096,7 +9059,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.198" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="1949"/></proof>
+  <proof prover="0"><result status="valid" steps="1947"/></proof>
   </goal>
   <goal name="WP_parameter def.199" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -9147,17 +9110,17 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.215" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="12789"/></proof>
+  <proof prover="0"><result status="valid" steps="11818"/></proof>
   </goal>
   <goal name="WP_parameter def.216" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="13005"/></proof>
+  <proof prover="0"><result status="valid" steps="11561"/></proof>
   </goal>
   <goal name="WP_parameter def.217" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="1935589"/></proof>
   </goal>
   <goal name="WP_parameter def.218" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="10271168"/></proof>
   </goal>
   <goal name="WP_parameter def.219" expl="precondition" proved="true">
@@ -9206,10 +9169,10 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.234" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="25199"/></proof>
+  <proof prover="0"><result status="valid" steps="24967"/></proof>
   </goal>
   <goal name="WP_parameter def.235" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="25022"/></proof>
+  <proof prover="0"><result status="valid" steps="24803"/></proof>
   </goal>
   <goal name="WP_parameter def.236" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="154"/></proof>
