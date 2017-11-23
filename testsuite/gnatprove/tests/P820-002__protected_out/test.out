@@ -16,9 +16,9 @@ polyorb_hi-messages.adb:81:62: info: initialization of "R" proved
 polyorb_hi-messages.adb:81:62: info: length check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:81:65: info: length check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:83:14: info: initialization of "R" proved
-polyorb_hi-messages.adb:92:51: medium: array index check might fail (e.g. when M = (others => 0) and M'First = 5 and M'Last = 0)
+polyorb_hi-messages.adb:92:51: medium: array index check might fail
 polyorb_hi-messages.adb:105:32: info: range check proved (CVC4: 1 VC)
-polyorb_hi-messages.adb:105:42: medium: range check might fail (e.g. when Item'First = -9223372036854775807 and Item'Last = 0)
+polyorb_hi-messages.adb:105:42: medium: range check might fail
 polyorb_hi-messages.adb:105:51: info: precondition proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:107:12: info: length check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:113:29: info: range check proved (CVC4: 1 VC)
@@ -34,7 +34,7 @@ polyorb_hi-messages.adb:120:57: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:122:23: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:123:39: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:123:39: info: range check proved (CVC4: 1 VC)
-polyorb_hi-messages.adb:155:14: medium: range check might fail (e.g. when Item = (others => 0) and Item'First = -9223372036854775807 and Item'Last = 0)
+polyorb_hi-messages.adb:155:14: medium: range check might fail
 polyorb_hi-messages.adb:156:16: info: range check proved (CVC4: 4 VC)
 polyorb_hi-messages.adb:156:57: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:156:63: info: range check proved (CVC4: 1 VC)
@@ -50,7 +50,7 @@ polyorb_hi-messages.ads:91:26: info: initialization of "M.Content" proved
 polyorb_hi-messages.ads:91:26: info: initialization of "M.First" proved
 polyorb_hi-messages.ads:91:26: info: initialization of "M.Last" proved
 polyorb_hi-messages.ads:98:40: info: precondition proved (CVC4: 1 VC)
-polyorb_hi-messages.ads:99:17: medium: postcondition might fail, cannot prove Payload'Result'Length = Length (M) (e.g. when M = (Content => (others => 0), First => 0, Last => 1) and Payload'Result = (others => 0))
+polyorb_hi-messages.ads:99:17: medium: postcondition might fail, cannot prove Payload'Result'Length = Length (M)
 polyorb_hi-messages.ads:99:32: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.ads:99:42: info: precondition proved (CVC4: 1 VC)
 polyorb_hi-messages.ads:103:44: info: precondition proved (CVC4: 1 VC)
