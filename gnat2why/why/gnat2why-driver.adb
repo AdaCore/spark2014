@@ -422,9 +422,6 @@ package body Gnat2Why.Driver is
 
       Rewrite_All_Compilation_Units;
 
-      --  Then register mappings from entity names to entity ids
-      Register_All_Entities;
-
       --  Mark all compilation units as "in SPARK / not in SPARK", in
       --  the same order that they were processed by the frontend. Bodies
       --  are not included, except for the main unit itself, which always
@@ -481,6 +478,9 @@ package body Gnat2Why.Driver is
          --  Also this functionality should be moved (to generated globals)
          Compute_Global_Effects;
          Timing_Phase_Completed (Timing, "globals (basic)");
+
+         --  Register mappings from entity names to entity ids
+         Register_All_Entities;
 
          --  Read the generated globals from the ALI files
          GG_Read (GNAT_Root);
