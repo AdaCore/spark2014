@@ -1,1 +1,2 @@
 Windows SKIP test is not adapted to Windows environment
+ALL XFAIL this test should not be done by printing json output.
