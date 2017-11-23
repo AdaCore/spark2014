@@ -1,0 +1,17 @@
+project Test is
+
+   for Languages use ("Ada");
+
+   for Main use ("test_sqrt");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnata", "-gnato");
+   end Compiler;
+
+   package Prove is
+      for Proof_Dir use "proof";
+      for Switches use ("-j2");
+   end Prove;
+
+
+end Test;
