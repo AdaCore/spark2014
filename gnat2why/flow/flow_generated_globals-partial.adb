@@ -44,7 +44,6 @@ with Sem_Util;                         use Sem_Util;
 with Sinfo;                            use Sinfo;
 with Snames;                           use Snames;
 with SPARK_Definition;                 use SPARK_Definition;
-with SPARK_Util;                       use SPARK_Util;
 with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with SPARK_Xrefs;                      use SPARK_Xrefs;
@@ -103,18 +102,11 @@ package body Flow_Generated_Globals.Partial is
    --  Preliminaries
    ----------------------------------------------------------------------------
 
-   function Disjoint (A, B, C : Node_Sets.Set) return Boolean;
-   --  Returns True iff sets A, B, C are mutually disjoint
-
    function Is_Caller_Entity (E : Entity_Id) return Boolean;
    --  Returns True iff E represent an entity is can call other routines
 
    function Is_Callable (E : Entity_Id) return Boolean;
    --  Returns True iff E might be called
-
-   function Is_Callee (E : Entity_Id) return Boolean;
-   --  Returns True iff E might be called or is a package nested in an entity
-   --  that might be called (and we treat its elaboration as a call).
 
    function Scope_Truly_Within_Or_Same
      (E, Analyzed : Entity_Id) return Boolean
@@ -141,45 +133,9 @@ package body Flow_Generated_Globals.Partial is
    --  Types
    ----------------------------------------------------------------------------
 
-   subtype Callee_Set is Node_Sets.Set
-   with Dynamic_Predicate =>
-          (for all E of Callee_Set => Is_Callee (E));
-
    type No_Colours is (Dummy_Color);
    --  Dummy type inhabited by only a single value (just like a unit type in
    --  OCaml); needed for graphs with colorless edges.
-
-   type Call_Nodes is record
-      Proof_Calls       : Callee_Set;
-      Conditional_Calls : Callee_Set;
-      Definite_Calls    : Callee_Set;
-   end record
-   with Dynamic_Predicate => Disjoint (Call_Nodes.Proof_Calls,
-                                       Call_Nodes.Conditional_Calls,
-                                       Call_Nodes.Definite_Calls);
-
-   subtype Pkg_State_Set is Global_Set
-   with Dynamic_Predicate =>
-          (for all E of Pkg_State_Set => Is_Package_State (E));
-
-   type Initializes_Nodes is record
-      Proper  : Pkg_State_Set;  --  ??? Abstract, just like in Flow_Nodes
-      Refined : Pkg_State_Set;
-   end record;
-
-   type Flow_Nodes is record
-      Proper  : Global_Nodes;  --  ??? Abstract
-      Refined : Global_Nodes;
-
-      Initializes : Initializes_Nodes;
-      --  Only meaningful for packages
-
-      Calls : Call_Nodes;
-      --  ### This is all the calls relevant for generation of
-      --  globals, i.e. calls to subprograms *with* contracts do not
-      --  appear here because we already understand the effects.
-   end record;
-   --  Information needed to synthesize the the Global contract
 
    --  ### Idea: Lets try to use tri-valued logic instead of using
    --  boolean constant Meaningless
@@ -409,12 +365,6 @@ package body Flow_Generated_Globals.Partial is
      (From           : in out Flow_Nodes;
       Constant_Graph :        Constant_Graphs.Graph);
    --  Filter constants without variable from contract
-
-   function To_Names
-     (Entries : Entry_Call_Sets.Set;
-      Objects : Tasking_Info)
-      return Name_Tasking_Info;
-   --  Convert tasking info from nodes to names
 
    procedure Write_Constants_To_ALI (Constant_Graph : Constant_Graphs.Graph);
    --  Register calls from the initial expressions of Locals to subprograms in
@@ -2440,37 +2390,6 @@ package body Flow_Generated_Globals.Partial is
       --  they are not written to the ALI file but that needs to be revisited
    end Strip_Constants;
 
-   --------------
-   -- To_Names --
-   --------------
-
-   function To_Names
-     (Entries : Entry_Call_Sets.Set;
-      Objects : Tasking_Info)
-      return Name_Tasking_Info
-   is
-      Result : Name_Tasking_Info;
-   begin
-      for EC of Entries loop
-         --  For entry calls pretend that we are accessing an object
-         --  Package_Name.Object_Name.Entry_Name.
-         Result (Entry_Calls).Insert
-           (To_Entity_Name
-              (To_String (EC.Obj) &
-                 "__" &
-               Get_Name_String (Chars (EC.Entr))));
-      end loop;
-
-      for Kind in Objects'Range loop
-         for N of Objects (Kind) loop
-            pragma Assert (Ekind (N) in E_Abstract_State | Object_Kind);
-            Result (Kind).Insert (To_Entity_Name (N));
-         end loop;
-      end loop;
-
-      return Result;
-   end To_Names;
-
    ----------------------------
    -- Write_Constants_To_ALI --
    ----------------------------
@@ -2663,41 +2582,23 @@ package body Flow_Generated_Globals.Partial is
          GG_Register_Direct_Calls (E, Contr.Direct_Calls);
 
          GG_Register_Global_Info
-           ((Name                  => To_Entity_Name (E),
-             Local                 => not Is_Visible_From_Other_Units (E),
-             Kind                  => Ekind (E),
-             Is_Protected          => Ekind (E) in E_Function | E_Procedure
-                                        and then Ekind (Scope (E)) =
-                                                 E_Protected_Type,
-             Is_Library_Level      => Ekind (E) = E_Package
-                                        and then Is_Library_Level_Entity (E),
-             Origin                => Origin_Flow,      --  ??? dummy
-             Globals               =>
-               (Proper  =>
-                  (Proof_Ins => To_Name_Set (Contr.Globals.Proper.Proof_Ins),
-                   Inputs    => To_Name_Set (Contr.Globals.Proper.Inputs),
-                   Outputs   => To_Name_Set (Contr.Globals.Proper.Outputs)),
-                Refined =>
-                  (Proof_Ins => To_Name_Set (Contr.Globals.Refined.Proof_Ins),
-                   Inputs    => To_Name_Set (Contr.Globals.Refined.Inputs),
-                   Outputs   => To_Name_Set (Contr.Globals.Refined.Outputs)),
-                Initializes =>
-                  To_Name_Set (Contr.Globals.Initializes.Proper),
-                Calls   =>
-                  (Proof_Calls       =>
-                     To_Name_Set (Contr.Globals.Calls.Proof_Calls),
-                   Definite_Calls    =>
-                     To_Name_Set (Contr.Globals.Calls.Definite_Calls),
-                   Conditional_Calls =>
-                     To_Name_Set (Contr.Globals.Calls.Conditional_Calls))),
+           (E                => E,
+            Local            => not Is_Visible_From_Other_Units (E),
+            Is_Protected     => Ekind (E) in E_Function | E_Procedure
+                                 and then Ekind (Scope (E)) =
+                                          E_Protected_Type,
+            Is_Library_Level => Ekind (E) = E_Package
+                                 and then Is_Library_Level_Entity (E),
+            Origin           => Origin_Flow,      --  ??? dummy
+            Globals          => Contr.Globals,
+            Local_Variables  => Visible_Pkg_State,
 
-             Local_Variables       => To_Name_Set (Visible_Pkg_State),
+            Has_Terminate    => Contr.Has_Terminate,
+            Nonreturning     => Contr.Nonreturning,
+            Nonblocking      => Contr.Nonblocking,
 
-             Has_Terminate         => Contr.Has_Terminate,
-             Nonreturning          => Contr.Nonreturning,
-             Nonblocking           => Contr.Nonblocking,
-             Tasking               => To_Names (Contr.Entry_Calls,
-                                                Contr.Tasking)));
+            Entries_Called   => Contr.Entry_Calls,
+            Tasking          => Contr.Tasking);
       end if;
 
       --  Register abstract state components; if any then there

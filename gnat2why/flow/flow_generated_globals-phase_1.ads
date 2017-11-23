@@ -23,6 +23,7 @@
 
 with Sinfo;      use Sinfo;
 with SPARK_Util; use SPARK_Util;
+with Flow_Generated_Globals.Partial; use Flow_Generated_Globals.Partial;
 
 package Flow_Generated_Globals.Phase_1 is
 
@@ -54,7 +55,22 @@ package Flow_Generated_Globals.Phase_1 is
    --  Register direct calls without caring if they are proof-only, definite or
    --  conditional.
 
-   procedure GG_Register_Global_Info (GI : Partial_Contract)
+   procedure GG_Register_Global_Info
+     (E               : Entity_Id;
+      Local           : Boolean;
+      Is_Protected    : Boolean;
+      Origin          : Globals_Origin_T;
+
+      Globals         : Flow_Nodes;
+
+      Local_Variables : Node_Sets.Set;
+
+      Entries_Called  : Entry_Call_Sets.Set;
+      Tasking         : Tasking_Info;
+
+      Has_Terminate   : Boolean;
+      Nonreturning    : Boolean;
+      Nonblocking     : Boolean)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register information needed later to compute globals. It also stores

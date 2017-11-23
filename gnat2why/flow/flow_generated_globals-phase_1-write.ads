@@ -50,6 +50,6 @@ private package Flow_Generated_Globals.Phase_1.Write is
 
    generic
       type T is (<>);
-   procedure Serialize_Discrete (A : T);
+   procedure Serialize_Discrete (A : T; Label : String := "");
 
 end Flow_Generated_Globals.Phase_1.Write;

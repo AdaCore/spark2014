@@ -123,17 +123,12 @@ package Flow is
    end record;
 
    type Entry_Call is record
-      Obj  : Entity_Name;      --  library-level object
-      Entr : Entity_Id;        --  protected entry
+      Prefix : Node_Id;      --  prefix of an entry call
+      Entr   : Entity_Id;    --  protected entry
    end record
    with Predicate => Is_Entry (Entry_Call.Entr);
    --  Unique representation of a call to protected entry of a library-level
    --  protected object.
-   --
-   --  Note: it is represented as an entity name and an entity.
-   --  Alternatively, we could represent this as a symbol here, i.e. as a
-   --  pointer to string as it is written in the ALI file, but it is cleaner
-   --  use these strings only for the serialization.
 
    function Hash (E : Entry_Call) return Ada.Containers.Hash_Type;
    --  Hash function needed to instantiate container package

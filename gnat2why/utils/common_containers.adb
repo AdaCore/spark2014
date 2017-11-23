@@ -101,17 +101,4 @@ package body Common_Containers is
       return Get (String_Cache (E)).all;
    end To_String;
 
-   -----------------
-   -- To_Name_Set --
-   -----------------
-
-   function To_Name_Set (S : Node_Sets.Set) return Name_Sets.Set is
-   begin
-      return X : Name_Sets.Set := Name_Sets.Empty_Set do
-         for E of S loop
-            X.Insert (To_Entity_Name (E));
-         end loop;
-      end return;
-   end To_Name_Set;
-
 end Common_Containers;

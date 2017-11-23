@@ -1572,8 +1572,8 @@ package body Flow is
 
    begin
       --  ??? constants for hasing are picked from the air
-      return Ada.Containers.Hash_Type (E.Obj)  * 17
-           + Ada.Containers.Hash_Type (E.Entr) * 19;
+      return Ada.Containers.Hash_Type (E.Prefix) * 17
+           + Ada.Containers.Hash_Type (E.Entr)   * 19;
    end Hash;
 
 end Flow;

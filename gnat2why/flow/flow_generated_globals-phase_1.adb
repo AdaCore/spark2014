@@ -21,10 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Strings.Unbounded;
-
 with Lib.Util;                use Lib.Util;
+with Namet;                   use Namet;
 with Osint.C;                 use Osint.C;
 with Sem_Aux;                 use Sem_Aux;
 with Sem_Util;                use Sem_Util;
@@ -38,19 +36,8 @@ with Flow_Generated_Globals.ALI_Serialization;
 use Flow_Generated_Globals.ALI_Serialization;
 with Flow_Generated_Globals.Phase_1.Write;
 use Flow_Generated_Globals.Phase_1.Write;
-with Serialisation;           use Serialisation;
 
 package body Flow_Generated_Globals.Phase_1 is
-
-   package Partial_Contract_Lists is
-     new Ada.Containers.Doubly_Linked_Lists (Partial_Contract);
-
-   Entity_Infos : Partial_Contract_Lists.List;
-   --  Entity-specific information as discovered by their analysis
-   --
-   --  ??? we keep this locally only because in the ALI file we first want to
-   --  have entity-independent info; perhaps we do not care and can safely
-   --  dump information locally for each scope.
 
    Current_Lib_Unit : Entity_Id;
    --  Unique identifier of the top-level entity of the current library unit;
@@ -138,17 +125,32 @@ package body Flow_Generated_Globals.Phase_1 is
    -- GG_Register_Global_Info --
    -----------------------------
 
-   procedure GG_Register_Global_Info (GI : Partial_Contract) is
+   procedure GG_Register_Global_Info
+     (E               : Entity_Id;
+      Local           : Boolean;
+      Is_Protected    : Boolean;
+      Origin          : Globals_Origin_T;
 
+      Globals         : Flow_Nodes;
+
+      Local_Variables : Node_Sets.Set;
+
+      Entries_Called  : Entry_Call_Sets.Set;
+      Tasking         : Tasking_Info;
+
+      Has_Terminate   : Boolean;
+      Nonreturning    : Boolean;
+      Nonblocking     : Boolean)
+   is
       procedure Process_Volatiles_And_States
-        (Names      : Name_Sets.Set;
+        (Objects    : Node_Sets.Set;
          Local_Vars : Boolean := False);
       --  Goes through Names, finds volatiles and remote states and stores them
       --  in the appropriate containers. Local_Vars should be set to true when
       --  processing local variables for a run-time check that they do not
       --  represent remote states.
 
-      procedure Process_Predefined_Variables (Names : Name_Sets.Set);
+      procedure Process_Predefined_Variables (Objects : Node_Sets.Set);
       --  Similarly to registering so called "remote states", i.e. states that
       --  are pulled from other compilation units and might only be known by
       --  Entity_Name in phase 2, we need to register variables in predefined
@@ -159,34 +161,67 @@ package body Flow_Generated_Globals.Phase_1 is
       --  conversion will be eliminated by rewriting front-end globals to
       --  work on Entity_Id, not by refactoring those two routines.
 
-      procedure Process_Ghost (Names : Name_Sets.Set);
-      --  Goes through Names, finds ghost objects and stores them in the
-      --  appropriate container.
+      procedure Process_Ghost (Objects : Node_Sets.Set);
+      --  Picks ghost entities from Objects and stores them in the appropriate
+      --  container.
 
-      procedure Process_CAE (Names : Name_Sets.Set);
-      --  Goes through Names, finds Costant_After_Elaboration variables and
+      procedure Serialize is new Serialize_Discrete (Boolean);
+      procedure Serialize is new Serialize_Discrete (Entity_Kind);
+      procedure Serialize is new Serialize_Discrete (Globals_Origin_T);
+
+      procedure Serialize (G : Global_Nodes; Label : String);
+      procedure Serialize (Entries_Called : Entry_Call_Sets.Set);
+      procedure Serialize (Info : Tasking_Info);
+
+      ---------------
+      -- Serialize --
+      ---------------
+
+      procedure Serialize (G : Global_Nodes; Label : String) is
+      begin
+         Serialize (G.Proof_Ins, Label & "proof_in");
+         Serialize (G.Inputs,    Label & "input");
+         Serialize (G.Outputs,   Label & "output");
+      end Serialize;
+
+      procedure Serialize (Entries_Called : Entry_Call_Sets.Set) is
+      begin
+         Serialize (Tasking_Info_Kind'Image (Entry_Calls));
+
+         Serialize (Int (Entries_Called.Length));
+
+         for EC of Entries_Called loop
+            --  For entry calls pretend that we are accessing an object
+            --  Package_Name.Object_Name.Entry_Name.
+            Serialize (Full_Entry_Name (EC.Prefix) &
+                         "__" &
+                         Get_Name_String (Chars (EC.Entr)));
+         end loop;
+      end Serialize;
+
+      procedure Serialize (Info : Tasking_Info) is
+      begin
+         for Kind in Tasking_Info'Range loop
+            Serialize (Info (Kind), Kind'Img);
+         end loop;
+      end Serialize;
+
+      procedure Process_CAE (Objects : Node_Sets.Set);
+      --  Goes through Objects, finds Costant_After_Elaboration variables and
       --  stores them in the appropriate container.
 
       ----------------------------------
       -- Process_Predefined_Variables --
       ----------------------------------
 
-      procedure Process_Predefined_Variables (Names : Name_Sets.Set) is
+      procedure Process_Predefined_Variables (Objects : Node_Sets.Set) is
       begin
-         for Name of Names loop
-            declare
-               E : constant Entity_Id := Find_Entity (Name);
-
-            begin
-               --  Convert name back to Entity_Id; this should work for
-               --  everything except the special __HEAP name that represent a
-               --  non-existing heap entity.
-               if Present (E)
-                 and then Is_Predefined_Initialized_Variable (E)
-               then
-                  Predefined_Initialized_Variables.Include (E);
-               end if;
-            end;
+         for E of Objects loop
+            if not Is_Heap_Variable (E)
+              and then Is_Predefined_Initialized_Variable (E)
+            then
+               Predefined_Initialized_Variables.Include (E);
+            end if;
          end loop;
       end Process_Predefined_Variables;
 
@@ -195,30 +230,20 @@ package body Flow_Generated_Globals.Phase_1 is
       ----------------------------------
 
       procedure Process_Volatiles_And_States
-        (Names      : Name_Sets.Set;
+        (Objects    : Node_Sets.Set;
          Local_Vars : Boolean := False) is
       begin
-         for Name of Names loop
-            declare
-               E : constant Entity_Id := Find_Entity (Name);
+         for E of Objects loop
+            if not Is_Heap_Variable (E) then
+               Register_Volatile (E);
 
-            begin
-               --  Convert name back to Entity_Id; this should work for
-               --  everything except the special __HEAP name that represent a
-               --  non-existing heap entity.
-               if Present (E) then
-                  Register_Volatile (E);
-
-                  if Ekind (E) = E_Abstract_State
-                    and then Enclosing_Lib_Unit_Entity (E) /= Current_Lib_Unit
-                  then
-                     pragma Assert (not Local_Vars);
-                     Remote_States.Include (E);
-                  end if;
-               else
-                  pragma Assert (Is_Heap_Variable (Name));
+               if Ekind (E) = E_Abstract_State
+                 and then Enclosing_Lib_Unit_Entity (E) /= Current_Lib_Unit
+               then
+                  pragma Assert (not Local_Vars);
+                  Remote_States.Include (E);
                end if;
-            end;
+            end if;
          end loop;
       end Process_Volatiles_And_States;
 
@@ -226,22 +251,14 @@ package body Flow_Generated_Globals.Phase_1 is
       -- Process_Ghost --
       -------------------
 
-      procedure Process_Ghost (Names : Name_Sets.Set) is
+      procedure Process_Ghost (Objects : Node_Sets.Set) is
       begin
-         for Name of Names loop
-            declare
-               E : constant Entity_Id := Find_Entity (Name);
-
-            begin
-               --  Convert name back to Entity_Id; this should work for
-               --  everything except the special __HEAP name that represent a
-               --  non-existing heap entity.
-               if Present (E)
+         for E of Objects loop
+            if not Is_Heap_Variable (E)
                  and then Is_Ghost_Entity (E)
-               then
-                  Ghost_Entities.Include (E);
-               end if;
-            end;
+            then
+               Ghost_Entities.Include (E);
+            end if;
          end loop;
       end Process_Ghost;
 
@@ -249,54 +266,83 @@ package body Flow_Generated_Globals.Phase_1 is
       -- Process_CAE --
       -----------------
 
-      procedure Process_CAE (Names : Name_Sets.Set) is
+      procedure Process_CAE (Objects : Node_Sets.Set) is
       begin
-         for Name of Names loop
-            declare
-               E : constant Entity_Id := Find_Entity (Name);
-
-            begin
-               --  Convert name back to Entity_Id; this should work for
-               --  everything except the special __HEAP name that represent a
-               --  non-existing heap entity.
-               if Present (E)
-                 and then Ekind (E) = E_Variable
-                 and then Is_Constant_After_Elaboration (E)
-               then
-                  CAE_Entities.Include (E);
-               end if;
-            end;
+         for E of Objects loop
+            if not Is_Heap_Variable (E)
+              and then Ekind (E) = E_Variable
+              and then Is_Constant_After_Elaboration (E)
+            then
+               CAE_Entities.Include (E);
+            end if;
          end loop;
       end Process_CAE;
 
    --  Start of processing for GG_Register_Global_Info
 
    begin
-      Entity_Infos.Append (GI);
+      New_GG_Line (EK_Globals);
+
+      Serialize (E);
+      Serialize (Local, "local");
+      Serialize (Ekind (E));
+      if Ekind (E) in E_Function | E_Procedure then
+         Serialize (Is_Protected);
+      end if;
+      Serialize (Origin);
+      Serialize (Globals.Proper,  "proper_");  -- ??? replace _ with :
+      Serialize (Globals.Refined, "refined_");
+      if Ekind (E) = E_Package then
+         Serialize (Globals.Initializes.Proper, "initializes");
+      end if;
+      Serialize (Globals.Calls.Proof_Calls,       "calls_proof");
+      Serialize (Globals.Calls.Definite_Calls,    "calls");
+      Serialize (Globals.Calls.Conditional_Calls, "calls_conditional");
+
+      Serialize (Local_Variables, "local_var");
+
+      if Ekind (E) in Entry_Kind
+                    | E_Function
+                    | E_Procedure
+                    | E_Task_Type
+                    | E_Package
+      then
+         --  ??? use Is_Proper_Callee here
+         if Ekind (E) /= E_Task_Type then
+            Serialize (Has_Terminate);
+            Serialize (Nonreturning);
+            Serialize (Nonblocking);
+         end if;
+
+         Serialize (Entries_Called);
+         Serialize (Tasking);
+      end if;
+
+      Terminate_GG_Line;
 
       --  Collect volatile variables and state abstractions; these sets are
       --  disjoint, so it is more efficient to process them separately instead
       --  of doing an expensive union to have a single procedure call.
-      if not GI.Local then
-         Process_Volatiles_And_States (GI.Globals.Proper.Proof_Ins);
-         Process_Volatiles_And_States (GI.Globals.Proper.Inputs);
-         Process_Volatiles_And_States (GI.Globals.Proper.Outputs);
-         Process_Volatiles_And_States (GI.Local_Variables, Local_Vars => True);
+      if not Local then
+         Process_Volatiles_And_States (Globals.Proper.Proof_Ins);
+         Process_Volatiles_And_States (Globals.Proper.Inputs);
+         Process_Volatiles_And_States (Globals.Proper.Outputs);
+         Process_Volatiles_And_States (Local_Variables, Local_Vars => True);
 
          --  Collect ghost entities
-         Process_Ghost (GI.Globals.Proper.Proof_Ins);
-         Process_Ghost (GI.Globals.Proper.Inputs);
-         Process_Ghost (GI.Globals.Proper.Outputs);
+         Process_Ghost (Globals.Proper.Proof_Ins);
+         Process_Ghost (Globals.Proper.Inputs);
+         Process_Ghost (Globals.Proper.Outputs);
 
          --  Collect CAE Entities
-         Process_CAE (GI.Globals.Proper.Proof_Ins);
-         Process_CAE (GI.Globals.Proper.Inputs);
-         Process_CAE (GI.Globals.Proper.Outputs);
+         Process_CAE (Globals.Proper.Proof_Ins);
+         Process_CAE (Globals.Proper.Inputs);
+         Process_CAE (Globals.Proper.Outputs);
 
          --  In phase 2 we only need to know the initialization status of
          --  proof_ins and inputs; outputs are irrelevant.
-         Process_Predefined_Variables (GI.Globals.Proper.Proof_Ins);
-         Process_Predefined_Variables (GI.Globals.Proper.Inputs);
+         Process_Predefined_Variables (Globals.Proper.Proof_Ins);
+         Process_Predefined_Variables (Globals.Proper.Inputs);
       end if;
    end GG_Register_Global_Info;
 
@@ -407,35 +453,7 @@ package body Flow_Generated_Globals.Phase_1 is
    -----------------------
 
    procedure GG_Write_Finalize is
-      procedure Write_To_ALI (V : in out ALI_Entry);
-      --  Helper subprogram to write the given entry to the ALI file
-
-      ------------------
-      -- Write_To_ALI --
-      ------------------
-
-      procedure Write_To_ALI (V : in out ALI_Entry) is
-         A : Archive (Serialisation.Output);
-      begin
-         Serialize (A, V);
-         Write_Info_Str
-           ("GG " &
-              Ada.Strings.Unbounded.To_String (Serialisation.To_String (A)));
-         Write_Info_Terminate;
-      end Write_To_ALI;
-
-      V : ALI_Entry;
-
-   --  Start of processing for GG_Write_Finalize
-
    begin
-      --  Write entity-specific info
-      for Info of Entity_Infos loop
-         V := (Kind            => EK_Globals,
-               The_Global_Info => Info);
-         Write_To_ALI (V);
-      end loop;
-
       --  The remaining entries are not specific to individual entities; it is
       --  the minimum information for objects (possibly from other compilation
       --  for which we will not have an ALI file at all, e.g. predefined units)

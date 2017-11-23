@@ -101,8 +101,12 @@ package body Flow_Generated_Globals.Phase_1.Write is
    -- Serialize_Discrete --
    ------------------------
 
-   procedure Serialize_Discrete (A : T) is
+   procedure Serialize_Discrete (A : T; Label : String := "") is
    begin
+      if Label /= "" then
+         Serialize (Label);
+      end if;
+
       Serialize (A'Img);
    end Serialize_Discrete;
 

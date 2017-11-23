@@ -4421,17 +4421,11 @@ package body Flow.Control_Flow_Graph is
          if Ekind (Scope (Called_Thing)) = E_Protected_Type
            and then Is_External_Call (N)
          then
-            declare
-               Protected_Object : constant Node_Id := Prefix (Name (N));
-
-            begin
-               if Is_Entry (Called_Thing) then
-                  FA.Entries.Include
-                    (Entry_Call'(Obj  => To_Entity_Name
-                                 (Full_Entry_Name (Protected_Object)),
-                                 Entr => Called_Thing));
-               end if;
-            end;
+            if Is_Entry (Called_Thing) then
+               FA.Entries.Include
+                 (Entry_Call'(Prefix => Prefix (Name (N)),
+                              Entr   => Called_Thing));
+            end if;
 
             FA.Tasking (Locks).Include
               (Get_Enclosing_Object (Prefix (Name (N))));
