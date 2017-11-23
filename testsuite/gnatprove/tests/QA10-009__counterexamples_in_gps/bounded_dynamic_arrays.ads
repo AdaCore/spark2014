@@ -1,6 +1,6 @@
 generic
    type Component is private;
-   type List_Index is range <> with Predicate => 1 in List_Index;
+   type List_Index is range <>;
    type List is array (List_Index range <>) of Component;
    Default_Value : Component;
 package Bounded_Dynamic_Arrays is
