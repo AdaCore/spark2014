@@ -1,7 +1,14 @@
-console_pack.adb:23:10: info: no contextual analysis of "Console_Send_Message" (call returns unconstrained type)
 console_pack.adb:39:07: warning: initialization of "Free_Bytes_In_Packet" has no effect
 console_pack.adb:46:17: info: initialization of "Free_Bytes_In_Packet" proved
 console_pack.adb:47:35: warning: unused assignment to "Has_Succeed"
 console_pack.ads:12:29: info: initialization of "Has_Succeed" proved
 console_pack.ads:21:07: info: initialization of "Has_Succeed" proved
 console_pack.ads:34:36: info: initialization of "Has_Succeed" proved
+crtp_pack.adb:98:24: medium: overflow check might fail, in instantiation at console_pack.adb:40
+crtp_pack.adb:99:24: info: range check proved (CVC4: 4 VC), in instantiation at console_pack.adb:40
+crtp_pack.adb:99:24: medium: discriminant check might fail, in instantiation at console_pack.adb:40
+crtp_pack.adb:100:44: info: overflow check proved (CVC4: 1 VC), in instantiation at console_pack.adb:40
+crtp_pack.adb:100:61: info: length check proved (CVC4: 1 VC), in instantiation at console_pack.adb:40
+crtp_pack.adb:101:12: info: length check proved (CVC4: 1 VC), in instantiation at console_pack.adb:40
+crtp_pack.adb:104:41: info: overflow check proved (CVC4: 1 VC), in instantiation at console_pack.adb:40
+crtp_pack.ads:105:07: info: initialization of "Has_Succeed" proved, in instantiation at console_pack.adb:40

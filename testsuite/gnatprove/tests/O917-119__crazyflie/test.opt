@@ -1,1 +1,1 @@
-ALL XFAIL GG: incomplete front-end calls
+assertions XFAIL GG: incomplete front-end calls

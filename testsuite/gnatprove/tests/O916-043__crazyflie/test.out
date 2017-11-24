@@ -15,28 +15,6 @@ crtp_pack.ads:185:09: tasking in SPARK requires sequential elaboration (SPARK RM
 crtp_pack.ads:185:09: violation of pragma SPARK_Mode at gnat.adc:2
 crtp_pack.ads:191:09: tasking in SPARK requires sequential elaboration (SPARK RM 9(2))
 crtp_pack.ads:191:09: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:37:09: info: no contextual analysis of "String_To_Log_Name" (body not seen yet)
-log_pack.adb:94:07: info: no contextual analysis of "Log_CRTP_Handler" (nested function instantiation)
-log_pack.adb:102:13: info: no contextual analysis of "Log_TOC_Process" (body not seen yet)
-log_pack.adb:104:13: info: no contextual analysis of "Log_Control_Process" (body not seen yet)
-log_pack.adb:111:07: info: no contextual analysis of "Log_TOC_Process" (nested function instantiation)
-log_pack.adb:170:19: info: no contextual analysis of "Append_Raw_Data_Variable_Name_To_Packet" (body not seen yet)
-log_pack.adb:184:07: info: no contextual analysis of "Log_Control_Process" (nested function instantiation)
-log_pack.adb:197:23: info: no contextual analysis of "Log_Create_Block" (body not seen yet)
-log_pack.adb:201:23: info: no contextual analysis of "Log_Append_To_Block" (body not seen yet)
-log_pack.adb:205:23: info: no contextual analysis of "Log_Delete_Block" (body not seen yet)
-log_pack.adb:207:23: info: no contextual analysis of "Log_Start_Block" (body not seen yet)
-log_pack.adb:211:23: info: no contextual analysis of "Log_Stop_Block" (body not seen yet)
-log_pack.adb:213:13: info: no contextual analysis of "Log_Reset" (body not seen yet)
-log_pack.adb:222:04: info: no contextual analysis of "Log_Create_Block" (multiple returns)
-log_pack.adb:243:04: info: no contextual analysis of "Log_Delete_Block" (multiple returns)
-log_pack.adb:265:04: info: no contextual analysis of "Log_Append_To_Block" (multiple returns)
-log_pack.adb:301:37: info: no contextual analysis of "Calculate_Block_Length" (body not seen yet)
-log_pack.adb:323:13: info: no contextual analysis of "Append_Log_Variable_To_Block" (body not seen yet)
-log_pack.adb:330:04: info: no contextual analysis of "Log_Start_Block" (multiple returns)
-log_pack.adb:359:04: info: no contextual analysis of "Log_Stop_Block" (multiple returns)
-log_pack.adb:422:07: info: no contextual analysis of "Append_Raw_Data_Variable_Name_To_Packet" (nested function instantiation)
-log_pack.adb:455:07: info: no contextual analysis of "Get_Log_Time_Stamp" (nested function instantiation)
 log_pack.adb:530:63: warning: "Value" may be referenced before it has a value
 log_pack.adb:540:63: warning: "Value" may be referenced before it has a value
 log_pack.adb:550:63: warning: "Value" may be referenced before it has a value

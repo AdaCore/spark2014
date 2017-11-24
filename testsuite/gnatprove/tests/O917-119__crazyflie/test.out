@@ -51,7 +51,6 @@ crtp_pack.adb:66:14: info: initialization of "Handler.Packet.Port" proved
 crtp_pack.adb:66:14: info: initialization of "Handler.Packet.Raw" proved
 crtp_pack.adb:66:14: info: initialization of "Handler.Packet.Reserved" proved
 crtp_pack.adb:66:14: info: initialization of "Handler.Packet.Size" proved
-crtp_pack.ads:77:04: warning: pragma "Unchecked_Union" ignored (not yet supported)
 crtp_pack.ads:138:07: info: initialization of "Packet.Channel" proved
 crtp_pack.ads:138:07: info: initialization of "Packet.Data_1" proved
 crtp_pack.ads:138:07: info: initialization of "Packet.Data_2" proved
