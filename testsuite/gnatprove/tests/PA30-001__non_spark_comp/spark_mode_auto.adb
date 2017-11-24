@@ -38,19 +38,19 @@ package body SPARK_Mode_Auto is
 
    protected body S2 is
       function Get_X return Integer is (X.all);
-      function Get_Y return Integer is (Y);
-      function Get_Z return Integer is (Z);
+      function Get_Y return Integer is (Y2);
+      function Get_Z return Integer is (Z2);
       procedure Set_X (V : Integer) is
       begin
          X.all := V;
       end Set_X;
       procedure Set_Y (V : Integer) is
       begin
-         Y := V;
+         Y2 := V;
       end Set_Y;
       procedure Set_Z (V : Integer)is
       begin
-         Z := V;
+         Z2 := V;
       end Set_Z;
    end S2;
 end SPARK_Mode_Auto;

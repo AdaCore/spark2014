@@ -1,6 +1,6 @@
 pragma Profile (Ravenscar);
 pragma Partition_Elaboration_Policy (Sequential);
-with SPARK_Mode_Auto; use SPARK_Mode_Auto;
+with SPARK_Mode_Auto;
 
 package SPARK_Mode_On with SPARK_Mode is
 
@@ -13,7 +13,7 @@ package SPARK_Mode_On with SPARK_Mode is
       procedure Set_Z (V : Integer);
    private
       pragma SPARK_Mode (Off);
-      X : Bad;
+      X : SPARK_Mode_Auto.Bad;
       Y : Integer := 0;
       Z : Integer;
    end My_Prot;
@@ -40,7 +40,7 @@ package SPARK_Mode_On with SPARK_Mode is
       procedure Set_Z (V : Integer);
    private
       pragma SPARK_Mode (Off);
-      X : Bad;
+      X : SPARK_Mode_Auto.Bad;
    end S2;
 
    Z : Integer := 0 with Part_Of => S;
@@ -48,6 +48,6 @@ package SPARK_Mode_On with SPARK_Mode is
 
 private
    pragma SPARK_Mode (Off);
-   X : Bad with Part_Of => S;
+   X : SPARK_Mode_Auto.Bad with Part_Of => S;
    Y2 : Integer := 0 with Part_Of => S2;
 end SPARK_Mode_On;
