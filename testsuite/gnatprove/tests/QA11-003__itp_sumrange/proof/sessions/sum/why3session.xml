@@ -2,10 +2,9 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="5" steplimit="0" memlimit="0"/>
-<prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="0" steplimit="18500" memlimit="0"/>
-<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="5" steplimit="0" memlimit="0"/>
-<prover id="3" name="CVC4_CE" version="1.5-gnatprove" timelimit="10" steplimit="18500" memlimit="0"/>
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="2" steplimit="0" memlimit="1000"/>
+<prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="5" steplimit="0" memlimit="0"/>
+<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="2" steplimit="0" memlimit="1000"/>
 <file name="../../../gnatprove/sum.mlw" proved="true">
 <theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -213,57 +212,56 @@
  </transf>
  </goal>
 </theory>
-<theory name="Sum__sum__subprogram_def" proved="true" sum="012ebf63230cfaa6850f5a32755d4151">
+<theory name="Sum__sum__subprogram_def" proved="true" sum="8da454376f5cfbb96ef52e5bde87c7a8">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
+  <proof prover="1"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.02" steps="89"/></proof>
+  <proof prover="1"><result status="valid" steps="89"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
+  <proof prover="1"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.03" steps="123"/></proof>
+  <proof prover="1"><result status="valid" steps="123"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.03" steps="113"/></proof>
-  <proof prover="3" obsolete="true"><result status="unknown" time="0.56" steps="18514"/></proof>
+  <proof prover="1"><result status="valid" steps="113"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Sum__simple_sum__subprogram_def" proved="true" sum="d6b3858e65c03a72a72a796f4fa5fa20">
+<theory name="Sum__simple_sum__subprogram_def" proved="true" sum="892ce36d9878d855725516a16a364c85">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" time="0.02" steps="30"/></proof>
+  <proof prover="1"><result status="valid" steps="30"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.02" steps="23"/></proof>
+  <proof prover="1"><result status="valid" steps="23"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.02" steps="32"/></proof>
+  <proof prover="1"><result status="valid" steps="32"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.02" steps="23"/></proof>
+  <proof prover="1"><result status="valid" steps="23"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.02" steps="73"/></proof>
+  <proof prover="1"><result status="valid" steps="73"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" time="0.03" steps="75"/></proof>
+  <proof prover="1"><result status="valid" steps="75"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="loop invariant preservation" proved="true">
   <transf name="eliminate_epsilon" proved="true" >
@@ -271,18 +269,15 @@
    <transf name="assert" proved="true" arg1="forall a x j. first1 &lt; j &lt;= last1 -&gt; first1 &lt; x &lt;= j -&gt; sum a (j-x) j = sum a (j-x) (j - 1) + to_rep1 (get a (j-1))">
     <goal name="WP_parameter def.8.0.0" proved="true">
     <transf name="induction" proved="true" arg1="x">
-     <goal name="WP_parameter def.8.0.0.0" proved="true">
-     <proof prover="2"><result status="valid" time="0.00" steps="1086"/></proof>
+     <goal name="WP_parameter def.8.0.0.0" expl="base case" proved="true">
+     <proof prover="1"><result status="valid" steps="5"/></proof>
      </goal>
-     <goal name="WP_parameter def.8.0.0.1" proved="true">
+     <goal name="WP_parameter def.8.0.0.1" expl="recursive case" proved="true">
      <transf name="instantiate" proved="true" arg1="sum__def_axiom" arg2="a">
-      <goal name="WP_parameter def.8.0.0.1.0" proved="true">
-      <transf name="replace" proved="true" arg1="(j - (x + 1))" arg2="((j - 1) - x)" arg3="in" arg4="G">
-       <goal name="WP_parameter def.8.0.0.1.0.0" proved="true">
-       <proof prover="2"><result status="valid" time="0.02" steps="14595"/></proof>
-       </goal>
-       <goal name="WP_parameter def.8.0.0.1.0.1" proved="true">
-       <proof prover="2"><result status="valid" time="0.01" steps="1208"/></proof>
+      <goal name="WP_parameter def.8.0.0.1.0" expl="recursive case" proved="true">
+      <transf name="instantiate" proved="true" arg1="Hrec" arg2="(x - 1)">
+       <goal name="WP_parameter def.8.0.0.1.0.0" expl="recursive case" proved="true">
+       <proof prover="2"><result status="valid" steps="22573"/></proof>
        </goal>
       </transf>
       </goal>
@@ -299,9 +294,9 @@
        <goal name="WP_parameter def.8.0.1.0.0.0" expl="loop invariant preservation" proved="true">
        <transf name="subst_all" proved="true" >
         <goal name="WP_parameter def.8.0.1.0.0.0.0" expl="loop invariant preservation" proved="true">
-        <transf name="instantiate" proved="true" arg1="h" arg2="K11+1-I,(K11 + 1)">
+        <transf name="instantiate" proved="true" arg1="Hinst" arg2="K11+1-I,(K11+1)">
          <goal name="WP_parameter def.8.0.1.0.0.0.0.0" expl="loop invariant preservation" proved="true">
-         <proof prover="2"><result status="valid" time="0.02" steps="12136"/></proof>
+         <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="19"/></proof>
          </goal>
         </transf>
         </goal>
@@ -318,24 +313,42 @@
   </transf>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="postcondition" proved="true">
   <transf name="assert" proved="true" arg1="forall a x j. first1 &lt; j &lt;= last1 -&gt; first1 &lt; x &lt;= j -&gt; sum a (j-x) j = sum a (j-x) (j - 1) + to_rep1 (get a (j-1))">
    <goal name="WP_parameter def.10.0" proved="true">
    <transf name="induction" proved="true" arg1="x">
-    <goal name="WP_parameter def.10.0.0" proved="true">
-    <proof prover="2"><result status="valid" time="0.01" steps="932"/></proof>
+    <goal name="WP_parameter def.10.0.0" expl="base case" proved="true">
+    <proof prover="1"><result status="valid" steps="5"/></proof>
     </goal>
-    <goal name="WP_parameter def.10.0.1" proved="true">
+    <goal name="WP_parameter def.10.0.1" expl="recursive case" proved="true">
     <transf name="instantiate" proved="true" arg1="sum__def_axiom" arg2="a">
-     <goal name="WP_parameter def.10.0.1.0" proved="true">
-     <transf name="replace" proved="true" arg1="(j - (x + 1))" arg2="((j - 1) - x)" arg3="in" arg4="G">
-      <goal name="WP_parameter def.10.0.1.0.0" proved="true">
-      <proof prover="2"><result status="valid" time="0.02" steps="10694"/></proof>
+     <goal name="WP_parameter def.10.0.1.0" expl="recursive case" proved="true">
+     <transf name="case" proved="true" arg1="(j &lt;= j - x)">
+      <goal name="WP_parameter def.10.0.1.0.0" expl="recursive case (true case)" proved="true">
+      <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="5"/></proof>
       </goal>
-      <goal name="WP_parameter def.10.0.1.0.1" proved="true">
-      <proof prover="2"><result status="valid" time="0.01" steps="1056"/></proof>
+      <goal name="WP_parameter def.10.0.1.0.1" expl="recursive case (false case)" proved="true">
+      <transf name="replace" proved="true" arg1="(sum a (j - x) j)" arg2="(to_rep1 (get a (j-x)) + sum a ((j-x) + 1) j)">
+       <goal name="WP_parameter def.10.0.1.0.1.0" expl="recursive case (false case)" proved="true">
+       <transf name="replace" proved="true" arg1="((j-x) + 1)" arg2="((j + 1) -x)">
+        <goal name="WP_parameter def.10.0.1.0.1.0.0" expl="recursive case (false case)" proved="true">
+        <transf name="instantiate" proved="true" arg1="Hrec" arg2="(x - 1)">
+         <goal name="WP_parameter def.10.0.1.0.1.0.0.0" expl="recursive case (false case)" proved="true">
+         <proof prover="2"><result status="valid" steps="19010"/></proof>
+         </goal>
+        </transf>
+        </goal>
+        <goal name="WP_parameter def.10.0.1.0.1.0.1" proved="true">
+        <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="5"/></proof>
+        </goal>
+       </transf>
+       </goal>
+       <goal name="WP_parameter def.10.0.1.0.1.1" proved="true">
+       <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="67"/></proof>
+       </goal>
+      </transf>
       </goal>
      </transf>
      </goal>
@@ -348,9 +361,9 @@
     <goal name="WP_parameter def.10.1.0" expl="postcondition" proved="true">
     <transf name="instantiate" proved="true" arg1="h" arg2="A">
      <goal name="WP_parameter def.10.1.0.0" expl="postcondition" proved="true">
-     <transf name="instantiate" proved="true" arg1="h" arg2="(J - I),(J)">
+     <transf name="instantiate" proved="true" arg1="Hinst" arg2="(J-I),J">
       <goal name="WP_parameter def.10.1.0.0.0" expl="postcondition" proved="true">
-      <proof prover="0"><result status="valid" time="0.03" steps="361"/></proof>
+      <proof prover="0"><result status="valid" steps="361"/></proof>
       </goal>
      </transf>
      </goal>
