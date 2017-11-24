@@ -3,7 +3,8 @@ with SPARK_Mode,
      Refined_State => (P_Abs_State => P_State)
 is
 
-   procedure Set_Value (Value : in Integer)
+   procedure Set_Value (Value : in Integer) with
+     Refined_Global => (Output => P_State)
    is
    begin
       P_State := Value;
