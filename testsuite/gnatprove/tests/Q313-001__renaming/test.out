@@ -1,0 +1,15 @@
+aida.adb:4:19: warning: unused variable "Source"
+aida.adb:5:19: warning: "Pointer" is not modified, could be IN
+aida.adb:5:19: warning: unused variable "Pointer"
+aida.adb:6:19: high: "Value" is not initialized in "Get"
+aida.adb:6:19: warning: unused variable "Value"
+aida.adb:13:07: info: range check proved (CVC4: 2 VC)
+aida.adb:13:32: info: range check proved (CVC4: 1 VC)
+aida.adb:14:07: warning: initialization of "From" has no effect
+aida.adb:15:07: warning: unused variable "Code"
+aida.adb:17:13: info: initialization of "From" proved
+aida.adb:17:32: warning: statement has no effect
+aida.adb:18:22: info: initialization of "From" proved
+aida.adb:18:22: info: range check proved (CVC4: 1 VC)
+aida.adb:20:14: high: "Result" is not initialized
+aida.ads:4:27: warning: unused initial value of "Value"
