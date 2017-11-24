@@ -1,1 +1,1 @@
-ALL XFAIL GG: missing support for dbg-proof-only
+ALL XFAIL GG: missing support for dbg-proof-only (PC02-011)
