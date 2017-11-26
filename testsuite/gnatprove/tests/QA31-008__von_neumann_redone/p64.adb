@@ -3,20 +3,20 @@
 
 with Interfaces; use Interfaces;
 
-package body P32
+package body P64
   with SPARK_Mode => On
 is
 
-   -- Auxiliary bitvectors functions for 32 bits
-   function Pow2 (X : U32) return U32
+   -- Auxiliary bitvectors functions for 64 bits
+   function Pow2 (X : U64) return U64
    is
      (Shift_Left (1, Integer (X)))
-   with Pre => X <= 32;
+   with Pre => X <= 64;
 
---   function Sqr (X : U32) return U32 is
+--   function Sqr (X : U64) return U64 is
 --     (X * X);
 
-   procedure Lemma_Bv (X, Y : U32) is
+   procedure Lemma_Bv (X, Y : U64) is
    begin
       pragma Assert ((X + Y) * (X + Y) = X * X + Y * (2 * X + Y));
       null;
@@ -42,25 +42,25 @@ is
 --     }
 --     return y;
 --  }
-   function Sqrt_Von_Neumann_Aux32
-     (X : in U32)
-      return U32
+   function Sqrt_Von_Neumann_Aux64
+     (X : in U64)
+      return U64
    is
-      Num, Bits, Res, B : U32;
+      Num, Bits, Res, B : U64;
 
      --  Ghost entities:
 
-      I : U32 := 0 with Ghost;
-      M, Bits_G, Res_G : U32 with Ghost;
+      I : U64 := 0 with Ghost;
+      M, Bits_G, Res_G : U64 with Ghost;
 
    begin
       Num := X;
-      pragma Assert (Num <= 2 ** 32 - 1);
-      Bits  := 16#4000_0000#;
+      pragma Assert (Num <= 2 ** 64 - 1);
+      Bits  := 16#4000_0000_0000_0000#;
       Res  := 0;
 
-      M := 16;
-      Bits_G := 16#8000#;
+      M := 32;
+      Bits_G := 16#8000_0000#;
       Res_G := 0;
 
       while (Bits /= 0) loop
@@ -95,15 +95,15 @@ is
 
          pragma Loop_Variant (Decreases => Bits);
 
-         pragma Loop_Invariant (M <= 16);
+         pragma Loop_Invariant (M <= 32);
          -- Bits_G = 2^{M-1} or 0 if M=0
          pragma Loop_Invariant (Bits_G = (if M = 0 then 0 else Pow2 (M - 1)));
          --  Bits = Bits_G ** 2
          pragma Loop_Invariant (Bits = Sqr(Bits_G));
          --  Res_G is divided by 2 ** m
          pragma Loop_Invariant ( (Res_G and (Pow2 (M) - 1)) = 0);
-         --  Res_G smaller than 2^16
-         pragma Loop_Invariant (Res_G < 16#1_0000#);
+         --  Res_G smaller than 2^32
+         pragma Loop_Invariant (Res_G < 16#1_0000_0000#);
          --  Res = Res_G * 2^M
          pragma Loop_Invariant (Res = Res_G * Pow2 (M));
          -- Num <= X
@@ -114,13 +114,8 @@ is
          pragma Loop_Invariant (if M /= 0 then Bits_G = Pow2 (M-1));
          -- (X - Num) is the square of (Res / 2^M)
          pragma Loop_Invariant (X - Num = Sqr (Res_G));
---         pragma Loop_Invariant (Num >= 0 and then Sqr (Res_G) <= X);
-         --         pragma Loop_Invariant (Pow2 (M) * (2 * Res_G + Pow2 (M)) - 1 < 2**32);
---         pragma Loop_Invariant (Integer'(Sqr (Res_G)) +
---                                  Integer'(
---                                    Pow2 (M) * (2 * Res_G + Pow2 (M)) - 1)
---                                < 2 ** 32);
-         pragma Loop_Invariant (Res_G + Pow2 (M) <= 2 ** 16);
+
+         pragma Loop_Invariant (Res_G + Pow2 (M) <= 2 ** 32);
          --  X < (Res_G + 2^M)^2
          pragma Loop_Invariant (X <= Sqr (Res_G + Pow2 (M)) - 1);
       end loop;
@@ -140,14 +135,12 @@ is
       pragma Assert ((Res + 1) * (Res + 1) - 1 >= X);
       Lemma_Bv (Res, 1);
       return Res;
-   end Sqrt_Von_Neumann_Aux32;
+   end Sqrt_Von_Neumann_Aux64;
 
-   function Sqrt_Von_Neumann32 (X : in Sqrt_Domain32) return Sqrt_Range32
+   function Sqrt_Von_Neumann64 (X : in Sqrt_Domain64) return Sqrt_Range64
    is
    begin
-      return (Sqrt_Range32 (Sqrt_Von_Neumann_Aux32 (U32(X))));
-   end Sqrt_Von_Neumann32;
+      return (Sqrt_Range64 (Sqrt_Von_Neumann_Aux64 (U64(X))));
+   end Sqrt_Von_Neumann64;
 
-
-
-end P32;
+end P64;

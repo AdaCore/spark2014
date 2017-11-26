@@ -1,4 +1,6 @@
 with P; use P;
+with P32; use P32;
+with P64; use P64;
 with Ada.Text_IO;
 
 procedure Test_Sqrt is
