@@ -32,7 +32,6 @@ with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Output;                          use Output;
 with Rtsfind;                         use Rtsfind;
-with Sem_Aux;                         use Sem_Aux;
 with Sem_Type;                        use Sem_Type;
 with Sprint;                          use Sprint;
 with Treepr;                          use Treepr;
@@ -1777,11 +1776,29 @@ package body Flow_Utility is
          end loop;
       end Expand;
 
+      E : Entity_Id;
+      --  The entity whose Global contract will be queried from the flow
+      --  analysis; typically this is the same as Subprogram, except for
+      --  derived task types, which can't have a Global contracts (so flow
+      --  analysis do not provide it). For them, proof expects the Global
+      --  contract of the root type (which should also be a task type and also
+      --  be in SPARK).
+
    --  Start of processing for Get_Proof_Globals
 
    begin
+      if Is_Derived_Type (Subprogram) then
+         E := Root_Type (Subprogram);
+
+         pragma Assert (Ekind (E) = E_Task_Type
+                          and then not Is_Derived_Type (E)
+                          and then Entity_In_SPARK (E));
+      else
+         E := Subprogram;
+      end if;
+
       Get_Globals
-        (Subprogram             => Subprogram,
+        (Subprogram             => E,
          Scope                  => S,
          Classwide              => Classwide,
          Globals                => Globals,

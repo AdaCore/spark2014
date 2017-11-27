@@ -30,6 +30,7 @@ with Einfo;                use Einfo;
 with Flow;                 use Flow;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 with Flow_Types;           use Flow_Types;
+with Sem_Aux;              use Sem_Aux;
 with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
 with Snames;               use Snames;
@@ -175,7 +176,8 @@ is
    with Pre  => Ekind (Subprogram) in E_Entry     |
                                       E_Function  |
                                       E_Procedure |
-                                      E_Task_Type,
+                                      E_Task_Type
+                and then not Is_Derived_Type (Subprogram),
         Post => (for all G of Globals.Proof_Ins =>
                    Is_Entire_Variable (G) and then G.Variant = In_View)
        and then (for all G of Globals.Reads =>
@@ -188,6 +190,10 @@ is
    --  generated globals or finally, if non of the above exist fall back to
    --  the computed globals. The sets returned will contain Flow_Id with the
    --  variant set to In_View and Out_View.
+   --
+   --  This query is meaningless for derived task types (whose entities are
+   --  also of an E_Task_Type kind), because derived types cannot be annotated
+   --  with a Global/Depends contracts.
    --
    --  If Consider_Discriminants is True then an out global will include a
    --  corresponding read if the global includes at least one discriminant.
