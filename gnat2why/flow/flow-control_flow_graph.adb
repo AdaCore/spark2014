@@ -1700,9 +1700,6 @@ package body Flow.Control_Flow_Graph is
       Vars_Used : Flow_Id_Sets.Set;
       Funcs     : Node_Sets.Set;
 
-      Real_Time_Clock : constant String := "ada__real_time__clock_time";
-      Calendar_Clock  : constant String := "ada__calendar__clock_time";
-
    begin
       --  Here we flag a delay statement as potentially blocking
       if FA.Generating_Globals
@@ -1724,17 +1721,17 @@ package body Flow.Control_Flow_Graph is
       --  statement and (for the delay until) the base type of its expression.
       --  The condtion here is the same as in Expand_N_Delay_Until_Statement.
       Vars_Used.Include
-        (Get_Flow_Id
-           (To_Entity_Name
-              ((case Nkind (N) is
-                when N_Delay_Relative_Statement =>
-                   Real_Time_Clock,
-                when N_Delay_Until_Statement =>
-                   (if Is_RTE (Base_Type (Etype (Expression (N))), RO_CA_Time)
-                    then Calendar_Clock
-                    else Real_Time_Clock),
-                when others =>
-                   raise Program_Error))));
+        (Direct_Mapping_Id
+           (RTE
+              (case Nkind (N) is
+               when N_Delay_Relative_Statement =>
+                  RE_Clock_Time,
+               when N_Delay_Until_Statement =>
+                  (if Is_RTE (Base_Type (Etype (Expression (N))), RO_CA_Time)
+                   then RO_CA_Clock_Time
+                   else RE_Clock_Time),
+               when others =>
+                  raise Program_Error)));
 
       Collect_Functions_And_Read_Locked_POs
         (Expression (N),
