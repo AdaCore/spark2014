@@ -593,7 +593,7 @@ package body Flow_Generated_Globals.Partial is
                        or else Is_Synchronized_State (E)
                        or else Is_Part_Of_Concurrent_Object (E))
                then
-                  Contr.Tasking (Unsynch_Accesses).Include (E);
+                  Unsynch.Include (E);
                end if;
             end loop;
          end Collect_Unsynchronized;

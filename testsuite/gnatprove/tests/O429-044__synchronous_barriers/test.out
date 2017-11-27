@@ -2,4 +2,7 @@ p.adb:5:04: "Synchronous_Barrier" is not allowed in SPARK
 p.adb:5:04: violation of pragma SPARK_Mode at test.adc:1
 p.adb:5:33: subtype of "synchronous_barrier" is not allowed in SPARK
 p.adb:5:33: violation of pragma SPARK_Mode at test.adc:1
+p.ads:3:09: high: possible data race when accessing variable "p.sb"
+p.ads:3:09: high: with task "p.t1"
+p.ads:3:09: high: with task "p.t2"
 gnatprove: error during flow analysis and proof

@@ -38,4 +38,7 @@ main_with_no_spec.adb:4:11: high: possible data race when accessing variable "p.
 main_with_no_spec.adb:4:11: high: with task "main_with_no_spec"
 main_with_no_spec.adb:4:11: high: with task "pt.t"
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
+main_spec_only.ads:4:11: high: possible data race when accessing variable "p.x"
+main_spec_only.ads:4:11: high: with task "main_spec_only"
+main_spec_only.ads:4:11: high: with task "pt.t"
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
