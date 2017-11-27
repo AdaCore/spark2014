@@ -588,11 +588,7 @@ package body Flow_Generated_Globals.Partial is
          procedure Collect_Unsynchronized (Vars : Node_Sets.Set) is
          begin
             for E of Vars loop
-               if not (Is_Heap_Variable (E)
-                       or else Is_Synchronized_Object (E)
-                       or else Is_Synchronized_State (E)
-                       or else Is_Part_Of_Concurrent_Object (E))
-               then
+               if not (Is_Heap_Variable (E) or else Is_Synchronized (E)) then
                   Unsynch.Include (E);
                end if;
             end loop;
