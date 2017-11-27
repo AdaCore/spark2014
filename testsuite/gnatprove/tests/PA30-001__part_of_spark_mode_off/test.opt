@@ -1,1 +1,1 @@
-ALL XFAIL GG: missing support for dbg-proof-only
+ALL XFAIL GG: protected object from not-flow-analyzed unit (PC02-011)
