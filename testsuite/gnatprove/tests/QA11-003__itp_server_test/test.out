@@ -11,140 +11,86 @@ test.adb:11:16: medium: postcondition might fail
 
 {"ide_request": "Exit_req"}
 
-{"infos" : {"commands" : ["list-transforms", "search", "list-provers",
-"print", "interrupt"] ,
-"provers" : [{"prover_name" : "z3_ce 4.5.1-gnatprove" ,
-"prover_parseable_name" : "z3_ce,4.5.1-gnatprove" ,
-"prover_shortcut" : "z3_ce" }, {"prover_name" : "altergo 1.30-gnatprove" ,
-"prover_parseable_name" : "altergo,1.30-gnatprove" ,
-"prover_shortcut" : "altergo" },
-{"prover_name" : "Z3_noquant 4.5.1-gnatprove" ,
-"prover_parseable_name" : "Z3_noquant,4.5.1-gnatprove" ,
-"prover_shortcut" : "z3_noquant" }, {"prover_name" : "Z3 4.5.1-gnatprove" ,
-"prover_parseable_name" : "Z3,4.5.1-gnatprove" , "prover_shortcut" : "z3" },
-{"prover_name" : "Coq 8.5pl2" , "prover_parseable_name" : "Coq,8.5pl2" ,
-"prover_shortcut" : "coq" }, {"prover_name" : "CVC4_CE 1.5-gnatprove" ,
-"prover_parseable_name" : "CVC4_CE,1.5-gnatprove" ,
-"prover_shortcut" : "cvc4_ce" }, {"prover_name" : "CVC4 1.5-gnatprove" ,
-"prover_parseable_name" : "CVC4,1.5-gnatprove" ,
-"prover_shortcut" : "cvc4" }] , "strategies" : [{"strategy_name" : "Inline" ,
-"strategy_shortcut" : "i" }, {"strategy_name" : "Compute" ,
-"strategy_shortcut" : "c" }, {"strategy_name" : "Split" ,
-"strategy_shortcut" : "s" }] ,
-"transformations" : ["abstract_unknown_lsymbols", "apply", "assert", "case",
-"clear_but", "close_epsilon", "compile_match", "compute_in_goal",
-"compute_specified", "cut", "destruct", "destruct_alg", "destruct_alg_subst",
-"detect_polymorphism", "discriminate", "discriminate_if_poly",
-"eliminate_algebraic", "eliminate_algebraic_if_poly", "eliminate_builtin",
-"eliminate_definition", "eliminate_definition_func",
-"eliminate_definition_if_poly", "eliminate_definition_pred",
-"eliminate_epsilon", "eliminate_if", "eliminate_if_fmla",
-"eliminate_if_term", "eliminate_inductive", "eliminate_let",
-"eliminate_let_fmla", "eliminate_let_term", "eliminate_literal",
-"eliminate_match", "eliminate_mutual_recursion",
-"eliminate_negative_constants", "eliminate_non_lambda_epsilon",
-"eliminate_non_lambda_set_epsilon", "eliminate_non_struct_recursion",
-"eliminate_projections", "eliminate_quantifiers", "eliminate_recursion",
-"eliminate_unused_hypo", "encoding_smt", "encoding_smt_if_poly",
-"encoding_sort", "encoding_tptp", "encoding_tptp_if_poly", "eval_match",
-"exists", "explode_record_param", "filter_trigger", "filter_trigger_builtin",
-"filter_trigger_no_predicate", "fold_defs", "hide", "hide_and_clear",
-"induction", "induction_pr", "induction_ty_lex", "inline_all", "inline_goal",
-"inline_tagged", "inline_trivial", "instantiate", "instantiate_predicate",
-"intro_projections_counterexmp", "intro_vc_vars_counterexmp",
-"introduce_exists", "introduce_premises", "intros", "intros_n",
-"inversion_pr", "left", "lift_epsilon", "path_split", "pose",
-"prepare_for_counterexmp", "prop_curry", "remove", "remove_triggers",
-"replace", "rewrite", "right", "simplify_array", "simplify_formula",
-"simplify_formula_and_task", "simplify_trivial_quantification",
-"simplify_trivial_quantification_in_goal", "simplify_unknown_lsymbols",
-"smoke_detector_deep", "smoke_detector_top", "sort", "split_all_full",
-"split_all_right", "split_all_wp", "split_conj", "split_conj_axioms",
-"split_disj", "split_goal_full", "split_goal_right", "split_goal_wp",
-"split_goal_wp_conj", "split_intro", "split_premise_full",
-"split_premise_right", "split_premise_wp", "subst", "subst_all", "unfold",
-"use_th"] } ,
-"notification" : "Initialized" }>>>>
-{"detached" : false , "name" : "WP_parameter def.0 [postcondition]" ,
-"node_ID" : 89 , "node_type" : "NGoal" , "notification" : "New_node" ,
-"parent_ID" : 88 }>>>>
-{"node_ID" : 89 , "notification" : "Node_change" ,
-"update" : {"proved" : false ,
-"update_info" : "Proved" } }>>>>
-{"detached" : false , "name" : "CVC4 1.5-gnatprove" , "node_ID" : 90 ,
-"node_type" : "NProofAttempt" , "notification" : "New_node" ,
-"parent_ID" : 89 }>>>>
-{"node_ID" : 90 , "notification" : "Node_change" ,
-"update" : {"limit" : {"limit_mem" : 0 , "limit_steps" : 22000 ,
-"limit_time" : 120 } , "obsolete" : false ,
-"proof_attempt" : {"proof_attempt" : "Done" ,
-"prover_result" : {"pr_answer" : "Unknown" , "pr_model" : "" ,
-"pr_output" : "" , "pr_status" : "WEXITED" , "pr_steps" : 14 ,
-"pr_time" : Not displayed } } ,
-"update_info" : "Proof_status_change" } }>>>>
-{"message" : {"information" : "Session initialized succesfully" ,
-"mess_notif" : "Information" } ,
-"notification" : "Message" }>>>>
-{"detached" : false , "name" : "introduce_premises" , "node_ID" : 91 ,
-"node_type" : "NTransformation" , "notification" : "New_node" ,
-"parent_ID" : 89 }>>>>
-{"node_ID" : 91 , "notification" : "Node_change" ,
-"update" : {"proved" : false ,
-"update_info" : "Proved" } }>>>>
-{"detached" : false , "name" : "WP_parameter def.0.0 [postcondition]" ,
-"node_ID" : 92 , "node_type" : "NGoal" , "notification" : "New_node" ,
-"parent_ID" : 91 }>>>>
-{"node_ID" : 92 , "notification" : "Node_change" ,
-"update" : {"proved" : false ,
-"update_info" : "Proved" } }>>>>
-{"node_ID1" : 89 , "node_ID2" : 92 ,
-"notification" : "Next_Unproven_Node_Id" }>>>>
-{"detached" : false , "name" : "Z3 4.5.1-gnatprove" , "node_ID" : 93 ,
-"node_type" : "NProofAttempt" , "notification" : "New_node" ,
-"parent_ID" : 89 }>>>>
-{"node_ID" : 93 , "notification" : "Node_change" ,
-"update" : {"limit" : {"limit_mem" : 1000 , "limit_steps" : 0 ,
-"limit_time" : 2 } , "obsolete" : false ,
-"proof_attempt" : {"proof_attempt" : "Undone" } ,
-"update_info" : "Proof_status_change" } }>>>>
-{"node_ID" : 93 , "notification" : "Node_change" ,
-"update" : {"limit" : {"limit_mem" : 1000 , "limit_steps" : 0 ,
-"limit_time" : 2 } , "obsolete" : false ,
-"proof_attempt" : {"proof_attempt" : "Scheduled" } ,
-"update_info" : "Proof_status_change" } }>>>>
-{"message" : {"mess_notif" : "Task_Monitor" , "monitor" : [0, 1, 0] } ,
-"notification" : "Message" }>>>>
-{"node_ID" : 93 , "notification" : "Node_change" ,
-"update" : {"limit" : {"limit_mem" : 1000 , "limit_steps" : 0 ,
-"limit_time" : 2 } , "obsolete" : false ,
-"proof_attempt" : {"proof_attempt" : "Running" } ,
-"update_info" : "Proof_status_change" } }>>>>
-{"node_ID" : 93 , "notification" : "Node_change" ,
-"update" : {"proved" : true ,
-"update_info" : "Proved" } }>>>>
-{"node_ID" : 93 , "notification" : "Node_change" ,
-"update" : {"limit" : {"limit_mem" : 1000 , "limit_steps" : 0 ,
-"limit_time" : 2 } , "obsolete" : false ,
-"proof_attempt" : {"proof_attempt" : "Done" ,
-"prover_result" : {"pr_answer" : "Valid" , "pr_model" : "" ,
-"pr_output" : "unsat/n(:rlimit-count 2304)/n" , "pr_status" : "WEXITED" ,
-"pr_steps" : 2304 , "pr_time" : Not displayed } } ,
-"update_info" : "Proof_status_change" } }>>>>
-{"node_ID" : 89 , "notification" : "Node_change" ,
-"update" : {"proved" : true ,
-"update_info" : "Proved" } }>>>>
-{"node_ID" : 93 , "notification" : "Node_change" ,
-"update" : {"limit" : {"limit_mem" : 1000 , "limit_steps" : 0 ,
-"limit_time" : 2 } , "obsolete" : false ,
-"proof_attempt" : {"proof_attempt" : "Done" ,
-"prover_result" : {"pr_answer" : "Valid" , "pr_model" : "" ,
-"pr_output" : "unsat/n(:rlimit-count 2304)/n" , "pr_status" : "WEXITED" ,
-"pr_steps" : 2304 , "pr_time" : Not displayed } } ,
-"update_info" : "Proof_status_change" } }>>>>
-{"message" : {"mess_notif" : "Task_Monitor" , "monitor" : [0, 0, 0] } ,
-"notification" : "Message" }>>>>
-{"loc_list" : [] , "node_ID" : 89 , "notification" : "Task" ,
-"task" : "--------------------------- Local Context ---------------------------/n/n------------------------------- Goal --------------------------------/n/ngoal WP_parameter def :/n  forall test__parity__result:int, result:int, test__parity__result1:int,/n   test__parity__result2:int, test__parity__result3:int,/n   test__parity__result4:int, test__parity__result5:int./n   forall result1:int./n    dynamic_property first last A /////n    A > 0 /////n    (((test__parity__result1 = test__parity__result2 /////n       test__parity__result3 = test__parity__result1) /////n      result = test__parity__result //// test__parity__result1 = A) /////n     mk int__ref test__parity__result4 = mk int__ref test__parity__result2 /////n     test__parity__result5 = test__parity__result3) /////n    result1 = test__parity__result4 ->/n    (exists x:int. (0 <= x //// x <= 255) //// (A = (x + x) //// A = ((x + x) + 1)))/n/n" }>>>>
-{"loc_list" : [] , "node_ID" : 92 , "notification" : "Task" ,
-"task" : "--------------------------- Local Context ---------------------------/n/n------------------------------- Goal --------------------------------/n/nconstant Parity5 : int/n/nconstant result1 : int/n/nconstant Parity4 : int/n/nconstant Parity3 : int/n/nconstant Parity2 : int/n/nconstant Parity1 : int/n/nconstant Parity : int/n/nconstant result : int/n/naxiom H : dynamic_property first last A/n/naxiom H1 : A > 0/n/naxiom H2 : Parity4 = Parity3/n/naxiom H3 : Parity2 = Parity4/n/naxiom H4 : result1 = Parity5/n/naxiom H5 : Parity4 = A/n/naxiom H6 : mk int__ref Parity1 = mk int__ref Parity3/n/naxiom H7 : Parity = Parity2/n/naxiom H8 : result = Parity1/n/ngoal WP_parameter def :/n  exists x:int. (0 <= x //// x <= 255) //// (A = (x + x) //// A = ((x + x) + 1))/n/n" }>>>>
+Initialized
+New_node 89 88
+Node_change 89
+New_node 90 89
+Node_change 90
+Message
+New_node 91 89
+Node_change 91
+New_node 92 91
+Node_change 92
+New_node 93 89
+Node_change 93
+Node_change 93
+Node_change 93
+Node_change 93
+Node_change 93
+Node_change 89
+Node_change 93
+Task
+--------------------------- Local Context ---------------------------
 
+------------------------------- Goal --------------------------------
+
+goal WP_parameter def :
+  forall test__parity__result:int, result:int, test__parity__result1:int,
+   test__parity__result2:int, test__parity__result3:int,
+   test__parity__result4:int, test__parity__result5:int.
+   forall result1:int.
+    dynamic_property first last A //
+    A > 0 //
+    (((test__parity__result1 = test__parity__result2 //
+       test__parity__result3 = test__parity__result1) //
+      result = test__parity__result // test__parity__result1 = A) //
+     mk int__ref test__parity__result4 = mk int__ref test__parity__result2 //
+     test__parity__result5 = test__parity__result3) //
+    result1 = test__parity__result4 ->
+    (exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 1)))
+
+
+Task
+--------------------------- Local Context ---------------------------
+
+------------------------------- Goal --------------------------------
+
+constant Parity5 : int
+
+constant result1 : int
+
+constant Parity4 : int
+
+constant Parity3 : int
+
+constant Parity2 : int
+
+constant Parity1 : int
+
+constant Parity : int
+
+constant result : int
+
+axiom H : dynamic_property first last A
+
+axiom H1 : A > 0
+
+axiom H2 : Parity4 = Parity3
+
+axiom H3 : Parity2 = Parity4
+
+axiom H4 : result1 = Parity5
+
+axiom H5 : Parity4 = A
+
+axiom H6 : mk int__ref Parity1 = mk int__ref Parity3
+
+axiom H7 : Parity = Parity2
+
+axiom H8 : result = Parity1
+
+goal WP_parameter def :
+  exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 1))
+
+
+DONE
