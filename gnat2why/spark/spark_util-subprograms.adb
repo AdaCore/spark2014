@@ -371,9 +371,8 @@ package body SPARK_Util.Subprograms is
            Parameter_Specifications (Subprogram_Specification (E));
          Param  : Node_Id;
 
-         Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
-         Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-         Write_Names : Name_Sets.Set;
+         Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+         Write_Ids : Flow_Types.Flow_Id_Sets.Set;
 
       begin
          --  Consider output parameters
@@ -400,9 +399,8 @@ package body SPARK_Util.Subprograms is
                                             Classwide  => True,
                                             Reads      => Read_Ids,
                                             Writes     => Write_Ids);
-            Write_Names := Flow_Types.To_Name_Set (Write_Ids);
 
-            return Write_Names.Is_Empty;
+            return Write_Ids.Is_Empty;
 
          --  Otherwise we don't know, return False to be on the safe side
 
