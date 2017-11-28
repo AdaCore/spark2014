@@ -3648,7 +3648,7 @@
   <proof prover="1"><result status="valid" steps="47645"/></proof>
   </goal>
   <goal name="WP_parameter def.32" expl="postcondition">
-  <proof prover="0"><result status="unknown" steps="3486"/></proof>
+  <proof prover="0"><result status="unknown" steps="3482"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.32.0" expl="postcondition">

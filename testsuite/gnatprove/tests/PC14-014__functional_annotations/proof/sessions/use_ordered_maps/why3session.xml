@@ -4173,7 +4173,7 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.48.0" expl="postcondition">
-   <proof prover="0"><result status="unknown" steps="26880"/></proof>
+   <proof prover="0"><result status="unknown" steps="26778"/></proof>
    <proof prover="1" timelimit="60"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.48.1" expl="postcondition" proved="true">
