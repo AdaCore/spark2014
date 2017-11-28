@@ -331,19 +331,15 @@ package body SPARK_Util.Subprograms is
 
    function Find_Dispatching_Parameter (E : Entity_Id) return Entity_Id is
       Typ    : constant Entity_Id := Find_Dispatching_Type (E);
-      Params : constant List_Id :=
-        Parameter_Specifications (Subprogram_Specification (E));
-      Param  : Node_Id;
+      Formal : Entity_Id := First_Formal (E);
 
    begin
-      Param := First (Params);
-
-      while Present (Param) loop
-         if Etype (Defining_Identifier (Param)) = Typ then
-            return Defining_Identifier (Param);
+      while Present (Formal) loop
+         if Etype (Formal) = Typ then
+            return Formal;
          end if;
 
-         Next (Param);
+         Next_Formal (Formal);
       end loop;
 
       raise Program_Error;
@@ -367,9 +363,7 @@ package body SPARK_Util.Subprograms is
       -------------------
 
       function Has_No_Output return Boolean is
-         Params : constant List_Id :=
-           Parameter_Specifications (Subprogram_Specification (E));
-         Param  : Node_Id;
+         Formal : Entity_Id := First_Formal (E);
 
          Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
          Write_Ids : Flow_Types.Flow_Id_Sets.Set;
@@ -377,9 +371,8 @@ package body SPARK_Util.Subprograms is
       begin
          --  Consider output parameters
 
-         Param := First (Params);
-         while Present (Param) loop
-            case Formal_Kind'(Ekind (Defining_Identifier (Param))) is
+         while Present (Formal) loop
+            case Formal_Kind'(Ekind (Formal)) is
                when E_Out_Parameter
                   | E_In_Out_Parameter
                =>
@@ -387,7 +380,7 @@ package body SPARK_Util.Subprograms is
                when E_In_Parameter =>
                   null;
             end case;
-            Next (Param);
+            Next_Formal (Formal);
          end loop;
 
          --  Consider output globals if they can be relied upon, either because
