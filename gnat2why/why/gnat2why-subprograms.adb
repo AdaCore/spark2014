@@ -961,48 +961,50 @@ package body Gnat2Why.Subprograms is
       declare
          Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
          Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-         Write_Names : Name_Sets.Set;
+
       begin
          Flow_Utility.Get_Proof_Globals (Subprogram => E,
                                          Classwide  => True,
                                          Reads      => Read_Ids,
                                          Writes     => Write_Ids);
-         Write_Names := Flow_Types.To_Name_Set (Write_Ids);
 
-         for Name of Write_Names loop
-            declare
-               Entity : constant Entity_Id := Find_Entity (Name);
-            begin
-               if Present (Entity)
-                 and then Ekind (Entity) /= E_Abstract_State
-                 and then Entity_In_SPARK (Entity)
-               then
+         for Write_Id of Write_Ids loop
+            if Write_Id.Kind = Direct_Mapping then
+               declare
+                  Entity : constant Entity_Id :=
+                    Get_Direct_Mapping_Id (Write_Id);
 
-                  --  Reference to self is handled specifically
+               begin
+                  if Ekind (Entity) /= E_Abstract_State
+                    and then Entity_In_SPARK (Entity)
+                  then
 
-                  if Ekind (Entity) in Type_Kind then
-                     pragma Assert (Ekind (Entity) in Protected_Kind);
-                     null;
-                  else
-                     declare
-                        Dyn_Prop : constant W_Pred_Id :=
-                          Compute_Dynamic_Invariant
-                            (Expr   =>
-                               +Transform_Identifier (Params   => Params,
-                                                      Expr     => Entity,
-                                                      Ent      => Entity,
-                                                      Domain   => EW_Term),
-                             Ty     => Etype (Entity),
-                             Params => Params);
-                     begin
-                        Dynamic_Prop_Effects := +New_And_Expr
-                          (Left   => +Dynamic_Prop_Effects,
-                           Right  => +Dyn_Prop,
-                           Domain => EW_Pred);
-                     end;
+                     --  Reference to self is handled specifically
+
+                     if Is_Type (Entity) then
+                        pragma Assert (Ekind (Entity) in Protected_Kind);
+                        null;
+                     else
+                        declare
+                           Dyn_Prop : constant W_Pred_Id :=
+                             Compute_Dynamic_Invariant
+                               (Expr   =>
+                                  +Transform_Identifier (Params   => Params,
+                                                         Expr     => Entity,
+                                                         Ent      => Entity,
+                                                         Domain   => EW_Term),
+                                Ty     => Etype (Entity),
+                                Params => Params);
+                        begin
+                           Dynamic_Prop_Effects := +New_And_Expr
+                             (Left   => +Dynamic_Prop_Effects,
+                              Right  => +Dyn_Prop,
+                              Domain => EW_Pred);
+                        end;
+                     end if;
                   end if;
-               end if;
-            end;
+               end;
+            end if;
          end loop;
       end;
 
