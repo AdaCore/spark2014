@@ -875,7 +875,7 @@ package body Flow.Analysis.Sanity is
                            (Find_In (User_Global.Writes,
                                      Change_Variant (Missing, Out_View)))
                          then "In_Out of &"
-                         else "input of &"),
+                         else "Input of &"),
             Severity => Medium_Check_Kind,
             F        => Missing);
       end loop;
@@ -887,7 +887,7 @@ package body Flow.Analysis.Sanity is
                            (Find_In (User_Global.Reads,
                                      Change_Variant (Missing, In_View)))
                          then "In_Out of &"
-                         else "output of &"),
+                         else "Output of &"),
             Severity => High_Check_Kind,
             F        => Missing);
       end loop;
@@ -905,7 +905,7 @@ package body Flow.Analysis.Sanity is
       for Unused of Unused_Inputs loop
          if not Is_Dummy_Abstract_State (Unused) then
             Error_Msg
-              (Msg      => "global input & of & not read",
+              (Msg      => "global Input & of & not read",
                Severity => Low_Check_Kind,
                F        => Unused);
          end if;
@@ -914,7 +914,7 @@ package body Flow.Analysis.Sanity is
       for Unused of Unused_Outputs loop
          if not Is_Dummy_Abstract_State (Unused) then
             Error_Msg
-              (Msg      => "global output & of & not written",
+              (Msg      => "global Output & of & not written",
                Severity => Error_Kind,
                F        => Unused);
          end if;

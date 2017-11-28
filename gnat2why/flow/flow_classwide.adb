@@ -121,10 +121,10 @@ package body Flow_Classwide is
 
          return
            (case Valid_Param_Mode (M) is
-               when Mode_Proof  => "proof_in",
-               when Mode_In     => "input",
-               when Mode_In_Out => "in_out",
-               when Mode_Out    => "output");
+               when Mode_Proof  => "Proof_In",
+               when Mode_In     => "Input",
+               when Mode_In_Out => "In_Out",
+               when Mode_Out    => "Output");
       end Mode;
 
    --  Start of processing for Check_Classwide_Global
@@ -153,7 +153,7 @@ package body Flow_Classwide is
             Error_Msg_Flow
               (E          => E,
                Msg        =>
-                 "& is a proof_in of overriding subprogram, but not of " &
+                 "& is a Proof_In of overriding subprogram, but not of " &
                  "overridden subprogram #",
                Severity   => Error_Kind,
                N          => E,
@@ -173,7 +173,7 @@ package body Flow_Classwide is
               (E          => E,
                Msg        =>
                  "& is an " & Mode (F) & " of overriding subprogram, but it " &
-                 "is not an input of overridden subprogram #",
+                 "is not an Input of overridden subprogram #",
                Severity   => Error_Kind,
                N          => E,
                Suppressed => Suppressed,
@@ -194,7 +194,7 @@ package body Flow_Classwide is
               (E          => E,
                Msg        =>
                  "& is an " & Mode (F) & " of overriding subprogram, but it " &
-                 "is not an output of overridden subprogram #",
+                 "is not an Output of overridden subprogram #",
                Severity   => Error_Kind,
                N          => E,
                Suppressed => Suppressed,
@@ -232,8 +232,8 @@ package body Flow_Classwide is
                Error_Msg_Flow
                  (E          => E,
                   Msg        =>
-                    "& is an output of overridden subprogram # and must be " &
-                    "an output here",
+                    "& is an Output of overridden subprogram # and must be " &
+                    "an Output here",
                   Severity   => Error_Kind,
                   N          => E,
                   Suppressed => Suppressed,

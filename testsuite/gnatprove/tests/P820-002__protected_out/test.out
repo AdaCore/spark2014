@@ -1,4 +1,4 @@
-polyorb_hi-epoch.ads:44:11: global output "Epoch.Elaborated_Variables" of "System_Startup_Time" not written
+polyorb_hi-epoch.ads:44:11: global Output "Epoch.Elaborated_Variables" of "System_Startup_Time" not written
 polyorb_hi-messages.adb:72:57: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:73:07: info: range check proved (CVC4: 2 VC)
 polyorb_hi-messages.adb:73:44: info: length check proved (CVC4: 1 VC)
