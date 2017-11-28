@@ -487,7 +487,7 @@ package body Gnat2Why.Tables is
 
          --  If field is hidden in Etype (E), copy it to E
 
-         if Ekind (Field) in Type_Kind
+         if Is_Type (Field)
            or else No (Search_Component_By_Name (E, Field))
          then
             Info.Components.Insert (Field);
@@ -503,7 +503,7 @@ package body Gnat2Why.Tables is
 
    function Original_Declaration (Comp : Entity_Id) return Entity_Id
    is
-     (if Ekind (Comp) in Type_Kind then Comp
+     (if Is_Type (Comp) then Comp
       elsif Is_Tagged_Type (Retysp (Scope (Comp)))
       then Retysp (Scope (Original_Record_Component (Comp)))
       else Root_Record_Type (Scope (Comp)));
@@ -527,8 +527,8 @@ package body Gnat2Why.Tables is
             --  we were looking for or it does not and we continue searching.
 
             if not Is_Tagged_Type (Scope (Comp))
-              or else (Ekind (Comp) in Type_Kind
-                       and then Ekind (Cur_Comp) in Type_Kind
+              or else (Is_Type (Comp)
+                       and then Is_Type (Cur_Comp)
                        and then Comp = Cur_Comp)
               or else (Ekind (Comp) = E_Component
                        and then Ekind (Cur_Comp) = E_Component

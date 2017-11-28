@@ -9414,7 +9414,7 @@ package body Gnat2Why.Expr is
 
             if Nkind (Var) in N_Has_Entity
               and then Present (Entity (Var))
-                and then Ekind (Entity (Var)) in Type_Kind
+                and then Is_Type (Entity (Var))
             then
 
                T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
@@ -9686,7 +9686,7 @@ package body Gnat2Why.Expr is
          when Attribute_Component_Size =>
             if Nkind (Var) in N_Has_Entity
               and then Present (Entity (Var))
-              and then Ekind (Entity (Var)) in Type_Kind
+              and then Is_Type (Entity (Var))
             then
 
                T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
@@ -9709,7 +9709,7 @@ package body Gnat2Why.Expr is
          when Attribute_Alignment =>
             if Nkind (Var) in N_Has_Entity
               and then Present (Entity (Var))
-              and then Ekind (Entity (Var)) in Type_Kind
+              and then Is_Type (Entity (Var))
             then
 
                T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);

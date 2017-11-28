@@ -147,7 +147,7 @@ package body Why.Gen.Records is
    is (if Field = Rec then
            New_Named_Type
              (Name => Get_Name (To_Local (E_Symb (Rec, WNE_Private_Type))))
-       elsif Ekind (Field) in Type_Kind then
+       elsif Is_Type (Field) then
            New_Named_Type
              (Name => Get_Name (E_Symb (Field, WNE_Private_Type)))
        else EW_Abstract (Etype (Field)));
@@ -1564,9 +1564,9 @@ package body Why.Gen.Records is
                                 New_Field_Equality
                                   (Field_Id     => Field_Id,
                                    Enclosing_Id => Fields_Id,
-                                   Is_Private   => Ekind (Comp) in Type_Kind,
+                                   Is_Private   => Is_Type (Comp),
                                    Field_Type   =>
-                                     (if Ekind (Comp) in Type_Kind then
+                                     (if Is_Type (Comp) then
                                            Comp
                                       else Retysp (Etype (Comp))));
                               Always_Present : constant Boolean :=
@@ -2519,7 +2519,7 @@ package body Why.Gen.Records is
                     or else No (Search_Component_In_Type (Anc_Ty, Comp)))
                then
 
-                  pragma Assert (not (Ekind (Comp) in Type_Kind));
+                  pragma Assert (not Is_Type (Comp));
 
                   Index := Index + 1;
                   All_Field_Assocs (Index) :=
