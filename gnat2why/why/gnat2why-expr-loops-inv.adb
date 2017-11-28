@@ -1146,9 +1146,9 @@ package body Gnat2Why.Expr.Loops.Inv is
             if F.Kind = Direct_Mapping then
                declare
                   Entity : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
                begin
-                  if Present (Entity)
-                    and then Ekind (Entity) in Object_Kind
+                  if Is_Object (Entity)
                     and then Is_Mutable_In_Why (Entity)
                   then
                      One_Level_Update (Entity, Loop_Writes,

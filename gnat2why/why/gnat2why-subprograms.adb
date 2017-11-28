@@ -1370,33 +1370,29 @@ package body Gnat2Why.Subprograms is
                declare
                   E : constant Entity_Id := Get_Direct_Mapping_Id (F);
                begin
-                  if Present (E) then
+                  --  Global variables accessed by the subprogram. Abstract
+                  --  states and private variables are not considered here,
+                  --  as they cannot have visible type invariants.
 
-                     --  Global variables accessed by the subprogram. Abstract
-                     --  states and private variables are not considered here,
-                     --  as they cannot have visible type invariants.
+                  if Is_Object (E) and then Entity_In_SPARK (E) then
+                     Inv_Pred := +New_And_Then_Expr
+                       (Left   => +Inv_Pred,
+                        Right  => +Compute_Type_Invariant_For_Entity (E),
+                        Domain => EW_Pred);
 
-                     if Is_Object (E) and then Entity_In_SPARK (E)
-                     then
-                        Inv_Pred := +New_And_Then_Expr
-                          (Left   => +Inv_Pred,
-                           Right  => +Compute_Type_Invariant_For_Entity (E),
-                           Domain => EW_Pred);
+                  --  Self reference of protected subprograms
 
-                     --  Self reference of protected subprograms
-
-                     elsif Is_Type (E) then
-                        pragma Assert (Is_Concurrent_Type (E));
-                        Inv_Pred := +New_And_Then_Expr
-                          (Left   => +Inv_Pred,
-                           Right  => +Compute_Type_Invariant
-                             (Expr        =>
-                                  +Concurrent_Self_Binder (E).B_Name,
-                              Ty          => E,
-                              Params      => Params,
-                              On_Internal => True),
-                           Domain => EW_Pred);
-                     end if;
+                  elsif Is_Type (E) then
+                     pragma Assert (Is_Concurrent_Type (E));
+                     Inv_Pred := +New_And_Then_Expr
+                       (Left   => +Inv_Pred,
+                        Right  => +Compute_Type_Invariant
+                          (Expr        =>
+                               +Concurrent_Self_Binder (E).B_Name,
+                           Ty          => E,
+                           Params      => Params,
+                           On_Internal => True),
+                        Domain => EW_Pred);
                   end if;
                end;
             end if;
