@@ -427,8 +427,8 @@ package SPARK_Util.Subprograms is
 
    function Find_Dispatching_Parameter (E : Entity_Id) return Entity_Id with
      Pre  => Ekind (E) = E_Procedure
-     and Is_Dispatching_Operation (E)
-     and Present (Find_Dispatching_Type (E)),
+             and then Is_Dispatching_Operation (E)
+             and then Present (Find_Dispatching_Type (E)),
      Post => Present (Find_Dispatching_Parameter'Result);
    --  @param E a dispatching procedure
    --  @return a parameter of E which has the dispatching type
