@@ -795,29 +795,6 @@ package body Why.Gen.Binders is
       return Result;
    end New_Constant_Record_Binders;
 
-   -----------------
-   -- New_Binders --
-   -----------------
-
-   function New_Binders
-     (Anonymous_Binders : W_Type_Array)
-      return Binder_Array
-   is
-      Result : Binder_Array (Anonymous_Binders'Range);
-      N      : Character := 'a';
-   begin
-      for J in Anonymous_Binders'Range loop
-         Result (J) :=
-           (B_Name =>
-              New_Identifier (Name => "dummy__" & N,
-                              Typ => Anonymous_Binders (J)),
-            others => <>);
-         N := Character'Succ (N);
-      end loop;
-
-      return Result;
-   end New_Binders;
-
    ------------------------
    -- New_Defining_Axiom --
    ------------------------

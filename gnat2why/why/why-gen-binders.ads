@@ -137,10 +137,6 @@ package Why.Gen.Binders is
    --  "Flatten" the Item_Array to a binder_array, transforming e.g. array
    --  bounds to binders.
 
-   function New_Binders
-     (Anonymous_Binders : W_Type_Array)
-      return Binder_Array;
-
    function New_Universal_Quantif
      (Ada_Node : Node_Id := Empty;
       Binders  : Binder_Array;
