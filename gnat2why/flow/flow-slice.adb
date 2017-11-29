@@ -189,6 +189,7 @@ package body Flow.Slice is
          begin
             if F_Final.Variant = Final_Value
               and then FA.Atr (V_Final).Is_Export
+              and then Is_Variable (F_Final)
               and then not Synthetic (F_Final)
             then
                Out_Vertices.Insert (V_Final);
@@ -206,6 +207,7 @@ package body Flow.Slice is
          begin
             if F_Initial.Variant = Initial_Value
               and then Attr.Is_Import
+              and then Is_Variable (F_Initial)
               and then not Synthetic (F_Initial)
             then
                In_Vertices.Include (V_Initial);

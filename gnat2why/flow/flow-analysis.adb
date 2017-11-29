@@ -3731,16 +3731,7 @@ package body Flow.Analysis is
                      else
                         --  Something that the user dependency fails to
                         --  mention.
-                        if not Is_Variable (Missing_Var) then
-                           --  Dealing with a constant
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Msg      => "& cannot appear in Depends",
-                              N        => FA.Depends_N,
-                              F1       => Missing_Var,
-                              Tag      => Depends_Null,
-                              Severity => Medium_Check_Kind);
-                        elsif F_Out = Null_Flow_Id then
+                        if F_Out = Null_Flow_Id then
                            Error_Msg_Flow
                              (FA       => FA,
                               Msg      => "missing dependency ""null => %""",
