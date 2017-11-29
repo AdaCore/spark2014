@@ -627,22 +627,22 @@ package body Flow.Analysis.Sanity is
 
          begin
             for Var of Variables_Referenced loop
+               case Var.Kind is
 
-               --  Ignore known variables and synthetic null export
-               if FA.All_Vars.Contains (Change_Variant (Var, Normal_Use))
-                    or else
-                  Synthetic (Var)
-               then
-                  null;
+                  --  Ignore synthetic null export
 
-               --  Here we are dealing with a missing global
+                  when Synthetic_Null_Export =>
+                     null;
 
-               else
-                  case Var.Kind is
-                     when Direct_Mapping
-                        | Record_Field
-                        | Magic_String
-                     =>
+                  --  Here we are dealing with a missing global
+
+                  when Direct_Mapping
+                     | Record_Field
+                     | Magic_String
+                  =>
+                     if not FA.All_Vars.Contains
+                       (Change_Variant (Var, Normal_Use))
+                     then
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      => "& must be listed in the " &
@@ -659,12 +659,13 @@ package body Flow.Analysis.Sanity is
                            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                            Vertex   => V);
 
-                     when others =>
-                        raise Program_Error;
-                  end case;
+                        Sane := False;
+                     end if;
 
-                  Sane := False;
-               end if;
+                  when Null_Value =>
+                     raise Program_Error;
+
+               end case;
             end loop;
          end;
       end loop;
