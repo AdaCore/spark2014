@@ -3757,8 +3757,7 @@ package body Flow.Analysis is
                               F1       => Missing_Var,
                               Tag      => Depends_Null,
                               Severity => Medium_Check_Kind);
-                        elsif F_Out = Direct_Mapping_Id
-                          (FA.Analyzed_Entity)
+                        elsif F_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
                         then
                            Error_Msg_Flow
                              (FA       => FA,
