@@ -84,21 +84,21 @@ package body Flow_Error_Messages is
    --  @return a sloc
 
    procedure Add_Json_Msg
-     (Suppr       : String_Id;
-      Tag         : String;
-      Severity    : Msg_Severity;
-      Slc         : Source_Ptr;
-      Msg_List    : in out GNATCOLL.JSON.JSON_Array;
-      E           : Entity_Id;
-      Msg_Id      : Message_Id;
-      How_Proved  : Prover_Category;
-      Tracefile   : String := "";
-      Cntexmp     : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
-      Check_Tree  : JSON_Value;
-      VC_File     : String := "";
-      VC_Loc      : Source_Ptr := No_Location;
-      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd  : String := "");
+     (Suppr      : String_Id;
+      Tag        : String;
+      Severity   : Msg_Severity;
+      Slc        : Source_Ptr;
+      Msg_List   : in out GNATCOLL.JSON.JSON_Array;
+      E          : Entity_Id;
+      Msg_Id     : Message_Id;
+      How_Proved : Prover_Category;
+      Tracefile  : String := "";
+      Cntexmp    : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
+      Check_Tree : JSON_Value;
+      VC_File    : String := "";
+      VC_Loc     : Source_Ptr := No_Location;
+      Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Editor_Cmd : String := "");
    --  Note that VC_Loc is the location of the verification check as opposed to
    --  Slc which is the location of the first failing part of a VC (raised as
    --  location for messages).
@@ -660,21 +660,21 @@ package body Flow_Error_Messages is
    ------------------
 
    procedure Add_Json_Msg
-     (Suppr       : String_Id;
-      Tag         : String;
-      Severity    : Msg_Severity;
-      Slc         : Source_Ptr;
-      Msg_List    : in out GNATCOLL.JSON.JSON_Array;
-      E           : Entity_Id;
-      Msg_Id      : Message_Id;
-      How_Proved  : Prover_Category;
-      Tracefile   : String := "";
-      Cntexmp     : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
-      Check_Tree  : JSON_Value;
-      VC_File     : String := "";
-      VC_Loc      : Source_Ptr := No_Location;
-      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd  : String := "")
+     (Suppr      : String_Id;
+      Tag        : String;
+      Severity   : Msg_Severity;
+      Slc        : Source_Ptr;
+      Msg_List   : in out GNATCOLL.JSON.JSON_Array;
+      E          : Entity_Id;
+      Msg_Id     : Message_Id;
+      How_Proved : Prover_Category;
+      Tracefile  : String := "";
+      Cntexmp    : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
+      Check_Tree : JSON_Value;
+      VC_File    : String := "";
+      VC_Loc     : Source_Ptr := No_Location;
+      Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Editor_Cmd : String := "")
    is
       Value : constant JSON_Value := Create_Object;
       File  : constant String     := File_Name (Slc);
@@ -705,10 +705,10 @@ package body Flow_Error_Messages is
 
       if VC_Loc /= No_Location then
          declare
-            VC_File  : constant String     := File_Name (VC_Loc);
-            VC_Line  : constant Natural    :=
+            VC_File : constant String  := File_Name (VC_Loc);
+            VC_Line : constant Natural :=
                          Natural (Get_Logical_Line_Number (VC_Loc));
-            VC_Col   : constant Natural    :=
+            VC_Col  : constant Natural :=
                          Natural (Get_Column_Number (VC_Loc));
          begin
             --  Note that vc_file already exists
