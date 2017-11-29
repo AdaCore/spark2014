@@ -224,9 +224,7 @@ package body Flow.Slice is
                then
                   --  See above about suppressing "null => foo" dependency
                   --  error messages for out parameters and globals.
-                  Out_Discrim.Include
-                    (Change_Variant (Entire_Variable (F_Initial),
-                                     Normal_Use));
+                  Out_Discrim.Include (Flow_Equivalent (F_Initial));
                end if;
             end if;
          end;
