@@ -648,7 +648,7 @@ package body Flow_Types is
    begin
       case F.Kind is
          when Null_Value =>
-            return F;
+            raise Program_Error;
          when others =>
             return F'Update (Variant => Variant);
       end case;

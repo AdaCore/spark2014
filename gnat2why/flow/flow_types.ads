@@ -439,7 +439,8 @@ package Flow_Types is
 
    function Change_Variant (F       : Flow_Id;
                             Variant : Flow_Id_Variant)
-                            return Flow_Id;
+                            return Flow_Id
+   with Pre => Present (F);
    --  Returns a copy of the given Flow_Id, but with a modified variant
 
    function Parent_Record (F : Flow_Id) return Flow_Id
