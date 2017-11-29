@@ -47,9 +47,6 @@ is
                                  MinMatchLength => 8,
                                  Text           => "SHUTDOWN          "));
 
-   function RolePresent (TheAdmin : T) return PrivTypes.PrivilegeT is
-     (TheAdmin.RolePresent);
-
    ------------------------------------------------------------------
    -- Str_Comp
    --
@@ -93,16 +90,6 @@ is
    end Init;
 
    ------------------------------------------------------------------
-   -- IsPresent
-   --
-   -- Implementation Notes:
-   --    None.
-   --
-   ------------------------------------------------------------------
-   function IsPresent (TheAdmin : T) return Boolean is
-     (TheAdmin.RolePresent in PrivTypes.AdminPrivilegeT);
-
-   ------------------------------------------------------------------
    -- OpIsAvailable
    --
    -- Implementation Notes:
@@ -130,16 +117,6 @@ is
       end loop;
       return TheOp;
    end OpIsAvailable;
-
-   ------------------------------------------------------------------
-   -- IsDoingOp
-   --
-   -- Implementation Notes:
-   --    None.
-   --
-   ------------------------------------------------------------------
-   function IsDoingOp (TheAdmin : T) return Boolean is
-      (TheAdmin.CurrentOp in OpT);
 
    ------------------------------------------------------------------
    -- Logon

@@ -306,7 +306,7 @@
 </theory>
 <theory name="Admin__optokeyed" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp__L13b__T14b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Admin__str_comp__L12b__T13b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Keyboard__read__datapresence" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -514,7 +514,7 @@
 </theory>
 <theory name="Admin__T6b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Admin__str_comp__L13b__T14b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Admin__str_comp__L12b__T13b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Keyboard__maxdatalength___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -720,17 +720,17 @@
  </transf>
  </goal>
 </theory>
-<theory name="Admin__finishop__subprogram_def" proved="true" sum="cd8304798d83dda9566c0dede80df605">
+<theory name="Admin__finishop__subprogram_def" proved="true" sum="0e5022b1b985d0db7ed6f38f7b70cd27">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="32"/></proof>
+  <proof prover="0"><result status="valid" steps="31"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="42"/></proof>
+  <proof prover="0"><result status="valid" steps="41"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="25"/></proof>
+  <proof prover="0"><result status="valid" steps="24"/></proof>
   </goal>
  </transf>
  </goal>

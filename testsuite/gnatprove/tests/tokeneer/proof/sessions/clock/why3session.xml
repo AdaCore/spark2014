@@ -318,7 +318,7 @@
 </theory>
 <theory name="Clock__setstringsegment__L_1__T3b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Clock__printduration__T11b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Clock__printduration__T6b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Clock__printduration__firsthourindex" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -334,7 +334,7 @@
 </theory>
 <theory name="Clock__printduration__tenthsecindex" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Clock__printtime__T13b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Clock__printtime__T8b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Clock__printtime__firstyearindex" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -536,9 +536,9 @@
 </theory>
 <theory name="Clock__setstringsegment__L_1__T3b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Clock__printduration__T11b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Clock__printduration__T6b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Clock__printtime__T13b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Clock__printtime__T8b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Temp___String_Literal_257" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -620,19 +620,19 @@
 </theory>
 <theory name="Clock__setstringsegment___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Clock__package_def" proved="true" sum="1e2cd7ceaa02b59ebafe96a702ab08a3">
+<theory name="Clock__package_def" proved="true" sum="d5c20d470f67722862676793fdb59bdd">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Clock__poll__subprogram_def" proved="true" sum="6be7de68b667f2b22d85ca0a4c882e29">
+<theory name="Clock__poll__subprogram_def" proved="true" sum="78352af201aadc164af9d313149802e6">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Clock__thecurrenttime__subprogram_def" proved="true" sum="515146804edbb6a99e0cf1b005ed3c4e">
+<theory name="Clock__thecurrenttime__subprogram_def" proved="true" sum="6177f3263ad41705340314165caddb7f">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -668,7 +668,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Clock__constructtime__subprogram_def" proved="true" sum="385350dd89e4874b4c71f93164055b3f">
+<theory name="Clock__constructtime__subprogram_def" proved="true" sum="84efc20b2d3f6a31c2501d8579a799e6">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -701,7 +701,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Clock__splittime__subprogram_def" proved="true" sum="a0a63c50282f8fa479fa90929e57eaf3">
+<theory name="Clock__splittime__subprogram_def" proved="true" sum="11a0af150745015c9cb7d32b0325e2db">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -728,7 +728,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Clock__printduration__subprogram_def" proved="true" sum="0b8070bb8496d5c749002be5a9d18108">
+<theory name="Clock__printduration__subprogram_def" proved="true" sum="c6971003468e55dd74d97213825a274d">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -776,7 +776,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Clock__printtime__subprogram_def" proved="true" sum="c958ffd9dfebcd46e63912ed7bbfa337">
+<theory name="Clock__printtime__subprogram_def" proved="true" sum="d1913506eac038fd646ca77cf6022b18">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -851,7 +851,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Clock__setstringsegment__subprogram_def" proved="true" sum="72a5b6913f04c0b35d7e886f9c919b7b">
+<theory name="Clock__setstringsegment__subprogram_def" proved="true" sum="d6245870cfdd8a962d95835684873068">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">

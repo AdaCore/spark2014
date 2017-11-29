@@ -202,7 +202,7 @@ package Admin is
    procedure FinishOp (TheAdmin : in out T)
      with Global  => null,
           Depends => (TheAdmin => TheAdmin),
-          Pre     => IsPresent (TheAdmin) and IsDoingOp (TheAdmin),
+          Pre     => IsPresent (TheAdmin),
           Post    => not IsDoingOp (TheAdmin)
                        and RolePresent (TheAdmin) = RolePresent (TheAdmin'Old)
                        and IsPresent (TheAdmin);
@@ -237,5 +237,28 @@ private
         PrivTypes.SecurityOfficer => AvailOpsT'(UpdateConfigData => True,
                                                 ShutdownOp       => True,
                                                 others           => False));
+
+   function RolePresent (TheAdmin : T) return PrivTypes.PrivilegeT is
+     (TheAdmin.RolePresent);
+
+   ------------------------------------------------------------------
+   -- IsPresent
+   --
+   -- Implementation Notes:
+   --    None.
+   --
+   ------------------------------------------------------------------
+   function IsPresent (TheAdmin : T) return Boolean is
+     (TheAdmin.RolePresent in PrivTypes.AdminPrivilegeT);
+
+   ------------------------------------------------------------------
+   -- IsDoingOp
+   --
+   -- Implementation Notes:
+   --    None.
+   --
+   ------------------------------------------------------------------
+   function IsDoingOp (TheAdmin : T) return Boolean is
+      (TheAdmin.CurrentOp in OpT);
 
 end Admin;

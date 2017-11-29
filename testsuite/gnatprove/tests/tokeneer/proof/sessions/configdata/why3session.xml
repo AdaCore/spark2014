@@ -454,9 +454,9 @@
 </theory>
 <theory name="System__default_bit_order" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__any_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -2174,6 +2174,10 @@
 </theory>
 <theory name="Clock__splittime__min___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
+<theory name="Clock__currenttimevar" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Clock__currenttimevar___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
 <theory name="Ada__streams__read__stream" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Ada__streams__read__stream___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
@@ -2898,9 +2902,9 @@
 </theory>
 <theory name="Configdata__isinentryperiod__daystart___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Clock__currenttime" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Clock__now" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Clock__currenttime" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Standard__short_short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3642,9 +3646,9 @@
 </theory>
 <theory name="System__default_bit_order___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__default_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4114,7 +4118,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__init__subprogram_def" proved="true" sum="3fa94f9c61dc7bf1968350b4c454d317">
+<theory name="Configdata__init__subprogram_def" proved="true" sum="70be323bced54977ea9ccf7c6801b976">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -4126,7 +4130,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__writefile__subprogram_def" proved="true" sum="cec0b74822ea90bc38ddf218dee91144">
+<theory name="Configdata__writefile__subprogram_def" proved="true" sum="b35c6433f07de1105179eebfcc165693">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4258,7 +4262,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__isinentryperiod__subprogram_def" proved="true" sum="4a7700ec0c5b77f5aac981913431c73e">
+<theory name="Configdata__isinentryperiod__subprogram_def" proved="true" sum="1172713b2fbc97ffc044377eba3a542c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -4300,7 +4304,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__thealarmthresholdentries__subprogram_def" proved="true" sum="4eaa0bd32cfa2acbb68a1eb99de134cf">
+<theory name="Configdata__thealarmthresholdentries__subprogram_def" proved="true" sum="03396d85f1cd72442f1a7512300e1f92">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4312,7 +4316,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readduration__subprogram_def" proved="true" sum="7b59ff1228027900ec48d8e82dfa8007">
+<theory name="Configdata__validatefile__readduration__subprogram_def" proved="true" sum="f9af0b407325fff363a4917f66feb2d0">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4324,7 +4328,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readfilesize__subprogram_def" proved="true" sum="be1349d9eb33bbb0eda4d12c5f928c06">
+<theory name="Configdata__validatefile__readfilesize__subprogram_def" proved="true" sum="fd433ce471300a3ec9f61af9894951a4">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4336,7 +4340,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readclass__subprogram_def" proved="true" sum="aed36f573f53868818d6d9faf1cf8db1">
+<theory name="Configdata__validatefile__readclass__subprogram_def" proved="true" sum="38483ff7bb11fc023b8960b96efb405b">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4522,7 +4526,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readworkinghours__subprogram_def" proved="true" sum="2186faf88f8f0d1be7564b99a32bd079">
+<theory name="Configdata__validatefile__readworkinghours__subprogram_def" proved="true" sum="f7d4da7201bf5d55851755b858716658">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4546,7 +4550,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readfar__subprogram_def" proved="true" sum="8f6ee8488ec2b7872913ce13cae9c9f5">
+<theory name="Configdata__validatefile__readfar__subprogram_def" proved="true" sum="401e664cb64521b2f48d4c52f505ca4b">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4555,55 +4559,55 @@
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readalarmsilent__subprogram_def" proved="true" sum="b550dc5f7748c05151fa857756afc63d">
+<theory name="Configdata__validatefile__readalarmsilent__subprogram_def" proved="true" sum="2e72ff71a029dfcaba872c4cf9568081">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readlatchunlock__subprogram_def" proved="true" sum="d57548a24ac97e30afe16f6e101ef2ca">
+<theory name="Configdata__validatefile__readlatchunlock__subprogram_def" proved="true" sum="6f3c53f5b9d04c203e62e4bd0d13253e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readfingerwait__subprogram_def" proved="true" sum="b6b877f15be697ec1ebd3cd9e9271bca">
+<theory name="Configdata__validatefile__readfingerwait__subprogram_def" proved="true" sum="314e29224ad2d58a4f8a1b3b4adbff95">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readtokenremoval__subprogram_def" proved="true" sum="f9f10ccc4cccc5abcb457fab1a2446d0">
+<theory name="Configdata__validatefile__readtokenremoval__subprogram_def" proved="true" sum="73aa5b8ca7b71091fede3da8762be833">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readclearance__subprogram_def" proved="true" sum="a75b04def52edd3496d55a2262057e60">
+<theory name="Configdata__validatefile__readclearance__subprogram_def" proved="true" sum="29abbe0b2ba3b51e695d3a85bea00267">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readworkingstart__subprogram_def" proved="true" sum="dd366a9a61ea2de06a44d386272e3051">
+<theory name="Configdata__validatefile__readworkingstart__subprogram_def" proved="true" sum="dd4162aaba76bb774d86361ee0cf3543">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readworkingend__subprogram_def" proved="true" sum="a487f74b1d2a0588f30bb5e6106314b9">
+<theory name="Configdata__validatefile__readworkingend__subprogram_def" proved="true" sum="7362800a49a5169fa6b7eed6e55844d3">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readauthduration__subprogram_def" proved="true" sum="314f3249293d17bbb297f5b70d29daa7">
+<theory name="Configdata__validatefile__readauthduration__subprogram_def" proved="true" sum="cf40829c49f3e697c1100b6e5e0bc431">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readaccesspolicy__subprogram_def" proved="true" sum="6c1492c152c2669cdb242bab325547be">
+<theory name="Configdata__validatefile__readaccesspolicy__subprogram_def" proved="true" sum="201c2f5ab8eee392265e62e1f510e147">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4669,25 +4673,25 @@
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readminentryclass__subprogram_def" proved="true" sum="1993bc2f40a9a2d50a4e1d2f91a2ce8d">
+<theory name="Configdata__validatefile__readminentryclass__subprogram_def" proved="true" sum="db9dc106b7f92521be4a3db9e7894104">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readminpreservedlog__subprogram_def" proved="true" sum="c1efc54a1ed3c6595152df55c19edcd7">
+<theory name="Configdata__validatefile__readminpreservedlog__subprogram_def" proved="true" sum="cc8623e51354b122130906de8bde0404">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readalarmthreshold__subprogram_def" proved="true" sum="d29f5314f8d2ecbd7a66c1ec67193c3f">
+<theory name="Configdata__validatefile__readalarmthreshold__subprogram_def" proved="true" sum="8c27ffaace7138c11e488680965b431f">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Configdata__validatefile__readsystemmaxfar__subprogram_def" proved="true" sum="fd37cca94d785840ae37aa669a3f5037">
+<theory name="Configdata__validatefile__readsystemmaxfar__subprogram_def" proved="true" sum="5b64613fe0ee0f6462062d78382d9dec">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>

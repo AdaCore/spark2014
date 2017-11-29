@@ -259,4 +259,85 @@ is
    function AddDuration (TheTime : TimeT; TheDuration : DurationT)
                         return TimeT;
 
+private
+   ------------------------------------------------------------------
+   -- Types and constants
+   --
+   ------------------------------------------------------------------
+   MilliSecsInMin : constant := 60 * MilliSecsInSec;
+   MilliSecsInHr  : constant := 60 * MilliSecsInMin;
+   ------------------------------------------------------------------
+   -- State
+   --
+   ------------------------------------------------------------------
+   CurrentTimeVar : TimeT with Part_Of => CurrentTime;
+
+   ------------------------------------------------------------------
+   -- TheCurrentTime
+   --
+   -- Implementation Notes:
+   --    None.
+   --
+   ------------------------------------------------------------------
+   function TheCurrentTime return TimeT is (CurrentTimeVar)
+     with Refined_Global => CurrentTimeVar;
+
+   ------------------------------------------------------------------
+   -- GreaterThan
+   --
+   -- Implementation Notes:
+   --    None.
+   --
+   ------------------------------------------------------------------
+   function GreaterThan (Left, Right : TimeT) return Boolean is
+     (Left.Year > Right.Year
+        or (Left.Year = Right.Year
+            and Left.Month > Right.Month )
+        or (Left.Year = Right.Year
+            and Left.Month = Right.Month
+            and Left.Day > Right.Day)
+        or (Left.Year = Right.Year
+            and Left.Month = Right.Month
+            and Left.Day = Right.Day
+            and Left.MilliSec > Right.MilliSec));
+
+   ------------------------------------------------------------------
+   -- LessThan
+   --
+   -- Implementation Notes:
+   --    None.
+   --
+   ------------------------------------------------------------------
+   function LessThan (Left, Right : TimeT) return Boolean is
+     (Left.Year < Right.Year
+        or (Left.Year = Right.Year
+            and Left.Month < Right.Month )
+        or (Left.Year = Right.Year
+            and Left.Month = Right.Month
+            and Left.Day < Right.Day)
+        or (Left.Year= Right.Year
+            and Left.Month = Right.Month
+            and Left.Day = Right.Day
+            and Left.MilliSec < Right.MilliSec));
+
+   ------------------------------------------------------------------
+   -- GreaterThanOrEqual
+   --
+   -- Implemention Notes:
+   --    None.
+   --
+   ------------------------------------------------------------------
+   function GreaterThanOrEqual (Left, Right : TimeT) return Boolean is
+     (GreaterThan (Left, Right) or Left = Right);
+
+   ------------------------------------------------------------------
+   -- LessThanOrEqual
+   --
+   -- Implemention Notes:
+   --    None.
+   --
+   ------------------------------------------------------------------
+   function LessThanOrEqual (Left, Right : TimeT) return Boolean is
+     (LessThan (Left, Right) or Left = Right);
+
 end Clock;

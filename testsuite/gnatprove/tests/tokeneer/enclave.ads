@@ -429,7 +429,7 @@ is
                 (not Admin.IsDoingOp(TheAdmin) and
                    Admin.RolePresent(TheAdmin) = PrivTypes.UserOnly)) and
 
-            (if (Admin.IsDoingOp(TheAdmin) and
+            (if (Admin.IsDoingOp(TheAdmin) and then
                    Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp)
              then
                 statusIsWaitingStartAdminOp) and
@@ -439,13 +439,13 @@ is
                    AdminToken.AuthCertValid and
                    AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-            (if (Admin.IsDoingOp(TheAdmin) and
+            (if (Admin.IsDoingOp(TheAdmin) and then
                    Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
              then
                  Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
             (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-                ((Admin.IsDoingOp(TheAdmin) and
+                ((Admin.IsDoingOp(TheAdmin) and then
                     Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
                    not Admin.IsDoingOp(TheAdmin))),
           --------------------------------------------------------
@@ -483,7 +483,7 @@ is
                 (not Admin.IsDoingOp(TheAdmin) and
                    Admin.RolePresent(TheAdmin) = PrivTypes.UserOnly)) and
 
-            (if (Admin.IsDoingOp(TheAdmin) and
+            (if (Admin.IsDoingOp(TheAdmin) and then
                    Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp)
              then
                  statusIsWaitingStartAdminOp) and
@@ -493,13 +493,13 @@ is
                    AdminToken.AuthCertValid and
                    AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-            (if (Admin.IsDoingOp(TheAdmin) and
+            (if (Admin.IsDoingOp(TheAdmin) and then
                    Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
              then
                  Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
             (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-                ((Admin.IsDoingOp(TheAdmin) and
+                ((Admin.IsDoingOp(TheAdmin) and then
                     Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
                    not Admin.IsDoingOp(TheAdmin))) and
 
@@ -562,7 +562,7 @@ is
                    and AdminToken.AuthCertValid
                    and AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-            (if (Admin.IsDoingOp (TheAdmin) and
+            (if (Admin.IsDoingOp (TheAdmin) and then
                    Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
              then
                 Admin.RolePresent (TheAdmin) = PrivTypes.Guard) and
@@ -589,14 +589,14 @@ is
                    and Admin.RolePresent (TheAdmin) = PrivTypes.UserOnly)) and
 
             (if (Admin.IsDoingOp (TheAdmin)
-                   and Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
+                   and then Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
              then
                 statusIsWaitingStartAdminOp) and
 
             (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
                 ((Admin.IsDoingOp (TheAdmin)
-                    and Admin.TheCurrentOp (TheAdmin) =
-                          Admin.OverrideLock)
+                    and then Admin.TheCurrentOp (TheAdmin) =
+                               Admin.OverrideLock)
                  or not Admin.IsDoingOp (TheAdmin))),
 
           Post    =>
@@ -629,7 +629,7 @@ is
                          PrivTypes.UserOnly)) and
 
             (if (Admin.IsDoingOp (TheAdmin)
-                   and Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
+                   and then Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
              then
                 statusIsWaitingStartAdminOp) and
 
@@ -639,14 +639,14 @@ is
                    and AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
             (if (Admin.IsDoingOp (TheAdmin)
-                   and Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
+                   and then Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
              then
                 Admin.RolePresent (TheAdmin) = PrivTypes.Guard) and
 
             (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
                 ((Admin.IsDoingOp (TheAdmin)
-                    and Admin.TheCurrentOp (TheAdmin) =
-                          Admin.OverrideLock)
+                    and then Admin.TheCurrentOp (TheAdmin) =
+                               Admin.OverrideLock)
                  or not Admin.IsDoingOp (TheAdmin)));
 
    ------------------------------------------------------------------
@@ -676,5 +676,59 @@ is
                                                TheAdmin),
                       Screen.State         =>+ (State,
                                                 TheAdmin));
+
+private
+   Status : StatusT with Part_Of => State;
+
+   ------------------------------------------------------------------
+   --  Types
+   ------------------------------------------------------------------
+
+   subtype EnrolmentStates is StatusT
+     range NotEnrolled .. WaitingEndEnrol;
+
+   subtype ActiveEnclaveStates is StatusT
+     range GotAdminToken .. Shutdown;
+
+   subtype NonQuiescentStates is StatusT
+     range WaitingRemoveAdminTokenFail .. Shutdown;
+
+   ------------------------------------------------------------------
+   --  State
+   ------------------------------------------------------------------
+   function GetStatus return StatusT is (Status)
+     with Refined_Global => Status;
+
+   function statusIsGotAdminToken return Boolean is
+     (Status = GotAdminToken)
+     with Refined_Global => Status;
+
+   function statusIsWaitingRemoveAdminTokenFail return Boolean is
+     (Status = WaitingRemoveAdminTokenFail)
+     with Refined_Global => Status;
+
+   function statusIsWaitingStartAdminOp return Boolean is
+     (Status = WaitingStartAdminOp)
+     with Refined_Global => Status;
+
+   function statusIsWaitingFinishAdminOp return Boolean is
+     (Status = WaitingFinishAdminOp)
+     with Refined_Global => Status;
+
+   function statusIsEnclaveQuiescent return Boolean is
+     (Status = EnclaveQuiescent)
+     with Refined_Global => Status;
+
+   function statusIsShutdown return Boolean is (Status = Shutdown)
+     with Refined_Global => Status;
+
+   ------------------------------------------------------------------
+   -- EnrolmentIsInProgress
+   --
+   -- Implementation Notes:
+   --    None.
+   ------------------------------------------------------------------
+   function EnrolmentIsInProgress return Boolean is (Status in EnrolmentStates)
+     with Refined_Global => Status;
 
 end Enclave;

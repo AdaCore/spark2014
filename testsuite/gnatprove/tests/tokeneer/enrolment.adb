@@ -236,6 +236,9 @@ package body Enrolment is
       while not File.EndOfFile(TheFile) and DataOK loop
          if not File.EndOfLine(TheFile) then
             CertNo := CertNo + 1;
+            pragma Annotate (GNATprove, False_Positive,
+                             "overflow check might fail",
+                             "This follows from the memory size of a floppy and the size of each certificate (in the region of 2**10 characters)");
             ValidateAndAddKey(IsTIS       => False,
                               KeyAdded    => DataOK,
                               Description => Description);

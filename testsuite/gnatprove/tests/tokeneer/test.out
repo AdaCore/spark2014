@@ -1,12 +1,12 @@
-admin.adb:67:29: info: index check proved (CVC4: 2 VC)
-admin.adb:67:47: info: index check proved (CVC4: 2 VC)
-admin.adb:79:27: info: index check proved (CVC4: 2 VC)
-admin.adb:119:33: info: initialization of "TheOp" proved
-admin.adb:119:33: info: loop invariant initialization proved (CVC4: 1 VC)
-admin.adb:119:33: info: loop invariant preservation proved (CVC4: 1 VC)
-admin.adb:125:36: info: index check proved (CVC4: 2 VC)
-admin.adb:131:14: info: initialization of "TheOp" proved
-admin.adb:206:64: info: range check proved (CVC4: 1 VC)
+admin.adb:64:29: info: index check proved (CVC4: 2 VC)
+admin.adb:64:47: info: index check proved (CVC4: 2 VC)
+admin.adb:76:27: info: index check proved (CVC4: 2 VC)
+admin.adb:106:33: info: initialization of "TheOp" proved
+admin.adb:106:33: info: loop invariant initialization proved (CVC4: 1 VC)
+admin.adb:106:33: info: loop invariant preservation proved (CVC4: 1 VC)
+admin.adb:112:36: info: index check proved (CVC4: 2 VC)
+admin.adb:118:14: info: initialization of "TheOp" proved
+admin.adb:183:64: info: range check proved (CVC4: 1 VC)
 admin.ads:115:20: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:115:20: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:118:22: info: postcondition proved (CVC4: 2 VC)
@@ -27,114 +27,114 @@ admin.ads:170:36: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:188:22: info: postcondition proved (CVC4: 4 VC)
 admin.ads:191:28: info: precondition proved (CVC4: 1 VC)
 admin.ads:206:22: info: postcondition proved (CVC4: 3 VC)
-admintoken.adb:95:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.adb:95:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.adb:96:42: info: initialization of "IDCert.Contents" constituent of "State" proved
-admintoken.adb:96:42: info: initialization of "IDCert.Valid" constituent of "State" proved
-admintoken.adb:97:50: info: initialization of "Interfac.State" constituent of "AdminToken.State" proved
-admintoken.adb:98:42: info: initialization of "TokenID" constituent of "State" proved
-admintoken.adb:99:42: info: initialization of "TokenPresence" constituent of "State" proved
-admintoken.adb:100:42: info: initialization of "TokenTry" constituent of "State" proved
-admintoken.adb:127:43: info: initialization of "TokenPresence" constituent of "State" proved
-admintoken.adb:168:41: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.adb:168:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.adb:169:41: info: initialization of "IDCert.Contents" constituent of "State" proved
-admintoken.adb:169:41: info: initialization of "IDCert.Valid" constituent of "State" proved
-admintoken.adb:170:41: info: initialization of "TokenTry" constituent of "State" proved
-admintoken.adb:199:30: info: initialization of "TokenOK" proved
-admintoken.adb:199:30: info: refined post proved (CVC4: 4 VC)
-admintoken.adb:199:41: info: initialization of "IDCert.Valid" constituent of "State" proved
-admintoken.adb:200:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.adb:202:44: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.adb:225:13: info: range check proved (CVC4: 4 VC)
-admintoken.adb:225:37: info: initialization of "Result" proved
-admintoken.adb:225:37: info: length check proved (CVC4: 1 VC)
-admintoken.adb:225:40: info: length check proved (CVC4: 1 VC)
-admintoken.adb:227:23: info: range check proved (CVC4: 4 VC)
-admintoken.adb:230:17: info: initialization of "Result" proved
-admintoken.adb:249:37: info: initialization of "Description" proved
-admintoken.adb:250:37: info: initialization of "IDValid" proved
-admintoken.adb:286:13: info: initialization of "CertFound" proved
-admintoken.adb:289:28: info: initialization of "RawCert" proved
-admintoken.adb:293:16: info: initialization of "ExtractOK" proved
-admintoken.adb:301:30: info: initialization of "RawCert" proved
-admintoken.adb:309:21: info: initialization of "CertFound" proved
-admintoken.adb:309:35: info: initialization of "ExtractOK" proved
-admintoken.adb:310:16: info: initialization of "TokenIDMatches" proved
-admintoken.adb:310:35: info: initialization of "Verified" proved
-admintoken.adb:312:17: info: initialization of "CertFound" proved
-admintoken.adb:312:34: info: initialization of "ExtractOK" proved
-admintoken.adb:312:51: info: initialization of "TokenIDMatches" proved
-admintoken.adb:313:28: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:314:20: info: initialization of "Verified" proved
-admintoken.adb:316:15: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:341:36: info: initialization of "AuthValid" proved
-admintoken.adb:385:13: info: initialization of "CertFound" proved
-admintoken.adb:387:28: info: initialization of "RawCert" proved
-admintoken.adb:391:16: info: initialization of "ExtractOK" proved
-admintoken.adb:401:33: info: initialization of "RawCert" proved
-admintoken.adb:413:23: info: initialization of "CertFound" proved
-admintoken.adb:414:29: info: initialization of "ExtractOK" proved
-admintoken.adb:415:29: info: initialization of "BaseIDMatches" proved
-admintoken.adb:416:29: info: initialization of "Verified" proved
-admintoken.adb:417:29: info: initialization of "Current" proved
-admintoken.adb:420:20: info: initialization of "CertFound" proved
-admintoken.adb:421:22: info: initialization of "ExtractOK" proved
-admintoken.adb:422:22: info: initialization of "BaseIDMatches" proved
-admintoken.adb:424:31: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:425:23: info: initialization of "Verified" proved
-admintoken.adb:427:19: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:428:23: info: initialization of "Current" proved
-admintoken.adb:430:19: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:446:10: info: initialization of "TokenTry" constituent of "State" proved
-admintoken.adb:449:10: info: initialization of "IDCertContents" proved
-admintoken.adb:451:10: info: initialization of "AuthCertContents" proved
-admintoken.adb:451:10: info: initialization of "Description" proved
-admintoken.adb:451:10: info: initialization of "IDCertContents" proved
-admintoken.adb:454:13: info: initialization of "IDValid" proved
-admintoken.adb:454:25: info: initialization of "AuthValid" proved
-admintoken.adb:455:51: info: initialization of "AuthCertContents" proved
-admintoken.adb:459:31: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:471:25: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:475:18: info: initialization of "AuthValid" proved
-admintoken.adb:475:32: info: initialization of "IDValid" proved
-admintoken.adb:475:44: info: initialization of "RoleOK" proved
-admintoken.adb:477:43: info: initialization of "IDValid" proved
-admintoken.adb:478:44: info: initialization of "IDCertContents" proved
-admintoken.adb:481:22: info: initialization of "AuthValid" proved
-admintoken.adb:482:22: info: initialization of "AuthCertContents" proved
-admintoken.adb:533:14: info: initialization of "Result" proved
-admintoken.adb:546:21: info: range check proved (CVC4: 1 VC)
-admintoken.adb:557:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.adb:557:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.adb:558:42: info: initialization of "IDCert.Contents" constituent of "State" proved
-admintoken.adb:558:42: info: initialization of "IDCert.Valid" constituent of "State" proved
-admintoken.adb:559:42: info: initialization of "TokenID" constituent of "State" proved
-admintoken.adb:560:42: info: initialization of "TokenPresence" constituent of "State" proved
-admintoken.adb:561:42: info: initialization of "TokenTry" constituent of "State" proved
-admintoken.adb:577:47: info: initialization of "AuthCertContents" proved
-admintoken.adb:581:43: info: initialization of "IDCertContents" proved
-admintoken.ads:66:22: info: postcondition proved (CVC4: 3 VC)
-admintoken.ads:66:26: info: initialization of "IDCert.Contents" constituent of "State" proved
-admintoken.ads:66:26: info: initialization of "IDCert.Valid" constituent of "State" proved
-admintoken.ads:67:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.ads:67:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:101:22: info: postcondition proved (CVC4: 2 VC)
-admintoken.ads:118:07: info: initialization of "Description" proved
-admintoken.ads:119:07: info: initialization of "TokenOK" proved
-admintoken.ads:148:22: info: initialization of "TokenOK" proved
-admintoken.ads:148:22: info: postcondition proved (CVC4: 4 VC)
-admintoken.ads:148:33: info: initialization of "IDCert.Contents" constituent of "State" proved
-admintoken.ads:148:33: info: initialization of "IDCert.Valid" constituent of "State" proved
-admintoken.ads:149:33: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.ads:149:33: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:217:26: info: initialization of "IDCert.Contents" constituent of "State" proved
-admintoken.ads:217:26: info: initialization of "IDCert.Valid" constituent of "State" proved
-admintoken.ads:218:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.ads:218:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:219:22: medium: postcondition might fail, cannot prove not (TheAuthCertRole in PrivTypes.adminprivileget
-admintoken.ads:219:27: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.ads:219:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:48:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.adb:48:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:49:42: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.adb:49:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:50:50: info: initialization of "Interfac.State" constituent of "AdminToken.State" proved
+admintoken.adb:51:42: info: initialization of "TokenID" constituent of "State" proved
+admintoken.adb:52:42: info: initialization of "TokenPresence" constituent of "State" proved
+admintoken.adb:53:42: info: initialization of "TokenTry" constituent of "State" proved
+admintoken.adb:80:43: info: initialization of "TokenPresence" constituent of "State" proved
+admintoken.adb:121:41: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.adb:121:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:122:41: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.adb:122:41: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:123:41: info: initialization of "TokenTry" constituent of "State" proved
+admintoken.adb:152:30: info: initialization of "TokenOK" proved
+admintoken.adb:152:30: info: refined post proved (CVC4: 4 VC)
+admintoken.adb:152:41: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:153:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:155:44: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.adb:178:13: info: range check proved (CVC4: 4 VC)
+admintoken.adb:178:37: info: initialization of "Result" proved
+admintoken.adb:178:37: info: length check proved (CVC4: 1 VC)
+admintoken.adb:178:40: info: length check proved (CVC4: 1 VC)
+admintoken.adb:180:23: info: range check proved (CVC4: 4 VC)
+admintoken.adb:183:17: info: initialization of "Result" proved
+admintoken.adb:202:37: info: initialization of "Description" proved
+admintoken.adb:203:37: info: initialization of "IDValid" proved
+admintoken.adb:239:13: info: initialization of "CertFound" proved
+admintoken.adb:242:28: info: initialization of "RawCert" proved
+admintoken.adb:246:16: info: initialization of "ExtractOK" proved
+admintoken.adb:254:30: info: initialization of "RawCert" proved
+admintoken.adb:262:21: info: initialization of "CertFound" proved
+admintoken.adb:262:35: info: initialization of "ExtractOK" proved
+admintoken.adb:263:16: info: initialization of "TokenIDMatches" proved
+admintoken.adb:263:35: info: initialization of "Verified" proved
+admintoken.adb:265:17: info: initialization of "CertFound" proved
+admintoken.adb:265:34: info: initialization of "ExtractOK" proved
+admintoken.adb:265:51: info: initialization of "TokenIDMatches" proved
+admintoken.adb:266:28: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:267:20: info: initialization of "Verified" proved
+admintoken.adb:269:15: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:294:36: info: initialization of "AuthValid" proved
+admintoken.adb:338:13: info: initialization of "CertFound" proved
+admintoken.adb:340:28: info: initialization of "RawCert" proved
+admintoken.adb:344:16: info: initialization of "ExtractOK" proved
+admintoken.adb:354:33: info: initialization of "RawCert" proved
+admintoken.adb:366:23: info: initialization of "CertFound" proved
+admintoken.adb:367:29: info: initialization of "ExtractOK" proved
+admintoken.adb:368:29: info: initialization of "BaseIDMatches" proved
+admintoken.adb:369:29: info: initialization of "Verified" proved
+admintoken.adb:370:29: info: initialization of "Current" proved
+admintoken.adb:373:20: info: initialization of "CertFound" proved
+admintoken.adb:374:22: info: initialization of "ExtractOK" proved
+admintoken.adb:375:22: info: initialization of "BaseIDMatches" proved
+admintoken.adb:377:31: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:378:23: info: initialization of "Verified" proved
+admintoken.adb:380:19: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:381:23: info: initialization of "Current" proved
+admintoken.adb:383:19: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:399:10: info: initialization of "TokenTry" constituent of "State" proved
+admintoken.adb:402:10: info: initialization of "IDCertContents" proved
+admintoken.adb:404:10: info: initialization of "AuthCertContents" proved
+admintoken.adb:404:10: info: initialization of "Description" proved
+admintoken.adb:404:10: info: initialization of "IDCertContents" proved
+admintoken.adb:407:13: info: initialization of "IDValid" proved
+admintoken.adb:407:25: info: initialization of "AuthValid" proved
+admintoken.adb:408:51: info: initialization of "AuthCertContents" proved
+admintoken.adb:412:31: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:424:25: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:428:18: info: initialization of "AuthValid" proved
+admintoken.adb:428:32: info: initialization of "IDValid" proved
+admintoken.adb:428:44: info: initialization of "RoleOK" proved
+admintoken.adb:430:43: info: initialization of "IDValid" proved
+admintoken.adb:431:44: info: initialization of "IDCertContents" proved
+admintoken.adb:434:22: info: initialization of "AuthValid" proved
+admintoken.adb:435:22: info: initialization of "AuthCertContents" proved
+admintoken.adb:486:14: info: initialization of "Result" proved
+admintoken.adb:496:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.adb:496:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:497:42: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.adb:497:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:498:42: info: initialization of "TokenID" constituent of "State" proved
+admintoken.adb:499:42: info: initialization of "TokenPresence" constituent of "State" proved
+admintoken.adb:500:42: info: initialization of "TokenTry" constituent of "State" proved
+admintoken.adb:516:47: info: initialization of "AuthCertContents" proved
+admintoken.adb:520:43: info: initialization of "IDCertContents" proved
+admintoken.ads:76:22: info: postcondition proved (CVC4: 3 VC)
+admintoken.ads:76:26: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.ads:76:26: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.ads:77:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.ads:77:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.ads:111:22: info: postcondition proved (CVC4: 2 VC)
+admintoken.ads:128:07: info: initialization of "Description" proved
+admintoken.ads:129:07: info: initialization of "TokenOK" proved
+admintoken.ads:158:22: info: initialization of "TokenOK" proved
+admintoken.ads:158:22: info: postcondition proved (CVC4: 4 VC)
+admintoken.ads:158:33: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.ads:158:33: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.ads:159:33: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.ads:159:33: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.ads:227:26: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.ads:227:26: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.ads:228:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.ads:228:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.ads:229:22: medium: postcondition might fail, cannot prove not (TheAuthCertRole in PrivTypes.adminprivileget
+admintoken.ads:229:27: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.ads:229:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.ads:279:21: info: range check proved (CVC4: 1 VC)
 alarm.adb:43:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
 alarm.adb:46:30: info: refined post proved (CVC4: 1 VC)
 alarm.ads:70:22: info: postcondition proved (CVC4: 1 VC)
@@ -146,290 +146,294 @@ alarmapi.adb:62:29: warning: assuming "Overwrite" has no effect on global items
 alarmapi.adb:62:29: warning: no Global contract available for "Overwrite"
 alarmapi.ads:29:14: warning: subprogram "Activate" has no effect
 alarmapi.ads:38:14: warning: subprogram "Deactivate" has no effect
-auditlog.adb:132:04: info: initialization of "LogFiles" constituent of "FileState" proved
-auditlog.adb:177:44: info: range check proved (CVC4: 1 VC)
-auditlog.adb:177:49: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:177:69: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:211:18: info: range check proved (CVC4: 1 VC)
-auditlog.adb:253:35: info: range check proved (CVC4: 1 VC)
-auditlog.adb:254:40: info: index check proved (CVC4: 2 VC)
-auditlog.adb:254:40: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:254:45: info: initialization of "LocalDesc" proved
-auditlog.adb:255:46: info: index check proved (CVC4: 2 VC)
-auditlog.adb:255:46: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:259:45: info: initialization of "LocalDesc" proved
-auditlog.adb:260:46: info: index check proved (CVC4: 2 VC)
-auditlog.adb:260:46: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:264:14: info: initialization of "LocalDesc" proved
-auditlog.adb:280:07: info: initialization of "Description" proved
-auditlog.adb:305:13: info: no contextual analysis of "ConvertToAuditDescription" (inside expression function)
-auditlog.adb:306:24: info: range check proved (CVC4: 1 VC)
-auditlog.adb:306:36: info: range check proved (CVC4: 1 VC)
-auditlog.adb:306:46: info: range check proved (CVC4: 1 VC)
-auditlog.adb:310:16: info: range check proved (CVC4: 1 VC)
-auditlog.adb:310:27: info: range check proved (CVC4: 1 VC)
-auditlog.adb:310:36: info: range check proved (CVC4: 1 VC)
-auditlog.adb:324:54: info: initialization of "OK" proved
-auditlog.adb:326:13: info: initialization of "OK" proved
-auditlog.adb:333:16: info: initialization of "TimeCount" proved
-auditlog.adb:345:16: info: initialization of "TimeCount" proved
-auditlog.adb:355:54: info: initialization of "OK" proved
-auditlog.adb:359:22: info: initialization of "FirstTime" proved
-auditlog.adb:359:22: info: initialization of "LastTime" proved
-auditlog.adb:359:22: info: initialization of "TimeOK" proved
-auditlog.adb:416:23: info: length check proved (CVC4: 1 VC)
-auditlog.adb:416:23: info: range check proved (CVC4: 4 VC)
-auditlog.adb:416:35: info: initialization of "Offset" proved
-auditlog.adb:416:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:417:35: info: initialization of "Offset" proved
-auditlog.adb:417:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:419:13: info: initialization of "BothTimesOK" proved
-auditlog.adb:421:24: info: range check proved (CVC4: 1 VC)
-auditlog.adb:421:26: info: initialization of "FirstTime" proved
-auditlog.adb:421:35: info: range check proved (CVC4: 1 VC)
-auditlog.adb:421:44: info: range check proved (CVC4: 1 VC)
-auditlog.adb:425:16: info: range check proved (CVC4: 1 VC)
-auditlog.adb:425:18: info: initialization of "FirstTime" proved
-auditlog.adb:425:28: info: range check proved (CVC4: 1 VC)
-auditlog.adb:425:37: info: range check proved (CVC4: 1 VC)
-auditlog.adb:428:17: info: initialization of "Descr" proved
-auditlog.adb:441:54: info: initialization of "OK" proved
-auditlog.adb:443:13: info: initialization of "OK" proved
-auditlog.adb:452:16: info: initialization of "TimeCount" proved
-auditlog.adb:462:53: info: initialization of "OK" proved
-auditlog.adb:466:22: info: initialization of "LastTime" proved
-auditlog.adb:466:22: info: initialization of "TimeOK" proved
-auditlog.adb:491:22: info: precondition proved (CVC4: 1 VC)
-auditlog.adb:493:32: info: initialization of "Archive" proved
-auditlog.adb:495:30: info: initialization of "Archive" proved
-auditlog.adb:520:22: info: postcondition proved (CVC4: 1 VC)
-auditlog.adb:529:32: info: initialization of "TheFile" proved
-auditlog.adb:531:52: info: initialization of "OK" proved
-auditlog.adb:532:30: info: initialization of "TheFile" proved
-auditlog.adb:534:52: info: initialization of "OK" proved
-auditlog.adb:536:26: info: initialization of "TheFile" proved
-auditlog.adb:588:10: medium: range check might fail, in call inlined at auditlog.adb:636
-auditlog.adb:588:68: info: initialization of "ElementText" proved
-auditlog.adb:588:68: info: initialization of "ElementText" proved, in call inlined at auditlog.adb:636
-auditlog.adb:588:68: info: length check proved (CVC4: 1 VC), in call inlined at auditlog.adb:636
-auditlog.adb:589:31: medium: length check might fail, in call inlined at auditlog.adb:636
-auditlog.adb:591:17: info: initialization of "ElementText" proved
-auditlog.adb:591:17: info: initialization of "ElementText" proved, in call inlined at auditlog.adb:636
-auditlog.adb:601:14: info: initialization of "OK" proved
-auditlog.adb:607:10: info: initialization of "OK" proved
-auditlog.adb:610:52: info: initialization of "Now.Day" proved
-auditlog.adb:610:52: info: initialization of "Now.MilliSec" proved
-auditlog.adb:610:52: info: initialization of "Now.Month" proved
-auditlog.adb:610:52: info: initialization of "Now.Year" proved
-auditlog.adb:667:14: info: initialization of "OK" proved
-auditlog.adb:717:59: medium: range check might fail
-auditlog.adb:717:64: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:718:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:720:59: info: range check proved (CVC4: 1 VC)
-auditlog.adb:720:64: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:721:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:726:26: medium: postcondition might fail, cannot prove LogFileEntries(CurrentLogFile) = 1
-auditlog.adb:766:25: info: postcondition proved (CVC4: 1 VC)
-auditlog.adb:773:28: info: initialization of "TheFile" proved
-auditlog.adb:778:39: info: initialization of "TheFile" proved
-auditlog.adb:780:75: info: range check proved (CVC4: 1 VC)
-auditlog.adb:820:25: info: postcondition proved (CVC4: 2 VC)
-auditlog.adb:848:53: info: range check proved (CVC4: 1 VC)
-auditlog.adb:854:28: info: initialization of "TheFile" proved
-auditlog.adb:859:39: info: initialization of "TheFile" proved
-auditlog.adb:871:10: info: precondition proved (CVC4: 1 VC)
-auditlog.adb:879:10: info: precondition proved (CVC4: 1 VC)
-auditlog.adb:886:44: info: range check proved (CVC4: 1 VC)
-auditlog.adb:900:26: info: initialization of "Description" proved
-auditlog.adb:901:35: info: initialization of "AuditAlarm" constituent of "State" proved
-auditlog.adb:922:60: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:923:22: info: postcondition proved (CVC4: 4 VC)
-auditlog.adb:928:60: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:936:28: info: initialization of "Head" proved
-auditlog.adb:938:25: info: initialization of "TheFile" proved
-auditlog.adb:940:23: info: initialization of "Head" proved
-auditlog.adb:940:26: info: initialization of "TheFile" proved
-auditlog.adb:942:22: info: initialization of "Head" proved
-auditlog.adb:945:22: info: initialization of "Head" proved
-auditlog.adb:949:50: info: range check proved (CVC4: 1 VC)
-auditlog.adb:951:44: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1008:56: medium: range check might fail
-auditlog.adb:1008:61: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1009:39: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1010:19: info: postcondition proved (CVC4: 2 VC)
-auditlog.adb:1012:56: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1012:61: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1013:39: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1021:10: info: precondition proved (CVC4: 3 VC)
-auditlog.adb:1023:10: info: precondition proved (CVC4: 3 VC)
-auditlog.adb:1027:28: info: initialization of "TruncateDescription" proved
-auditlog.adb:1031:07: info: precondition proved (CVC4: 3 VC)
-auditlog.adb:1053:42: info: initialization of "AuditAlarm" constituent of "State" proved
-auditlog.adb:1054:42: info: initialization of "AuditSystemFault" constituent of "State" proved
-auditlog.adb:1055:42: info: initialization of "CurrentLogFile" constituent of "State" proved
-auditlog.adb:1056:42: info: initialization of "LogFileEntries" constituent of "State" proved
-auditlog.adb:1057:42: info: initialization of "LogFilesStatus" constituent of "State" proved
-auditlog.adb:1058:42: info: initialization of "NumberLogEntries" constituent of "State" proved
-auditlog.adb:1059:42: info: initialization of "UsedLogFiles.Head" constituent of "State" proved
-auditlog.adb:1059:42: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1059:42: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:1059:42: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.adb:1070:30: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:1070:30: info: refined post proved (CVC4: 2 VC)
-auditlog.adb:1071:30: info: initialization of "NumberLogEntries" constituent of "State" proved
-auditlog.adb:1072:67: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1072:72: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1073:50: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1074:32: info: initialization of "LogFileEntries" constituent of "State" proved
-auditlog.adb:1074:47: info: initialization of "CurrentLogFile" constituent of "State" proved
-auditlog.adb:1095:36: info: initialization of "FileAges" proved
-auditlog.adb:1096:36: info: initialization of "LogFileEntries" constituent of "State" proved
-auditlog.adb:1097:36: info: initialization of "LogFilesStatus" constituent of "State" proved
-auditlog.adb:1123:39: info: initialization of "FileH" proved
-auditlog.adb:1124:39: info: initialization of "FirstTime" proved
-auditlog.adb:1125:39: info: initialization of "NumberEntries" proved
-auditlog.adb:1126:39: info: initialization of "Status" proved
-auditlog.adb:1145:37: info: initialization of "FileH" proved
-auditlog.adb:1147:38: info: initialization of "FileH" proved
-auditlog.adb:1148:40: info: initialization of "FileH" proved
-auditlog.adb:1150:18: info: initialization of "OK" proved
-auditlog.adb:1152:36: info: initialization of "FileH" proved
-auditlog.adb:1157:47: info: initialization of "FileH" proved
-auditlog.adb:1160:24: info: initialization of "TimeCount" proved
-auditlog.adb:1165:46: info: initialization of "FileH" proved
-auditlog.adb:1166:39: info: initialization of "NumberEntries" proved
-auditlog.adb:1167:38: info: initialization of "FileH" proved
-auditlog.adb:1168:41: info: initialization of "NumberEntries" proved
-auditlog.adb:1168:55: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1169:34: info: initialization of "NumberEntries" proved
-auditlog.adb:1178:37: info: initialization of "FileH" proved
-auditlog.adb:1180:22: info: initialization of "OK" proved
-auditlog.adb:1180:32: info: initialization of "TimeOK" proved
-auditlog.adb:1201:30: info: initialization of "LogFilesStatus" constituent of "State" proved
-auditlog.adb:1201:33: info: initialization of "Status" proved
-auditlog.adb:1202:33: info: initialization of "FileH" proved
-auditlog.adb:1203:30: info: initialization of "FileAges" proved
-auditlog.adb:1203:33: info: initialization of "FirstTime" proved
-auditlog.adb:1204:30: info: initialization of "LogFileEntries" constituent of "State" proved
-auditlog.adb:1204:33: info: initialization of "NumberEntries" proved
-auditlog.adb:1216:31: info: initialization of "OK" proved
-auditlog.adb:1218:07: info: initialization of "AuditSystemFault" constituent of "State" proved
-auditlog.adb:1224:13: info: initialization of "LogFilesStatus" constituent of "State" proved
-auditlog.adb:1225:16: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:1230:53: info: initialization of "UsedLogFiles.Head" constituent of "State" proved
-auditlog.adb:1230:53: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.adb:1232:20: info: range check proved (CVC4: 34 VC)
-auditlog.adb:1232:48: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1233:47: info: initialization of "FileAges" proved
-auditlog.adb:1233:56: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.adb:1236:45: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1236:64: medium: range check might fail
-auditlog.adb:1237:45: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:1237:65: medium: range check might fail
-auditlog.adb:1238:26: info: range check proved (CVC4: 34 VC)
-auditlog.adb:1239:32: info: overflow check proved (CVC4: 17 VC)
-auditlog.adb:1239:37: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1241:43: info: index check proved (CVC4: 34 VC)
-auditlog.adb:1241:49: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.adb:1241:69: info: index check proved (CVC4: 34 VC)
-auditlog.adb:1241:69: info: overflow check proved (CVC4: 17 VC)
-auditlog.adb:1243:43: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.adb:1246:26: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1248:45: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1248:64: medium: range check might fail
-auditlog.adb:1249:45: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:1249:65: medium: range check might fail
-auditlog.adb:1250:60: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1250:60: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.adb:1258:10: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:1264:47: info: initialization of "UsedLogFiles.Head" constituent of "State" proved
-auditlog.adb:1264:47: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.adb:1264:50: info: initialization of "CurrentLogFile" constituent of "State" proved
-auditlog.adb:1265:41: info: initialization of "CurrentLogFile" constituent of "State" proved
-auditlog.adb:1265:41: info: initialization of "LogFilesStatus" constituent of "State" proved
-auditlog.adb:1267:28: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.adb:1267:46: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1270:42: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:1270:62: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1270:67: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1271:27: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1271:27: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1271:29: info: initialization of "LogFileEntries" constituent of "State" proved
-auditlog.adb:1271:44: info: initialization of "CurrentLogFile" constituent of "State" proved
-auditlog.adb:1274:07: info: initialization of "AuditAlarm" constituent of "State" proved
-auditlog.adb:1274:07: info: initialization of "NumberLogEntries" constituent of "State" proved
-auditlog.adb:1332:30: info: refined post proved (CVC4: 2 VC)
-auditlog.adb:1334:67: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1334:72: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1335:50: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1342:07: info: precondition proved (CVC4: 2 VC)
-auditlog.adb:1350:10: info: initialization of "OldAlarm" proved
-auditlog.adb:1352:10: info: precondition proved (CVC4: 2 VC)
-auditlog.adb:1411:30: info: refined post proved (CVC4: 2 VC)
-auditlog.adb:1413:67: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1413:72: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1414:50: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1425:22: info: precondition proved (CVC4: 1 VC)
-auditlog.adb:1435:36: info: initialization of "Archive" proved
-auditlog.adb:1439:17: info: initialization of "OK" proved
-auditlog.adb:1440:36: info: initialization of "Archive" proved
-auditlog.adb:1445:30: info: initialization of "OK" proved
-auditlog.adb:1447:32: info: initialization of "Archive" proved
-auditlog.adb:1450:26: info: initialization of "ArchiveFault" proved
-auditlog.adb:1450:46: info: initialization of "OK" proved
-auditlog.adb:1456:16: info: initialization of "ArchivedFileCount" proved
-auditlog.adb:1460:16: info: loop invariant initialization proved (CVC4: 1 VC)
-auditlog.adb:1460:16: info: loop invariant preservation proved (CVC4: 1 VC)
-auditlog.adb:1461:53: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1461:58: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1461:78: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1464:44: info: initialization of "FileIndexInUsedList" proved
-auditlog.adb:1465:38: info: initialization of "FileIndex" proved
-auditlog.adb:1467:34: info: initialization of "FileIndex" proved
-auditlog.adb:1469:35: info: initialization of "TheFile" proved
-auditlog.adb:1470:35: info: initialization of "Archive" proved
-auditlog.adb:1473:33: info: initialization of "OK" proved
-auditlog.adb:1475:23: info: initialization of "ArchiveFault" proved
-auditlog.adb:1478:39: info: initialization of "FileIndex" proved
-auditlog.adb:1480:16: info: initialization of "ArchivedFileCount" proved
-auditlog.adb:1482:34: info: initialization of "TheFile" proved
-auditlog.adb:1486:34: info: initialization of "TheFile" proved
-auditlog.adb:1487:34: info: initialization of "Description" proved
-auditlog.adb:1490:34: info: initialization of "FileIndex" proved
-auditlog.adb:1490:37: info: initialization of "TheFile" proved
-auditlog.adb:1491:34: info: initialization of "ArchivedFileCount" proved
-auditlog.adb:1491:52: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1492:51: info: initialization of "FileIndexInUsedList" proved
-auditlog.adb:1498:10: info: initialization of "ArchiveFault" proved
-auditlog.adb:1499:10: info: precondition proved (CVC4: 2 VC)
-auditlog.adb:1509:07: info: precondition proved (CVC4: 2 VC)
-auditlog.adb:1513:32: info: initialization of "Description" proved
-auditlog.adb:1564:30: info: refined post proved (CVC4: 2 VC)
-auditlog.adb:1566:67: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1566:72: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1567:50: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1583:13: info: loop invariant initialization proved (CVC4: 3 VC)
-auditlog.adb:1583:13: info: loop invariant preservation proved (CVC4: 3 VC)
-auditlog.adb:1587:50: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1587:55: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1587:75: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1595:53: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1598:47: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1607:10: info: initialization of "OldAlarm" proved
-auditlog.adb:1611:10: info: precondition proved (CVC4: 2 VC)
-auditlog.adb:1619:07: info: precondition proved (CVC4: 2 VC)
-auditlog.ads:60:22: info: initialization of "CurrentLogFile" constituent of "State" proved
-auditlog.ads:60:22: info: initialization of "LogFileEntries" constituent of "State" proved
-auditlog.ads:60:22: info: initialization of "NumberLogEntries" constituent of "State" proved
-auditlog.ads:60:22: info: initialization of "UsedLogFiles.Head" constituent of "State" proved
-auditlog.ads:60:22: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.ads:60:22: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.ads:60:22: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.ads:60:22: info: postcondition proved (CVC4: 1 VC)
-auditlog.ads:92:22: info: postcondition proved (CVC4: 1 VC)
-auditlog.ads:105:26: info: initialization of "Archive" proved
-auditlog.ads:119:22: info: postcondition proved (CVC4: 1 VC)
-auditlog.ads:143:22: info: postcondition proved (CVC4: 1 VC)
+auditlog.adb:85:18: info: range check proved (CVC4: 1 VC)
+auditlog.adb:126:35: info: range check proved (CVC4: 1 VC)
+auditlog.adb:127:40: info: index check proved (CVC4: 2 VC)
+auditlog.adb:127:40: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:127:45: info: initialization of "LocalDesc" proved
+auditlog.adb:128:46: info: index check proved (CVC4: 2 VC)
+auditlog.adb:128:46: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:132:45: info: initialization of "LocalDesc" proved
+auditlog.adb:133:46: info: index check proved (CVC4: 2 VC)
+auditlog.adb:133:46: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:137:14: info: initialization of "LocalDesc" proved
+auditlog.adb:153:07: info: initialization of "Description" proved
+auditlog.adb:178:13: info: no contextual analysis of "ConvertToAuditDescription" (inside expression function)
+auditlog.adb:179:24: info: range check proved (CVC4: 1 VC)
+auditlog.adb:179:36: info: range check proved (CVC4: 1 VC)
+auditlog.adb:179:46: info: range check proved (CVC4: 1 VC)
+auditlog.adb:183:16: info: range check proved (CVC4: 1 VC)
+auditlog.adb:183:27: info: range check proved (CVC4: 1 VC)
+auditlog.adb:183:36: info: range check proved (CVC4: 1 VC)
+auditlog.adb:197:54: info: initialization of "OK" proved
+auditlog.adb:199:13: info: initialization of "OK" proved
+auditlog.adb:206:16: info: initialization of "TimeCount" proved
+auditlog.adb:218:16: info: initialization of "TimeCount" proved
+auditlog.adb:228:54: info: initialization of "OK" proved
+auditlog.adb:232:22: info: initialization of "FirstTime" proved
+auditlog.adb:232:22: info: initialization of "LastTime" proved
+auditlog.adb:232:22: info: initialization of "TimeOK" proved
+auditlog.adb:289:23: info: length check proved (CVC4: 1 VC)
+auditlog.adb:289:23: info: range check proved (CVC4: 4 VC)
+auditlog.adb:289:35: info: initialization of "Offset" proved
+auditlog.adb:289:42: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:290:35: info: initialization of "Offset" proved
+auditlog.adb:290:42: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:292:13: info: initialization of "BothTimesOK" proved
+auditlog.adb:294:24: info: range check proved (CVC4: 1 VC)
+auditlog.adb:294:26: info: initialization of "FirstTime" proved
+auditlog.adb:294:35: info: range check proved (CVC4: 1 VC)
+auditlog.adb:294:44: info: range check proved (CVC4: 1 VC)
+auditlog.adb:298:16: info: range check proved (CVC4: 1 VC)
+auditlog.adb:298:18: info: initialization of "FirstTime" proved
+auditlog.adb:298:28: info: range check proved (CVC4: 1 VC)
+auditlog.adb:298:37: info: range check proved (CVC4: 1 VC)
+auditlog.adb:301:17: info: initialization of "Descr" proved
+auditlog.adb:314:54: info: initialization of "OK" proved
+auditlog.adb:316:13: info: initialization of "OK" proved
+auditlog.adb:325:16: info: initialization of "TimeCount" proved
+auditlog.adb:335:53: info: initialization of "OK" proved
+auditlog.adb:339:22: info: initialization of "LastTime" proved
+auditlog.adb:339:22: info: initialization of "TimeOK" proved
+auditlog.adb:364:22: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:366:32: info: initialization of "Archive" proved
+auditlog.adb:368:30: info: initialization of "Archive" proved
+auditlog.adb:393:22: info: postcondition proved (CVC4: 1 VC)
+auditlog.adb:402:32: info: initialization of "TheFile" proved
+auditlog.adb:404:52: info: initialization of "OK" proved
+auditlog.adb:405:30: info: initialization of "TheFile" proved
+auditlog.adb:407:52: info: initialization of "OK" proved
+auditlog.adb:409:26: info: initialization of "TheFile" proved
+auditlog.adb:461:10: medium: range check might fail, in call inlined at auditlog.adb:509
+auditlog.adb:461:68: info: initialization of "ElementText" proved
+auditlog.adb:461:68: info: initialization of "ElementText" proved, in call inlined at auditlog.adb:509
+auditlog.adb:461:68: info: length check proved (CVC4: 1 VC), in call inlined at auditlog.adb:509
+auditlog.adb:462:31: medium: length check might fail, in call inlined at auditlog.adb:509
+auditlog.adb:464:17: info: initialization of "ElementText" proved
+auditlog.adb:464:17: info: initialization of "ElementText" proved, in call inlined at auditlog.adb:509
+auditlog.adb:474:14: info: initialization of "OK" proved
+auditlog.adb:480:10: info: initialization of "OK" proved
+auditlog.adb:483:52: info: initialization of "Now.Day" proved
+auditlog.adb:483:52: info: initialization of "Now.MilliSec" proved
+auditlog.adb:483:52: info: initialization of "Now.Month" proved
+auditlog.adb:483:52: info: initialization of "Now.Year" proved
+auditlog.adb:540:14: info: initialization of "OK" proved
+auditlog.adb:582:72: medium: range check might fail
+auditlog.adb:582:77: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:583:42: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:584:22: medium: postcondition might fail, cannot prove LogFileState.NumberLogEntries = LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) * MaxLogFileEntries + LogFileState.LogFileEntries(LogFileState.CurrentLogFile)
+auditlog.adb:585:72: medium: range check might fail
+auditlog.adb:585:77: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:586:42: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:630:25: info: postcondition proved (CVC4: 1 VC)
+auditlog.adb:637:28: info: initialization of "TheFile" proved
+auditlog.adb:642:52: info: initialization of "TheFile" proved
+auditlog.adb:644:127: info: range check proved (CVC4: 1 VC)
+auditlog.adb:680:25: medium: postcondition might fail, cannot prove LogFileState.UsedLogFiles.Length = LogFileState.UsedLogFiles.Length'Old + 1
+auditlog.adb:707:79: medium: range check might fail
+auditlog.adb:713:28: info: initialization of "TheFile" proved
+auditlog.adb:718:52: info: initialization of "TheFile" proved
+auditlog.adb:730:10: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:739:10: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:747:70: medium: range check might fail
+auditlog.adb:763:07: info: initialization of "Description" proved
+auditlog.adb:764:35: info: initialization of "AuditAlarm" constituent of "State" proved
+auditlog.adb:779:73: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:780:22: medium: postcondition might fail, cannot prove LogFileState.UsedLogFiles.Length >= 1
+auditlog.adb:785:73: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:793:28: info: initialization of "Head" proved
+auditlog.adb:795:25: info: initialization of "TheFile" proved
+auditlog.adb:797:23: info: initialization of "Head" proved
+auditlog.adb:797:26: info: initialization of "TheFile" proved
+auditlog.adb:799:22: info: initialization of "Head" proved
+auditlog.adb:802:36: info: initialization of "Head" proved
+auditlog.adb:806:76: medium: range check might fail
+auditlog.adb:808:70: medium: range check might fail
+auditlog.adb:853:69: medium: range check might fail
+auditlog.adb:853:74: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:854:39: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:855:19: info: postcondition proved (CVC4: 2 VC)
+auditlog.adb:857:69: info: range check proved (CVC4: 1 VC)
+auditlog.adb:857:74: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:858:39: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:866:10: info: precondition proved (CVC4: 3 VC)
+auditlog.adb:869:10: info: precondition proved (CVC4: 3 VC)
+auditlog.adb:874:29: info: initialization of "TruncateDescription" proved
+auditlog.adb:878:07: info: precondition proved (CVC4: 3 VC)
+auditlog.adb:901:42: info: initialization of "AuditAlarm" constituent of "State" proved
+auditlog.adb:902:42: info: initialization of "AuditSystemFault" constituent of "State" proved
+auditlog.adb:903:42: info: initialization of "LogFilesStatus" constituent of "State" proved
+auditlog.adb:904:42: info: initialization of "LogFileState.CurrentLogFile" constituent of "State" proved
+auditlog.adb:904:42: info: initialization of "LogFileState.LogFileEntries" constituent of "State" proved
+auditlog.adb:904:42: info: initialization of "LogFileState.NumberLogEntries" constituent of "State" proved
+auditlog.adb:904:42: info: initialization of "LogFileState.UsedLogFiles.Head" constituent of "State" proved
+auditlog.adb:904:42: info: initialization of "LogFileState.UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:904:42: info: initialization of "LogFileState.UsedLogFiles.Length" constituent of "State" proved
+auditlog.adb:904:42: info: initialization of "LogFileState.UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:912:30: info: initialization of "LogFileState.UsedLogFiles.Length" constituent of "State" proved
+auditlog.adb:912:30: info: refined post proved (CVC4: 2 VC)
+auditlog.adb:913:30: info: initialization of "LogFileState.NumberLogEntries" constituent of "State" proved
+auditlog.adb:914:80: info: range check proved (CVC4: 1 VC)
+auditlog.adb:914:85: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:915:50: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:916:32: info: initialization of "LogFileState.LogFileEntries" constituent of "State" proved
+auditlog.adb:916:60: info: initialization of "LogFileState.CurrentLogFile" constituent of "State" proved
+auditlog.adb:936:32: info: initialization of "LogFileEntries" proved
+auditlog.adb:937:36: info: initialization of "FileAges" proved
+auditlog.adb:938:36: info: initialization of "LogFilesStatus" constituent of "State" proved
+auditlog.adb:964:39: info: initialization of "FileH" proved
+auditlog.adb:965:39: info: initialization of "FirstTime" proved
+auditlog.adb:966:39: info: initialization of "NumberEntries" proved
+auditlog.adb:967:39: info: initialization of "Status" proved
+auditlog.adb:986:37: info: initialization of "FileH" proved
+auditlog.adb:988:38: info: initialization of "FileH" proved
+auditlog.adb:989:40: info: initialization of "FileH" proved
+auditlog.adb:991:18: info: initialization of "OK" proved
+auditlog.adb:993:36: info: initialization of "FileH" proved
+auditlog.adb:998:47: info: initialization of "FileH" proved
+auditlog.adb:1001:24: info: initialization of "TimeCount" proved
+auditlog.adb:1006:46: info: initialization of "FileH" proved
+auditlog.adb:1007:39: info: initialization of "NumberEntries" proved
+auditlog.adb:1008:38: info: initialization of "FileH" proved
+auditlog.adb:1009:41: info: initialization of "NumberEntries" proved
+auditlog.adb:1009:55: info: range check proved (CVC4: 1 VC)
+auditlog.adb:1010:34: info: initialization of "NumberEntries" proved
+auditlog.adb:1019:37: info: initialization of "FileH" proved
+auditlog.adb:1021:22: info: initialization of "OK" proved
+auditlog.adb:1021:32: info: initialization of "TimeOK" proved
+auditlog.adb:1042:30: info: initialization of "LogFilesStatus" constituent of "State" proved
+auditlog.adb:1042:33: info: initialization of "Status" proved
+auditlog.adb:1043:33: info: initialization of "FileH" proved
+auditlog.adb:1044:30: info: initialization of "FileAges" proved
+auditlog.adb:1044:33: info: initialization of "FirstTime" proved
+auditlog.adb:1045:30: info: initialization of "LogFileEntries" proved
+auditlog.adb:1045:33: info: initialization of "NumberEntries" proved
+auditlog.adb:1057:31: info: initialization of "OK" proved
+auditlog.adb:1059:07: info: initialization of "AuditSystemFault" constituent of "State" proved
+auditlog.adb:1065:13: info: initialization of "LogFilesStatus" constituent of "State" proved
+auditlog.adb:1066:16: info: initialization of "LogFileState.UsedLogFiles.Length" constituent of "State" proved
+auditlog.adb:1071:79: info: initialization of "LogFileState.UsedLogFiles.Head" constituent of "State" proved
+auditlog.adb:1071:79: info: initialization of "LogFileState.UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1073:20: info: range check proved (CVC4: 34 VC)
+auditlog.adb:1073:48: info: initialization of "LogFileState.UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:1074:47: info: initialization of "FileAges" proved
+auditlog.adb:1074:56: info: initialization of "LogFileState.UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1077:58: info: initialization of "LogFileState.UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:1077:90: medium: range check might fail
+auditlog.adb:1078:58: info: initialization of "LogFileState.UsedLogFiles.Length" constituent of "State" proved
+auditlog.adb:1078:91: medium: range check might fail
+auditlog.adb:1079:26: info: range check proved (CVC4: 34 VC)
+auditlog.adb:1080:32: info: overflow check proved (CVC4: 17 VC)
+auditlog.adb:1080:37: info: initialization of "LogFileState.UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:1082:56: info: index check proved (CVC4: 34 VC)
+auditlog.adb:1082:62: info: initialization of "LogFileState.UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1082:95: info: index check proved (CVC4: 34 VC)
+auditlog.adb:1082:95: info: overflow check proved (CVC4: 17 VC)
+auditlog.adb:1084:56: info: initialization of "LogFileState.UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1087:26: info: initialization of "LogFileState.UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:1089:58: info: initialization of "LogFileState.UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:1089:90: medium: range check might fail
+auditlog.adb:1090:58: info: initialization of "LogFileState.UsedLogFiles.Length" constituent of "State" proved
+auditlog.adb:1090:91: medium: range check might fail
+auditlog.adb:1091:86: info: initialization of "LogFileState.UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:1091:86: info: initialization of "LogFileState.UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1099:10: info: initialization of "LogFileState.UsedLogFiles.Length" constituent of "State" proved
+auditlog.adb:1105:73: info: initialization of "LogFileState.UsedLogFiles.Head" constituent of "State" proved
+auditlog.adb:1105:73: info: initialization of "LogFileState.UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1105:76: info: initialization of "LogFileState.CurrentLogFile" constituent of "State" proved
+auditlog.adb:1106:54: info: initialization of "LogFileState.CurrentLogFile" constituent of "State" proved
+auditlog.adb:1106:54: info: initialization of "LogFilesStatus" constituent of "State" proved
+auditlog.adb:1108:41: info: initialization of "LogFileState.UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1108:72: info: initialization of "LogFileState.UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:1111:55: info: initialization of "LogFileState.UsedLogFiles.Length" constituent of "State" proved
+auditlog.adb:1111:88: info: range check proved (CVC4: 1 VC)
+auditlog.adb:1111:93: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1112:27: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1112:27: info: range check proved (CVC4: 1 VC)
+auditlog.adb:1112:29: info: initialization of "LogFileState.LogFileEntries" constituent of "State" proved
+auditlog.adb:1112:57: info: initialization of "LogFileState.CurrentLogFile" constituent of "State" proved
+auditlog.adb:1115:07: info: initialization of "AuditAlarm" constituent of "State" proved
+auditlog.adb:1115:22: info: initialization of "LogFileState.CurrentLogFile" constituent of "State" proved
+auditlog.adb:1115:22: info: initialization of "LogFileState.LogFileEntries" constituent of "State" proved
+auditlog.adb:1115:22: info: initialization of "LogFileState.NumberLogEntries" constituent of "State" proved
+auditlog.adb:1115:22: info: initialization of "LogFileState.UsedLogFiles.Head" constituent of "State" proved
+auditlog.adb:1115:22: info: initialization of "LogFileState.UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:1115:22: info: initialization of "LogFileState.UsedLogFiles.Length" constituent of "State" proved
+auditlog.adb:1115:22: info: initialization of "LogFileState.UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1161:30: info: refined post proved (CVC4: 2 VC)
+auditlog.adb:1163:80: info: range check proved (CVC4: 1 VC)
+auditlog.adb:1163:85: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1164:50: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1171:07: info: precondition proved (CVC4: 2 VC)
+auditlog.adb:1180:10: info: initialization of "OldAlarm" proved
+auditlog.adb:1182:10: info: precondition proved (CVC4: 2 VC)
+auditlog.adb:1229:30: info: refined post proved (CVC4: 2 VC)
+auditlog.adb:1231:80: info: range check proved (CVC4: 1 VC)
+auditlog.adb:1231:85: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1232:50: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1243:22: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:1253:36: info: initialization of "Archive" proved
+auditlog.adb:1257:17: info: initialization of "OK" proved
+auditlog.adb:1258:36: info: initialization of "Archive" proved
+auditlog.adb:1263:30: info: initialization of "OK" proved
+auditlog.adb:1265:32: info: initialization of "Archive" proved
+auditlog.adb:1268:26: info: initialization of "ArchiveFault" proved
+auditlog.adb:1268:46: info: initialization of "OK" proved
+auditlog.adb:1274:16: info: initialization of "ArchivedFileCount" proved
+auditlog.adb:1278:16: info: loop invariant initialization proved (CVC4: 1 VC)
+auditlog.adb:1278:16: info: loop invariant preservation proved (CVC4: 1 VC)
+auditlog.adb:1279:66: info: range check proved (CVC4: 1 VC)
+auditlog.adb:1279:71: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1279:91: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1282:57: info: initialization of "FileIndexInUsedList" proved
+auditlog.adb:1283:51: info: initialization of "FileIndex" proved
+auditlog.adb:1285:34: info: initialization of "FileIndex" proved
+auditlog.adb:1287:35: info: initialization of "TheFile" proved
+auditlog.adb:1288:35: info: initialization of "Archive" proved
+auditlog.adb:1291:33: info: initialization of "OK" proved
+auditlog.adb:1293:23: info: initialization of "ArchiveFault" proved
+auditlog.adb:1296:39: info: initialization of "FileIndex" proved
+auditlog.adb:1298:16: info: initialization of "ArchivedFileCount" proved
+auditlog.adb:1300:34: info: initialization of "TheFile" proved
+auditlog.adb:1304:34: info: initialization of "TheFile" proved
+auditlog.adb:1305:34: info: initialization of "Description" proved
+auditlog.adb:1308:34: info: initialization of "FileIndex" proved
+auditlog.adb:1308:37: info: initialization of "TheFile" proved
+auditlog.adb:1309:34: info: initialization of "ArchivedFileCount" proved
+auditlog.adb:1309:52: info: range check proved (CVC4: 1 VC)
+auditlog.adb:1310:51: info: initialization of "FileIndexInUsedList" proved
+auditlog.adb:1316:10: info: initialization of "ArchiveFault" proved
+auditlog.adb:1317:10: info: invariant check proved (CVC4: 1 VC)
+auditlog.adb:1317:10: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:1327:07: info: invariant check proved (CVC4: 1 VC)
+auditlog.adb:1327:07: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:1331:32: info: initialization of "Description" proved
+auditlog.adb:1370:30: info: refined post proved (CVC4: 2 VC)
+auditlog.adb:1372:80: info: range check proved (CVC4: 1 VC)
+auditlog.adb:1372:85: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1373:50: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1389:13: info: loop invariant initialization proved (CVC4: 3 VC)
+auditlog.adb:1392:13: medium: loop invariant might fail after first iteration, cannot prove LogFileState.NumberLogEntries = LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) * MaxLogFileEntries + LogFileState.LogFileEntries(LogFileState.CurrentLogFile)
+auditlog.adb:1393:63: info: range check proved (CVC4: 1 VC)
+auditlog.adb:1393:68: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1393:88: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1401:79: medium: range check might fail
+auditlog.adb:1404:73: medium: range check might fail
+auditlog.adb:1413:10: info: initialization of "OldAlarm" proved
+auditlog.adb:1417:10: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:1417:10: medium: invariant check might fail
+auditlog.adb:1425:07: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:1425:07: medium: invariant check might fail
+auditlog.ads:47:14: info: invariant check proved (CVC4: 1 VC)
+auditlog.ads:67:14: info: invariant check proved (CVC4: 1 VC)
+auditlog.ads:96:14: info: invariant check proved (CVC4: 1 VC)
+auditlog.ads:97:26: info: initialization of "Archive" proved
+auditlog.ads:121:14: info: invariant check proved (CVC4: 1 VC)
+auditlog.ads:277:46: info: range check proved (CVC4: 1 VC)
+auditlog.ads:277:51: info: overflow check proved (CVC4: 1 VC)
+auditlog.ads:277:71: info: overflow check proved (CVC4: 1 VC)
+auditlog.ads:281:09: info: invariant check proved on default value (CVC4: 1 VC)
+auditlog.ads:295:04: info: initialization of "LogFiles" constituent of "FileState" proved
 bio.adb:119:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at bio.adb:181
 bio.adb:119:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at bio.adb:181
 bio.adb:121:33: info: initialization of "Result" proved
@@ -453,67 +457,67 @@ bio.adb:175:23: info: initialization of "FullString" proved, in call inlined at 
 bio.adb:175:23: medium: range check might fail, in call inlined at bio.adb:183
 bio.adb:185:14: info: initialization of "Result" proved
 bio.adb:241:10: info: initialization of "NumericReturn" proved
-bio.adb:244:18: medium: precondition might fail
+bio.adb:244:18: info: precondition proved (CVC4: 1 VC)
 bio.adb:250:35: info: initialization of "NumericReturn" proved
 bio.ads:40:20: info: initialization of "FingerPresent" proved
 bio.ads:56:22: info: initialization of "MatchResult" proved
 bio.ads:57:22: info: initialization of "AchievedFAR" proved
-cert-attr-auth.adb:66:35: info: initialization of "LocalContents.Issuer.ID" proved
-cert-attr-auth.adb:66:35: info: initialization of "LocalContents.Issuer.Name" proved
-cert-attr-auth.adb:66:35: info: initialization of "LocalContents.Issuer.NameLength" proved
-cert-attr-auth.adb:68:36: info: initialization of "LocalContents.SerialNumber" proved
-cert-attr-auth.adb:69:35: info: initialization of "LocalContents.SigAlgId" proved
-cert-attr-auth.adb:70:35: info: initialization of "LocalContents.Holder.Issuer.ID" proved
-cert-attr-auth.adb:70:35: info: initialization of "LocalContents.Holder.Issuer.Name" proved
-cert-attr-auth.adb:70:35: info: initialization of "LocalContents.Holder.Issuer.NameLength" proved
-cert-attr-auth.adb:70:35: info: initialization of "LocalContents.Holder.SerialNumber" proved
-cert-attr-auth.adb:71:35: info: initialization of "LocalContents.Privilege.Role" proved
-cert-attr-auth.adb:72:35: info: initialization of "LocalContents.Privilege.Class" proved
-cert-attr-auth.adb:77:27: info: initialization of "LocalContents.AttCertValidity.NotBefore.Year" proved
-cert-attr-auth.adb:78:27: info: initialization of "LocalContents.AttCertValidity.NotBefore.Month" proved
-cert-attr-auth.adb:79:27: info: initialization of "LocalContents.AttCertValidity.NotBefore.Day" proved
-cert-attr-auth.adb:80:27: info: initialization of "LocalContents.AttCertValidity.NotBefore.Hour" proved
-cert-attr-auth.adb:81:27: info: initialization of "LocalContents.AttCertValidity.NotBefore.Minute" proved
-cert-attr-auth.adb:86:27: info: initialization of "LocalContents.AttCertValidity.NotAfter.Year" proved
-cert-attr-auth.adb:87:27: info: initialization of "LocalContents.AttCertValidity.NotAfter.Month" proved
-cert-attr-auth.adb:88:27: info: initialization of "LocalContents.AttCertValidity.NotAfter.Day" proved
-cert-attr-auth.adb:89:27: info: initialization of "LocalContents.AttCertValidity.NotAfter.Hour" proved
-cert-attr-auth.adb:90:27: info: initialization of "LocalContents.AttCertValidity.NotAfter.Minute" proved
-cert-attr-auth.adb:94:18: info: initialization of "Extracted" proved
-cert-attr-auth.adb:94:32: info: initialization of "NotBeforeOk" proved
-cert-attr-auth.adb:94:48: info: initialization of "NotAfterOk" proved
-cert-attr-auth.adb:118:32: info: initialization of "Raw.Day" proved
-cert-attr-auth.adb:118:32: info: initialization of "Raw.Hour" proved
-cert-attr-auth.adb:118:32: info: initialization of "Raw.Minute" proved
-cert-attr-auth.adb:118:32: info: initialization of "Raw.Month" proved
-cert-attr-auth.adb:118:32: info: initialization of "Raw.Year" proved
-cert-attr-auth.adb:135:53: info: initialization of "TheYear" proved
-cert-attr-auth.adb:136:53: info: initialization of "TheMonth" proved
-cert-attr-auth.adb:137:53: info: initialization of "TheDay" proved
-cert-attr-auth.adb:138:53: info: initialization of "TheHour" proved
-cert-attr-auth.adb:139:53: info: initialization of "TheMinute" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.AttCertValidity.NotAfter.Day" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.AttCertValidity.NotAfter.Hour" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.AttCertValidity.NotAfter.Minute" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.AttCertValidity.NotAfter.Month" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.AttCertValidity.NotAfter.Year" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.AttCertValidity.NotBefore.Day" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.AttCertValidity.NotBefore.Hour" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.AttCertValidity.NotBefore.Minute" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.AttCertValidity.NotBefore.Month" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.AttCertValidity.NotBefore.Year" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.Holder.Issuer.ID" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.Holder.Issuer.Name" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.Holder.Issuer.NameLength" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.Holder.SerialNumber" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.Issuer.ID" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.Issuer.Name" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.Issuer.NameLength" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.Privilege.Class" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.Privilege.Role" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.SerialNumber" proved
-cert-attr-auth.adb:157:48: info: initialization of "LocalContents.SigAlgId" proved
-cert-attr-auth.adb:203:21: info: initialization of "IsVerified" proved
+cert-attr-auth.adb:45:35: info: initialization of "LocalContents.Issuer.ID" proved
+cert-attr-auth.adb:45:35: info: initialization of "LocalContents.Issuer.Name" proved
+cert-attr-auth.adb:45:35: info: initialization of "LocalContents.Issuer.NameLength" proved
+cert-attr-auth.adb:47:36: info: initialization of "LocalContents.SerialNumber" proved
+cert-attr-auth.adb:48:35: info: initialization of "LocalContents.SigAlgId" proved
+cert-attr-auth.adb:49:35: info: initialization of "LocalContents.Holder.Issuer.ID" proved
+cert-attr-auth.adb:49:35: info: initialization of "LocalContents.Holder.Issuer.Name" proved
+cert-attr-auth.adb:49:35: info: initialization of "LocalContents.Holder.Issuer.NameLength" proved
+cert-attr-auth.adb:49:35: info: initialization of "LocalContents.Holder.SerialNumber" proved
+cert-attr-auth.adb:50:35: info: initialization of "LocalContents.Privilege.Role" proved
+cert-attr-auth.adb:51:35: info: initialization of "LocalContents.Privilege.Class" proved
+cert-attr-auth.adb:56:27: info: initialization of "LocalContents.AttCertValidity.NotBefore.Year" proved
+cert-attr-auth.adb:57:27: info: initialization of "LocalContents.AttCertValidity.NotBefore.Month" proved
+cert-attr-auth.adb:58:27: info: initialization of "LocalContents.AttCertValidity.NotBefore.Day" proved
+cert-attr-auth.adb:59:27: info: initialization of "LocalContents.AttCertValidity.NotBefore.Hour" proved
+cert-attr-auth.adb:60:27: info: initialization of "LocalContents.AttCertValidity.NotBefore.Minute" proved
+cert-attr-auth.adb:65:27: info: initialization of "LocalContents.AttCertValidity.NotAfter.Year" proved
+cert-attr-auth.adb:66:27: info: initialization of "LocalContents.AttCertValidity.NotAfter.Month" proved
+cert-attr-auth.adb:67:27: info: initialization of "LocalContents.AttCertValidity.NotAfter.Day" proved
+cert-attr-auth.adb:68:27: info: initialization of "LocalContents.AttCertValidity.NotAfter.Hour" proved
+cert-attr-auth.adb:69:27: info: initialization of "LocalContents.AttCertValidity.NotAfter.Minute" proved
+cert-attr-auth.adb:73:18: info: initialization of "Extracted" proved
+cert-attr-auth.adb:73:32: info: initialization of "NotBeforeOk" proved
+cert-attr-auth.adb:73:48: info: initialization of "NotAfterOk" proved
+cert-attr-auth.adb:97:32: info: initialization of "Raw.Day" proved
+cert-attr-auth.adb:97:32: info: initialization of "Raw.Hour" proved
+cert-attr-auth.adb:97:32: info: initialization of "Raw.Minute" proved
+cert-attr-auth.adb:97:32: info: initialization of "Raw.Month" proved
+cert-attr-auth.adb:97:32: info: initialization of "Raw.Year" proved
+cert-attr-auth.adb:114:53: info: initialization of "TheYear" proved
+cert-attr-auth.adb:115:53: info: initialization of "TheMonth" proved
+cert-attr-auth.adb:116:53: info: initialization of "TheDay" proved
+cert-attr-auth.adb:117:53: info: initialization of "TheHour" proved
+cert-attr-auth.adb:118:53: info: initialization of "TheMinute" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.AttCertValidity.NotAfter.Day" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.AttCertValidity.NotAfter.Hour" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.AttCertValidity.NotAfter.Minute" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.AttCertValidity.NotAfter.Month" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.AttCertValidity.NotAfter.Year" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.AttCertValidity.NotBefore.Day" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.AttCertValidity.NotBefore.Hour" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.AttCertValidity.NotBefore.Minute" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.AttCertValidity.NotBefore.Month" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.AttCertValidity.NotBefore.Year" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.Holder.Issuer.ID" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.Holder.Issuer.Name" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.Holder.Issuer.NameLength" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.Holder.SerialNumber" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.Issuer.ID" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.Issuer.Name" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.Issuer.NameLength" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.Privilege.Class" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.Privilege.Role" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.SerialNumber" proved
+cert-attr-auth.adb:136:48: info: initialization of "LocalContents.SigAlgId" proved
+cert-attr-auth.adb:182:21: info: initialization of "IsVerified" proved
 cert-attr-auth.ads:79:23: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
 cert-attr-auth.ads:79:23: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
 cert-attr-auth.ads:79:23: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
@@ -828,7 +832,7 @@ certificatestore.adb:249:29: info: initialization of "Closed" proved
 certificatestore.adb:262:42: info: initialization of "NextSerialNumber" constituent of "State" proved
 certificatestore.adb:263:42: info: initialization of "Overflow" constituent of "State" proved
 certificatestore.adb:287:17: info: initialization of "ReadOK" proved
-certificatestore.adb:288:21: medium: precondition might fail
+certificatestore.adb:288:21: info: precondition proved (CVC4: 1 VC)
 certificatestore.adb:314:41: info: initialization of "Overflow" constituent of "State" proved
 certificatestore.adb:334:47: info: range check proved (CVC4: 1 VC)
 certificatestore.adb:343:13: info: initialization of "Exists" proved
@@ -836,7 +840,7 @@ certificatestore.adb:350:10: info: initialization of "Exists" proved
 certificatestore.adb:352:41: info: initialization of "Overflow" constituent of "State" proved
 certificatestore.adb:357:15: info: initialization of "Exists" proved
 certificatestore.adb:357:26: info: initialization of "Written" proved
-certificatestore.adb:358:18: medium: precondition might fail
+certificatestore.adb:358:18: info: precondition proved (CVC4: 1 VC)
 certprocessing.adb:43:34: info: initialization of "LocalData.SerialNumber" proved
 certprocessing.adb:44:34: info: initialization of "LocalData.SigAlgId" proved
 certprocessing.adb:45:34: info: initialization of "LocalData.Issuer.ID" proved
@@ -1043,71 +1047,71 @@ certprocessing.ads:203:20: info: initialization of "SignatureData.SigLength" pro
 certprocessing.ads:204:20: info: initialization of "ObtainSuccess" proved
 certprocessing.ads:223:07: info: initialization of "UnsignedRawAuthCert" proved
 certprocessing.ads:240:07: info: initialization of "SignedRawAuthCert" proved
-clock.adb:73:11: info: range check proved (CVC4: 2 VC)
-clock.adb:74:12: info: index check proved (CVC4: 2 VC)
-clock.adb:74:54: info: initialization of "V" proved
-clock.adb:74:56: info: division check proved (CVC4: 1 VC)
-clock.adb:75:18: info: initialization of "V" proved
-clock.adb:75:20: info: division check proved (CVC4: 1 VC)
-clock.adb:93:41: info: initialization of "CurrentTimeVar.Day" constituent of "CurrentTime" proved
-clock.adb:93:41: info: initialization of "CurrentTimeVar.MilliSec" constituent of "CurrentTime" proved
-clock.adb:93:41: info: initialization of "CurrentTimeVar.Month" constituent of "CurrentTime" proved
-clock.adb:93:41: info: initialization of "CurrentTimeVar.Year" constituent of "CurrentTime" proved
-clock.adb:208:32: info: range check proved (CVC4: 1 VC)
-clock.adb:209:33: info: range check proved (CVC4: 1 VC)
-clock.adb:210:31: info: range check proved (CVC4: 1 VC)
-clock.adb:211:36: info: range check proved (CVC4: 1 VC)
-clock.adb:211:42: info: overflow check proved (CVC4: 1 VC)
-clock.adb:212:27: info: overflow check proved (CVC4: 1 VC)
-clock.adb:212:27: info: range check proved (CVC4: 1 VC)
-clock.adb:212:40: info: range check proved (CVC4: 1 VC)
-clock.adb:212:45: info: overflow check proved (CVC4: 1 VC)
-clock.adb:214:34: info: initialization of "TheTime.Day" proved
-clock.adb:214:34: info: initialization of "TheTime.MilliSec" proved
-clock.adb:214:34: info: initialization of "TheTime.Month" proved
-clock.adb:214:34: info: initialization of "TheTime.Year" proved
-clock.adb:245:41: info: division check proved (CVC4: 1 VC)
-clock.adb:245:41: info: range check proved (CVC4: 1 VC)
-clock.adb:246:44: info: division check proved (CVC4: 1 VC)
-clock.adb:247:25: info: division check proved (CVC4: 1 VC)
-clock.adb:247:25: info: range check proved (CVC4: 1 VC)
-clock.adb:289:07: info: precondition proved (CVC4: 2 VC)
-clock.adb:289:24: info: initialization of "LocalText" proved
-clock.adb:290:44: info: division check proved (CVC4: 1 VC)
-clock.adb:294:07: info: precondition proved (CVC4: 2 VC)
-clock.adb:294:24: info: initialization of "LocalText" proved
-clock.adb:295:45: info: division check proved (CVC4: 1 VC)
-clock.adb:296:32: info: division check proved (CVC4: 1 VC)
-clock.adb:300:07: info: precondition proved (CVC4: 2 VC)
-clock.adb:300:24: info: initialization of "LocalText" proved
-clock.adb:301:45: info: division check proved (CVC4: 1 VC)
-clock.adb:302:32: info: division check proved (CVC4: 1 VC)
-clock.adb:306:07: info: precondition proved (CVC4: 2 VC)
-clock.adb:306:24: info: initialization of "LocalText" proved
-clock.adb:307:44: info: division check proved (CVC4: 1 VC)
-clock.adb:311:14: info: initialization of "LocalText" proved
-clock.adb:346:07: info: precondition proved (CVC4: 2 VC)
-clock.adb:346:24: info: initialization of "LocalText" proved
-clock.adb:351:07: info: precondition proved (CVC4: 2 VC)
-clock.adb:351:24: info: initialization of "LocalText" proved
-clock.adb:356:07: info: precondition proved (CVC4: 2 VC)
-clock.adb:356:24: info: initialization of "LocalText" proved
-clock.adb:361:07: info: precondition proved (CVC4: 2 VC)
-clock.adb:361:24: info: initialization of "LocalText" proved
-clock.adb:362:49: info: division check proved (CVC4: 1 VC)
-clock.adb:366:07: info: precondition proved (CVC4: 2 VC)
-clock.adb:366:24: info: initialization of "LocalText" proved
-clock.adb:367:50: info: division check proved (CVC4: 1 VC)
-clock.adb:368:32: info: division check proved (CVC4: 1 VC)
-clock.adb:372:07: info: precondition proved (CVC4: 2 VC)
-clock.adb:372:24: info: initialization of "LocalText" proved
-clock.adb:373:50: info: division check proved (CVC4: 1 VC)
-clock.adb:374:32: info: division check proved (CVC4: 1 VC)
-clock.adb:378:07: info: precondition proved (CVC4: 2 VC)
-clock.adb:378:24: info: initialization of "LocalText" proved
-clock.adb:379:50: info: division check proved (CVC4: 1 VC)
-clock.adb:380:32: info: division check proved (CVC4: 1 VC)
-clock.adb:384:14: info: initialization of "LocalText" proved
+clock.adb:59:11: info: range check proved (CVC4: 2 VC)
+clock.adb:60:12: info: index check proved (CVC4: 2 VC)
+clock.adb:60:54: info: initialization of "V" proved
+clock.adb:60:56: info: division check proved (CVC4: 1 VC)
+clock.adb:61:18: info: initialization of "V" proved
+clock.adb:61:20: info: division check proved (CVC4: 1 VC)
+clock.adb:89:41: info: initialization of "CurrentTimeVar.Day" constituent of "CurrentTime" proved
+clock.adb:89:41: info: initialization of "CurrentTimeVar.MilliSec" constituent of "CurrentTime" proved
+clock.adb:89:41: info: initialization of "CurrentTimeVar.Month" constituent of "CurrentTime" proved
+clock.adb:89:41: info: initialization of "CurrentTimeVar.Year" constituent of "CurrentTime" proved
+clock.adb:126:32: info: range check proved (CVC4: 1 VC)
+clock.adb:127:33: info: range check proved (CVC4: 1 VC)
+clock.adb:128:31: info: range check proved (CVC4: 1 VC)
+clock.adb:129:36: info: range check proved (CVC4: 1 VC)
+clock.adb:129:42: info: overflow check proved (CVC4: 1 VC)
+clock.adb:130:27: info: overflow check proved (CVC4: 1 VC)
+clock.adb:130:27: info: range check proved (CVC4: 1 VC)
+clock.adb:130:40: info: range check proved (CVC4: 1 VC)
+clock.adb:130:45: info: overflow check proved (CVC4: 1 VC)
+clock.adb:132:34: info: initialization of "TheTime.Day" proved
+clock.adb:132:34: info: initialization of "TheTime.MilliSec" proved
+clock.adb:132:34: info: initialization of "TheTime.Month" proved
+clock.adb:132:34: info: initialization of "TheTime.Year" proved
+clock.adb:163:41: info: division check proved (CVC4: 1 VC)
+clock.adb:163:41: info: range check proved (CVC4: 1 VC)
+clock.adb:164:44: info: division check proved (CVC4: 1 VC)
+clock.adb:165:25: info: division check proved (CVC4: 1 VC)
+clock.adb:165:25: info: range check proved (CVC4: 1 VC)
+clock.adb:207:07: info: precondition proved (CVC4: 2 VC)
+clock.adb:207:24: info: initialization of "LocalText" proved
+clock.adb:208:44: info: division check proved (CVC4: 1 VC)
+clock.adb:212:07: info: precondition proved (CVC4: 2 VC)
+clock.adb:212:24: info: initialization of "LocalText" proved
+clock.adb:213:45: info: division check proved (CVC4: 1 VC)
+clock.adb:214:32: info: division check proved (CVC4: 1 VC)
+clock.adb:218:07: info: precondition proved (CVC4: 2 VC)
+clock.adb:218:24: info: initialization of "LocalText" proved
+clock.adb:219:45: info: division check proved (CVC4: 1 VC)
+clock.adb:220:32: info: division check proved (CVC4: 1 VC)
+clock.adb:224:07: info: precondition proved (CVC4: 2 VC)
+clock.adb:224:24: info: initialization of "LocalText" proved
+clock.adb:225:44: info: division check proved (CVC4: 1 VC)
+clock.adb:229:14: info: initialization of "LocalText" proved
+clock.adb:264:07: info: precondition proved (CVC4: 2 VC)
+clock.adb:264:24: info: initialization of "LocalText" proved
+clock.adb:269:07: info: precondition proved (CVC4: 2 VC)
+clock.adb:269:24: info: initialization of "LocalText" proved
+clock.adb:274:07: info: precondition proved (CVC4: 2 VC)
+clock.adb:274:24: info: initialization of "LocalText" proved
+clock.adb:279:07: info: precondition proved (CVC4: 2 VC)
+clock.adb:279:24: info: initialization of "LocalText" proved
+clock.adb:280:49: info: division check proved (CVC4: 1 VC)
+clock.adb:284:07: info: precondition proved (CVC4: 2 VC)
+clock.adb:284:24: info: initialization of "LocalText" proved
+clock.adb:285:50: info: division check proved (CVC4: 1 VC)
+clock.adb:286:32: info: division check proved (CVC4: 1 VC)
+clock.adb:290:07: info: precondition proved (CVC4: 2 VC)
+clock.adb:290:24: info: initialization of "LocalText" proved
+clock.adb:291:50: info: division check proved (CVC4: 1 VC)
+clock.adb:292:32: info: division check proved (CVC4: 1 VC)
+clock.adb:296:07: info: precondition proved (CVC4: 2 VC)
+clock.adb:296:24: info: initialization of "LocalText" proved
+clock.adb:297:50: info: division check proved (CVC4: 1 VC)
+clock.adb:298:32: info: division check proved (CVC4: 1 VC)
+clock.adb:302:14: info: initialization of "LocalText" proved
 clock.ads:186:07: info: initialization of "TheTime.Day" proved
 clock.ads:186:07: info: initialization of "TheTime.MilliSec" proved
 clock.ads:186:07: info: initialization of "TheTime.Month" proved
@@ -1486,7 +1490,7 @@ configuration.adb:156:40: info: initialization of "TheMinEntryClass" proved
 configuration.adb:157:40: info: initialization of "TheMinPreservedLogSize" proved
 configuration.adb:158:40: info: initialization of "TheAlarmThresholdSize" proved
 configuration.adb:159:40: info: initialization of "TheSystemMaxFar" proved
-configuration.adb:161:18: medium: precondition might fail
+configuration.adb:161:18: info: precondition proved (CVC4: 1 VC)
 configuration.adb:165:28: info: initialization of "TheAccessPolicy" proved
 configuration.adb:165:28: info: initialization of "TheAlarmSilentDuration" proved
 configuration.adb:165:28: info: initialization of "TheAlarmThresholdSize" proved
@@ -1514,8 +1518,8 @@ configuration.adb:179:40: info: initialization of "TheMinPreservedLogSize" prove
 configuration.adb:180:40: info: initialization of "TheAlarmThresholdSize" proved
 configuration.adb:181:40: info: initialization of "TheSystemMaxFar" proved
 configuration.adb:183:17: info: initialization of "Success" proved
-configuration.adb:185:21: info: precondition proved (CVC4: 2 VC)
-configuration.adb:193:18: medium: precondition might fail
+configuration.adb:185:21: info: precondition proved (CVC4: 1 VC)
+configuration.adb:193:18: info: precondition proved (CVC4: 1 VC)
 configuration.ads:46:43: info: initialization of "ConfigData.State" proved
 configuration.ads:67:07: info: initialization of "DataValid" proved
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:188
@@ -1586,7 +1590,7 @@ display.adb:152:14: info: initialization of "Result.Len" proved, in call inlined
 display.adb:152:14: info: initialization of "Result.Text" proved
 display.adb:152:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
 display.adb:152:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
-display.adb:184:18: medium: precondition might fail
+display.adb:184:18: info: precondition proved (CVC4: 1 VC)
 display.adb:235:49: medium: "Interfac.Output" constituent of "Display.Output" might not be written
 display.adb:264:18: warning: statement has no effect
 display.adb:266:36: info: initialization of "TheMsg.Top.Len" proved
@@ -1602,84 +1606,84 @@ display.adb:280:57: info: initialization of "TheMsg.Bottom.Text" proved
 display.adb:280:57: info: initialization of "TheMsg.Top.Len" proved
 display.adb:280:57: info: initialization of "TheMsg.Top.Text" proved
 display.adb:285:17: info: initialization of "Written" proved
-display.adb:286:21: medium: precondition might fail
+display.adb:286:21: info: precondition proved (CVC4: 1 VC)
 display.adb:305:42: info: initialization of "CurrentDisplay" constituent of "State" proved
 display.adb:306:42: info: initialization of "CurrentlyDisplayed" constituent of "State" proved
 display.adb:307:42: info: initialization of "Sizes.Bottom" constituent of "State" proved
 display.adb:307:42: info: initialization of "Sizes.Top" constituent of "State" proved
 door.adb:88:22: info: postcondition proved (CVC4: 4 VC)
 door.adb:113:23: info: initialization of "LocalAlarm" proved
-door.adb:114:18: medium: precondition might fail
+door.adb:114:18: info: precondition proved (CVC4: 1 VC)
 door.adb:115:33: info: initialization of "ID" proved
 door.adb:116:33: info: initialization of "Severity" proved
 door.adb:122:20: info: initialization of "LocalAlarm" proved
-door.adb:169:30: medium: refined postcondition might fail
-door.adb:197:10: info: initialization of "SystemFault" proved
-door.adb:200:18: medium: precondition might fail
-door.adb:209:28: info: initialization of "NewDoor" proved
-door.adb:212:16: info: initialization of "NewDoor" proved
-door.adb:218:21: medium: precondition might fail
-door.adb:219:54: info: initialization of "ID" proved
-door.adb:225:28: info: initialization of "NewDoor" proved
-door.adb:249:41: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.adb:249:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.adb:249:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.adb:249:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:277:30: info: refined post proved (CVC4: 6 VC)
-door.adb:280:57: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.adb:280:57: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.adb:280:57: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.adb:280:57: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:298:32: info: initialization of "LatchTimeout.Day" proved
-door.adb:298:32: info: initialization of "LatchTimeout.MilliSec" proved
-door.adb:298:32: info: initialization of "LatchTimeout.Month" proved
-door.adb:298:32: info: initialization of "LatchTimeout.Year" proved
-door.adb:301:44: info: initialization of "LatchTimeout.Day" proved
-door.adb:301:44: info: initialization of "LatchTimeout.MilliSec" proved
-door.adb:301:44: info: initialization of "LatchTimeout.Month" proved
-door.adb:301:44: info: initialization of "LatchTimeout.Year" proved
-door.adb:306:07: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.adb:306:07: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.adb:306:07: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.adb:306:07: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:322:41: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.adb:322:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.adb:322:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.adb:322:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:347:30: medium: refined postcondition might fail
-door.adb:350:57: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.adb:350:57: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.adb:350:57: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.adb:350:57: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:360:07: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.adb:360:07: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.adb:360:07: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.adb:360:07: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:372:42: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.adb:372:42: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.adb:372:42: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.adb:372:42: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:373:42: info: initialization of "CurrentDoor" constituent of "State" proved
-door.adb:374:42: info: initialization of "DoorAlarm" constituent of "State" proved
-door.adb:413:42: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.adb:413:42: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.adb:413:42: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.adb:413:42: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:414:42: info: initialization of "CurrentDoor" constituent of "State" proved
-door.adb:415:42: info: initialization of "DoorAlarm" constituent of "State" proved
-door.adb:416:47: info: initialization of "Latch.State" proved
+door.adb:169:30: info: refined post proved (CVC4: 7 VC)
+door.adb:189:10: info: initialization of "SystemFault" proved
+door.adb:192:18: info: precondition proved (CVC4: 1 VC)
+door.adb:201:28: info: initialization of "NewDoor" proved
+door.adb:204:16: info: initialization of "NewDoor" proved
+door.adb:210:21: info: precondition proved (CVC4: 1 VC)
+door.adb:211:54: info: initialization of "ID" proved
+door.adb:217:28: info: initialization of "NewDoor" proved
+door.adb:241:41: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:241:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:241:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:241:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:269:30: info: refined post proved (CVC4: 6 VC)
+door.adb:272:57: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:272:57: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:272:57: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:272:57: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:290:32: info: initialization of "LatchTimeout.Day" proved
+door.adb:290:32: info: initialization of "LatchTimeout.MilliSec" proved
+door.adb:290:32: info: initialization of "LatchTimeout.Month" proved
+door.adb:290:32: info: initialization of "LatchTimeout.Year" proved
+door.adb:293:44: info: initialization of "LatchTimeout.Day" proved
+door.adb:293:44: info: initialization of "LatchTimeout.MilliSec" proved
+door.adb:293:44: info: initialization of "LatchTimeout.Month" proved
+door.adb:293:44: info: initialization of "LatchTimeout.Year" proved
+door.adb:298:07: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:298:07: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:298:07: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:298:07: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:314:41: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:314:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:314:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:314:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:339:30: info: refined post proved (CVC4: 5 VC)
+door.adb:342:57: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:342:57: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:342:57: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:342:57: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:352:07: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:352:07: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:352:07: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:352:07: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:364:42: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:364:42: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:364:42: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:364:42: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:365:42: info: initialization of "CurrentDoor" constituent of "State" proved
+door.adb:366:42: info: initialization of "DoorAlarm" constituent of "State" proved
+door.adb:405:42: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:405:42: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:405:42: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:405:42: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:406:42: info: initialization of "CurrentDoor" constituent of "State" proved
+door.adb:407:42: info: initialization of "DoorAlarm" constituent of "State" proved
+door.adb:408:47: info: initialization of "Latch.State" proved
 door.ads:87:20: info: initialization of "SystemFault" proved
-door.ads:116:22: info: postcondition proved (CVC4: 8 VC)
-door.ads:169:22: info: postcondition proved (CVC4: 6 VC)
-door.ads:172:48: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.ads:172:48: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.ads:172:48: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.ads:172:48: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.ads:213:22: info: postcondition proved (CVC4: 5 VC)
-door.ads:216:48: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.ads:216:48: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.ads:216:48: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.ads:216:48: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.ads:116:22: info: postcondition proved (CVC4: 7 VC)
+door.ads:164:22: info: postcondition proved (CVC4: 6 VC)
+door.ads:167:48: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.ads:167:48: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.ads:167:48: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.ads:167:48: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.ads:208:22: info: postcondition proved (CVC4: 5 VC)
+door.ads:211:48: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.ads:211:48: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.ads:211:48: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.ads:211:48: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
 doorapi.adb:33:29: medium: length check might fail
 doorapi.adb:33:29: warning: assuming "Overwrite" has no effect on global items
 doorapi.adb:33:29: warning: no Global contract available for "Overwrite"
@@ -1694,167 +1698,165 @@ doorapi.adb:58:47: info: initialization of "StateDict" proved
 doorapi.adb:61:13: info: initialization of "IsOp" proved
 doorapi.adb:62:16: info: initialization of "IsClosed" proved
 doorapi.adb:70:14: info: initialization of "DoorState" proved
-enclave.adb:105:18: info: precondition proved (CVC4: 1 VC)
-enclave.adb:113:14: info: initialization of "Result" proved
-enclave.adb:189:22: info: postcondition proved (CVC4: 1 VC)
-enclave.adb:226:33: info: initialization of "Status" constituent of "State" proved
-enclave.adb:250:22: info: postcondition proved (CVC4: 1 VC)
-enclave.adb:250:23: info: initialization of "Status" constituent of "State" proved
-enclave.adb:262:16: info: precondition proved (CVC4: 1 VC)
-enclave.adb:262:41: info: initialization of "TheCurrentFloppy" proved
-enclave.adb:267:10: info: initialization of "DataOK" proved
-enclave.adb:274:18: medium: precondition might fail
-enclave.adb:286:18: medium: precondition might fail
-enclave.adb:290:28: info: initialization of "Description" proved
-enclave.adb:329:22: info: postcondition proved (CVC4: 1 VC)
-enclave.adb:382:33: info: initialization of "Status" constituent of "State" proved
-enclave.adb:394:22: info: initialization of "Status" constituent of "State" proved
-enclave.adb:394:22: info: postcondition proved (CVC4: 2 VC)
-enclave.adb:396:29: info: assertion proved (CVC4: 1 VC)
-enclave.adb:396:29: info: initialization of "Status" constituent of "State" proved
-enclave.adb:399:15: medium: precondition might fail
-enclave.adb:438:33: info: initialization of "Status" constituent of "State" proved
-enclave.adb:481:18: medium: precondition might fail
-enclave.adb:487:19: medium: precondition might fail
-enclave.adb:490:07: info: initialization of "Status" constituent of "State" proved
-enclave.adb:499:11: medium: postcondition might fail, cannot prove (AdminToken.isgood)
-enclave.adb:504:18: medium: precondition might fail
-enclave.adb:510:19: medium: precondition might fail
-enclave.adb:528:18: medium: precondition might fail
-enclave.adb:534:13: info: initialization of "TokenOK" proved
-enclave.adb:537:21: info: precondition proved (CVC4: 2 VC)
-enclave.adb:547:48: info: precondition proved (CVC4: 3 VC)
-enclave.adb:553:21: info: precondition proved (CVC4: 2 VC)
-enclave.adb:557:31: info: initialization of "Description" proved
-enclave.adb:582:33: info: initialization of "Status" constituent of "State" proved
-enclave.adb:597:23: info: initialization of "Status" constituent of "State" proved
-enclave.adb:597:23: info: postcondition proved (CVC4: 1 VC)
-enclave.adb:601:15: medium: precondition might fail
-enclave.adb:636:39: medium: "Floppy.Output" might not be written
-enclave.adb:674:11: medium: precondition might fail
-enclave.adb:682:18: medium: precondition might fail
-enclave.adb:688:19: medium: precondition might fail
-enclave.adb:691:06: info: postcondition proved (CVC4: 12 VC)
-enclave.adb:702:18: info: precondition proved (CVC4: 1 VC)
-enclave.adb:713:18: medium: precondition might fail
-enclave.adb:719:19: info: precondition proved (CVC4: 1 VC)
-enclave.adb:741:42: medium: "Floppy.Output" might not be written
-enclave.adb:766:25: info: postcondition proved (CVC4: 1 VC)
-enclave.adb:774:21: medium: precondition might fail
-enclave.adb:780:37: info: initialization of "TheLog" proved
-enclave.adb:806:36: info: initialization of "Status" constituent of "State" proved
-enclave.adb:831:26: info: initialization of "Status" constituent of "State" proved
-enclave.adb:831:26: info: postcondition proved (CVC4: 4 VC)
-enclave.adb:844:16: info: initialization of "WriteOK" proved
-enclave.adb:846:24: medium: precondition might fail
-enclave.adb:852:24: medium: precondition might fail
-enclave.adb:866:21: medium: precondition might fail
-enclave.adb:879:15: medium: precondition might fail
-enclave.adb:887:10: info: precondition proved (CVC4: 1 VC)
-enclave.adb:889:10: info: precondition proved (CVC4: 1 VC)
-enclave.adb:943:27: medium: precondition might fail
-enclave.adb:945:06: info: postcondition proved (CVC4: 7 VC)
-enclave.adb:956:18: info: precondition proved (CVC4: 1 VC)
-enclave.adb:986:26: info: initialization of "TheCurrentFloppy" proved
-enclave.adb:990:13: info: initialization of "ConfigDataOK" proved
-enclave.adb:997:15: info: precondition proved (CVC4: 2 VC)
-enclave.adb:1020:33: info: initialization of "Status" constituent of "State" proved
-enclave.adb:1048:11: medium: precondition might fail
-enclave.adb:1057:18: medium: precondition might fail
-enclave.adb:1063:19: medium: precondition might fail
-enclave.adb:1072:06: info: initialization of "Status" constituent of "State" proved
-enclave.adb:1072:06: info: postcondition proved (CVC4: 17 VC)
-enclave.adb:1094:18: medium: precondition might fail
-enclave.adb:1100:19: medium: precondition might fail
-enclave.adb:1105:18: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1108:15: medium: precondition might fail
-enclave.adb:1119:12: medium: precondition might fail
-enclave.adb:1182:11: medium: precondition might fail
-enclave.adb:1197:19: medium: precondition might fail
-enclave.adb:1215:18: medium: precondition might fail
-enclave.adb:1218:11: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.useronly
-enclave.adb:1223:15: medium: precondition might fail
-enclave.adb:1243:18: medium: precondition might fail
-enclave.adb:1249:19: medium: precondition might fail
-enclave.adb:1263:18: medium: precondition might fail
-enclave.adb:1295:39: medium: "Floppy.Output" might not be written
-enclave.adb:1375:18: medium: precondition might fail
-enclave.adb:1394:18: medium: precondition might fail
-enclave.adb:1400:19: medium: precondition might fail
-enclave.adb:1424:13: medium: postcondition might fail, cannot prove Admin.IsPresent(TheAdmin)
-enclave.adb:1433:18: medium: precondition might fail
-enclave.adb:1454:18: medium: precondition might fail
-enclave.adb:1460:19: medium: precondition might fail
-enclave.adb:1465:18: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1468:17: info: precondition proved (CVC4: 3 VC)
-enclave.adb:1470:13: info: precondition proved (CVC4: 9 VC)
-enclave.adb:1473:13: info: precondition proved (CVC4: 4 VC)
-enclave.adb:1476:13: info: precondition proved (CVC4: 8 VC)
-enclave.adb:1479:13: info: precondition proved (CVC4: 12 VC)
-enclave.adb:1504:41: info: initialization of "Status" constituent of "State" proved
-enclave.adb:1506:30: info: refined post proved (CVC4: 3 VC)
-enclave.adb:1507:37: info: initialization of "Status" constituent of "State" proved
-enclave.adb:1614:31: info: refined post proved (CVC4: 3 VC)
-enclave.adb:1621:39: info: range check proved (CVC4: 1 VC)
-enclave.adb:1623:12: info: initialization of "LocalStatus" proved
-enclave.adb:1625:13: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1628:13: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1631:13: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1670:31: medium: refined postcondition might fail
-enclave.adb:1685:21: medium: precondition might fail
-enclave.adb:1704:18: medium: precondition might fail
-enclave.adb:1731:47: medium: "Floppy.Output" might not be written
-enclave.adb:1887:06: medium: refined postcondition might fail
-enclave.adb:1906:18: medium: precondition might fail
-enclave.adb:1912:19: medium: precondition might fail
-enclave.adb:1937:18: medium: precondition might fail
-enclave.adb:1943:18: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1947:42: medium: range check might fail
-enclave.adb:1949:12: info: initialization of "LocalStatus" proved
-enclave.adb:1952:13: info: precondition proved (CVC4: 7 VC)
-enclave.adb:1957:13: info: precondition proved (CVC4: 13 VC)
-enclave.adb:2040:06: info: refined post proved (CVC4: 16 VC)
-enclave.adb:2068:18: medium: precondition might fail
-enclave.adb:2078:18: medium: precondition might fail
-enclave.adb:2084:19: medium: precondition might fail
-enclave.adb:2179:21: medium: precondition might fail
-enclave.adb:2185:22: medium: precondition might fail
-enclave.adb:2197:21: medium: precondition might fail
-enclave.adb:2199:13: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.guard
-enclave.adb:2203:22: medium: precondition might fail
-enclave.adb:2207:21: medium: precondition might fail
-enclave.adb:2235:13: info: initialization of "KeyedDataPresence" proved
-enclave.adb:2236:27: info: precondition proved (CVC4: 1 VC)
-enclave.adb:2237:54: info: initialization of "KeyedData.Length" proved
-enclave.adb:2237:54: info: initialization of "KeyedData.Text" proved
-enclave.adb:2239:16: info: initialization of "TheOp" proved
-enclave.adb:2245:21: info: precondition proved (CVC4: 2 VC)
-enclave.adb:2246:42: info: initialization of "TheOp" proved
-enclave.adb:2246:42: info: range check proved (CVC4: 1 VC)
-enclave.adb:2248:24: medium: precondition might fail
-enclave.adb:2252:34: info: initialization of "KeyedData.Text" proved
-enclave.adb:2258:24: medium: precondition might fail
-enclave.adb:2262:34: info: initialization of "KeyedData.Text" proved
-enclave.adb:2275:10: info: precondition proved (CVC4: 9 VC)
+enclave.adb:62:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:70:14: info: initialization of "Result" proved
+enclave.adb:146:22: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:183:33: info: initialization of "Status" constituent of "State" proved
+enclave.adb:207:22: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:207:23: info: initialization of "Status" constituent of "State" proved
+enclave.adb:219:16: info: precondition proved (CVC4: 1 VC)
+enclave.adb:219:41: info: initialization of "TheCurrentFloppy" proved
+enclave.adb:224:10: info: initialization of "DataOK" proved
+enclave.adb:231:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:243:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:247:28: info: initialization of "Description" proved
+enclave.adb:286:22: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:339:33: info: initialization of "Status" constituent of "State" proved
+enclave.adb:351:22: info: initialization of "Status" constituent of "State" proved
+enclave.adb:351:22: info: postcondition proved (CVC4: 2 VC)
+enclave.adb:353:29: info: assertion proved (CVC4: 1 VC)
+enclave.adb:353:29: info: initialization of "Status" constituent of "State" proved
+enclave.adb:356:15: info: precondition proved (CVC4: 1 VC)
+enclave.adb:395:33: info: initialization of "Status" constituent of "State" proved
+enclave.adb:438:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:444:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:447:06: info: postcondition proved (CVC4: 8 VC)
+enclave.adb:447:07: info: initialization of "Status" constituent of "State" proved
+enclave.adb:461:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:467:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:485:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:491:13: info: initialization of "TokenOK" proved
+enclave.adb:494:21: info: precondition proved (CVC4: 1 VC)
+enclave.adb:504:48: info: precondition proved (CVC4: 3 VC)
+enclave.adb:510:21: info: precondition proved (CVC4: 1 VC)
+enclave.adb:514:31: info: initialization of "Description" proved
+enclave.adb:539:33: info: initialization of "Status" constituent of "State" proved
+enclave.adb:554:23: info: initialization of "Status" constituent of "State" proved
+enclave.adb:554:23: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:558:15: info: precondition proved (CVC4: 1 VC)
+enclave.adb:593:39: medium: "Floppy.Output" might not be written
+enclave.adb:631:11: info: precondition proved (CVC4: 1 VC)
+enclave.adb:639:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:645:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:648:06: info: postcondition proved (CVC4: 12 VC)
+enclave.adb:659:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:670:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:676:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:698:42: medium: "Floppy.Output" might not be written
+enclave.adb:723:25: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:737:37: info: initialization of "TheLog" proved
+enclave.adb:763:36: info: initialization of "Status" constituent of "State" proved
+enclave.adb:788:26: info: initialization of "Status" constituent of "State" proved
+enclave.adb:788:26: info: postcondition proved (CVC4: 4 VC)
+enclave.adb:801:16: info: initialization of "WriteOK" proved
+enclave.adb:809:24: info: precondition proved (CVC4: 1 VC)
+enclave.adb:823:21: info: precondition proved (CVC4: 1 VC)
+enclave.adb:836:15: info: precondition proved (CVC4: 1 VC)
+enclave.adb:844:10: info: precondition proved (CVC4: 1 VC)
+enclave.adb:846:10: info: precondition proved (CVC4: 1 VC)
+enclave.adb:900:27: info: precondition proved (CVC4: 1 VC)
+enclave.adb:902:06: info: postcondition proved (CVC4: 7 VC)
+enclave.adb:913:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:943:26: info: initialization of "TheCurrentFloppy" proved
+enclave.adb:947:13: info: initialization of "ConfigDataOK" proved
+enclave.adb:954:15: info: precondition proved (CVC4: 1 VC)
+enclave.adb:977:33: info: initialization of "Status" constituent of "State" proved
+enclave.adb:1005:11: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1014:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1020:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1029:06: info: initialization of "Status" constituent of "State" proved
+enclave.adb:1029:06: info: postcondition proved (CVC4: 17 VC)
+enclave.adb:1051:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1057:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1062:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1065:15: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1076:12: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1139:11: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1154:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1163:06: info: postcondition proved (CVC4: 20 VC)
+enclave.adb:1172:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1180:15: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1200:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1206:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1220:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1252:39: medium: "Floppy.Output" might not be written
+enclave.adb:1332:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1351:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1357:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1366:06: info: postcondition proved (CVC4: 24 VC)
+enclave.adb:1390:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1411:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1417:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1422:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1425:17: info: precondition proved (CVC4: 3 VC)
+enclave.adb:1427:13: info: precondition proved (CVC4: 9 VC)
+enclave.adb:1430:13: info: precondition proved (CVC4: 4 VC)
+enclave.adb:1433:13: info: precondition proved (CVC4: 8 VC)
+enclave.adb:1436:13: info: precondition proved (CVC4: 12 VC)
+enclave.adb:1452:41: info: initialization of "Status" constituent of "State" proved
+enclave.adb:1454:30: info: refined post proved (CVC4: 3 VC)
+enclave.adb:1455:37: info: initialization of "Status" constituent of "State" proved
+enclave.adb:1562:31: info: refined post proved (CVC4: 3 VC)
+enclave.adb:1569:39: info: range check proved (CVC4: 1 VC)
+enclave.adb:1571:12: info: initialization of "LocalStatus" proved
+enclave.adb:1573:13: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1576:13: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1579:13: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1618:31: info: refined post proved (CVC4: 5 VC)
+enclave.adb:1633:21: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1652:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1679:47: medium: "Floppy.Output" might not be written
+enclave.adb:1835:06: info: refined post proved (CVC4: 24 VC)
+enclave.adb:1854:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1860:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1885:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1891:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1895:42: medium: range check might fail
+enclave.adb:1897:12: info: initialization of "LocalStatus" proved
+enclave.adb:1900:13: info: precondition proved (CVC4: 7 VC)
+enclave.adb:1905:13: info: precondition proved (CVC4: 13 VC)
+enclave.adb:1988:06: info: refined post proved (CVC4: 16 VC)
+enclave.adb:2016:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2026:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2032:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2127:21: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2133:22: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2145:21: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2147:13: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.guard
+enclave.adb:2151:22: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2155:21: medium: precondition might fail
+enclave.adb:2183:13: info: initialization of "KeyedDataPresence" proved
+enclave.adb:2184:27: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2185:54: info: initialization of "KeyedData.Length" proved
+enclave.adb:2185:54: info: initialization of "KeyedData.Text" proved
+enclave.adb:2187:16: info: initialization of "TheOp" proved
+enclave.adb:2193:21: info: precondition proved (CVC4: 2 VC)
+enclave.adb:2194:42: info: initialization of "TheOp" proved
+enclave.adb:2194:42: info: range check proved (CVC4: 1 VC)
+enclave.adb:2196:24: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2200:34: info: initialization of "KeyedData.Text" proved
+enclave.adb:2206:24: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2210:34: info: initialization of "KeyedData.Text" proved
+enclave.adb:2223:10: info: precondition proved (CVC4: 9 VC)
 enclave.ads:117:22: info: postcondition proved (CVC4: 3 VC)
 enclave.ads:117:56: info: initialization of "Status" constituent of "State" proved
 enclave.ads:210:22: info: postcondition proved (CVC4: 3 VC)
 enclave.ads:252:22: info: postcondition proved (CVC4: 5 VC)
-enclave.ads:433:25: medium: precondition might fail
-enclave.ads:443:25: medium: precondition might fail
-enclave.ads:449:26: medium: precondition might fail
+enclave.ads:433:25: info: precondition proved (CVC4: 1 VC)
+enclave.ads:443:25: info: precondition proved (CVC4: 1 VC)
+enclave.ads:449:26: info: precondition proved (CVC4: 1 VC)
 enclave.ads:458:13: info: postcondition proved (CVC4: 24 VC)
-enclave.ads:487:25: medium: precondition might fail
-enclave.ads:497:25: medium: precondition might fail
-enclave.ads:503:26: medium: precondition might fail
+enclave.ads:487:25: info: precondition proved (CVC4: 1 VC)
+enclave.ads:497:25: info: precondition proved (CVC4: 1 VC)
+enclave.ads:503:26: info: precondition proved (CVC4: 1 VC)
 enclave.ads:516:25: info: precondition proved (CVC4: 1 VC)
-enclave.ads:566:25: medium: precondition might fail
-enclave.ads:592:29: medium: precondition might fail
-enclave.ads:598:30: medium: precondition might fail
+enclave.ads:566:25: info: precondition proved (CVC4: 1 VC)
+enclave.ads:592:34: info: precondition proved (CVC4: 1 VC)
+enclave.ads:598:35: info: precondition proved (CVC4: 1 VC)
 enclave.ads:603:13: info: postcondition proved (CVC4: 16 VC)
-enclave.ads:632:29: medium: precondition might fail
-enclave.ads:642:29: medium: precondition might fail
-enclave.ads:648:30: medium: precondition might fail
+enclave.ads:632:34: info: precondition proved (CVC4: 1 VC)
+enclave.ads:642:34: info: precondition proved (CVC4: 1 VC)
+enclave.ads:648:35: info: precondition proved (CVC4: 1 VC)
 enrolment.adb:66:66: low: range check might fail
 enrolment.adb:67:55: low: range check might fail
 enrolment.adb:67:63: low: range check might fail
@@ -1917,11 +1919,10 @@ enrolment.adb:228:27: info: overflow check proved (CVC4: 1 VC)
 enrolment.adb:229:10: info: initialization of "CertNo" proved
 enrolment.adb:236:45: info: initialization of "DataOK" proved
 enrolment.adb:238:23: info: initialization of "CertNo" proved
-enrolment.adb:238:30: medium: overflow check might fail
-enrolment.adb:239:13: info: initialization of "CertNo" proved
-enrolment.adb:250:14: info: initialization of "ClosedOK" proved
-enrolment.adb:251:25: info: initialization of "CertNo" proved
-enrolment.adb:255:14: info: initialization of "DataOK" proved
+enrolment.adb:242:13: info: initialization of "CertNo" proved
+enrolment.adb:253:14: info: initialization of "ClosedOK" proved
+enrolment.adb:254:25: info: initialization of "CertNo" proved
+enrolment.adb:258:14: info: initialization of "DataOK" proved
 enrolment.ads:55:24: info: initialization of "DataOK" proved
 enrolment.ads:56:24: info: initialization of "Description" proved
 enrolment.ads:78:22: info: initialization of "DataOK" proved
@@ -1940,286 +1941,286 @@ keyboard.adb:76:32: info: initialization of "LocalData" proved
 keyboard.ads:76:20: info: initialization of "DataPresence" proved
 keyboard.ads:77:20: info: initialization of "Data.Length" proved
 keyboard.ads:77:20: info: initialization of "Data.Text" proved
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:268
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:276
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:284
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:347
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:355
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:363
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:542
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:694
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:762
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:847
-keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:268
-keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:276
-keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:284
-keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:347
-keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:355
-keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:363
-keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:542
-keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:694
-keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:762
-keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:847
-keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:268
-keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:276
-keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:284
-keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:347
-keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:355
-keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:363
-keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:542
-keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:694
-keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:762
-keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:847
-keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:268
-keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:276
-keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:284
-keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:347
-keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:355
-keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:363
-keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:542
-keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:694
-keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:762
-keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:847
-keystore.adb:116:41: info: initialization of "Result" proved
-keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:268
-keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:276
-keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:284
-keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:347
-keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:355
-keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:363
-keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:542
-keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:694
-keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:762
-keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:847
-keystore.adb:116:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:268
-keystore.adb:116:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:276
-keystore.adb:116:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:284
-keystore.adb:116:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:347
-keystore.adb:116:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:355
-keystore.adb:116:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:363
-keystore.adb:116:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:542
-keystore.adb:116:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:694
-keystore.adb:116:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:762
-keystore.adb:116:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:847
-keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:268
-keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:276
-keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:284
-keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:347
-keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:355
-keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:363
-keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:542
-keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:694
-keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:762
-keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:847
-keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:268
-keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:276
-keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:284
-keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:347
-keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:355
-keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:363
-keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:542
-keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:694
-keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:762
-keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:847
-keystore.adb:121:14: info: initialization of "Result" proved
-keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:268
-keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:276
-keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:284
-keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:347
-keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:355
-keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:363
-keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:542
-keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:694
-keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:762
-keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:847
-keystore.adb:136:22: info: initialization of "TheDigest.DigestID" proved
-keystore.adb:136:22: info: initialization of "TheDigest.Pad" proved
-keystore.adb:136:22: info: initialization of "TheDigest.SignReturn" proved
-keystore.adb:136:22: info: initialization of "TheDigest.VerifyReturn" proved
-keystore.adb:137:22: info: initialization of "Success" proved
-keystore.adb:186:42: info: range check proved (CVC4: 1 VC)
-keystore.adb:186:53: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:186:69: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:194:16: info: loop invariant initialization proved (CVC4: 7 VC)
-keystore.adb:194:16: info: loop invariant preservation proved (CVC4: 7 VC)
-keystore.adb:199:24: info: initialization of "Result" proved
-keystore.adb:199:35: info: index check proved (CVC4: 2 VC)
-keystore.adb:199:35: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:199:51: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:204:17: info: initialization of "Result" proved
-keystore.adb:216:10: info: initialization of "RetValIni" proved
-keystore.adb:218:51: info: division check proved (CVC4: 1 VC)
-keystore.adb:221:24: info: initialization of "LoopMax" proved
-keystore.adb:223:16: info: initialization of "LoopMax" proved
-keystore.adb:223:16: info: loop invariant initialization proved (CVC4: 10 VC)
-keystore.adb:223:16: info: loop invariant preservation proved (CVC4: 10 VC)
-keystore.adb:223:56: info: division check proved (CVC4: 1 VC)
-keystore.adb:224:30: info: initialization of "LoopMax" proved
-keystore.adb:226:20: info: initialization of "BytesLeft" proved
-keystore.adb:226:57: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:226:67: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:228:20: info: initialization of "Size" proved
-keystore.adb:229:20: info: initialization of "RetValIni" proved
-keystore.adb:230:20: info: initialization of "RetValFin" proved
-keystore.adb:232:16: info: initialization of "BytesLeft" proved
-keystore.adb:233:48: info: initialization of "BytesLeft" proved
-keystore.adb:236:22: info: precondition proved (CVC4: 5 VC)
-keystore.adb:239:29: info: initialization of "Size" proved
-keystore.adb:242:31: info: initialization of "Block" proved
-keystore.adb:243:31: info: initialization of "Size" proved
-keystore.adb:246:23: info: initialization of "RetValUpd" proved
-keystore.adb:246:55: info: initialization of "LoopMax" proved
-keystore.adb:248:26: info: initialization of "BytesLeft" proved
-keystore.adb:248:36: info: range check proved (CVC4: 1 VC)
-keystore.adb:252:13: info: initialization of "RetValUpd" proved
-keystore.adb:259:18: info: initialization of "RetValIni" proved
-keystore.adb:260:18: info: initialization of "RetValUpd" proved
-keystore.adb:261:18: info: initialization of "RetValFin" proved
-keystore.adb:263:20: info: initialization of "RetValIni" proved
-keystore.adb:264:18: medium: precondition might fail
-keystore.adb:268:29: info: initialization of "RetValIni" proved
-keystore.adb:271:20: info: initialization of "RetValUpd" proved
-keystore.adb:272:18: medium: precondition might fail
-keystore.adb:276:29: info: initialization of "RetValUpd" proved
-keystore.adb:279:20: info: initialization of "RetValFin" proved
-keystore.adb:280:18: medium: precondition might fail
-keystore.adb:284:28: info: initialization of "RetValFin" proved
-keystore.adb:303:07: info: initialization of "Handles" proved
-keystore.adb:332:10: info: initialization of "RetValIni" proved
-keystore.adb:337:13: info: initialization of "RetValIni" proved
-keystore.adb:342:20: info: initialization of "RetValIni" proved
-keystore.adb:343:18: medium: precondition might fail
-keystore.adb:347:28: info: initialization of "RetValIni" proved
-keystore.adb:350:20: info: initialization of "RetValDo" proved
-keystore.adb:351:18: medium: precondition might fail
-keystore.adb:355:28: info: initialization of "RetValDo" proved
-keystore.adb:358:20: info: initialization of "RetValFin" proved
-keystore.adb:359:18: medium: precondition might fail
-keystore.adb:363:28: info: initialization of "RetValFin" proved
-keystore.adb:381:33: info: initialization of "IssuerKey" proved
-keystore.adb:414:29: info: initialization of "IssuerTemplate.AttrMask" proved
-keystore.adb:414:29: info: initialization of "IssuerTemplate.IsPublic" proved
-keystore.adb:414:29: info: initialization of "IssuerTemplate.KeyID" proved
-keystore.adb:414:29: info: initialization of "IssuerTemplate.KeyLength" proved
-keystore.adb:414:29: info: initialization of "IssuerTemplate.Owner.ID" proved
-keystore.adb:414:29: info: initialization of "IssuerTemplate.Owner.Name" proved
-keystore.adb:414:29: info: initialization of "IssuerTemplate.Owner.NameLength" proved
-keystore.adb:415:29: info: initialization of "ActualCount" proved
-keystore.adb:418:10: info: initialization of "ActualCount" proved
-keystore.adb:421:18: medium: precondition might fail
-keystore.adb:432:20: info: initialization of "Handles" proved
-keystore.adb:448:26: info: initialization of "PrivateKeyHandle" proved
-keystore.adb:478:29: info: initialization of "PrivateTemplate.AttrMask" proved
-keystore.adb:478:29: info: initialization of "PrivateTemplate.IsPublic" proved
-keystore.adb:478:29: info: initialization of "PrivateTemplate.KeyID" proved
-keystore.adb:478:29: info: initialization of "PrivateTemplate.KeyLength" proved
-keystore.adb:478:29: info: initialization of "PrivateTemplate.Owner.ID" proved
-keystore.adb:478:29: info: initialization of "PrivateTemplate.Owner.Name" proved
-keystore.adb:478:29: info: initialization of "PrivateTemplate.Owner.NameLength" proved
-keystore.adb:479:29: info: initialization of "ActualCount" proved
-keystore.adb:482:10: info: initialization of "ActualCount" proved
-keystore.adb:485:18: medium: precondition might fail
-keystore.adb:494:27: info: initialization of "Handles" proved
-keystore.adb:513:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
-keystore.adb:513:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
-keystore.adb:513:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
-keystore.adb:513:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
-keystore.adb:536:19: info: initialization of "RetVal" proved
-keystore.adb:538:18: medium: precondition might fail
-keystore.adb:542:32: info: initialization of "RetVal" proved
-keystore.adb:548:33: info: initialization of "ThePrivateKeyH" proved
-keystore.adb:550:10: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
-keystore.adb:551:52: info: initialization of "ThePrivateKeyH" proved
-keystore.adb:552:52: info: initialization of "ThePrivateKey.AttrMask" proved
-keystore.adb:552:52: info: initialization of "ThePrivateKey.IsPublic" proved
-keystore.adb:552:52: info: initialization of "ThePrivateKey.KeyID" proved
-keystore.adb:552:52: info: initialization of "ThePrivateKey.KeyLength" proved
-keystore.adb:552:52: info: initialization of "ThePrivateKey.Owner.ID" proved
-keystore.adb:552:52: info: initialization of "ThePrivateKey.Owner.Name" proved
-keystore.adb:552:52: info: initialization of "ThePrivateKey.Owner.NameLength" proved
-keystore.adb:555:13: info: initialization of "RetVal" proved
-keystore.adb:556:34: info: initialization of "ThePrivateKey.Owner.ID" proved
-keystore.adb:556:34: info: initialization of "ThePrivateKey.Owner.Name" proved
-keystore.adb:556:34: info: initialization of "ThePrivateKey.Owner.NameLength" proved
-keystore.adb:594:21: info: initialization of "TheIssuerKey" proved
-keystore.adb:677:10: info: initialization of "Digested" proved
-keystore.adb:682:40: info: initialization of "TheIssuerKey" proved
-keystore.adb:683:40: info: initialization of "TheDigest.DigestID" proved
-keystore.adb:683:40: info: initialization of "TheDigest.Pad" proved
-keystore.adb:683:40: info: initialization of "TheDigest.SignReturn" proved
-keystore.adb:683:40: info: initialization of "TheDigest.VerifyReturn" proved
-keystore.adb:687:23: info: initialization of "RetVal" proved
-keystore.adb:689:22: info: initialization of "RetVal" proved
-keystore.adb:690:21: medium: precondition might fail
-keystore.adb:694:36: info: initialization of "RetVal" proved
-keystore.adb:746:10: info: initialization of "Digested" proved
-keystore.adb:750:39: info: initialization of "ThePrivateKeyH" proved
-keystore.adb:751:39: info: initialization of "TheDigest.DigestID" proved
-keystore.adb:751:39: info: initialization of "TheDigest.Pad" proved
-keystore.adb:751:39: info: initialization of "TheDigest.SignReturn" proved
-keystore.adb:751:39: info: initialization of "TheDigest.VerifyReturn" proved
-keystore.adb:755:21: info: initialization of "RetVal" proved
-keystore.adb:757:22: info: initialization of "RetVal" proved
-keystore.adb:758:21: medium: precondition might fail
-keystore.adb:762:35: info: initialization of "RetVal" proved
-keystore.adb:828:45: info: initialization of "TheKeyTemplate.AttrMask" proved
-keystore.adb:828:45: info: initialization of "TheKeyTemplate.IsPublic" proved
-keystore.adb:828:45: info: initialization of "TheKeyTemplate.KeyID" proved
-keystore.adb:828:45: info: initialization of "TheKeyTemplate.KeyLength" proved
-keystore.adb:828:45: info: initialization of "TheKeyTemplate.Owner.ID" proved
-keystore.adb:828:45: info: initialization of "TheKeyTemplate.Owner.Name" proved
-keystore.adb:828:45: info: initialization of "TheKeyTemplate.Owner.NameLength" proved
-keystore.adb:831:17: info: initialization of "RetVal" proved
-keystore.adb:833:10: info: initialization of "Added" proved
-keystore.adb:842:19: info: initialization of "RetVal" proved
-keystore.adb:843:18: medium: precondition might fail
-keystore.adb:847:33: info: initialization of "RetVal" proved
-keystore.adb:863:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
-keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
-keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
-keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
-keystore.ads:74:40: info: initialization of "IsPresent" proved
-keystore.ads:140:28: info: initialization of "Verified" proved
-keystore.ads:172:20: info: initialization of "Signature.SigData" proved
-keystore.ads:172:20: info: initialization of "Signature.SigLength" proved
-keystore.ads:173:20: info: initialization of "Signed" proved
-keystore.ads:202:22: info: initialization of "Added" proved
-keystore.ads:227:22: info: postcondition proved (CVC4: 3 VC)
-keystore.ads:227:23: info: initialization of "Added" proved
-keystore.ads:245:22: info: postcondition proved (CVC4: 1 VC)
-keystore.ads:245:26: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
-keystore.ads:245:26: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
-keystore.ads:245:26: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
-keystore.ads:245:26: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
-latch.adb:51:42: info: initialization of "CurrentLatch" constituent of "State" proved
-latch.adb:52:42: info: initialization of "LatchTimeout.Day" constituent of "State" proved
-latch.adb:52:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
-latch.adb:52:42: info: initialization of "LatchTimeout.Month" constituent of "State" proved
-latch.adb:52:42: info: initialization of "LatchTimeout.Year" constituent of "State" proved
-latch.adb:96:30: info: refined post proved (CVC4: 2 VC)
-latch.adb:112:26: info: initialization of "LocalLatch" proved
-latch.adb:113:18: medium: precondition might fail
-latch.adb:114:32: info: initialization of "ID" proved
-latch.adb:121:23: info: initialization of "LocalLatch" proved
-latch.adb:136:49: info: initialization of "Interfac.Output" constituent of "Latch.Output" proved
-latch.adb:147:30: info: refined post proved (CVC4: 1 VC)
-latch.adb:147:62: info: initialization of "SystemFault" proved
-latch.adb:156:10: info: initialization of "SystemFault" proved
-latch.adb:158:18: medium: precondition might fail
-latch.adb:176:41: info: initialization of "LatchTimeout.Day" constituent of "State" proved
-latch.adb:176:41: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
-latch.adb:176:41: info: initialization of "LatchTimeout.Month" constituent of "State" proved
-latch.adb:176:41: info: initialization of "LatchTimeout.Year" constituent of "State" proved
-latch.adb:178:30: info: initialization of "LatchTimeout.Day" constituent of "State" proved
-latch.adb:178:30: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
-latch.adb:178:30: info: initialization of "LatchTimeout.Month" constituent of "State" proved
-latch.adb:178:30: info: initialization of "LatchTimeout.Year" constituent of "State" proved
-latch.adb:178:30: info: refined post proved (CVC4: 1 VC)
-latch.adb:192:42: info: initialization of "CurrentLatch" constituent of "State" proved
-latch.adb:193:42: info: initialization of "LatchTimeout.Day" constituent of "State" proved
-latch.adb:193:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
-latch.adb:193:42: info: initialization of "LatchTimeout.Month" constituent of "State" proved
-latch.adb:193:42: info: initialization of "LatchTimeout.Year" constituent of "State" proved
+keystore.adb:97:09: low: range check might fail, in call inlined at keystore.adb:253
+keystore.adb:97:09: low: range check might fail, in call inlined at keystore.adb:261
+keystore.adb:97:09: low: range check might fail, in call inlined at keystore.adb:269
+keystore.adb:97:09: low: range check might fail, in call inlined at keystore.adb:332
+keystore.adb:97:09: low: range check might fail, in call inlined at keystore.adb:340
+keystore.adb:97:09: low: range check might fail, in call inlined at keystore.adb:348
+keystore.adb:97:09: low: range check might fail, in call inlined at keystore.adb:527
+keystore.adb:97:09: low: range check might fail, in call inlined at keystore.adb:643
+keystore.adb:97:09: low: range check might fail, in call inlined at keystore.adb:711
+keystore.adb:97:09: low: range check might fail, in call inlined at keystore.adb:796
+keystore.adb:100:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:253
+keystore.adb:100:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:261
+keystore.adb:100:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:269
+keystore.adb:100:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:332
+keystore.adb:100:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:340
+keystore.adb:100:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:348
+keystore.adb:100:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:527
+keystore.adb:100:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:643
+keystore.adb:100:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:711
+keystore.adb:100:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:796
+keystore.adb:101:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:253
+keystore.adb:101:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:261
+keystore.adb:101:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:269
+keystore.adb:101:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:332
+keystore.adb:101:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:340
+keystore.adb:101:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:348
+keystore.adb:101:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:527
+keystore.adb:101:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:643
+keystore.adb:101:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:711
+keystore.adb:101:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:796
+keystore.adb:101:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:253
+keystore.adb:101:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:261
+keystore.adb:101:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:269
+keystore.adb:101:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:332
+keystore.adb:101:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:340
+keystore.adb:101:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:348
+keystore.adb:101:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:527
+keystore.adb:101:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:643
+keystore.adb:101:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:711
+keystore.adb:101:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:796
+keystore.adb:101:41: info: initialization of "Result" proved
+keystore.adb:101:41: info: initialization of "Result" proved, in call inlined at keystore.adb:253
+keystore.adb:101:41: info: initialization of "Result" proved, in call inlined at keystore.adb:261
+keystore.adb:101:41: info: initialization of "Result" proved, in call inlined at keystore.adb:269
+keystore.adb:101:41: info: initialization of "Result" proved, in call inlined at keystore.adb:332
+keystore.adb:101:41: info: initialization of "Result" proved, in call inlined at keystore.adb:340
+keystore.adb:101:41: info: initialization of "Result" proved, in call inlined at keystore.adb:348
+keystore.adb:101:41: info: initialization of "Result" proved, in call inlined at keystore.adb:527
+keystore.adb:101:41: info: initialization of "Result" proved, in call inlined at keystore.adb:643
+keystore.adb:101:41: info: initialization of "Result" proved, in call inlined at keystore.adb:711
+keystore.adb:101:41: info: initialization of "Result" proved, in call inlined at keystore.adb:796
+keystore.adb:101:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:253
+keystore.adb:101:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:261
+keystore.adb:101:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:269
+keystore.adb:101:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:332
+keystore.adb:101:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:340
+keystore.adb:101:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:348
+keystore.adb:101:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:527
+keystore.adb:101:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:643
+keystore.adb:101:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:711
+keystore.adb:101:41: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:796
+keystore.adb:101:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:253
+keystore.adb:101:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:261
+keystore.adb:101:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:269
+keystore.adb:101:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:332
+keystore.adb:101:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:340
+keystore.adb:101:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:348
+keystore.adb:101:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:527
+keystore.adb:101:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:643
+keystore.adb:101:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:711
+keystore.adb:101:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:796
+keystore.adb:103:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:253
+keystore.adb:103:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:261
+keystore.adb:103:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:269
+keystore.adb:103:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:332
+keystore.adb:103:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:340
+keystore.adb:103:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:348
+keystore.adb:103:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:527
+keystore.adb:103:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:643
+keystore.adb:103:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:711
+keystore.adb:103:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:796
+keystore.adb:106:14: info: initialization of "Result" proved
+keystore.adb:106:14: info: initialization of "Result" proved, in call inlined at keystore.adb:253
+keystore.adb:106:14: info: initialization of "Result" proved, in call inlined at keystore.adb:261
+keystore.adb:106:14: info: initialization of "Result" proved, in call inlined at keystore.adb:269
+keystore.adb:106:14: info: initialization of "Result" proved, in call inlined at keystore.adb:332
+keystore.adb:106:14: info: initialization of "Result" proved, in call inlined at keystore.adb:340
+keystore.adb:106:14: info: initialization of "Result" proved, in call inlined at keystore.adb:348
+keystore.adb:106:14: info: initialization of "Result" proved, in call inlined at keystore.adb:527
+keystore.adb:106:14: info: initialization of "Result" proved, in call inlined at keystore.adb:643
+keystore.adb:106:14: info: initialization of "Result" proved, in call inlined at keystore.adb:711
+keystore.adb:106:14: info: initialization of "Result" proved, in call inlined at keystore.adb:796
+keystore.adb:121:22: info: initialization of "TheDigest.DigestID" proved
+keystore.adb:121:22: info: initialization of "TheDigest.Pad" proved
+keystore.adb:121:22: info: initialization of "TheDigest.SignReturn" proved
+keystore.adb:121:22: info: initialization of "TheDigest.VerifyReturn" proved
+keystore.adb:122:22: info: initialization of "Success" proved
+keystore.adb:171:42: info: range check proved (CVC4: 1 VC)
+keystore.adb:171:53: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:171:69: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:179:16: info: loop invariant initialization proved (CVC4: 7 VC)
+keystore.adb:179:16: info: loop invariant preservation proved (CVC4: 7 VC)
+keystore.adb:184:24: info: initialization of "Result" proved
+keystore.adb:184:35: info: index check proved (CVC4: 2 VC)
+keystore.adb:184:35: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:184:51: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:189:17: info: initialization of "Result" proved
+keystore.adb:201:10: info: initialization of "RetValIni" proved
+keystore.adb:203:51: info: division check proved (CVC4: 1 VC)
+keystore.adb:206:24: info: initialization of "LoopMax" proved
+keystore.adb:208:16: info: initialization of "LoopMax" proved
+keystore.adb:208:16: info: loop invariant initialization proved (CVC4: 10 VC)
+keystore.adb:208:16: info: loop invariant preservation proved (CVC4: 10 VC)
+keystore.adb:208:56: info: division check proved (CVC4: 1 VC)
+keystore.adb:209:30: info: initialization of "LoopMax" proved
+keystore.adb:211:20: info: initialization of "BytesLeft" proved
+keystore.adb:211:57: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:211:67: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:213:20: info: initialization of "Size" proved
+keystore.adb:214:20: info: initialization of "RetValIni" proved
+keystore.adb:215:20: info: initialization of "RetValFin" proved
+keystore.adb:217:16: info: initialization of "BytesLeft" proved
+keystore.adb:218:48: info: initialization of "BytesLeft" proved
+keystore.adb:221:22: info: precondition proved (CVC4: 5 VC)
+keystore.adb:224:29: info: initialization of "Size" proved
+keystore.adb:227:31: info: initialization of "Block" proved
+keystore.adb:228:31: info: initialization of "Size" proved
+keystore.adb:231:23: info: initialization of "RetValUpd" proved
+keystore.adb:231:55: info: initialization of "LoopMax" proved
+keystore.adb:233:26: info: initialization of "BytesLeft" proved
+keystore.adb:233:36: info: range check proved (CVC4: 1 VC)
+keystore.adb:237:13: info: initialization of "RetValUpd" proved
+keystore.adb:244:18: info: initialization of "RetValIni" proved
+keystore.adb:245:18: info: initialization of "RetValUpd" proved
+keystore.adb:246:18: info: initialization of "RetValFin" proved
+keystore.adb:248:20: info: initialization of "RetValIni" proved
+keystore.adb:249:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:253:29: info: initialization of "RetValIni" proved
+keystore.adb:256:20: info: initialization of "RetValUpd" proved
+keystore.adb:257:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:261:29: info: initialization of "RetValUpd" proved
+keystore.adb:264:20: info: initialization of "RetValFin" proved
+keystore.adb:265:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:269:28: info: initialization of "RetValFin" proved
+keystore.adb:288:07: info: initialization of "Handles" proved
+keystore.adb:317:10: info: initialization of "RetValIni" proved
+keystore.adb:322:13: info: initialization of "RetValIni" proved
+keystore.adb:327:20: info: initialization of "RetValIni" proved
+keystore.adb:328:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:332:28: info: initialization of "RetValIni" proved
+keystore.adb:335:20: info: initialization of "RetValDo" proved
+keystore.adb:336:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:340:28: info: initialization of "RetValDo" proved
+keystore.adb:343:20: info: initialization of "RetValFin" proved
+keystore.adb:344:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:348:28: info: initialization of "RetValFin" proved
+keystore.adb:366:33: info: initialization of "IssuerKey" proved
+keystore.adb:399:29: info: initialization of "IssuerTemplate.AttrMask" proved
+keystore.adb:399:29: info: initialization of "IssuerTemplate.IsPublic" proved
+keystore.adb:399:29: info: initialization of "IssuerTemplate.KeyID" proved
+keystore.adb:399:29: info: initialization of "IssuerTemplate.KeyLength" proved
+keystore.adb:399:29: info: initialization of "IssuerTemplate.Owner.ID" proved
+keystore.adb:399:29: info: initialization of "IssuerTemplate.Owner.Name" proved
+keystore.adb:399:29: info: initialization of "IssuerTemplate.Owner.NameLength" proved
+keystore.adb:400:29: info: initialization of "ActualCount" proved
+keystore.adb:403:10: info: initialization of "ActualCount" proved
+keystore.adb:406:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:417:20: info: initialization of "Handles" proved
+keystore.adb:433:26: info: initialization of "PrivateKeyHandle" proved
+keystore.adb:463:29: info: initialization of "PrivateTemplate.AttrMask" proved
+keystore.adb:463:29: info: initialization of "PrivateTemplate.IsPublic" proved
+keystore.adb:463:29: info: initialization of "PrivateTemplate.KeyID" proved
+keystore.adb:463:29: info: initialization of "PrivateTemplate.KeyLength" proved
+keystore.adb:463:29: info: initialization of "PrivateTemplate.Owner.ID" proved
+keystore.adb:463:29: info: initialization of "PrivateTemplate.Owner.Name" proved
+keystore.adb:463:29: info: initialization of "PrivateTemplate.Owner.NameLength" proved
+keystore.adb:464:29: info: initialization of "ActualCount" proved
+keystore.adb:467:10: info: initialization of "ActualCount" proved
+keystore.adb:470:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:479:27: info: initialization of "Handles" proved
+keystore.adb:498:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
+keystore.adb:498:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
+keystore.adb:498:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
+keystore.adb:498:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
+keystore.adb:521:19: info: initialization of "RetVal" proved
+keystore.adb:523:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:527:32: info: initialization of "RetVal" proved
+keystore.adb:533:33: info: initialization of "ThePrivateKeyH" proved
+keystore.adb:535:10: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
+keystore.adb:536:52: info: initialization of "ThePrivateKeyH" proved
+keystore.adb:537:52: info: initialization of "ThePrivateKey.AttrMask" proved
+keystore.adb:537:52: info: initialization of "ThePrivateKey.IsPublic" proved
+keystore.adb:537:52: info: initialization of "ThePrivateKey.KeyID" proved
+keystore.adb:537:52: info: initialization of "ThePrivateKey.KeyLength" proved
+keystore.adb:537:52: info: initialization of "ThePrivateKey.Owner.ID" proved
+keystore.adb:537:52: info: initialization of "ThePrivateKey.Owner.Name" proved
+keystore.adb:537:52: info: initialization of "ThePrivateKey.Owner.NameLength" proved
+keystore.adb:540:13: info: initialization of "RetVal" proved
+keystore.adb:541:34: info: initialization of "ThePrivateKey.Owner.ID" proved
+keystore.adb:541:34: info: initialization of "ThePrivateKey.Owner.Name" proved
+keystore.adb:541:34: info: initialization of "ThePrivateKey.Owner.NameLength" proved
+keystore.adb:579:21: info: initialization of "TheIssuerKey" proved
+keystore.adb:626:10: info: initialization of "Digested" proved
+keystore.adb:631:40: info: initialization of "TheIssuerKey" proved
+keystore.adb:632:40: info: initialization of "TheDigest.DigestID" proved
+keystore.adb:632:40: info: initialization of "TheDigest.Pad" proved
+keystore.adb:632:40: info: initialization of "TheDigest.SignReturn" proved
+keystore.adb:632:40: info: initialization of "TheDigest.VerifyReturn" proved
+keystore.adb:636:23: info: initialization of "RetVal" proved
+keystore.adb:638:22: info: initialization of "RetVal" proved
+keystore.adb:639:21: info: precondition proved (CVC4: 1 VC)
+keystore.adb:643:36: info: initialization of "RetVal" proved
+keystore.adb:695:10: info: initialization of "Digested" proved
+keystore.adb:699:39: info: initialization of "ThePrivateKeyH" proved
+keystore.adb:700:39: info: initialization of "TheDigest.DigestID" proved
+keystore.adb:700:39: info: initialization of "TheDigest.Pad" proved
+keystore.adb:700:39: info: initialization of "TheDigest.SignReturn" proved
+keystore.adb:700:39: info: initialization of "TheDigest.VerifyReturn" proved
+keystore.adb:704:21: info: initialization of "RetVal" proved
+keystore.adb:706:22: info: initialization of "RetVal" proved
+keystore.adb:707:21: info: precondition proved (CVC4: 1 VC)
+keystore.adb:711:35: info: initialization of "RetVal" proved
+keystore.adb:777:45: info: initialization of "TheKeyTemplate.AttrMask" proved
+keystore.adb:777:45: info: initialization of "TheKeyTemplate.IsPublic" proved
+keystore.adb:777:45: info: initialization of "TheKeyTemplate.KeyID" proved
+keystore.adb:777:45: info: initialization of "TheKeyTemplate.KeyLength" proved
+keystore.adb:777:45: info: initialization of "TheKeyTemplate.Owner.ID" proved
+keystore.adb:777:45: info: initialization of "TheKeyTemplate.Owner.Name" proved
+keystore.adb:777:45: info: initialization of "TheKeyTemplate.Owner.NameLength" proved
+keystore.adb:780:17: info: initialization of "RetVal" proved
+keystore.adb:782:10: info: initialization of "Added" proved
+keystore.adb:791:19: info: initialization of "RetVal" proved
+keystore.adb:792:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:796:33: info: initialization of "RetVal" proved
+keystore.adb:812:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
+keystore.adb:812:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
+keystore.adb:812:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
+keystore.adb:812:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
+keystore.ads:76:40: info: initialization of "IsPresent" proved
+keystore.ads:142:28: info: initialization of "Verified" proved
+keystore.ads:174:20: info: initialization of "Signature.SigData" proved
+keystore.ads:174:20: info: initialization of "Signature.SigLength" proved
+keystore.ads:175:20: info: initialization of "Signed" proved
+keystore.ads:204:22: info: initialization of "Added" proved
+keystore.ads:229:22: info: postcondition proved (CVC4: 3 VC)
+keystore.ads:229:23: info: initialization of "Added" proved
+keystore.ads:247:22: info: postcondition proved (CVC4: 1 VC)
+keystore.ads:247:26: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
+keystore.ads:247:26: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
+keystore.ads:247:26: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
+keystore.ads:247:26: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
+latch.adb:41:42: info: initialization of "CurrentLatch" constituent of "State" proved
+latch.adb:42:42: info: initialization of "LatchTimeout.Day" constituent of "State" proved
+latch.adb:42:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
+latch.adb:42:42: info: initialization of "LatchTimeout.Month" constituent of "State" proved
+latch.adb:42:42: info: initialization of "LatchTimeout.Year" constituent of "State" proved
+latch.adb:76:30: info: refined post proved (CVC4: 2 VC)
+latch.adb:92:26: info: initialization of "LocalLatch" proved
+latch.adb:93:18: info: precondition proved (CVC4: 1 VC)
+latch.adb:94:32: info: initialization of "ID" proved
+latch.adb:101:23: info: initialization of "LocalLatch" proved
+latch.adb:116:49: info: initialization of "Interfac.Output" constituent of "Latch.Output" proved
+latch.adb:127:30: info: refined post proved (CVC4: 1 VC)
+latch.adb:127:62: info: initialization of "SystemFault" proved
+latch.adb:136:10: info: initialization of "SystemFault" proved
+latch.adb:138:18: info: precondition proved (CVC4: 1 VC)
+latch.adb:156:41: info: initialization of "LatchTimeout.Day" constituent of "State" proved
+latch.adb:156:41: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
+latch.adb:156:41: info: initialization of "LatchTimeout.Month" constituent of "State" proved
+latch.adb:156:41: info: initialization of "LatchTimeout.Year" constituent of "State" proved
+latch.adb:158:30: info: initialization of "LatchTimeout.Day" constituent of "State" proved
+latch.adb:158:30: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
+latch.adb:158:30: info: initialization of "LatchTimeout.Month" constituent of "State" proved
+latch.adb:158:30: info: initialization of "LatchTimeout.Year" constituent of "State" proved
+latch.adb:158:30: info: refined post proved (CVC4: 1 VC)
+latch.adb:172:42: info: initialization of "CurrentLatch" constituent of "State" proved
+latch.adb:173:42: info: initialization of "LatchTimeout.Day" constituent of "State" proved
+latch.adb:173:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
+latch.adb:173:42: info: initialization of "LatchTimeout.Month" constituent of "State" proved
+latch.adb:173:42: info: initialization of "LatchTimeout.Year" constituent of "State" proved
 latch.ads:106:22: info: postcondition proved (CVC4: 3 VC)
 latch.ads:120:28: info: initialization of "SystemFault" proved
 latch.ads:135:22: info: postcondition proved (CVC4: 1 VC)
@@ -2248,8 +2249,8 @@ latchapi.ads:42:19: info: initialization of "Failed" proved
 poll.adb:36:11: info: initialization of "Clock.CurrentTime" proved
 poll.ads:49:24: info: initialization of "SystemFault" proved
 poll.ads:57:38: info: initialization of "Clock.CurrentTime" proved
-poll.ads:113:13: info: postcondition proved (CVC4: 14 VC)
 poll.ads:115:45: info: initialization of "Clock.CurrentTime" proved
+poll.ads:124:13: medium: postcondition might fail, cannot prove not Latch.IsLocked'Old) or (Latch.Current_Latch = Latch.Current_Latch'Old and Latch.Latch_Timeout = Latch.Latch_Timeout'Old and Latch(Latch.islocked)
 screen.adb:156:28: info: initialization of "OK" proved
 screen.adb:158:41: medium: "Interfac.Output" constituent of "Screen.Output" might not be written
 screen.adb:191:07: info: initialization of "OK" proved
@@ -2550,7 +2551,7 @@ screen.adb:854:48: info: initialization of "TheTime.Day" proved
 screen.adb:854:48: info: initialization of "TheTime.MilliSec" proved
 screen.adb:854:48: info: initialization of "TheTime.Month" proved
 screen.adb:854:48: info: initialization of "TheTime.Year" proved
-screen.adb:888:18: medium: precondition might fail
+screen.adb:888:18: info: precondition proved (CVC4: 1 VC)
 screen.adb:912:49: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
 screen.adb:964:19: info: initialization of "WriteOK" proved
 screen.adb:964:31: info: initialization of "ScreenOK" proved
@@ -2573,7 +2574,7 @@ screen.adb:1012:25: info: initialization of "WriteOK" proved
 screen.adb:1012:37: info: initialization of "ScreenOK" proved
 screen.adb:1016:36: info: initialization of "ShouldDisplayConfig" proved
 screen.adb:1018:14: info: initialization of "ScreenOK" proved
-screen.adb:1020:18: medium: precondition might fail
+screen.adb:1020:18: info: precondition proved (CVC4: 1 VC)
 screen.adb:1045:42: info: initialization of "CurrentConfig.Data.AlarmSilent" constituent of "State" proved
 screen.adb:1045:42: info: initialization of "CurrentConfig.Data.AlarmThreshold" constituent of "State" proved
 screen.adb:1045:42: info: initialization of "CurrentConfig.Data.AuthDuration" constituent of "State" proved
@@ -2605,7 +2606,7 @@ screen.adb:1099:07: info: initialization of "TheMsg" constituent of "State" prov
 screen.adb:1100:19: info: initialization of "ScreenOK" proved
 screen.adb:1100:32: info: initialization of "WriteOK" proved
 screen.adb:1102:14: info: initialization of "ScreenOK" proved
-screen.adb:1104:18: medium: precondition might fail
+screen.adb:1104:18: info: precondition proved (CVC4: 1 VC)
 spark_io.adb:128:42: warning: cannot copy object of a limited type in Ada 2005 (RM-2005 6.5(5.5/2))
 spark_io.adb:128:42: warning: consider switching to return of access type
 spark_io.ads:165:21: info: implicit function contract not available for proof ("Mode" might not return)
@@ -2665,10 +2666,10 @@ tismain.adb:165:40: info: initialization of "Screen.State" proved
 tismain.adb:166:34: info: initialization of "TheAdmin" proved
 tismain.adb:167:34: info: initialization of "TheStats" proved
 tismain.adb:168:43: info: initialization of "UserToken.State" proved
+tismain.adb:209:22: info: postcondition proved (CVC4: 12 VC)
 tismain.adb:209:35: info: initialization of "Enclave.State" proved
 tismain.adb:210:33: info: initialization of "KeyStore.State" proved
 tismain.adb:215:42: info: initialization of "TheAdmin" proved
-tismain.adb:218:22: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) /= PrivTypes.guard
 tismain.adb:224:36: info: initialization of "AdminToken.State" proved
 tismain.adb:233:15: info: initialization of "ConfigData.State" proved
 tismain.adb:234:15: info: initialization of "AuditLog.State" proved
@@ -2685,19 +2686,19 @@ tismain.adb:243:14: info: initialization of "KeyStore.State" proved
 tismain.adb:245:18: info: initialization of "KeyStore.State" proved
 tismain.adb:246:18: info: initialization of "AuditLog.State" proved
 tismain.adb:246:18: info: initialization of "ConfigData.State" proved
-tismain.adb:246:18: medium: precondition might fail
+tismain.adb:246:18: info: precondition proved (CVC4: 1 VC)
 tismain.adb:253:18: info: initialization of "AuditLog.State" proved
 tismain.adb:253:18: info: initialization of "ConfigData.State" proved
-tismain.adb:253:18: medium: precondition might fail
+tismain.adb:253:18: info: precondition proved (CVC4: 1 VC)
 tismain.adb:279:40: medium: "Floppy.Output" might not be written
 tismain.adb:280:43: medium: "UserToken.Output" might not be written
-tismain.adb:556:20: medium: precondition might fail
-tismain.adb:562:21: medium: precondition might fail
-tismain.adb:569:20: medium: precondition might fail
-tismain.adb:617:22: medium: precondition might fail
-tismain.adb:623:23: medium: precondition might fail
-tismain.adb:630:22: medium: precondition might fail
-tismain.adb:637:14: medium: postcondition might fail, cannot prove not Admin.IsPresent(TheAdmin)
+tismain.adb:556:20: info: precondition proved (CVC4: 1 VC)
+tismain.adb:562:21: info: precondition proved (CVC4: 1 VC)
+tismain.adb:569:20: info: precondition proved (CVC4: 1 VC)
+tismain.adb:602:08: info: postcondition proved (CVC4: 22 VC)
+tismain.adb:617:22: info: precondition proved (CVC4: 1 VC)
+tismain.adb:623:23: info: precondition proved (CVC4: 1 VC)
+tismain.adb:630:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:703:17: info: precondition proved (CVC4: 2 VC)
 tismain.adb:706:17: info: precondition proved (CVC4: 3 VC)
 tismain.adb:710:19: info: precondition proved (CVC4: 6 VC)
@@ -2711,15 +2712,15 @@ tismain.adb:746:39: medium: "Latch.Output" might not be written
 tismain.adb:747:40: medium: "Screen.Output" might not be written
 tismain.adb:748:34: info: initialization of "SystemFault" proved
 tismain.adb:749:43: medium: "UserToken.Output" might not be written
-tismain.adb:1078:25: medium: precondition might fail
-tismain.adb:1084:26: medium: precondition might fail
-tismain.adb:1091:25: medium: precondition might fail
+tismain.adb:1078:25: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1084:26: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1091:25: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1121:13: medium: postcondition might fail, cannot prove Latch.IsLocked = Latch.Interfac_IsLocked or SystemFault
 tismain.adb:1122:19: info: initialization of "SystemFault" proved
 tismain.adb:1134:51: info: initialization of "Clock.CurrentTime" proved
-tismain.adb:1156:25: medium: precondition might fail
-tismain.adb:1162:26: medium: precondition might fail
-tismain.adb:1169:25: medium: precondition might fail
+tismain.adb:1156:25: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1162:26: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1169:25: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1203:14: info: initialization of "SystemFault" proved
 tismain.adb:1206:17: info: initialization of "SystemFault" proved
 tismain.adb:1208:13: info: initialization of "Clock.CurrentTime" proved
@@ -2747,9 +2748,9 @@ tismain.adb:1351:10: medium: loop invariant might fail in first iteration, canno
 tismain.adb:1351:15: info: initialization of "Latch.State" proved
 tismain.adb:1353:33: info: initialization of "TheAdmin" proved
 tismain.adb:1354:25: info: initialization of "AdminToken.State" proved
-tismain.adb:1359:22: medium: precondition might fail
-tismain.adb:1365:23: medium: precondition might fail
-tismain.adb:1372:22: medium: precondition might fail
+tismain.adb:1359:22: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1365:23: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1372:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1397:07: info: initialization of "AdminToken.State" proved
 tismain.adb:1397:07: info: initialization of "AuditLog.State" proved
 tismain.adb:1397:07: info: initialization of "CertificateStore.State" proved
@@ -2778,9 +2779,9 @@ tismain.adb:1418:48: info: initialization of "Clock.CurrentTime" proved
 tismain.adb:1421:35: info: initialization of "SystemFault" proved
 tismain.adb:1437:33: info: initialization of "TheAdmin" proved
 tismain.adb:1438:25: info: initialization of "AdminToken.State" proved
-tismain.adb:1443:22: medium: precondition might fail
-tismain.adb:1449:23: medium: precondition might fail
-tismain.adb:1456:22: medium: precondition might fail
+tismain.adb:1443:22: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1449:23: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1456:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1482:10: info: initialization of "SystemFault" proved
 tismain.adb:1484:10: info: initialization of "AuditLog.State" proved
 tismain.adb:1484:10: info: initialization of "ConfigData.State" proved
@@ -2806,9 +2807,9 @@ tismain.adb:1511:21: info: initialization of "Door.State" proved
 tismain.adb:1512:48: info: initialization of "Clock.CurrentTime" proved
 tismain.adb:1530:33: info: initialization of "TheAdmin" proved
 tismain.adb:1531:25: info: initialization of "AdminToken.State" proved
-tismain.adb:1536:22: medium: precondition might fail
-tismain.adb:1542:23: medium: precondition might fail
-tismain.adb:1549:22: medium: precondition might fail
+tismain.adb:1536:22: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1542:23: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1549:22: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:97:40: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:116:39: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:135:37: info: range check proved (CVC4: 1 VC)
@@ -2847,11 +2848,11 @@ tokenreader.adb:289:47: info: initialization of "Readers" proved
 tokenreader.adb:290:22: info: initialization of "ReaderStatus" constituent of "State" proved
 tokenreader.adb:291:49: info: initialization of "Readers" proved
 tokenreader.adb:297:16: info: initialization of "ReaderStatus" constituent of "State" proved
-tokenreader.adb:299:24: medium: precondition might fail
+tokenreader.adb:299:24: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:308:16: info: initialization of "ReaderStatus" constituent of "State" proved
-tokenreader.adb:310:24: medium: precondition might fail
-tokenreader.adb:321:21: medium: precondition might fail
-tokenreader.adb:332:18: medium: precondition might fail
+tokenreader.adb:310:24: info: precondition proved (CVC4: 1 VC)
+tokenreader.adb:321:21: info: precondition proved (CVC4: 1 VC)
+tokenreader.adb:332:18: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:338:31: info: initialization of "ResponseCode" proved
 tokenreader.adb:515:22: info: initialization of "ResponseCode" proved
 tokenreader.adb:518:22: info: initialization of "TheCardHandle" proved
@@ -2868,7 +2869,7 @@ tokenreader.adb:668:43: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:673:13: info: initialization of "ResponseCode" proved
 tokenreader.adb:684:47: info: initialization of "ResponseCode" proved
 tokenreader.adb:686:13: info: initialization of "ResponseCode" proved
-tokenreader.adb:688:21: medium: precondition might fail
+tokenreader.adb:688:21: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:694:34: info: initialization of "ResponseCode" proved
 tokenreader.adb:801:19: info: initialization of "StatusOK" proved
 tokenreader.adb:801:32: info: initialization of "Exists" proved
@@ -2901,20 +2902,20 @@ userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.MilliSec" cons
 userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Month" constituent of "State" proved
 userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Year" constituent of "State" proved
 userentry.adb:97:33: info: initialization of "Status" constituent of "State" proved
-userentry.adb:116:15: medium: precondition might fail
+userentry.adb:116:15: info: precondition proved (CVC4: 1 VC)
 userentry.adb:159:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:216:13: info: initialization of "AuthCertOK" proved
-userentry.adb:220:21: medium: precondition might fail
-userentry.adb:229:21: info: precondition proved (CVC4: 2 VC)
+userentry.adb:220:21: info: precondition proved (CVC4: 1 VC)
+userentry.adb:229:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:244:16: info: initialization of "TokenOK" proved
-userentry.adb:248:24: medium: precondition might fail
-userentry.adb:257:24: info: precondition proved (CVC4: 2 VC)
-userentry.adb:277:24: medium: precondition might fail
-userentry.adb:287:24: info: precondition proved (CVC4: 2 VC)
+userentry.adb:248:24: info: precondition proved (CVC4: 1 VC)
+userentry.adb:257:24: info: precondition proved (CVC4: 1 VC)
+userentry.adb:277:24: info: precondition proved (CVC4: 1 VC)
+userentry.adb:287:24: info: precondition proved (CVC4: 1 VC)
 userentry.adb:291:34: info: initialization of "Description" proved
-userentry.adb:361:21: medium: precondition might fail
+userentry.adb:361:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:375:16: info: initialization of "FingerPresence" proved
-userentry.adb:379:24: medium: precondition might fail
+userentry.adb:379:24: info: precondition proved (CVC4: 1 VC)
 userentry.adb:419:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:476:15: low: range check might fail
 userentry.adb:482:16: info: range check proved (CVC4: 4 VC)
@@ -2934,24 +2935,24 @@ userentry.adb:519:29: info: initialization of "TheTemplate.Pad" proved
 userentry.adb:519:29: info: initialization of "TheTemplate.RequiredMaxFAR" proved
 userentry.adb:520:29: info: initialization of "MaxFAR" proved
 userentry.adb:529:13: info: initialization of "MatchResult" proved
-userentry.adb:533:21: medium: precondition might fail
+userentry.adb:533:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:537:32: info: initialization of "AchievedFAR" proved
-userentry.adb:548:21: medium: precondition might fail
+userentry.adb:548:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:552:32: info: initialization of "AchievedFAR" proved
 userentry.adb:588:34: info: initialization of "Status" constituent of "State" proved
 userentry.adb:589:43: medium: "UserToken.Output" might not be written
 userentry.adb:651:19: info: precondition proved (CVC4: 1 VC)
 userentry.adb:658:13: info: initialization of "UpdateOK" proved
 userentry.adb:663:13: info: initialization of "UpdateOK" proved
-userentry.adb:667:21: medium: precondition might fail
-userentry.adb:682:21: medium: precondition might fail
+userentry.adb:667:21: info: precondition proved (CVC4: 1 VC)
+userentry.adb:682:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:715:33: info: initialization of "Status" constituent of "State" proved
-userentry.adb:753:21: medium: precondition might fail
-userentry.adb:772:21: medium: precondition might fail
+userentry.adb:753:21: info: precondition proved (CVC4: 1 VC)
+userentry.adb:772:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:859:13: info: postcondition proved (CVC4: 4 VC)
-userentry.adb:887:21: medium: precondition might fail
+userentry.adb:887:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:923:33: info: initialization of "Status" constituent of "State" proved
-userentry.adb:941:15: medium: precondition might fail
+userentry.adb:941:15: info: precondition proved (CVC4: 1 VC)
 userentry.adb:1027:47: info: initialization of "NewMsg" proved
 userentry.adb:1045:50: medium: "UserToken.Output" might not be written
 userentry.adb:1183:13: info: refined post proved (CVC4: 4 VC)
@@ -3138,7 +3139,7 @@ usertoken.adb:1014:41: info: initialization of "AuthCert.Contents" constituent o
 usertoken.adb:1014:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
 usertoken.adb:1042:10: info: initialization of "Clearance.Class" proved
 usertoken.adb:1059:45: info: precondition proved (CVC4: 1 VC)
-usertoken.adb:1064:18: medium: precondition might fail
+usertoken.adb:1064:18: info: precondition proved (CVC4: 1 VC)
 usertoken.adb:1075:24: info: initialization of "ID.Issuer.ID" proved
 usertoken.adb:1075:24: info: initialization of "ID.Issuer.Name" proved
 usertoken.adb:1075:24: info: initialization of "ID.Issuer.NameLength" proved

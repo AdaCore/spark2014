@@ -24,27 +24,6 @@ use type BasicTypes.Unsigned32T;
 package body Cert.Attr.Auth is
 
    ------------------------------------------------------------------
-   -- TheRole
-   --
-   -- Implementation Notes:
-   --     None
-   ------------------------------------------------------------------
-
-   function TheRole (Contents : ContentsT) return PrivTypes.PrivilegeT is
-     (Contents.Role);
-
-
-   ------------------------------------------------------------------
-   -- TheClearance
-   --
-   -- Implementation Notes:
-   --     None
-   ------------------------------------------------------------------
-
-   function TheClearance (Contents : ContentsT) return PrivTypes.ClearanceT is
-     (Contents.Clearance);
-
-   ------------------------------------------------------------------
    -- Extract
    --
    -- Implementation Notes:

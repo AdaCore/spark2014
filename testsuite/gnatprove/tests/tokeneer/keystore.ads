@@ -23,6 +23,8 @@ with BasicTypes,
      CryptoTypes,
      Auditlog;
 
+use type CryptoTypes.IssuerT;
+
 package KeyStore
   with Abstract_State => (State,
                           Store),
@@ -243,5 +245,61 @@ is
           Depends => (State =>  null,
                       Store =>+ null),
           Post    => not PrivateKeyPresent;
+
+private
+   ----------------------------------------------------------------
+   -- Types
+   ----------------------------------------------------------------
+   type OptionalPrivateKeyT is record
+      IsPresent : Boolean;
+      Owner     : CryptoTypes.IssuerT;
+   end record;
+
+   ----------------------------------------------------------------
+   -- State
+   ----------------------------------------------------------------
+
+   ThisTISInfo : OptionalPrivateKeyT with Part_Of => State;
+
+
+   -- Key handles are unsigned 32 bit words, with zero being a null
+   -- key handle.
+   NullKey : constant BasicTypes.Unsigned32T := 0;
+
+   ------------------------------------------------------------------
+   -- PrivateKeyPresent
+   --
+   -- Implementation Notes:
+   --    None.
+   --
+   ------------------------------------------------------------------
+   function PrivateKeyPresent return Boolean is (ThisTISInfo.IsPresent)
+     with Refined_Global  => ThisTISInfo;
+
+   ------------------------------------------------------------------
+   -- IssuerIsThisTIS
+   --
+   -- Implementation Notes:
+   --    None
+   --
+   ------------------------------------------------------------------
+   function IssuerIsThisTIS (Issuer : in     CryptoTypes.IssuerT)
+                            return  Boolean
+   is
+     (if PrivateKeyPresent then
+         Issuer = ThisTISInfo.Owner
+      else
+         False)
+     with Refined_Global  => ThisTISInfo;
+
+   ------------------------------------------------------------------
+   -- ThisTIS
+   --
+   -- Implementation Notes:
+   --    None.
+   --
+   ------------------------------------------------------------------
+   function ThisTIS return CryptoTypes.IssuerT is (ThisTISInfo.Owner)
+     with Refined_Global  => ThisTISInfo;
 
 end KeyStore;

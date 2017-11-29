@@ -23,123 +23,11 @@ use type AlarmTypes.StatusT;
 
 package body AuditLog
   with Refined_State => (State     => (AuditAlarm,
-                                       CurrentLogFile,
-                                       UsedLogFiles,
-                                       LogFileEntries,
+                                       LogFileState,
                                        LogFilesStatus,
-                                       NumberLogEntries,
                                        AuditSystemFault),
                          FileState => LogFiles)
 is
-   ------------------------------------------------------------------
-   -- Types
-   --
-   ------------------------------------------------------------------
-
-   MaxNumberLogFiles : constant := 2**4 + 1;  -- 17
-   MaxNumberArchivableFiles : constant := 4;
-
-   type LogFileCountT is range 0..MaxNumberLogFiles;
-   subtype LogFileIndexT is LogFileCountT range 1..MaxNumberLogFiles;
-
-   type FileStatusT is (Free, Archived, Used);
-
-   type LogFilesT is array (LogFileIndexT) of File.T;
-
-   type LogFilesStatusT is array (LogFileIndexT) of FileStatusT;
-
-   subtype FileNameI is Positive range 1..16;
-   subtype FileNameT is String(FileNameI);
-
-   type LogFileNamesT is array (LogFileIndexT) of FileNameT;
-
-   type LogFileListEntriesT is array (LogFileIndexT) of LogFileIndexT;
-
-   ----------------------------------------------------------------
-   -- LogFileListT
-   --
-   -- Description:
-   --   This represents a list.
-   --      List - is a cyclic buffer that can hold all the files
-   --      Head - is the current head of the list in the cyclic buffer
-   --      LastI - is the last index of the list in the cyclic buffer
-   --      Length - is the length of the list
-   --   The values of Head and LastI are not significant when Length=0.
-   -----------------------------------------------------------------
-
-   type LogFileListT is record
-      List   : LogFileListEntriesT;
-      Head   : LogFileIndexT;
-      LastI  : LogFileIndexT;
-      Length : LogFileCountT;
-   end record;
-
-   EmptyList : constant LogFileListT :=
-     LogFileListT'(List => LogFileListEntriesT'
-                               (others => LogFileIndexT'First),
-                   Head => LogFileIndexT'Last,
-                   LastI => LogFileIndexT'First,
-                   Length => 0);
-
-
-   subtype LogDirStringI is Positive range 1..3;
-   subtype LogDirStringT is String(LogDirStringI);
-
-   LogDirectory : constant LogDirStringT := "Log";
-
-   subtype ArchiveFileStringI is Positive range 1..17;
-   subtype ArchiveFileStringT is String(ArchiveFileStringI);
-
-   ArchiveFileName : constant ArchiveFileStringT := "./Log/archive.log";
-   --------------------------------------------------------------
-   --  ElementText
-   --
-   --  Description:
-   --     Text representation of Element name
-   --
-   --------------------------------------------------------------
-   subtype ElementTextI is Positive range 1..20;
-   subtype ElementTextT is String(ElementTextI);
-
-   NoElement : constant ElementTextT := ElementTextT'(others => ' ');
-
-   ------------------------------------------------------------------
-   -- MaxLogFileEntries
-   --
-   --  Description:
-   --     The max number of entries in a file.
-   --     Note that it is a requirement of the Formal Design that
-   --        MaxLogFileEntries * (NumberLogFiles - 1)
-   --                                * AuditTypes.SizeAuditElement
-   --             >= AuditTypes.MaxSupportedLogSize
-   --
-   -- Implementation Notes:
-   --    None.
-   ------------------------------------------------------------------
-   MaxLogFileEntries : constant :=
-     AuditTypes.MaxSupportedLogEntries/(MaxNumberLogFiles - 1);
-   MaxLogEntries     : constant := MaxLogFileEntries * MaxNumberLogFiles;
-
-   type LogEntryCountT is range 0..MaxLogEntries;
-   subtype FileEntryCountT is LogEntryCountT range 0..MaxLogFileEntries;
-
-   type LogFileEntryT is array (LogFileIndexT) of FileEntryCountT;
-
-   ------------------------------------------------------------------
-   -- State
-   --
-   ------------------------------------------------------------------
-   LogFiles         : LogFilesT := LogFilesT'(others => File.NullFile);
-
-   CurrentLogFile   : LogFileIndexT;
-   LogFilesStatus   : LogFilesStatusT;
-   NumberLogEntries : LogEntryCountT;
-   UsedLogFiles     : LogFileListT;
-   LogFileEntries   : LogFileEntryT;
-
-   AuditAlarm       : AlarmTypes.StatusT;
-
-   AuditSystemFault : Boolean;
    ------------------------------------------------------------------
    -- LogFileNames
    --
@@ -166,20 +54,6 @@ is
                     16 => "./Log/File16.log",
                     17 => "./Log/File17.log"
                    );
-
-   --  Helper expression function that acts as the precondition of
-   --  AddElementToLog, ArchiveLog and ClearLogEntries. It allows us
-   --  to refer to types and variables that are declared in the body
-   --  and are not visible here and it acts as an invariant.
-   function Valid_NumberLogEntries return Boolean is
-     (UsedLogFiles.Length >= 1 and then
-      NumberLogEntries =
-        LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-        LogFileEntries(CurrentLogFile))
-      with Refined_Global => (LogFileEntries,
-                              CurrentLogFile,
-                              NumberLogEntries,
-                              UsedLogFiles);
 
    ------------------------------------------------------------------
    -- Private Operations
@@ -220,15 +94,14 @@ is
    --       None.
    --
    ------------------------------------------------------------------
-   procedure CheckLogAlarm
-     with Global  => (Input  => (ConfigData.State,
-                                 NumberLogEntries),
+   procedure CheckLogAlarm (LogFileState : LogFileStateT)
+     with Global  => (Input  => ConfigData.State,
                       In_Out => AuditAlarm),
           Depends => (AuditAlarm =>+ (ConfigData.State,
-                                      NumberLogEntries))
+                                      LogFileState))
    is
    begin
-      if NumberLogEntries >=
+      if LogFileState.NumberLogEntries >=
         LogEntryCountT(ConfigData.TheAlarmThresholdEntries)
       then
          AuditAlarm := AlarmTypes.Alarming;
@@ -507,19 +380,19 @@ is
    --       None.
    --
    ------------------------------------------------------------------
-   procedure DeleteLogFile (Index : LogFileIndexT)
+   procedure DeleteLogFile (LogFileState : in out LogFileStateT;
+                            Index        : LogFileIndexT)
      with Global  => (In_Out => (AuditSystemFault,
-                                 LogFileEntries,
                                  LogFiles,
                                  LogFilesStatus)),
           Depends => ((AuditSystemFault,
                        LogFiles)         =>+ (Index,
                                               LogFiles),
-                      (LogFileEntries,
+                      (LogFileState,
                        LogFilesStatus)   =>+ Index),
           Post    => (for all I in LogFileIndexT'Range =>
                         (if I /= Index then
-                           LogFileEntries (I) = LogFileEntries'Old (I)))
+                           LogFileState.LogFileEntries (I) = LogFileState.LogFileEntries'Old (I)))
    is
       OK      : Boolean;
       TheFile : File.T;
@@ -536,7 +409,7 @@ is
       LogFiles(Index) := TheFile;
 
       LogFilesStatus (Index) := Free;
-      LogFileEntries (Index) := 0;
+      LogFileState.LogFileEntries (Index) := 0;
 
    end DeleteLogFile;
 
@@ -681,57 +554,49 @@ is
    --
    ------------------------------------------------------------------
    procedure AddElementToLogFile
-     (ElementID   : in     AuditTypes.ElementT;
-      Severity    : in     AuditTypes.SeverityT;
-      User        : in     AuditTypes.UserTextT;
-      Description : in     AuditTypes.DescriptionT)
+     (LogFileState : in out LogFileStateT;
+      ElementID    : in     AuditTypes.ElementT;
+      Severity     : in     AuditTypes.SeverityT;
+      User         : in     AuditTypes.UserTextT;
+      Description  : in     AuditTypes.DescriptionT)
      with Global  => (Input  => Clock.Now,
                       In_Out => (AuditSystemFault,
-                                 CurrentLogFile,
-                                 LogFileEntries,
                                  LogFiles,
-                                 LogFilesStatus,
-                                 NumberLogEntries,
-                                 UsedLogFiles)),
+                                 LogFilesStatus)),
           Depends => ((AuditSystemFault,
                        LogFiles)         =>+ (Clock.Now,
-                                              CurrentLogFile,
                                               Description,
                                               ElementID,
-                                              LogFileEntries,
+                                              LogFileState,
                                               LogFiles,
                                               LogFilesStatus,
                                               Severity,
                                               User),
-                      (CurrentLogFile,
-                       LogFileEntries,
-                       LogFilesStatus,
-                       UsedLogFiles)     =>+ (CurrentLogFile,
-                                              LogFileEntries,
-                                              LogFilesStatus),
-                      NumberLogEntries   =>+ null),
-          Pre     => NumberLogEntries < MaxLogEntries and
-                     (LogFileEntries(CurrentLogFile) < MaxLogFileEntries or
-                       UsedLogFiles.Length < LogFileCountT'Last) and
-                     NumberLogEntries =
-                       LogEntryCountT(UsedLogFiles.Length - 1) *
-                       MaxLogFileEntries + LogFileEntries(CurrentLogFile),
-          Post    => NumberLogEntries =
-                       LogEntryCountT(UsedLogFiles.Length - 1) *
-                       MaxLogFileEntries + LogFileEntries(CurrentLogFile) and
-                     NumberLogEntries = NumberLogEntries'Old + 1 and
-                     (if LogFileEntries(CurrentLogFile'Old) =
+                      (LogFileState,
+                       LogFilesStatus)     =>+ (LogFileState,
+                                              LogFilesStatus)),
+          Pre     => LogFileState.NumberLogEntries < MaxLogEntries and
+                     (LogFileState.LogFileEntries(LogFileState.CurrentLogFile) < MaxLogFileEntries or
+                       LogFileState.UsedLogFiles.Length < LogFileCountT'Last) and
+                     LogFileState.NumberLogEntries =
+                       LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) *
+                       MaxLogFileEntries + LogFileState.LogFileEntries(LogFileState.CurrentLogFile),
+          Post    => LogFileState.NumberLogEntries =
+                       LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) *
+                       MaxLogFileEntries + LogFileState.LogFileEntries(LogFileState.CurrentLogFile) and
+                     LogFileState.NumberLogEntries = LogFileState.NumberLogEntries'Old + 1 and
+                     (if LogFileState.LogFileEntries(LogFileState.CurrentLogFile'Old) =
                         MaxLogFileEntries
                       then
-                         LogFileEntries(CurrentLogFile) = 1 and
-                         UsedLogFiles.Length = UsedLogFiles'Old.Length + 1)
+                         LogFileState.LogFileEntries(LogFileState.CurrentLogFile) = 1 and
+                         LogFileState.UsedLogFiles.Length = LogFileState.UsedLogFiles'Old.Length + 1)
                      and
-                     (if LogFileEntries(CurrentLogFile'Old) <
+                     (if LogFileState.LogFileEntries(LogFileState.CurrentLogFile'Old) <
                         MaxLogFileEntries
                       then
-                          LogFileEntries(CurrentLogFile) =
-                            LogFileEntries(CurrentLogFile'Old) + 1 and
-                          UsedLogFiles.Length = UsedLogFiles'Old.Length)
+                          LogFileState.LogFileEntries(LogFileState.CurrentLogFile) =
+                            LogFileState.LogFileEntries(LogFileState.CurrentLogFile'Old) + 1 and
+                          LogFileState.UsedLogFiles.Length = LogFileState.UsedLogFiles'Old.Length)
    is
       ------------------------------------------------------------------
       -- AddElementToCurrentFile
@@ -744,40 +609,39 @@ is
       --
       ------------------------------------------------------------------
       procedure AddElementToCurrentFile
-        (ElementID   : in     AuditTypes.ElementT;
-         Severity    : in     AuditTypes.SeverityT;
-         User        : in     AuditTypes.UserTextT;
-         Description : in     AuditTypes.DescriptionT)
-        with Global  => (Input  => (Clock.Now,
-                                    CurrentLogFile),
+        (LogFileState : in out LogFileStateT;
+         ElementID    : in     AuditTypes.ElementT;
+         Severity     : in     AuditTypes.SeverityT;
+         User         : in     AuditTypes.UserTextT;
+         Description  : in     AuditTypes.DescriptionT)
+        with Global  => (Input  => Clock.Now,
                          In_Out => (AuditSystemFault,
-                                    LogFileEntries,
                                     LogFiles)),
              Depends => ((AuditSystemFault,
                           LogFiles)         =>+ (Clock.Now,
-                                                 CurrentLogFile,
                                                  Description,
                                                  ElementID,
                                                  LogFiles,
+                                                 LogFileState,
                                                  Severity,
                                                  User),
-                         LogFileEntries     =>+ CurrentLogFile),
-             Pre     => LogFileEntries(CurrentLogFile) < MaxLogFileEntries,
-             Post    => LogFileEntries(CurrentLogFile) =
-                          LogFileEntries'Old(CurrentLogFile) + 1
+                          LogFileState      =>+ null),
+             Pre     => LogFileState.LogFileEntries(LogFileState.CurrentLogFile) < MaxLogFileEntries,
+             Post    => LogFileState.LogFileEntries(LogFileState.CurrentLogFile) =
+                          LogFileState.LogFileEntries'Old(LogFileState.CurrentLogFile) + 1
       is
          TheFile : File.T;
       begin
-         TheFile := LogFiles (CurrentLogFile);
+         TheFile := LogFiles (LogFileState.CurrentLogFile);
          AddElementToFile
            (TheFile     => TheFile,
             ElementID   => ElementID,
             Severity    => Severity,
             User        => User,
             Description => Description);
-         LogFiles (CurrentLogFile) := TheFile;
+         LogFiles (LogFileState.CurrentLogFile) := TheFile;
 
-         LogFileEntries(CurrentLogFile) := LogFileEntries(CurrentLogFile) + 1;
+         LogFileState.LogFileEntries(LogFileState.CurrentLogFile) := LogFileState.LogFileEntries(LogFileState.CurrentLogFile) + 1;
       end AddElementToCurrentFile;
 
       ------------------------------------------------------------------
@@ -791,46 +655,41 @@ is
       --
       ------------------------------------------------------------------
       procedure AddElementToNextFile
-        (ElementID   : in     AuditTypes.ElementT;
-         Severity    : in     AuditTypes.SeverityT;
-         User        : in     AuditTypes.UserTextT;
-         Description : in     AuditTypes.DescriptionT)
+        (LogFileState : in out LogFileStateT;
+         ElementID    : in     AuditTypes.ElementT;
+         Severity     : in     AuditTypes.SeverityT;
+         User         : in     AuditTypes.UserTextT;
+         Description  : in     AuditTypes.DescriptionT)
         with Global  => (Input  => Clock.Now,
                          In_Out => (AuditSystemFault,
-                                    CurrentLogFile,
-                                    LogFileEntries,
                                     LogFiles,
-                                    LogFilesStatus,
-                                    UsedLogFiles)),
+                                    LogFilesStatus)),
              Depends => ((AuditSystemFault,
                           LogFiles)         =>+ (Clock.Now,
-                                                 CurrentLogFile,
                                                  Description,
                                                  ElementID,
+                                                 logFileState,
                                                  LogFiles,
                                                  LogFilesStatus,
                                                  Severity,
                                                  User),
-                         (CurrentLogFile,
-                          LogFileEntries,
-                          LogFilesStatus,
-                          UsedLogFiles)     =>+ (CurrentLogFile,
+                         (LogFileState,
+                          LogFilesStatus)   =>+ (LogFileState,
                                                  LogFilesStatus)),
-             Pre     => UsedLogFiles.Length < LogFileCountT'Last,
-             Post    => UsedLogFiles.Length = UsedLogFiles.Length'Old + 1 and
-                          LogFileEntries(CurrentLogFile) = 1
+             Pre     => LogFileState.UsedLogFiles.Length < LogFileCountT'Last,
+             Post    => LogFileState.UsedLogFiles.Length = LogFileState.UsedLogFiles.Length'Old + 1 and
+                          LogFileState.LogFileEntries(LogFileState.CurrentLogFile) = 1
       is
          TheFile : File.T;
 
-         procedure SetCurrentFileToNextFreeFile
-           with Global  => (Input  => LogFilesStatus,
-                            In_Out => CurrentLogFile),
-                Depends => (CurrentLogFile =>+ LogFilesStatus)
+         procedure SetCurrentFileToNextFreeFile (LogFileState : in out LogFileStateT)
+           with Global  => (Input  => LogFilesStatus),
+                Depends => (LogFileState =>+ LogFilesStatus)
          is
          begin
             for I in LogFileIndexT loop
                if LogFilesStatus(I) = Free then
-                  CurrentLogFile := I;
+                  LogFileState.CurrentLogFile := I;
                   exit;
                end if;
             end loop;
@@ -840,25 +699,25 @@ is
       -- AddElementToNextFile
       -------------------------------------------------
       begin
-         SetCurrentFileToNextFreeFile;
+         SetCurrentFileToNextFreeFile (LogFileState);
 
-         LogFilesStatus(CurrentLogFile) := Used;
+         LogFilesStatus(LogFileState.CurrentLogFile) := Used;
 
          -- add currentLogFile' to end of list of UsedLogFiles.
-         UsedLogFiles.Length := UsedLogFiles.Length + 1;
-         UsedLogFiles.LastI := NextListIndex(UsedLogFiles.LastI);
-         UsedLogFiles.List(UsedLogFiles.LastI) := CurrentLogFile;
+         LogFileState.UsedLogFiles.Length := LogFileState.UsedLogFiles.Length + 1;
+         LogFileState.UsedLogFiles.LastI := NextListIndex(LogFileState.UsedLogFiles.LastI);
+         LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.LastI) := LogFileState.CurrentLogFile;
 
-         TheFile := LogFiles (CurrentLogFile);
+         TheFile := LogFiles (LogFileState.CurrentLogFile);
          AddElementToFile
            (TheFile     => TheFile,
             ElementID   => ElementID,
             Severity    => Severity,
             User        => User,
             Description => Description);
-         LogFiles (CurrentLogFile) := TheFile;
+         LogFiles (LogFileState.CurrentLogFile) := TheFile;
 
-         LogFileEntries(CurrentLogFile) := 1;
+         LogFileState.LogFileEntries(LogFileState.CurrentLogFile) := 1;
 
       end AddElementToNextFile;
 
@@ -866,24 +725,26 @@ is
    -- AddElementToLogFile
    ------------------------------------------------
    begin
-      if LogFileEntries(CurrentLogFile) < MaxLogFileEntries then
+      if LogFileState.LogFileEntries(LogFileState.CurrentLogFile) < MaxLogFileEntries then
 
          AddElementToCurrentFile
-           (ElementID   => ElementID,
-            Severity    => Severity,
-            User        => User,
-            Description => Description);
+           (LogFileState => LogFileState,
+            ElementID    => ElementID,
+            Severity     => Severity,
+            User         => User,
+            Description  => Description);
 
       else
 
          AddElementToNextFile
-           (ElementID   => ElementID,
-            Severity    => Severity,
-            User        => User,
-            Description => Description);
+           (LogFileState => LogFileState,
+            ElementID    => ElementID,
+            Severity     => Severity,
+            User         => User,
+            Description  => Description);
       end if;
 
-      NumberLogEntries := NumberLogEntries + 1;
+      LogFileState.NumberLogEntries := LogFileState.NumberLogEntries + 1;
 
    end AddElementToLogFile;
 
@@ -897,40 +758,36 @@ is
    --       Leaves all files closed.
    --
    ------------------------------------------------------------------
-   procedure TruncateLog(Description : out AuditTypes.DescriptionT)
+   procedure TruncateLog
+     (LogFileState : in out LogFileStateT;
+      Description  : out AuditTypes.DescriptionT)
      with Global  => (Output   => AuditAlarm,
                       In_Out   => (AuditSystemFault,
-                                   LogFileEntries,
                                    LogFiles,
-                                   LogFilesStatus,
-                                   NumberLogEntries,
-                                   UsedLogFiles),
-                      Proof_In => CurrentLogFile),
+                                   LogFilesStatus)),
           Depends => (AuditAlarm         => null,
                       (AuditSystemFault,
                        LogFiles)         =>+ (LogFiles,
-                                              UsedLogFiles),
+                                              LogFileState),
                       Description        => (LogFiles,
-                                             UsedLogFiles),
-                      (LogFileEntries,
-                       LogFilesStatus,
-                       UsedLogFiles)     =>+ UsedLogFiles,
-                      NumberLogEntries   =>+ null),
-          Pre     => UsedLogFiles.Length >= 1 and
-                     UsedLogFiles.Length = LogFileCountT'Last and
-                     NumberLogEntries =
-                       LogEntryCountT(UsedLogFiles.Length) * MaxLogFileEntries,
-          Post    => UsedLogFiles.Length >= 1 and
-                     LogFileEntries (CurrentLogFile) =
-                       LogFileEntries'Old (CurrentLogFile'Old) and
-                     UsedLogFiles.Length = LogFileCountT'Last - 1 and
-                     NumberLogEntries =
-                       LogEntryCountT(UsedLogFiles.Length) * MaxLogFileEntries
+                                             LogFileState),
+                      (LogFileState,
+                       LogFilesStatus)   =>+ LogFileState),
+          Pre     => LogFileState.UsedLogFiles.Length >= 1 and
+                     LogFileState.UsedLogFiles.Length = LogFileCountT'Last and
+                     LogFileState.NumberLogEntries =
+                       LogEntryCountT(LogFileState.UsedLogFiles.Length) * MaxLogFileEntries,
+          Post    => LogFileState.UsedLogFiles.Length >= 1 and
+                     LogFileState.LogFileEntries (LogFileState.CurrentLogFile) =
+                       LogFileState.LogFileEntries'Old (LogFileState.CurrentLogFile'Old) and
+                     LogFileState.UsedLogFiles.Length = LogFileCountT'Last - 1 and
+                     LogFileState.NumberLogEntries =
+                       LogEntryCountT(LogFileState.UsedLogFiles.Length) * MaxLogFileEntries
    is
       TheFile : File.T;
       Head    : LogFileIndexT;
    begin
-      Head := UsedLogFiles.List(UsedLogFiles.Head);
+      Head := LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.Head);
 
       -- Make description
       TheFile := LogFiles (Head);
@@ -939,16 +796,16 @@ is
          Description => Description);
       LogFiles (Head) := TheFile;
 
-      pragma Assume (Head /= CurrentLogFile);
+      pragma Assume (Head /= LogFileState.CurrentLogFile);
 
       -- Empty the file.
-      DeleteLogFile (Head);
+      DeleteLogFile (LogFileState, Head);
 
       -- remove the head of the usedLogFiles
-      UsedLogFiles.Head := NextListIndex (UsedLogFiles.Head);
-      UsedLogFiles.Length := UsedLogFiles.Length - 1;
+      LogFileState.UsedLogFiles.Head := NextListIndex (LogFileState.UsedLogFiles.Head);
+      LogFileState.UsedLogFiles.Length := LogFileState.UsedLogFiles.Length - 1;
 
-      NumberLogEntries := NumberLogEntries - MaxLogFileEntries;
+      LogFileState.NumberLogEntries := LogFileState.NumberLogEntries - MaxLogFileEntries;
 
       AuditAlarm := AlarmTypes.Alarming;
    end TruncateLog;
@@ -968,71 +825,62 @@ is
    --
    ------------------------------------------------------------------
    procedure AddElementToLogFileWithTruncateChecks
-     (ElementID   : in     AuditTypes.ElementT;
-      Severity    : in     AuditTypes.SeverityT;
-      User        : in     AuditTypes.UserTextT;
-      Description : in     AuditTypes.DescriptionT)
+     (LogFileState : in out LogFileStateT;
+      ElementID    : in     AuditTypes.ElementT;
+      Severity     : in     AuditTypes.SeverityT;
+      User         : in     AuditTypes.UserTextT;
+      Description  : in     AuditTypes.DescriptionT)
      with Global  => (Input  => Clock.Now,
                       In_Out => (AuditAlarm,
                                  AuditSystemFault,
-                                 CurrentLogFile,
-                                 LogFileEntries,
                                  LogFiles,
-                                 LogFilesStatus,
-                                 NumberLogEntries,
-                                 UsedLogFiles)),
-          Depends => ((AuditAlarm,
-                       LogFilesStatus,
-                       NumberLogEntries) =>+ (CurrentLogFile,
-                                              LogFileEntries,
-                                              UsedLogFiles),
+                                 LogFilesStatus)),
+          Depends => (AuditAlarm         =>+ LogFileState,
                       (AuditSystemFault,
                        LogFiles)         =>+ (Clock.Now,
-                                              CurrentLogFile,
                                               Description,
                                               ElementID,
-                                              LogFileEntries,
+                                              LogFileState,
                                               LogFiles,
                                               LogFilesStatus,
                                               Severity,
-                                              UsedLogFiles,
                                               User),
-                      (CurrentLogFile,
-                       LogFileEntries,
-                       UsedLogFiles)     => (CurrentLogFile,
-                                             LogFileEntries,
-                                             LogFilesStatus,
-                                             UsedLogFiles)),
-          Pre  => UsedLogFiles.Length >= 1 and
-                  NumberLogEntries =
-                    LogEntryCountT(UsedLogFiles.Length - 1) *
-                    MaxLogFileEntries + LogFileEntries(CurrentLogFile),
-          Post => UsedLogFiles.Length >= 1 and
-                  NumberLogEntries =
-                    LogEntryCountT(UsedLogFiles.Length - 1) *
-                    MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+                      (LogFilesStatus,
+                       LogFileState)     => (LogFileState,
+                                             LogFilesStatus)),
+          Pre  => LogFileState.UsedLogFiles.Length >= 1 and
+                  LogFileState.NumberLogEntries =
+                    LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) *
+                    MaxLogFileEntries + LogFileState.LogFileEntries(LogFileState.CurrentLogFile),
+          Post => LogFileState.UsedLogFiles.Length >= 1 and
+                  LogFileState.NumberLogEntries =
+                    LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) *
+                    MaxLogFileEntries + LogFileState.LogFileEntries(LogFileState.CurrentLogFile)
    is
       TruncateDescription : AuditTypes.DescriptionT;
    begin
-      if LogFileEntries(CurrentLogFile) = MaxLogFileEntries
-        and UsedLogFiles.Length = LogFileCountT'Last
+      if LogFileState.LogFileEntries(LogFileState.CurrentLogFile) = MaxLogFileEntries
+        and LogFileState.UsedLogFiles.Length = LogFileCountT'Last
       then
 
-         TruncateLog(Description => TruncateDescription);
+         TruncateLog(LogFileState => LogFileState,
+                     Description  => TruncateDescription);
 
          AddElementToLogFile
-           (ElementID   => AuditTypes.TruncateLog,
-            Severity    => AuditTypes.Critical,
-            User        => AuditTypes.NoUser,
-            Description => TruncateDescription);
+           (LogFileState => LogFileState,
+            ElementID    => AuditTypes.TruncateLog,
+            Severity     => AuditTypes.Critical,
+            User         => AuditTypes.NoUser,
+            Description  => TruncateDescription);
 
       end if;
 
       AddElementToLogFile
-        (ElementID   => ElementID,
-         Severity    => Severity,
-         User        => User,
-         Description => Description);
+        (LogFileState => LogFileState,
+         ElementID    => ElementID,
+         Severity     => Severity,
+         User         => User,
+         Description  => Description);
 
    end AddElementToLogFileWithTruncateChecks;
 
@@ -1052,26 +900,20 @@ is
      with Refined_Global  => (Input  => ConfigData.State,
                               Output => (AuditAlarm,
                                          AuditSystemFault,
-                                         CurrentLogFile,
-                                         LogFileEntries,
                                          LogFilesStatus,
-                                         NumberLogEntries,
-                                         UsedLogFiles),
+                                         LogFileState),
                               In_Out => LogFiles),
           Refined_Depends => (AuditAlarm         => (ConfigData.State,
                                                      LogFiles),
                               (AuditSystemFault,
-                               CurrentLogFile,
-                               LogFileEntries,
                                LogFiles,
                                LogFilesStatus,
-                               NumberLogEntries,
-                               UsedLogFiles)      => LogFiles),
-          Refined_Post    => UsedLogFiles.Length >= 1 and
-                             NumberLogEntries =
-                               LogEntryCountT(UsedLogFiles.Length - 1) *
+                               LogFileState)     => LogFiles),
+          Refined_Post    => LogFileState.UsedLogFiles.Length >= 1 and
+                             LogFileState.NumberLogEntries =
+                               LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) *
                                MaxLogFileEntries +
-                               LogFileEntries(CurrentLogFile)
+                               LogFileState.LogFileEntries(LogFileState.CurrentLogFile)
    is
      type FileAgeT is array (LogFileIndexT) of Clock.TimeTextT;
      FileAges : FileAgeT;
@@ -1091,9 +933,8 @@ is
      --      None
      --
      ------------------------------------------------------------------
-     procedure SetFileDetails
+     procedure SetFileDetails (LogFileEntries : out LogFileEntryT)
        with Global  => (Output => (FileAges,
-                                   LogFileEntries,
                                    LogFilesStatus),
                         In_Out => (AuditSystemFault,
                                    LogFiles)),
@@ -1215,39 +1056,39 @@ is
 
       AuditSystemFault := not OK;
 
-      SetFileDetails;
+      SetFileDetails (LogFileState.LogFileEntries);
 
       -- Now put the used files in order in the list.
 
-      UsedLogFiles := EmptyList;
+      LogFileState.UsedLogFiles := EmptyList;
       for I in LogFileIndexT loop
          if LogFilesStatus(I) = Used then
-            if UsedLogFiles.Length = 0 then
+            if LogFileState.UsedLogFiles.Length = 0 then
                -- easy case list currently empty
-               UsedLogFiles.Head := LogFileIndexT'First;
-               UsedLogFiles.LastI := LogFileIndexT'First;
-               UsedLogFiles.Length := 1;
-               UsedLogFiles.List(UsedLogFiles.Head) := I;
+               LogFileState.UsedLogFiles.Head := LogFileIndexT'First;
+               LogFileState.UsedLogFiles.LastI := LogFileIndexT'First;
+               LogFileState.UsedLogFiles.Length := 1;
+               LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.Head) := I;
             else
-               for J in LogFileIndexT range 1..UsedLogFiles.LastI loop
-                  if AgeLessThan(FileAges(I), FileAges(UsedLogFiles.List(J))) then
+               for J in LogFileIndexT range 1..LogFileState.UsedLogFiles.LastI loop
+                  if AgeLessThan(FileAges(I), FileAges(LogFileState.UsedLogFiles.List(J))) then
                      -- this is where the new entry goes.
                      -- move all other entries up the list to make room
-                     UsedLogFiles.LastI  := UsedLogFiles.LastI + 1;
-                     UsedLogFiles.Length := UsedLogFiles.Length + 1;
+                     LogFileState.UsedLogFiles.LastI  := LogFileState.UsedLogFiles.LastI + 1;
+                     LogFileState.UsedLogFiles.Length := LogFileState.UsedLogFiles.Length + 1;
                      for K in reverse LogFileIndexT
-                       range J + 1..UsedLogFiles.LastI
+                       range J + 1..LogFileState.UsedLogFiles.LastI
                      loop
-                        UsedLogFiles.List(K) := UsedLogFiles.List(K - 1);
+                        LogFileState.UsedLogFiles.List(K) := LogFileState.UsedLogFiles.List(K - 1);
                      end loop;
-                     UsedLogFiles.List(J) := I;
+                     LogFileState.UsedLogFiles.List(J) := I;
                      exit;
                   end if;
-                  if J = UsedLogFiles.LastI then
+                  if J = LogFileState.UsedLogFiles.LastI then
                      -- entry goes at the end
-                     UsedLogFiles.LastI  := UsedLogFiles.LastI + 1;
-                     UsedLogFiles.Length := UsedLogFiles.Length + 1;
-                     UsedLogFiles.List(UsedLogFiles.LastI) := I;
+                     LogFileState.UsedLogFiles.LastI  := LogFileState.UsedLogFiles.LastI + 1;
+                     LogFileState.UsedLogFiles.Length := LogFileState.UsedLogFiles.Length + 1;
+                     LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.LastI) := I;
                      exit;
                   end if;
                end loop;
@@ -1255,23 +1096,23 @@ is
          end if;
       end loop;
 
-      if UsedLogFiles.Length = 0 then
-         CurrentLogFile := LogFileIndexT'First;
+      if LogFileState.UsedLogFiles.Length = 0 then
+         LogFileState.CurrentLogFile := LogFileIndexT'First;
          -- The current file is the first used file.
-         UsedLogFiles.Head := LogFileIndexT'First;
-         UsedLogFiles.LastI := LogFileIndexT'First;
-         UsedLogFiles.Length := 1;
-         UsedLogFiles.List(UsedLogFiles.Head) := CurrentLogFile;
-         LogFilesStatus(CurrentLogFile) := Used;
+         LogFileState.UsedLogFiles.Head := LogFileIndexT'First;
+         LogFileState.UsedLogFiles.LastI := LogFileIndexT'First;
+         LogFileState.UsedLogFiles.Length := 1;
+         LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.Head) := LogFileState.CurrentLogFile;
+         LogFilesStatus(LogFileState.CurrentLogFile) := Used;
       else
-         CurrentLogFile := UsedLogFiles.List(UsedLogFiles.LastI);
+         LogFileState.CurrentLogFile := LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.LastI);
       end if;
 
-      NumberLogEntries := LogEntryCountT(UsedLogFiles.Length - 1) *
-        MaxLogFileEntries + LogFileEntries(CurrentLogFile);
+      LogFileState.NumberLogEntries := LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) *
+        MaxLogFileEntries + LogFileState.LogFileEntries(LogFileState.CurrentLogFile);
 
       AuditAlarm := AlarmTypes.Silent;
-      CheckLogAlarm;
+      CheckLogAlarm (LogFileState);
 
    end Init;
 
@@ -1291,37 +1132,25 @@ is
                                          ConfigData.State),
                               In_Out => (AuditAlarm,
                                          AuditSystemFault,
-                                         CurrentLogFile,
-                                         LogFileEntries,
+                                         LogFileState,
                                          LogFiles,
-                                         LogFilesStatus,
-                                         NumberLogEntries,
-                                         UsedLogFiles)),
+                                         LogFilesStatus)),
           Refined_Depends => ((AuditAlarm,
-                               CurrentLogFile,
-                               LogFileEntries,
                                LogFilesStatus,
-                               NumberLogEntries,
-                               UsedLogFiles)     => (AuditAlarm,
+                               LogFileState)     => (AuditAlarm,
                                                      ConfigData.State,
-                                                     CurrentLogFile,
-                                                     LogFileEntries,
-                                                     LogFilesStatus,
-                                                     NumberLogEntries,
-                                                     UsedLogFiles),
+                                                     LogFileState,
+                                                     LogFilesStatus),
                               (AuditSystemFault,
                                LogFiles)         =>+ (AuditAlarm,
                                                       Clock.Now,
                                                       ConfigData.State,
-                                                      CurrentLogFile,
                                                       Description,
                                                       ElementID,
-                                                      LogFileEntries,
+                                                      LogFileState,
                                                       LogFiles,
                                                       LogFilesStatus,
-                                                      NumberLogEntries,
                                                       Severity,
-                                                      UsedLogFiles,
                                                       User)),
           --  Refined_Pre     => (UsedLogFiles.Length >= 1 and then
           --                        NumberLogEntries =
@@ -1329,31 +1158,33 @@ is
           --                        LogFileEntries(CurrentLogFile)),
           --  This has been substituted by a call to Valid_NumberLogEntries
           --  at the specs
-          Refined_Post    => UsedLogFiles.Length >= 1 and
-                             NumberLogEntries =
-                               LogEntryCountT(UsedLogFiles.Length - 1) *
+          Refined_Post    => LogFileState.UsedLogFiles.Length >= 1 and
+                             LogFileState.NumberLogEntries =
+                               LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) *
                                MaxLogFileEntries +
-                               LogFileEntries(CurrentLogFile)
+                               LogFileState.LogFileEntries(LogFileState.CurrentLogFile)
    is
       OldAlarm : AlarmTypes.StatusT;
    begin
       OldAlarm := AuditAlarm;
 
       AddElementToLogFileWithTruncateChecks
-        (ElementID   => ElementID,
-         Severity    => Severity,
-         User        => User,
-         Description => ConvertToAuditDescription (Description));
+        (LogFileState => LogFileState,
+         ElementID    => ElementID,
+         Severity     => Severity,
+         User         => User,
+         Description  => ConvertToAuditDescription (Description));
 
-      CheckLogAlarm;
+      CheckLogAlarm (LogFileState);
 
       if OldAlarm /= AuditAlarm then
          -- This will always raise alarms not clear them
          AddElementToLogFileWithTruncateChecks
-           (ElementID   => AuditTypes.AuditAlarmRaised,
-            Severity    => AuditTypes.Warning,
-            User        => AuditTypes.NoUser,
-            Description => AuditTypes.NoDescription);
+           (LogFileState => LogFileState,
+            ElementID    => AuditTypes.AuditAlarmRaised,
+            Severity     => AuditTypes.Warning,
+            User         => AuditTypes.NoUser,
+            Description  => AuditTypes.NoDescription);
       end if;
    end AddElementToLog;
 
@@ -1369,38 +1200,25 @@ is
                                          ConfigData.State),
                               In_Out => (AuditAlarm,
                                          AuditSystemFault,
-                                         CurrentLogFile,
-                                         LogFileEntries,
+                                         LogFileState,
                                          LogFiles,
-                                         LogFilesStatus,
-                                         NumberLogEntries,
-                                         UsedLogFiles)),
-          Refined_Depends => (Archive            => (LogFileEntries,
-                                                     LogFiles,
-                                                     UsedLogFiles),
+                                         LogFilesStatus)),
+          Refined_Depends => (Archive            => (LogFileState,
+                                                     LogFiles),
                               (AuditAlarm,
-                               CurrentLogFile,
-                               LogFileEntries,
-                               LogFilesStatus,
-                               NumberLogEntries,
-                               UsedLogFiles)     => (AuditAlarm,
+                               LogFileState,
+                               LogFilesStatus)   => (AuditAlarm,
                                                      ConfigData.State,
-                                                     CurrentLogFile,
-                                                     LogFileEntries,
+                                                     LogFileState,
                                                      LogFiles,
-                                                     LogFilesStatus,
-                                                     NumberLogEntries,
-                                                     UsedLogFiles),
+                                                     LogFilesStatus),
                               (AuditSystemFault,
                                LogFiles)         =>+ (AuditAlarm,
                                                       Clock.Now,
                                                       ConfigData.State,
-                                                      CurrentLogFile,
-                                                      LogFileEntries,
+                                                      LogFileState,
                                                       LogFiles,
                                                       LogFilesStatus,
-                                                      NumberLogEntries,
-                                                      UsedLogFiles,
                                                       User)),
           --  Refined_Pre     => (UsedLogFiles.Length >= 1 and then
           --                        NumberLogEntries =
@@ -1408,11 +1226,11 @@ is
           --                        LogFileEntries(CurrentLogFile)),
           --  This has been substituted by a call to Valid_NumberLogEntries
           --  at the specs
-          Refined_Post    => UsedLogFiles.Length >= 1 and
-                             NumberLogEntries =
-                               LogEntryCountT(UsedLogFiles.Length - 1) *
+          Refined_Post    => LogFileState.UsedLogFiles.Length >= 1 and
+                             LogFileState.NumberLogEntries =
+                               LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) *
                                MaxLogFileEntries +
-                               LogFileEntries(CurrentLogFile)
+                               LogFileState.LogFileEntries(LogFileState.CurrentLogFile)
    is
       Description         : AuditTypes.DescriptionT;
       TheFile             : File.T;
@@ -1426,9 +1244,9 @@ is
 
       Description := ConvertToAuditDescription("Nothing archived");
 
-      if UsedLogFiles.Length = 0 or
-        (UsedLogFiles.Length = 1 and
-           LogFileEntries(UsedLogFiles.List(UsedLogFiles.Head))
+      if LogFileState.UsedLogFiles.Length = 0 or
+        (LogFileState.UsedLogFiles.Length = 1 and
+           LogFileState.LogFileEntries(LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.Head))
            < MaxLogFileEntries) then
          -- Make an empty file to return
 
@@ -1451,18 +1269,18 @@ is
 
       else
          ArchivedFileCount := 0;
-         FileIndexInUsedList := UsedLogFiles.Head;
+         FileIndexInUsedList := LogFileState.UsedLogFiles.Head;
 
          while ArchivedFileCount < MaxNumberArchivableFiles
-           and ArchivedFileCount < UsedLogFiles.Length
+           and ArchivedFileCount < LogFileState.UsedLogFiles.Length
          loop
             pragma Loop_Invariant
-              (NumberLogEntries =
-                 LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-                 LogFileEntries(CurrentLogFile));
+              (LogFileState.NumberLogEntries =
+                 LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) * MaxLogFileEntries +
+                 LogFileState.LogFileEntries(LogFileState.CurrentLogFile));
 
-            FileIndex := UsedLogFiles.List(FileIndexInUsedList);
-            exit when LogFileEntries(FileIndex) < MaxLogFileEntries;
+            FileIndex := LogFileState.UsedLogFiles.List(FileIndexInUsedList);
+            exit when LogFileState.LogFileEntries(FileIndex) < MaxLogFileEntries;
 
             TheFile := LogFiles (FileIndex);
 
@@ -1526,34 +1344,22 @@ is
                                          ConfigData.State),
                               In_Out => (AuditAlarm,
                                          AuditSystemFault,
-                                         CurrentLogFile,
-                                         LogFileEntries,
+                                         LogFileState,
                                          LogFiles,
-                                         LogFilesStatus,
-                                         NumberLogEntries,
-                                         UsedLogFiles)),
+                                         LogFilesStatus)),
           Refined_Depends => ((AuditAlarm,
-                               CurrentLogFile,
-                               LogFileEntries,
-                               LogFilesStatus,
-                               NumberLogEntries,
-                               UsedLogFiles)     => (AuditAlarm,
+                               LogFileState,
+                               LogFilesStatus)   => (AuditAlarm,
                                                      ConfigData.State,
-                                                     CurrentLogFile,
-                                                     LogFileEntries,
-                                                     LogFilesStatus,
-                                                     NumberLogEntries,
-                                                     UsedLogFiles),
+                                                     LogFileState,
+                                                     LogFilesStatus),
                               (AuditSystemFault,
                                LogFiles)         =>+ (AuditAlarm,
                                                       Clock.Now,
                                                       ConfigData.State,
-                                                      CurrentLogFile,
-                                                      LogFileEntries,
+                                                      LogFileState,
                                                       LogFiles,
                                                       LogFilesStatus,
-                                                      NumberLogEntries,
-                                                      UsedLogFiles,
                                                       User)),
           --  Refined_Pre     => (UsedLogFiles.Length >= 1 and then
           --                        NumberLogEntries =
@@ -1561,48 +1367,48 @@ is
           --                        LogFileEntries(CurrentLogFile)),
           --  This has been substituted by a call to Valid_NumberLogEntries
           --  at the specs
-          Refined_Post    => UsedLogFiles.Length >= 1 and
-                             NumberLogEntries =
-                               LogEntryCountT(UsedLogFiles.Length - 1) *
+          Refined_Post    => LogFileState.UsedLogFiles.Length >= 1 and
+                             LogFileState.NumberLogEntries =
+                               LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) *
                                MaxLogFileEntries +
-                               LogFileEntries(CurrentLogFile)
+                               LogFileState.LogFileEntries(LogFileState.CurrentLogFile)
    is
       OldAlarm : AlarmTypes.StatusT;
    begin
       -- Note the CurrentLogFile cannot be Archived.
 
-      while UsedLogFiles.Length > 1 loop
+      while LogFileState.UsedLogFiles.Length > 1 loop
          --  pragma Loop_Invariant
          --    (UsedLogFiles.Length > 1 and then
          --     NumberLogEntries =
          --       LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
          --       LogFileEntries(CurrentLogFile));
-         exit when LogFilesStatus(UsedLogFiles.List(UsedLogFiles.Head))
+         exit when LogFilesStatus(LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.Head))
            /= Archived;
          pragma Loop_Invariant
-           (UsedLogFiles.Length > 1 and
-            LogFilesStatus(UsedLogFiles.List(UsedLogFiles.Head))
+           (LogFileState.UsedLogFiles.Length > 1 and
+            LogFilesStatus(LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.Head))
               = Archived and
-            NumberLogEntries =
-              LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
-              LogFileEntries(CurrentLogFile));
+            LogFileState.NumberLogEntries =
+              LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) * MaxLogFileEntries +
+              LogFileState.LogFileEntries(LogFileState.CurrentLogFile));
 
-         pragma Assume (UsedLogFiles.List(UsedLogFiles.Head) /= CurrentLogFile);
+         pragma Assume (LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.Head) /= LogFileState.CurrentLogFile);
 
          -- Empty the archived file.
-         DeleteLogFile (UsedLogFiles.List(UsedLogFiles.Head));
+         DeleteLogFile (LogFileState, LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.Head));
 
-         UsedLogFiles.Length := UsedLogFiles.Length - 1;
-         UsedLogFiles.Head := NextListIndex (UsedLogFiles.Head);
+         LogFileState.UsedLogFiles.Length := LogFileState.UsedLogFiles.Length - 1;
+         LogFileState.UsedLogFiles.Head := NextListIndex (LogFileState.UsedLogFiles.Head);
 
-         NumberLogEntries := NumberLogEntries - MaxLogFileEntries;
+         LogFileState.NumberLogEntries := LogFileState.NumberLogEntries - MaxLogFileEntries;
 
       end loop;
 
       OldAlarm := AuditAlarm;
 
       AuditAlarm := AlarmTypes.Silent;
-      CheckLogAlarm;
+      CheckLogAlarm (LogFileState);
 
       if OldAlarm /= AuditAlarm then
          -- Archiving will always clear alarms not raise them.

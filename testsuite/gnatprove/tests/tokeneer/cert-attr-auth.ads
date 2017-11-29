@@ -196,4 +196,25 @@ private
                 Clearance  => PrivTypes.ClearanceT'
                   (Class => PrivTypes.ClassT'First));
 
+   ------------------------------------------------------------------
+   -- TheRole
+   --
+   -- Implementation Notes:
+   --     None
+   ------------------------------------------------------------------
+
+   function TheRole (Contents : ContentsT) return PrivTypes.PrivilegeT is
+     (Contents.Role);
+
+
+   ------------------------------------------------------------------
+   -- TheClearance
+   --
+   -- Implementation Notes:
+   --     None
+   ------------------------------------------------------------------
+
+   function TheClearance (Contents : ContentsT) return PrivTypes.ClearanceT is
+     (Contents.Clearance);
+
 end Cert.Attr.Auth;

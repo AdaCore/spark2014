@@ -24,20 +24,6 @@ package body Clock
   with Refined_State => (CurrentTime => CurrentTimeVar,
                          Now         => Clock.Interfac.Now)
 is
-
-   ------------------------------------------------------------------
-   -- Types and constants
-   --
-   ------------------------------------------------------------------
-   MilliSecsInMin : constant := 60 * MilliSecsInSec;
-   MilliSecsInHr  : constant := 60 * MilliSecsInMin;
-   ------------------------------------------------------------------
-   -- State
-   --
-   ------------------------------------------------------------------
-   CurrentTimeVar : TimeT;
-
-
    ------------------------------------------------------------------
    -- Private Operations
    ------------------------------------------------------------------
@@ -82,6 +68,16 @@ is
    ------------------------------------------------------------------
 
    ------------------------------------------------------------------
+   -- GetNow
+   --
+   -- Implementation Notes:
+   --    None.
+   --
+   ------------------------------------------------------------------
+   function GetNow return TimeT is (Interfac.TheTime)
+     with Refined_Global => Interfac.Now;
+
+   ------------------------------------------------------------------
    -- Poll
    --
    -- Implementation Notes:
@@ -96,84 +92,6 @@ is
    begin
       CurrentTimeVar := Interfac.TheTime;
    end Poll;
-
-   ------------------------------------------------------------------
-   -- TheCurrentTime
-   --
-   -- Implementation Notes:
-   --    None.
-   --
-   ------------------------------------------------------------------
-   function TheCurrentTime return TimeT is (CurrentTimeVar)
-     with Refined_Global => CurrentTimeVar;
-
-   ------------------------------------------------------------------
-   -- GetNow
-   --
-   -- Implementation Notes:
-   --    None.
-   --
-   ------------------------------------------------------------------
-   function GetNow return TimeT is (Interfac.TheTime)
-     with Refined_Global => Interfac.Now;
-
-   ------------------------------------------------------------------
-   -- GreaterThan
-   --
-   -- Implementation Notes:
-   --    None.
-   --
-   ------------------------------------------------------------------
-   function GreaterThan (Left, Right : TimeT) return Boolean is
-     (Left.Year > Right.Year
-        or (Left.Year = Right.Year
-            and Left.Month > Right.Month )
-        or (Left.Year = Right.Year
-            and Left.Month = Right.Month
-            and Left.Day > Right.Day)
-        or (Left.Year = Right.Year
-            and Left.Month = Right.Month
-            and Left.Day = Right.Day
-            and Left.MilliSec > Right.MilliSec));
-
-   ------------------------------------------------------------------
-   -- LessThan
-   --
-   -- Implementation Notes:
-   --    None.
-   --
-   ------------------------------------------------------------------
-   function LessThan (Left, Right : TimeT) return Boolean is
-     (Left.Year < Right.Year
-        or (Left.Year = Right.Year
-            and Left.Month < Right.Month )
-        or (Left.Year = Right.Year
-            and Left.Month = Right.Month
-            and Left.Day < Right.Day)
-        or (Left.Year= Right.Year
-            and Left.Month = Right.Month
-            and Left.Day = Right.Day
-            and Left.MilliSec < Right.MilliSec));
-
-   ------------------------------------------------------------------
-   -- GreaterThanOrEqual
-   --
-   -- Implemention Notes:
-   --    None.
-   --
-   ------------------------------------------------------------------
-   function GreaterThanOrEqual (Left, Right : TimeT) return Boolean is
-     (GreaterThan (Left, Right) or Left = Right);
-
-   ------------------------------------------------------------------
-   -- LessThanOrEqual
-   --
-   -- Implemention Notes:
-   --    None.
-   --
-   ------------------------------------------------------------------
-   function LessThanOrEqual (Left, Right : TimeT) return Boolean is
-     (LessThan (Left, Right) or Left = Right);
 
    ------------------------------------------------------------------
    -- ConstructTime

@@ -16,19 +16,9 @@
 --
 ------------------------------------------------------------------
 
-with BasicTypes;
-use type BasicTypes.PresenceT;
-
-with TokenTypes;
-use type TokenTypes.TryT;
-use type TokenTypes.TokenIDT;
-
 with CertTypes;
 use type CertTypes.IDT;
 
-with Cert.Attr.Auth;
-use Cert.Attr.Auth;
-with Cert.ID;
 with AdminToken.Interfac;
 with Clock;
 with ConfigData;
@@ -43,43 +33,6 @@ package body AdminToken
                          Status => AdminToken.Interfac.Status,
                          Input  => AdminToken.Interfac.Input)
 is
-   ------------------------------------------------------------------
-   -- Types
-   --
-   ------------------------------------------------------------------
-   type ValidAuthCertT is record
-      Valid    : Boolean;
-      Contents : Cert.Attr.Auth.ContentsT;
-   end record;
-
-   type ValidIDCertT is record
-      Valid    : Boolean;
-      Contents : Cert.ID.ContentsT;
-   end record;
-
-   ------------------------------------------------------------------
-   -- State
-   --
-   ------------------------------------------------------------------
-   TokenPresence : BasicTypes.PresenceT;
-
-   TokenTry  : TokenTypes.TryT;
-
-   TokenID   : TokenTypes.TokenIDT;
-
-   AuthCert  : ValidAuthCertT;
-   IDCert    : ValidIDCertT;
-
-   function TheAuthCertRole return PrivTypes.PrivilegeT is
-     (TheRole (AuthCert.Contents))
-     with Refined_Global => AuthCert;
-
-   function IsGood return Boolean is (IDCert.Valid)
-     with Refined_Global => IDCert;
-
-   function AuthCertValid return Boolean is (AuthCert.Valid)
-     with Refined_Global => AuthCert;
-
    ------------------------------------------------------------------
    -- Public Operations
    --
@@ -532,20 +485,6 @@ is
       end if;
       return Result;
    end ExtractUser;
-
-   ------------------------------------------------------------------
-   -- GetRole
-   --
-   -- Description:
-   --    obtains the role value for the Auth certificate.
-   --
-   -- Traceunit : C.AdminToken.GetRole
-   -- Traceto :
-   ------------------------------------------------------------------
-   function GetRole return PrivTypes.AdminPrivilegeT is
-     (Cert.Attr.Auth.TheRole (Contents => AuthCert.Contents))
-     with Refined_Global  => (AuthCert,
-                              IDCert);
 
    ------------------------------------------------------------------
    -- Clear

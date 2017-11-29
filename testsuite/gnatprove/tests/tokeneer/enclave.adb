@@ -37,49 +37,6 @@ use type Door.T;
 package body Enclave
   with Refined_State => (State => Status)
 is
-   Status : StatusT;
-
-   ------------------------------------------------------------------
-   --  Types
-   ------------------------------------------------------------------
-
-   subtype EnrolmentStates is StatusT
-     range NotEnrolled .. WaitingEndEnrol;
-
-   subtype ActiveEnclaveStates is StatusT
-     range GotAdminToken .. Shutdown;
-
-   subtype NonQuiescentStates is StatusT
-     range WaitingRemoveAdminTokenFail .. Shutdown;
-   ------------------------------------------------------------------
-   --  State
-   ------------------------------------------------------------------
-   function GetStatus return StatusT is (Status)
-     with Refined_Global => Status;
-
-   function statusIsGotAdminToken return Boolean is
-     (Status = GotAdminToken)
-     with Refined_Global => Status;
-
-   function statusIsWaitingRemoveAdminTokenFail return Boolean is
-     (Status = WaitingRemoveAdminTokenFail)
-     with Refined_Global => Status;
-
-   function statusIsWaitingStartAdminOp return Boolean is
-     (Status = WaitingStartAdminOp)
-     with Refined_Global => Status;
-
-   function statusIsWaitingFinishAdminOp return Boolean is
-     (Status = WaitingFinishAdminOp)
-     with Refined_Global => Status;
-
-   function statusIsEnclaveQuiescent return Boolean is
-     (Status = EnclaveQuiescent)
-     with Refined_Global => Status;
-
-   function statusIsShutdown return Boolean is (Status = Shutdown)
-     with Refined_Global => Status;
-
    ------------------------------------------------------------------
    --  Private Operations
    --
@@ -477,13 +434,13 @@ is
             AdminToken.AuthCertValid and
             AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
       then
          Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-         ((Admin.IsDoingOp(TheAdmin) and
+         ((Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
             not Admin.IsDoingOp(TheAdmin))),
           Post    =>
@@ -500,13 +457,13 @@ is
             AdminToken.AuthCertValid and
             AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
       then
          Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-         ((Admin.IsDoingOp(TheAdmin) and
+         ((Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
             not Admin.IsDoingOp(TheAdmin)))
    is
@@ -667,24 +624,24 @@ is
                       Status               =>+ Floppy.State),
           Pre     =>
      (Status = WaitingStartAdminOp or
-        Status = WaitingFinishAdminOp) and
+        Status = WaitingFinishAdminOp) and then
 
-     Admin.IsPresent(TheAdmin) and
-     Admin.IsDoingOp(TheAdmin) and
-     Admin.TheCurrentOp(TheAdmin) = Admin.ArchiveLog and
+     Admin.IsPresent(TheAdmin) and then
+     Admin.IsDoingOp(TheAdmin) and then
+     Admin.TheCurrentOp(TheAdmin) = Admin.ArchiveLog and then
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
          (AdminToken.IsGood and
             AdminToken.AuthCertValid and
-            AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
+            AdminToken.TheAuthCertRole = PrivTypes.Guard)) and then
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
       then
-         Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
+         Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and then
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-         ((Admin.IsDoingOp(TheAdmin) and
+         ((Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
             not Admin.IsDoingOp(TheAdmin))),
           Post    =>
@@ -709,7 +666,7 @@ is
             AdminToken.AuthCertValid and
             AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
       then
          Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
@@ -937,9 +894,9 @@ is
                                                   Status),
                       TheAdmin               =>+ Status),
           Pre     => (Status = WaitingStartAdminOp or
-                        Status = WaitingFinishAdminOp) and
-                     Admin.IsPresent(TheAdmin) and
-                     Admin.IsDoingOp(TheAdmin) and
+                        Status = WaitingFinishAdminOp) and then
+                     Admin.IsPresent(TheAdmin) and then
+                     Admin.IsDoingOp(TheAdmin) and then
                      Admin.TheCurrentOp(TheAdmin) = Admin.UpdateConfigData,
           Post    =>
      (Status = WaitingStartAdminOp or
@@ -1044,22 +1001,22 @@ is
                                                 Latch.State),
                       Status               => null),
            Pre     =>
-     Admin.IsDoingOp(TheAdmin) and
-     Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock and
-     Admin.RolePresent(TheAdmin) = PrivTypes.Guard and
+     Admin.IsDoingOp(TheAdmin) and then
+     Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock and then
+     Admin.RolePresent(TheAdmin) = PrivTypes.Guard and then
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
          (AdminToken.IsGood and
             AdminToken.AuthCertValid and
-            AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
+            AdminToken.TheAuthCertRole = PrivTypes.Guard)) and then
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
       then
-         Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
+         Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and then
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-         ((Admin.IsDoingOp(TheAdmin) and
+         ((Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
             not Admin.IsDoingOp(TheAdmin))),
            --------------------------------------------------------
@@ -1090,13 +1047,13 @@ is
             AdminToken.AuthCertValid and
             AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
       then
           Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-         ((Admin.IsDoingOp(TheAdmin) and
+         ((Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
             not Admin.IsDoingOp(TheAdmin))) and
 
@@ -1175,25 +1132,25 @@ is
           -- property holds.                                    --
           --------------------------------------------------------
           Pre     =>
-     Status = WaitingStartAdminOp and
+     Status = WaitingStartAdminOp and then
 
-     Admin.IsPresent(TheAdmin) and
-     Admin.IsDoingOp(TheAdmin) and
-     Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp and
+     Admin.IsPresent(TheAdmin) and then
+     Admin.IsDoingOp(TheAdmin) and then
+     Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp and then
 
      ((Latch.IsLocked and
          Door.TheCurrentDoor = Door.Open and
          Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                   Door.Alarm_Timeout)) =
-        (Door.TheDoorAlarm = AlarmTypes.Alarming)) and
+        (Door.TheDoorAlarm = AlarmTypes.Alarming)) and then
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
          (AdminToken.IsGood and
             AdminToken.AuthCertValid and
-            AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
+            AdminToken.TheAuthCertRole = PrivTypes.Guard)) and then
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-         ((Admin.IsDoingOp(TheAdmin) and
+         ((Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
             not Admin.IsDoingOp(TheAdmin))),
           --------------------------------------------------------
@@ -1207,11 +1164,11 @@ is
         Status = WaitingStartAdminOp) and
 
      (not (Status = WaitingStartAdminOp) or
-         (Admin.RolePresent(TheAdmin) = Admin.RolePresent(TheAdmin'Old) and
-            Admin.IsPresent(TheAdmin) and
-            Admin.IsDoingOp(TheAdmin) and
-            Latch.Current_Latch = Latch.Current_Latch'Old and
-            Latch.Latch_Timeout = Latch.Latch_Timeout'Old and
+         (Admin.RolePresent(TheAdmin) = Admin.RolePresent(TheAdmin'Old) and then
+            Admin.IsPresent(TheAdmin) and then
+            Admin.IsDoingOp(TheAdmin) and then
+            Latch.Current_Latch = Latch.Current_Latch'Old and then
+            Latch.Latch_Timeout = Latch.Latch_Timeout'Old and then
             Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp)) and
 
      (if Status = Shutdown then
@@ -1219,7 +1176,7 @@ is
             Latch.IsLocked and
             not Admin.IsDoingOp(TheAdmin))) and
 
-     ((Admin.IsDoingOp(TheAdmin) and
+     ((Admin.IsDoingOp(TheAdmin) and then
          Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp) =
         (Status = WaitingStartAdminOp)) and
 
@@ -1239,7 +1196,7 @@ is
              AdminToken.AuthCertValid and
              AdminToken.TheAuthCertRole = PrivTypes.Guard))) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
       then
           Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
@@ -1371,7 +1328,7 @@ is
      (Status = WaitingStartAdminOp or
         Status = WaitingFinishAdminOp) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp)
       then
          Status = WaitingStartAdminOp) and
@@ -1390,13 +1347,13 @@ is
             AdminToken.AuthCertValid and
             AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
       then
           Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-         ((Admin.IsDoingOp(TheAdmin) and
+         ((Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
             not Admin.IsDoingOp(TheAdmin))),
           --------------------------------------------------------
@@ -1429,7 +1386,7 @@ is
          (not Admin.IsDoingOp(TheAdmin) and
             Admin.RolePresent(TheAdmin) = PrivTypes.UserOnly)) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp)
       then
           Status = WaitingStartAdminOp) and
@@ -1450,18 +1407,18 @@ is
              AdminToken.AuthCertValid and
              AdminToken.TheAuthCertRole = PrivTypes.Guard))) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
       then
           Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-         ((Admin.IsDoingOp(TheAdmin) and
+         ((Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
             not Admin.IsDoingOp(TheAdmin))) and
 
      (if (not Latch.IsLocked and Latch.IsLocked'Old) then
-         (Admin.IsDoingOp(TheAdmin'Old) and
+         (Admin.IsDoingOp(TheAdmin'Old) and then
             Admin.TheCurrentOp(TheAdmin'Old) = Admin.OverrideLock))
    is
    begin
@@ -1484,15 +1441,6 @@ is
    -- Exported subprocedures
    --
    ------------------------------------------------------------------
-   ------------------------------------------------------------------
-   -- EnrolmentIsInProgress
-   --
-   -- Implementation Notes:
-   --    None.
-   ------------------------------------------------------------------
-   function EnrolmentIsInProgress return Boolean is (Status in EnrolmentStates)
-     with Refined_Global => Status;
-
    ------------------------------------------------------------------
    -- Init
    --
@@ -1902,13 +1850,13 @@ is
              AdminToken.AuthCertValid and
              AdminToken.TheAuthCertRole = PrivTypes.Guard))) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
       then
           Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-         ((Admin.IsDoingOp(TheAdmin) and
+         ((Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
             not Admin.IsDoingOp(TheAdmin))) and
 
@@ -1933,7 +1881,7 @@ is
          (not Admin.IsDoingOp(TheAdmin) and
             Admin.RolePresent(TheAdmin) = PrivTypes.UserOnly)) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp)
       then
           Status = WaitingStartAdminOp) and
@@ -2064,7 +2012,7 @@ is
          (not Admin.IsDoingOp(TheAdmin) and
             Admin.RolePresent(TheAdmin) = PrivTypes.UserOnly)) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp)
       then
           Status = WaitingStartAdminOp) and
@@ -2074,13 +2022,13 @@ is
             AdminToken.AuthCertValid and
             AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-     (if (Admin.IsDoingOp(TheAdmin) and
+     (if (Admin.IsDoingOp(TheAdmin) and then
             Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
       then
           Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
      (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-         ((Admin.IsDoingOp(TheAdmin) and
+         ((Admin.IsDoingOp(TheAdmin) and then
              Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
             not Admin.IsDoingOp(TheAdmin)))
    is
@@ -2175,13 +2123,13 @@ is
                AdminToken.AuthCertValid and
                AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-        (if (Admin.IsDoingOp(TheAdmin) and
+        (if (Admin.IsDoingOp(TheAdmin) and then
                Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
          then
              Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
         (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-            ((Admin.IsDoingOp(TheAdmin) and
+            ((Admin.IsDoingOp(TheAdmin) and then
                 Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
                not Admin.IsDoingOp(TheAdmin))),
              Post    =>
@@ -2193,13 +2141,13 @@ is
                AdminToken.AuthCertValid and
                AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-        (if (Admin.IsDoingOp(TheAdmin) and
+        (if (Admin.IsDoingOp(TheAdmin) and then
                Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
          then
             Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
         (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-            ((Admin.IsDoingOp(TheAdmin) and
+            ((Admin.IsDoingOp(TheAdmin) and then
                 Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
                not Admin.IsDoingOp(TheAdmin))) and
 

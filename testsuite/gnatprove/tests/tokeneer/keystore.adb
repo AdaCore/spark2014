@@ -23,7 +23,6 @@ with AuditLog,
      KeyStore.Interfac;
 
 use type BasicTypes.Unsigned32T;
-use type CryptoTypes.IssuerT;
 use type KeyStore.Interfac.ReturnValueT;
 use type KeyStore.Interfac.MaskT;
 
@@ -31,28 +30,14 @@ package body KeyStore
   with Refined_State => (Store => KeyStore.Interfac.Store,
                          State => ThisTISInfo)
 is
-
    ----------------------------------------------------------------
    -- Types
    ----------------------------------------------------------------
-   type OptionalPrivateKeyT is record
-      IsPresent : Boolean;
-      Owner     : CryptoTypes.IssuerT;
-   end record;
-
    type IsSystemT is array (Interfac.ReturnValueT) of Boolean;
 
    ----------------------------------------------------------------
    -- State
    ----------------------------------------------------------------
-
-   ThisTISInfo : OptionalPrivateKeyT;
-
-
-   -- Key handles are unsigned 32 bit words, with zero being a null
-   -- key handle.
-   NullKey : constant BasicTypes.Unsigned32T := 0;
-
    -- Crypto errors can be groupes as a System Error, or a User Error.
    IsSystem : constant IsSystemT := IsSystemT'
      (Interfac.Ok                         => False,
@@ -594,42 +579,6 @@ is
       IsPresent := (TheIssuerKey /= NullKey);
 
    end KeyMatchingIssuerPresent;
-
-   ------------------------------------------------------------------
-   -- PrivateKeyPresent
-   --
-   -- Implementation Notes:
-   --    None.
-   --
-   ------------------------------------------------------------------
-   function PrivateKeyPresent return Boolean is (ThisTISInfo.IsPresent)
-     with Refined_Global  => ThisTISInfo;
-
-   ------------------------------------------------------------------
-   -- IssuerIsThisTIS
-   --
-   -- Implementation Notes:
-   --    None
-   --
-   ------------------------------------------------------------------
-   function IssuerIsThisTIS (Issuer : in     CryptoTypes.IssuerT)
-                            return  Boolean
-   is
-     (if PrivateKeyPresent then
-         Issuer = ThisTISInfo.Owner
-      else
-         False)
-     with Refined_Global  => ThisTISInfo;
-
-   ------------------------------------------------------------------
-   -- ThisTIS
-   --
-   -- Implementation Notes:
-   --    None.
-   --
-   ------------------------------------------------------------------
-   function ThisTIS return CryptoTypes.IssuerT is (ThisTISInfo.Owner)
-     with Refined_Global  => ThisTISInfo;
 
    ------------------------------------------------------------------
    -- IsVerifiedBy

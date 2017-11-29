@@ -163,4 +163,25 @@ is
      with Global  => (Output => State),
           Depends => (State => null);
 
+private
+   CurrentLatch : T with Part_Of => State;
+   LatchTimeout : Clock.TimeT with Part_Of => State;
+
+   --  Proof functions (ghost functions)
+   function Current_Latch return T is (CurrentLatch)
+     with Refined_Global => CurrentLatch;
+
+   function Latch_Timeout return Clock.TimeT is (LatchTimeout)
+     with Refined_Global => LatchTimeout;
+
+   ------------------------------------------------------------------
+   -- IsLocked
+   --
+   -- Implementation Notes:
+   --    None
+   --
+   ------------------------------------------------------------------
+   function IsLocked return Boolean is (CurrentLatch = Locked)
+     with Refined_Global => CurrentLatch;
+
 end Latch;

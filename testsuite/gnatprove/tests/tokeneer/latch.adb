@@ -25,16 +25,6 @@ package body Latch
                                     LatchTimeout),
                          Output => Latch.Interfac.Output)
 is
-   CurrentLatch : T;
-   LatchTimeout : Clock.TimeT;
-
-   --  Proof functions (ghost functions)
-   function Current_Latch return T is (CurrentLatch)
-     with Refined_Global => CurrentLatch;
-
-   function Latch_Timeout return Clock.TimeT is (LatchTimeout)
-     with Refined_Global => LatchTimeout;
-
    function LatchIsLocked return Boolean is (Latch.Interfac.IsLocked);
 
    --  Dodgy function that retrieves Output
@@ -57,16 +47,6 @@ is
       CurrentLatch := Locked;
       LatchTimeout := Clock.ZeroTime;
    end Init;
-
-   ------------------------------------------------------------------
-   -- IsLocked
-   --
-   -- Implementation Notes:
-   --    None
-   --
-   ------------------------------------------------------------------
-   function IsLocked return Boolean is (CurrentLatch = Locked)
-     with Refined_Global => CurrentLatch;
 
    ------------------------------------------------------------------
    -- UpdateInternalLatch

@@ -671,9 +671,9 @@
 </theory>
 <theory name="System__default_bit_order" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__any_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -2983,9 +2983,9 @@
 </theory>
 <theory name="System__default_bit_order___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__default_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3301,7 +3301,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Latchapi__unlock__subprogram_def" sum="bbf2a7e554fb9f069afb1fc6616c1c5d">
+<theory name="Latchapi__unlock__subprogram_def" sum="8d2016b8578b42ea4c8029915b5f69ec">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
@@ -3313,7 +3313,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Latchapi__lock__subprogram_def" sum="9f0673f3b94a74a88f55e6ddde48ee6c">
+<theory name="Latchapi__lock__subprogram_def" sum="69b1eba1e9ffaa701148c2397a107d0a">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">

@@ -552,20 +552,20 @@ is
               AdminToken.authCertValid and
               AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-       (if (Admin.IsDoingOp(TheAdmin) and
+       (if (Admin.IsDoingOp(TheAdmin) and then
               Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
         then
            Admin.RolePresent(TheAdmin) = PrivTypes.Guard) and
 
        (if Admin.RolePresent(TheAdmin) = PrivTypes.Guard then
-           ((Admin.IsDoingOp(TheAdmin) and
+           ((Admin.IsDoingOp(TheAdmin) and then
                Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
               not Admin.IsDoingOp(TheAdmin))) and
 
        (if not Admin.IsPresent(TheAdmin) then
            not Admin.IsDoingOp(TheAdmin)) and
 
-       (if (Admin.IsDoingOp(TheAdmin) and
+       (if (Admin.IsDoingOp(TheAdmin) and then
               Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp)
         then
            Enclave.statusIsWaitingStartAdminOp) and
@@ -613,20 +613,20 @@ is
                 AdminToken.authCertValid and
                 AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-         (if (Admin.IsDoingOp(TheAdmin) and
+         (if (Admin.IsDoingOp(TheAdmin) and then
                 Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock)
           then
              (Admin.rolePresent(TheAdmin) = PrivTypes.Guard)) and
 
          (if (Admin.rolePresent(TheAdmin) = PrivTypes.Guard) then
-             ((Admin.IsDoingOp(TheAdmin) and
+             ((Admin.IsDoingOp(TheAdmin) and then
                  Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
                 not Admin.IsDoingOp(TheAdmin))) and
 
          (if (not Admin.IsPresent(TheAdmin)) then
             (not Admin.IsDoingOp(TheAdmin))) and
 
-         (if (Admin.IsDoingOp(TheAdmin) and
+         (if (Admin.IsDoingOp(TheAdmin) and then
                 Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp)
           then
              Enclave.statusIsWaitingStartAdminOp) and
@@ -1074,20 +1074,20 @@ is
                    AdminToken.authCertValid and
                    AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-            (if (Admin.IsDoingOp (TheAdmin) and
+            (if (Admin.IsDoingOp (TheAdmin) and then
                    Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
              then
                 Admin.RolePresent (TheAdmin) = PrivTypes.Guard) and
 
             (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
-                ((Admin.IsDoingOp (TheAdmin) and
+                ((Admin.IsDoingOp (TheAdmin) and then
                     Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock) or
                    not Admin.IsDoingOp (TheAdmin))) and
 
             (if not Admin.IsPresent (TheAdmin) then
                 not Admin.IsDoingOp (TheAdmin)) and
 
-            (if (Admin.IsDoingOp (TheAdmin) and
+            (if (Admin.IsDoingOp (TheAdmin) and then
                    Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
              then
                 Enclave.statusIsWaitingStartAdminOp) and
@@ -1152,20 +1152,20 @@ is
                    AdminToken.authCertValid and
                    AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-            (if (Admin.IsDoingOp (TheAdmin) and
+            (if (Admin.IsDoingOp (TheAdmin) and then
                    Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
              then
                 Admin.RolePresent (TheAdmin) = PrivTypes.Guard) and
 
             (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
-                ((Admin.IsDoingOp (TheAdmin) and
+                ((Admin.IsDoingOp (TheAdmin) and then
                     Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock) or
                    not Admin.IsDoingOp (TheAdmin))) and
 
             (if not Admin.IsPresent (TheAdmin) then
                 not Admin.IsDoingOp (TheAdmin)) and
 
-            (if (Admin.IsDoingOp (TheAdmin) and
+            (if (Admin.IsDoingOp (TheAdmin) and then
                    Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
              then
                 Enclave.statusIsWaitingStartAdminOp) and
@@ -1355,20 +1355,20 @@ begin
                 AdminToken.AuthCertValid and
                 AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-         (if (Admin.IsDoingOp (TheAdmin) and
+         (if (Admin.IsDoingOp (TheAdmin) and then
                 Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
           then
              Admin.RolePresent (TheAdmin) = PrivTypes.Guard) and
 
          (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
-             ((Admin.IsDoingOp (TheAdmin) and
+             ((Admin.IsDoingOp (TheAdmin) and then
                  Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock) or
                 not Admin.IsDoingOp (TheAdmin))) and
 
          (if not Admin.IsPresent (TheAdmin) then
              not Admin.IsDoingOp (TheAdmin)) and
 
-         (if (Admin.IsDoingOp (TheAdmin) and
+         (if (Admin.IsDoingOp (TheAdmin) and then
                 Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
           then
              Enclave.statusIsWaitingStartAdminOp) and
@@ -1439,20 +1439,20 @@ begin
                 AdminToken.AuthCertValid and
                 AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-         (if (Admin.IsDoingOp (TheAdmin) and
+         (if (Admin.IsDoingOp (TheAdmin) and then
                 Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
           then
             Admin.RolePresent (TheAdmin) = PrivTypes.Guard) and
 
          (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
-             ((Admin.IsDoingOp (TheAdmin) and
+             ((Admin.IsDoingOp (TheAdmin) and then
                  Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock) or
                 not Admin.IsDoingOp (TheAdmin))) and
 
          (if not Admin.IsPresent (TheAdmin) then
              not Admin.IsDoingOp (TheAdmin)) and
 
-         (if (Admin.IsDoingOp (TheAdmin) and
+         (if (Admin.IsDoingOp (TheAdmin) and then
                 Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
           then
              Enclave.statusIsWaitingStartAdminOp) and
@@ -1532,20 +1532,20 @@ begin
                 AdminToken.AuthCertValid and
                 AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
 
-         (if (Admin.IsDoingOp (TheAdmin) and
+         (if (Admin.IsDoingOp (TheAdmin) and then
                 Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock)
           then
              Admin.RolePresent (TheAdmin) = PrivTypes.Guard) and
 
          (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
-             ((Admin.IsDoingOp (TheAdmin) and
+             ((Admin.IsDoingOp (TheAdmin) and then
                  Admin.TheCurrentOp (TheAdmin) = Admin.OverrideLock) or
                 not Admin.IsDoingOp (TheAdmin))) and
 
          (if not Admin.IsPresent (TheAdmin) then
              not Admin.IsDoingOp (TheAdmin)) and
 
-         (if (Admin.IsDoingOp (TheAdmin) and
+         (if (Admin.IsDoingOp (TheAdmin) and then
                 Admin.TheCurrentOp (TheAdmin) = Admin.ShutdownOp)
           then
              Enclave.statusIsWaitingStartAdminOp) and

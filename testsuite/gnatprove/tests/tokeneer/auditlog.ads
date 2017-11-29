@@ -26,18 +26,12 @@ package AuditLog
                           State),
        Initializes    => FileState
 is
-   --  Helper expression function that acts as the precondition of
-   --  AddElementToLog, ArchiveLog and ClearLogEntries. It allows us
-   --  to refer to types and variables that are declared in the body
-   --  and are not visible here and it acts as an invariant.
-   function Valid_NumberLogEntries return Boolean
-     with Global     => State,
-          Ghost;
-
    ------------------------------------------------------------------
    -- Types
    --
    ------------------------------------------------------------------
+
+   type LogFileStateT (<>) is private;
 
    ------------------------------------------------------------------
    -- Init
@@ -56,8 +50,7 @@ is
                       In_Out => FileState),
           Depends => (FileState =>+ null,
                       State     => (ConfigData.State,
-                                    FileState)),
-          Post    => Valid_NumberLogEntries;
+                                    FileState));
 
    ------------------------------------------------------------------
    -- AddElementToLog
@@ -88,8 +81,7 @@ is
                                       Severity,
                                       State,
                                       User)),
-          Pre     => Valid_NumberLogEntries and Description'First = 1,
-          Post    => Valid_NumberLogEntries;
+          Pre     => Description'First = 1;
 
    ------------------------------------------------------------------
    -- ArchiveLog
@@ -114,9 +106,7 @@ is
                                       ConfigData.State,
                                       FileState,
                                       State,
-                                      User)),
-          Pre     => Valid_NumberLogEntries,
-          Post    => Valid_NumberLogEntries;
+                                      User));
 
    ------------------------------------------------------------------
    -- ClearLogEntries
@@ -138,9 +128,7 @@ is
                                       ConfigData.State,
                                       FileState,
                                       State,
-                                      User)),
-          Pre     => Valid_NumberLogEntries,
-          Post    => Valid_NumberLogEntries;
+                                      User));
 
    ------------------------------------------------------------------
    -- CancelArchive
@@ -178,5 +166,139 @@ is
    ------------------------------------------------------------------
    function SystemFaultOccurred return Boolean
      with Global => State;
+
+private
+   ------------------------------------------------------------------
+   -- Types
+   --
+   ------------------------------------------------------------------
+
+   MaxNumberLogFiles : constant := 2**4 + 1;  -- 17
+   MaxNumberArchivableFiles : constant := 4;
+
+   type LogFileCountT is range 0..MaxNumberLogFiles;
+   subtype LogFileIndexT is LogFileCountT range 1..MaxNumberLogFiles;
+
+   type FileStatusT is (Free, Archived, Used);
+
+   type LogFilesT is array (LogFileIndexT) of File.T;
+
+   type LogFilesStatusT is array (LogFileIndexT) of FileStatusT;
+
+   subtype FileNameI is Positive range 1..16;
+   subtype FileNameT is String(FileNameI);
+
+   type LogFileNamesT is array (LogFileIndexT) of FileNameT;
+
+   type LogFileListEntriesT is array (LogFileIndexT) of LogFileIndexT;
+
+   ----------------------------------------------------------------
+   -- LogFileListT
+   --
+   -- Description:
+   --   This represents a list.
+   --      List - is a cyclic buffer that can hold all the files
+   --      Head - is the current head of the list in the cyclic buffer
+   --      LastI - is the last index of the list in the cyclic buffer
+   --      Length - is the length of the list
+   --   The values of Head and LastI are not significant when Length=0.
+   -----------------------------------------------------------------
+
+   type LogFileListT is record
+      List   : LogFileListEntriesT;
+      Head   : LogFileIndexT;
+      LastI  : LogFileIndexT;
+      Length : LogFileCountT;
+   end record;
+
+   EmptyList : constant LogFileListT :=
+     LogFileListT'(List => LogFileListEntriesT'
+                               (others => LogFileIndexT'First),
+                   Head => LogFileIndexT'Last,
+                   LastI => LogFileIndexT'First,
+                   Length => 0);
+
+
+   subtype LogDirStringI is Positive range 1..3;
+   subtype LogDirStringT is String(LogDirStringI);
+
+   LogDirectory : constant LogDirStringT := "Log";
+
+   subtype ArchiveFileStringI is Positive range 1..17;
+   subtype ArchiveFileStringT is String(ArchiveFileStringI);
+
+   ArchiveFileName : constant ArchiveFileStringT := "./Log/archive.log";
+
+   --------------------------------------------------------------
+   --  ElementText
+   --
+   --  Description:
+   --     Text representation of Element name
+   --
+   --------------------------------------------------------------
+   subtype ElementTextI is Positive range 1..20;
+   subtype ElementTextT is String(ElementTextI);
+
+   NoElement : constant ElementTextT := ElementTextT'(others => ' ');
+
+   ------------------------------------------------------------------
+   -- MaxLogFileEntries
+   --
+   --  Description:
+   --     The max number of entries in a file.
+   --     Note that it is a requirement of the Formal Design that
+   --        MaxLogFileEntries * (NumberLogFiles - 1)
+   --                                * AuditTypes.SizeAuditElement
+   --             >= AuditTypes.MaxSupportedLogSize
+   --
+   -- Implementation Notes:
+   --    None.
+   ------------------------------------------------------------------
+   MaxLogFileEntries : constant :=
+     AuditTypes.MaxSupportedLogEntries/(MaxNumberLogFiles - 1);
+   MaxLogEntries     : constant := MaxLogFileEntries * MaxNumberLogFiles;
+
+   type LogEntryCountT is range 0..MaxLogEntries;
+   subtype FileEntryCountT is LogEntryCountT range 0..MaxLogFileEntries;
+
+   type LogFileEntryT is array (LogFileIndexT) of FileEntryCountT;
+
+   ------------------------------------------------------------------
+   -- State
+   --
+   ------------------------------------------------------------------
+   function Valid_NumberLogEntries (CurrentLogFile   : LogFileIndexT;
+                                    NumberLogEntries : LogEntryCountT;
+                                    UsedLogFiles     : LogFileListT;
+                                    LogFileEntries   : LogFileEntryT)
+                                    return Boolean is
+     (UsedLogFiles.Length >= 1 and then
+        NumberLogEntries =
+          LogEntryCountT(UsedLogFiles.Length - 1) * MaxLogFileEntries +
+          LogFileEntries(CurrentLogFile))
+      with Ghost;
+
+   type LogFileStateT is record
+      CurrentLogFile   : LogFileIndexT  := 1;
+      NumberLogEntries : LogEntryCountT := 0;
+      UsedLogFiles     : LogFileListT   :=
+        LogFileListT'(List   => (others => 1),
+                      Head   => 1,
+                      LastI  => 1,
+                      Length => 1);
+      LogFileEntries   : LogFileEntryT  := (others => 0);
+   end record
+     with Type_Invariant =>
+       Valid_NumberLogEntries
+         (CurrentLogFile, NumberLogEntries, UsedLogFiles, LogFileEntries);
+
+   LogFiles         : LogFilesT := LogFilesT'(others => File.NullFile)
+     with Part_Of => FileState;
+
+   LogFilesStatus   : LogFilesStatusT with Part_Of => State;
+   LogFileState     : LogFileStateT with Part_Of => State;
+   AuditAlarm       : AlarmTypes.StatusT with Part_Of => State;
+
+   AuditSystemFault : Boolean with Part_Of => State;
 
 end AuditLog;

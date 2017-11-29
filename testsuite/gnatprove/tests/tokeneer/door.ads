@@ -123,11 +123,6 @@ is
                         Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                                  Latch.Latch_Timeout) and
 
-                     (Latch.IsLocked'Old <=
-                        (Latch.Current_Latch = Latch.Current_Latch'Old and
-                         Latch.Latch_Timeout = Latch.Latch_Timeout'Old and
-                         Latch.IsLocked)) and
-
                      Latch.Latch_Timeout = Latch.Latch_Timeout'Old;
 
    ------------------------------------------------------------------
