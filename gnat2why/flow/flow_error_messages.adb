@@ -1000,10 +1000,9 @@ package body Flow_Error_Messages is
          function Is_Entity_And_Has_Warnings_Off
            (F : Flow_Id) return Boolean
          is
-           ((Present (F)
-               and then F.Kind in Direct_Mapping | Record_Field
-               and then
-                 Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F))));
+           (F.Kind in Direct_Mapping | Record_Field
+              and then
+            Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F)));
 
       begin
          --  ??? if Fn is not present, then there is no point to check F(n+1)
