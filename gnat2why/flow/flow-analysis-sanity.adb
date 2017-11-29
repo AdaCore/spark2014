@@ -594,20 +594,18 @@ package body Flow.Analysis.Sanity is
       Aspect_To_Fix : constant String :=
         (case FA.Kind is
             when Kind_Subprogram | Kind_Task =>
-              (if Present (FA.Refined_Global_N)
-               then "Refined_Global"
-               elsif Present (FA.Global_N)
-               then (if Present (FA.Refined_Depends_N)
-                     then "Refined_Depends"
-                     else "Global")
-               elsif Present (FA.Depends_N)
-               then (if Present (FA.Refined_Depends_N)
-                     then "Refined_Depends"
-                     else "Depends")
-               else "Global"),
+              (if    Present (FA.Refined_Global_N)  then "Refined_Global"
+               elsif Present (FA.Refined_Depends_N) then "Refined_Depends"
+               elsif Present (FA.Global_N)          then "Global"
+               elsif Present (FA.Depends_N)         then "Depends"
+               else                                      "Global"),
+
             when Kind_Package | Kind_Package_Body  =>
                "Initializes");
-      --  A string representation of the aspect that needs to be corrected
+      --  A string representation of the aspect that needs to be corrected; the
+      --  preference in choosing a contract matches the preference hardcoded in
+      --  Get_Global routine. If no contract is present, then ask the user to
+      --  add the Global contract, because usually it is the simplest one.
 
       SRM_Ref : constant String :=
         (case FA.Kind is
