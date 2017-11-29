@@ -211,8 +211,7 @@ package body Flow_Error_Messages is
                Loc := Instantiation_Location (Loc);
                File := To_Unbounded_String (File_Name (Loc));
                Line := Get_Physical_Line_Number (Loc);
-               Append (M, To_String (Context) &
-                         To_String (File) & ":" & Image (Integer (Line), 1));
+               Append (M, Context & File & ":" & Image (Integer (Line), 1));
             end loop;
          end;
       end if;
