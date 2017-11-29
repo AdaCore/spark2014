@@ -3201,9 +3201,7 @@ package body Flow.Analysis is
                      V : constant Flow_Graphs.Vertex_Id :=
                        Get_Initial_Vertex (FA.PDG, Input);
                   begin
-                     if V /= Flow_Graphs.Null_Vertex
-                       and then FA.Atr (V).Mode = Mode_Proof
-                     then
+                     if FA.Atr (V).Mode = Mode_Proof then
                         declare
                            Tracefile      : constant String :=
                              Fresh_Trace_File;
