@@ -704,9 +704,7 @@ package body Flow_Types is
    function Entire_Variable (F : Flow_Id) return Flow_Id is
    begin
       case F.Kind is
-         when Null_Value            |
-              Magic_String          |
-              Synthetic_Null_Export =>
+         when Magic_String | Synthetic_Null_Export =>
             return F;
 
          when Direct_Mapping | Record_Field =>
@@ -717,6 +715,9 @@ package body Flow_Types is
                                    then Enclosing_Concurrent_Type (F)
                                    else F.Node),
                        Facet   => Normal_Part);
+
+         when Null_Value =>
+            raise Program_Error;
       end case;
    end Entire_Variable;
 

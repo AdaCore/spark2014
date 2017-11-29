@@ -147,7 +147,10 @@ package body Flow.Slice is
    is
 
       function Flow_Equivalent (F : Flow_Id) return Flow_Id
-      with Post => Flow_Equivalent'Result.Variant = Normal_Use;
+      with Pre  => F.Kind in Direct_Mapping
+                           | Record_Field
+                           | Magic_String,
+           Post => Flow_Equivalent'Result.Variant = Normal_Use;
       --  Given a flow id, return the view the dependency relation cares about
 
       ---------------------
@@ -155,18 +158,7 @@ package body Flow.Slice is
       ---------------------
 
       function Flow_Equivalent (F : Flow_Id) return Flow_Id is
-      begin
-         case F.Kind is
-            when Direct_Mapping        |
-                 Magic_String          |
-                 Synthetic_Null_Export |
-                 Record_Field          =>
-               return Change_Variant (Entire_Variable (F), Normal_Use);
-
-            when Null_Value =>
-               raise Program_Error;
-         end case;
-      end Flow_Equivalent;
+        (Change_Variant (Entire_Variable (F), Normal_Use));
 
       In_Vertices   : Vertex_Sets.Set     := Vertex_Sets.Empty_Set;
       Out_Vertices  : Vertex_Sets.Set     := Vertex_Sets.Empty_Set;

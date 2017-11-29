@@ -454,8 +454,8 @@ package Flow_Types is
    --  constituent of a protected object then the protected object is returned.
 
    function Entire_Variable (F : Flow_Id) return Flow_Id
-   with Post => (if Present (F)
-                 then Is_Entire_Variable (Entire_Variable'Result));
+   with Pre  => Present (F),
+        Post => Is_Entire_Variable (Entire_Variable'Result);
    --  Returns the entire variable represented by F
 
    procedure Sprint_Flow_Id (F : Flow_Id);
