@@ -582,17 +582,17 @@ package body Flow_Error_Messages is
    function Escape (S : String) return String is
       R : Unbounded_String := Null_Unbounded_String;
    begin
-      for Index in S'Range loop
-         if S (Index) in '%' | '$' | '{' | '*' | '&' | '#' |
-                         '}' | '@' | '^' | '>' | '!' | '?' |
-                         '<' | '`' | ''' | '\' | '|' | '[' |
-                         ']'
-           or else Is_Upper (S (Index))
+      for C of S loop
+         if C in '%' | '$' | '{' | '*' | '&' | '#' |
+                 '}' | '@' | '^' | '>' | '!' | '?' |
+                 '<' | '`' | ''' | '\' | '|' | '[' |
+                 ']'
+           or else Is_Upper (C)
          then
             Append (R, "'");
          end if;
 
-         Append (R, S (Index));
+         Append (R, C);
       end loop;
 
       return To_String (R);
