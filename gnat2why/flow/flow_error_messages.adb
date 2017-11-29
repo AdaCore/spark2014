@@ -22,12 +22,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;   use Ada.Characters.Handling;
 with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Assumption_Types;          use Assumption_Types;
 with Atree;                     use Atree;
 with Common_Containers;         use Common_Containers;
-with Csets;                     use Csets;
 with Einfo;                     use Einfo;
 with Errout;                    use Errout;
 with Erroutc;                   use Erroutc;
@@ -588,7 +588,7 @@ package body Flow_Error_Messages is
                          '}' | '@' | '^' | '>' | '!' | '?' |
                          '<' | '`' | ''' | '\' | '|' | '[' |
                          ']'
-           or else Is_Upper_Case_Letter (S (Index))
+           or else Is_Upper (S (Index))
          then
             Append (R, "'");
          end if;
