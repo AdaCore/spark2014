@@ -72,10 +72,10 @@ package body Flow.Slice is
       begin
          case F.Variant is
             when Initial_Value | Final_Value =>
-               Deps.Include (V);
+               Deps.Insert (V);
             when In_View | Out_View =>
                if IPFA then
-                  Deps.Include (V);
+                  Deps.Insert (V);
                end if;
             when Initial_Grouping | Final_Grouping =>
                null;
@@ -199,7 +199,7 @@ package body Flow.Slice is
               and then FA.Atr (V_Final).Is_Export
               and then not Synthetic (F_Final)
             then
-               Out_Vertices.Include (V_Final);
+               Out_Vertices.Insert (V_Final);
             end if;
          end;
       end loop;
