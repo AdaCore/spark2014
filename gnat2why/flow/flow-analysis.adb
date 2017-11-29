@@ -3190,11 +3190,6 @@ package body Flow.Analysis is
    --  Start of processing for Find_Exports_Derived_From_Proof_Ins
 
    begin
-      --  For ghost subprograms we do NOT need to do this check
-      if Is_Ghost_Entity (FA.Analyzed_Entity) then
-         return;
-      end if;
-
       for O in FA.Dependency_Map.Iterate loop
          declare
             Output : Flow_Id          renames Dependency_Maps.Key (O);

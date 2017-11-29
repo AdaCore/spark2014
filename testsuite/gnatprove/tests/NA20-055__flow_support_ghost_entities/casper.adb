@@ -1,7 +1,7 @@
 package body Casper is
    procedure Ghost_Proc (Par : out Integer) is
    begin
-      Par := G1 + G2;  --  This is legal.
+      Par := G1 + G2;  --  This is illegal.
    end Ghost_Proc;
 
    procedure P (Par : out Integer) is
