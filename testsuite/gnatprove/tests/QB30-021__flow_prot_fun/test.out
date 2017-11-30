@@ -1,0 +1,6 @@
+p.adb:7:30: default initialization cannot depend on variable input "Pot" (SPARK RM 4.4(2))
+p.adb:21:30: default initialization cannot depend on variable input "Pot" (SPARK RM 4.4(2))
+p.adb:44:25: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+p.adb:56:30: default initialization cannot depend on variable input "PT" (SPARK RM 4.4(2))
+p.adb:64:30: default initialization cannot depend on variable input "PT" (SPARK RM 4.4(2))
+gnatprove: error during flow analysis and proof
