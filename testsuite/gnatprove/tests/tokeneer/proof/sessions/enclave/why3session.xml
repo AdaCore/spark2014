@@ -681,9 +681,9 @@
 </theory>
 <theory name="System__default_bit_order" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__any_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3733,9 +3733,9 @@
 </theory>
 <theory name="Clock__now" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Configdata__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Configdata__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Configdata__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Auditlog__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3779,9 +3779,9 @@
 </theory>
 <theory name="Certificatestore__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Usertoken__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Usertoken__status" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Usertoken__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Usertoken__input" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4861,9 +4861,9 @@
 </theory>
 <theory name="System__default_bit_order___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__default_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -5775,7 +5775,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__enrolop__subprogram_def" proved="true" sum="3d85139c50ccaef37564a40ffa5e92db">
+<theory name="Enclave__enrolop__subprogram_def" proved="true" sum="a6f2339207de38a8145fa6a91fcfe9ec">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -5811,7 +5811,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__adminlogout__subprogram_def" proved="true" sum="641f5db0c172a1201517d4ba6d4c675c">
+<theory name="Enclave__adminlogout__subprogram_def" proved="true" sum="eb0339ffc24746d35bf0649bad898ede">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -5853,7 +5853,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__progressadminactivity__subprogram_def" proved="true" sum="2931632981bb83562ad269390c98d950">
+<theory name="Enclave__progressadminactivity__subprogram_def" proved="true" sum="86fd4c7363dad7901fea45c17249c8de">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6099,7 +6099,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__startadminactivity__subprogram_def" proved="true" sum="0d9b8a07eaff5b606911ca0b9cc3d0a5">
+<theory name="Enclave__startadminactivity__subprogram_def" proved="true" sum="13ece669bfbb0eb15fc810853e7307df">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6282,7 +6282,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__readenrolmentdata__subprogram_def" proved="true" sum="40b75d47336ddc05ace2c13ab10d28c2">
+<theory name="Enclave__readenrolmentdata__subprogram_def" proved="true" sum="92179f7c6670bdc6c625394d24963745">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
@@ -6291,7 +6291,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__validateenrolmentdata__subprogram_def" proved="true" sum="dfc72bef222655e5815bea4d27c6240e">
+<theory name="Enclave__validateenrolmentdata__subprogram_def" proved="true" sum="7daf0cf52f37a52b24571780d9d15efc">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6309,7 +6309,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__completefailedenrolment__subprogram_def" proved="true" sum="927945a0859a1742c379d8ff14f862fc">
+<theory name="Enclave__completefailedenrolment__subprogram_def" proved="true" sum="21b79630c837913fa5798fdff5d943c6">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
@@ -6324,7 +6324,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__badadmintokentear__subprogram_def" proved="true" sum="149ec65202adcb56140b55ee9b6457d4">
+<theory name="Enclave__badadmintokentear__subprogram_def" proved="true" sum="3894b34c23148ccc96fa9ea204186d78">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6342,7 +6342,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__validateadmintoken__subprogram_def" proved="true" sum="3f67fd4b44d2f913c6e814816ffbc957">
+<theory name="Enclave__validateadmintoken__subprogram_def" proved="true" sum="3cfd6780cc2f3492e1ef4c1b299bafa6">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6402,7 +6402,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__completefailedadminlogon__subprogram_def" proved="true" sum="36d16a325493685d158c3da3d25d6e4c">
+<theory name="Enclave__completefailedadminlogon__subprogram_def" proved="true" sum="ef67ccd7fc4d0dfbdf24ccb30e9d41de">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6414,7 +6414,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__archivelogop__subprogram_def" proved="true" sum="28948e5d284df3a4bad816568e76cae2">
+<theory name="Enclave__archivelogop__subprogram_def" proved="true" sum="97e00f687814b4ef26a73d1d23e91789">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6480,7 +6480,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__archivelogop__startarchivelog__subprogram_def" proved="true" sum="101dafa4d255fb3a23478e696d127309">
+<theory name="Enclave__archivelogop__startarchivelog__subprogram_def" proved="true" sum="8300e0dd7b2fd7441fa0263eea4e76eb">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
@@ -6489,7 +6489,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__archivelogop__finisharchivelog__subprogram_def" proved="true" sum="b4ba326a13e69b51e015903a34bfad18">
+<theory name="Enclave__archivelogop__finisharchivelog__subprogram_def" proved="true" sum="c0aabc9262d87aa1d73cf1a0a702c6dc">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6516,7 +6516,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__updateconfigdataop__subprogram_def" proved="true" sum="6720123f79be343653d3c3c6d6d4a122">
+<theory name="Enclave__updateconfigdataop__subprogram_def" proved="true" sum="7dd82b12b6b482a9ff467b77aea85d86">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6552,7 +6552,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__overridedoorlockop__subprogram_def" proved="true" sum="24525e4dfbf38bb95a6854840cdb013a">
+<theory name="Enclave__overridedoorlockop__subprogram_def" proved="true" sum="3785486abd3cf1d8406da670a0da0e2a">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6633,7 +6633,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__shutdownop__subprogram_def" proved="true" sum="cdaad6e4768af8e52e39ae486cddf71c">
+<theory name="Enclave__shutdownop__subprogram_def" proved="true" sum="6f51d3f6740c74f708f6db6bde7d9f0a">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6720,7 +6720,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__adminop__subprogram_def" proved="true" sum="270836be9179f87730a96ce22ca1da48">
+<theory name="Enclave__adminop__subprogram_def" proved="true" sum="8f00872d37255244a3924f194a461dca">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6945,7 +6945,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enclave__startadminactivity__startadminop__subprogram_def" sum="d96b056cae1a3734716cc7ce47cc9848">
+<theory name="Enclave__startadminactivity__startadminop__subprogram_def" sum="450e926096c5aa55ae8053739ed24dbc">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6973,7 +6973,7 @@
   <proof prover="1"><result status="valid" steps="78"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
-  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="1235"/></proof>
   <proof prover="2"><result status="unknown" steps="939"/></proof>
   <proof prover="3"><result status="unknown" steps="167239"/></proof>
@@ -6997,15 +6997,14 @@
   <proof prover="1"><result status="valid" steps="39"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="postcondition">
-  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="1170"/></proof>
+  <proof prover="2"><result status="unknown" steps="971"/></proof>
   <proof prover="3"><result status="unknown" steps="184836"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="postcondition">
-  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="917"/></proof>
-  <proof prover="2"><result status="unknown" steps="1027"/></proof>
-  <proof prover="3"><result status="unknown" steps="186491"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="47"/></proof>

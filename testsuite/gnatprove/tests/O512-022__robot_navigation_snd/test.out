@@ -453,7 +453,7 @@ algorithm.adb:871:97: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:872:21: info: initialization of "driveSpeed" proved
 algorithm.adb:872:32: medium: float overflow check might fail
 algorithm.adb:872:34: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:872:53: medium: float overflow check might fail
+algorithm.adb:872:53: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:872:60: info: initialization of "theta" proved
 algorithm.adb:872:68: info: division check proved (CVC4: 1 VC)
 algorithm.adb:872:68: medium: float overflow check might fail

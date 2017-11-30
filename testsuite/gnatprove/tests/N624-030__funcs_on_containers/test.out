@@ -42,7 +42,7 @@ find_map.adb:13:41: info: initialization of "Result.TC" proved
 find_map.adb:13:41: info: initialization of private part of "Result" proved
 find_map.adb:13:64: info: range check proved (CVC4: 1 VC)
 find_map.adb:15:13: info: loop invariant initialization proved (CVC4: 4 VC)
-find_map.adb:15:13: info: loop invariant preservation proved (CVC4: 3 VC; Z3: 1 VC)
+find_map.adb:15:13: info: loop invariant preservation proved (CVC4: 4 VC)
 find_map.adb:16:25: info: initialization of "Result.Buckets" proved
 find_map.adb:16:25: info: initialization of "Result.Free" proved
 find_map.adb:16:25: info: initialization of "Result.Length" proved
@@ -85,7 +85,7 @@ find_map.adb:44:68: info: index check proved (CVC4: 2 VC)
 find_map.adb:49:17: info: precondition proved (CVC4: 5 VC)
 find_map.ads:23:30: info: range check proved (CVC4: 1 VC)
 find_map.ads:24:30: info: range check proved (CVC4: 1 VC)
-find_map.ads:27:14: info: postcondition proved (CVC4: 7 VC)
+find_map.ads:27:14: info: postcondition proved (Z3: 7 VC)
 find_map.ads:28:47: info: index check proved (CVC4: 2 VC)
 find_map.ads:29:17: info: precondition proved (CVC4: 2 VC)
 find_map.ads:29:46: info: index check proved (CVC4: 4 VC)

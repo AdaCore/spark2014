@@ -2,10 +2,10 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="1600" memlimit="0"/>
-<prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="120" steplimit="71000" memlimit="0"/>
-<prover id="2" name="CVC4_CE" version="1.5-gnatprove" timelimit="10" steplimit="71000" memlimit="0"/>
-<prover id="3" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="1730000" memlimit="0"/>
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="2500" memlimit="0"/>
+<prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="120" steplimit="102500" memlimit="0"/>
+<prover id="2" name="CVC4_CE" version="1.5-gnatprove" timelimit="10" steplimit="102500" memlimit="0"/>
+<prover id="3" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="2450000" memlimit="0"/>
 <file name="../../../gnatprove/array_applications.mlw">
 <theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -301,7 +301,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Array_applications__fibonacci_implicit__subprogram_def" sum="b784c585c5f0c5fcf39ec727648aacc4">
+<theory name="Array_applications__fibonacci_implicit__subprogram_def" sum="89c28db20dd6f7cb65e89e9f689b6bff">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -336,7 +336,7 @@
   </goal>
   <goal name="WP_parameter def.10" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="175"/></proof>
-  <proof prover="1"><result status="unknown" steps="71013"/></proof>
+  <proof prover="1"><result status="unknown" steps="102512"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -345,13 +345,13 @@
   <proof prover="1"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition" proved="true">
-  <proof prover="0"><result status="failure" time="0.41"/></proof>
-  <proof prover="1"><result status="unknown" steps="71018"/></proof>
+  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="1"><result status="unknown" steps="102502"/></proof>
   <proof prover="3"><result status="valid" steps="1688544"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="77"/></proof>
-  <proof prover="1"><result status="unknown" steps="71021"/></proof>
+  <proof prover="1"><result status="unknown" steps="102521"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="13"/></proof>
@@ -360,15 +360,15 @@
   <proof prover="1"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="postcondition">
-  <proof prover="0"><result status="failure" time="0.37"/></proof>
-  <proof prover="1"><result status="unknown" steps="3040"/></proof>
-  <proof prover="2"><result status="unknown" steps="3042"/></proof>
+  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="1"><result status="unknown" steps="3388"/></proof>
+  <proof prover="2"><result status="unknown" steps="3390"/></proof>
   <proof prover="3"><result status="unknown" steps="733342"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__subprogram_def" proved="true" sum="217b905cbc69e2b18b77b783cb75a440">
+<theory name="Array_applications__fibonacci_implicit_ok__subprogram_def" proved="true" sum="e7ecd1f96bc98280dd5e62e92e1690c9">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -403,7 +403,7 @@
   </goal>
   <goal name="WP_parameter def.10" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="175"/></proof>
-  <proof prover="1"><result status="unknown" steps="71013"/></proof>
+  <proof prover="1"><result status="unknown" steps="102512"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -412,13 +412,13 @@
   <proof prover="1"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition" proved="true">
-  <proof prover="0"><result status="failure" time="0.44"/></proof>
-  <proof prover="1"><result status="unknown" steps="71018"/></proof>
+  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="1"><result status="unknown" steps="102502"/></proof>
   <proof prover="3"><result status="valid" steps="1688544"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="77"/></proof>
-  <proof prover="1"><result status="unknown" steps="71021"/></proof>
+  <proof prover="1"><result status="unknown" steps="102521"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="13"/></proof>
@@ -427,12 +427,12 @@
   <proof prover="1"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="6177"/></proof>
+  <proof prover="1"><result status="valid" steps="6432"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Array_applications__fibonacci_explicit__subprogram_def" sum="8295d3ebfd4085d651860b0e8703cecd">
+<theory name="Array_applications__fibonacci_explicit__subprogram_def" sum="5718309760fcfb7ae0e1763b497a149a">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -460,7 +460,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="26225"/></proof>
+  <proof prover="1"><result status="valid" steps="27224"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -493,7 +493,7 @@
   <proof prover="1"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="1207"/></proof>
+  <proof prover="1"><result status="valid" steps="1261"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -502,7 +502,7 @@
   <proof prover="1"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="36162"/></proof>
+  <proof prover="1"><result status="valid" steps="37635"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="13"/></proof>
@@ -512,24 +512,24 @@
   </goal>
   <goal name="WP_parameter def.25" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="82"/></proof>
-  <proof prover="1"><result status="unknown" steps="71013"/></proof>
+  <proof prover="1"><result status="unknown" steps="102517"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="208"/></proof>
+  <proof prover="1"><result status="valid" steps="226"/></proof>
   </goal>
   <goal name="WP_parameter def.27" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="439"/></proof>
+  <proof prover="1"><result status="valid" steps="457"/></proof>
   </goal>
   <goal name="WP_parameter def.28" expl="postcondition">
-  <proof prover="0"><result status="failure" time="0.28"/></proof>
-  <proof prover="1"><result status="unknown" steps="71013"/></proof>
-  <proof prover="2"><result status="unknown" steps="71013"/></proof>
-  <proof prover="3"><result status="unknown" steps="1730226"/></proof>
+  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="1"><result status="unknown" steps="102502"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="3"><result status="unknown" steps="2450226"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__subprogram_def" sum="36cf1acea2a7dccaae25ec4f593556da">
+<theory name="Array_applications__fibonacci_explicit_ok__subprogram_def" sum="14044a129062ca98caa86097d419d26d">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -557,7 +557,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="26225"/></proof>
+  <proof prover="1"><result status="valid" steps="27224"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -590,7 +590,7 @@
   <proof prover="1"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="1207"/></proof>
+  <proof prover="1"><result status="valid" steps="1261"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -599,7 +599,7 @@
   <proof prover="1"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="36162"/></proof>
+  <proof prover="1"><result status="valid" steps="37635"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="13"/></proof>
@@ -609,19 +609,19 @@
   </goal>
   <goal name="WP_parameter def.25" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="82"/></proof>
-  <proof prover="1"><result status="unknown" steps="71013"/></proof>
+  <proof prover="1"><result status="unknown" steps="102517"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="208"/></proof>
+  <proof prover="1"><result status="valid" steps="226"/></proof>
   </goal>
   <goal name="WP_parameter def.27" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="439"/></proof>
+  <proof prover="1"><result status="valid" steps="457"/></proof>
   </goal>
   <goal name="WP_parameter def.28" expl="postcondition">
-  <proof prover="0"><result status="failure" time="0.39"/></proof>
-  <proof prover="1"><result status="unknown" steps="71002"/></proof>
-  <proof prover="2"><result status="unknown" steps="71002"/></proof>
-  <proof prover="3"><result status="unknown" steps="1730226"/></proof>
+  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="1"><result status="unknown" steps="102518"/></proof>
+  <proof prover="2"><result status="unknown" steps="102514"/></proof>
+  <proof prover="3"><result status="unknown" steps="2450226"/></proof>
   </goal>
  </transf>
  </goal>

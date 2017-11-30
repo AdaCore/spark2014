@@ -531,9 +531,9 @@
 </theory>
 <theory name="System__default_bit_order" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__any_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -2961,9 +2961,9 @@
 </theory>
 <theory name="Clock__now" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Configdata__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Configdata__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Configdata__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Auditlog__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3219,7 +3219,7 @@
 </theory>
 <theory name="Temp___String_Literal_167" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_168" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_170" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Enrolment__validate__validateandaddkey" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3711,9 +3711,9 @@
 </theory>
 <theory name="System__default_bit_order___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__default_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4225,7 +4225,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enrolment__validate__subprogram_def" sum="9f6268771d550b5d13d5b27b9fb54c6f">
+<theory name="Enrolment__validate__subprogram_def" sum="f0c298d3aaca8d2071e075258cf0cdf5">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
@@ -4270,7 +4270,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enrolment__validate__makedescription__subprogram_def" proved="true" sum="810dc7fcd8dcde6ba184e038b09634dc">
+<theory name="Enrolment__validate__makedescription__subprogram_def" proved="true" sum="a0a924909b227cdec9d0cc5be8f83850">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4315,7 +4315,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enrolment__validate__validateandaddkey__subprogram_def" proved="true" sum="87f6b1b6bcc8bed7d4f8f0bfccd6c7ba">
+<theory name="Enrolment__validate__validateandaddkey__subprogram_def" proved="true" sum="8ca18e9e897f02140673414ac7fbd06e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
@@ -4340,7 +4340,7 @@
   <proof prover="1"><result status="valid" steps="184"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="389"/></proof>
+  <proof prover="1"><result status="valid" steps="379"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="361"/></proof>

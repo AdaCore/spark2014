@@ -185,7 +185,7 @@ test_vdll.adb:141:44: info: initialization of private part of "L3" proved
 test_vdll.adb:142:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:142:36: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:142:53: info: initialization of private part of "L3" proved
-test_vdll.adb:143:19: info: assertion proved (Z3: 1 VC)
+test_vdll.adb:143:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:143:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:143:37: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:143:54: info: initialization of private part of "L3" proved

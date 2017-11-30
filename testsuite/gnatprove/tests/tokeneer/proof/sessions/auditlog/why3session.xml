@@ -524,9 +524,9 @@
 </theory>
 <theory name="System__default_bit_order" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__any_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3906,11 +3906,11 @@
 </theory>
 <theory name="Temp___String_Literal_1230" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1231" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1232" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Temp___String_Literal_1236" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1237" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1238" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Auditlog__getstartandendtimefromfile__converttimestotext__T30b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3970,11 +3970,11 @@
 </theory>
 <theory name="Temp___String_Literal_1539" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1540" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1541" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Temp___String_Literal_1545" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1546" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1547" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Temp___String_Literal_1565" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3996,9 +3996,9 @@
 </theory>
 <theory name="System__default_bit_order___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__default_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4616,7 +4616,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__addelementtolog__subprogram_def" proved="true" sum="7ff43ca6346a2988afef08e0a0fc8101">
+<theory name="Auditlog__addelementtolog__subprogram_def" proved="true" sum="19f8101bcafacb9b41d92e75fc3a04c9">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4737,10 +4737,10 @@
   <proof prover="0"><result status="valid" steps="87"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="93"/></proof>
+  <proof prover="0"><result status="valid" steps="94"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="113"/></proof>
+  <proof prover="0"><result status="valid" steps="114"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -4749,16 +4749,16 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="213"/></proof>
+  <proof prover="0"><result status="valid" steps="217"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="310"/></proof>
+  <proof prover="0"><result status="valid" steps="311"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="197"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="427"/></proof>
+  <proof prover="0"><result status="valid" steps="428"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="209"/></proof>
@@ -4883,13 +4883,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__getstartandendtimefromfile__subprogram_def" proved="true" sum="9c680ff94b9e5e8dcaf4af596da647eb">
+<theory name="Auditlog__getstartandendtimefromfile__subprogram_def" proved="true" sum="ecceb63f0883166832d746dc26b622e8">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__getstartandendtimefromfile__converttimestotext__subprogram_def" proved="true" sum="73414285a81c3f6b55da525bc488c33c">
+<theory name="Auditlog__getstartandendtimefromfile__converttimestotext__subprogram_def" proved="true" sum="4d832a1cc440ffd8aaef31277cba8cc3">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4919,7 +4919,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__updateendtimefromfile__overwritetimeintext__subprogram_def" proved="true" sum="5d0fdce6800b8c973db3735b694a60c1">
+<theory name="Auditlog__updateendtimefromfile__overwritetimeintext__subprogram_def" proved="true" sum="5ca75d71befb80bef187dd633a6058a2">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -5021,7 +5021,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__addelementtologfile__subprogram_def" proved="true" sum="3ec2835702ff918e3c21bb24adc8136e">
+<theory name="Auditlog__addelementtologfile__subprogram_def" proved="true" sum="c4ca4395cb031a7c76f70f32700959cb">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -5072,7 +5072,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__addelementtologfile__addelementtocurrentfile__subprogram_def" proved="true" sum="bbaf2723206c742fa48f8160ac2bc224">
+<theory name="Auditlog__addelementtologfile__addelementtocurrentfile__subprogram_def" proved="true" sum="eabc4cc3c8f4f1bb1afb911ed48098cc">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -5093,7 +5093,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__addelementtologfile__addelementtonextfile__subprogram_def" proved="true" sum="3973752945bfa6604301b6519c66ee00">
+<theory name="Auditlog__addelementtologfile__addelementtonextfile__subprogram_def" proved="true" sum="38ec7f15dbaa93bb4d8340c9a5a904ff">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -5130,7 +5130,7 @@
   <proof prover="0"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="64"/></proof>
+  <proof prover="0"><result status="valid" steps="66"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="51"/></proof>
@@ -5141,7 +5141,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__addelementtologfilewithtruncatechecks__subprogram_def" proved="true" sum="16bc7494575914bfec7756c8781b9701">
+<theory name="Auditlog__addelementtologfilewithtruncatechecks__subprogram_def" proved="true" sum="b94a533a753ce6f336699b6fdd35fe2f">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">

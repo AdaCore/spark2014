@@ -172,7 +172,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Reduced_02__double_to_single__subprogram_def" proved="true" sum="50c390174b73818b97c5f53f611552ee">
+<theory name="Reduced_02__double_to_single__subprogram_def" proved="true" sum="f99b72995056a5440e13834db76cf1a4">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">

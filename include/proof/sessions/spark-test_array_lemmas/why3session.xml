@@ -387,10 +387,10 @@
   <proof prover="1"><result status="valid" steps="30"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="50"/></proof>
+  <proof prover="1"><result status="valid" steps="100"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="117"/></proof>
+  <proof prover="1"><result status="valid" steps="200"/></proof>
   </goal>
  </transf>
  </goal>
@@ -432,7 +432,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="79"/></proof>
+  <proof prover="1"><result status="valid" steps="100"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -447,7 +447,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="116"/></proof>
+  <proof prover="1"><result status="valid" steps="200"/></proof>
   </goal>
  </transf>
  </goal>
