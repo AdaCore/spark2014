@@ -15,7 +15,7 @@
 --    Provides a "current time" for each system cycle.
 --
 ------------------------------------------------------------------
-with BasicTypes;
+with CommonTypes;
 
 package Clock
   with Abstract_State => (CurrentTime,
@@ -178,11 +178,11 @@ is
    --
    ------------------------------------------------------------------
    procedure ConstructTime
-     (Year    : in     BasicTypes.Unsigned32T;
-      Month   : in     BasicTypes.Unsigned32T;
-      Day     : in     BasicTypes.Unsigned32T;
-      Hour    : in     BasicTypes.Unsigned32T;
-      Min     : in     BasicTypes.Unsigned32T;
+     (Year    : in     CommonTypes.Unsigned32T;
+      Month   : in     CommonTypes.Unsigned32T;
+      Day     : in     CommonTypes.Unsigned32T;
+      Hour    : in     CommonTypes.Unsigned32T;
+      Min     : in     CommonTypes.Unsigned32T;
       TheTime :    out TimeT;
       Success :    out Boolean)
      with Depends => ((Success,

@@ -34,6 +34,9 @@ package body DoorAPI is
                                        Position => 1,
                                        New_Item => "door.getState()"),
          Length => 15);
+      pragma Annotate (GNATprove, False_Positive,
+                       "length check might fail",
+                       "Call to Overwrite will return here a string of the expected length");
       DoorState : DoorStateT := Error;
       IsOp,
       IsClosed,
@@ -54,8 +57,14 @@ package body DoorAPI is
             IsOp := Boolean'Value
               (MsgProc.GetStringByKey
                 (Dic => StateDict, Key => "operational?"));
+            pragma Annotate (GNATprove, Intentional,
+                             "precondition might fail",
+                             "Malformed input should trigger an exception here");
             IsClosed := Boolean'Value
               (MsgProc.GetStringByKey (Dic => StateDict, Key => "closed?"));
+            pragma Annotate (GNATprove, Intentional,
+                             "precondition might fail",
+                             "Malformed input should trigger an exception here");
          end;
 
          if IsOp then

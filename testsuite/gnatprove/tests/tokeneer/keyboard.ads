@@ -15,7 +15,7 @@
 --    Provides facitities for reading the keyboard.
 --
 ------------------------------------------------------------------
-with BasicTypes;
+with CommonTypes;
 
 package Keyboard
   with Abstract_State => (Inputs with External => Async_Writers)
@@ -73,7 +73,7 @@ is
    -- Traceto: FD.Enclave.ValidateOpRequestOK
    -- Traceto: FD.Enclave.ValidateOpRequestFail
    ------------------------------------------------------------------
-   procedure Read (DataPresence :    out BasicTypes.PresenceT;
+   procedure Read (DataPresence :    out CommonTypes.PresenceT;
                    Data         :    out DataT)
      with Global  => (Input  => Inputs),
           Depends => ((Data, DataPresence) => Inputs);

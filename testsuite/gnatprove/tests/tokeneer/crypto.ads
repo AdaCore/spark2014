@@ -20,7 +20,7 @@
 --
 ------------------------------------------------------------------
 
-with BasicTypes,
+with CommonTypes,
      CertTypes,
      CryptoTypes,
      SPARK_IO;
@@ -37,7 +37,7 @@ package Crypto is
    -- sensible size (128 bytes).
 
    subtype KeyPaddingIndexT is Integer range 1..67;
-   type KeyPaddingT is array(KeyPaddingIndexT) of BasicTypes.ByteT;
+   type KeyPaddingT is array(KeyPaddingIndexT) of CommonTypes.ByteT;
 
    -- Each attribute will have a corresponding bit in AttrMask, which
    -- will be set if the attribute is defined:
@@ -53,8 +53,8 @@ package Crypto is
    type KeyTemplateT is record
       AttrMask  : MaskT;                   -- 4 bytes
       Owner     : CryptoTypes.IssuerT;     -- 48 bytes
-      KeyID     : BasicTypes.Unsigned32T;  -- 4 bytes
-      KeyLength : BasicTypes.Unsigned32T;  -- 4 bytes
+      KeyID     : CommonTypes.Unsigned32T;  -- 4 bytes
+      KeyLength : CommonTypes.Unsigned32T;  -- 4 bytes
       IsPublic  : Boolean;                 -- 1 byte
       Padding   : KeyPaddingT;             -- 128 - 61 = 67 bytes
    end record;
@@ -64,7 +64,7 @@ package Crypto is
 
    type HandleCountT is range 0..20;
    subtype HandleArrayI is HandleCountT range 1..HandleCountT'Last;
-   type HandleArrayT is array(HandleArrayI) of BasicTypes.Unsigned32T;
+   type HandleArrayT is array(HandleArrayI) of CommonTypes.Unsigned32T;
 
    type ReturnValueT is
      (Ok,
@@ -100,10 +100,10 @@ package Crypto is
    -- DigestT represents the digest information contained in a
    -- certificate. Padded for realistic size.
    type DigestPadI is range 1..20;
-   type DigestPadT is array (DigestPadI) of BasicTypes.ByteT;
+   type DigestPadT is array (DigestPadI) of CommonTypes.ByteT;
 
    type DigestT is record
-      DigestID     : BasicTypes.Unsigned32T;
+      DigestID     : CommonTypes.Unsigned32T;
       SignReturn   : ReturnValueT;
       VerifyReturn : ReturnValueT;
       Pad          : DigestPadT;
@@ -136,7 +136,7 @@ package Crypto is
    --
    ------------------------------------------------------------------
    procedure CreateObject (Template     : in     KeyTemplateT;
-                           ObjectHandle :    out BasicTypes.Unsigned32T;
+                           ObjectHandle :    out CommonTypes.Unsigned32T;
                            ReturnValue  :    out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
@@ -158,7 +158,7 @@ package Crypto is
    --    found matches.
    --
    ------------------------------------------------------------------
-   procedure FindObjects (HandleCount   : in out BasicTypes.Unsigned32T;
+   procedure FindObjects (HandleCount   : in out CommonTypes.Unsigned32T;
                           ObjectHandles :    out HandleArrayT;
                           ReturnValue   :    out Crypto.ReturnValueT);
 
@@ -195,7 +195,7 @@ package Crypto is
    --
    ------------------------------------------------------------------
    procedure DigestUpdate (DataBlock   : in     HundredByteArrayT;
-                           ByteCount   : in     BasicTypes.Unsigned32T;
+                           ByteCount   : in     CommonTypes.Unsigned32T;
                            ReturnValue :    out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
@@ -207,7 +207,7 @@ package Crypto is
    --
    ------------------------------------------------------------------
    procedure DigestFinal (Digest       : out DigestT;
-                          DigestLength : out BasicTypes.Unsigned32T;
+                          DigestLength : out CommonTypes.Unsigned32T;
                           ReturnValue  : out Crypto.ReturnValueT);
 
    ------------------------------------------------------------------
@@ -218,7 +218,7 @@ package Crypto is
    --
    ------------------------------------------------------------------
    procedure Sign (Mechanism    : in     CryptoTypes.AlgorithmT;
-                   KeyHandle    : in     BasicTypes.Unsigned32T;
+                   KeyHandle    : in     CommonTypes.Unsigned32T;
                    Digest       : in     DigestT;
                    Signature    :    out CertTypes.SignatureT;
                    ReturnValue  :    out Crypto.ReturnValueT);
@@ -232,7 +232,7 @@ package Crypto is
    --
    ------------------------------------------------------------------
    procedure Verify (Mechanism    : in     CryptoTypes.AlgorithmT;
-                     KeyHandle    : in     BasicTypes.Unsigned32T;
+                     KeyHandle    : in     CommonTypes.Unsigned32T;
                      Digest       : in     DigestT;
                      Signature    : in     CertTypes.SignatureT;
                      ReturnValue  :    out Crypto.ReturnValueT);
@@ -244,7 +244,7 @@ package Crypto is
    --    Extracts attribute data from the object pointed to by KeyHandle.
    --
    ------------------------------------------------------------------
-   procedure GetAttributeValue (KeyHandle   : in     BasicTypes.Unsigned32T;
+   procedure GetAttributeValue (KeyHandle   : in     CommonTypes.Unsigned32T;
                                 Template    : in out KeyTemplateT;
                                 ReturnValue :    out Crypto.ReturnValueT);
 

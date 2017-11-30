@@ -16,7 +16,7 @@
 --
 ------------------------------------------------------------------
 
-with BasicTypes,
+with CommonTypes,
      CertProcessing,
      KeyStore;
 
@@ -60,9 +60,9 @@ package body Cert is
    is
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
       FullString : String := "Issuer: "
-        & CryptoTypes.IssuerIdT'Image (Contents.ID.Issuer.ID)
+        & CryptoTypes.IssuerIdT_Image (Contents.ID.Issuer.ID)
         & " SerialNo:  "
-        & CertTypes.SerialNumberT'Image (Contents.ID.SerialNumber);
+        & CertTypes.SerialNumberT_Image (Contents.ID.SerialNumber);
    begin
       -- if the Full string is shorter then use it all otherwise
       -- truncate it.

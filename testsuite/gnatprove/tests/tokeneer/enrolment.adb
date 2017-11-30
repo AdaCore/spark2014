@@ -18,6 +18,7 @@
 
 with Cert.ID,
      CertTypes,
+     CommonTypes,
      CryptoTypes,
      KeyStore,
      AuditLog,
@@ -57,14 +58,14 @@ package body Enrolment is
       -- Implementation Notes:
       --    Hidden from SPARK because of use of slicing.
       ------------------------------------------------------------------
-      function MakeDescription (Detail : in String)
+      function MakeDescription (Detail : in CommonTypes.StringF1L1000)
                                 return AuditTypes.DescriptionT
         with Global => CertNo
       is
          Result  : AuditTypes.DescriptionT := AuditTypes.NoDescription;
          TheDesc : constant String :=
                                "Enrolment failed at certificate" &
-                               Positive'Image(CertNo) & " - " &
+                               CommonTypes.Integer_Image(CertNo) & " - " &
                                Detail;
       begin
          if TheDesc'Last < Result'Last then
@@ -120,9 +121,9 @@ package body Enrolment is
                                                    KeyStore.Store,
                                                    TheFile),
                          TheFile              =>+ null),
-             Post    => ((IsTIS and then KeyAdded) <=
+             Post    => (if IsTIS and KeyAdded then
                             KeyStore.PrivateKeyPresent) and
-                         ((not (IsTIS and then KeyAdded)) <=
+                         (if (not (IsTIS and KeyAdded)) then
                             (KeyStore.PrivateKeyPresent =
                                KeyStore.PrivateKeyPresent'Old))
       is
@@ -234,6 +235,9 @@ package body Enrolment is
       -- Continue through the certificates until the end is
       -- reached, or certificate validation fails
       while not File.EndOfFile(TheFile) and DataOK loop
+         pragma Loop_Invariant (KeyStore.PrivateKeyPresent);
+         pragma Loop_Invariant (CertNo >= 2);
+
          if not File.EndOfLine(TheFile) then
             CertNo := CertNo + 1;
             pragma Annotate (GNATprove, False_Positive,

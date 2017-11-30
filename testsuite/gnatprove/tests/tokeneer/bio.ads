@@ -17,7 +17,7 @@
 ------------------------------------------------------------------
 with AuditLog,
      AuditTypes,
-     BasicTypes,
+     CommonTypes,
      Clock,
      ConfigData,
      IandATypes;
@@ -37,7 +37,7 @@ is
    -- Traceunit : C.Bio.Poll
    -- Traceto   : FD.Interfac.TISPoll
    ------------------------------------------------------------------
-   procedure Poll (FingerPresent :    out BasicTypes.PresenceT)
+   procedure Poll (FingerPresent :    out CommonTypes.PresenceT)
      with Global  => Input,
           Depends => (FingerPresent => Input);
 

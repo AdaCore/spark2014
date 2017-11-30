@@ -24,8 +24,8 @@ with AuditLog;
 with TokenTypes;
 use type TokenTypes.TryT;
 
-with BasicTypes;
-use type BasicTypes.Unsigned32T;
+with CommonTypes;
+use type CommonTypes.Unsigned32T;
 
 package body TokenReader
   with Refined_State => (State  => ReaderStatus,
@@ -44,7 +44,7 @@ is
       TokenConnected : Boolean;
       TokenHandle    : Interfac.CardHandleT;
       CurrentStatus  : Interfac.ValidReaderStateT;
-      LastFault      : BasicTypes.Unsigned32T;
+      LastFault      : CommonTypes.Unsigned32T;
    end record;
 
    NoReaderInfo : constant ReaderInfoT :=
@@ -54,7 +54,7 @@ is
                   TokenConnected => False,
                   TokenHandle    => Interfac.NullHandle,
                   CurrentStatus  => Interfac.Unaware,
-                  LastFault      => BasicTypes.Unsigned32T'First);
+                  LastFault      => CommonTypes.Unsigned32T'First);
 
    type ReaderInfoArrayT is array (ReaderT) of ReaderInfoT;
 
@@ -88,7 +88,7 @@ is
    -- Implementation Notes:
    --    None
    ------------------------------------------------------------------
-   function GetResponseCode (ResponseCode : BasicTypes.Unsigned32T)
+   function GetResponseCode (ResponseCode : CommonTypes.Unsigned32T)
                             return Interfac.ResponseCodeT
    is (if ResponseCode >=
             Interfac.ResponseCodeT'Pos(Interfac.ResponseCodeT'First)
@@ -107,7 +107,7 @@ is
    -- Implementation Notes:
    --    None
    ------------------------------------------------------------------
-   function GetReaderState (ReaderState : BasicTypes.Unsigned32T)
+   function GetReaderState (ReaderState : CommonTypes.Unsigned32T)
                            return Interfac.ReaderStateT
    is (if ReaderState >=
             Interfac.ReaderStateT'Pos(Interfac.ReaderStateT'First)
@@ -126,7 +126,7 @@ is
    -- Implementation Notes:
    --    None
    ------------------------------------------------------------------
-   function GetCardState (CardState : BasicTypes.Unsigned32T)
+   function GetCardState (CardState : CommonTypes.Unsigned32T)
                          return Interfac.CardStateT
    is (if CardState >=
             Interfac.CardStateT'Pos(Interfac.CardStateT'First)
@@ -146,8 +146,9 @@ is
    --    None
    ------------------------------------------------------------------
    function MakeDescription
-     (Text         : String;
-      ResponseCode : BasicTypes.Unsigned32T) return AuditTypes.DescriptionT
+     (Text         : CommonTypes.StringF1L1000;
+      ResponseCode : CommonTypes.Unsigned32T) return AuditTypes.DescriptionT
+   with Post => True  --  no contextual analysis needed
    is
       Result : AuditTypes.DescriptionT := AuditTypes.NoDescription;
       TheCodeName : Interfac.ResponseCodeT;
@@ -171,8 +172,8 @@ is
                                      TheCodeName))
       is
          FullString : constant String := Text & ": "
-           & Interfac.ResponseCodeT'Image(TheCodeName)& " ("
-           & BasicTypes.Unsigned32T'Image(ResponseCode)& ")";
+           & Interfac.ResponseCodeT_Image(TheCodeName)& " ("
+           & CommonTypes.Unsigned32T_Image(ResponseCode)& ")";
       begin
          -- if the Full string is shorter then use it all otherwise
          -- truncate it.
@@ -215,8 +216,8 @@ is
                                                    Interfac.ReaderStatus),
                               ReaderStatus => Interfac.ReaderStatus)
    is
-      NumberReaders : BasicTypes.Unsigned32T;
-      ResponseCode  : BasicTypes.Unsigned32T;
+      NumberReaders : CommonTypes.Unsigned32T;
+      ResponseCode  : CommonTypes.Unsigned32T;
       Readers       : Interfac.ReaderNameArrayT;
 
       ------------------------------------------------------------------
@@ -271,9 +272,9 @@ is
       if ResponseCode = Interfac.ResponseCodeT'Pos(Interfac.Success) then
 
          if NumberReaders >=
-              BasicTypes.Unsigned32T(Interfac.ReaderArrayI'First) and
+              CommonTypes.Unsigned32T(Interfac.ReaderArrayI'First) and
            NumberReaders <=
-             BasicTypes.Unsigned32T(Interfac.ReaderArrayI'Last)
+             CommonTypes.Unsigned32T(Interfac.ReaderArrayI'Last)
          then
             for I in Interfac.ReaderArrayI
               range 1..Interfac.ReaderArrayI(NumberReaders)
@@ -368,8 +369,8 @@ is
                                                         Interfac.ReaderStatus,
                                                         Reader))
    is
-      ResponseCode  : BasicTypes.Unsigned32T;
-      RawNewState   : BasicTypes.Unsigned32T;
+      ResponseCode  : CommonTypes.Unsigned32T;
+      RawNewState   : CommonTypes.Unsigned32T;
       NewState      : Interfac.ReaderStateT;
 
       StatusChangeTimeout : constant := 0;
@@ -391,7 +392,7 @@ is
                                   Reader,
                                   ReaderStatus))
       is
-        UnusedResponseCode : BasicTypes.Unsigned32T;
+        UnusedResponseCode : CommonTypes.Unsigned32T;
       begin
          pragma Warnings (Off);
          if ReaderStatus(Reader).TokenConnected then
@@ -472,7 +473,7 @@ is
                                            Reader))
       is
         TheCardHandle : Interfac.CardHandleT;
-        ResponseCode  : BasicTypes.Unsigned32T;
+        ResponseCode  : CommonTypes.Unsigned32T;
 
         ------------------------------------------------------------------
         -- MarkTokenConnected
@@ -549,9 +550,9 @@ is
                                            Interfac.ReaderStatus,
                                            Reader))
       is
-        RawCardState : BasicTypes.Unsigned32T;
+        RawCardState : CommonTypes.Unsigned32T;
         CardState    : Interfac.CardStateT;
-        ResponseCode : BasicTypes.Unsigned32T;
+        ResponseCode : CommonTypes.Unsigned32T;
         TheATR       : TokenTypes.TokenIDT;
 
         ------------------------------------------------------------------
@@ -721,12 +722,12 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   function TheTokenPresence (Reader :  ReaderT) return BasicTypes.PresenceT
+   function TheTokenPresence (Reader :  ReaderT) return CommonTypes.PresenceT
    is
      (if ReaderStatus(Reader).TokenTry = TokenTypes.NoToken then
-         BasicTypes.Absent
+         CommonTypes.Absent
       else
-         BasicTypes.Present)
+         CommonTypes.Present)
      with Refined_Global => ReaderStatus;
 
    ------------------------------------------------------------------
@@ -764,7 +765,7 @@ is
    is
       StatusOK     : Boolean;
       Exists       : Boolean := True;
-      ResponseCode : BasicTypes.Unsigned32T;
+      ResponseCode : CommonTypes.Unsigned32T;
    begin
 
       RawCert := CertTypes.NullRawCertificate;
@@ -827,7 +828,7 @@ is
 
    is
       StatusOK     : Boolean;
-      ResponseCode : BasicTypes.Unsigned32T;
+      ResponseCode : CommonTypes.Unsigned32T;
    begin
         Interfac.UpdateAuthCert
          (CardHandle   => ReaderStatus(User).TokenHandle,

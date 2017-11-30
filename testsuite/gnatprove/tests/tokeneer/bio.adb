@@ -16,11 +16,11 @@
 --
 ------------------------------------------------------------------
 with Bio.Interfac,
-     BasicTypes;
+     CommonTypes;
 
 with Unchecked_Conversion;
 
-use type BasicTypes.Unsigned32T;
+use type CommonTypes.Unsigned32T;
 
 package body Bio
   with Refined_State => (Input => Bio.Interfac.Input)
@@ -79,6 +79,15 @@ is
 
    for ReturnT'Size use 32;
 
+   function ReturnT_Image (X : ReturnT) return CommonTypes.StringF1L1000 is
+      (ReturnT'Image (X));
+   pragma Annotate (GNATprove, False_Positive,
+                    "range check might fail",
+                    "Image of enums of type ReturnT are short strings starting at index 1");
+   pragma Annotate (GNATprove, False_Positive,
+                    "predicate check might fail",
+                    "Image of enums of type ReturnT are short strings starting at index 1");
+
    ------------------------------------------------------------------
    -- ValueOf
    --
@@ -89,10 +98,10 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   function ValueOf (Code : ReturnT) return BasicTypes.Unsigned32T
+   function ValueOf (Code : ReturnT) return CommonTypes.Unsigned32T
    is
       function CodeToVal is
-         new Unchecked_Conversion(ReturnT, BasicTypes.Unsigned32T);
+         new Unchecked_Conversion(ReturnT, CommonTypes.Unsigned32T);
    begin
       return CodeToVal(Code);
    end ValueOf;
@@ -110,7 +119,7 @@ is
    --    conversion from the enumerated type to the numeric type.
    --    Exits when a match is made.
    ------------------------------------------------------------------
-   function GetReturnCode (ReturnVal : BasicTypes.Unsigned32T)
+   function GetReturnCode (ReturnVal : CommonTypes.Unsigned32T)
       return ReturnT
    is
       Result : ReturnT := InternalError;
@@ -138,14 +147,14 @@ is
    --    None
    ------------------------------------------------------------------
    function MakeDescription
-     (Text        : String;
-      ReturnValue : BasicTypes.Unsigned32T)
+     (Text        : CommonTypes.StringF1L1000;
+      ReturnValue : CommonTypes.Unsigned32T)
      return AuditTypes.DescriptionT
      with Global => null;
 
    function MakeDescription
-     (Text        : String;
-      ReturnValue : BasicTypes.Unsigned32T)
+     (Text        : CommonTypes.StringF1L1000;
+      ReturnValue : CommonTypes.Unsigned32T)
      return AuditTypes.DescriptionT
 
    is
@@ -161,10 +170,12 @@ is
       -- Implementation Notes:
       --    None
       ------------------------------------------------------------------
-      procedure SetResultString is
+      procedure SetResultString with
+        Post => True  --  no contextual analysis needed
+      is
          FullString : String := Text & ": "
-           & ReturnT'Image(TheCodeName) & " ( "
-           & BasicTypes.Unsigned32T'Image(ReturnValue) & " )";
+           & ReturnT_Image(TheCodeName) & " ( "
+           & CommonTypes.Unsigned32T_Image(ReturnValue) & " )";
       begin
 
          -- if the Full string is shorter then use it all otherwise
@@ -192,7 +203,7 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   procedure Poll (FingerPresent :    out BasicTypes.PresenceT)
+   procedure Poll (FingerPresent :    out CommonTypes.PresenceT)
      with Refined_Global  => (Input => Interfac.Input),
           Refined_Depends => (FingerPresent => Interfac.Input)
    is
@@ -229,7 +240,7 @@ is
                                                        MaxFAR,
                                                        Template))
    is
-      NumericReturn : BasicTypes.Unsigned32T;
+      NumericReturn : CommonTypes.Unsigned32T;
    begin
 
       Interfac.Verify(Template     => Template,

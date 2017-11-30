@@ -27,9 +27,6 @@ package body Latch
 is
    function LatchIsLocked return Boolean is (Latch.Interfac.IsLocked);
 
-   --  Dodgy function that retrieves Output
-   function Interfac_IsLocked return Boolean is (Latch.Interfac.isLocked);
-
    ------------------------------------------------------------------
    -- Init
    --

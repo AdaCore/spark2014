@@ -16,7 +16,7 @@
 --
 ------------------------------------------------------------------
 with Display,
-     BasicTypes;
+     CommonTypes;
 
 private package Display.Interfac
   with Abstract_State => (Output with External => Async_Readers,
@@ -30,7 +30,7 @@ is
    --    Determine size of display lines
    --
    ------------------------------------------------------------------
-   function GetMaxTextSizeTop return BasicTypes.Unsigned32T
+   function GetMaxTextSizeTop return CommonTypes.Unsigned32T
      with Global => null;
 
    ------------------------------------------------------------------
@@ -40,7 +40,7 @@ is
    --    Determine size of display lines
    --
    ------------------------------------------------------------------
-   function GetMaxTextSizeBottom return BasicTypes.Unsigned32T
+   function GetMaxTextSizeBottom return CommonTypes.Unsigned32T
      with Global => null;
 
    ------------------------------------------------------------------

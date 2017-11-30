@@ -443,7 +443,7 @@ is
    --    None.
    ------------------------------------------------------------------
    function IsPresent return Boolean is
-     (TokenPresence = BasicTypes.Present)
+     (TokenPresence = CommonTypes.Present)
      with Refined_Global => TokenPresence;
 
    ------------------------------------------------------------------
@@ -507,7 +507,7 @@ is
       AuthCertContents : Cert.Attr.Auth.ContentsT;
       IDCertContents   : Cert.ID.ContentsT;
    begin
-      TokenPresence := BasicTypes.Absent;
+      TokenPresence := CommonTypes.Absent;
       TokenTry      := TokenTypes.NoToken;
       TokenID       := TokenTypes.TokenIDT'First;
 

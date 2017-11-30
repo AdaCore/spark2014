@@ -27,7 +27,7 @@
 ------------------------------------------------------------------
 
 with TcpIp,
-     BasicTypes;
+     CommonTypes;
 
 package MsgProc is
 
@@ -102,7 +102,7 @@ package MsgProc is
    --    Converts an unsigned 32-bit number into a string.
    --
    ------------------------------------------------------------------
-   function StringFrom32 (Num : in     BasicTypes.Unsigned32T) return String;
+   function StringFrom32 (Num : in     CommonTypes.Unsigned32T) return String;
 
    ------------------------------------------------------------------
    -- StringFromInt

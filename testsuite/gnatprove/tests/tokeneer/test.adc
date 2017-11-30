@@ -1,2 +1,7 @@
 pragma SPARK_Mode (On);
+
 pragma Unevaluated_Use_Of_Old (Allow);
+--  Allow use of 'Old in potentially unevaluated expressions
+
+pragma Warnings (Off, "no Global contract available for");
+--  Calls to standard library subprograms which do not read/write globals

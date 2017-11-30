@@ -292,6 +292,13 @@ private
        Valid_NumberLogEntries
          (CurrentLogFile, NumberLogEntries, UsedLogFiles, LogFileEntries);
 
+   function Valid_NumberLogEntries (LogFileState : LogFileStateT) return Boolean is
+     (Valid_NumberLogEntries (LogFileState.CurrentLogFile,
+                              LogFileState.NumberLogEntries,
+                              LogFileState.UsedLogFiles,
+                              LogFileState.LogFileEntries))
+   with Ghost;
+
    LogFiles         : LogFilesT := LogFilesT'(others => File.NullFile)
      with Part_Of => FileState;
 

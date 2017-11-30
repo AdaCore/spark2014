@@ -17,7 +17,7 @@
 ------------------------------------------------------------------
 with AuditLog,
      AuditTypes,
-     BasicTypes,
+     CommonTypes,
      CertTypes,
      Clock,
      ConfigData,

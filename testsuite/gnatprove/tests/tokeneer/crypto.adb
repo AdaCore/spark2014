@@ -18,13 +18,13 @@
 with SPARK_IO,
      Ada.Strings,
      Ada.Strings.Fixed,
-     BasicTypes,
+     CommonTypes,
      CryptoTypes,
      MsgProc;
 
 use type SPARK_IO.File_Status;
 use type CryptoTypes.IssuerIDT;
-use type BasicTypes.Unsigned32T;
+use type CommonTypes.Unsigned32T;
 
 package body Crypto
   with SPARK_Mode => Off  --  exception handlers
@@ -35,7 +35,7 @@ is
    -- NextHandle acts as a pointer to the next position in the keystore.
    -- Initialized to the maximum possible value, before being formally
    -- initialized by the Initialize procedure.
-   subtype HandleT is BasicTypes.Unsigned32T range 1..100;
+   subtype HandleT is CommonTypes.Unsigned32T range 1..100;
    NextHandle : HandleT := 100;
 
    -- IsInit keeps track of the state of the cryptoki library.
@@ -345,7 +345,7 @@ is
                                  Stop => IDLength);
 
                KeyStore(CurrentHandle).KeyID :=
-                       BasicTypes.Unsigned32T'Value(IDString);
+                       CommonTypes.Unsigned32T'Value(IDString);
 
             else
 
@@ -376,7 +376,7 @@ is
                                  Stop => LenStrLength);
 
                KeyStore(CurrentHandle).KeyLength :=
-                       BasicTypes.Unsigned32T'Value(LenString);
+                       CommonTypes.Unsigned32T'Value(LenString);
 
             else
                ReadOK := False;
@@ -504,7 +504,7 @@ is
    --
    ------------------------------------------------------------------
    procedure CreateObject (Template     : in     KeyTemplateT;
-                           ObjectHandle :    out BasicTypes.Unsigned32T;
+                           ObjectHandle :    out CommonTypes.Unsigned32T;
                            ReturnValue  :    out ReturnValueT)
    is
       Keys : SPARK_IO.File_Type;
@@ -528,7 +528,7 @@ is
 
          SPARK_IO.Put_String(File => Keys,
                              Item => MsgProc.StringFrom32(
-                                        BasicTypes.Unsigned32T(
+                                        CommonTypes.Unsigned32T(
                                            Template.Owner.Id)),
                              Stop => 0);
 
@@ -656,7 +656,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure FindObjects (HandleCount   : in out BasicTypes.Unsigned32T;
+   procedure FindObjects (HandleCount   : in out CommonTypes.Unsigned32T;
                           ObjectHandles :    out HandleArrayT;
                           ReturnValue   :    out ReturnValueT)
    is
@@ -732,14 +732,14 @@ is
                  MatchCount := MatchCount + 1;
               end if;
 
-              if BasicTypes.Unsigned32T(MatchCount) <= HandleCount then
+              if CommonTypes.Unsigned32T(MatchCount) <= HandleCount then
                  ObjectHandles(MatchCount) := i;
               end if;
 
            end if;
         end loop;
 
-        HandleCount := BasicTypes.Unsigned32T(MatchCount);
+        HandleCount := CommonTypes.Unsigned32T(MatchCount);
         ReturnValue := Ok;
 
       end if;
@@ -799,7 +799,7 @@ is
    --
    ------------------------------------------------------------------
    procedure DigestUpdate (DataBlock   : in     HundredByteArrayT;
-                           ByteCount   : in     BasicTypes.Unsigned32T;
+                           ByteCount   : in     CommonTypes.Unsigned32T;
                            ReturnValue :    out ReturnValueT)
    is
 
@@ -880,7 +880,7 @@ is
    --
    ------------------------------------------------------------------
    procedure DigestFinal (Digest       : out DigestT;
-                          DigestLength : out BasicTypes.Unsigned32T;
+                          DigestLength : out CommonTypes.Unsigned32T;
                           ReturnValue  : out ReturnValueT)
    is
       CertDict  : MsgProc.DictionaryT :=
@@ -906,7 +906,7 @@ is
                                               Key => "Digest");
 
       begin
-         TheDigest.DigestID := BasicTypes.Unsigned32T'Value(
+         TheDigest.DigestID := CommonTypes.Unsigned32T'Value(
                             MsgProc.GetStringByKey(Dic => DigestDict,
                                                    Key => "DigestID"));
 
@@ -922,9 +922,9 @@ is
             -- Need to calculate a new digest ID from the certificate
             for i in Positive range 1..CertDict'Length loop
                TheDigest.DigestID :=
-                     (BasicTypes.Unsigned32T(TheDigest.DigestID) +
-                      BasicTypes.Unsigned32T(i * Character'Pos(CertDict(i)))
-                     ) mod BasicTypes.Unsigned32T'Last;
+                     (CommonTypes.Unsigned32T(TheDigest.DigestID) +
+                      CommonTypes.Unsigned32T(i * Character'Pos(CertDict(i)))
+                     ) mod CommonTypes.Unsigned32T'Last;
             end loop;
          end if;
 
@@ -951,18 +951,18 @@ is
       --    None.
       --
       ------------------------------------------------------------------
-      function CalcDigestLength return BasicTypes.Unsigned32T
+      function CalcDigestLength return CommonTypes.Unsigned32T
       is
       begin
 
-         return BasicTypes.Unsigned32T'Value(
+         return CommonTypes.Unsigned32T'Value(
                            MsgProc.GetStringByKey(
                               Dic => CertDict,
                               Key => "DigestLength"));
       exception
          -- return invalid length
          when E : others =>
-            return BasicTypes.Unsigned32T'Last;
+            return CommonTypes.Unsigned32T'Last;
       end CalcDigestLength;
 
       ------------------------------------------------------------------
@@ -1014,7 +1014,7 @@ is
    --
    ------------------------------------------------------------------
    procedure Sign (Mechanism    : in     CryptoTypes.AlgorithmT;
-                   KeyHandle    : in     BasicTypes.Unsigned32T;
+                   KeyHandle    : in     CommonTypes.Unsigned32T;
                    Digest       : in     DigestT;
                    Signature    :    out CertTypes.SignatureT;
                    ReturnValue  :    out ReturnValueT)
@@ -1022,9 +1022,9 @@ is
 
       function CreateSignatureFrom
         (AlgorithmID : CryptoTypes.AlgorithmT;
-         Siglength   : BasicTypes.Unsigned32T;
-         KeyID       : BasicTypes.Unsigned32T;
-         DigestID    : BasicTypes.Unsigned32T)
+         Siglength   : CommonTypes.Unsigned32T;
+         KeyID       : CommonTypes.Unsigned32T;
+         DigestID    : CommonTypes.Unsigned32T)
         return CertTypes.SignatureT
       is
          TrimKeyID : String := Ada.Strings.Fixed.Trim(
@@ -1093,49 +1093,49 @@ is
    --
    ------------------------------------------------------------------
    procedure Verify (Mechanism    : in     CryptoTypes.AlgorithmT;
-                     KeyHandle    : in     BasicTypes.Unsigned32T;
+                     KeyHandle    : in     CommonTypes.Unsigned32T;
                      Digest       : in     DigestT;
                      Signature    : in     CertTypes.SignatureT;
                      ReturnValue  :    out ReturnValueT)
    is
 
       function TheKeyID (Signature : CertTypes.SignatureT)
-                        return BasicTypes.Unsigned32T
+                        return CommonTypes.Unsigned32T
       is
       begin
-         return BasicTypes.Unsigned32T'Value(
+         return CommonTypes.Unsigned32T'Value(
                    MsgProc.GetStringByKey(
                           Dic => MsgProc.DictionaryT(Signature.SigData),
                           Key => "KeyID"));
       exception
          when E : others =>
-            return BasicTypes.Unsigned32T'Last;
+            return CommonTypes.Unsigned32T'Last;
       end TheKeyID;
 
       function TheDigestID(Signature : CertTypes.SignatureT)
-            return BasicTypes.Unsigned32T
+            return CommonTypes.Unsigned32T
       is
       begin
-         return BasicTypes.Unsigned32T'Value(
+         return CommonTypes.Unsigned32T'Value(
                    MsgProc.GetStringByKey(
                           Dic => MsgProc.DictionaryT(Signature.SigData),
                           Key => "DigestID"));
       exception
          when E : others =>
-            return BasicTypes.Unsigned32T'Last;
+            return CommonTypes.Unsigned32T'Last;
       end TheDigestID;
 
       function TheSigLength(Signature : CertTypes.SignatureT)
-            return BasicTypes.Unsigned32T
+            return CommonTypes.Unsigned32T
       is
       begin
-         return BasicTypes.Unsigned32T'Value(
+         return CommonTypes.Unsigned32T'Value(
                    MsgProc.GetStringByKey(
                           Dic => MsgProc.DictionaryT(Signature.SigData),
                           Key => "SigLength"));
       exception
          when E : others =>
-            return BasicTypes.Unsigned32T'Last;
+            return CommonTypes.Unsigned32T'Last;
       end TheSigLength;
 
    begin -- Verify
@@ -1165,7 +1165,7 @@ is
    --    Extracts attribute data from the object pointed to by KeyHandle.
    --
    ------------------------------------------------------------------
-   procedure GetAttributeValue (KeyHandle   : in     BasicTypes.Unsigned32T;
+   procedure GetAttributeValue (KeyHandle   : in     CommonTypes.Unsigned32T;
                                 Template    : in out KeyTemplateT;
                                 ReturnValue :    out ReturnValueT)
    is

@@ -45,8 +45,6 @@ is
    CurrentName : String := "current.txt";
    WrittenName : String := "written.log";
 
-   CFloppyDrive : Interfaces.C.Char_Array(0 .. 2);
-
 
    ------------------------------------------------------------------
    -- FileAndPathName

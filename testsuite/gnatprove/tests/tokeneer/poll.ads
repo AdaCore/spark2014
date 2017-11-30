@@ -121,10 +121,6 @@ package Poll is
                (AdminToken.TheAuthCertRole = PrivTypes.Guard)) and
             (Latch.IsLocked = Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                                        Latch.Latch_Timeout)) and
-            ((not Latch.IsLocked'Old) or
-                (Latch.Current_Latch = Latch.Current_Latch'Old and
-                 Latch.Latch_Timeout = Latch.Latch_Timeout'Old and
-                 Latch.IsLocked)) and
             Latch.Latch_Timeout = Latch.Latch_Timeout'Old;
 
 end Poll;

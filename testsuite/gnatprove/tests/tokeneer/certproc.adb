@@ -16,13 +16,13 @@
 --
 ------------------------------------------------------------------
 
-with BasicTypes;
+with CommonTypes;
 with MsgProc;
 with CryptoTypes;
 with Ada.Strings.Fixed;
 with Ada.Strings;
 
-use type BasicTypes.Unsigned32T;
+use type CommonTypes.Unsigned32T;
 use type CryptoTypes.AlgorithmT;
 use type CryptoTypes.IssuerT;
 
@@ -188,44 +188,44 @@ is
       end DateNotInType;
 
    begin
-      TheValidity.NotBefore.Minute := BasicTypes.Unsigned32T'Value(
+      TheValidity.NotBefore.Minute := CommonTypes.Unsigned32T'Value(
                                          MsgProc.GetStringByKey(
                                              Dic => NB,
                                              Key => "Minute"));
-      TheValidity.NotBefore.Hour   := BasicTypes.Unsigned32T'Value(
+      TheValidity.NotBefore.Hour   := CommonTypes.Unsigned32T'Value(
                                          MsgProc.GetStringByKey(
                                              Dic => NB,
                                              Key => "Hour"));
-      TheValidity.NotBefore.Day    := BasicTypes.Unsigned32T'Value(
+      TheValidity.NotBefore.Day    := CommonTypes.Unsigned32T'Value(
                                          MsgProc.GetStringByKey(
                                              Dic => NB,
                                              Key => "Day"));
-      TheValidity.NotBefore.Month  := BasicTypes.Unsigned32T'Value(
+      TheValidity.NotBefore.Month  := CommonTypes.Unsigned32T'Value(
                                          MsgProc.GetStringByKey(
                                              Dic => NB,
                                              Key => "Month"));
-      TheValidity.NotBefore.Year   := BasicTypes.Unsigned32T'Value(
+      TheValidity.NotBefore.Year   := CommonTypes.Unsigned32T'Value(
                                          MsgProc.GetStringByKey(
                                              Dic => NB,
                                              Key => "Year"));
 
-      TheValidity.NotAfter.Minute := BasicTypes.Unsigned32T'Value(
+      TheValidity.NotAfter.Minute := CommonTypes.Unsigned32T'Value(
                                          MsgProc.GetStringByKey(
                                              Dic => NA,
                                              Key => "Minute"));
-      TheValidity.NotAfter.Hour   := BasicTypes.Unsigned32T'Value(
+      TheValidity.NotAfter.Hour   := CommonTypes.Unsigned32T'Value(
                                          MsgProc.GetStringByKey(
                                              Dic => NA,
                                              Key => "Hour"));
-      TheValidity.NotAfter.Day    := BasicTypes.Unsigned32T'Value(
+      TheValidity.NotAfter.Day    := CommonTypes.Unsigned32T'Value(
                                          MsgProc.GetStringByKey(
                                              Dic => NA,
                                              Key => "Day"));
-      TheValidity.NotAfter.Month  := BasicTypes.Unsigned32T'Value(
+      TheValidity.NotAfter.Month  := CommonTypes.Unsigned32T'Value(
                                          MsgProc.GetStringByKey(
                                              Dic => NA,
                                              Key => "Month"));
-      TheValidity.NotAfter.Year   := BasicTypes.Unsigned32T'Value(
+      TheValidity.NotAfter.Year   := CommonTypes.Unsigned32T'Value(
                                          MsgProc.GetStringByKey(
                                              Dic => NA,
                                              Key => "Year"));
@@ -331,19 +331,19 @@ is
    --
    ------------------------------------------------------------------
    procedure GetCertType (TheCert  : in     CertTypes.RawCertificateT;
-                          Expected : in     BasicTypes.Unsigned32T;
-                          Actual   :    out BasicTypes.Unsigned32T;
+                          Expected : in     CommonTypes.Unsigned32T;
+                          Actual   :    out CommonTypes.Unsigned32T;
                           Success  :    out Boolean)
    is
    begin
-      Actual  := BasicTypes.Unsigned32T'Value(
+      Actual  := CommonTypes.Unsigned32T'Value(
                     MsgProc.GetStringByKey(
                               Dic => MsgProc.DictionaryT(TheCert),
                               Key => "CertType"));
       Success := Expected = Actual;
    exception
       when E : others =>
-         Actual  := BasicTypes.Unsigned32T'Last;
+         Actual  := CommonTypes.Unsigned32T'Last;
          Success := False;
    end GetCertType;
 
@@ -360,8 +360,8 @@ is
    --
    ------------------------------------------------------------------
    procedure GetSerialNumber (TheCert  : in     CertTypes.RawCertificateT;
-                              CertType : in     BasicTypes.Unsigned32T;
-                              SerialNo :    out BasicTypes.Unsigned32T;
+                              CertType : in     CommonTypes.Unsigned32T;
+                              SerialNo :    out CommonTypes.Unsigned32T;
                               Success  :    out Boolean)
    is
       LocalCert : CertTypes.RawCertificateT := TheCert;
@@ -372,14 +372,14 @@ is
          RemoveHolder(LocalCert);
       end if;
 
-      SerialNo := BasicTypes.Unsigned32T'Value(
+      SerialNo := CommonTypes.Unsigned32T'Value(
                     MsgProc.GetStringByKey(
                               Dic => MsgProc.DictionaryT(LocalCert),
                               Key => "SerialNumber"));
       Success  := True;
    exception
       when E : others =>
-         SerialNo := BasicTypes.Unsigned32T'Last;
+         SerialNo := CommonTypes.Unsigned32T'Last;
          Success  := False;
    end GetSerialNumber;
 
@@ -443,7 +443,7 @@ is
    --
    ------------------------------------------------------------------
    procedure GetName (TheCert   : in     CertTypes.RawCertificateT;
-                      CertType  : in     BasicTypes.Unsigned32T;
+                      CertType  : in     CommonTypes.Unsigned32T;
                       IsSubject : in     Boolean;
                       TheName   :    out CryptoTypes.IssuerT;
                       Success   :    out Boolean)
@@ -531,7 +531,7 @@ is
    --
    ------------------------------------------------------------------
    procedure GetValidity (TheCert   : in     CertTypes.RawCertificateT;
-                          CertType  : in     BasicTypes.Unsigned32T;
+                          CertType  : in     CommonTypes.Unsigned32T;
                           Validity  :    out ValidityT;
                           Success   :    out Boolean)
    is
@@ -599,11 +599,11 @@ is
                                MsgProc.GetStringByKey(
                                   Dic => KeyDict,
                                   Key => "AlgoRithmID"));
-      TheKey.KeyLength   := BasicTypes.Unsigned32T'Value(
+      TheKey.KeyLength   := CommonTypes.Unsigned32T'Value(
                                MsgProc.GetStringByKey(
                                   Dic => KeyDict,
                                   Key => "KeyLength"));
-      TheKey.KeyID       := BasicTypes.Unsigned32T'Value(
+      TheKey.KeyID       := CommonTypes.Unsigned32T'Value(
                                MsgProc.GetStringByKey(
                                   Dic => KeyDict,
                                   Key => "KeyID"));
@@ -611,14 +611,14 @@ is
          Success := True;
       else
          Success := False;
-         TheKey.KeyLength := BasicTypes.Unsigned32T'First;
+         TheKey.KeyLength := CommonTypes.Unsigned32T'First;
       end if;
    exception
       when E : others =>
          Success := False;
          TheKey := (AlgorithmID => CryptoTypes.AlgorithmT'First,
-                    KeyLength   => BasicTypes.Unsigned32T'First,
-                    KeyID       => BasicTypes.Unsigned32T'First);
+                    KeyLength   => CommonTypes.Unsigned32T'First,
+                    KeyID       => CommonTypes.Unsigned32T'First);
    end GetKeyInfo;
 
 
@@ -692,7 +692,7 @@ is
                           MsgProc.GetStringByKey(
                              Dic => TemplateDict,
                              Key => "TemplateID"));
-      Template.Length := BasicTypes.Unsigned32T'Value(
+      Template.Length := CommonTypes.Unsigned32T'Value(
                           MsgProc.GetStringByKey(
                              Dic => TemplateDict,
                              Key => "TemplateLength"));
@@ -721,7 +721,7 @@ is
    --
    ------------------------------------------------------------------
    procedure OverwriteDigestID(Crypto : in out String;
-                               NewID  : in     BasicTypes.Unsigned32T)
+                               NewID  : in     CommonTypes.Unsigned32T)
    is
       LocalCrypto : String := Crypto;
       DigestIDKeyEnd,
@@ -817,8 +817,8 @@ is
       SubjectOK,
       KeyOK      : Boolean;
 
-      TheCertType     : BasicTypes.Unsigned32T;
-      TheSerialNumber : BasicTypes.Unsigned32T;
+      TheCertType     : CommonTypes.Unsigned32T;
+      TheSerialNumber : CommonTypes.Unsigned32T;
       TheSigAlgId     : CryptoTypes.AlgorithmT;
       TheIssuer       : CryptoTypes.IssuerT;
       TheValidity     : ValidityT;
@@ -878,8 +878,8 @@ is
       HolderOK,
       PrivilegeOK     : Boolean;
 
-      TheCertType     : BasicTypes.Unsigned32T;
-      TheSerialNumber : BasicTypes.Unsigned32T;
+      TheCertType     : CommonTypes.Unsigned32T;
+      TheSerialNumber : CommonTypes.Unsigned32T;
       TheSigAlgId     : CryptoTypes.AlgorithmT;
       TheIssuer       : CryptoTypes.IssuerT;
       TheValidity     : ValidityT;
@@ -945,8 +945,8 @@ is
       HolderOK,
       TemplateOK     : Boolean;
 
-      TheCertType     : BasicTypes.Unsigned32T;
-      TheSerialNumber : BasicTypes.Unsigned32T;
+      TheCertType     : CommonTypes.Unsigned32T;
+      TheSerialNumber : CommonTypes.Unsigned32T;
       TheSigAlgId     : CryptoTypes.AlgorithmT;
       TheIssuer       : CryptoTypes.IssuerT;
       TheValidity     : ValidityT;
@@ -1006,8 +1006,8 @@ is
       HolderOK,
       PrivilegeOK     : Boolean;
 
-      TheCertType     : BasicTypes.Unsigned32T;
-      TheSerialNumber : BasicTypes.Unsigned32T;
+      TheCertType     : CommonTypes.Unsigned32T;
+      TheSerialNumber : CommonTypes.Unsigned32T;
       TheSigAlgId     : CryptoTypes.AlgorithmT;
       TheIssuer       : CryptoTypes.IssuerT;
       TheValidity     : ValidityT;
@@ -1180,7 +1180,7 @@ is
                           "'Issuer': {'Text': '" &
                           AuthCert.Issuer.Name(1..AuthCert.Issuer.NameLength) &
                           "', 'ID': '" &
-                          MsgProc.StringFrom32(BasicTypes.Unsigned32T(AuthCert.Issuer.ID)) &
+                          MsgProc.StringFrom32(CommonTypes.Unsigned32T(AuthCert.Issuer.ID)) &
                           "', 'TextLength': '" &
                           MsgProc.StringFromInt(AuthCert.Issuer.NameLength) &
                           "'}, ";
@@ -1218,23 +1218,23 @@ is
                           "'}}, ";
       HolderString   : String :=
                           "'Holder': {'SerialNumber': '" &
-                          MsgProc.StringFrom32(BasicTypes.Unsigned32T(
+                          MsgProc.StringFrom32(CommonTypes.Unsigned32T(
                              AuthCert.Holder.SerialNumber)) &
                           "', 'Issuer': {'Text': '" &
                           AuthCert.Holder.Issuer.Name(
                                     1..AuthCert.Holder.Issuer.NameLength) &
                           "', 'ID': '" &
-                          MsgProc.StringFrom32(BasicTypes.Unsigned32T(
+                          MsgProc.StringFrom32(CommonTypes.Unsigned32T(
                                     AuthCert.Holder.Issuer.ID)) &
                           "', 'TextLength': '" &
                           MsgProc.StringFromInt(AuthCert.Holder.Issuer.NameLength) &
                           "'}}, ";
       PriviString    : String :=
                           "'Privilege': {'Pad': '??????????', 'Role': '" &
-                          MsgProc.StringFrom32(BasicTypes.Unsigned32T(
+                          MsgProc.StringFrom32(CommonTypes.Unsigned32T(
                             RoleTo(AuthCert.Privilege.Role))) &
                           "', 'Class': '" &
-                          MsgProc.StringFrom32(BasicTypes.Unsigned32T(
+                          MsgProc.StringFrom32(CommonTypes.Unsigned32T(
                             ClassTo(AuthCert.Privilege.Class))) &
                           "'}, ";
       CryptoString   : String :=
@@ -1295,7 +1295,7 @@ is
                    SignatureData       : in     CertTypes.SignatureT;
                    SignedRawAuthCert   :    out CertTypes.RawCertificateT)
    is
-      NewID : BasicTypes.Unsigned32T;
+      NewID : CommonTypes.Unsigned32T;
 
       SigDataString  : String := SignatureData.SigData(
                                     1..SignatureData.SigLength);
@@ -1312,7 +1312,7 @@ is
 
       -- Attempt to replace the old DigestID with the new one
       begin
-         NewID := BasicTypes.Unsigned32T'Value(
+         NewID := CommonTypes.Unsigned32T'Value(
                      MsgProc.GetStringByKey(
                         MsgProc.DictionaryT(SigDataString),
                         "DigestID"));

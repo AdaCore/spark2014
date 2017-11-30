@@ -15,8 +15,8 @@
 --    ...
 --
 ------------------------------------------------------------------
-with BasicTypes;
-use type BasicTypes.PresenceT;
+with CommonTypes;
+use type CommonTypes.PresenceT;
 
 with TokenTypes;
 use type TokenTypes.TryT;
@@ -89,7 +89,7 @@ is
    -- State
    --
    ------------------------------------------------------------------
-   TokenPresence : BasicTypes.PresenceT;
+   TokenPresence : CommonTypes.PresenceT;
 
    TokenTry      : TokenTypes.TryT;
 
@@ -159,7 +159,7 @@ is
       PrivCertContents  : Cert.Attr.Priv.ContentsT;
       IandACertContents : Cert.Attr.IandA.ContentsT;
    begin
-      TokenPresence := BasicTypes.Absent;
+      TokenPresence := CommonTypes.Absent;
       TokenTry      := TokenTypes.NoToken;
       TokenID       := TokenTypes.TokenIDT'First;
 
@@ -356,7 +356,7 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   function IsPresent return Boolean is (TokenPresence = BasicTypes.Present)
+   function IsPresent return Boolean is (TokenPresence = CommonTypes.Present)
      with Refined_Global => TokenPresence;
 
    ------------------------------------------------------------------
@@ -684,7 +684,7 @@ is
       -- Implementation Notes:
       --    Hidden from SPARK because of use of slicing.
       ------------------------------------------------------------------
-      function MakeDescription (Text : in String)
+      function MakeDescription (Text : in CommonTypes.StringF1)
                                return AuditTypes.DescriptionT
       is
          Result : AuditTypes.DescriptionT := AuditTypes.NoDescription;

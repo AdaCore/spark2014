@@ -84,7 +84,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function Construct (TheName : String) return T
+   function Construct (TheName : CommonTypes.StringF1) return T
    is
      NewName : NameT;
    begin
@@ -105,7 +105,7 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   procedure SetName (TheName : in     String;
+   procedure SetName (TheName : in     CommonTypes.StringF1;
                       TheFile : in out T)
    is
    begin

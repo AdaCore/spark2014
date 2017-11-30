@@ -26,7 +26,6 @@ package body Alarm
   with SPARK_Mode,
        Refined_State => (Output => Alarm.Interfac.Output)
 is
-
    function IsAlarming return Boolean is (Alarm.Interfac.IsAlarming);
 
    ------------------------------------------------------------------
@@ -43,8 +42,8 @@ is
                               Output => Interfac.Output),
           Refined_Depends => (Interfac.Output => (AuditLog.State,
                                                   Door.State)),
-          Refined_Post    => (Door.TheDoorAlarm = AlarmTypes.Alarming) <=
-                               Interfac.IsAlarming
+          Refined_Post    => (if Door.TheDoorAlarm = AlarmTypes.Alarming then
+                               Interfac.IsAlarming)
       --------------------------------------------------------
       -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 3          --
       --====================================================--

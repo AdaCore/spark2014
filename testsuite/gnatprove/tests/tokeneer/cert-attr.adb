@@ -35,9 +35,9 @@ package body Cert.Attr is
    is
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
       FullString : String := "Issuer: "
-        & CryptoTypes.IssuerIdT'Image (Contents.BaseCertID.Issuer.ID)
+        & CryptoTypes.IssuerIdT_Image (Contents.BaseCertID.Issuer.ID)
         & " SerialNo:  "
-        & CertTypes.SerialNumberT'Image (Contents.BaseCertID.SerialNumber);
+        & CertTypes.SerialNumberT_Image (Contents.BaseCertID.SerialNumber);
 
    begin
       -- if the Full string is shorter then use it all otherwise

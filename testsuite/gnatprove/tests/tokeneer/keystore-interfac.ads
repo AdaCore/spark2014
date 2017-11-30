@@ -15,7 +15,7 @@
 --    Thin layer for the crypto library
 --
 ------------------------------------------------------------------
-with BasicTypes,
+with CommonTypes,
      CertTypes,
      CryptoTypes;
 
@@ -48,8 +48,8 @@ is
    type KeyTemplateT is record
       AttrMask  : MaskT;
       Owner     : CryptoTypes.IssuerT;
-      KeyID     : BasicTypes.Unsigned32T;
-      KeyLength : BasicTypes.Unsigned32T;
+      KeyID     : CommonTypes.Unsigned32T;
+      KeyLength : CommonTypes.Unsigned32T;
       IsPublic  : Boolean;
    end record;
 
@@ -58,7 +58,7 @@ is
 
    type HandleCountT is range 0..20;
    subtype HandleArrayI is HandleCountT range 1..HandleCountT'Last;
-   type HandleArrayT is array(HandleArrayI) of BasicTypes.Unsigned32T;
+   type HandleArrayT is array(HandleArrayI) of CommonTypes.Unsigned32T;
 
    type ReturnValueT is (
       Ok,
@@ -95,17 +95,17 @@ is
    -- DigestT represents the digest information contained in a
    -- certificate.Padded for realistic size.
    type DigestPadI is range 1..20;
-   type DigestPadT is array (DigestPadI) of BasicTypes.ByteT;
+   type DigestPadT is array (DigestPadI) of CommonTypes.ByteT;
 
    type DigestT is record
-      DigestID     : BasicTypes.Unsigned32T;
+      DigestID     : CommonTypes.Unsigned32T;
       SignReturn   : ReturnValueT;
       VerifyReturn : ReturnValueT;
       Pad          : DigestPadT;
    end record;
 
    NullDigest : constant DigestT :=
-     DigestT'(DigestID     => BasicTypes.Unsigned32T'First,
+     DigestT'(DigestID     => CommonTypes.Unsigned32T'First,
               SignReturn   => FunctionFailed,
               VerifyReturn => FunctionFailed,
               Pad          => DigestPadT'(others => 0));
@@ -169,7 +169,7 @@ is
    --    found matches.
    --
    ------------------------------------------------------------------
-   procedure FindObjects (HandleCount   : in out BasicTypes.Unsigned32T;
+   procedure FindObjects (HandleCount   : in out CommonTypes.Unsigned32T;
                           ObjectHandles :    out HandleArrayT;
                           ReturnValue   :    out ReturnValueT)
      with Global  => Store,
@@ -216,7 +216,7 @@ is
    --
    ------------------------------------------------------------------
    procedure DigestUpdate (DataBlock   : in     HundredByteArrayT;
-                           ByteCount   : in     BasicTypes.Unsigned32T;
+                           ByteCount   : in     CommonTypes.Unsigned32T;
                            ReturnValue :    out ReturnValueT)
      with Global  => Store,
           Depends => (ReturnValue => (ByteCount,
@@ -245,7 +245,7 @@ is
    --
    ------------------------------------------------------------------
    procedure Sign (Mechanism    : in     CryptoTypes.AlgorithmT;
-                   KeyHandle    : in     BasicTypes.Unsigned32T;
+                   KeyHandle    : in     CommonTypes.Unsigned32T;
                    Digest       : in     DigestT;
                    Signature    :    out CertTypes.SignatureT;
                    ReturnValue  :    out ReturnValueT)
@@ -265,7 +265,7 @@ is
    --
    ------------------------------------------------------------------
    procedure Verify (Mechanism    : in     CryptoTypes.AlgorithmT;
-                     KeyHandle    : in     BasicTypes.Unsigned32T;
+                     KeyHandle    : in     CommonTypes.Unsigned32T;
                      Digest       : in     DigestT;
                      Signature    : in     CertTypes.SignatureT;
                      ReturnValue  :    out ReturnValueT)
@@ -283,7 +283,7 @@ is
    --    Extracts attribute data from the object pointed to by KeyHandle.
    --
    ------------------------------------------------------------------
-   procedure GetAttributeValue (KeyHandle   : in     BasicTypes.Unsigned32T;
+   procedure GetAttributeValue (KeyHandle   : in     CommonTypes.Unsigned32T;
                                 Template    : in out KeyTemplateT;
                                 ReturnValue :    out ReturnValueT)
      with Global  => Store,

@@ -15,7 +15,7 @@
 --    Types that appear within the context of a certificate
 --
 ------------------------------------------------------------------
-with BasicTypes,
+with CommonTypes,
      CryptoTypes;
 
 package CertTypes is
@@ -58,6 +58,15 @@ package CertTypes is
    end record;
 
    type SerialNumberT is range 0..2**32 - 1;
+
+   function SerialNumberT_Image (X : SerialNumberT) return CommonTypes.StringF1L1000 is
+      (SerialNumberT'Image (X));
+   pragma Annotate (GNATprove, False_Positive,
+                    "range check might fail",
+                    "Image of integers of type SerialNumberT are short strings starting at index 1");
+   pragma Annotate (GNATprove, False_Positive,
+                    "predicate check might fail",
+                    "Image of integers of type SerialNumberT are short strings starting at index 1");
 
    -- Certificate ID
    type IDT is record

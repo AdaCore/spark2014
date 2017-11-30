@@ -119,6 +119,7 @@ is
 
    function ConvertToAuditDescription
      (Description : String) return AuditTypes.DescriptionT
+   with Post => True  --  no contextual analysis is needed
    is
       LocalDesc : AuditTypes.DescriptionT := AuditTypes.NoDescription;
    begin
@@ -380,19 +381,19 @@ is
    --       None.
    --
    ------------------------------------------------------------------
-   procedure DeleteLogFile (LogFileState : in out LogFileStateT;
-                            Index        : LogFileIndexT)
+   procedure DeleteLogFile (LogFileEntries : in out LogFileEntryT;
+                            Index          : LogFileIndexT)
      with Global  => (In_Out => (AuditSystemFault,
                                  LogFiles,
                                  LogFilesStatus)),
           Depends => ((AuditSystemFault,
                        LogFiles)         =>+ (Index,
                                               LogFiles),
-                      (LogFileState,
+                      (LogFileEntries,
                        LogFilesStatus)   =>+ Index),
           Post    => (for all I in LogFileIndexT'Range =>
                         (if I /= Index then
-                           LogFileState.LogFileEntries (I) = LogFileState.LogFileEntries'Old (I)))
+                           LogFileEntries (I) = LogFileEntries'Old (I)))
    is
       OK      : Boolean;
       TheFile : File.T;
@@ -409,7 +410,7 @@ is
       LogFiles(Index) := TheFile;
 
       LogFilesStatus (Index) := Free;
-      LogFileState.LogFileEntries (Index) := 0;
+      LogFileEntries (Index) := 0;
 
    end DeleteLogFile;
 
@@ -453,13 +454,14 @@ is
       --
       ------------------------------------------------------------------
       function NameOfType (E : AuditTypes.ElementT) return ElementTextT
+        with Post => True  --  no contextual analysis needed
       is
          pragma Unreferenced (E);
 
          ElementText : ElementTextT := NoElement;
       begin
-         ElementText(1..AuditTypes.ElementT'Image(ElementID)'Last) :=
-           AuditTypes.ElementT'Image(ElementID);
+         ElementText(1..AuditTypes.ElementT_Image(ElementID)'Last) :=
+           AuditTypes.ElementT_Image(ElementID);
 
          return ElementText;
       end NameOfType;
@@ -575,9 +577,10 @@ is
                       (LogFileState,
                        LogFilesStatus)     =>+ (LogFileState,
                                               LogFilesStatus)),
-          Pre     => LogFileState.NumberLogEntries < MaxLogEntries and
+          Pre     => Valid_NumberLogEntries (LogFileState) and then
+                     LogFileState.NumberLogEntries < MaxLogEntries and then
                      (LogFileState.LogFileEntries(LogFileState.CurrentLogFile) < MaxLogFileEntries or
-                       LogFileState.UsedLogFiles.Length < LogFileCountT'Last) and
+                       LogFileState.UsedLogFiles.Length < LogFileCountT'Last) and then
                      LogFileState.NumberLogEntries =
                        LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) *
                        MaxLogFileEntries + LogFileState.LogFileEntries(LogFileState.CurrentLogFile),
@@ -585,18 +588,18 @@ is
                        LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) *
                        MaxLogFileEntries + LogFileState.LogFileEntries(LogFileState.CurrentLogFile) and
                      LogFileState.NumberLogEntries = LogFileState.NumberLogEntries'Old + 1 and
-                     (if LogFileState.LogFileEntries(LogFileState.CurrentLogFile'Old) =
+                     (if LogFileState.LogFileEntries(LogFileState.CurrentLogFile)'Old =
                         MaxLogFileEntries
                       then
                          LogFileState.LogFileEntries(LogFileState.CurrentLogFile) = 1 and
-                         LogFileState.UsedLogFiles.Length = LogFileState.UsedLogFiles'Old.Length + 1)
+                         LogFileState.UsedLogFiles.Length = LogFileState.UsedLogFiles.Length'Old + 1)
                      and
-                     (if LogFileState.LogFileEntries(LogFileState.CurrentLogFile'Old) <
+                     (if LogFileState.LogFileEntries(LogFileState.CurrentLogFile)'Old <
                         MaxLogFileEntries
                       then
                           LogFileState.LogFileEntries(LogFileState.CurrentLogFile) =
-                            LogFileState.LogFileEntries(LogFileState.CurrentLogFile'Old) + 1 and
-                          LogFileState.UsedLogFiles.Length = LogFileState.UsedLogFiles'Old.Length)
+                            LogFileState.LogFileEntries(LogFileState.CurrentLogFile)'Old + 1 and
+                          LogFileState.UsedLogFiles.Length = LogFileState.UsedLogFiles.Length'Old)
    is
       ------------------------------------------------------------------
       -- AddElementToCurrentFile
@@ -628,7 +631,10 @@ is
                           LogFileState      =>+ null),
              Pre     => LogFileState.LogFileEntries(LogFileState.CurrentLogFile) < MaxLogFileEntries,
              Post    => LogFileState.LogFileEntries(LogFileState.CurrentLogFile) =
-                          LogFileState.LogFileEntries'Old(LogFileState.CurrentLogFile) + 1
+                          LogFileState.LogFileEntries'Old(LogFileState.CurrentLogFile) + 1 and then
+                        LogFileState.CurrentLogFile = LogFileState.CurrentLogFile'Old and then
+                        LogFileState.UsedLogFiles = LogFileState.UsedLogFiles'Old and then
+                        LogFileState.NumberLogEntries = LogFileState.NumberLogEntries'Old
       is
          TheFile : File.T;
       begin
@@ -678,13 +684,12 @@ is
                                                  LogFilesStatus)),
              Pre     => LogFileState.UsedLogFiles.Length < LogFileCountT'Last,
              Post    => LogFileState.UsedLogFiles.Length = LogFileState.UsedLogFiles.Length'Old + 1 and
-                          LogFileState.LogFileEntries(LogFileState.CurrentLogFile) = 1
+                          LogFileState.LogFileEntries(LogFileState.CurrentLogFile) = 1 and
+                        LogFileState.NumberLogEntries = LogFileState.NumberLogEntries'Old
       is
          TheFile : File.T;
 
          procedure SetCurrentFileToNextFreeFile (LogFileState : in out LogFileStateT)
-           with Global  => (Input  => LogFilesStatus),
-                Depends => (LogFileState =>+ LogFilesStatus)
          is
          begin
             for I in LogFileIndexT loop
@@ -799,7 +804,7 @@ is
       pragma Assume (Head /= LogFileState.CurrentLogFile);
 
       -- Empty the file.
-      DeleteLogFile (LogFileState, Head);
+      DeleteLogFile (LogFileState.LogFileEntries, Head);
 
       -- remove the head of the usedLogFiles
       LogFileState.UsedLogFiles.Head := NextListIndex (LogFileState.UsedLogFiles.Head);
@@ -848,7 +853,7 @@ is
                       (LogFilesStatus,
                        LogFileState)     => (LogFileState,
                                              LogFilesStatus)),
-          Pre  => LogFileState.UsedLogFiles.Length >= 1 and
+          Pre  => LogFileState.UsedLogFiles.Length >= 1 and then
                   LogFileState.NumberLogEntries =
                     LogEntryCountT(LogFileState.UsedLogFiles.Length - 1) *
                     MaxLogFileEntries + LogFileState.LogFileEntries(LogFileState.CurrentLogFile),
@@ -1062,6 +1067,9 @@ is
 
       LogFileState.UsedLogFiles := EmptyList;
       for I in LogFileIndexT loop
+         pragma Loop_Invariant (LogFileState.UsedLogFiles.Length < I);
+         pragma Loop_Invariant (if LogFileState.UsedLogFiles.Length > 0 then LogFileState.UsedLogFiles.LastI < I);
+
          if LogFilesStatus(I) = Used then
             if LogFileState.UsedLogFiles.Length = 0 then
                -- easy case list currently empty
@@ -1071,6 +1079,9 @@ is
                LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.Head) := I;
             else
                for J in LogFileIndexT range 1..LogFileState.UsedLogFiles.LastI loop
+                  pragma Loop_Invariant (LogFileState.UsedLogFiles.Length in 1 .. I-1);
+                  pragma Loop_Invariant (if LogFileState.UsedLogFiles.Length > 0 then LogFileState.UsedLogFiles.LastI < I);
+
                   if AgeLessThan(FileAges(I), FileAges(LogFileState.UsedLogFiles.List(J))) then
                      -- this is where the new entry goes.
                      -- move all other entries up the list to make room
@@ -1396,7 +1407,7 @@ is
          pragma Assume (LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.Head) /= LogFileState.CurrentLogFile);
 
          -- Empty the archived file.
-         DeleteLogFile (LogFileState, LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.Head));
+         DeleteLogFile (LogFileState.LogFileEntries, LogFileState.UsedLogFiles.List(LogFileState.UsedLogFiles.Head));
 
          LogFileState.UsedLogFiles.Length := LogFileState.UsedLogFiles.Length - 1;
          LogFileState.UsedLogFiles.Head := NextListIndex (LogFileState.UsedLogFiles.Head);

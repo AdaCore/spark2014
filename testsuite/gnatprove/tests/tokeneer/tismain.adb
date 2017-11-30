@@ -1067,7 +1067,7 @@ is
             (not Enclave.EnrolmentIsInProgress =
                 KeyStore.PrivateKeyPresent) and
 
-            (Latch.IsLocked = Latch.Interfac_IsLocked) and
+            (Latch.IsLocked = Latch.LatchIsLocked) and
 
             (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
                 (AdminToken.isGood and
@@ -1118,7 +1118,7 @@ is
             (not Enclave.EnrolmentIsInProgress =
                KeyStore.PrivateKeyPresent) and
 
-            (Latch.IsLocked = Latch.Interfac_IsLocked
+            (Latch.IsLocked = Latch.LatchIsLocked
                or SystemFault) and
 
             -------------------------------------------------------
@@ -1136,10 +1136,10 @@ is
              then
                 (Alarm.isAlarming or SystemFault)) and
 
-            (not (Latch.Interfac_IsLocked'Old and
-                    not Latch.Interfac_IsLocked and
+            (not (Latch.LatchIsLocked'Old and
+                    not Latch.LatchIsLocked and
                     not Latch.IsLocked and
-                    Latch.IsLocked'Old = Latch.Interfac_IsLocked'Old)
+                    Latch.IsLocked'Old = Latch.LatchIsLocked'Old)
              or
                ((Latch.IsLocked'Old or not Latch.IsLocked) or
                   (AdminToken.isGood and
@@ -1341,14 +1341,36 @@ begin
 
    Init;
 
+   -- In order to show that (the admin part of) security
+   -- property 1 holds, the changes to Latch.State and
+   -- Latch.Output need to be recorded.
+   -- Two proof functions prf_preLatchState and
+   -- prf_preLatchOutput have been introduced to model
+   -- the values of Latch.State and Latch.Output at the
+   -- start of the main loop. These are then used in
+   -- assertions further down the loop.
+   -- VC1 and VC2 both have conclusions C1 and C2 that show
+   -- this.
+   --
+   -- VC1 (which represents the path from the start to the
+   -- first assertion) also has a conclusion C3 which is not
+   -- actually true. Latch.Output is not defined until the first
+   -- call to Update, which is within MainLoopBody. This is
+   -- acceptable though, since the Latch will not be updated on the
+   -- first iteration of the loop. For the latch to be altered,
+   -- Either a guard is present, or a user entry is in progress.
+   -- For these conditions to be true, at least one iteration must
+   -- have taken place.
+   pragma Assume (Latch.IsLocked = Latch.LatchIsLocked);
+
    loop
 
       pragma Loop_Invariant
         (((not Enclave.EnrolmentIsInProgress) = KeyStore.PrivateKeyPresent) and
 
          --  Latch.LatchIsLocked = Latch.LatchIsLocked'Loop_Entry and
-         --  Latch.Interfac_IsLocked = Latch.Interfac_IsLocked'Loop_Entry and
-         Latch.IsLocked = Latch.Interfac_IsLocked and
+         --  Latch.LatchIsLocked = Latch.LatchIsLocked'Loop_Entry and
+         Latch.IsLocked = Latch.LatchIsLocked and
 
          (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
              (AdminToken.IsGood and
@@ -1432,7 +1454,7 @@ begin
          --                PrivTypes.Guard)))
          --  or SystemFault) and
 
-         (Latch.IsLocked = Latch.Interfac_IsLocked or SystemFault) and
+         (Latch.IsLocked = Latch.LatchIsLocked or SystemFault) and
 
          (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
              (AdminToken.IsGood and
@@ -1525,7 +1547,7 @@ begin
          --            AdminToken.TheAuthCertRole (AdminToken.State) =
          --              PrivTypes.Guard))) and
 
-         (Latch.IsLocked = Latch.Interfac_isLocked or SystemFault) and
+         (Latch.IsLocked = Latch.LatchIsLocked or SystemFault) and
 
          (if Admin.RolePresent (TheAdmin) = PrivTypes.Guard then
              (AdminToken.IsGood and

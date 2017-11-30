@@ -18,7 +18,7 @@
 --
 ------------------------------------------------------------------
 
-with BasicTypes,
+with CommonTypes,
      CertTypes,
      CryptoTypes,
      IandATypes,
@@ -37,7 +37,7 @@ package CertProc is
       Month,
       Day,
       Hour,
-      Minute : BasicTypes.Unsigned32T;
+      Minute : CommonTypes.Unsigned32T;
    end record;
 
    type ValidityT is record
@@ -52,8 +52,8 @@ package CertProc is
 
    type PublicKeyInfoT is record
       AlgorithmId : CryptoTypes.AlgorithmT;
-      KeyID       : BasicTypes.Unsigned32T;
-      KeyLength   : BasicTypes.Unsigned32T;
+      KeyID       : CommonTypes.Unsigned32T;
+      KeyLength   : CommonTypes.Unsigned32T;
    end record;
 
    -- A fictional field called CryptoControlData is held in a raw
@@ -70,8 +70,8 @@ package CertProc is
    -- defined in section 2.
 
    type IDCertDataT is record
-      CertType             : BasicTypes.Unsigned32T;
-      SerialNumber         : BasicTypes.Unsigned32T;
+      CertType             : CommonTypes.Unsigned32T;
+      SerialNumber         : CommonTypes.Unsigned32T;
       SigAlgId             : CryptoTypes.AlgorithmT;
       Issuer               : CryptoTypes.IssuerT;
       Validity             : ValidityT;
@@ -80,40 +80,40 @@ package CertProc is
    end record;
 
    type PrivCertDataT is record
-      CertType        : BasicTypes.Unsigned32T;
+      CertType        : CommonTypes.Unsigned32T;
       Holder          : CertTypes.IDT;
       Issuer          : CryptoTypes.IssuerT;
       SigAlgId        : CryptoTypes.AlgorithmT;
-      SerialNumber    : BasicTypes.Unsigned32T;
+      SerialNumber    : CommonTypes.Unsigned32T;
       AttCertValidity : ValidityT;
       Privilege       : PrivilegeT;
    end record;
 
    type AuthCertDataT is record
-      CertType        : BasicTypes.Unsigned32T;
+      CertType        : CommonTypes.Unsigned32T;
       Holder          : CertTypes.IDT;
       Issuer          : CryptoTypes.IssuerT;
       SigAlgId        : CryptoTypes.AlgorithmT;
-      SerialNumber    : BasicTypes.Unsigned32T;
+      SerialNumber    : CommonTypes.Unsigned32T;
       AttCertValidity : ValidityT;
       Privilege       : PrivilegeT;
    end record;
 
    type IACertDataT is record
-      CertType        : BasicTypes.Unsigned32T;
+      CertType        : CommonTypes.Unsigned32T;
       Holder          : CertTypes.IDT;
       Issuer          : CryptoTypes.IssuerT;
       SigAlgId        : CryptoTypes.AlgorithmT;
-      SerialNumber    : BasicTypes.Unsigned32T;
+      SerialNumber    : CommonTypes.Unsigned32T;
       AttCertValidity : ValidityT;
       Template        : IandATypes.TemplateT;
    end record;
 
    -- Constants
-   IDCertType   : constant BasicTypes.Unsigned32T := 0;
-   IACertType   : constant BasicTypes.Unsigned32T := 1;
-   PrivCertType : constant BasicTypes.Unsigned32T := 2;
-   AuthCertType : constant BasicTypes.Unsigned32T := 3;
+   IDCertType   : constant CommonTypes.Unsigned32T := 0;
+   IACertType   : constant CommonTypes.Unsigned32T := 1;
+   PrivCertType : constant CommonTypes.Unsigned32T := 2;
+   AuthCertType : constant CommonTypes.Unsigned32T := 3;
 
    ------------------------------------------------------------------
    -- ExtractIDCertData

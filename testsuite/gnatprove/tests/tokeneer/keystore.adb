@@ -18,11 +18,11 @@
 
 with AuditLog,
      AuditTypes,
-     BasicTypes,
+     CommonTypes,
      CryptoTypes,
      KeyStore.Interfac;
 
-use type BasicTypes.Unsigned32T;
+use type CommonTypes.Unsigned32T;
 use type KeyStore.Interfac.ReturnValueT;
 use type KeyStore.Interfac.MaskT;
 
@@ -148,7 +148,7 @@ is
       BytesLeft : Positive;
 
       Block : Interfac.HundredByteArrayT;
-      Size : BasicTypes.Unsigned32T := 100;
+      Size : CommonTypes.Unsigned32T := 100;
 
 
       ------------------------------------------------------------------
@@ -164,7 +164,7 @@ is
       function GetBlock
         (Data      : CertTypes.RawCertificateT;
          BlockNo   : Positive;
-         BlockSize : BasicTypes.Unsigned32T)
+         BlockSize : CommonTypes.Unsigned32T)
         return Interfac.HundredByteArrayT
         with Pre => BlockNo in 1 .. 41
                       and then BlockSize in 1 .. 100
@@ -179,11 +179,11 @@ is
               (BlockNo in 1 .. 41
                and BlockSize in 1 .. 100
                and J in 1 .. 100
-               and BasicTypes.Unsigned32T (J) <= BlockSize);
+               and CommonTypes.Unsigned32T (J) <= BlockSize);
 
             Result (J) := Data (J + (BlockNo - 1) * 100);
 
-            exit when BasicTypes.Unsigned32T (J) = BlockSize;
+            exit when CommonTypes.Unsigned32T (J) = BlockSize;
          end loop;
 
          return Result;
@@ -215,7 +215,7 @@ is
                and RetValFin = Interfac.Ok);
 
             if BytesLeft < 100 then
-               Size := BasicTypes.Unsigned32T (BytesLeft);
+               Size := CommonTypes.Unsigned32T (BytesLeft);
             end if;
 
             Block := GetBlock
@@ -284,7 +284,7 @@ is
    ------------------------------------------------------------------
    procedure DoFind
      (Template    : in     Interfac.KeyTemplateT;
-      HandleCount : in out BasicTypes.Unsigned32T;
+      HandleCount : in out CommonTypes.Unsigned32T;
       Handles     :    out Interfac.HandleArrayT)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State,
@@ -363,7 +363,7 @@ is
    --
    ------------------------------------------------------------------
    procedure KeyMatchingIssuer (Issuer    : in     CryptoTypes.IssuerT;
-                                IssuerKey :    out BasicTypes.Unsigned32T)
+                                IssuerKey :    out CommonTypes.Unsigned32T)
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State,
                                  Interfac.Store),
@@ -383,8 +383,8 @@ is
       Handles : Interfac.HandleArrayT;
 
       -- Only expect to find one public key belonging to the issuer
-      ExpectedCount : constant BasicTypes.Unsigned32T := 1;
-      ActualCount   : BasicTypes.Unsigned32T := ExpectedCount;
+      ExpectedCount : constant CommonTypes.Unsigned32T := 1;
+      ActualCount   : CommonTypes.Unsigned32T := ExpectedCount;
 
    begin
       -- Create a crypto template, with only the Owner attr defined.
@@ -430,7 +430,7 @@ is
    --    first handle is returned, and the TIS is allowed to continue.
    --
    ------------------------------------------------------------------
-   procedure PrivateKey (PrivateKeyHandle :    out BasicTypes.Unsigned32T)
+   procedure PrivateKey (PrivateKeyHandle :    out CommonTypes.Unsigned32T)
      with Global  => (Input  => (Clock.Now,
                                   ConfigData.State,
                                   Interfac.Store),
@@ -448,8 +448,8 @@ is
       Handles : Interfac.HandleArrayT;
 
       -- Only expect to find one public key belonging to the issuer
-      ExpectedCount : constant BasicTypes.Unsigned32T := 1;
-      ActualCount   : BasicTypes.Unsigned32T := ExpectedCount;
+      ExpectedCount : constant CommonTypes.Unsigned32T := 1;
+      ActualCount   : CommonTypes.Unsigned32T := ExpectedCount;
 
    begin
       -- Create a crypto template, with only the IsPublic attr defined.
@@ -507,7 +507,7 @@ is
                               ThisTISInfo          => Interfac.Store)
    is
       RetVal : Interfac.ReturnValueT;
-      ThePrivateKeyH : BasicTypes.Unsigned32T;
+      ThePrivateKeyH : CommonTypes.Unsigned32T;
 
       ThePrivateKey : Interfac.KeyTemplateT :=
                          Interfac.KeyTemplateT'(
@@ -571,7 +571,7 @@ is
                               IsPresent            => (Interfac.Store,
                                                        Issuer))
    is
-      TheIssuerKey : BasicTypes.Unsigned32T;
+      TheIssuerKey : CommonTypes.Unsigned32T;
    begin
 
       KeyMatchingIssuer(Issuer    => Issuer,
@@ -615,7 +615,7 @@ is
    is
       TheDigest    : Interfac.DigestT;
       Digested     : Boolean;
-      TheIssuerKey : BasicTypes.Unsigned32T;
+      TheIssuerKey : CommonTypes.Unsigned32T;
       RetVal       : Interfac.ReturnValueT;
    begin
       Digest(Mechanism   => Mechanism,
@@ -681,7 +681,7 @@ is
    is
       -- This TIS always uses RSA with SHA-1
       Mechanism : constant CryptoTypes.AlgorithmT := CryptoTypes.SHA1_RSA;
-      ThePrivateKeyH : BasicTypes.Unsigned32T;
+      ThePrivateKeyH : CommonTypes.Unsigned32T;
       TheDigest : Interfac.DigestT;
 
       Digested  : Boolean;
@@ -769,9 +769,9 @@ is
         Interfac.KeyTemplateT'(AttrMask  => Interfac.FullKeyMask,
                                Owner     => TheOwner,
                                KeyID     =>
-                                 BasicTypes.Unsigned32T(TheKey.KeyID),
+                                 CommonTypes.Unsigned32T(TheKey.KeyID),
                                KeyLength =>
-                                 BasicTypes.Unsigned32T(TheKey.KeyLength),
+                                 CommonTypes.Unsigned32T(TheKey.KeyLength),
                                IsPublic  => IsPublic);
 
       Interfac.CreateObject(Template     => TheKeyTemplate,

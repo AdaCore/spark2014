@@ -17,8 +17,8 @@
 ------------------------------------------------------------------
 
 with Keyboard.Interfac;
-with BasicTypes;
-use type BasicTypes.PresenceT;
+with CommonTypes;
+use type CommonTypes.PresenceT;
 
 package body Keyboard
   with Refined_State => (Inputs => Keyboard.Interfac.Inputs)
@@ -58,7 +58,7 @@ is
    -- Implementation Notes:
    --   None.
    ------------------------------------------------------------------
-   procedure Read (DataPresence :    out BasicTypes.PresenceT;
+   procedure Read (DataPresence :    out CommonTypes.PresenceT;
                    Data         :    out DataT)
      with Refined_Global  => (Input  => Interfac.Inputs),
           Refined_Depends => ((Data,

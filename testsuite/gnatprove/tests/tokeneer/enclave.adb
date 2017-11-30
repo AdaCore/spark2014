@@ -18,7 +18,7 @@
 with Admin,
      AuditLog,
      AuditTypes,
-     BasicTypes,
+     CommonTypes,
      ConfigData,
      Configuration,
      Door,
@@ -31,7 +31,7 @@ with Admin,
      UserToken;
 
 use type Admin.OpAndNullT;
-use type BasicTypes.PresenceT;
+use type CommonTypes.PresenceT;
 use type Door.T;
 
 package body Enclave
@@ -1485,7 +1485,10 @@ is
    ------------------------------------------------------------------
    function CurrentAdminActivityPossible return Boolean
      with Refined_Global  => (AdminToken.State,
-                              Status)
+                              Status),
+          Refined_Post => (if CurrentAdminActivityPossible'Result then
+                             Status in NonQuiescentStates)
+
    is
       ------------------------------------------------------------------
       -- AdminActivityInProgress
@@ -2173,14 +2176,14 @@ is
             (not Admin.IsDoingOp(TheAdmin) and
                Admin.RolePresent(TheAdmin) = PrivTypes.UserOnly))
       is
-         KeyedDataPresence : BasicTypes.PresenceT;
+         KeyedDataPresence : CommonTypes.PresenceT;
          KeyedData         : Keyboard.DataT;
          TheOp             : Admin.OpAndNullT;
       begin
          Keyboard.Read(DataPresence => KeyedDataPresence,
                        Data         => KeyedData);
 
-         if KeyedDataPresence = BasicTypes.Present then
+         if KeyedDataPresence = CommonTypes.Present then
             TheOp := Admin.OpIsAvailable(TheAdmin => TheAdmin,
                                          KeyedOp  => KeyedData);
 

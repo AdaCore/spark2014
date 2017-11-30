@@ -17,7 +17,7 @@
 --    Interfaces to the TokenAPI.
 --
 ------------------------------------------------------------------
-with BasicTypes;
+with CommonTypes;
 with CertTypes;
 with TokenTypes;
 
@@ -80,7 +80,14 @@ is
        RemovedCard,        -- ICC has been removed.
        InvalidResponseCode);
 
-
+   function ResponseCodeT_Image (X : ResponseCodeT) return CommonTypes.StringF1L1000 is
+      (ResponseCodeT'Image (X));
+   pragma Annotate (GNATprove, False_Positive,
+                    "range check might fail",
+                    "Image of enums of type ResponseCodeT are short strings starting at index 1");
+   pragma Annotate (GNATprove, False_Positive,
+                    "predicate check might fail",
+                    "Image of enums of type ResponseCodeT are short strings starting at index 1");
 
    type CardStateT is
       (InvalidCardState,
@@ -120,8 +127,8 @@ is
    --
    ------------------------------------------------------------------
    procedure ListReaders (List         :    out ReaderNameArrayT;
-                          Number       : in out BasicTypes.Unsigned32T;
-                          ResponseCode :    out BasicTypes.Unsigned32T)
+                          Number       : in out CommonTypes.Unsigned32T;
+                          ResponseCode :    out CommonTypes.Unsigned32T)
      with Global  => (Input  => ReaderStatus),
           Depends => ((List,
                        Number,
@@ -136,11 +143,11 @@ is
    --    a card is present.
    --
    ------------------------------------------------------------------
-   procedure GetStatusChange (Timeout      : in     BasicTypes.Unsigned32T;
+   procedure GetStatusChange (Timeout      : in     CommonTypes.Unsigned32T;
                               Reader       : in     ReaderNameT;
                               CurrentState : in     ReaderStateT;
-                              NewState     :    out BasicTypes.Unsigned32T;
-                              ResponseCode :    out BasicTypes.Unsigned32T)
+                              NewState     :    out CommonTypes.Unsigned32T;
+                              ResponseCode :    out CommonTypes.Unsigned32T)
      with Global  => ReaderStatus,
           Depends => (NewState     => (Reader,
                                        ReaderStatus,
@@ -161,7 +168,7 @@ is
    ------------------------------------------------------------------
    procedure Connect (Reader       : in     ReaderNameT;
                       CardHandle   :    out CardHandleT;
-                      ResponseCode :    out BasicTypes.Unsigned32T)
+                      ResponseCode :    out CommonTypes.Unsigned32T)
      with Global  => ReaderStatus,
           Depends => ((CardHandle,
                        ResponseCode) => (Reader,
@@ -179,9 +186,9 @@ is
    --
    ------------------------------------------------------------------
    procedure Status (CardHandle   : in     CardHandleT;
-                     CState       :    out BasicTypes.Unsigned32T;
+                     CState       :    out CommonTypes.Unsigned32T;
                      ATR          :    out TokenTypes.TokenIDT;
-                     ResponseCode :    out BasicTypes.Unsigned32T)
+                     ResponseCode :    out CommonTypes.Unsigned32T)
      with Global  => (ReaderInput,
                       ReaderStatus),
           Depends => (ATR            => (CardHandle,
@@ -200,7 +207,7 @@ is
    --
    ------------------------------------------------------------------
    procedure Disconnect (CardHandle   : in     CardHandleT;
-                         ResponseCode :    out BasicTypes.Unsigned32T)
+                         ResponseCode :    out CommonTypes.Unsigned32T)
      with Global  => ReaderStatus,
           Depends => (ResponseCode => (CardHandle,
                                        ReaderStatus));
@@ -217,7 +224,7 @@ is
    procedure GetIDCert (CardHandle   : in     CardHandleT;
                         RawIDCert    :    out CertTypes.RawCertificateT;
                         StatusOK     :    out Boolean;
-                        ResponseCode :    out BasicTypes.Unsigned32T)
+                        ResponseCode :    out CommonTypes.Unsigned32T)
      with Global  => (ReaderInput,
                       ReaderStatus),
           Depends => (RawIDCert      => (CardHandle,
@@ -239,7 +246,7 @@ is
    procedure GetPrivCert (CardHandle   : in     CardHandleT;
                           RawPrivCert  :    out CertTypes.RawCertificateT;
                           StatusOK     :    out Boolean;
-                          ResponseCode :    out BasicTypes.Unsigned32T)
+                          ResponseCode :    out CommonTypes.Unsigned32T)
 
      with Global  => (ReaderInput,
                       ReaderStatus),
@@ -262,7 +269,7 @@ is
    procedure GetIACert (CardHandle   : in     CardHandleT;
                         RawIACert    :    out CertTypes.RawCertificateT;
                         StatusOK     :    out Boolean;
-                        ResponseCode :    out BasicTypes.Unsigned32T)
+                        ResponseCode :    out CommonTypes.Unsigned32T)
      with Global  => (ReaderInput,
                       ReaderStatus),
           Depends => (RawIACert => (CardHandle,
@@ -286,7 +293,7 @@ is
                           RawAuthCert  :    out CertTypes.RawCertificateT;
                           Exists       :    out Boolean;
                           StatusOK     :    out Boolean;
-                          ResponseCode :    out BasicTypes.Unsigned32T)
+                          ResponseCode :    out CommonTypes.Unsigned32T)
      with Global  => (ReaderInput,
                       ReaderStatus),
           Depends => ((Exists,
@@ -310,7 +317,7 @@ is
    procedure UpdateAuthCert (CardHandle   : in     CardHandleT;
                              RawAuthCert  : in     CertTypes.RawCertificateT;
                              StatusOK     :    out Boolean;
-                             ResponseCode :    out BasicTypes.Unsigned32T)
+                             ResponseCode :    out CommonTypes.Unsigned32T)
      with Global  => (Input  => ReaderStatus,
                       Output => ReaderOutput),
           Depends => (ReaderOutput   => (CardHandle,

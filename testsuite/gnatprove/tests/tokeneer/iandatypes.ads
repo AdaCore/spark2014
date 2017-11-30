@@ -15,7 +15,7 @@
 --    Types that appear within the context of an I&A certificate
 --
 ------------------------------------------------------------------
-with BasicTypes,
+with CommonTypes,
      CryptoTypes;
 
 package IandATypes is
@@ -32,6 +32,15 @@ package IandATypes is
    type FarT is range 0..2**31 - 1;
    for FarT'Size use 32;
 
+   function FarT_Image (X : FarT) return CommonTypes.StringF1L1000 is
+      (FarT'Image (X));
+   pragma Annotate (GNATprove, False_Positive,
+                    "range check might fail",
+                    "Image of integers of type FarT are short strings starting at index 1");
+   pragma Annotate (GNATprove, False_Positive,
+                    "predicate check might fail",
+                    "Image of integers of type FarT are short strings starting at index 1");
+
    type MatchResultT is (Match, NoMatch);
 
    -- The biometric template contains fictional fields to simplify the
@@ -39,12 +48,12 @@ package IandATypes is
    -- field, an ID field and padding to bring up to the maximum size currently
    -- allowed by the Identicator format (500 bytes).
    type TemplatePadI is range 1..452;
-   type TemplatePadT is array(TemplatePadI) of BasicTypes.ByteT;
+   type TemplatePadT is array(TemplatePadI) of CommonTypes.ByteT;
 
    NullTemplatePad : constant TemplatePadT :=
-     TemplatePadT'(others => BasicTypes.ByteT'First);
+     TemplatePadT'(others => CommonTypes.ByteT'First);
 
-   subtype TemplateLengthT is BasicTypes.Unsigned32T;
+   subtype TemplateLengthT is CommonTypes.Unsigned32T;
 
    subtype TemplateIDI is Positive range 1..40;
    subtype TemplateIDT is String(TemplateIDI);

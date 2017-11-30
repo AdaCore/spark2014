@@ -90,13 +90,16 @@ package body LatchAPI is
    ------------------------------------------------------------------
 
    procedure Unlock(Failed : out Boolean) is
-      InMsg  : TcpIp.MessageT;
+      InMsg  : TcpIp.MessageT with Unreferenced;
       OutMsg : constant TcpIp.MessageT :=
         (Data   => Ada.Strings.Fixed.Overwrite
            (Source   => TcpIp.NullMsg.Data,
             Position => 1,
             New_Item => "door.unlock()"),
          Length => 13);
+      pragma Annotate (GNATprove, False_Positive,
+                       "length check might fail",
+                       "Call to Overwrite will return here a string of the expected length");
       IsLocked, CommsIsOK, ReadBackOK  : Boolean;
 
    begin
@@ -124,13 +127,16 @@ package body LatchAPI is
    ------------------------------------------------------------------
 
    procedure Lock (Failed : out Boolean) is
-      InMsg  : TcpIp.MessageT;
+      InMsg  : TcpIp.MessageT with Unreferenced;
       OutMsg : constant TcpIp.MessageT :=
         (Data   => Ada.Strings.Fixed.Overwrite
            (Source   => TcpIp.NullMsg.Data,
             Position => 1,
             New_Item => "door.lock()"),
          Length => 11);
+      pragma Annotate (GNATprove, False_Positive,
+                       "length check might fail",
+                       "Call to Overwrite will return here a string of the expected length");
       IsLocked, CommsIsOK, ReadBackOK : Boolean;
 
    begin

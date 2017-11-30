@@ -16,7 +16,7 @@
 --
 ------------------------------------------------------------------
 with AuditLog;
-with BasicTypes;
+with CommonTypes;
 with CertTypes;
 with Clock;
 with ConfigData;
@@ -102,7 +102,7 @@ is
    --
    -- traceunit : C.TokenReader.TheTokenPresence
    ------------------------------------------------------------------
-   function TheTokenPresence (Reader : ReaderT) return BasicTypes.PresenceT
+   function TheTokenPresence (Reader : ReaderT) return CommonTypes.PresenceT
      with Global => State;
 
    ------------------------------------------------------------------

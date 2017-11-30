@@ -100,7 +100,7 @@ is
          Padding   => (others => 0));
 
       LocalReturnValue   : Crypto.ReturnValueT;
-      UnusedObjectHandle : BasicTypes.Unsigned32T;
+      UnusedObjectHandle : CommonTypes.Unsigned32T;
    begin
       Crypto.CreateObject(Template     => LocalTemplate,
                           ObjectHandle => UnusedObjectHandle,
@@ -139,7 +139,7 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure FindObjects (HandleCount   : in out BasicTypes.Unsigned32T;
+   procedure FindObjects (HandleCount   : in out CommonTypes.Unsigned32T;
                           ObjectHandles :    out HandleArrayT;
                           ReturnValue   :    out ReturnValueT)
    is
@@ -191,7 +191,7 @@ is
    --
    ------------------------------------------------------------------
    procedure DigestUpdate (DataBlock   : in     HundredByteArrayT;
-                           ByteCount   : in     BasicTypes.Unsigned32T;
+                           ByteCount   : in     CommonTypes.Unsigned32T;
                            ReturnValue :    out ReturnValueT)
    is
       LocalReturnValue : Crypto.ReturnValueT;
@@ -214,7 +214,7 @@ is
    is
       LocalDigest      : Crypto.DigestT;
       LocalReturnValue : Crypto.ReturnValueT;
-      UnusedLength     : BasicTypes.Unsigned32T;
+      UnusedLength     : CommonTypes.Unsigned32T;
    begin
       Crypto.DigestFinal(Digest       => LocalDigest,
                          DigestLength => UnusedLength,
@@ -236,7 +236,7 @@ is
    --
    ------------------------------------------------------------------
    procedure Sign (Mechanism   : in     CryptoTypes.AlgorithmT;
-                   KeyHandle   : in     BasicTypes.Unsigned32T;
+                   KeyHandle   : in     CommonTypes.Unsigned32T;
                    Digest      : in     DigestT;
                    Signature   :    out CertTypes.SignatureT;
                    ReturnValue :    out ReturnValueT)
@@ -266,7 +266,7 @@ is
    --
    ------------------------------------------------------------------
    procedure Verify (Mechanism   : in     CryptoTypes.AlgorithmT;
-                     KeyHandle   : in     BasicTypes.Unsigned32T;
+                     KeyHandle   : in     CommonTypes.Unsigned32T;
                      Digest      : in     DigestT;
                      Signature   : in     CertTypes.SignatureT;
                      ReturnValue :    out ReturnValueT)
@@ -294,7 +294,7 @@ is
    --    None
    --
    ------------------------------------------------------------------
-   procedure GetAttributeValue (KeyHandle   : in     BasicTypes.Unsigned32T;
+   procedure GetAttributeValue (KeyHandle   : in     CommonTypes.Unsigned32T;
                                 Template    : in out KeyTemplateT;
                                 ReturnValue :    out ReturnValueT)
    is

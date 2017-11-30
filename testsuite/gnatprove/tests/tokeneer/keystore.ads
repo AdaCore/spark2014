@@ -16,7 +16,7 @@
 --
 ------------------------------------------------------------------
 
-with BasicTypes,
+with CommonTypes,
      CertTypes,
      Clock,
      ConfigData,
@@ -264,7 +264,7 @@ private
 
    -- Key handles are unsigned 32 bit words, with zero being a null
    -- key handle.
-   NullKey : constant BasicTypes.Unsigned32T := 0;
+   NullKey : constant CommonTypes.Unsigned32T := 0;
 
    ------------------------------------------------------------------
    -- PrivateKeyPresent

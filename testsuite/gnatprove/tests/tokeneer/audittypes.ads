@@ -16,6 +16,8 @@
 --
 ------------------------------------------------------------------
 
+with CommonTypes;
+
 package AuditTypes is
 
    --------------------------------------------------------------
@@ -71,6 +73,15 @@ package AuditTypes is
         Shutdown,
         OverrideLock,
         SystemFault);
+
+   function ElementT_Image (X : ElementT) return CommonTypes.StringF1L20 is
+      (ElementT'Image (X));
+   pragma Annotate (GNATprove, False_Positive,
+                    "range check might fail",
+                    "Image of enums of type ElementT are short strings starting at index 1");
+   pragma Annotate (GNATprove, False_Positive,
+                    "predicate check might fail",
+                    "Image of enums of type ElementT are short strings starting at index 1");
 
    --------------------------------------------------------------
    --  Severity

@@ -15,7 +15,7 @@
 --    Provides the interface to the console for reading keyed data.
 --
 ------------------------------------------------------------------
-with BasicTypes;
+with CommonTypes;
 with Keyboard;
 
 private package Keyboard.Interfac
@@ -32,7 +32,7 @@ is
    --
    ------------------------------------------------------------------
    procedure ReadKeyboardData
-     (KeyedDataPresence : out BasicTypes.PresenceT;
+     (KeyedDataPresence : out CommonTypes.PresenceT;
       KeyedData         : out Keyboard.DataTextT;
       KeyedDataLength   : out Keyboard.DataLengthT)
      with Global  => (Input  => Inputs),

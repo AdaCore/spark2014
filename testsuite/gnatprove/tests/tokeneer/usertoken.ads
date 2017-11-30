@@ -19,7 +19,7 @@
 
 with AuditLog,
      AuditTypes,
-     BasicTypes,
+     CommonTypes,
      Cert.Attr.Auth,
      Cert.Attr.IandA,
      Cert.Attr.Priv,

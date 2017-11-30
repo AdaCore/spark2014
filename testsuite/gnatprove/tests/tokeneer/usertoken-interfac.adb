@@ -57,7 +57,7 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   function TheTokenPresence return BasicTypes.PresenceT is
+   function TheTokenPresence return CommonTypes.PresenceT is
      (TokenReader.TheTokenPresence(Reader => TokenReader.User));
 
    ------------------------------------------------------------------

@@ -18,11 +18,18 @@
 
 package CommonTypes is
 
-   type Unsigned32T is range 0 .. 2**32 - 1;
+   type Unsigned32T is range 0..2**32 - 1;
+   for Unsigned32T'Size use 32;
+
+   type Signed32T is range - (2**31)..2**31 - 1;
+   for Signed32T'Size use 32;
+
    type Unsigned8T is range 0 .. 2**8 - 1;
 
-   type Signed32T is range - (2**31) .. 2**31 - 1;
+   type ByteT is range 0..255;
+   for ByteT'Size use 8;
 
+   type PresenceT is (Present, Absent);
 
    ------------------------------------------------------------------
    --
@@ -49,5 +56,31 @@ package CommonTypes is
    subtype String8ArrayI is Integer range 1..10;
    type String8ArrayT is Array(String8ArrayI) of String8T;
 
+   subtype StringF1 is String with
+     Predicate => StringF1'First = 1;
+   subtype StringF1L20 is StringF1 with
+     Predicate => StringF1L20'Last <= 20;
+   subtype StringF1L1000 is StringF1 with
+     Predicate => StringF1L1000'Last <= 1000;
+   subtype StringF1L1000NE is StringF1L1000 with
+     Predicate => StringF1L1000NE'Length >= 1;
+
+   function Unsigned32T_Image (X : Unsigned32T) return StringF1L1000 is
+      (Unsigned32T'Image (X));
+   pragma Annotate (GNATprove, False_Positive,
+                    "range check might fail",
+                    "Image of integers of type Unsigned32T are short strings starting at index 1");
+   pragma Annotate (GNATprove, False_Positive,
+                    "predicate check might fail",
+                    "Image of integers of type Unsigned32T are short strings starting at index 1");
+
+   function Integer_Image (X : Integer) return StringF1L1000 is
+      (Integer'Image (X));
+   pragma Annotate (GNATprove, False_Positive,
+                    "range check might fail",
+                    "Image of integers of type Integer are short strings starting at index 1");
+   pragma Annotate (GNATprove, False_Positive,
+                    "predicate check might fail",
+                    "Image of integers of type Integer are short strings starting at index 1");
 
 end CommonTypes;

@@ -16,10 +16,10 @@
 --
 ------------------------------------------------------------------
 with CertProcessing,
-     BasicTypes,
+     CommonTypes,
      KeyStore;
 
-use type BasicTypes.Unsigned32T;
+use type CommonTypes.Unsigned32T;
 
 package body Cert.Attr.Auth is
 
@@ -111,17 +111,17 @@ package body Cert.Attr.Auth is
                          Hour    => TheHour,
                          Min     => TheMinute);
          Raw := CertProcessing.TimeT'(
-                   Year   => BasicTypes.Unsigned32T(TheYear),
-                   Month  => BasicTypes.Unsigned32T(TheMonth),
-                   Day    => BasicTypes.Unsigned32T(TheDay),
-                   Hour   => BasicTypes.Unsigned32T(TheHour),
-                   Minute => BasicTypes.Unsigned32T(TheMinute));
+                   Year   => CommonTypes.Unsigned32T(TheYear),
+                   Month  => CommonTypes.Unsigned32T(TheMonth),
+                   Day    => CommonTypes.Unsigned32T(TheDay),
+                   Hour   => CommonTypes.Unsigned32T(TheHour),
+                   Minute => CommonTypes.Unsigned32T(TheMinute));
       end ConvertTISTime;
 
    begin
       LocalContents.Issuer          := Contents.ID.Issuer;
       LocalContents.SerialNumber
-        := BasicTypes.Unsigned32T(Contents.ID.SerialNumber);
+        := CommonTypes.Unsigned32T(Contents.ID.SerialNumber);
       LocalContents.SigAlgID        := Contents.Mechanism;
       LocalContents.Holder          := Contents.BaseCertID;
       LocalContents.Privilege.Role  := Contents.Role;

@@ -59,7 +59,7 @@ is
       ---------------------------------------------------------------------
       procedure GetData (KeyedData : out Keyboard.DataTextT;
                          Length    : out Keyboard.DataLengthT;
-                         Presence  : out BasicTypes.PresenceT);
+                         Presence  : out CommonTypes.PresenceT);
 
       ----------------------------------------------------------------------
       -- Refresh
@@ -73,7 +73,7 @@ is
    private
       TheData     : Keyboard.DataTextT := (others => ' ');
       TheLength   : Keyboard.DataLengthT := 0;
-      ThePresence : BasicTypes.PresenceT := BasicTypes.Absent;
+      ThePresence : CommonTypes.PresenceT := CommonTypes.Absent;
       IsFresh     : Boolean := False;
    end KeyedDataStore;
 
@@ -107,11 +107,11 @@ is
 
          -- Remove the CR & LF. A blank line does not count as present data.
          if TheLength > 2 then
-            ThePresence := BasicTypes.Present;
+            ThePresence := CommonTypes.Present;
             TheLength := TheLength - 2;
             IsFresh := True;
          else
-            ThePresence := BasicTypes.Absent;
+            ThePresence := CommonTypes.Absent;
             TheLength := 0;
          end if;
 
@@ -126,13 +126,13 @@ is
       ---------------------------------------------------------------------
       procedure GetData (KeyedData : out Keyboard.DataTextT;
                          Length    : out Keyboard.DataLengthT;
-                         Presence  : out BasicTypes.PresenceT) is
+                         Presence  : out CommonTypes.PresenceT) is
       begin
          KeyedData := TheData;
          Length := TheLength;
          Presence := ThePresence;
 
-         ThePresence := BasicTypes.Absent;
+         ThePresence := CommonTypes.Absent;
          TheLength := 0;
 
       end GetData;
@@ -148,7 +148,7 @@ is
       begin
          if not IsFresh then
             TheData := (others => ' ');
-            ThePresence := BasicTypes.Absent;
+            ThePresence := CommonTypes.Absent;
             TheLength := 0;
          else
             IsFresh := False;
@@ -240,7 +240,7 @@ is
    ------------------------------------------------------------------
 
    procedure ReadKeyboardData
-     (KeyedDataPresence : out BasicTypes.PresenceT;
+     (KeyedDataPresence : out CommonTypes.PresenceT;
       KeyedData         : out Keyboard.DataTextT;
       KeyedDataLength   : out Keyboard.DataLengthT)
    is

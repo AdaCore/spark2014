@@ -300,10 +300,10 @@ is
    --    Trims the image of the number.
    --
    ------------------------------------------------------------------
-   function StringFrom32 (Num : BasicTypes.Unsigned32T) return String is
+   function StringFrom32 (Num : CommonTypes.Unsigned32T) return String is
    begin
       return Ada.Strings.Fixed.Trim
-        (BasicTypes.Unsigned32T'Image(Num), Ada.Strings.Both);
+        (CommonTypes.Unsigned32T'Image(Num), Ada.Strings.Both);
    end StringFrom32;
 
    ------------------------------------------------------------------

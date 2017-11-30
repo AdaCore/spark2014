@@ -16,8 +16,8 @@
 --
 ------------------------------------------------------------------
 
-with BasicTypes;
-use type BasicTypes.PresenceT;
+with CommonTypes;
+use type CommonTypes.PresenceT;
 
 with TokenTypes;
 use type TokenTypes.TryT;
@@ -247,7 +247,7 @@ private
    -- State
    --
    ------------------------------------------------------------------
-   TokenPresence : BasicTypes.PresenceT with Part_Of => State;
+   TokenPresence : CommonTypes.PresenceT with Part_Of => State;
 
    TokenTry  : TokenTypes.TryT with Part_Of => State;
 

@@ -15,7 +15,7 @@
 --    Makes the calls to the BioAPI.
 --
 ------------------------------------------------------------------
-with BasicTypes,
+with CommonTypes,
      IandATypes;
 
 private package Bio.Interfac
@@ -35,7 +35,7 @@ is
    --    Used in Bio.Poll
    --
    ------------------------------------------------------------------
-   function IsSamplePresent return BasicTypes.PresenceT
+   function IsSamplePresent return CommonTypes.PresenceT
      with Volatile_Function,
           Global => Input;
 
@@ -51,7 +51,7 @@ is
                      MaxFAR         : in     IandATypes.FarT;
                      MatchResult    :    out IandATypes.MatchResultT;
                      AchievedFAR    :    out IandATypes.FarT;
-                     BioReturn      :    out BasicTypes.Unsigned32T)
+                     BioReturn      :    out CommonTypes.Unsigned32T)
      with Global  => Input,
           Depends => ((AchievedFAR,
                        BioReturn)   => (Input,

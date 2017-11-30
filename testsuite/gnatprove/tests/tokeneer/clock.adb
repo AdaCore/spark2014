@@ -16,9 +16,9 @@
 --
 ------------------------------------------------------------------
 with Clock.Interfac,
-     BasicTypes;
+     CommonTypes;
 
-use type BasicTypes.Unsigned32T;
+use type CommonTypes.Unsigned32T;
 
 package body Clock
   with Refined_State => (CurrentTime => CurrentTimeVar,
@@ -101,25 +101,25 @@ is
    --
    ------------------------------------------------------------------
    procedure ConstructTime
-     (Year    : in     BasicTypes.Unsigned32T;
-      Month   : in     BasicTypes.Unsigned32T;
-      Day     : in     BasicTypes.Unsigned32T;
-      Hour    : in     BasicTypes.Unsigned32T;
-      Min     : in     BasicTypes.Unsigned32T;
+     (Year    : in     CommonTypes.Unsigned32T;
+      Month   : in     CommonTypes.Unsigned32T;
+      Day     : in     CommonTypes.Unsigned32T;
+      Hour    : in     CommonTypes.Unsigned32T;
+      Min     : in     CommonTypes.Unsigned32T;
       TheTime :    out TimeT;
       Success :    out Boolean)
    is
    begin
-      if BasicTypes.Unsigned32T(YearsT'First) <= Year and
-        Year <= BasicTypes.Unsigned32T(YearsT'Last) and
-        BasicTypes.Unsigned32T(MonthsT'First) <= Month and
-        Month <= BasicTypes.Unsigned32T(MonthsT'Last) and
-        BasicTypes.Unsigned32T(DaysT'First) <= Day and
-        Day <= BasicTypes.Unsigned32T(DaysT'Last) and
-        BasicTypes.Unsigned32T(HoursT'First) <= Hour and
-        Hour <= BasicTypes.Unsigned32T(HoursT'Last) and
-        BasicTypes.Unsigned32T(MinutesT'First) <= Min and
-        Min <= BasicTypes.Unsigned32T(MinutesT'Last)
+      if CommonTypes.Unsigned32T(YearsT'First) <= Year and
+        Year <= CommonTypes.Unsigned32T(YearsT'Last) and
+        CommonTypes.Unsigned32T(MonthsT'First) <= Month and
+        Month <= CommonTypes.Unsigned32T(MonthsT'Last) and
+        CommonTypes.Unsigned32T(DaysT'First) <= Day and
+        Day <= CommonTypes.Unsigned32T(DaysT'Last) and
+        CommonTypes.Unsigned32T(HoursT'First) <= Hour and
+        Hour <= CommonTypes.Unsigned32T(HoursT'Last) and
+        CommonTypes.Unsigned32T(MinutesT'First) <= Min and
+        Min <= CommonTypes.Unsigned32T(MinutesT'Last)
       then
 
          TheTime := TimeT'

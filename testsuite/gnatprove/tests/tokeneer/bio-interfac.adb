@@ -29,9 +29,9 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function IsSamplePresent return BasicTypes.PresenceT is
-     (if BioApi.SamplePresent then BasicTypes.Present
-      else BasicTypes.Absent);
+   function IsSamplePresent return CommonTypes.PresenceT is
+     (if BioApi.SamplePresent then CommonTypes.Present
+      else CommonTypes.Absent);
 
    ------------------------------------------------------------------
    -- Verify
@@ -44,7 +44,7 @@ is
                      MaxFAR         : in     IandATypes.FarT;
                      MatchResult    :    out IandATypes.MatchResultT;
                      AchievedFAR    :    out IandATypes.FarT;
-                     BioReturn      :    out BasicTypes.Unsigned32T)
+                     BioReturn      :    out CommonTypes.Unsigned32T)
    is
       Matched          : Boolean;
       LocalFARAchieved : BioApi.RateT;
@@ -70,7 +70,7 @@ is
       end if;
 
       AchievedFAR := IandATypes.FarT(LocalFARAchieved);
-      BioReturn   := BasicTypes.Unsigned32T(LocalReturn);
+      BioReturn   := CommonTypes.Unsigned32T(LocalReturn);
 
    end Verify;
 

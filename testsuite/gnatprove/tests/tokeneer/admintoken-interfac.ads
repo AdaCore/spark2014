@@ -16,7 +16,7 @@
 --
 ------------------------------------------------------------------
 
-with BasicTypes,
+with CommonTypes,
      CertTypes,
      TokenTypes;
 
@@ -81,7 +81,7 @@ is
    --    Returns whether an admin token is present.
    --
    ------------------------------------------------------------------
-   function TheTokenPresence return BasicTypes.PresenceT
+   function TheTokenPresence return CommonTypes.PresenceT
      with Global => State;
 
    ------------------------------------------------------------------

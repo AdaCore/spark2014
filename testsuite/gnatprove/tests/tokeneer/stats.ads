@@ -17,6 +17,8 @@
 --
 ------------------------------------------------------------------
 
+with CommonTypes;
+
 package Stats is
 
    type T is private;
@@ -24,6 +26,14 @@ package Stats is
    MaxStatsCount : constant := 2**31-1;
    type StatsCount is range 0..MaxStatsCount;
 
+   function StatsCount_Image (X : StatsCount) return CommonTypes.StringF1L1000 is
+      (StatsCount'Image (X));
+   pragma Annotate (GNATprove, False_Positive,
+                    "range check might fail",
+                    "Image of integers of type StatsCount are short strings starting at index 1");
+   pragma Annotate (GNATprove, False_Positive,
+                    "predicate check might fail",
+                    "Image of integers of type StatsCount are short strings starting at index 1");
 
    ------------------------------------------------------------------
    -- Init

@@ -22,10 +22,10 @@
 
 with AuditLog,
      AuditTypes,
-     BasicTypes,
+     CommonTypes,
      Display.Interfac;
 
-use type BasicTypes.Unsigned32T;
+use type CommonTypes.Unsigned32T;
 
 package body Display
   with Refined_State => (State  => (CurrentDisplay,
@@ -91,8 +91,8 @@ is
          );
 
    type SizesT is record
-      Top    : BasicTypes.Unsigned32T;
-      Bottom : BasicTypes.Unsigned32T;
+      Top    : CommonTypes.Unsigned32T;
+      Bottom : CommonTypes.Unsigned32T;
    end record;
 
 
@@ -263,8 +263,8 @@ is
          -- Reset the screen
          Interfac.Reset;
 
-         if BasicTypes.Unsigned32T(TheMsg.Top.Len) <= Sizes.Top and
-           BasicTypes.Unsigned32T(TheMsg.Bottom.Len) <= Sizes.Bottom
+         if CommonTypes.Unsigned32T(TheMsg.Top.Len) <= Sizes.Top and
+           CommonTypes.Unsigned32T(TheMsg.Bottom.Len) <= Sizes.Bottom
          then
 
             -- Top and Bottom text fit --> Write Top, Bottom

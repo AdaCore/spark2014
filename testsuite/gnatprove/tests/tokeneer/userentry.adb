@@ -16,8 +16,8 @@
 --
 ------------------------------------------------------------------
 
-with BasicTypes;
-use type BasicTypes.PresenceT;
+with CommonTypes;
+use type CommonTypes.PresenceT;
 
 with IandATypes;
 use type IandATypes.MatchResultT;
@@ -345,7 +345,7 @@ is
                        UserToken.State)    =>+ UserToken.State),
           Pre     => Status = WaitingFinger
    is
-      FingerPresence : BasicTypes.PresenceT;
+      FingerPresence : CommonTypes.PresenceT;
    begin
 
       if not UserToken.IsPresent then
@@ -372,7 +372,7 @@ is
 
             Bio.Poll(FingerPresent => FingerPresence);
 
-            if FingerPresence = BasicTypes.Present then
+            if FingerPresence = CommonTypes.Present then
 
                -- ReadFingerOKC actions
 
@@ -473,7 +473,7 @@ is
                 Depends => (Result =>+ AchievedFAR)
          is
             FullString : String := "Acheived FAR : "
-              & IandATypes.FarT'Image(AchievedFAR) ;
+              & IandATypes.FarT_Image(AchievedFAR) ;
          begin
 
             -- if the Full string is shorter then use it all otherwise

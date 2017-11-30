@@ -68,8 +68,8 @@ is
    --     None.
    ------------------------------------------------------------------
    procedure ListReaders (List         :    out ReaderNameArrayT;
-                          Number       : in out BasicTypes.Unsigned32T;
-                          ResponseCode :    out BasicTypes.Unsigned32T)
+                          Number       : in out CommonTypes.Unsigned32T;
+                          ResponseCode :    out CommonTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
       LocalNumber       : CommonTypes.Unsigned32T :=
@@ -84,8 +84,8 @@ is
          List (J) := LocalList(J);
       end loop;
 
-      Number       := BasicTypes.Unsigned32T (LocalNumber);
-      ResponseCode := BasicTypes.Unsigned32T (LocalResponseCode);
+      Number       := CommonTypes.Unsigned32T (LocalNumber);
+      ResponseCode := CommonTypes.Unsigned32T (LocalResponseCode);
    end ListReaders;
 
    ------------------------------------------------------------------
@@ -94,11 +94,11 @@ is
    -- Implementation Notes:
    --     None.
    ------------------------------------------------------------------
-   procedure GetStatusChange (Timeout      : in     BasicTypes.Unsigned32T;
+   procedure GetStatusChange (Timeout      : in     CommonTypes.Unsigned32T;
                               Reader       : in     ReaderNameT;
                               CurrentState : in     ReaderStateT;
-                              NewState     :    out BasicTypes.Unsigned32T;
-                              ResponseCode :    out BasicTypes.Unsigned32T)
+                              NewState     :    out CommonTypes.Unsigned32T;
+                              ResponseCode :    out CommonTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
       LocalCurrentState : TokenAPI.ReaderStateT;
@@ -114,8 +114,8 @@ is
           NewState     => LocalNewState,
           ResponseCode => LocalResponseCode);
 
-      NewState     := BasicTypes.Unsigned32T(LocalNewState);
-      ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
+      NewState     := CommonTypes.Unsigned32T(LocalNewState);
+      ResponseCode := CommonTypes.Unsigned32T(LocalResponseCode);
    end GetStatusChange;
 
    ------------------------------------------------------------------
@@ -126,7 +126,7 @@ is
    ------------------------------------------------------------------
    procedure Connect (Reader       : in     ReaderNameT;
                       CardHandle   :    out CardHandleT;
-                      ResponseCode :    out BasicTypes.Unsigned32T)
+                      ResponseCode :    out CommonTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
       LocalCardHandle   : CommonTypes.Unsigned32T;
@@ -137,7 +137,7 @@ is
          ResponseCode => LocalResponseCode);
 
       CardHandle   := CardHandleT(LocalCardHandle);
-      ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
+      ResponseCode := CommonTypes.Unsigned32T(LocalResponseCode);
    end Connect;
 
    ------------------------------------------------------------------
@@ -147,9 +147,9 @@ is
    --     None.
    ------------------------------------------------------------------
    procedure Status (CardHandle   : in     CardHandleT;
-                     CState       :    out BasicTypes.Unsigned32T;
+                     CState       :    out CommonTypes.Unsigned32T;
                      ATR          :    out TokenTypes.TokenIDT;
-                     ResponseCode :    out BasicTypes.Unsigned32T)
+                     ResponseCode :    out CommonTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
       LocalCState       :  CommonTypes.Unsigned32T;
@@ -162,8 +162,8 @@ is
          ResponseCode => LocalResponseCode);
 
       ATR          := TokenTypes.TokenIDT(LocalATR.TokenID);
-      CState       := BasicTypes.Unsigned32T(LocalCState);
-      ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
+      CState       := CommonTypes.Unsigned32T(LocalCState);
+      ResponseCode := CommonTypes.Unsigned32T(LocalResponseCode);
    end Status;
 
    ------------------------------------------------------------------
@@ -173,7 +173,7 @@ is
    --     None.
    ------------------------------------------------------------------
    procedure Disconnect (CardHandle   : in     CardHandleT;
-                         ResponseCode :    out BasicTypes.Unsigned32T)
+                         ResponseCode :    out CommonTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
    begin
@@ -181,7 +181,7 @@ is
         (CardHandle   => CommonTypes.Unsigned32T(CardHandle),
          ResponseCode => LocalResponseCode);
 
-      ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
+      ResponseCode := CommonTypes.Unsigned32T(LocalResponseCode);
    end Disconnect;
 
    ------------------------------------------------------------------
@@ -193,7 +193,7 @@ is
    procedure GetIDCert (CardHandle   : in     CardHandleT;
                         RawIDCert    :    out CertTypes.RawCertificateT;
                         StatusOK     :    out Boolean;
-                        ResponseCode :    out BasicTypes.Unsigned32T)
+                        ResponseCode :    out CommonTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
       LocalRawCert      : TokenAPI.GenericRawCertT;
@@ -205,7 +205,7 @@ is
          ResponseCode => LocalResponseCode);
 
       RawIDCert    := ConvertToTISRawCert(LocalRawCert);
-      ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
+      ResponseCode := CommonTypes.Unsigned32T(LocalResponseCode);
    end GetIDCert;
 
    ------------------------------------------------------------------
@@ -217,7 +217,7 @@ is
    procedure GetPrivCert (CardHandle   : in     CardHandleT;
                           RawPrivCert  :    out CertTypes.RawCertificateT;
                           StatusOK     :    out Boolean;
-                          ResponseCode :    out BasicTypes.Unsigned32T)
+                          ResponseCode :    out CommonTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
       LocalRawCert      : TokenAPI.GenericRawCertT;
@@ -229,7 +229,7 @@ is
          ResponseCode => LocalResponseCode);
 
       RawPrivCert  := ConvertToTISRawCert(LocalRawCert);
-      ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
+      ResponseCode := CommonTypes.Unsigned32T(LocalResponseCode);
    end GetPrivCert;
 
    ------------------------------------------------------------------
@@ -241,7 +241,7 @@ is
    procedure GetIACert (CardHandle   : in     CardHandleT;
                         RawIACert    :    out CertTypes.RawCertificateT;
                         StatusOK     :    out Boolean;
-                        ResponseCode :    out BasicTypes.Unsigned32T)
+                        ResponseCode :    out CommonTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
       LocalRawCert      : TokenAPI.GenericRawCertT;
@@ -253,7 +253,7 @@ is
          ResponseCode => LocalResponseCode);
 
       RawIACert    := ConvertToTISRawCert(LocalRawCert);
-      ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
+      ResponseCode := CommonTypes.Unsigned32T(LocalResponseCode);
    end GetIACert;
 
    ------------------------------------------------------------------
@@ -266,7 +266,7 @@ is
                           RawAuthCert  :    out CertTypes.RawCertificateT;
                           Exists       :    out Boolean;
                           StatusOK     :    out Boolean;
-                          ResponseCode :    out BasicTypes.Unsigned32T)
+                          ResponseCode :    out CommonTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
       LocalRawCert      : TokenAPI.GenericRawCertT;
@@ -279,7 +279,7 @@ is
          ResponseCode => LocalResponseCode);
 
       RawAuthCert  := ConvertToTISRawCert(LocalRawCert);
-      ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
+      ResponseCode := CommonTypes.Unsigned32T(LocalResponseCode);
    end GetAuthCert;
 
    ------------------------------------------------------------------
@@ -291,7 +291,7 @@ is
    procedure UpdateAuthCert (CardHandle   : in     CardHandleT;
                              RawAuthCert  : in     CertTypes.RawCertificateT;
                              StatusOK     :    out Boolean;
-                             ResponseCode :    out BasicTypes.Unsigned32T)
+                             ResponseCode :    out CommonTypes.Unsigned32T)
    is
       LocalResponseCode : CommonTypes.Unsigned32T;
    begin
@@ -301,7 +301,7 @@ is
          StatusOK     => StatusOK,
          ResponseCode => LocalResponseCode);
 
-      ResponseCode := BasicTypes.Unsigned32T(LocalResponseCode);
+      ResponseCode := CommonTypes.Unsigned32T(LocalResponseCode);
    end UpdateAuthCert;
 
 end TokenReader.Interfac;

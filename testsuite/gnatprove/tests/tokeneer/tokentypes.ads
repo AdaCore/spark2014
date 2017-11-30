@@ -15,7 +15,7 @@
 --    Types that appear within the context of tokens
 --
 ------------------------------------------------------------------
-with BasicTypes,
+with CommonTypes,
      CryptoTypes;
 
 package TokenTypes is
@@ -24,7 +24,7 @@ package TokenTypes is
    -- Types
    --
    ------------------------------------------------------------------
-   subtype TokenIDT is BasicTypes.Unsigned32T;
+   subtype TokenIDT is CommonTypes.Unsigned32T;
 
    type TryT is (NoToken, BadToken, GoodToken);
 

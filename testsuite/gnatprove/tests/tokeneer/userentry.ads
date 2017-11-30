@@ -18,7 +18,7 @@
 with AlarmTypes,
      AuditLog,
      AuditTypes,
-     BasicTypes,
+     CommonTypes,
      Bio,
      CertificateStore,
      Clock,

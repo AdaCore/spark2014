@@ -16,8 +16,8 @@
 --
 ------------------------------------------------------------------
 with CertProcessing;
-with BasicTypes;
-use type BasicTypes.Unsigned32T;
+with CommonTypes;
+use type CommonTypes.Unsigned32T;
 with Clock;
 
 package body Cert.ID is
@@ -79,9 +79,9 @@ package body Cert.ID is
       Contents.SubjectPublicKey.KeyID :=
         CryptoTypes.KeyIDT(LocalContents.SubjectPublicKeyInfo.KeyID);
       if LocalContents.SubjectPublicKeyInfo.KeyLength >=
-        BasicTypes.Unsigned32T(CryptoTypes.KeyLengthT'First)
+        CommonTypes.Unsigned32T(CryptoTypes.KeyLengthT'First)
         and LocalContents.SubjectPublicKeyInfo.KeyLength <=
-        BasicTypes.Unsigned32T(CryptoTypes.KeyLengthT'Last)
+        CommonTypes.Unsigned32T(CryptoTypes.KeyLengthT'Last)
       then
          Contents.SubjectPublicKey.KeyLength := CryptoTypes.KeyLengthT
            (LocalContents.SubjectPublicKeyInfo.KeyLength);

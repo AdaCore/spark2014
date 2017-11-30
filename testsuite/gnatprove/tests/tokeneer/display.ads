@@ -19,7 +19,7 @@
 
 with AuditLog,
      AuditTypes,
-     BasicTypes,
+     CommonTypes,
      Clock,
      ConfigData;
 

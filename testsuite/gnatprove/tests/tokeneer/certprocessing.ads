@@ -16,7 +16,7 @@
 --
 ------------------------------------------------------------------
 
-with BasicTypes,
+with CommonTypes,
      CertTypes,
      CryptoTypes,
      IandATypes,
@@ -39,7 +39,7 @@ package CertProcessing is
       Month,
       Day,
       Hour,
-      Minute : BasicTypes.Unsigned32T;
+      Minute : CommonTypes.Unsigned32T;
    end record;
 
    type ValidityT is record
@@ -56,14 +56,14 @@ package CertProcessing is
    -- PublicKeyInfoT holds the public key of the certificate owner
    type PublicKeyInfoT is record
       AlgorithmId : CryptoTypes.AlgorithmT;
-      KeyID       : BasicTypes.Unsigned32T;
-      KeyLength   : BasicTypes.Unsigned32T;
+      KeyID       : CommonTypes.Unsigned32T;
+      KeyLength   : CommonTypes.Unsigned32T;
    end record;
 
    -- The XXCertDataT types represent the actual data stored in each
    -- certificate type.
    type IDCertDataT is record
-      SerialNumber         : BasicTypes.Unsigned32T;
+      SerialNumber         : CommonTypes.Unsigned32T;
       SigAlgId             : CryptoTypes.AlgorithmT;
       Issuer               : CryptoTypes.IssuerT;
       Validity             : ValidityT;
@@ -75,7 +75,7 @@ package CertProcessing is
       Holder          : CertTypes.IDT;
       Issuer          : CryptoTypes.IssuerT;
       SigAlgId        : CryptoTypes.AlgorithmT;
-      SerialNumber    : BasicTypes.Unsigned32T;
+      SerialNumber    : CommonTypes.Unsigned32T;
       AttCertValidity : ValidityT;
       Privilege       : PrivilegeT;
    end record;
@@ -84,7 +84,7 @@ package CertProcessing is
       Holder          : CertTypes.IDT;
       Issuer          : CryptoTypes.IssuerT;
       SigAlgId        : CryptoTypes.AlgorithmT;
-      SerialNumber    : BasicTypes.Unsigned32T;
+      SerialNumber    : CommonTypes.Unsigned32T;
       AttCertValidity : ValidityT;
       Privilege       : PrivilegeT;
    end record;
@@ -93,7 +93,7 @@ package CertProcessing is
       Holder          : CertTypes.IDT;
       Issuer          : CryptoTypes.IssuerT;
       SigAlgId        : CryptoTypes.AlgorithmT;
-      SerialNumber    : BasicTypes.Unsigned32T;
+      SerialNumber    : CommonTypes.Unsigned32T;
       AttCertValidity : ValidityT;
       Template        : IandATypes.TemplateT;
    end record;

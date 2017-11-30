@@ -17,6 +17,8 @@
 ------------------------------------------------------------------
 with Ada.Streams.Stream_IO; -- only used in hidden private part
 
+with CommonTypes;
+
 package File
   with SPARK_Mode
 is
@@ -40,7 +42,7 @@ is
    --
    -- Traceunit : C.File.SetName
    ------------------------------------------------------------------
-   procedure SetName (TheName : in     String;
+   procedure SetName (TheName : in     CommonTypes.StringF1;
                       TheFile : in out T)
      with Global  => null,
           Depends => (TheFile =>+ TheName);
@@ -68,7 +70,7 @@ is
    --
    -- Traceunit : C.File.Construct
    ------------------------------------------------------------------
-   function Construct (TheName : String) return T
+   function Construct (TheName : CommonTypes.StringF1) return T
      with Global => null,
           Pre    => TheName'Last <= MaxNameLength;
 

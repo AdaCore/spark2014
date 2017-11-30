@@ -17,12 +17,12 @@
 --    None.
 --
 ------------------------------------------------------------------
-with BasicTypes;
+with CommonTypes;
 with DisplayAPI;
 with Ada.Strings;
 with Ada.Strings.Fixed;
 
-use type BasicTypes.Unsigned32T;
+use type CommonTypes.Unsigned32T;
 
 package body Display.Interfac
   with SPARK_Mode => Off
@@ -40,8 +40,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function GetMaxTextSizeTop return BasicTypes.Unsigned32T is
-     (BasicTypes.Unsigned32T(DisplayAPI.GetMaxTextSizeTop));
+   function GetMaxTextSizeTop return CommonTypes.Unsigned32T is
+     (CommonTypes.Unsigned32T(DisplayAPI.GetMaxTextSizeTop));
 
    ------------------------------------------------------------------
    -- GetMaxTextSizeBottom
@@ -50,8 +50,8 @@ is
    --    None.
    --
    ------------------------------------------------------------------
-   function GetMaxTextSizeBottom return BasicTypes.Unsigned32T is
-     (BasicTypes.Unsigned32T(DisplayAPI.GetMaxTextSizeBottom));
+   function GetMaxTextSizeBottom return CommonTypes.Unsigned32T is
+     (CommonTypes.Unsigned32T(DisplayAPI.GetMaxTextSizeBottom));
 
    ------------------------------------------------------------------
    -- SetTopText

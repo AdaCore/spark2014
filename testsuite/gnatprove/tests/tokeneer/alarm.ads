@@ -67,6 +67,6 @@ is
           -- annotation, Door.TheDoorAlarm = Alarming is        --
           -- equivalent to the security property conditions     --
           --------------------------------------------------------
-          Post    => (Door.TheDoorAlarm = AlarmTypes.Alarming) <= IsAlarming;
+          Post    => (if Door.TheDoorAlarm = AlarmTypes.Alarming then IsAlarming);
 
 end Alarm;

@@ -25,6 +25,8 @@ with CertTypes,
      Cert.Attr,
      PrivTypes;
 
+use type PrivTypes.PrivilegeT;
+
 package Cert.Attr.Auth is
 
    ------------------------------------------------------------------
@@ -165,7 +167,8 @@ package Cert.Attr.Auth is
    ------------------------------------------------------------------
    procedure Clear (Contents :    out ContentsT)
      with Global  => null,
-          Depends => (Contents => null);
+          Depends => (Contents => null),
+          Post    => TheRole(Contents) = PrivTypes.PrivilegeT'First;
 
    --  Converts the extended type to the original one.
    function Cert_Attr_Auth_To_Cert (Contents : in ContentsT)

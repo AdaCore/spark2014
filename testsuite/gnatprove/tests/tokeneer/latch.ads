@@ -47,11 +47,6 @@ is
      with Global     => null,
           Ghost;
 
-   --  Dodgy function that retrieves Output
-   function Interfac_IsLocked return Boolean
-     with Global     => null,
-          Ghost;
-
    ------------------------------------------------------------------
    -- Init
    --

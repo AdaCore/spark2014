@@ -20,7 +20,7 @@ with Admin,
      AuditLog,
      AuditTypes,
      AlarmTypes,
-     BasicTypes,
+     CommonTypes,
      Clock,
      ConfigData,
      Configuration,
@@ -56,7 +56,6 @@ is
                     WaitingStartAdminOp,
                     WaitingFinishAdminOp,
                     ShutDown);
-
 
    --  Proof functions
    function GetStatus return StatusT

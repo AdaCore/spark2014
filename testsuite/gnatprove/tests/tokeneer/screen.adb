@@ -432,7 +432,7 @@ is
                              return SecondsStringT
       is
          Str      : SecondsStringT := "  0.0 s";
-         ValueStr : String := ConfigData.DurationT'Image(Value);
+         ValueStr : String := ConfigData.DurationT_Image(Value);
       begin
          Str(5) := ValueStr(ValueStr'Last);
          if Value >= 10 then
@@ -778,7 +778,7 @@ is
       function StatsCountString (Value : Stats.StatsCount)
                                 return StatsCountStringT
       is
-         Data : String := Stats.StatsCount'Image(Value);
+         Data : String := Stats.StatsCount_Image(Value);
          Result : StatsCountStringT := (others => ' ');
       begin
          Result(1 .. Data'Last - 1) := Data(2 .. Data'Last);
