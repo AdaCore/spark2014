@@ -9225,8 +9225,7 @@ package body Gnat2Why.Expr is
                      --  All possible cases should have been handled before
                      --  this point.
 
-                     pragma Assert (False);
-                     null;
+                     raise Program_Error;
                end case;
             end;
 
