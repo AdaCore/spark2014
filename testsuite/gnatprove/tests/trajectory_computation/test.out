@@ -50,7 +50,7 @@ complex_trajectory.adb:40:47: info: float overflow check proved (Interval)
 complex_trajectory.adb:42:29: info: float overflow check proved (CodePeer)
 complex_trajectory.adb:42:38: info: division check proved (CodePeer)
 complex_trajectory.adb:42:38: info: float overflow check proved (Interval)
-complex_trajectory.adb:44:22: medium: assertion might fail, cannot prove Old_Speed in Low_Bound (N + 1) .. High_Bound (N + 1)
+complex_trajectory.adb:44:22: info: assertion proved (CVC4: 2 VC)
 complex_trajectory.adb:44:48: info: range check proved (CodePeer)
 complex_trajectory.adb:44:70: info: range check proved (CodePeer)
 complex_trajectory.adb:45:07: warning: statement has no effect
@@ -300,7 +300,7 @@ simple_trajectory.ads:19:66: info: float overflow check proved (Interval)
 simple_trajectory.ads:22:64: info: range check proved (Interval)
 simple_trajectory.ads:22:67: info: float overflow check proved (Interval)
 simple_trajectory.ads:37:29: info: initialization of "New_Speed" proved
-simple_trajectory.ads:41:19: medium: postcondition might fail, cannot prove Invariant (N + 1, New_Speed)
+simple_trajectory.ads:41:19: info: postcondition proved (CVC4: 1 VC)
 simple_trajectory.ads:41:32: info: range check proved (CVC4: 1 VC)
 simple_trajectory.ads:41:37: info: initialization of "New_Speed" proved
 simple_trajectory_overflow.adb:10:46: info: float overflow check proved (Interval)

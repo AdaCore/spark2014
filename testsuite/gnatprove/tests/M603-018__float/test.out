@@ -49,11 +49,11 @@ testfloat.adb:47:19: info: assertion proved (CVC4: 2 VC)
 testfloat.adb:47:19: info: initialization of "T" proved
 testfloat.adb:47:24: info: initialization of "X" proved
 testfloat.adb:47:29: info: initialization of "Y" proved
-testfloat.adb:49:04: info: precondition proved (CVC4: 6 VC; altergo: 1 VC)
+testfloat.adb:49:04: info: precondition proved (CVC4: 7 VC)
 testfloat.adb:49:13: info: initialization of "X" proved
 testfloat.adb:49:16: info: initialization of "Y" proved
 testfloat.adb:49:19: info: initialization of "Z" proved
-testfloat.adb:50:04: info: precondition proved (CVC4: 6 VC; altergo: 1 VC)
+testfloat.adb:50:04: info: precondition proved (CVC4: 7 VC)
 testfloat.adb:50:13: info: initialization of "X" proved
 testfloat.adb:50:16: info: initialization of "Y" proved
 testfloat.adb:50:19: info: initialization of "T" proved

@@ -104,11 +104,11 @@ algorithm.adb:268:62: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:272:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:272:58: info: initialization of "iterR.Node" proved
 algorithm.adb:278:19: info: initialization of "iterR.Node" proved
-algorithm.adb:279:19: info: precondition proved (CVC4: 1 VC)
+algorithm.adb:279:19: info: precondition proved (altergo: 1 VC)
 algorithm.adb:279:40: info: initialization of "iterR.Node" proved
 algorithm.adb:282:28: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:282:51: info: initialization of "iterR.Node" proved
-algorithm.adb:283:19: info: precondition proved (CVC4: 1 VC)
+algorithm.adb:283:19: info: precondition proved (altergo: 1 VC)
 algorithm.adb:283:40: info: initialization of "iterR.Node" proved
 algorithm.adb:284:19: medium: precondition might fail (e.g. when No_Element = (Node => 0) and This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?) and iterL = (Node => 0))
 algorithm.adb:284:38: info: initialization of "iterL.Node" proved
@@ -147,7 +147,7 @@ algorithm.adb:331:64: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:335:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:335:58: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:335:81: info: initialization of "riterL.Node" proved
-algorithm.adb:340:16: info: precondition proved (CVC4: 1 VC)
+algorithm.adb:340:16: info: precondition proved (altergo: 1 VC)
 algorithm.adb:340:37: info: initialization of "riterL.Node" proved
 algorithm.adb:344:23: info: initialization of "riterR.Node" proved
 algorithm.adb:345:13: medium: precondition might fail (e.g. when No_Element = (Node => 0) and This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?) and riterR = (Node => 0))
