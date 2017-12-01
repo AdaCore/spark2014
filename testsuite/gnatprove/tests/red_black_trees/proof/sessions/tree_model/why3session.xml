@@ -2,7 +2,7 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.5-gnatprove" timelimit="60" steplimit="0" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.5-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/tree_model.mlw" proved="true">
 <theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -1086,7 +1086,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__range_shifted__subprogram_def" proved="true" sum="5ac22067ca4500106e8d1dc57863a737">
+<theory name="Tree_model__d_seq__range_shifted__subprogram_def" proved="true" sum="c653a275e89caf2224176308ef0b8da9">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1119,7 +1119,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__add__2__subprogram_def" proved="true" sum="cf79c986afe259f255ef096bcbe404bc">
+<theory name="Tree_model__d_seq__add__2__subprogram_def" proved="true" sum="957accf806ecf1b0279a3aff43efdb89">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1158,7 +1158,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__is_concat__subprogram_def" proved="true" sum="bebf5b4d177a042d8269673f3187905b">
+<theory name="Tree_model__is_concat__subprogram_def" proved="true" sum="3898d55680a93b47f01139703bb71da8">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1392,7 +1392,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__union__subprogram_def" proved="true" sum="d15d8fea02cfb8e5d93a4bb11dd5ca63">
+<theory name="Tree_model__v_set__union__subprogram_def" proved="true" sum="5f517c88216a6e4aa29b84afbea18261">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">

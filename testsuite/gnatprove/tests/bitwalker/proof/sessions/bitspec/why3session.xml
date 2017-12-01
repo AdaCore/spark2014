@@ -454,7 +454,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bitspec__nth8_stream__subprogram_def" proved="true" sum="a0063e1fd1b6dfc1a61aed28d2f30c78">
+<theory name="Bitspec__nth8_stream__subprogram_def" proved="true" sum="7388e0cf80e96b12d72c647674728163">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -478,7 +478,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bitspec__maxvalue__subprogram_def" proved="true" sum="4dc4793355c73258f1a859f90099f73f">
+<theory name="Bitspec__maxvalue__subprogram_def" proved="true" sum="96fc5a7f9811e336ab03ffbae80ecc32">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>

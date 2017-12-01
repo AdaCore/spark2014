@@ -1646,7 +1646,7 @@
 </theory>
 <theory name="Use_vectors__insert_count___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Use_vectors__package_def" proved="true" sum="e51f1b97c081a96919f5e3f6845e361c">
+<theory name="Use_vectors__package_def" proved="true" sum="093a6418180f7145570909459d331453">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1676,13 +1676,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__nested__id__subprogram_def" proved="true" sum="7069a3f2d22f0dc040b3e6f5b0a515b1">
+<theory name="Use_vectors__nested__id__subprogram_def" proved="true" sum="f88fc597ad0ed3c74123cd77d409ccaa">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__package_def" proved="true" sum="a9ae86e3086d58491dfee1366cd30d3c">
+<theory name="Use_vectors__my_vectors__package_def" proved="true" sum="f678f793c0731e776cd8b9a008f6b3ca">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1739,19 +1739,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__vector__default_checks" proved="true" sum="f3b66e3bfcfc74dc04769f4800fe7c10">
+<theory name="Use_vectors__my_vectors__vector__default_checks" proved="true" sum="15379d6f680a431a5009180348eadb9a">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__capacity__subprogram_def" proved="true" sum="4cec33d59a37b4f62948673fa50c6fce">
+<theory name="Use_vectors__my_vectors__capacity__subprogram_def" proved="true" sum="23b844f3272c3c3a338a557c3610681c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__length__subprogram_def" proved="true" sum="4cec33d59a37b4f62948673fa50c6fce">
+<theory name="Use_vectors__my_vectors__length__subprogram_def" proved="true" sum="23b844f3272c3c3a338a557c3610681c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -1763,7 +1763,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__package_def" proved="true" sum="b48008b798d4dfa8516d8b79398cb02d">
+<theory name="Use_vectors__my_vectors__formal_model__m__package_def" proved="true" sum="6ad0cc23885bd4d24e9683a9630acde3">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1790,19 +1790,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__length__subprogram_def" proved="true" sum="064af84052569d6df63a0f3e3d568ddf">
+<theory name="Use_vectors__my_vectors__formal_model__m__length__subprogram_def" proved="true" sum="f1050730a4c89a8580778c5b19bc61b4">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__last__subprogram_def" proved="true" sum="920d6916a8667e9003287fcb067bdd73">
+<theory name="Use_vectors__my_vectors__formal_model__m__last__subprogram_def" proved="true" sum="061624155a5980aadcdb0666d53f6a1d">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__get__subprogram_def" proved="true" sum="d0e8bd425f7f8872cfaa8a312cebc0a5">
+<theory name="Use_vectors__my_vectors__formal_model__m__get__subprogram_def" proved="true" sum="10d97496cda4ae2560dafe62d0437c93">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -1814,55 +1814,55 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__Oeq__subprogram_def" proved="true" sum="dafc0c022b3600c2c1dc2fdd9f986b51">
+<theory name="Use_vectors__my_vectors__formal_model__m__Oeq__subprogram_def" proved="true" sum="76415af50fcda52aa420275c6f7b6034">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__Olt__subprogram_def" proved="true" sum="dafc0c022b3600c2c1dc2fdd9f986b51">
+<theory name="Use_vectors__my_vectors__formal_model__m__Olt__subprogram_def" proved="true" sum="76415af50fcda52aa420275c6f7b6034">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__Ole__subprogram_def" proved="true" sum="dafc0c022b3600c2c1dc2fdd9f986b51">
+<theory name="Use_vectors__my_vectors__formal_model__m__Ole__subprogram_def" proved="true" sum="76415af50fcda52aa420275c6f7b6034">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__contains__subprogram_def" proved="true" sum="1a4ebf2c3bcf33db3c026fbbfc653020">
+<theory name="Use_vectors__my_vectors__formal_model__m__contains__subprogram_def" proved="true" sum="743ca206976c7f8f23957d7be21bd745">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__constant_range__subprogram_def" proved="true" sum="1a4ebf2c3bcf33db3c026fbbfc653020">
+<theory name="Use_vectors__my_vectors__formal_model__m__constant_range__subprogram_def" proved="true" sum="743ca206976c7f8f23957d7be21bd745">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__equal_except__subprogram_def" proved="true" sum="0139446b5fcf29edcb040aed93e0718c">
+<theory name="Use_vectors__my_vectors__formal_model__m__equal_except__subprogram_def" proved="true" sum="a34f3655a8850708b4d8dcf7e525e1b2">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__equal_except__2__subprogram_def" proved="true" sum="d0bfdcfbab4ce85e723f3fff649ccd8f">
+<theory name="Use_vectors__my_vectors__formal_model__m__equal_except__2__subprogram_def" proved="true" sum="c47daf0b2d878f52a887e6b77cbf4be4">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__range_equal__subprogram_def" proved="true" sum="b046aa2fa9d479f828ec7bdf29d60634">
+<theory name="Use_vectors__my_vectors__formal_model__m__range_equal__subprogram_def" proved="true" sum="9a59e67876ca6bfe9912f3af6b359e47">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__range_shifted__subprogram_def" proved="true" sum="029267792a619c85867b67cec9be7faf">
+<theory name="Use_vectors__my_vectors__formal_model__m__range_shifted__subprogram_def" proved="true" sum="5875bfb6812aba7f48c3d10ef5e09d40">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1898,19 +1898,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__set__subprogram_def" proved="true" sum="990df50b17c989e8151bcce2f51ae0e6">
+<theory name="Use_vectors__my_vectors__formal_model__m__set__subprogram_def" proved="true" sum="8713886b9b40f7c12974b80e02d487ed">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__add__subprogram_def" proved="true" sum="1d99e1ba54da328ff49ff86e9ceb7d14">
+<theory name="Use_vectors__my_vectors__formal_model__m__add__subprogram_def" proved="true" sum="19f54cbc079586450b687095ce8d4c92">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__add__2__subprogram_def" proved="true" sum="9f702c08e281e6756daf8db1a05903a3">
+<theory name="Use_vectors__my_vectors__formal_model__m__add__2__subprogram_def" proved="true" sum="55070d200073250dd15a37efc896a445">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1919,55 +1919,55 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__remove__subprogram_def" proved="true" sum="debfb9144baa3d3923e19b68f50fd1da">
+<theory name="Use_vectors__my_vectors__formal_model__m__remove__subprogram_def" proved="true" sum="659d9001d030f9bba280488951f00d9f">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__iter_first__subprogram_def" proved="true" sum="920d6916a8667e9003287fcb067bdd73">
+<theory name="Use_vectors__my_vectors__formal_model__m__iter_first__subprogram_def" proved="true" sum="061624155a5980aadcdb0666d53f6a1d">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__iter_has_element__subprogram_def" proved="true" sum="8bf5612b198c6beac5b1098f954a6cd2">
+<theory name="Use_vectors__my_vectors__formal_model__m__iter_has_element__subprogram_def" proved="true" sum="114ca72b4c23a55ea28a3c33fd9e6671">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m__iter_next__subprogram_def" proved="true" sum="f736e7177d77b70a64d1b50f0b0a583c">
+<theory name="Use_vectors__my_vectors__formal_model__m__iter_next__subprogram_def" proved="true" sum="0a47a8161869fc4f94bf41640db2bc66">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m_elements_in_union__subprogram_def" proved="true" sum="9e92441d3d19f89dfd40b10410ae83f2">
+<theory name="Use_vectors__my_vectors__formal_model__m_elements_in_union__subprogram_def" proved="true" sum="b47257ccca99f8ffbe1d7d848b8e578e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m_elements_included__subprogram_def" proved="true" sum="c7d37453a3fd8a75adf45360baf07393">
+<theory name="Use_vectors__my_vectors__formal_model__m_elements_included__subprogram_def" proved="true" sum="8d70ac2f36b8cc4b6d4f1fe1632e1297">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m_elements_reversed__subprogram_def" proved="true" sum="50581c386acab3d0976ed06a36136bcf">
+<theory name="Use_vectors__my_vectors__formal_model__m_elements_reversed__subprogram_def" proved="true" sum="b8e6764e5627a7887536d305cca13763">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__m_elements_swapped__subprogram_def" proved="true" sum="71a0f4e9988561b5b723656fad9a101b">
+<theory name="Use_vectors__my_vectors__formal_model__m_elements_swapped__subprogram_def" proved="true" sum="4cb89177497419b386d16693e9e8a7fc">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__formal_model__model__subprogram_def" proved="true" sum="4cec33d59a37b4f62948673fa50c6fce">
+<theory name="Use_vectors__my_vectors__formal_model__model__subprogram_def" proved="true" sum="23b844f3272c3c3a338a557c3610681c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -1979,79 +1979,79 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__Oeq__subprogram_def" proved="true" sum="faf3ef1fd33cb8f7be0cd479d18af8a2">
+<theory name="Use_vectors__my_vectors__Oeq__subprogram_def" proved="true" sum="a41926571681ac7459fad62138d199b3">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__last_index__subprogram_def" proved="true" sum="4cec33d59a37b4f62948673fa50c6fce">
+<theory name="Use_vectors__my_vectors__last_index__subprogram_def" proved="true" sum="23b844f3272c3c3a338a557c3610681c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__to_vector__subprogram_def" proved="true" sum="b7a9efe28932e6c466187a69e193bfca">
+<theory name="Use_vectors__my_vectors__to_vector__subprogram_def" proved="true" sum="d11352af4270c975d3b2be6891114303">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__reserve_capacity__subprogram_def" proved="true" sum="72665c86e3c1a449caa41c6a5085f5a7">
+<theory name="Use_vectors__my_vectors__reserve_capacity__subprogram_def" proved="true" sum="f60c921f53708849c5e7acab631ecd37">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__is_empty__subprogram_def" proved="true" sum="4cec33d59a37b4f62948673fa50c6fce">
+<theory name="Use_vectors__my_vectors__is_empty__subprogram_def" proved="true" sum="23b844f3272c3c3a338a557c3610681c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__clear__subprogram_def" proved="true" sum="d6826211d4b69c7bc308997d49d382a0">
+<theory name="Use_vectors__my_vectors__clear__subprogram_def" proved="true" sum="baac2a494aef4891762ed36cc096a401">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__assign__subprogram_def" proved="true" sum="25043f100227e87b8c34a0b2e67578da">
+<theory name="Use_vectors__my_vectors__assign__subprogram_def" proved="true" sum="0c2e48140be1f43cd48ccee2fcf36668">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__copy__subprogram_def" proved="true" sum="cd448069a7fe9068d63fdae3b332bf93">
+<theory name="Use_vectors__my_vectors__copy__subprogram_def" proved="true" sum="884a11fdb353aa351bba0a68efa3a890">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__move__subprogram_def" proved="true" sum="c7c05848a4c207cc467a1504b5fb3668">
+<theory name="Use_vectors__my_vectors__move__subprogram_def" proved="true" sum="a1b9fa7fb31ed33f2cfc0699b3c24af8">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__first_index__subprogram_def" proved="true" sum="4cec33d59a37b4f62948673fa50c6fce">
+<theory name="Use_vectors__my_vectors__first_index__subprogram_def" proved="true" sum="23b844f3272c3c3a338a557c3610681c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__element__subprogram_def" proved="true" sum="48f587b6d7f0deae818ccceba9d995df">
+<theory name="Use_vectors__my_vectors__element__subprogram_def" proved="true" sum="9d97477965cc35b0b898672744634046">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__replace_element__subprogram_def" proved="true" sum="70828f24ad4d0b6e221d6ebe20753172">
+<theory name="Use_vectors__my_vectors__replace_element__subprogram_def" proved="true" sum="1f5adb92c674c9ef3b56e129e677824d">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__insert__subprogram_def" proved="true" sum="13bce798378729d5f75afebc5cb44641">
+<theory name="Use_vectors__my_vectors__insert__subprogram_def" proved="true" sum="bb61be71ed046ceb8cc0280baf599e25">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2063,7 +2063,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__insert__2__subprogram_def" proved="true" sum="d4aab6a598120976fadccdf12598064c">
+<theory name="Use_vectors__my_vectors__insert__2__subprogram_def" proved="true" sum="85076593f9797c18b39921b3e3336b81">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2072,7 +2072,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__insert__3__subprogram_def" proved="true" sum="eb4b430a998be9165094e7415ee7a0e1">
+<theory name="Use_vectors__my_vectors__insert__3__subprogram_def" proved="true" sum="247a2c4e8f490914907cfc91a8b0dedc">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2084,7 +2084,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__prepend__subprogram_def" proved="true" sum="b18b65ef83e8e08b046bfa530f355349">
+<theory name="Use_vectors__my_vectors__prepend__subprogram_def" proved="true" sum="799b7c736a8fb8c2a65359a5fa67505e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2093,13 +2093,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__prepend__2__subprogram_def" proved="true" sum="cc4f4c0e424e8c73c9949c28e8375f39">
+<theory name="Use_vectors__my_vectors__prepend__2__subprogram_def" proved="true" sum="2c89e56d4fee72d6e5d7f0621c4511e1">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__prepend__3__subprogram_def" proved="true" sum="69367a3f00eb450f6778a0581adc1f3b">
+<theory name="Use_vectors__my_vectors__prepend__3__subprogram_def" proved="true" sum="fa0580270ea7090dc27c2be075a651e5">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2108,7 +2108,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__append__subprogram_def" proved="true" sum="b18b65ef83e8e08b046bfa530f355349">
+<theory name="Use_vectors__my_vectors__append__subprogram_def" proved="true" sum="799b7c736a8fb8c2a65359a5fa67505e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2117,13 +2117,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__append__2__subprogram_def" proved="true" sum="cc4f4c0e424e8c73c9949c28e8375f39">
+<theory name="Use_vectors__my_vectors__append__2__subprogram_def" proved="true" sum="2c89e56d4fee72d6e5d7f0621c4511e1">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__append__3__subprogram_def" proved="true" sum="69367a3f00eb450f6778a0581adc1f3b">
+<theory name="Use_vectors__my_vectors__append__3__subprogram_def" proved="true" sum="fa0580270ea7090dc27c2be075a651e5">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2132,13 +2132,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__delete__subprogram_def" proved="true" sum="bcde255d7ff40926fd384f42b3926030">
+<theory name="Use_vectors__my_vectors__delete__subprogram_def" proved="true" sum="092a33761678f74950dafb6304edf57a">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__delete__2__subprogram_def" proved="true" sum="6bec3729cca91e2247f60bd1061ed8b2">
+<theory name="Use_vectors__my_vectors__delete__2__subprogram_def" proved="true" sum="85977e0ed24197bf4df75e28fa44133e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2153,55 +2153,55 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__delete_first__subprogram_def" proved="true" sum="854012fabc664d49ae45dfd63e99e972">
+<theory name="Use_vectors__my_vectors__delete_first__subprogram_def" proved="true" sum="fdd5e2932ed36ad6fdf10cfa786f5d3c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__delete_first__2__subprogram_def" proved="true" sum="99dc1074368e0160bf9199b03f162bd5">
+<theory name="Use_vectors__my_vectors__delete_first__2__subprogram_def" proved="true" sum="783b95f9bab9394beff43870bfdb7858">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__delete_last__subprogram_def" proved="true" sum="854012fabc664d49ae45dfd63e99e972">
+<theory name="Use_vectors__my_vectors__delete_last__subprogram_def" proved="true" sum="fdd5e2932ed36ad6fdf10cfa786f5d3c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__delete_last__2__subprogram_def" proved="true" sum="99dc1074368e0160bf9199b03f162bd5">
+<theory name="Use_vectors__my_vectors__delete_last__2__subprogram_def" proved="true" sum="783b95f9bab9394beff43870bfdb7858">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__reverse_elements__subprogram_def" proved="true" sum="d6826211d4b69c7bc308997d49d382a0">
+<theory name="Use_vectors__my_vectors__reverse_elements__subprogram_def" proved="true" sum="baac2a494aef4891762ed36cc096a401">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__swap__subprogram_def" proved="true" sum="0a6ebb4ecab073d8793f0f27b96a9b8b">
+<theory name="Use_vectors__my_vectors__swap__subprogram_def" proved="true" sum="0cd65bb6fed4095a46534e65aa261d13">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__first_element__subprogram_def" proved="true" sum="201f3247b67bf31e9a449f2c5c31f9af">
+<theory name="Use_vectors__my_vectors__first_element__subprogram_def" proved="true" sum="53100507d7daa473808af3e454f89050">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__last_element__subprogram_def" proved="true" sum="201f3247b67bf31e9a449f2c5c31f9af">
+<theory name="Use_vectors__my_vectors__last_element__subprogram_def" proved="true" sum="53100507d7daa473808af3e454f89050">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__find_index__subprogram_def" proved="true" sum="9918c8cd5c9e6250010f22da6c0af647">
+<theory name="Use_vectors__my_vectors__find_index__subprogram_def" proved="true" sum="859054f1155f1a7afee41c5a609c9e35">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2216,7 +2216,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__reverse_find_index__subprogram_def" proved="true" sum="23fadfafb8b85069f8be7f549c325ce6">
+<theory name="Use_vectors__my_vectors__reverse_find_index__subprogram_def" proved="true" sum="87e68aabf2ba417f02de4d8a98fb2a76">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2234,19 +2234,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__contains__subprogram_def" proved="true" sum="d0e6e0676b52cc346bfb11fa049f2c8f">
+<theory name="Use_vectors__my_vectors__contains__subprogram_def" proved="true" sum="ae46ccbf0ada9e116692887a74d15b05">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_vectors__has_element__subprogram_def" proved="true" sum="0226c33e91aa6887fe5d2b638413ed1f">
+<theory name="Use_vectors__my_vectors__has_element__subprogram_def" proved="true" sum="9bbc8f34364593bf78027e877a959f0e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__is_incr__subprogram_def" proved="true" sum="5aee7f17c074ae4feeeb3b339914f4e2">
+<theory name="Use_vectors__is_incr__subprogram_def" proved="true" sum="895fa042661258918f455986cb479f26">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2255,7 +2255,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__incr_all__subprogram_def" proved="true" sum="f58a8aff97a5085abdb9335492304d62">
+<theory name="Use_vectors__incr_all__subprogram_def" proved="true" sum="55a977cadd53323999f0289688c0f8b0">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -2354,7 +2354,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__incr_all_2__subprogram_def" proved="true" sum="a8d2adb37a0382c1a5ed25f64014b680">
+<theory name="Use_vectors__incr_all_2__subprogram_def" proved="true" sum="b383e8f33b6b2a4792a894122430b945">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -2471,7 +2471,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__double_size__subprogram_def" proved="true" sum="2666f5ff1e15da48c70f79a4ef4505f4">
+<theory name="Use_vectors__double_size__subprogram_def" proved="true" sum="6284708e6d50358e148b9dfb3f258092">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2609,7 +2609,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__my_find__subprogram_def" proved="true" sum="0af4e1264de6a82404ce9f85701bf7d9">
+<theory name="Use_vectors__my_find__subprogram_def" proved="true" sum="c98c28cea39878b476235012d2fc1af9">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -2699,7 +2699,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__update_range_to_zero__subprogram_def" proved="true" sum="841aab3912170c3ae52e29b2dcb9605c">
+<theory name="Use_vectors__update_range_to_zero__subprogram_def" proved="true" sum="f3f5fb7d91a52f6227d0d6a40819a540">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -2819,7 +2819,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_vectors__insert_count__subprogram_def" proved="true" sum="a1d4a7eba2189fb53d0dd8843a25c25f">
+<theory name="Use_vectors__insert_count__subprogram_def" proved="true" sum="7112df06331677d83bae2201a9cdcc4b">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">

@@ -2759,7 +2759,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__hash__subprogram_def" proved="true" sum="443616c477a003de65442cb5cb8a23a2">
+<theory name="Use_ordered_maps__hash__subprogram_def" proved="true" sum="149a3a702b4afd9123074c09378ee8b2">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -2783,7 +2783,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__length__subprogram_def" proved="true" sum="a505790cf977a079757591f1e6959ba1">
+<theory name="Use_ordered_maps__my_maps__length__subprogram_def" proved="true" sum="6f49c8b54e12301eb7d4f42f575cfbbe">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -2927,13 +2927,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__formal_model__m__add__subprogram_def" proved="true" sum="949cecbc8edeb4afe6e5438b899cb1e2">
+<theory name="Use_ordered_maps__my_maps__formal_model__m__add__subprogram_def" proved="true" sum="ace72b87cb8a9d127620164e89d572b2">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__formal_model__m__set__subprogram_def" proved="true" sum="dcf13894717c9f3c7d7f27b60e54616e">
+<theory name="Use_ordered_maps__my_maps__formal_model__m__set__subprogram_def" proved="true" sum="e06b55aa338796f259541adcb7ff730f">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -3023,7 +3023,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__formal_model__k__range_shifted__subprogram_def" proved="true" sum="0586d0db077d26e78dc303018ee0b125">
+<theory name="Use_ordered_maps__my_maps__formal_model__k__range_shifted__subprogram_def" proved="true" sum="4c4645c3196090547f8e75a77183dce8">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3056,7 +3056,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__formal_model__k__add__2__subprogram_def" proved="true" sum="2fd4b4915d6256f087bc8986bc8dc018">
+<theory name="Use_ordered_maps__my_maps__formal_model__k__add__2__subprogram_def" proved="true" sum="ca41333a1936149a894ec3d47a99c7db">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3263,193 +3263,193 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__formal_model__model__subprogram_def" proved="true" sum="be6a2e94359ac02c4ab9a1ef1e70f0f1">
+<theory name="Use_ordered_maps__my_maps__formal_model__model__subprogram_def" proved="true" sum="d3a5abb6caddd6b011627e44a20d0f19">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__formal_model__keys__subprogram_def" proved="true" sum="be6a2e94359ac02c4ab9a1ef1e70f0f1">
+<theory name="Use_ordered_maps__my_maps__formal_model__keys__subprogram_def" proved="true" sum="d3a5abb6caddd6b011627e44a20d0f19">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__formal_model__positions__subprogram_def" proved="true" sum="be6a2e94359ac02c4ab9a1ef1e70f0f1">
+<theory name="Use_ordered_maps__my_maps__formal_model__positions__subprogram_def" proved="true" sum="d3a5abb6caddd6b011627e44a20d0f19">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__formal_model__lift_abstraction_level__subprogram_def" proved="true" sum="be6a2e94359ac02c4ab9a1ef1e70f0f1">
+<theory name="Use_ordered_maps__my_maps__formal_model__lift_abstraction_level__subprogram_def" proved="true" sum="d3a5abb6caddd6b011627e44a20d0f19">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__Oeq__subprogram_def" proved="true" sum="d11e79c2edfd30d2b43982ac7e73d0ae">
+<theory name="Use_ordered_maps__my_maps__Oeq__subprogram_def" proved="true" sum="e28fab84f736b2dde17b638fdf34c76f">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__is_empty__subprogram_def" proved="true" sum="7f939bce3c5e9ad9b631d8e3b827adab">
+<theory name="Use_ordered_maps__my_maps__is_empty__subprogram_def" proved="true" sum="2fbf7792fa9d5b7e19ae6f86e1ada820">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__clear__subprogram_def" proved="true" sum="3831213cb40f2a6dafd0269067162923">
+<theory name="Use_ordered_maps__my_maps__clear__subprogram_def" proved="true" sum="5522593b4e9598fc97a3089d79a13b6c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__assign__subprogram_def" proved="true" sum="da30c1670fd5e8452d3788147fdccad4">
+<theory name="Use_ordered_maps__my_maps__assign__subprogram_def" proved="true" sum="01ec58c075f74a2ee09a1db0841a0a71">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__copy__subprogram_def" proved="true" sum="6624161368579e201d0297f35a06799a">
+<theory name="Use_ordered_maps__my_maps__copy__subprogram_def" proved="true" sum="074499ec4fa38da5223373a0a9daf470">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__has_element__subprogram_def" proved="true" sum="2395e84778930844ac198c7fc8a58208">
+<theory name="Use_ordered_maps__my_maps__has_element__subprogram_def" proved="true" sum="1efac663b1d27ebf71a358f62947cf05">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__key__subprogram_def" proved="true" sum="4e15d1dbaeabf8668b54242221d769a2">
+<theory name="Use_ordered_maps__my_maps__key__subprogram_def" proved="true" sum="00f7a1049852434eee7acae0cdb2a723">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__element__subprogram_def" proved="true" sum="c10b3a88d80efa92b6505242cb011d1c">
+<theory name="Use_ordered_maps__my_maps__element__subprogram_def" proved="true" sum="f18525e7b437ac6166c1d4d80430e0f9">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__replace_element__subprogram_def" proved="true" sum="7fba83fd974756bd0512e9f380c7627b">
+<theory name="Use_ordered_maps__my_maps__replace_element__subprogram_def" proved="true" sum="80e1c9450a08502c08fd0669e980f1e9">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__move__subprogram_def" proved="true" sum="7be04d701af1343cfc66e5b31a8113e8">
+<theory name="Use_ordered_maps__my_maps__move__subprogram_def" proved="true" sum="6b08be3d5b54d5a715176e900b904176">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__contains__subprogram_def" proved="true" sum="5b10eeaed0f4c1410ea03943f867beea">
+<theory name="Use_ordered_maps__my_maps__contains__subprogram_def" proved="true" sum="1171942204f996734ab612d447b334d5">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__insert__subprogram_def" proved="true" sum="7c663c2c65c3da154cb590e50b985c8b">
+<theory name="Use_ordered_maps__my_maps__insert__subprogram_def" proved="true" sum="3c06fb5b01e9a523c1c051129220754e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__insert__2__subprogram_def" proved="true" sum="8d811334a7e6b9ad17dddafc7bb8e6e4">
+<theory name="Use_ordered_maps__my_maps__insert__2__subprogram_def" proved="true" sum="68e1a452256b49b0e68dfba0079e5f37">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__element__2__subprogram_def" proved="true" sum="f43c1f795bd0c756632b1c7399a6a74a">
+<theory name="Use_ordered_maps__my_maps__element__2__subprogram_def" proved="true" sum="b1605d3b3f77bb5e3eb7fbdbc9401a55">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__include__subprogram_def" proved="true" sum="2a2b11a5c05fca690b96f1f6df7810e7">
+<theory name="Use_ordered_maps__my_maps__include__subprogram_def" proved="true" sum="f438eb3a88d6e2d3f17012874f69d35e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__replace__subprogram_def" proved="true" sum="156a99a185b78876fe9295ace2dd270c">
+<theory name="Use_ordered_maps__my_maps__replace__subprogram_def" proved="true" sum="1e6296f905c45a13b2134df9ca3e67f0">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__exclude__subprogram_def" proved="true" sum="4c34bdc545c02ac9ae43960e7b65270a">
+<theory name="Use_ordered_maps__my_maps__exclude__subprogram_def" proved="true" sum="810a31a10df97b4a49c1abaaeee9b9ba">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__delete__subprogram_def" proved="true" sum="a26a470e33a3944097e316af47687704">
+<theory name="Use_ordered_maps__my_maps__delete__subprogram_def" proved="true" sum="5b76ec82c67dcc074e7886ec2dcb2238">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__delete__2__subprogram_def" proved="true" sum="3173ef50240b3f959a10edfd2d6c54e7">
+<theory name="Use_ordered_maps__my_maps__delete__2__subprogram_def" proved="true" sum="330883a0280454dca1376f25e5cf3458">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__first_key__subprogram_def" proved="true" sum="0de915b4c0a2b8aae6db3ee0acbcb012">
+<theory name="Use_ordered_maps__my_maps__first_key__subprogram_def" proved="true" sum="9abeaaca23ec2ba987700852f5805246">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__delete_first__subprogram_def" proved="true" sum="54c2040cb43e9a808484015895087fdb">
+<theory name="Use_ordered_maps__my_maps__delete_first__subprogram_def" proved="true" sum="e673bdcbdc26ce8f88d9e5542373e9ea">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__last_key__subprogram_def" proved="true" sum="0de915b4c0a2b8aae6db3ee0acbcb012">
+<theory name="Use_ordered_maps__my_maps__last_key__subprogram_def" proved="true" sum="9abeaaca23ec2ba987700852f5805246">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__delete_last__subprogram_def" proved="true" sum="54c2040cb43e9a808484015895087fdb">
+<theory name="Use_ordered_maps__my_maps__delete_last__subprogram_def" proved="true" sum="e673bdcbdc26ce8f88d9e5542373e9ea">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__first__subprogram_def" proved="true" sum="fef7b8e8adbba7eca14dbc2c35c2883f">
+<theory name="Use_ordered_maps__my_maps__first__subprogram_def" proved="true" sum="610d3cecea35d733c466223de3137436">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__first_element__subprogram_def" proved="true" sum="0de915b4c0a2b8aae6db3ee0acbcb012">
+<theory name="Use_ordered_maps__my_maps__first_element__subprogram_def" proved="true" sum="9abeaaca23ec2ba987700852f5805246">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__last__subprogram_def" proved="true" sum="fef7b8e8adbba7eca14dbc2c35c2883f">
+<theory name="Use_ordered_maps__my_maps__last__subprogram_def" proved="true" sum="610d3cecea35d733c466223de3137436">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__last_element__subprogram_def" proved="true" sum="0de915b4c0a2b8aae6db3ee0acbcb012">
+<theory name="Use_ordered_maps__my_maps__last_element__subprogram_def" proved="true" sum="9abeaaca23ec2ba987700852f5805246">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__next__subprogram_def" proved="true" sum="bbeec5ac6c44136b66a9d5a824598a69">
+<theory name="Use_ordered_maps__my_maps__next__subprogram_def" proved="true" sum="2c32f9cc26f4b623da04c198d4d6c33c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3458,7 +3458,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__next__2__subprogram_def" proved="true" sum="caddad3adf1c59542ce285085e4f6bd3">
+<theory name="Use_ordered_maps__my_maps__next__2__subprogram_def" proved="true" sum="f60a43955ad6e2ca76bb494c392f966c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3467,7 +3467,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__previous__subprogram_def" proved="true" sum="4f6272f224fbf94f86d666d5605604d8">
+<theory name="Use_ordered_maps__my_maps__previous__subprogram_def" proved="true" sum="120d7c78ef8070d081b02fb7c3c49cb8">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3476,7 +3476,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__previous__2__subprogram_def" proved="true" sum="cd1e864c6a4f6762daee6c185fcd85b5">
+<theory name="Use_ordered_maps__my_maps__previous__2__subprogram_def" proved="true" sum="ff6cd7a0828f6c4080f3d041a1c0fcc2">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3485,13 +3485,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__find__subprogram_def" proved="true" sum="ae77d52d449bad28457dcef9696d73b1">
+<theory name="Use_ordered_maps__my_maps__find__subprogram_def" proved="true" sum="94464dd77b332ffefc6e88b39e9a2f69">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__floor__subprogram_def" proved="true" sum="080d98f36215bc2c1ac6781a3b5cbb2b">
+<theory name="Use_ordered_maps__my_maps__floor__subprogram_def" proved="true" sum="4a4b3bd576179cbd95b2fd3bfd862ec8">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3500,7 +3500,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_maps__ceiling__subprogram_def" proved="true" sum="6cbb1400d88f649819cf2df61efec3d9">
+<theory name="Use_ordered_maps__my_maps__ceiling__subprogram_def" proved="true" sum="caf53a0c84db712738dfcc6a75cdfbf9">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3509,7 +3509,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_find__subprogram_def" proved="true" sum="2d80a3115749bc0849f6674fac16ed28">
+<theory name="Use_ordered_maps__my_find__subprogram_def" proved="true" sum="9dc995919afe8e829eefc0a55e38ff4b">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -3557,7 +3557,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__my_contains__subprogram_def" proved="true" sum="daac66e90e81ed93e84184aa8e84b5c0">
+<theory name="Use_ordered_maps__my_contains__subprogram_def" proved="true" sum="da83694a7ee55ca759ccf0da7d6a47a1">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
@@ -3569,7 +3569,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__f__subprogram_def" proved="true" sum="cf65c2ea8c5b60c6514de65fa922357a">
+<theory name="Use_ordered_maps__f__subprogram_def" proved="true" sum="3bdc618a9d64a60c00ee869093340149">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3578,7 +3578,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__apply_f__subprogram_def" sum="a25e7c5bcc55f9c07c44a329951d68b6">
+<theory name="Use_ordered_maps__apply_f__subprogram_def" sum="1158124b4913a99b2732d345b025771a">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -3594,11 +3594,11 @@
   <proof prover="1"><result status="valid" steps="41343"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="316"/></proof>
+  <proof prover="0"><result status="unknown" steps="397"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="316"/></proof>
+  <proof prover="0"><result status="unknown" steps="397"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="VC for def" proved="true">
@@ -3617,11 +3617,11 @@
   <proof prover="1"><result status="valid" steps="12645"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="425"/></proof>
+  <proof prover="0"><result status="unknown" steps="531"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="3224"/></proof>
+  <proof prover="0"><result status="unknown" steps="3209"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition" proved="true">
@@ -3640,25 +3640,25 @@
   <proof prover="1"><result status="valid" steps="43992"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="381"/></proof>
+  <proof prover="0"><result status="unknown" steps="367"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="12645"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="425"/></proof>
+  <proof prover="0"><result status="unknown" steps="411"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="3075"/></proof>
+  <proof prover="0"><result status="unknown" steps="3203"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="54118"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="338"/></proof>
+  <proof prover="0"><result status="unknown" steps="425"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.24" expl="precondition" proved="true">
@@ -3671,15 +3671,15 @@
   <proof prover="1"><result status="valid" steps="45367"/></proof>
   </goal>
   <goal name="WP_parameter def.27" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="307"/></proof>
+  <proof prover="0"><result status="unknown" steps="378"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.28" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="927"/></proof>
+  <proof prover="0"><result status="unknown" steps="872"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.29" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="2385"/></proof>
+  <proof prover="0"><result status="unknown" steps="2487"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.30" expl="precondition">
@@ -3800,7 +3800,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__apply_f_2__subprogram_def" sum="4cf9ab34a242a43ca7b251912839aafe">
+<theory name="Use_ordered_maps__apply_f_2__subprogram_def" sum="b654b72219796f792969b303ae88f353">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -3816,36 +3816,36 @@
   <proof prover="1"><result status="valid" steps="40196"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="316"/></proof>
+  <proof prover="0"><result status="unknown" steps="397"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="316"/></proof>
+  <proof prover="0"><result status="unknown" steps="397"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="11103"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="356"/></proof>
+  <proof prover="0"><result status="unknown" steps="395"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="12243"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="2239"/></proof>
+  <proof prover="0"><result status="unknown" steps="2120"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="2161"/></proof>
+  <proof prover="0"><result status="unknown" steps="2054"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="13397"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="2287"/></proof>
+  <proof prover="0"><result status="unknown" steps="2168"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition" proved="true">
@@ -3864,26 +3864,26 @@
   <proof prover="1"><result status="valid" steps="42763"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="381"/></proof>
+  <proof prover="0"><result status="unknown" steps="367"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="12278"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="425"/></proof>
+  <proof prover="0"><result status="unknown" steps="411"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="307"/></proof>
+  <proof prover="0"><result status="unknown" steps="378"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="1073"/></proof>
+  <proof prover="0"><result status="unknown" steps="998"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="2745"/></proof>
+  <proof prover="0"><result status="unknown" steps="2871"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.24" expl="precondition">
@@ -3987,7 +3987,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__apply_f_3__subprogram_def" sum="c959b889ff95e51e3c29df47328837fe">
+<theory name="Use_ordered_maps__apply_f_3__subprogram_def" sum="951cd9664561102c2db2703a49eee68c">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -4003,33 +4003,33 @@
   <proof prover="1"><result status="valid" steps="2890"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="402"/></proof>
+  <proof prover="0"><result status="unknown" steps="695"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="11196"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="642"/></proof>
+  <proof prover="0"><result status="unknown" steps="541"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="3493"/></proof>
+  <proof prover="0"><result status="unknown" steps="3935"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="12671"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="3627"/></proof>
+  <proof prover="0"><result status="unknown" steps="4061"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="3551"/></proof>
+  <proof prover="0"><result status="unknown" steps="3973"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="756"/></proof>
+  <proof prover="0"><result status="unknown" steps="909"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition" proved="true">
@@ -4057,19 +4057,19 @@
   <proof prover="1"><result status="valid" steps="54314"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="415"/></proof>
+  <proof prover="0"><result status="unknown" steps="399"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="2168"/></proof>
+  <proof prover="0"><result status="unknown" steps="2047"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="4208"/></proof>
+  <proof prover="0"><result status="unknown" steps="3790"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="15457"/></proof>
+  <proof prover="0"><result status="unknown" steps="16336"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.24" expl="loop invariant preservation">
@@ -4081,11 +4081,11 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="loop invariant preservation">
-  <proof prover="0"><result status="unknown" steps="32952"/></proof>
+  <proof prover="0"><result status="unknown" steps="39293"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.27" expl="loop invariant preservation">
-  <proof prover="0"><result status="unknown" steps="27534"/></proof>
+  <proof prover="0"><result status="unknown" steps="31270"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.28" expl="VC for def" proved="true">
@@ -4143,7 +4143,7 @@
   <proof prover="1"><result status="valid" steps="62638"/></proof>
   </goal>
   <goal name="WP_parameter def.46" expl="postcondition">
-  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.46.0" expl="postcondition">
@@ -4160,7 +4160,7 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.47.0" expl="postcondition">
-   <proof prover="0"><result status="unknown" steps="28488"/></proof>
+   <proof prover="0"><result status="unknown" steps="33358"/></proof>
    <proof prover="1" timelimit="60"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.47.1" expl="postcondition" proved="true">
@@ -4173,7 +4173,7 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.48.0" expl="postcondition">
-   <proof prover="0"><result status="unknown" steps="26778"/></proof>
+   <proof prover="0"><result status="unknown" steps="31992"/></proof>
    <proof prover="1" timelimit="60"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.48.1" expl="postcondition" proved="true">
@@ -4184,7 +4184,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__apply_f_4__subprogram_def" sum="a79a7550a2aad6eb28650058d5319a14">
+<theory name="Use_ordered_maps__apply_f_4__subprogram_def" sum="0cfda732cc83bf8692b9c006982e2695">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -4200,33 +4200,33 @@
   <proof prover="1"><result status="valid" steps="2890"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="402"/></proof>
+  <proof prover="0"><result status="unknown" steps="695"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="11196"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="642"/></proof>
+  <proof prover="0"><result status="unknown" steps="541"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="3493"/></proof>
+  <proof prover="0"><result status="unknown" steps="3935"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="12671"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="3627"/></proof>
+  <proof prover="0"><result status="unknown" steps="4061"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="3551"/></proof>
+  <proof prover="0"><result status="unknown" steps="3973"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="756"/></proof>
+  <proof prover="0"><result status="unknown" steps="909"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition" proved="true">
@@ -4254,19 +4254,19 @@
   <proof prover="1"><result status="valid" steps="54314"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="415"/></proof>
+  <proof prover="0"><result status="unknown" steps="399"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="2168"/></proof>
+  <proof prover="0"><result status="unknown" steps="2047"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="4208"/></proof>
+  <proof prover="0"><result status="unknown" steps="3790"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="15457"/></proof>
+  <proof prover="0"><result status="unknown" steps="16336"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.24" expl="loop invariant preservation">
@@ -4278,11 +4278,11 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="loop invariant preservation">
-  <proof prover="0"><result status="unknown" steps="32952"/></proof>
+  <proof prover="0"><result status="unknown" steps="39293"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.27" expl="loop invariant preservation">
-  <proof prover="0"><result status="unknown" steps="27534"/></proof>
+  <proof prover="0"><result status="unknown" steps="31270"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.28" expl="VC for def" proved="true">
@@ -4298,7 +4298,7 @@
   <proof prover="1"><result status="valid" steps="50717"/></proof>
   </goal>
   <goal name="WP_parameter def.32" expl="precondition">
-  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.32.0" expl="precondition">
@@ -4344,7 +4344,7 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.36.0" expl="postcondition">
-   <proof prover="0"><result status="unknown" steps="25031"/></proof>
+   <proof prover="0"><result status="unknown" steps="30859"/></proof>
    <proof prover="1" timelimit="60"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.36.1" expl="postcondition" proved="true">
@@ -4355,7 +4355,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__are_disjoint__subprogram_def" proved="true" sum="d6b2678f1677ffc618f0cff0f6c7bfed">
+<theory name="Use_ordered_maps__are_disjoint__subprogram_def" proved="true" sum="d0b976dafccb2f594b40d2a0bfa63997">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -4400,13 +4400,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__prop__subprogram_def" proved="true" sum="8cd8b4c42f6a8e6bffe0593d5ca1bbeb">
+<theory name="Use_ordered_maps__prop__subprogram_def" proved="true" sum="764fa2ef12bbcc1c41a9bd7beb38fe93">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__union_prop__subprogram_def" sum="62852340c0b8acddec863c318c99d7f2">
+<theory name="Use_ordered_maps__union_prop__subprogram_def" sum="e9e0986a4c9c74aa0c987634c9d3e9dd">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4449,11 +4449,11 @@
   <proof prover="1"><result status="valid" steps="39938"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="305"/></proof>
+  <proof prover="0"><result status="unknown" steps="378"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="342"/></proof>
+  <proof prover="0"><result status="unknown" steps="423"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="VC for def" proved="true">
@@ -4472,15 +4472,15 @@
   <proof prover="1"><result status="valid" steps="44432"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="290"/></proof>
+  <proof prover="0"><result status="unknown" steps="353"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="474"/></proof>
+  <proof prover="0"><result status="unknown" steps="565"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="2531"/></proof>
+  <proof prover="0"><result status="unknown" steps="2627"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="precondition">
@@ -4525,7 +4525,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__insert_count__subprogram_def" proved="true" sum="b6e17578ad45d2924aa57d351868cddc">
+<theory name="Use_ordered_maps__insert_count__subprogram_def" proved="true" sum="e48ed131971020ab6f8aa9cd50f76be1">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4597,13 +4597,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__q__subprogram_def" proved="true" sum="8cd8b4c42f6a8e6bffe0593d5ca1bbeb">
+<theory name="Use_ordered_maps__q__subprogram_def" proved="true" sum="764fa2ef12bbcc1c41a9bd7beb38fe93">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__from_keys_to_model__subprogram_def" proved="true" sum="a9f9ed909bcfacb586c5a13bb64a457f">
+<theory name="Use_ordered_maps__from_keys_to_model__subprogram_def" proved="true" sum="38fcbe9c229b89b5431d95360fd2d5fc">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4636,7 +4636,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__from_model_to_keys__subprogram_def" proved="true" sum="c1753c1a0a7a35863c041e1255eff2ce">
+<theory name="Use_ordered_maps__from_model_to_keys__subprogram_def" proved="true" sum="993d23de3897f015b21ad2dda9cbe7ae">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
@@ -4660,7 +4660,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__from_keys_to_cursors__subprogram_def" proved="true" sum="63882fc87fddaf78f54069dc6b86f179">
+<theory name="Use_ordered_maps__from_keys_to_cursors__subprogram_def" proved="true" sum="b034590b3672929982090e766ec7898e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4684,7 +4684,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__from_cursors_to_keys__subprogram_def" proved="true" sum="f0f65fadcd390601c88cf25792d1a432">
+<theory name="Use_ordered_maps__from_cursors_to_keys__subprogram_def" proved="true" sum="96031157ea0033c8370852ebe42ba9af">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
@@ -4708,7 +4708,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__from_model_to_cursors__subprogram_def" proved="true" sum="76a7480346f1738a610a7905616ab1b9">
+<theory name="Use_ordered_maps__from_model_to_cursors__subprogram_def" proved="true" sum="af4ba9178e8bedd66402da9ecdfa1229">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
@@ -4729,7 +4729,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_maps__from_cursors_to_model__subprogram_def" proved="true" sum="65960dbcd53f55185189eb585d95c67e">
+<theory name="Use_ordered_maps__from_cursors_to_model__subprogram_def" proved="true" sum="2717d42d7af65e776ecf535f8e761d55">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">

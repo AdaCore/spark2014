@@ -2961,7 +2961,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_elements__subprogram_def" proved="true" sum="50676e549e2215215638026c33cbfdd5">
+<theory name="Use_ordered_sets__my_sets__equivalent_elements__subprogram_def" proved="true" sum="a7d31d1459e0b22a1cf9526c1ad8b14e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -2973,7 +2973,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__length__subprogram_def" proved="true" sum="0213199dbb05a013cfc387d9b5c59036">
+<theory name="Use_ordered_sets__my_sets__length__subprogram_def" proved="true" sum="6c1429bb49f50b5e39f425de152869bb">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -3003,121 +3003,121 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_first__subprogram_def" proved="true" sum="47081ea78446f2b7ef749c802efcbec2">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_first__subprogram_def" proved="true" sum="e653654d1d81cca8c432d846a25fc9da">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_has_element__subprogram_def" proved="true" sum="3b596e98f9964c0cd1dca6e6810ea4dc">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_has_element__subprogram_def" proved="true" sum="32242167ececd56e0f1d6c27451f5de6">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_next__subprogram_def" proved="true" sum="57fc4f459991b41806dadcf102b854f3">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_next__subprogram_def" proved="true" sum="09a0236e8e109445adf330e4dc4e1f3b">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_element__subprogram_def" proved="true" sum="40fea10b530d402cec343a1d59ae3ece">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_element__subprogram_def" proved="true" sum="e1e460ae5b59e9b6d6c620a1a8bbe5ee">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__contains__subprogram_def" proved="true" sum="ff4ebeb1e380feef41fd85a5bf4e697e">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__contains__subprogram_def" proved="true" sum="b1126d32f4f03f45b15bd57db7aa4c52">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__length__subprogram_def" proved="true" sum="54ae0536cd181fd32f446c17e2ff8378">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__length__subprogram_def" proved="true" sum="aa41a87b197a51a27f27492d38d66c34">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Ole__subprogram_def" proved="true" sum="75533a5b5078d34afebad52c794057eb">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__Ole__subprogram_def" proved="true" sum="f5091718151108daba27c0d47d835fb0">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Oeq__subprogram_def" proved="true" sum="75533a5b5078d34afebad52c794057eb">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__Oeq__subprogram_def" proved="true" sum="f5091718151108daba27c0d47d835fb0">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_empty__subprogram_def" proved="true" sum="47081ea78446f2b7ef749c802efcbec2">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__is_empty__subprogram_def" proved="true" sum="e653654d1d81cca8c432d846a25fc9da">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except__subprogram_def" proved="true" sum="cbd1bdf285d0040e2dbfce99c91b35c6">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except__subprogram_def" proved="true" sum="641f058f7ff8e73e98eb94efab4c591b">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection__subprogram_def" proved="true" sum="78d056fae9b7ae0fe8f8e960d266057f">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection__subprogram_def" proved="true" sum="2dcbafd215ccc921c4101278f90e072e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union__subprogram_def" proved="true" sum="78d056fae9b7ae0fe8f8e960d266057f">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union__subprogram_def" proved="true" sum="2dcbafd215ccc921c4101278f90e072e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_singleton__subprogram_def" proved="true" sum="f3d01de597dc900652f65ecb39ab32b3">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__is_singleton__subprogram_def" proved="true" sum="69804f7db13dbd837cde93f8371b813a">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both__subprogram_def" proved="true" sum="78d056fae9b7ae0fe8f8e960d266057f">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both__subprogram_def" proved="true" sum="2dcbafd215ccc921c4101278f90e072e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__no_overlap__subprogram_def" proved="true" sum="6eb3758ed4eb9e04b1b8bde1c767f77a">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__no_overlap__subprogram_def" proved="true" sum="e73872679a28167fb2f9f8b7c94a1c7e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__intersection__subprogram_def" proved="true" sum="6eb3758ed4eb9e04b1b8bde1c767f77a">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__intersection__subprogram_def" proved="true" sum="e73872679a28167fb2f9f8b7c94a1c7e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__num_overlaps__subprogram_def" proved="true" sum="6eb3758ed4eb9e04b1b8bde1c767f77a">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__num_overlaps__subprogram_def" proved="true" sum="e73872679a28167fb2f9f8b7c94a1c7e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__add__subprogram_def" proved="true" sum="8cfc2d55fb90fe7b94343f2e761c6b49">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__add__subprogram_def" proved="true" sum="a8a6b19527282f8f8f4dddfcc49ccff1">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__remove__subprogram_def" proved="true" sum="36c68ae012136a153119186b9569d805">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__remove__subprogram_def" proved="true" sum="1069e7dc7eb3b3456ee3f55067d599ac">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__union__subprogram_def" proved="true" sum="1168b67a18f80d45e234b5a12808a79d">
+<theory name="Use_ordered_sets__my_sets__formal_model__m__union__subprogram_def" proved="true" sum="0719ff4997a09148aeb6b997d16acdbb">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3141,19 +3141,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__length__subprogram_def" proved="true" sum="44d15c04ae18fa73904de3d3de97493d">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__length__subprogram_def" proved="true" sum="96efa0246a9cb61ca853e5d9c11cd108">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__last__subprogram_def" proved="true" sum="e1e45f704695da71d7bbcb6e7872bd73">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__last__subprogram_def" proved="true" sum="d693845e8553aac2585ce79dcfe0b022">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__get__subprogram_def" proved="true" sum="f0c9743e085544da611b1ebd0360f4ba">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__get__subprogram_def" proved="true" sum="1b53fcc6b4dcf1241b5dc3c2fa13de4f">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -3165,55 +3165,55 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Oeq__subprogram_def" proved="true" sum="fa3298f3fc35b8171ebfe16fc478b520">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__Oeq__subprogram_def" proved="true" sum="379440c5a53c57a383a81f750cbc8690">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Olt__subprogram_def" proved="true" sum="fa3298f3fc35b8171ebfe16fc478b520">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__Olt__subprogram_def" proved="true" sum="379440c5a53c57a383a81f750cbc8690">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Ole__subprogram_def" proved="true" sum="fa3298f3fc35b8171ebfe16fc478b520">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__Ole__subprogram_def" proved="true" sum="379440c5a53c57a383a81f750cbc8690">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__subprogram_def" proved="true" sum="0c2098be1598fbd5cf1c02fb2b9792a4">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__subprogram_def" proved="true" sum="6b458715af0a05e88f137570bd559085">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__subprogram_def" proved="true" sum="0c2098be1598fbd5cf1c02fb2b9792a4">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__subprogram_def" proved="true" sum="6b458715af0a05e88f137570bd559085">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__subprogram_def" proved="true" sum="636c67d46997b37f79aba90a439ddc92">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__subprogram_def" proved="true" sum="521e88da9fb68a0bd551d7ffd1aa330e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__subprogram_def" proved="true" sum="4c15ab844b2136ebb38f837ada41f1fe">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__subprogram_def" proved="true" sum="33ba46211338af0bca1eb8cc05027b76">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__subprogram_def" proved="true" sum="77a7c5627edac70e17eacbe143ebe63d">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__subprogram_def" proved="true" sum="e0c54fd0a9791aa678cc49866143ac90">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__subprogram_def" proved="true" sum="313970a337e5f8baea3a1c982939ee50">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__subprogram_def" proved="true" sum="227dab96a87e892b888291cec9631ed1">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3234,19 +3234,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__set__subprogram_def" proved="true" sum="18e7b83c15c61c98cfe0f1643dd64005">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__set__subprogram_def" proved="true" sum="3fd22df5fd4ec2eeb6c48dd4de5edac8">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__subprogram_def" proved="true" sum="baffaf970f230cdca44682e12ce2f5a3">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__add__subprogram_def" proved="true" sum="beda926145dd1785816cb8b958acc13d">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__2__subprogram_def" proved="true" sum="25d404490ac9fe6b45e2c167ebab0497">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__add__2__subprogram_def" proved="true" sum="0e9e2558a7932612766d1cd28a3cddef">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3255,67 +3255,67 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__remove__subprogram_def" proved="true" sum="cec2eb3327ae368903ef9c014c847b35">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__remove__subprogram_def" proved="true" sum="565b65da23217a73f293e50511410d1d">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_first__subprogram_def" proved="true" sum="e1e45f704695da71d7bbcb6e7872bd73">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_first__subprogram_def" proved="true" sum="d693845e8553aac2585ce79dcfe0b022">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_has_element__subprogram_def" proved="true" sum="4ea0b4cedf7ac8945879f8ec72605bdd">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_has_element__subprogram_def" proved="true" sum="d86e5b1296c2fb6b3d7e80e45a442c9e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_next__subprogram_def" proved="true" sum="d896c1d56e6ce60cc23d2eaedb18f8bb">
+<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_next__subprogram_def" proved="true" sum="bb150d6646c475a47eee21bfaefb5835">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__subprogram_def" proved="true" sum="675458dc5c262faafc725db56aec10c2">
+<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__subprogram_def" proved="true" sum="9b704aae316ff66409cea93151401a66">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__subprogram_def" proved="true" sum="675458dc5c262faafc725db56aec10c2">
+<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__subprogram_def" proved="true" sum="9b704aae316ff66409cea93151401a66">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_is_find__subprogram_def" proved="true" sum="272e4e475b49e517a4439ba2929156fe">
+<theory name="Use_ordered_sets__my_sets__formal_model__e_is_find__subprogram_def" proved="true" sum="b94e6e23a34dc90cc0baf12473524a4d">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__find__subprogram_def" proved="true" sum="cc70011122b4bf09dc0d3b971ad4c94a">
+<theory name="Use_ordered_sets__my_sets__formal_model__find__subprogram_def" proved="true" sum="9937033beef50912f6010451c74a6b61">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__subprogram_def" proved="true" sum="1b9af9beac7a32bfbb55b366120f542c">
+<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__subprogram_def" proved="true" sum="8294cfad9a844b021af09d094b041117">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__subprogram_def" proved="true" sum="8b4b56281c0a87ed5282ada05596941c">
+<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__subprogram_def" proved="true" sum="4ee5ca5add1877b6c5b9db3ba541f04d">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__subprogram_def" proved="true" sum="260cf48678ef9617ae2dda5be85fa51b">
+<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__subprogram_def" proved="true" sum="a54fb733f1729ef83becf0a4c78ecbdc">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -3471,187 +3471,187 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__subprogram_def" proved="true" sum="e28aeb2438c3bd3f01a892c0fafb8e6e">
+<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__subprogram_def" proved="true" sum="4d5d7fae2e6d1d90e40ec78b2144d490">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__subprogram_def" proved="true" sum="c0355699d7f1dd84e1eb5fa86c63ef2d">
+<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__subprogram_def" proved="true" sum="289c83c984c44feff52d0673d9206e37">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__model__subprogram_def" proved="true" sum="8581f87c48f6ac3729180081d667fd6d">
+<theory name="Use_ordered_sets__my_sets__formal_model__model__subprogram_def" proved="true" sum="5c3f4760480b1eaa6a4f6000bc21386d">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements__subprogram_def" proved="true" sum="2e9b629f189781c0c037f7efe7303471">
+<theory name="Use_ordered_sets__my_sets__formal_model__elements__subprogram_def" proved="true" sum="af06ddc8a356b3f997beab10c9e70c38">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positions__subprogram_def" proved="true" sum="2e9b629f189781c0c037f7efe7303471">
+<theory name="Use_ordered_sets__my_sets__formal_model__positions__subprogram_def" proved="true" sum="af06ddc8a356b3f997beab10c9e70c38">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__lift_abstraction_level__subprogram_def" proved="true" sum="2e9b629f189781c0c037f7efe7303471">
+<theory name="Use_ordered_sets__my_sets__formal_model__lift_abstraction_level__subprogram_def" proved="true" sum="af06ddc8a356b3f997beab10c9e70c38">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__Oeq__subprogram_def" proved="true" sum="d6f47df7ee9b8712828a87efcbe6a533">
+<theory name="Use_ordered_sets__my_sets__Oeq__subprogram_def" proved="true" sum="15d8cce3d94330cc4424594ca141af29">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets__subprogram_def" proved="true" sum="d6f47df7ee9b8712828a87efcbe6a533">
+<theory name="Use_ordered_sets__my_sets__equivalent_sets__subprogram_def" proved="true" sum="15d8cce3d94330cc4424594ca141af29">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__to_set__subprogram_def" proved="true" sum="8cd8b4c42f6a8e6bffe0593d5ca1bbeb">
+<theory name="Use_ordered_sets__my_sets__to_set__subprogram_def" proved="true" sum="764fa2ef12bbcc1c41a9bd7beb38fe93">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__is_empty__subprogram_def" proved="true" sum="e2443839a06fbaab0a92f837a6018f93">
+<theory name="Use_ordered_sets__my_sets__is_empty__subprogram_def" proved="true" sum="46aa9f4b33fe5c7c7934743bc346f034">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__clear__subprogram_def" proved="true" sum="3c781da2118a85c4b6676122cd48522a">
+<theory name="Use_ordered_sets__my_sets__clear__subprogram_def" proved="true" sum="3db8cc98d7fb48139da7bae6078111a1">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__assign__subprogram_def" proved="true" sum="dc3b376cb1188b7c42147d6019c8e4c0">
+<theory name="Use_ordered_sets__my_sets__assign__subprogram_def" proved="true" sum="ba792922397778196c8d8574486277f9">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__copy__subprogram_def" proved="true" sum="cb14bbb2a02600ff1879686dce74732e">
+<theory name="Use_ordered_sets__my_sets__copy__subprogram_def" proved="true" sum="d8ed01ed075c9e5226f03a57a17ab05e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__has_element__subprogram_def" proved="true" sum="8fc85a8b400cb8504afd6ac581f6203d">
+<theory name="Use_ordered_sets__my_sets__has_element__subprogram_def" proved="true" sum="a4565418833b532ddcf0a005c47383d3">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__element__subprogram_def" proved="true" sum="a37f565b30a0e1347bad8040b7baa8ea">
+<theory name="Use_ordered_sets__my_sets__element__subprogram_def" proved="true" sum="0a364e04300346ba722ac2ea343c82a6">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__subprogram_def" proved="true" sum="d89dca9cfcbb7b1d9ae2f84cbea7cc4c">
+<theory name="Use_ordered_sets__my_sets__replace_element__subprogram_def" proved="true" sum="542be689bb870dd9b937e8b8238af3f1">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__move__subprogram_def" proved="true" sum="6733de41008eac27daefa646a7b4455f">
+<theory name="Use_ordered_sets__my_sets__move__subprogram_def" proved="true" sum="b428ab6a5519ffd054997efa66dff0c5">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__contains__subprogram_def" proved="true" sum="6752789af282d114246acc85c1332c0d">
+<theory name="Use_ordered_sets__my_sets__contains__subprogram_def" proved="true" sum="9745b492920149049ccb86e53aa33094">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__insert__subprogram_def" proved="true" sum="7fce84abe60de193c5d7c3211f76a4d8">
+<theory name="Use_ordered_sets__my_sets__insert__subprogram_def" proved="true" sum="7f4ee5ec3b27bf5fe2ff9c0b4013236e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__insert__2__subprogram_def" proved="true" sum="7d63067d096dd506f92342c99fd0a565">
+<theory name="Use_ordered_sets__my_sets__insert__2__subprogram_def" proved="true" sum="2431b5b2e5e720652a86d6ef3f071a7a">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__include__subprogram_def" proved="true" sum="81ffb78834fd73c9e6d3ea88b98b5e68">
+<theory name="Use_ordered_sets__my_sets__include__subprogram_def" proved="true" sum="d0db95ffab46cb3c24be187b089fb6c4">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__replace__subprogram_def" proved="true" sum="df5aad2b88533f2aecdb7e1c8d204d6f">
+<theory name="Use_ordered_sets__my_sets__replace__subprogram_def" proved="true" sum="4f1967250316e4d2faadd9443198b2cc">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__exclude__subprogram_def" proved="true" sum="58acc30926a0fc7adaae67bfb4e1991d">
+<theory name="Use_ordered_sets__my_sets__exclude__subprogram_def" proved="true" sum="d75a65a288342aa4ee2e58e84dbbec91">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__delete__subprogram_def" proved="true" sum="df5aad2b88533f2aecdb7e1c8d204d6f">
+<theory name="Use_ordered_sets__my_sets__delete__subprogram_def" proved="true" sum="4f1967250316e4d2faadd9443198b2cc">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__delete__2__subprogram_def" proved="true" sum="7b3a8be991280214d3287688bfc20539">
+<theory name="Use_ordered_sets__my_sets__delete__2__subprogram_def" proved="true" sum="012f1197634d54ae325f4aea04a55a25">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__first_element__subprogram_def" proved="true" sum="16ce2d879f32a36df3969c5df1daf8e2">
+<theory name="Use_ordered_sets__my_sets__first_element__subprogram_def" proved="true" sum="f6b9bb022ba4bbd08deb985730600d57">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__delete_first__subprogram_def" proved="true" sum="5d0fefb4c34716f20268414391055f69">
+<theory name="Use_ordered_sets__my_sets__delete_first__subprogram_def" proved="true" sum="e4d4dc6f08a8ba66a1275962f379365c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__last_element__subprogram_def" proved="true" sum="16ce2d879f32a36df3969c5df1daf8e2">
+<theory name="Use_ordered_sets__my_sets__last_element__subprogram_def" proved="true" sum="f6b9bb022ba4bbd08deb985730600d57">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__delete_last__subprogram_def" proved="true" sum="5d0fefb4c34716f20268414391055f69">
+<theory name="Use_ordered_sets__my_sets__delete_last__subprogram_def" proved="true" sum="e4d4dc6f08a8ba66a1275962f379365c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__intersection__2__subprogram_def" proved="true" sum="d6f47df7ee9b8712828a87efcbe6a533">
+<theory name="Use_ordered_sets__my_sets__intersection__2__subprogram_def" proved="true" sum="15d8cce3d94330cc4424594ca141af29">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__union__subprogram_def" proved="true" sum="f1e483d164fd93c4be409e2f5f1b6ca0">
+<theory name="Use_ordered_sets__my_sets__union__subprogram_def" proved="true" sum="855f24022c7bcc8ff83bfcc7dd7c8309">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3663,7 +3663,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__union__2__subprogram_def" proved="true" sum="ce48cbae63f7869ad9e6ab0b30d5a756">
+<theory name="Use_ordered_sets__my_sets__union__2__subprogram_def" proved="true" sum="7e05dc272099e4a75a8ed115b191133d">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3672,25 +3672,25 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__intersection__subprogram_def" proved="true" sum="7729e3e4b399da8ff580dff8ac208ff3">
+<theory name="Use_ordered_sets__my_sets__intersection__subprogram_def" proved="true" sum="6f68479034c857f46058a619ebde8c43">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__difference__subprogram_def" proved="true" sum="7729e3e4b399da8ff580dff8ac208ff3">
+<theory name="Use_ordered_sets__my_sets__difference__subprogram_def" proved="true" sum="6f68479034c857f46058a619ebde8c43">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__difference__2__subprogram_def" proved="true" sum="d6f47df7ee9b8712828a87efcbe6a533">
+<theory name="Use_ordered_sets__my_sets__difference__2__subprogram_def" proved="true" sum="15d8cce3d94330cc4424594ca141af29">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__subprogram_def" proved="true" sum="ca65ed406f3ea72ef75180bda41f3efd">
+<theory name="Use_ordered_sets__my_sets__symmetric_difference__subprogram_def" proved="true" sum="f43d691d938b1c25691eb432a68c7b48">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3705,7 +3705,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__2__subprogram_def" proved="true" sum="ce48cbae63f7869ad9e6ab0b30d5a756">
+<theory name="Use_ordered_sets__my_sets__symmetric_difference__2__subprogram_def" proved="true" sum="7e05dc272099e4a75a8ed115b191133d">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3714,31 +3714,31 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__overlap__subprogram_def" proved="true" sum="d6f47df7ee9b8712828a87efcbe6a533">
+<theory name="Use_ordered_sets__my_sets__overlap__subprogram_def" proved="true" sum="15d8cce3d94330cc4424594ca141af29">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__is_subset__subprogram_def" proved="true" sum="d6f47df7ee9b8712828a87efcbe6a533">
+<theory name="Use_ordered_sets__my_sets__is_subset__subprogram_def" proved="true" sum="15d8cce3d94330cc4424594ca141af29">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__first__subprogram_def" proved="true" sum="b2ce203cdec458dac9731eb554d54ee6">
+<theory name="Use_ordered_sets__my_sets__first__subprogram_def" proved="true" sum="a43a847dcf3b027919f6a76e47227caa">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__last__subprogram_def" proved="true" sum="b2ce203cdec458dac9731eb554d54ee6">
+<theory name="Use_ordered_sets__my_sets__last__subprogram_def" proved="true" sum="a43a847dcf3b027919f6a76e47227caa">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__next__subprogram_def" proved="true" sum="36a1bebd79d8fc006b1aeac00aa324d7">
+<theory name="Use_ordered_sets__my_sets__next__subprogram_def" proved="true" sum="d1eb5842288e07ea08e2ed464476b607">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3747,7 +3747,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__next__2__subprogram_def" proved="true" sum="3577ba2fe144114f295f349bbe23bfa4">
+<theory name="Use_ordered_sets__my_sets__next__2__subprogram_def" proved="true" sum="462923ad1fe898febe811718e569b02c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3756,7 +3756,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__previous__subprogram_def" proved="true" sum="87b02b1263ee2258979d5bac67010115">
+<theory name="Use_ordered_sets__my_sets__previous__subprogram_def" proved="true" sum="85d7bb30febb2f2ccf01a8ed5c3ecf87">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3765,7 +3765,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__previous__2__subprogram_def" proved="true" sum="d2612d86b536df23cf3697db3408305f">
+<theory name="Use_ordered_sets__my_sets__previous__2__subprogram_def" proved="true" sum="da58fcd51a2b25667167f6ed1ead82f6">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3774,13 +3774,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__find__subprogram_def" proved="true" sum="3c6ece2bcd40f5cdfe604f949b02eb21">
+<theory name="Use_ordered_sets__my_sets__find__subprogram_def" proved="true" sum="2585ccaefdb5e747885307e0214b4fdf">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__floor__subprogram_def" proved="true" sum="5ddab61404577f5a402e277478e101fb">
+<theory name="Use_ordered_sets__my_sets__floor__subprogram_def" proved="true" sum="7e54cf9fe41a2ceeccf1937c46761956">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3789,7 +3789,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_sets__ceiling__subprogram_def" proved="true" sum="7c02faa8bb4021cdf0eba707eec96137">
+<theory name="Use_ordered_sets__my_sets__ceiling__subprogram_def" proved="true" sum="c54e6cb54a055f2cf9bc68d1f9ef88e4">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3798,7 +3798,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_contains__subprogram_def" proved="true" sum="4e34ff0af9e965401b393e55fc0d2596">
+<theory name="Use_ordered_sets__my_contains__subprogram_def" proved="true" sum="9d5e9f2e1abcdae3cd84927b75f7dd60">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
@@ -3810,7 +3810,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__my_find__subprogram_def" proved="true" sum="6aae4f19708239ad2d4568458f47ab98">
+<theory name="Use_ordered_sets__my_find__subprogram_def" proved="true" sum="7c0268d56868471bfde24e553ee903eb">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -3840,7 +3840,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__f__subprogram_def" proved="true" sum="5e6aee4c0a0b0795f4ec723128a6d79b">
+<theory name="Use_ordered_sets__f__subprogram_def" proved="true" sum="598f968a6b551670944fa3887d851bce">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -3849,7 +3849,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__apply_f__subprogram_def" sum="3ee2d19db2484175b48dbc6f34acb832">
+<theory name="Use_ordered_sets__apply_f__subprogram_def" sum="ebb6ffa8e4521b40dc9fac04a111d201">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -3862,40 +3862,40 @@
   <proof prover="1"><result status="valid" steps="33299"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="327"/></proof>
+  <proof prover="0"><result status="unknown" steps="412"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="327"/></proof>
+  <proof prover="0"><result status="unknown" steps="412"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="10000"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="370"/></proof>
+  <proof prover="0"><result status="unknown" steps="413"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="VC for def" proved="true">
   <proof prover="1"><result status="valid" steps="2676"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="1002"/></proof>
+  <proof prover="0"><result status="unknown" steps="992"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="10280"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="1049"/></proof>
+  <proof prover="0"><result status="unknown" steps="992"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="318"/></proof>
+  <proof prover="0"><result status="unknown" steps="391"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="2703"/></proof>
+  <proof prover="0"><result status="unknown" steps="2841"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition">
@@ -3952,7 +3952,7 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.29.0" expl="postcondition">
-   <proof prover="0"><result status="unknown" steps="11194"/></proof>
+   <proof prover="0"><result status="unknown" steps="9453"/></proof>
    <proof prover="1" timelimit="60"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.29.1" expl="postcondition" proved="true">
@@ -3976,7 +3976,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__are_disjoint__subprogram_def" proved="true" sum="a787350db1a278feab532ca3cc23f8f5">
+<theory name="Use_ordered_sets__are_disjoint__subprogram_def" proved="true" sum="9fbd72cfbadf076d79b9be134504677c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -4009,7 +4009,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__are_disjoint_2__subprogram_def" proved="true" sum="83a1c6cfb39e63f90d43922d962548d7">
+<theory name="Use_ordered_sets__are_disjoint_2__subprogram_def" proved="true" sum="4276a39cc9a221094ccf470a4f75cd42">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -4045,13 +4045,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__prop__subprogram_def" proved="true" sum="8cd8b4c42f6a8e6bffe0593d5ca1bbeb">
+<theory name="Use_ordered_sets__prop__subprogram_def" proved="true" sum="764fa2ef12bbcc1c41a9bd7beb38fe93">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__union_prop__subprogram_def" proved="true" sum="4b3f3dd6ebce1e5e08e4ca80d3331d9a">
+<theory name="Use_ordered_sets__union_prop__subprogram_def" proved="true" sum="c86800f0858d50b45d29d18478ef1dda">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4102,7 +4102,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__move__subprogram_def" sum="b7ce9ce8a21032f4dba61641ab681f87">
+<theory name="Use_ordered_sets__move__subprogram_def" sum="fa77214869cb1c73602b22e3d8de3991">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -4124,11 +4124,11 @@
   <proof prover="1"><result status="valid" steps="34735"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="334"/></proof>
+  <proof prover="0"><result status="unknown" steps="493"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="2850"/></proof>
+  <proof prover="0"><result status="unknown" steps="2310"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
@@ -4172,7 +4172,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__move_2__subprogram_def" sum="a41493a68cdd16e95f3a0323d89ac86b">
+<theory name="Use_ordered_sets__move_2__subprogram_def" sum="50d48d9f6d938cbd1f5ee0c05612fa21">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -4188,7 +4188,7 @@
   <proof prover="1"><result status="valid" steps="7377"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="272"/></proof>
+  <proof prover="0"><result status="unknown" steps="446"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
@@ -4222,11 +4222,11 @@
   <proof prover="1"><result status="valid" steps="34536"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="271"/></proof>
+  <proof prover="0"><result status="unknown" steps="392"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="16477"/></proof>
+  <proof prover="0"><result status="unknown" steps="16042"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="precondition">
@@ -4278,7 +4278,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__move_3__subprogram_def" sum="4883a115c873ae26d9ac7efedffa30ad">
+<theory name="Use_ordered_sets__move_3__subprogram_def" sum="e426020e457014dc17a46a68e3ec0c8d">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -4291,18 +4291,18 @@
   <proof prover="1"><result status="valid" steps="32047"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="337"/></proof>
+  <proof prover="0"><result status="unknown" steps="411"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="327"/></proof>
+  <proof prover="0"><result status="unknown" steps="412"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="9281"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="345"/></proof>
+  <proof prover="0"><result status="unknown" steps="396"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="VC for def" proved="true">
@@ -4312,15 +4312,15 @@
   <proof prover="1"><result status="valid" steps="9561"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="2587"/></proof>
+  <proof prover="0"><result status="unknown" steps="2508"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="318"/></proof>
+  <proof prover="0"><result status="unknown" steps="391"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="2328"/></proof>
+  <proof prover="0"><result status="unknown" steps="2430"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition">
@@ -4356,7 +4356,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__move_4__subprogram_def" sum="d5fac3a25494af03a12fbebe03b08784">
+<theory name="Use_ordered_sets__move_4__subprogram_def" sum="3fa2d6871c0cb49f0d3fef0d1277e7a3">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -4366,18 +4366,18 @@
   <proof prover="1"><result status="valid" steps="30385"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="337"/></proof>
+  <proof prover="0"><result status="unknown" steps="411"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="327"/></proof>
+  <proof prover="0"><result status="unknown" steps="412"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="9065"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="345"/></proof>
+  <proof prover="0"><result status="unknown" steps="396"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition" proved="true">
@@ -4387,11 +4387,11 @@
   <proof prover="1"><result status="valid" steps="37629"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="318"/></proof>
+  <proof prover="0"><result status="unknown" steps="391"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="3398"/></proof>
+  <proof prover="0"><result status="unknown" steps="2986"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
@@ -4437,7 +4437,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__double_size__subprogram_def" sum="5629708f624d675c68b630c179338cc6">
+<theory name="Use_ordered_sets__double_size__subprogram_def" sum="a9636f79aa59a1054088e503b0e4ca36">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
@@ -4483,7 +4483,7 @@
   <proof prover="1"><result status="valid" steps="2958"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="294"/></proof>
+  <proof prover="0"><result status="unknown" steps="478"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="precondition">
@@ -4528,7 +4528,7 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.27" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="301"/></proof>
+  <proof prover="0"><result status="unknown" steps="409"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.28" expl="precondition" proved="true">
@@ -4580,18 +4580,18 @@
   <proof prover="1"><result status="valid" steps="42440"/></proof>
   </goal>
   <goal name="WP_parameter def.44" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="286"/></proof>
+  <proof prover="0"><result status="unknown" steps="388"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.45" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="41688"/></proof>
   </goal>
   <goal name="WP_parameter def.46" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="274"/></proof>
+  <proof prover="0"><result status="unknown" steps="410"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.47" expl="precondition">
-  <proof prover="0"><result status="unknown" steps="273"/></proof>
+  <proof prover="0"><result status="unknown" steps="366"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.48" expl="precondition">
@@ -4724,7 +4724,7 @@
   </transf>
   </goal>
   <goal name="WP_parameter def.78" expl="postcondition">
-  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.78.0" expl="postcondition">
@@ -4752,7 +4752,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__insert_count__subprogram_def" proved="true" sum="8f6d2c0f54bd8adb9d63b6f421131a56">
+<theory name="Use_ordered_sets__insert_count__subprogram_def" proved="true" sum="3151add37f27df097e77769c256cd5ef">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4800,13 +4800,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__q__subprogram_def" proved="true" sum="8cd8b4c42f6a8e6bffe0593d5ca1bbeb">
+<theory name="Use_ordered_sets__q__subprogram_def" proved="true" sum="764fa2ef12bbcc1c41a9bd7beb38fe93">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__from_elements_to_model__subprogram_def" proved="true" sum="c402d2e6a386e95a3b7305b4ad601d31">
+<theory name="Use_ordered_sets__from_elements_to_model__subprogram_def" proved="true" sum="e94ae296aacd7b1fcc7abd9fbecb61e5">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4824,7 +4824,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__from_model_to_elements__subprogram_def" proved="true" sum="920f4d6277f84188517edc960c3a41c4">
+<theory name="Use_ordered_sets__from_model_to_elements__subprogram_def" proved="true" sum="ff560f6b388d8c67b639e2f52cc64eb2">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
@@ -4842,7 +4842,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__from_elements_to_cursors__subprogram_def" proved="true" sum="bba84fb87042f3dc718d4c9aeba9136d">
+<theory name="Use_ordered_sets__from_elements_to_cursors__subprogram_def" proved="true" sum="23d1d741ad7c10b64067b037b27397ab">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4863,7 +4863,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__from_cursors_to_elements__subprogram_def" proved="true" sum="3c8ca354f539bc6635bf5f23f34b35c4">
+<theory name="Use_ordered_sets__from_cursors_to_elements__subprogram_def" proved="true" sum="6d18fcedf4656084a93863c12fda1b3f">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
@@ -4884,7 +4884,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__from_model_to_cursors__subprogram_def" proved="true" sum="3f4673574d3031c4951d3d82c8a59887">
+<theory name="Use_ordered_sets__from_model_to_cursors__subprogram_def" proved="true" sum="5abc1d4b2e0bd4b4f5a03fc8eff06b3e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
@@ -4902,7 +4902,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Use_ordered_sets__from_cursors_to_model__subprogram_def" proved="true" sum="b63d78cb83306ddd3a174029658491e9">
+<theory name="Use_ordered_sets__from_cursors_to_model__subprogram_def" proved="true" sum="fbf22ff0028c4adcbbee452d74af2ba5">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
