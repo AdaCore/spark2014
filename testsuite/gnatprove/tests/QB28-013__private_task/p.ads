@@ -1,5 +1,7 @@
 package P is
-   type T is limited private;
+   type TT is limited private;
+   type PT is limited private;
 private
-   task type T;
+   task type TT;
+   protected type PT is end;
 end;
