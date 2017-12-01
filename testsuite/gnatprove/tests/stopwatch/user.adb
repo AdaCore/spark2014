@@ -9,17 +9,20 @@ is
 
       procedure StartClock with
         Global  => (Output => Timer.Oper_State),
-        Depends => (Timer.Oper_State => null),
+        Depends => (Timer.Oper_State => null,
+                    Buttons          =>+ null),
         Attach_Handler => 1;
 
       procedure StopClock with
         Global  => (Output => Timer.Oper_State),
-        Depends => (Timer.Oper_State => null),
+        Depends => (Timer.Oper_State => null,
+                    Buttons          =>+ null),
         Attach_Handler => 2;
 
       procedure ResetClock with
         Global  => (In_Out => Display.State),
-        Depends => (Display.State =>+ null),
+        Depends => (Display.State =>+ null,
+                    Buttons       =>+ null),
         Attach_Handler => 3;
    end Buttons;
 

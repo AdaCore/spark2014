@@ -38,12 +38,18 @@ is
       end loop;
    end TimingLoop;
 
-   procedure StartClock is
+   procedure StartClock with
+     Refined_Global  => (In_Out => Operate),
+     Refined_Depends => (Operate => null, null => Operate)
+   is
    begin
       Ada.Synchronous_Task_Control.Set_True (Operate);
    end StartClock;
 
-   procedure StopClock is
+   procedure StopClock with
+     Refined_Global  => (In_Out => Operate),
+     Refined_Depends => (Operate => null, null => Operate)
+   is
    begin
       Ada.Synchronous_Task_Control.Set_False (Operate);
    end StopClock;
