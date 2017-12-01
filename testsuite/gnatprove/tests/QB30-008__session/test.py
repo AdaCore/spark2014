@@ -1,0 +1,9 @@
+from test_support import *
+from subprocess import call
+
+prove_all()
+
+installdir = spark_install_path()
+why3session = os.path.join(installdir, 'libexec', 'spark', 'bin',
+        'why3session')
+call([why3session,'info', '--stats', os.path.join('gnatprove', 'add')])

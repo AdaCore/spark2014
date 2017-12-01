@@ -95,6 +95,7 @@ install-all:
 	$(MV) install/bin/gnatwhy3 install/libexec/spark/bin
 	$(MV) install/bin/gnat_server install/libexec/spark/bin
 	$(MV) install/bin/why3config install/libexec/spark/bin
+	$(MV) install/bin/why3session install/libexec/spark/bin
 	# the following line is allowed to fail - why3ide might not be
 	# installed
 	-$(MV) install/bin/why3ide install/libexec/spark/bin
