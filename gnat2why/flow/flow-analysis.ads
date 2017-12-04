@@ -241,13 +241,6 @@ private
                             return Node_Or_Entity_Id;
    --  Find a good place to raise an error for vertex V.
 
-   procedure Global_Required
-     (FA  : in out Flow_Analysis_Graphs;
-      Var : Flow_Id)
-   with Pre  => Var.Kind = Magic_String;
-   --  Emit error message that (the first call) introducing the
-   --  global Var requires a global annotation.
-
    function First_Variable_Use (N        : Node_Id;
                                 FA       : Flow_Analysis_Graphs;
                                 Scope    : Flow_Scope;

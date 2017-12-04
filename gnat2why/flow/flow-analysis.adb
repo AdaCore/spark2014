@@ -219,34 +219,6 @@ package body Flow.Analysis is
       end if;
    end Write_Vertex_Set;
 
-   ---------------------
-   -- Global_Required --
-   ---------------------
-
-   procedure Global_Required
-     (FA  : in out Flow_Analysis_Graphs;
-      Var : Flow_Id)
-   is
-      First_Use : constant Node_Id :=
-        First_Variable_Use
-          (FA      => FA,
-           Var     => Var,
-           Kind    => Use_Any,
-           Precise => True);
-
-   begin
-      pragma Assert (Nkind (First_Use) in N_Subprogram_Call);
-
-      Error_Msg_Flow
-        (FA       => FA,
-         Msg      => "called subprogram & requires GLOBAL " &
-           "aspect to make state & visible",
-         N        => First_Use,
-         F1       => Direct_Mapping_Id (Get_Called_Entity (First_Use)),
-         F2       => Var,
-         Severity => Error_Kind);
-   end Global_Required;
-
    -----------------
    -- Find_Global --
    -----------------
@@ -3553,9 +3525,9 @@ package body Flow.Analysis is
       Projected_User_Deps : Dependency_Maps.Map;
       Actual_Deps         : Dependency_Maps.Map;
 
-      Params         : Node_Sets.Set;
-      Implicit_Param : Entity_Id;
-      --  This set will hold all local parameters of the subprogram
+      Implicit_Param : constant Entity_Id :=
+        Get_Implicit_Formal (FA.Analyzed_Entity);
+      --  Implicit formal parameter (for task types and protected operations)
 
       Depends_Scope : constant Flow_Scope :=
         (if Present (FA.Refined_Depends_N) then
@@ -3564,36 +3536,6 @@ package body Flow.Analysis is
             FA.S_Scope);
       --  This is body scope if we are checking a Refined_Depends contract or
       --  spec scope if we are checking a Depends contract.
-
-      function Message_Kind (F : Flow_Id) return Msg_Severity;
-      --  Returns the severity of the message that we have to emit
-      --
-      --  In the absence of a user-provided Global contract the user-provided
-      --  Depends contract is used to synthesize the Globals. In this case and
-      --  if F is a global variable the emitted messages are errors since
-      --  subprogram callers will be assuming wrong Globals.
-      --
-      --  On the other hand, when there is a user-provided Global contract or
-      --  when F is not a Global variable, emitted messages are medium checks.
-
-      ------------------
-      -- Message_Kind --
-      ------------------
-
-      function Message_Kind (F : Flow_Id) return Msg_Severity is
-      begin
-         if No (FA.Global_N)
-           and then F.Kind = Direct_Mapping
-           and then not Params.Contains (Get_Direct_Mapping_Id (F))
-         then
-            return Error_Kind;
-         end if;
-
-         --  No need to raise an error
-         return Medium_Check_Kind;
-      end Message_Kind;
-
-   --  Start of processing for Check_Depends_Contract
 
    begin
       if No (FA.Depends_N) then
@@ -3606,10 +3548,6 @@ package body Flow.Analysis is
                    Scope      => FA.B_Scope,
                    Classwide  => False,
                    Depends    => User_Deps);
-
-      --  Populate the Params and Implicit_Param
-      Params := Get_Formals (FA.Analyzed_Entity);
-      Implicit_Param := Get_Implicit_Formal (FA.Analyzed_Entity);
 
       --  Up-project the dependencies
       Up_Project (User_Deps, Projected_User_Deps, Depends_Scope);
@@ -3657,7 +3595,6 @@ package body Flow.Analysis is
             Missing_Deps : Ordered_Flow_Id_Sets.Set;
             Wrong_Deps   : Ordered_Flow_Id_Sets.Set;
 
-            Proceed_With_Analysis : Boolean := True;
          begin
             if F_Out = Null_Flow_Id then
                --  The null dependency is special: it may not be present in the
@@ -3675,13 +3612,7 @@ package body Flow.Analysis is
             elsif Projected_User_Deps.Contains (F_Out) then
                --  ??? repeated search in map
                U_Deps := Projected_User_Deps (F_Out);
-            elsif F_Out.Kind = Magic_String then
-               Global_Required (FA, F_Out);
-               Proceed_With_Analysis := False;
             else
-               --  If the Depends aspect is used to synthesize the Global
-               --  aspect, then this message will be an error instead of a
-               --  medium check.
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "expected to see & on the left-hand-side of" &
@@ -3689,159 +3620,147 @@ package body Flow.Analysis is
                   N        => FA.Depends_N,
                   F1       => F_Out,
                   Tag      => Depends_Missing_Clause,
-                  Severity => Message_Kind (F_Out));
+                  Severity => Medium_Check_Kind);
             end if;
 
-            --  If we mention magic strings anywhere, there is no point in
-            --  proceeding as the dependency relation *cannot* be correct.
+            --  Check consistency
 
-            if Proceed_With_Analysis then
-               for Var of A_Deps loop
-                  if Var.Kind = Magic_String then
-                     Global_Required (FA, Var);
-                     Proceed_With_Analysis := False;
-                  end if;
-               end loop;
-            end if;
+            Missing_Deps := To_Ordered_Flow_Id_Set (A_Deps - U_Deps);
+            Wrong_Deps   := To_Ordered_Flow_Id_Set (U_Deps - A_Deps);
 
-            --  If all is still well we now do a consistency check
+            for Missing_Var of Missing_Deps loop
+               declare
+                  V : constant Flow_Graphs.Vertex_Id :=
+                    Get_Initial_Vertex (FA.PDG, Missing_Var);
 
-            if Proceed_With_Analysis then
-               Missing_Deps := To_Ordered_Flow_Id_Set (A_Deps - U_Deps);
-               Wrong_Deps   := To_Ordered_Flow_Id_Set (U_Deps - A_Deps);
-
-               for Missing_Var of Missing_Deps loop
-                  declare
-                     V : constant Flow_Graphs.Vertex_Id :=
-                       Get_Initial_Vertex (FA.PDG, Missing_Var);
-                  begin
-                     if V /= Flow_Graphs.Null_Vertex
-                       and then FA.Atr (V).Mode = Mode_Proof
-                     then
-                        null;
-                     elsif F_Out = Null_Flow_Id
-                       and then Missing_Var.Kind = Direct_Mapping
-                       and then Present (Implicit_Param)
-                       and then Implicit_Param =
-                                  Get_Direct_Mapping_Id (Missing_Var)
-                     then
-                        --  Suppress missing dependencies related to implicit
-                        --  concurrent objects.
-                        null;
-                     else
-                        --  Something that the user dependency fails to
-                        --  mention.
-                        if F_Out = Null_Flow_Id then
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Msg      => "missing dependency ""null => %""",
-                              N        => FA.Depends_N,
-                              F1       => Missing_Var,
-                              Tag      => Depends_Null,
-                              Severity => Medium_Check_Kind);
-                        elsif F_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
-                        then
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Msg      =>
-                                "missing dependency ""%'Result => %""",
-                              N        => Search_Contract
-                                            (FA.Analyzed_Entity,
-                                             Pragma_Depends,
-                                             Get_Direct_Mapping_Id (F_Out)),
-                              F1       => F_Out,
-                              F2       => Missing_Var,
-                              Tag      => Depends_Missing,
-                              Severity => Medium_Check_Kind);
-                        else
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Msg      => "missing dependency ""% => %""",
-                              N        => Search_Contract
-                                            (FA.Analyzed_Entity,
-                                             Pragma_Depends,
-                                             Get_Direct_Mapping_Id (F_Out)),
-                              F1       => F_Out,
-                              F2       => Missing_Var,
-                              Tag      => Depends_Missing,
-                              Severity => Medium_Check_Kind);
-                           --  ??? show path
-                        end if;
-                     end if;
-                  end;
-               end loop;
-
-               for Wrong_Var of Wrong_Deps loop
-                  --  Something the user dependency claims, but does not happen
-                  --  in reality.
-                  if Is_Abstract_State (Wrong_Var)
-                    and then Wrong_Var.Kind in Direct_Mapping | Record_Field
-                    and then State_Refinement_Is_Visible (Wrong_Var,
-                                                          FA.B_Scope)
-                    and then Has_Null_Refinement
-                               (Get_Direct_Mapping_Id (Wrong_Var))
+               begin
+                  if V /= Flow_Graphs.Null_Vertex
+                    and then FA.Atr (V).Mode = Mode_Proof
                   then
-                     --  If the depends contract mentions a state with visible
-                     --  null refinement then we do not need to emit a message
-                     --  since this is trivially True.
                      null;
-                  elsif F_Out.Kind = Direct_Mapping
+
+                  --  Suppress missing dependencies related to implicit
+                  --  concurrent objects.
+
+                  elsif F_Out = Null_Flow_Id
+                    and then Missing_Var.Kind = Direct_Mapping
                     and then Present (Implicit_Param)
                     and then Implicit_Param =
-                               Get_Direct_Mapping_Id (Wrong_Var)
-                    and then Wrong_Var.Kind = Direct_Mapping
+                      Get_Direct_Mapping_Id (Missing_Var)
                   then
-                     --  Suppress incorrect dependencies related to implicit
-                     --  concurrent objects.
                      null;
-                  elsif not Is_Variable (Wrong_Var) then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "& cannot appear in Depends",
-                        N        => FA.Depends_N,
-                        F1       => Wrong_Var,
-                        Tag      => Depends_Wrong,
-                        Severity => Medium_Check_Kind);
-                  elsif F_Out = Null_Flow_Id then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "incorrect dependency ""null => %""",
-                        N        => FA.Depends_N,
-                        F1       => Wrong_Var,
-                        Tag      => Depends_Wrong,
-                        Severity => Medium_Check_Kind);
-                     --  ??? show a path?
-                  elsif F_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
-                    and then Ekind (FA.Analyzed_Entity) = E_Function
-                  then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "incorrect dependency ""%'Result => %""",
-                        N        => Search_Contract
-                                      (FA.Analyzed_Entity,
-                                       Pragma_Depends,
-                                       Get_Direct_Mapping_Id (F_Out),
-                                       Get_Direct_Mapping_Id (Wrong_Var)),
-                        F1       => F_Out,
-                        F2       => Wrong_Var,
-                        Tag      => Depends_Wrong,
-                        Severity => Medium_Check_Kind);
+
+                  --  Something that the user dependency fails to mention
+
                   else
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "incorrect dependency ""% => %""",
-                        N        => Search_Contract
-                                      (FA.Analyzed_Entity,
-                                       Pragma_Depends,
-                                       Get_Direct_Mapping_Id (F_Out),
-                                       Get_Direct_Mapping_Id (Wrong_Var)),
-                        F1       => F_Out,
-                        F2       => Wrong_Var,
-                        Tag      => Depends_Wrong,
-                        Severity => Medium_Check_Kind);
+                     if F_Out = Null_Flow_Id then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "missing dependency ""null => %""",
+                           N        => FA.Depends_N,
+                           F1       => Missing_Var,
+                           Tag      => Depends_Null,
+                           Severity => Medium_Check_Kind);
+
+                     elsif F_Out = Direct_Mapping_Id (FA.Analyzed_Entity) then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      =>  "missing dependency ""%'Result => %""",
+                           N        => Search_Contract
+                                         (FA.Analyzed_Entity,
+                                          Pragma_Depends,
+                                          Get_Direct_Mapping_Id (F_Out)),
+                           F1       => F_Out,
+                           F2       => Missing_Var,
+                           Tag      => Depends_Missing,
+                           Severity => Medium_Check_Kind);
+
+                     else
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "missing dependency ""% => %""",
+                           N        => Search_Contract
+                                         (FA.Analyzed_Entity,
+                                          Pragma_Depends,
+                                          Get_Direct_Mapping_Id (F_Out)),
+                           F1       => F_Out,
+                           F2       => Missing_Var,
+                           Tag      => Depends_Missing,
+                           Severity => Medium_Check_Kind);
+                        --  ??? show path
+                     end if;
                   end if;
-               end loop;
-            end if;
+               end;
+            end loop;
+
+            for Wrong_Var of Wrong_Deps loop
+               --  Something the user dependency claims, but does not happen
+               --  in reality.
+               if Is_Abstract_State (Wrong_Var)
+                 and then Wrong_Var.Kind in Direct_Mapping | Record_Field
+                 and then State_Refinement_Is_Visible (Wrong_Var, FA.B_Scope)
+                 and then Has_Null_Refinement
+                   (Get_Direct_Mapping_Id (Wrong_Var))
+               then
+                  --  If the depends contract mentions a state with visible
+                  --  null refinement then we do not need to emit a message
+                  --  since this is trivially True.
+                  null;
+               elsif F_Out.Kind = Direct_Mapping
+                 and then Present (Implicit_Param)
+                 and then Implicit_Param = Get_Direct_Mapping_Id (Wrong_Var)
+                 and then Wrong_Var.Kind = Direct_Mapping
+               then
+                  --  Suppress incorrect dependencies related to implicit
+                  --  concurrent objects.
+                  null;
+               elsif not Is_Variable (Wrong_Var) then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "& cannot appear in Depends",
+                     N        => FA.Depends_N,
+                     F1       => Wrong_Var,
+                     Tag      => Depends_Wrong,
+                     Severity => Medium_Check_Kind);
+               elsif F_Out = Null_Flow_Id then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "incorrect dependency ""null => %""",
+                     N        => FA.Depends_N,
+                     F1       => Wrong_Var,
+                     Tag      => Depends_Wrong,
+                     Severity => Medium_Check_Kind);
+                  --  ??? show a path?
+               elsif F_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
+                 and then Ekind (FA.Analyzed_Entity) = E_Function
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "incorrect dependency ""%'Result => %""",
+                     N        => Search_Contract
+                                   (FA.Analyzed_Entity,
+                                    Pragma_Depends,
+                                    Get_Direct_Mapping_Id (F_Out),
+                                    Get_Direct_Mapping_Id (Wrong_Var)),
+                     F1       => F_Out,
+                     F2       => Wrong_Var,
+                     Tag      => Depends_Wrong,
+                     Severity => Medium_Check_Kind);
+               else
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "incorrect dependency ""% => %""",
+                     N        => Search_Contract
+                                   (FA.Analyzed_Entity,
+                                    Pragma_Depends,
+                                    Get_Direct_Mapping_Id (F_Out),
+                                    Get_Direct_Mapping_Id (Wrong_Var)),
+                     F1       => F_Out,
+                     F2       => Wrong_Var,
+                     Tag      => Depends_Wrong,
+                     Severity => Medium_Check_Kind);
+               end if;
+            end loop;
          end;
       end loop;
    end Check_Depends_Contract;
