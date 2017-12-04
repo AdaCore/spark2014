@@ -237,12 +237,12 @@ prefixsum_expanded.ads:55:08: info: postcondition proved (CVC4: 8 VC)
 prefixsum_general.adb:9:13: info: initialization of "Space" proved
 prefixsum_general.adb:10:18: info: initialization of "Space" proved
 prefixsum_general.adb:13:13: info: loop invariant initialization proved (CVC4: 8 VC)
-prefixsum_general.adb:13:13: medium: loop invariant might fail after first iteration, cannot prove A'Length mod Space = 0
 prefixsum_general.adb:13:22: info: division check proved (CVC4: 1 VC)
 prefixsum_general.adb:13:26: info: initialization of "Space" proved
 prefixsum_general.adb:17:26: info: initialization of "Left" proved
 prefixsum_general.adb:21:24: info: division check proved (CVC4: 1 VC)
 prefixsum_general.adb:30:27: info: division check proved (CVC4: 1 VC)
+prefixsum_general.adb:31:17: medium: loop invariant might fail after first iteration, cannot prove A (K) = Summation (A'Loop_Entry, K + 1 - Space, K)
 prefixsum_general.adb:31:25: info: precondition proved (CVC4: 1 VC)
 prefixsum_general.adb:31:56: info: range check proved (CVC4: 1 VC)
 prefixsum_general.adb:32:10: info: loop variant proved (CVC4: 1 VC)
