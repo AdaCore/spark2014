@@ -3595,23 +3595,21 @@ package body Flow.Analysis is
             Missing_Deps : Ordered_Flow_Id_Sets.Set;
             Wrong_Deps   : Ordered_Flow_Id_Sets.Set;
 
+            Projected_User_Out : constant Dependency_Maps.Cursor :=
+              Projected_User_Deps.Find (F_Out);
+
          begin
-            if F_Out = Null_Flow_Id then
-               --  The null dependency is special: it may not be present in the
-               --  user dependency because null => null would be super tedious
-               --  to write.
-               declare
-                  Null_Dep : constant Dependency_Maps.Cursor :=
-                    Projected_User_Deps.Find (Null_Flow_Id);
-               begin
-                  if Dependency_Maps.Has_Element (Null_Dep) then
-                     --  ??? Move should be fine here
-                     U_Deps := Projected_User_Deps (Null_Dep);
-                  end if;
-               end;
-            elsif Projected_User_Deps.Contains (F_Out) then
-               --  ??? repeated search in map
-               U_Deps := Projected_User_Deps (F_Out);
+            if Dependency_Maps.Has_Element (Projected_User_Out) then
+               --  ??? Move should be fine here
+               U_Deps := Projected_User_Deps (Projected_User_Out);
+
+            --  The null dependency is special: it may not be present in the
+            --  user dependency because null => null would be super tedious
+            --  to write.
+
+            elsif F_Out = Null_Flow_Id then
+               null;
+
             else
                Error_Msg_Flow
                  (FA       => FA,
