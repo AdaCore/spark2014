@@ -5934,22 +5934,6 @@ package body Flow.Control_Flow_Graph is
                            --  Check that G is not both a Proof_In and Output
                            pragma Assert (not Globals (Position).Is_Proof_In);
                         end if;
-
-                        --  Emit error if it is a global output of a function;
-                        --  later it will be difficult to tell which of the
-                        --  globals is an output.
-                        if Ekind (FA.Analyzed_Entity) = E_Function then
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Msg      => "function with output global & " &
-                                          "is not allowed in SPARK",
-                              N        => FA.Analyzed_Entity,
-                              F1       => G,
-                              Severity => Error_Kind,
-                              Tag      => Side_Effects);
-
-                           FA.Function_Side_Effects_Present := True;
-                        end if;
                      end;
                   end loop;
 

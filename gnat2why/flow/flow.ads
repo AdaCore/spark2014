@@ -268,10 +268,6 @@ package Flow is
             Refined_Depends_N : Node_Id;
             --  A few contract nodes cached as they can be a tedious to find
 
-            Function_Side_Effects_Present : Boolean;
-            --  Set to True if we are dealing with a function that has side
-            --  effects.
-
          when Kind_Package | Kind_Package_Body =>
             Initializes_N : Node_Id;
             --  Contract node cached, since it is tedious to find

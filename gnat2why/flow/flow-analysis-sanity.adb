@@ -52,23 +52,42 @@ package body Flow.Analysis.Sanity is
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean)
    is
+      Globals : Global_Flow_Ids;
+
    begin
       Sane := True;
 
-      if Ekind (FA.Analyzed_Entity) = E_Function
-        and then FA.Function_Side_Effects_Present
-      then
-         if Gnat2Why_Args.Debug_Mode then
+      if Ekind (FA.Analyzed_Entity) = E_Function then
+
+         Get_Globals (Subprogram => FA.Analyzed_Entity,
+                      Scope      => FA.B_Scope,
+                      Classwide  => False,
+                      Globals    => Globals);
+
+         for G of Globals.Writes loop
             Error_Msg_Flow
               (FA       => FA,
-               Msg      => "flow analysis of & abandoned due to " &
-                           "function with side effects",
+               Msg      => "function with output global & " &
+                           "is not allowed in SPARK",
                N        => FA.Analyzed_Entity,
+               F1       => G,
                Severity => Error_Kind,
-               F1       => Direct_Mapping_Id (FA.Analyzed_Entity));
-         end if;
+               Tag      => Side_Effects);
+         end loop;
 
-         Sane := False;
+         if not Globals.Writes.Is_Empty then
+            Sane := False;
+
+            if Gnat2Why_Args.Debug_Mode then
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "flow analysis of & abandoned due to " &
+                              "function with side effects",
+                  N        => FA.Analyzed_Entity,
+                  Severity => Error_Kind,
+                  F1       => Direct_Mapping_Id (FA.Analyzed_Entity));
+            end if;
+         end if;
       end if;
    end Check_Function_Side_Effects;
 
