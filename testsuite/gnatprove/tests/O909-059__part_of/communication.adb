@@ -1,5 +1,5 @@
 package body Communication with SPARK_Mode,
-  Refined_State => (State => (Ring_Buffer.Bla, Max1))
+  Refined_State => (State => Ring_Buffer.Bla)
 is
    procedure P is null;
 
