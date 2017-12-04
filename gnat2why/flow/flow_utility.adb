@@ -953,10 +953,8 @@ package body Flow_Utility is
                       Use_Deduced_Globals => Use_Computed_Globals,
                       Ignore_Depends      => True);
 
-         Remove_Generic_In_Formals_Without_Variable_Input
-           (Globals.Proof_Ins);
-         Remove_Generic_In_Formals_Without_Variable_Input
-           (Globals.Reads);
+         Remove_Generic_In_Formals_Without_Variable_Input (Globals.Proof_Ins);
+         Remove_Generic_In_Formals_Without_Variable_Input (Globals.Reads);
 
          --  Change all variants to Normal_Use
          Globals.Proof_Ins := Change_Variant (Globals.Proof_Ins, Normal_Use);
