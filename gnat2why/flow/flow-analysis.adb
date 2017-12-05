@@ -2078,10 +2078,7 @@ package body Flow.Analysis is
          declare
             Atr : V_Attributes renames FA.Atr (V);
          begin
-            if Atr.Is_Program_Node or
-              Atr.Is_Parameter or
-              Atr.Is_Global_Parameter
-            then
+            if Atr.Is_Program_Node then
                Dead_Code.Include (V);
             end if;
          end;
