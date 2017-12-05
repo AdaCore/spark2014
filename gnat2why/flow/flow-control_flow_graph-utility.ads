@@ -24,6 +24,7 @@
 --  This package contains a few helper functions for CFG construction.
 
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
+with Sinfo;                       use Sinfo;
 with SPARK_Util;                  use SPARK_Util;
 
 package Flow.Control_Flow_Graph.Utility is
@@ -103,7 +104,8 @@ package Flow.Control_Flow_Graph.Utility is
       Loops      : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc      : Node_Or_Entity_Id := Empty)
       return V_Attributes
-   with Pre  => Present (Callsite),
+   with Pre  => Nkind (Callsite) in N_Procedure_Call_Statement
+                                  | N_Entry_Call_Statement,
         Post => not Make_Call_Attributes'Result.Is_Null_Node and
                 Make_Call_Attributes'Result.Is_Program_Node and
                 Make_Call_Attributes'Result.Is_Callsite;
