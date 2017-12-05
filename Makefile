@@ -1,6 +1,6 @@
 # This Makefile is used to build and install GNATprove and its
-# sub-components, at the exception of provers CVC4 and Z3, which should be
-# separately built/installed.
+# sub-components, at the exception of provers (CVC4, Z3, Alt-Ergo) which
+# should be separately built/installed.
 #
 # To build gnat2why, you need:
 #  . a working GNAT compiler
@@ -9,29 +9,29 @@
 #
 # To build gnatprove, you need:
 #  . an installation of the gnatcoll library
-#  . local checked out repositories of submodules why3 and alt-ergo.
+#  . local checked out repositories of submodules why3.
 #
 # The necessary steps to correctly install gnat2why/gnatprove are
 #
 # 1) make setup
 #
-#    This does the local setup of submodules why3 and alt-ergo.
+#    This does the local setup of submodule why3.
 #
 # 2) make
 #
-#    This builds gnatprove, gnat2why, why3 and alt-ergo.
+#    This builds gnatprove, gnat2why, and why3.
 #
 # 3) make install-all
 #
 #    This copies all the necessary files into the install/ subdirectory, for
-#    gnatprove, gnat2why, why3 and alt-ergo.
+#    gnatprove, gnat2why, and why3.
 #
 # 4) export PATH=/path/to/spark2014/install/bin:$PATH
 #
 #    This puts the directory install/bin in your path.
 
 .PHONY: clean doc gnat2why gnat2why-nightly gnatprove install \
-	install-all why3 alt-ergo all setup all-nightly doc-nightly
+	install-all why3 all setup all-nightly doc-nightly
 
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
@@ -52,39 +52,34 @@ GNATMAKE=gnatmake
 VERSION=0.0w
 
 # main target for developers
-all: gnat2why gnatprove why3 alt-ergo
+all: gnat2why gnatprove why3
 
 # main target for nightly builds
 all-nightly: gnat2why-nightly gnatprove-nightly install install-examples
 
-# Setup and installation of why3 and alt-ergo
-# ===========================================
+# Setup and installation of why3
+# ==============================
 #
-# We deal differently with submodules for why3 and alt-ergo in a developer
-# setting, who builds directly why3 and alt-ergo, and for nightly builds, where
-# the builds of why3 and alt-ergo are handled separately.
+# We deal differently with submodules for why3 in a developer
+# setting, who builds directly why3, and for nightly builds, where
+# the builds of why3 and cvc4, z3, and alt-ergo are handled separately.
 #
 # Thus, special targets are defined for the developer only:
-#   setup        why3, alt-ergo
-#   install-all  install of gnatprove, why3 and alt-ergo
+#   setup        why3
+#   install-all  install of gnatprove and why3
 
 setup:
 	cd why3 && ./configure --prefix=$(INSTALLDIR) \
 		--enable-relocation \
 		--enable-coq-tactic=no \
 		--disable-menhirLib
-	cd alt-ergo && ./configure --prefix=$(INSTALLDIR)
 
 why3:
 	$(MAKE) -C why3
 
-alt-ergo:
-	$(MAKE) -C alt-ergo
-
 install-all:
 	$(MAKE) install
 	$(MAKE) -C why3 install_spark2014_dev
-	$(MAKE) -C alt-ergo install
 	# Move internal binaries to libexec/spark/bin like the nighty build
 	# does (in anod scripts), as why3 executables expect this relative
 	# location to find the Why3 installation files in share. Do this for
@@ -99,7 +94,6 @@ install-all:
 	# the following line is allowed to fail - why3ide might not be
 	# installed
 	-$(MV) install/bin/why3ide install/libexec/spark/bin
-	$(MV) install/bin/alt-ergo install/libexec/spark/bin
 	# Create the fake prover scripts to help extract benchmarks.
 	$(CP) benchmark_script/fake_* install/libexec/spark/bin
 	# It is ok for developers to not have a local build of CVC4. In that
@@ -172,6 +166,5 @@ clean:
 	$(MAKE) -C docs/ug clean
 	$(MAKE) -C docs/lrm clean
 	$(MAKE) -C why3 clean
-	$(MAKE) -C alt-ergo clean
 	$(MAKE) -C include clean
 	rm -f docs/sphinx_support/confvars.py
