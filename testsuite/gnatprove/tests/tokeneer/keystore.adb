@@ -178,7 +178,6 @@ is
             pragma Loop_Invariant
               (BlockNo in 1 .. 41
                and BlockSize in 1 .. 100
-               and J in 1 .. 100
                and CommonTypes.Unsigned32T (J) <= BlockSize);
 
             Result (J) := Data (J + (BlockNo - 1) * 100);
@@ -209,7 +208,6 @@ is
                and LoopMax = LoopMax'Loop_Entry
                and J in 1 .. LoopMax
                and BytesLeft = (RawCertData.DataLength) - (J - 1) * 100
-               and RawCertData.DataLength in 1 .. 4096
                and Size in 1 .. 100
                and RetValIni = Interfac.Ok
                and RetValFin = Interfac.Ok);

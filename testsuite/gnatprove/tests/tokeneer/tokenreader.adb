@@ -148,7 +148,7 @@ is
    function MakeDescription
      (Text         : CommonTypes.StringF1L1000;
       ResponseCode : CommonTypes.Unsigned32T) return AuditTypes.DescriptionT
-   with Post => True  --  no contextual analysis needed
+   with Pre => True  --  no contextual analysis needed
    is
       Result : AuditTypes.DescriptionT := AuditTypes.NoDescription;
       TheCodeName : Interfac.ResponseCodeT;

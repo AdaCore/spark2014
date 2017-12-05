@@ -119,7 +119,7 @@ is
 
    function ConvertToAuditDescription
      (Description : String) return AuditTypes.DescriptionT
-   with Post => True  --  no contextual analysis is needed
+   with Pre => True  --  no contextual analysis is needed
    is
       LocalDesc : AuditTypes.DescriptionT := AuditTypes.NoDescription;
    begin
@@ -454,7 +454,7 @@ is
       --
       ------------------------------------------------------------------
       function NameOfType (E : AuditTypes.ElementT) return ElementTextT
-        with Post => True  --  no contextual analysis needed
+        with Pre => True  --  no contextual analysis needed
       is
          pragma Unreferenced (E);
 

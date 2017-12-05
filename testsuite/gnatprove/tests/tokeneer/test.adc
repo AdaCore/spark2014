@@ -5,3 +5,6 @@ pragma Unevaluated_Use_Of_Old (Allow);
 
 pragma Warnings (Off, "no Global contract available for");
 --  Calls to standard library subprograms which do not read/write globals
+
+pragma Warnings (Off, "index for * may assume lower bound of 1");
+--  Proof guarantees safe access to strings within bounds 

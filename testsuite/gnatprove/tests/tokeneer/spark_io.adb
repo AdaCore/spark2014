@@ -125,7 +125,10 @@ package body Spark_IO is
     case File.IO_Sort is
       when Stdin     => return Ada.Text_IO.Standard_Input;
       when Stdout    => return Ada.Text_IO.Standard_Output;
-      when NamedFile => return File.File.all;
+      when NamedFile =>
+         pragma Warnings (Off, "cannot copy object of a limited type in Ada 2005");
+         return File.File.all;
+         pragma Warnings (On, "cannot copy object of a limited type in Ada 2005");
     end case;
   end File_Ref;
 
