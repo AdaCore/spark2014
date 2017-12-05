@@ -24,7 +24,6 @@ why3server
 libexec/spark/share dir
 doc
 gcc-6.4.1
-gnatcoll
 gprconfig
 info
 man
