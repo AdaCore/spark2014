@@ -155,11 +155,12 @@ is
    ------------------------------------------------------------------
    procedure WriteMessage (OK :  out Boolean)
      with Global  => (Input  => TheMsg,
-                      Output => Interfac.Output,
-                      In_Out => CurrentMsg),
+                      In_Out => (CurrentMsg,
+                                 Interfac.Output)),
           Depends => ((CurrentMsg,
-                       Interfac.Output,
-                       OK)              => (CurrentMsg,
+                       Interfac.Output) =>+ (CurrentMsg,
+                                             TheMsg),
+                      OK                => (CurrentMsg,
                                             TheMsg))
    is
    begin
@@ -189,13 +190,16 @@ is
      (NewDoorAlarm  : in     AlarmTypes.StatusT;
       NewAuditAlarm : in     AlarmTypes.StatusT;
       OK            :    out Boolean )
-     with Global  => (Output => Interfac.Output,
-                      In_Out => (CurrentDoorAlarm,
-                                 CurrentLogAlarm)),
+     with Global  => (In_Out => (CurrentDoorAlarm,
+                                 CurrentLogAlarm,
+                                 Interfac.Output)),
           Depends => (CurrentDoorAlarm  =>+ NewDoorAlarm,
                       CurrentLogAlarm   =>+ NewAuditAlarm,
-                      (Interfac.Output,
-                       OK)              => (CurrentDoorAlarm,
+                      Interfac.Output   =>+ (CurrentDoorAlarm,
+                                             CurrentLogAlarm,
+                                             NewAuditAlarm,
+                                             NewDoorAlarm),
+                      OK                => (CurrentDoorAlarm,
                                             CurrentLogAlarm,
                                             NewAuditAlarm,
                                             NewDoorAlarm))
@@ -382,12 +386,13 @@ is
    ------------------------------------------------------------------
    procedure WriteConfigData (OK :    out Boolean)
      with Global  => (Input  => ConfigData.State,
-                      Output => Interfac.Output,
-                      In_Out => CurrentConfig),
+                      In_Out => (CurrentConfig,
+                                 Interfac.Output)),
            Depends => ((CurrentConfig,
-                        Interfac.Output,
                         OK)              => (ConfigData.State,
-                                             CurrentConfig))
+                                             CurrentConfig),
+                       Interfac.Output   =>+ (ConfigData.State,
+                                              CurrentConfig))
    is
       ConsoleOK : Boolean;
 
@@ -754,9 +759,10 @@ is
    procedure WriteStatsData (TheStats : in     Stats.T;
                              OK       :    out Boolean)
      with Global  => (Input  => CurrentStats,
-                      Output => Interfac.Output),
-          Depends => ((Interfac.Output,
-                       OK)              => (CurrentStats,
+                      In_Out => Interfac.Output),
+          Depends => (Interfac.Output   =>+ (CurrentStats,
+                                            TheStats),
+                      OK                => (CurrentStats,
                                             TheStats))
    is
       ConsoleOK : Boolean;

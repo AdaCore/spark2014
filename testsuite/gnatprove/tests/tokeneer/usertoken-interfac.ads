@@ -30,7 +30,7 @@ private package UserToken.Interfac
                                        Part_Of  => UserToken.Input),
                           (Output with External => Async_Readers,
                                        Part_Of  => UserToken.Output)),
-       Initializes    => Status
+       Initializes    => (Status, Output)
 is
 
    ------------------------------------------------------------------

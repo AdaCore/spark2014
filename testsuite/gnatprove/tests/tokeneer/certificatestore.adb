@@ -220,6 +220,8 @@ is
          -- Trim the automatic space at the start of the string
          Length := Str'Length - 1;
          Text(1..Length) := Str(2..Length + 1);
+         pragma Annotate (GNATprove, False_Positive, "might not be initialized",
+                          "Initialization of string in two steps");
          Text(Length + 1..RawNextI'Last) := (others => ' ');
       end ConvertFrom32;
 

@@ -25,7 +25,8 @@ with AuditLog,
 
 package Display
   with Abstract_State => (State,
-                          (Output with External => Async_Readers))
+                          (Output with External => Async_Readers)),
+       Initializes => Output
 is
 
    ------------------------------------------------------------------
@@ -146,9 +147,9 @@ is
    procedure UpdateDevice
      with Global  => (Input  => (Clock.Now,
                                  ConfigData.State),
-                      Output => Output,
                       In_Out => (AuditLog.FileState,
                                  AuditLog.State,
+                                 Output,
                                  State)),
           Depends => ((AuditLog.FileState,
                        AuditLog.State)     => (AuditLog.FileState,
@@ -156,8 +157,8 @@ is
                                                Clock.Now,
                                                ConfigData.State,
                                                State),
-                      (Output,
-                       State)              => State);
+                      Output               =>+ State,
+                      State                =>+ null);
 
    ------------------------------------------------------------------
    -- Init

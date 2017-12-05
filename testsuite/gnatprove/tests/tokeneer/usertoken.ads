@@ -42,7 +42,7 @@ package UserToken
                           Status,
                           (Input  with External => Async_Writers),
                           (Output with External => Async_Readers)),
-        Initializes   => Status
+        Initializes   => (Status, Output)
 is
    ------------------------------------------------------------------
    -- Types
@@ -123,9 +123,9 @@ is
                                  ConfigData.State,
                                  KeyStore.Store,
                                  State),
-                      Output => Output,
                       In_Out => (AuditLog.FileState,
                                  AuditLog.State,
+                                 Output,
                                  Status)),
           Depends => ((AuditLog.FileState,
                        AuditLog.State)     => (AuditLog.FileState,
@@ -134,8 +134,10 @@ is
                                                ConfigData.State,
                                                KeyStore.Store,
                                                State),
-                      (Output,
-                       Status,
+                      Output               =>+ (KeyStore.Store,
+                                               State,
+                                               Status),
+                      (Status,
                        Success)            => (KeyStore.Store,
                                                State,
                                                Status));

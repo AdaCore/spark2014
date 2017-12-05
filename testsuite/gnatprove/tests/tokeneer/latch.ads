@@ -25,7 +25,8 @@ use Clock;
 package Latch
   with SPARK_Mode,
        Abstract_State => (State,
-                          (Output with External => Async_Readers))
+                          (Output with External => Async_Readers)),
+       Initializes => Output
 is
 
    ------------------------------------------------------------------

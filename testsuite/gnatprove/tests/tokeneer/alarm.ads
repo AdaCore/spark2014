@@ -22,7 +22,8 @@ with AuditLog;
 
 package Alarm
   with SPARK_Mode,
-       Abstract_State => (Output with External => Async_Readers)
+       Abstract_State => (Output with External => Async_Readers),
+       Initializes => Output
 is
 
    ---------------------------------------------------------

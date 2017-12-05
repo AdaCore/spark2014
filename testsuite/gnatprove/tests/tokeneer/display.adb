@@ -232,10 +232,10 @@ is
                                          ConfigData.State,
                                          CurrentDisplay,
                                          Sizes),
-                              Output => Interfac.Output,
                               In_Out => (AuditLog.FileState,
                                          AuditLog.State,
-                                         CurrentlyDisplayed)),
+                                         CurrentlyDisplayed,
+                                         Interfac.Output)),
           Refined_Depends => ((AuditLog.FileState,
                                AuditLog.State)     => (AuditLog.FileState,
                                                        AuditLog.State,
@@ -245,9 +245,9 @@ is
                                                        CurrentlyDisplayed,
                                                        Sizes),
                               CurrentlyDisplayed   =>+ CurrentDisplay,
-                              Interfac.Output      => (CurrentDisplay,
-                                                       CurrentlyDisplayed,
-                                                       Sizes))
+                              Interfac.Output      =>+ (CurrentDisplay,
+                                                        CurrentlyDisplayed,
+                                                        Sizes))
    is
       TheMsg    : MsgStrT;
       Written   : Boolean;
@@ -261,7 +261,11 @@ is
 
          TheMsg := MsgToStrings(CurrentDisplay);
          -- Reset the screen
+         -- This is seen as having no effect due to the modeling of
+         -- the output of the display.
+         pragma Warnings (GNATprove, Off, "statement has no effect");
          Interfac.Reset;
+         pragma Warnings (GNATprove, On, "statement has no effect");
 
          if CommonTypes.Unsigned32T(TheMsg.Top.Len) <= Sizes.Top and
            CommonTypes.Unsigned32T(TheMsg.Bottom.Len) <= Sizes.Bottom

@@ -20,7 +20,8 @@ with Display,
 
 private package Display.Interfac
   with Abstract_State => (Output with External => Async_Readers,
-                                      Part_Of  => Display.Output)
+                                      Part_Of  => Display.Output),
+       Initializes => Output
 is
 
    ------------------------------------------------------------------

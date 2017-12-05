@@ -22,7 +22,8 @@ package Floppy
   with Abstract_State => (State,         -- CurrentFile and Presence
                           WrittenState,  -- WrittenFile
                           (Input  with External => Async_Writers),
-                          (Output with External => Async_Readers))
+                          (Output with External => Async_Readers)),
+       Initializes => Output
 is
 
    ------------------------------------------------------------------
