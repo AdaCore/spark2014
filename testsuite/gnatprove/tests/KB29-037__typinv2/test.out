@@ -1,4 +1,4 @@
-main.adb:5:09: info: initialization of "Var" proved
+main.adb:5:09: high: "Var" is not initialized
 p.adb:4:08: medium: predicate check might fail
 p.adb:4:40: medium: overflow check might fail
 p.adb:5:08: medium: predicate check might fail

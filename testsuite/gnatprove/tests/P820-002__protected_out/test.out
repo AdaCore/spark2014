@@ -143,7 +143,7 @@ polyorb_hi_generated-activity.ads:102:03: warning: in instantiation at polyorb_h
 polyorb_hi_generated-activity.ads:102:03: warning: pragma "Storage_Size" ignored (not yet supported)
 polyorb_hi_generated-activity.ads:192:03: warning: in instantiation at polyorb_hi-periodic_task.ads:74
 polyorb_hi_generated-activity.ads:192:03: warning: pragma "Storage_Size" ignored (not yet supported)
-polyorb_hi_generated-transport.adb:41:07: info: initialization of "Msg" proved
+polyorb_hi_generated-transport.adb:41:07: high: "Msg" is not initialized
 polyorb_hi_generated-transport.adb:47:07: info: initialization of "Msg" proved
 polyorb_hi_generated-transport.adb:50:09: info: initialization of "Value" proved
 polyorb_hi_generated-transport.adb:54:07: info: no contextual analysis of "Producer_Consumer_Result_Consumer_Deliver" (body not seen yet)

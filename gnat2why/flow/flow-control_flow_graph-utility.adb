@@ -541,7 +541,9 @@ package body Flow.Control_Flow_Graph.Utility is
                                     E_Task_Type
               or else (Belongs_To_Concurrent_Type (F_Ent)
                          and then (Belongs_To_Protected_Type (F_Ent)
-                                     or else Is_Default_Initialized (F_Ent)))
+                                   or else Is_Default_Initialized
+                                             (F_Ent,
+                                              Get_Flow_Scope (Entire_Var))))
               or else In_Generic_Actual (Entire_Var);
 
             if Is_Discriminant (F_Ent)

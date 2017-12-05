@@ -213,6 +213,21 @@ package Flow_Refinement is
    --  the abstract version. If we can't find an abstract version, we return
    --  Empty.
 
+   function Default_Initialization (Typ        : Entity_Id;
+                                    Scope      : Flow_Scope;
+                                    Ignore_DIC : Boolean := False)
+                                    return Default_Initialization_Kind;
+   --  Determine default initialization kind that applies to a particular type.
+   --  Types defined in units with external axiomatization (such as formal
+   --  containers) and private types are treated specially, so that they are
+   --  either considered as having full default initialization, or no default
+   --  initialization.
+   --  @param Typ any type
+   --  @param Scope is the Flow_Scope from where we are looking
+   --  @param Ignore_DIC If True then do not consider attribute Has_DIC for
+   --     this type.
+   --  @return the Default_Initialization_Kind of Typ
+
    function Down_Project (Var : Entity_Id;
                           S   : Flow_Scope)
                           return Node_Sets.Set

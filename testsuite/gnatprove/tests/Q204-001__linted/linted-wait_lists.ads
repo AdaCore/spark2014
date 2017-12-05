@@ -16,7 +16,7 @@ package Linted.Wait_Lists with
    pragma Preelaborate;
 
    type Node_Nonnull_Access is private;
-   type Node_Access is private;
+   type Node_Access is private with Default_Initial_Condition;
 
    protected type Wait_List is
       procedure Insert (N : Node_Nonnull_Access) with

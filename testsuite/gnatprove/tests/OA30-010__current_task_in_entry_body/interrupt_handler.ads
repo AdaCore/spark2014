@@ -11,6 +11,6 @@ is
       procedure P;
       pragma Attach_Handler (P, Interrupt);
    private
-      T : Task_Id;
+      T : Task_Id := Null_Task_Id;
    end;
 end Interrupt_Handler;

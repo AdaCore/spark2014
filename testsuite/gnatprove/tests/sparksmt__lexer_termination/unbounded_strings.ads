@@ -29,7 +29,9 @@ package Unbounded_Strings with
    SPARK_Mode
 is
 
-   type Unbounded_String is limited private;
+   type Unbounded_String is limited private
+     with Default_Initial_Condition =>
+       Length (Unbounded_String) = 0;
 
    function Length (S : Unbounded_String) return Natural
    with Global => null;

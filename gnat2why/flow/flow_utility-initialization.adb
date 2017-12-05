@@ -22,10 +22,9 @@
 ------------------------------------------------------------------------------
 
 with Aspects;          use Aspects;
+with Flow_Refinement;  use Flow_Refinement;
 with Nlists;           use Nlists;
 with Sem_Type;         use Sem_Type;
-with SPARK_Util;       use SPARK_Util;
-with SPARK_Util.Types; use SPARK_Util.Types;
 with Why;
 
 package body Flow_Utility.Initialization is
@@ -166,19 +165,24 @@ package body Flow_Utility.Initialization is
    ----------------------------
 
    function Is_Default_Initialized
-     (F             : Flow_Id;
-      Explicit_Only : Boolean := False)
+     (F          : Flow_Id;
+      Scope      : Flow_Scope;
+      Ignore_DIC : Boolean := False)
       return Boolean
    is
 
-      function Has_Full_Default_Initialization (E : Entity_Id) return Boolean;
+      function Has_Full_Default_Initialization (E     : Entity_Id;
+                                                Scope : Flow_Scope)
+                                                return Boolean;
       --  Returns True iff F has full default initialization
 
       -------------------------------------
       -- Has_Full_Default_Initialization --
       -------------------------------------
 
-      function Has_Full_Default_Initialization (E : Entity_Id) return Boolean
+      function Has_Full_Default_Initialization (E     : Entity_Id;
+                                                Scope : Flow_Scope)
+                                                return Boolean
       is
          Typ : Entity_Id;
       begin
@@ -193,7 +197,7 @@ package body Flow_Utility.Initialization is
                Typ := Etype (E);
          end case;
 
-         return Default_Initialization (Typ, Explicit_Only) =
+         return Default_Initialization (Typ, Scope, Ignore_DIC) =
                   Full_Default_Initialization;
       end Has_Full_Default_Initialization;
 
@@ -207,7 +211,7 @@ package body Flow_Utility.Initialization is
             begin
                return Is_Imported (E)
                  or else In_Generic_Actual (E)
-                 or else Has_Full_Default_Initialization (E);
+                 or else Has_Full_Default_Initialization (E, Scope);
             end;
 
          when Record_Field =>
@@ -226,7 +230,7 @@ package body Flow_Utility.Initialization is
 
             else
                return Has_Full_Default_Initialization
-                        (Get_Direct_Mapping_Id (F));
+                        (Get_Direct_Mapping_Id (F), Scope);
             end if;
 
          when Magic_String | Synthetic_Null_Export =>

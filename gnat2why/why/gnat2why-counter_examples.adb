@@ -30,6 +30,8 @@ with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Atree;                     use Atree;
 with Einfo;                     use Einfo;
+with Flow_Refinement;           use Flow_Refinement;
+with Flow_Types;                use Flow_Types;
 with GNAT;                      use GNAT;
 with GNAT.String_Split;         use GNAT.String_Split;
 with Namet;                     use Namet;
@@ -1482,7 +1484,7 @@ package body Gnat2Why.Counter_Examples is
                     Expression (Parent (Element_Decl));
                   No_Default_Init : constant Boolean :=
                     Default_Initialization
-                      (Etype (Element_Decl)) =
+                      (Etype (Element_Decl), Get_Flow_Scope (Element_Decl)) =
                         No_Default_Initialization;
                begin
                   return No (Init_Expr)

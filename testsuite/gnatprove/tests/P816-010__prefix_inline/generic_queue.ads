@@ -21,7 +21,7 @@ package Generic_Queue with SPARK_Mode is
 
    type Buffer_Element_Array is private;
 
-   type Buffer_Tag is tagged private;
+   type Buffer_Tag is tagged private with Default_Initial_Condition;
 
    procedure clear( Self : in out Buffer_Tag )
      with Post'Class => Self.Empty;

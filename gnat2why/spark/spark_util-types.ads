@@ -170,20 +170,6 @@ package SPARK_Util.Types is
    --     of type From to type To. Currently a very coarse approximation
    --     to rule out obvious cases.
 
-   function Default_Initialization
-     (Typ           : Entity_Id;
-      Explicit_Only : Boolean := False) return Default_Initialization_Kind;
-   --  Determine default initialization kind that applies to a particular type.
-   --  Types defined in units with external axiomatization (such as formal
-   --  containers) and private types are treated specially, so that they are
-   --  either considered as having full default initialization, or no default
-   --  initialization.
-   --  @param Typ any type
-   --  @param Explicit_Only If True then do not consider attributes
-   --    Has_DIC and Has_Inherited_DIC for this
-   --    type.
-   --  @return the Default_Initialization_Kind of Typ
-
    function Find_Predicate_Aspect (Typ : Entity_Id) return Node_Id;
    --  Find the aspect specification Predicate or Dynamic_Predicate or
    --  Static_Predicate associated with entity Typ. Return Empty if Typ does

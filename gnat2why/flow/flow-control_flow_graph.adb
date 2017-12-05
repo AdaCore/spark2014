@@ -3696,7 +3696,7 @@ package body Flow.Control_Flow_Graph is
 
       else
          for F of Flatten_Variable (E, FA.B_Scope) loop
-            if Is_Default_Initialized (F) then
+            if Is_Default_Initialized (F, FA.B_Scope) then
                Add_Vertex
                  (FA,
                   Make_Default_Initialization_Attributes
@@ -4598,24 +4598,27 @@ package body Flow.Control_Flow_Graph is
       --  If the type has a Default_Initial_Condition then we:
       --    * check if the full type is as the aspect suggested
       --      and issue a warning if not
-      if Has_DIC (Typ) then
-         --  Issue a warning if the declared type promised to be
-         --  default initialized but is not.
+      if Has_Own_DIC (Typ)
+        or else (Is_Tagged_Type (Typ)
+                 and then Has_Inherited_DIC (Typ))
+      then
+         --  Issue a warning if the declared type promised to be default
+         --  initialized but is not.
          --
          --  We do not issue this warning:
          --    * during the global generation phase,
-         --    * when dealing with an internal type (this is fine
-         --      since we will get a warning on the type that comes from
-         --      source anyway).
+         --    * when dealing with an internal type (this is fine since we
+         --      will get a warning on the type that comes from source
+         --      anyway).
 
          if not FA.Generating_Globals
            and then Comes_From_Source (Typ)
-           and then (not Is_Private_Type (Typ)
-                       or else No (Full_View (Typ)))
-           and then not Full_View_Not_In_SPARK (Typ)
-           and then Is_Default_Initialized (Direct_Mapping_Id (Typ))
+           and then No (Full_View (Typ))
+           and then Is_Default_Initialized (Direct_Mapping_Id (Typ),
+                                            Get_Flow_Scope (Typ))
            and then not Is_Default_Initialized (Direct_Mapping_Id (Typ),
-                                                Explicit_Only => True)
+                                                Get_Flow_Scope (Typ),
+                                                Ignore_DIC => True)
          then
             Error_Msg_Flow
               (FA       => FA,

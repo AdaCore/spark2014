@@ -5,7 +5,7 @@ package Call_From_Sub_In_PT is
       procedure Proc (T : out Task_Id);
    private
       D    : Integer := 3;
-      T    : Task_Id;
+      T    : Task_Id := Null_Task_Id;
       Flag : Boolean := True;
    end PT;
 end;

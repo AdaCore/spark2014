@@ -17,8 +17,8 @@ package Linted.Triggers with
      Spark_Mode is
    pragma Preelaborate;
 
-   type Waiter is private;
-   type Signaller is private;
+   type Waiter is private with Default_Initial_Condition;
+   type Signaller is private with Default_Initial_Condition;
 
    Null_Waiter : constant Waiter;
    Null_Signaller : constant Signaller;

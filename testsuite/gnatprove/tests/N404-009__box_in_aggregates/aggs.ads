@@ -7,7 +7,7 @@ is
    type T1 is range 1 .. 10
      with Default_Value => 5;
 
-   type P1 is private;
+   type P1 is private with Default_Initial_Condition;
 
    --  T2 does NOT have a default value
    type T2 is range 11 .. 20;

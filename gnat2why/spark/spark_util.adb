@@ -26,6 +26,8 @@
 with Ada.Characters.Latin_1;             use Ada.Characters.Latin_1;
 with Csets;                              use Csets;
 with Errout;                             use Errout;
+with Flow_Refinement;                    use Flow_Refinement;
+with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
 with Gnat2Why_Args;
 with Output;
@@ -248,7 +250,8 @@ package body SPARK_Util is
       Component   : Entity_Id;
       Association : Node_Id;
       Not_Init    : constant Boolean :=
-        Default_Initialization (Typ) /= Full_Default_Initialization;
+        Default_Initialization (Typ, Get_Flow_Scope (N)) /=
+          Full_Default_Initialization;
 
    --  Start of processing for Aggregate_Is_Fully_Initialized
 

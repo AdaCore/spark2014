@@ -14,7 +14,8 @@ package Public_Derives_Private with SPARK_Mode is
       F1 : Natural := 0;
    end record;
 
-   type Private_Grand_Child_Private_Tagged is private;
+   type Private_Grand_Child_Private_Tagged is private
+     with Default_Initial_Condition;
 
    function Get_F2 (G : Private_Grand_Child_Private_Tagged) return Natural;
 

@@ -2938,7 +2938,8 @@ package body Gnat2Why.Expr is
       end if;
 
       if Has_Predicates (Ty) and then
-        Default_Initialization (Ty) /= No_Default_Initialization
+        Default_Initialization (Ty, Get_Flow_Scope (Ty))
+          /= No_Default_Initialization
       then
          declare
             Tmp_Exp : constant W_Identifier_Id :=

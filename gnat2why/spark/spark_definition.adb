@@ -32,6 +32,8 @@ with Common_Iterators;                use Common_Iterators;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
+with Flow_Refinement;                 use Flow_Refinement;
+with Flow_Types;                      use Flow_Types;
 with Gnat2Why.Annotate;               use Gnat2Why.Annotate;
 with Gnat2Why_Args;
 with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
@@ -2903,8 +2905,8 @@ package body SPARK_Definition is
 
          if Present (Encap_Id)
            and then Is_Single_Concurrent_Object (Encap_Id)
-           and then Default_Initialization (Etype (E)) not in
-             Full_Default_Initialization | No_Possible_Initialization
+           and then Default_Initialization (Etype (E), Get_Flow_Scope (E))
+             not in Full_Default_Initialization | No_Possible_Initialization
            and then not Has_Initial_Value (E)
            and then not Is_Imported (E)
          then
@@ -3854,7 +3856,7 @@ package body SPARK_Definition is
                      --  check needed if the private view of the type is not in
                      --  SPARK.
 
-                     if SPARK_Util.Types.Default_Initialization (E) not in
+                     if Default_Initialization (E, Get_Flow_Scope (E)) not in
                        Full_Default_Initialization | No_Possible_Initialization
                      then
                         Mark_Violation ("protected type "

@@ -49,7 +49,7 @@ is
       Err : Errors.Error;
    end record;
 
-   type Read_Future is limited private;
+   type Read_Future is limited private with Default_Initial_Condition;
 
    function Read_Future_Is_Live (Future : Read_Future) return Boolean with
       Ghost,
@@ -98,7 +98,7 @@ is
       (if Init then not Read_Future_Is_Live (Future)
        else Read_Future_Is_Live (Future));
 
-   type Write_Future is limited private;
+   type Write_Future is limited private with Default_Initial_Condition;
 
    function Write_Future_Is_Live (Future : Write_Future) return Boolean with
       Ghost,
@@ -147,7 +147,7 @@ is
       (if Init then not Write_Future_Is_Live (Future)
        else Write_Future_Is_Live (Future));
 
-   type Poll_Future is limited private;
+   type Poll_Future is limited private with Default_Initial_Condition;
 
    function Poll_Future_Is_Live (Future : Poll_Future) return Boolean with
       Ghost,
