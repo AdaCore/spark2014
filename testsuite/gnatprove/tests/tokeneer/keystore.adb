@@ -94,7 +94,7 @@ is
       Result    : AuditTypes.DescriptionT := AuditTypes.NoDescription;
       TheString : constant String :=
         "Crypto Library Error in "& Op& " : "
-        & Interfac.ReturnValueT'Image (RetVal);
+        & Interfac.ReturnValueT_Image (RetVal);
 
    begin
       if TheString'Length <= AuditTypes.DescriptionT'Last then

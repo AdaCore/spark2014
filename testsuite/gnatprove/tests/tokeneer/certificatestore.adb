@@ -215,8 +215,9 @@ is
         with Depends => ((Length,
                           Text)   => Num)
       is
-         Str : String := CertTypes.SerialNumberT'Image(Num);
+         Str : String := CertTypes.SerialNumberT_Image(Num);
       begin
+         pragma Assume (Str'Length <= 11);
          -- Trim the automatic space at the start of the string
          Length := Str'Length - 1;
          Text(1..Length) := Str(2..Length + 1);

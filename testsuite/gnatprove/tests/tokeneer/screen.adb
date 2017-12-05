@@ -441,7 +441,8 @@ is
       begin
          Str(5) := ValueStr(ValueStr'Last);
          if Value >= 10 then
-            -- Know ValueStr is at least 3 characters.
+            -- Know ValueStr is at least 3 characters and less than 5
+            pragma Assume (ValueStr'Length in 3 .. 5);
             Str(6 - ValueStr'Last .. 3) := ValueStr(2 .. ValueStr'Last - 1);
          end if;
          return Str;
@@ -477,9 +478,10 @@ is
       function FileSizeString (Value : AuditTypes.FileSizeT)
                                return FileSizeStringT
       is
-         Data : String := AuditTypes.FileSizeT'Image(Value/2**10) & " kBytes";
+         Data : String := AuditTypes.FileSizeT_Image(Value/2**10) & " kBytes";
          Result : FileSizeStringT := (others => ' ');
       begin
+         pragma Assume (Data'Length <= 16);
          Result(1 .. Data'Last - 1) := Data(2 .. Data'Last);
          return Result;
       end FileSizeString;
@@ -497,7 +499,7 @@ is
       function AccessPolicyString (Value : ConfigData.AccessPolicyT)
                                   return AccessPolicyStringT
       is
-         Data   : String := ConfigData.AccessPolicyT'Image(Value);
+         Data   : String := ConfigData.AccessPolicyT_Image(Value);
          Result : AccessPolicyStringT := (others => ' ');
       begin
          Result(1 .. Data'Last) := Data;
@@ -516,7 +518,7 @@ is
       ------------------------------------------------------------------
       function ClassString (Value : PrivTypes.ClassT) return ClassStringT
       is
-         Data   : String := PrivTypes.ClassT'Image(Value);
+         Data   : String := PrivTypes.ClassT_Image(Value);
          Result : ClassStringT := (others => ' ');
       begin
          Result(1 .. Data'Last) := Data;
@@ -536,9 +538,10 @@ is
       function FARString (Value : IandATypes.FarT)
                          return FARStringT
       is
-         Data   : String := IandATypes.FarT'Image(Value);
+         Data   : String := IandATypes.FarT_Image(Value);
          Result : FARStringT := (others => ' ');
       begin
+         pragma Assume (Data'Length <= 13);
          Result(1 .. Data'Last - 1) := Data(2 .. Data'Last);
          return Result;
       end FARString;
@@ -787,6 +790,7 @@ is
          Data : String := Stats.StatsCount_Image(Value);
          Result : StatsCountStringT := (others => ' ');
       begin
+         pragma Assume (Data'Length <= 11);
          Result(1 .. Data'Last - 1) := Data(2 .. Data'Last);
          return Result;
       end StatsCountString;

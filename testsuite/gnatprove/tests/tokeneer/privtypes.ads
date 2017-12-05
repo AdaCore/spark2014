@@ -16,6 +16,8 @@
 --
 ------------------------------------------------------------------
 
+with CommonTypes;
+
 package PrivTypes is
 
    ------------------------------------------------------------------
@@ -37,6 +39,15 @@ package PrivTypes is
       Confidential,
       Secret,
       Topsecret);
+
+   function ClassT_Image (X : ClassT) return CommonTypes.StringF1L12 is
+      (ClassT'Image (X));
+   pragma Annotate (GNATprove, False_Positive,
+                    "range check might fail",
+                    "Image of enums of type ClassT are short strings starting at index 1");
+   pragma Annotate (GNATprove, False_Positive,
+                    "predicate check might fail",
+                    "Image of enums of type ClassT are short strings starting at index 1");
 
    type ClearanceT is record
       Class : ClassT;

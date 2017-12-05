@@ -59,7 +59,7 @@ package CertTypes is
 
    type SerialNumberT is range 0..2**32 - 1;
 
-   function SerialNumberT_Image (X : SerialNumberT) return CommonTypes.StringF1L1000 is
+   function SerialNumberT_Image (X : SerialNumberT) return CommonTypes.StringF1L2to1000 is
       (SerialNumberT'Image (X));
    pragma Annotate (GNATprove, False_Positive,
                     "range check might fail",

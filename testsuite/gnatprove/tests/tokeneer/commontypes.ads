@@ -57,11 +57,17 @@ package CommonTypes is
    type String8ArrayT is Array(String8ArrayI) of String8T;
 
    subtype StringF1 is String with
-     Predicate => StringF1'First = 1;
+     Predicate => StringF1'First = 1 and StringF1'Last >= 0;
    subtype StringF1L20 is StringF1 with
      Predicate => StringF1L20'Last <= 20;
+   subtype StringF1L12 is StringF1 with
+     Predicate => StringF1L12'Last <= 12;
    subtype StringF1L1000 is StringF1 with
      Predicate => StringF1L1000'Last <= 1000;
+   subtype StringF1L2to1000 is StringF1 with
+     Predicate => StringF1L2to1000'Length >= 2;
+   subtype StringF1L3to1000 is StringF1 with
+     Predicate => StringF1L3to1000'Length >= 3;
    subtype StringF1L1000NE is StringF1L1000 with
      Predicate => StringF1L1000NE'Length >= 1;
 

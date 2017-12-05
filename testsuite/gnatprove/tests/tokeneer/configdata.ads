@@ -36,7 +36,7 @@ is
    ------------------------------------------------------------------
    subtype DurationT is Clock.DurationT range 0..2000;
 
-   function DurationT_Image (X : DurationT) return CommonTypes.StringF1L1000NE is
+   function DurationT_Image (X : DurationT) return CommonTypes.StringF1L3to1000 is
       (DurationT'Image (X));
    pragma Annotate (GNATprove, False_Positive,
                     "range check might fail",
@@ -47,6 +47,15 @@ is
 
 
    type AccessPolicyT is (WorkingHours, AllHours);
+
+   function AccessPolicyT_Image (X : AccessPolicyT) return CommonTypes.StringF1L12 is
+      (AccessPolicyT'Image (X));
+   pragma Annotate (GNATprove, False_Positive,
+                    "range check might fail",
+                    "Image of enums of type AccessPolicyT are short strings starting at index 1");
+   pragma Annotate (GNATprove, False_Positive,
+                    "predicate check might fail",
+                    "Image of enums of type AccessPolicyT are short strings starting at index 1");
 
    ------------------------------------------------------------------
    -- Init
