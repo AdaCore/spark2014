@@ -177,19 +177,43 @@
 </theory>
 <theory name="Commontypes__stringf1l20Predicate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
+<theory name="Commontypes__stringf1l12" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l12Predicate__I15s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l12Predicate__I15s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l12Predicate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
 <theory name="Commontypes__stringf1l1000" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Commontypes__stringf1l1000Predicate__I15s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Commontypes__stringf1l1000Predicate__I17s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Commontypes__stringf1l1000Predicate__I15s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Commontypes__stringf1l1000Predicate__I17s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Commontypes__stringf1l1000Predicate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
+<theory name="Commontypes__stringf1l2to1000" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l2to1000Predicate__I19s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l2to1000Predicate__I19s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l2to1000Predicate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l3to1000" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l3to1000Predicate__I21s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l3to1000Predicate__I21s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l3to1000Predicate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
 <theory name="Commontypes__stringf1l1000ne" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Commontypes__stringf1l1000nePredicate__I17s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Commontypes__stringf1l1000nePredicate__I23s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Commontypes__stringf1l1000nePredicate__I17s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Commontypes__stringf1l1000nePredicate__I23s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Commontypes__stringf1l1000nePredicate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -251,6 +275,12 @@
 </theory>
 <theory name="Audittypes__filesizet__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
+<theory name="Audittypes__filesizet_image__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Audittypes__filesizet_image__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Audittypes__filesizet_image" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
 <theory name="Audittypes__TauditentrycounttB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Audittypes__TauditentrycounttB__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
@@ -306,6 +336,12 @@
 <theory name="Clock__durationt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Clock__durationt__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Clock__durationt_image__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Clock__durationt_image__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Clock__durationt_image" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Clock__TmillisecstB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -531,9 +567,9 @@
 </theory>
 <theory name="System__default_bit_order" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__any_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -1897,6 +1933,12 @@
 </theory>
 <theory name="Privtypes__classt__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
+<theory name="Privtypes__classt_image__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Privtypes__classt_image__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Privtypes__classt_image" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
 <theory name="Privtypes__clearancet__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Privtypes__clearancet" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
@@ -1914,6 +1956,12 @@
 <theory name="Configdata__accesspolicyt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Configdata__accesspolicyt__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Configdata__accesspolicyt_image__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Configdata__accesspolicyt_image__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Configdata__accesspolicyt_image" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Configdata__updatedata__thelatchunlockduration" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -2961,17 +3009,17 @@
 </theory>
 <theory name="Clock__now" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Configdata__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Configdata__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Configdata__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Auditlog__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Auditlog__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keystore__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Keystore__store" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Keystore__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Standard__short_short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3219,7 +3267,7 @@
 </theory>
 <theory name="Temp___String_Literal_167" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_170" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_168" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Enrolment__validate__validateandaddkey" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3273,7 +3321,13 @@
 </theory>
 <theory name="Commontypes__stringf1l20___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
+<theory name="Commontypes__stringf1l12___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
 <theory name="Commontypes__stringf1l1000___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l2to1000___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l3to1000___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Commontypes__stringf1l1000ne___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3583,9 +3637,9 @@
 </theory>
 <theory name="Auditlog__logfilestatet__T21s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___1050" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___1102" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___1054" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___1106" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Auditlog__logfilestatet___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3691,15 +3745,15 @@
 </theory>
 <theory name="Enrolment__validate__T17b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1522" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1574" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1534" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1586" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1577" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1629" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1579" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1631" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1581" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1633" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Audittypes__nodescription___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3711,9 +3765,9 @@
 </theory>
 <theory name="System__default_bit_order___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__default_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3847,7 +3901,13 @@
 </theory>
 <theory name="Commontypes__stringf1l20Predicate___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
+<theory name="Commontypes__stringf1l12Predicate___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
 <theory name="Commontypes__stringf1l1000Predicate___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l2to1000Predicate___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Commontypes__stringf1l3to1000Predicate___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Commontypes__stringf1l1000nePredicate___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3856,6 +3916,10 @@
 <theory name="Commontypes__integer_image___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Audittypes__elementt_image___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Audittypes__filesizet_image___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Clock__durationt_image___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Clock__poll___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4115,7 +4179,11 @@
 </theory>
 <theory name="Iandatypes__fart_image___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
+<theory name="Privtypes__classt_image___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
 <theory name="Configdata__durationt_image___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Configdata__accesspolicyt_image___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Configdata__init___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4225,14 +4293,14 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enrolment__validate__subprogram_def" sum="f0c298d3aaca8d2071e075258cf0cdf5">
+<theory name="Enrolment__validate__subprogram_def" sum="1522b38339d8c826a5b8f897e6bb66be">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="46"/></proof>
+  <proof prover="1"><result status="valid" steps="47"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -4245,9 +4313,9 @@
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="808"/></proof>
-  <proof prover="2"><result status="unknown" steps="1348"/></proof>
-  <proof prover="3"><result status="unknown" steps="168207"/></proof>
+  <proof prover="1"><result status="unknown" steps="795"/></proof>
+  <proof prover="2"><result status="unknown" steps="1279"/></proof>
+  <proof prover="3"><result status="unknown" steps="168331"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -4259,7 +4327,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="277"/></proof>
+  <proof prover="1"><result status="valid" steps="286"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="210"/></proof>
@@ -4270,20 +4338,20 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enrolment__validate__makedescription__subprogram_def" proved="true" sum="a0a924909b227cdec9d0cc5be8f83850">
+<theory name="Enrolment__validate__makedescription__subprogram_def" proved="true" sum="4f86b28c4a4a6ebc2dd65312dcb59326">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="29"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="293"/></proof>
+  <proof prover="1"><result status="valid" steps="299"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="409"/></proof>
+  <proof prover="1"><result status="valid" steps="415"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="519"/></proof>
+  <proof prover="1"><result status="valid" steps="525"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -4301,13 +4369,13 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="437"/></proof>
+  <proof prover="1"><result status="valid" steps="443"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="437"/></proof>
+  <proof prover="1"><result status="valid" steps="443"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -4315,7 +4383,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Enrolment__validate__validateandaddkey__subprogram_def" proved="true" sum="8ca18e9e897f02140673414ac7fbd06e">
+<theory name="Enrolment__validate__validateandaddkey__subprogram_def" proved="true" sum="a639f60470691a72a0f8a14e3a9732fd">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
