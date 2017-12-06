@@ -1663,7 +1663,7 @@ package body Flow.Analysis is
                   if Intersection.Is_Empty then
                      TV := Flow_Graphs.Continue;
                   else
-                     Mask.Include (V);
+                     Mask.Insert (V);
                      TV := Flow_Graphs.Skip_Children;
                   end if;
                end;
@@ -2522,7 +2522,7 @@ package body Flow.Analysis is
             F : Flow_Id renames FA.CFG.Get_Key (V);
          begin
             if V /= To and then F.Kind = Direct_Mapping then
-               Path.Include (V);
+               Path.Insert (V);
             end if;
          end Add_Loc;
 
@@ -3096,7 +3096,7 @@ package body Flow.Analysis is
                              then FA.CFG.Get_Key (V).Kind
                              else FA.PDG.Get_Key (V).Kind) = Direct_Mapping
                then
-                  Vertices.Include (V);
+                  Vertices.Insert (V);
                end if;
             end Add_Loc;
 
@@ -3886,7 +3886,7 @@ package body Flow.Analysis is
             if not To.Contains (V)
               and then F.Kind = Direct_Mapping
             then
-               Path.Include (V);
+               Path.Insert (V);
             end if;
          end Add_Loc;
 
