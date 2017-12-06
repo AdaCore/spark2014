@@ -3592,9 +3592,6 @@ package body Flow.Analysis is
             A_Deps : Flow_Id_Sets.Set renames Actual_Deps (C);
             U_Deps : Flow_Id_Sets.Set;
 
-            Missing_Deps : Ordered_Flow_Id_Sets.Set;
-            Wrong_Deps   : Ordered_Flow_Id_Sets.Set;
-
             Projected_User_Out : constant Dependency_Maps.Cursor :=
               Projected_User_Deps.Find (F_Out);
 
@@ -3623,10 +3620,7 @@ package body Flow.Analysis is
 
             --  Check consistency
 
-            Missing_Deps := To_Ordered_Flow_Id_Set (A_Deps - U_Deps);
-            Wrong_Deps   := To_Ordered_Flow_Id_Set (U_Deps - A_Deps);
-
-            for Missing_Var of Missing_Deps loop
+            for Missing_Var of A_Deps.Difference (U_Deps) loop
                declare
                   V : constant Flow_Graphs.Vertex_Id :=
                     Get_Initial_Vertex (FA.PDG, Missing_Var);
@@ -3691,7 +3685,7 @@ package body Flow.Analysis is
                end;
             end loop;
 
-            for Wrong_Var of Wrong_Deps loop
+            for Wrong_Var of U_Deps.Difference (A_Deps) loop
                --  Something the user dependency claims, but does not happen
                --  in reality.
                if Is_Abstract_State (Wrong_Var)
