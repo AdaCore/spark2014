@@ -27,7 +27,6 @@ Node_change 93
 Node_change 93
 Node_change 93
 Node_change 93
-Node_change 89
 Node_change 93
 Task
 --------------------------- Local Context ---------------------------
@@ -47,7 +46,7 @@ goal WP_parameter def :
      mk int__ref test__parity__result4 = mk int__ref test__parity__result2 //
      test__parity__result5 = test__parity__result3) //
     result1 = test__parity__result4 ->
-    (exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 1)))
+    (exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2)))
 
 
 Task
@@ -90,7 +89,7 @@ axiom H7 : Parity = Parity2
 axiom H8 : result = Parity1
 
 goal WP_parameter def :
-  exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 1))
+  exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2))
 
 
 DONE

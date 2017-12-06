@@ -9,7 +9,7 @@ is
      with
        Pre => A > 0,
        Post => (for some X in Unsigned_Byte'Range =>
-                  A = X + X or else A = X + X + 1)
+                  A = X + X or else A = X + X + 2) -- Not correct (intended)
    is
    begin
       return A;
