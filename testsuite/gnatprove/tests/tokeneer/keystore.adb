@@ -88,7 +88,7 @@ is
 
    function ConvertRetValToText
      (RetVal : Interfac.ReturnValueT;
-      Op     : String)
+      Op     : CommonTypes.StringF1L1000)
      return AuditTypes.DescriptionT
    is
       Result    : AuditTypes.DescriptionT := AuditTypes.NoDescription;

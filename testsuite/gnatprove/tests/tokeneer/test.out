@@ -1990,81 +1990,93 @@ keyboard.adb:76:32: info: initialization of "LocalData" proved
 keyboard.ads:76:20: info: initialization of "DataPresence" proved
 keyboard.ads:77:20: info: initialization of "Data.Length" proved
 keyboard.ads:77:20: info: initialization of "Data.Text" proved
-keystore.adb:96:35: low: range check might fail
-keystore.adb:96:39: low: range check might fail
-keystore.adb:97:09: low: range check might fail
-keystore.adb:100:19: medium: range check might fail
-keystore.adb:101:10: medium: range check might fail
-keystore.adb:101:32: medium: range check might fail
+keystore.adb:96:35: info: range check proved (CVC4: 1 VC)
+keystore.adb:96:39: info: range check proved (CVC4: 1 VC)
+keystore.adb:97:09: info: range check proved (CVC4: 1 VC)
+keystore.adb:100:19: info: range check proved (CVC4: 1 VC)
+keystore.adb:101:10: info: range check proved (CVC4: 4 VC)
+keystore.adb:101:32: info: range check proved (CVC4: 1 VC)
 keystore.adb:101:41: info: initialization of "Result" proved
-keystore.adb:101:41: medium: length check might fail
-keystore.adb:101:44: medium: length check might fail
-keystore.adb:103:20: medium: range check might fail
+keystore.adb:101:41: info: length check proved (CVC4: 1 VC)
+keystore.adb:101:44: info: length check proved (CVC4: 1 VC)
+keystore.adb:103:20: info: range check proved (CVC4: 4 VC)
 keystore.adb:106:14: info: initialization of "Result" proved
 keystore.adb:121:22: info: initialization of "TheDigest.DigestID" proved
 keystore.adb:121:22: info: initialization of "TheDigest.Pad" proved
 keystore.adb:121:22: info: initialization of "TheDigest.SignReturn" proved
 keystore.adb:121:22: info: initialization of "TheDigest.VerifyReturn" proved
 keystore.adb:122:22: info: initialization of "Success" proved
-keystore.adb:171:42: medium: range check might fail
-keystore.adb:171:53: medium: overflow check might fail
-keystore.adb:171:69: medium: overflow check might fail
-keystore.adb:179:16: medium: loop invariant might fail after first iteration, cannot prove BlockNo in 1 .. 41
-keystore.adb:179:16: medium: loop invariant might fail in first iteration, cannot prove BlockNo in 1 .. 41
+keystore.adb:171:42: info: range check proved (CVC4: 1 VC)
+keystore.adb:171:53: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:171:69: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:179:16: info: loop invariant initialization proved (CVC4: 5 VC)
+keystore.adb:179:16: info: loop invariant preservation proved (CVC4: 5 VC)
 keystore.adb:183:24: info: initialization of "Result" proved
-keystore.adb:183:35: medium: array index check might fail
-keystore.adb:183:35: medium: overflow check might fail
-keystore.adb:183:51: medium: overflow check might fail
+keystore.adb:183:35: info: index check proved (CVC4: 2 VC)
+keystore.adb:183:35: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:183:51: info: overflow check proved (CVC4: 1 VC)
 keystore.adb:188:17: info: initialization of "Result" proved
 keystore.adb:200:10: info: initialization of "RetValIni" proved
-keystore.adb:202:51: medium: divide by zero might fail
+keystore.adb:202:51: info: division check proved (CVC4: 1 VC)
 keystore.adb:205:24: info: initialization of "LoopMax" proved
 keystore.adb:207:16: info: initialization of "LoopMax" proved
-keystore.adb:207:16: medium: loop invariant might fail after first iteration, cannot prove LoopMax = ((RawCertData.DataLength - 1) / 100) + 1
-keystore.adb:207:16: medium: loop invariant might fail in first iteration, cannot prove LoopMax = ((RawCertData.DataLength - 1) / 100) + 1
-keystore.adb:207:56: medium: divide by zero might fail
+keystore.adb:207:16: info: loop invariant initialization proved (CVC4: 8 VC)
+keystore.adb:207:16: info: loop invariant preservation proved (CVC4: 8 VC)
+keystore.adb:207:56: info: division check proved (CVC4: 1 VC)
 keystore.adb:208:30: info: initialization of "LoopMax" proved
 keystore.adb:210:20: info: initialization of "BytesLeft" proved
-keystore.adb:210:57: medium: overflow check might fail
-keystore.adb:210:67: medium: overflow check might fail
+keystore.adb:210:57: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:210:67: info: overflow check proved (CVC4: 1 VC)
 keystore.adb:211:20: info: initialization of "Size" proved
 keystore.adb:212:20: info: initialization of "RetValIni" proved
 keystore.adb:213:20: info: initialization of "RetValFin" proved
 keystore.adb:215:16: info: initialization of "BytesLeft" proved
 keystore.adb:216:49: info: initialization of "BytesLeft" proved
-keystore.adb:219:22: medium: precondition might fail
+keystore.adb:219:22: info: precondition proved (CVC4: 5 VC)
 keystore.adb:222:29: info: initialization of "Size" proved
 keystore.adb:225:31: info: initialization of "Block" proved
 keystore.adb:226:31: info: initialization of "Size" proved
 keystore.adb:229:23: info: initialization of "RetValUpd" proved
 keystore.adb:229:55: info: initialization of "LoopMax" proved
 keystore.adb:231:26: info: initialization of "BytesLeft" proved
-keystore.adb:231:36: medium: range check might fail
+keystore.adb:231:36: info: range check proved (CVC4: 1 VC)
 keystore.adb:235:13: info: initialization of "RetValUpd" proved
 keystore.adb:242:18: info: initialization of "RetValIni" proved
 keystore.adb:243:18: info: initialization of "RetValUpd" proved
 keystore.adb:244:18: info: initialization of "RetValFin" proved
 keystore.adb:246:20: info: initialization of "RetValIni" proved
-keystore.adb:247:18: medium: precondition might fail
+keystore.adb:247:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:251:49: info: initialization of "RetValIni" proved
+keystore.adb:251:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:251:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:254:20: info: initialization of "RetValUpd" proved
-keystore.adb:255:18: medium: precondition might fail
+keystore.adb:255:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:259:49: info: initialization of "RetValUpd" proved
+keystore.adb:259:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:259:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:262:20: info: initialization of "RetValFin" proved
-keystore.adb:263:18: medium: precondition might fail
+keystore.adb:263:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:267:48: info: initialization of "RetValFin" proved
+keystore.adb:267:59: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:267:59: info: range check proved (CVC4: 1 VC)
 keystore.adb:286:07: info: initialization of "Handles" proved
 keystore.adb:315:10: info: initialization of "RetValIni" proved
 keystore.adb:320:13: info: initialization of "RetValIni" proved
 keystore.adb:325:20: info: initialization of "RetValIni" proved
-keystore.adb:326:18: medium: precondition might fail
+keystore.adb:326:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:330:49: info: initialization of "RetValIni" proved
+keystore.adb:330:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:330:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:333:20: info: initialization of "RetValDo" proved
-keystore.adb:334:18: medium: precondition might fail
+keystore.adb:334:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:338:48: info: initialization of "RetValDo" proved
+keystore.adb:338:58: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:338:58: info: range check proved (CVC4: 1 VC)
 keystore.adb:341:20: info: initialization of "RetValFin" proved
-keystore.adb:342:18: medium: precondition might fail
+keystore.adb:342:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:346:48: info: initialization of "RetValFin" proved
+keystore.adb:346:59: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:346:59: info: range check proved (CVC4: 1 VC)
 keystore.adb:364:33: info: initialization of "IssuerKey" proved
 keystore.adb:397:29: info: initialization of "IssuerTemplate.AttrMask" proved
 keystore.adb:397:29: info: initialization of "IssuerTemplate.IsPublic" proved
@@ -2075,7 +2087,7 @@ keystore.adb:397:29: info: initialization of "IssuerTemplate.Owner.Name" proved
 keystore.adb:397:29: info: initialization of "IssuerTemplate.Owner.NameLength" proved
 keystore.adb:398:29: info: initialization of "ActualCount" proved
 keystore.adb:401:10: info: initialization of "ActualCount" proved
-keystore.adb:404:18: medium: precondition might fail
+keystore.adb:404:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:415:20: info: initialization of "Handles" proved
 keystore.adb:431:26: info: initialization of "PrivateKeyHandle" proved
 keystore.adb:461:29: info: initialization of "PrivateTemplate.AttrMask" proved
@@ -2087,15 +2099,17 @@ keystore.adb:461:29: info: initialization of "PrivateTemplate.Owner.Name" proved
 keystore.adb:461:29: info: initialization of "PrivateTemplate.Owner.NameLength" proved
 keystore.adb:462:29: info: initialization of "ActualCount" proved
 keystore.adb:465:10: info: initialization of "ActualCount" proved
-keystore.adb:468:18: medium: precondition might fail
+keystore.adb:468:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:477:27: info: initialization of "Handles" proved
 keystore.adb:496:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
 keystore.adb:496:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
 keystore.adb:496:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
 keystore.adb:496:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
 keystore.adb:519:19: info: initialization of "RetVal" proved
-keystore.adb:521:18: medium: precondition might fail
+keystore.adb:521:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:525:52: info: initialization of "RetVal" proved
+keystore.adb:525:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:525:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:531:33: info: initialization of "ThePrivateKeyH" proved
 keystore.adb:533:10: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
 keystore.adb:534:52: info: initialization of "ThePrivateKeyH" proved
@@ -2119,8 +2133,10 @@ keystore.adb:630:40: info: initialization of "TheDigest.SignReturn" proved
 keystore.adb:630:40: info: initialization of "TheDigest.VerifyReturn" proved
 keystore.adb:634:23: info: initialization of "RetVal" proved
 keystore.adb:636:22: info: initialization of "RetVal" proved
-keystore.adb:637:21: medium: precondition might fail
+keystore.adb:637:21: info: precondition proved (CVC4: 1 VC)
 keystore.adb:641:56: info: initialization of "RetVal" proved
+keystore.adb:641:64: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:641:64: info: range check proved (CVC4: 1 VC)
 keystore.adb:693:10: info: initialization of "Digested" proved
 keystore.adb:697:39: info: initialization of "ThePrivateKeyH" proved
 keystore.adb:698:39: info: initialization of "TheDigest.DigestID" proved
@@ -2129,8 +2145,10 @@ keystore.adb:698:39: info: initialization of "TheDigest.SignReturn" proved
 keystore.adb:698:39: info: initialization of "TheDigest.VerifyReturn" proved
 keystore.adb:702:21: info: initialization of "RetVal" proved
 keystore.adb:704:22: info: initialization of "RetVal" proved
-keystore.adb:705:21: medium: precondition might fail
+keystore.adb:705:21: info: precondition proved (CVC4: 1 VC)
 keystore.adb:709:55: info: initialization of "RetVal" proved
+keystore.adb:709:63: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:709:63: info: range check proved (CVC4: 1 VC)
 keystore.adb:775:45: info: initialization of "TheKeyTemplate.AttrMask" proved
 keystore.adb:775:45: info: initialization of "TheKeyTemplate.IsPublic" proved
 keystore.adb:775:45: info: initialization of "TheKeyTemplate.KeyID" proved
@@ -2141,8 +2159,10 @@ keystore.adb:775:45: info: initialization of "TheKeyTemplate.Owner.NameLength" p
 keystore.adb:778:17: info: initialization of "RetVal" proved
 keystore.adb:780:10: info: initialization of "Added" proved
 keystore.adb:789:19: info: initialization of "RetVal" proved
-keystore.adb:790:18: medium: precondition might fail
+keystore.adb:790:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:794:53: info: initialization of "RetVal" proved
+keystore.adb:794:61: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:794:61: info: range check proved (CVC4: 1 VC)
 keystore.adb:810:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
 keystore.adb:810:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
 keystore.adb:810:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
@@ -2153,9 +2173,9 @@ keystore.ads:174:20: info: initialization of "Signature.SigData" proved
 keystore.ads:174:20: info: initialization of "Signature.SigLength" proved
 keystore.ads:175:20: info: initialization of "Signed" proved
 keystore.ads:204:22: info: initialization of "Added" proved
-keystore.ads:229:22: medium: postcondition might fail, cannot prove Added and (not IsPublic) and PrivateKeyPresent) xor (not (Added and not IsPublic) and (PrivateKeyPresent = PrivateKeyPresent'old
+keystore.ads:229:22: info: postcondition proved (CVC4: 3 VC)
 keystore.ads:229:23: info: initialization of "Added" proved
-keystore.ads:247:22: medium: postcondition might fail, cannot prove not (PrivateKeyPresent)
+keystore.ads:247:22: info: postcondition proved (CVC4: 1 VC)
 keystore.ads:247:26: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
 keystore.ads:247:26: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
 keystore.ads:247:26: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
