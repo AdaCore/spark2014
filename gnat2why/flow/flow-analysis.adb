@@ -248,8 +248,6 @@ package body Flow.Analysis is
                begin
                   if Nkind (N) in N_Identifier | N_Expanded_Name
                     and then Present (Entity (N))
-                    and then Nkind (Entity (N)) in N_Entity
-                    -- ??? workaround or something?
                     and then Unique_Entity (Entity (N)) = Target
                   then
                      Result := N;
