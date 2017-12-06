@@ -6,5 +6,9 @@ project Test is
       for Default_Switches ("ada") use ("-gnato13", "-gnatws");
       for Local_Configuration_Pragmas use "test.adc";
    end Compiler;
-end Test;
 
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+
+end Test;
