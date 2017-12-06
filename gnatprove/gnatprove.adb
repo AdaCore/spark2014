@@ -607,9 +607,7 @@ procedure Gnatprove with SPARK_Mode is
             GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
          end if;
          Close (Id);
-         GNAT.OS_Lib.Delete_File
-           (Compose (Proj.Root_Project.Artifacts_Dir.Display_Full_Name,
-            Socket_Name.all), Del_Succ);
+         GNAT.OS_Lib.Delete_File (Socket_Name.all, Del_Succ);
       end;
    end Flow_Analysis_And_Proof;
 

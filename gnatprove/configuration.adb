@@ -35,6 +35,7 @@ with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
 with GNAT.Strings;              use GNAT.Strings;
+with Platform;                  use Platform;
 with SPARK2014VSN;              use SPARK2014VSN;
 with System.Multiprocessors;
 
@@ -62,6 +63,14 @@ package body Configuration is
    procedure Clean_Up (Tree : Project_Tree);
    --  Deletes generated "gnatprove" sub-directories in all object directories
    --  of the project.
+
+   function Compute_Socket_Dir (Root_Project : Project_Type) return String;
+   --  Returns the directory where the socket file will be created. On
+   --  Windows, this is irrelevant, so the function returns the empty string.
+   --  On Unix, the following rules are applied:
+   --  - if TMPDIR is set, exists and is writable, use that
+   --  - if /tmp exists and is writable, use that
+   --  - otherwise return the object directory.
 
    procedure Handle_Project_Loading_Switches
      (Switch    : String;
@@ -232,6 +241,48 @@ package body Configuration is
          Next (Iter);
       end loop;
    end Clean_Up;
+
+   ------------------------
+   -- Compute_Socket_Dir --
+   ------------------------
+
+   function Compute_Socket_Dir (Root_Project : Project_Type) return String is
+
+      TMPDIR_Envvar : constant String := "TMPDIR";
+      --  It's OK to use a forward slash here, this will be used on Unix only
+
+      TMP_Dir : constant String := "/tmp";
+
+      function Exists_And_Is_Writable (Dir : String) return Boolean;
+      --  Check whether the argument is a directory that exists and is writable
+
+      ----------------------------
+      -- Exists_And_Is_Writable --
+      ----------------------------
+
+      function Exists_And_Is_Writable (Dir : String) return Boolean is
+      begin
+         return Exists (Dir)
+           and then GNAT.OS_Lib.Is_Write_Accessible_File (Dir);
+      end Exists_And_Is_Writable;
+
+   --  Start of processing for Compute_Socket_Dir
+
+   begin
+      if Get_OS_Flavor in X86_Windows | X86_64_Windows then
+         return "";
+      end if;
+      if Ada.Environment_Variables.Exists (TMPDIR_Envvar)
+        and then Exists_And_Is_Writable
+          (Ada.Environment_Variables.Value (TMPDIR_Envvar))
+      then
+         return Ada.Environment_Variables.Value (TMPDIR_Envvar);
+      elsif Exists_And_Is_Writable (TMP_Dir) then
+         return TMP_Dir;
+      else
+         return Root_Project.Artifacts_Dir.Display_Full_Name;
+      end if;
+   end Compute_Socket_Dir;
 
    -------------------------------------
    -- Handle_Project_Loading_Switches --
@@ -1661,9 +1712,13 @@ package body Configuration is
          declare
             Obj_Dir_Hash : constant Hash_Type :=
               Full_Name_Hash (Proj_Type.Artifacts_Dir);
+            Socket_Dir   : constant String := Compute_Socket_Dir (Proj_Type);
+            Socket_Base  : constant String :=
+               "why3server" & Hash_Image (Obj_Dir_Hash) & ".sock";
          begin
-            Socket_Name := new String'
-              ("why3server" & Hash_Image (Obj_Dir_Hash) & ".sock");
+            Socket_Name := new String'(
+               (if Socket_Dir = "" then Socket_Base
+                else Compose (Socket_Dir, Socket_Base)));
          end;
       end;
 
