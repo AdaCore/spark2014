@@ -3979,16 +3979,31 @@ package body Flow.Analysis is
             All_Actual_Ins    : Flow_Id_Sets.Set;
 
          begin
-            --  Populate All_Actual_Ins
+            --  If the currently analyzed user RHS is variable, then collect
+            --  its actual dependencies; otherwise, reject it as a constant.
+
             for Contract_Out of All_Contract_Outs loop
-               declare
-                  Actual_Out : constant Dependency_Maps.Cursor :=
-                    FA.Dependency_Map.Find (Contract_Out);
-               begin
-                  if Dependency_Maps.Has_Element (Actual_Out) then
-                     All_Actual_Ins.Union (FA.Dependency_Map (Actual_Out));
-                  end if;
-               end;
+               if Is_Variable (Contract_Out) then
+                  declare
+                     Actual_Out : constant Dependency_Maps.Cursor :=
+                       FA.Dependency_Map.Find (Contract_Out);
+                  begin
+                     if Dependency_Maps.Has_Element (Actual_Out) then
+                        All_Actual_Ins.Union (FA.Dependency_Map (Actual_Out));
+                     end if;
+                  end;
+               else
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "& cannot appear in Initializes",
+                     N        => Search_Contract
+                                   (FA.Spec_Entity,
+                                    Pragma_Initializes,
+                                    Get_Direct_Mapping_Id (Contract_Out)),
+                     F1       => Contract_Out,
+                     Tag      => Initializes_Wrong,
+                     Severity => Medium_Check_Kind);
+               end if;
             end loop;
 
             --  Detect inputs missing from the RHS
@@ -4052,22 +4067,6 @@ package body Flow.Analysis is
                         Tag      => Initializes_Wrong,
                         Severity => Medium_Check_Kind);
                   end if;
-               end if;
-            end loop;
-
-            --  Detect constants without variable inputs on the LHS
-            for Contract_Out of All_Contract_Outs loop
-               if not Is_Variable (Contract_Out) then
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "& cannot appear in Initializes",
-                     N        => Search_Contract
-                                   (FA.Spec_Entity,
-                                    Pragma_Initializes,
-                                    Get_Direct_Mapping_Id (Contract_Out)),
-                     F1       => Contract_Out,
-                     Tag      => Initializes_Wrong,
-                     Severity => Medium_Check_Kind);
                end if;
             end loop;
          end;
