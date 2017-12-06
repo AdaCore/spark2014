@@ -3897,12 +3897,6 @@ package body Flow.Analysis is
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
 
-      function Node_Id_Set_To_Flow_Id_Set
-        (NS : Node_Sets.Set)
-         return Flow_Id_Sets.Set;
-      --  Takes a set of Node_Ids and returns a set of the
-      --  corresponding Flow_Ids.
-
       function Flow_Id_Set_To_Vertex_Set
         (FS : Flow_Id_Sets.Set)
          return Vertex_Sets.Set;
@@ -3918,23 +3912,6 @@ package body Flow.Analysis is
       --  From and any vertex contained in To. It then writes a
       --  tracefile containing all vertices in between (From
       --  and To excluded).
-
-      --------------------------------
-      -- Node_Id_Set_To_Flow_Id_Set --
-      --------------------------------
-
-      function Node_Id_Set_To_Flow_Id_Set
-        (NS : Node_Sets.Set)
-         return Flow_Id_Sets.Set
-      is
-         Tmp : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      begin
-         for N of NS loop
-            Tmp.Insert (Direct_Mapping_Id (N));
-         end loop;
-
-         return Tmp;
-      end Node_Id_Set_To_Flow_Id_Set;
 
       -------------------------------
       -- Flow_Id_Set_To_Vertex_Set --
@@ -4089,18 +4066,11 @@ package body Flow.Analysis is
             All_Actual_Ins    : Flow_Id_Sets.Set;
          begin
             --  Down project the LHS of an initialization_item
-            All_Contract_Outs :=
-              Node_Id_Set_To_Flow_Id_Set
-                (Down_Project
-                   (Var => Get_Direct_Mapping_Id (The_Out),
-                    S   => FA.B_Scope));
+            All_Contract_Outs := Down_Project (The_Out, FA.B_Scope);
 
             --  Down project the RHS of an initialization_item
             for G of The_Ins loop
-               All_Contract_Ins.Union
-                 (Node_Id_Set_To_Flow_Id_Set
-                    (Down_Project
-                       (Get_Direct_Mapping_Id (G), FA.B_Scope)));
+               All_Contract_Ins.Union (Down_Project (G, FA.B_Scope));
             end loop;
 
             --  Populate All_Actual_Outs and All_Actual_Ins
