@@ -3970,19 +3970,16 @@ package body Flow.Analysis is
             The_Out : Flow_Id          renames Dependency_Maps.Key (C);
             The_Ins : Flow_Id_Sets.Set renames DM (C);
 
-            All_Contract_Outs : Flow_Id_Sets.Set;
-            All_Contract_Ins  : Flow_Id_Sets.Set;
+            All_Contract_Outs : constant Flow_Id_Sets.Set :=
+              Down_Project (The_Out, FA.B_Scope);
+
+            All_Contract_Ins  : constant Flow_Id_Sets.Set :=
+              Down_Project (The_Ins, FA.B_Scope);
+
             All_Actual_Ins    : Flow_Id_Sets.Set;
+
          begin
-            --  Down project the LHS of an initialization_item
-            All_Contract_Outs := Down_Project (The_Out, FA.B_Scope);
-
-            --  Down project the RHS of an initialization_item
-            for G of The_Ins loop
-               All_Contract_Ins.Union (Down_Project (G, FA.B_Scope));
-            end loop;
-
-            --  Populate All_Actual_Outs and All_Actual_Ins
+            --  Populate All_Actual_Ins
             for O in FA.Dependency_Map.Iterate loop
                declare
                   Actual_Out : Flow_Id renames Dependency_Maps.Key (O);
