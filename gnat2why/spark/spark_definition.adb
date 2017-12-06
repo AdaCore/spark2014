@@ -2210,7 +2210,6 @@ package body SPARK_Definition is
            Attribute_Machine_Mantissa  |
            Attribute_Machine_Overflows |
            Attribute_Machine_Radix     |
-           Attribute_Machine_Rounding  |
            Attribute_Machine_Rounds    |
            Attribute_Max               |
            Attribute_Min               |

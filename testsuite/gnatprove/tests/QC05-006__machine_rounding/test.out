@@ -1,0 +1,2 @@
+test.adb:3:22: attribute "Machine_Rounding" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
