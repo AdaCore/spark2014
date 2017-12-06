@@ -3980,19 +3980,18 @@ package body Flow.Analysis is
 
          begin
             --  Populate All_Actual_Ins
-            for O in FA.Dependency_Map.Iterate loop
+            for Contract_Out of All_Contract_Outs loop
                declare
-                  Actual_Out : Flow_Id renames Dependency_Maps.Key (O);
-                  Actual_Ins : Flow_Id_Sets.Set renames FA.Dependency_Map (O);
+                  Actual_Out : constant Dependency_Maps.Cursor :=
+                    FA.Dependency_Map.Find (Contract_Out);
                begin
-                  if All_Contract_Outs.Contains (Actual_Out) then
-                     All_Actual_Ins.Union (Actual_Ins);
+                  if Dependency_Maps.Has_Element (Actual_Out) then
+                     All_Actual_Ins.Union (FA.Dependency_Map (Actual_Out));
                   end if;
                end;
             end loop;
 
-            --  Complain about actual inputs that are not mentioned in the
-            --  Initializes.
+            --  Detect inputs missing from the RHS
             for Actual_In of All_Actual_Ins loop
                if not All_Contract_Ins.Contains (Actual_In) then
                   declare
@@ -4023,8 +4022,7 @@ package body Flow.Analysis is
                end if;
             end loop;
 
-            --  Complain about inputs mentioned in the Initializes that are not
-            --  actual inputs.
+            --  Detect extra inputs on the RHS
             for Contract_In of All_Contract_Ins loop
                if not All_Actual_Ins.Contains (Contract_In) then
                   if Is_Variable (Contract_In) then
@@ -4057,11 +4055,9 @@ package body Flow.Analysis is
                end if;
             end loop;
 
-            --  Complain about outputs that are constants and should
-            --  consequently not be mentioned in an initializes aspect.
+            --  Detect constants without variable inputs on the LHS
             for Contract_Out of All_Contract_Outs loop
                if not Is_Variable (Contract_Out) then
-                  --  Output is a constant without variable input
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "& cannot appear in Initializes",
