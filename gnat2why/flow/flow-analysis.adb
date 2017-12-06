@@ -3939,7 +3939,7 @@ package body Flow.Analysis is
          To        : Vertex_Sets.Set;
          Tracefile : String)
       is
-         Path_Found : Boolean := False;
+         Path_Found : Boolean := False with Ghost;
          Path       : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
          procedure Are_We_There_Yet
