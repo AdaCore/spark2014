@@ -64,19 +64,20 @@ package body Flow.Analysis.Sanity is
                       Classwide  => False,
                       Globals    => Globals);
 
-         for G of Globals.Writes loop
-            Error_Msg_Flow
-              (FA       => FA,
-               Msg      => "function with output global & " &
-                           "is not allowed in SPARK",
-               N        => FA.Analyzed_Entity,
-               F1       => G,
-               Severity => Error_Kind,
-               Tag      => Side_Effects);
-         end loop;
-
          if not Globals.Writes.Is_Empty then
+
             Sane := False;
+
+            for G of Globals.Writes loop
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "function with output global & " &
+                    "is not allowed in SPARK",
+                  N        => FA.Analyzed_Entity,
+                  F1       => G,
+                  Severity => Error_Kind,
+                  Tag      => Side_Effects);
+            end loop;
 
             if Gnat2Why_Args.Debug_Mode then
                Error_Msg_Flow
