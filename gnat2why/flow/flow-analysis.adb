@@ -4059,36 +4059,26 @@ package body Flow.Analysis is
                                                         Pragma_Refined_State);
 
    begin
-      if Present (Refined_State_N) then
-         declare
-            DM : constant Dependency_Maps.Map :=
-              Parse_Refined_State (Refined_State_N);
-
-         begin
-            for Constituents of DM loop
-               for Constituent of Constituents loop
-                  declare
-                     Constituent_E : constant Entity_Id :=
-                       Get_Direct_Mapping_Id (Constituent);
-
-                  begin
-                     if Ekind (Constituent_E) = E_Constant
-                       and then not Has_Variable_Input (Constituent_E)
-                     then
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "& cannot appear in Refined_State",
-                           N        => Refined_State_N,
-                           F1       => Constituent,
-                           SRM_Ref  => "7.2.2(16)",
-                           Tag      => Refined_State_Wrong,
-                           Severity => Medium_Check_Kind);
-                     end if;
-                  end;
-               end loop;
+      for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+         if not Is_Null_State (State)
+           and then not Has_Null_Refinement (State)
+         then
+            for Constituent of Iter (Refinement_Constituents (State)) loop
+               if Ekind (Constituent) = E_Constant
+                 and then not Has_Variable_Input (Constituent)
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "& cannot appear in Refined_State",
+                     N        => Refined_State_N,
+                     F1       => Direct_Mapping_Id (Constituent),
+                     SRM_Ref  => "7.2.2(16)",
+                     Tag      => Refined_State_Wrong,
+                     Severity => Medium_Check_Kind);
+               end if;
             end loop;
-         end;
-      end if;
+         end if;
+      end loop;
    end Check_Refined_State_Contract;
 
    -------------------------------------
