@@ -579,9 +579,7 @@ package body Flow.Analysis.Sanity is
                            SRM_Ref  => "6.1.4(16)",
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            Severity => High_Check_Kind,
-                           F1       => (if A.Is_Parameter
-                                        then A.Parameter_Formal
-                                        else Var),
+                           F1       => Var,
                            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                            Tag      => Illegal_Update,
                            Vertex   => V);
