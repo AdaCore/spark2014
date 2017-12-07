@@ -155,7 +155,7 @@ package Flow.Analysis is
    --  Complexity is O(N^2)
 
    procedure Check_Refined_State_Contract (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in Kind_Package_Body;
+   with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
    --  Check if the Refined_State references any constant without variable
    --  inputs and if so emits a check. This enforces SPARK RM 7.2.2(16).
 

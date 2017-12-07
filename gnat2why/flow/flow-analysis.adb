@@ -3969,17 +3969,32 @@ package body Flow.Analysis is
                         All_Actual_Ins.Union (FA.Dependency_Map (Actual_Out));
                      end if;
                   end;
-               else
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "& cannot appear in Initializes",
-                     N        => Search_Contract
-                                   (FA.Spec_Entity,
-                                    Pragma_Initializes,
-                                    Get_Direct_Mapping_Id (Contract_Out)),
-                     F1       => Contract_Out,
-                     Tag      => Initializes_Wrong,
-                     Severity => Medium_Check_Kind);
+
+               --  Emit message only for constants without variable input
+               --  declared in the visible part of the analyzed package; here
+               --  we might get other constants that are constituents of an
+               --  abstract state of the analyzed package, but we will flag
+               --  them when checking the Refined_State/Part_Of contracts.
+
+               elsif Contract_Out.Kind = Direct_Mapping then
+                  declare
+                     E : constant Entity_Id :=
+                       Get_Direct_Mapping_Id (Contract_Out);
+                  begin
+                     if Get_Flow_Scope (E) = (FA.Spec_Entity, Visible_Part)
+                     then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "& cannot appear in Initializes",
+                           N        => Search_Contract
+                                         (FA.Spec_Entity,
+                                          Pragma_Initializes,
+                                          E),
+                           F1       => Contract_Out,
+                           Tag      => Initializes_Wrong,
+                           Severity => Medium_Check_Kind);
+                     end if;
+                  end;
                end if;
             end loop;
 
@@ -4055,30 +4070,86 @@ package body Flow.Analysis is
    ----------------------------------
 
    procedure Check_Refined_State_Contract (FA : in out Flow_Analysis_Graphs) is
-      Refined_State_N : constant Node_Id := Get_Pragma (FA.Analyzed_Entity,
-                                                        Pragma_Refined_State);
+
+      procedure Error_Msg (N : Node_Id; E : Entity_Id; Msg : String);
+      --  Emit message Msg about constant without variable input E; the message
+      --  will be attached to N.
+
+      ---------------
+      -- Error_Msg --
+      ---------------
+
+      procedure Error_Msg (N : Node_Id; E : Entity_Id; Msg : String) is
+      begin
+         Error_Msg_Flow
+           (FA       => FA,
+            Msg      => Msg,
+            N        => N,
+            F1       => Direct_Mapping_Id (E),
+            SRM_Ref  => "7.2.2(16)",
+            Tag      => Refined_State_Wrong,
+            Severity => Medium_Check_Kind);
+      end Error_Msg;
+
+   --  Start of processing for Check_Refined_State_Contract
 
    begin
-      for State of Iter (Abstract_States (FA.Spec_Entity)) loop
-         if not Is_Null_State (State)
-           and then not Has_Null_Refinement (State)
-         then
-            for Constituent of Iter (Refinement_Constituents (State)) loop
-               if Ekind (Constituent) = E_Constant
-                 and then not Has_Variable_Input (Constituent)
+      --  If package body is in SPARK, then look at the Refined_State contract
+      --  (ignoring null abstract states and those with null refinement).
+
+      if Entity_Body_In_SPARK (FA.Spec_Entity) then
+
+         declare
+            Refined_State_N : constant Node_Id :=
+              Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_State);
+
+         begin
+            for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+               if not Is_Null_State (State)
+                 and then not Has_Null_Refinement (State)
                then
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "& cannot appear in Refined_State",
-                     N        => Refined_State_N,
-                     F1       => Direct_Mapping_Id (Constituent),
-                     SRM_Ref  => "7.2.2(16)",
-                     Tag      => Refined_State_Wrong,
-                     Severity => Medium_Check_Kind);
+                  for Constituent of Iter (Refinement_Constituents (State))
+                  loop
+                     if Ekind (Constituent) = E_Constant
+                       and then not Has_Variable_Input (Constituent)
+                     then
+                        Error_Msg (Refined_State_N,
+                                   Constituent,
+                                   "& cannot appear in Refined_State");
+                     end if;
+                  end loop;
                end if;
             end loop;
-         end if;
-      end loop;
+         end;
+
+      --  If only package spec is in SPARK, then only look at Part_Of
+      --  constituents (ignoring null abstract states).
+
+      elsif Entity_Spec_In_SPARK (FA.Spec_Entity) then
+
+         for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+            if not Is_Null_State (State) then
+               for Constituent of Iter (Part_Of_Constituents (State)) loop
+
+                  --  Part_Of indicator can be applied to entities in packages
+                  --  nested in the private part of the currently analyzed one
+                  --  and those packages can have SPARK_Mode => Off. We detect
+                  --  this by checking whether the constituent is in SPARK.
+
+                  if Entity_In_SPARK (Constituent)
+                    and then Ekind (Constituent) = E_Constant
+                    and then not Has_Variable_Input (Constituent)
+                  then
+                     Error_Msg (Declaration_Node (Constituent),
+                                Constituent,
+                                "& cannot have a Part_Of indicator");
+                  end if;
+               end loop;
+            end if;
+         end loop;
+
+      end if;
+
    end Check_Refined_State_Contract;
 
    -------------------------------------
