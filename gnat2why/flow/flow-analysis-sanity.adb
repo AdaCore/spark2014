@@ -108,7 +108,10 @@ package body Flow.Analysis.Sanity is
       procedure Check_Variable_Inputs
         (Flow_Ids : Ordered_Flow_Id_Sets.Set;
          Err_Desc : String;
-         Err_Node : Node_Id);
+         Err_Node : Node_Id)
+      with Pre => (for all F of Flow_Ids => F.Kind in Direct_Mapping
+                                                    | Record_Field
+                                                    | Magic_String);
       --  Issues an error for any member of the Flow_Ids which does NOT denote
       --  a constant, a bound or a discriminant (of an enclosing concurrent
       --  type).
@@ -360,27 +363,66 @@ package body Flow.Analysis.Sanity is
          Err_Desc : String;
          Err_Node : Node_Id)
       is
+         procedure Emit_Error (F : Flow_Id);
+
+         ----------------
+         -- Emit_Error --
+         ----------------
+
+         procedure Emit_Error (F : Flow_Id)
+         is
+         begin
+            Error_Msg_Flow
+              (FA       => FA,
+               Msg      => Err_Desc & " cannot depend on variable input &",
+               SRM_Ref  => "4.4(2)",
+               N        => Err_Node,
+               Severity => Error_Kind,
+               F1       => Entire_Variable (F));
+         end Emit_Error;
+
+      --  Start of processing for Check_Variable_inputs
+
       begin
          for F of Flow_Ids loop
-            if (F.Kind in Direct_Mapping | Record_Field
-                and then Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
-                and then not (Is_Constant_Object (Get_Direct_Mapping_Id (F))
-                              or else Is_Bound (F)
-                              or else Ekind (Get_Direct_Mapping_Id (F)) =
-                                E_Discriminant))
-              or else
-                F.Kind = Magic_String
-            then
-               Error_Msg_Flow
-                 (FA       => FA,
-                  Msg      => Err_Desc &
-                              " cannot depend on variable input &",
-                  SRM_Ref  => "4.4(2)",
-                  N        => Err_Node,
-                  Severity => Error_Kind,
-                  F1       => Entire_Variable (F));
-               Sane := False;
-            end if;
+            case F.Kind is
+               when Direct_Mapping
+                  | Record_Field
+               =>
+                  declare
+                     Var : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
+                  begin
+                     pragma Assert (Nkind (Var) in N_Entity);
+
+                     --  We emit an error if F is a variable. In particular we
+                     --  consider F a variable if is not:
+                     --  * a constant
+                     --  * a bound coming from an in_out or out formal
+                     --    parameter
+                     --  * a discriminant
+                     --  ??? the discriminant part will probably be removed
+                     --      under another existing ticket.
+                     if not (Is_Constant (F)
+                             or else
+                               (Is_Bound (F)
+                                and then Ekind (Var) in E_Out_Parameter
+                                                      | E_In_Out_Parameter)
+                             or else Ekind (Var) = E_Discriminant)
+                     then
+                        Emit_Error (F);
+                        Sane := False;
+                     end if;
+                  end;
+
+               when Magic_String =>
+                  Emit_Error (F);
+                  Sane := False;
+
+               when others =>
+                  raise Program_Error;
+
+            end case;
          end loop;
       end Check_Variable_Inputs;
 
