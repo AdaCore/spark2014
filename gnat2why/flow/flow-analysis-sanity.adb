@@ -1076,7 +1076,7 @@ package body Flow.Analysis.Sanity is
       SRM_Ref : constant String :=
         (case FA.Kind is
             when Kind_Subprogram | Kind_Task      => "6.1.4(13)",
-            when Kind_Package | Kind_Package_Body => "7.1.5(12)");
+            when Kind_Package | Kind_Package_Body => "7.1.5(11)");
       --  String representation of the violated SPARK RM rule
 
    begin
