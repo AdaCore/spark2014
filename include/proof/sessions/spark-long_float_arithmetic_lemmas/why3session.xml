@@ -6,363 +6,362 @@
 <prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="1" steplimit="0" memlimit="0"/>
 <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="5" steplimit="0" memlimit="0"/>
 <prover id="3" name="altergo" version="1.30-gnatprove" timelimit="10" steplimit="0" memlimit="0"/>
-<file name="../../../obj/gnatprove/spark-long_float_arithmetic_lemmas.mlw" expanded="true">
-<theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<file name="../../../obj/gnatprove/spark-long_float_arithmetic_lemmas.mlw" proved="true">
+<theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_long_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_long_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__natural" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__natural" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__natural__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__natural__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__positive" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__positive" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__positive__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__positive__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Standard__character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__string" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Standard__wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_string" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Array__Int__Standard__wide_wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Array__Int__Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_string" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__duration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__duration" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_8" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_8" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_8__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_8__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_16" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_16" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_16__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_16__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_32" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_32" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_32__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_32__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_64" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_64" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_64__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_64__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__universal_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__universal_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__universal_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__universal_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__fl" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__fl" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__fl__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__fl__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__fl_last_sqrt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__fl_last_sqrt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val3" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val3" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val3___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val3___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val3" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val3" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val3___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val3___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val3" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val3" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val3___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val3___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val3" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val3" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val3___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val3___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val3" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val3" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val3___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val3___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val3" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val3" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val3___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val3___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_long_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__natural___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__natural___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__positive___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__positive___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__short_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__long_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__wide_wide_string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__duration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__duration___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_8___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_8___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_16___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_16___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_32___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_32___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__integer_64___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_64___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Standard__universal_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__universal_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__fl___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__fl___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__fl_last_sqrt___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__fl_last_sqrt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__package_def" sum="044971f09026567f6505a9af1c438ea6" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
+<theory name="Spark__long_float_arithmetic_lemmas__package_def" proved="true" sum="1799836e0a16043b4e7b4c20f51ba041">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__subprogram_def" sum="5f9060d59bbeaa618d05bf0304c00dd1" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.17" steps="2275"/></proof>
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__subprogram_def" proved="true" sum="e605da353c5e8548398cb193e5baad79">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="2275"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.22" steps="2594"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="2594"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.22" steps="2532"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__subprogram_def" sum="99027033582db746fcb87f8280401b31" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.18" steps="2276"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.22" steps="2598"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.21" steps="2445"/></proof>
+  <goal name="WP_parameter def.2" expl="postcondition" proved="true">
+  <proof prover="1"><result status="valid" steps="2532"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__subprogram_def" sum="f6d233d391c0c2095fe68148796c7ffc" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="valid" time="2.00" steps="9901524"/></proof>
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__subprogram_def" proved="true" sum="c2398d0883aca34117e157a8d331b5c9">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="2276"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="valid" time="3.13" steps="15245693"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="2598"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__pragargs__cmp.v"><result status="valid" time="10.94"/></proof>
-  <proof prover="1"><result status="timeout" time="1.00"/></proof>
+  <goal name="WP_parameter def.2" expl="postcondition" proved="true">
+  <proof prover="1"><result status="valid" steps="2445"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__subprogram_def" sum="ee8ede36cd6792c42a9aa38c3260f368" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="valid" time="1.93" steps="9112462"/></proof>
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__subprogram_def" proved="true" sum="6cb6a4fa1ed0aef3d7fac3072139ca7e">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+  <proof prover="1" timelimit="10"><result status="timeout"/></proof>
+  <proof prover="2"><result status="valid" steps="9901524"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="valid" time="3.25" steps="15617925"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition" proved="true">
+  <proof prover="1" timelimit="10"><result status="timeout"/></proof>
+  <proof prover="2"><result status="valid" steps="15245693"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__pragargs__cmp.v"><result status="valid" time="21.90"/></proof>
-  <proof prover="1"><result status="timeout" time="1.00"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" sum="aff756486d1c3e0294a4f75a1471d8ee" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.11" steps="212"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="timeout" time="5.00"/></proof>
-  <proof prover="3"><result status="valid" time="0.36" steps="582"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="227"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="timeout" time="5.00"/></proof>
-  <proof prover="3"><result status="valid" time="0.28" steps="461"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="19.64"/></proof>
-  <proof prover="1"><result status="timeout" time="1.00"/></proof>
+  <goal name="WP_parameter def.2" expl="postcondition" proved="true">
+  <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__pragargs__cmp.v"><result status="valid"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__subprogram_def" sum="12e9cf03358c6f9b785fb54a7da8e145" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="216"/></proof>
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__subprogram_def" proved="true" sum="004b78b5ced40145ecd110e8c84b332f">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+  <proof prover="1" timelimit="10"><result status="timeout"/></proof>
+  <proof prover="2"><result status="valid" steps="9112462"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="timeout" time="5.00"/></proof>
-  <proof prover="3"><result status="valid" time="0.37" steps="590"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition" proved="true">
+  <proof prover="1" timelimit="10"><result status="timeout"/></proof>
+  <proof prover="2"><result status="valid" steps="15617925"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="231"/></proof>
+  <goal name="WP_parameter def.2" expl="postcondition" proved="true">
+  <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__pragargs__cmp.v"><result status="valid"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="timeout" time="5.00"/></proof>
-  <proof prover="3"><result status="valid" time="0.28" steps="469"/></proof>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" proved="true" sum="8cfe138f8ac971db31dc86493303ff62">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="212"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__pragargs__cmp.v"><result status="valid" time="20.20"/></proof>
-  <proof prover="1"><result status="timeout" time="1.00"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition" proved="true">
+  <proof prover="1" timelimit="10"><result status="timeout"/></proof>
+  <proof prover="2"><result status="valid" steps="11260473"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="227"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="precondition" proved="true">
+  <proof prover="1" timelimit="10"><result status="timeout"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="3"><result status="valid" steps="461"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="postcondition" proved="true">
+  <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__subprogram_def" proved="true" sum="ed15c131a3e7b6fba6ff3ad7a90387e0">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="216"/></proof>
+  </goal>
+  <goal name="WP_parameter def.1" expl="precondition" proved="true">
+  <proof prover="1" timelimit="10"><result status="timeout"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="3"><result status="valid" steps="590"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="231"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="precondition" proved="true">
+  <proof prover="1" timelimit="10"><result status="timeout"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="3"><result status="valid" steps="469"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="postcondition" proved="true">
+  <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__pragargs__cmp.v"><result status="valid"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>

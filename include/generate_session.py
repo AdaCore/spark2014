@@ -172,6 +172,6 @@ def kill_and_regenerate_all():
     print "---------------------------"
     print "Summarize all proved checks"
     print "---------------------------"
-    run_options(opt="--output-msg-only --report=all")
+    run_options(opt="--output-msg-only --report=provers")
 
 kill_and_regenerate_all()

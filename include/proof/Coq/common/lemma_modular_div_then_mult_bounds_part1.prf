@@ -1,6 +1,6 @@
 (* not used anymore, as Alt-ergo manages to prove Lemma_Modular_Div_Then_Mult_Bounds_Part1 *)
 
-intros (arg2_type,pre).
+intros arg2_type pre.
 Open Scope Z_scope.
 Require Import SPARK.
 
@@ -14,7 +14,9 @@ rewrite to_uint_of_int in arg2_lb, arg2_ub by auto with zarith.
 assert (0 < t'int arg2) as arg2_pos by auto with zarith.
 
 (* shared lemma: no overflow in (arg1 / arg2) * arg2 *)
-assert (0 <= (t'int arg1 / t'int arg2) * t'int arg2 < SPARK_MAX_UINT_PLUS1) as no_ovfl_div_mul.
+assert (0 <= (t'int arg1 / t'int arg2) * t'int arg2 <
+       (* Problem with cpp not replacing variable here *)
+       SPARK_MAX_UINT_PLUS1) as no_ovfl_div_mul.
 split.
 { assert (t'int arg2 > 0) as arg2_pos2 by auto with zarith.
   assert (0 <= t'int arg1 / t'int arg2) as div_nat.

@@ -2,6 +2,8 @@ spark-arithmetic_lemmas.ads:49:14:VC_POSTCONDITION
 spark-arithmetic_lemmas.ads:64:15:VC_POSTCONDITION
 spark-arithmetic_lemmas.ads:73:14:VC_POSTCONDITION
 spark-arithmetic_lemmas.ads:82:14:VC_POSTCONDITION
+spark-mod_arithmetic_lemmas.adb:50:22:VC_ASSERT
+spark-mod_arithmetic_lemmas.adb:51:22:VC_ASSERT
 spark-mod_arithmetic_lemmas.ads:48:14:VC_POSTCONDITION
 spark-mod_arithmetic_lemmas.ads:68:14:VC_POSTCONDITION
 spark-mod_arithmetic_lemmas.ads:78:14:VC_POSTCONDITION
