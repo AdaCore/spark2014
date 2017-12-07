@@ -757,24 +757,9 @@ package body Flow.Analysis is
                      end;
 
                   when Kind_Package | Kind_Package_Body =>
-                     Vars_Known := Flow_Id_Sets.Empty_Set;
-
-                     for F of To_Entire_Variables (FA.Visible_Vars) loop
-                        case F.Kind is
-                           when Direct_Mapping =>
-                              Vars_Known.Union
-                                (To_Flow_Id_Set
-                                   (Down_Project
-                                      (Get_Direct_Mapping_Id (F),
-                                       FA.S_Scope)));
-
-                           when Magic_String =>
-                              Vars_Known.Insert (F);
-
-                           when others =>
-                              raise Program_Error;
-                        end case;
-                     end loop;
+                     Vars_Known :=
+                       Down_Project (To_Entire_Variables (FA.Visible_Vars),
+                                     FA.S_Scope);
 
                   when Kind_Task =>
                      raise Program_Error;
