@@ -763,3 +763,17 @@ close it using the menu because it makes sure to close everything related to
 manual proof.
 
 More details on how to use it are available in :ref:`Manual Proof Using GPS`.
+
+|GNATprove| and Network File Systems or Shared Folders
+------------------------------------------------------
+
+On Linux and Mac-OS, |GNATprove| needs to create a Unix domain socket file.
+This might be a problem if |GNATprove| attempts to create such a file in a
+directory that is a shared folder or on a network file system like NFS, which
+does not support such folders. To minimize changes for this to occur,
+|GNATprove| determines the folder to create that special file as follows:
+* if the environment variable ``TMPDIR`` is set, and the corresponding directory
+  exists and is writeable, use that; otherwise,
+* if ``/tmp`` exists and is writable, use that; otherwise,
+* use the ``gnatprove`` subfolder of the object directory of the root project.
+
