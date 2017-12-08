@@ -28,11 +28,12 @@ why3config
 why3cpulimit
 why3realize
 why3server
+why3session
 z3
 libexec/spark/share dir
 codepeer
 doc
-gcc-6.4.1
+gcc-7.2.1
 gprconfig
 info
 javascript
