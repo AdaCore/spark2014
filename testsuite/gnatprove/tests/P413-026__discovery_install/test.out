@@ -21,9 +21,10 @@ why3config
 why3cpulimit
 why3realize
 why3server
+why3session
 libexec/spark/share dir
 doc
-gcc-6.4.1
+gcc-7.2.1
 gprconfig
 info
 man
