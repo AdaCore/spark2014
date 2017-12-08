@@ -64,11 +64,11 @@ package body Flow.Analysis.Sanity is
                       Classwide  => False,
                       Globals    => Globals);
 
-         if not Globals.Writes.Is_Empty then
+         if not Globals.Outputs.Is_Empty then
 
             Sane := False;
 
-            for G of Globals.Writes loop
+            for G of Globals.Outputs loop
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "function with output global & " &
@@ -859,13 +859,13 @@ package body Flow.Analysis.Sanity is
 
       --  Detect insonsistent globals
 
-      Check (Generated => Generated_Global.Reads,
-             User      => User_Global.Reads,
+      Check (Generated => Generated_Global.Inputs,
+             User      => User_Global.Inputs,
              Missing   => Missing_Inputs,
              Unused    => Unused_Inputs);
 
-      Check (Generated => Generated_Global.Writes,
-             User      => User_Global.Writes,
+      Check (Generated => Generated_Global.Outputs,
+             User      => User_Global.Outputs,
              Missing   => Missing_Outputs,
              Unused    => Unused_Outputs);
 
@@ -880,7 +880,7 @@ package body Flow.Analysis.Sanity is
          Error_Msg
            (Msg      => "& must be a global " &
                         (if Present
-                           (Find_In (User_Global.Writes,
+                           (Find_In (User_Global.Outputs,
                                      Change_Variant (Missing, Out_View)))
                          then "In_Out of &"
                          else "Input of &"),
@@ -892,7 +892,7 @@ package body Flow.Analysis.Sanity is
          Error_Msg
            (Msg      => "& must be a global " &
                         (if Present
-                           (Find_In (User_Global.Reads,
+                           (Find_In (User_Global.Inputs,
                                      Change_Variant (Missing, In_View)))
                          then "In_Out of &"
                          else "Output of &"),

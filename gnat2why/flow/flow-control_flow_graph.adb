@@ -4661,7 +4661,7 @@ package body Flow.Control_Flow_Graph is
       --  contracts. Here we filter such constants to not propagate the user's
       --  mistake.
       Remove_Constants (Globals.Proof_Ins, Skip => FA.Local_Constants);
-      Remove_Constants (Globals.Reads,     Skip => FA.Local_Constants);
+      Remove_Constants (Globals.Inputs,     Skip => FA.Local_Constants);
 
       for R of Globals.Proof_Ins loop
          Add_Vertex (FA,
@@ -4676,7 +4676,7 @@ package body Flow.Control_Flow_Graph is
          Ins.Append (V);
       end loop;
 
-      for R of Globals.Reads loop
+      for R of Globals.Inputs loop
          Add_Vertex (FA,
                      Make_Global_Attributes
                        (Call_Vertex                  => Callsite,
@@ -4688,8 +4688,8 @@ package body Flow.Control_Flow_Graph is
          Ins.Append (V);
       end loop;
 
-      for W of Globals.Writes loop
-         if not Globals.Reads.Contains (Change_Variant (W, In_View)) then
+      for W of Globals.Outputs loop
+         if not Globals.Inputs.Contains (Change_Variant (W, In_View)) then
             Add_Vertex
               (FA,
                Make_Global_Attributes
@@ -5901,7 +5901,7 @@ package body Flow.Control_Flow_Graph is
                                              Is_Write    => False));
                   end loop;
 
-                  for G of My_Globals.Reads loop
+                  for G of My_Globals.Inputs loop
                      --  ??? here we should call Insert, because no global can
                      --  be both a Proof_In and Input. But it is not always the
                      --  case: apparently due to some bug in generated globals.
@@ -5911,7 +5911,7 @@ package body Flow.Control_Flow_Graph is
                                               Is_Write    => False));
                   end loop;
 
-                  for G of My_Globals.Writes loop
+                  for G of My_Globals.Outputs loop
                      declare
                         Position : Global_Maps.Cursor;
                         Inserted : Boolean;

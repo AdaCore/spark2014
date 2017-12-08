@@ -648,7 +648,7 @@ package body Flow.Analysis is
          Check_If_Initialized (R);
       end loop;
 
-      for R of Globals.Reads loop
+      for R of Globals.Inputs loop
          Check_If_Initialized (R);
       end loop;
    end Analyse_Main;
@@ -747,11 +747,11 @@ package body Flow.Analysis is
                            Vars_Known.Insert (Change_Variant (F, Normal_Use));
                         end loop;
 
-                        for F of Globals.Reads loop
+                        for F of Globals.Inputs loop
                            Vars_Known.Insert (Change_Variant (F, Normal_Use));
                         end loop;
 
-                        for F of Globals.Writes loop
+                        for F of Globals.Outputs loop
                            Vars_Known.Include (Change_Variant (F, Normal_Use));
                         end loop;
                      end;
@@ -3446,12 +3446,12 @@ package body Flow.Analysis is
                   --  If the Flow_Id is an Output (and not an Input) of the
                   --  procedure then include it in Outputs.
 
-                  for Write of Globals.Writes loop
+                  for Write of Globals.Outputs loop
                      --  ??? we should only care about abstract states of the
                      --  package that we are analyzing.
                      if Is_Abstract_State (Write)
                        and then not
-                         Globals.Reads.Contains
+                         Globals.Inputs.Contains
                            (Change_Variant (Write, In_View))
                      then
                         Outputs_Of_Procs.Include
@@ -4225,7 +4225,7 @@ package body Flow.Analysis is
                       Classwide  => False,
                       Globals    => Globals);
 
-         for W of Globals.Writes loop
+         for W of Globals.Outputs loop
             if W.Kind in Direct_Mapping | Record_Field then
                G_Out     := Get_Direct_Mapping_Id (W);
                CAE_Scope := Get_Flow_Scope (G_Out);
@@ -4323,8 +4323,8 @@ package body Flow.Analysis is
          --  function, after sanity checks, are known to be empty.
 
          Check_Set_For_Volatiles (Globals.Proof_Ins);
-         Check_Set_For_Volatiles (Globals.Reads);
-         pragma Assert (Globals.Writes.Is_Empty);
+         Check_Set_For_Volatiles (Globals.Inputs);
+         pragma Assert (Globals.Outputs.Is_Empty);
       end;
 
       --  Warn about volatile function without volatile effects
@@ -4770,7 +4770,7 @@ package body Flow.Analysis is
                    Globals    => Globals);
 
       --  Add Proof_Ins to Reads
-      Globals.Reads.Union (Globals.Proof_Ins);
+      Globals.Inputs.Union (Globals.Proof_Ins);
 
       for Precondition of Preconditions loop
          declare
@@ -4783,7 +4783,7 @@ package body Flow.Analysis is
             --  The above set contains all variables used in the precondition.
          begin
             for Var of VU loop
-               if Globals.Reads.Contains (Change_Variant (Var, In_View))
+               if Globals.Inputs.Contains (Change_Variant (Var, In_View))
                  and then not Variable_Has_CAE (Var)
                then
                   Error_Msg_Flow

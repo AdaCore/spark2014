@@ -393,8 +393,8 @@ package body Flow_Generated_Globals.Phase_2 is
       procedure Populate_Results (G : Global_Names) is
       begin
          Globals.Proof_Ins := To_Flow_Id_Set (G.Proof_Ins, View => In_View);
-         Globals.Reads     := To_Flow_Id_Set (G.Inputs,    View => In_View);
-         Globals.Writes    := To_Flow_Id_Set (G.Outputs,   View => Out_View);
+         Globals.Inputs    := To_Flow_Id_Set (G.Inputs,    View => In_View);
+         Globals.Outputs   := To_Flow_Id_Set (G.Outputs,   View => Out_View);
       end Populate_Results;
 
    --  Start of processing for GG_Get_Globals
@@ -409,13 +409,13 @@ package body Flow_Generated_Globals.Phase_2 is
          --  Down-project globals to the scope of the caller
 
          Globals.Proof_Ins := Down_Project (Globals.Proof_Ins, S);
-         Globals.Reads     := Down_Project (Globals.Reads,     S);
-         Globals.Writes    := Down_Project (Globals.Writes,    S);
+         Globals.Inputs    := Down_Project (Globals.Inputs,    S);
+         Globals.Outputs   := Down_Project (Globals.Outputs,   S);
 
       else
          Globals.Proof_Ins.Clear;
-         Globals.Reads.Clear;
-         Globals.Writes.Clear;
+         Globals.Inputs.Clear;
+         Globals.Outputs.Clear;
 
          if XXX then
             declare

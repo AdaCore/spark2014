@@ -758,10 +758,10 @@ package body Flow.Analysis.Antialiasing is
                       Classwide  => Flow_Classwide.Is_Dispatching_Call (Call),
                       Globals    => Globals);
          if Is_Out then
-            for R of Globals.Reads loop
+            for R of Globals.Inputs loop
                --  No use in checking both the read and the write of
                --  an in out global.
-               if not Globals.Writes.Contains (Change_Variant (R, Out_View))
+               if not Globals.Outputs.Contains (Change_Variant (R, Out_View))
                then
                   case R.Kind is
                      when Direct_Mapping =>
@@ -786,7 +786,7 @@ package body Flow.Analysis.Antialiasing is
                end if;
             end loop;
          end if;
-         for W of Globals.Writes loop
+         for W of Globals.Outputs loop
             case W.Kind is
                when Direct_Mapping =>
                   Check_Node_Against_Node

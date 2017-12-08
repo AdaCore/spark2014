@@ -109,13 +109,13 @@ package body Flow_Classwide is
       begin
          if My_Globals.Proof_Ins.Contains (F_In) then
             M := Mode_Proof;
-         elsif My_Globals.Reads.Contains (F_In) then
-            if My_Globals.Writes.Contains (F_Out) then
+         elsif My_Globals.Inputs.Contains (F_In) then
+            if My_Globals.Outputs.Contains (F_Out) then
                M := Mode_In_Out;
             else
                M := Mode_In;
             end if;
-         elsif My_Globals.Writes.Contains (F_Out) then
+         elsif My_Globals.Outputs.Contains (F_Out) then
             M := Mode_Out;
          end if;
 
@@ -148,7 +148,7 @@ package body Flow_Classwide is
       --  of G1 or a direct or indirect constituent thereof; and
       for F of My_Globals.Proof_Ins loop
          if not (Anc_Globals.Proof_Ins.Contains (F)
-                 or else Anc_Globals.Reads.Contains (F))
+                 or else Anc_Globals.Inputs.Contains (F))
          then
             Error_Msg_Flow
               (E          => E,
@@ -167,8 +167,8 @@ package body Flow_Classwide is
          end if;
       end loop;
 
-      for F of My_Globals.Reads loop
-         if not Anc_Globals.Reads.Contains (F) then
+      for F of My_Globals.Inputs loop
+         if not Anc_Globals.Inputs.Contains (F) then
             Error_Msg_Flow
               (E          => E,
                Msg        =>
@@ -188,8 +188,8 @@ package body Flow_Classwide is
 
       --  each Output-mode item of G2 is an Output-mode or In_Out-mode item
       --  of G1 or a direct or indirect constituent thereof; and
-      for F of My_Globals.Writes loop
-         if not Anc_Globals.Writes.Contains (F) then
+      for F of My_Globals.Outputs loop
+         if not Anc_Globals.Outputs.Contains (F) then
             Error_Msg_Flow
               (E          => E,
                Msg        =>
@@ -220,13 +220,13 @@ package body Flow_Classwide is
       --  for each Output-mode item of G1 which is a state abstraction whose
       --  refinement is visible at the point of G2, each direct or indirect
       --  constituent thereof is an Output-mode item of G2.
-      for F_Out of Anc_Globals.Writes loop
+      for F_Out of Anc_Globals.Outputs loop
          declare
             F_In : constant Flow_Id := Change_Variant (F_Out, In_View);
          begin
-            if not (Anc_Globals.Reads.Contains (F_In)
+            if not (Anc_Globals.Inputs.Contains (F_In)
                     or else Anc_Globals.Proof_Ins.Contains (F_In))
-              and then (My_Globals.Reads.Contains (F_In)
+              and then (My_Globals.Inputs.Contains (F_In)
                         or else My_Globals.Proof_Ins.Contains (F_In))
             then
                Error_Msg_Flow
@@ -293,8 +293,8 @@ package body Flow_Classwide is
                             Classwide  => Classwide,
                             Globals    => Globals);
                Void    := Change_Variant (Globals.Proof_Ins, Normal_Use);
-               Inputs  := Change_Variant (Globals.Reads, Normal_Use);
-               Outputs := Change_Variant (Globals.Writes, Normal_Use);
+               Inputs  := Change_Variant (Globals.Inputs, Normal_Use);
+               Outputs := Change_Variant (Globals.Outputs, Normal_Use);
             end;
 
             --  ... all explicit parameters...

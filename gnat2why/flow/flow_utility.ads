@@ -180,9 +180,9 @@ is
                 and then not Is_Derived_Type (Subprogram),
         Post => (for all G of Globals.Proof_Ins =>
                    Is_Entire_Variable (G) and then G.Variant = In_View)
-       and then (for all G of Globals.Reads =>
+       and then (for all G of Globals.Inputs =>
                    Is_Entire_Variable (G) and then G.Variant = In_View)
-       and then (for all G of Globals.Writes =>
+       and then (for all G of Globals.Outputs =>
                    Is_Entire_Variable (G) and then G.Variant = Out_View);
    --  Given a subprogram, work out globals from the appropriate global aspect
    --  (relative to Scope), or the depends aspect (if no global aspect is

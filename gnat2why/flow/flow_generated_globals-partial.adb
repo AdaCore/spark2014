@@ -1099,11 +1099,11 @@ package body Flow_Generated_Globals.Partial is
       --  directive.
 
       Remove_Constants (Globals.Proof_Ins);
-      Remove_Constants (Globals.Reads);
+      Remove_Constants (Globals.Inputs);
 
       return (Proof_Ins => To_Node_Set (Globals.Proof_Ins),
-              Inputs    => To_Node_Set (Globals.Reads),
-              Outputs   => To_Node_Set (Globals.Writes));
+              Inputs    => To_Node_Set (Globals.Inputs),
+              Outputs   => To_Node_Set (Globals.Outputs));
    end Contract_Globals;
 
    --------------

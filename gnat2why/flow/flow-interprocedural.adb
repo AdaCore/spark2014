@@ -244,7 +244,7 @@ package body Flow.Interprocedural is
                          Consider_Discriminants => True,
                          Use_Deduced_Globals    => not FA.Generating_Globals);
 
-            Remove_Constants (Globals.Reads, Skip => FA.Local_Constants);
+            Remove_Constants (Globals.Inputs, Skip => FA.Local_Constants);
 
             --  Add parameters
             for E of Get_Explicit_Formals (Called_Thing) loop
@@ -253,11 +253,11 @@ package body Flow.Interprocedural is
 
                case Ekind (E) is
                   when E_In_Parameter =>
-                     Globals.Reads.Insert (The_In);
+                     Globals.Inputs.Insert (The_In);
 
                   when E_In_Out_Parameter =>
-                     Globals.Reads.Insert (The_In);
-                     Globals.Writes.Insert (The_Out);
+                     Globals.Inputs.Insert (The_In);
+                     Globals.Outputs.Insert (The_Out);
 
                   when E_Out_Parameter =>
                      if Contains_Discriminants (The_In, FA.B_Scope)
@@ -266,9 +266,9 @@ package body Flow.Interprocedural is
                         --  Discriminated out parameters or out parameters
                         --  for which we need to keep track of the bounds
                         --  also appear as an input.
-                        Globals.Reads.Insert (The_In);
+                        Globals.Inputs.Insert (The_In);
                      end if;
-                     Globals.Writes.Insert (The_Out);
+                     Globals.Outputs.Insert (The_Out);
 
                   when others =>
                      raise Program_Error;
@@ -304,21 +304,21 @@ package body Flow.Interprocedural is
                   --  conservatively Include and not Insert the protected
                   --  object. If the current implicit parameter is the
                   --  protected type we still include it.
-                  Globals.Reads.Include (The_In);
+                  Globals.Inputs.Include (The_In);
                   if Ekind (Called_Thing) /= E_Function then
-                     Globals.Writes.Include (The_Out);
+                     Globals.Outputs.Include (The_Out);
                   end if;
                end;
             end if;
 
-            if Globals.Writes.Is_Empty then
+            if Globals.Outputs.Is_Empty then
                --  All inputs flow into the null export vertex
-               for Input of Globals.Reads loop
+               for Input of Globals.Inputs loop
                   Add_TD_Edge (Input, Null_Export_Flow_Id);
                end loop;
             else
                --  Each output depends on all inputs
-               for Output of Globals.Writes loop
+               for Output of Globals.Outputs loop
                   declare
                      Output_V : constant Flow_Graphs.Vertex_Id :=
                        Find_Parameter_Vertex (FA, V, Output);
@@ -327,7 +327,7 @@ package body Flow.Interprocedural is
                        Is_Ghost_Object (Output);
 
                   begin
-                     for Input of Globals.Reads loop
+                     for Input of Globals.Inputs loop
                         declare
                            Dependency_Allowed : constant Boolean :=
                              Output_Is_Ghost

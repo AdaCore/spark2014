@@ -166,14 +166,14 @@ package body Flow is
             procedure Print_Sets;
             procedure Print_Sets is
                RO : constant Flow_Id_Sets.Set :=
-                 Change_Variant (Globals.Reads, Normal_Use) -
-                 Change_Variant (Globals.Writes, Normal_Use);
+                 Change_Variant (Globals.Inputs, Normal_Use) -
+                 Change_Variant (Globals.Outputs, Normal_Use);
                RW : constant Flow_Id_Sets.Set :=
-                 Change_Variant (Globals.Reads, Normal_Use) and
-                 Change_Variant (Globals.Writes, Normal_Use);
+                 Change_Variant (Globals.Inputs, Normal_Use) and
+                 Change_Variant (Globals.Outputs, Normal_Use);
                WO : constant Flow_Id_Sets.Set :=
-                 Change_Variant (Globals.Writes, Normal_Use) -
-                 Change_Variant (Globals.Reads, Normal_Use);
+                 Change_Variant (Globals.Outputs, Normal_Use) -
+                 Change_Variant (Globals.Inputs, Normal_Use);
             begin
                Print_Named_Flow_Id_Set ("Proof_In",
                                         Change_Variant

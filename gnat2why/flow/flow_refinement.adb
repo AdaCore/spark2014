@@ -765,22 +765,22 @@ package body Flow_Refinement is
       Projected, Partial : Flow_Id_Sets.Set;
 
    begin
-      Up_Project (Vars.Reads, Scope, Projected, Partial);
-      Projected_Vars.Reads := Projected or Partial;
+      Up_Project (Vars.Inputs, Scope, Projected, Partial);
+      Projected_Vars.Inputs := Projected or Partial;
 
-      Up_Project (Vars.Writes, Scope, Projected, Partial);
+      Up_Project (Vars.Outputs, Scope, Projected, Partial);
       for State of Partial loop
-         if not Is_Fully_Contained (State, Vars.Writes) then
-            Projected_Vars.Reads.Include (Change_Variant (State, In_View));
+         if not Is_Fully_Contained (State, Vars.Outputs) then
+            Projected_Vars.Inputs.Include (Change_Variant (State, In_View));
          end if;
       end loop;
-      Projected_Vars.Writes := Projected or Partial;
+      Projected_Vars.Outputs := Projected or Partial;
 
       Up_Project (Vars.Proof_Ins, Scope, Projected, Partial);
       Projected_Vars.Proof_Ins :=
         (Projected or Partial) -
-        (Projected_Vars.Reads or
-           Change_Variant (Projected_Vars.Writes, In_View));
+        (Projected_Vars.Inputs or
+           Change_Variant (Projected_Vars.Outputs, In_View));
    end Up_Project;
 
    procedure Up_Project (Vars           : Dependency_Maps.Map;
