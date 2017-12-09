@@ -1,12 +1,11 @@
 admin.adb:64:29: info: index check proved (CVC4: 2 VC)
 admin.adb:64:47: info: index check proved (CVC4: 2 VC)
-admin.adb:76:27: info: index check proved (CVC4: 2 VC)
-admin.adb:106:33: info: initialization of "TheOp" proved
-admin.adb:106:33: info: loop invariant initialization proved (CVC4: 1 VC)
-admin.adb:106:33: info: loop invariant preservation proved (CVC4: 1 VC)
-admin.adb:112:36: info: index check proved (CVC4: 2 VC)
-admin.adb:118:14: info: initialization of "TheOp" proved
-admin.adb:183:64: info: range check proved (CVC4: 1 VC)
+admin.adb:94:33: info: initialization of "TheOp" proved
+admin.adb:94:33: info: loop invariant initialization proved (CVC4: 1 VC)
+admin.adb:94:33: info: loop invariant preservation proved (CVC4: 1 VC)
+admin.adb:100:36: info: index check proved (CVC4: 2 VC)
+admin.adb:106:14: info: initialization of "TheOp" proved
+admin.adb:171:64: info: range check proved (CVC4: 1 VC)
 admin.ads:115:20: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:115:20: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:118:22: info: postcondition proved (CVC4: 2 VC)
@@ -27,6 +26,7 @@ admin.ads:170:36: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:188:22: info: postcondition proved (CVC4: 4 VC)
 admin.ads:191:28: info: precondition proved (CVC4: 1 VC)
 admin.ads:206:22: info: postcondition proved (CVC4: 3 VC)
+admin.ads:274:27: info: index check proved (CVC4: 2 VC)
 admintoken.adb:48:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.adb:48:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
 admintoken.adb:49:42: info: initialization of "IDCert.Contents" constituent of "State" proved
@@ -1864,10 +1864,10 @@ enclave.adb:2029:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2035:19: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2130:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2136:22: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2139:09: info: postcondition proved (CVC4: 14 VC)
 enclave.adb:2148:21: info: precondition proved (CVC4: 1 VC)
-enclave.adb:2150:13: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.guard
 enclave.adb:2154:22: info: precondition proved (CVC4: 1 VC)
-enclave.adb:2158:21: medium: precondition might fail
+enclave.adb:2158:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2186:13: info: initialization of "KeyedDataPresence" proved
 enclave.adb:2187:27: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2188:54: info: initialization of "KeyedData.Length" proved

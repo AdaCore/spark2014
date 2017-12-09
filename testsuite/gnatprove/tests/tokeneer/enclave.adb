@@ -2154,7 +2154,7 @@ is
                 Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or
                not Admin.IsDoingOp(TheAdmin))) and
 
-        (if (Admin.IsDoingOp(TheAdmin) and
+        (if (Admin.IsDoingOp(TheAdmin) and then
                Admin.TheCurrentOp(TheAdmin) = Admin.ShutdownOp)
          then
             Status = WaitingStartAdminOp) and

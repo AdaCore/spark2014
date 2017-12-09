@@ -3748,9 +3748,9 @@
 </theory>
 <theory name="Keyboard__inputs" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Clock__currenttime" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Clock__now" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Clock__currenttime" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Configdata__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3760,9 +3760,9 @@
 </theory>
 <theory name="Auditlog__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keystore__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Keystore__store" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Keystore__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Admintoken__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3802,9 +3802,9 @@
 </theory>
 <theory name="Screen__output" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Usertoken__status" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Usertoken__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Usertoken__status" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Usertoken__input" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4722,9 +4722,9 @@
 </theory>
 <theory name="Auditlog__logfilestatet__T21s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___1209" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___1211" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___1213" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___1215" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Auditlog__logfilestatet___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -5714,7 +5714,7 @@
 </theory>
 <theory name="Tismain__shutdownauditlogfailure___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Tismain__subprogram_def" proved="true" sum="4103f1954515084f3cd0dfce89fd6852">
+<theory name="Tismain__subprogram_def" proved="true" sum="884e699d9b6454eea73db5614f261b81">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -6041,7 +6041,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tismain__init__subprogram_def" proved="true" sum="9932abc1662a864fb5ed137765cfe160">
+<theory name="Tismain__init__subprogram_def" proved="true" sum="4a9109d7c1e5c600081d96a9603d32d6">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6089,7 +6089,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tismain__processing__subprogram_def" proved="true" sum="a753f4d3f23b2e0fa2bd246c830b58b0">
+<theory name="Tismain__processing__subprogram_def" proved="true" sum="f18b24468682ccee2eb516a7cea5562f">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6317,7 +6317,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tismain__mainloopbody__subprogram_def" proved="true" sum="8b2f13ca036d62a5ba2c70b156d34e19">
+<theory name="Tismain__mainloopbody__subprogram_def" proved="true" sum="acce11d08f390d050a1c24b7288878fe">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6467,13 +6467,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tismain__shutdowndoorlatchfailure__subprogram_def" proved="true" sum="47d9dee94b8b3c8bcd5d6535083b80e2">
+<theory name="Tismain__shutdowndoorlatchfailure__subprogram_def" proved="true" sum="1818f95669c9f2844122388b9b2d03e0">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Tismain__shutdownauditlogfailure__subprogram_def" proved="true" sum="6b861f75885cbc6be06e0a0ebfd865ca">
+<theory name="Tismain__shutdownauditlogfailure__subprogram_def" proved="true" sum="65273acf31cb9b937bc276c9a9b1de73">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>

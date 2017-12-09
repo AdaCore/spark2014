@@ -261,4 +261,16 @@ private
    function IsDoingOp (TheAdmin : T) return Boolean is
       (TheAdmin.CurrentOp in OpT);
 
+   --------------------------------------------------------------------
+   -- AllowedOp
+   --
+   -- Description:
+   --    Returns the Operation that is allowed for the current Admin
+   --------------------------------------------------------------------
+   function AllowedOp (TheAdmin : T;
+                       Op       : OpT)
+                      return Boolean
+   is
+     (IsAvailable(TheAdmin.RolePresent)(Op));
+
 end Admin;

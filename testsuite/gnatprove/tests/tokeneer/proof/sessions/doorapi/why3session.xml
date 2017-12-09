@@ -2920,14 +2920,14 @@
   </goal>
   <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="timeout" steps="179526"/></proof>
-  <proof prover="2"><result status="timeout" steps="101277"/></proof>
+  <proof prover="1"><result status="timeout" steps="184057"/></proof>
+  <proof prover="2"><result status="timeout" steps="103232"/></proof>
   <proof prover="3"><result status="unknown" steps="187744"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="timeout" steps="200360"/></proof>
-  <proof prover="2"><result status="timeout" steps="111266"/></proof>
+  <proof prover="1"><result status="timeout" steps="202958"/></proof>
+  <proof prover="2"><result status="timeout" steps="115180"/></proof>
   <proof prover="3"><result status="unknown" steps="227361"/></proof>
   </goal>
  </transf>

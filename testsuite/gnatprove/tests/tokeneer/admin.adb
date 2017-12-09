@@ -63,18 +63,6 @@ is
       (for all I in 1 .. KeyedOp.Length =>
          OpToKeyed(Op).Text(I) = KeyedOp.Text(I)));
 
-   --------------------------------------------------------------------
-   -- AllowedOp
-   --
-   -- Description:
-   --    Returns the Operation that is allowed for the current Admin
-   --------------------------------------------------------------------
-   function AllowedOp (TheAdmin : T;
-                       Op       : OpT)
-                      return Boolean
-   is
-     (IsAvailable(TheAdmin.RolePresent)(Op));
-
    ------------------------------------------------------------------
    -- Init
    --

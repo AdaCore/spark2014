@@ -3598,13 +3598,13 @@
 </theory>
 <theory name="Screen__init__localstats___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Clock__now" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Clock__currenttime" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Configdata__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Clock__now" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Configdata__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Configdata__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Auditlog__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4642,13 +4642,9 @@
 </theory>
 <theory name="Screen__init__T150b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1726" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1728" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1740" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Temp___String_Literal_1752" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Temp___String_Literal_1753" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1742" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Temp___String_Literal_1754" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4680,9 +4676,13 @@
 </theory>
 <theory name="Temp___String_Literal_1768" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1783" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1769" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1796" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1770" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Temp___String_Literal_1785" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Temp___String_Literal_1798" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Screen__writeconfigdata__filesizestring__result__aggregate_def" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4692,13 +4692,13 @@
 </theory>
 <theory name="Screen__writeconfigdata__farstring__result__aggregate_def" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1848" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Temp___String_Literal_1849" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Temp___String_Literal_1850" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Temp___String_Literal_1851" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Temp___String_Literal_1852" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Temp___String_Literal_1853" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Screen__writestatsdata__statscountstring__result__aggregate_def" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -5344,7 +5344,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Screen__setmessage__subprogram_def" proved="true" sum="dbb37539b479f52fd49c5793b78edd22">
+<theory name="Screen__setmessage__subprogram_def" proved="true" sum="c18700c5bff7ef2e615f4e80aa151485">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -5353,7 +5353,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Screen__updatescreen__subprogram_def" proved="true" sum="dfea2467350fd2fc4dac20e2e43ca1b7">
+<theory name="Screen__updatescreen__subprogram_def" proved="true" sum="cfee5ed3ac6acca29c5b12cb0a3b97ca">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -5362,7 +5362,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Screen__init__subprogram_def" proved="true" sum="eace60af2294bf642a54252e542109e2">
+<theory name="Screen__init__subprogram_def" proved="true" sum="535a96998bedf48dfe4e7ab8c296f364">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
