@@ -4462,10 +4462,20 @@ package body SPARK_Definition is
             end if;
          end;
 
-      --  Get appropriate SPARK_Mode for subprograms and packages (only happens
-      --  for packages with external axioms).
+      --  Get appropriate SPARK_Mode for subprograms (except for those which
+      --  implement delayed aspects types, whose handling sets the
+      --  Current_SPARK_Pragma before calling Mark_Entity) and packages (only
+      --  happens for packages with external axioms).
+      --
+      --  ??? for subprograms the Current_SPARK_Pragma was meant to be set by
+      --  the callers of Mark_Entity, but this was changed for marking of
+      --  protected operations; probably we could revert that.
 
-      elsif Is_Subprogram (E)
+      elsif (Ekind (E) = E_Function
+             and then not Is_Predicate_Function (E))
+        or else (Ekind (E) = E_Procedure
+                 and then not Is_DIC_Procedure (E)
+                 and then not Is_Invariant_Procedure (E))
         or else Is_Entry (E)
         or else Ekind (E) = E_Package
       then
