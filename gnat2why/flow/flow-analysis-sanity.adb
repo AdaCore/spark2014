@@ -224,10 +224,9 @@ package body Flow.Analysis.Sanity is
                begin
                   if Entity_Spec_In_SPARK (Typ) then
 
-                     --  Traverse discriminants.
-                     --  Note that we don't traverse them in case they are a
-                     --  completion of a private type as this will have already
-                     --  be checked at their declarations.
+                     --  Traverse discriminants unless they are a completion of
+                     --  a private type, as then they were already checked at
+                     --  the type declaration.
 
                      if not Is_Private_Type (Etype (Typ)) then
                         Traverse_Declarations_Or_Statements
@@ -287,54 +286,70 @@ package body Flow.Analysis.Sanity is
                end;
 
             when N_Full_Type_Declaration
-               | N_Subtype_Declaration
                | N_Private_Type_Declaration
                | N_Private_Extension_Declaration
             =>
-               declare
-                  Typ : constant Entity_Id := Defining_Identifier (N);
+               if Comes_From_Source (N) then
 
-               begin
-                  if Comes_From_Source (N) then
+                  --  Traverse discriminants
 
-                     --  Traverse record components
-
-                     if Ekind (Typ) = E_Record_Type then
-                        declare
-                           Typ_Def : constant Node_Id := Type_Definition (N);
-
-                           Components : constant Node_Id :=
-                             (case Nkind (Typ_Def) is
-                                 when N_Record_Definition =>
-                                    Component_List (Typ_Def),
-                                 when N_Derived_Type_Definition =>
-                                    Component_List
-                                      (Record_Extension_Part (Typ_Def)),
-                                 when others =>
-                                    raise Program_Error);
-
-                        begin
-                           if Present (Components) then
-                              Traverse_Declarations_Or_Statements
-                                (Component_Items (Components));
-                           end if;
-                        end;
-                     end if;
-
-                     --  Traverse discriminants.
-                     --  Note that we don't traverse them in case they are a
-                     --  completion of a private type as this will have already
-                     --  be checked at their declarations.
-
-                     if Nkind (N) /= N_Subtype_Declaration
-                       and then not (Nkind (N) = N_Full_Type_Declaration
-                                     and then Is_Private_Type (Etype (Typ)))
-                     then
+                  case Nkind (N) is
+                     when N_Private_Type_Declaration =>
                         Traverse_Declarations_Or_Statements
                           (Discriminant_Specifications (N));
-                     end if;
-                  end if;
-               end;
+
+                     when N_Full_Type_Declaration =>
+                        declare
+                           Typ : constant Entity_Id := Defining_Identifier (N);
+
+                        begin
+                           --  Skip discriminants of a completion of a private
+                           --  type, as they have already been checked when the
+                           --  type was declared.
+
+                           if not Is_Private_Type (Etype (Typ)) then
+                              Traverse_Declarations_Or_Statements
+                                (Discriminant_Specifications (N));
+                           end if;
+
+                           --  Traverse record components
+
+                           if Ekind (Typ) = E_Record_Type then
+                              declare
+                                 Typ_Def : constant Node_Id :=
+                                   Type_Definition (N);
+
+                                 Components : constant Node_Id :=
+                                   (case Nkind (Typ_Def) is
+                                       when N_Record_Definition =>
+                                          Component_List (Typ_Def),
+                                       when N_Derived_Type_Definition =>
+                                          Component_List
+                                            (Record_Extension_Part (Typ_Def)),
+                                       when others =>
+                                          raise Program_Error);
+
+                              begin
+                                 if Present (Components) then
+                                    Traverse_Declarations_Or_Statements
+                                      (Component_Items (Components));
+                                 end if;
+                              end;
+                           end if;
+                        end;
+
+                     --  Discriminants on derived type are not allowed in
+                     --  SPARK; SPARK RM 3.7(2).
+
+                     when N_Private_Extension_Declaration =>
+                        pragma Assert
+                          (Discriminant_Specifications (N) = No_List);
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
+
+               end if;
 
             when N_Block_Statement =>
                Traverse_Declarations_And_HSS (N);
@@ -713,11 +728,24 @@ package body Flow.Analysis.Sanity is
                        Subtype_Indication (Component_Definition (N));
 
                   begin
-                     pragma Assert (Present (S_Indication));
+                     case Nkind (S_Indication) is
+                        --  Subtype either points to a constraint, for example
+                        --  "String (1 .. 10)".
 
-                     if Nkind (S_Indication) = N_Subtype_Indication then
-                        Check_Subtype_Constraints (Constraint (S_Indication));
-                     end if;
+                        when N_Subtype_Indication =>
+                           Check_Subtype_Constraints
+                             (Constraint (S_Indication));
+
+                        --  or to a type, for example "Integer", or
+                        --  "Standard.Integer".
+
+                        when N_Identifier | N_Expanded_Name =>
+                           pragma Assert (Is_Type (Entity (S_Indication)));
+
+                        when others =>
+                           raise Program_Error;
+
+                     end case;
                   end;
                end if;
 
