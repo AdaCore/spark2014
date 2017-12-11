@@ -1,3 +1,3 @@
-logging.adb:15:51: subtype constraint cannot depend on variable input "Payload_As_Bytes" (SPARK RM 4.4(2))
-logging.adb:18:45: subtype constraint cannot depend on variable input "Payload_As_Bytes" (SPARK RM 4.4(2))
-gnatprove: error during flow analysis and proof
+logging.adb:15:15: info: range check proved (CVC4: 2 VC)
+logging.adb:16:30: info: range check proved (CVC4: 1 VC)
+logging.adb:16:30: medium: range check might fail

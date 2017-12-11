@@ -20,7 +20,7 @@ procedure Essai05 with
    end Conv;
 
    function Conv2 (V : Array_A) return Array_B is
-      R : Array_B (V'Range) := (others => 0);
+      R : Array_B (V'Range) := (others => 0); --@RANGE_CHECK:FAIL
    begin
       for I in V'Range loop
          R (I) := V (I);
@@ -29,8 +29,7 @@ procedure Essai05 with
    end Conv2;
 
    A : Array_A := (0, 1, 2);
-   B : Array_B := Conv (A);
-   --  We now get a spurious message here which is related to inlining.
+   B : Array_B := Conv (A); --@RANGE_CHECK:FAIL
 
 begin
    null;
