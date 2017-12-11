@@ -607,7 +607,8 @@ package body Flow.Analysis.Sanity is
                       and then
                         (not Is_Internal (Typ)
                          or else (Nkind (N) = N_Full_Type_Declaration
-                                  and then Present (Incomplete_View (N))))
+                                  and then Present (Incomplete_View (N)))
+                         or else Is_Derived_Type (Typ))
                   then
                      declare
                         S_Indication : Node_Id;

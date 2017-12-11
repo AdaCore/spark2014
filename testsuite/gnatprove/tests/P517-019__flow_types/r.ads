@@ -18,5 +18,5 @@ package R is
    --  it makes the implementation code easier or simpler)
 
    type T4;
-   type T4 is new String (1 .. X);  --  missing check
+   type T4 is new String (1 .. X);
 end;
