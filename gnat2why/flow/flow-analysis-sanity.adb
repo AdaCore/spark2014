@@ -24,12 +24,15 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
+with Nlists;                 use Nlists;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
+with Snames;                 use Snames;
 
 with Checked_Types;          use Checked_Types;
 with Gnat2Why_Args;
+with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with SPARK_Util;             use SPARK_Util;
@@ -100,10 +103,22 @@ package body Flow.Analysis.Sanity is
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean)
    is
-      Entry_Node : Node_Id;
+      procedure Traverse_Declarations_And_HSS       (N : Node_Id);
+      procedure Traverse_Declarations_Or_Statements (L : List_Id);
+      procedure Traverse_Declaration_Or_Statement   (N : Node_Id);
+      procedure Traverse_Handled_Statement_Sequence (N : Node_Id);
 
-      function Check_Expression (N : Node_Id) return Traverse_Result;
-      --  Helper function to walk over the tree
+      procedure Check_Expression (N : Node_Id);
+      --  Check if the expression for the declaration N has variable inputs. In
+      --  particular this enforces SPARK RM 4.4(2) by checking:
+      --  * a constraint other than the range of a loop parameter specification
+      --  * the default expression of a component declaration
+      --  * the default expression of a discriminant_specification
+      --  * a Dynamic_Predicate aspect specification
+      --  * a Type_Invariant aspect specification
+      --  * an indexing expression of an indexed component or the discrete
+      --    range of a slice in an object renaming declaration which renames
+      --    part of that index or slice.
 
       procedure Check_Variable_Inputs
         (Flow_Ids : Ordered_Flow_Id_Sets.Set;
@@ -143,15 +158,270 @@ package body Flow.Analysis.Sanity is
                            Expand_Synthesized_Constants => True)));
       --  As above
 
+      -----------------------------------
+      -- Traverse_Declarations_And_HSS --
+      -----------------------------------
+
+      procedure Traverse_Declarations_And_HSS (N : Node_Id) is
+      begin
+         Traverse_Declarations_Or_Statements (Declarations (N));
+         Traverse_Handled_Statement_Sequence (Handled_Statement_Sequence (N));
+      end Traverse_Declarations_And_HSS;
+
+      -----------------------------------------
+      -- Traverse_Declarations_Or_Statements --
+      -----------------------------------------
+
+      procedure Traverse_Declarations_Or_Statements (L : List_Id) is
+         N : Node_Id := First (L);
+
+      begin
+         --  Loop through statements or declarations
+         while Present (N) loop
+
+            --  Call Check_Expression the declarations specified in SPARK RM
+            --  4.4(2).
+
+            if Nkind (N) in N_Full_Type_Declaration
+                          | N_Subtype_Declaration
+                          | N_Incomplete_Type_Declaration
+                          | N_Private_Type_Declaration
+                          | N_Private_Extension_Declaration
+                          | N_Component_Declaration
+                          | N_Discriminant_Specification
+                          | N_Object_Renaming_Declaration
+            then
+               Check_Expression (N);
+            end if;
+
+            Traverse_Declaration_Or_Statement (N);
+
+            Next (N);
+         end loop;
+      end Traverse_Declarations_Or_Statements;
+
+      ---------------------------------------
+      -- Traverse_Declaration_Or_Statement --
+      ---------------------------------------
+
+      procedure Traverse_Declaration_Or_Statement (N : Node_Id) is
+      begin
+         case Nkind (N) is
+            when N_Protected_Body =>
+               declare
+                  Spec : constant Entity_Id := Corresponding_Spec (N);
+
+               begin
+                  if Entity_Body_In_SPARK (Spec) then
+                     Traverse_Declarations_Or_Statements (Declarations (N));
+                  end if;
+               end;
+
+            when N_Protected_Type_Declaration =>
+               declare
+                  Typ : constant Entity_Id := Defining_Identifier (N);
+
+               begin
+                  if Entity_Spec_In_SPARK (Typ) then
+
+                     --  Traverse discriminants.
+                     --  Note that we don't traverse them in case they are a
+                     --  completion of a private type as this will have already
+                     --  be checked at their declarations.
+
+                     if not Is_Private_Type (Etype (Typ)) then
+                        Traverse_Declarations_Or_Statements
+                          (Discriminant_Specifications (N));
+                     end if;
+
+                     declare
+                        Def : constant Node_Id := Protected_Definition (N);
+
+                     begin
+                        Traverse_Declarations_Or_Statements
+                          (Visible_Declarations (Def));
+
+                        if Private_Spec_In_SPARK (Typ) then
+                           Traverse_Declarations_Or_Statements
+                             (Private_Declarations (Def));
+                        end if;
+                     end;
+                  end if;
+               end;
+
+            when N_Task_Type_Declaration =>
+               declare
+                  Typ : constant Entity_Id := Defining_Identifier (N);
+
+               begin
+                  if Entity_Spec_In_SPARK (Typ) then
+
+                     --  Traverse discriminants.
+                     --  Note that we don't traverse them in case they are a
+                     --  completion of a private type as this will have already
+                     --  be checked at their declarations.
+
+                     if not Is_Private_Type (Etype (Typ)) then
+                        Traverse_Declarations_Or_Statements
+                          (Discriminant_Specifications (N));
+                     end if;
+
+                     --  Traverse visible and private parts. The body part is
+                     --  traversed on its own whenever we have graph for it.
+
+                     declare
+                        Def : constant Node_Id := Task_Definition (N);
+
+                     begin
+                        if Present (Def) then
+                           Traverse_Declarations_Or_Statements
+                             (Visible_Declarations (Def));
+
+                           if Private_Spec_In_SPARK (Typ) then
+                              Traverse_Declarations_Or_Statements
+                                (Private_Declarations (Def));
+                           end if;
+                        end if;
+                     end;
+                  end if;
+               end;
+
+            when N_Full_Type_Declaration
+               | N_Subtype_Declaration
+               | N_Private_Type_Declaration
+               | N_Private_Extension_Declaration
+            =>
+               declare
+                  Typ : constant Entity_Id := Defining_Identifier (N);
+
+               begin
+                  if Comes_From_Source (N) then
+
+                     --  Traverse record components
+
+                     if Ekind (Typ) = E_Record_Type then
+                        declare
+                           Typ_Def : constant Node_Id := Type_Definition (N);
+
+                           Components : constant Node_Id :=
+                             (case Nkind (Typ_Def) is
+                                 when N_Record_Definition =>
+                                    Component_List (Typ_Def),
+                                 when N_Derived_Type_Definition =>
+                                    Component_List
+                                      (Record_Extension_Part (Typ_Def)),
+                                 when others =>
+                                    raise Program_Error);
+
+                        begin
+                           if Present (Components) then
+                              Traverse_Declarations_Or_Statements
+                                (Component_Items (Components));
+                           end if;
+                        end;
+                     end if;
+
+                     --  Traverse discriminants.
+                     --  Note that we don't traverse them in case they are a
+                     --  completion of a private type as this will have already
+                     --  be checked at their declarations.
+
+                     if Nkind (N) /= N_Subtype_Declaration
+                       and then not (Nkind (N) = N_Full_Type_Declaration
+                                     and then Is_Private_Type (Etype (Typ)))
+                     then
+                        Traverse_Declarations_Or_Statements
+                          (Discriminant_Specifications (N));
+                     end if;
+                  end if;
+               end;
+
+            when N_Block_Statement =>
+               Traverse_Declarations_And_HSS (N);
+
+            when N_If_Statement =>
+
+               --  Traverse the statements in the THEN part
+
+               Traverse_Declarations_Or_Statements (Then_Statements (N));
+
+               --  Loop through ELSIF parts if present
+
+               if Present (Elsif_Parts (N)) then
+                  declare
+                     Elif : Node_Id := First (Elsif_Parts (N));
+
+                  begin
+                     while Present (Elif) loop
+                        Traverse_Declarations_Or_Statements
+                          (Then_Statements (Elif));
+                        Next (Elif);
+                     end loop;
+                  end;
+               end if;
+
+               --  Finally traverse the ELSE statements if present
+
+               Traverse_Declarations_Or_Statements (Else_Statements (N));
+
+            when N_Case_Statement =>
+
+               --  Process case branches
+
+               declare
+                  Alt : Node_Id := First (Alternatives (N));
+               begin
+                  loop
+                     Traverse_Declarations_Or_Statements (Statements (Alt));
+                     Next (Alt);
+                     exit when No (Alt);
+                  end loop;
+               end;
+
+            when N_Extended_Return_Statement =>
+               Traverse_Handled_Statement_Sequence
+                 (Handled_Statement_Sequence (N));
+
+            when N_Loop_Statement =>
+               Traverse_Declarations_Or_Statements (Statements (N));
+
+            when others =>
+               null;
+         end case;
+      end Traverse_Declaration_Or_Statement;
+
+      -----------------------------------------
+      -- Traverse_Handled_Statement_Sequence --
+      -----------------------------------------
+
+      procedure Traverse_Handled_Statement_Sequence (N : Node_Id) is
+         Handler : Node_Id;
+
+      begin
+         if Present (N) then
+            Traverse_Declarations_Or_Statements (Statements (N));
+
+            if Present (Exception_Handlers (N)) then
+               Handler := First (Exception_Handlers (N));
+               while Present (Handler) loop
+                  Traverse_Declarations_Or_Statements (Statements (Handler));
+                  Next (Handler);
+               end loop;
+            end if;
+         end if;
+      end Traverse_Handled_Statement_Sequence;
+
       ----------------------
       -- Check_Expression --
       ----------------------
 
-      function Check_Expression (N : Node_Id) return Traverse_Result is
-
+      procedure Check_Expression (N : Node_Id) is
          function Check_Renaming (N : Node_Id) return Traverse_Result;
          --  Checks that indexed components and slices in object renaming
          --  declarations do not have variable inputs.
+
+         procedure Check_Subtype_Constraints (N : Node_Id);
+         --  Checks that subtype constraints do not have variable inputs
 
          --------------------
          -- Check_Renaming --
@@ -182,27 +452,54 @@ package body Flow.Analysis.Sanity is
          procedure Check_Name_Indexes_And_Slices is new
            Traverse_Proc (Check_Renaming);
 
+         -------------------------------
+         -- Check_Subtype_Constraints --
+         -------------------------------
+
+         procedure Check_Subtype_Constraints (N : Node_Id) is
+         begin
+            case Nkind (N) is
+               when N_Range =>
+                  Check_Variable_Inputs
+                    (Flow_Ids => Variables (N),
+                     Err_Desc => "subtype constraint",
+                     Err_Node => N);
+
+               when N_Range_Constraint =>
+                  --  Note that fetching the Variables for C returns the union
+                  --  of the sets of the low-bound and the high-bound.
+                  Check_Variable_Inputs
+                    (Flow_Ids => Variables (N),
+                     Err_Desc => "subtype constraint",
+                     Err_Node => N);
+
+               when N_Index_Or_Discriminant_Constraint =>
+                  Check_Variable_Inputs
+                    (Flow_Ids => Variables (Constraints (N)),
+                     Err_Desc => "subtype constraint",
+                     Err_Node => N);
+
+               when N_Delta_Constraint
+                  | N_Digits_Constraint
+               =>
+
+                  --  Ada LRM requires these constraints to be static, so no
+                  --  further action required here.
+
+                  null;
+
+               when others =>
+                  raise Program_Error;
+            end case;
+         end Check_Subtype_Constraints;
+
       --  Start of processing for Check_Expression
 
       begin
          case Nkind (N) is
-            when N_Subprogram_Body
-               | N_Package_Specification
-               | N_Package_Body
-            =>
-
-               --  We do not want to process declarations of any nested
-               --  subprograms or packages. These will be analyzed by their
-               --  own pass of flow analysis.
-
-               if N = Entry_Node then
-                  return OK;
-               else
-                  return Skip;
-               end if;
-
             when N_Full_Type_Declaration
                | N_Subtype_Declaration
+               | N_Incomplete_Type_Declaration
                | N_Private_Type_Declaration
                | N_Private_Extension_Declaration
             =>
@@ -210,7 +507,15 @@ package body Flow.Analysis.Sanity is
                   Typ : constant Type_Id := Defining_Identifier (N);
 
                begin
-                  if Has_Predicates (Typ) then
+
+                  --  Check that the type predicate expression, if present,
+                  --  does not have variable inputs. We don't use
+                  --  Has_Predicates because in case of a type with a
+                  --  completion will return True both for the type declaration
+                  --  and the completion and we don't want to have duplicate
+                  --  checks.
+
+                  if Present (Get_Pragma (Typ, Pragma_Predicate)) then
                      declare
                         Predicate_Func : constant Entity_Id :=
                           Predicate_Function (Typ);
@@ -228,15 +533,20 @@ package body Flow.Analysis.Sanity is
                      end;
                   end if;
 
+                  --  Check that the type invariant expression, if present,
+                  --  does not have variable inputs.
                   --  Has_Invariants_In_SPARK operates on the public view of a
                   --  type and therefore we use call it on private type
-                  --  delcarations or extensions.
+                  --  declarations or extensions.
+
                   if Nkind (N) in N_Private_Type_Declaration
                                 | N_Private_Extension_Declaration
                     and then Has_Invariants_In_SPARK (Typ)
                   then
+
                      --  This is the check for 7.3.2(3) [which is really
                      --  4.4(2)] and the check for 7.3.2(4).
+
                      declare
                         Expr : constant Node_Id :=
                           Get_Expr_From_Check_Only_Proc
@@ -246,13 +556,16 @@ package body Flow.Analysis.Sanity is
                           Get_Functions (Expr, Include_Predicates => False);
 
                      begin
+
                         --  Check 4.4(2) (no variable inputs)
+
                         Check_Variable_Inputs
                           (Flow_Ids => Variables (Expr),
                            Err_Desc => "invariant",
                            Err_Node => Full_View (Typ));
 
                         --  Check 7.3.2(4) (no calls to boundary subprograms)
+
                         for F of Funs loop
                            if Is_Boundary_Subprogram_For_Type (F, Typ) then
                               Error_Msg_Flow
@@ -269,76 +582,119 @@ package body Flow.Analysis.Sanity is
                         end loop;
                      end;
                   end if;
+
+                  --  Check that the subtype constraint, if present, does not
+                  --  depend on variable inputs.
+
+                  if Nkind (N) in N_Subtype_Declaration
+                                | N_Full_Type_Declaration
+                                | N_Private_Extension_Declaration
+                      and then
+                        (not Is_Internal (Typ)
+                         or else (Nkind (N) = N_Full_Type_Declaration
+                                  and then Present (Incomplete_View (N))))
+                  then
+                     declare
+                        S_Indication : Node_Id;
+
+                     begin
+                        --  Find the subtype indication
+
+                        case Nkind (N) is
+                           when N_Full_Type_Declaration =>
+                              declare
+                                 Typ_Def : constant Node_Id :=
+                                   Type_Definition (N);
+
+                              begin
+                                 S_Indication :=
+                                   (case Nkind (Typ_Def) is
+                                       when N_Derived_Type_Definition =>
+                                          Subtype_Indication (Typ_Def),
+                                       when N_Array_Type_Definition =>
+                                          Subtype_Indication
+                                            (Component_Definition (Typ_Def)),
+                                       when others => Empty);
+                              end;
+
+                           when N_Subtype_Declaration
+                              | N_Private_Extension_Declaration
+                           =>
+                              S_Indication := Subtype_Indication (N);
+
+                           when others =>
+                              raise Program_Error;
+                        end case;
+
+                        if Present (S_Indication)
+                          and then Nkind (S_Indication) = N_Subtype_Indication
+                        then
+                           Check_Subtype_Constraints
+                             (Constraint (S_Indication));
+                        end if;
+                     end;
+                  end if;
                end;
-               return OK;
 
-            when N_Loop_Parameter_Specification =>
+               --  Special case for N_Constrained_Array_Definition. Check that
+               --  its subtype constraints do not depend on variable inputs.
 
-               --  In a loop parameter specification, variables are allowed
-               --  in the range constraint, so the tree walk is pruned here.
+               if Nkind (N) = N_Full_Type_Declaration then
+                  declare
+                     Typ_Def : constant Node_Id := Type_Definition (N);
 
-               return Skip;
+                  begin
+                     if Nkind (Typ_Def) = N_Constrained_Array_Definition then
+                        declare
+                           Sub_Constraint : Node_Id :=
+                             First (Discrete_Subtype_Definitions (Typ_Def));
+
+                        begin
+                           while Present (Sub_Constraint) loop
+                              pragma Assert
+                                (Nkind (Sub_Constraint) in N_Range
+                                                         | N_Subtype_Indication
+                                 or else
+                                 Ekind (Entity (Sub_Constraint)) in Type_Kind);
+
+                              case Nkind (Sub_Constraint) is
+                                 when N_Range =>
+                                    Check_Subtype_Constraints (Sub_Constraint);
+                                 when N_Subtype_Indication =>
+                                    Check_Subtype_Constraints
+                                      (Constraint (Sub_Constraint));
+                                 when others =>
+                                    null;
+                              end case;
+                              Next (Sub_Constraint);
+                           end loop;
+                        end;
+                     end if;
+                  end;
+               end if;
+
+            --  Check that an indexing expression of an indexed component or
+            --  the discrete range of a slice in an object renaming
+            --  declaration which renames part of that index or slice is
+            --  without variable inputs.
 
             when N_Object_Renaming_Declaration =>
                if Comes_From_Source (N) then
                   Check_Name_Indexes_And_Slices (Name (N));
                end if;
-               return Skip;
 
-            when N_Subtype_Indication =>
-               --  We do not sanity check subtype declaration generated by the
-               --  front end; see N116-011 and NA18-003.
-
-               declare
-                  Parent_N : constant Node_Id := Parent (N);
-               begin
-                  if Nkind (Parent_N) = N_Subtype_Declaration
-                    and then Is_Internal (Defining_Identifier (Parent_N))
-                  then
-                     return Skip;
-                  end if;
-               end;
-
-               declare
-                  C : constant Node_Id := Constraint (N);
-               begin
-                  case Nkind (C) is
-                     when N_Range_Constraint =>
-                        --  Note that fetching the Variables for C returns the
-                        --  union of the sets of the low-bound and the
-                        --  high-bound.
-                        Check_Variable_Inputs
-                          (Flow_Ids => Variables (C),
-                           Err_Desc => "subtype constraint",
-                           Err_Node => C);
-                        return Skip;
-
-                     when N_Index_Or_Discriminant_Constraint =>
-                        Check_Variable_Inputs
-                          (Flow_Ids => Variables (Constraints (C)),
-                           Err_Desc => "subtype constraint",
-                           Err_Node => C);
-                        return Skip;
-
-                     when N_Delta_Constraint
-                        | N_Digits_Constraint
-                     =>
-
-                        --  Ada LRM requires these constraints to be
-                        --  static, so no further action required here.
-
-                        return Skip;
-
-                     when others =>
-                        raise Program_Error;
-                  end case;
-               end;
+            --  Check that component declarations and discriminant
+            --  specifications are without variable inputs.
 
             when N_Component_Declaration
                | N_Discriminant_Specification
             =>
+
+               --  Check their default expression
+
                declare
                   Default_Expression : constant Node_Id := Expression (N);
+
                begin
                   if Present (Default_Expression) then
                      Check_Variable_Inputs
@@ -347,10 +703,26 @@ package body Flow.Analysis.Sanity is
                         Err_Node => Default_Expression);
                   end if;
                end;
-               return Skip;
+
+               --  Check that the subtype constraint for the component, if
+               --  present, does not depend on variable inputs.
+
+               if Nkind (N) = N_Component_Declaration then
+                  declare
+                     S_Indication : constant Node_Id :=
+                       Subtype_Indication (Component_Definition (N));
+
+                  begin
+                     pragma Assert (Present (S_Indication));
+
+                     if Nkind (S_Indication) = N_Subtype_Indication then
+                        Check_Subtype_Constraints (Constraint (S_Indication));
+                     end if;
+                  end;
+               end if;
 
             when others =>
-               return OK;
+               raise Program_Error;
          end case;
       end Check_Expression;
 
@@ -452,72 +824,90 @@ package body Flow.Analysis.Sanity is
       procedure Check_Actuals is new
         Iterate_Generic_Parameters (Handle_Parameters);
 
-      procedure Do_Checks is new Traverse_Proc (Check_Expression);
-
    --  Start of processing for Check_Expressions
 
    begin
       Sane := True;
 
-      --  Please don't try to simplify/delete Entry_Node here, it is also a
-      --  global in Do_Checks.
-
       case FA.Kind is
          when Kind_Subprogram =>
-            Entry_Node := Get_Body (FA.Analyzed_Entity);
-            Do_Checks (Entry_Node);
+            declare
+               Subp_Body : constant Node_Id := Get_Body (FA.Analyzed_Entity);
 
-            if Is_User_Defined_Equality (FA.Spec_Entity) then
+            begin
+               Traverse_Declarations_And_HSS (Subp_Body);
+
+               --  If this is a user defined equality on a record type, then it
+               --  cannot have variable inputs.
+
+               if Is_User_Defined_Equality (FA.Spec_Entity) then
+                  declare
+                     Typ : constant Entity_Id :=
+                       Get_Full_Type_Without_Checking
+                         (First_Formal (FA.Spec_Entity));
+
+                  begin
+                     if Ekind (Typ) in Record_Kind then
+                        Check_Variable_Inputs
+                          (Flow_Ids => Variables
+                             (Get_Expr_From_Return_Only_Func (FA.Spec_Entity)),
+                           Err_Desc => "user-defined equality",
+                           Err_Node => FA.Spec_Entity);
+                     end if;
+                  end;
+               end if;
+
+               --  If the node is an instance of a generic then we need to
+               --  check its actuals.
+
+               if Is_Generic_Instance (FA.Analyzed_Entity) then
+
+                  --  For subprogram instances we need to get to the
+                  --  wrapper package.
+
+                  Check_Actuals
+                    (Unique_Defining_Entity (Parent (Subp_Body)));
+               end if;
+            end;
+
+         when Kind_Task =>
+
+            --  Traverse declarations and statements in the task body. We deal
+            --  with the visible and private parts of the task when analysing
+            --  the enclosing subprogram/package.
+
+            Traverse_Declarations_And_HSS (Task_Body (FA.Analyzed_Entity));
+
+         when Kind_Package
+            | Kind_Package_Body
+         =>
+            if Entity_Spec_In_SPARK (FA.Spec_Entity) then
                declare
-                  Typ : constant Entity_Id :=
-                    Get_Full_Type_Without_Checking
-                      (First_Formal (FA.Spec_Entity));
+                  Pkg_Spec : constant Node_Id :=
+                    Package_Specification (FA.Spec_Entity);
 
                begin
-                  if Ekind (Typ) in Record_Kind then
-                     Check_Variable_Inputs
-                       (Flow_Ids => Variables
-                          (Get_Expr_From_Return_Only_Func (FA.Spec_Entity)),
-                        Err_Desc => "user-defined equality",
-                        Err_Node => FA.Spec_Entity);
+                  Traverse_Declarations_Or_Statements
+                    (Visible_Declarations (Pkg_Spec));
+
+                  if Private_Spec_In_SPARK (FA.Spec_Entity) then
+                     Traverse_Declarations_Or_Statements
+                       (Private_Declarations (Pkg_Spec));
+
+                     if Entity_Body_In_SPARK (FA.Spec_Entity) then
+                        Traverse_Declarations_And_HSS
+                          (Package_Body (FA.Spec_Entity));
+                     end if;
                   end if;
                end;
             end if;
 
             --  If the node is an instance of a generic then we need to check
             --  its actuals.
-            if Is_Generic_Instance (FA.Analyzed_Entity) then
-               --  For subprogram instances we need to get to the
-               --  wrapper package.
-               Check_Actuals (Unique_Defining_Entity (Parent (Entry_Node)));
-            end if;
 
-         when Kind_Task =>
-            Entry_Node := Task_Body (FA.Analyzed_Entity);
-            Do_Checks (Entry_Node);
-
-         when Kind_Package =>
-            Entry_Node := Package_Specification (FA.Analyzed_Entity);
-            Do_Checks (Entry_Node);
-
-            --  If the node is an instance of a generic then we need to check
-            --  its actuals.
             if Is_Generic_Instance (FA.Spec_Entity) then
                Check_Actuals (FA.Spec_Entity);
             end if;
-
-         when Kind_Package_Body =>
-            Entry_Node := Package_Specification (FA.Spec_Entity);
-            Do_Checks (Entry_Node);
-
-            --  If the node is an instance of a generic then we need to check
-            --  its actuals.
-            if Is_Generic_Instance (FA.Spec_Entity) then
-               Check_Actuals (FA.Spec_Entity);
-            end if;
-
-            Entry_Node := Package_Body (FA.Analyzed_Entity);
-            Do_Checks (Entry_Node);
       end case;
 
       if not Sane then
