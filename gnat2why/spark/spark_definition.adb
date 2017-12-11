@@ -2723,16 +2723,12 @@ package body SPARK_Definition is
                   Subp  : Entity_Id renames Node_Maps.Key (Cur);
                   Expr  : constant Node_Id :=
                     Get_Expr_From_Check_Only_Proc (Subp);
-                  Param : constant Entity_Id :=
-                    Defining_Entity (First (Parameter_Specifications
-                                     (Subprogram_Specification (Subp))));
+                  Param : constant Entity_Id := First_Formal (Subp);
 
                   Save_Delayed_Aspect_Type : constant Entity_Id :=
                     Current_Delayed_Aspect_Type;
 
                begin
-                  pragma Assert (Present (Param));
-
                   Current_Delayed_Aspect_Type := Etype (Param);
 
                   Mark_Entity (Param);
