@@ -799,9 +799,7 @@ package body Flow.Analysis.Sanity is
                      --  consider F a variable if is not:
                      --  * a constant
                      --  * a bound
-                     --  * a discriminant
-                     --  ??? the discriminant part will probably be removed
-                     --      under another existing ticket.
+                     --  * a discriminant.
                      if not (Is_Constant (F)
                              or else Is_Bound (F)
                              or else Ekind (Var) = E_Discriminant)
