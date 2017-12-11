@@ -160,27 +160,27 @@ use_lists.adb:41:29: info: initialization of "Cu.Node" proved
 use_lists.adb:42:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:42:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:44:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_lists.adb:44:32: medium: precondition might fail
+use_lists.adb:44:13: info: loop invariant preservation proved (Z3: 1 VC)
+use_lists.adb:44:32: info: precondition proved (Z3: 1 VC)
 use_lists.adb:44:53: info: initialization of "Cu.Node" proved
-use_lists.adb:45:17: medium: loop invariant might fail after first iteration, cannot prove Is_Incr (Element (Model (L)'Loop_Entry, N), Element (Model (L), N)
-use_lists.adb:45:26: medium: precondition might fail
-use_lists.adb:46:26: medium: precondition might fail
+use_lists.adb:45:26: info: precondition proved (Z3: 2 VC)
+use_lists.adb:46:26: info: precondition proved (Z3: 2 VC)
 use_lists.adb:48:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_lists.adb:48:27: medium: precondition might fail
+use_lists.adb:48:13: info: loop invariant preservation proved (Z3: 1 VC)
+use_lists.adb:48:27: info: precondition proved (Z3: 1 VC)
 use_lists.adb:48:48: info: initialization of "Cu.Node" proved
 use_lists.adb:49:17: info: precondition proved (Z3: 2 VC)
-use_lists.adb:49:17: medium: loop invariant might fail after first iteration, cannot prove Element (Model (L)'Loop_Entry, N) = Element (Model (L), N)
 use_lists.adb:49:48: info: range check proved (Z3: 1 VC)
 use_lists.adb:50:17: info: precondition proved (Z3: 2 VC)
 use_lists.adb:50:37: info: range check proved (Z3: 1 VC)
-use_lists.adb:51:13: medium: precondition might fail
+use_lists.adb:51:13: info: precondition proved (Z3: 1 VC)
 use_lists.adb:51:25: info: initialization of "Cu.Node" proved
-use_lists.adb:52:13: medium: precondition might fail
+use_lists.adb:52:13: info: precondition proved (Z3: 1 VC)
 use_lists.adb:52:33: info: initialization of "Cu.Node" proved
-use_lists.adb:52:37: medium: precondition might fail
+use_lists.adb:52:37: info: precondition proved (Z3: 1 VC)
 use_lists.adb:52:49: info: initialization of "Cu.Node" proved
 use_lists.adb:52:53: info: overflow check proved (Z3: 1 VC)
-use_lists.adb:54:10: medium: precondition might fail
+use_lists.adb:54:10: info: precondition proved (Z3: 1 VC)
 use_lists.adb:54:19: info: initialization of "Cu.Node" proved
 use_lists.adb:61:29: info: initialization of "Cu.Node" proved
 use_lists.adb:62:33: info: loop invariant initialization proved (Z3: 1 VC)
@@ -334,7 +334,7 @@ use_lists.ads:24:75: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:28:14: medium: postcondition might fail, cannot prove Length (L2) = Length (L1)
 use_lists.ads:30:24: info: precondition proved (Z3: 2 VC)
 use_lists.ads:31:24: medium: precondition might fail
-use_lists.ads:38:15: medium: postcondition might fail, cannot prove Is_Incr (Element (Model (L)'Old, N), Element (Model (L), N)
+use_lists.ads:36:14: info: postcondition proved (Z3: 2 VC)
 use_lists.ads:38:24: info: precondition proved (Z3: 2 VC)
 use_lists.ads:39:24: info: precondition proved (Z3: 2 VC)
 use_lists.ads:45:15: medium: postcondition might fail, cannot prove Is_Incr (Element (Model (L)'Old, N), Element (Model (L), N)
@@ -368,7 +368,6 @@ use_lists.ads:83:21: info: precondition proved (Z3: 1 VC)
 use_lists.ads:84:21: info: precondition proved (Z3: 2 VC)
 use_lists.ads:85:23: info: precondition proved (Z3: 2 VC)
 use_lists.ads:86:20: info: precondition proved (Z3: 2 VC)
-use_lists.ads:96:14: info: postcondition proved (CVC4: 5 VC; Z3: 1 VC)
 use_lists.ads:96:42: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:97:30: info: precondition proved (Z3: 1 VC)
 use_lists.ads:98:13: info: precondition proved (Z3: 2 VC)
@@ -377,6 +376,7 @@ use_lists.ads:100:25: info: precondition proved (Z3: 1 VC)
 use_lists.ads:101:14: info: precondition proved (Z3: 1 VC)
 use_lists.ads:101:43: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:102:09: info: precondition proved (Z3: 2 VC)
+use_lists.ads:102:09: medium: postcondition might fail, cannot prove Element (Model (L), I) = 0
 use_lists.ads:102:29: info: range check proved (Z3: 1 VC)
 use_lists.ads:103:25: info: precondition proved (Z3: 1 VC)
 use_lists.ads:103:54: info: overflow check proved (Z3: 1 VC)
