@@ -798,16 +798,12 @@ package body Flow.Analysis.Sanity is
                      --  We emit an error if F is a variable. In particular we
                      --  consider F a variable if is not:
                      --  * a constant
-                     --  * a bound coming from an in_out or out formal
-                     --    parameter
+                     --  * a bound
                      --  * a discriminant
                      --  ??? the discriminant part will probably be removed
                      --      under another existing ticket.
                      if not (Is_Constant (F)
-                             or else
-                               (Is_Bound (F)
-                                and then Ekind (Var) in E_Out_Parameter
-                                                      | E_In_Out_Parameter)
+                             or else Is_Bound (F)
                              or else Ekind (Var) = E_Discriminant)
                      then
                         Emit_Error (F);
