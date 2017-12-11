@@ -1,0 +1,4 @@
+main.adb:1:30: warning: unused variable "Y"
+main.adb:4:22: high: "X" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(12))
+main.adb:4:22: medium: assertion might fail, cannot prove X
+main.adb:12:25: high: "Y" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(12))
