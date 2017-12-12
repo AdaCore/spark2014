@@ -50,7 +50,7 @@ package SPARK is
                         Data_Error,
                         Layout_Error);
 
-   type Text_IO_File_Type is limited private;
+   type Text_IO_File_Type is limited private with Default_Initial_Condition;
 
 private
    pragma SPARK_Mode (Off);
