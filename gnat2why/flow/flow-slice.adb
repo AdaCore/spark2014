@@ -338,12 +338,11 @@ package body Flow.Slice is
          --  Detect initialized local variables
          for LV of FA.GG.Local_Variables loop
 
-            --  Null abstract states and abstract states with null refinements
-            --  are trivially initialized but are not detected by the condition
-            --  in the else branch. (??? why?)
-            if Is_Null_State (LV)
-              or else (Ekind (LV) = E_Abstract_State
-                       and then Has_Null_Refinement (LV))
+            --  Abstract states with null refinements are trivially initialized
+            --  but are not detected by the condition in the else branch. (???
+            --  why?)
+            if Ekind (LV) = E_Abstract_State
+              and then Has_Null_Refinement (LV)
             then
                Local_Definite_Writes.Insert (LV);
 

@@ -412,53 +412,46 @@ package body Flow_Utility is
                      Result : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
                   begin
-                     --  If the state is null, this is known right at its
-                     --  declaration and is not affected by the SPARK_Mode.
+                     --  Use the Refined_State aspect, if visible
+                     if Entity_Body_In_SPARK (Pkg) then
 
-                     if Is_Null_State (E) then
-                        return Flow_Id_Sets.Empty_Set;
-                     else
-                        --  Use the Refined_State aspect, if visible
-                        if Entity_Body_In_SPARK (Pkg) then
-
-                           --  At this point we know whether the state has a
-                           --  null refinement; if it does, then we ignore it.
-                           if Has_Null_Refinement (E) then
-                              return Flow_Id_Sets.Empty_Set;
-                           else
-                              for C of Iter (Refinement_Constituents (E)) loop
-                                 Result.Union
-                                   (Expand_Abstract_State
-                                      (Direct_Mapping_Id (C, F.Variant),
-                                       Erase_Constants));
-                              end loop;
-
-                              return Result;
-                           end if;
-
-                        --  Pick the Part_Of constituents from the private part
-                        --  of the package and private child packages, but only
-                        --  if they are visible (which is equivalent to being
-                        --  marked as in-SPARK).
-
+                        --  At this point we know whether the state has a null
+                        --  refinement; if it does, then we ignore it.
+                        if Has_Null_Refinement (E) then
+                           return Flow_Id_Sets.Empty_Set;
                         else
-                           for C of Iter (Part_Of_Constituents (E)) loop
-                              if Entity_In_SPARK (C) then
-                                 Result.Union
-                                   (Expand_Abstract_State
-                                      (Direct_Mapping_Id (C, F.Variant),
-                                       Erase_Constants));
-                              end if;
+                           for C of Iter (Refinement_Constituents (E)) loop
+                              Result.Union
+                                (Expand_Abstract_State
+                                   (Direct_Mapping_Id (C, F.Variant),
+                                    Erase_Constants));
                            end loop;
-
-                           --  There might be more constituents in the package
-                           --  body, but we can't see them. The state itself
-                           --  will represent them.
-
-                           Result.Insert (F);
 
                            return Result;
                         end if;
+
+                     --  Pick the Part_Of constituents from the private part
+                     --  of the package and private child packages, but only if
+                     --  they are visible (which is equivalent to being marked
+                     --  as in-SPARK).
+
+                     else
+                        for C of Iter (Part_Of_Constituents (E)) loop
+                           if Entity_In_SPARK (C) then
+                              Result.Union
+                                (Expand_Abstract_State
+                                   (Direct_Mapping_Id (C, F.Variant),
+                                    Erase_Constants));
+                           end if;
+                        end loop;
+
+                     --  There might be more constituents in the package body,
+                     --  but we can't see them. The state itself will represent
+                     --  them.
+
+                        Result.Insert (F);
+
+                        return Result;
                      end if;
                   end;
 

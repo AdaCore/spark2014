@@ -1250,10 +1250,8 @@ package body Flow.Analysis.Sanity is
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
                return Ekind (E) = E_Abstract_State
-                 and then (Is_Null_State (E)
-                           or else
-                             (State_Refinement_Is_Visible (E, FA.B_Scope)
-                              and then Has_Null_Refinement (E)));
+                 and then State_Refinement_Is_Visible (E, FA.B_Scope)
+                 and then Has_Null_Refinement (E);
             end;
          else
             return False;
