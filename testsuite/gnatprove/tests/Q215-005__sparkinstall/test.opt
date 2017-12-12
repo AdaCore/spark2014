@@ -1,1 +1,3 @@
 packaged REQUIRED
+NT OUT oldgcc.out
+Darwin OUT oldgcc.out
