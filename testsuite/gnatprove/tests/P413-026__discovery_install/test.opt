@@ -1,1 +1,3 @@
 !discovery SKIP test is only for discovery edition
+NT OUT oldgcc.out
+Darwin OUT oldgcc.out
