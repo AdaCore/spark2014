@@ -1,3 +1,4 @@
+pragma Unevaluated_Use_Of_Old (Allow);
 with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Formal_Doubly_Linked_Lists;
 package For_Loops_On_Lists with SPARK_Mode is

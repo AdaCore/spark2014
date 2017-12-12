@@ -1,6 +1,6 @@
+pragma Unevaluated_Use_Of_Old (Allow);
 with Pump;
 use Pump;
-
 package PumpUnit
 with SPARK_Mode => On,
   Abstract_State => (Account, -- amount currently owing, total amount accrued
