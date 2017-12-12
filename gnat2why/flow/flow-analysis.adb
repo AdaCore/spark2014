@@ -3220,77 +3220,83 @@ package body Flow.Analysis is
       procedure Check_Hidden_State_Variables_And_Missing_Part_Of
         (E : Entity_Id)
       is
-         State : constant Entity_Id := Encapsulating_State (E);
       begin
-         --  Find state variable that is a Part_Of some state, but not listed
-         --  in its refinement.
-         if Is_Constituent (E)
-           and then Refinement_Exists (State)
-           and then not Find_In_Refinement (State, E)
-         then
-            Error_Msg_Flow
-              (FA       => FA,
-               Msg      => "& needs to be listed in the refinement of &",
-               N        => E,
-               F1       => Direct_Mapping_Id (E),
-               F2       => Direct_Mapping_Id (State),
-               Tag      => Hidden_Unexposed_State,
-               Severity => Medium_Check_Kind);
-         end if;
+         if Is_Constituent (E) then
 
-         --  Detect hidden variables in the private part of a package or in the
-         --  package body that are not part of any refinement.
-         if Ekind (E) = E_Variable
-           and then not Is_Constituent (E)
-           and then not In_Visible_Declarations (Enclosing_Declaration (E))
-         then
-            Error_Msg_Flow
-              (FA       => FA,
-               Msg      => "& needs to be a constituent of some state " &
-                             "abstraction",
-               N        => E,
-               F1       => Direct_Mapping_Id (E),
-               Tag      => Hidden_Unexposed_State,
-               Severity => Medium_Check_Kind);
-         end if;
+            --  Find state variable that is a Part_Of some state, but not
+            --  listed in its refinement.
 
-         --  Look for constants with variable inputs without Part_Of that are
-         --  declared:
-         --  * in the private part of a package
-         --  * in the visible part of a package declared immediately within
-         --    the private part of a package
-         --  * in the visible part of a private child.
-         --  Those do require a Part_Of indicator as per SPARK RM 7.2.6(2-3).
-
-         if Ekind (E) = E_Constant
-           and then not Is_Constituent (E)
-           and then not In_Body_Declarations (Enclosing_Declaration (E))
-         then
             declare
-               S : constant Entity_Id := Scope (E);
-
-               Msg : constant String :=
-                 (if Is_Private_Descendant (S)
-                  then "visible part of the private child"
-                  else "private part of package");
-
-               SRM_Ref : constant String :=
-                 (if Is_Private_Descendant (S)
-                  then "7.2.6(3)"
-                  else "7.2.6(2)");
-
+               State : constant Entity_Id := Encapsulating_State (E);
             begin
+               if Refinement_Exists (State)
+                 and then not Find_In_Refinement (State, E)
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "& needs to be listed in the refinement of &",
+                     N        => E,
+                     F1       => Direct_Mapping_Id (E),
+                     F2       => Direct_Mapping_Id (State),
+                     Tag      => Hidden_Unexposed_State,
+                     Severity => Medium_Check_Kind);
+               end if;
+            end;
+
+         else
+            --  Detect hidden variables in the private part of a package or in
+            --  the package body that are not part of any refinement.
+
+            if Ekind (E) = E_Variable
+              and then not In_Visible_Declarations (Enclosing_Declaration (E))
+            then
                Error_Msg_Flow
                  (FA       => FA,
-                  Msg      => "indicator Part_Of is required in this "
-                                & "context: & is declared in the "
-                                & Msg & " &",
-                  SRM_Ref  => SRM_Ref,
+                  Msg      => "& needs to be a constituent " &
+                              "of some state abstraction",
                   N        => E,
-                  Severity => Error_Kind,
                   F1       => Direct_Mapping_Id (E),
-                  F2       => Direct_Mapping_Id (FA.Spec_Entity));
-            end;
+                  Tag      => Hidden_Unexposed_State,
+                  Severity => Medium_Check_Kind);
+            end if;
+
+            --  Look for constants with variable inputs without Part_Of that
+            --  are declared:
+            --  * in the private part of a package
+            --  * in the visible part of a package declared immediately within
+            --    the private part of a package
+            --  * in the visible part of a private child.
+            --  Those do require a Part_Of indicator, see SPARK RM 7.2.6(2-3).
+
+            if Ekind (E) = E_Constant
+              and then not In_Body_Declarations (Enclosing_Declaration (E))
+            then
+               declare
+                  S : constant Entity_Id := Scope (E);
+
+                  Msg : constant String :=
+                    (if Is_Private_Descendant (S)
+                     then "visible part of the private child"
+                     else "private part of package");
+
+                  SRM_Ref : constant String :=
+                    (if Is_Private_Descendant (S)
+                     then "7.2.6(3)"
+                     else "7.2.6(2)");
+
+               begin
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "indicator Part_Of is required in this "
+                                  & "context: & is declared in the "
+                                  & Msg & " &",
+                     SRM_Ref  => SRM_Ref,
+                     N        => E,
+                     Severity => Error_Kind,
+                     F1       => Direct_Mapping_Id (E),
+                     F2       => Direct_Mapping_Id (FA.Spec_Entity));
+               end;
+            end if;
          end if;
       end Check_Hidden_State_Variables_And_Missing_Part_Of;
 
