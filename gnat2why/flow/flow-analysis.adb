@@ -3415,7 +3415,7 @@ package body Flow.Analysis is
 
       function Trivially_Initialized (E : Entity_Id) return Boolean
       with Pre => Ekind (E) = E_Abstract_State;
-      --  Returns True iff E is its declaration says it is initialized
+      --  Returns True iff declaration of E says it is initialized
 
       --------------------------------
       -- Initialized_By_Initializes --
@@ -3466,35 +3466,37 @@ package body Flow.Analysis is
       end Collect_Procedure_Outputs;
 
       function Trivially_Initialized (E : Entity_Id) return Boolean is
-        (Is_Null_State (E)
-           or else
-         (Has_Volatile (E)
-            and then Has_Volatile_Flavor (E, Pragma_Async_Writers)));
+        (Has_Volatile (E)
+         and then Has_Volatile_Flavor (E, Pragma_Async_Writers));
 
    --  Start of processing for Find_Impossible_To_Initialize_State
 
    begin
-      Collect_Procedure_Outputs;
+      if not Has_Null_Abstract_State (FA.Spec_Entity) then
+         Collect_Procedure_Outputs;
 
-      --  Issue error for every non-null abstract state that does not have
-      --  Async_Writers, is not mentioned in an Initializes aspect and is not
-      --  a pure output of any externally visible procedure.
+         --  Issue error for every non-null abstract state that does not have
+         --  Async_Writers, is not mentioned in an Initializes aspect and is
+         --  not a pure output of an externally visible procedure.
 
-      for State of Iter (Abstract_States (FA.Spec_Entity)) loop
-         if not Trivially_Initialized (State)
-           and then not Initialized_By_Initializes (Direct_Mapping_Id (State))
-           and then not Outputs_Of_Procs.Contains (Direct_Mapping_Id (State))
-         then
-            Error_Msg_Flow
-              (FA       => FA,
-               Msg      => "no procedure exists that can initialize " &
-                 "abstract state &",
-               N        => State,
-               F1       => Direct_Mapping_Id (State),
-               Tag      => Impossible_To_Initialize_State,
-               Severity => Warning_Kind);
-         end if;
-      end loop;
+         for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+            if not Trivially_Initialized (State)
+                and then
+              not Initialized_By_Initializes (Direct_Mapping_Id (State))
+                and then
+              not Outputs_Of_Procs.Contains (Direct_Mapping_Id (State))
+            then
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "no procedure exists that can initialize " &
+                              "abstract state &",
+                  N        => State,
+                  F1       => Direct_Mapping_Id (State),
+                  Tag      => Impossible_To_Initialize_State,
+                  Severity => Warning_Kind);
+            end if;
+         end loop;
+      end if;
 
    end Find_Impossible_To_Initialize_State;
 
@@ -4094,41 +4096,39 @@ package body Flow.Analysis is
    --  Start of processing for Check_Refined_State_Contract
 
    begin
-      --  If package body is in SPARK, then look at the Refined_State contract
-      --  (ignoring null abstract states and those with null refinement).
+      if Has_Non_Null_Abstract_State (FA.Spec_Entity) then
 
-      if Entity_Body_In_SPARK (FA.Spec_Entity) then
+         --  If package body is in SPARK, then look at the Refined_State
+         --  contract (ignoring abstract states with null refinement).
 
-         declare
-            Refined_State_N : constant Node_Id :=
-              Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_State);
+         if Entity_Body_In_SPARK (FA.Spec_Entity) then
+            declare
+               Refined_State_N : constant Node_Id :=
+                 Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_State);
 
-         begin
+            begin
+               for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+                  if not Has_Null_Refinement (State) then
+                     for Constituent of Iter (Refinement_Constituents (State))
+                     loop
+                        if Ekind (Constituent) = E_Constant
+                          and then not Has_Variable_Input (Constituent)
+                        then
+                           Error_Msg (Refined_State_N,
+                                      Constituent,
+                                      "& cannot appear in Refined_State");
+                        end if;
+                     end loop;
+                  end if;
+               end loop;
+            end;
+
+         --  If only package spec is in SPARK, then look at Part_Of
+         --  constituents.
+
+         elsif Entity_Spec_In_SPARK (FA.Spec_Entity) then
+
             for State of Iter (Abstract_States (FA.Spec_Entity)) loop
-               if not Is_Null_State (State)
-                 and then not Has_Null_Refinement (State)
-               then
-                  for Constituent of Iter (Refinement_Constituents (State))
-                  loop
-                     if Ekind (Constituent) = E_Constant
-                       and then not Has_Variable_Input (Constituent)
-                     then
-                        Error_Msg (Refined_State_N,
-                                   Constituent,
-                                   "& cannot appear in Refined_State");
-                     end if;
-                  end loop;
-               end if;
-            end loop;
-         end;
-
-      --  If only package spec is in SPARK, then only look at Part_Of
-      --  constituents (ignoring null abstract states).
-
-      elsif Entity_Spec_In_SPARK (FA.Spec_Entity) then
-
-         for State of Iter (Abstract_States (FA.Spec_Entity)) loop
-            if not Is_Null_State (State) then
                for Constituent of Iter (Part_Of_Constituents (State)) loop
 
                   --  Part_Of indicator can be applied to entities in packages
@@ -4145,9 +4145,9 @@ package body Flow.Analysis is
                                 "& cannot have a Part_Of indicator");
                   end if;
                end loop;
-            end if;
-         end loop;
+            end loop;
 
+         end if;
       end if;
 
    end Check_Refined_State_Contract;

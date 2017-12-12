@@ -1662,14 +1662,15 @@ package body Flow_Generated_Globals.Partial is
                --  Add states that are trivially initialized because they
                --  have null refinements (their initialization is missed
                --  while looking at the initialization of the constituents).
-               for State of Iter (Abstract_States (Folded)) loop
-                  if not Is_Null_State (State)
-                    and then Entity_Body_In_SPARK (Folded)
-                    and then Has_Null_Refinement (State)
-                  then
-                     Projected.Insert (State);
-                  end if;
-               end loop;
+               if Has_Non_Null_Abstract_State (Folded)
+                 and then Entity_Body_In_SPARK (Folded)
+               then
+                  for State of Iter (Abstract_States (Folded)) loop
+                     if Has_Null_Refinement (State) then
+                        Projected.Insert (State);
+                     end if;
+                  end loop;
+               end if;
 
                Node_Sets.Move (Target => Update.Initializes.Proper,
                                Source => Projected);
@@ -2604,11 +2605,11 @@ package body Flow_Generated_Globals.Partial is
          Traverse_Declarations (Visible_Declarations (Pkg_Spec));
 
          if Present (Get_Pragma (E, Pragma_Abstract_State)) then
-            for State of Iter (Abstract_States (E)) loop
-               if not Is_Null_State (State) then
+            if Has_Non_Null_Abstract_State (E) then
+               for State of Iter (Abstract_States (E)) loop
                   Register_Object (State);
-               end if;
-            end loop;
+               end loop;
+            end if;
          else
             Traverse_Declarations (Private_Declarations (Pkg_Spec));
             declare

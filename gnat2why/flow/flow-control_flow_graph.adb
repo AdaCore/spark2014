@@ -3827,8 +3827,8 @@ package body Flow.Control_Flow_Graph is
       --  Introduce variables from the Abstract_State aspect of the nested
       --  package.
 
-      for State of Iter (Abstract_States (Spec_E)) loop
-         if not Is_Null_State (State) then
+      if Has_Non_Null_Abstract_State (Spec_E) then
+         for State of Iter (Abstract_States (Spec_E)) loop
             --  Creating 'Initial and 'Final vertices for every state
             --  abstraction and setting Is_Export to True if the
             --  corresponding entity is initialized.
@@ -3855,8 +3855,8 @@ package body Flow.Control_Flow_Graph is
             end;
 
             Register_Own_Variable (FA, State);
-         end if;
-      end loop;
+         end loop;
+      end if;
 
       --  Traverse visible and private part of the specs and link them up
 
