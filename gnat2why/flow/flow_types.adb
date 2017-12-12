@@ -808,16 +808,12 @@ package body Flow_Types is
                      Nam := Homonym (Nam);
                   end loop;
 
-               when E_Task_Type =>
-                  declare
-                     Task_Object : constant Entity_Id := Anonymous_Object (N);
-                     --  For single task declarations return the original name,
-                     --  i.e. without the "tk" suffix added by expansion.
-                  begin
-                     if Present (Task_Object) then
-                        Nam := Task_Object;
-                     end if;
-                  end;
+               when E_Task_Type | E_Protected_Type =>
+                  --  For single concurrent units return the original name,
+                  --  i.e. without the "tk" or "t" suffixes added by expansion.
+                  if Is_Single_Concurrent_Type (N) then
+                     Nam := Anonymous_Object (N);
+                  end if;
 
                --  For references to internal formal argument in predicate
                --  function bodies use name of the predicated type.
