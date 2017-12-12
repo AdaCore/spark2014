@@ -260,7 +260,7 @@ package body Flow.Control_Flow_Graph.Utility is
      (FA                           : Flow_Analysis_Graphs;
       Call_Vertex                  : Node_Id;
       Actual                       : Node_Id;
-      Formal                       : Node_Id;
+      Formal                       : Entity_Id;
       In_Vertex                    : Boolean;
       Discriminants_Or_Bounds_Only : Boolean;
       Sub_Called                   : Node_Sets.Set     := Node_Sets.Empty_Set;
