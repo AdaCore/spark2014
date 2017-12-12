@@ -796,9 +796,9 @@
 </theory>
 <theory name="System__default_bit_order" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__any_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3748,9 +3748,9 @@
 </theory>
 <theory name="Keyboard__inputs" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Clock__now" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Clock__currenttime" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Clock__now" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Configdata__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3760,9 +3760,9 @@
 </theory>
 <theory name="Auditlog__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Keystore__store" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Keystore__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Keystore__store" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Admintoken__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3792,9 +3792,9 @@
 </theory>
 <theory name="Floppy__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Floppy__writtenstate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Floppy__output" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Floppy__writtenstate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Floppy__input" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3802,9 +3802,9 @@
 </theory>
 <theory name="Screen__output" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Usertoken__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Usertoken__status" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Usertoken__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Usertoken__input" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4894,9 +4894,9 @@
 </theory>
 <theory name="System__default_bit_order___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__default_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -5714,7 +5714,7 @@
 </theory>
 <theory name="Tismain__shutdownauditlogfailure___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Tismain__subprogram_def" proved="true" sum="884e699d9b6454eea73db5614f261b81">
+<theory name="Tismain__subprogram_def" proved="true" sum="f7055ef16d54fd1af3a5a1894acdc217">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
@@ -6041,7 +6041,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tismain__init__subprogram_def" proved="true" sum="4a9109d7c1e5c600081d96a9603d32d6">
+<theory name="Tismain__init__subprogram_def" proved="true" sum="4dde237feea5c41c3072f6ab22b2fc13">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6089,7 +6089,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tismain__processing__subprogram_def" proved="true" sum="f18b24468682ccee2eb516a7cea5562f">
+<theory name="Tismain__processing__subprogram_def" proved="true" sum="1486e605ed8e2cf275fbff5e0f4657f1">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6311,13 +6311,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tismain__processing__resetscreenmessage__subprogram_def" proved="true" sum="8819f4164d3fee889cb6426482912526">
+<theory name="Tismain__processing__resetscreenmessage__subprogram_def" proved="true" sum="876e9f3f9929afebc4c0823cef11bd31">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Tismain__mainloopbody__subprogram_def" proved="true" sum="acce11d08f390d050a1c24b7288878fe">
+<theory name="Tismain__mainloopbody__subprogram_def" proved="true" sum="d2826d55ff565aa74da65b608b3c2dfe">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -6467,13 +6467,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tismain__shutdowndoorlatchfailure__subprogram_def" proved="true" sum="1818f95669c9f2844122388b9b2d03e0">
+<theory name="Tismain__shutdowndoorlatchfailure__subprogram_def" proved="true" sum="af2eac66e8c7b394ccfb32a7353a0fe5">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Tismain__shutdownauditlogfailure__subprogram_def" proved="true" sum="65273acf31cb9b937bc276c9a9b1de73">
+<theory name="Tismain__shutdownauditlogfailure__subprogram_def" proved="true" sum="3a37246a3561ccaece76e44c716f9b1a">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>

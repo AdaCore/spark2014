@@ -564,9 +564,9 @@
 </theory>
 <theory name="System__default_bit_order" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__any_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -2744,9 +2744,9 @@
 </theory>
 <theory name="Clock__now" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Configdata__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Configdata__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Configdata__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Auditlog__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3432,9 +3432,9 @@
 </theory>
 <theory name="System__default_bit_order___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__default_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3946,7 +3946,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Door__poll__subprogram_def" proved="true" sum="a6c32eaee42b424a2ad53efa3884ef25">
+<theory name="Door__poll__subprogram_def" proved="true" sum="a010b642583c23a9273944c755921d81">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4000,7 +4000,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Door__unlockdoor__subprogram_def" proved="true" sum="ccb73e70bcb511f038aaa657e480c5e5">
+<theory name="Door__unlockdoor__subprogram_def" proved="true" sum="f23697499f8f01853b82dd2e8462d36e">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
@@ -4042,7 +4042,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Door__lockdoor__subprogram_def" proved="true" sum="78572d9d91f69b268bcecd1c28d47b27">
+<theory name="Door__lockdoor__subprogram_def" proved="true" sum="ddb6f82157a50f820d85f68028ceff54">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">

@@ -6,7 +6,7 @@
 <prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
 <prover id="2" name="CVC4_CE" version="1.5-gnatprove" timelimit="10" steplimit="0" memlimit="0"/>
 <prover id="3" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
-<file name="../../../gnatprove/cryptotypes.mlw">
+<file name="../../../gnatprove/privtypes.mlw">
 <theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Standard__short_short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
@@ -225,73 +225,27 @@
 </theory>
 <theory name="Commontypes__integer_image" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__namecountt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__privileget" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__namecountt__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__privileget__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__namei" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__adminprivileget" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__namei__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__adminprivileget__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__namet" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__classt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__T1s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__classt__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__T1s__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__classt_image__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__T2s" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__classt_image__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__blankname" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__classt_image" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__TissueridtB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__clearancet__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__TissueridtB__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__issueridt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__issueridt__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__issueridt_image__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__issueridt_image__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__issueridt_image" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__issuert__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__issuert" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__nullissuer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__algorithmt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__algorithmt__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__keytypet" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__keytypet__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__TkeyidtB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__TkeyidtB__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__keyidt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__keyidt__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__TkeylengthtB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__TkeylengthtB__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__keylengtht" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__keylengtht__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__keypartt__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__keypartt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__nullkeypart" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__clearancet" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Standard__short_short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -336,8 +290,6 @@
 <theory name="Standard__integer_64___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Standard__universal_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__blankname__aggregate_def" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Commontypes__Tunsigned32tB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -389,41 +341,13 @@
 </theory>
 <theory name="Commontypes__stringf1l1000ne___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__namecountt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__privileget___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__namei___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__adminprivileget___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__namet___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__classt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__T1s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__T2s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__TissueridtB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__issueridt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__issuert___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__algorithmt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__keytypet___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__TkeyidtB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__keyidt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__TkeylengthtB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__keylengtht___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__keypartt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__blankname___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__nullissuer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Cryptotypes__nullkeypart___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__clearancet___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Commontypes__stringf1Predicate___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -443,15 +367,15 @@
 </theory>
 <theory name="Commontypes__integer_image___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__issueridt_image___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Privtypes__classt_image___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Cryptotypes__package_def" proved="true" sum="92ce307c626a45b72e18501b2b831796">
+<theory name="Privtypes__package_def" proved="true" sum="e284967f6dbb6592898a5ced2974229f">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Cryptotypes__issueridt_image__subprogram_def" sum="4da56c9eac7f1c0c101fa9390829c905">
+<theory name="Privtypes__classt_image__subprogram_def" sum="5a0b45f13be22869bc243f9a7252d5db">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">

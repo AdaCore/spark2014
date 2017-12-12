@@ -802,13 +802,13 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="95"/></proof>
   <proof prover="2"><result status="unknown" steps="92"/></proof>
-  <proof prover="3"><result status="unknown" steps="28087"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="116"/></proof>
   <proof prover="2"><result status="unknown" steps="116"/></proof>
-  <proof prover="3"><result status="unknown" steps="29619"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>

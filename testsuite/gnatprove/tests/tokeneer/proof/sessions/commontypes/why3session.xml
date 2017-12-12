@@ -359,7 +359,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="115"/></proof>
   <proof prover="2"><result status="unknown" steps="115"/></proof>
-  <proof prover="3"><result status="unknown" steps="27558"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
@@ -374,7 +374,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="115"/></proof>
   <proof prover="2"><result status="unknown" steps="115"/></proof>
-  <proof prover="3"><result status="unknown" steps="27537"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
@@ -389,7 +389,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="115"/></proof>
   <proof prover="2"><result status="unknown" steps="115"/></proof>
-  <proof prover="3"><result status="unknown" steps="27559"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
@@ -404,7 +404,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="115"/></proof>
   <proof prover="2"><result status="unknown" steps="115"/></proof>
-  <proof prover="3"><result status="unknown" steps="27502"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
@@ -419,7 +419,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="115"/></proof>
   <proof prover="2"><result status="unknown" steps="115"/></proof>
-  <proof prover="3"><result status="unknown" steps="27501"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
@@ -434,7 +434,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="116"/></proof>
   <proof prover="2"><result status="unknown" steps="116"/></proof>
-  <proof prover="3"><result status="unknown" steps="29784"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="166"/></proof>
@@ -452,13 +452,13 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="95"/></proof>
   <proof prover="2"><result status="unknown" steps="92"/></proof>
-  <proof prover="3"><result status="unknown" steps="28087"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="116"/></proof>
   <proof prover="2"><result status="unknown" steps="116"/></proof>
-  <proof prover="3"><result status="unknown" steps="29614"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
@@ -470,13 +470,13 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="95"/></proof>
   <proof prover="2"><result status="unknown" steps="92"/></proof>
-  <proof prover="3"><result status="unknown" steps="28081"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="116"/></proof>
   <proof prover="2"><result status="unknown" steps="116"/></proof>
-  <proof prover="3"><result status="unknown" steps="29613"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>

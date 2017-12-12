@@ -550,13 +550,13 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="95"/></proof>
   <proof prover="2"><result status="unknown" steps="92"/></proof>
-  <proof prover="3"><result status="unknown" steps="28179"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="123"/></proof>
   <proof prover="2"><result status="unknown" steps="123"/></proof>
-  <proof prover="3"><result status="unknown" steps="29368"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
