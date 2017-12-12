@@ -1,3 +1,4 @@
 !large SKIP part of large testsuite
 Darwin SKIP platform dependent diff with Z3
+NT SKIP too slow
 ALL RLIMIT 1500

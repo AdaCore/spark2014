@@ -208,12 +208,12 @@ test_vdll.adb:166:11: info: discriminant check proved (CVC4: 1 VC)
 test_vdll.adb:166:11: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:166:17: info: initialization of private part of "L1" proved
 test_vdll.adb:167:18: info: initialization of private part of "L4" proved
-test_vdll.adb:168:19: info: assertion proved (Z3: 1 VC)
+test_vdll.adb:168:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:168:27: info: initialization of private part of "L4" proved
 test_vdll.adb:171:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:171:43: info: initialization of private part of "L4" proved
-test_vdll.adb:172:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:172:19: info: precondition proved (CVC4: 1 VC)
+test_vdll.adb:172:19: medium: assertion might fail, cannot prove Test_Element (L4, First (L4), 4)
 test_vdll.adb:172:44: info: initialization of private part of "L4" proved
 test_vdll.adb:175:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:175:36: info: initialization of private part of "L4" proved
