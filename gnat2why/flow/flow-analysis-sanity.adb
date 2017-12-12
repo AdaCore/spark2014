@@ -108,7 +108,15 @@ package body Flow.Analysis.Sanity is
       procedure Traverse_Declaration_Or_Statement   (N : Node_Id);
       procedure Traverse_Handled_Statement_Sequence (N : Node_Id);
 
-      procedure Check_Expression (N : Node_Id);
+      procedure Check_Expression (N : Node_Id)
+      with Pre => Nkind (N) in N_Full_Type_Declaration
+                             | N_Subtype_Declaration
+                             | N_Incomplete_Type_Declaration
+                             | N_Private_Type_Declaration
+                             | N_Private_Extension_Declaration
+                             | N_Component_Declaration
+                             | N_Discriminant_Specification
+                             | N_Object_Renaming_Declaration;
       --  Check if the expression for the declaration N has variable inputs. In
       --  particular this enforces SPARK RM 4.4(2) by checking:
       --  * a constraint other than the range of a loop parameter specification
@@ -522,7 +530,6 @@ package body Flow.Analysis.Sanity is
                   Typ : constant Type_Id := Defining_Identifier (N);
 
                begin
-
                   --  Check that the type predicate expression, if present,
                   --  does not have variable inputs. We don't use
                   --  Has_Predicates because in case of a type with a
@@ -531,21 +538,13 @@ package body Flow.Analysis.Sanity is
                   --  checks.
 
                   if Present (Get_Pragma (Typ, Pragma_Predicate)) then
-                     declare
-                        Predicate_Func : constant Entity_Id :=
-                          Predicate_Function (Typ);
-
-                     begin
-                        if Present (Predicate_Func) then
-                           Check_Variable_Inputs
-                             (Flow_Ids =>
-                                Variables
-                                  (Get_Expr_From_Return_Only_Func
-                                       (Predicate_Func)),
-                              Err_Desc => "predicate",
-                              Err_Node => Typ);
-                        end if;
-                     end;
+                     Check_Variable_Inputs
+                       (Flow_Ids =>
+                          Variables
+                            (Get_Expr_From_Return_Only_Func
+                               (Predicate_Function (Typ))),
+                        Err_Desc => "predicate",
+                        Err_Node => Typ);
                   end if;
 
                   --  Check that the type invariant expression, if present,
@@ -666,23 +665,26 @@ package body Flow.Analysis.Sanity is
                              First (Discrete_Subtype_Definitions (Typ_Def));
 
                         begin
-                           while Present (Sub_Constraint) loop
-                              pragma Assert
-                                (Nkind (Sub_Constraint) in N_Range
-                                                         | N_Subtype_Indication
-                                 or else
-                                 Ekind (Entity (Sub_Constraint)) in Type_Kind);
-
+                           loop
                               case Nkind (Sub_Constraint) is
                                  when N_Range =>
                                     Check_Subtype_Constraints (Sub_Constraint);
+
                                  when N_Subtype_Indication =>
                                     Check_Subtype_Constraints
                                       (Constraint (Sub_Constraint));
+
+                                 when N_Identifier | N_Expanded_Name =>
+                                    pragma Assert
+                                      (Is_Type (Entity (Sub_Constraint)));
+
                                  when others =>
                                     null;
                               end case;
+
                               Next (Sub_Constraint);
+
+                              exit when No (Sub_Constraint);
                            end loop;
                         end;
                      end if;
