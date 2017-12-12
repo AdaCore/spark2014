@@ -3261,16 +3261,9 @@ package body Flow.Analysis is
          --    the private part of a package
          --  * in the visible part of a private child.
          --  Those do require a Part_Of indicator as per SPARK RM 7.2.6(2-3).
-         --
-         --  ??? Note that here we don't use Is_Constituent but we directly
-         --  check for a Part_Of indicator because at the moment Is_Constituent
-         --  will return True when a constant declared in the private part of
-         --  package is listed in the Refined_State but is missing a Part_Of
-         --  indicator (and therefore Get_Pragma will return False). The
-         --  condition with Get_Pragma could be replaced by Is_Constituent once
-         --  the front end ticket (about fixing the above) will be addressed.
+
          if Ekind (E) = E_Constant
-           and then not Present (Get_Pragma (E, Pragma_Part_Of))
+           and then not Is_Constituent (E)
            and then not In_Body_Declarations (Enclosing_Declaration (E))
          then
             declare
