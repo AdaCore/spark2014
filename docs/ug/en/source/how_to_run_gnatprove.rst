@@ -772,8 +772,10 @@ This might be a problem if |GNATprove| attempts to create such a file in a
 directory that is a shared folder or on a network file system like NFS, which
 does not support such folders. To minimize changes for this to occur,
 |GNATprove| determines the folder to create that special file as follows:
+
 * if the environment variable ``TMPDIR`` is set, and the corresponding directory
   exists and is writeable, use that; otherwise,
 * if ``/tmp`` exists and is writable, use that; otherwise,
 * use the ``gnatprove`` subfolder of the object directory of the root project.
+
 
