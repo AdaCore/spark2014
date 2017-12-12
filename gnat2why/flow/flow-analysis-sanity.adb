@@ -679,7 +679,7 @@ package body Flow.Analysis.Sanity is
                                       (Is_Type (Entity (Sub_Constraint)));
 
                                  when others =>
-                                    null;
+                                    raise Program_Error;
                               end case;
 
                               Next (Sub_Constraint);
