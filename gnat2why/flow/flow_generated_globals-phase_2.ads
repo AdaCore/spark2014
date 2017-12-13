@@ -127,10 +127,9 @@ package Flow_Generated_Globals.Phase_2 is
         Post => GG_Mode = GG_Read_Mode;
    --  Determines the set of all globals
 
-   function GG_Get_State_Abstractions return Name_Sets.Set
+   function GG_Is_Abstract_State (EN : Entity_Name) return Boolean
    with Pre => GG_State_Constituents_Map_Is_Ready;
-   --  @return a set of Entity_Names with all the state abstractions
-   --    that the Generated Globals know of.
+   --  @return true iff EN denotes an abstract state
 
    function GG_Get_Initializes (E : Entity_Id) return Dependency_Maps.Map
    with Pre => GG_Has_Been_Generated and then

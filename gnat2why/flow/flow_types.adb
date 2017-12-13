@@ -553,7 +553,7 @@ package body Flow_Types is
       and then
         (case F.Kind is
             when Direct_Mapping => Is_Abstract_State (F.Node),
-            when Magic_String   => GG_Get_State_Abstractions.Contains (F.Name),
+            when Magic_String   => GG_Is_Abstract_State (F.Name),
             when others         => False));
 
    -----------------

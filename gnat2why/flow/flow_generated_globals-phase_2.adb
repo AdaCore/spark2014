@@ -361,14 +361,12 @@ package body Flow_Generated_Globals.Phase_2 is
       return Direct_Calls;
    end Generated_Calls;
 
-   -------------------------------
-   -- GG_Get_State_Abstractions --
-   -------------------------------
+   --------------------------
+   -- GG_Is_Abstract_State --
+   --------------------------
 
-   function GG_Get_State_Abstractions return Name_Sets.Set is
-   begin
-      return State_Abstractions;
-   end GG_Get_State_Abstractions;
+   function GG_Is_Abstract_State (EN : Entity_Name) return Boolean renames
+     State_Abstractions.Contains;
 
    --------------------
    -- GG_Get_Globals --
