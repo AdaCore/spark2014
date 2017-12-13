@@ -798,12 +798,13 @@ package body Flow.Analysis.Sanity is
                   begin
                      pragma Assert (Nkind (Var) in N_Entity);
 
-                     --  We emit an error if F is a variable. In particular we
-                     --  consider F a variable if is not:
+                     --  We emit an error if F is a non internal variable. In
+                     --  particular we consider F a variable if is not:
                      --  * a constant
                      --  * a bound
                      --  * a discriminant.
-                     if not (Is_Constant (F)
+                     if not (Is_Internal (Var)
+                             or else Is_Constant (F)
                              or else Is_Bound (F)
                              or else Ekind (Var) = E_Discriminant)
                      then
