@@ -784,7 +784,7 @@ package body Flow.Analysis.Sanity is
                F1       => Entire_Variable (F));
          end Emit_Error;
 
-      --  Start of processing for Check_Variable_inputs
+      --  Start of processing for Check_Variable_Inputs
 
       begin
          for F of Flow_Ids loop
@@ -800,13 +800,13 @@ package body Flow.Analysis.Sanity is
 
                      --  We emit an error if F is a non internal variable. In
                      --  particular we consider F a variable if is not:
-                     --  * a constant
                      --  * a bound
+                     --  * a constant object
                      --  * a discriminant.
-                     if not (Is_Internal (Var)
-                             or else Is_Constant (F)
-                             or else Is_Bound (F)
-                             or else Ekind (Var) = E_Discriminant)
+                     if not (Is_Bound (F)
+                             or else Is_Constant_Object (Var)
+                             or else Ekind (Var) = E_Discriminant
+                             or else Is_Internal (Var))
                      then
                         Emit_Error (F);
                         Sane := False;
