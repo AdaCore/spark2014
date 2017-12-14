@@ -2557,38 +2557,56 @@ package body SPARK_Definition is
             Obj : constant Entity_Id :=
               Get_Enclosing_Object (Prefix (Name (N)));
          begin
-            case Ekind (Obj) is
-               when Formal_Kind =>
-                  Mark_Unsupported
-                    ("call to operation of a formal protected parameter", N);
-                  return;
+            if Present (Obj) then
+               case Ekind (Obj) is
+                  when Formal_Kind =>
+                     Mark_Unsupported
+                       ("call to operation of a formal protected parameter",
+                        N);
+                     return;
 
-               --  External calls prefixed with library-level objects are fine
+                  --  Accept external calls prefixed with library-level objects
 
-               when E_Variable =>
-                  null;
+                  when E_Variable =>
+                     null;
 
-               when others =>
-                  raise Program_Error;
-            end case;
+                  when others =>
+                     raise Program_Error;
+               end case;
+            else
+               Mark_Violation
+                 ("call through access to protected operation", N);
+               return;
+            end if;
          end;
       end if;
 
       --  Similar limitation for suspending on suspension objects
       if Suspends_On_Suspension_Object (E) then
-         case Ekind (Get_Enclosing_Object (First_Actual (N))) is
-            when Formal_Kind =>
-               Mark_Unsupported ("suspension on a formal parameter", N);
+         declare
+            Obj : constant Entity_Id :=
+              Get_Enclosing_Object (First_Actual (N));
+         begin
+            if Present (Obj) then
+               case Ekind (Obj) is
+                  when Formal_Kind =>
+                     Mark_Unsupported ("suspension on a formal parameter", N);
+                     return;
+
+                  --  Suspension on library-level objects is fine
+
+                  when E_Variable =>
+                     null;
+
+                  when others =>
+                     raise Program_Error;
+               end case;
+            else
+               Mark_Violation
+                 ("suspension through access to suspension object", N);
                return;
-
-            --  Suspension on library-level objects is fine
-
-            when E_Variable =>
-               null;
-
-            when others =>
-               raise Program_Error;
-         end case;
+            end if;
+         end;
       end if;
 
       if Ekind (E) in E_Function

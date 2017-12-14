@@ -1,1 +1,0 @@
-ALL XFAIL tasking calls via pointers (QC14-025)
