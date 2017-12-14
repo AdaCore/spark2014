@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(steps=9000, prover=["cvc4"])
+prove_all(steps=10000, prover=["cvc4"])

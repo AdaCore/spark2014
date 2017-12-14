@@ -34,6 +34,7 @@ libexec/spark/share dir
 codepeer
 doc
 gcc-6.4.1
+gpr
 gprconfig
 info
 javascript

@@ -1,2 +1,2 @@
 from test_support import *
-prove_all(steps=5000, counterexample=False)
+prove_all(steps=5000, prover=["cvc4", "altergo"], counterexample=False)
