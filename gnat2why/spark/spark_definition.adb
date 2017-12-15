@@ -5204,6 +5204,7 @@ package body SPARK_Definition is
               Pragma_No_Elaboration_Code_All      |
               Pragma_No_Heap_Finalization         |
               Pragma_No_Tagged_Streams            |
+              Pragma_Predicate_Failure            |
               Pragma_Pure_Function                |
               Pragma_Restriction_Warnings         |
               Pragma_Secondary_Stack_Size         |
@@ -5319,7 +5320,6 @@ package body SPARK_Definition is
            Pragma_Post_Class                     |
            Pragma_Pre                            |
            Pragma_Predicate                      |
-           Pragma_Predicate_Failure              |
            Pragma_Prefix_Exception_Messages      |
            Pragma_Pre_Class                      |
            Pragma_Priority_Specific_Dispatching  |

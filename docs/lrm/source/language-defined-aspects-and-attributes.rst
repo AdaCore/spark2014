@@ -54,6 +54,7 @@ Pre			      Yes
 Pre'Class		      Yes
 Post			      Yes
 Post'Class		      Yes
+Predicate_Failure	      Yes
 Preelaborate       	      Yes
 Priority  	  	      Yes
 Pure               	      Yes

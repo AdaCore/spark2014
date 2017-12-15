@@ -135,6 +135,7 @@ Max_Queue_Length              Yes                    Extended Ravenscar
 No_Elaboration_Code_All       Yes
 No_Heap_Finalization          Yes
 Overflow_Mode                 Yes
+Predicate_Failure             Yes
 Pure_Function      	      Yes
 Restriction_Warnings  	      Yes
 Secondary_Stack_Size          Yes
