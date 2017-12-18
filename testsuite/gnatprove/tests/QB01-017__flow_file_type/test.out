@@ -1,0 +1,3 @@
+main.adb:6:15: warning: assuming "Open" has no effect on global items
+main.adb:6:15: warning: no Global contract available for "Open"
+main.adb:6:30: high: "FD" is not initialized
