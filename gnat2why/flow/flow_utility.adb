@@ -2383,9 +2383,7 @@ package body Flow_Utility is
                | E_Discriminant
                | E_Loop_Parameter
                | E_Variable
-               | E_Out_Parameter
-               | E_In_Out_Parameter
-               | E_In_Parameter
+               | Formal_Kind
             =>
                if Is_Discriminal (E) then
                   return Do_Entity (Discriminal_Link (E));
