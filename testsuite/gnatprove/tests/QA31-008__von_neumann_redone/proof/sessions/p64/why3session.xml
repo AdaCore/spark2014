@@ -537,7 +537,7 @@
             <goal name="WP_parameter def.0.0.0.0.0.1.0.0.0.0.0" proved="true">
             <transf name="rewrite" proved="true" arg1="Mod_mult">
              <goal name="WP_parameter def.0.0.0.0.0.1.0.0.0.0.0.0" proved="true">
-             <proof prover="0"><result status="valid" steps="92"/></proof>
+             <proof prover="0"><result status="valid" steps="71"/></proof>
              </goal>
              <goal name="WP_parameter def.0.0.0.0.0.1.0.0.0.0.0.1" proved="true">
              <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -618,7 +618,7 @@
         <goal name="WP_parameter def.0.0.0.0.1.1.0" proved="true">
         <transf name="assert" proved="true" arg1="(forall a b. (a + b) * (a + b) = a * a + b * (2 * a + b))">
          <goal name="WP_parameter def.0.0.0.0.1.1.0.0" proved="true">
-         <proof prover="0"><result status="valid" steps="92"/></proof>
+         <proof prover="0"><result status="valid" steps="70"/></proof>
          </goal>
          <goal name="WP_parameter def.0.0.0.0.1.1.0.1" proved="true">
          <transf name="rewrite" proved="true" arg1="h">
@@ -914,12 +914,14 @@
      </transf>
      </goal>
      <goal name="WP_parameter def.68.0.0.1" proved="true">
+     <proof prover="1"><result status="valid" steps="5"/></proof>
      <proof prover="2"><result status="valid" steps="692"/></proof>
      </goal>
     </transf>
     </goal>
     <goal name="WP_parameter def.68.0.1" proved="true">
-    <proof prover="0"><result status="valid" steps="163"/></proof>
+    <proof prover="0"><result status="valid" steps="150"/></proof>
+    <proof prover="1"><result status="valid" steps="5"/></proof>
     </goal>
    </transf>
    </goal>
@@ -943,6 +945,7 @@
       <proof prover="2"><result status="valid" steps="1033053"/></proof>
       </goal>
       <goal name="WP_parameter def.70.0.0.0.1" expl="loop invariant preservation (true case)" proved="true">
+      <proof prover="1"><result status="valid" steps="5468"/></proof>
       <proof prover="2"><result status="valid" steps="8530"/></proof>
       </goal>
      </transf>
@@ -977,11 +980,11 @@
           <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0" expl="loop invariant preservation (false case)" proved="true">
           <transf name="rewrite" proved="true" arg1="&lt;-" arg2="H89">
            <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0" expl="loop invariant preservation (false case)" proved="true">
-           <transf name="assert" proved="true" arg1="(t&apos;int Num10 &lt;= t&apos;int (sub B9 (of_int1 1)))">
+           <transf name="assert" proved="true" arg1="(t&#39;int Num10 &lt;= t&#39;int (sub B9 (of_int1 1)))">
             <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.0" proved="true">
             <transf name="clear_but" proved="true" arg1="h2">
              <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.0.0" proved="true">
-             <proof prover="0"><result status="valid" steps="165"/></proof>
+             <proof prover="0"><result status="valid" steps="223"/></proof>
              </goal>
             </transf>
             </goal>
@@ -997,7 +1000,7 @@
                 <proof prover="1"><result status="valid" steps="5"/></proof>
                 </goal>
                 <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1" proved="true">
-                <transf name="assert" proved="true" arg1="(t&apos;int Res_G10 + t&apos;int Bits_G10 &lt; 4294967296)">
+                <transf name="assert" proved="true" arg1="(t&#39;int Res_G10 + t&#39;int Bits_G10 &lt; 4294967296)">
                  <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.0" proved="true">
                  <proof prover="1"><result status="valid" steps="489737"/></proof>
                  <proof prover="2" timelimit="600" memlimit="1000"><result status="valid" steps="6062149"/></proof>
@@ -1011,9 +1014,27 @@
                     <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0" proved="true">
                     <transf name="rewrite" proved="true" arg1="to_uint_sub_bounded">
                      <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0" proved="true">
-                     <transf name="assert" proved="true" arg1="((t&apos;int Res_G10 + t&apos;int Bits_G10) *(t&apos;int Res_G10 + t&apos;int Bits_G10)  &lt; two_power_size)">
+                     <transf name="assert" proved="true" arg1="((t&#39;int Res_G10 + t&#39;int Bits_G10) *(t&#39;int Res_G10 + t&#39;int Bits_G10)  &lt; two_power_size)">
                       <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.0" proved="true">
-                      <proof prover="0"><result status="valid" steps="637"/></proof>
+                      <transf name="replace" proved="true" arg1="two_power_size" arg2="(4294967296 * 4294967296)">
+                       <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.0.0" proved="true">
+                       <transf name="assert" proved="true" arg1="(forall a b. 0 &lt;= a &lt; b -&gt; a * a &lt; b * b)">
+                        <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.0.0.0" proved="true">
+                        <proof prover="2" timelimit="2" memlimit="1000"><result status="valid" steps="223586"/></proof>
+                        </goal>
+                        <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.0.0.1" proved="true">
+                        <transf name="apply" proved="true" arg1="h">
+                         <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.0.0.1.0" proved="true">
+                         <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="6124"/></proof>
+                         </goal>
+                        </transf>
+                        </goal>
+                       </transf>
+                       </goal>
+                       <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.0.1" proved="true">
+                       <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="5"/></proof>
+                       </goal>
+                      </transf>
                       </goal>
                       <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1" proved="true">
                       <transf name="rewrite" proved="true" arg1="to_uint_mul_bounded">
@@ -1022,10 +1043,17 @@
                         <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.0.0" proved="true">
                         <transf name="rewrite" proved="true" arg1="to_uint_mul_bounded">
                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.0.0.0" proved="true">
-                         <proof prover="0"><result status="valid" steps="1025"/></proof>
+                         <transf name="replace" proved="true" arg1="(t&#39;int (of_int1 2))" arg2="2">
+                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.0.0.0.0" proved="true">
+                          <proof prover="0" timelimit="2" memlimit="1000"><result status="valid" steps="157"/></proof>
+                          </goal>
+                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.0.0.0.1" proved="true">
+                          <proof prover="2" timelimit="2" memlimit="1000"><result status="valid" steps="722"/></proof>
+                          </goal>
+                         </transf>
                          </goal>
                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.0.0.1" proved="true">
-                         <proof prover="1"><result status="valid" steps="6124"/></proof>
+                         <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="6124"/></proof>
                          <proof prover="2" timelimit="2" memlimit="1000"><result status="valid" steps="1335335"/></proof>
                          </goal>
                         </transf>
@@ -1036,8 +1064,7 @@
                          <proof prover="1"><result status="valid" steps="6124"/></proof>
                          </goal>
                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.0.1.1" proved="true">
-                         <proof prover="0"><result status="valid" steps="279"/></proof>
-                         <proof prover="2" timelimit="2" memlimit="1000"><result status="valid" steps="1335335"/></proof>
+                         <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="6124"/></proof>
                          </goal>
                         </transf>
                         </goal>
@@ -1048,20 +1075,36 @@
                         <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.1.0" proved="true">
                         <transf name="rewrite" proved="true" arg1="to_uint_mul_bounded">
                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.1.0.0" proved="true">
-                         <proof prover="0"><result status="valid" steps="561"/></proof>
+                         <transf name="replace" proved="true" arg1="(t&#39;int (of_int1 2))" arg2="2">
+                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.1.0.0.0" proved="true">
+                          <proof prover="0" timelimit="2" memlimit="1000"><result status="valid" steps="149"/></proof>
+                          </goal>
+                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.1.0.0.1" proved="true">
+                          <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="5"/></proof>
+                          </goal>
+                         </transf>
                          </goal>
                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.1.0.1" proved="true">
                          <proof prover="1"><result status="valid" steps="6124"/></proof>
+                         <transf name="replace" proved="true" arg1="(t&#39;int (of_int1 2))" arg2="2">
+                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.1.0.1.0" proved="true">
+                          <proof prover="0" timelimit="2" memlimit="1000"><result status="valid" steps="166"/></proof>
+                          </goal>
+                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.1.0.1.1" proved="true">
+                          <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="5"/></proof>
+                          </goal>
+                         </transf>
                          </goal>
                         </transf>
                         </goal>
                         <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.1.1" proved="true">
                         <transf name="rewrite" proved="true" arg1="to_uint_mul_bounded">
                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.1.1.0" proved="true">
+                         <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="6124"/></proof>
                          <proof prover="2"><result status="valid" steps="1335487"/></proof>
                          </goal>
                          <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.0.1.1.1.1" proved="true">
-                         <proof prover="1"><result status="valid" steps="6124"/></proof>
+                         <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="6124"/></proof>
                          </goal>
                         </transf>
                         </goal>
@@ -1075,10 +1118,10 @@
                      <proof prover="2"><result status="valid" steps="19391978"/></proof>
                      <transf name="split_goal_wp_conj" proved="true" >
                       <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.1.0" proved="true">
-                      <proof prover="0" timelimit="2" memlimit="1000"><result status="valid" steps="488"/></proof>
+                      <proof prover="0" timelimit="2" memlimit="1000"><result status="valid" steps="398"/></proof>
                       </goal>
                       <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.0.0.1.1" proved="true">
-                      <proof prover="0" timelimit="2" memlimit="1000"><result status="valid" steps="177"/></proof>
+                      <proof prover="0" timelimit="2" memlimit="1000"><result status="valid" steps="156"/></proof>
                       <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="6124"/></proof>
                       </goal>
                      </transf>
@@ -1088,12 +1131,12 @@
                    </transf>
                    </goal>
                    <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.0.1" proved="true">
-                   <proof prover="0"><result status="valid" steps="187"/></proof>
+                   <proof prover="0" timelimit="2" memlimit="1000"><result status="valid" steps="165"/></proof>
                    </goal>
                   </transf>
                   </goal>
                   <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.0.1.1.1" proved="true">
-                  <proof prover="1"><result status="valid" steps="5"/></proof>
+                  <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="5"/></proof>
                   </goal>
                  </transf>
                  </goal>
@@ -1102,12 +1145,12 @@
                </transf>
                </goal>
                <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.0.1" proved="true">
-               <proof prover="0"><result status="valid" steps="434"/></proof>
+               <proof prover="0" timelimit="50" memlimit="1000"><result status="valid" steps="11504"/></proof>
                </goal>
               </transf>
               </goal>
               <goal name="WP_parameter def.70.1.1.0.1.0.0.0.0.0.1.0.1" proved="true">
-              <proof prover="2"><result status="valid" steps="710"/></proof>
+              <proof prover="2" timelimit="2" memlimit="1000"><result status="valid" steps="710"/></proof>
               </goal>
              </transf>
              </goal>
@@ -1118,14 +1161,14 @@
           </transf>
           </goal>
           <goal name="WP_parameter def.70.1.1.0.1.0.0.0.1" proved="true">
-          <proof prover="1"><result status="valid" steps="1091"/></proof>
+          <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="1091"/></proof>
           </goal>
          </transf>
          </goal>
         </transf>
         </goal>
         <goal name="WP_parameter def.70.1.1.0.1.0.1" proved="true">
-        <proof prover="1"><result status="valid" steps="5"/></proof>
+        <proof prover="1" timelimit="2" memlimit="1000"><result status="valid" steps="5"/></proof>
         </goal>
        </transf>
        </goal>
@@ -1197,23 +1240,23 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="940"/></proof>
+  <proof prover="0"><result status="valid" steps="458"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="104"/></proof>
+  <proof prover="0"><result status="valid" steps="91"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="103"/></proof>
+  <proof prover="0"><result status="valid" steps="90"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
   <transf name="split_all_full" proved="true" >
    <goal name="WP_parameter def.3.0" expl="postcondition" proved="true">
-   <proof prover="0"><result status="valid" steps="6596"/></proof>
+   <proof prover="0"><result status="valid" steps="154"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9231"/></proof>
+  <proof prover="0"><result status="valid" steps="667"/></proof>
   </goal>
  </transf>
  </goal>

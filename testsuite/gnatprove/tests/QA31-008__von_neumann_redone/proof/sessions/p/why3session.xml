@@ -2,8 +2,9 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.5-gnatprove" timelimit="0" steplimit="0" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.5-gnatprove" timelimit="0" steplimit="18500" memlimit="0"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="0" steplimit="0" memlimit="0"/>
+<prover id="2" name="CVC4_CE" version="1.5-gnatprove" timelimit="10" steplimit="18500" memlimit="0"/>
 <file name="../../../gnatprove/p.mlw" proved="true">
 <theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -617,18 +618,25 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="0" timelimit="2" memlimit="1000"><result status="valid" steps="11616"/></proof>
+  <proof prover="0"><result status="valid" steps="11616"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="unknown" steps="18517"/></proof>
   <proof prover="1"><result status="valid" steps="1939316"/></proof>
+  <proof prover="2"><result status="unknown" steps="18513"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="unknown" steps="18519"/></proof>
   <proof prover="1"><result status="valid" steps="1134331"/></proof>
+  <proof prover="2"><result status="unknown" steps="18520"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
+  <proof prover="0"><result status="unknown" steps="18513"/></proof>
   <proof prover="1"><result status="valid" steps="42210483"/></proof>
+  <proof prover="2"><result status="unknown" steps="18516"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition" proved="true">
+  <proof prover="0"><result status="unknown" steps="18513"/></proof>
   <proof prover="1"><result status="valid" steps="4705318"/></proof>
   </goal>
  </transf>

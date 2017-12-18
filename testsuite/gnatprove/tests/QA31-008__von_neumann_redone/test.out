@@ -207,7 +207,7 @@ p32.adb:123:33: info: loop invariant preservation proved (CVC4: 1 VC)
 p32.adb:123:41: info: precondition proved (CVC4: 1 VC)
 p32.adb:123:47: info: initialization of "M" proved
 p32.adb:125:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p32.adb:125:33: info: loop invariant preservation proved (CVC4: 6 VC; Z3: 6 VC; altergo: 8 VC)
+p32.adb:125:33: info: loop invariant preservation proved (CVC4: 11 VC; Z3: 8 VC; altergo: 6 VC)
 p32.adb:125:43: info: initialization of "Res_G" proved
 p32.adb:125:51: info: precondition proved (CVC4: 1 VC)
 p32.adb:125:57: info: initialization of "M" proved
@@ -362,7 +362,7 @@ p64.adb:114:48: info: initialization of "Bits_G" proved
 p64.adb:114:57: info: precondition proved (CVC4: 1 VC)
 p64.adb:114:63: info: initialization of "M" proved
 p64.adb:116:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p64.adb:116:33: info: loop invariant preservation proved (CVC4: 3 VC; Z3: 1 VC; altergo: 1 VC)
+p64.adb:116:33: info: loop invariant preservation proved (CVC4: 4 VC; altergo: 1 VC)
 p64.adb:116:37: info: initialization of "Num" proved
 p64.adb:116:48: info: initialization of "Res_G" proved
 p64.adb:118:33: info: initialization of "Res_G" proved
@@ -371,7 +371,7 @@ p64.adb:118:33: info: loop invariant preservation proved (CVC4: 1 VC)
 p64.adb:118:41: info: precondition proved (CVC4: 1 VC)
 p64.adb:118:47: info: initialization of "M" proved
 p64.adb:120:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p64.adb:120:33: info: loop invariant preservation proved (CVC4: 12 VC; Z3: 5 VC; altergo: 7 VC)
+p64.adb:120:33: info: loop invariant preservation proved (CVC4: 18 VC; Z3: 5 VC; altergo: 5 VC)
 p64.adb:120:43: info: initialization of "Res_G" proved
 p64.adb:120:51: info: precondition proved (CVC4: 1 VC)
 p64.adb:120:57: info: initialization of "M" proved
