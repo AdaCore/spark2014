@@ -12,6 +12,14 @@ package body P is
             --
             --  This is just like the non-protected Proc procedure below.
          end record;
+
+         function Nested_Func return Integer is
+            type T is record
+               C : Integer := PO.X;
+            end record;
+         begin
+            return 0;
+         end;
       begin
          null;
       end;
@@ -25,6 +33,14 @@ package body P is
             --
             --  This is just like the non-protected Fun function below.
          end record;
+
+         procedure Nested_Proc is
+            type T is record
+               C : Integer := PO.X;
+            end record;
+         begin
+            null;
+         end;
       begin
          return 0;
       end;

@@ -2406,12 +2406,53 @@ package body Flow_Utility is
                   return Flow_Id_Sets.Empty_Set;
                end if;
 
-               --  Ignore discriminants and components unless they come
-               --  from task or protected types.
-               if Ekind (E) in E_Discriminant | E_Component
-                 and then Ekind (Scope (E)) not in E_Protected_Type
-                                                 | E_Task_Type
-               then
+               --  Special-case discriminants, components and constituents of
+               --  protected types referenced within their own types.
+
+               if Is_Protected_Component_Or_Discr_Or_Part_Of (E) then
+                  declare
+                     Curr_Scope : Entity_Id := Find_Enclosing_Scope (N);
+                     Prev_Scope : Entity_Id;
+
+                  begin
+                     --  Detect discriminants referenced within their own type
+                     --  definition.
+
+                     if Ekind (Curr_Scope) = E_Protected_Type then
+                        pragma Assert (Ekind (E) = E_Discriminant);
+
+                        --  ??? those discriminants appear to be returned
+                        --  by Get_Variables, but later ignored in
+                        --  Check_Variable_Inputs.
+
+                     --  Detect discriminants and protected components
+                     --  referenced within protected functions or protected
+                     --  procedures/entries.
+
+                     else
+                        loop
+                           Prev_Scope := Curr_Scope;
+                           Curr_Scope := Enclosing_Unit (Curr_Scope);
+                           exit when
+                             Ekind (Curr_Scope) = E_Protected_Type;
+                        end loop;
+
+                        case Ekind (Prev_Scope) is
+                           when E_Function =>
+                              return Flow_Id_Sets.Empty_Set;
+
+                           when E_Procedure | E_Entry =>
+                              null;
+
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                     end if;
+                  end;
+
+               --  Ignore other discriminants and components
+
+               elsif Ekind (E) in E_Component | E_Discriminant then
                   return Flow_Id_Sets.Empty_Set;
                end if;
 
