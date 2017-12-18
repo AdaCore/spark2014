@@ -2413,19 +2413,18 @@ package body Flow_Utility is
                      Prev_Scope : Entity_Id;
 
                   begin
-                     --  Detect discriminants referenced within their own type
-                     --  definition.
+                     --  Detect references within the type definition itself
 
                      if Ekind (Curr_Scope) = E_Protected_Type then
                         pragma Assert (Ekind (E) = E_Discriminant);
 
-                        --  ??? those discriminants appear to be returned
-                        --  by Get_Variables, but later ignored in
-                        --  Check_Variable_Inputs.
+                         --  ??? those discriminants are returned by
+                         --  Get_Variables, but later ignored in
+                         --  Check_Variable_Inputs as if they would belong to
+                         --  an IN mode parameter.
 
-                     --  Detect discriminants and protected components
-                     --  referenced within protected functions or protected
-                     --  procedures/entries.
+                     --  Detect references within protected functions and
+                     --  protected procedures/entries.
 
                      else
                         loop

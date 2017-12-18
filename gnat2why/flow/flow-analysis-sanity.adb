@@ -802,7 +802,8 @@ package body Flow.Analysis.Sanity is
                      --  particular we consider F a variable if is not:
                      --  * a bound
                      --  * a constant object
-                     --  * a discriminant.
+                     --  * a discriminant of a protected type
+
                      if not (Is_Bound (F)
                              or else Is_Constant_Object (Var)
                              or else Ekind (Var) = E_Discriminant
