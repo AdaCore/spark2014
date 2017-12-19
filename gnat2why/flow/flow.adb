@@ -1130,7 +1130,8 @@ package body Flow is
             FA.Is_Main :=
               (case Ekind (E) is
                when E_Function
-                  | E_Procedure => Might_Be_Main (E),
+                  | E_Procedure => Might_Be_Main (E)
+                                   or else Is_Interrupt_Handler (E),
                when E_Entry     => False,
                when E_Task_Type => True,
                when others      => raise Program_Error);

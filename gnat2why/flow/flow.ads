@@ -258,9 +258,9 @@ package Flow is
       case Kind is
          when Kind_Subprogram | Kind_Task =>
             Is_Main : Boolean;
-            --  True if this is a task or a main program, i.e. a library level
+            --  True if this is a task, a main program, i.e. a library level
             --  subprogram without formal parameters (global parameters are
-            --  allowed).
+            --  allowed) or an interrupt handler.
 
             Global_N          : Node_Id;
             Refined_Global_N  : Node_Id;
