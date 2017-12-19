@@ -6285,7 +6285,6 @@ package body Flow.Control_Flow_Graph is
                   for Var of Vars loop
                      if not Synthetic (Var)
                        and then not Known_Vars.Contains (Var)
-                       and then not Is_Discriminant (Var)
                      then
                         FA.GG.Globals.Include (Get_Direct_Mapping_Id (Var));
                      end if;
