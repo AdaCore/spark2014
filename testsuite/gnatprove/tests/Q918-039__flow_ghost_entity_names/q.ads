@@ -1,3 +1,4 @@
 package Q is
-   procedure Foo (X : Integer) with Ghost;
+   procedure Foo (X : Integer);
+   procedure Bar (X : Integer);
 end Q;

@@ -1411,6 +1411,7 @@ package body Flow is
                      --  We exclude tasks from this check since it is only
                      --  relevant for subprograms.
                      Analysis.Check_Terminating_Annotation (FA);
+                     Analysis.Check_Ghost_Procedure_Outputs (FA);
                   end if;
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   if FA.Is_Main then

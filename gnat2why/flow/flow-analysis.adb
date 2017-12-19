@@ -3787,6 +3787,38 @@ package body Flow.Analysis is
       end loop;
    end Check_Depends_Contract;
 
+   -----------------------------------
+   -- Check_Ghost_Procedure_Outputs --
+   -----------------------------------
+
+   procedure Check_Ghost_Procedure_Outputs (FA : in out Flow_Analysis_Graphs)
+   is
+      Globals : Global_Flow_Ids;
+   begin
+      if Ekind (FA.Analyzed_Entity) = E_Procedure
+        and then Is_Ghost_Entity (FA.Analyzed_Entity)
+      then
+         Get_Globals (Subprogram  => FA.Analyzed_Entity,
+                      Scope       => FA.B_Scope,
+                      Classwide   => False,
+                      Globals     => Globals);
+
+         for Output of Globals.Outputs loop
+            if not Is_Ghost_Object (Output) then
+               Error_Msg_Flow  (FA       => FA,
+                                Msg      => "ghost procedure & cannot have " &
+                                            "non-ghost global output &",
+                                N        => FA.Analyzed_Entity,
+                                F1       => Direct_Mapping_Id
+                                              (FA.Analyzed_Entity),
+                                F2       => Output,
+                                Severity => Medium_Check_Kind,
+                                SRM_Ref  => "6.9(20)");
+            end if;
+         end loop;
+      end if;
+   end Check_Ghost_Procedure_Outputs;
+
    -------------------------------------------
    -- Check_Consistent_AS_For_Private_Child --
    -------------------------------------------

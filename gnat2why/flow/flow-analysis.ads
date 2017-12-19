@@ -195,6 +195,11 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
+   procedure Check_Ghost_Procedure_Outputs (FA : in out Flow_Analysis_Graphs)
+   with Pre => FA.Kind = Kind_Subprogram;
+   --  Check if the ghost procedure has any non-ghost (global) outputs. This is
+   --  to enforce SPARK RM 6.9(20).
+
    procedure Check_Concurrent_Accesses (GNAT_Root : Node_Id)
    with Pre => Nkind (GNAT_Root) = N_Compilation_Unit;
    --  Check exclusivity rules for concurrent accesses to library-level objects
