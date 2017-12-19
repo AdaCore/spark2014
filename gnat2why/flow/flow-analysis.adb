@@ -3201,7 +3201,8 @@ package body Flow.Analysis is
       Pkg_Body : constant Node_Id := Package_Body (FA.Spec_Entity);
 
       procedure Check_Hidden_State_Variables_And_Missing_Part_Of
-        (E : Entity_Id)
+        (E       : Entity_Id;
+         Part_Of : Boolean)
         with Pre => Ekind (E) in E_Constant | E_Variable
                     and not Is_Internal (E)
                     and not Is_Part_Of_Concurrent_Object (E);
@@ -3209,25 +3210,34 @@ package body Flow.Analysis is
       --  * a state variable is not mentioned as a constituent of an abstract
       --    state when it should be;
       --  * a state variable is missing the Part_Of indicator which is required
-      --    by SPARK RM 7.2.6(2-3).
+      --    by SPARK RM 7.2.6(2-3). This check is guarded by the Part_Of flag.
 
-      procedure Traverse_Declarations (L : List_Id);
+      procedure Traverse_Declarations (L       : List_Id;
+                                       Part_Of : Boolean := False);
+      --  Traverse declarations in L.
+      --  Part_Of is set to True when we are in the private part of a package
+      --  or in the visible part of a private child. We use this parameter to
+      --  remember where we come from in the traveral and pass it to
+      --  Check_Hidden_State_Variables_And_Missing_Part_Of to only emit a check
+      --  about a missing Part_Of (SPARK RM 7.2.6(2-3)).
 
       ------------------------------------------------------
       -- Check_Hidden_State_Variables_And_Missing_Part_Of --
       ------------------------------------------------------
 
       procedure Check_Hidden_State_Variables_And_Missing_Part_Of
-        (E : Entity_Id)
+        (E       : Entity_Id;
+         Part_Of : Boolean)
       is
       begin
          if Is_Constituent (E) then
 
-            --  Find state variable that is a Part_Of some state, but not
+            --  Detect state variable that is a Part_Of some state, but not
             --  listed in its refinement.
 
             declare
                State : constant Entity_Id := Encapsulating_State (E);
+
             begin
                if Refinement_Exists (State)
                  and then not Find_In_Refinement (State, E)
@@ -3244,12 +3254,47 @@ package body Flow.Analysis is
             end;
 
          else
-            --  Detect hidden variables in the private part of a package or in
-            --  the package body that are not part of any refinement.
 
-            if Ekind (E) = E_Variable
-              and then not In_Visible_Declarations (Enclosing_Declaration (E))
+            --  Detect constants with variable inputs without Part_Of that do
+            --  require one (SPARK RM 7.2.6(2-3)) and emit a check.
+
+            if Part_Of
+              and then Ekind (E) = E_Constant
             then
+               declare
+                  S : constant Node_Id := Scope (E);
+
+                  Msg : constant String :=
+                    (if Is_Child_Unit (S)
+                     then "visible part of the private child"
+                     else "private part of package");
+
+                  SRM_Ref : constant String :=
+                    (if Is_Child_Unit (S)
+                     then "7.2.6(3)"
+                     else "7.2.6(2)");
+
+               begin
+                  pragma Assert (if Is_Child_Unit (S)
+                                 then Is_Private_Descendant (S)
+                                 and then In_Visible_Declarations
+                                            (Enclosing_Declaration (E)));
+
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "indicator Part_Of is required in this "
+                                 & "context: & is declared in the "
+                                 & Msg & " &",
+                     SRM_Ref  => SRM_Ref,
+                     N        => E,
+                     Severity => Error_Kind,
+                     F1       => Direct_Mapping_Id (E),
+                     F2       => Direct_Mapping_Id (FA.Spec_Entity));
+               end;
+
+            --  Detect hidden state and emit a message
+
+            else
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "& needs to be a constituent " &
@@ -3259,44 +3304,6 @@ package body Flow.Analysis is
                   Tag      => Hidden_Unexposed_State,
                   Severity => Medium_Check_Kind);
             end if;
-
-            --  Look for constants with variable inputs without Part_Of that
-            --  are declared:
-            --  * in the private part of a package
-            --  * in the visible part of a package declared immediately within
-            --    the private part of a package
-            --  * in the visible part of a private child.
-            --  Those do require a Part_Of indicator, see SPARK RM 7.2.6(2-3).
-
-            if Ekind (E) = E_Constant
-              and then not In_Body_Declarations (Enclosing_Declaration (E))
-            then
-               declare
-                  S : constant Entity_Id := Scope (E);
-
-                  Msg : constant String :=
-                    (if Is_Private_Descendant (S)
-                     then "visible part of the private child"
-                     else "private part of package");
-
-                  SRM_Ref : constant String :=
-                    (if Is_Private_Descendant (S)
-                     then "7.2.6(3)"
-                     else "7.2.6(2)");
-
-               begin
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "indicator Part_Of is required in this "
-                                  & "context: & is declared in the "
-                                  & Msg & " &",
-                     SRM_Ref  => SRM_Ref,
-                     N        => E,
-                     Severity => Error_Kind,
-                     F1       => Direct_Mapping_Id (E),
-                     F2       => Direct_Mapping_Id (FA.Spec_Entity));
-               end;
-            end if;
          end if;
       end Check_Hidden_State_Variables_And_Missing_Part_Of;
 
@@ -3304,7 +3311,8 @@ package body Flow.Analysis is
       -- Traverse_Declarations --
       ---------------------------
 
-      procedure Traverse_Declarations (L : List_Id) is
+      procedure Traverse_Declarations (L       : List_Id;
+                                       Part_Of : Boolean := False) is
          N : Node_Id := First (L);
       begin
          while Present (N) loop
@@ -3320,15 +3328,19 @@ package body Flow.Analysis is
                        and then not Is_Internal (E)
                        and then not Is_Part_Of_Concurrent_Object (E)
                      then
+
                         --  Detect which of the state variables are hidden or
                         --  are missing a Part_Of indicator and emit a message.
-                        Check_Hidden_State_Variables_And_Missing_Part_Of (E);
+
+                        Check_Hidden_State_Variables_And_Missing_Part_Of
+                          (E, Part_Of);
                      end if;
                   end;
 
                --  N is a nested package. If the relative part is in SPARK, we
                --  recursively traverse its visible, private and body
                --  declarations.
+
                when N_Package_Declaration =>
                   declare
                      E        : constant Entity_Id := Defining_Entity (N);
@@ -3338,13 +3350,20 @@ package body Flow.Analysis is
 
                   begin
                      if Entity_Spec_In_SPARK (E) then
+
+                        --  Here we traverse the visible declarations of the
+                        --  nested package and we use the parameter Part_Of to
+                        --  remember if we were looking for missing Part_Of
+                        --  indicators.
+
                         Traverse_Declarations
-                          (Visible_Declarations (Pkg_Spec));
+                          (Visible_Declarations (Pkg_Spec), Part_Of);
 
                         --  The following is for packages that have hidden
                         --  states not exposed through an abstract state. The
                         --  case where they have abstract states will be
                         --  checked when analyzing the package itself.
+
                         if No (Abstract_States (E))
                           and then Private_Spec_In_SPARK (E)
                         then
@@ -3369,24 +3388,51 @@ package body Flow.Analysis is
    --  Start of processing for Find_Hidden_Unexposed_State
 
    begin
-      --  If the analyzed package has abstract states then traverse its private
-      --  and body declarations.
-      if Present (Abstract_States (FA.Spec_Entity))
-        and then Private_Spec_In_SPARK (FA.Spec_Entity)
-      then
-         Traverse_Declarations (Private_Declarations (Pkg_Spec));
-
-         if Entity_Body_In_SPARK (FA.Spec_Entity) then
-            Traverse_Declarations (Declarations (Pkg_Body));
-         end if;
-      end if;
-
-      --  Traverse declarations from the visible part of a private child.
-      --  This is to enforce SPARK RM 7.2.6(3).
       if Is_Child_Unit (FA.Spec_Entity)
         and then Is_Private_Descendant (FA.Spec_Entity)
       then
-         Traverse_Declarations (Visible_Declarations (Pkg_Spec));
+         --  For a private child we enforce SPARK RM 7.2.6(3) and therefore we
+         --  traverse its visible declarations setting the flag Part_Of to
+         --  True. Note that if the private child has or has not an abstract
+         --  state does not have any influence on this because the Part_Of
+         --  indicator could also denote a state abstraction declared by the
+         --  parent unit of the or by a public descendant of that parent unit.
+
+         Traverse_Declarations (Visible_Declarations (Pkg_Spec),
+                                Part_Of => True);
+
+         --  If the private child does not have an abstract state but the
+         --  parent does, then we need to check if it contains any hidden state
+         --  for the parent abstract state and we therefore traverse the
+         --  private and body part.
+
+         if No (Abstract_States (FA.Spec_Entity))
+           and then Present (Abstract_States (Scope (FA.Spec_Entity)))
+         then
+            Traverse_Declarations (Private_Declarations (Pkg_Spec));
+
+            if Entity_Body_In_SPARK (FA.Spec_Entity) then
+               Traverse_Declarations (Declarations (Pkg_Body));
+            end if;
+         end if;
+
+      else
+
+         if Present (Abstract_States (FA.Spec_Entity)) then
+
+            --  For a package with abstract states we enforce SPARK RM 7.2.6(2)
+            --  and therefore we traverse its private declarations setting the
+            --  flag Part_Of to True.
+
+            Traverse_Declarations (Private_Declarations (Pkg_Spec),
+                                   Part_Of => True);
+
+            --  We also detect hidden state in the body part
+
+            if Entity_Body_In_SPARK (FA.Spec_Entity) then
+               Traverse_Declarations (Declarations (Pkg_Body));
+            end if;
+         end if;
       end if;
    end Find_Hidden_Unexposed_State;
 
