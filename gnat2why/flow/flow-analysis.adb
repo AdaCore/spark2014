@@ -4420,11 +4420,14 @@ package body Flow.Analysis is
       begin
          for F of FS loop
             if Is_Volatile (F) then
+
                --  We just found a volatile effect
+
                Volatile_Effect_Found := True;
 
                --  Issue error if dealing with nonvolatile function; SPARK RM
                --  7.1.3(8).
+
                if not Volatile_Effect_Expected then
                   Error_Msg_Flow
                     (FA       => FA,
@@ -4444,8 +4447,10 @@ package body Flow.Analysis is
 
    begin
       if Ekind (FA.Analyzed_Entity) /= E_Function then
+
          --  If we are not dealing with a function then we have nothing to do
          --  here.
+
          return;
       end if;
 
@@ -4460,6 +4465,7 @@ package body Flow.Analysis is
       begin
          --  Populate global sets using (possibly generated) Global from the
          --  function specification.
+
          Get_Globals (Subprogram => FA.Analyzed_Entity,
                       Scope      => FA.S_Scope,
                       Classwide  => False,
@@ -4475,7 +4481,15 @@ package body Flow.Analysis is
          pragma Assert (Globals.Outputs.Is_Empty);
       end;
 
+      --  The function is volatile if its parameters are of a volatile type
+
+      Volatile_Effect_Found :=
+        Volatile_Effect_Found
+        or else (for some F of Get_Explicit_Formals (FA.Analyzed_Entity)
+                 => Is_Effectively_Volatile (Etype (F)));
+
       --  Warn about volatile function without volatile effects
+
       if Volatile_Effect_Expected
         and then not Volatile_Effect_Found
       then
