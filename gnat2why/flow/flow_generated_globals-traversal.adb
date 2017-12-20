@@ -302,6 +302,15 @@ package body Flow_Generated_Globals.Traversal is
 
       procedure Traverse_Declaration_Or_Statement (N : Node_Id) is
       begin
+         --  Call Process on all declarations
+
+         if Nkind (N) in N_Declaration
+           or else Nkind (N) in N_Later_Decl_Item
+           or else Nkind (N) = N_Entry_Body
+         then
+            Process (N);
+         end if;
+
          case Nkind (N) is
             when N_Package_Declaration =>
                Traverse_Visible_And_Private_Parts (Specification (N));
@@ -425,15 +434,6 @@ package body Flow_Generated_Globals.Traversal is
 
          while Present (N) loop
 
-            --  Call Process on all declarations
-
-            if Nkind (N) in N_Declaration
-              or else Nkind (N) in N_Later_Decl_Item
-              or else Nkind (N) = N_Entry_Body
-            then
-               Process (N);
-            end if;
-
             Traverse_Declaration_Or_Statement (N);
 
             Next (N);
@@ -550,14 +550,6 @@ package body Flow_Generated_Globals.Traversal is
         and then Is_Generic_Unit (Corresponding_Spec (Lu))
       then
          return;
-      end if;
-
-      --  Call Process on all declarations
-
-      if Nkind (Lu) in N_Declaration
-        or else Nkind (Lu) in N_Later_Decl_Item
-      then
-         Process (Lu);
       end if;
 
       --  Traverse the unit
