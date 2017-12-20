@@ -495,9 +495,7 @@ package body Flow_Generated_Globals.Traversal is
       begin
          case Ekind (Spec_E) is
             when E_Package =>
-               Traverse_Declarations_Or_Statements (Declarations (N));
-               Traverse_Handled_Statement_Sequence
-                 (Handled_Statement_Sequence (N));
+               Traverse_Declarations_And_HSS (N);
 
             when E_Generic_Package =>
                null;
