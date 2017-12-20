@@ -528,25 +528,10 @@ package body Flow_Generated_Globals.Traversal is
          Traverse_Declarations_Or_Statements (Private_Declarations (N));
       end Traverse_Visible_And_Private_Parts;
 
-      --  Local variables
-
-      Lu : Node_Id;
-      --  ??? Library unit
-
    --  Start of processing for Traverse_Compilation_Unit
 
    begin
-      --  Get Unit (checking case of subunit)
-
-      Lu := Unit (CU);
-
-      if Nkind (Lu) = N_Subunit then
-         Lu := Proper_Body (Lu);
-      end if;
-
-      --  Traverse the unit
-
-      Traverse_Declaration_Or_Statement (Lu);
+      Traverse_Declaration_Or_Statement (Unit (CU));
    end Traverse_Compilation_Unit;
 
 end Flow_Generated_Globals.Traversal;
