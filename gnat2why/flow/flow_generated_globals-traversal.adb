@@ -441,12 +441,11 @@ package body Flow_Generated_Globals.Traversal is
       -----------------------------------------
 
       procedure Traverse_Declarations_Or_Statements (L : List_Id) is
-         N : Node_Id;
+         N : Node_Id := First (L);
 
       begin
          --  Loop through statements or declarations
 
-         N := First (L);
          while Present (N) loop
 
             --  Call Process on all declarations
