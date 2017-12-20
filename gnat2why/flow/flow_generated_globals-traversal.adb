@@ -544,14 +544,6 @@ package body Flow_Generated_Globals.Traversal is
          Lu := Proper_Body (Lu);
       end if;
 
-      --  Do not add scopes for generic units
-
-      if Nkind (Lu) = N_Package_Body
-        and then Is_Generic_Unit (Corresponding_Spec (Lu))
-      then
-         return;
-      end if;
-
       --  Traverse the unit
 
       Traverse_Declaration_Or_Statement (Lu);
