@@ -301,21 +301,6 @@ package body Flow_Generated_Globals.Traversal is
       ---------------------------------------
 
       procedure Traverse_Declaration_Or_Statement (N : Node_Id) is
-         function Traverse_Stub (N : Node_Id) return Boolean;
-         --  Returns True iff stub N should be traversed
-
-         function Traverse_Stub (N : Node_Id) return Boolean is
-         begin
-            pragma Assert (Nkind_In (N, N_Package_Body_Stub,
-                                        N_Protected_Body_Stub,
-                                        N_Subprogram_Body_Stub,
-                                        N_Task_Body_Stub));
-
-            return Present (Library_Unit (N));
-         end Traverse_Stub;
-
-      --  Start of processing for Traverse_Declaration_Or_Statement
-
       begin
          case Nkind (N) is
             when N_Package_Declaration =>
@@ -325,9 +310,7 @@ package body Flow_Generated_Globals.Traversal is
                Traverse_Package_Body (N);
 
             when N_Package_Body_Stub =>
-               if Traverse_Stub (N) then
-                  Traverse_Package_Body (Get_Body_From_Stub (N));
-               end if;
+               Traverse_Package_Body (Get_Body_From_Stub (N));
 
             when N_Subprogram_Body =>
                Traverse_Subprogram_Body (N);
@@ -336,17 +319,13 @@ package body Flow_Generated_Globals.Traversal is
                Traverse_Subprogram_Body (N);
 
             when N_Subprogram_Body_Stub =>
-               if Traverse_Stub (N) then
-                  Traverse_Subprogram_Body (Get_Body_From_Stub (N));
-               end if;
+               Traverse_Subprogram_Body (Get_Body_From_Stub (N));
 
             when N_Protected_Body =>
                Traverse_Protected_Body (N);
 
             when N_Protected_Body_Stub =>
-               if Traverse_Stub (N) then
-                  Traverse_Protected_Body (Get_Body_From_Stub (N));
-               end if;
+               Traverse_Protected_Body (Get_Body_From_Stub (N));
 
             when N_Protected_Type_Declaration =>
                Traverse_Visible_And_Private_Parts (Protected_Definition (N));
@@ -366,9 +345,7 @@ package body Flow_Generated_Globals.Traversal is
                Traverse_Task_Body (N);
 
             when N_Task_Body_Stub =>
-               if Traverse_Stub (N) then
-                  Traverse_Task_Body (Get_Body_From_Stub (N));
-               end if;
+               Traverse_Task_Body (Get_Body_From_Stub (N));
 
             when N_Block_Statement =>
                Traverse_Block (N);
