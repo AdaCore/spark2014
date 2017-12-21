@@ -3354,12 +3354,7 @@ package body Flow_Utility is
    begin
       case F.Kind is
          when Direct_Mapping | Record_Field =>
-            declare
-               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-            begin
-               return Is_Object (E)
-                 and then Is_Ghost_Entity (E);
-            end;
+            return Is_Ghost_Entity (Get_Direct_Mapping_Id (F));
 
          when Magic_String =>
             return GG_Is_Ghost_Object (F.Name);

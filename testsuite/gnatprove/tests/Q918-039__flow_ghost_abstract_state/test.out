@@ -1,3 +1,2 @@
 p.adb:2:11: info: initialization of "Q.State" proved
-p.adb:2:11: medium: ghost procedure "P" cannot have non-ghost global output "Q.State" (SPARK RM 6.9(20))
 q.ads:2:14: info: initialization of "F" constituent of "State" proved
