@@ -67,8 +67,7 @@ package SPARK_Definition is
    ----------------------------------------------------------------------
 
    procedure Mark_Compilation_Unit (N : Node_Id)
-     with Pre => Nkind (N) in N_Compilation_Unit                     |
-                              N_Generic_Package_Declaration          |
+     with Pre => Nkind (N) in N_Generic_Package_Declaration          |
                               N_Generic_Subprogram_Declaration       |
                               N_Generic_Package_Renaming_Declaration |
                               N_Package_Body                         |
