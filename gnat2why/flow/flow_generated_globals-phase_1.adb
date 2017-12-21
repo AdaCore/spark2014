@@ -108,8 +108,8 @@ package body Flow_Generated_Globals.Phase_1 is
    --  in phase 2 we might only know them by Entity_Name (which is not enough
    --  to decide their initialization status).
 
-   Ghost_Objects : Name_Sets.Set;
-   --  Objects abstractions marked with a Ghost aspect
+   Ghost_Entities : Name_Sets.Set;
+   --  Entities marked with a Ghost aspect
 
    type Call_Info is record
       Caller  : Entity_Name;
@@ -300,7 +300,7 @@ package body Flow_Generated_Globals.Phase_1 is
                if Present (E)
                  and then Is_Ghost_Entity (E)
                then
-                  Ghost_Objects.Include (Name);
+                  Ghost_Entities.Include (Name);
                end if;
             end;
          end loop;
@@ -320,7 +320,7 @@ package body Flow_Generated_Globals.Phase_1 is
          Process_Volatiles_And_States (GI.Globals.Proper.Outputs);
          Process_Volatiles_And_States (GI.Local_Variables, Local_Vars => True);
 
-         --  Collect ghost objects
+         --  Collect ghost entities
          Process_Ghost (GI.Globals.Proper.Proof_Ins);
          Process_Ghost (GI.Globals.Proper.Inputs);
          Process_Ghost (GI.Globals.Proper.Outputs);
@@ -481,9 +481,9 @@ package body Flow_Generated_Globals.Phase_1 is
             The_Predef_Init_Vars => Predefined_Initialized_Variables);
       Write_To_ALI (V);
 
-      --  Write ghost objects
-      V := (Kind              => EK_Ghost_Objects,
-            The_Ghost_Objects => Ghost_Objects);
+      --  Write ghost entities
+      V := (Kind               => EK_Ghost_Entities,
+            The_Ghost_Entities => Ghost_Entities);
       Write_To_ALI (V);
 
       --  Write entity-specific info

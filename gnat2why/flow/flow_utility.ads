@@ -731,8 +731,8 @@ is
    function Is_Abstract_State (N : Node_Id) return Boolean;
    --  Returns True iff N is an abstract state
 
-   function Is_Ghost_Object (F : Flow_Id) return Boolean;
-   --  Returns True iff F represents a ghost object
+   function Is_Ghost_Entity (F : Flow_Id) return Boolean;
+   --  Returns True iff F represents a ghost entity
 
    function Is_Variable (F : Flow_Id) return Boolean
    with Pre => Present (F);

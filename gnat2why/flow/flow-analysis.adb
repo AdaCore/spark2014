@@ -1858,7 +1858,7 @@ package body Flow.Analysis is
                  --  Suppression for vertices that write to ghost variables
                  --  ??? Probably we want remove this suppression
                  not (for some Var of Atr.Variables_Defined =>
-                         Is_Ghost_Object (Var)) and then
+                         Is_Ghost_Entity (Var)) and then
 
                  --  Suppression for ghost entities
                  not Is_Ghost_Entity (FA.Spec_Entity)
@@ -3804,7 +3804,7 @@ package body Flow.Analysis is
                       Globals     => Globals);
 
          for Output of Globals.Outputs loop
-            if not Is_Ghost_Object (Output) then
+            if not Is_Ghost_Entity (Output) then
                Error_Msg_Flow  (FA       => FA,
                                 Msg      => "ghost procedure & cannot have " &
                                             "non-ghost global output &",

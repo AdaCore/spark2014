@@ -3347,22 +3347,22 @@ package body Flow_Utility is
    end Initialize;
 
    ---------------------
-   -- Is_Ghost_Object --
+   -- Is_Ghost_Entity --
    ---------------------
 
-   function Is_Ghost_Object (F : Flow_Id) return Boolean is
+   function Is_Ghost_Entity (F : Flow_Id) return Boolean is
    begin
       case F.Kind is
          when Direct_Mapping | Record_Field =>
             return Is_Ghost_Entity (Get_Direct_Mapping_Id (F));
 
          when Magic_String =>
-            return GG_Is_Ghost_Object (F.Name);
+            return GG_Is_Ghost_Entity (F.Name);
 
          when others =>
             return False;
       end case;
-   end Is_Ghost_Object;
+   end Is_Ghost_Entity;
 
    -----------------------------------
    -- Is_Initialized_At_Elaboration --

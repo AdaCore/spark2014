@@ -324,7 +324,7 @@ package body Flow.Interprocedural is
                        Find_Parameter_Vertex (FA, V, Output);
 
                      Output_Is_Ghost : constant Boolean :=
-                       Is_Ghost_Object (Output);
+                       Is_Ghost_Entity (Output);
 
                   begin
                      for Input of Globals.Inputs loop
@@ -335,7 +335,7 @@ package body Flow.Interprocedural is
                              Is_Abstract_State (Output)
                                or else
                              (not Ghost_Subprogram
-                              and then not Is_Ghost_Object (Input));
+                              and then not Is_Ghost_Entity (Input));
                            --  Ghost outputs can always be modified; non-ghost
                            --  abstract states too, because they might contain
                            --  ghost constituents; non-ghost outputs can only

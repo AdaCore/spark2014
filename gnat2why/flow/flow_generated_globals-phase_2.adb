@@ -253,8 +253,8 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Ghost information
    ----------------------------------------------------------------------
 
-   Ghost_Objects : Name_Sets.Set;
-   --  Objects marked as ghost
+   Ghost_Entities : Name_Sets.Set;
+   --  Entities marked as ghost
 
    ----------------------------------------------------------------------
    --  Volatile information
@@ -1081,8 +1081,8 @@ package body Flow_Generated_Globals.Phase_2 is
                   Initialized_Vars_And_States.Union
                     (V.The_Predef_Init_Vars);
 
-               when EK_Ghost_Objects =>
-                  Ghost_Objects.Union (V.The_Ghost_Objects);
+               when EK_Ghost_Entities =>
+                  Ghost_Entities.Union (V.The_Ghost_Entities);
 
                when EK_Volatiles =>
                   Async_Writers_Vars.Union (V.The_Async_Writers);
@@ -2355,11 +2355,11 @@ package body Flow_Generated_Globals.Phase_2 is
    is (GG_State_Constituents);
 
    ------------------------
-   -- GG_Is_Ghost_Object --
+   -- GG_Is_Ghost_Entity --
    ------------------------
 
-   function GG_Is_Ghost_Object (EN : Entity_Name) return Boolean
-     renames Ghost_Objects.Contains;
+   function GG_Is_Ghost_Entity (EN : Entity_Name) return Boolean
+     renames Ghost_Entities.Contains;
 
    --------------------------
    -- GG_Has_Async_Readers --
