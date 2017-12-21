@@ -2671,6 +2671,12 @@ package body SPARK_Definition is
       Context_N : Node_Id;
 
    begin
+      --  Separately mark declarations from Standard as in SPARK or not
+
+      if N = Standard_Package_Node then
+         return;
+      end if;
+
       --  Avoid rewriting generic units which are only preanalyzed, which may
       --  cause rewriting to fail, as this is not needed.
 
@@ -2679,12 +2685,6 @@ package body SPARK_Definition is
       end if;
 
       Initialize;
-
-      --  Separately mark declarations from Standard as in SPARK or not
-
-      if Defining_Entity (N) = Standard_Standard then
-         return;
-      end if;
 
       --  Mark entities in SPARK or not
 
