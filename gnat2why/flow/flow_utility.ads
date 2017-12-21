@@ -733,8 +733,6 @@ is
 
    function Is_Ghost_Object (F : Flow_Id) return Boolean;
    --  Returns True iff F represents a ghost object
-   --  ??? returns False if F.Kind = Magic_String, which is wrong; should be
-   --  fixed by recording the ghost status in the ALI file.
 
    function Is_Variable (F : Flow_Id) return Boolean
    with Pre => Present (F);

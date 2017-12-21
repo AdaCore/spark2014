@@ -250,6 +250,13 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Variables and state abstractions know to be initialized
 
    ----------------------------------------------------------------------
+   --  Ghost information
+   ----------------------------------------------------------------------
+
+   Ghost_Objects : Name_Sets.Set;
+   --  Objects marked as ghost
+
+   ----------------------------------------------------------------------
    --  Volatile information
    ----------------------------------------------------------------------
 
@@ -1073,6 +1080,9 @@ package body Flow_Generated_Globals.Phase_2 is
                when EK_Predef_Init_Vars =>
                   Initialized_Vars_And_States.Union
                     (V.The_Predef_Init_Vars);
+
+               when EK_Ghost_Objects =>
+                  Ghost_Objects.Union (V.The_Ghost_Objects);
 
                when EK_Volatiles =>
                   Async_Writers_Vars.Union (V.The_Async_Writers);
@@ -2343,6 +2353,13 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function GG_State_Constituents_Map_Is_Ready return Boolean
    is (GG_State_Constituents);
+
+   ------------------------
+   -- GG_Is_Ghost_Object --
+   ------------------------
+
+   function GG_Is_Ghost_Object (EN : Entity_Name) return Boolean
+     renames Ghost_Objects.Contains;
 
    --------------------------
    -- GG_Has_Async_Readers --

@@ -56,6 +56,9 @@ package body Flow_Generated_Globals.ALI_Serialization is
       EK_Predef_Init_Vars   => (Kind                 => EK_Predef_Init_Vars,
                                 The_Predef_Init_Vars => Name_Sets.Empty_Set),
 
+      EK_Ghost_Objects      => (Kind              => EK_Ghost_Objects,
+                                The_Ghost_Objects => Name_Sets.Empty_Set),
+
       EK_Volatiles          => (Kind   => EK_Volatiles,
                                 others => <>),
 
@@ -264,6 +267,9 @@ package body Flow_Generated_Globals.ALI_Serialization is
 
          when EK_Predef_Init_Vars =>
             Serialize (A, V.The_Predef_Init_Vars, "PIV");
+
+         when EK_Ghost_Objects =>
+            Serialize (A, V.The_Ghost_Objects, "GHOST");
 
          when EK_Volatiles =>
             Serialize (A, V.The_Async_Readers,    "AR");

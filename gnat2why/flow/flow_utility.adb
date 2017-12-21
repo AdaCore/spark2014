@@ -3361,6 +3361,9 @@ package body Flow_Utility is
                  and then Is_Ghost_Entity (E);
             end;
 
+         when Magic_String =>
+            return GG_Is_Ghost_Object (F.Name);
+
          when others =>
             return False;
       end case;

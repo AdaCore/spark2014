@@ -108,6 +108,9 @@ package body Flow_Generated_Globals.Phase_1 is
    --  in phase 2 we might only know them by Entity_Name (which is not enough
    --  to decide their initialization status).
 
+   Ghost_Objects : Name_Sets.Set;
+   --  Objects abstractions marked with a Ghost aspect
+
    type Call_Info is record
       Caller  : Entity_Name;
       Callees : Name_Lists.List;
@@ -221,6 +224,10 @@ package body Flow_Generated_Globals.Phase_1 is
       --  conversion will be eliminated by rewriting front-end globals to
       --  work on Entity_Id, not by refactoring those two routines.
 
+      procedure Process_Ghost (Names : Name_Sets.Set);
+      --  Goes through Names, finds ghost objects and stores them in the
+      --  appropriate container.
+
       ----------------------------------
       -- Process_Predefined_Variables --
       ----------------------------------
@@ -230,6 +237,7 @@ package body Flow_Generated_Globals.Phase_1 is
          for Name of Names loop
             declare
                E : constant Entity_Id := Find_Entity (Name);
+
             begin
                --  Convert name back to Entity_Id; this should work for
                --  everything except the special __HEAP name that represent a
@@ -254,6 +262,7 @@ package body Flow_Generated_Globals.Phase_1 is
          for Name of Names loop
             declare
                E : constant Entity_Id := Find_Entity (Name);
+
             begin
                --  Convert name back to Entity_Id; this should work for
                --  everything except the special __HEAP name that represent a
@@ -274,6 +283,29 @@ package body Flow_Generated_Globals.Phase_1 is
          end loop;
       end Process_Volatiles_And_States;
 
+      -------------------
+      -- Process_Ghost --
+      -------------------
+
+      procedure Process_Ghost (Names : Name_Sets.Set) is
+      begin
+         for Name of Names loop
+            declare
+               E : constant Entity_Id := Find_Entity (Name);
+
+            begin
+               --  Convert name back to Entity_Id; this should work for
+               --  everything except the special __HEAP name that represent a
+               --  non-existing heap entity.
+               if Present (E)
+                 and then Is_Ghost_Entity (E)
+               then
+                  Ghost_Objects.Include (Name);
+               end if;
+            end;
+         end loop;
+      end Process_Ghost;
+
    --  Start of processing for GG_Register_Global_Info
 
    begin
@@ -287,6 +319,11 @@ package body Flow_Generated_Globals.Phase_1 is
          Process_Volatiles_And_States (GI.Globals.Proper.Inputs);
          Process_Volatiles_And_States (GI.Globals.Proper.Outputs);
          Process_Volatiles_And_States (GI.Local_Variables, Local_Vars => True);
+
+         --  Collect ghost objects
+         Process_Ghost (GI.Globals.Proper.Proof_Ins);
+         Process_Ghost (GI.Globals.Proper.Inputs);
+         Process_Ghost (GI.Globals.Proper.Outputs);
 
          --  In phase 2 we only need to know the initialization status of
          --  proof_ins and inputs; outputs are irrelevant.
@@ -442,6 +479,11 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Write predefined initialized variables
       V := (Kind                 => EK_Predef_Init_Vars,
             The_Predef_Init_Vars => Predefined_Initialized_Variables);
+      Write_To_ALI (V);
+
+      --  Write ghost objects
+      V := (Kind              => EK_Ghost_Objects,
+            The_Ghost_Objects => Ghost_Objects);
       Write_To_ALI (V);
 
       --  Write entity-specific info
