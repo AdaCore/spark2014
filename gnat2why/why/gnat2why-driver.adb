@@ -44,6 +44,7 @@ with Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Types;                      use Flow_Types;
 with Flow_Utility;                    use Flow_Utility;
+with Flow_Visibility;                 use Flow_Visibility;
 with GNAT.Expect;
 with GNAT.Source_Info;
 with GNATCOLL.JSON;                   use GNATCOLL.JSON;
@@ -373,6 +374,9 @@ package body Gnat2Why.Driver is
       procedure Mark_All_Compilation_Units is new Sem.Walk_Library_Items
         (Action => Mark_Compilation_Unit);
 
+      procedure Register_All_Flow_Scopes is new Sem.Walk_Library_Items
+        (Action => Register_Flow_Scopes);
+
       --  This Boolean indicates whether proof have been attempted anywhere in
       --  the unit.
       Proof_Done : Boolean := False;
@@ -456,6 +460,8 @@ package body Gnat2Why.Driver is
          --  Then traverse body (or spec if no body is present)
          Flow_Generated_Globals.Traversal.Build_Tree (GNAT_Root);
       end;
+
+      Register_All_Flow_Scopes;
 
       if Gnat2Why_Args.Global_Gen_Mode then
 

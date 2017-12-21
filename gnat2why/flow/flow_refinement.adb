@@ -310,7 +310,8 @@ package body Flow_Refinement is
                   Context_Spec : constant Entity_Id :=
                     Unique_Defining_Entity (Context);
 
-                  pragma Assert (Ekind (Context_Spec) = E_Package);
+                  pragma Assert (Ekind (Context_Spec) in E_Package
+                                                       | E_Generic_Package);
 
                   Orig_Spec : Entity_Id;
 
@@ -365,7 +366,8 @@ package body Flow_Refinement is
                      pragma Assert (Ekind (Ent) = E_Generic_Package);
                   else
                      Ent := Defining_Entity (Context);
-                     pragma Assert (Ekind (Ent) = E_Package);
+                     pragma Assert (Ekind (Ent) in E_Package
+                                                 | E_Generic_Package);
                   end if;
 
                   --  We have to decide if we come from visible or private part
