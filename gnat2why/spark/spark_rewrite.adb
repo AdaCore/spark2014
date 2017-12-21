@@ -32,6 +32,7 @@ with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with SPARK_Util.Subprograms;
+with Stand;                  use Stand;
 with Tbuild;                 use Tbuild;
 
 package body SPARK_Rewrite is
@@ -405,14 +406,17 @@ package body SPARK_Rewrite is
 
       --  Rewrite_Compilation_Unit is called on the declaration or body of a
       --  library unit (see spec of Sem.Walk_Library_Items), but we need here
-      --  to call Rewrite_Nodes on the parent compilation unit node when there
-      --  is one, so that aspects rewritten as pragmas after the library unit
-      --  declaration or body (listed in Pragmas_After) are also rewritten.
+      --  to call Rewrite_Nodes on the parent compilation unit node, so that
+      --  aspects rewritten as pragmas after the library unit declaration or
+      --  body (listed in Pragmas_After) are also rewritten. Only Standard
+      --  package has no such a parent.
 
-      elsif Present (Parent (N)) then
-         Rewrite_Nodes (Parent (N));
-      else
+      elsif N = Standard_Package_Node then
+         pragma Assert (No (Parent (N)));
          Rewrite_Nodes (N);
+      else
+         pragma Assert (Nkind (Parent (N)) = N_Compilation_Unit);
+         Rewrite_Nodes (Parent (N));
       end if;
    end Rewrite_Compilation_Unit;
 
