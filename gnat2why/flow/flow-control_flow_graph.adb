@@ -6302,10 +6302,12 @@ package body Flow.Control_Flow_Graph is
                 else Mode_In_Out),
                FA);
 
-            --  Collect unsynchronized accesses by excluding states and objects
-            --  that are synchronized or are Part_Of single concurrent objects.
-            if not Is_Synchronized (E) then
-               FA.Tasking (Unsynch_Accesses).Include (E);
+            --  Collect accesses to not-synchronized library-level entities
+
+            if Is_Library_Level_Entity (E)
+              and then not Is_Synchronized (E)
+            then
+               FA.Tasking (Unsynch_Accesses).Insert (E);
             end if;
          end loop;
 
