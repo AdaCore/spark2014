@@ -1505,8 +1505,8 @@ package body Flow is
             then
                Error_Msg_Flow
                  (FA       => FA,
-                  Msg      => "Current_Task should not be called from a " &
-                              "subprogram in entry body & (RM C.7(17))",
+                  Msg      => "Current_Task should not be called from " &
+                              "an entry body & (RM C.7.1(17))",
                   N        => FA.Analyzed_Entity,
                   F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Severity => High_Check_Kind);
@@ -1521,7 +1521,7 @@ package body Flow is
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "Current_Task should not be called from " &
-                              "protected procedure handler & (RM C.7(17))",
+                              "an interrupt handler & (RM C.7.1(17))",
                   N        => FA.Analyzed_Entity,
                   F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Severity => High_Check_Kind);
