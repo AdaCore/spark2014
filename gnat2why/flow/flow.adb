@@ -545,6 +545,12 @@ package body Flow is
             Write_Str ("when ");
             Print_Node (Get_Direct_Mapping_Id (F));
 
+         elsif A.Pretty_Print_Kind = Pretty_Print_Package then
+            Write_Str
+              ("package " &
+               Get_Name_String
+                 (Chars (Defining_Entity (Get_Direct_Mapping_Id (F)))));
+
          elsif A.Pretty_Print_Kind /= Pretty_Print_Null then
             raise Program_Error;
 
@@ -1493,16 +1499,7 @@ package body Flow is
            and then Convention (FA.Analyzed_Entity) in Convention_Entry |
                                                        Convention_Protected
          then
-            --  ??? issue different warning if the blocking status is unknown
-            if Is_Potentially_Blocking (FA.Analyzed_Entity) then
-               Error_Msg_Flow
-                 (FA       => FA,
-                  Msg      => "potentially blocking operation " &
-                              "in protected operation &",
-                  N        => FA.Analyzed_Entity,
-                  F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Severity => High_Check_Kind);
-            end if;
+            Flow.Analysis.Check_Potentially_Blocking (FA);
 
             --  We issue a high error message in case the Current_Task function
             --  is called from an entry body.

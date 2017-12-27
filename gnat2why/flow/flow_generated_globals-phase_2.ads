@@ -219,12 +219,17 @@ package Flow_Generated_Globals.Phase_2 is
                                       | E_Procedure);
    --  Returns callees of entity E
 
-   function Is_Potentially_Blocking (E : Entity_Id) return Boolean
-   with Pre => GG_Has_Been_Generated and then
-               Analysis_Requested (E, With_Inlined => True) and then
-               Ekind (E) in E_Entry | E_Procedure | E_Function;
-   --  Returns True if subprogram E is potentially blocking or its blocking
-   --  status is unknown; returns False if it is known to be nonblocking.
+   function Is_Potentially_Blocking
+     (E       : Entity_Id;
+      Context : Entity_Id)
+      return Boolean
+   with Pre => GG_Has_Been_Generated
+               and then Ekind (E) in E_Procedure | E_Function | E_Package
+               and then Ekind (Context) = E_Protected_Type;
+   --  Returns True if E is potentially blocking or its blocking status is
+   --  unknown when called from Context (which is a protected type that
+   --  encloses the protected subprogram); returns False if it is known to be
+   --  nonblocking.
 
    function Is_Recursive (E : Entity_Id) return Boolean
    with Pre => GG_Has_Been_Generated and then

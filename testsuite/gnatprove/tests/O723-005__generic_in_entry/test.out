@@ -1,9 +1,9 @@
 a-tiflio.ads:48:04: info: initialization of "Default_Fore" proved, in instantiation at p.adb:9
 a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiation at p.adb:9
 a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at p.adb:9
+p.adb:11:26: high: potentially blocking operation in protected operation "My_Text_Entry"
 p.adb:11:26: info: initialization of "Default_Aft" proved
 p.adb:11:26: info: initialization of "Default_Exp" proved
 p.adb:11:26: info: initialization of "Default_Fore" proved
 p.adb:11:26: warning: assuming "Put" has no effect on global items
 p.adb:11:26: warning: no Global contract available for "Put"
-p.ads:4:13: high: potentially blocking operation in protected operation "My_Text_Entry"

@@ -400,15 +400,22 @@ package body Flow.Slice is
 
                pragma Assert (Ekind (E) in Entry_Kind
                                          | E_Function
-                                         | E_Procedure);
+                                         | E_Procedure
+                                         | E_Package);
 
-               if not Has_User_Supplied_Globals (E)
-                 or else Rely_On_Generated_Global (E, FA.B_Scope)
-               then
-                  if A.Is_Assertion then
-                     Proof_Calls.Include (E);
-                  else
-                     Unresolved.Include (E);
+               --  Ignore fake "calls" to the elaboration of a nested packages,
+               --  because their reads and writes are already inlined in the
+               --  CFG (as represented by the Initializes contract).
+
+               if Ekind (E) /= E_Package then
+                  if not Has_User_Supplied_Globals (E)
+                    or else Rely_On_Generated_Global (E, FA.B_Scope)
+                  then
+                     if A.Is_Assertion then
+                        Proof_Calls.Include (E);
+                     else
+                        Unresolved.Include (E);
+                     end if;
                   end if;
                end if;
             end loop;

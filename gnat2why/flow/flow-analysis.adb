@@ -1598,6 +1598,10 @@ package body Flow.Analysis is
       --  Checks if variables in the set Variables_Defined have been mentioned
       --  in a pragma Unmodified, Unused or Unreferenced.
 
+      function Is_Package_Elaboration (V : Flow_Graphs.Vertex_Id)
+                                       return Boolean;
+      --  Checks if V represents elaboration of a nested package
+
       function Other_Fields_Are_Ineffective (V : Flow_Graphs.Vertex_Id)
                                              return Boolean;
       --  This function returns True if V corresponds to an assignment to a
@@ -1746,6 +1750,21 @@ package body Flow.Analysis is
            E.Kind in Direct_Mapping | Record_Field
              and then Has_Pragma_Un (Get_Direct_Mapping_Id (E)));
 
+      ----------------------------
+      -- Is_Package_Elaboration --
+      ----------------------------
+
+      function Is_Package_Elaboration (V : Flow_Graphs.Vertex_Id)
+                                       return Boolean
+      is
+         F : constant Flow_Id := FA.CFG.Get_Key (V);
+      begin
+         --  Match attributes of vertices created in Do_Package_Declaration
+
+         return F.Kind = Direct_Mapping
+           and then Nkind (Get_Direct_Mapping_Id (F)) = N_Package_Declaration;
+      end Is_Package_Elaboration;
+
       --------------------------
       -- Skip_Any_Conversions --
       --------------------------
@@ -1856,6 +1875,9 @@ package body Flow.Analysis is
                  --  Suppression for vertices that define a variable that has
                  --  Async_Readers set.
                  not Defines_Async_Reader_Var (V) and then
+
+                 --  Suppression for elaboration of nested packages
+                 not Is_Package_Elaboration (V) and then
 
                  --  Suppression for vertices with assertion expressions
                  not Atr.Is_Assertion and then
@@ -4242,6 +4264,75 @@ package body Flow.Analysis is
       end if;
 
    end Check_Refined_State_Contract;
+
+   --------------------------------
+   -- Check_Potentially_Blocking --
+   --------------------------------
+
+   procedure Check_Potentially_Blocking (FA : in out Flow_Analysis_Graphs) is
+
+      function Is_Delay_Statement (F : Flow_Id) return Boolean;
+      --  Return True iff F represent a delay statement
+
+      procedure Emit_Message (N : Node_Id);
+      --  Emit message about a potentially blocking operation attached to N
+
+      ------------------
+      -- Emit_Message --
+      ------------------
+
+      procedure Emit_Message (N : Node_Id) is
+      begin
+         Error_Msg_Flow
+           (FA       => FA,
+            Msg      => "potentially blocking operation " &
+                        "in protected operation &",
+            N        => N,
+            F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+            Severity => High_Check_Kind);
+      end Emit_Message;
+
+      ------------------------
+      -- Is_Delay_Statement --
+      ------------------------
+
+      function Is_Delay_Statement (F : Flow_Id) return Boolean is
+      begin
+         --  Match attributes of vertices created in Do_Delay_Statement
+         return
+           F.Kind = Direct_Mapping
+             and then Nkind (Get_Direct_Mapping_Id (F)) in N_Delay_Statement;
+      end Is_Delay_Statement;
+
+   --  Start of processing for Check_Potentially_Blocking
+
+   begin
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Atr : V_Attributes renames FA.Atr (V);
+         begin
+            if Atr.Is_Program_Node
+              and then Is_Delay_Statement (FA.CFG.Get_Key (V))
+            then
+               Emit_Message (Atr.Error_Location);
+            else
+               for E of Atr.Subprograms_Called loop
+
+                  --  Calls to entries are trivially potentially blocking;
+                  --  calls to other entities require a detailed check.
+
+                  if Is_Entry (E)
+                    or else
+                      Is_Potentially_Blocking
+                        (E, Context => Scope (FA.Spec_Entity))
+                  then
+                     Emit_Message (Atr.Error_Location);
+                  end if;
+               end loop;
+            end if;
+         end;
+      end loop;
+   end Check_Potentially_Blocking;
 
    -------------------------------------
    -- Check_Prefixes_Of_Attribute_Old --

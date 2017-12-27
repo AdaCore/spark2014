@@ -1,1 +1,1 @@
-p.ads:4:13: high: potentially blocking operation in protected operation "Yielding_Entry"
+p.adb:8:25: high: potentially blocking operation in protected operation "Yielding_Entry"

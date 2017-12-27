@@ -1,1 +1,1 @@
-pack.ads:5:17: high: potentially blocking operation in protected operation "Dummy"
+pack.adb:11:10: high: potentially blocking operation in protected operation "Dummy"

@@ -3838,18 +3838,6 @@ package body Flow.Control_Flow_Graph is
       Spec_E : constant Entity_Id := Defining_Entity (N);
 
    begin
-      --  Pretend that declaration of a nested package is a "call", so that
-      --  calls from the elaboration of that package will appear as calls from
-      --  the analyzed entity.
-      --
-      --  Don't do this for wrapper packages, because they are not
-      --  flow-analyzed and we do not get direct calls for them; in effect, we
-      --  wouldn't be able to resolve calls from their elaboration (but there
-      --  shouldn't be any such calls anyway).
-      if not Is_Wrapper_Package (Spec_E) then
-         FA.Direct_Calls.Insert (Spec_E);
-      end if;
-
       --  If the nested package is not in SPARK (either because of explicit
       --  SPARK_Mode => Off or because a SPARK violation), then ignore its
       --  abstract states, visible declarations and private declarations. The
@@ -3902,8 +3890,37 @@ package body Flow.Control_Flow_Graph is
 
          Visible_Decls : constant List_Id := Visible_Declarations (Spec);
          Private_Decls : constant List_Id := Private_Declarations (Spec);
+
+         V : Flow_Graphs.Vertex_Id;
+         --  Vertex that represents elaboration of a nested package
+
       begin
+         --  Pretend that declaration of a nested package is a "call", so that
+         --  calls from the elaboration of that package will appear as calls
+         --  from the analyzed entity.
+         --
+         --  Don't do this for wrapper packages, because they are not
+         --  flow-analyzed and we do not get direct calls for them; in effect,
+         --  we wouldn't be able to resolve calls from their elaboration (but
+         --  there shouldn't be any such calls anyway).
+
+         Add_Vertex (FA,
+                     Direct_Mapping_Id (N),
+                     Make_Basic_Attributes
+                       (Sub_Called => (if Is_Wrapper_Package (Spec_E)
+                                       then Node_Sets.Empty_Set
+                                       else Node_Sets.To_Set (Spec_E)),
+                        E_Loc      => N,
+                        Print_Hint => Pretty_Print_Package),
+                     V);
+
          Process_Statement_List (Visible_Decls, FA, CM, Ctx);
+
+         --  Link the trivial vertex for package elaboration with vertices
+         --  for its visible declarations.
+         Linkup (FA,
+                 V,
+                 CM (Union_Id (Visible_Decls)).Standard_Entry);
 
          --  Process the private declarations if they are present and in SPARK
          if No (Get_Pragma (Spec_E, Pragma_Abstract_State))
@@ -3924,8 +3941,7 @@ package body Flow.Control_Flow_Graph is
             CM.Insert
               (Union_Id (N),
                Graph_Connections'
-                 (Standard_Entry => CM.Element
-                    (Union_Id (Visible_Decls)).Standard_Entry,
+                 (Standard_Entry => V,
                   Standard_Exits => CM.Element
                     (Union_Id (Private_Decls)).Standard_Exits));
 
@@ -3933,9 +3949,12 @@ package body Flow.Control_Flow_Graph is
          --  the connections of N from Visible_Decls.
 
          else
-            Move_Connections (CM,
-                              Dst => Union_Id (N),
-                              Src => Union_Id (Visible_Decls));
+            CM.Insert
+              (Union_Id (N),
+               Graph_Connections'
+                 (Standard_Entry => V,
+                  Standard_Exits => CM.Element
+                    (Union_Id (Visible_Decls)).Standard_Exits));
          end if;
       end;
 

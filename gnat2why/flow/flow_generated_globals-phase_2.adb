@@ -2604,12 +2604,13 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Is_Potentially_Blocking --
    -----------------------------
 
-   function Is_Potentially_Blocking (E : Entity_Id) return Boolean is
+   function Is_Potentially_Blocking
+     (E       : Entity_Id;
+      Context : Entity_Id)
+      return Boolean
+   is
       EN : constant Entity_Name := To_Entity_Name (E);
-      --  Entity name
-
-      Protected_Type_E : constant Entity_Id := Scope (E);
-      --  Entity of the enclosing protected type
+      --  Entity name, as it appears in the call graph
 
       function Calls_Potentially_Blocking_Subprogram return Boolean;
       --  Check for calls to potentially blocking subprograms of a given Kind
@@ -2650,7 +2651,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   Callee_E : constant Entity_Id := Find_Entity (Callee);
                begin
                   if Present (Callee_E)
-                    and then Scope (Callee_E) = Protected_Type_E
+                    and then Scope (Callee_E) = Context
                   then
                      return True;
                   end if;
@@ -2690,7 +2691,7 @@ package body Flow_Generated_Globals.Phase_2 is
                --  the same target type as that of the protected action.
                if Callee_E = Empty
                  or else not Scope_Within_Or_Same (Scope (Callee_E),
-                                                   Protected_Type_E)
+                                                   Context)
                then
                   if Calls_Same_Target_Type (Callee) then
                      return True;
@@ -2709,8 +2710,20 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Start of processing for Is_Potentially_Blocking
 
    begin
-      return (not Phase_1_Info (EN).Nonblocking)
-        or else Calls_Potentially_Blocking_Subprogram;
+      --  Predefined subprograms are checked by their Entity_Id
+
+      if In_Predefined_Unit (E) then
+         return Is_Predefined_Potentially_Blocking (E);
+
+      --  For other subprograms require rely on what is in the ALI files
+
+      else
+         if Phase_1_Info (EN).Nonblocking then
+            return Calls_Potentially_Blocking_Subprogram;
+         else
+            return True;
+         end if;
+      end if;
    end Is_Potentially_Blocking;
 
    ------------------------------------------

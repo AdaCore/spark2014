@@ -159,6 +159,25 @@ package Flow.Analysis is
    --  Check if the Refined_State references any constant without variable
    --  inputs and if so emits a check. This enforces SPARK RM 7.2.2(16).
 
+   procedure Check_Potentially_Blocking (FA : in out Flow_Analysis_Graphs)
+   with Pre => Ekind (Scope (FA.Spec_Entity)) = E_Protected_Type;
+   --  Check for potentially blocking operations in protected actions
+   --
+   --  The current implementation emits a message for each statement that
+   --  involves a potentially blocking operation. This is enough to easily
+   --  identify delay statements and entry call statements this is enough
+   --  (but frontend flags them with a warning anyway).
+   --
+   --  For a call on a subprogram whose body contains a potentially blocking
+   --  operation the idea is that once AI12-0064, i.e. the Nonblocking aspect,
+   --  is implemented, the users should annotate subprograms called directly
+   --  in the statements flagged by this routine as Nonblocking. This way
+   --  they will progressively arrive at the one with a potentially blocking
+   --  statement.
+   --
+   --  ??? An external call on a protected subprogram with the same target
+   --  object as that of the protected action deserves a dedicated diagnostics.
+
    procedure Check_Prefixes_Of_Attribute_Old (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind in Kind_Subprogram | Kind_Task;
    --  We issue a high check whenever a variable that serves as a
