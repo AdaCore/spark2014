@@ -27,7 +27,6 @@ with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;                use Ada.Text_IO;
 
 with ALI;                        use ALI;
-with Lib;                        use Lib;
 with Namet;                      use Namet;
 with Osint;                      use Osint;
 with Output;                     use Output;
@@ -2600,131 +2599,147 @@ package body Flow_Generated_Globals.Phase_2 is
    function GG_Is_Volatile (EN : Entity_Name) return Boolean
      renames Volatile_Vars.Contains;
 
-   -----------------------------
-   -- Is_Potentially_Blocking --
-   -----------------------------
+   ----------------------------------------
+   -- Has_Potentially_Blocking_Statement --
+   ----------------------------------------
 
-   function Is_Potentially_Blocking
-     (E       : Entity_Id;
-      Context : Entity_Id)
-      return Boolean
+   function Has_Potentially_Blocking_Statement (E : Entity_Id) return Boolean
+   is
+     (not Phase_1_Info (To_Entity_Name (E)).Nonblocking);
+
+   ---------------------------------
+   -- Potentially_Blocking_Callee --
+   ---------------------------------
+
+   function Potentially_Blocking_Callee
+     (E : Entity_Id)
+      return Any_Entity_Name
    is
       EN : constant Entity_Name := To_Entity_Name (E);
       --  Entity name, as it appears in the call graph
 
-      function Calls_Potentially_Blocking_Subprogram return Boolean;
-      --  Check for calls to potentially blocking subprograms of a given Kind
+      use Entity_Name_Graphs;
 
-      -------------------------------------------
-      -- Calls_Potentially_Blocking_Subprogram --
-      -------------------------------------------
+      Caller : constant Vertex_Id :=
+        Protected_Operation_Call_Graph.Get_Vertex (EN);
+      --  Vertex that represents the analysed subprogram
 
-      function Calls_Potentially_Blocking_Subprogram return Boolean is
-         use Entity_Name_Graphs;
-
-         Caller : constant Vertex_Id :=
-           Protected_Operation_Call_Graph.Get_Vertex (EN);
-         --  Vertex that represents the analysed subprogram
-
-         function Calls_Same_Target_Type (S : Entity_Name) return Boolean;
-         --  Check if subprogram S calls the enclosing protected type of E
-
-         ----------------------------
-         -- Calls_Same_Target_Type --
-         ----------------------------
-
-         function Calls_Same_Target_Type (S : Entity_Name) return Boolean is
-            Subp_V : constant Vertex_Id :=
-              Protected_Operation_Call_Graph.Get_Vertex (S);
-            --  Vertex that represents subprogram S
+   begin
+      for V of Protected_Operation_Call_Graph.
+        Get_Collection (Caller, Out_Neighbours)
+      loop
+         declare
+            Callee : constant Entity_Name :=
+              Protected_Operation_Call_Graph.Get_Key (V);
 
          begin
-            --  Iterate over subprograms called by subprogram S
-            for V of Protected_Operation_Call_Graph.
-              Get_Collection (Subp_V, Out_Neighbours)
-            loop
-               declare
-                  Callee : constant Entity_Name :=
-                    Protected_Operation_Call_Graph.Get_Key (V);
-                  --  Vertex that represent subprogram called by S
+            if not Is_Predefined (Callee)
+               --  All user-defined callers of predefined potentially
+               --  blocking subprograms have been already marked as
+               --  potentially blocking, so here we can safely assume
+               --  that any call to predefined subprogram is nonblocking.
+              and then not Phase_1_Info (Callee).Nonblocking
+            then
+               return Callee;
+            end if;
+         end;
 
-                  Callee_E : constant Entity_Id := Find_Entity (Callee);
-               begin
-                  if Present (Callee_E)
-                    and then Scope (Callee_E) = Context
-                  then
-                     return True;
-                  end if;
-               end;
+      end loop;
 
-            end loop;
+      return Null_Entity_Name;
+   end Potentially_Blocking_Callee;
 
-            return False;
-         end Calls_Same_Target_Type;
+   function Potentially_Blocking_External_Call
+     (E       : Entity_Id;
+      Context : Entity_Id)
+      return External_Call
+   is
+      EN : constant Entity_Name := To_Entity_Name (E);
+      --  Entity name, as it appears in the call graph
 
-      --  Start of processing for Calls_Potentially_Blocking_Subprogram
+      use Entity_Name_Graphs;
+
+      Caller : constant Vertex_Id :=
+        Protected_Operation_Call_Graph.Get_Vertex (EN);
+      --  Vertex that represents the analysed subprogram
+
+      function Calls_Same_Target_Type (S : Entity_Name) return Entity_Id;
+      --  If subprogram S calls a protected operation of the protected type
+      --  Context, then return the entity of that operation; otherwise, return
+      --  Empty.
+
+      ----------------------------
+      -- Calls_Same_Target_Type --
+      ----------------------------
+
+      function Calls_Same_Target_Type (S : Entity_Name) return Entity_Id is
+         Subp_V : constant Vertex_Id :=
+           Protected_Operation_Call_Graph.Get_Vertex (S);
+         --  Vertex that represents subprogram S
 
       begin
+         --  Iterate over subprograms called by subprogram S
          for V of Protected_Operation_Call_Graph.
-           Get_Collection (Caller, Out_Neighbours)
+           Get_Collection (Subp_V, Out_Neighbours)
          loop
             declare
                Callee : constant Entity_Name :=
                  Protected_Operation_Call_Graph.Get_Key (V);
+               --  Vertex that represent subprogram called by S
 
                Callee_E : constant Entity_Id := Find_Entity (Callee);
-               --  Entities from other compilation units have empty id
+
             begin
-               if Is_Predefined (Callee) then
-                  --  All user-defined callers of predefined potentially
-                  --  blocking subprograms have been already marked as
-                  --  potentially blocking, so here we can safely assume
-                  --  that any call to predefined subprogram is nonblocking.
-                  null;
-               else
-                  if not Phase_1_Info (Callee).Nonblocking then
-                     return True;
-                  end if;
-               end if;
-
-               --  Check for external calls to a protected subprogram with
-               --  the same target type as that of the protected action.
-               if Callee_E = Empty
-                 or else not Scope_Within_Or_Same (Scope (Callee_E),
-                                                   Context)
+               if Present (Callee_E)
+                 and then Scope (Callee_E) = Context
                then
-                  if Calls_Same_Target_Type (Callee) then
-                     return True;
-                  end if;
+                  return Callee_E;
                end if;
-
-               --  ??? remote subprograms
             end;
 
          end loop;
 
-         return False;
+         return Empty;
+      end Calls_Same_Target_Type;
 
-      end Calls_Potentially_Blocking_Subprogram;
-
-   --  Start of processing for Is_Potentially_Blocking
+   --  Start of processing for Potentially_Blocking_External_Call
 
    begin
-      --  Predefined subprograms are checked by their Entity_Id
+      for V of Protected_Operation_Call_Graph.
+        Get_Collection (Caller, Out_Neighbours)
+      loop
+         declare
+            Callee : constant Entity_Name :=
+              Protected_Operation_Call_Graph.Get_Key (V);
 
-      if In_Predefined_Unit (E) then
-         return Is_Predefined_Potentially_Blocking (E);
+            Callee_E : constant Entity_Id := Find_Entity (Callee);
+            --  Entities from other compilation units have empty id
 
-      --  For other subprograms require rely on what is in the ALI files
+         begin
+            --  Check for external calls to a protected subprogram with
+            --  the same target type as that of the protected action.
+            if Callee_E = Empty
+              or else not Scope_Within_Or_Same (Scope (Callee_E),
+                                                Context)
+            then
+               declare
+                  Protected_Subp : constant Entity_Id :=
+                    Calls_Same_Target_Type (Callee);
 
-      else
-         if Phase_1_Info (EN).Nonblocking then
-            return Calls_Potentially_Blocking_Subprogram;
-         else
-            return True;
-         end if;
-      end if;
-   end Is_Potentially_Blocking;
+               begin
+                  if Present (Protected_Subp) then
+                     return (Protected_Subprogram => Protected_Subp,
+                             External_Callee      => Callee);
+                  end if;
+               end;
+            end if;
+         end;
+
+      end loop;
+
+      return (Protected_Subprogram => Empty,
+              External_Callee      => Null_Entity_Name);
+   end Potentially_Blocking_External_Call;
 
    ------------------------------------------
    -- Is_Potentially_Nonreturning_Internal --

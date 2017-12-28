@@ -25,6 +25,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Ordered_Multisets;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
+with Lib;                                use Lib;
 with Sinfo;                              use Sinfo;
 with Snames;                             use Snames;
 with SPARK_Definition;                   use SPARK_Definition;
@@ -219,17 +220,40 @@ package Flow_Generated_Globals.Phase_2 is
                                       | E_Procedure);
    --  Returns callees of entity E
 
-   function Is_Potentially_Blocking
+   function Has_Potentially_Blocking_Statement (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Function | E_Procedure | E_Package;
+   --  Returns True iff E has a potentially blocking statement (or if its
+   --  blocking status is unknown, e.g. when the body is not in SPARK).
+   --
+   --  Note: it returns False when E is potentially blocking due to a call to
+   --  a potentially blocking subprogram.
+
+   function Potentially_Blocking_Callee (E : Entity_Id) return Any_Entity_Name
+   with Pre => Ekind (E) in E_Function | E_Procedure | E_Package;
+   --  Returns an Entity_Name of a potentially blocking callee, if any, and
+   --  Null_Entity_Name if none such a callee exists.
+
+   type External_Call is record
+      Protected_Subprogram : Entity_Id;
+      External_Callee      : Any_Entity_Name;
+   end record
+   with Dynamic_Predicate =>
+     (Present (Protected_Subprogram) = (External_Callee in Entity_Name));
+   --  Represents an external call on the same target as that of a protected
+   --  action; if no such an call exists, then its components are left as
+   --  Empty and Null_Entity_Name. It is needed for detailed messages about
+   --  potentially blocking operations.
+
+   function Potentially_Blocking_External_Call
      (E       : Entity_Id;
       Context : Entity_Id)
-      return Boolean
-   with Pre => GG_Has_Been_Generated
-               and then Ekind (E) in E_Procedure | E_Function | E_Package
-               and then Ekind (Context) = E_Protected_Type;
-   --  Returns True if E is potentially blocking or its blocking status is
-   --  unknown when called from Context (which is a protected type that
-   --  encloses the protected subprogram); returns False if it is known to be
-   --  nonblocking.
+      return External_Call
+   with Pre  => GG_Has_Been_Generated
+                and then Ekind (E) in E_Procedure | E_Function | E_Package
+                and then not In_Predefined_Unit (E)
+                and then Ekind (Context) = E_Protected_Type;
+   --  Returns a detailed info about an external call on the same target as
+   --  that of a protected action, if such a call exists.
 
    function Is_Recursive (E : Entity_Id) return Boolean
    with Pre => GG_Has_Been_Generated and then

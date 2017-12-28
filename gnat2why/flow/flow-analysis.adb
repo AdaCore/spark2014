@@ -24,6 +24,7 @@
 with Ada.Text_IO;
 
 with Elists;                      use Elists;
+with Lib;                         use Lib;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Output;                      use Output;
@@ -4274,24 +4275,6 @@ package body Flow.Analysis is
       function Is_Delay_Statement (F : Flow_Id) return Boolean;
       --  Return True iff F represent a delay statement
 
-      procedure Emit_Message (N : Node_Id);
-      --  Emit message about a potentially blocking operation attached to N
-
-      ------------------
-      -- Emit_Message --
-      ------------------
-
-      procedure Emit_Message (N : Node_Id) is
-      begin
-         Error_Msg_Flow
-           (FA       => FA,
-            Msg      => "potentially blocking operation " &
-                        "in protected operation &",
-            N        => N,
-            F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
-            Severity => High_Check_Kind);
-      end Emit_Message;
-
       ------------------------
       -- Is_Delay_Statement --
       ------------------------
@@ -4304,29 +4287,132 @@ package body Flow.Analysis is
              and then Nkind (Get_Direct_Mapping_Id (F)) in N_Delay_Statement;
       end Is_Delay_Statement;
 
+      --  Local variables
+
+      Context : constant Entity_Id := Scope (FA.Spec_Entity);
+
    --  Start of processing for Check_Potentially_Blocking
 
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             Atr : V_Attributes renames FA.Atr (V);
+
+            Blocking_Callee       : Any_Entity_Name;
+            Call_With_Same_Target : External_Call;
+            --  Will keep a detailed reason for operations that are potentially
+            --  blocking due to indirect calls to other subprograms.
+
          begin
             if Atr.Is_Program_Node
               and then Is_Delay_Statement (FA.CFG.Get_Key (V))
             then
-               Emit_Message (Atr.Error_Location);
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      =>
+                    "potentially blocking delay statement " &
+                    "in protected operation &",
+                  N        => Atr.Error_Location,
+                  F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Severity => High_Check_Kind);
             else
                for E of Atr.Subprograms_Called loop
 
-                  --  Calls to entries are trivially potentially blocking;
-                  --  calls to other entities require a detailed check.
+                  --  Calls to entries are trivially potentially blocking
 
-                  if Is_Entry (E)
-                    or else
-                      Is_Potentially_Blocking
-                        (E, Context => Scope (FA.Spec_Entity))
-                  then
-                     Emit_Message (Atr.Error_Location);
+                  if Is_Entry (E) then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      =>
+                          "potentially blocking entry call " &
+                          "in protected operation &",
+                        N        => Atr.Error_Location,
+                        F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Severity => High_Check_Kind);
+
+                  --  Predefined potentially blocking routines are identified
+                  --  individually, because they are not analyzed in phase 1.
+
+                  elsif In_Predefined_Unit (E) then
+                     if Is_Predefined_Potentially_Blocking (E) then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      =>
+                             "call to potentially blocking " &
+                             "predefined subprogram & " &
+                             "in protected operation &",
+                           N        => Atr.Error_Location,
+                           F1       => Direct_Mapping_Id (E),
+                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           Severity => High_Check_Kind);
+                     end if;
+
+                  --  Direct calls to potentially blocking subprograms
+
+                  elsif Has_Potentially_Blocking_Statement (E) then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      =>
+                          "call to potentially blocking subprogram & " &
+                          "in protected operation &",
+                        N        => Atr.Error_Location,
+                        F1       => Direct_Mapping_Id (E),
+                        F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Severity => High_Check_Kind);
+
+                  --  ??? For indirect calls we would prefer to emit a detailed
+                  --  trace of calls that leads to a potentially blocking
+                  --  operation, but this requires storing the slocs of both
+                  --  direct calls and potentially blocking operations within
+                  --  the ALI file and a copy of the original call graph (and
+                  --  not its transitive closure).
+
+                  else
+
+                     --  Indirect calls to potentially blocking subprograms
+
+                     Blocking_Callee := Potentially_Blocking_Callee (E);
+
+                     if Blocking_Callee /= Null_Entity_Name then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      =>
+                             "call to potentially blocking subprogram & " &
+                             "in protected operation &",
+                           N        => Atr.Error_Location,
+                           F1       => Magic_String_Id (Blocking_Callee),
+                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           Severity => High_Check_Kind);
+
+                     --  An external call on a protected subprogram with the
+                     --  same target object as that of the protected action.
+
+                     else
+                        Call_With_Same_Target :=
+                          Potentially_Blocking_External_Call (E, Context);
+
+                        if Present (Call_With_Same_Target.Protected_Subprogram)
+                        then
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      =>
+                                "external call to & from & " &
+                                "in protected operation &",
+                              N        => Atr.Error_Location,
+                              F1       =>
+                                Direct_Mapping_Id
+                                  (Call_With_Same_Target.Protected_Subprogram),
+
+                              F2       =>
+                                Magic_String_Id
+                                  (Call_With_Same_Target. External_Callee),
+
+                              F3       =>
+                                Direct_Mapping_Id (FA.Analyzed_Entity),
+
+                              Severity => High_Check_Kind);
+                        end if;
+                     end if;
                   end if;
                end loop;
             end if;

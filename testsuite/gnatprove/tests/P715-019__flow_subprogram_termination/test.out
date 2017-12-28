@@ -283,7 +283,7 @@ preconditions.ads:2:14: info: subprogram "Returning_Precondition" will terminate
 preconditions.ads:6:13: warning: subprogram "Nonreturning_Precondition" might not terminate
 r.adb:7:13: warning: subprogram "E" might not terminate
 r.adb:8:17: warning: subprogram "P" might not terminate
-r.adb:18:13: high: potentially blocking operation in protected operation "E"
+r.adb:18:13: high: potentially blocking entry call in protected operation "E"
 r.adb:25:21: warning: statement has no effect
 r.adb:31:14: warning: subprogram "Proc1" has no effect
 r.adb:31:14: warning: subprogram "Proc1" might not terminate
