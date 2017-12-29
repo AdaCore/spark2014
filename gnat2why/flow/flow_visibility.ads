@@ -28,6 +28,8 @@ package Flow_Visibility is
 
    procedure Register_Flow_Scopes (Unit_Node : Node_Id);
 
+   procedure Close_Visibility_Graph;
+
    function Is_Visible
      (Looking_From : Flow_Scope;
       Looking_At   : Flow_Scope)

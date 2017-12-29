@@ -426,6 +426,14 @@ package body Gnat2Why.Driver is
 
       Rewrite_All_Compilation_Units;
 
+      --  Flow visibility info needs to be build before the GG traversal
+      --  (which relies on visibility for deciding variable input in constant
+      --  declarations) and marking (which relies on visibility for deciding
+      --  the default initialization).
+
+      Register_All_Flow_Scopes;
+      Close_Visibility_Graph;
+
       --  Mark all compilation units as "in SPARK / not in SPARK", in
       --  the same order that they were processed by the frontend. Bodies
       --  are not included, except for the main unit itself, which always
@@ -460,8 +468,6 @@ package body Gnat2Why.Driver is
          --  Then traverse body (or spec if no body is present)
          Flow_Generated_Globals.Traversal.Build_Tree (GNAT_Root);
       end;
-
-      Register_All_Flow_Scopes;
 
       if Gnat2Why_Args.Global_Gen_Mode then
 

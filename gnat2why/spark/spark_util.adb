@@ -840,7 +840,8 @@ package body SPARK_Util is
       Name : constant String := Source_Name (E);
 
    begin
-      if Has_Fully_Qualified_Name (E)
+      if E = Standard_Standard
+        or else Has_Fully_Qualified_Name (E)
         or else Scope (E) = Standard_Standard
       then
          return Name;

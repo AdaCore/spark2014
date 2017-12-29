@@ -36,6 +36,7 @@ with Checked_Types;        use Checked_Types;
 with Common_Containers;    use Common_Containers;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 with Flow_Types;           use Flow_Types;
+with Flow_Visibility;
 with SPARK_Definition;     use SPARK_Definition;
 with SPARK_Util.Types;     use SPARK_Util.Types;
 
@@ -94,7 +95,10 @@ package Flow_Refinement is
 
    function Is_Visible (Target_Scope : Flow_Scope;
                         Looking_From : Flow_Scope)
-                        return Boolean;
+                        return Boolean
+   with Post => Flow_Visibility.Is_Visible
+       (Looking_From => Looking_From,
+        Looking_At   => Target_Scope) = Is_Visible'Result;
    --  Returns True iff Target_Scope is visible from Looking_From
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
