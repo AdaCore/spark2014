@@ -3146,8 +3146,11 @@ package body SPARK_Definition is
                   when E_In_Out_Parameter =>
                      Mark_Violation ("function with `IN OUT` parameter", Id);
 
-                  when others =>
+                  when E_In_Parameter =>
                      null;
+
+                  when others =>
+                     raise Program_Error;
                end case;
 
                Next (Param);
