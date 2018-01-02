@@ -330,7 +330,7 @@ package body Gnat2Why.Annotate is
            or else Present (Next (Next (C_Param)))
          then
             Error_Msg_N
-              ("Contains function must have exactly two parameter", E);
+              ("Contains function must have exactly two parameters", E);
          elsif not Is_Standard_Boolean_Type (Etype (E)) then
             Error_Msg_N
               ("Contains function must return Booleans", E);
