@@ -1661,10 +1661,7 @@ package body Gnat2Why.Expr is
 
       DIC_Subp  : constant Entity_Id := DIC_Procedure (N);
       DIC_Expr  : constant Node_Id := Get_Expr_From_Check_Only_Proc (DIC_Subp);
-      DIC_Param : constant Entity_Id :=
-        Defining_Entity (First (Parameter_Specifications
-                          (Subprogram_Specification (DIC_Subp))));
-
+      DIC_Param : constant Entity_Id := First_Formal (DIC_Subp);
       DIC_Check : W_Prog_Id := +Void;
 
    begin
@@ -1796,9 +1793,7 @@ package body Gnat2Why.Expr is
             Inv_Subp  : constant Node_Id := Invariant_Procedure (Ty);
             Inv_Expr  : constant Node_Id :=
               Get_Expr_From_Check_Only_Proc (Inv_Subp);
-            Inv_Param : constant Entity_Id :=
-              Defining_Entity (First (Parameter_Specifications
-                               (Subprogram_Specification (Inv_Subp))));
+            Inv_Param : constant Entity_Id := First_Formal (Inv_Subp);
          begin
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
             Insert_Entity (Inv_Param, Tmp_Id);
@@ -3344,9 +3339,7 @@ package body Gnat2Why.Expr is
                declare
                   Init_Expr : constant Node_Id :=
                     Get_Expr_From_Check_Only_Proc (Init_Subp);
-                  Init_Param : constant Entity_Id :=
-                    Defining_Entity (First (Parameter_Specifications
-                                     (Subprogram_Specification (Init_Subp))));
+                  Init_Param : constant Entity_Id := First_Formal (Init_Subp);
                   Init_Id    : constant W_Identifier_Id :=
                     New_Temp_Identifier (Init_Param, Get_Type (Tmp));
                   T          : W_Pred_Id;
@@ -4157,9 +4150,7 @@ package body Gnat2Why.Expr is
       Result : W_Expr_Id;
       Pred_Expr  : constant Node_Id :=
         Get_Expr_From_Return_Only_Func (Pred_Subp);
-      Pred_Param : constant Entity_Id :=
-        Defining_Entity (First (Parameter_Specifications
-                         (Subprogram_Specification (Pred_Subp))));
+      Pred_Param : constant Entity_Id := First_Formal (Pred_Subp);
       Pred_Id    : constant W_Identifier_Id :=
         New_Temp_Identifier (Pred_Param, Get_Type (+Expr));
 
@@ -15856,9 +15847,7 @@ package body Gnat2Why.Expr is
       Result    : W_Expr_Id;
       Inv_Expr  : constant Node_Id :=
         Get_Expr_From_Check_Only_Proc (Inv_Subp);
-      Inv_Param : constant Entity_Id :=
-        Defining_Entity (First (Parameter_Specifications
-                         (Subprogram_Specification (Inv_Subp))));
+      Inv_Param : constant Entity_Id := First_Formal (Inv_Subp);
       Inv_Id    : constant W_Identifier_Id :=
         New_Temp_Identifier (Inv_Param, Get_Type (+Expr));
 
@@ -16051,9 +16040,7 @@ package body Gnat2Why.Expr is
                   Default_Init_Expr : constant Node_Id :=
                     Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
                   Init_Param : constant Entity_Id :=
-                    Defining_Entity (First (Parameter_Specifications
-                                      (Subprogram_Specification
-                                        (Default_Init_Subp))));
+                    First_Formal (Default_Init_Subp);
                begin
                   if Present (Default_Init_Expr) then
 

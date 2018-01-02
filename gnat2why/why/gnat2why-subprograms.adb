@@ -1111,20 +1111,17 @@ package body Gnat2Why.Subprograms is
 
       if Global_Params then
          declare
-            Params : constant List_Id :=
-              Parameter_Specifications (Subprogram_Specification (E));
-            Param  : Node_Id;
+            Formal : Entity_Id := First_Formal (E);
          begin
-            Param := First (Params);
-            while Present (Param) loop
+            while Present (Formal) loop
                declare
                   B : constant Item_Type :=
                     Ada_Ent_To_Why.Element
-                      (Symbol_Table, Defining_Entity (Param));
+                      (Symbol_Table, Formal);
                begin
                   Effects_Append_Binder_To_Writes (B);
                end;
-               Next (Param);
+               Next_Formal (Formal);
             end loop;
          end;
       else
@@ -1408,25 +1405,20 @@ package body Gnat2Why.Subprograms is
          For_Input : Boolean;
          Inv_Pred  : in out W_Pred_Id)
       is
-         Parameters : constant List_Id :=
-           (if Is_Entry (E) then Parameter_Specifications (Parent (Subp))
-            else Parameter_Specifications (Subprogram_Specification (Subp)));
-         Parameter  : Node_Id := First (Parameters);
+         Formal : Entity_Id := First_Formal (Subp);
+
       begin
-         while Present (Parameter) loop
-            declare
-               E : constant Entity_Id := Defining_Entity (Parameter);
-            begin
-               if (if For_Input then Ekind (E) /= E_Out_Parameter
-                   else Ekind (E) /= E_In_Parameter)
-               then
-                  Inv_Pred := +New_And_Then_Expr
-                    (Left   => +Inv_Pred,
-                     Right  => +Compute_Type_Invariant_For_Entity (E),
-                     Domain => EW_Pred);
-               end if;
-            end;
-            Next (Parameter);
+         while Present (Formal) loop
+            if (if For_Input then Ekind (Formal) /= E_Out_Parameter
+                else Ekind (Formal) /= E_In_Parameter)
+            then
+               Inv_Pred := +New_And_Then_Expr
+                 (Left   => +Inv_Pred,
+                  Right  => +Compute_Type_Invariant_For_Entity (Formal),
+                  Domain => EW_Pred);
+            end if;
+
+            Next_Formal (Formal);
          end loop;
       end Add_Type_Invariants_For_Params;
 
@@ -2988,8 +2980,7 @@ package body Gnat2Why.Subprograms is
          Pred_Fun_Param : constant Entity_Id :=
            (if Ekind (E) = E_Function and then Is_Predicate_Function (E)
             then
-               Defining_Entity (First (Parameter_Specifications
-              (Subprogram_Specification (E))))
+               First_Formal (E)
             else
                Empty);
          Params : constant Transformation_Params :=
@@ -5583,40 +5574,29 @@ package body Gnat2Why.Subprograms is
       ----------------------
 
       procedure Relocate_Symbols (Overridden : Entity_Id) is
-         From_Params : constant List_Id :=
-           Parameter_Specifications (Subprogram_Specification (Overridden));
-         To_Params   : constant List_Id :=
-           Parameter_Specifications (Subprogram_Specification (E));
-         From_Param  : Node_Id;
-         To_Param    : Node_Id;
+         From_Formal : Entity_Id := First_Formal (Overridden);
+         To_Formal   : Entity_Id := First_Formal (E);
 
       begin
-         From_Param := First (From_Params);
-         To_Param := First (To_Params);
-         while Present (From_Param) loop
-            declare
-               From_Id : constant Entity_Id :=
-                 Defining_Identifier (From_Param);
-               To_Id   : constant Entity_Id :=
-                 Defining_Identifier (To_Param);
-            begin
-               Ada_Ent_To_Why.Insert
-                 (Symbol_Table,
-                  From_Id,
-                  Ada_Ent_To_Why.Element (Symbol_Table, To_Id));
-            end;
+         while Present (From_Formal) loop
+            Ada_Ent_To_Why.Insert
+              (Symbol_Table,
+               From_Formal,
+               Ada_Ent_To_Why.Element (Symbol_Table, To_Formal));
 
-            Next (From_Param);
-            Next (To_Param);
+            Next_Formal (From_Formal);
+            Next_Formal (To_Formal);
          end loop;
 
-         pragma Assert (No (To_Param));
+         pragma Assert (No (To_Formal));
       end Relocate_Symbols;
 
       Inherit_Subp  : constant Subprogram_List := Inherited_Subprograms (E);
       Subp_For_Pre  : Entity_Id := Empty;
       Subp_For_Post : Entity_Id := Empty;
       Contracts     : Node_Lists.List;
+
+   --  Start of processing for Update_Symbol_Table_For_Inherited_Contracts
 
    begin
       --  Find the subprogram from which the precondition is inherited, if any

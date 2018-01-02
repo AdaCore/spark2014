@@ -33,7 +33,6 @@ with Gnat2Why_Args;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Lib;
 with Namet;                      use Namet;
-with Nlists;                     use Nlists;
 with Sem_Aux;                    use Sem_Aux;
 with Sem_Util;                   use Sem_Util;
 with SPARK_Definition;           use SPARK_Definition;
@@ -433,8 +432,7 @@ package body Gnat2Why.Util is
       Default_Init_Expr : constant Node_Id :=
         Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
       Init_Param        : constant Entity_Id :=
-        Defining_Entity (First (Parameter_Specifications
-                          (Subprogram_Specification (Default_Init_Subp))));
+        First_Formal (Default_Init_Subp);
    begin
       return Present (Default_Init_Expr)
         and then Flow_Utility.Get_Variables_For_Proof (Default_Init_Expr, Ty)

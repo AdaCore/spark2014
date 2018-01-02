@@ -1147,22 +1147,16 @@ package body SPARK_Util.Subprograms is
 
       if Is_External then
          declare
-            Parameters : constant List_Id :=
-              (if Is_Entry (E) then Parameter_Specifications (Parent (E))
-               else Parameter_Specifications (Subprogram_Specification (E)));
-            Parameter  : Node_Id := First (Parameters);
+            Formal : Entity_Id := First_Formal (E);
          begin
-            while Present (Parameter) loop
-               declare
-                  E : constant Entity_Id := Defining_Entity (Parameter);
-               begin
-                  if Ekind (E) /= E_Out_Parameter
-                    and then Invariant_Check_Needed (Etype (E))
-                  then
-                     return True;
-                  end if;
-               end;
-               Next (Parameter);
+            while Present (Formal) loop
+               if Ekind (Formal) /= E_Out_Parameter
+                 and then Invariant_Check_Needed (Etype (Formal))
+               then
+                  return True;
+               end if;
+
+               Next_Formal (Formal);
             end loop;
          end;
       end if;

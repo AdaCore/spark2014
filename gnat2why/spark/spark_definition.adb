@@ -3104,10 +3104,7 @@ package body SPARK_Definition is
          procedure Mark_Function_Specification (N : Node_Id) is
             Id               : constant Entity_Id := Defining_Entity (N);
             Is_Volatile_Func : constant Boolean   := Is_Volatile_Function (Id);
-            Params           : constant List_Id   :=
-              Parameter_Specifications (N);
-            Param            : Node_Id;
-            Param_Id         : Entity_Id;
+            Formal           : Entity_Id := First_Formal (Id);
 
          begin
             --  A nonvolatile function shall not have a result of an
@@ -3120,15 +3117,12 @@ package body SPARK_Definition is
                  ("nonvolatile function with effectively volatile result", Id);
             end if;
 
-            Param := First (Params);
-            while Present (Param) loop
-               Param_Id := Defining_Identifier (Param);
-
+            while Present (Formal) loop
                --  A nonvolatile function shall not have a formal parameter
                --  of an effectively volatile type (SPARK RM 7.1.3(9)).
 
                if not Is_Volatile_Func
-                 and then Is_Effectively_Volatile (Etype (Param_Id))
+                 and then Is_Effectively_Volatile (Etype (Formal))
                then
                   Mark_Violation
                     ("nonvolatile function with effectively volatile " &
@@ -3139,7 +3133,7 @@ package body SPARK_Definition is
                --  parameter_specification with a mode of OUT or IN OUT
                --  (SPARK RM 6.1(5)).
 
-               case Ekind (Param_Id) is
+               case Ekind (Formal) is
                   when E_Out_Parameter =>
                      Mark_Violation ("function with OUT parameter", Id);
 
@@ -3153,7 +3147,7 @@ package body SPARK_Definition is
                      raise Program_Error;
                end case;
 
-               Next (Param);
+               Next_Formal (Formal);
             end loop;
 
             --  If the result type of a subprogram is not in SPARK, then the
@@ -3195,10 +3189,9 @@ package body SPARK_Definition is
                end loop;
             end Mark_Global_Items;
 
-            Id         : constant Entity_Id := Defining_Entity (N);
-            Formals    : constant List_Id   := Parameter_Specifications (N);
-            Param_Spec : Node_Id;
-            Formal     : Entity_Id;
+            Id : constant Entity_Id := Defining_Entity (N);
+
+            Formal : Entity_Id := First_Formal (Id);
 
             --  Variables for collecting the subprogram's inputs and outputs
             Subp_Inputs  : Elist_Id := No_Elist;
@@ -3220,13 +3213,11 @@ package body SPARK_Definition is
                   null;
             end case;
 
-            Param_Spec := First (Formals);
-            while Present (Param_Spec) loop
-               Formal := Defining_Identifier (Param_Spec);
+            while Present (Formal) loop
                if not In_SPARK (Formal) then
                   Mark_Violation (Formal, From => Etype (Formal));
                end if;
-               Next (Param_Spec);
+               Next_Formal (Formal);
             end loop;
 
             --  Mark global items that appear in Global and Depends contracts,
