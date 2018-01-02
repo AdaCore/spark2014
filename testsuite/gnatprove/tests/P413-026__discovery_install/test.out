@@ -25,6 +25,7 @@ why3session
 libexec/spark/share dir
 doc
 gcc-7.2.1
+gpr
 gprconfig
 info
 man
