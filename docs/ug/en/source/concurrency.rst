@@ -816,3 +816,45 @@ In effect, you might miss checks when:
 
 As a workaround, when building library projects add a dummy main subprogram
 that "withs" all the library-level packages of your project.
+
+Interrupt Handlers
+------------------
+
+SPARK puts no restrictions on the Ada interrupt handling and GNATprove merely
+checks that interrupt handlers will be safely executed. In Ada interrupts
+handlers are defined by annotating protected procedures, for example:
+
+.. code-block:: ada
+
+   with Ada.Interrupts.Names; use Ada.Interrupts.Names;
+
+   protected P is
+      procedure Signal with Attach_Handler => SIGINT;
+   end P;
+
+Currently GNATprove emits a check for each handler declaration saying that the
+corresponding interrupt might be already reserved. In particular, it might be
+reserved by either the system or the Ada runtime; see GNAT pragmas
+Interrupt_State and Unreserve_All_Interrupts for details. Once examined, they
+can be suppressed with pragma Annotate.
+
+If pragma Priority or Interrupt_Priority is explicitly specified for a
+protected type, then GNATprove will check that its value is in the range of the
+System.Any_Priority or System.Interrupt_Priority, respectively; see Ada RM
+D.3(6.1/3).
+
+For interrupt handlers whose bodies are annotated with SPARK_Mode => On,
+GNATprove will additionally check that:
+
+* the interrupt handler does not call (directly or indirectly) the
+  Ada.Task_Identification.Current_Task routine, which might cause a
+  Program_Error runtime exception; see Ada RM C.7.1(17/3);
+
+* all global objects read (either as an Input or a Proof_In) by the interrupt
+  handler are initialized at elaboration;
+
+* there are no unsynchronized objects accessed both by the interrupt handler
+  and by some task (or by some other interrupt handler);
+
+* there are no protected objects locked both by the interrupt handler and by
+  some task (or by some other interrupt handler).
