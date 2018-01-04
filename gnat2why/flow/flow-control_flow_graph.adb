@@ -1174,9 +1174,20 @@ package body Flow.Control_Flow_Graph is
                                           Corresponding_Grouping (F.Variant));
                      begin
                         Create_Record_Tree (P, Leaf_Atr, FA);
-                        Linkup (FA,
-                                FA.CFG.Get_Vertex (P),
-                                FA.CFG.Get_Vertex (F));
+                        case F.Variant is
+                           when Initial_Value =>
+                              Linkup (FA,
+                                      FA.CFG.Get_Vertex (P),
+                                      FA.CFG.Get_Vertex (F));
+
+                           when Final_Value =>
+                              Linkup  (FA,
+                                       FA.CFG.Get_Vertex (F),
+                                       FA.CFG.Get_Vertex (P));
+
+                           when others =>
+                              raise Program_Error;
+                        end case;
                      end;
                   end if;
             end case;
@@ -1198,9 +1209,20 @@ package body Flow.Control_Flow_Graph is
 
                      if F.Kind = Record_Field then
                         Create_Record_Tree (Parent_Record (F), Leaf_Atr, FA);
-                        Linkup (FA,
-                                FA.CFG.Get_Vertex (Parent_Record (F)),
-                                FA.CFG.Get_Vertex (F));
+                        case F.Variant is
+                           when Initial_Grouping =>
+                              Linkup (FA,
+                                      FA.CFG.Get_Vertex (Parent_Record (F)),
+                                      FA.CFG.Get_Vertex (F));
+
+                           when Final_Grouping =>
+                              Linkup (FA,
+                                      FA.CFG.Get_Vertex (F),
+                                      FA.CFG.Get_Vertex (Parent_Record (F)));
+
+                           when others =>
+                              raise Program_Error;
+                        end case;
                      end if;
                   end if;
             end case;
@@ -1299,6 +1321,10 @@ package body Flow.Control_Flow_Graph is
             Final_V);
          Linkup (FA, FA.End_Vertex, Final_V);
 
+         Create_Record_Tree (F_Final,
+                             Final_Atr,
+                             FA);
+
          FA.All_Vars.Include (F);
       end Process;
 
@@ -1378,6 +1404,10 @@ package body Flow.Control_Flow_Graph is
             Final_Atr,
             Final_V);
          Linkup (FA, FA.End_Vertex, Final_V);
+
+         Create_Record_Tree (F_Final,
+                             Final_Atr,
+                             FA);
 
          FA.All_Vars.Include (F);
       end Process;

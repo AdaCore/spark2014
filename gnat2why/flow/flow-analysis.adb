@@ -109,7 +109,8 @@ package body Flow.Analysis is
                               F : Flow_Id)
                               return Flow_Graphs.Vertex_Id
    with Pre  => F.Variant = Normal_Use,
-        Post => G.Get_Key (Get_Final_Vertex'Result).Variant = Final_Value;
+        Post => G.Get_Key (Get_Final_Vertex'Result).Variant in Final_Value
+                                                             | Final_Grouping;
    --  Returns the vertex id which represents the final value for F
 
    function Is_Param_Of_Null_Subp_Of_Generic (E : Entity_Id)
@@ -323,8 +324,16 @@ package body Flow.Analysis is
       F : Flow_Id)
       return Flow_Graphs.Vertex_Id
    is
+      Result : Flow_Graphs.Vertex_Id;
    begin
-      return G.Get_Vertex (Change_Variant (F, Final_Value));
+      --  Look for either the Final_Value or Final_Grouping variant
+      Result := G.Get_Vertex (Change_Variant (F, Final_Value));
+
+      if Result = Flow_Graphs.Null_Vertex then
+         return G.Get_Vertex (Change_Variant (F, Final_Grouping));
+      else
+         return Result;
+      end if;
    end Get_Final_Vertex;
 
    ---------------------------------------
@@ -3126,7 +3135,12 @@ package body Flow.Analysis is
 
       begin
          --  Sanity check that we do not have an empty set.
-         pragma Assert (not Vertices_To_Cover.Is_Empty);
+         --  ??? In order to have this assertion we should add some edges in
+         --  the PDG which are currently not there, i.e. the ones created in
+         --  the CFG during Create_Record_Tree and the dependency of a
+         --  protected subprogram from a protected object.
+
+         --  pragma Assert (not Vertices_To_Cover.Is_Empty);
 
          Start := FA.Start_Vertex;
          for Vert of Vertices_To_Cover loop
