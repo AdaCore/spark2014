@@ -3018,9 +3018,9 @@ package body Flow.Analysis is
       end loop;
    end Find_Stable_Elements;
 
-   -------------------------------------------
-   --  Find_Exports_Derived_From_Proof_Ins  --
-   -------------------------------------------
+   -----------------------------------------
+   -- Find_Exports_Derived_From_Proof_Ins --
+   -----------------------------------------
 
    procedure Find_Exports_Derived_From_Proof_Ins
      (FA : in out Flow_Analysis_Graphs)
@@ -3031,9 +3031,9 @@ package body Flow.Analysis is
       --  Returns a set of vertices that highlight the path in the CFG
       --  where the export depends on a Proof_In.
 
-      ------------------------------------------
-      --  Path_Leading_To_Proof_In_Dependency --
-      ------------------------------------------
+      -----------------------------------------
+      -- Path_Leading_To_Proof_In_Dependency --
+      -----------------------------------------
 
       function Path_Leading_To_Proof_In_Dependency
         (From : Flow_Graphs.Vertex_Id;
@@ -3048,9 +3048,9 @@ package body Flow.Analysis is
          --  it operates on the PDG graph. If CFG_Graph is set to True then it
          --  operates on the CFG.
 
-         ------------------------------------
-         --  Vertices_Between_From_And_To  --
-         ------------------------------------
+         ----------------------------------
+         -- Vertices_Between_From_And_To --
+         ----------------------------------
 
          function Vertices_Between_From_And_To
            (From      : Flow_Graphs.Vertex_Id;
@@ -3067,9 +3067,9 @@ package body Flow.Analysis is
                Instruction : out Flow_Graphs.Traversal_Instruction);
             --  Visitor procedure for Shortest_Path
 
-            ---------------
-            --  Add_Loc  --
-            ---------------
+            -------------
+            -- Add_Loc --
+            -------------
 
             procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
             begin
@@ -3083,9 +3083,9 @@ package body Flow.Analysis is
                end if;
             end Add_Loc;
 
-            ------------------------
-            --  Are_We_There_Yet  --
-            ------------------------
+            ----------------------
+            -- Are_We_There_Yet --
+            ----------------------
 
             procedure Are_We_There_Yet
               (V           : Flow_Graphs.Vertex_Id;
