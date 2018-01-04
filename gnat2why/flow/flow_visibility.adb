@@ -278,7 +278,10 @@ package body Flow_Visibility is
                Is_Private := False;
                Parent     := Empty;
             else
-               Is_Private := Is_Private_Descendant (E);
+               Is_Private :=
+                 Nkind (Atree.Parent (N)) = N_Compilation_Unit
+                   and then
+                 Private_Present (Atree.Parent (N));
                Parent     := Scope (E);
                pragma Assert (Hierarchy_Info.Contains (Parent));
             end if;
