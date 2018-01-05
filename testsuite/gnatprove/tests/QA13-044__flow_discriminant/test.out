@@ -1,0 +1,4 @@
+p.adb:5:19: info: range check proved (CVC4: 1 VC)
+p.ads:5:18: warning: unused variable "Input"
+p.ads:6:09: medium: missing dependency "null => Input"
+p.ads:6:36: medium: incorrect dependency "Foo'Result => Input"
