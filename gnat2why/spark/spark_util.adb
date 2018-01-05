@@ -1099,9 +1099,13 @@ package body SPARK_Util is
               Get_Range
                 (Scalar_Range
                    (case Ekind (N) is
-                    when Scalar_Kind => N,
-                    when Object_Kind => Etype (N),
-                    when others      => raise Program_Error));
+                    when Object_Kind                => Etype (N),
+                    when Scalar_Kind                => N,
+                    when E_Limited_Private_Subtype
+                       | E_Limited_Private_Type
+                       | E_Private_Subtype
+                       | E_Private_Type             => Full_View (N),
+                    when others                     => raise Program_Error));
 
          when others =>
             raise Program_Error;

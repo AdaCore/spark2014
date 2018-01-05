@@ -2,7 +2,7 @@ package Instructions is
 
    type Instruction is private;
 
-   procedure Read;
+   procedure Read with Global => null;
 
 private
 
