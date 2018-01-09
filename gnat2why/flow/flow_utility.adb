@@ -2397,8 +2397,15 @@ package body Flow_Utility is
                --  current context) and ignore them, just like we ignore
                --  references to the current instance of a non-single
                --  concurrent type.
+               --
+               --  For standalone subprograms (e.g. main subprogram) the
+               --  Ctx.Scope is currently represented by a Null_Flow_Scope,
+               --  whose Ent is Empty, which would crash the Is_CCT_Instance.
+               --  Such standalone subprograms can't, by definition, reference
+               --  the current instance of the concurrent type.
 
                if Is_Single_Concurrent_Object (E)
+                 and then Present (Ctx.Scope)
                  and then Is_CCT_Instance (Etype (E), Ctx.Scope.Ent)
                then
                   return Flow_Id_Sets.Empty_Set;
