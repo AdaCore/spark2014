@@ -1736,12 +1736,11 @@ package body Flow_Utility is
    -- Get_Proof_Globals --
    -----------------------
 
-   procedure Get_Proof_Globals (Subprogram          : Entity_Id;
-                                Classwide           : Boolean;
-                                Reads               : out Flow_Id_Sets.Set;
-                                Writes              : out Flow_Id_Sets.Set;
-                                Use_Deduced_Globals : Boolean := True;
-                                Keep_Constants      : Boolean := False)
+   procedure Get_Proof_Globals (Subprogram     :     Entity_Id;
+                                Classwide      :     Boolean;
+                                Reads          : out Flow_Id_Sets.Set;
+                                Writes         : out Flow_Id_Sets.Set;
+                                Keep_Constants :     Boolean := False)
    is
       Globals : Global_Flow_Ids;
 
@@ -1794,7 +1793,7 @@ package body Flow_Utility is
          Classwide              => Classwide,
          Globals                => Globals,
          Consider_Discriminants => False,
-         Use_Deduced_Globals    => Use_Deduced_Globals);
+         Use_Deduced_Globals    => True);
 
       --  Reset outputs
       Writes := Flow_Id_Sets.Empty_Set;

@@ -210,12 +210,11 @@ is
    --  If Ignore_Depends is True then we do not use the Refined_Depends
    --  contract to trim the Globals.
 
-   procedure Get_Proof_Globals (Subprogram          : Entity_Id;
-                                Classwide           : Boolean;
-                                Reads               : out Flow_Id_Sets.Set;
-                                Writes              : out Flow_Id_Sets.Set;
-                                Use_Deduced_Globals : Boolean := True;
-                                Keep_Constants      : Boolean := False)
+   procedure Get_Proof_Globals (Subprogram     :     Entity_Id;
+                                Classwide      :     Boolean;
+                                Reads          : out Flow_Id_Sets.Set;
+                                Writes         : out Flow_Id_Sets.Set;
+                                Keep_Constants :     Boolean := False)
    with Pre  => Ekind (Subprogram) in E_Entry     |
                                       E_Function  |
                                       E_Procedure |
