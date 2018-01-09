@@ -126,7 +126,7 @@ package body Flow.Analysis is
 
    procedure Warn_On_Subprogram_With_No_Effect
      (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in Kind_Subprogram
+   with Pre => FA.Kind = Kind_Subprogram
                and then not Has_Effects (FA);
    --  Issue a warning if the subprogram has no effects. The message is
    --  suppressed if the subprogram is:
@@ -1394,7 +1394,6 @@ package body Flow.Analysis is
 
       elsif not Has_Effects (FA) then
          Warn_On_Subprogram_With_No_Effect (FA);
-         return;
       end if;
    end Find_Ineffective_Imports_And_Unused_Objects;
 
