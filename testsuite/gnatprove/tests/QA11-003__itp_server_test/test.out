@@ -24,6 +24,10 @@ Node_change 92
 New_node 93 89
 Node_change 93
 Node_change 93
+Node_change 93
+Node_change 93
+Node_change 93
+Node_change 93
 Task
 --------------------------- Local Context ---------------------------
 
@@ -45,10 +49,6 @@ goal WP_parameter def :
     (exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2)))
 
 
-Node_change 93
-Node_change 93
-Node_change 93
-Node_change 93
 Task
 --------------------------- Local Context ---------------------------
 
