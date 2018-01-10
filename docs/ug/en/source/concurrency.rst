@@ -835,8 +835,8 @@ handlers are defined by annotating protected procedures, for example:
 Currently GNATprove emits a check for each handler declaration saying that the
 corresponding interrupt might be already reserved. In particular, it might be
 reserved by either the system or the Ada runtime; see GNAT pragmas
-Interrupt_State and Unreserve_All_Interrupts for details. Once examined, they
-can be suppressed with pragma Annotate.
+Interrupt_State and Unreserve_All_Interrupts for details. Once examined, those
+checks can be suppressed with pragma Annotate.
 
 If pragma Priority or Interrupt_Priority is explicitly specified for a
 protected type, then GNATprove will check that its value is in the range of the
