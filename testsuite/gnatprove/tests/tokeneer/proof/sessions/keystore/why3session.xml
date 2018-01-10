@@ -564,9 +564,9 @@
 </theory>
 <theory name="System__default_bit_order" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_interrupt_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__any_priority" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3280,9 +3280,9 @@
 </theory>
 <theory name="Clock__now" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Configdata__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Configdata__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Configdata__state" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Auditlog__filestate" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3552,7 +3552,7 @@
 </theory>
 <theory name="Temp___String_Literal_204" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_205" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_206" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Keystore__digest" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4144,9 +4144,9 @@
 </theory>
 <theory name="System__default_bit_order___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="System__max_interrupt_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="System__max_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="System__default_priority___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4696,7 +4696,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__init__subprogram_def" proved="true" sum="f0956f62fd4260ac8571e698861191d4">
+<theory name="Keystore__init__subprogram_def" proved="true" sum="cb4b079c30d2760fff8fb25f01527fd4">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
@@ -4711,7 +4711,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__keymatchingissuerpresent__subprogram_def" proved="true" sum="57cde980ed75589b555d3587bc4f971d">
+<theory name="Keystore__keymatchingissuerpresent__subprogram_def" proved="true" sum="45519c6cd3c27d07441a237d4f9c732a">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
@@ -4735,7 +4735,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__isverifiedby__subprogram_def" proved="true" sum="57479e71697fcfd6970875c80cfc937a">
+<theory name="Keystore__isverifiedby__subprogram_def" proved="true" sum="d13072785dc5e69d57fefb6e8ae4c695">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
@@ -4750,7 +4750,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__sign__subprogram_def" proved="true" sum="01edd451ddd772a3c46e3d3f9f192eea">
+<theory name="Keystore__sign__subprogram_def" proved="true" sum="363b1c5b06251dab5149f6d38ff847e2">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
@@ -4765,7 +4765,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__addkey__subprogram_def" proved="true" sum="04855ad66778d30d6fe6eb03c6117c19">
+<theory name="Keystore__addkey__subprogram_def" proved="true" sum="c359b0c1a19890f1ecb208bdedcd92da">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
@@ -4798,7 +4798,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__convertretvaltotext__subprogram_def" proved="true" sum="7829b2be4fb360f31e025732dfdaa667">
+<theory name="Keystore__convertretvaltotext__subprogram_def" proved="true" sum="157f9df2ac6b3c9ae2ca8b4f48bf9219">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -4849,7 +4849,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__digest__subprogram_def" proved="true" sum="a262c549ab49cd7302d6ea534ab2cb2f">
+<theory name="Keystore__digest__subprogram_def" proved="true" sum="31321cb87d209b106fe0402e62c02346">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -5017,7 +5017,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__dofind__subprogram_def" proved="true" sum="c10925c07abf4a6544771ff20af2e504">
+<theory name="Keystore__dofind__subprogram_def" proved="true" sum="76aa5aff33dae5b1b092136a505f3658">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
@@ -5050,7 +5050,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__keymatchingissuer__subprogram_def" proved="true" sum="586b0b2e1ce5df7068e1aecb7a9758f2">
+<theory name="Keystore__keymatchingissuer__subprogram_def" proved="true" sum="95f092b7cc29d626cc6b09d9ba768f98">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -5059,7 +5059,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__privatekey__subprogram_def" proved="true" sum="bfe3c378bc9eb1f56c646e9e8e029538">
+<theory name="Keystore__privatekey__subprogram_def" proved="true" sum="3e5b3abb117aa10a1702ec360caa9757">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">

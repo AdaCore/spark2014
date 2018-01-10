@@ -1269,7 +1269,8 @@ package body SPARK_Util is
    function Is_Call_Arg_To_Predicate_Function (N : Node_Id) return Boolean is
      (Present (N)
         and then Present (Parent (N))
-        and then Nkind (Parent (N)) = N_Type_Conversion
+        and then Nkind (Parent (N)) in N_Type_Conversion
+                                     | N_Unchecked_Type_Conversion
         and then Present (Parent (Parent (N)))
         and then Is_Predicate_Function_Call (Parent (Parent (N))));
 

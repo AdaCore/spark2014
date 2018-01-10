@@ -349,98 +349,59 @@
  </transf>
  </goal>
 </theory>
-<theory name="Commontypes__stringf1l20Predicate__subprogram_def" sum="e7472dd4bda7160d37ddf057ff812485">
- <goal name="WP_parameter def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
+<theory name="Commontypes__stringf1l20Predicate__subprogram_def" proved="true" sum="b0264322349f6015bd405c45176cfd31">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="115"/></proof>
-  <proof prover="2"><result status="unknown" steps="115"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Commontypes__stringf1l12Predicate__subprogram_def" sum="9ef937ab19f7934b462fd627839b3451">
- <goal name="WP_parameter def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
+<theory name="Commontypes__stringf1l12Predicate__subprogram_def" proved="true" sum="f23ed66381581027675b746523d76424">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="115"/></proof>
-  <proof prover="2"><result status="unknown" steps="115"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Commontypes__stringf1l1000Predicate__subprogram_def" sum="c106ae9196b06d1bd390d97ec336b22a">
- <goal name="WP_parameter def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
+<theory name="Commontypes__stringf1l1000Predicate__subprogram_def" proved="true" sum="ccb4ffa126f93c64f7b355fd7ab939fd">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="115"/></proof>
-  <proof prover="2"><result status="unknown" steps="115"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Commontypes__stringf1l2to1000Predicate__subprogram_def" sum="c64ad6177279e8ba07b6d991977e45f2">
- <goal name="WP_parameter def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
+<theory name="Commontypes__stringf1l2to1000Predicate__subprogram_def" proved="true" sum="b4dae8574ac16fe3f123a174139dbf3b">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="115"/></proof>
-  <proof prover="2"><result status="unknown" steps="115"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Commontypes__stringf1l3to1000Predicate__subprogram_def" sum="907894f723dca58b861e87cb51ad142a">
- <goal name="WP_parameter def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
+<theory name="Commontypes__stringf1l3to1000Predicate__subprogram_def" proved="true" sum="a014bb5ed25494b3d0d8f150591aeb73">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="115"/></proof>
-  <proof prover="2"><result status="unknown" steps="115"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Commontypes__stringf1l1000nePredicate__subprogram_def" sum="aed6e7ebf79966983099449e2814baa5">
- <goal name="WP_parameter def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
+<theory name="Commontypes__stringf1l1000nePredicate__subprogram_def" proved="true" sum="687713a1049c428b6748434d9bde266f">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="116"/></proof>
-  <proof prover="2"><result status="unknown" steps="116"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="166"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="35"/></proof>
+  <goal name="WP_parameter def.1" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" steps="103"/></proof>
   </goal>
  </transf>
  </goal>

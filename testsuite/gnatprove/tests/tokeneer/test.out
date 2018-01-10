@@ -1161,18 +1161,11 @@ clock.ads:217:07: info: initialization of "Day" proved
 clock.ads:218:07: info: initialization of "Hour" proved
 clock.ads:219:07: info: initialization of "Min" proved
 commontypes.ads:61:12: info: range check proved (CVC4: 1 VC)
-commontypes.ads:61:12: medium: predicate check might fail
 commontypes.ads:63:12: info: range check proved (CVC4: 1 VC)
-commontypes.ads:63:12: medium: predicate check might fail
-commontypes.ads:65:12: info: predicate check proved (CVC4: 1 VC)
 commontypes.ads:65:12: info: range check proved (CVC4: 1 VC)
-commontypes.ads:65:12: medium: predicate check might fail
 commontypes.ads:67:12: info: range check proved (CVC4: 1 VC)
-commontypes.ads:67:12: medium: predicate check might fail
 commontypes.ads:69:12: info: range check proved (CVC4: 1 VC)
-commontypes.ads:69:12: medium: predicate check might fail
 commontypes.ads:71:12: info: range check proved (CVC4: 1 VC)
-commontypes.ads:71:12: medium: predicate check might fail
 configdata.adb:165:04: info: initialization of "ConfigFile" constituent of "FileState" proved
 configdata.adb:207:30: info: initialization of "Value" proved
 configdata.adb:209:36: info: initialization of "Success" proved
@@ -1519,8 +1512,8 @@ configuration.adb:109:64: info: division check proved (CVC4: 1 VC)
 configuration.adb:109:72: info: range check proved (CVC4: 1 VC)
 configuration.adb:110:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:110:63: info: division check proved (CVC4: 1 VC)
-configuration.adb:110:71: info: range check proved (CVC4: 1 VC)
-configuration.adb:111:12: info: range check proved (CVC4: 1 VC)
+configuration.adb:110:71: info: range check proved (Z3: 1 VC)
+configuration.adb:111:12: info: range check proved (Z3: 1 VC)
 configuration.adb:116:26: info: initialization of "Str" proved
 configuration.adb:116:26: info: range check proved (CVC4: 4 VC)
 configuration.adb:118:13: info: range check proved (CVC4: 4 VC)
