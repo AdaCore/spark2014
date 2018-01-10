@@ -749,7 +749,7 @@ cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Year" prov
 cert-attr-priv.ads:91:21: info: initialization of "Contents.Role" proved
 cert-attr.adb:38:09: info: range check proved (CVC4: 1 VC)
 cert-attr.adb:39:09: info: range check proved (CVC4: 1 VC)
-cert-attr.adb:40:09: low: range check might fail
+cert-attr.adb:40:09: info: range check proved (CVC4: 1 VC)
 cert-attr.adb:47:10: info: range check proved (CVC4: 4 VC)
 cert-attr.adb:47:43: info: initialization of "LocalUser" proved
 cert-attr.adb:47:43: info: length check proved (CVC4: 1 VC)
@@ -826,7 +826,7 @@ cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyID" pro
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyLength" proved
 cert.adb:63:09: info: range check proved (CVC4: 1 VC)
 cert.adb:64:09: info: range check proved (CVC4: 1 VC)
-cert.adb:65:09: low: range check might fail
+cert.adb:65:09: info: range check proved (CVC4: 1 VC)
 cert.adb:71:10: info: range check proved (CVC4: 4 VC)
 cert.adb:71:43: info: initialization of "LocalUser" proved
 cert.adb:71:43: info: length check proved (CVC4: 1 VC)

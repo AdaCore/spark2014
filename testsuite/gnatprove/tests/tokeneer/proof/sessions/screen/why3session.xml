@@ -4322,9 +4322,9 @@
 </theory>
 <theory name="Auditlog__logfilestatet__T21s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___1148" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Temp___1152" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Temp___1156" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Auditlog__logfilestatet___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4642,17 +4642,9 @@
 </theory>
 <theory name="Screen__init__T150b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1728" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1732" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1742" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Temp___String_Literal_1754" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Temp___String_Literal_1755" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Temp___String_Literal_1756" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Temp___String_Literal_1757" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1746" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Temp___String_Literal_1758" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4680,9 +4672,17 @@
 </theory>
 <theory name="Temp___String_Literal_1770" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1785" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1771" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1798" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1772" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Temp___String_Literal_1773" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Temp___String_Literal_1774" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Temp___String_Literal_1789" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Temp___String_Literal_1802" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Screen__writeconfigdata__filesizestring__result__aggregate_def" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4692,13 +4692,13 @@
 </theory>
 <theory name="Screen__writeconfigdata__farstring__result__aggregate_def" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1850" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1854" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1851" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1855" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1852" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1856" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1853" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___String_Literal_1857" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Screen__writestatsdata__statscountstring__result__aggregate_def" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -5449,11 +5449,11 @@
  </transf>
  </goal>
 </theory>
-<theory name="Screen__writeconfigdata__secondsstring__subprogram_def" proved="true" sum="a03ca951eadbbd66b1751c74955245e4">
+<theory name="Screen__writeconfigdata__secondsstring__subprogram_def" proved="true" sum="3c8d4b6392d619c22fb2ac46ae62d00b">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="89"/></proof>
+  <proof prover="0"><result status="valid" steps="94"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5462,7 +5462,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="69"/></proof>
+  <proof prover="0"><result status="valid" steps="74"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -5474,13 +5474,13 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="115"/></proof>
+  <proof prover="0"><result status="valid" steps="120"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="96"/></proof>
+  <proof prover="0"><result status="valid" steps="101"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>

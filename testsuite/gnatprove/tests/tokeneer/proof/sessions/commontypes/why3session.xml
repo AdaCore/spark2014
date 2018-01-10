@@ -376,20 +376,26 @@
  </transf>
  </goal>
 </theory>
-<theory name="Commontypes__stringf1l2to1000Predicate__subprogram_def" proved="true" sum="b4dae8574ac16fe3f123a174139dbf3b">
+<theory name="Commontypes__stringf1l2to1000Predicate__subprogram_def" proved="true" sum="49d2b2f9831ae49a351cd43ba79a0186">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
+  <goal name="WP_parameter def.1" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" steps="103"/></proof>
+  </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Commontypes__stringf1l3to1000Predicate__subprogram_def" proved="true" sum="a014bb5ed25494b3d0d8f150591aeb73">
+<theory name="Commontypes__stringf1l3to1000Predicate__subprogram_def" proved="true" sum="29012ff945d3e39818db61209eb2ac03">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.1" expl="assertion" proved="true">
+  <proof prover="1"><result status="valid" steps="103"/></proof>
   </goal>
  </transf>
  </goal>

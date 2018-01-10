@@ -2,11 +2,8 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
-<prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
-<prover id="2" name="CVC4_CE" version="1.5-gnatprove" timelimit="10" steplimit="0" memlimit="0"/>
-<prover id="3" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
-<file name="../../../gnatprove/cert.mlw">
+<prover id="0" name="CVC4" version="1.5-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<file name="../../../gnatprove/cert.mlw" proved="true">
 <theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Standard__short_short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
@@ -3691,9 +3688,9 @@
 </theory>
 <theory name="Auditlog__logfilestatet__T21s___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___1414" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Temp___1418" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Temp___1422" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Auditlog__logfilestatet___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -3759,11 +3756,11 @@
 </theory>
 <theory name="Cert__extractuser__T9b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
-<theory name="Temp___String_Literal_1722" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
-<theory name="Temp___String_Literal_1723" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
-</theory>
 <theory name="Temp___String_Literal_1726" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Temp___String_Literal_1727" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Temp___String_Literal_1730" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
 <theory name="Cryptotypes__blankname___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -4317,50 +4314,47 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__extractuser__subprogram_def" sum="d5cff7f3546b3c615275d900e3c9ab29">
- <goal name="WP_parameter def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
+<theory name="Cert__extractuser__subprogram_def" proved="true" sum="1ee2abb0f2bdebbc3b90e03c0bcd0770">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="19"/></proof>
+  <proof prover="0"><result status="valid" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="198"/></proof>
+  <proof prover="0"><result status="valid" steps="203"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="timeout" steps="628973"/></proof>
-  <proof prover="2"><result status="timeout" steps="235428"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
+  <goal name="WP_parameter def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="318"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="462"/></proof>
+  <proof prover="0"><result status="valid" steps="479"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="5"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="5"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="5"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="5"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="5"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="350"/></proof>
+  <proof prover="0"><result status="valid" steps="355"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="5"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="350"/></proof>
+  <proof prover="0"><result status="valid" steps="355"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="5"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
