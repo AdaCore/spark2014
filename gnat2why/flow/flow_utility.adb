@@ -2459,6 +2459,37 @@ package body Flow_Utility is
                   return Flow_Id_Sets.Empty_Set;
                end if;
 
+               --  For variables of a constrained record type we want to detect
+               --  their discriminant constraints.
+
+               if Ekind (E) = E_Variable then
+                  declare
+                     Typ : constant Entity_Id := Etype (E);
+
+                  begin
+                     if Ekind (Typ) in Record_Kind
+                       and then Is_Constrained (Typ)
+                       and then Has_Discriminants (Typ)
+                     then
+                        declare
+                           Variables : Flow_Id_Sets.Set;
+
+                        begin
+                           --  Loop over the list of discriminant constraints
+                           for Discr of Iter (Discriminant_Constraint (Typ))
+                           loop
+                              if Nkind (Discr) = N_Identifier then
+                                 Variables.Union (Do_Entity (Entity (Discr)));
+                              else
+                                 Variables.Union (Recurse (Discr));
+                              end if;
+                           end loop;
+                           return Merge_Entity (E) or Variables;
+                        end;
+                     end if;
+                  end;
+               end if;
+
                return V : Flow_Id_Sets.Set := Merge_Entity (E) do
                   --  If we've extensions (and we care about them) then we
                   --  need to add them now.
