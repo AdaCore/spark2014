@@ -733,10 +733,10 @@ raised at runtime. Together, these two points ensure that every |SPARK|
 subprogram formally verified using GNATprove will always return normally in a
 state that respects its postcondition, as long as it terminates.
 
-In general, |GNATprove| does not attempt verify termination of subprograms. It
-can be instructed to do so using a |GNATprove| specific Annotate pragma. On the
-following example, we instruct |GNATprove| that the five ``F`` functions should
-terminate:
+In general, |GNATprove| does not attempt to verify termination of subprograms.
+It can be instructed to do so using a |GNATprove| specific Annotate pragma. On
+the following example, we instruct |GNATprove| that the five ``F`` functions
+should terminate:
 
 .. literalinclude:: /gnatprove_by_example/examples/terminating_annotations.ads
    :language: ada
@@ -777,11 +777,11 @@ body of ``F_Not_SPARK`` has been excluded from analysis using
 When looking at the body of ``F_Call``, we can see that it calls a procedure
 ``Not_SPARK``. Clearly, this procedure is terminating, as it does not do
 anything. But, as the body of ``No_SPARK`` has been hidden from analysis using
-``SPARK_Mode => Off``, |GNATprove| cannot deduce that it terminates. As  result,
-it stays in the safe side, and assumes that ``Not_SPARK`` could loop, which
-causes the verification of ``F_Call`` to fail. Finally, |GNATprove| is able to
-verify that ``F_Term`` terminates, though it contains a while loop. Indeed, the
-number of possible iterations of the loop has been bounded using a
+``SPARK_Mode => Off``, |GNATprove| cannot deduce that it terminates. As a
+result, it stays in the safe side, and assumes that ``Not_SPARK`` could loop,
+which causes the verification of ``F_Call`` to fail. Finally, |GNATprove| is
+able to verify that ``F_Term`` terminates, though it contains a while loop.
+Indeed, the number of possible iterations of the loop has been bounded using a
 ``Loop_Variant``. Also note that, though it was not able to prove termination of
 ``F_Rec``, ``F_While``, and ``F_Call``, GNATprove will still trust the
 annotation and consider them as terminating when verifying ``F_Term``.
