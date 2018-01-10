@@ -258,9 +258,9 @@ are in |SPARK|.
 
 15. The package Ada.Task_Identification declares (and initializes)
     a synchronized external state abstraction named Tasking_State.
-    The package Ada.Real_Time declares (and initializes) a synchronized
-    external state abstraction named Clock_Time.
-    The Async_Readers and Async_Writers aspects of both state
+    The packages Ada.Real_Time and Ada.Calendar declare (and initialize)
+    synchronized external state abstractions named Clock_Time.
+    The Async_Readers and Async_Writers aspects of all those state
     abstractions are True, and their Effective_Reads and Effective_Writes
     aspects are False.
     Each is listed in the Initializes aspect of its respective package.
