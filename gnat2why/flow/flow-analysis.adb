@@ -303,15 +303,15 @@ package body Flow.Analysis is
       F : Flow_Id)
       return Flow_Graphs.Vertex_Id
    is
-      Result : Flow_Graphs.Vertex_Id;
+      Initial_Value_Vertex : constant Flow_Graphs.Vertex_Id :=
+        G.Get_Vertex (Change_Variant (F, Initial_Value));
+
    begin
       --  Look for either the Initial_Value or Initial_Grouping variant
-      Result := G.Get_Vertex (Change_Variant (F, Initial_Value));
-
-      if Result = Flow_Graphs.Null_Vertex then
+      if Initial_Value_Vertex = Flow_Graphs.Null_Vertex then
          return G.Get_Vertex (Change_Variant (F, Initial_Grouping));
       else
-         return Result;
+         return Initial_Value_Vertex;
       end if;
    end Get_Initial_Vertex;
 
@@ -324,15 +324,15 @@ package body Flow.Analysis is
       F : Flow_Id)
       return Flow_Graphs.Vertex_Id
    is
-      Result : Flow_Graphs.Vertex_Id;
+      Final_Value_Vertex : constant Flow_Graphs.Vertex_Id :=
+        G.Get_Vertex (Change_Variant (F, Final_Value));
+
    begin
       --  Look for either the Final_Value or Final_Grouping variant
-      Result := G.Get_Vertex (Change_Variant (F, Final_Value));
-
-      if Result = Flow_Graphs.Null_Vertex then
+      if Final_Value_Vertex = Flow_Graphs.Null_Vertex then
          return G.Get_Vertex (Change_Variant (F, Final_Grouping));
       else
-         return Result;
+         return Final_Value_Vertex;
       end if;
    end Get_Final_Vertex;
 
