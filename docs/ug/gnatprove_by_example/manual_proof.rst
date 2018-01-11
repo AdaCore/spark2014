@@ -247,7 +247,8 @@ Manual Proof Using Coq
 
 This section presents a simple example of how to prove interactively a check
 with an interactive prover like Coq when |GNATprove| fails to prove it
-automatically. Here is a simple |SPARK| procedure:
+automatically (for installation of Coq, see also: :ref:`Coq`). Here is a simple
+|SPARK| procedure:
 
 .. literalinclude:: examples/nonlinear.adb
    :language: ada
