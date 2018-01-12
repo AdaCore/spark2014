@@ -43,6 +43,7 @@ ap-altitude-pitch.adb:32:10: info: initialization of "Result" proved, in call in
 ap-altitude-pitch.adb:34:14: info: initialization of "Result" proved
 ap-altitude-pitch.adb:34:14: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45
 ap-altitude-pitch.adb:34:14: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:34:14: info: range check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:51:30: info: range check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:53:30: info: assertion proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:53:30: info: initialization of "Floor_Climb_Rate" proved

@@ -18,6 +18,16 @@ array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined
 array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:39
 array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:40
 array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:41
+array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:32
+array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:33
+array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:34
+array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:35
+array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:36
+array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:37
+array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:38
+array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:39
+array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:40
+array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:41
 array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:32
 array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:33
 array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:34

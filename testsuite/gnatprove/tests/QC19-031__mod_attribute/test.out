@@ -1,0 +1,5 @@
+SOUNDNESS BUG at main.adb:14: mark @RANGE_CHECK:FAIL not found
+main.adb:17:38: "Constraint_Error" would have been raised at run time
+main.adb:17:38: error in inlined body at line 14
+main.adb:17:38: value not in range of type "Word64_Pos" defined at line 9
+gnatprove: error during generation of Global contracts
