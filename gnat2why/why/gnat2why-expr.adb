@@ -9020,7 +9020,7 @@ package body Gnat2Why.Expr is
       Params       : Transformation_Params;
       Expected_Typ : W_Type_Id) return W_Expr_Id
    is
-      Aname   : constant Name_Id := Attribute_Name (Expr);
+      Aname   : constant Name_Id      := Attribute_Name (Expr);
       Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
       Var     : constant Node_Id      := Prefix (Expr);
       T       : W_Expr_Id;
@@ -9272,7 +9272,10 @@ package body Gnat2Why.Expr is
             declare
                Arg         : constant Node_Id := First (Expressions (Expr));
                Arg_BTyp    : constant W_Type_Id := Base_Why_Type (Arg);
-               Target_Type : constant W_Type_Id := Base_Why_Type (Var);
+
+               --  S'Mod for subtype S returns a value of type S'Base
+               Target_Type : constant W_Type_Id :=
+                 Base_Why_Type (Base_Type (Etype (Var)));
 
             begin
                --  If the argument is a bitvector we do the modulo on
