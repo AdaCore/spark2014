@@ -11,7 +11,7 @@ is
    function To_Pos (Value : Unsigned_64) return Word64_Pos
    is
    begin
-      return Word64_Pos'Mod (Value);  --  @RANGE_CHECK:FAIL
+      return Word64_Pos'Mod (Value);
    end To_Pos;
 begin
    Output.Print_Result (Unsigned_64 (To_Pos (Value => Unsigned_64'Last)));
