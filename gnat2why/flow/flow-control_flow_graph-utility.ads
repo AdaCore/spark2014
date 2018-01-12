@@ -23,6 +23,7 @@
 
 --  This package contains a few helper functions for CFG construction.
 
+with Flow_Refinement;             use Flow_Refinement;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Sinfo;                       use Sinfo;
 with SPARK_Util;                  use SPARK_Util;
@@ -183,11 +184,15 @@ package Flow.Control_Flow_Graph.Utility is
    function Make_Variable_Attributes
      (F_Ent : Flow_Id;
       Mode  : Param_Mode;
-      E_Loc : Node_Or_Entity_Id := Empty)
+      E_Loc : Node_Or_Entity_Id := Empty;
+      S     : Flow_Scope := Null_Flow_Scope)
       return V_Attributes
    with Pre  => F_Ent.Kind in Direct_Mapping | Record_Field and
                 F_Ent.Variant in Initial_Or_Final_Variant and
-                Mode /= Mode_Proof,
+                Mode /= Mode_Proof and
+                (if Present (S)
+                 then F_Ent.Variant = Initial_Value and then
+                   not Is_In_Analyzed_Files (Get_Direct_Mapping_Id (F_Ent))),
         Post => not Make_Variable_Attributes'Result.Is_Null_Node and
                 not Make_Variable_Attributes'Result.Is_Program_Node and
                 not Make_Variable_Attributes'Result.Is_Global;
@@ -200,6 +205,10 @@ package Flow.Control_Flow_Graph.Utility is
    --     * Is_Loop_Parameter
    --     * Is_Export
    --     * Variables_Defined or Variables_Used
+   --
+   --  The scope parameter S is only set in phase 2 and only for constituents
+   --  declared in private child packages; it is used to decide their
+   --  initialization status.
 
    function Make_Global_Variable_Attributes
      (F    : Flow_Id;

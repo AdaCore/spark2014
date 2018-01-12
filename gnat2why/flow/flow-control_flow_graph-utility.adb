@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Flow_Utility;           use Flow_Utility;
-with Flow_Refinement;        use Flow_Refinement;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Type;               use Sem_Type;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
@@ -506,12 +505,14 @@ package body Flow.Control_Flow_Graph.Utility is
    function Make_Variable_Attributes
      (F_Ent : Flow_Id;
       Mode  : Param_Mode;
-      E_Loc : Node_Or_Entity_Id := Empty)
+      E_Loc : Node_Or_Entity_Id := Empty;
+      S     : Flow_Scope := Null_Flow_Scope)
       return V_Attributes
    is
       A          : V_Attributes       := Null_Attributes;
       Entire_Var : constant Entity_Id :=
         Get_Direct_Mapping_Id (Entire_Variable (F_Ent));
+
    begin
       A.Error_Location     := E_Loc;
       A.Is_Constant        :=
@@ -525,7 +526,10 @@ package body Flow.Control_Flow_Graph.Utility is
 
             A.Is_Initialized := A.Mode in Mode_In | Mode_In_Out
               or else Ekind (Entire_Var) = E_Loop_Parameter
-              or else In_Generic_Actual (Entire_Var);
+              or else In_Generic_Actual (Entire_Var)
+              or else (not Is_In_Analyzed_Files (Entire_Var)
+                         and then
+                       Is_Initialized_At_Elaboration (Entire_Var, S));
 
             --  Is_Import is True for:
             --    * formal "in" and "in out" parameters

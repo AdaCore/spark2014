@@ -1267,6 +1267,16 @@ package body Flow.Control_Flow_Graph is
             when others =>
                raise Program_Error);
 
+      Scop : constant Flow_Scope :=
+        (if FA.Generating_Globals or else Is_In_Analyzed_Files (E)
+         then Null_Flow_Scope
+         else FA.B_Scope);
+      --  In phase 2, when this routine is called on constituents declared in
+      --  private child packages, we need the scope of the parent package for
+      --  deciding whether the constituent is initialized at elaboration. In
+      --  phase 1 the initialization status of such constituents doesn't
+      --  matter.
+
       procedure Process (F : Flow_Id)
       with Pre => F.Kind in Direct_Mapping | Record_Field
                   and then F.Variant = Normal_Use;
@@ -1290,7 +1300,8 @@ package body Flow.Control_Flow_Graph is
            Make_Variable_Attributes
              (F_Ent => F_Initial,
               Mode  => PM,
-              E_Loc => E);
+              E_Loc => E,
+              S     => Scop);
 
          Final_Atr : constant V_Attributes :=
            Make_Variable_Attributes
