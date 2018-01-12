@@ -607,6 +607,23 @@ package body Flow_Generated_Globals.Partial is
    --  Start of processing for Preanalyze_Spec
 
    begin
+      -------------------------------------------------------------------------
+      --  Properties related to Global and Refined_Global contracts (and
+      --  accesses to unsynchronized variables, which follows from them).
+      -------------------------------------------------------------------------
+      --
+      --  For entities with explicit Global and mixed SPARK_Mode (i.e.
+      --  SPARK_Mode => On on spec and SPARK_Mode => Off on body) we pick the
+      --  Global contract as it is and leave the conditional/definite/proof
+      --  calls as empty (so that no extra globals will come from these calls).
+      --  This behaviour is mandated by the spirit of respecting contracts at
+      --  the SPARK_Mode On/Off boundary.
+      --
+      --  For entities with explicit Global and entirely not in SPARK (i.e.
+      --  SPARK_Mode => Off on both spec and body) we do the same both to keep
+      --  things simple and to give users some control over the often
+      --  unreliable approximation based on the frontend cross-references.
+
       if Ekind (E) in Entry_Kind
                     | E_Function
                     | E_Procedure
@@ -633,15 +650,14 @@ package body Flow_Generated_Globals.Partial is
 
             Contr.Tasking (Unsynch_Accesses) :=
               Unsynchronized_Globals (Contr.Globals.Refined);
+
+            Contr.Globals.Calls.Conditional_Calls := Frontend_Calls (E);
          end if;
       end if;
 
-      Contr.Globals.Calls.Conditional_Calls := Frontend_Calls (E);
-
-      pragma Assert
-        (if Is_Callable (E)
-         then Contract_Calls (E).Is_Subset
-                (Of_Set => Contr.Globals.Calls.Conditional_Calls));
+      -------------------------------------------------------------------------
+      --  Other properties, not related to globals
+      -------------------------------------------------------------------------
 
       if Entity_In_SPARK (E) then
          if Is_Callable (E) then
