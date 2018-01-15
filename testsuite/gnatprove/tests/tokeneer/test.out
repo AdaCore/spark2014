@@ -1625,6 +1625,7 @@ display.adb:148:38: info: initialization of "Result.Len" proved, in call inlined
 display.adb:148:38: info: initialization of "Result.Text" proved
 display.adb:148:38: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
 display.adb:148:38: info: initialization of "Result.Text" proved, in call inlined at display.adb:284
+display.adb:150:18: warning: unused assignment, in call inlined at display.adb:188
 display.adb:150:21: info: initialization of "Result.Len" proved
 display.adb:150:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
 display.adb:150:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:284
