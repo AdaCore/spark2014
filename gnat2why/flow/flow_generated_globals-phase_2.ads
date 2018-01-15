@@ -116,8 +116,8 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns the Entity_Name of the directly encapsulating state. If one does
    --  not exist it returns Null_Entity_Name.
 
-   procedure GG_Get_Globals (E           : Entity_Id;
-                             S           : Flow_Scope;
+   procedure GG_Get_Globals (E       : Entity_Id;
+                             S       : Flow_Scope;
                              Globals : out Global_Flow_Ids)
    with Pre  => GG_Mode = GG_Read_Mode and then
                 Ekind (E) in E_Entry     |
