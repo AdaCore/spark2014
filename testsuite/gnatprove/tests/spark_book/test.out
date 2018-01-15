@@ -782,6 +782,7 @@ generic_searchers.ads:17:41: info: initialization of "Result" proved, in instant
 generic_searchers.ads:17:41: info: initialization of "Result" proved, in instantiation at search_demo.adb:12
 good_types.adb:13:26: info: division check proved (CVC4: 1 VC), in call inlined at good_types.adb:22
 good_types.adb:13:26: info: float overflow check proved (Interval), in call inlined at good_types.adb:22
+good_types.adb:13:26: info: range check proved (Interval), in call inlined at good_types.adb:22
 good_types.adb:20:11: warning: assuming "Get" has no effect on global items
 good_types.adb:20:11: warning: no Global contract available for "Get"
 good_types.adb:21:11: warning: assuming "Get" has no effect on global items
