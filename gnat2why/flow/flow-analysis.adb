@@ -4635,6 +4635,17 @@ package body Flow.Analysis is
                First_Task_Type_Objects : Task_Multisets.Set renames
                  Task_Instances (Owner_Types.First_Element);
 
+               Msg_Object : constant Entity_Name :=
+                 (if GG_Is_Constituent (Object) and then
+                      (for all Const of
+                          Get_Constituents (GG_Encapsulating_State (Object))
+                       => Owned_Objects.Contains (Const))
+                  then GG_Encapsulating_State (Object)
+                  else Object);
+               --  If Owned_Objects contains all the constituents of a state
+               --  abstraction then we issue the message only for the state
+               --  abstraction.
+
             begin
                --  Violation occurs when the resource is accessed by:
                --  * instances of several task types
@@ -4656,7 +4667,7 @@ package body Flow.Analysis is
                         Owners.Union (Task_Instances (Task_Type));
                      end loop;
 
-                     Report_Violations (Object     => Object,
+                     Report_Violations (Object     => Msg_Object,
                                         Owners     => Owners,
                                         Msg_Object => Msg,
                                         Msg_Owner  => "with task &",

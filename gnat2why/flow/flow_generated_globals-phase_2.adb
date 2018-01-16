@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---               Copyright (C) 2014-2017, Altran UK Limited                 --
+--               Copyright (C) 2014-2018, Altran UK Limited                 --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1302,9 +1302,9 @@ package body Flow_Generated_Globals.Phase_2 is
                         --  Pointer to objects accessed by task T
 
                         Inserted : Boolean;
-                        --  Flag that indicates if a key was inserted or if
-                        --  it already existed in a map. It is required by
-                        --  the hashed-maps API, but not used here.
+                        --  Flag that indicates if a key was inserted or if it
+                        --  already existed in a map. It is required by the
+                        --  hashed-maps API, but not used here.
 
                      begin
                         --  Only do something if S accesses any objects
@@ -1314,18 +1314,20 @@ package body Flow_Generated_Globals.Phase_2 is
                               Position => T_C,
                               Inserted => Inserted);
 
-                           Tasking_Info_Bag (GG_Phase_2, Kind) (T_C).Union
-                             (Phase_1_Info (S_C));
+                           for Var of Phase_1_Info (S_C) loop
+                              Tasking_Info_Bag (GG_Phase_2, Kind) (T_C).
+                                Union (GG_Expand_Abstract_State (Var));
+                           end loop;
                         end if;
                      end;
                   end loop;
                end Collect_From;
 
             begin
-               --  Now graph G is a transitive (but not reflexive!) closure.
-               --  We need to explicitly collect objects accessed by the task
-               --  itself, and then all subprogram called it calls (directly
-               --  or indirectly).
+               --  Now graph G is a transitive (but not reflexive!) closure. We
+               --  need to explicitly collect objects accessed by the task
+               --  itself, and then all subprogram called it calls (directly or
+               --  indirectly).
 
                Collect_From (TN);
                for SV of G.Get_Collection (TV, Out_Neighbours) loop
@@ -2628,6 +2630,33 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function Refinement_Exists (AS : Entity_Id) return Boolean is
      (State_Comp_Map.Contains (To_Entity_Name (AS)));
+
+   function Refinement_Exists (AS : Entity_Name) return Boolean
+     renames State_Comp_Map.Contains;
+
+   ------------------------------
+   -- GG_Expand_Abstract_State --
+   ------------------------------
+
+   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set
+   is
+   begin
+      if GG_Is_Abstract_State (AS)
+        and then Refinement_Exists (AS)
+      then
+         declare
+            Constituents : Name_Sets.Set;
+
+         begin
+            for Constituent of Get_Constituents (AS) loop
+               Constituents.Union (GG_Expand_Abstract_State (Constituent));
+            end loop;
+            return Constituents;
+         end;
+      else
+         return Name_Sets.To_Set (AS);
+      end if;
+   end GG_Expand_Abstract_State;
 
    --------------------------
    -- Register_Task_Object --

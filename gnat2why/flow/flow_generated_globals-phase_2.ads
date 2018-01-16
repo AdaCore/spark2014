@@ -84,10 +84,6 @@ package Flow_Generated_Globals.Phase_2 is
    -- Querying --
    --------------
 
-   function Refinement_Exists (AS : Entity_Id) return Boolean
-   with Pre => Ekind (AS) = E_Abstract_State;
-   --  Returns True iff a refinement has been specified for abstract state AS
-
    function Find_In_Refinement (AS : Entity_Id; C : Entity_Id) return Boolean
    with Pre => Ekind (AS) = E_Abstract_State
                  and then
@@ -130,6 +126,17 @@ package Flow_Generated_Globals.Phase_2 is
    function GG_Is_Abstract_State (EN : Entity_Name) return Boolean
    with Pre => GG_State_Constituents_Map_Is_Ready;
    --  @return true iff EN denotes an abstract state
+
+   function Refinement_Exists (AS : Entity_Id) return Boolean
+   with Pre => Ekind (AS) = E_Abstract_State;
+   --  Returns True iff a refinement has been specified for abstract state AS
+
+   function Refinement_Exists (AS : Entity_Name) return Boolean
+   with Pre => GG_Is_Abstract_State (AS);
+   --  Returns True iff a refinement has been specified for abstract state AS
+
+   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set;
+   --  Returns the constituents of AS if it is an abstract state, AS otherwise
 
    function GG_Get_Initializes (E : Entity_Id) return Dependency_Maps.Map
    with Pre => GG_Has_Been_Generated and then
