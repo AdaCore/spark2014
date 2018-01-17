@@ -4691,7 +4691,7 @@ package body Flow.Control_Flow_Graph is
       --  contracts. Here we filter such constants to not propagate the user's
       --  mistake.
       Remove_Constants (Globals.Proof_Ins, Skip => FA.Local_Constants);
-      Remove_Constants (Globals.Inputs,     Skip => FA.Local_Constants);
+      Remove_Constants (Globals.Inputs,    Skip => FA.Local_Constants);
 
       for R of Globals.Proof_Ins loop
          Add_Vertex (FA,
@@ -6090,8 +6090,8 @@ package body Flow.Control_Flow_Graph is
          Create_Initial_And_Final_Vertices (FA.Analyzed_Entity, FA);
       end if;
 
-      --  If you're now wondering where we deal with locally declared
-      --  objects then we deal with them as they are encountered. See
+      --  If you're now wondering where we deal with locally declared objects
+      --  then we deal with them as they are encountered. See
       --  Do_Object_Declaration for enlightenment.
 
       --  Produce flowgraph for the precondition and postcondition, if any
@@ -6207,8 +6207,8 @@ package body Flow.Control_Flow_Graph is
             declare
                Nodes : Union_Lists.List := Union_Lists.Empty_List;
                Block : Graph_Connections;
-               --  List of nodes that represent the order in which a package
-               --  is elaborated; it is then abstracted into a single block.
+               --  List of nodes that represent the order in which a package is
+               --  elaborated; it is then abstracted into a single block.
 
                Visible_Decls : constant List_Id :=
                  Visible_Declarations (Spec_N);
@@ -6226,8 +6226,8 @@ package body Flow.Control_Flow_Graph is
 
                --  We need a copy of all variables from the spec + initializes.
                --  Although this is somewhat out-of-place, this is the only
-               --  place we can assemble them easily without re-doing a lot
-               --  of the hard work we've done so far.
+               --  place we can assemble them easily without re-doing a lot of
+               --  the hard work we've done so far.
                FA.Visible_Vars := FA.All_Vars or Package_Writes;
 
                if Present (Private_Decls)
@@ -6238,8 +6238,7 @@ package body Flow.Control_Flow_Graph is
                   Nodes.Append (Union_Id (Private_Decls));
                end if;
 
-               --  We need to keep track of these for checking
-               --  Elaborate_Body...
+               --  We need to keep track of these for checking Elaborate_Body
                FA.Spec_Vars := FA.All_Vars;
 
                if FA.Kind = Kind_Package_Body then
@@ -6276,11 +6275,11 @@ package body Flow.Control_Flow_Graph is
       Mark_Exceptional_Paths (FA);
       Prune_Exceptional_Paths (FA);
 
-      --  Make sure we will be able to produce the post-dominance frontier
-      --  even if we have dead code remaining.
+      --  Make sure we will be able to produce the post-dominance frontier even
+      --  if we have dead code remaining.
       Separate_Dead_Paths (FA);
 
-      --  Simplify graph by removing all null vertices.
+      --  Simplify graph by removing all null vertices
       Simplify_CFG (FA);
 
       --  In GG mode, we now assemble globals and retroactively make some
@@ -6384,8 +6383,8 @@ package body Flow.Control_Flow_Graph is
             end if;
 
             --  Calls to entries and to predefined potentially blocking
-            --  subprograms make this entity potentially blocking. We do
-            --  this here, because otherwise we would have to do it in both
+            --  subprograms make this entity potentially blocking. We do this
+            --  here, because otherwise we would have to do it in both
             --  Do_Call_Statement and Callect_Functions_And_Read_Locked_POs.
             if FA.Has_Only_Nonblocking_Statements
               and then (Is_Entry (E)
