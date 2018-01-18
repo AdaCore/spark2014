@@ -40,9 +40,6 @@ package Call is
       return Argument_List;
    --  Convert a String List into an Argument List
 
-   procedure Free_Argument_List (L : Argument_List);
-   --  free all strings in an argument list
-
    procedure Call_Exit_On_Failure
      (Command   : String;
       Arguments : String_Lists.List;

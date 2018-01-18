@@ -591,14 +591,14 @@ package body Configuration is
       Ada.Text_IO.Put_Line (SPARK2014_Version_String);
       Call_With_Status (Gnatwhy3,
                         Arguments => (1 => new String'("--version")),
-                        Status => Status,
+                        Status    => Status,
                         Free_Args => True);
 
       if Alt_Ergo /= null then
          Ada.Text_IO.Put (Alt_Ergo.all & ": ");
          Call_With_Status (Alt_Ergo.all,
                            Arguments => (1 => new String'("-version")),
-                           Status => Status,
+                           Status    => Status,
                            Free_Args => True);
          Free (Alt_Ergo);
       end if;
@@ -606,7 +606,7 @@ package body Configuration is
          Ada.Text_IO.Put (CVC4.all & ": ");
          Call_With_Status (CVC4.all,
                            Arguments => (1 => new String'("--version")),
-                           Status => Status,
+                           Status    => Status,
                            Free_Args => True);
          Free (CVC4);
       end if;
@@ -614,7 +614,7 @@ package body Configuration is
          Ada.Text_IO.Put (Z3.all & ": ");
          Call_With_Status (Z3.all,
                            Arguments => (1 => new String'("--version")),
-                           Status => Status,
+                           Status    => Status,
                            Free_Args => True);
          Free (Z3);
       end if;

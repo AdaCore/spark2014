@@ -32,9 +32,12 @@ with GNATCOLL.Utils;
 package body Call is
 
    procedure Print_Command_Line
-      (Command : String;
+      (Command   : String;
        Arguments : Argument_List);
-   --  print the command line for debug purposes
+   --  Print the command line for debug purposes
+
+   procedure Free_Argument_List (L : Argument_List);
+   --  Free all strings in an argument list
 
    ------------------------
    -- Abort_With_Message --
@@ -55,12 +58,10 @@ package body Call is
    is
       use String_Lists;
       Arguments : Argument_List := (1 .. Integer (S.Length) => <>);
-      Cur       : Cursor        := First (S);
-      Cnt       : Integer       := 1;
+      Cnt       : Positive      := 1;
    begin
-      while Has_Element (Cur) loop
-         Arguments (Cnt) := new String'(Element (Cur));
-         Next (Cur);
+      for Elem of S loop
+         Arguments (Cnt) := new String'(Elem);
          Cnt := Cnt + 1;
       end loop;
       return Arguments;
@@ -237,6 +238,9 @@ package body Call is
       end Print_Line;
 
       procedure My_Cat is new For_Line_In_File (Print_Line);
+
+   --  Start of processing for Cat
+
    begin
       My_Cat (File);
    end Cat;
@@ -298,19 +302,15 @@ package body Call is
    ------------------------
 
    procedure Print_Command_Line
-      (Command : String;
+      (Command   : String;
        Arguments : Argument_List)
    is
    begin
       Ada.Text_IO.Put (Command);
 
-      for Index in Arguments'Range loop
-         declare
-            S : constant String_Access := Arguments (Index);
-         begin
-            Ada.Text_IO.Put (" ");
-            Ada.Text_IO.Put (S.all);
-         end;
+      for Arg of Arguments loop
+         Ada.Text_IO.Put (" ");
+         Ada.Text_IO.Put (Arg.all);
       end loop;
    end Print_Command_Line;
 
@@ -325,12 +325,19 @@ package body Call is
 
       procedure Append_To_Buf (S : String);
 
+      -------------------
+      -- Append_To_Buf --
+      -------------------
+
       procedure Append_To_Buf (S : String) is
       begin
          Append (U, S);
       end Append_To_Buf;
 
       procedure Do_It is new Call.For_Line_In_File (Append_To_Buf);
+
+   --  Start of processing for Read_File_Into_String
+
    begin
       Do_It (Fn);
       return To_String (U);
