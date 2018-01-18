@@ -37,10 +37,6 @@
 \newcommand\var[1]{\ensuremath{\mathtt{#1}}} 
 \newcommand{\keyword}[1]{\textsf{#1}}
 
-\newenvironment{maroua} {% 
-     \bfseries \noindent \color{magenta}%
-     } 
-    
 
 \setcounter{biburllcpenalty}{7000}
 \setcounter{biburlucpenalty}{8000}
@@ -197,7 +193,7 @@ this allows us to call the function \var{Sum} using \var{X} as a first and secon
 
 \begin{figure}[htb!]
 \centering
-   \includegraphics[width=1.2\columnwidth]{observe_ex1}
+   \includegraphics[width=1\columnwidth]{observe_ex1}
    \caption{Example observing a constant object.}
    \label{fig:observe_exp}
 \end{figure}
@@ -242,8 +238,8 @@ to \var{S}, which involves moving \var{R.X} into \var{S.X} and moving \var{R.Y} 
 
 \begin{figure}[htb!]
 \centering
-   \includegraphics[width=0.7\columnwidth]{movingComposite}
-   \caption{Example for moving a composite object. }
+   \includegraphics[width=0.6\columnwidth]{movingComposite}
+   \caption{Example for moving a composite object.}
    \label{fig:movingComposite}
 \end{figure}
  
@@ -254,9 +250,9 @@ Borrowing composite ownership objects occurs when passing such an object as \key
 such objects are passed by reference. Note the difference with \keyword{out} or \keyword{in out} parameters of an access type, which are passed by copy,
 and are thus considered as moved. To avoid having two different mechanisms depending on whether a parameter is passed by-copy or by-reference, we also require
 that all composite ownership types are passed by reference.
-In the code snippet of Figure~\ref{fig:borrowingComposite}, procedure \var{Swap_Rec} procedure has an \keyword{in out} formal parameter \var{R} of record type. At the point of
-call to \var{Swap_Rec}, the actual parameter \var{R1} becomes borrowed as formal parameter \var{R}, until returning from \var{Swap_Rec}. Inside \var{Swap_Rec}, the formal parameter \var{R} is initially
-in unrestricted state, hence its components \var{R.X} and \var{R.Y} can be successively moved in and out through the call to \var{Swap}, and then borrowed through the call to \var{Swap_Content}.
+In the code snippet of Figure~\ref{fig:borrowingComposite}, procedure \var{Swap\_Rec} procedure has an \keyword{in out} formal parameter \var{R} of record type. At the point of
+call to \var{Swap\_Rec}, the actual parameter \var{R1} becomes borrowed as formal parameter \var{R}, until returning from \var{Swap\_Rec}. Inside \var{Swap\_Rec}, the formal parameter \var{R} is initially
+in unrestricted state, hence its components \var{R.X} and \var{R.Y} can be successively moved in and out through the call to \var{Swap}, and then borrowed through the call to \var{Swap\_Content}.
 Note that components of a composite type can be separately moved and borrowed, without impacting the state of other components of the same aggregate object.
 The case of subcomponents is more complex, as a component is implicitly borrowed when one of its subcomponents is borrowed, and similarly in the other direction.
 We refer the reader to \cite{AI2017} for further details.
@@ -281,7 +277,7 @@ the formal parameter \var{R} is initially in observed state, hence its component
 \begin{figure}[htb!]
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
-   \includegraphics[width=1\columnwidth]{observingComposite}
+   \includegraphics[width=0.9\columnwidth]{observingComposite}
    \caption{Example for traversing a data structure with read access: Binary Search Tree Search.}
    \label{fig:observingComposite}
 \end{figure}
@@ -299,17 +295,10 @@ We also special-case assignments to such stand-alone objects of anonymous access
 In the borrowing case (for an access-to-variable object), the source of the assignment is restricted to a subcomponent of the object itself, which does not borrow a new object.
 Doing otherwise would require data-flow analysis to determine the scope of borrowed object. In the observing case (for an access-to-constant object), the source of
 the assignment is restricted to an already observed object with a compatible scope. Again, doing otherwise would require data-flow analysis to determine the scope of observed object.
-In the code snippet of Figure~\ref{fig:maxTree}, local variable Walker is a stand-alone object of access-to-constant type that allows traversing the input binary
-search tree to return the maximal value (obtained by searching for the rightmost leaf of the tree). After initializing Walker with the value of parameter \var{T},
-\var{T} becomes observed, and Walker starts in the observed state (thus preventing updates to T through Walker). The data structure traversing is ensured by the instruction
-of line (Walker := Walker.Right). 
-In the code snippet of Figure~\ref{fig:treeInsert}, local variable Walker is a stand-alone object of access-to-variable type that allows traversing the input binary
-search tree to insert the input value \var{V} at the right leaf position (obtained by searching for the leaf where this value would be stored if already present).
-After initializing Walker with the value of parameter \var{T}, \var{T} becomes borrowed, and Walker starts in the unrestricted state (thus allowing updates to \var{T} through Walker).
-The data structure traversing is ensured by the instruction of line (Walker := Walker.Left)  and (Walker:=Walker.Right). Insertion in the tree is performed at lines
-Walker.Left := new Integer(V); and Walker.Left := new Integer(V);.
-
-
+In the code snippet of Figure~\ref{fig:maxTree}, local variable \var{Walker} is a stand-alone object of access-to-constant type that allows traversing the input binary
+search tree to return the maximal value (obtained by searching for the rightmost leaf of the tree). After initializing \var{Walker} with the value of parameter \var{T},
+\var{T} becomes observed, and \var{Walker} starts in the observed state (thus preventing updates to \var{T} through \var{Walker}). The data structure traversing is ensured by the instruction
+of line $\ell_{16}$. 
 
 \begin{figure}[htb!]
 \centering
@@ -320,18 +309,123 @@ Walker.Left := new Integer(V); and Walker.Left := new Integer(V);.
 \end{figure}
 
 
+In the code snippet of Figure~\ref{fig:treeInsert}, local variable \var{Walker} is a stand-alone object of access-to-variable type that allows traversing the input binary
+search tree to insert the input value \var{V} at the right leaf position (obtained by searching for the leaf where this value would be stored if already present).
+After initializing \var{Walker} with the value of parameter \var{T}, \var{T} becomes borrowed, and \var{Walker} starts in the unrestricted state (thus allowing updates to \var{T} through \var{Walker}).
+The data structure traversing is ensured by the instruction of line $\ell_8$ and $\ell_{13}$. Insertion in the tree is performed at lines
+$\ell_9$ and $\ell_{15}$.
+
 
 \begin{figure}[htb!]
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
    \includegraphics[width=1\columnwidth]{treeInsert}
-   \caption{Example for traversing a data structure with read access: Binary Search Tree Insert.}
+   \caption{Example for traversing a data structure with read access: Binary Search Tree Insert. \var{buildLeaf} is a function that creates a node such that the formal
+	parameter is the value of the \var{Data} subcomponent and \var{Left} and \var{Right} subcomponents are null.}
    \label{fig:treeInsert}
 \end{figure}
 
+
 \section{Formal Verification with Ownership Types in SPARK}
 
+In SPARK, an assignment to a variable cannot change the value of another visible variable. This property is essential to allow sound modular static analysis,
+where each subprogram can be analyzed independently while detecting all possible violations of the kinds targeted by the analysis.
+This is currently enforced by forbidding the use of access types in SPARK, and by restricting aliasing between parameters and global variables so that only
+benign aliasing is accepted (i.e. aliasing that does not cause interference).
 
+The precise rules detailed in SPARK RM 6.4.2 can be summarized as follows:
+
+\begin{compactitem}
+  \item Two output parameters should never be aliased.
+  \item An input and an output parameters should not be aliased, unless the input parameter is always passed by copy.
+  \item An output parameter should never be aliased with a global variable referenced by the subprogram.
+  \item An input parameter should not be aliased with a global variable referenced by the subprogram, unless the input parameter is always passed by copy.
+\end{compactitem}
+
+To understand why aliasing matters in SPARK, consider the variation of procedure \var{Swap\_Contents} in Figure~\ref{fig:spark_ex1}. If \var{X\_Param} and \var{Y\_Param}
+are not aliased, then the result of calling \var{Swap\_Contents} on actual parameters \var{X} and \var{Y} will swap their contents. If \var{X} and \var{Y} are aliased, then calling
+\var{Swap\_Contents} on \var{X} and \var{X} will zero out the content of \var{X}. This is due to the assignment to \var{X\_Param.all} on line $\ell_4$.
+
+
+\begin{figure}[htb!]
+\centering
+  \captionsetup{justification=centering,margin=0.6cm}
+   \includegraphics[width=1\columnwidth]{spark_ex1}
+   \caption{A variant of the \var{Swap\_Contents} procedure for which aliasing matters in SPARK.}
+   \label{fig:spark_ex1}
+\end{figure}
+  
+If SPARK ignored aliasing, it would conclude that this version of \var{Swap\_Contents} always swaps the contents of its parameters \var{X\_Param} and \var{Y\_Param}.
+In particular, it could prove the following postcondition on \var{Swap\_Contents}.
+
+\begin{figure}[htb!]
+\centering
+  \captionsetup{justification=centering,margin=0.6cm}
+   \includegraphics[width=1\columnwidth]{spark_ex1_proof}
+   \label{fig:spark_ex1_proof}
+\end{figure}
+
+Indeed, by considering that the assignment to \var{X\_Param.all} on line $\ell_4$ does not influence the value of \var{Y\_Param.all}, proof would be able to
+derive that the values \var{X\_Param.all} and \var{Y\_Param.all} have been swapped. Similarly, flow analysis would derive wrong dependencies if possible aliasing is not taken into account.
+This wrong postcondition would in turn allow to prove that a wrong assertion is satisfied in the code snippet of Figure \ref{fig:spark_ex1_exp}, while it fails at run time:
+
+\begin{figure}[htb!]
+\centering
+  \captionsetup{justification=centering,margin=0.6cm}
+   \includegraphics[width=1\columnwidth]{spark_ex1_exp}
+	\caption{Example for a wrong assertion due to the presence of aliasing in SPARK.}
+   \label{fig:spark_ex1_exp}
+\end{figure}
+
+Thus, pointers cannot be treated like any other component in SPARK, in the presence of aliasing. But rules we have described for ownership objects precisely prevent
+aliasing when one of the objects can be written. This is similar to the rules in SPARK for preventing aliasing between references, and this allows to treat pointers
+like other components.
+In the case of \var{Swap\_Contents}, this means that SPARK analysis will be able to conclude that the postcondition above is satisfied by the implementation of \var{Swap\_Contents}
+But calls to \var{Swap\_Contents(X,X)} will be rejected both by compilation and analysis.
+
+
+\section{Related Work}
+
+\todo[inline]{Talk about Joe3 language? safeJava? “Ownership, Uniqueness, and Immutability”
+A Primer on Separation Logic (and Automatic Program Verification and Analysis)
+object ownership and containment
+}
+
+Permission-based programming languages generalize the issue of avoiding harmful aliasing to the more general problem of preventing harmful sharing of resources
+(memory, but also network connections, files, etc.). C-like languages are mostly based on pointers and often sacrifice safety for performance purposes.
+To overcome safety shortcoming and manage the storage of a pointer, C++ introduces the notion of \textit{unique pointer}. An object defined as \var{unique\_ptr}
+has the ability of taking ownership of a pointer. It becomes responsible for its deletion at some point. Although enforces the language safety, the unique
+pointer concept greatly limits its features by prohibiting pointer arithmetic and disabling copy assignments.
+ 
+Separation logic~\cite{Reynolds02} is an extension of Hoare-Floyd logic that allows reasoning about pointers. In general, it is not well integrated with deductive
+verification, and, in particular, is not supported by SMT provers.
+The most closely related works to ours are system programming in Cyclone \cite{Grossman2002} and Rust \cite{Balasubramanian17} that achieve absence of
+harmful aliasing by enforcing an Ownership type system on the memory pointed-to by objects. Rust is a recent programming language targeting system
+programming, with a focus on memory safety for concurrent programs.
+Rust analysis also deals with the lifetime of allocated memory, enforcing
+at the same time the lack of dangling pointer references. Pointers in Rust can never be null.
+Dafny associates each object with its \emph{dynamic frame}, the set of pointers that it owns~\cite{Leino10}. This dynamic version of Ownership is
+enforced by modeling the Ownership of pointers in logic, generating verification conditions to detect violations of the single-owner model, and proving
+them using SMT provers. In Spec\#, Ownership is similarly enforced by proof, to detect violations of the so-called Boogie methodology~\cite{Boogie} \todo{fix this ref}.
+In our work, we use a permission-based mechanism for detecting potentially harmful aliasing, in order to make the presence of pointers transparent for automated provers.
+In addition, our approach does not require additional user annotations, that are required in some of the previously mentioned techniques. We thus achieve high automation
+and usability, which was our goal for supporting pointers in SPARK.
+
+
+\section{Conclusion}
+We have presented an extension to the Ada language to provide pointer types (``access types'' in Ada) that provide provably safe, automatic
+storage management without any asynchronous garbage collection, and without explicit deallocation by the user. Although we took inspiration
+from Rust and ParaSail, the extension we propose is also different in many ways, in order to work well with existing features of Ada such
+as by-copy/by-reference parameter passing and exception handling, and because we rely on the existing mechanisms in Ada for preventing access
+to uninitialized pointers and freed memory. 
+This extension relies on the notion of ownership, where only one access object can read and write the designated object at any given time.
+Ownership of a designated object can be \textit{moved} to another object through assignment, which deallocates the object previously designated
+by the target of the assignment and leaves the source of the assignment null. Ownership can also be \textit{borrowed} through a short-term read-write,
+which can be either a parameter or a locally defined object. Finally, the value of a designated object can be \textit{observed} by multiple short-term
+read-only references. Collectively, these mechanisms enforce a principle of Concurrent-Reads-Exclusive-Write.
+Because the mechanism for these safe pointers relies on a strict control of aliasing, they can be used in the SPARK subset for formal verification, which
+includes both analysis of flows and proof of properties. 
+This proposal has been formalized as Ada Issue \cite{AI2017} for inclusion in the next version of Ada.
 
 \printbibliography[title={References}]
 
