@@ -1,4 +1,3 @@
-
 with State;
 
 package body Impure_Package is
