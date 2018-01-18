@@ -10,6 +10,9 @@
 \usepackage{listings}
 \usepackage[table]{xcolor}
 \newcommand{\CodeSymbol}[1]{\textcolor{Bittersweet}{#1}}
+\usepackage{lineno}
+\pagestyle{plain}
+\linenumbers
 \lstset{
    language=Ada,
    keywordstyle=\color{RedViolet}\ttfamily\bf,
@@ -73,17 +76,19 @@
 
 \urlstyle{sf}
 
-\title{Practical Formal Verification for Reliable Software\thanks{Work partly
-supported by the Joint Laboratory ProofInUse (ANR-13-LAB3-0007,
-\url{http://www.spark-2014.org/proofinuse})}}
+\title{Levels of Software Assurance - Practical Formal Verification for
+  Reliable Software}
 
-\author{Claire Dross\inst{1} \and Guillaume Foliard\inst{2} \and Lionel
-  Matias\inst{2} \and Stuart Matthews\inst{3} \and Jean-Marc Mota\inst{4} \and
-  Yannick Moy\inst{1} \and Romain Soulat\inst{4}}
+\author{Claire~Dross\inst{1}\thanks{Work partly supported by the Joint Laboratory
+    ProofInUse (ANR-13-LAB3-0007, \url{http://www.spark-2014.org/proofinuse})}
+  \and Guillaume~Foliard\inst{2} \and
+  Théo~Jouanny\inst{3} \and \\ Lionel~Matias\inst{2} \and
+  Stuart~Matthews\inst{4} \and Jean-Marc~Mota\inst{5} \and \\ 
+  Yannick~Moy\inst{1} \and Pascal~Pignard\inst{3} \and Romain~Soulat\inst{5}}
 
 \institute{AdaCore, F-75009 Paris \and Thales Air Systems, F-91470 Limours \and
-  Altran, Bath BA1 1AN, United Kingdom \and Thales Research \& Technologies,
-  F-91767 Palaiseau}
+  Thales Communications \& Security, F-49300 Cholet \and Altran, Bath BA1 1AN,
+  United Kingdom \and Thales Research \& Technologies, F-91767 Palaiseau}
 
 \date{}
 
@@ -114,29 +119,29 @@ increasing assurance that map well with industrial needs in practice.
 Taken literally, reliable software is the notion that we can rely on software
 to perform as intended. This is also how the international standard bodies and
 academic experts define it, as phrased in IEC 60050 terms applied to software:
-``reliability [is the] ability to perform as required, without failure, for a
-given time interval, under given conditions''. Currently, almost no software is
-reliable in this sense, because the intention is usually expressed in ambiguous
-natural language, and the confidence that software behaves as intended is
-obtained by a combination of development discipline (to avoid introducing
-errors) and partial testing of all the possible software behaviors (to detect
-errors that were introduced). Hence, reliable software today is more an
-aspiration when building the software than a quality of the software produced.
-However, a link between software quality and reliability does exist, and it was
-clarified by researcher John Rushby~\cite{RushbySEFM2009}: ``probability of
-(im)perfection [..]  provides a bridge between correctness, which is the goal
-of software verification (and especially formal verification), and the
-probabilistic properties such as reliability that are the targets for system
-level assurance.''
+\textit{``reliability [is the] ability to perform as required, without failure,
+  for a given time interval, under given conditions''}. Currently, almost no
+software is reliable in this sense, because the intention is usually expressed
+in ambiguous natural language, and the confidence that software behaves as
+intended is obtained by a combination of development discipline (to avoid
+introducing errors) and partial testing of all the possible software behaviors
+(to detect errors that were introduced). Hence, reliable software today is more
+an aspiration when building the software than a quality of the software
+produced.  However, a link between software quality and reliability does exist,
+and it was clarified by researcher John Rushby~\cite{RushbySEFM2009}:
+\textit{``probability of (im)perfection [..]  provides a bridge between
+  correctness, which is the goal of software verification (and especially
+  formal verification), and the probabilistic properties such as reliability
+  that are the targets for system level assurance.''}
 
 This interpretation of reliable software as probably perfect software has been
 taken seriously in some companies like Altran UK, where specifications are
-routinely expressed with the precision 3 of a formal language, and confidence
-is obtained by a combination of classical techniques plus the guarantees
-provided by the use of formal verification. Tools for formal verification of
-software have reached a degree of automation and usability that makes them
-suitable for use in commercial contexts across a large set of industries, from
-the well-established - space, railway, aerospace \& defense - to industries that
+routinely expressed with the precision of a formal language, and confidence is
+obtained by a combination of classical techniques plus the guarantees provided
+by the use of formal verification. Tools for formal verification of software
+have reached a degree of automation and usability that makes them suitable for
+use in commercial contexts across a large set of industries, from the
+well-established - space, railway, aerospace \& defense - to industries that
 more recently included software as a critical component like automotive and
 medical. The main tool used at Altran UK for formal specification, programming
 and formal verification of software is SPARK, a subset of the Ada programming
@@ -149,14 +154,16 @@ While the benefits obtained by formal verification at Altran UK are clearly
 desirable, it may be intimidating for companies without formal verification
 know-how to start on this path. Knowing that others have replicated these
 benefits in other contexts is an important argument to make.  Here, we are
-describing the experiments done at Thales during the year 2016, to assess the
-costs and benefits of using formal verification of software using SPARK. With
-little investment in training and consulting, the operational teams managed to
-specify intended behavior formally with limited efforts. The teams also proved
-critical properties of their software. Specifically, in one use case the code
-was fully proved to be free of run-time errors (like buffer overflows and
-divisions by zero) while in another use case the code was proved to follow a
-specified safety automaton.
+describing the experiments done at Thales during the years 2016 and 2017, to
+assess the costs and benefits of using formal verification of software using
+SPARK. With little investment in training and consulting, either provided
+externally or through self-training, the operational teams managed to specify
+intended behavior formally with limited efforts. The teams also proved critical
+properties of their software. Specifically: in multiple use cases the code was
+fully proved to be free of run-time errors (like buffer overflows and divisions
+by zero); in a subset of these use cases the code was proved to implement
+functional API specifications; while in another use case the code was proved to
+follow a specified safety automaton.
 
 In addition, the collaboration of AdaCore and Thales resulted in a set of
 guidelines~\cite{AdaCoreThalesSPARK} that should be followed for an easier
@@ -191,11 +198,11 @@ The problem is that these ``verifying compilers'' are operating on proof
 languages that are reserved for experts. Since King's PhD defence, there have
 been numerous attempts at defining practical ``verifying compilers'' for
 programming languages used in industry (first Pascal, then Ada, more recently
-Java and C\#), none of which has succeeded in gaining industrial adoption. It is
-difficult to prove that a program is ``correct'', and it will remain so for the
-foreseeable future. As Rustan Leino, a prominent researcher in formal program
-verification, put it in 2010: ``Program verification is unusable. But perhaps
-not useless.''~\cite{Leino10usableauto-active}
+Java and C\#), none of which has succeeded in gaining industrial adoption. It
+is difficult to prove that a program is ``correct'', and it will remain so for
+the foreseeable future. As Rustan Leino, a prominent researcher in formal
+program verification, put it in 2010: \textit{``Program verification is
+  unusable. But perhaps not useless.''}~\cite{Leino10usableauto-active}
 
 Departing from this academic tradition, SPARK has been focused on practical
 formal verification from the start. SPARK has been adopted in numerous large
@@ -237,7 +244,7 @@ coexist in the same files. Hybrid verification is obtained by using proof on
 SPARK code and test on Ada code. This is possible because contracts can be
 executed, and because test and proof use the exact same semantics for
 contracts~\cite{tseChalin10}. Other formal program verification technologies
-like Frama-C for C programs have made similar
+like Frama-C for C programs have made similar although not identical
 choices~\cite{kosmatov:hal-01344110}.
 
 SPARK toolset focuses on automation and usability. Generation of implicit
@@ -261,8 +268,9 @@ We identify five levels of assurance that can be achieved with SPARK, which are
 \item Platinum level - full functional correctness
 \end{enumerate}
 
-At Stone level, strict SPARK rules are enforced on the code, which leads to
-better quality and maintainability. At Bronze level, the SPARK code is
+At Stone level, strict SPARK rules are enforced on the code, having the effect
+of ensuring that a strong semantic coding standard is followed, which leads to
+better code quality and maintainability. At Bronze level, the SPARK code is
 guaranteed to be free from a number of defects like reads of uninitialized
 variables. At Silver level, the SPARK code is guaranteed to be free of run-time
 errors. At Gold level, the SPARK code is guaranteed to respect key integrity
@@ -301,7 +309,7 @@ are:
 The detail of how SPARK is applied varies from project to project, depending on
 factors which include the required integrity level, applicable standards, and
 the overall verification strategy for the system (in which SPARK will play a
-part amongst other technique and tools). Together, these considerations will
+part amongst other techniques and tools). Together, these considerations will
 lead to a set of verification objectives for SPARK, which will be documented in
 the technical plan at the start of a project (and which in turn support the
 assurance case either implicitly or explicitly if it is a formal deliverable).
@@ -330,7 +338,7 @@ E   & 0   & \cellcolor{Orchid} & \cellcolor{Fuchsia} & & \\ \hline
 
 \caption{Technical Planning Guidelines for the Application of SPARK.  The
   colored cells denote the typical application of the objectives with the
-  darker colours showing the most common use cases.}
+  darker colors showing the most common use cases.}
 \label{fig:levels}
 \end{figure}
 
@@ -386,7 +394,7 @@ be immensely difficult to detect by other forms of
 verification~\cite{King2000TSE}.
 
 A key part of the software engineering process which maximizes the benefit of
-SPARK is a careful delineation of the "SPARK boundary" i.e. choosing which
+SPARK is a careful delineation of the ``SPARK boundary'' i.e. choosing which
 parts of the application software will be written in SPARK. Although the
 benefits of SPARK would push towards maximizing the proportion of the software
 written in SPARK, other factors are likely to affect this engineering
@@ -396,12 +404,15 @@ which are qualified by alternative means. It is not unusual even to use
 different levels of SPARK verification within the same application. For example
 SHOLIS~\cite{Croxford2005Manifesto} used this approach with SIL-4 parts of the
 application attaining full functional proof (Platinum level) while in
-lower-integrity functions (SIL-2) we verified to the level of AoRTE
-(Silver). The non-interference between different sections of the code was
-assured by the use of information flow analysis. More generally, consideration
-has to be given to the assumptions that are made to support the verification
-objectives - how these are satisfied or mitigated by other activities in the
-overall V\&V strategy~\cite{kanig2014tap}.
+lower-integrity functions (SIL-2) we verified only up to AoRTE (Silver level). 
+The non-interference between different sections of the code was
+assured by the use of information flow analysis: the global data accessed by
+the different sections of the code were specified using data flow contracts on
+subprograms, which were reviewed manually to ensure non-interference, and
+analysis ensured that the implementation respected the specified contracts.
+More generally, consideration has to be given to the assumptions that are made
+to support the verification objectives - how these are satisfied or mitigated
+by other activities in the overall V\&V strategy~\cite{kanig2014tap}.
 
 The use of SPARK within the Correctness By Construction framework as described
 above has been demonstrated to produce software with very low defect density
@@ -430,24 +441,26 @@ definition of the expected outcome for all possible test cases.
 
 \section{The Adoption of Formal Verification}
 
+\subsection{First Study: Defining the Process}
+
 One trait of established industrial software development processes is their
 inertia in accepting new practices which could be considered as too disrupting,
 either by lack of understanding and know-how or, mostly for early adopters,
 because of the difficulty to assess costs and benefits. In the latter case, the
 upfront adoption effort is hiding the longer term process optimisation
 opportunities. In order to get a first idea of the possibilities SPARK-based
-formal verification could provide at Thales, a study was planned with the aim
-of producing a first set of deployment guidelines supported by real life
-experiments on actual software applications.
+formal verification could provide at Thales, a study was carried throughout
+2016 with the aim of producing a first set of deployment guidelines supported
+by real life experiments on actual software applications.
 
 As formal verification with SPARK is not a widespread technology in the
 software industry, a prerequisite is to picture the range of its capabilities
 with a simple to remember concept. This led to the definition of the five
 levels of assurance previously introduced. As part of this study, AdaCore and
-Thales wrote a guidance document describing how SPARK could be adopted at these
-different levels. This is further conditioned by the phase of the software
-development lifecycle, which has a significant impact on the definition of
-activities to be performed when deploying SPARK.
+Thales wrote a guidance document~\cite{AdaCoreThalesSPARK} describing how SPARK
+could be adopted at these different levels. This is further conditioned by the
+phase of the software development lifecycle, which has a significant impact on
+the definition of activities to be performed when deploying SPARK.
 
 Given the current state of progress of some ongoing software development
 projects, four use cases were identified as potential targets for SPARK
@@ -517,13 +530,171 @@ loop invariants or specific proof switches. The lessons learned here are that
 SPARK is expressive enough for typical safety automata properties, and powerful
 enough for automatic proof of such properties.
 
-From an adoption point of view, we conclude that formal verification as
-implemented by SPARK 2014 and its associated toolset can be considered as a
-toolbox providing various opportunities for subsetting and tailoring. This
-flexibility gives the possibility to fine-tune the gradual insertion of formal
-verification techniques in existing processes, while mitigating risks both on
-their efficiency from a cost and planning point of view and their ability to
-output software with a defect density under control.
+From an adoption point of view, we concluded from this first study that formal
+verification as implemented by SPARK 2014 and its associated toolset can be
+considered as a toolbox providing various opportunities for subsetting and
+tailoring. This flexibility gives the possibility to fine-tune the gradual
+insertion of formal verification techniques in existing processes, while
+mitigating risks both on their efficiency from a cost and planning point of
+view and their ability to output software with a defect density under control.
+
+\subsection{Second Study: Refining the Process}
+
+In the field of high security applications, which is particularly important for
+Thales, testing represents a considerable part of the software development
+process. In addition to unit tests, other principles are implemented such as
+enforcing coding rules, peer code reviews and qualimetry surveys with many
+tools checking that those principles are strictly followed. One solution to
+lighten and improve this process, to produce software of improved quality, is
+the use of more suitable tools, such as formal verification tools to replace
+part of the tests. Indeed, formal proofs allow a comprehensive checking of
+proved parts, unlike testing that can only guaranty a partial checking of the
+software.
+
+After an internship in 2015 comparing some available environments for formal
+verification (eCv, Frama-C, SPARK), another six-months internship in 2017 was
+dedicated to the study of the benefits of Ada language and particularly SPARK
+language for our security software. Our motivation was that the Ada language is
+widely used in avionics, space or transport industries where software is
+critical in term of safety. With Ada 2012 version bringing contract programming
+and SPARK being able to verify formally such specifications, the goal of the
+study was to assess the benefits of Ada and SPARK for our security critical
+software.
+
+During this internship, we evaluated the various advantages of Ada and SPARK,
+through a state of the art analysis, followed by two proofs of concept in the
+field of cryptography.
+
+The first use case was porting from C to Ada, then to SPARK, part of a
+cryptographic library which is used as an abstract layer between a lower level
+cryptographic library (also in C) and client applications. This use case
+followed the guidance document produced in the previously mentioned first
+study, to convert an application from Ada to SPARK.
+
+The preliminary stage consisted in porting the C library code to valid Ada
+code. Porting API (.h files) was facilitated by g++ switch ``–fdump-ada-spec''
+which produced comprehensive Ada specification (.ads files) as well as Ada body
+skeletons (.adb files) generated automatically with the gnatstub tool. The body
+code was completed manually without difficulties as most C idioms are available
+with Ada. Interfacing with our C low level cryptographic library was essential
+for us and supported natively by Ada. This small step brought simpler code with
+pointer related defensive code suppressed thanks to the use of handy Ada array
+attributes and built-in Ada compiler verifications.
+
+We first reached Stone level by transforming our Ada code to be valid SPARK
+code. It mostly consisted in suppression of pointers (or at least encapsulating
+them in a non-SPARK unit) and transformation of functions with side effects
+into procedures (or at least encapsulating them in wrappers within a non-SPARK
+unit). Thus, we were able to make the first analysis of our code with SPARK
+tools. This first step didn't require major changes in our code but it
+pinpointed for us parts of our code with potential security vulnerabilities
+(pointer casts and side effects in particular).
+
+In a second stage, we reached Bronze level, analyzing our code for data flow
+and variable initialization. Data flow (Global) and information flow (Depends)
+contracts were added in our code to specify precisely the intended
+behavior. The analysis detected unused inputs which could then be removed,
+which is useful for maintenance, as well as partially initialized data
+structures, which is useful for debugging.
+
+In a third stage, we reached Silver level, ensuring absence of run-time errors
+in our code (AoRTE). We added preconditions in our code, mostly to link the
+right algorithm with the right variant of a discriminated structure.
+
+In a fourth stage, we reached Gold level, verifying the functional behvavior of
+our code.  We added preconditions and postconditions in our code to specify key
+security requirements: cleanup of security-sensitive working variables,
+correctness of output value, concistency between parameters. At this level, all
+the existing defensive code was covered by contracts. By achieving complete
+proof of these specifications, the propagation of error codes from low level
+subprograms to high level ones was no longer necessary.
+
+The second use case was about producing an API similar to the API ported from C
+during the first proof of concept, this time based on a low level cryptographic
+library in Ada, which was also later proved with SPARK. The whole process from
+Stone level to Gold level was followed again. We then faced new technical
+issues: the need for loop invariants, contracts on type hierarchies for
+subprograms supporting dispatching, visibility of global variables in contracts
+of high level subprograms, non-provable Ada code. We detail each of these in
+the following. Though loop invariants are the basis of formal proof, they are
+considered as tricky. We got many unproved properties coming mostly from weak
+preconditions or weak postconditions of subprograms called inside a loop, which
+were not obvious to understand. Object Oriented Programming brings another
+layer of complexity, with specific rules for inheriting subprograms and
+contracts over these subprograms. Global variables mentioned in data flow
+contracts propagate to the upper levels of the call tree, where they are not
+visible anymore, which required costly workarounds. A better solution would
+have been to hide this particular effect in a low-level non-SPARK package
+body. Finally, some idiomatic Ada code did not lead to automatic proofs in
+SPARK. It seemed to be a good thing as it forced us to change for simpler and
+more readable code.
+
+We learned a few lessons from this second study. First, as stated in the
+guidance document, \textit{Users should refrain from changing the program for
+  the only benefit of getting fewer messages from the tool}, a principle that
+could be phrased as ``do not please the tools''. Secondly, reaching Gold Level
+is more easily achievable when clear and meaningful software specifications are
+available. Thirdly, not all code can be proved but non-provable parts that are
+well identified can undergo peer code reviews. For instance, 90\% of the code
+was automatically provable in the second use case. Finally, this case study
+allowed us to refine the guidance document for future uses inside and outside
+Thales.
+
+\section{Related Works}
+
+Formal methods have long been considered as a means of compliance to satisfy
+verification objectives in critical software development for some certification
+domains, for example in railway (EN 50128) and industrial processes (IEC
+51508). The aeronautic standard has more recently recognized formal methods as
+a means of compliance on par with the dominant technique of testing (DO-178C,
+2012). Other certification standards in the domains of automotive (ISO 26262),
+nuclear (IEC 60880) and space (ECSS-QST-80C) also recognize some uses of formal
+methods as verification techniques. The English military certification standard
+``Safety Management Requirements for Defence Systems'' (DEFSTAN 0056) puts a
+strong emphasis on formal methods as a means of compliance.
+
+The adequation of formal methods for certification was thoroughly investigated
+by John Rushby in his report for the NASA in 1993 on ``Formal Methods and the
+Certification of Critical Systems''~\cite{Rushby93formalmethods}. Although
+Rushby's report talks about ``formal methods'', this mostly corresponds to what
+we call today ``theorem proving'': model checking techniques are mentioned en
+passant, and nothing is said about abstract interpretation techniques, which
+did not have then the recognition that they have today. More recently, Graf and
+Garavel studied extensively the use of formal methods for developing critical
+systems, and they cover in particular the impact of formal methods on the
+development and verification processes~\cite{GrafGaravel-BSI-2013}. More
+specific guidance exists in specific application domains, such as in
+avionics~\cite{BrownERTS2010}.
+
+There is on the contrary very little guidance on the use of specific formal
+methods and tools. This is somewhat remediated by the availability of tool
+specific user's guides and publicly available experience
+reports~\cite{Woodcock2009}. Company specific guidance is developed to carry
+over the experience gained from project to project, in the companies using
+formal methods, but such guidance is kept confidential. Indeed, the experience
+gathered through previous projects is considered as a business advantage over
+the competition, and the guidance having been developed in the specific
+business context of the company, the information related to formal methods
+usage is very tied to other confidential information. The publication of the
+guidance co-developed between AdaCore and Thales~\cite{AdaCoreThalesSPARK} on
+SPARK adoption is thus a break from current practice, which was possible
+because it was written since the start with the tool provider.
+
+Formal methods have been divided between heavyweight and lightweight ones, with
+the former being the original formal methods and the latter also being called
+the \textit{disappearing} formal methods. SPARK is a case of lightweight or
+disappearing formal methods, in which the user does not directly manipulate the
+underlying formalism, but instead interacts with tools through multiple
+interfaces. Formal methods and tools are usually placed at some point in
+between the heavyweight and lightweight extreme points. With the notion of
+software assurance levels, we have shown that a given tool can be placed at
+multiple places along this axis, and that a project can hop between these
+places using the same tool.
+
+In particular, it is likely that other formal verification platforms for
+software such as Atelier B and Frama-C could similarly define their own
+software assurance levels. For example, the plugin structure of Frama-C could
+be used to define levels in terms of plugin usage~\cite{Kirchner2015}.
 
 \section{Conclusion}
 
@@ -546,10 +717,24 @@ processes. While AdaCore expertise was essential in the success of these
 experiments, Thales has identified typical use cases where the methodology used
 could be replicated without external help. Thales is now aiming at clarifying
 how SPARK can be adapted to its internal processes. The guidance document
-written as a result of Thales experiments will be published for others to start
-on this path.
+written as a result of Thales experiments is being used to support adoption of
+SPARK in other teams inside Thales and is available for other companies to
+start on this path.
 
-\paragraph*{Acknowledgements.}
+We have benefited in multiple ways from the definition of the five software
+assurance levels that can be achieved with SPARK. First, the five levels
+clarify the verification objectives that can be achieved with formal
+verification: not only they provide simple and easy-to-remember names for
+communicating between stakeholders, they also make it explicit that upper
+levels build on the lower levels, and they provide at each level a clear
+identification of the costs and benefits. Secondly, the five levels make it
+easier to plan for progressive adoption of higher levels of software assurance,
+with lower levels requiring less effort than higher levels, and each level
+providing already very valuable benefits. These results could be translated to
+other formal methods that similarly provide different depths of use that could
+be translated to assurance levels.
+
+%\paragraph*{Acknowledgements.}
 
 \bibliographystyle{plain}
 \bibliography{fm2018}
