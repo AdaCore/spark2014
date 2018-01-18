@@ -14,6 +14,10 @@ docs/flow/*/*/* no-precommit-check
 papers/proof_and_test/Code/* no-precommit-check
 papers/proof_and_test/Code/*/* no-precommit-check
 papers/proof_and_test/Code/*/*/* no-precommit-check
+papers/*/* no-precommit-check
+papers/*/*/* no-precommit-check
+papers/*/*/*/* no-precommit-check
+papers/*/*/*/*/* no-precommit-check
 libs/containers/ada/*/*/* no-precommit-check
 libs/containers/ada/*/* no-precommit-check
 libs/containers/ada/* no-precommit-check
