@@ -1,0 +1,4 @@
+gnatprove: error during flow analysis and proof
+gnatprove: error in config file no_main_section.conf: no main section
+gnatprove: Could not find driver file alt_ergo_gnatprove.drv
+gnatprove: error during flow analysis and proof
