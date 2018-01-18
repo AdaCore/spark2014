@@ -31,6 +31,7 @@ with Ada.Environment_Variables;
 with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;               use Ada.Text_IO;
+with Call;                      use Call;
 with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
@@ -103,6 +104,9 @@ package body Configuration is
    procedure Print_Errors (S : String);
    --  The String in argument is an error message from gnatcoll. Print it on
    --  stderr with a prefix.
+
+   procedure Produce_Version_Output;
+   --  print the version of gnatprove, why3 and shipped provers
 
    procedure Set_CodePeer_Mode
      (Config : Command_Line_Configuration;
@@ -568,6 +572,53 @@ package body Configuration is
    begin
       Ada.Text_IO.Put_Line (Standard_Error, "gnatprove: " & S);
    end Print_Errors;
+
+   ----------------------------
+   -- Produce_Version_Output --
+   ----------------------------
+
+   procedure Produce_Version_Output is
+      Gnatwhy3 : constant String :=
+        Compose (File_System.Install.Libexec_Spark_Bin, "gnatwhy3");
+      Alt_Ergo : String_Access :=
+        GNAT.OS_Lib.Locate_Exec_On_Path ("alt-ergo");
+      CVC4 : String_Access :=
+        GNAT.OS_Lib.Locate_Exec_On_Path ("cvc4");
+      Z3 : String_Access :=
+        GNAT.OS_Lib.Locate_Exec_On_Path ("z3");
+      Status : aliased Integer;
+   begin
+      Ada.Text_IO.Put_Line (SPARK2014_Version_String);
+      Call_With_Status (Gnatwhy3,
+                        Arguments => (1 => new String'("--version")),
+                        Status => Status,
+                        Free_Args => True);
+
+      if Alt_Ergo /= null then
+         Ada.Text_IO.Put (Alt_Ergo.all & ": ");
+         Call_With_Status (Alt_Ergo.all,
+                           Arguments => (1 => new String'("-version")),
+                           Status => Status,
+                           Free_Args => True);
+         Free (Alt_Ergo);
+      end if;
+      if CVC4 /= null then
+         Ada.Text_IO.Put (CVC4.all & ": ");
+         Call_With_Status (CVC4.all,
+                           Arguments => (1 => new String'("--version")),
+                           Status => Status,
+                           Free_Args => True);
+         Free (CVC4);
+      end if;
+      if Z3 /= null then
+         Ada.Text_IO.Put (Z3.all & ": ");
+         Call_With_Status (Z3.all,
+                           Arguments => (1 => new String'("--version")),
+                           Status => Status,
+                           Free_Args => True);
+         Free (Z3);
+      end if;
+   end Produce_Version_Output;
 
    -----------------
    -- Prover_List --
@@ -1388,7 +1439,7 @@ package body Configuration is
       Free (First_Config);
 
       if Version then
-         Ada.Text_IO.Put_Line (SPARK2014_Version_String);
+         Produce_Version_Output;
          GNAT.OS_Lib.OS_Exit (0);
       end if;
 
