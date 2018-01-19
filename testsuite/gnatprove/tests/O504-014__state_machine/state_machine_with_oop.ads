@@ -1,6 +1,6 @@
 with Ada.Containers;
 with Ada.Containers.Formal_Indefinite_Vectors;
-package State_Machine_With_Oop with SPARK_Mode is
+package State_Machine_With_Oop with SPARK_Mode, Elaborate_Body is
    type Root_State is abstract tagged record
       Common_Value : Integer;
    end record;

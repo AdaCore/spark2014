@@ -1,7 +1,7 @@
 package Weapon_Class
 with SPARK_Mode
 is
-
+   pragma Elaborate_Body;
    subtype Cycle_Time is Integer range 0 .. 30;
 
    ------------------
