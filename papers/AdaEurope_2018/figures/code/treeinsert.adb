@@ -43,7 +43,7 @@ procedure treeinsert is
 		if Walker.Right /= null then
 		  Walker := Walker.Right;
 		else
-		  Walker.Right := buildLeaf(V); --buildLeaf2(Walker.Right, V);  --
+		  Walker.Right := buildLeaf(V); 
 		end if;
 	  end if;
 	end loop;

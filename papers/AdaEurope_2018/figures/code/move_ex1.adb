@@ -16,8 +16,7 @@ Procedure Swap(X_Param, Y_Param : in out Int_Ptr) is
   X : Int_Ptr := new Integer;
   Y : Int_Ptr := new Integer;
   
-  begin
-	Swap(X, Y);
+  Swap(X, Y);
 	(...)
   end move_ex1;
 

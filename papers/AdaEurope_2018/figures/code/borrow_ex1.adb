@@ -17,8 +17,7 @@ Procedure Swap_Contents (X_Param, Y_Param : in Int_Ptr) is
   X : Int_Ptr := new Integer;
   Y : Int_Ptr := new Integer;
 
-  begin
-	Swap_Contents(X, Y);
+  Swap_Contents(X, Y);
 	(...)
   end borrow_ex1;
 	

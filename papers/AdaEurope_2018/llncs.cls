@@ -840,10 +840,10 @@ to0pt{\kern0.55\wd0\vrule height0.45\ht0\hss}\box0}}}}
 \newtoks\titlerunning
 \newtoks\toctitle
 
-\def\clearheadinfo{\gdef\@author{No Author Given}%
+\def\clearheadinfo{\gdef\@author{Maroua Maalej, Tucker Taft, Yannick Moy}%
                    \gdef\@title{No Title Given}%
                    \gdef\@subtitle{}%
-                   \gdef\@institute{No Institute Given}%
+                   \gdef\@institute{AdaCore}%
                    \gdef\@thanks{}%
                    \global\titlerunning={}\global\authorrunning={}%
                    \global\toctitle={}\global\tocauthor={}}

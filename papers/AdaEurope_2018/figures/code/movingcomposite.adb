@@ -13,8 +13,7 @@ procedure movingcomposite with SPARK_Mode is
   R : Rec := (...);
   S : Rec := (...);
  
-  begin
-	S := R;
+  S := R;
 	(...)
   end movingcomposite;
 	

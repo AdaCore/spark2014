@@ -46,11 +46,11 @@
 
 % any author declaration will be ignored  when using 'plid' option (for double blind review)
 
-\title{Safe Dynamic Memory Management in Ada and SPARK }
+\title{Safe Dynamic Memory Management in Ada and SPARK}
 
 \maketitle
 \begin{abstract}
-Handling memory in a correct and efficient way is a step toward less complex, safe, and higher performing programs and architectures. However, languages used for critical software development like Ada, including formal verification with its SPARK subset, still face challenges regarding the use of pointers due to pointer aliasing. In this paper we introduce an extension to the Ada language, and to its SPARK subset, to provide pointer types (``access types'' in Ada) that provide provably safe, automatic storage management without any asynchronous garbage collection, and without explicit deallocation by the user. Because the mechanism for these safe pointers relies on a strict control of aliasing, they can be used in the SPARK subset for formal verification, which includes both analysis of flows and proof of properties. In this article, we present the proposal that has been submitted for inclusion in the next version of Ada, as well as the ideas underlying the inclusion of these pointers in formal analyses.
+Handling memory in a correct and efficient way is a step toward less complex, safe, and higher performing programs and architectures. However, languages used for critical software development like Ada, including formal verification with its SPARK subset, still face challenges regarding the use of pointers due to pointer aliasing. In this work, we introduce an extension to the Ada language, and to its SPARK subset, to provide pointer types (``access types'' in Ada) that provide provably safe, automatic storage management without any asynchronous garbage collection, and without explicit deallocation by the user. Because the mechanism for these safe pointers relies on a strict control of aliasing, they can be used in the SPARK subset for formal verification, which includes both analysis of flows and proof of properties. In this paper, we present the proposal that has been submitted for inclusion in the next version of Ada, as well as the ideas underlying the inclusion of these pointers in formal analyses.
 \end{abstract}
 
 %\category{D - Software}{D.3 Programming Languages}{D.3.4 Processors - Compilers}
@@ -58,7 +58,9 @@ Handling memory in a correct and efficient way is a step toward less complex, sa
 %\terms
 %Languages, Security, Experimentation
 
-\keywords
+\keywords 
+
+Compilation, Safe Pointers, Formal Verification, Memory Management
 
 
 \section{Introduction}
@@ -79,13 +81,13 @@ By unknown aliasing of names, we mean the situation where two distinct names mig
 an alias, but not an ``unknown alias'', because the compiler is fully aware of such an alias, and hence is not something we are worrying about here. However, if a global
 variable is passed by reference as a parameter to a subprogram that also has visibility on the same global, the by-reference parameter and the global are now aliases within
 the subprogram, and the compiler generating code for the subprogram has no way of knowing that, hence they are ``unknown aliases''.  One approach is to always assume the worst,
-but that makes analysis \todo {analyses?} much harder, and in some cases infeasible. Access types also introduce unknown aliasing, and in most cases, an analysis tool will not be
+but that makes analyses much harder, and in some cases infeasible. Access types also introduce unknown aliasing, and in most cases, an analysis tool will not be
 sure whether the aliases exist, and will again have to make worst-case assumptions, which again may make any interesting proof infeasible.
 The question that emerges in this context is: Can we create a subset of access-type functionality that supports the creation of interesting data structures without bringing along
 all of the problems? The notion of pointer ``ownership'' has emerged as one way to ``tame'' pointer problems, while preserving flexibility.  The goal is to allow a pattern of use
 of pointers that avoids dangling references as well as storage leaks, by providing safe, immediate, automatic reclamation of storage rather than relying on unchecked deallocation,
 while also not having to fall back on the time and space vagaries of garbage collection.  As a side benefit, we can also get safer use of pointers in the context of parallelism.
-We propose the use of pointer Ownership, as well as some additional rules preventing ``aliasing’’ between parameters, and between parameters and global variables, to provide safe,
+We propose the use of pointer Ownership, as well as some additional rules preventing ``aliasing'' between parameters, and between parameters and global variables, to provide safe,
 automatic, parallelism-friendly heap storage management while allowing the flexible construction of pointer-based data structures, such as trees, linked lists, hash tables, etc.
 Although we took inspiration from Rust and ParaSail to produce this proposal, it is also different in many ways, due to the different objectives pursued in Ada and SPARK. Firstly,
 this proposal is designed to work well with existing features of Ada such as by-copy/by-reference parameter passing and exception handling: raising an exception should not lead to
@@ -118,38 +120,36 @@ Here is the taxonomy:
 In the sequel, we presume that all objects in the code examples that we will present are managed objects and refer the reader to \cite{AI2017} for further details on
 the Ownership aspect specification, and specific rules that apply to non-ownership managed object. Note also that the Ownership rules will be expressed in terms
 of ``names'' rather than ``objects'', since objects do not really exist at compile-time, when these rules are intended to be enforced. 
-In the rest of this section, we will start by focusing on owning access objects and observing access objects, which in Ada are passed by copy, before we
+In the next section, we will focuse on owning access objects and observing access objects, which in Ada are passed by copy, before we
 consider the situation of composite ownership objects, for which we require pass-by-reference.
 
 
 \subsection{Ownership for Access Objects}
 \label{subsec:ownershipAccess}
 
-\subsubsection{Moving access Values}
+\subsubsection{Moving Access Values}
 \label{sec:moving}
 
 The main idea of the move operation is a complete transfer of the ownership from the right hand side access-to-variable object to the left hand side object in an assignment operation.
 A moved object should hence be in the unrestricted state before the assignment. However, after the assignment, it gets set to null since the newly assigned object becomes the owner
 and is unrestricted, so we must ensure the original access object has no remaining access.  By setting the original access object to null, any name that starts with a dereference of
-that original access object is effectively ``destroyed''.  If we didn't set the original access object to null, an exception might allow the old value of the variable to be used in
+that original access object is effectively ``destroyed''. If we do not set the original access object to null, an exception might allow the old value of the variable to be used in
 an unrestricted way in the exception handler, which would be bad, particularly if the designated object had been deallocated prior to raising the exception. To avoid memory leaks,
 if the prior value of the moving target is different from the new one, the object is finalized and also its storage is deallocated.  
 We consider as a move each assignment operation where the target is a variable or a return object of a named type including an \keyword{out} or \keyword{in out} parameter.
 Note that assigning to part of an aggregate is also considered as a move but will not be considered in this section which is focused only on direct manipulation of access objects.
-Figure \ref{fig:move_ex1} illustrates an example of ``move'' operations. Objects \var{X} and \var{Y} are access-to-variables objects of the named type \var{Int\_Ptr}. At a Swap procedure call site,
-\var{X\_Param} is \textit{copied in} from its actual parameter \var{X}, which was presumably in the unrestricted state. The ownership of X.all is then passed from \var{X} to \var{X\_Param}.
-That requires setting X to null until the subprogram returns (to ensure safety in the presence of an exception), at which point X\_Param is \textit{copied back} to \var{X}.
-Variable X then reasserts its ownership over \var{X.all}. Similar state transitions apply for \var{Y} and \var{Y\_Param}.  At lines $\ell_4$, $\ell_6$, and $\ell_7$,
-we have additional move operations, which consist of moving, respectively, the objects \var{X\_Param}, \var{Y\_Param}, and Tmp. To conclude, thanks to our move-related rules, the naive
-implementation of the Swap procedure for access types is guaranteed to be alias safe in the caller when Swap is executing and inside Swap itself since the ownership is transferred
+Figure \ref{fig:move_ex1} illustrates an example of ``move'' operations. Objects \var{X} and \var{Y} are access-to-variables objects of the named type \var{Int\_Ptr}. At a \var{Swap} procedure call site,
+\var{X\_Param} is \textit{copied in} from its actual parameter \var{X}, which was presumably in the unrestricted state. The ownership of \var{X.all} is then passed from \var{X} to \var{X\_Param}.
+That requires setting \var{X} to null until the subprogram returns (to ensure safety in the presence of an exception), at which point \var{X\_Param} is \textit{copied back} to \var{X}.
+Variable \var{X} then reasserts its ownership over \var{X.all}. Similar state transitions apply for \var{Y} and \var{Y\_Param}.  At lines $\ell_4$, $\ell_6$, and $\ell_7$,
+we have additional move operations, which consist of moving, respectively, the objects \var{X\_Param}, \var{Y\_Param}, and \var{Tmp}. To conclude, thanks to our move-related rules, the naive
+implementation of the Swap procedure for access types is guaranteed to be alias safe in the caller when \var{Swap} is executing and inside \var{Swap} itself since the ownership is transferred
 at each access-to-variable object copy. 
-\todo[inline]{I suggest adding the following sentence: Note that we consider \var{swap(X, X)} as illegal because we disallow operating on overlapping parts of a single variable twice
-within the same statement. We refer the reader to ..... where this restriction is explained in deep detail.}
 
 \begin{figure}[htb!]
 \centering
-   \includegraphics[width=\columnwidth]{move_ex1}
-   \caption{}
+   \includegraphics[]{move_ex1}
+   \caption{Example for moving the ownership of an access object.}
    \label{fig:move_ex1}
 \end{figure}
  
@@ -174,7 +174,7 @@ provide read/write access. This is to accommodate existing practice in the use o
 
 \begin{figure}[htb!]
 \centering
-   \includegraphics[width=\columnwidth]{borrow_ex1}
+   \includegraphics[]{borrow_ex1}
    \caption{Example for borrowing, \keyword{in} parameter.}
    \label{fig:borrow_ex1}
 \end{figure}
@@ -193,8 +193,8 @@ this allows us to call the function \var{Sum} using \var{X} as a first and secon
 
 \begin{figure}[htb!]
 \centering
-   \includegraphics[width=1\columnwidth]{observe_ex1}
-   \caption{Example observing a constant object.}
+   \includegraphics[]{observe_ex1}
+   \caption{Example for observing a constant object.}
    \label{fig:observe_exp}
 \end{figure}
 
@@ -205,7 +205,7 @@ cannot be written, so there is no read-write aliasing problem here.
 We have seen that after borrowing an object, its name does not allow neither reading nor updating until the borrowing ends. For example, this prevents a call to \var{Swap\_Contents (X, X)},
 as borrowing X in parameter \var{X\_Param} makes it illegal to borrow it again in parameter \var{Y\_Param}. The actual order of evaluation does not matter here, as any other order would also be illegal.
 We have also seen that after moving an object, its value is changed to null, which prevents accessing the designated object again through the same name.
-That rule in itself does not prevent a call to \var{Swap(X, X)}, as moving X in parameter \var{X\_Param} makes X null, so that it can be moved in parameter \var{Y\_Param} with value null.
+That rule in itself does not prevent a call to \var{Swap(X, X)}, as moving \var{X} in parameter \var{X\_Param} makes \var{X} null, so that it can be moved in parameter \var{Y\_Param} with value null.
 Therefore, there is no read-write aliasing inside Swap. However, the actual order of evaluation matters for the functional behavior, as another order would make \var{X\_Param} null
 instead. Likewise, on return from the procedure call, moving back parameter values to \var{X} may happen in two different orders, with different functional behaviors.
 While obvious cases of parameter aliasing like \var{Swap(X,X)} are already illegal according to Ada 2012 rules, more complex cases that involve array indexing are neither
@@ -218,7 +218,7 @@ in order to prevent these cases. We refer the reader to \cite{AI2017} for furthe
 
 As we introduced before, the Ownership aspect should be specified for managed objects. Recall that in this proposal, we only care for objects with Ownership aspect True.
 The moving, borrowing and observing states for access objects were presented in Section \ref{subsec:ownershipAccess}. In this section, we safely extend Ownership rules to
-composite types to still ensure the CREW access-policy for these types. To simplify the rules significantly, and avoids the possibility of dangling references upon exception
+composite types to still ensure the CREW access-policy for these types. To simplify the rules significantly, and avoid the possibility of dangling references upon exception
 propagation, we force by-reference parameter passing for such composite types.  We also disallow private types to have a full type that is a by-copy type, so this effectively
 means that all non-access types with Ownership aspect True are necessarily by-reference types. 
 
@@ -231,14 +231,14 @@ access objects are applied here to each access component of the composite type: 
 prior value of the component in the moving target is different from the new one, the object is finalized and also its storage is deallocated.  
 Like before, we consider as a move each assignment operation where the target is a variable or a return object of a composite ownership type, but this time we do not
 include \keyword{out} or \keyword{in out} parameters, which are described in Section~\ref{subsubsec:borrowComposite}.
-In the code snippet of Figure~\ref{fig:movingComposite}, Rec is a record with components of access type. The move operation occurs at line \var{(S := R)} where \var{R} is moved
+In the code snippet of Figure~\ref{fig:movingComposite}, \var{Rec} is a record with components of access type. The move operation occurs at line $\ell_{10}$ where \var{R} is moved
 to \var{S}, which involves moving \var{R.X} into \var{S.X} and moving \var{R.Y} into \var{S.Y}. As a result, the initial objects designated by
 \var{S.X} and \var{S.Y} are deallocated and \var{R.X} and \var{R.Y} end up null after the assignment. 
 
 
 \begin{figure}[htb!]
 \centering
-   \includegraphics[width=0.6\columnwidth]{movingComposite}
+   \includegraphics[]{movingComposite}
    \caption{Example for moving a composite object.}
    \label{fig:movingComposite}
 \end{figure}
@@ -248,18 +248,18 @@ to \var{S}, which involves moving \var{R.X} into \var{S.X} and moving \var{R.Y} 
 
 Borrowing composite ownership objects occurs when passing such an object as \keyword{out} or \keyword{in out} parameter. This naturally applies when
 such objects are passed by reference. Note the difference with \keyword{out} or \keyword{in out} parameters of an access type, which are passed by copy,
-and are thus considered as moved. To avoid having two different mechanisms depending on whether a parameter is passed by-copy or by-reference, we also require
+and are thus considered as moved. To avoid having two different mechanisms depending on whether a parameter is passed by-copy or by-reference, we require
 that all composite ownership types are passed by reference.
-In the code snippet of Figure~\ref{fig:borrowingComposite}, procedure \var{Swap\_Rec} procedure has an \keyword{in out} formal parameter \var{R} of record type. At the point of
+In the code snippet of Figure~\ref{fig:borrowingComposite}, procedure \var{Swap\_Rec} has an \keyword{in out} formal parameter \var{R} of record type. At the point of
 call to \var{Swap\_Rec}, the actual parameter \var{R1} becomes borrowed as formal parameter \var{R}, until returning from \var{Swap\_Rec}. Inside \var{Swap\_Rec}, the formal parameter \var{R} is initially
-in unrestricted state, hence its components \var{R.X} and \var{R.Y} can be successively moved in and out through the call to \var{Swap}, and then borrowed through the call to \var{Swap\_Content}.
+in unrestricted state, hence its components \var{R.X} and \var{R.Y} can be successively moved in and out through the call to \var{Swap}, and then borrowed through the call to \var{Swap\_Contents}.
 Note that components of a composite type can be separately moved and borrowed, without impacting the state of other components of the same aggregate object.
 The case of subcomponents is more complex, as a component is implicitly borrowed when one of its subcomponents is borrowed, and similarly in the other direction.
 We refer the reader to \cite{AI2017} for further details.
 
 \begin{figure}[htb!]
 \centering
-   \includegraphics[width=0.9\columnwidth]{borrowingComposite}
+   \includegraphics[]{borrowingComposite}
    \caption{Example for borrowing a composite parameter of mode \keyword{out} or \keyword{in out}.}
    \label{fig:borrowingComposite}
 \end{figure}
@@ -269,7 +269,7 @@ We refer the reader to \cite{AI2017} for further details.
 \label{subsubsec:extendingBorrowing}
 
 Observing composite ownership objects occurs when passing such an object as \keyword{in} parameter or initializing a constant stand-alone object of such a type. 
-In the code snippet of Figure~\ref{fig:observingComposite}, procedure \var{Sum\_Rec} procedure has an \keyword{in} formal parameter \var{R} of record type.
+In the code snippet of Figure~\ref{fig:observingComposite}, procedure \var{Sum\_Rec} has an \keyword{in} formal parameter \var{R} of record type.
 At the point of call to \var{Sum\_Rec}, the actual parameter \var{R1} becomes observed as formal parameter \var{R}, until returning from \var{Sum\_Rec}. Inside \var{Sum\_Rec},
 the formal parameter \var{R} is initially in observed state, hence its components \var{R.X} and \var{R.Y} can be only be read/observed through the call to \var{Sum}.
 
@@ -277,7 +277,7 @@ the formal parameter \var{R} is initially in observed state, hence its component
 \begin{figure}[htb!]
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
-   \includegraphics[width=0.9\columnwidth]{observingComposite}
+   \includegraphics[]{observingComposite}
    \caption{Example for traversing a data structure with read access: Binary Search Tree Search.}
    \label{fig:observingComposite}
 \end{figure}
@@ -303,7 +303,7 @@ of line $\ell_{16}$.
 \begin{figure}[htb!]
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
-   \includegraphics[width=1\columnwidth]{maxTree}
+   \includegraphics[]{maxTree}
    \caption{Example for traversing a data structure with read access: Binary Search Tree Search.}
    \label{fig:maxTree}
 \end{figure}
@@ -319,7 +319,7 @@ $\ell_9$ and $\ell_{15}$.
 \begin{figure}[htb!]
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
-   \includegraphics[width=1\columnwidth]{treeInsert}
+   \includegraphics[]{treeInsert}
    \caption{Example for traversing a data structure with read access: Binary Search Tree Insert. \var{buildLeaf} is a function that creates a node such that the formal
 	parameter is the value of the \var{Data} subcomponent and \var{Left} and \var{Right} subcomponents are null.}
    \label{fig:treeInsert}
@@ -350,7 +350,7 @@ are not aliased, then the result of calling \var{Swap\_Contents} on actual param
 \begin{figure}[htb!]
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
-   \includegraphics[width=1\columnwidth]{spark_ex1}
+   \includegraphics[]{spark_ex1}
    \caption{A variant of the \var{Swap\_Contents} procedure for which aliasing matters in SPARK.}
    \label{fig:spark_ex1}
 \end{figure}
@@ -361,7 +361,7 @@ In particular, it could prove the following postcondition on \var{Swap\_Contents
 \begin{figure}[htb!]
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
-   \includegraphics[width=1\columnwidth]{spark_ex1_proof}
+   \includegraphics[]{spark_ex1_proof}
    \label{fig:spark_ex1_proof}
 \end{figure}
 
@@ -372,7 +372,7 @@ This wrong postcondition would in turn allow to prove that a wrong assertion is 
 \begin{figure}[htb!]
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
-   \includegraphics[width=1\columnwidth]{spark_ex1_exp}
+   \includegraphics[]{spark_ex1_exp}
 	\caption{Example for a wrong assertion due to the presence of aliasing in SPARK.}
    \label{fig:spark_ex1_exp}
 \end{figure}
@@ -406,7 +406,7 @@ Rust analysis also deals with the lifetime of allocated memory, enforcing
 at the same time the lack of dangling pointer references. Pointers in Rust can never be null.
 Dafny associates each object with its \emph{dynamic frame}, the set of pointers that it owns~\cite{Leino10}. This dynamic version of Ownership is
 enforced by modeling the Ownership of pointers in logic, generating verification conditions to detect violations of the single-owner model, and proving
-them using SMT provers. In Spec\#, Ownership is similarly enforced by proof, to detect violations of the so-called Boogie methodology~\cite{Boogie} \todo{fix this ref}.
+them using SMT provers. In Spec\#, Ownership is similarly enforced by proof, to detect violations of the so-called Boogie methodology~\cite{Boogie}.
 In our work, we use a permission-based mechanism for detecting potentially harmful aliasing, in order to make the presence of pointers transparent for automated provers.
 In addition, our approach does not require additional user annotations, that are required in some of the previously mentioned techniques. We thus achieve high automation
 and usability, which was our goal for supporting pointers in SPARK.

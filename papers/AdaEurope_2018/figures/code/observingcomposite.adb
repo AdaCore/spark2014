@@ -10,7 +10,6 @@ procedure observingcomposite with SPARK_Mode is
 	X, Y : Int_Ptr;
   end record;
   
-  (...)
   function Sum_Rec (R : in Rec) return Integer is
   begin
 	return Sum (R.X, R.Y);

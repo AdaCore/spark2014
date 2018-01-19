@@ -15,8 +15,7 @@ procedure observe_ex1 with SPARK_Mode is
   X : Int_Ptr := new Integer;
   Y : Integer;
 
-  Begin
-	Y := Sum (X, X);
+  Y := Sum (X, X);
 	(...)
   End observe_ex1;
 
