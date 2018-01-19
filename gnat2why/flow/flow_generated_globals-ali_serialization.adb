@@ -59,6 +59,9 @@ package body Flow_Generated_Globals.ALI_Serialization is
       EK_Ghost_Entities     => (Kind               => EK_Ghost_Entities,
                                 The_Ghost_Entities => Name_Sets.Empty_Set),
 
+      EK_CAE_Entities       => (Kind             => EK_CAE_Entities,
+                                The_CAE_Entities => Name_Sets.Empty_Set),
+
       EK_Volatiles          => (Kind   => EK_Volatiles,
                                 others => <>),
 
@@ -270,6 +273,9 @@ package body Flow_Generated_Globals.ALI_Serialization is
 
          when EK_Ghost_Entities =>
             Serialize (A, V.The_Ghost_Entities, "GHOST");
+
+         when EK_CAE_Entities =>
+            Serialize (A, V.The_CAE_Entities, "CAE");
 
          when EK_Volatiles =>
             Serialize (A, V.The_Async_Readers,    "AR");

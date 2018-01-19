@@ -254,7 +254,14 @@ package body Flow_Generated_Globals.Phase_2 is
    ----------------------------------------------------------------------
 
    Ghost_Entities : Name_Sets.Set;
-   --  Entities marked as ghost
+   --  Entities annotated as ghost
+
+   ----------------------------------------------------------------------
+   --  CAE information
+   ----------------------------------------------------------------------
+
+   CAE_Entities : Name_Sets.Set;
+   --  Entities annotated as Constant_After_Elaboration
 
    ----------------------------------------------------------------------
    --  Volatile information
@@ -1083,6 +1090,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
                when EK_Ghost_Entities =>
                   Ghost_Entities.Union (V.The_Ghost_Entities);
+
+               when EK_CAE_Entities =>
+                  CAE_Entities.Union (V.The_CAE_Entities);
 
                when EK_Volatiles =>
                   Async_Writers_Vars.Union (V.The_Async_Writers);
@@ -2362,6 +2372,13 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function GG_Is_Ghost_Entity (EN : Entity_Name) return Boolean
      renames Ghost_Entities.Contains;
+
+   ----------------------
+   -- GG_Is_CAE_Entity --
+   ----------------------
+
+   function GG_Is_CAE_Entity (EN : Entity_Name) return Boolean
+     renames CAE_Entities.Contains;
 
    --------------------------
    -- GG_Has_Async_Readers --

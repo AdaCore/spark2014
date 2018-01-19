@@ -111,6 +111,9 @@ package body Flow_Generated_Globals.Phase_1 is
    Ghost_Entities : Name_Sets.Set;
    --  Entities marked with a Ghost aspect
 
+   CAE_Entities : Name_Sets.Set;
+   --  Entities marked with a Constant_After_Elaboration aspect
+
    type Call_Info is record
       Caller  : Entity_Name;
       Callees : Name_Lists.List;
@@ -228,6 +231,10 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Goes through Names, finds ghost objects and stores them in the
       --  appropriate container.
 
+      procedure Process_CAE (Names : Name_Sets.Set);
+      --  Goes through Names, finds Costant_After_Elaboration variables and
+      --  stores them in the appropriate container.
+
       ----------------------------------
       -- Process_Predefined_Variables --
       ----------------------------------
@@ -306,6 +313,30 @@ package body Flow_Generated_Globals.Phase_1 is
          end loop;
       end Process_Ghost;
 
+      -----------------
+      -- Process_CAE --
+      -----------------
+
+      procedure Process_CAE (Names : Name_Sets.Set) is
+      begin
+         for Name of Names loop
+            declare
+               E : constant Entity_Id := Find_Entity (Name);
+
+            begin
+               --  Convert name back to Entity_Id; this should work for
+               --  everything except the special __HEAP name that represent a
+               --  non-existing heap entity.
+               if Present (E)
+                 and then Ekind (E) = E_Variable
+                 and then Is_Constant_After_Elaboration (E)
+               then
+                  CAE_Entities.Include (Name);
+               end if;
+            end;
+         end loop;
+      end Process_CAE;
+
    --  Start of processing for GG_Register_Global_Info
 
    begin
@@ -324,6 +355,11 @@ package body Flow_Generated_Globals.Phase_1 is
          Process_Ghost (GI.Globals.Proper.Proof_Ins);
          Process_Ghost (GI.Globals.Proper.Inputs);
          Process_Ghost (GI.Globals.Proper.Outputs);
+
+         --  Collect CAE Entities
+         Process_CAE (GI.Globals.Proper.Proof_Ins);
+         Process_CAE (GI.Globals.Proper.Inputs);
+         Process_CAE (GI.Globals.Proper.Outputs);
 
          --  In phase 2 we only need to know the initialization status of
          --  proof_ins and inputs; outputs are irrelevant.
@@ -484,6 +520,11 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Write ghost entities
       V := (Kind               => EK_Ghost_Entities,
             The_Ghost_Entities => Ghost_Entities);
+      Write_To_ALI (V);
+
+      --  Wirte CAE entities
+      V := (Kind             => EK_CAE_Entities,
+            The_CAE_Entities => CAE_Entities);
       Write_To_ALI (V);
 
       --  Write entity-specific info

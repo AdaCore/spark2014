@@ -4347,68 +4347,123 @@ package body Flow.Analysis is
    procedure Check_Constant_After_Elaboration
      (FA : in out Flow_Analysis_Graphs)
    is
+      Package_Elaboration : constant Boolean :=
+        Ekind (FA.Spec_Entity) = E_Package;
 
-      function In_Body_Part (S : Flow_Scope) return Boolean
-      with Pre => S /= Null_Flow_Scope;
-      --  @param S is the Flow_Scope of the Constant_After_Elaboration variable
-      --  @return True iff the Analyzed_Entity is defined in the body of the
-      --     package that introduces the Constant_After_Elaboration variable.
+      procedure Check_Subprogram (E : Entity_Id);
+      --  Inspects globals of subprogram E to detect violations of
+      --  SRM 6.1.4(20).
 
-      ------------------
-      -- In_Body_Part --
-      ------------------
+      ----------------------
+      -- Check_Subprogram --
+      ----------------------
 
-      function In_Body_Part (S : Flow_Scope) return Boolean is
-         Body_S : constant Flow_Scope := Body_Scope (S);
-      begin
-         --  We check if Body_S is visible from FA.S_Scope
-         return Is_Visible (Body_S, FA.S_Scope);
-      end In_Body_Part;
+      procedure Check_Subprogram (E : Entity_Id) is
+         procedure Emit_Check (Globals : Flow_Id_Sets.Set);
+         --  Emit check when SRM 6.1.4(20) is violated
 
-   --  Start of processing for Check_Constant_After_Elaboration
+         ----------------
+         -- Emit_Check --
+         ----------------
 
-   begin
-      if Ekind (FA.Analyzed_Entity) = E_Function then
-         --  Skip this check when dealing with a function.
-         return;
-      end if;
+         procedure Emit_Check (Globals : Flow_Id_Sets.Set) is
+         begin
+            for Global of Globals loop
+               if Is_Constant_After_Elaboration (Global) then
+                  if Package_Elaboration then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "subprogram & with global constant " &
+                                    "after elaboration & must not be called " &
+                                    "during elaboration of &",
+                        Severity => High_Check_Kind,
+                        N        => FA.Analyzed_Entity,
+                        --  ??? This error location should be improved
+                        F1       => Direct_Mapping_Id (E),
+                        F2       => Global,
+                        F3       => Direct_Mapping_Id (FA.Spec_Entity),
+                        SRM_Ref  => "6.1.4(20)",
+                        Tag      => Not_Constant_After_Elaboration);
 
-      --  Check that the procedure/entry/task does not modify variables that
-      --  have Constant_After_Elaboration set.
-      declare
+                  else
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "constant after elaboration & must not " &
+                                    "be an output of subprogram &",
+                        Severity => High_Check_Kind,
+                        N        => FA.Analyzed_Entity,
+                        --  ??? This error location should be improved
+                        F1       => Global,
+                        F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                        SRM_Ref  => "6.1.4(20)",
+                        Tag      => Not_Constant_After_Elaboration);
+                  end if;
+               end if;
+            end loop;
+         end Emit_Check;
+
          Globals : Global_Flow_Ids;
 
-         G_Out     : Entity_Id;
-         CAE_Scope : Flow_Scope;
+      --  Start of processing for Check_Subprogram
+
       begin
-         Get_Globals (Subprogram => FA.Analyzed_Entity,
+         Get_Globals (Subprogram => E,
                       Scope      => FA.B_Scope,
                       Classwide  => False,
                       Globals    => Globals);
 
-         for W of Globals.Outputs loop
-            if W.Kind in Direct_Mapping | Record_Field then
-               G_Out     := Get_Direct_Mapping_Id (W);
-               CAE_Scope := Get_Flow_Scope (G_Out);
+         --  Check that the elaboration of a library level package does not
+         --  call a subprogram or entry having an Input or Proof_In global
+         --  marked as constant after elaboration.
 
-               if CAE_Scope /= Null_Flow_Scope
-                 and then not In_Body_Part (CAE_Scope)
-                 and then Ekind (G_Out) = E_Variable
-                 and then Is_Constant_After_Elaboration (G_Out)
-               then
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "constant after elaboration & " &
-                                 "must not be an output of procedure &",
-                     Severity => High_Check_Kind,
-                     N        => FA.Analyzed_Entity,
-                     F1       => W,
-                     F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                     Tag      => Not_Constant_After_Elaboration);
-               end if;
+         if Package_Elaboration then
+
+            Emit_Check (Globals.Inputs);
+            Emit_Check (Globals.Proof_Ins);
+
+         --  Check that the procedure/entry/task does not modify variables
+         --  that have Constant_After_Elaboration set.
+
+         else
+
+            Emit_Check (Globals.Outputs);
+
+         end if;
+      end Check_Subprogram;
+
+   --  Start of processing for Check_Constant_After_Elaboration
+
+   begin
+      case Ekind (FA.Spec_Entity) is
+
+         --  Check calls of a package elaboration
+
+         when E_Package =>
+            if Is_Library_Level_Entity (FA.Spec_Entity) then
+               for Call of Generated_Calls (FA.Spec_Entity) loop
+                  if Is_Subprogram (Call)
+                    or else Is_Entry (Call)
+                  then
+                     Check_Subprogram (Call);
+                  end if;
+               end loop;
             end if;
-         end loop;
-      end;
+
+         --  Check procedures/entries/tasks
+
+         when E_Procedure
+            | E_Entry
+            | E_Task_Type
+         =>
+            Check_Subprogram (FA.Spec_Entity);
+
+         when E_Function =>
+            null;
+
+         when others =>
+            raise Program_Error;
+
+      end case;
    end Check_Constant_After_Elaboration;
 
    -----------------------------------------

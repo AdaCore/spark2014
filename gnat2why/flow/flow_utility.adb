@@ -3371,6 +3371,30 @@ package body Flow_Utility is
    end Is_Ghost_Entity;
 
    -----------------------------------
+   -- Is_Constant_After_Elaboration --
+   -----------------------------------
+
+   function Is_Constant_After_Elaboration (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Direct_Mapping =>
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
+            begin
+               return Ekind (E) = E_Variable
+                 and then Is_Constant_After_Elaboration (E);
+            end;
+
+         when Magic_String =>
+            return GG_Is_CAE_Entity (F.Name);
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Is_Constant_After_Elaboration;
+
+   -----------------------------------
    -- Is_Initialized_At_Elaboration --
    -----------------------------------
 

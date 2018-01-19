@@ -733,6 +733,10 @@ is
    function Is_Ghost_Entity (F : Flow_Id) return Boolean;
    --  Returns True iff F represents a ghost entity
 
+   function Is_Constant_After_Elaboration (F : Flow_Id) return Boolean
+   with Pre => Is_Variable (F);
+   --  Returns True iff F represents a constant after elaboration
+
    function Is_Variable (F : Flow_Id) return Boolean
    with Pre => Present (F);
    --  Returns True if F is either not a constant or is a constant

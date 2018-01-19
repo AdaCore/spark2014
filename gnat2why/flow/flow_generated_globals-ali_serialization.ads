@@ -34,6 +34,7 @@ package Flow_Generated_Globals.ALI_Serialization is
                            EK_Remote_States,
                            EK_Predef_Init_Vars,
                            EK_Ghost_Entities,
+                           EK_CAE_Entities,
                            EK_Volatiles,
                            EK_Globals,
                            EK_Constant_Calls,
@@ -55,6 +56,8 @@ package Flow_Generated_Globals.ALI_Serialization is
             The_Predef_Init_Vars         : Name_Sets.Set;
          when EK_Ghost_Entities =>
             The_Ghost_Entities           : Name_Sets.Set;
+         when EK_CAE_Entities =>
+            The_CAE_Entities             : Name_Sets.Set;
          when EK_Volatiles =>
             The_Async_Readers            : Name_Sets.Set;
             The_Async_Writers            : Name_Sets.Set;
