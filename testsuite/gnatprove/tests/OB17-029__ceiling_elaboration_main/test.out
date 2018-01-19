@@ -1,0 +1,6 @@
+x.adb:5:15: warning: assuming "Put_Line" has no effect on global items
+x.adb:5:15: warning: no Global contract available for "Put_Line"
+x.ads:2:14: warning: subprogram "Dummy" has no effect
+y.adb:5:15: warning: assuming "Put_Line" has no effect on global items
+y.adb:5:15: warning: no Global contract available for "Put_Line"
+y.ads:2:14: warning: subprogram "Dummy" has no effect

@@ -1,0 +1,2 @@
+with X;
+procedure P;
