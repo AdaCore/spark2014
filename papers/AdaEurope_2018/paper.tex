@@ -473,17 +473,28 @@ pointer concept greatly limits its features by prohibiting pointer arithmetic an
 Separation logic~\cite{Reynolds02} is an extension of Hoare-Floyd logic that allows reasoning about pointers. In general, it is not well integrated with deductive
 verification, and, in particular, is not supported by SMT provers.
 
-\smallskip
-The most closely related works to ours are system programming in Cyclone \cite{Grossman2002} and Rust \cite{Balasubramanian17} that achieve absence of
-harmful aliasing by enforcing an Ownership type system on the memory pointed-to by objects. Rust is a recent programming language targeting system
-programming, with a focus on memory safety for concurrent programs.
-Rust analysis also deals with the lifetime of allocated memory, enforcing
-at the same time the lack of dangling pointer references. Pointers in Rust can never be null.
 
 \smallskip
 Dafny associates each object with its \emph{dynamic frame}, the set of pointers that it owns~\cite{Leino10}. This dynamic version of Ownership is
 enforced by modeling the Ownership of pointers in logic, generating verification conditions to detect violations of the single-owner model, and proving
 them using SMT provers. In Spec\#, Ownership is similarly enforced by proof, to detect violations of the so-called Boogie methodology~\cite{Boogie}.
+
+\smallskip
+The inspiration for much of this work springs from the system programming in Cyclone \cite{Grossman2002} and Rust \cite{Balasubramanian17} that achieve absence of
+harmful aliasing by enforcing an Ownership type system on the memory pointed-to by objects. Rust is a recent programming language targeting system
+programming, with a focus on memory safety for concurrent programs.
+\todo[inline]{I suggest we talk about keywords is Rust here like mut and \& which are not allowed in Ada and SPARK to highlight the difference with
+Rust. Since we cannot use mut we should define rules for borrowing and its scope for instance. Since we cannot decide the by-reference passing for all object types,
+we make the assumption of by-reference passing for composite types...}
+Rust analysis also deals with the lifetime of allocated memory, enforcing
+at the same time the lack of dangling pointer references. Pointers in Rust can never be null.\todo[inline]{How does this affect the ownership rules?}
+
+\smallskip
+The most closely related works to ours springs from Jaloyan \textit{et al.} \cite{Jaloyan18} anti-aliasing rules. In \cite{Jaloyan18}, access-to-variable objects
+and composite objects with access subcomponent objects are condsidered as deep variables and their ownership states are transfered in the same way when used to call subprograms.
+Actual deep parameters are considered as borrowed and the durations of borrows are only limited to duration of procedure calls.   
+It turns out that this prevents traversing a linked data structure with read/write permission or even only the read permission. In this work, the distinction between stand-alone access
+objects and composite ones and moving or observing composite objects instead of borrowing them has allowed us to traverse a data structure with the ability to modify something. 
 
 \smallskip
 In our work, we use a permission-based mechanism for detecting potentially harmful aliasing, in order to make the presence of pointers transparent for automated provers.
