@@ -6,6 +6,7 @@
 % \usepackage{amsmath}
 % \usepackage{pbox}
 % \usepackage{dsfont}
+\setcounter{secnumdepth}{3}%%% pour que les subsubsection aient des numéros
 \usepackage{paralist}
 \usepackage{graphicx}
 \usepackage{tikz}
@@ -23,7 +24,7 @@
 \usepackage{caption}
 \graphicspath{{figures/}}
 
-
+\usepackage [T1]{fontenc}
 \usepackage[style=alphabetic, maxnames=99]{biblatex}
 \addbibresource{references.bib}
 
@@ -129,6 +130,7 @@ consider the situation of composite ownership objects, for which we require pass
 
 \subsubsection{Moving Access Values}
 \label{sec:moving}
+\ \\
 
 The main idea of the move operation is a complete transfer of the ownership from the right hand side access-to-variable object to the left hand side object in an assignment operation.
 A moved object should hence be in the unrestricted state before the assignment. However, after the assignment, it gets set to null since the newly assigned object becomes the owner
@@ -157,6 +159,7 @@ at each access-to-variable object copy.
 \subsubsection{Borrowing Pointer Values}
 \label{sec:borrowing}
 
+\ \\
 We say that a value has been ``borrowed'' if that value has been copied into a short-lived access-to-variable managed object.
 The key insight of a borrowing state is a temporary transfer of the ownership of the said borrowed object until the end of the scope of the borrower.
 We effectively want the name to still designate the same object(s) until the borrower goes away. As a result, while a name that denotes a managed object
@@ -182,6 +185,7 @@ provide read/write access. This is to accommodate existing practice in the use o
 
 \subsubsection{Observing Pointer Values}
 \label{sec:observing}
+\ \\
 
 We say an access-to-variable object is ``observed'' when its value has been ``observed'', and such an object can only be used for read-only access to the designated object.
 The observed state remains so until the end of the scope of the observer. While the state of a name that denotes a managed object is observed, the name shall not be moved nor
@@ -200,6 +204,8 @@ this allows us to call the function \var{Sum} using \var{X} as a first and secon
 
 \subsubsection{Preventing Read-Write Aliasing}
 \label{sec:noaliasing}
+\ \\
+
 We have seen that the observing mechanism allows multiple access objects to observe the same designated object. In the scope of these objects, the designated object
 cannot be written, so there is no read-write aliasing problem here.
 We have seen that after borrowing an object, its name does not allow neither reading nor updating until the borrowing ends. For example, this prevents a call to \var{Swap\_Contents (X, X)},
@@ -224,6 +230,7 @@ means that all non-access types with Ownership aspect True are necessarily by-re
 
 \subsubsection{Moving Composite Values}
 \label{subsubsec:movingComposite}
+\ \\
 
 Like for access objects, the main idea of the move operation is a complete transfer of the ownership from the right hand side composite object to the left hand
 side object in an assignment operation. Thus, a moved object should still be in the unrestricted state before the assignment. The rules that apply for moving an
@@ -245,6 +252,7 @@ to \var{S}, which involves moving \var{R.X} into \var{S.X} and moving \var{R.Y} 
  
 \subsubsection{Borrowing Composite Values}
 \label{subsubsec:borrowComposite}
+\ \\
 
 Borrowing composite ownership objects occurs when passing such an object as \keyword{out} or \keyword{in out} parameter. This naturally applies when
 such objects are passed by reference. Note the difference with \keyword{out} or \keyword{in out} parameters of an access type, which are passed by copy,
@@ -267,6 +275,7 @@ We refer the reader to \cite{AI2017} for further details.
    
 \subsubsection{Observing Composite Values}
 \label{subsubsec:extendingBorrowing}
+\ \\
 
 Observing composite ownership objects occurs when passing such an object as \keyword{in} parameter or initializing a constant stand-alone object of such a type. 
 In the code snippet of Figure~\ref{fig:observingComposite}, procedure \var{Sum\_Rec} has an \keyword{in} formal parameter \var{R} of record type.
@@ -285,6 +294,7 @@ the formal parameter \var{R} is initially in observed state, hence its component
 
 
 \subsubsection{Traversing Data Structures with Local Variables}
+\ \\
 
 In the rules about borrowing access values (Section~\ref{sec:borrowing}), we said that initializing a stand-alone object of access-to-variable type corresponds to
 borrowing the value. Similarly, in the rules about observing access values (Section~\ref{sec:observing}), we said that initializing a stand-alone object of
@@ -320,7 +330,7 @@ $\ell_9$ and $\ell_{15}$.
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
    \includegraphics[]{treeInsert}
-   \caption{Example for traversing a data structure with read access: Binary Search Tree Insert. \var{buildLeaf} is a function that creates a node such that the formal
+   \caption{Example for traversing a data structure with read access: Binary Search Tree Insert. \var{Build\_Leaf} is a function that creates a node such that the formal
 	parameter is the value of the \var{Data} subcomponent and \var{Left} and \var{Right} subcomponents are null.}
    \label{fig:treeInsert}
 \end{figure}

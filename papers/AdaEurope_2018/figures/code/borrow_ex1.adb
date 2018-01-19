@@ -9,10 +9,10 @@ procedure borrow_ex1 with SPARK_Mode is
 
 Procedure Swap_Contents (X_Param, Y_Param : in Int_Ptr) is
   Tmp : integer := X_Param.all;
-  Begin
+  begin
     X_Param.all := Y_Param.all;
     Y_Param.all := Tmp;
-  End Swap_Contents;
+  end Swap_Contents;
 
   X : Int_Ptr := new Integer;
   Y : Int_Ptr := new Integer;

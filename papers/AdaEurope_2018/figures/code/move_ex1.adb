@@ -8,10 +8,10 @@ procedure move_ex1 with SPARK_Mode is
 
 Procedure Swap(X_Param, Y_Param : in out Int_Ptr) is
   Tmp : Int_Ptr := X_Param;
-  Begin
+  begin
      X_Param := Y_Param;
      Y_Param := Tmp;
-  End Swap;
+  end Swap;
 
   X : Int_Ptr := new Integer;
   Y : Int_Ptr := new Integer;
