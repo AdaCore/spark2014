@@ -671,8 +671,7 @@ procedure Gnatprove with SPARK_Mode is
       Call_With_Status (Command   => "spark_report",
                         Arguments => Args,
                         Status    => Status,
-                        Verbose   => Verbose,
-                        Free_Args => False);
+                        Verbose   => Verbose);
 
       if not Debug then
          GNAT.OS_Lib.Delete_File (Obj_Dir_Fn, Success);

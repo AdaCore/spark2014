@@ -40,44 +40,12 @@ package Call is
       return Argument_List;
    --  Convert a String List into an Argument List
 
-   procedure Call_Exit_On_Failure
-     (Command   : String;
-      Arguments : String_Lists.List;
-      Verbose   : Boolean := False);
-   --  Call the given command using the given argument list.
-   --  Free all argument access values.
-   --  If the command exit status is not 0, print its output and exit.
-
-   procedure Call_Exit_On_Failure
-     (Command   : String;
-      Arguments : Argument_List;
-      Verbose   : Boolean := False);
-
-   procedure Call_With_Status
-     (Command   : String;
-      Arguments : Argument_List;
-      Status    : out Integer;
-      Output_FD : File_Descriptor := Standout;
-      Verbose   : Boolean := False;
-      Free_Args : Boolean := True);
-
-   function Call_With_Status
-     (Command   : String;
-      Arguments : String_Lists.List;
-      Status    : out Integer;
-      Verbose   : Boolean := False;
-      Free_Args : Boolean := True)
-      return String;
-   --  Call Command on Arguments, returning both the Status of the system call,
-   --  and the output on standard output as result.
-
    procedure Call_With_Status
      (Command   : String;
       Arguments : String_Lists.List;
       Status    : out Integer;
       Output_FD : File_Descriptor := Standout;
-      Verbose   : Boolean := False;
-      Free_Args : Boolean := True);
+      Verbose   : Boolean := False);
 
    function Get_Process_Id return Integer;
    --  Return the process ID of the current process

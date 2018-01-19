@@ -587,35 +587,35 @@ package body Configuration is
       Z3 : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("z3");
       Status : aliased Integer;
+      Dash_Dash_Version : String_Lists.List;
+      Dash_Version : String_Lists.List;
    begin
+      Dash_Dash_Version.Append ("--version");
+      Dash_Version.Append ("-version");
       Ada.Text_IO.Put_Line (SPARK2014_Version_String);
       Call_With_Status (Gnatwhy3,
-                        Arguments => (1 => new String'("--version")),
-                        Status    => Status,
-                        Free_Args => True);
+                        Arguments => Dash_Dash_Version,
+                        Status    => Status);
 
       if Alt_Ergo /= null then
          Ada.Text_IO.Put (Alt_Ergo.all & ": ");
          Call_With_Status (Alt_Ergo.all,
-                           Arguments => (1 => new String'("-version")),
-                           Status    => Status,
-                           Free_Args => True);
+                           Arguments => Dash_Version,
+                           Status    => Status);
          Free (Alt_Ergo);
       end if;
       if CVC4 /= null then
          Ada.Text_IO.Put (CVC4.all & ": ");
          Call_With_Status (CVC4.all,
-                           Arguments => (1 => new String'("--version")),
-                           Status    => Status,
-                           Free_Args => True);
+                           Arguments => Dash_Dash_Version,
+                           Status    => Status);
          Free (CVC4);
       end if;
       if Z3 /= null then
          Ada.Text_IO.Put (Z3.all & ": ");
          Call_With_Status (Z3.all,
-                           Arguments => (1 => new String'("--version")),
-                           Status    => Status,
-                           Free_Args => True);
+                           Arguments => Dash_Dash_Version,
+                           Status    => Status);
          Free (Z3);
       end if;
    end Produce_Version_Output;

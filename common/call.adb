@@ -36,9 +36,6 @@ package body Call is
        Arguments : Argument_List);
    --  Print the command line for debug purposes
 
-   procedure Free_Argument_List (L : Argument_List);
-   --  Free all strings in an argument list
-
    ------------------------
    -- Abort_With_Message --
    ------------------------
@@ -73,13 +70,14 @@ package body Call is
 
    procedure Call_With_Status
      (Command   : String;
-      Arguments : Argument_List;
+      Arguments : String_Lists.List;
       Status    : out Integer;
       Output_FD : File_Descriptor := Standout;
-      Verbose   : Boolean := False;
-      Free_Args : Boolean := True)
+      Verbose   : Boolean := False)
    is
       Executable : String_Access := Locate_Exec_On_Path (Command);
+      Arg_List : Argument_List :=
+        Argument_List_Of_String_List (Arguments);
    begin
       if Executable = null then
          Ada.Text_IO.Put_Line ("Could not find executable " & Command);
@@ -87,114 +85,14 @@ package body Call is
       end if;
 
       if Verbose then
-         Print_Command_Line (Command, Arguments);
+         Print_Command_Line (Command, Arg_List);
          Ada.Text_IO.New_Line;
       end if;
 
-      Spawn (Executable.all, Arguments, Output_FD, Status, Err_To_Out => True);
-      if Free_Args then
-         Free_Argument_List (Arguments);
-      end if;
+      Spawn (Executable.all, Arg_List, Output_FD, Status, Err_To_Out => True);
+      GNATCOLL.Utils.Free (Arg_List);
       Free (Executable);
    end Call_With_Status;
-
-   function Call_With_Status
-     (Command   : String;
-      Arguments : String_Lists.List;
-      Status    : out Integer;
-      Verbose   : Boolean := False;
-      Free_Args : Boolean := True)
-      return String
-   is
-      use Ada.Strings.Unbounded;
-      use Ada.Text_IO;
-
-      Temp_FD   : File_Descriptor;
-      Temp_Name : Temp_File_Name;
-      Temp_File : File_Type;
-      Content   : Unbounded_String;
-
-   begin
-      --  Call command and get output in temporary file
-
-      Create_Temp_File (Temp_FD, Temp_Name);
-      Call_With_Status (Command   => Command,
-                        Arguments => Arguments,
-                        Status    => Status,
-                        Output_FD => Temp_FD,
-                        Verbose   => Verbose,
-                        Free_Args => Free_Args);
-
-      --  Read temporary file into string Content
-
-      Open (File => Temp_File,
-            Mode => In_File,
-            Name => Temp_Name);
-      while not End_Of_File (Temp_File) loop
-         Append (Content, Get_Line (Temp_File));
-      end loop;
-      Delete (Temp_File);
-
-      --  Return output from string Content
-
-      return To_String (Content);
-   end Call_With_Status;
-
-   procedure Call_With_Status
-     (Command   : String;
-      Arguments : String_Lists.List;
-      Status    : out Integer;
-      Output_FD : File_Descriptor := Standout;
-      Verbose   : Boolean := False;
-      Free_Args : Boolean := True)
-   is
-   begin
-      Call_With_Status
-        (Command,
-         Argument_List_Of_String_List (Arguments),
-         Status,
-         Output_FD,
-         Verbose,
-         Free_Args);
-   end Call_With_Status;
-
-   --------------------------
-   -- Call_Exit_On_Failure --
-   --------------------------
-
-   procedure Call_Exit_On_Failure
-     (Command   : String;
-      Arguments : Argument_List;
-      Verbose   : Boolean := False)
-   is
-      Status : Integer;
-   begin
-      Call_With_Status (Command,
-                        Arguments,
-                        Status,
-                        Verbose => Verbose,
-                        Free_Args => False);
-
-      if Status /= 0 then
-         Print_Command_Line (Command, Arguments);
-         Ada.Text_IO.Put_Line (" failed.");
-         GNAT.OS_Lib.OS_Exit (1);
-      end if;
-
-      Free_Argument_List (Arguments);
-   end Call_Exit_On_Failure;
-
-   procedure Call_Exit_On_Failure
-     (Command   : String;
-      Arguments : String_Lists.List;
-      Verbose   : Boolean := False)
-   is
-   begin
-      Call_Exit_On_Failure
-        (Command,
-         Argument_List_Of_String_List (Arguments),
-         Verbose);
-   end Call_Exit_On_Failure;
 
    ---------
    -- Cat --
@@ -280,22 +178,6 @@ package body Call is
       when Ada.IO_Exceptions.End_Error =>
          Close (File_Handle);
    end For_Line_In_File;
-
-   ------------------------
-   -- Free_Argument_List --
-   ------------------------
-
-   procedure Free_Argument_List (L : Argument_List)
-   is
-   begin
-      for Index in L'Range loop
-         declare
-            S : String_Access := L (Index);
-         begin
-            Free (S);
-         end;
-      end loop;
-   end Free_Argument_List;
 
    ------------------------
    -- Print_Command_Line --
