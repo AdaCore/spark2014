@@ -49,7 +49,7 @@ very_longs.adb:134:41: info: range check proved (CVC4: 1 VC)
 very_longs.adb:135:29: info: range check proved (CVC4: 1 VC)
 very_longs.adb:137:32: info: initialization of "String_Index" proved
 very_longs.adb:137:32: info: loop invariant preservation proved (CVC4: 1 VC)
-very_longs.adb:137:32: medium: loop invariant might fail in first iteration, cannot prove String_Index = 2 * Result.Long_Digits'last - Index + 1
+very_longs.adb:137:32: medium: loop invariant might fail in first iteration, cannot prove String_Index = 2 * Result.Long_Digits'Last - Index + 1
 very_longs.adb:137:58: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:137:85: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:137:87: info: initialization of "Index" proved

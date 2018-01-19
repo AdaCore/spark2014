@@ -49,7 +49,7 @@ aco-math-very_longs.adb:122:41: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:123:29: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:125:32: info: initialization of "String_Index" proved
 aco-math-very_longs.adb:125:32: info: loop invariant preservation proved (CVC4: 1 VC)
-aco-math-very_longs.adb:125:32: medium: loop invariant might fail in first iteration, cannot prove String_Index = 2 * Result.Long_Digits'last - Index + 1 (e.g. when Index = 1073741823 and Result = (Long_Digits => (others => 0), others => ?) and Result.Long_Digits'First = 1 and Result.Long_Digits'Last = 1073741823 and String_Index = 2)
+aco-math-very_longs.adb:125:32: medium: loop invariant might fail in first iteration, cannot prove String_Index = 2 * Result.Long_Digits'Last - Index + 1 (e.g. when Index = 1073741823 and Result = (Long_Digits => (others => 0), others => ?) and Result.Long_Digits'First = 1 and Result.Long_Digits'Last = 1073741823 and String_Index = 2)
 aco-math-very_longs.adb:125:58: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:125:85: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:125:87: info: initialization of "Index" proved
