@@ -404,15 +404,15 @@ which are qualified by alternative means. It is not unusual even to use
 different levels of SPARK verification within the same application. For example
 SHOLIS~\cite{Croxford2005Manifesto} used this approach with SIL-4 parts of the
 application attaining full functional proof (Platinum level) while in
-lower-integrity functions (SIL-2) we verified only up to AoRTE (Silver level). 
-The non-interference between different sections of the code was
-assured by the use of information flow analysis: the global data accessed by
-the different sections of the code were specified using data flow contracts on
-subprograms, which were reviewed manually to ensure non-interference, and
-analysis ensured that the implementation respected the specified contracts.
-More generally, consideration has to be given to the assumptions that are made
-to support the verification objectives - how these are satisfied or mitigated
-by other activities in the overall V\&V strategy~\cite{kanig2014tap}.
+lower-integrity functions (SIL-2) we verified only up to AoRTE (Silver level).
+The non-interference between different sections of the code was assured by the
+use of information flow analysis: a contract was attached to each subprogram
+specifying which global data items it could access in accordance with its SIL
+and the SPARK tools were used to check that the implementation respected these
+contracts. More generally, consideration has to be given to the assumptions
+that are made to support the verification objectives - how these are satisfied
+or mitigated by other activities in the overall V\&V
+strategy~\cite{kanig2014tap}.
 
 The use of SPARK within the Correctness By Construction framework as described
 above has been demonstrated to produce software with very low defect density
@@ -540,7 +540,7 @@ view and their ability to output software with a defect density under control.
 
 \subsection{Second Study: Refining the Process}
 
-In the field of high security applications, which is particularly important for
+In the field of high-security applications, which is particularly important for
 Thales, testing represents a considerable part of the software development
 process. In addition to unit tests, other principles are implemented such as
 enforcing coding rules, peer code reviews and qualimetry surveys with many
@@ -548,38 +548,38 @@ tools checking that those principles are strictly followed. One solution to
 lighten and improve this process, to produce software of improved quality, is
 the use of more suitable tools, such as formal verification tools to replace
 part of the tests. Indeed, formal proofs allow a comprehensive checking of
-proved parts, unlike testing that can only guaranty a partial checking of the
+proved parts, unlike testing that can only guarantee a partial checking of the
 software.
 
 After an internship in 2015 comparing some available environments for formal
 verification (eCv, Frama-C, SPARK), another six-months internship in 2017 was
-dedicated to the study of the benefits of Ada language and particularly SPARK
-language for our security software. Our motivation was that the Ada language is
-widely used in avionics, space or transport industries where software is
-critical in term of safety. With Ada 2012 version bringing contract programming
-and SPARK being able to verify formally such specifications, the goal of the
-study was to assess the benefits of Ada and SPARK for our security critical
-software.
+dedicated to the study of the benefits of the Ada language and particularly the
+SPARK language for our security software. Our motivation was that the Ada
+language is widely used in avionics, space or transport industries where
+software is critical in term of safety. With the Ada 2012 version bringing
+contract-based programming and SPARK being able to verify formally compliance
+to such contract-based specifications, the goal of the study was to assess the
+benefits of Ada and SPARK for our security-critical software.
 
 During this internship, we evaluated the various advantages of Ada and SPARK,
 through a state of the art analysis, followed by two proofs of concept in the
 field of cryptography.
 
 The first use case was porting from C to Ada, then to SPARK, part of a
-cryptographic library which is used as an abstract layer between a lower level
-cryptographic library (also in C) and client applications. This use case
+cryptographic library which is used as an abstraction layer between a lower
+level cryptographic library (also in C) and client applications. This use case
 followed the guidance document produced in the previously mentioned first
 study, to convert an application from Ada to SPARK.
 
-The preliminary stage consisted in porting the C library code to valid Ada
+The preliminary stage consisted of porting the C library code to valid Ada
 code. Porting API (.h files) was facilitated by g++ switch ``–fdump-ada-spec''
-which produced comprehensive Ada specification (.ads files) as well as Ada body
-skeletons (.adb files) generated automatically with the gnatstub tool. The body
-code was completed manually without difficulties as most C idioms are available
-with Ada. Interfacing with our C low level cryptographic library was essential
-for us and supported natively by Ada. This small step brought simpler code with
-pointer related defensive code suppressed thanks to the use of handy Ada array
-attributes and built-in Ada compiler verifications.
+which produced comprehensive Ada specifications (.ads files) as well as Ada
+body skeletons (.adb files) generated automatically with the gnatstub tool. The
+body code was completed manually without difficulties as most C idioms are
+available with Ada. Interfacing with our C low-level cryptographic library was
+essential for us and was supported natively by Ada. This small step brought
+simpler code with pointer-related defensive code eliminated thanks to the use
+of handy Ada array attributes and built-in Ada compiler verification.
 
 We first reached Stone level by transforming our Ada code to be valid SPARK
 code. It mostly consisted in suppression of pointers (or at least encapsulating
@@ -604,10 +604,10 @@ right algorithm with the right variant of a discriminated structure.
 In a fourth stage, we reached Gold level, verifying the functional behvavior of
 our code.  We added preconditions and postconditions in our code to specify key
 security requirements: cleanup of security-sensitive working variables,
-correctness of output value, concistency between parameters. At this level, all
-the existing defensive code was covered by contracts. By achieving complete
-proof of these specifications, the propagation of error codes from low level
-subprograms to high level ones was no longer necessary.
+correctness of output value, consistency between parameters. At this level, all
+the existing defensive code had been replaced by contracts. By achieving
+complete proof of these specifications, the propagation of error codes from low
+level subprograms to high level ones was no longer necessary.
 
 The second use case was about producing an API similar to the API ported from C
 during the first proof of concept, this time based on a low level cryptographic
@@ -615,23 +615,23 @@ library in Ada, which was also later proved with SPARK. The whole process from
 Stone level to Gold level was followed again. We then faced new technical
 issues: the need for loop invariants, contracts on type hierarchies for
 subprograms supporting dispatching, visibility of global variables in contracts
-of high level subprograms, non-provable Ada code. We detail each of these in
-the following. Though loop invariants are the basis of formal proof, they are
-considered as tricky. We got many unproved properties coming mostly from weak
-preconditions or weak postconditions of subprograms called inside a loop, which
-were not obvious to understand. Object Oriented Programming brings another
-layer of complexity, with specific rules for inheriting subprograms and
-contracts over these subprograms. Global variables mentioned in data flow
-contracts propagate to the upper levels of the call tree, where they are not
-visible anymore, which required costly workarounds. A better solution would
-have been to hide this particular effect in a low-level non-SPARK package
-body. Finally, some idiomatic Ada code did not lead to automatic proofs in
-SPARK. It seemed to be a good thing as it forced us to change for simpler and
-more readable code.
+of high level subprograms, non-provable Ada code. Though loop invariants are
+the basis of formal proof, they are considered as tricky. We got many unproved
+properties coming mostly from weak preconditions or weak postconditions of
+subprograms called inside a loop, which were not obvious to understand. Object
+Oriented Programming brings another layer of complexity, with specific rules
+for inheriting subprograms and contracts over these subprograms. Global
+variables mentioned in data flow contracts propagate to the upper levels of the
+call tree, where they are not visible anymore, which required costly
+workarounds. A better solution would have been to hide this particular effect
+in a low-level non-SPARK package body, or to use the data abstraction feature
+available in SPARK. Finally, some idiomatic Ada code did not lead to automatic
+proofs in SPARK. It seemed to be a good thing as it forced us to change for
+simpler and more readable code.
 
 We learned a few lessons from this second study. First, as stated in the
 guidance document, \textit{Users should refrain from changing the program for
-  the only benefit of getting fewer messages from the tool}, a principle that
+  the benefit of only getting fewer messages from the tool}, a principle that
 could be phrased as ``do not please the tools''. Secondly, reaching Gold Level
 is more easily achievable when clear and meaningful software specifications are
 available. Thirdly, not all code can be proved but non-provable parts that are
@@ -645,50 +645,54 @@ Thales.
 Formal methods have long been considered as a means of compliance to satisfy
 verification objectives in critical software development for some certification
 domains, for example in railway (EN 50128) and industrial processes (IEC
-51508). The aeronautic standard has more recently recognized formal methods as
-a means of compliance on par with the dominant technique of testing (DO-178C,
-2012). Other certification standards in the domains of automotive (ISO 26262),
-nuclear (IEC 60880) and space (ECSS-QST-80C) also recognize some uses of formal
-methods as verification techniques. The English military certification standard
-``Safety Management Requirements for Defence Systems'' (DEFSTAN 0056) puts a
-strong emphasis on formal methods as a means of compliance.
+51508). The avionics standard DO-178C in 2012 has more recently recognized
+formal methods as a means of compliance on par with the dominant technique of
+testing. Other certification standards in the domains of automotive (ISO
+26262), nuclear (IEC 60880) and space (ECSS-QST-80C) also recognize some uses
+of formal methods as verification techniques. The UK military certification
+standard ``Safety Management Requirements for Defence Systems'' (DEFSTAN 0055)
+puts a strong emphasis on formal methods as a means of compliance.
 
-The adequation of formal methods for certification was thoroughly investigated
-by John Rushby in his report for the NASA in 1993 on ``Formal Methods and the
-Certification of Critical Systems''~\cite{Rushby93formalmethods}. Although
-Rushby's report talks about ``formal methods'', this mostly corresponds to what
-we call today ``theorem proving'': model checking techniques are mentioned en
-passant, and nothing is said about abstract interpretation techniques, which
-did not have then the recognition that they have today. More recently, Graf and
-Garavel studied extensively the use of formal methods for developing critical
-systems, and they cover in particular the impact of formal methods on the
-development and verification processes~\cite{GrafGaravel-BSI-2013}. More
-specific guidance exists in specific application domains, such as in
+The adequateness of formal methods for certification was thoroughly
+investigated by John Rushby in his report for the NASA in 1993 on ``Formal
+Methods and the Certification of Critical
+Systems''~\cite{Rushby93formalmethods}. Although Rushby's report talks about
+``formal methods'', this mostly corresponds to what we call today ``theorem
+proving'': model checking techniques are mentioned en passant, and nothing is
+said about abstract interpretation techniques, which did not have then the
+recognition that they do today. More recently, Graf and Garavel studied
+extensively the use of formal methods for developing critical systems, and they
+cover in particular the impact of formal methods on development and
+verification processes~\cite{GrafGaravel-BSI-2013}. More specific guidance
+exists in certain application domains, such as in
 avionics~\cite{BrownERTS2010}.
 
 There is on the contrary very little guidance on the use of specific formal
 methods and tools. This is somewhat remediated by the availability of tool
-specific user's guides and publicly available experience
-reports~\cite{Woodcock2009}. Company specific guidance is developed to carry
-over the experience gained from project to project, in the companies using
-formal methods, but such guidance is kept confidential. Indeed, the experience
-gathered through previous projects is considered as a business advantage over
-the competition, and the guidance having been developed in the specific
-business context of the company, the information related to formal methods
-usage is very tied to other confidential information. The publication of the
-guidance co-developed between AdaCore and Thales~\cite{AdaCoreThalesSPARK} on
-SPARK adoption is thus a break from current practice, which was possible
-because it was written since the start with the tool provider.
+specific user guides and publicly available experience
+reports~\cite{Woodcock2009}. Company-specific guidance is developed to
+carry-over the experience gained from project to project, in the companies
+using formal methods, but such guidance is kept confidential. Indeed, the
+experience gathered through previous projects is considered as a business
+advantage over the competition, and the guidance having been developed in the
+specific business context of the company, the information related to formal
+methods usage is very tied to other confidential information. In their dual
+role of SPARK tools providers and practitioners, Praxis and then Altran have
+always been keen on publicizing best practices and lessons learned with formal
+verification on industrial projects. The publication of the guidance
+co-developed between AdaCore and Thales~\cite{AdaCoreThalesSPARK} on SPARK
+adoption follows this lead, which was possible because it was written since the
+start with the tool provider.
 
 Formal methods have been divided between heavyweight and lightweight ones, with
 the former being the original formal methods and the latter also being called
-the \textit{disappearing} formal methods. SPARK is a case of lightweight or
-disappearing formal methods, in which the user does not directly manipulate the
-underlying formalism, but instead interacts with tools through multiple
-interfaces. Formal methods and tools are usually placed at some point in
-between the heavyweight and lightweight extreme points. With the notion of
+the \textit{disappearing} formal methods~\cite{hase00}. SPARK is a case of
+lightweight or disappearing formal methods, in which the user does not directly
+manipulate the underlying formalism, but instead interacts with tools through
+multiple interfaces. Formal methods and tools are usually placed at some point
+in between the heavyweight and lightweight extreme points. With the notion of
 software assurance levels, we have shown that a given tool can be placed at
-multiple places along this axis, and that a project can hop between these
+multiple places along this axis, and that a project can move between these
 places using the same tool.
 
 In particular, it is likely that other formal verification platforms for

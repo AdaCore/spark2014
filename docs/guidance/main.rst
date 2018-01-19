@@ -207,10 +207,10 @@ allows us to get stronger guarantees, should the wolf in the fable adopt
 more aggressive means of attack than blowing.
 
 A pitfall when using tools for automating human tasks is to end up `pleasing
-the tool` rather than working around the tool limitations. Both flow analysis
+the tools` rather than working around the tool limitations. Both flow analysis
 and proof, the two technologies used in SPARK, have known limitations. Users
-should refrain from changing the program for the only benefit of getting fewer
-messages from the tool. When relevant, users should justify tool messages
+should refrain from changing the program for the benefit of only getting fewer
+messages from the tools. When relevant, users should justify tool messages
 through appropriate pragmas. See the sections on :ref:`Justifying Unproved
 Check Messages` and :ref:`Flow Analysis Warnings` for more details.
 
