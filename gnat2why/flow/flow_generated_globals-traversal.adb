@@ -114,10 +114,10 @@ package body Flow_Generated_Globals.Traversal is
 
                   if Debug then
                      Ada.Text_IO.Put_Line
-                       (Unique_Name (P) & P'Img &
-                          " -> " &
-                          Unique_Name (E) & E'Img &
-                          " (" & Scope_Map.Length'Img & " )");
+                       (Full_Source_Name (P) & P'Img &
+                        " -> " &
+                        Full_Source_Name (E) & E'Img &
+                        " (" & Scope_Map.Length'Img & " )");
                   end if;
 
                   Scope_Map.Insert (Key      => E,
@@ -192,7 +192,7 @@ package body Flow_Generated_Globals.Traversal is
          for Child of Scope_Map (E) loop
             Dump (Child);
          end loop;
-         Ada.Text_IO.Put_Line ("***" & Unique_Name (E));
+         Ada.Text_IO.Put_Line ("***" & Full_Source_Name (E));
       end Dump;
 
    --  Start of processing for Dump_Tree
