@@ -299,6 +299,12 @@ package body SPARK_Register is
                      when N_Entry_Declaration =>
                         Register_Entity (Defining_Entity (N));
 
+                     --  Accept statements are not in SPARK, but for
+                     --  completeness we register their parameters.
+
+                     when N_Accept_Statement =>
+                        Register_Entity (Defining_Entity (N));
+
                      when N_Access_To_Subprogram_Definition |
                           N_Entry_Body_Formal_Part          =>
                         null;
