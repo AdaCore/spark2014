@@ -60,8 +60,8 @@ package body Flow_Generated_Globals.Phase_1 is
    Task_Instances : Task_Instances_Lists.List;
    --  Instances of task types
 
-   package Partial_Contract_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Partial_Contract);
+   package Partial_Contract_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Partial_Contract);
 
    Entity_Infos : Partial_Contract_Lists.List;
    --  Entity-specific information as discovered by their analysis
@@ -75,8 +75,8 @@ package body Flow_Generated_Globals.Phase_1 is
       Max_Queue_Length : Nat;
    end record;
 
-   package Entries_Max_Queue_Length_Lists is new
-     Ada.Containers.Doubly_Linked_Lists (Entry_With_Max_Queue_Length);
+   package Entries_Max_Queue_Length_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Entry_With_Max_Queue_Length);
 
    Entries_Max_Queue_Length : Entries_Max_Queue_Length_Lists.List;
 
@@ -85,9 +85,8 @@ package body Flow_Generated_Globals.Phase_1 is
       Constituents : Name_Lists.List;
    end record;
 
-   package Abstract_State_Constituents_Lists is new
-     Ada.Containers.Doubly_Linked_Lists
-       (Element_Type => Abstract_State_Constituents);
+   package Abstract_State_Constituents_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Abstract_State_Constituents);
 
    State_Constituents : Abstract_State_Constituents_Lists.List;
    --  List of abstract states and their constituents, i.e.
@@ -119,8 +118,8 @@ package body Flow_Generated_Globals.Phase_1 is
       Callees : Name_Lists.List;
    end record;
 
-   package Call_Info_Lists is new
-     Ada.Containers.Doubly_Linked_Lists (Call_Info);
+   package Call_Info_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Call_Info);
 
    Direct_Calls_List : Call_Info_Lists.List;
    --  Container with direct calls for subprograms, entries and tasks types

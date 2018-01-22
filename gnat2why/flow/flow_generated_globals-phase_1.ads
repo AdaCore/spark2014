@@ -73,8 +73,8 @@ package Flow_Generated_Globals.Phase_1 is
    --  Register protected object and its priority
 
    procedure GG_Register_State_Refinement (E : Entity_Id)
-   with Pre  => GG_Mode = GG_Write_Mode and then
-                Ekind (E) = E_Package,
+   with Pre  => GG_Mode = GG_Write_Mode
+                  and then Ekind (E) = E_Package,
         Post => GG_Mode = GG_Write_Mode;
    --  Register information related to state abstractions and their
    --  refinements. This will later be used to return the appropriate view

@@ -321,7 +321,7 @@ package Flow_Generated_Globals.Phase_2 is
      (E : Entity_Id) return Name_Sets.Set
    with Pre => GG_Has_Been_Generated and then
                Analysis_Requested (E, With_Inlined => True);
-   --  @param Ent an entity name that refers to a task, main-like subprogram or
+   --  @param E an entity name that refers to a task, main-like subprogram or
    --    protected operation
    --  @return the set of protected operations that are called "directly", that
    --    is without going through other protected operations
