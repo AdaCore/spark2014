@@ -1555,42 +1555,27 @@ package body SPARK_Util is
 
       pragma Assert (Nkind (Instance) in N_Generic_Instantiation);
 
-      function Get_Label_List (E : Entity_Id) return List_Id;
-      --  Use Parent field to reach N_Generic_Package_Declaration or
-      --  N_Generic_Subprogram_Declaration.
-      --  ??? See Gnat2Why.External_Axioms.Get_Label_List
+      Actuals : constant List_Id :=
+        Generic_Associations (Instance);
 
-      --------------------
-      -- Get_Label_List --
-      --------------------
+      Formals : constant List_Id :=
+        Generic_Formal_Declarations
+          (Unit_Declaration_Node (Get_Generic_Entity (Instance)));
 
-      function Get_Label_List (E : Entity_Id) return List_Id is
-         P : Node_Id := Get_Generic_Entity (E);
-      begin
-         while Nkind (P) not in N_Generic_Package_Declaration
-                              | N_Generic_Subprogram_Declaration
-         loop
-            P := Parent (P);
-         end loop;
+      --  pragma Assert (List_Length (Actuals) = List_Length (Formals));
+      --  ??? this isn't always the case; needs to be investigated
 
-         return Generic_Formal_Declarations (P);
-      end Get_Label_List;
-
-      Params  : constant List_Id := Generic_Associations (Instance);
-      Formals : constant List_Id := Get_Label_List (Instance);
-
-      Param  : Node_Id := First (Params);
+      Actual : Node_Id := First (Actuals);
       Formal : Node_Id := First (Formals);
 
-   --  Start of processing for Iterate_Generic_Parameters
-
    begin
-      while Present (Param) loop
-         pragma Assert (Nkind (Param) = N_Generic_Association);
+      while Present (Actual) loop
+         pragma Assert (Nkind (Actual) = N_Generic_Association);
 
-         Handle_Parameters (Formal, Explicit_Generic_Actual_Parameter (Param));
+         Handle_Parameters
+           (Formal, Explicit_Generic_Actual_Parameter (Actual));
 
-         Next (Param);
+         Next (Actual);
          Next (Formal);
       end loop;
    end Iterate_Generic_Parameters;
