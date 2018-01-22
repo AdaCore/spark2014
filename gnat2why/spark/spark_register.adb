@@ -64,6 +64,11 @@ package body SPARK_Register is
          --  the original node.
 
       begin
+         --  Set the error location to advice the user on where the problem
+         --  might be when this routine crash.
+
+         Current_Error_Node := N;
+
          case Nkind (N) is
             --  Recursively call the tree rewriting procedure on subunits
 
@@ -345,6 +350,11 @@ package body SPARK_Register is
       else
          Process_Tree (Parent (N));
       end if;
+
+      --  Clear the error location (it will be set again by the next
+      --  traverse-like routines).
+
+      Current_Error_Node := Empty;
    end Register_Compilation_Unit;
 
 end SPARK_Register;
