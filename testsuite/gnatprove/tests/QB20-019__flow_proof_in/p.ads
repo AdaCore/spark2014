@@ -7,7 +7,7 @@ package P is
         Depends => (Id'Result => Arg, null => X);
 
    --  Those Globals are wrong
-   function Wrapper1 (Arg : Integer) return Integer is (Id (Arg)) with Global => null;        -- crashes proof
+   function Wrapper1 (Arg : Integer) return Integer is (Id (Arg)) with Global => null;
    function Wrapper2 (Arg : Integer) return Integer is (Id (Arg)) with Global => (Input => X);
 
    --  Those Global/Depends are OK
