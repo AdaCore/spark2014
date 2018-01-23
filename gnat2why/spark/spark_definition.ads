@@ -178,7 +178,7 @@ package SPARK_Definition is
 
    type Entity_Collection is
      (Entities_To_Translate,
-      Marked_Entities)
+      SPARK_Entities)
    with Iterable => (First       => First_Cursor,
                      Next        => Next_Cursor,
                      Has_Element => Has_Element,
@@ -207,8 +207,8 @@ private
       case Kind is
          when Entities_To_Translate =>
             Entity_To_Translate_Cursor : Node_Lists.Cursor;
-         when Marked_Entities =>
-            Marked_Entities_Cursor     : Hashed_Node_Sets.Cursor;
+         when SPARK_Entities =>
+            SPARK_Entities_Cursor      : Hashed_Node_Sets.Cursor;
       end case;
    end record;
 

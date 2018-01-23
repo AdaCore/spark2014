@@ -122,12 +122,12 @@ package body Flow_Utility is
 
    function Components (E : Entity_Id) return Node_Lists.List
    with Pre => Is_Type (E);
-   --  Return components of the given entity E, similar to
+   --  Return components in SPARK of the given entity E, similar to
    --  {First,Next}_Component_Or_Discriminant, with the difference that any
    --  components of private ancestors are included.
    --  @param E a type entity
-   --  @return all component and discriminants of the type or the empty list
-   --    if none exists
+   --  @return all component and discriminants of the type that are in SPARK or
+   --    the empty list if none exists.
 
    ------------------------
    -- Classwide_Pre_Post --
@@ -348,12 +348,15 @@ package body Flow_Utility is
                   declare
                      Inserted : Boolean;
                      Unused   : Component_Sets.Cursor;
+
                   begin
-                     S.Insert (New_Item => Ptr,
-                               Position => Unused,
-                               Inserted => Inserted);
-                     if Inserted then
-                        L.Append (Ptr);
+                     if Component_Is_Visible_In_SPARK (Ptr) then
+                        S.Insert (New_Item => Ptr,
+                                  Position => Unused,
+                                  Inserted => Inserted);
+                        if Inserted then
+                           L.Append (Ptr);
+                        end if;
                      end if;
                   end;
                   Next_Component_Or_Discriminant (Ptr);
@@ -621,12 +624,21 @@ package body Flow_Utility is
                   Write_Line (" (" & Ekind (T)'Img & ")");
                end if;
 
+               --  If the type is not in SPARK we return the variable itself
+               if not Entity_In_SPARK (T) then
+                  return Flow_Id_Sets.To_Set (F);
+               end if;
+
                --  If we are dealing with a derived type then we want to get to
-               --  the root and then populate the Root_Components set. However,
-               --  we don't want to consider Itypes.
-               if Is_Derived_Type (T) then
+               --  the root, if this is in SPARK, and then populate the
+               --  Root_Components set. However, we don't want to consider
+               --  Itypes.
+               if Is_Derived_Type (T)
+                 and then not Full_View_Not_In_SPARK (T)
+               then
                   declare
                      Root : Node_Id := T;
+
                   begin
                      while (Is_Derived_Type (Root) or else Is_Itype (Root))
                        and then Etype (Root) /= Root
@@ -719,7 +731,10 @@ package body Flow_Utility is
                      if Components (T).Is_Empty then
                         --  If the record has an empty component list then we
                         --  add the variable itself...
+                        --  Note that this happens also when the components are
+                        --  hidden behind a SPARK_Mode => Off.
                         Results.Insert (F);
+
                      else
                         --  ...else we add each visible component
                         for Ptr of Components (T) loop
@@ -3249,52 +3264,57 @@ package body Flow_Utility is
       Comp_Graph := Component_Graphs.Create;
 
       S := Node_Sets.Empty_Set;
-      for E of Marked_Entities loop
-         --  ??? we should iterate over Entities_To_Translate, which only
-         --  contains entities in SPARK; currently we iterate over
-         --  Marked_Entities, which includes types not in SPARK.
+      --  Note that we cannot iterate over Entities_To_Translate because we
+      --  would be missing entities with external axiomatization.
+      for E of SPARK_Entities loop
          if Is_Record_Type (E)
-           or else Ekind (E) in E_Protected_Type | E_Task_Type
+           or else Is_Incomplete_Or_Private_Type (E)
+           or else Is_Concurrent_Type (E)
          then
             Ptr := First_Component_Or_Discriminant (E);
 
             while Present (Ptr) loop
-               S.Insert (New_Item => Ptr,
-                         Position => Unused,
-                         Inserted => Inserted);
+               --  We add a component to the graph if it is in SPARK
+               if Component_Is_Visible_In_SPARK (Ptr) then
+                  S.Insert (New_Item => Ptr,
+                            Position => Unused,
+                            Inserted => Inserted);
 
-               if Inserted then
-                  Comp_Graph.Add_Vertex (Ptr);
-               end if;
-
-               declare
-                  Orig_Rec_Comp : constant Node_Id :=
-                    Original_Record_Component (Ptr);
-               begin
-                  if Present (Orig_Rec_Comp) then
-                     S.Insert (New_Item => Orig_Rec_Comp,
-                               Position => Unused,
-                               Inserted => Inserted);
-                     if Inserted then
-                        Comp_Graph.Add_Vertex (Orig_Rec_Comp);
-                     end if;
+                  if Inserted then
+                     Comp_Graph.Add_Vertex (Ptr);
                   end if;
-               end;
 
-               if Ekind (Ptr) = E_Discriminant then
                   declare
-                     Corr_Discr : constant Node_Id :=
-                       Corresponding_Discriminant (Ptr);
+                     Orig_Rec_Comp : constant Node_Id :=
+                       Original_Record_Component (Ptr);
+
                   begin
-                     if Present (Corr_Discr) then
-                        S.Insert (New_Item => Corr_Discr,
+                     if Present (Orig_Rec_Comp) then
+                        S.Insert (New_Item => Orig_Rec_Comp,
                                   Position => Unused,
                                   Inserted => Inserted);
                         if Inserted then
-                           Comp_Graph.Add_Vertex (Corr_Discr);
+                           Comp_Graph.Add_Vertex (Orig_Rec_Comp);
                         end if;
                      end if;
                   end;
+
+                  if Ekind (Ptr) = E_Discriminant then
+                     declare
+                        Corr_Discr : constant Node_Id :=
+                          Corresponding_Discriminant (Ptr);
+
+                     begin
+                        if Present (Corr_Discr) then
+                           S.Insert (New_Item => Corr_Discr,
+                                     Position => Unused,
+                                     Inserted => Inserted);
+                           if Inserted then
+                              Comp_Graph.Add_Vertex (Corr_Discr);
+                           end if;
+                        end if;
+                     end;
+                  end if;
                end if;
 
                Next_Component_Or_Discriminant (Ptr);
@@ -3338,6 +3358,7 @@ package body Flow_Utility is
       declare
          C         : Cluster_Id;
          Work_List : Node_Sets.Set;
+
       begin
          while not S.Is_Empty loop
             --  Pick an element at random.

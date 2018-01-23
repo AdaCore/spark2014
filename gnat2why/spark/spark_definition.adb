@@ -6228,9 +6228,9 @@ package body SPARK_Definition is
             Cursor'(Kind                       => Entities_To_Translate,
                     Entity_To_Translate_Cursor => Entity_List.First),
 
-         when Marked_Entities =>
-            Cursor'(Kind                       => Marked_Entities,
-                    Marked_Entities_Cursor     => Entity_Set.First));
+         when SPARK_Entities =>
+            Cursor'(Kind                       => SPARK_Entities,
+                    SPARK_Entities_Cursor      => Entities_In_SPARK.First));
 
    -----------------
    -- Next_Cursor --
@@ -6245,10 +6245,10 @@ package body SPARK_Definition is
                     Entity_To_Translate_Cursor =>
                       Node_Lists.Next (C.Entity_To_Translate_Cursor)),
 
-          when Marked_Entities =>
-             Cursor'(Kind => Marked_Entities,
-                     Marked_Entities_Cursor     =>
-                       Hashed_Node_Sets.Next (C.Marked_Entities_Cursor)));
+          when SPARK_Entities =>
+             Cursor'(Kind => SPARK_Entities,
+                     SPARK_Entities_Cursor     =>
+                       Hashed_Node_Sets.Next (C.SPARK_Entities_Cursor)));
 
    -----------------
    -- Has_Element --
@@ -6261,8 +6261,8 @@ package body SPARK_Definition is
          when Entities_To_Translate =>
             Node_Lists.Has_Element (C.Entity_To_Translate_Cursor),
 
-         when Marked_Entities =>
-            Hashed_Node_Sets.Has_Element (C.Marked_Entities_Cursor));
+         when SPARK_Entities =>
+            Hashed_Node_Sets.Has_Element (C.SPARK_Entities_Cursor));
 
    -----------------
    -- Get_Element --
@@ -6275,7 +6275,7 @@ package body SPARK_Definition is
          when Entities_To_Translate =>
             Node_Lists.Element (C.Entity_To_Translate_Cursor),
 
-         when Marked_Entities =>
-            Hashed_Node_Sets.Element (C.Marked_Entities_Cursor));
+         when SPARK_Entities =>
+            Hashed_Node_Sets.Element (C.SPARK_Entities_Cursor));
 
 end SPARK_Definition;
