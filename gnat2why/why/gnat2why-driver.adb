@@ -70,7 +70,6 @@ with Sem_Util;                        use Sem_Util;
 with Sinfo;                           use Sinfo;
 with Sinput;                          use Sinput;
 with SPARK_Definition;                use SPARK_Definition;
-with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
 with SPARK_Rewrite;                   use SPARK_Rewrite;
 with SPARK_Register;                  use SPARK_Register;
 with SPARK_Util;                      use SPARK_Util;
@@ -455,13 +454,6 @@ package body Gnat2Why.Driver is
       end;
 
       if Gnat2Why_Args.Global_Gen_Mode then
-
-         --  Load frontend cross-references (for subprograms with SPARK_Mode =>
-         --  Off).
-
-         Load_SPARK_Xrefs;
-
-         Timing_Phase_Completed (Timing, "globals (frontend)");
 
          Generate_Globals (GNAT_Root);
          Timing_Phase_Completed (Timing, "globals (partial)");
