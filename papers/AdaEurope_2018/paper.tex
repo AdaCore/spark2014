@@ -28,7 +28,7 @@
 
 \maketitle
 \begin{abstract}
-Handling memory in a correct and efficient way is a step toward less complex, safe, and higher performing programs and architectures. However, languages used for critical software development like Ada, including formal verification with its SPARK subset, still face challenges regarding the use of pointers due to pointer aliasing. In this work, we introduce an extension to the Ada language, and to its SPARK subset, to provide pointer types (``access types'' in Ada) that provide provably safe, automatic storage management without any asynchronous garbage collection, and without explicit deallocation by the user. Because the mechanism for these safe pointers relies on a strict control of aliasing, they can be used in the SPARK subset for formal verification, which includes both analysis of flows and proof of properties. In this paper, we present the proposal that has been submitted for inclusion in the next version of Ada, as well as the ideas underlying the inclusion of these pointers in formal analyses.
+Handling memory in a correct and efficient way is a step toward safer, less complex, and higher performing software and software-intensive systems. However, languages used for critical software development such as Ada, which supports formal verification with its SPARK subset, face challenges regarding any use of pointers due to potential pointer aliasing. In this work, we introduce an extension to the Ada language, and to its SPARK subset, to provide pointer types (``access types'' in Ada) that provide provably safe, automatic storage management without any asynchronous garbage collection, and without explicit deallocation by the user. Because the mechanism for these safe pointers relies on a strict control of aliasing, they can be used in the SPARK subset for formal verification, including both information flow analysis and proof of safety and correctness properties. In this paper, we present this proposal (which has been submitted for inclusion in the next version of Ada), as well as the approach to incorporating these pointers into formal analyses.
 \end{abstract}
 
 %\category{D - Software}{D.3 Programming Languages}{D.3.4 Processors - Compilers}
@@ -43,8 +43,9 @@ Compilation, Safe Pointers, Formal Verification, Memory Management
 
 Standard Ada supports safe use of pointers (``access types'' in Ada) via strong type checking, but safety is guaranteed only for programs where there are no explicit deallocations of pointed-to objects -- explicit deallocation is considered ``unchecked'' programming in Ada, meaning that the programmer is responsible for ensuring that the deallocation is not performed prematurely. Ada can provide automatic reclamation of the entire memory pool associated with a particular pointer type when the pointer type goes out of scope, but it does not automatically reclaim storage prior to that point. It is possible for a user to implement abstract data types that do some amount of automatic deallocation at the object level, but this requires additional programming, and typically has certain limitations. As part of its strong type checking, Ada also prevents dangling references to objects on the stack or the heap, by providing automatic compile-time checking of ``accessibility'' levels, which reflects the lifetimes of stack and heap objects.  Conversions between pointer types are restricted to ensure pointers never outlive the objects they designate. Values of a pointer type are by default initialized to null to prevent use of uninitialized pointers, and run-time checks verify that a null pointer is never dereferenced.
 
-SPARK is a subset of the Ada programming language, targeted at the most safety- and security-critical applications. SPARK starts with the basic Ada features oriented toward building reliable and long-lived software. SPARK restrictions ensure that the behavior of a SPARK program is unambiguously defined, and simple enough that formal verification tools can perform an automatic assessment of conformance between a program specification and its implementation. The SPARK language and toolset for formal verification have been applied over many years to on-board aircraft systems,
-control systems, cryptographic systems, and rail systems \cite{ONeill2012, McCormick2015}.
+\smallskip
+SPARK is a subset of the Ada programming language, targeted at the most safety- and security-critical applications. SPARK starts with the basic Ada features oriented toward building reliable and long-lived software, then adds restrictions that ensure that the behavior of a SPARK program is unambiguously defined, and simple enough that formal verification tools can perform an automatic assessment of conformance between a program specification and its implementation. The SPARK language and toolset for formal verification have been applied over many years to on-board aircraft systems,
+air traffic control systems, cryptographic systems, and rail systems \cite{ONeill2012, McCormick2015}.
 
 As a consequence of our focus in SPARK on proof automation and usability, we have forbidden the use in SPARK of programming language features that either prevent automatic proof, or make it possible only at the expense of extensive user effort in annotating the program. The lack of support for pointers in SPARK is the main example of this choice. On the one hand, SPARK supports many Ada features that can make up for the lack of pointers: by-reference parameter passing, the ability to specify the address of objects, and the support for arrays as first-class objects. On the other hand, pointers are sometimes desirable, which forces one to exclude from formal SPARK analysis the parts of a program that make use of pointers. While there are idioms that facilitate this isolation of pointers in non-SPARK parts of a program~\cite{AdaCoreThalesSPARK}, it is highly desirable to provide some level of support for pointers in SPARK.
 
@@ -52,7 +53,7 @@ In this work, we present the first step for the inclusion of a variety of pointe
 
 
 \section{A Proposal for Ownership Types in Ada}
-Pointers (access types) are essential to many complex Ada data structures, but they also have significant downsides, and can create many kinds of safety and security problems.
+Pointers (access types) are essential to many complex Ada data structures, but they also have some downsides, and can create various kinds of safety and security problems.
 When attempting to prove properties about a program, particularly programs with multiple threads of control, the enemy is often the unknown ``aliasing'' of names introduced by
 access types and certain uses of (potentially) by-reference parameters. We say that two names may alias if they have the possibility to refer to overlapping memory regions.
 By unknown aliasing of names, we mean the situation where two distinct names might refer to the same object, without the compiler being aware of that.  A rename introduces
@@ -61,8 +62,10 @@ variable is passed by reference as a parameter to a subprogram that also has vis
 the subprogram, and the compiler generating code for the subprogram has no way of knowing that, hence they are ``unknown aliases''.  One approach is to always assume the worst,
 but that makes analyses much harder, and in some cases infeasible. Access types also introduce unknown aliasing, and in most cases, an analysis tool will not be
 sure whether the aliases exist, and will again have to make worst-case assumptions, which again may make any interesting proof infeasible.
-The question that emerges in this context is: Can we create a subset of access-type functionality that supports the creation of interesting data structures without bringing along
-all of the problems? The notion of pointer ``ownership'' has emerged as one way to ``tame'' pointer problems, while preserving flexibility.  The goal is to allow a pattern of use
+
+\smallskip
+The question that emerges in this context is: can we create a subset of access-type functionality that supports the creation of interesting data structures without bringing along
+the various problems associated with unknown aliasing? The notion of pointer ``ownership'' has emerged as one way to ``tame'' pointer problems, while preserving flexibility.  The goal is to allow a pattern of use
 of pointers that avoids dangling references as well as storage leaks, by providing safe, immediate, automatic reclamation of storage rather than relying on unchecked deallocation,
 while also not having to fall back on the time and space vagaries of garbage collection.  As a side benefit, we can also get safer use of pointers in the context of parallelism.
 We propose the use of pointer Ownership, as well as some additional rules preventing ``aliasing'' between parameters, and between parameters and global variables, to provide safe,
@@ -71,43 +74,46 @@ automatic, parallelism-friendly heap storage management while allowing the flexi
 Although we took inspiration from Rust and ParaSail to produce this proposal, it is also different in many ways, due to the different objectives pursued in Ada and SPARK. Firstly,
 this proposal is designed to work well with existing features of Ada such as by-copy/by-reference parameter passing and exception handling: raising an exception should not lead to
 memory leaks, and upon handling of a raised exception, visible objects should not be left in an inconsistent state. Secondly, this proposal relies on the existing mechanisms in Ada
-for preventing access to uninitialized pointers and freed memory: uninitialized and freed pointers should be set to null so that attempts at dereferencing such pointers results in a run-time error.
+for preventing access to uninitialized pointers and out-of-scope memory: uninitialized and freed pointers should be set to null so that attempts at dereferencing such pointers results in a run-time error.
 
 
 \subsection{Ownership Types}
 \label{sec:ownership}
 
-In this section, we describe the \textit{Ownership} aspect, which can be specified for an access type so that there can be either one writable access path to an object
-designated by an object of such an access type, or one or more read-only access paths via such access objects, but never both concurrently. This is known as
+In this section, we describe the \textit{Ownership} aspect, a Boolean value which can be specified True for an Ada access type, with the effect that the compiler enforces an additional set of rules to ensure that there can be at most one writable access path to the data
+\textit{designated} (i.e. pointed to) by an object of such an access type, or one or more read-only access paths via such access objects, but never both concurrently. This is known as
 the Concurrent-Read-Exclusive-Write (CREW) access policy. The CREW policy prevents multiple access via different objects to the same memory area whenever one
 of those access objects is modifying that area.
 
-Ownership is a Boolean aspect, and can be specified to be True for access types and composite types.  Objects of such a type are called ownership objects.
-In addition, we use the term \textit{managed objects} to refer to all ownership objects, plus objects that are reachable by following ownership access objects.
-Here is the taxonomy:
+\smallskip
+In addition to access types, Ownership can also be specified True for composite types, allowing for a record, an array, or even a private type with potentially multiple components that are access objects with Ownership True.  Any object of a type with Ownership True is called an ownership object.
+In addition, we use the more general term \textit{managed object} to refer to an ownership object or any object that is reachable by following ownership access objects.
+Here is the overall taxonomy:
 
 \begin{compactitem}
-\item Ownership objects: objects of a type with Ownership aspect True that include:
+\item \textit{Ownership} objects: objects of a type with Ownership aspect True, including:
     \begin{compactitem}
 \item \textit{Owning access} objects: access-to-variable objects with Ownership aspect True;
 \item \textit{Observing access} objects: access-to-constant objects with Ownership aspect True;
 \item \textit{Composite ownership} objects: records and arrays with Ownership aspect True;
     \end{compactitem}
-\item Other managed objects: any part of a non-ownership object designated by an owning or observing access object.
+\item Other \textit{managed} objects: non-ownership objects that are pointed to by an owning or observing access object.
 \end{compactitem}
 
-In the sequel, we presume that all objects in the code examples that we will present are managed objects and refer the reader to \cite{AI2017} for further details on
-the Ownership aspect specification, and specific rules that apply to non-ownership managed object. Note also that the Ownership rules will be expressed in terms
+\smallskip
+In the remainder, we presume that all objects in the code samples that we will present are managed objects; we refer the reader to \cite{AI2017} for further details on
+the Ownership aspect specification, and specific rules that apply to non-ownership managed objects. Note also that the Ownership rules will be expressed in terms
 of ``names'' rather than ``objects'', since objects do not really exist at compile-time, when these rules are intended to be enforced. 
 
-In the next section, we will focuse on owning access objects and observing access objects, which in Ada are passed by copy, before we
-consider the situation of composite ownership objects, for which we require pass-by-reference.
+\smallskip
+In the next section, we will focus on owning access objects and observing access objects, which in Ada, when passed as a parameter, are passed by copy , before we
+consider the situation of composite ownership objects, for which we require pass-by-reference.  As it turns out, when worrying about ownership and limiting the number of ways you can reach an object, whether something is passed by copy or by reference as part of calling another subprogram can make a difference, particularly in the context of exception propagation and handling.
 
 
 \subsection{Ownership for Access Objects}
 \label{subsec:ownershipAccess}
 
-To ensure safe memory management, the basic rule is that at most one object of an access type that allows updating may be used to refer to a designated object at any time.  There might be multiple access objects that designate the same object (or some part of it) at any given time, but at most one of them may be used for updating.  Only when there are no updaters available, there can be one or more access objects that provide read-only access. The manipulation of ownership access objects in the program is limited to the following three specific kinds of operations:
+To ensure safe memory management, the basic rule is that at most one object of an access type that gives update access may be used to refer to a designated object at any time.  There might be multiple access objects that designate the same object (or some part of it) at any given time, but at most one of them may be used for updating that object.  And only when there are no updaters available, there can be one or more access objects that provide read-only access. The manipulation of ownership access objects in the program is limited to the following three specific kinds of operations:
 
 \begin{compactitem}
   \item \textit{Moving}: An assignment operation that leads to moving the value of one access object into another, leaving behind a null;
@@ -127,22 +133,33 @@ Given an access object, it should have one of the three possible states after an
 \subsubsection{Moving Access Values}
 \label{sec:moving}
 
-The main idea of the move operation is a complete transfer of the ownership from the right hand side access-to-variable object to the left hand side object in an assignment operation.
-A moved object should hence be in the unrestricted state before the assignment. However, after the assignment, it gets set to null since the newly assigned object becomes the owner
-and is unrestricted, so we must ensure the original access object has no remaining access.  By setting the original access object to null, any name that starts with a dereference of
-that original access object is effectively ``destroyed''. If we do not set the original access object to null, an exception might allow the old value of the variable to be used in
-an unrestricted way in the exception handler, which would be bad, particularly if the designated object had been deallocated prior to raising the exception. To avoid memory leaks,
-if the prior value of the moving target is different from the new one, the object is finalized and also its storage is deallocated.  
+The main idea of the \textit{move} operation is a complete transfer of the ownership from the right hand side to the left hand side in an assignment operation, where both left- and right-hand-side objects are owning access variables in the unrestricted state, or the assignment operation is part of a function return.
+After the assignment, the right-hand side gets set to null, and the newly assigned object becomes the (unrestricted) owner. By setting the original access object to null, any name that starts with a dereference of
+that original access object is effectively ``destroyed,'' and we ensure that even if an exception is raised before we explicitly assign a new value to the right-hand side, upon handling the exception, there is no danger it will
+be able to dereference the old value of the right-hand side.  Using the old value to reach the designated object would, at a minimum, violate our CREW policy, and would be much worse if the designated object had been deallocated after the move but prior to the exception being raised.
 
-We consider as a move each assignment operation where the target is a variable or a return object of a named type including an \keyword{out} or \keyword{in out} parameter.
-Note that assigning to part of an aggregate is also considered as a move but will not be considered in this section which is focused only on direct manipulation of access objects.
+\smallskip
+In addition to setting the right-hand side to null, a move also finalizes and deallocates the object, if any, designated by the
+left-hand side prior to the assignment.  This automatic deallocation means memory is reclaimed as soon as it is
+no longer accessible, thereby preventing memory leaks without the need for an asynchronous garbage collector.
+This is safe to do, because a move requires the left-hand side to be in the \textit{unrestricted} state, meaning that
+the left-hand side is the only access object pointing to the object about to be deallocated.
+
+\smallskip
+In addition to considering certain assignment statements to be \textit{moves}, we also considers the assignment
+operations inherent in passing an \keyword{out} or \keyword{in out} parameter to be moves, as well
+as a function return (as mentioned above).
+Assignments that are part of updating a subcomponent of a composite object are also considered moves, but
+we consider those in a later section focused on composite types (see below).
+
+\smallskip
 Figure \ref{fig:move_ex1} illustrates an example of ``move'' operations. Objects \var{X} and \var{Y} are access-to-variables objects of the named type \var{Int\_Ptr}. At a \var{Swap} procedure call site,
 \var{X\_Param} is \textit{copied in} from its actual parameter \var{X}, which was presumably in the unrestricted state. The ownership of \var{X.all} is then passed from \var{X} to \var{X\_Param}.
 That requires setting \var{X} to null until the subprogram returns (to ensure safety in the presence of an exception), at which point \var{X\_Param} is \textit{copied back} to \var{X}.
 Variable \var{X} then reasserts its ownership over \var{X.all}. Similar state transitions apply for \var{Y} and \var{Y\_Param}.  At lines $\ell_4$, $\ell_6$, and $\ell_7$,
-we have additional move operations, which consist of moving, respectively, the objects \var{X\_Param}, \var{Y\_Param}, and \var{Tmp}. To conclude, thanks to our move-related rules, the naive
-implementation of the Swap procedure for access types is guaranteed to be alias safe in the caller when \var{Swap} is executing and inside \var{Swap} itself since the ownership is transferred
-at each access-to-variable object copy. 
+we have additional move operations, which consist of moving, respectively, the objects \var{X\_Param}, \var{Y\_Param}, and \var{Tmp}. To conclude, thanks to our move-related rules, such a naive
+implementation of the Swap procedure for access types is nevertheless guaranteed to be alias safe while \var{Swap} is executing, both from the \textit{caller} perspective and from inside \var{Swap} itself, since the ownership is transferred
+as part of each access-to-variable object copy. 
 
 \begin{figure}[htb!]
 \centering
@@ -152,24 +169,24 @@ at each access-to-variable object copy.
 \end{figure}
  
 
-\subsubsection{Borrowing Pointer Values}
+\subsubsection{Borrowing Access Values}
 \label{sec:borrowing}
 
-We say that a value has been ``borrowed'' if that value has been copied into a short-lived access-to-variable managed object.
-The key insight of a borrowing state is a temporary transfer of the ownership of the said borrowed object until the end of the scope of the borrower.
-We effectively want the name to still designate the same object(s) until the borrower goes away. As a result, while a name that denotes a managed object
-is in the borrowed state, it provides a view that allows neither reading nor updating, it is completely ``dead'' until the borrowing ends. It shall not
-be used as a primary, as a prefix, as an actual parameter, nor as the target of an assignment. At the point where a static name that denotes a managed
-object is borrowed, every static name that denotes the same managed object is borrowed, and every name with that static name as a prefix, is similarly borrowed.
+We say that a value has been ``borrowed'' if that value has been copied into a short-lived (owning) access-to-variable  object.
+The key feature of a borrowing operation is a temporary transfer of the ownership of the said borrowed object until the end of the scope of the borrower.
+We want the original access value to still designate the same object until the borrower goes away. As a result, while an access object
+is in the borrowed state, its value may not be changed; furthermore, to preserve our CREW policy, we want to be sure it is not used or copied again until the current borrower goes away, so in fact when in the borrowed state, the original access object is completely ``dead''; it cannot
+be read nor be the target of an assignment. Furthermore, borrowing applies recursively down the tree rooted at the original access object, meaning that at the point where a name is borrowed,
+every name with that name as a prefix, is similarly borrowed.
 
-We consider as borrowing some assignment operations used to \textit{initialize anonymous} stand-alone objects, \keyword{in} parameters of an access-to-variable
-type, and object renaming where the renamed object is in the unrestricted state. Borrowing also affects actual parameters that are other than owning access objects
-when the formal ones are of mode \keyword{out} or \keyword{in out}. We shall expand on this in Section \ref{subsec:ownershipComposite}. For now, let us consider the
-code snippet of Figure \ref{fig:borrow_ex1} as a simple example for borrowing. \var{X} and \var{Y} are both access-to-variable objects. We want to swap the contents of the two
-pointers using the \var{Swap\_Contents} procedure. To that end, we declare \var{X\_Param} and \var{Y\_Param} as formal parameters of mode \keyword{in}. Objects \var{X} and \var{Y} become borrowed
-in the caller and in the subprogram, \var{X\_Param} and \var{Y\_Param} are the borrowers. This state gives read/write permission through these formal parameters which makes swapping
-the contents safely possible. In fact, we consider this as borrowing since we want \keyword{in} parameters and stand-alone constants of an owning access type to still
-provide read/write access. This is to accommodate existing practice in the use of constants of an access type to still be used to update the designated object.
+\smallskip
+The assignment operations that are considered borrowing are those that \textit{initialize} a stand-alone object of an \textit{anonymous} access-to-variable type, or an \keyword{in} parameter of a (named or anonymous) access-to-variable
+type.  We also consider as borrowing the passing of an object of a composite ownership type
+as a parameter of mode \keyword{out} or \keyword{in out} -- we will expand on this in Section \ref{subsec:ownershipComposite} below. For now, let us consider the
+code snippet of Figure \ref{fig:borrow_ex1} as a simple example of borrowing. \var{X} and \var{Y} are both access-to-variable objects. We want to swap the objects designated by the two
+pointers (their ``contents'') using the \var{Swap\_Contents} procedure. To that end, we declare \var{X\_Param} and \var{Y\_Param} as formal parameters of mode \keyword{in}. Objects \var{X} and \var{Y} become borrowed
+in the caller, and inside \var{Swap\_Contents} \var{X\_Param} and \var{Y\_Param} are the borrowers, in the unrestricted state. This state allows reading and updating via these formal parameters, which makes swapping
+the contents of their designated objects safely possible. We allow an \keyword{in} parameter or a stand-alone constant of an owning access type to provide read/write access to its designated object to accommodate existing practice in the use of such constant access-to-variable values to update their designated objects.
 
 \begin{figure}[htb!]
 \centering
@@ -179,18 +196,21 @@ provide read/write access. This is to accommodate existing practice in the use o
 \end{figure}
 
 
-\subsubsection{Observing Pointer Values}
+\subsubsection{Observing Access Values}
 \label{sec:observing}
 
-We say an access-to-variable object is ``observed'' when its value has been ``observed'', and such an object can only be used for read-only access to the designated object.
-The observed state remains so until the end of the scope of the observer. While the state of a name that denotes a managed object is observed, the name shall not be moved nor
-borrowed and shall not be used as the target of an assignment since we want observed objects and everything ``owned'' by them to be read only. At the point where a static name
-that denotes a managed object is observed, every static name that denotes the same managed object is observed, and every name with that static name as a prefix, is similarly observed. 
+We say an access-to-variable object is ``observed'' when its value has been copied into an ``observer,'' and both the original
+access object and the copy can only be used for gaining read access to the designated object.
+The original object remains in the observed state until the end of the scope of the observer. While being observed, the object is not allowed to be moved nor
+borrowed, and must not be used as the target of an assignment since we want the observed object to continue
+to designate the same object as long as any observers exist.  As with borrowing, observing applies recursively down the tree rooted at the original access object, meaning that at the point where a name is observed,
+every name with that name as a prefix, is similarly observed.
 
-We consider as observing some assignment operations used to \textit{initialize} anonymous stand-alone objects and parameters of an access-to-constant type.
-In the code snippet of Figure \ref{fig:observe_exp}, \var{X\_Param} and \var{Y\_Param} are access-to-constant objects of an anonymous type. As the assignment of the value of \var{X} to \var{X\_Param}
-as well as to \var{Y\_Param} are part of the initialization, we consider these operations as observing and assign to \var{X\_Param} and \var{Y\_Param} the read-only permission. Note that
-this allows us to call the function \var{Sum} using \var{X} as a first and second parameter. The first \var{X} being observed, we still can observe it further. 
+\smallskip
+We consider as observing the assignment operations used to \textit{initialize} stand-alone objects of an access-to-\textit{constant} type, as well as \var{in} parameters of such a type.
+In the code snippet of Figure \ref{fig:observe_exp}, \var{X\_Param} and \var{Y\_Param} are access-to-constant objects of an anonymous type. Since the assignment of the value of \var{X} to \var{X\_Param}
+as well as to \var{Y\_Param} are part of the initialization of the target objects, this initiates the observing, and while \var{X\_Param} and \var{Y\_Param} exist they provide read-only access. Note that
+this allows us to call the function \var{Sum} using \var{X} as a first and second parameter -- upon the first occurrence of \var{X} it enters the observed state, but we can still observe it further. 
 
 \begin{figure}[htb!]
 \centering
@@ -202,19 +222,22 @@ this allows us to call the function \var{Sum} using \var{X} as a first and secon
 \subsubsection{Preventing Read-Write Aliasing}
 \label{sec:noaliasing}
 
-We have seen that the observing mechanism allows multiple access objects to observe the same designated object. In the scope of these objects, the designated object
+We have seen that the observing rules allow multiple access objects to observe the same designated object. In the scope of these objects, the original object is in the observed state, meaning that its designated object
 cannot be written, so there is no read-write aliasing problem here.
 
-We have seen that after borrowing an object, its name does not allow neither reading nor updating until the borrowing ends. For example, this prevents a call to \var{Swap\_Contents (X, X)},
+\smallskip
+We have seen that after borrowing an object, its name allows neither reading nor updating until the borrowing ends. For example, this prevents a call to \var{Swap\_Contents (X, X)},
 as borrowing X in parameter \var{X\_Param} makes it illegal to borrow it again in parameter \var{Y\_Param}. The actual order of evaluation does not matter here, as any other order would also be illegal.
 
-We have also seen that after moving an object, its value is changed to null, which prevents accessing the designated object again through the same name.
-That rule in itself does not prevent a call to \var{Swap(X, X)}, as moving \var{X} in parameter \var{X\_Param} makes \var{X} null, so that it can be moved in parameter \var{Y\_Param} with value null.
-Therefore, there is no read-write aliasing inside Swap. However, the actual order of evaluation matters for the functional behavior, as another order would make \var{X\_Param} null
-instead. Likewise, on return from the procedure call, moving back parameter values to \var{X} may happen in two different orders, with different functional behaviors.
-While obvious cases of parameter aliasing like \var{Swap(X,X)} are already illegal according to Ada 2012 rules, more complex cases that involve array indexing are neither
-prevented by Ada 2012 rules nor by the rules for moving presented previously. Therefore, we have also defined a restriction \textit{No\_Parameter\_Aliasing},
-in order to prevent these cases. We refer the reader to \cite{AI2017} for further details on the No\_Parameter\_Aliasing restriction.
+\smallskip
+We have also seen that after moving an object, its value is set to null, which prevents accessing the designated object again through the original name.
+That rule by itself does not prevent a call to \var{Swap(X, X)}, but moving \var{X} into parameter \var{X\_Param} makes \var{X} null, so that if it is then moved into parameter \var{Y\_Param}, the value null will be passed.   As it turns out, passing the same object twice in the same call, as an \var{out} or \var{in} \var{out} parameter, is already illegal in Ada.
+Even without this Ada rule, there is no danger of read-write aliasing inside \var{Swap}. However, if the code were legal, the actual order of evaluation would matter for the functional behavior, as another order would make \var{X\_Param} null
+instead. Likewise, on return from the procedure call, if the call were legal, moving back parameter values to \var{X} could happen in two different orders.
+While simple cases of parameter aliasing like \var{Swap(X,X)} are already illegal in Ada, more complex cases that involve, for example, dynamic array indexing are neither
+prevented by current Ada rules nor by the rules for moving presented previously. Therefore, as part of the proposed
+extension to Ada, an additional restriction \var{No\_Parameter\_Aliasing} has been proposed,
+which will prevent the more complex cases as well. We refer the reader to \cite{AI2017} for further details on the \var{No\_Parameter\_Aliasing} restriction.
 
 
 \subsection{Extension to Composite Types} 
