@@ -1,0 +1,13 @@
+project SPARK_Example is
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnata", "-gnato13");
+   end Compiler;
+
+   package Prove is
+      for Switches use ("--mode=all");
+   end Prove;
+
+   for Main use ("main.adb");
+
+end SPARK_Example;
