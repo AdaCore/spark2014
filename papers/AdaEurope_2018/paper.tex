@@ -59,7 +59,7 @@ access types and certain uses of (potentially) by-reference parameters. We say t
 By \textit{unknown} aliasing of names, we mean the situation where two distinct names might refer to the same object, without the compiler being aware of that.  A rename introduces
 an alias, but not an ``unknown alias,'' because the compiler is fully aware of such an alias, and hence is not something we are worrying about here. However, if a global
 variable is passed by reference as a parameter to a subprogram that also has visibility on the same global, the by-reference parameter and the global are now aliases within
-the subprogram, and the compiler generating code for the subprogram has no way of knowing that, hence they are ``unknown aliases.''  One approach is to always assume the worst,
+the subprogram, and the compiler generating code for the subprogram has no way of knowing that, hence they are ``unknown aliases''.  One approach is to always assume the worst,
 but that makes analyses much harder, and in some cases infeasible. Access types also introduce unknown aliasing, and in most cases, an analysis tool will not be
 sure whether the aliases exist, and will again have to make worst-case assumptions, which again may make any interesting proof infeasible.
 
@@ -475,3 +475,4 @@ This proposal has been formalized as Ada Issue \cite{AI2017} for inclusion in th
 \printbibliography[title={References}]
 
 \end{document}
+\grid
