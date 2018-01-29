@@ -362,27 +362,15 @@ spark-text_io-unbounded_io.ads:105:45: info: implicit function contract not avai
 spark-text_io-unbounded_io.ads:106:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io-unbounded_io.ads:106:45: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:29:08: medium: initial condition might fail
-spark-text_io.ads:29:42: info: initialization of "Standard_Input.File" proved
-spark-text_io.ads:29:42: info: initialization of "Standard_Input.Sort" proved
-spark-text_io.ads:29:42: info: initialization of "Standard_Input.Status" proved
-spark-text_io.ads:30:42: info: initialization of "Standard_Output.File" proved
-spark-text_io.ads:30:42: info: initialization of "Standard_Output.Sort" proved
-spark-text_io.ads:30:42: info: initialization of "Standard_Output.Status" proved
-spark-text_io.ads:31:42: info: initialization of "Standard_Error.File" proved
-spark-text_io.ads:31:42: info: initialization of "Standard_Error.Sort" proved
-spark-text_io.ads:31:42: info: initialization of "Standard_Error.Status" proved
+spark-text_io.ads:29:42: info: initialization of "Standard_Input" proved
+spark-text_io.ads:30:42: info: initialization of "Standard_Output" proved
+spark-text_io.ads:31:42: info: initialization of "Standard_Error" proved
 spark-text_io.ads:32:29: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:33:29: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:34:29: info: implicit function contract not available for proof ("Status" might not return)
-spark-text_io.ads:80:04: info: initialization of "Standard_Input.File" proved
-spark-text_io.ads:80:04: info: initialization of "Standard_Input.Sort" proved
-spark-text_io.ads:80:04: info: initialization of "Standard_Input.Status" proved
-spark-text_io.ads:81:04: info: initialization of "Standard_Output.File" proved
-spark-text_io.ads:81:04: info: initialization of "Standard_Output.Sort" proved
-spark-text_io.ads:81:04: info: initialization of "Standard_Output.Status" proved
-spark-text_io.ads:82:04: info: initialization of "Standard_Error.File" proved
-spark-text_io.ads:82:04: info: initialization of "Standard_Error.Sort" proved
-spark-text_io.ads:82:04: info: initialization of "Standard_Error.Status" proved
+spark-text_io.ads:80:04: info: initialization of "Standard_Input" proved
+spark-text_io.ads:81:04: info: initialization of "Standard_Output" proved
+spark-text_io.ads:82:04: info: initialization of "Standard_Error" proved
 spark-text_io.ads:134:31: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:134:31: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:139:12: info: implicit function contract not available for proof ("Mode" might not return)
