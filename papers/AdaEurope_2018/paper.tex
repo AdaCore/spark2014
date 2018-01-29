@@ -440,11 +440,11 @@ at the same time the lack of dangling pointer references.
 The most closely related works to ours springs from Jaloyan \textit{et al.} \cite{Jaloyan18} anti-aliasing rules. In \cite{Jaloyan18}, access-to-variable objects
 and composite objects with access subcomponent objects are considered as \textit{deep} variables and their ownership states are transferred in the same way when used to call subprograms.
 Actual deep parameters are considered as borrowed and the durations of borrows are only limited to the duration of procedure calls.   
-It turns out that there rules do not allow traversing a linked data structure with read/write permission, or even traversing with read-only permission. In our work, the distinction between stand-alone access
+It turns out that their rules do not allow traversing a linked data structure with read/write permission, or even traversing with read-only permission. In our work, the distinction between stand-alone access
 objects and composite ones and moving or observing composite objects instead of borrowing them has allowed us to traverse a data structure, preserving the ability to modify objects reachable by following pointers. 
 
 In our work, we use a permission-based mechanism for detecting potentially harmful aliasing, in order to make the presence of pointers transparent for automated provers.
-In addition, our approach does not require additional user annotations, which are required in some of the previously mentioned techniques.  We instead rely on the existing distinctions in Ada between \var{in} and \var{in out} parameters, and between access-to-variable and access-to-object types. We thus achieve high automation
+In addition, our approach does not require additional user annotations, which are required in some of the previously mentioned techniques.  We instead rely on the existing distinctions in Ada between \var{in} and \var{in out} parameters, and between access-to-variable and access-to-constant types. We thus achieve high automation
 and usability, which was one of our goals in supporting pointers in SPARK.
 
 
