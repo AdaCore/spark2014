@@ -322,7 +322,9 @@ package SPARK_Util.Subprograms is
                             E_Task_Type;
    --  @param E subprogram
    --  @return True iff E has a data dependencies (Global) or flow
-   --     dependencies (Depends) contract
+   --     dependencies (Depends) contract, or is classified as Pure (either
+   --     because of pragma Pure_Function or pragma Pure), which means an
+   --     implicit Global => null.
 
    function Includes_Current_Task (Calls : Node_Sets.Set) return Boolean
    with Pre => (for all Call of Calls => Ekind (Call) in Entry_Kind

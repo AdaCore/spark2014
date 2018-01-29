@@ -614,7 +614,9 @@ package body SPARK_Util.Subprograms is
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean is
      (Present (Find_Contract (E, Pragma_Global))
         or else
-      Present (Find_Contract (E, Pragma_Depends)));
+      Present (Find_Contract (E, Pragma_Depends))
+        or else
+      Is_Pure (E));
 
    ----------------------------------------
    -- Is_Predefined_Potentially_Blocking --

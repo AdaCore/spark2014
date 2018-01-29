@@ -2710,7 +2710,6 @@ package body SPARK_Definition is
         and then ((Is_Imported (E) and then
                      Convention (E) not in Convention_Ada)
                   or else In_Internal_Unit (E))
-        and then not Is_Pure (E)
       then
          Error_Msg_NE
            ("?no Global contract available for &", N, E);

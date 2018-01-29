@@ -1632,6 +1632,27 @@ package body Flow_Utility is
             Debug ("writes", Globals.Outputs);
          end;
 
+      --  SPARK RM 6.1.4(4):
+      --
+      --  "If a subprogram's Global aspect is not otherwise specified and
+      --  either:
+      --
+      --    * the subprogram is a library-level subprogram declared in a
+      --      library unit that is declared pure (i.e., a subprogram to which
+      --      the implementation permissions of Ada RM 10.2.1 apply); or
+      --
+      --    * a Pure_Function pragma applies to the subprogram
+      --
+      --  then a Global aspect of null is implicitly specified for the
+      --  subprogram."
+      --
+      --  The frontend flag Is_Pure is set on exactly on those subprograms that
+      --  are specified in the SPARM RM rule.
+
+      elsif Is_Pure (Subprogram) then
+
+         Debug ("giving null globals for a pure entity");
+
       elsif Gnat2Why_Args.Flow_Generate_Contracts
         and then Use_Deduced_Globals
       then

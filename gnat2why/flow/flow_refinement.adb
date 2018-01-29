@@ -1787,7 +1787,7 @@ package body Flow_Refinement is
    begin
       return
         --  1) No Global and no Depends aspect
-        (No (Global_N) and then No (Depends_N))
+        (No (Global_N) and then No (Depends_N) and then not Is_Pure (E))
 
           or else
 
