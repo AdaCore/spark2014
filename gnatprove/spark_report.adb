@@ -234,7 +234,7 @@ procedure SPARK_Report is
       ----------------------
 
       procedure Print_Table_Line (Line : Summary_Entries) is
-         Elt   : Summary_Line := Summary (Line);
+         Elt   : Summary_Line renames Summary (Line);
          Total : constant Natural :=
            Elt.Flow + Elt.Interval + Elt.CodePeer + Elt.Provers.Total +
              Elt.Justified + Elt.Unproved;
@@ -256,7 +256,7 @@ procedure SPARK_Report is
 
       procedure Print_Table_Total
       is
-         Elt : constant Summary_Line := Summary (Total);
+         Elt : Summary_Line renames Summary (Total);
          Tot : constant Natural :=
            Elt.Flow + Elt.Interval + Elt.CodePeer + Elt.Provers.Total +
              Elt.Justified + Elt.Unproved;
@@ -325,7 +325,7 @@ procedure SPARK_Report is
             declare
                Pcnt_Img : constant String :=
                  Integer'Image (Integer_Percent (Part, Total));
-               No_Space : constant String :=
+               No_Space : String renames
                  Pcnt_Img (Pcnt_Img'First + 1 .. Pcnt_Img'Last);
             begin
                Put_Cell (T, Integer'Image (Part) & " (" & No_Space & "%)");
@@ -648,7 +648,7 @@ procedure SPARK_Report is
    begin
       for Index in 1 .. Argument_Count loop
          declare
-            S : constant String := Argument (Index);
+            S : String renames Argument (Index);
          begin
             if S = "--assumptions" then
                Assumptions := True;
