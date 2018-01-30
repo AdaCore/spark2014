@@ -1,6 +1,9 @@
 \documentclass{llncs}
 
 
+\usepackage[modulo]{lineno}
+\linenumbers
+%\pagestyle{plain}
 
 \usepackage{paralist}
 \usepackage[colorinlistoftodos,prependcaption]{todonotes}
@@ -22,13 +25,15 @@
 \setcounter{biburlucpenalty}{8000}
 
 \begin{document}
-
+%\setcounter{page}{1}
+\pagenumbering{arabic}
 
 \title{Safe Dynamic Memory Management in Ada and SPARK}
 
 \maketitle
 \begin{abstract}
-Handling memory in a correct and efficient way is a step toward safer, less complex, and higher performing software and software-intensive systems. However, languages used for critical software development such as Ada, which supports formal verification with its SPARK subset, face challenges regarding any use of pointers due to potential pointer aliasing. In this work, we introduce an extension to the Ada language, and to its SPARK subset, to provide pointer types (``access types'' in Ada) that provide provably safe, automatic storage management without any asynchronous garbage collection, and without explicit deallocation by the user. Because the mechanism for these safe pointers relies on a strict control of aliasing, they can be used in the SPARK subset for formal verification, including both information flow analysis and proof of safety and correctness properties. In this paper, we present this proposal (which has been submitted for inclusion in the next version of Ada), as well as the approach to incorporating these pointers into formal analyses.
+Handling memory in a correct and efficient way is a step toward safer, less complex, and higher performing software and software-intensive systems. However, languages used for critical software development such as Ada, which supports formal verification with its SPARK subset, face challenges regarding any use of pointers due to potential pointer aliasing. In this work, we introduce an extension to the Ada language, and to its SPARK subset, to provide pointer types (``access types'' in Ada) that provide provably safe, automatic storage management without any asynchronous garbage collection, and without explicit deallocation by the user. Because the mechanism for these safe pointers relies on a strict control of aliasing, they can be used in the SPARK subset for formal verification, including both information flow analysis and proof of safety and correctness properties. In this paper, we present this proposal (which has been submitted for inclusion in the next version of Ada), as explain
+how we would be able to incorporate these pointers into formal analyses.
 \end{abstract}
 
 %\category{D - Software}{D.3 Programming Languages}{D.3.4 Processors - Compilers}
@@ -103,7 +108,7 @@ Here is the overall taxonomy:
 \smallskip
 In the remainder, we presume that all objects in the code samples that we will present are managed objects; we refer the reader to \cite{AI2018} for further details on
 the Ownership aspect specification, and specific rules that apply to non-ownership managed objects. Note also that the Ownership rules will be expressed in terms
-of ``names'' rather than ``objects'', since objects do not really exist at compile-time, when these rules are intended to be enforced. 
+of ``names'' rather than ``objects,'' since objects do not really exist at compile-time, when these rules are intended to be enforced. 
 
 \smallskip
 In the next section, we will focus on owning access objects and observing access objects, which in Ada when passed as a parameter are passed by copy, before we
@@ -138,7 +143,7 @@ Given an access object, it should have one of the three possible states after an
 
 The main idea of the \textit{move} operation is a complete transfer of the ownership from the right hand side to the left hand side in an assignment operation, where both left- and right-hand-side objects are owning access variables in the unrestricted state.
 After the assignment, the right-hand side gets set to null, and the newly assigned object becomes the (unrestricted) owner. By setting the original access object to null, any name that starts with a dereference of
-that original access object is effectively ``destroyed'', and we ensure that even if an exception is raised before we explicitly assign a new value to the right-hand side, upon handling the exception, there is no danger it will
+that original access object is effectively ``destroyed,'' and we ensure that even if an exception is raised before we explicitly assign a new value to the right-hand side, upon handling the exception, there is no danger it will
 be able to dereference the old value of the right-hand side.  Being allowed to use the old value to reach the designated object would, at a minimum, violate our CREW policy, and would be much worse if the designated object had been deallocated after the move, but prior to the exception being raised.
 
 \smallskip
@@ -259,7 +264,7 @@ prior value of the subcomponent in the target composite object is different from
 As before, we consider as a move each assignment operation for a composite ownership type where the target is a variable or the object returned by a function, but this time we do not
 include passing of \keyword{out} or \keyword{in out} parameters as moves, because for composite ownership objects, parameters are passed by reference and no true copying is occurring. Composite parameter passing is described further in Section~\ref{subsubsec:borrowComposite}.
 
-In the code snippet of Figure~\ref{fig:movingComposite}, \var{Rec} is a record with components of an owning access type. The move operation occurs at line $\ell_{10}$ where \var{R} is moved
+In the code snippet of Figure~\ref{fig:movingComposite}, \var{Rec} is a record with components of an owning access type. The move operation occurs at line $\ell_{9}$ where \var{R} is moved
 to \var{S}, which involves moving \var{R.X} into \var{S.X} and moving \var{R.Y} into \var{S.Y}. As a result, the objects originally designated by
 \var{S.X} and \var{S.Y} are deallocated and \var{R.X} and \var{R.Y} end up null after the assignment. 
 
@@ -333,7 +338,7 @@ of line $\ell_{16}$.
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
    \includegraphics[]{maxTree}
-   \caption{Example of traversing a data structure with read access: Binary Search Tree Search.}
+   \caption{Example of traversing a data structure with read access: Binary Search Tree Max.}
    \label{fig:maxTree}
 \end{figure}
 
@@ -341,8 +346,8 @@ of line $\ell_{16}$.
 In the code snippet of Figure~\ref{fig:treeInsert}, local variable \var{Walker} is a stand-alone object of an anonymous access-to-variable type, which allows traversing the input binary
 search tree to insert the input value \var{V} at the correct leaf position (obtained by searching for the branch where this value would be stored, if it were already present).
 After initializing \var{Walker} with a copy of the value of parameter \var{T}, \var{T} becomes borrowed, and \var{Walker} starts its life in the unrestricted state (thus allowing updates to the tree pointed to by \var{T} through \var{Walker}).
-The data structure traversal is performed by the instruction of line $\ell_8$ and $\ell_{13}$. Insertion in the tree is performed at lines
-$\ell_9$ and $\ell_{15}$.
+The data structure traversal is performed by the instruction of line $\ell_8$ and $\ell_{15}$. Insertion in the tree is performed at lines
+$\ell_10$ and $\ell_{17}$.
 
 
 \begin{figure}[htb!]
@@ -384,8 +389,8 @@ are not aliased, then the result of calling \var{Swap\_Contents} on actual param
    \label{fig:spark_ex1}
 \end{figure}
 
-If SPARK ignored aliasing, it would conclude that this version of \var{Swap\_Contents} always swaps the contents of its parameters \var{X\_Param} and \var{Y\_Param}.
-In particular, it could prove the following postcondition on \var{Swap\_Contents}.
+If SPARK ignored aliasing, it would conclude that this version of procedure \var{Swap\_Contents} always swaps the contents of its parameters \var{X\_Param} and \var{Y\_Param}.
+In particular, it could prove the following postcondition on the procedure.
 
 \begin{figure}[htb!]
 \centering
@@ -411,7 +416,7 @@ Thus pointers cannot be treated like any other component in SPARK, in the presen
 aliasing when one of the objects can be written. This is similar to the rules in SPARK for preventing aliasing between references, and this allows SPARK to treat such pointers
 like other components.
 
-In the case of \var{Swap\_Contents}, this means that SPARK analysis will be able to conclude that the postcondition above is satisfied by the implementation of \var{Swap\_Contents}
+In the case of \var{Swap\_Contents}, this means that SPARK analysis will be able to conclude that the postcondition above is satisfied by the implementation of \var{Swap\_Contents}.
 But calls to \var{Swap\_Contents(X,X)} will be rejected both by compilation and analysis.
 
 
@@ -466,6 +471,7 @@ includes both analysis of flows and proof of properties.
 
 This proposal has been formalized as Ada Issue \cite{AI2018} for inclusion in the next version of Ada.
 
+\nolinenumbers
 \printbibliography[title={References}]
 
 \end{document}

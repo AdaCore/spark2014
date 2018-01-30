@@ -15,9 +15,9 @@ begin
   return Sum (R.X, R.Y);
 end Sum_Rec; 
 
-  R1 : Rec := (...);
+R1 : Rec := (...);
 
-  Y : Integer := Sum_Rec (R1);
+Y : Integer := Sum_Rec (R1);
 begin
   Y := Sum_Rec (R1);
   (...);
