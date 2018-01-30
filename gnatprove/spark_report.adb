@@ -173,7 +173,8 @@ procedure SPARK_Report is
       procedure Compute_Total_Summary_Line;
       --  compute the numbers for the "Total" line of the summary table
 
-      function Integer_Percent (Part, Total : Integer) return Integer;
+      function Integer_Percent (Part, Total : Integer) return Integer
+      with Post => Integer_Percent'Result in 0 .. 100;
       --  compute the percentage of Part in Total, using Integers
       --  @param Part the part
       --  @param Total the total count
