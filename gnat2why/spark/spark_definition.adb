@@ -2021,8 +2021,6 @@ package body SPARK_Definition is
             | N_Range_Constraint
             | N_Real_Range_Specification
             | N_Record_Definition
-            | N_Reduction_Expression
-            | N_Reduction_Expression_Parameter
             | N_SCIL_Dispatch_Table_Tag_Init
             | N_SCIL_Dispatching_Call
             | N_SCIL_Membership_Test
