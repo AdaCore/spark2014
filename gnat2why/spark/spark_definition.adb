@@ -6221,14 +6221,10 @@ package body SPARK_Definition is
    ------------------
 
    function First_Cursor (Kind : Entity_Collection) return Cursor is
-     (case Kind is
-         when Entities_To_Translate =>
-            Cursor'(Kind                       => Entities_To_Translate,
-                    Entity_To_Translate_Cursor => Entity_List.First),
-
-         when SPARK_Entities =>
-            Cursor'(Kind                       => SPARK_Entities,
-                    SPARK_Entities_Cursor      => Entities_In_SPARK.First));
+      pragma Unreferenced (Kind);
+   begin
+      return Cursor (Entity_List.First);
+   end First_Cursor;
 
    -----------------
    -- Next_Cursor --
@@ -6236,17 +6232,12 @@ package body SPARK_Definition is
 
    function Next_Cursor (Kind : Entity_Collection;
                          C    : Cursor)
-                         return Cursor is
-     (case Kind is
-         when Entities_To_Translate =>
-            Cursor'(Kind => Entities_To_Translate,
-                    Entity_To_Translate_Cursor =>
-                      Node_Lists.Next (C.Entity_To_Translate_Cursor)),
-
-          when SPARK_Entities =>
-             Cursor'(Kind => SPARK_Entities,
-                     SPARK_Entities_Cursor     =>
-                       Hashed_Node_Sets.Next (C.SPARK_Entities_Cursor)));
+                         return Cursor
+   is
+      pragma Unreferenced (Kind);
+   begin
+      return Cursor (Node_Lists.Next (Node_Lists.Cursor (C)));
+   end Next_Cursor;
 
    -----------------
    -- Has_Element --
@@ -6254,13 +6245,12 @@ package body SPARK_Definition is
 
    function Has_Element (Kind : Entity_Collection;
                          C    : Cursor)
-                         return Boolean is
-     (case Kind is
-         when Entities_To_Translate =>
-            Node_Lists.Has_Element (C.Entity_To_Translate_Cursor),
-
-         when SPARK_Entities =>
-            Hashed_Node_Sets.Has_Element (C.SPARK_Entities_Cursor));
+                         return Boolean
+   is
+      pragma Unreferenced (Kind);
+   begin
+      return Node_Lists.Has_Element (Node_Lists.Cursor (C));
+   end Has_Element;
 
    -----------------
    -- Get_Element --
@@ -6268,12 +6258,11 @@ package body SPARK_Definition is
 
    function Get_Element (Kind : Entity_Collection;
                          C    : Cursor)
-                         return Entity_Id is
-     (case Kind is
-         when Entities_To_Translate =>
-            Node_Lists.Element (C.Entity_To_Translate_Cursor),
-
-         when SPARK_Entities =>
-            Hashed_Node_Sets.Element (C.SPARK_Entities_Cursor));
+                         return Entity_Id
+   is
+      pragma Unreferenced (Kind);
+   begin
+      return Node_Lists.Element (Node_Lists.Cursor (C));
+   end Get_Element;
 
 end SPARK_Definition;

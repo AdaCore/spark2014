@@ -38,10 +38,12 @@ with Treepr;                          use Treepr;
 
 with Common_Iterators;                use Common_Iterators;
 with Gnat2Why_Args;
+with Gnat2Why.External_Axioms;        use Gnat2Why.External_Axioms;
 with Gnat2Why.Util;
 with SPARK_Definition;                use SPARK_Definition;
 with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
 with SPARK_Util;                      use SPARK_Util;
+with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
 with Why;
@@ -3197,6 +3199,13 @@ package body Flow_Utility is
    procedure Initialize is
       use Component_Graphs;
 
+      S : Node_Sets.Set;
+
+      procedure Process (E : Entity_Id);
+      --  Extract information about entity E into flow's internal data
+      --  structure. Currently it deals with record components and
+      --  discriminants.
+
       function Node_Info (G : Graph;
                           V : Vertex_Id)
                           return Node_Display_Info;
@@ -3247,46 +3256,41 @@ package body Flow_Utility is
                  Label  => Null_Unbounded_String);
       end Edge_Info;
 
-      Ptr      : Entity_Id;
-      Ptr2     : Entity_Id;
+      -------------
+      -- Process --
+      -------------
 
-      S        : Node_Sets.Set;
+      procedure Process (E : Entity_Id) is
+         Unused   : Node_Sets.Cursor;
+         --  Dummy variable required by the standard containers API
 
-      Inserted : Boolean;
-      --  Indicates than an element was inserted to a set
+         Inserted : Boolean;
+         --  Indicates than an element was inserted to a set
 
-      Unused   : Node_Sets.Cursor;
-      --  Dummy variable required by the standard containers API
+         Comp : Entity_Id;
+         --  Component or discriminant of entity E
 
-   --  Start of processing for Initialize
-
-   begin
-      Comp_Graph := Component_Graphs.Create;
-
-      S := Node_Sets.Empty_Set;
-      --  Note that we cannot iterate over Entities_To_Translate because we
-      --  would be missing entities with external axiomatization.
-      for E of SPARK_Entities loop
+      begin
          if Is_Record_Type (E)
            or else Is_Incomplete_Or_Private_Type (E)
            or else Is_Concurrent_Type (E)
          then
-            Ptr := First_Component_Or_Discriminant (E);
+            Comp := First_Component_Or_Discriminant (E);
 
-            while Present (Ptr) loop
+            while Present (Comp) loop
                --  We add a component to the graph if it is in SPARK
-               if Component_Is_Visible_In_SPARK (Ptr) then
-                  S.Insert (New_Item => Ptr,
+               if Component_Is_Visible_In_SPARK (Comp) then
+                  S.Insert (New_Item => Comp,
                             Position => Unused,
                             Inserted => Inserted);
 
                   if Inserted then
-                     Comp_Graph.Add_Vertex (Ptr);
+                     Comp_Graph.Add_Vertex (Comp);
                   end if;
 
                   declare
                      Orig_Rec_Comp : constant Node_Id :=
-                       Original_Record_Component (Ptr);
+                       Original_Record_Component (Comp);
 
                   begin
                      if Present (Orig_Rec_Comp) then
@@ -3299,10 +3303,10 @@ package body Flow_Utility is
                      end if;
                   end;
 
-                  if Ekind (Ptr) = E_Discriminant then
+                  if Ekind (Comp) = E_Discriminant then
                      declare
                         Corr_Discr : constant Node_Id :=
-                          Corresponding_Discriminant (Ptr);
+                          Corresponding_Discriminant (Comp);
 
                      begin
                         if Present (Corr_Discr) then
@@ -3317,8 +3321,28 @@ package body Flow_Utility is
                   end if;
                end if;
 
-               Next_Component_Or_Discriminant (Ptr);
+               Next_Component_Or_Discriminant (Comp);
             end loop;
+         end if;
+      end Process;
+
+      --  Local variables:
+
+      Ptr  : Entity_Id;
+      Ptr2 : Entity_Id;
+
+   --  Start of processing for Initialize
+
+   begin
+      Comp_Graph := Component_Graphs.Create;
+
+      for E of Entities_To_Translate loop
+         Process (E);
+
+         if Ekind (E) = E_Package
+           and then Entity_In_Ext_Axioms (E)
+         then
+            Process_External_Entities (E, Process'Access);
          end if;
       end loop;
 

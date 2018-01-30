@@ -176,15 +176,13 @@ package SPARK_Definition is
    --  Marked entity collections
    ----------------------------------------------------------------------
 
-   type Entity_Collection is
-     (Entities_To_Translate,
-      SPARK_Entities)
+   type Entity_Collection is (Entities_To_Translate)
    with Iterable => (First       => First_Cursor,
                      Next        => Next_Cursor,
                      Has_Element => Has_Element,
                      Element     => Get_Element);
 
-   type Cursor (Kind : Entity_Collection) is private;
+   type Cursor is private;
 
    function First_Cursor (Kind : Entity_Collection)
                           return Cursor;
@@ -203,13 +201,6 @@ package SPARK_Definition is
 
 private
 
-   type Cursor (Kind : Entity_Collection) is record
-      case Kind is
-         when Entities_To_Translate =>
-            Entity_To_Translate_Cursor : Node_Lists.Cursor;
-         when SPARK_Entities =>
-            SPARK_Entities_Cursor      : Hashed_Node_Sets.Cursor;
-      end case;
-   end record;
+   type Cursor is new Node_Lists.Cursor;
 
 end SPARK_Definition;
