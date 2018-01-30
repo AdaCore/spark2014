@@ -378,7 +378,7 @@ benign aliasing is permitted (i.e. aliasing that does not cause interference):
 
 To understand why aliasing matters in SPARK, consider a variant of procedure \var{Swap\_Contents} in Figure~\ref{fig:spark_ex1}. If \var{X\_Param} and \var{Y\_Param}
 are not aliased, then the result of calling \var{Swap\_Contents} on actual parameters \var{X} and \var{Y} will swap their contents. If \var{X} and \var{Y} are aliased, then calling
-\var{Swap\_Contents} on \var{X} and \var{X} will zero out the content of \var{X}. This is due to the assignment to \var{X\_Param.all} on line $\ell_4$.
+\var{Swap\_Contents} on \var{X} and \var{Y} will zero out the content of \var{X}. This is due to the assignment to \var{X\_Param.all} on line $\ell_4$.
 
 
 \begin{figure}[htb!]
