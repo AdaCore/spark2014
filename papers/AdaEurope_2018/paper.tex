@@ -437,7 +437,7 @@ programming, with a focus on memory safety for concurrent programs.
 Rust and ParaSail also deal with the lifetime of allocated memory, enforcing
 at the same time the lack of dangling pointer references.
 
-The most closely related works to ours springs from Jaloyan \textit{et al.} \cite{Jaloyan18} anti-aliasing rules. In \cite{Jaloyan18}, access-to-variable objects
+The most closely related work to ours springs from Jaloyan \textit{et al.} \cite{Jaloyan18} anti-aliasing rules. In \cite{Jaloyan18}, access-to-variable objects
 and composite objects with access subcomponent objects are considered as \textit{deep} variables and their ownership states are transferred in the same way when used to call subprograms.
 Actual deep parameters are considered as borrowed and the durations of borrows are only limited to the duration of procedure calls.   
 It turns out that their rules do not allow traversing a linked data structure with read/write permission, or even traversing with read-only permission. In our work, the distinction between stand-alone access

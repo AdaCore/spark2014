@@ -5,12 +5,12 @@ use Ada.Text_IO;
 
 procedure maxtree with SPARK_Mode is
 
-  type Rec;
-  type Tree is access Rec;
-  type Rec is record
-	Data : Natural;
-	Left, Right : Tree;
-  end record;
+type Rec;
+type Tree is access Rec;
+type Rec is record
+  Data : Natural;
+  Left, Right : Tree;
+end record;
 
 function Max (T : in Tree) return Integer is 
   Walker : access constant Rec := T; -- Walker observes T

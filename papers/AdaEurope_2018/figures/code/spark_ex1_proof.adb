@@ -17,15 +17,14 @@ begin
   Y_Param.all := Tmp;
 end Swap_Contents;
 
-X : Int_Ptr := new Integer'(1);
-(...)
+  X : Int_Ptr := new Integer'(1);
+  (...)
 
-Swap_Contents (X, X);
-pragma Assert (X.all = 1);  --  wrong assertion 
+  Swap_Contents (X, X);
+  pragma Assert (X.all = 1);  --  wrong assertion 
 
-  
-  begin
-	Swap(X, Y);
-	(...)
-  end spark_ex1;
+begin
+  Swap(X, Y);
+  (...)
+end spark_ex1;
 
