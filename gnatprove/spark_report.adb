@@ -307,7 +307,7 @@ procedure SPARK_Report is
                end if;
                First := False;
                Append (Buf, Key (C));
-               Append (Buf, " " & Natural'Image (Element (C).Count) & "%");
+               Append (Buf, Natural'Image (Element (C).Count) & "%");
             end loop;
          end if;
          Append (Buf, ')');
