@@ -215,9 +215,8 @@ procedure SPARK_Report is
 
       procedure Print_Table_Header is
       begin
-
-         --  the very first cell is the upper left corner of the table, which
-         --  is empty
+         --  The very first cell is the upper left corner of the table, which
+         --  is empty.
 
          Put_Cell (T, "SPARK Analysis results", Align => Left_Align);
          Put_Cell (T, "Total");
@@ -768,6 +767,8 @@ procedure SPARK_Report is
                Put_Line (Handle, " skipped");
             end if;
          end For_Each_Subp;
+
+      --  Start of processing for For_Each_Unit
 
       begin
          Put_Line (Handle,
