@@ -847,8 +847,6 @@ package body Gnat2Why.Driver is
                Translated_Object_Entities.Insert (E);
             end if;
 
-         when Named_Kind => return;  --  Ignore named kind
-
          when Object_Kind =>
 
             --  Ignore discriminals, i.e. objects that occur for discriminants

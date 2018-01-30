@@ -4598,8 +4598,10 @@ package body SPARK_Definition is
                --  are either fully expanded into constituents (if their
                --  refinement is not hidden behind a SPARK_Mode => Off) or
                --  translated just to represent their hidden constituents.
+               --
+               --  Named numbers also do not require any translation.
 
-               when E_Abstract_State =>
+               when E_Abstract_State | Named_Kind =>
                   null;
 
                when others =>
