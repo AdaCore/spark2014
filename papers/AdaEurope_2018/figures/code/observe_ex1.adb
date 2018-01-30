@@ -7,16 +7,16 @@ procedure observe_ex1 with SPARK_Mode is
 
  type Int_Ptr is access integer;
 
- function Sum (X_Param, Y_Param : access constant Integer) return Integer is
-  begin
-    return X_Param.all + Y_Param.all;
-  end Sum;
+function Sum (X_Param, Y_Param : access constant Integer) return Integer is
+begin
+  return X_Param.all + Y_Param.all;
+end Sum;
 
   X : Int_Ptr := new Integer;
   Y : Integer;
 
   Y := Sum (X, X);
 	(...)
-  End observe_ex1;
+end observe_ex1;
 
 

@@ -10,16 +10,16 @@ procedure borrowingcomposite with SPARK_Mode is
 	X, Y : Int_Ptr;
   end record;
   
- procedure Swap_Rec (R : in out Rec) is -- R1 is borrowed
-  begin
-     Swap (R.X, R.Y);
-     Swap_Contents (R.X, R.Y); 
-  end Swap_Rec;
+procedure Swap_Rec (R : in out Rec) is -- R1 is borrowed
+begin
+  Swap (R.X, R.Y);
+  Swap_Contents (R.X, R.Y); 
+end Swap_Rec;
 
   R1 : Rec;
 
   Swap_Rec (R1);
-	(...);
+  (...);
   end borrowingcomposite;
 	
 

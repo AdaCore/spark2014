@@ -10,17 +10,18 @@ procedure observingcomposite with SPARK_Mode is
 	X, Y : Int_Ptr;
   end record;
   
-  function Sum_Rec (R : in Rec) return Integer is
-  begin
-	return Sum (R.X, R.Y);
-  end Sum_Rec; 
+function Sum_Rec (R : in Rec) return Integer is
+begin
+  return Sum (R.X, R.Y);
+end Sum_Rec; 
 
   R1 : Rec := (...);
+
   Y : Integer := Sum_Rec (R1);
-  begin
-	Y := Sum_Rec (R1);
-	(...);
-  end observingcomposite;
+begin
+  Y := Sum_Rec (R1);
+  (...);
+end observingcomposite;
 	
 
 

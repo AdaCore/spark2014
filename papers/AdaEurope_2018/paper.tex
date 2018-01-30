@@ -138,7 +138,7 @@ Given an access object, it should have one of the three possible states after an
 
 The main idea of the \textit{move} operation is a complete transfer of the ownership from the right hand side to the left hand side in an assignment operation, where both left- and right-hand-side objects are owning access variables in the unrestricted state.
 After the assignment, the right-hand side gets set to null, and the newly assigned object becomes the (unrestricted) owner. By setting the original access object to null, any name that starts with a dereference of
-that original access object is effectively ``destroyed,'' and we ensure that even if an exception is raised before we explicitly assign a new value to the right-hand side, upon handling the exception, there is no danger it will
+that original access object is effectively ``destroyed'', and we ensure that even if an exception is raised before we explicitly assign a new value to the right-hand side, upon handling the exception, there is no danger it will
 be able to dereference the old value of the right-hand side.  Being allowed to use the old value to reach the designated object would, at a minimum, violate our CREW policy, and would be much worse if the designated object had been deallocated after the move, but prior to the exception being raised.
 
 \smallskip

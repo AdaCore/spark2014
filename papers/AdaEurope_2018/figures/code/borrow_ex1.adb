@@ -7,18 +7,18 @@ procedure borrow_ex1 with SPARK_Mode is
 
   type Int_Ptr is access integer;
 
-Procedure Swap_Contents (X_Param, Y_Param : in Int_Ptr) is
+procedure Swap_Contents (X_Param, Y_Param : in Int_Ptr) is
   Tmp : integer := X_Param.all;
-  begin
-    X_Param.all := Y_Param.all;
-    Y_Param.all := Tmp;
-  end Swap_Contents;
+begin
+  X_Param.all := Y_Param.all;
+  Y_Param.all := Tmp;
+end Swap_Contents;
 
   X : Int_Ptr := new Integer;
   Y : Int_Ptr := new Integer;
 
   Swap_Contents(X, Y);
 	(...)
-  end borrow_ex1;
+end borrow_ex1;
 	
 

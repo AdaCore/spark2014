@@ -5,17 +5,17 @@ use Ada.Text_IO;
 
 procedure movingcomposite with SPARK_Mode is
 
-  type Int_Ptr is access integer;
-  type Rec is record
-	X, Y : Int_Ptr;
-  end record;
+type Int_Ptr is access integer;
+type Rec is record
+  X, Y : Int_Ptr;
+end record;
   
   R : Rec := (...);
   S : Rec := (...);
  
   S := R;
 	(...)
-  end movingcomposite;
+end movingcomposite;
 	
 
 

@@ -29,28 +29,31 @@ procedure treeinsert is
   end buildLeaf2;
 
 
-  procedure Insert (T : in Tree; V : Natural) is  
-	Walker : access Rec := T;
-	T1 : Tree := new Rec;
-  begin     
-	loop
-	  if V < Walker.Data then
-		if Walker.Left /= null then
-		  Walker := Walker.Left;
-		else Walker.Left := Build_Leaf(V);
-		end if;
-	  elsif V > Walker.Data then
-		if Walker.Right /= null then
-		  Walker := Walker.Right;
-		else
-		  Walker.Right := Build_Leaf(V); 
-		end if;
+procedure Insert (T : in Tree; V : Natural) is  
+  Walker : access Rec := T;
+  T1 : Tree := new Rec;
+begin     
+  loop
+	if V < Walker.Data then
+	  if Walker.Left /= null then
+		Walker := Walker.Left;
+	  else
+		Walker.Left := Build_Leaf(V);
+		exit;
 	  end if;
-	end loop;
-  end Insert;
+	elsif V > Walker.Data then
+	  if Walker.Right /= null then
+		Walker := Walker.Right;
+	  else
+		Walker.Right := Build_Leaf(V);
+		exit;
+	  end if;
+	end if;
+  end loop;
+end Insert;
 
-  Begin
-	Put_Line("hi");
-  End treeinsert;
+begin
+  Put_Line("hi");
+end treeinsert;
 
 
