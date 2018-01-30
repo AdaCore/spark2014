@@ -2297,9 +2297,10 @@ package body Flow_Utility is
                       Use_Deduced_Globals => Ctx.Use_Computed_Globals);
 
          if not Ctx.Fold_Functions then
-            --  If we fold functions we're interested in real world,
-            --  otherwise (this case) we're interested in the proof world
-            --  too.
+
+            --  If we fold functions we're interested in real world, otherwise
+            --  (this case) we're interested in the proof world too.
+
             Globals.Inputs.Union (Globals.Proof_Ins);
          end if;
 
@@ -2321,6 +2322,7 @@ package body Flow_Utility is
          if Folding then
             declare
                Depends : Dependency_Maps.Map;
+
             begin
                Get_Depends (Subprogram           => Subprogram,
                             Scope                => Ctx.Scope,
@@ -2416,8 +2418,10 @@ package body Flow_Utility is
                if Ctx.Expand_Synthesized_Constants
                  and then not Comes_From_Source (E)
                then
+
                   --  To expand synthesized constants, we need to find the
                   --  original expression and find the variable set of that.
+
                   declare
                      Obj_Decl : constant Node_Id := Parent (E);
 
@@ -2430,6 +2434,7 @@ package body Flow_Utility is
                      pragma Assert
                        (Present (Expr),
                         "Constant has no expression");
+
                   begin
                      return Recurse (Expr);
                   end;
@@ -2437,6 +2442,7 @@ package body Flow_Utility is
                elsif Ctx.Local_Constants.Contains (E)
                  or else Has_Variable_Input (E)
                then
+
                   --  If this constant:
                   --    * comes from source and is in Local_Constants
                   --    * or has variable input
@@ -2444,6 +2450,7 @@ package body Flow_Utility is
                   --  Note that for constants of a constrained record or
                   --  concurrent type we want to detect their discriminant
                   --  constraints so we add them as well.
+
                   return Merge_Entity (E) or Discriminant_Constraints (E);
                end if;
 
@@ -2557,14 +2564,17 @@ package body Flow_Utility is
                end;
 
             when Scalar_Kind =>
+
                --  Types mostly get dealt with by membership tests here, but
                --  sometimes they just appear (for example in a for loop over a
                --  type).
+
                if Is_Constrained (E) then
                   declare
                      SR : constant Node_Id := Scalar_Range (E);
                      LB : constant Node_Id := Low_Bound (SR);
                      HB : constant Node_Id := High_Bound (SR);
+
                   begin
                      return Recurse (LB) or Recurse (HB);
                   end;
@@ -2754,7 +2764,7 @@ package body Flow_Utility is
                              (F'Update (Facet => The_Bounds));
 
                         else
-                           --  This is something else. We just copy it.
+                           --  This is something else, we just copy it
                            Variables.Include (F);
                         end if;
                      end loop;
@@ -2803,10 +2813,12 @@ package body Flow_Utility is
 
          declare
             Ptr : Node_Id := Empty;
+
          begin
             if Present (Expressions (N)) then
                Ptr := First (Expressions (N));
             end if;
+
             while Present (Ptr) loop
                Variables.Union (Recurse (Ptr));
                Next (Ptr);
@@ -2823,8 +2835,8 @@ package body Flow_Utility is
       Variables : Flow_Id_Sets.Set;
 
       function Proc (N : Node_Id) return Traverse_Result;
-      --  Adds each identifier or defining_identifier found to Variables,
-      --  as long as we are dealing with:
+      --  Adds each identifier or defining_identifier found to Variables, as
+      --  long as we are dealing with:
       --     * a variable
       --     * a subprogram parameter
       --     * a loop parameter
@@ -2874,8 +2886,8 @@ package body Flow_Utility is
                   Variables.Union (Do_Subprogram_Call (Parent (N)));
 
                elsif Ctx.Reduced then
-                  --  In reduced mode we just keep traversing the tree, but
-                  --  we need to turn off consider_extensions.
+                  --  In reduced mode we just keep traversing the tree, but we
+                  --  need to turn off consider_extensions.
                   Variables.Union (Recurse (Prefix (N)));
 
                else
@@ -2888,8 +2900,8 @@ package body Flow_Utility is
                   return OK;
 
                elsif Ekind (Get_Type (N, Ctx.Scope)) in Record_Kind then
-                  --  We use Untangle_Record_Assignment as this can deal
-                  --  with view conversions.
+                  --  We use Untangle_Record_Assignment as this can deal with
+                  --  view conversions.
 
                   declare
                      M : constant Flow_Id_Maps.Map :=
@@ -2906,6 +2918,7 @@ package body Flow_Utility is
                             Ctx.Use_Computed_Globals,
                           Expand_Synthesized_Constants =>
                             Ctx.Expand_Synthesized_Constants);
+
                   begin
                      for FS of M loop
                         Variables.Union (Filter (FS));
@@ -2927,8 +2940,8 @@ package body Flow_Utility is
 
                declare
                   procedure Process_Type (E : Entity_Id);
-                  --  Merge variables used in predicate functions for the
-                  --  given type.
+                  --  Merge variables used in predicate functions for the given
+                  --  type.
 
                   ------------------
                   -- Process_Type --
@@ -2944,11 +2957,11 @@ package body Flow_Utility is
                      end if;
 
                      --  Something to note here: we include the predicate
-                     --  function in the set of called subprograms during
-                     --  GG, but not in phase 2. The idea is that 'calling'
-                     --  the subprogram will introduce the dependencies on
-                     --  its global, wheras in phase 2 we directly include
-                     --  its globals.
+                     --  function in the set of called subprograms during GG,
+                     --  but not in phase 2. The idea is that 'calling' the
+                     --  subprogram will introduce the dependencies on its
+                     --  global, wheras in phase 2 we directly include its
+                     --  globals.
 
                      Get_Globals
                        (Subprogram          => P,
@@ -2956,6 +2969,7 @@ package body Flow_Utility is
                         Classwide           => False,
                         Globals             => Globals,
                         Use_Deduced_Globals => Ctx.Use_Computed_Globals);
+
                      pragma Assert (Globals.Outputs.Is_Empty);
                      --  No function folding to deal with for predicate
                      --  functions (they always consume their single input).
@@ -2963,6 +2977,7 @@ package body Flow_Utility is
                      declare
                         Effects : constant Flow_Id_Sets.Set :=
                           Globals.Proof_Ins or Globals.Inputs;
+
                      begin
                         for F of Effects loop
                            Variables.Include (Change_Variant (F, Normal_Use));
@@ -2971,17 +2986,23 @@ package body Flow_Utility is
                   end Process_Type;
 
                   P : Node_Id;
+
                begin
                   if Present (Right_Opnd (N)) then
+
                      --  x in t
+
                      P := Right_Opnd (N);
                      if Nkind (P) in N_Identifier | N_Expanded_Name
                         and then Is_Type (Entity (P))
                      then
                         Process_Type (Get_Type (P, Ctx.Scope));
                      end if;
+
                   else
+
                      --  x in t | 1 .. y | u
+
                      P := First (Alternatives (N));
                      loop
                         if Nkind (P) in N_Identifier | N_Expanded_Name
@@ -3000,12 +3021,15 @@ package body Flow_Utility is
                declare
                   pragma Assert
                     (Present (Iterator_Specification (N)) xor
-                     Present (Loop_Parameter_Specification (N)));
+                       Present (Loop_Parameter_Specification (N)));
+
                   It : constant Node_Id :=
                     (if Present (Iterator_Specification (N))
                      then Iterator_Specification (N)
                      else Loop_Parameter_Specification (N));
+
                   E : constant Entity_Id := Defining_Identifier (It);
+
                begin
                   Variables.Union (Recurse (It,
                                             With_Quantified_Variable => E));
@@ -3028,21 +3052,25 @@ package body Flow_Utility is
       Traverse (N);
 
       return S : Flow_Id_Sets.Set do
+
          --  We need to do some post-processing on the result here. First we
          --  check each variable to see if it is the result of an action. For
          --  flow analysis its more helpful to talk about the original
          --  variables, so we undo these actions whenever possible.
+
          for F of Variables loop
             case F.Kind is
                when Direct_Mapping | Record_Field =>
                   declare
                      N : constant Node_Id := Parent (F.Node);
+
                   begin
                      if Nkind (N) = N_Object_Declaration
                        and then Is_Action (N)
                      then
                         declare
                            Expr : constant Node_Id := Expression (N);
+
                         begin
                            case Nkind (Expr) is
                               when N_Identifier | N_Expanded_Name =>
@@ -4823,8 +4851,8 @@ package body Flow_Utility is
       function Is_Ignored_Node (N : Node_Id) return Boolean
       is (Nkind (N) = N_Attribute_Reference
           and then
-            Get_Attribute_Id (Attribute_Name (N)) in
-                     Attribute_Old | Attribute_Loop_Entry);
+          Get_Attribute_Id (Attribute_Name (N)) in Attribute_Old
+                                                 | Attribute_Loop_Entry);
 
       function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
       is (Get_Variables
@@ -4857,6 +4885,9 @@ package body Flow_Utility is
    --  Start of processing for Untangle_Record_Fields
 
    begin
+
+      --  Debug output
+
       if Debug_Trace_Untangle_Fields then
          Write_Str ("Untangle_Record_Field on ");
          Sprint_Node_Inline (N);
@@ -4870,30 +4901,35 @@ package body Flow_Utility is
       --  We also note all components (bar, z), 'update nodes and the order in
       --  which they access or update fields (bar, the_update, z).
 
-      while Nkind (Root_Node) = N_Selected_Component or else
-        (Is_Attribute_Update (Root_Node) and then
+      while Nkind (Root_Node) = N_Selected_Component
+        or else
+          (Is_Attribute_Update (Root_Node)
+           and then
            Is_Record_Type (Get_Full_Type_Without_Checking (Root_Node)))
-          or else
-        Is_Ignored_Node (Root_Node)
+        or else
+          Is_Ignored_Node (Root_Node)
       loop
          if Nkind (Root_Node) = N_Selected_Component then
             Component.Prepend
               (Original_Record_Component (Entity (Selector_Name (Root_Node))));
          end if;
+
          if not Is_Ignored_Node (Root_Node) then
             Seq.Prepend (Root_Node);
          end if;
+
          Root_Node := Prefix (Root_Node);
       end loop;
 
       if Root_Node = N then
          --  In some case Arr'Update (...) we need to make sure that Seq
-         --  contains the 'Update so that the early abort can handle
-         --  things...
+         --  contains the 'Update so that the early abort can handle things...
          Root_Node  := Prefix (N);
          Seq.Prepend (N);
          Must_Abort := True;
       end if;
+
+      --  Debug output
 
       if Debug_Trace_Untangle_Fields then
          Write_Str ("Root: ");
@@ -4916,15 +4952,15 @@ package body Flow_Utility is
          Outdent;
       end if;
 
-      --  If the root node is not an entire record variable, we recurse
-      --  here and then simply merge all variables we find here and then
-      --  abort.
+      --  If the root node is not an entire record variable, we recurse here
+      --  and then simply merge all variables we find here and then abort.
 
-      if Nkind (Root_Node) not in N_Identifier | N_Expanded_Name or else
-        not Is_Record_Type (Get_Full_Type_Without_Checking (Root_Node))
+      if Nkind (Root_Node) not in N_Identifier | N_Expanded_Name
+        or else
+          not Is_Record_Type (Get_Full_Type_Without_Checking (Root_Node))
       then
          return Vars : Flow_Id_Sets.Set do
-            --  Recurse on root.
+            --  Recurse on root
             Vars := Get_Vars_Wrapper (Root_Node);
 
             --  Add anything we might find in 'Update expressions
@@ -4937,7 +4973,8 @@ package body Flow_Utility is
 
                      declare
                         Ptr : Node_Id := First (Component_Associations
-                                                  (First (Expressions (N))));
+                                                (First (Expressions (N))));
+
                      begin
                         while Present (Ptr) loop
                            Vars.Union (Get_Vars_Wrapper (Ptr));
@@ -4953,6 +4990,8 @@ package body Flow_Utility is
                end case;
             end loop;
 
+            --  Debug output
+
             if Debug_Trace_Untangle_Fields then
                Write_Str ("Early delegation return: ");
                Print_Node_Set (Vars);
@@ -4961,15 +5000,13 @@ package body Flow_Utility is
          end return;
       end if;
 
-      --  Ok, so the root is an entire variable, we can untangle this
-      --  further...
+      --  Ok, so the root is an entire variable, we can untangle this further
 
       pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
       pragma Assert (not Must_Abort);
 
-      --  We set up an identity map of all fields of the original record.
-      --  For example a record with two fields would produce this kind of
-      --  map:
+      --  We set up an identity map of all fields of the original record. For
+      --  example a record with two fields would produce this kind of map:
       --
       --     r.x -> r.x
       --     r.y -> r.y
@@ -4977,53 +5014,60 @@ package body Flow_Utility is
       declare
          FS : constant Flow_Id_Sets.Set :=
            Flatten_Variable (Entity (Root_Node), Scope);
+
       begin
          for F of FS loop
             M.Insert (F, Flow_Id_Sets.To_Set (F));
          end loop;
+
+         --  Debug output
+
          if Debug_Trace_Untangle_Fields then
             Print_Flow_Map (M);
          end if;
       end;
 
-      --  We then process Seq (the sequence of actions we have been asked
-      --  to take) and update the map or eliminate entries from it.
+      --  We then process Seq (the sequence of actions we have been asked to
+      --  take) and update the map or eliminate entries from it.
       --
       --  = Update =
-      --  For example, if we get an update 'update (y => z) then we change
-      --  the map accordingly:
+      --  For example, if we get an update 'update (y => z) then we change the
+      --  map accordingly:
       --
       --     r.x -> r.x
       --     r.y -> z
       --
       --  = Access =
-      --  Otherwise, we trim down the map. For example .y will throw away
-      --  any entries in the map that are not related:
+      --  Otherwise, we trim down the map. For example .y will throw away any
+      --  entries in the map that are not related:
       --
       --     r.y -> z
       --
       --  Once we have processed all instructions, then the set of relevant
-      --  variables remains in all elements of the map. In this example,
-      --  just `z'.
+      --  variables remains in all elements of the map. In this example, just
+      --  `z'.
 
-      --  Comp_Id is maintained by this loop and refers to the next
-      --  component index. The Current_Field is also maintained and refers
-      --  to the field we're at right now. For example after
+      --  Comp_Id is maintained by this loop and refers to the next component
+      --  index. The Current_Field is also maintained and refers to the field
+      --  we're at right now. For example after
       --     R'Update (...).X'Update (...).Z
       --  has been processed, then Comp_Id = 3 and Current_Field = R.X.Z.
       --
-      --  We use this to check which entries to update or trim in the map.
-      --  For trimming we use Comp_Id, for updating we use Current_Field.
+      --  We use this to check which entries to update or trim in the map. For
+      --  trimming we use Comp_Id, for updating we use Current_Field.
 
-      --  Finally a note about function folding: on each update we merge
-      --  all variables used in All_Vars so that subsequent trimmings don't
-      --  eliminate them. Depends_Vars however is assembled at the end of
-      --  the fully trimmed map. (Note N709-009 will also need to deal with
-      --  proof variables here.)
+      --  Finally a note about function folding: on each update we merge all
+      --  variables used in All_Vars so that subsequent trimmings don't
+      --  eliminate them. Depends_Vars however is assembled at the end of the
+      --  fully trimmed map. (Note N709-009 will also need to deal with proof
+      --  variables here.)
 
       Comp_Id       := 1;
       Current_Field := Direct_Mapping_Id (Entity (Root_Node));
+
       for N of Seq loop
+         --  Debug output
+
          if Debug_Trace_Untangle_Fields then
             Write_Str ("Processing: ");
             Print_Node_Briefly (N);
@@ -5043,12 +5087,14 @@ package body Flow_Utility is
                end if;
 
                --  We update the map as requested
+
                declare
                   Ptr       : Node_Id := First (Component_Associations
                                                   (First (Expressions (N))));
                   Field_Ptr : Node_Id;
                   Tmp       : Flow_Id_Sets.Set;
                   FS        : Flow_Id_Sets.Set;
+
                begin
                   Indent;
                   while Present (Ptr) loop
@@ -5065,9 +5111,9 @@ package body Flow_Utility is
                         if Is_Record_Type (Get_Type (E, Scope)) then
                            --  Composite update
 
-                           --  We should call Untangle_Record_Aggregate
-                           --  here. For now we us a safe default (all
-                           --  fields depend on everything).
+                           --  We should call Untangle_Record_Aggregate here.
+                           --  For now we us a safe default (all fields depend
+                           --  on everything).
                            case Nkind (Expression (Ptr)) is
                               --  when N_Aggregate =>
                               --     null;
@@ -5100,6 +5146,7 @@ package body Flow_Utility is
             when N_Selected_Component =>
                --  We trim the result map
                E := Original_Record_Component (Entity (Selector_Name (N)));
+
                if Debug_Trace_Untangle_Fields then
                   Write_Str ("Trimming for: ");
                   Sprint_Node_Inline (E);
@@ -5108,11 +5155,13 @@ package body Flow_Utility is
 
                declare
                   New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+
                begin
                   for C in M.Iterate loop
                      declare
                         K : Flow_Id          renames Flow_Id_Maps.Key (C);
                         V : Flow_Id_Sets.Set renames M (C);
+
                      begin
                         if K.Kind = Record_Field
                           and then Natural (K.Component.Length) >= Comp_Id

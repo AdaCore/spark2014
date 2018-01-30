@@ -270,30 +270,30 @@ is
    --  Obtain all variables used in an expression; use Scope to determine if
    --  called subprograms should provide their abstract or refined view.
    --
-   --  Local_Constants describes a set of constants (which should all come
-   --  from source) which are treated as if they were variables; this means
-   --  they are potentially returned by this function.
+   --  Local_Constants describes a set of constants (which should all come from
+   --  source) which are treated as if they were variables; this means they are
+   --  potentially returned by this function.
    --
-   --  If Fold_Functions is true, we exclude variables that a function does
-   --  not use to derive its result from. For example, given the following
+   --  If Fold_Functions is True, we exclude variables that a function does not
+   --  use to derive its result from. For example, given the following
    --  dependency relation on a function:
    --     Depends => (Foo'Result => A,
    --                 null       => B)
-   --  Then we return only {A} instead of {A, B} if Fold_Functions is true.
+   --  Then we return only {A} instead of {A, B} if Fold_Functions is True.
    --
-   --  The following other options all have default parameters as they are
-   --  only useful in certain usage scenarios. In the majority of flow
-   --  analysis one does not have to think about them. They are:
+   --  The following other options all have default parameters as they are only
+   --  useful in certain usage scenarios. In the majority of flow analysis, one
+   --  does not have to think about them. They are:
    --
-   --     * Reduced: if True, obtain only entire variables.
+   --     * Reduced: if True, obtain only entire variables
    --
    --     * Assume_In_Expression: if True, we assume that node N is part of
    --       some kind of expression, and aggressively raise exceptions if we
    --       find nodes that make no sense in such a context.
    --
-   --     * Expand_Synthesized_Constants: if True, then constants that do
-   --       not come from source are expanded out to the variable set of
-   --       their initializing expression.
+   --     * Expand_Synthesized_Constants: if True, then constants that do not
+   --       come from source are expanded out to the variable set of their
+   --       initializing expression.
 
    function Get_Variables
      (L                            : List_Id;
@@ -469,8 +469,8 @@ is
                  and then Map_Root.Kind in Direct_Mapping | Record_Field
                  and then Nkind (Map_Type) in N_Defining_Identifier
                  and then Is_Type (Map_Type);
-   --  Process a record or aggregate N and return a map which can be used
-   --  to work out which fields will depend on what inputs.
+   --  Process a record or aggregate N and return a map which can be used to
+   --  work out which fields will depend on what inputs.
    --
    --  Map_Root is used to produce keys for the map. For example if
    --     N         -->  (X => G, Y => H)
@@ -481,11 +481,11 @@ is
    --     Tmp.F.Y -> H
    --
    --  Scope, Local_Constants, Fold_Functions, Use_Computed_Globals,
-   --  Expand_Synthesized_Constants will be passed on to Get_Variables
-   --  if necessary.
+   --  Expand_Synthesized_Constants will be passed on to Get_Variables if
+   --  necessary.
    --
-   --  Get_Variables will be called with Reduced set to False (as this
-   --  function should never be called when its true...)
+   --  Get_Variables will be called with Reduced set to False (as this function
+   --  should never be called when its True...).
 
    function Untangle_Record_Fields
      (N                            : Node_Id;
@@ -500,8 +500,8 @@ is
    --  Process a node describing one or more record fields and return a
    --  variable set with all variables referenced.
    --
-   --  Fold_Functions also has an effect on how we deal with useless
-   --  'Update expressions:
+   --  Fold_Functions also has an effect on how we deal with useless 'Update
+   --  expressions:
    --
    --     Node                 Fold_Functions  Result
    --     -------------------  --------------  --------
@@ -515,7 +515,7 @@ is
    --  necessary.
    --
    --  Get_Variables will be called with Reduced set to False (as this function
-   --  should never be called when it's true...)
+   --  should never be called when it's True...).
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
    with Pre => Ekind (E) in Entry_Kind | E_Function | E_Procedure;
