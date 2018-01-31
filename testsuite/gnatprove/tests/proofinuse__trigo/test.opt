@@ -1,2 +1,3 @@
 Darwin SKIP test too slow for Darwin
 assertions SKIP test too slow for assertions
+inverse-prover SKIP test too slow
