@@ -40,14 +40,9 @@ with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with Flow_Debug;                     use Flow_Debug;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
+with Flow_Visibility;
 
 package body Flow_Refinement is
-
-   function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope
-   with Pre => S.Part = Body_Part;
-   --  Returns the flow scope of the enclosing package or concurrent object if
-   --  it exists and the null scope otherwise.
-   --  ??? this should be merged into Get_Enclosing_Body_Flow_Scope
 
    ----------------
    -- Is_Visible --
@@ -57,109 +52,10 @@ package body Flow_Refinement is
                         Looking_From : Flow_Scope)
                         return Boolean
    is
-      --  Returns True iff the target scope is visible from S. We do this by
-      --  moving up the scope DAG from S and testing if we have reached the
-      --  target scope. If we hit the top (the null scope) without finding it,
-      --  we return False.
-      --
-      --  The scope DAG may look like a twisty maze, but it is actually
-      --  reasonably easy to traverse upwards. The only complication is when we
-      --  deal with a private part, in which case we need to quickly check one
-      --  extra scope (the visible part), but then we continue as normal.
-      --
-      --     S is...     Next node is...
-      --     =======     ===============
-      --     X|body      X|private
-      --     X|private   X|visible             (check this first)
-      --                 enclosing_scope (S)   (then continue here)
-      --     X|visible   enclosing_scope (S)
-      --
-      --  The enclosing scope of S is computed by Get_Enclosing_Flow_Scope and
-      --  is either:
-      --
-      --     1. The first parent (just going up the AST) of S which is a
-      --        package/concurrent type (this deals with nested packages)
-      --
-      --     2. The first Scope (see einfo.ads) which is a package/concurrent
-      --        type (this deals with public and private children)
-      --
-      --     3. null (if we have hit Standard)
-      --
-      --  The visibility is the same as before, i.e.
-      --     S.Section = Enclosing_Scope (S).Section
-      --  unless S is a private descendant, in which case it is always "priv".
-
-      S : Flow_Scope renames Looking_From;
-
-      Context : Flow_Scope;
    begin
-      --  Go upwards from S (the scope we are in) and see if we end up in
-      --  Target_Scope (what we're checking if we can see).
-      Context := S;
-
-      Climbing : while Present (Context) loop
-         if Context.Ent = Target_Scope.Ent then
-            --  Check visibility between different parts of the same entity
-            if (case Context.Part is
-                   when Body_Part    =>
-                      True,
-
-                   when Private_Part =>
-                      Target_Scope.Part in Private_Part | Visible_Part,
-
-                   when Visible_Part =>
-                      Target_Scope.Part = Visible_Part,
-
-                   when others       =>
-                      raise Program_Error)
-            then
-               return True;
-            else
-               exit Climbing;
-            end if;
-         else
-            case Context.Part is
-               when Body_Part =>
-                  declare
-                     Enclosing_Body_Scope : constant Flow_Scope :=
-                       Get_Enclosing_Body_Flow_Scope (Context);
-                  begin
-                     Context := (if Present (Enclosing_Body_Scope)
-                                 then Enclosing_Body_Scope
-                                 else Private_Scope (Context));
-                  end;
-
-               when Private_Part | Visible_Part =>
-                  Context := Get_Enclosing_Flow_Scope (Context);
-
-               when others =>
-                  raise Program_Error;
-
-            end case;
-         end if;
-      end loop Climbing;
-
-      --  Check if Target_Scope is generally visible
-      Context := Target_Scope;
-      while Context /= Null_Flow_Scope loop
-         case Declarative_Part'(Context.Part) is
-            when Visible_Part =>
-               Context := Get_Enclosing_Flow_Scope (Context);
-
-            when Body_Part | Private_Part =>
-               exit;
-         end case;
-      end loop;
-
-      if Context = Null_Flow_Scope then
-         return True;
-      end if;
-
-      --  Check if Target_Scope is nested within S
-      pragma Assert (Target_Scope /= Null_Flow_Scope);
-
-      return Target_Scope.Part = Visible_Part
-         and then Is_Visible (Get_Enclosing_Flow_Scope (Target_Scope), S);
+      return Flow_Visibility.Is_Visible
+        (Looking_From => Looking_From,
+         Looking_At   => Target_Scope);
    end Is_Visible;
 
    function Is_Visible (N : Node_Id;
@@ -230,43 +126,6 @@ package body Flow_Refinement is
       --  Call to Get_Flow_Scope on a declaration node returns the scope where
       --  S.Ent is declared, not the scope of the S.Ent itself.
    end Get_Enclosing_Flow_Scope;
-
-   -----------------------------------
-   -- Get_Enclosing_Body_Flow_Scope --
-   -----------------------------------
-
-   function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope is
-   begin
-      --  Top-level (generic) and child package bodies are nested immediately
-      --  in the Standard package.
-      --  ??? is this really what want for child packages?
-      if Is_Compilation_Unit (S.Ent) then
-         return Null_Flow_Scope;
-
-      --  Other body scopes are nested in the bodies of their enclosing scopes
-
-      else
-         declare
-            Enclosing_Scope : constant Flow_Scope :=
-              Get_Enclosing_Flow_Scope ((S.Ent, Visible_Part));
-         begin
-            --  Typically bodies that are not compilation units are nested in
-            --  other bodies.
-
-            if Present (Enclosing_Scope) then
-               return (Ent  => Enclosing_Scope.Ent,
-                       Part => Body_Part);
-
-            --  Except for (generic) package bodies declared immediately in the
-            --  bodies of top-level subprograms.
-
-            else
-               pragma Assert (Is_Subprogram (Main_Unit_Entity));
-               return Null_Flow_Scope;
-            end if;
-         end;
-      end if;
-   end Get_Enclosing_Body_Flow_Scope;
 
    --------------------
    -- Get_Flow_Scope --
