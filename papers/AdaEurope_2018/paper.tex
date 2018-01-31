@@ -70,7 +70,7 @@ sure whether the aliases exist, and will again have to make worst-case assumptio
 
 \smallskip
 The question that emerges in this context is: can we create a subset of access-type functionality that supports the creation of interesting data structures without bringing along
-the various problems associated with unknown aliasing? The notion of pointer ``ownership'' has emerged as one way to ``tame'' pointer problems, while preserving flexibility.  The goal is to allow a pattern of use
+the various problems associated with unknown aliasing? The notion of pointer ``ownership'' has emerged as one way to ``tame'' pointer problems, while preserving flexibility \cite{POM}.  The goal is to allow a pattern of use
 of pointers that avoids dangling references as well as storage leaks, by providing safe, immediate, automatic reclamation of storage rather than relying on unchecked deallocation,
 while also not having to fall back on the time and space vagaries of garbage collection.  As a side benefit, we can also get safer use of pointers in the context of parallelism.
 We propose the use of pointer ownership (as well as some additional rules, detailed in \cite{AI2018}, preventing ``aliasing'' between parameters, and between parameters and global variables) to provide safe,
@@ -86,12 +86,12 @@ for preventing access to uninitialized pointers and out-of-scope memory: uniniti
 \label{sec:ownership}
 
 In this section, we describe the \textit{Ownership} aspect, a Boolean value which can be specified True for an Ada access type, with the effect that the compiler enforces an additional set of rules to ensure that there can be at most one writable access path to the data
-\textit{designated} (i.e. pointed to) by an object of such an access type, or one or more read-only access paths via such access objects, but never both concurrently. This is known as
-the Concurrent-Read-Exclusive-Write (CREW) access policy. The CREW policy prevents multiple access via different objects to the same memory area whenever one
+\textit{designated} (i.e. pointed to) by an object of such an access type, or alternatively one or more read-only access paths via such access objects, but never both concurrently. This is known as
+the Concurrent-Read-Exclusive-Write (CREW) access policy \cite{CREW}. The CREW policy prevents multiple access via different objects to the same memory area whenever one
 of those access objects is modifying that area.
 
 \smallskip
-In addition to access types, Ownership can also be specified True for composite types, allowing for a record, an array, or even a private type with potentially multiple components that are access objects with Ownership True.  Any object of a type with Ownership True is called an ownership object.
+In addition to access types, Ownership can also be specified True for composite types, allowing for a record, an array, or even a private type with potentially multiple components that are access objects with Ownership True.  Any object of a type with Ownership True is called an \textit{ownership} object.
 In addition, we use the more general term \textit{managed object} to refer to an ownership object or any object that is reachable by following ownership access objects.
 Here is the overall taxonomy:
 
@@ -172,7 +172,7 @@ as part of each access-to-variable object copy.
 \begin{figure}[htb!]
 \centering
    \includegraphics[]{move_ex1}
-   \caption{Example of moving the ownership of an access object.}
+   \caption{Example of moving the ownership of an object.}
    \label{fig:move_ex1}
 \end{figure}
  
@@ -199,7 +199,7 @@ the value of their designated objects safely possible. Note that we allow an \ke
 \begin{figure}[htb!]
 \centering
    \includegraphics[]{borrow_ex1}
-   \caption{Example of borrowing, \keyword{in} parameter.}
+   \caption{Example of borrowing via an \keyword{in} parameter.}
    \label{fig:borrow_ex1}
 \end{figure}
 
@@ -223,7 +223,7 @@ this allows us to call the function \var{Sum} using \var{X} as a first and secon
 \begin{figure}[htb!]
 \centering
    \includegraphics[]{observe_ex1}
-   \caption{Example of observing a constant object.}
+   \caption{Example of observing via an access-to-constant object.}
    \label{fig:observe_exp}
 \end{figure}
 
@@ -292,7 +292,7 @@ We refer the reader to \cite{AI2018} for further details.
 \begin{figure}[htb!]
 \centering
    \includegraphics[]{borrowingComposite}
-   \caption{Example of borrowing a composite parameter of mode \keyword{out} or \keyword{in out}.}
+   \caption{Example of borrowing via a composite parameter of mode \keyword{out} or \keyword{in out}.}
    \label{fig:borrowingComposite}
 \end{figure}
 
@@ -338,7 +338,7 @@ of line $\ell_{16}$.
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
    \includegraphics[]{maxTree}
-   \caption{Example of traversing a data structure with read access: Binary Search Tree Max.}
+   \caption{Example of traversing a data structure with read-only access: Max on a Binary Search Tree.}
    \label{fig:maxTree}
 \end{figure}
 
@@ -354,8 +354,7 @@ $\ell_10$ and $\ell_{17}$.
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
    \includegraphics[]{treeInsert}
-   \caption{Example of traversing a data structure with read and write access: Binary Search Tree Insert. \var{Build\_Leaf} is a function that creates a node such that the formal
-	parameter is the value of the \var{Data} subcomponent and \var{Left} and \var{Right} subcomponents are null.}
+   \caption{Example of traversing a data structure with read and  update access: Insert into a Binary Search Tree. \var{Build\_Leaf(V)} creates a node with \var{Data} = \var{V}, and \var{Left}, and \var{Right} components both null.}
    \label{fig:treeInsert}
 \end{figure}
 
@@ -385,7 +384,7 @@ are not aliased, then the result of calling \var{Swap\_Contents} on actual param
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
    \includegraphics[]{spark_ex1}
-   \caption{A variant of the \var{Swap\_Contents} procedure for which aliasing matters in SPARK.}
+   \caption{A variant of the \var{Swap\_Contents} procedure where aliasing would create problems in SPARK.}
    \label{fig:spark_ex1}
 \end{figure}
 
@@ -408,7 +407,7 @@ This wrong postcondition would in turn allow a proof that an incorrect assertion
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
    \includegraphics[]{spark_ex1_exp}
-	\caption{Example of proof of a wrong assertion due to the presence of aliasing in SPARK.}
+	\caption{Example of proof of an incorrect assertion due to the presence of aliasing in SPARK.}
    \label{fig:spark_ex1_exp}
 \end{figure}
 
