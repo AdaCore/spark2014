@@ -1193,15 +1193,15 @@ package body Flow.Analysis.Sanity is
          Missing := Flow_Id_Sets.Empty_Set;
          Unused  := User;
 
-         for A of Generated loop
+         for G of Generated loop
             declare
-               U : constant Flow_Id := Find_In (User, A);
+               U : constant Flow_Id := Find_In (User, G);
 
             begin
                if Present (U) then
                   Unused.Exclude (U);
                else
-                  Missing.Insert (A);
+                  Missing.Insert (G);
                end if;
             end;
          end loop;
