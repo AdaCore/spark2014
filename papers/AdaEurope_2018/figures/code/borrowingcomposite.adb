@@ -16,7 +16,7 @@ begin
   Swap_Contents (R.X, R.Y); 
 end Swap_Rec;
 
-R1 : Rec;
+R1 : Rec := (...);
 
 Swap_Rec (R1);
 (...);

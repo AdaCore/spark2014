@@ -14,8 +14,8 @@ begin
   Y_Param.all := Tmp;
 end Swap_Contents;
 
-X : Int_Ptr := new Integer;
-Y : Int_Ptr := new Integer;
+X : Int_Ptr := new Integer'(13);
+Y : Int_Ptr := new Integer'(17);
 
 Swap_Contents(X, Y);
 	(...)

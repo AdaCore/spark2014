@@ -13,8 +13,8 @@ begin
   Y_Param := Tmp;
 end Swap;
 
-X : Int_Ptr := new Integer;
-Y : Int_Ptr := new Integer;
+X : Int_Ptr := new Integer'(7);
+Y : Int_Ptr := new Integer'(11);
   
 Swap(X, Y);
   (...)

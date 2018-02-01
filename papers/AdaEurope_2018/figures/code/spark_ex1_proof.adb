@@ -21,7 +21,7 @@ end Swap_Contents;
   (...)
 
   Swap_Contents (X, X);
-  pragma Assert (X.all = 1);  --  wrong assertion 
+  pragma Assert (X.all = 1);  --  incorrect assertion 
 
 begin
   Swap(X, Y);

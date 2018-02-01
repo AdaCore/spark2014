@@ -13,10 +13,9 @@ begin
   return X_Param.all + Y_Param.all;
 end Sum;
 
-X : Int_Ptr := new Integer;
-Y : Integer;
+X : Int_Ptr := new Integer'(42);
 
-Y := Sum (X, X);
+Y : constant Integer := Sum (X, X);
 	(...)
 end observe_ex1;
 
