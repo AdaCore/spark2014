@@ -3856,7 +3856,7 @@ package body Flow.Analysis is
                   then
                      Error_Msg_Flow
                        (FA       => FA,
-                        Msg      => "Refinement of % shall mention %",
+                        Msg      => "refinement of % shall mention %",
                         Severity => Error_Kind,
                         F1       => Direct_Mapping_Id (Encapsulating),
                         F2       => Direct_Mapping_Id (Child_State),
