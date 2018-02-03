@@ -313,14 +313,14 @@ package body Flow_Classwide is
                begin
                   case Ekind (P) is
                      when E_In_Parameter     =>
-                        Inputs.Include (Formal);
+                        Inputs.Insert (Formal);
 
                      when E_Out_Parameter    =>
-                        Outputs.Include (Formal);
+                        Outputs.Insert (Formal);
 
                      when E_In_Out_Parameter =>
-                        Inputs.Include (Formal);
-                        Outputs.Include (Formal);
+                        Inputs.Insert (Formal);
+                        Outputs.Insert (Formal);
 
                      when others =>
                         raise Program_Error;
@@ -330,15 +330,14 @@ package body Flow_Classwide is
 
             --  ... and the function symbol if we're dealing with a function
             if Ekind (E) = E_Function then
-               Outputs.Include (Direct_Mapping_Id (E));
+               Outputs.Insert (Direct_Mapping_Id (E));
             end if;
 
-            M := Dependency_Maps.Empty_Map;
             for F of Outputs loop
-               M.Include (F, Inputs);
+               M.Insert (F, Inputs);
             end loop;
             if not Void.Is_Empty then
-               M.Include (Null_Flow_Id, Void);
+               M.Insert (Null_Flow_Id, Void);
             end if;
          end if;
 
@@ -367,18 +366,18 @@ package body Flow_Classwide is
       begin
          while Present (Anc_Ptr) loop
             pragma Assert (Present (My_Ptr));
-            My_To_Anc.Include (Direct_Mapping_Id (My_Ptr),
-                               Direct_Mapping_Id (Anc_Ptr));
-            Anc_To_My.Include (Direct_Mapping_Id (Anc_Ptr),
-                               Direct_Mapping_Id (My_Ptr));
+            My_To_Anc.Insert (Direct_Mapping_Id (My_Ptr),
+                              Direct_Mapping_Id (Anc_Ptr));
+            Anc_To_My.Insert (Direct_Mapping_Id (Anc_Ptr),
+                              Direct_Mapping_Id (My_Ptr));
             Next_Formal (Anc_Ptr);
             Next_Formal (My_Ptr);
          end loop;
          if Ekind (E) = E_Function then
-            My_To_Anc.Include (Direct_Mapping_Id (E),
-                               Direct_Mapping_Id (Overridden_Operation (E)));
-            Anc_To_My.Include (Direct_Mapping_Id (Overridden_Operation (E)),
-                               Direct_Mapping_Id (E));
+            My_To_Anc.Insert (Direct_Mapping_Id (E),
+                              Direct_Mapping_Id (Overridden_Operation (E)));
+            Anc_To_My.Insert (Direct_Mapping_Id (Overridden_Operation (E)),
+                              Direct_Mapping_Id (E));
          end if;
          pragma Assert (Present (Anc_Ptr) = Present (My_Ptr));
       end;
