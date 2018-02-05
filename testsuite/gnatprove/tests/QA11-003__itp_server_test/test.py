@@ -88,7 +88,7 @@ def launch_server(limit_line, input_file):
                 print ("UNPARSED NOTIFICATION " + i)
     if nb_unparsed > 1:
         print "PROBLEM WITH UNPARSED JSON NOTIFICATIONS"
-    if next_unproven != 1:
+    if next_unproven < 1:
         print "PROBLEM WITH NEXT_UNPROVEN_NODE"
     return "DONE"
 
