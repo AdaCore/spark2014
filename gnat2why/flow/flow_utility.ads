@@ -679,19 +679,19 @@ is
                               | E_Procedure
                               | E_Entry
                               | E_Task_Type
-                and then Ekind (Output) in Assignable_Kind
-                                | E_Abstract_State
-                                | E_Constant
-                                | E_Function
-                                | E_Protected_Type
-                                | E_Task_Type
+                and then (No (Output)
+                          or else Ekind (Output) in Assignable_Kind
+                                                  | E_Abstract_State
+                                                  | E_Constant
+                                                  | E_Function
+                                                  | E_Protected_Type
+                                                  | E_Task_Type)
                 and then (if Present (Input)
                           then Ekind (Input) in E_Abstract_State
                                               | E_Task_Type
                                               | Object_Kind),
         Post => Present (Search_Depends_Contract'Result);
-   --  Search the Contract of Unit for the given Output. If Input is also
-   --  given, search for that Input of the given Output.
+   --  Search the Contract of Unit for the given "Output => Input" dependency.
    --
    --  If we can't find what we're looking for, we return either the Unit
    --  itself or the corresponding contract (if it exists).

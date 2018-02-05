@@ -55,10 +55,10 @@ depends_illegal_3.adb:38:35: warning: unused variable "Par2"
 depends_illegal_3.adb:42:33: low: unused global "X"
 depends_illegal_3.adb:43:33: low: unused global "Y"
 depends_illegal_3.adb:43:33: warning: "Y" is not modified, could be INPUT
-depends_illegal_3.adb:44:11: medium: incorrect dependency "null => Par2"
-depends_illegal_3.adb:44:11: medium: incorrect dependency "null => Y"
 depends_illegal_3.adb:44:24: medium: missing dependency "Par2 => Par2"
 depends_illegal_3.adb:44:30: medium: missing dependency "Y => Y"
+depends_illegal_3.adb:45:43: medium: incorrect dependency "null => Par2"
+depends_illegal_3.adb:45:52: medium: incorrect dependency "null => Y"
 depends_illegal_3.adb:60:07: high: "X" must be listed in the Depends aspect of "P4" (SPARK RM 6.1.4(13))
 depends_illegal_3.adb:65:18: info: initialization of "P2" proved
 depends_illegal_3.adb:73:33: info: initialization of "G_Var2" proved
@@ -74,8 +74,8 @@ depends_illegal_3.adb:77:23: medium: missing dependency "G_Var2 => P3"
 depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => G_Var1"
 depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => P1"
 depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => P3"
-depends_illegal_3.adb:98:11: medium: incorrect dependency "null => Par1"
 depends_illegal_3.adb:98:23: medium: missing dependency "F1'Result => Par1"
+depends_illegal_3.adb:99:36: medium: incorrect dependency "null => Par1"
 depends_illegal_4.adb:7:14: warning: "Y" is not modified, could be INPUT
 depends_illegal_4.adb:8:18: info: initialization of "Par2" proved
 depends_illegal_4.adb:15:23: medium: missing dependency "Par2 => Y"

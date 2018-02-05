@@ -9,18 +9,18 @@ tests.adb:122:23: info: initialization of "N" proved
 tests.adb:131:23: info: initialization of "N" proved
 tests.adb:140:23: info: initialization of "N" proved
 tests.adb:151:23: info: initialization of "N" proved
-tests.adb:153:09: medium: incorrect dependency "null => C"
 tests.adb:153:21: medium: missing dependency "N => C"
+tests.adb:154:29: medium: incorrect dependency "null => C"
 tests.adb:161:12: info: initialization of "Tmp.X" proved
 tests.adb:161:12: info: initialization of "Tmp.Y" proved
 tests.adb:166:23: info: initialization of "N" proved
-tests.adb:168:09: medium: incorrect dependency "null => C"
 tests.adb:168:21: medium: missing dependency "N => C"
+tests.adb:169:29: medium: incorrect dependency "null => C"
 tests.adb:180:23: info: initialization of "N" proved
-tests.adb:182:09: medium: incorrect dependency "null => A"
-tests.adb:182:09: medium: incorrect dependency "null => B"
 tests.adb:182:21: medium: missing dependency "N => A"
 tests.adb:182:21: medium: missing dependency "N => B"
+tests.adb:183:30: medium: incorrect dependency "null => A"
+tests.adb:183:33: medium: incorrect dependency "null => B"
 tests.adb:191:12: info: initialization of "Obj.Round" proved
 tests.adb:191:12: info: initialization of "Obj.X" proved
 tests.adb:191:12: info: initialization of "Obj.Y" proved
@@ -30,8 +30,8 @@ tests.adb:209:12: info: initialization of "Obj.Round" proved
 tests.adb:209:12: info: initialization of "Obj.X" proved
 tests.adb:209:12: info: initialization of "Obj.Y" proved
 tests.adb:215:23: info: initialization of "N" proved
-tests.adb:217:09: medium: incorrect dependency "null => C"
 tests.adb:217:21: medium: missing dependency "N => C"
+tests.adb:218:29: medium: incorrect dependency "null => C"
 tests.adb:225:36: info: initialization of "Tmp.B.X" proved
 tests.adb:225:36: info: initialization of "Tmp.B.Y" proved
 tests.adb:227:12: info: initialization of "Tmp2.X" proved

@@ -3762,7 +3762,10 @@ package body Flow.Analysis is
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "incorrect dependency ""null => %""",
-                     N        => FA.Depends_N,
+                     N        => Search_Depends_Contract
+                                   (FA.Analyzed_Entity,
+                                    Empty,
+                                    Get_Direct_Mapping_Id (Wrong_Var)),
                      F1       => Wrong_Var,
                      Tag      => Depends_Wrong,
                      Severity => Medium_Check_Kind);

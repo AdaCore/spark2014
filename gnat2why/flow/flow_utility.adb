@@ -3844,9 +3844,13 @@ package body Flow_Utility is
             --  Handle a clause like "null => ...", which must be the last one
 
             when N_Null =>
-               --  ??? a null LHS is syntactically possible, but this routine
-               --  is not called in that case.
-               raise Program_Error;
+               if No (Output) then
+                  Needle := Item;
+                  if Present (Input) then
+                     Find_Input (Expression (N));
+                  end if;
+                  return;
+               end if;
 
             --  Handle clauses like "X => ..." and "X.Y => ..."
 

@@ -5,4 +5,4 @@ stacks_14-monitored_14.ads:7:20: info: initialization of "S.Monitor_Vector" prov
 stacks_14-monitored_14.ads:7:20: info: initialization of "S.Next_Identity_Value" proved
 stacks_14-monitored_14.ads:7:20: info: initialization of "S.Stack_Pointer" proved
 stacks_14-monitored_14.ads:7:20: info: initialization of "S.Stack_Vector" proved
-stacks_14-monitored_14.ads:8:11: medium: incorrect dependency "null => S"
+stacks_14-monitored_14.ads:9:31: medium: incorrect dependency "null => S"

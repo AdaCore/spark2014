@@ -141,10 +141,10 @@ test.adb:143:09: medium: discriminant check might fail
 test.adb:146:32: info: initialization of "X.Index" proved
 test.adb:146:32: info: initialization of "X.Reason" proved
 test.adb:147:32: info: initialization of "Y" proved
-test.adb:149:09: medium: incorrect dependency "null => X"
+test.adb:151:29: medium: incorrect dependency "null => X"
 test.adb:155:09: medium: discriminant check might fail
 test.adb:170:33: info: initialization of "R.A" proved
 test.adb:170:33: info: initialization of "R.B" proved
 test.adb:170:33: info: initialization of "R.C" proved
-test.adb:183:09: medium: incorrect dependency "null => R"
 test.adb:183:21: medium: missing dependency "R => R"
+test.adb:184:29: medium: incorrect dependency "null => R"
