@@ -116,9 +116,9 @@ ok_semantics2-priv.ads:11:14: warning: "Y" constituent of "State2" is not modifi
 ok_semantics2-priv.ads:11:14: warning: "YY" constituent of "OK_Semantics2.State2" is not modified, could be INPUT
 ok_semantics2-priv.ads:11:14: warning: "Z" constituent of "State3" is not modified, could be INPUT
 ok_semantics2-priv.ads:11:14: warning: "ZZ" constituent of "State" is not modified, could be INPUT
-ok_semantics2-pub.adb:7:31: medium: incorrect dependency "Check'Result => OK_Semantics2.State1"
-ok_semantics2-pub.adb:7:31: medium: incorrect dependency "Check'Result => OK_Semantics2.State2"
-ok_semantics2-pub.adb:7:31: medium: incorrect dependency "Check'Result => OK_Semantics2.State3"
+ok_semantics2-pub.adb:7:26: medium: incorrect dependency "Check'Result => OK_Semantics2.State1"
+ok_semantics2-pub.adb:7:26: medium: incorrect dependency "Check'Result => OK_Semantics2.State2"
+ok_semantics2-pub.adb:7:26: medium: incorrect dependency "Check'Result => OK_Semantics2.State3"
 ok_semantics2-pub.ads:4:13: low: unused global "Priv.State" constituent of "OK_Semantics2.State3"
 ok_semantics2-pub.ads:4:13: low: unused global "X" constituent of "State1"
 ok_semantics2-pub.ads:4:13: low: unused global "Y" constituent of "State2"
@@ -152,8 +152,8 @@ ok_semantics2-pub.ads:10:14: warning: "Z" constituent of "State3" is not modifie
 ok_semantics2.adb:10:43: medium: incorrect dependency "Check'Result => X constituent of State1"
 ok_semantics2.adb:10:46: medium: incorrect dependency "Check'Result => Y constituent of State2"
 ok_semantics2.adb:10:49: medium: incorrect dependency "Check'Result => Z constituent of State3"
-ok_semantics2.adb:10:56: medium: incorrect dependency "Check'Result => YY constituent of OK_Semantics2.State2"
-ok_semantics2.adb:10:65: medium: incorrect dependency "Check'Result => Priv.State constituent of OK_Semantics2.State3"
+ok_semantics2.adb:10:52: medium: incorrect dependency "Check'Result => YY constituent of OK_Semantics2.State2"
+ok_semantics2.adb:10:61: medium: incorrect dependency "Check'Result => Priv.State constituent of OK_Semantics2.State3"
 ok_semantics2.ads:11:13: low: unused global "Priv.State" constituent of "OK_Semantics2.State3"
 ok_semantics2.ads:11:13: low: unused global "X" constituent of "State1"
 ok_semantics2.ads:11:13: low: unused global "Y" constituent of "State2"

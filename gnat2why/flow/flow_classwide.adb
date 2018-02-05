@@ -26,7 +26,6 @@ with Flow_Error_Messages;  use Flow_Error_Messages;
 with Flow_Refinement;      use Flow_Refinement;
 with Flow_Types;           use Flow_Types;
 with Flow_Utility;         use Flow_Utility;
-with Snames;               use Snames;
 
 package body Flow_Classwide is
 
@@ -416,9 +415,8 @@ package body Flow_Classwide is
                     "class-wide dependency ""% => %"" is not a " &
                     "class-wide dependency of overridden subprogram #",
                   Severity   => Error_Kind,
-                  N          => Search_Contract
+                  N          => Search_Depends_Contract
                                   (E,
-                                   Pragma_Depends,
                                    Get_Direct_Mapping_Id (My_Output),
                                    Get_Direct_Mapping_Id (F)),
                   Suppressed => Suppressed,

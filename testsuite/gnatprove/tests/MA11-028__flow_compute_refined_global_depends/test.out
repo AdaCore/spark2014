@@ -12,10 +12,10 @@ bad_refinement.ads:15:11: medium: "Bad_Refinement.State2" must be a global Input
 bad_refinement.ads:18:11: medium: "Bad_Refinement.State2" must be a global In_Out of "Liar5"
 bad_refinement.ads:21:21: info: initialization of "I" proved
 bad_refinement.ads:21:24: info: initialization of "J" proved
-bad_refinement.ads:23:11: medium: incorrect dependency "I => Bad_Refinement.State"
+bad_refinement.ads:23:33: medium: incorrect dependency "I => Bad_Refinement.State"
 bad_refinement.ads:25:21: info: initialization of "I" proved
 bad_refinement.ads:25:24: info: initialization of "J" proved
-bad_refinement.ads:26:11: medium: incorrect dependency "I => Bad_Refinement.State"
+bad_refinement.ads:26:33: medium: incorrect dependency "I => Bad_Refinement.State"
 bad_refinement.ads:34:11: global Output "Bad_Refinement.State2" of "Liar9" not written
 bad_refinement.ads:34:11: high: "Bad_Refinement.State" must be a global Output of "Liar9"
 lots_of_tests.adb:6:04: info: initialization of "A" constituent of "State" proved

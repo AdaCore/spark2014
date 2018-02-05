@@ -32,6 +32,7 @@ with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Output;                          use Output;
 with Rtsfind;                         use Rtsfind;
+with Sem_Prag;                        use Sem_Prag;
 with Sem_Type;                        use Sem_Type;
 with Sprint;                          use Sprint;
 with Treepr;                          use Treepr;
@@ -130,6 +131,18 @@ package body Flow_Utility is
    --  @param E a type entity
    --  @return all component and discriminants of the type that are in SPARK or
    --    the empty list if none exists.
+
+   function First_Name_Node (N : Node_Id) return Node_Id
+   with Pre  => Nkind (N) in N_Identifier | N_Expanded_Name,
+        Post => Nkind (First_Name_Node'Result) = N_Identifier;
+   --  Returns the first node that represents a (possibly qualified) entity
+   --  name, i.e. for "X" it will be the node of X itself and for "P.X" it will
+   --  be the node of P.
+   --
+   --  This is a helper routine for putting error messages within the Depends,
+   --  Refined_Depends and Initializes contract. Note: it is similar to the
+   --  Errout.First_Node, but doesn't rely on slocs thus avoids possible
+   --  problems with generic instances (as described in Safe_First_Sloc).
 
    ------------------------
    -- Classwide_Pre_Post --
@@ -3775,189 +3788,250 @@ package body Flow_Utility is
    end Same_Component;
 
    ---------------------
-   -- Search_Contract --
+   -- First_Name_Node --
    ---------------------
 
-   function Search_Contract (Unit     : Entity_Id;
-                             Contract : Pragma_Id;
-                             Output   : Entity_Id;
-                             Input    : Entity_Id := Empty)
-                             return Node_Id
+   function First_Name_Node (N : Node_Id) return Node_Id is
+      Name : Node_Id := N;
+   begin
+      while Nkind (Name) = N_Expanded_Name loop
+         Name := Prefix (Name);
+      end loop;
+
+      return Name;
+   end First_Name_Node;
+
+   -----------------------------
+   -- Search_Depends_Contract --
+   -----------------------------
+
+   function Search_Depends_Contract
+     (Unit   : Entity_Id;
+      Output : Entity_Id;
+      Input  : Entity_Id := Empty)
+      return Node_Id
    is
 
       Contract_N : Node_Id;
-      Needle     : Node_Id := Empty;
 
-      function Proc (N : Node_Id) return Traverse_Result;
-      --  Searches under contract for Output and sets Needle to the node, if
-      --  found.
+      Needle : Node_Id := Empty;
+      --  A node where the message about an "Output => Input" dependency should
+      --  be located.
 
-      ----------
-      -- Proc --
-      ----------
+      procedure Scan_Contract (N : Node_Id);
+      --  Scan contract looking for "Output => Input" dependency
 
-      function Proc (N : Node_Id) return Traverse_Result is
-         Tmp, Tmp2 : Node_Id;
-         O, I      : Entity_Id;
+      procedure Find_Output (N : Node_Id)
+      with Pre => Nkind (N) = N_Component_Association;
+      --  Find node that corresponds to the Output entity
+
+      procedure Find_Input (N : Node_Id);
+      --  Find node that corresponds to the Input entity
+
+      -----------------
+      -- Find_Output --
+      -----------------
+
+      procedure Find_Output (N : Node_Id) is
+         Item : constant Node_Id := First (Choices (N));
+         pragma Assert (List_Length (Choices (N)) = 1);
+
       begin
-         case Nkind (N) is
-            when N_Component_Association =>
-               Tmp := First (Choices (N));
-               while Present (Tmp) loop
-                  case Nkind (Tmp) is
-                     when N_Attribute_Reference =>
-                        O := Entity (Prefix (Tmp));
-                     when N_Identifier | N_Expanded_Name =>
-                        O := Entity (Tmp);
-                     when N_Null | N_Aggregate =>
-                        O := Empty;
-                     when N_Numeric_Or_String_Literal =>
-                        --  We should only ever get here if we are dealing with
-                        --  a rewritten constant.
-                        pragma Assert (Tmp /= Original_Node (Tmp));
+         --  Note: N_Numeric_Or_String_Literal can only appear on the RHS of a
+         --  dependency clause; frontend rejects it if it appears on the LHS.
 
-                        --  We process the entity of the Original_Node instead
-                        O := Entity (Original_Node (Tmp));
+         case Nkind (Item) is
+            --  Handle a clause like "null => ...", which must be the last one
 
-                     when others =>
-                        raise Program_Error;
-                  end case;
-                  if O = Output then
-                     Needle := Tmp;
-                     if No (Input) then
-                        return Abandon;
-                     end if;
+            when N_Null =>
+               --  ??? a null LHS is syntactically possible, but this routine
+               --  is not called in that case.
+               raise Program_Error;
 
-                     --  Look for specific input Input of export
-                     Tmp2 := Expression (Parent (Tmp));
-                     case Nkind (Tmp2) is
-                        when N_Attribute_Reference =>
-                           I := Entity (Prefix (Tmp2));
+            --  Handle clauses like "X => ..." and "X.Y => ..."
+
+            when N_Identifier | N_Expanded_Name =>
+               if Canonical_Entity (Entity (Item), Unit) = Output then
+                  Needle := First_Name_Node (Item);
+                  if Present (Input) then
+                     Find_Input (Expression (N));
+                  end if;
+                  return;
+               end if;
+
+            --  Handle clauses like "X'Result => ..." and "X.Y'Result => ..."
+
+            when N_Attribute_Reference =>
+               pragma Assert (Get_Attribute_Id (Attribute_Name (Item)) =
+                              Attribute_Result);
+
+               if Entity (Prefix (Item)) = Output then
+                  Needle := First_Name_Node (Prefix (Item));
+                  if Present (Input) then
+                     Find_Input (Expression (N));
+                  end if;
+                  return;
+               end if;
+
+            --  Handle clauses like "(X, X.Y, Z'Result, Z.Y'Result) => ..."
+
+            when N_Aggregate =>
+               declare
+                  Single_Item : Node_Id := First (Expressions (Item));
+
+               begin
+                  loop
+                     case Nkind (Single_Item) is
                         when N_Identifier | N_Expanded_Name =>
-                           I := Entity (Tmp2);
-                        when N_Null =>
-                           I := Empty;
-                        when N_Aggregate =>
-                           Tmp2 := First (Expressions (Tmp2));
-
-                           while Present (Tmp2) loop
-                              case Nkind (Tmp2) is
-                                 when N_Attribute_Reference =>
-                                    I := Entity (Prefix (Tmp2));
-                                 when N_Identifier | N_Expanded_Name =>
-                                    I := Entity (Tmp2);
-                                 when N_Null | N_Aggregate =>
-                                    I := Empty;
-                                 when N_Numeric_Or_String_Literal =>
-                                    --  We should only ever get here if we are
-                                    --  dealing with a rewritten constant.
-                                    pragma Assert
-                                      (Tmp2 /= Original_Node (Tmp2));
-
-                                    --  We process the entity of the
-                                    --  Original_Node instead.
-                                    I := Entity (Original_Node (Tmp2));
-
-                                 when others =>
-                                    raise Program_Error;
-                              end case;
-                              if I = Input then
-                                 Needle := Tmp2;
-                                 return Abandon;
+                           if Canonical_Entity (Entity (Single_Item), Unit) =
+                             Output
+                           then
+                              Needle := First_Name_Node (Single_Item);
+                              if Present (Input) then
+                                 Find_Input (Expression (N));
                               end if;
-                              Tmp2 := Next (Tmp2);
-                           end loop;
-                        when N_Numeric_Or_String_Literal =>
-                           --  We should only ever get here if we are dealing
-                           --  with a rewritten constant.
-                           pragma Assert (Tmp2 /= Original_Node (Tmp2));
+                              return;
+                           end if;
 
-                           --  We process the entity of the Original_Node
-                           --  instead.
-                           I := Entity (Original_Node (Tmp2));
+                        when N_Attribute_Reference =>
+                           pragma Assert
+                             (Get_Attribute_Id (Attribute_Name (Single_Item)) =
+                                Attribute_Result);
+
+                           if Entity (Prefix (Single_Item)) = Output then
+                              Needle := First_Name_Node (Prefix (Single_Item));
+                              if Present (Input) then
+                                 Find_Input (Expression (N));
+                              end if;
+                              return;
+                           end if;
 
                         when others =>
                            raise Program_Error;
                      end case;
 
-                     if I = Input then
-                        Needle := Tmp2;
-                        return Abandon;
-                     end if;
+                     Next (Single_Item);
 
-                  end if;
-                  Tmp := Next (Tmp);
-               end loop;
-               return Skip;
-
-            when N_Aggregate =>
-               --  We only want to process the aggregate if it hangs directly
-               --  under the pragma.
-               --
-               --  Note that in this kind of tree we cannot possibly find an
-               --  Input (since no inputs exist). We can at best find the
-               --  Output.
-               if Nkind (Parent (N)) /= N_Pragma_Argument_Association then
-                  return OK;
-               end if;
-
-               Tmp := First (Expressions (N));
-               while Present (Tmp) loop
-                  case Nkind (Tmp) is
-                     when N_Attribute_Reference =>
-                        O := Entity (Prefix (Tmp));
-                     when N_Identifier | N_Expanded_Name =>
-                        O := Entity (Tmp);
-                     when N_Null | N_Aggregate =>
-                        O := Empty;
-                     when N_Numeric_Or_String_Literal =>
-                        --  We should only ever get here if we are dealing with
-                        --  a rewritten constant.
-                        pragma Assert (Tmp /= Original_Node (Tmp));
-
-                        --  We process the entity of the Original_Node instead
-                        O := Entity (Original_Node (Tmp));
-
-                     when others =>
-                        raise Program_Error;
-                  end case;
-                  if O = Output then
-                     Needle := Tmp;
-                     return Abandon;
-                  end if;
-                  Tmp := Next (Tmp);
-               end loop;
+                     exit when No (Single_Item);
+                  end loop;
+               end;
 
             when others =>
-               null;
+               raise Program_Error;
+
          end case;
-         return OK;
-      end Proc;
+      end Find_Output;
 
-      procedure Find_Export_Internal is new Traverse_Proc (Proc);
+      ----------------
+      -- Find_Input --
+      ----------------
 
-   --  Start of processing for Search_Contract
+      procedure Find_Input (N : Node_Id) is
+      begin
+         case Nkind (N) is
+            when N_Null =>
+               --  ??? a null RHS is syntactically possible, but this routine
+               --  is not called in that case.
+               raise Program_Error;
+
+            --  Handle contracts like "... => X" and "... => X.Y"
+
+            when N_Identifier | N_Expanded_Name =>
+               if Canonical_Entity (Entity (N), Unit) = Input then
+                  Needle := First_Name_Node (N);
+               end if;
+
+            when N_Numeric_Or_String_Literal =>
+               if Unique_Entity (Original_Constant (N)) = Input then
+                  Needle := First_Name_Node (Original_Node (N));
+               end if;
+
+            --  Handle contracts like "... => (X, X.Y)"
+
+            when N_Aggregate =>
+               declare
+                  Item : Node_Id := First (Expressions (N));
+
+               begin
+                  loop
+                     case Nkind (Item) is
+                        when N_Identifier | N_Expanded_Name =>
+                           if Canonical_Entity (Entity (Item), Unit) = Input
+                           then
+                              Needle := First_Name_Node (Item);
+                              return;
+                           end if;
+
+                        when N_Numeric_Or_String_Literal =>
+                           if Unique_Entity (Original_Constant (Item)) = Input
+                           then
+                              Needle := First_Name_Node (Original_Node (Item));
+                              return;
+                           end if;
+
+                        when others =>
+                           raise Program_Error;
+                     end case;
+
+                     Next (Item);
+
+                     exit when No (Item);
+                  end loop;
+               end;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Find_Input;
+
+      -------------------
+      -- Scan_Contract --
+      -------------------
+
+      procedure Scan_Contract (N : Node_Id) is
+      begin
+         case Nkind (N) is
+            --  Handle empty contract, i.e. "null"
+
+            when N_Null =>
+               return;
+
+            --  Handle non-empty contracts, e.g. "... => ..., ... => ..."
+
+            when N_Aggregate =>
+
+               declare
+                  Clause : Node_Id := First (Component_Associations (N));
+
+               begin
+                  loop
+                     Find_Output (Clause);
+
+                     exit when Present (Needle);
+
+                     Next (Clause);
+
+                     exit when No (Clause);
+                  end loop;
+               end;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Scan_Contract;
+
+   --  Start of processing for Search_Depends_Contract
 
    begin
-      case Contract is
-         when Pragma_Depends =>
-            --  ??? Picking the Depends or the Refined_Depends should be rather
-            --  based on the visiblity of the Input and Ouput.
-            Contract_N := Find_Contract (Unit, Pragma_Refined_Depends);
+      Contract_N := Find_Contract (Unit, Pragma_Refined_Depends);
 
-            if No (Contract_N) then
-               Contract_N := Find_Contract (Unit, Pragma_Depends);
-            end if;
-
-         when Pragma_Initializes =>
-            Contract_N := Get_Pragma (Unit, Pragma_Initializes);
-
-         when others =>
-            raise Program_Error;
-      end case;
+      if No (Contract_N) then
+         Contract_N := Find_Contract (Unit, Pragma_Depends);
+      end if;
 
       if Present (Contract_N) then
-         Find_Export_Internal (Contract_N);
+
+         Scan_Contract (Expression (Get_Argument (Contract_N, Unit)));
 
          return (if Present (Needle)
                  then Needle
@@ -3966,7 +4040,226 @@ package body Flow_Utility is
          return Unit;
       end if;
 
-   end Search_Contract;
+   end Search_Depends_Contract;
+
+   ---------------------------------
+   -- Search_Initializes_Contract --
+   ---------------------------------
+
+   function Search_Initializes_Contract
+     (Unit   : Entity_Id;
+      Output : Entity_Id;
+      Input  : Entity_Id := Empty)
+      return Node_Id
+   is
+      Contract : constant Node_Id := Get_Pragma (Unit, Pragma_Initializes);
+
+      Needle : Node_Id := Empty;
+      --  A node where the message about an "Output => Input" dependency should
+      --  be located.
+
+      procedure Scan_Initialization_Spec (Inits : Node_Id);
+      --  Scan the initialization_spec of a Initializes contract
+
+      procedure Scan_Initialization_Item (Item : Node_Id);
+      --  Scan an initialization clause of the form "X"
+
+      procedure Scan_Initialization_Item_With_Inputs (N : Node_Id)
+      with Pre => Nkind (N) = N_Component_Association;
+      --  Scan an initialization clause of the form "X => ..."
+
+      procedure Scan_Inputs (N : Node_Id);
+      --  Scan the RHS of an initialization clause of the form "... => ..."
+
+      ------------------------------
+      -- Scan_Initialization_Item --
+      ------------------------------
+
+      procedure Scan_Initialization_Item (Item : Node_Id) is
+      begin
+         case Nkind (Item) is
+            when N_Identifier | N_Expanded_Name =>
+               if Canonical_Entity (Entity (Item), Unit) = Output then
+                  Needle := First_Name_Node (Item);
+               end if;
+
+            when N_Numeric_Or_String_Literal =>
+               if Unique_Entity (Original_Constant (Item)) = Output then
+                  Needle := Item;
+               end if;
+
+            when others =>
+               raise Program_Error;
+
+         end case;
+      end Scan_Initialization_Item;
+
+      ------------------------------------------
+      -- Scan_Initialization_Item_With_Inputs --
+      ------------------------------------------
+
+      procedure Scan_Initialization_Item_With_Inputs (N : Node_Id) is
+         LHS : constant Node_Id := First (Choices (N));
+         pragma Assert (List_Length (Choices (N)) = 1);
+
+      begin
+         case Nkind (LHS) is
+            when N_Identifier | N_Expanded_Name =>
+               if Canonical_Entity (Entity (LHS), Unit) = Output then
+                  Needle := First_Name_Node (LHS);
+
+                  if Present (Input) then
+                     Scan_Inputs (Expression (N));
+                  end if;
+               end if;
+
+            when N_Numeric_Or_String_Literal =>
+               if Unique_Entity (Original_Constant (LHS)) = Output then
+                  Needle := First_Name_Node (Original_Node (LHS));
+
+                  if Present (Input) then
+                     Scan_Inputs (Expression (N));
+                  end if;
+               end if;
+
+            when others =>
+               raise Program_Error;
+
+         end case;
+      end Scan_Initialization_Item_With_Inputs;
+
+      ------------------------------
+      -- Scan_Initialization_Spec --
+      ------------------------------
+
+      procedure Scan_Initialization_Spec (Inits : Node_Id) is
+         Init : Node_Id;
+
+      begin
+         case Nkind (Inits) is
+            --  Null initialization list
+
+            when N_Null =>
+               Needle := Inits;
+               return;
+
+            --  Clauses appear as component associations of an aggregate
+
+            when N_Aggregate =>
+
+               --  Handle clauses like "X"
+
+               if Present (Expressions (Inits)) then
+                  Init := First (Expressions (Inits));
+                  loop
+                     Scan_Initialization_Item (Init);
+
+                     if Present (Needle) then
+                        return;
+                     end if;
+
+                     Next (Init);
+                     exit when No (Init);
+                  end loop;
+               end if;
+
+               --  Handle clauses like "X => ..."
+
+               if Present (Component_Associations (Inits)) then
+                  Init := First (Component_Associations (Inits));
+                  loop
+                     Scan_Initialization_Item_With_Inputs (Init);
+
+                     if Present (Needle) then
+                        return;
+                     end if;
+
+                     Next (Init);
+                     exit when No (Init);
+                  end loop;
+               end if;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Scan_Initialization_Spec;
+
+      -----------------
+      -- Scan_Inputs --
+      -----------------
+
+      procedure Scan_Inputs (N : Node_Id) is
+      begin
+         case Nkind (N) is
+
+            --  Handle input like "... => X" and "... => X.Y"
+
+            when N_Identifier | N_Expanded_Name =>
+               if Canonical_Entity (Entity (N), Unit) = Input then
+                  Needle := First_Name_Node (N);
+               end if;
+
+            --  Handle rewritten numeric constant (qualified and simple name)
+
+            when N_Numeric_Or_String_Literal =>
+               if Unique_Entity (Original_Constant (N)) = Input then
+                  Needle := First_Name_Node (Original_Node (N));
+               end if;
+
+            --  Handle aggregate inputs like "... => (X, Y)"
+
+            when N_Aggregate =>
+               declare
+                  RHS : Node_Id := First (Expressions (N));
+
+               begin
+                  loop
+                     case Nkind (RHS) is
+                        when N_Identifier | N_Expanded_Name =>
+                           if Canonical_Entity (Entity (RHS), Unit) = Input
+                           then
+                              Needle := First_Name_Node (RHS);
+                              return;
+                           end if;
+
+                        when N_Numeric_Or_String_Literal =>
+                           if Unique_Entity (Original_Constant (RHS)) = Input
+                           then
+                              Needle := First_Name_Node (Original_Node (RHS));
+                              return;
+                           end if;
+
+                        when others =>
+                           raise Program_Error;
+
+                     end case;
+
+                     Next (RHS);
+
+                     exit when No (RHS);
+                  end loop;
+               end;
+
+            when others =>
+               raise Program_Error;
+
+         end case;
+      end Scan_Inputs;
+
+   --  Start of processing for Search_Initializes_Contract
+
+   begin
+      if Present (Contract) then
+         Scan_Initialization_Spec (Expression (Get_Argument (Contract, Unit)));
+
+         return (if Present (Needle)
+                 then Needle
+                 else Contract);
+      else
+         return Unit;
+      end if;
+
+   end Search_Initializes_Contract;
 
    --------------------
    -- To_Flow_Id_Set --

@@ -3615,9 +3615,9 @@ package body Flow.Analysis is
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "incorrect dependency & is not an output of &",
-                  N        => Search_Contract (FA.Analyzed_Entity,
-                                               Pragma_Depends,
-                                               Get_Direct_Mapping_Id (F_Out)),
+                  N        => Search_Depends_Contract
+                                (FA.Analyzed_Entity,
+                                 Get_Direct_Mapping_Id (F_Out)),
                   F1       => F_Out,
                   F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Tag      => Depends_Null,
@@ -3701,9 +3701,8 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      =>  "missing dependency ""%'Result => %""",
-                           N        => Search_Contract
+                           N        => Search_Depends_Contract
                                          (FA.Analyzed_Entity,
-                                          Pragma_Depends,
                                           Get_Direct_Mapping_Id (F_Out)),
                            F1       => F_Out,
                            F2       => Missing_Var,
@@ -3714,9 +3713,8 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      => "missing dependency ""% => %""",
-                           N        => Search_Contract
+                           N        => Search_Depends_Contract
                                          (FA.Analyzed_Entity,
-                                          Pragma_Depends,
                                           Get_Direct_Mapping_Id (F_Out)),
                            F1       => F_Out,
                            F2       => Missing_Var,
@@ -3753,7 +3751,10 @@ package body Flow.Analysis is
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "& cannot appear in Depends",
-                     N        => FA.Depends_N,
+                     N        => Search_Depends_Contract
+                                   (FA.Analyzed_Entity,
+                                    Get_Direct_Mapping_Id (F_Out),
+                                    Get_Direct_Mapping_Id (Wrong_Var)),
                      F1       => Wrong_Var,
                      Tag      => Depends_Wrong,
                      Severity => Medium_Check_Kind);
@@ -3772,9 +3773,8 @@ package body Flow.Analysis is
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "incorrect dependency ""%'Result => %""",
-                     N        => Search_Contract
+                     N        => Search_Depends_Contract
                                    (FA.Analyzed_Entity,
-                                    Pragma_Depends,
                                     Get_Direct_Mapping_Id (F_Out),
                                     Get_Direct_Mapping_Id (Wrong_Var)),
                      F1       => F_Out,
@@ -3785,9 +3785,8 @@ package body Flow.Analysis is
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "incorrect dependency ""% => %""",
-                     N        => Search_Contract
+                     N        => Search_Depends_Contract
                                    (FA.Analyzed_Entity,
-                                    Pragma_Depends,
                                     Get_Direct_Mapping_Id (F_Out),
                                     Get_Direct_Mapping_Id (Wrong_Var)),
                      F1       => F_Out,
@@ -4004,9 +4003,8 @@ package body Flow.Analysis is
                           (FA       => FA,
                            Msg      => "% must be initialized at elaboration",
                            N        => (if Present (FA.Initializes_N)
-                                        then Search_Contract
+                                        then Search_Initializes_Contract
                                           (FA.Spec_Entity,
-                                           Pragma_Initializes,
                                            Get_Direct_Mapping_Id (The_Out),
                                            Get_Direct_Mapping_Id (G))
                                         else FA.Spec_Entity),
@@ -4078,9 +4076,8 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      => "& cannot appear in Initializes",
-                           N        => Search_Contract
+                           N        => Search_Initializes_Contract
                                          (FA.Spec_Entity,
-                                          Pragma_Initializes,
                                           E),
                            F1       => Contract_Out,
                            Tag      => Initializes_Wrong,
@@ -4102,9 +4099,8 @@ package body Flow.Analysis is
                         Msg       =>
                           "initialization of % must not depend on %",
                         SRM_Ref   => "7.1.5(11)",
-                        N         => Search_Contract
+                        N         => Search_Initializes_Contract
                                        (FA.Spec_Entity,
-                                        Pragma_Initializes,
                                         Get_Direct_Mapping_Id (The_Out)),
                         F1        => The_Out,
                         F2        => Actual_In,
@@ -4129,10 +4125,10 @@ package body Flow.Analysis is
                        (FA       => FA,
                         Msg      => "initialization of & does not depend on &",
                         SRM_Ref  => "7.1.5(11)",
-                        N        => Search_Contract
+                        N        => Search_Initializes_Contract
                                       (FA.Spec_Entity,
-                                       Pragma_Initializes,
-                                       Get_Direct_Mapping_Id (The_Out)),
+                                       Get_Direct_Mapping_Id (The_Out),
+                                       Get_Direct_Mapping_Id (Contract_In)),
                         F1       => The_Out,
                         F2       => Contract_In,
                         Tag      => Initializes_Wrong,
@@ -4142,9 +4138,8 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      => "& cannot appear in Initializes",
-                        N        => Search_Contract
+                        N        => Search_Initializes_Contract
                                       (FA.Spec_Entity,
-                                       Pragma_Initializes,
                                        Get_Direct_Mapping_Id (The_Out),
                                        Get_Direct_Mapping_Id (Contract_In)),
                         F1       => Contract_In,

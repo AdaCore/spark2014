@@ -38,7 +38,7 @@ pkg_a.ads:10:04: warning: initialization of "Z" has no effect
 pkg_a.ads:13:04: info: initialization of "Q" proved
 pkg_b.adb:10:14: high: "Y" must be listed in the Initializes aspect of "Pkg_B" (SPARK RM 7.1.5(11))
 pkg_c.adb:15:12: high: cannot write "X" during elaboration of "Pkg_C" (SPARK RM 7.7.1(6))
-pkg_d.ads:4:32: high: X must be initialized at elaboration
+pkg_d.ads:4:27: high: X must be initialized at elaboration
 pkg_d.ads:10:04: info: initialization of "X" proved
 pkg_d.ads:11:04: info: initialization of "Y" proved
 pkg_d.ads:12:04: info: initialization of "Z" proved
