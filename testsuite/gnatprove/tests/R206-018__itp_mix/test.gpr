@@ -1,0 +1,11 @@
+project Test is
+   package Builder is
+      for Global_Configuration_Pragmas use "test.adc";
+   end Builder;
+
+   package Prove is
+      for Proof_Dir use "proof";
+      for Switches use ("--no-axiom-guard", "--level=0");
+   end Prove;
+
+end Test;

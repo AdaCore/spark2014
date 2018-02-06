@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="4">
+<prover id="0" name="CVC4" version="1.5-gnatprove" timelimit="1" steplimit="0" memlimit="0"/>
+<prover id="1" name="CVC4_CE" version="1.5-gnatprove" timelimit="1" steplimit="0" memlimit="0"/>
+<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="2" steplimit="0" memlimit="1000"/>
+<file name="../../../gnatprove/math_euclid.mlw">
+<theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__short_short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__long_long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__long_long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__natural" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__natural__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__positive" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__positive__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__short_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__short_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__long_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__long_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__wide_wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Array__Int__Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Array__Int__Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__wide_wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__duration" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer_8" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer_8__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer_16" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer_16__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer_32" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer_32__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer_64" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer_64__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__universal_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__universal_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__divides__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__divides__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__divides__b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__divides__b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__divides" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__lemma_divisor_mod__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__lemma_divisor_mod__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__lemma_divisor_mod__b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__lemma_divisor_mod__b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__lemma_divisor_mod__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__lemma_divisor_mod__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__short_short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__long_long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__natural___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__positive___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__short_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__long_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__wide_wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__wide_wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__duration___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer_8___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer_16___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer_32___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__integer_64___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Standard__universal_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__lemma_divisor_mod" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__divides___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__lemma_divisor_mod___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Math_euclid__package_def" proved="true" sum="e284967f6dbb6592898a5ced2974229f">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+ </transf>
+ </goal>
+</theory>
+<theory name="Math_euclid__divides__subprogram_def" proved="true" sum="baa39a721c0a46ec7773c38a4581aa79">
+ <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Math_euclid__lemma_divisor_mod__subprogram_def" sum="921286cec88c0728dc906d6b41d7cfa5">
+ <goal name="WP_parameter def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="78"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="postcondition">
+  <proof prover="0"><result status="unknown" steps="1951"/></proof>
+  <transf name="introduce_premises" >
+   <goal name="WP_parameter def.2.0" expl="postcondition">
+   <proof prover="0"><result status="unknown" steps="1951"/></proof>
+   <transf name="assert" arg1="(mod2 A B = B * (- div2 A B) + A)">
+    <goal name="WP_parameter def.2.0.0">
+    <proof prover="0"><result status="unknown" steps="1718"/></proof>
+    <proof prover="1"><result status="unknown" steps="1757"/></proof>
+    <proof prover="2" obsolete="true"><result status="valid" steps="5572"/></proof>
+    </goal>
+    <goal name="WP_parameter def.2.0.1" expl="postcondition">
+    <proof prover="0"><result status="unknown" steps="2360"/></proof>
+    <transf name="assert" arg1="(B = X * div2 B X)">
+     <goal name="WP_parameter def.2.0.1.0">
+     <proof prover="0"><result status="unknown" steps="2025"/></proof>
+     <proof prover="1"><result status="unknown" steps="2071"/></proof>
+     <proof prover="2" obsolete="true"><result status="valid" steps="6057"/></proof>
+     </goal>
+     <goal name="WP_parameter def.2.0.1.1" expl="postcondition">
+     <proof prover="0"><result status="unknown" steps="3291"/></proof>
+     <transf name="assert" arg1="(mod2 A B = X * ((div2 B X) * (-div2 A B)) + A)">
+      <goal name="WP_parameter def.2.0.1.1.0" proved="true">
+      <proof prover="0"><result status="valid" steps="1461"/></proof>
+      <proof prover="2" obsolete="true"><result status="valid" steps="9282"/></proof>
+      </goal>
+      <goal name="WP_parameter def.2.0.1.1.1" expl="postcondition">
+      <proof prover="0"><result status="unknown" steps="2426"/></proof>
+      <transf name="assert" arg1="(mod2 (mod2 A B) X = 0)">
+       <goal name="WP_parameter def.2.0.1.1.1.0">
+       <transf name="rewrite" arg1="h1">
+        <goal name="WP_parameter def.2.0.1.1.1.0.0">
+        <transf name="rewrite" arg1="Mod_mult1">
+         <goal name="WP_parameter def.2.0.1.1.1.0.0.0">
+         <proof prover="2" obsolete="true"><result status="valid" steps="6125"/></proof>
+         </goal>
+         <goal name="WP_parameter def.2.0.1.1.1.0.0.1">
+         <proof prover="2" obsolete="true"><result status="valid" steps="5907"/></proof>
+         </goal>
+        </transf>
+        </goal>
+       </transf>
+       </goal>
+       <goal name="WP_parameter def.2.0.1.1.1.1" expl="postcondition">
+       <proof prover="2" obsolete="true"><result status="valid" steps="6431"/></proof>
+       </goal>
+      </transf>
+      </goal>
+     </transf>
+     </goal>
+    </transf>
+    </goal>
+   </transf>
+   </goal>
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>
