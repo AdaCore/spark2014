@@ -5902,97 +5902,65 @@ package body Flow.Control_Flow_Graph is
          case FA.Kind is
             when Kind_Subprogram | Kind_Task =>
                declare
-                  type G_Prop is record
-                     Is_Proof_In : Boolean;
-                     Is_Read     : Boolean;
-                     Is_Write    : Boolean;
-                  end record;
+                  procedure Process (G : Flow_Id; Mode : Param_Mode);
+                  --  ??? this is just a wrapper with a workaround for a
+                  --  corner-case problem described in the body; once that
+                  --  problem is fixed, this wrapper should be removed.
 
-                  package Global_Maps is new Ada.Containers.Hashed_Maps
-                    (Key_Type        => Flow_Id,
-                     Element_Type    => G_Prop,
-                     Hash            => Hash,
-                     Equivalent_Keys => "=",
-                     "="             => "=");
+                  -------------
+                  -- Process --
+                  -------------
 
-                  My_Globals : Global_Flow_Ids;
-                  Globals    : Global_Maps.Map := Global_Maps.Empty_Map;
+                  procedure Process (G : Flow_Id; Mode : Param_Mode) is
+                  begin
+                     --  ??? if the global represents the current task then
+                     --  we already have vertices for that. When it comes to
+                     --  generated globals task types should be handled in
+                     --  similar way to packages, I think. For now this is
+                     --  just a crude hack.
+                     if G.Kind = Direct_Mapping and then
+                       Get_Direct_Mapping_Id (G) = FA.Analyzed_Entity
+                     then
+                        pragma Assert (FA.Kind = Kind_Task);
+                     else
+                        Create_Initial_And_Final_Vertices (G, Mode, FA);
+                     end if;
+                  end Process;
+
+                  Globals : Global_Flow_Ids;
 
                begin
                   Get_Globals (Subprogram => FA.Analyzed_Entity,
                                Scope      => FA.B_Scope,
                                Classwide  => False,
-                               Globals    => My_Globals);
+                               Globals    => Globals);
 
-                  for G of My_Globals.Proof_Ins loop
-                     Globals.Insert (Change_Variant (G, Normal_Use),
-                                     G_Prop'(Is_Proof_In => True,
-                                             Is_Read     => False,
-                                             Is_Write    => False));
+                  --  Convert globals from the In_View/Out_View to Normal_Use
+                  --  variants to simplify splitting Inputs and Outputs into
+                  --  In/In_Out/Out globals.
+
+                  Globals :=
+                    (Proof_Ins =>
+                       Change_Variant (Globals.Proof_Ins, Normal_Use),
+                     Inputs    =>
+                       Change_Variant (Globals.Inputs,    Normal_Use),
+                     Outputs   =>
+                       Change_Variant (Globals.Outputs,   Normal_Use));
+
+                  for G of Globals.Proof_Ins loop
+                     Process (G, Mode_Proof);
                   end loop;
 
-                  for G of My_Globals.Inputs loop
-                     --  ??? here we should call Insert, because no global can
-                     --  be both a Proof_In and Input. But it is not always the
-                     --  case: apparently due to some bug in generated globals.
-                     Globals.Include (Change_Variant (G, Normal_Use),
-                                      G_Prop'(Is_Proof_In => False,
-                                              Is_Read     => True,
-                                              Is_Write    => False));
+                  for G of Globals.Inputs.Difference (Globals.Outputs) loop
+                     Process (G, Mode_In);
                   end loop;
 
-                  for G of My_Globals.Outputs loop
-                     declare
-                        Position : Global_Maps.Cursor;
-                        Inserted : Boolean;
-
-                     begin
-                        --  Attempt to insert mapping from G to P; if insertion
-                        --  fails it means that a mapping was already present.
-                        --  In this case update the existing property as write.
-                        Globals.Insert
-                          (Key      => Change_Variant (G, Normal_Use),
-                           New_Item => (Is_Proof_In => False,
-                                        Is_Read     => False,
-                                        Is_Write    => True),
-                           Position => Position,
-                           Inserted => Inserted);
-
-                        if not Inserted then
-                           Globals (Position).Is_Write := True;
-
-                           --  Check that G is not both a Proof_In and Output
-                           pragma Assert (not Globals (Position).Is_Proof_In);
-                        end if;
-                     end;
+                  for G of Globals.Outputs.Difference (Globals.Inputs) loop
+                     Process (G, Mode_Out);
                   end loop;
 
-                  for C in Globals.Iterate loop
-                     declare
-                        G : Flow_Id renames Global_Maps.Key (C);
-                        P : G_Prop  renames Globals (C);
-
-                        Mode : constant Param_Mode :=
-                          (if    P.Is_Read and P.Is_Write then Mode_In_Out
-                           elsif P.Is_Read                then Mode_In
-                           elsif P.Is_Write               then Mode_Out
-                           elsif P.Is_Proof_In            then Mode_Proof
-                           else raise Program_Error);
-
-                     begin
-                        --  ??? if the global represents the current task then
-                        --  we already have vertices for that. When it comes to
-                        --  generated globals task types should be handled in
-                        --  similar way to packages, I think. For now this is
-                        --  just a crude hack.
-                        if G.Kind = Direct_Mapping and then
-                          Get_Direct_Mapping_Id (G) = FA.Analyzed_Entity
-                        then
-                           pragma Assert (FA.Kind = Kind_Task);
-                        else
-                           Create_Initial_And_Final_Vertices (G, Mode, FA);
-                        end if;
-                     end;
+                  for G of Globals.Inputs.Intersection (Globals.Outputs) loop
+                     Process (G, Mode_In_Out);
                   end loop;
                end;
 
