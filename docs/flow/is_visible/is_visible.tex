@@ -1,0 +1,172 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{listings}
+
+\usepackage{tikz}
+\usetikzlibrary{graphdrawing}
+\usetikzlibrary{graphs}
+\usegdlibrary{force,layered,trees}
+
+\title{A graph based Is\_Visible}
+\author{Florian Schanda}
+
+\begin{document}
+
+\section{Architecture}
+\begin{itemize}
+\item Save it in .dot form for debugging for each compilation unit
+\item Optionally, we can take the transitive closure now which would make
+  all visibility queries O(1)
+\item Based on Entity\_Id, and is the same in Phase 1 and Phase 2
+\item No need to save anything in the ALI file
+\end{itemize}
+
+\section{Data structures}
+
+\subsection{Flow\_Scope}
+\begin{lstlisting}[language=Ada]
+type Declarative_Part is (Visible_Part, Private_Part, Body_Part);
+
+type Flow_Scope is record
+   Name : Entity_Id;
+   Part : Declarative_Part;
+end record;
+\end{lstlisting}
+
+\subsubsection{Invariant}
+\begin{itemize}
+\item Ekind(\verb|Name|) must be a (generic) package spec, (generic)
+  subprogram spec, task type, or protected object.
+\item \verb|Part| can only be \verb|Private_Part| for (generic) packages.
+\end{itemize}
+
+\subsection{Hierarchy\_Info}
+We have a global (hashed) map \verb|Hierarchy_Info| from \verb|Entity_Id|
+to \verb|Hierarchy_Info_T|.
+
+\begin{lstlisting}[language=Ada]
+type Hierarchy_Info_T is record
+   Is_Package  : Boolean;
+
+   Is_Private  : Boolean;
+   Is_Instance : Boolean;
+   Is_Nested   : Boolean;
+
+   Parent      : Entity_Id;
+   Template    : Entity_Id;
+   Container   : Flow_Scope;
+end record;
+\end{lstlisting}
+
+Is\_Package is true for packages and generic packages, and false for other
+visibility-blocking scopes that all work in the same way: subprograms,
+tasks, and protected objects. For all of these, there is only a spec and
+body, i.e. there is no private part.
+
+\subsubsection{Semantics}
+Standard has \verb|Is_Private|, \verb|Is_Instance|, and \verb|Is_Nested|
+all set to False; and \verb|Empty| as \verb|Parent|.
+
+All top-level scopes are (public) children of \verb|Standard|.
+
+\subsubsection{Predicates}
+Predicate \verb|Is_Child| check if a scope is a public child of another
+package and is defined as:
+\begin{equation*}
+  \lnot Is\_Private \land
+  \lnot Is\_Nested \land
+  Present (Parent) \land
+  \lnot Parent = Standard
+\end{equation*}
+
+\subsubsection{Invariant}
+In addition, the following invariant should hold on all
+\verb|Hierarchy_Info_T| objects:
+
+\begin{itemize}
+\item If \verb|Is_Package| is false, then \verb|Is_Private| must be false.
+
+\item If \verb|Is_Private|, \verb|Is_Nested| must be false. [Nested
+  packages cannot have children, private or otherwise.]
+
+\item If \verb|Is_Instance|, \verb|Template| must be contained in
+  \verb|Hierarchy_Info|; otherwise \verb|Template| must be
+  \verb|Empty|.
+
+\item If \verb|Is_Nested|
+  \begin{itemize}
+  \item \verb|Is_Private| must be false,
+  \item \verb|Parent| must be \verb|Empty|, and
+  \item \verb|Container.Name| must be contained in \verb|Hierarchy_Info|;
+  \end{itemize}
+  otherwise
+  \begin{itemize}
+  \item \verb|Container| must be \verb|Null_Flow_Scope|, and
+  \item \verb|Parent| must be contained in \verb|Hierarchy_Info|.
+  \end{itemize}
+\end{itemize}
+
+\section{Graph}
+a $\rightarrow$ b means ``a has visibility of b''.
+
+\subsection{Visibility query}
+A visibility query for flow scopes x to y is a check if there exists a path
+in the graph between x and y.
+
+\subsection{Basic setup}
+The graph is constructed out of the hierarchy info map and is used to
+answer visibility queries throughout phase 1 and phase 2.
+
+Each possible scope (3 for each package, 2 for everything else) gets a
+vertex on the graph, along with a vertex for standard.
+
+\pagebreak
+\subsection{Edges}
+For each mapping \verb|S| $\rightarrow$ \verb|Hierarchy_Object_T| we add
+the following edges. If more than one case matches, the first one takes
+precedence.
+
+\begin{description}
+\item[Rule 0:] S body $\rightarrow
+  \begin{cases*}
+    \text{S priv} \rightarrow \text{S spec} & if Is\_Package \\
+    \text{S spec}                           & otherwise      \\
+  \end{cases*}$
+
+\item[Rule 1:] S spec $\rightarrow
+  \begin{cases*}
+    \text{Template spec} & if Is\_Instance \\
+    \text{Container}     & if Is\_Nested   \\
+    \text{Parent priv}   & if Is\_Private  \\
+    \text{Parent spec}   & otherwise       \\
+  \end{cases*}$
+
+\item[Rule 2:] S spec $\leftarrow
+  \begin{cases*}
+    \text{Container}   & if Is\_Nested  \\
+    \text{Parent priv} & if Is\_Private \\
+    \text{Parent spec} & otherwise      \\
+  \end{cases*}$
+
+\item[Rule 3:] S priv $\rightarrow
+  \begin{cases*}
+    \text{Template priv} & if Is\_Package \land\ Is\_Instance \\
+    \text{Parent priv}   & if Is\_Package \land\ Is\_Child
+  \end{cases*}$
+
+\item[Rule 4:] S body $\rightarrow
+  \begin{cases*}
+    \text{Template body}     & if Is\_Instance \\
+    \text{body of Container} & if Is\_Nested
+  \end{cases*}$
+\end{description}
+
+\pagebreak
+\section{Examples}
+\input{figure1}
+\input{figure2}
+\input{figure3}
+\input{figure4}
+\input{figure5}
+
+\end{document}

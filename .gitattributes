@@ -10,6 +10,7 @@ docs/case_study/*/* no-precommit-check
 docs/case_study/*/*/* no-precommit-check
 docs/case_study/*/*/*/* no-precommit-check
 docs/case_study/*/*/*/*/* no-precommit-check
+docs/flow/*/* no-precommit-check
 docs/flow/*/*/* no-precommit-check
 papers/proof_and_test/Code/* no-precommit-check
 papers/proof_and_test/Code/*/* no-precommit-check
