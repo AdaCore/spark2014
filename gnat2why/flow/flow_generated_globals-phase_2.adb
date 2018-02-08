@@ -315,7 +315,7 @@ package body Flow_Generated_Globals.Phase_2 is
    function Scope (EN : Entity_Name) return Entity_Name;
    --  Equivalent of Sinfo.Scope for entity names
 
-   function Scope_Within_Or_Same (Scope1, Scope2 : Entity_Name) return Boolean;
+   function Scope_Within_Or_Same (Inner, Outer : Entity_Name) return Boolean;
    --  Equivalent of Sem_Util.Scope_Within_Or_Same for entity names;
    --  ??? see Scope_Truly_Within_Or_Same and make this one work for subunits
 
@@ -3026,20 +3026,17 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Scope_Within_Or_Same --
    --------------------------
 
-   function Scope_Within_Or_Same (Scope1, Scope2 : Entity_Name)
+   function Scope_Within_Or_Same (Inner, Outer : Entity_Name)
                                   return Boolean
    is
-      Scope1_Str : constant String := To_String (Scope1);
-      Scope2_Str : constant String := To_String (Scope2);
+      Inner_Name : constant String := To_String (Inner);
+      Outer_Name : constant String := To_String (Outer);
 
    begin
       return
-        Scope1_Str'Length >= Scope2_Str'Length
-        and then
-          Scope1_Str
-            (Scope2_Str'First ..
-               Scope2_Str'First + Scope2_Str'Length - 1) =
-          Scope2_Str;
+        Inner_Name'Length >= Outer_Name'Length
+          and then
+        Ada.Strings.Fixed.Head (Inner_Name, Outer_Name'Length) = Outer_Name;
    end Scope_Within_Or_Same;
 
    -------
