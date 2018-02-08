@@ -386,7 +386,7 @@ package SPARK_Util.Subprograms is
    --  @return True iff E is volatile for internal calls, see SPARK RM 7.1.2
 
    function Might_Be_Main (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in Subprogram_Kind;
+   with Pre => Is_Subprogram (E);
    --  @param E subprogram
    --  @return True iff E is a library level subprogram, has no formal
    --     parameters (E is allowed to have global parameters), and is either

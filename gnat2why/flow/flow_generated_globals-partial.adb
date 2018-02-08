@@ -2669,6 +2669,8 @@ package body Flow_Generated_Globals.Partial is
              Is_Protected          => Ekind (E) in E_Function | E_Procedure
                                         and then Ekind (Scope (E)) =
                                                  E_Protected_Type,
+             Is_Library_Level      => Ekind (E) = E_Package
+                                        and then Is_Library_Level_Entity (E),
              Origin                => Origin_Flow,      --  ??? dummy
              Globals               =>
                (Proper  =>

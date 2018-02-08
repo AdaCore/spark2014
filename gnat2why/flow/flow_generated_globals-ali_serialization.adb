@@ -203,6 +203,9 @@ package body Flow_Generated_Globals.ALI_Serialization is
       if V.Kind in E_Function | E_Procedure then
          Serialize (A, V.Is_Protected);
       end if;
+      if V.Kind = E_Package then
+         Serialize (A, V.Is_Library_Level);
+      end if;
       Serialize (A, V.Origin);
       Serialize (A, V.Globals.Proper,  "proper_");  -- ??? replace _ with :
       Serialize (A, V.Globals.Refined, "refined_");

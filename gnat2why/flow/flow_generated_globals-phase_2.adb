@@ -264,6 +264,14 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Entities annotated as Constant_After_Elaboration
 
    ----------------------------------------------------------------------
+   --  POs information
+   ----------------------------------------------------------------------
+
+   Directly_Called_POs_In_Elaborations : Name_Sets.Set;
+   --  Protected objects directly accessed in elaborations of (possibly) main
+   --  subprograms.
+
+   ----------------------------------------------------------------------
    --  Volatile information
    ----------------------------------------------------------------------
 
@@ -1129,6 +1137,16 @@ package body Flow_Generated_Globals.Phase_2 is
                            V.The_Global_Info.Tasking (Kind));
                      end if;
                   end loop;
+
+                  if Present (Root_Entity)
+                    and then Is_Subprogram (Root_Entity)
+                    and then Might_Be_Main (Root_Entity)
+                    and then V.The_Global_Info.Kind = E_Package
+                    and then V.The_Global_Info.Is_Library_Level
+                  then
+                     Directly_Called_POs_In_Elaborations.Union
+                       (V.The_Global_Info.Tasking (Locks));
+                  end if;
 
                when EK_Constant_Calls =>
                   declare
@@ -2321,6 +2339,15 @@ package body Flow_Generated_Globals.Phase_2 is
             Collect_Objects_From_Subprogram (Callee);
          end;
       end loop;
+
+      --  For a (possibly) main subprogram we also consider protected objects
+      --  that are accessed in elaborations.
+      if E = Root_Entity
+        and then Is_Subprogram (E)
+        and then Might_Be_Main (E)
+      then
+         Res.Union (Directly_Called_POs_In_Elaborations);
+      end if;
 
       return Res;
    end Directly_Called_Protected_Objects;
