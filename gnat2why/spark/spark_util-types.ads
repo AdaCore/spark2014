@@ -201,6 +201,12 @@ package SPARK_Util.Types is
    --  the value of the Iterable aspect of a formal type.
    --  Return the ultimate alias.
 
+   function Get_Parent_Type_If_Check_Needed (N : Node_Id) return Entity_Id
+     with Pre => Nkind (N) in N_Full_Type_Declaration | N_Subtype_Declaration;
+   --  @param N a (sub)type declaration
+   --  @return If the type declaration requires a check, return the "parent"
+   --    type mentionend in the type declaration. Return empty otherwise.
+
    function Has_Invariants_In_SPARK (E : Entity_Id) return Boolean;
    --  @params E any type
    --  @returns True if E has a type invariant and the invariant is in SPARK.

@@ -1849,6 +1849,19 @@ package body SPARK_Definition is
                if Is_Itype (BT) then
                   Mark_Entity (BT);
                end if;
+
+               if Nkind (N) in N_Full_Type_Declaration | N_Subtype_Declaration
+               then
+                  declare
+                     Par : constant Entity_Id :=
+                       Get_Parent_Type_If_Check_Needed (N);
+                  begin
+                     if Present (Par) then
+                        Mark_Entity (Par);
+                     end if;
+                  end;
+               end if;
+
             end;
 
          when N_Task_Type_Declaration
@@ -1978,6 +1991,8 @@ package body SPARK_Definition is
               and then Nkind (Original_Node (N)) = N_Attribute_Reference
             then
                Mark_Attribute_Reference (Original_Node (N));
+            elsif Present (Etype (N)) then
+               Mark_Entity (Etype (N));
             end if;
 
          --  Object renamings are rewritten by expansion, but they are kept in
@@ -3686,6 +3701,14 @@ package body SPARK_Definition is
                Mark_Violation (E, From => Retysp (Etype (E)));
             end if;
          end if;
+
+         declare
+            Anc_Subt : constant Entity_Id := Ancestor_Subtype (E);
+         begin
+            if Anc_Subt /= Empty then
+               Mark_Entity (Anc_Subt);
+            end if;
+         end;
 
          --  Type declarations may refer to private types whose full view has
          --  not been declared yet. However, it is this full view which may

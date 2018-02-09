@@ -10263,11 +10263,6 @@ package body Gnat2Why.Expr is
 
    function Transform_Declaration (Decl : Node_Id) return W_Prog_Id is
 
-      function Get_Base_Type (N : Node_Id) return Entity_Id;
-      --  Return the base type when N is the node of a (sub-)type
-      --  declaration which requires a check.
-      --  Return Empty otherwise.
-
       function Check_Discr_Of_Subtype (Base, Ent : Entity_Id) return W_Prog_Id;
       --  @param Ent a type entity
       --  @param Base the base type of Ent; Empty if Ent has no base type
@@ -10444,44 +10439,6 @@ package body Gnat2Why.Expr is
          return Checks;
       end Check_Itypes_Of_Components;
 
-      -------------------
-      -- Get_Base_Type --
-      -------------------
-
-      function Get_Base_Type (N : Node_Id) return Entity_Id is
-      begin
-         if Nkind (N) = N_Full_Type_Declaration then
-            declare
-               T_Def : constant Node_Id := Type_Definition (N);
-            begin
-               case Nkind (T_Def) is
-                  when N_Subtype_Indication =>
-                     return Entity (Subtype_Mark (T_Def));
-
-                  when N_Derived_Type_Definition =>
-                     declare
-                        S : constant Node_Id := Subtype_Indication (T_Def);
-                     begin
-                        return Entity (if Nkind (S) = N_Subtype_Indication
-                                       then Subtype_Mark (S)
-                                       else S);
-                     end;
-
-                  when others =>
-                     return Empty;
-               end case;
-            end;
-         else
-            declare
-               S : constant Node_Id := Subtype_Indication (N);
-            begin
-               return Entity (if Nkind (S) = N_Subtype_Indication
-                              then Subtype_Mark (S)
-                              else S);
-            end;
-         end if;
-      end Get_Base_Type;
-
       R : W_Prog_Id := +Void;
 
    --  Start of processing for Transform_Declaration
@@ -10601,8 +10558,7 @@ package body Gnat2Why.Expr is
                end Is_Type_Renaming;
 
                Ent  : Entity_Id := Unique_Defining_Entity (Decl);
-               Base : Entity_Id := Get_Base_Type (Decl);
-
+               Base : Entity_Id := Get_Parent_Type_If_Check_Needed (Decl);
             --  Start of processing for Do_Type_Declaration
 
             begin

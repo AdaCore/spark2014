@@ -396,6 +396,44 @@ package body SPARK_Util.Types is
       Nam : Name_Id) return Entity_Id
      is (Ultimate_Alias (Sem_Util.Get_Iterable_Type_Primitive (Typ, Nam)));
 
+   -------------------------------------
+   -- Get_Parent_Type_If_Check_Needed --
+   -------------------------------------
+
+   function Get_Parent_Type_If_Check_Needed (N : Node_Id) return Entity_Id is
+   begin
+      if Nkind (N) = N_Full_Type_Declaration then
+         declare
+            T_Def : constant Node_Id := Type_Definition (N);
+         begin
+            case Nkind (T_Def) is
+               when N_Subtype_Indication =>
+                  return Entity (Subtype_Mark (T_Def));
+
+               when N_Derived_Type_Definition =>
+                  declare
+                     S : constant Node_Id := Subtype_Indication (T_Def);
+                  begin
+                     return Entity (if Nkind (S) = N_Subtype_Indication
+                                    then Subtype_Mark (S)
+                                    else S);
+                  end;
+
+               when others =>
+                  return Empty;
+            end case;
+         end;
+      else
+         declare
+            S : constant Node_Id := Subtype_Indication (N);
+         begin
+            return Entity (if Nkind (S) = N_Subtype_Indication
+                           then Subtype_Mark (S)
+                           else S);
+         end;
+      end if;
+   end Get_Parent_Type_If_Check_Needed;
+
    --------------------------------------
    -- Get_Specific_Type_From_Classwide --
    --------------------------------------
