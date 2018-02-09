@@ -194,7 +194,7 @@ package body SPARK_Rewrite is
       Wrapper_Package : constant Entity_Id :=
         Defining_Entity (Instance_Spec (N));
 
-      pragma Assert (Ekind (Wrapper_Package) = E_Package);
+      pragma Assert (Is_Wrapper_Package (Wrapper_Package));
 
       function Wrapped_Instance return Entity_Id
       with Post => Ekind (Wrapped_Instance'Result) in E_Function | E_Procedure;
