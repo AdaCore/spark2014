@@ -371,9 +371,6 @@ package body Gnat2Why.Driver is
       procedure Register_All_Entities is new Sem.Walk_Library_Items
         (Action => Register_Compilation_Unit);
 
-      procedure Mark_All_Compilation_Units is new Sem.Walk_Library_Items
-        (Action => Mark_Compilation_Unit);
-
       procedure Register_All_Flow_Scopes is new Sem.Walk_Library_Items
         (Action => Register_Flow_Scopes);
 
@@ -434,12 +431,22 @@ package body Gnat2Why.Driver is
       Register_All_Flow_Scopes;
       Connect_Flow_Scopes;
 
-      --  Mark all compilation units as "in SPARK / not in SPARK", in
-      --  the same order that they were processed by the frontend. Bodies
-      --  are not included, except for the main unit itself, which always
-      --  comes last.
+      Mark_Standard_Package;
 
-      Mark_All_Compilation_Units;
+      --  Mark the current compilation unit as "in SPARK / not in SPARK".
+
+      declare
+         Lib_Unit : constant Node_Id := Library_Unit (GNAT_Root);
+      begin
+         --  If both spec and body of the current compilation unit are present
+         --  then traverse spec first.
+         if Present (Lib_Unit) and then Lib_Unit /= GNAT_Root then
+            Mark_Compilation_Unit (Unit (Lib_Unit));
+         end if;
+
+         --  Then traverse body (or spec if no body is present)
+         Mark_Compilation_Unit (Unit (GNAT_Root));
+      end;
       Timing_Phase_Completed (Timing, "marking");
 
       --  Finalize has to be called before we call Compilation_Errors.

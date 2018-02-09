@@ -252,9 +252,6 @@ package body SPARK_Definition is
    procedure Queue_For_Marking (E : Entity_Id);
    --  Register E for marking at a later stage
 
-   procedure Mark_Standard_Package;
-   --  Put marks on package Standard
-
    ------------------------------
    -- Body_Statements_In_SPARK --
    ------------------------------
@@ -2964,7 +2961,6 @@ package body SPARK_Definition is
       --  Separately mark declarations from Standard as in SPARK or not
 
       if N = Standard_Package_Node then
-         Mark_Standard_Package;
          return;
       end if;
 

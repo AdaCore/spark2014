@@ -184,6 +184,9 @@ package SPARK_Definition is
    --  integrate SPARK_Annotate into Marking (via a child package?) to
    --  avoid this internal call in the public API.
 
+   procedure Mark_Standard_Package;
+   --  Put marks on package Standard
+
    ----------------------------------------------------------------------
    --  Marked entity collections
    ----------------------------------------------------------------------
