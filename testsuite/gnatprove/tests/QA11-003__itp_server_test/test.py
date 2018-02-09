@@ -53,13 +53,14 @@ def launch_server(limit_line, input_file):
     nb_unparsed = 0
     task_monitor = 0
     next_unproven = 0
+    node_change = 0
     for i in l:
         try:
             pos = i.find("{")
             j = json.loads(i[pos:])
             notif_type = j[NOTIFICATION]
             if notif_type == NODE_CHANGE:
-                print (NODE_CHANGE + " " + str(j[NODE_ID]))
+                node_change = node_change + 1
             elif notif_type == NEW_NODE:
                 print (NEW_NODE + " " + str(j[NODE_ID]) + " " + str(j[PARENT_ID]))
             elif notif_type == NEXT_UNPROVEN:
@@ -86,10 +87,9 @@ def launch_server(limit_line, input_file):
             if i != "\n" and i != " ":
                 nb_unparsed = nb_unparsed + 1
                 print ("UNPARSED NOTIFICATION " + i)
-    if nb_unparsed > 1:
-        print "PROBLEM WITH UNPARSED JSON NOTIFICATIONS"
-    if next_unproven < 1:
-        print "PROBLEM WITH NEXT_UNPROVEN_NODE"
+    print ("Unparsed JSON = " + str(nb_unparsed))
+    print ("Next_unproven = " + str(next_unproven))
+    print ("Node_change = " +  str(node_change))
     return "DONE"
 
 prove_all(counterexample=False, prover=["cvc4"])

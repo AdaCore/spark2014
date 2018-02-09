@@ -12,17 +12,11 @@ test.adb:11:16: medium: postcondition might fail
 {"ide_request": "Exit_req"}
 
 New_node 89 88
-Node_change 89
 New_node 90 89
-Node_change 90
 Message
 New_node 91 89
-Node_change 91
 New_node 92 91
-Node_change 92
 New_node 93 89
-Node_change 93
-Node_change 93
 Task
 --------------------------- Local Context ---------------------------
 
@@ -44,10 +38,6 @@ goal WP_parameter def :
     (exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2)))
 
 
-Node_change 93
-Node_change 93
-Node_change 93
-Node_change 93
 Task
 --------------------------- Local Context ---------------------------
 
@@ -91,4 +81,7 @@ goal WP_parameter def :
   exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2))
 
 
+Unparsed JSON = 0
+Next_unproven = 1
+Node_change = 10
 DONE
