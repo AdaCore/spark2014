@@ -1,0 +1,2 @@
+main.adb:18:09: info: initialization of "X.C" proved
+main.adb:18:09: info: initialization of "X.Dummy" proved
