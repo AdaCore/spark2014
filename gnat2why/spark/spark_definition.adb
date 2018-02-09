@@ -46,6 +46,7 @@ with Nmake;                           use Nmake;
 with Opt;                             use Opt;
 with Restrict;                        use Restrict;
 with Rident;                          use Rident;
+with Rtsfind;                         use Rtsfind;
 with Sem_Aux;                         use Sem_Aux;
 with Sem_Disp;                        use Sem_Disp;
 with Sem_Prag;                        use Sem_Prag;
@@ -4435,6 +4436,9 @@ package body SPARK_Definition is
 
       if Ekind (E) in E_Protected_Type | E_Task_Type then
 
+         Mark_Entity (RTE (RE_Priority));
+         Mark_Entity (RTE (RE_Interrupt_Priority));
+
          Current_SPARK_Pragma := SPARK_Pragma (E);
 
       --  ??? perhaps use SPARK_Pragma_Of_Type here, but not sure if that works
@@ -5518,6 +5522,11 @@ package body SPARK_Definition is
       Insert_All_And_SPARK (Standard_Integer_16);
       Insert_All_And_SPARK (Standard_Integer_32);
       Insert_All_And_SPARK (Standard_Integer_64);
+
+      --  Marking this expression may be needed for any subprogram that might
+      --  be main, so that's often enough to put this here.
+
+      Mark (Expression (Parent (RTE (RE_Default_Priority))));
    end Mark_Standard_Package;
 
    ----------------------------

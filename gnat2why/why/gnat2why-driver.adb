@@ -402,14 +402,15 @@ package body Gnat2Why.Driver is
          return;
       end if;
 
-      Mark_Standard_Package;
-
-      --  Allow the generation of new nodes and lists
+      --  Allow the generation of new nodes and lists, which might happen when
+      --  marking implicitly referenced entities, e.g. System.Priority.
 
       Atree.Unlock;
       Nlists.Unlock;
       Sem.Scope_Stack.Locked := False;
       Lib.Unlock;
+
+      Mark_Standard_Package;
 
       --  Before any analysis takes place, perform some rewritings of the tree
       --  that facilitates analysis.
