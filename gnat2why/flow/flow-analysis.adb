@@ -3530,7 +3530,7 @@ package body Flow.Analysis is
    --  Start of processing for Find_Impossible_To_Initialize_State
 
    begin
-      if not Has_Null_Abstract_State (FA.Spec_Entity) then
+      if Has_Non_Null_Abstract_State (FA.Spec_Entity) then
          Collect_Procedure_Outputs;
 
          --  Issue error for every non-null abstract state that does not have
