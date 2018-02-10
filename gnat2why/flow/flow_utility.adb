@@ -1323,13 +1323,9 @@ package body Flow_Utility is
               First (Pragma_Argument_Associations (Global_Node));
             pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
-            Row      : Node_Id;
-            The_Mode : Name_Id;
-            RHS      : Node_Id;
-
-            G_Proof  : Node_Sets.Set := Node_Sets.Empty_Set;
-            G_In     : Node_Sets.Set := Node_Sets.Empty_Set;
-            G_Out    : Node_Sets.Set := Node_Sets.Empty_Set;
+            G_Proof : Node_Sets.Set := Node_Sets.Empty_Set;
+            G_In    : Node_Sets.Set := Node_Sets.Empty_Set;
+            G_Out   : Node_Sets.Set := Node_Sets.Empty_Set;
 
             procedure Process (The_Mode   : Name_Id;
                                The_Global : Entity_Id)
@@ -1390,81 +1386,100 @@ package body Flow_Utility is
                return;
 
             elsif Nkind (Expression (PAA)) = N_Aggregate
-              and then Expressions (Expression (PAA)) /= No_List
+              and then Present (Expressions (Expression (PAA)))
             then
                --  global => foo
                --  global => (foo, bar)
                --  One or more inputs
-               RHS := First (Expressions (Expression (PAA)));
-               while Present (RHS) loop
-                  case Nkind (RHS) is
-                     when N_Identifier | N_Expanded_Name =>
-                        Process (Name_Input, Entity (RHS));
 
-                     when N_Numeric_Or_String_Literal =>
-                        Process (Name_Input, Original_Constant (RHS));
+               declare
+                  RHS : Node_Id := First (Expressions (Expression (PAA)));
 
-                     when others =>
-                        raise Why.Unexpected_Node;
+               begin
+                  loop
+                     case Nkind (RHS) is
+                        when N_Identifier | N_Expanded_Name =>
+                           Process (Name_Input, Entity (RHS));
 
-                  end case;
-                  RHS := Next (RHS);
-               end loop;
+                        when N_Numeric_Or_String_Literal =>
+                           Process (Name_Input, Original_Constant (RHS));
+
+                        when others =>
+                           raise Program_Error;
+
+                     end case;
+
+                     RHS := Next (RHS);
+
+                     exit when No (RHS);
+                  end loop;
+               end;
 
             elsif Nkind (Expression (PAA)) = N_Aggregate
-              and then Component_Associations (Expression (PAA)) /= No_List
+              and then Present (Component_Associations (Expression (PAA)))
             then
                --  global => (mode => foo,
                --             mode => (bar, baz))
                --  A mixture of things.
 
                declare
-                  CA : constant List_Id :=
-                    Component_Associations (Expression (PAA));
+                  Row : Node_Id :=
+                    First (Component_Associations (Expression (PAA)));
+
+                  Mode : Name_Id;
+                  RHS  : Node_Id;
+                  Item : Node_Id;
+
                begin
-                  Row := First (CA);
-                  while Present (Row) loop
+                  loop
                      pragma Assert (List_Length (Choices (Row)) = 1);
-                     The_Mode := Chars (First (Choices (Row)));
 
-                     RHS := Expression (Row);
+                     Mode := Chars (First (Choices (Row)));
+                     RHS  := Expression (Row);
+
                      case Nkind (RHS) is
-                        when N_Aggregate =>
-                           RHS := First (Expressions (RHS));
-                           while Present (RHS) loop
-                              case Nkind (RHS) is
-                                 when N_Numeric_Or_String_Literal =>
-                                    Process (The_Mode,
-                                             Original_Constant (RHS));
-
-                                 when others =>
-                                    Process (The_Mode, Entity (RHS));
-
-                              end case;
-                              RHS := Next (RHS);
-                           end loop;
-
-                        when N_Identifier | N_Expanded_Name =>
-                           Process (The_Mode, Entity (RHS));
-
                         when N_Null =>
                            null;
 
+                        when N_Identifier | N_Expanded_Name =>
+                           Process (Mode, Entity (RHS));
+
                         when N_Numeric_Or_String_Literal =>
-                           Process (The_Mode, Original_Constant (RHS));
+                           Process (Mode, Original_Constant (RHS));
+
+                        when N_Aggregate =>
+                           Item := First (Expressions (RHS));
+                           loop
+                              case Nkind (Item) is
+                                 when N_Identifier | N_Expanded_Name =>
+                                    Process (Mode, Entity (Item));
+
+                                 when N_Numeric_Or_String_Literal =>
+                                    Process (Mode, Original_Constant (Item));
+
+                                 when others =>
+                                    raise Program_Error;
+
+                              end case;
+
+                              Next (Item);
+
+                              exit when No (Item);
+                           end loop;
 
                         when others =>
-                           Print_Node_Subtree (RHS);
-                           raise Why.Unexpected_Node;
+                           raise Program_Error;
 
                      end case;
 
                      Row := Next (Row);
+
+                     exit when No (Row);
                   end loop;
                end;
 
             else
-               raise Why.Unexpected_Node;
+               raise Program_Error;
             end if;
 
             ---------------------------------------------------------------
