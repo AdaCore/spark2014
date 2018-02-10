@@ -1389,17 +1389,12 @@ package body Flow_Utility is
                --  No globals, nothing to do.
                return;
 
-            elsif Nkind (Expression (PAA)) in N_Identifier | N_Expanded_Name
-            then
-               --  global => foo
-               --  A single input
-               Process (Name_Input, Entity (Expression (PAA)));
-
             elsif Nkind (Expression (PAA)) = N_Aggregate
               and then Expressions (Expression (PAA)) /= No_List
             then
+               --  global => foo
                --  global => (foo, bar)
-               --  Inputs
+               --  One or more inputs
                RHS := First (Expressions (Expression (PAA)));
                while Present (RHS) loop
                   case Nkind (RHS) is
