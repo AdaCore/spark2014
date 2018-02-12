@@ -24,6 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Fixed;               use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Aspects;                         use Aspects;
@@ -315,7 +316,11 @@ package body SPARK_Definition is
       SRM_Reference : String := "";
       Cont_Msg      : String := "")
    with Global => (Output => Violation_Detected,
-                   Input  => Current_SPARK_Pragma);
+                   Input  => Current_SPARK_Pragma),
+        Pre => SRM_Reference = ""
+                 or else
+              (SRM_Reference'Length > 9
+               and then Head (SRM_Reference, 9) = "SPARK RM ");
    --  Mark node N as a violation of SPARK. An error message pointing to the
    --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
    --  If SRM_Reference is set, the reference to the SRM is appended to the
@@ -2518,7 +2523,7 @@ package body SPARK_Definition is
                      then "function call"
                      else "object") & " as actual",
                   N             => Actual,
-                  SRM_Reference => "7.1.3(11)");
+                  SRM_Reference => "SPARK RM 7.1.3(11)");
             end if;
          end if;
 
