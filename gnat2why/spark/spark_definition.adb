@@ -3651,13 +3651,11 @@ package body SPARK_Definition is
          --  if not already marked.
 
          if Is_Array_Type (E) then
+            Mark_Entity (Component_Type (E));
+
             declare
-               Component_Typ : constant Node_Id := Component_Type (E);
-               Index         : Node_Id := First_Index (E);
+               Index : Node_Id := First_Index (E);
             begin
-               if Present (Component_Typ) then
-                  Mark_Entity (Component_Typ);
-               end if;
 
                while Present (Index) loop
                   Mark_Entity (Etype (Index));
@@ -4046,12 +4044,6 @@ package body SPARK_Definition is
                   end if;
                   Next_Index (Index);
                end loop;
-
-               --  Access definition for component type is not in SPARK
-
-               if No (Component_Typ) then
-                  Mark_Violation ("access type", E);
-               end if;
 
                --  Check that component type is in SPARK
 
