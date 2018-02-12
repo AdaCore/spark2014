@@ -16,8 +16,8 @@ LMESSAGE = "message"
 NEW_NODE = "New_node"
 LMESSAGE = "message"
 MESS_NOTIF = "mess_notif"
+RLIMIT = "\nrlimit: Real time limit (8 s) exceeded\n"
 TASK_MONITOR = "Task_Monitor"
-
 
 """ This tests is a commandline test for the itp server. It launches a server as
 a background process, and then pass it request in JSON. The output to be checked
@@ -35,7 +35,7 @@ def launch_server(limit_line, input_file):
     read, write = os.pipe()
     # process writes output to file, so we can avoid deadlocking
     with open ("proc.out", "w") as outfile:
-        process = Run (cmd, cwd="gnatprove", input=read, output=outfile, bg=True, timeout=400)
+        process = Run (cmd, cwd="gnatprove", input=read, output=outfile, bg=True, timeout=8)
         with open (input_file, "r") as in_file:
             for l in in_file:
                 print(l)
@@ -54,6 +54,9 @@ def launch_server(limit_line, input_file):
     task_monitor = 0
     next_unproven = 0
     node_change = 0
+    children_88 = 0
+    children_89 = 0
+    children = 0
     for i in l:
         try:
             pos = i.find("{")
@@ -62,6 +65,11 @@ def launch_server(limit_line, input_file):
             if notif_type == NODE_CHANGE:
                 node_change = node_change + 1
             elif notif_type == NEW_NODE:
+                children = children + 1
+                if j[PARENT_ID] == 88:
+                    children_88 = children_88 + 1
+                elif j[PARENT_ID] == 89:
+                    children_89 = children_89 + 1
                 print (NEW_NODE + " " + str(j[NODE_ID]) + " " + str(j[PARENT_ID]))
             elif notif_type == NEXT_UNPROVEN:
                 # TODO this is ok but we print nothing
@@ -82,11 +90,19 @@ def launch_server(limit_line, input_file):
                 else:
                     print (UMESSAGE)
             else:
-                print "TODO PROBLEM TO REPORT"
+                print ("TODO PROBLEM TO REPORT")
         except:
-            if i != "\n" and i != " ":
+            if i == RLIMIT:
+                print ("Process Ended")
+            elif i != "\n" and i != " ":
                 nb_unparsed = nb_unparsed + 1
                 print ("UNPARSED NOTIFICATION " + i)
+    if children_88 == 1:
+        print ("Children 88 OK")
+    if children_89 == 3:
+        print ("Children 89 OK")
+    if children == 5:
+        print ("Children OK")
     print ("Unparsed JSON = " + str(nb_unparsed))
     print ("Next_unproven = " + str(next_unproven))
     print ("Node_change = " +  str(node_change))
@@ -95,4 +111,4 @@ def launch_server(limit_line, input_file):
 prove_all(counterexample=False, prover=["cvc4"])
 sleep(5)
 result = launch_server(limit_line="test.adb:11:16:VC_POSTCONDITION", input_file="test.in")
-print(result)
+print (result)
