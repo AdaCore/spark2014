@@ -128,6 +128,11 @@ package body Flow.Analysis.Sanity is
       --    range of a slice in an object renaming declaration which renames
       --    part of that index or slice.
 
+      procedure Check_Actuals (E : Entity_Id)
+      with Pre => Ekind (E) = E_Package;
+      --  Calls Check_Variable_Inputs on actuals corresponding to in parameter
+      --  formals of a generic instance.
+
       procedure Check_Variable_Inputs
         (Flow_Ids : Ordered_Flow_Id_Sets.Set;
          Err_Desc : String;
@@ -138,10 +143,6 @@ package body Flow.Analysis.Sanity is
       --  Issues an error for any member of the Flow_Ids which does NOT denote
       --  a constant, a bound or a discriminant (of an enclosing concurrent
       --  type).
-
-      procedure Handle_Parameters (Formal : Node_Id; Actual : Node_Id);
-      --  Checks that for a generic instance there is no Actual with variable
-      --  inputs corresponding to a Formal object declaration with mode in.
 
       function Variables (N : Node_Id) return Ordered_Flow_Id_Sets.Set
       is
@@ -825,31 +826,33 @@ package body Flow.Analysis.Sanity is
          end loop;
       end Check_Variable_Inputs;
 
-      -----------------------
-      -- Handle_Parameters --
-      -----------------------
+      -------------------
+      -- Check_Actuals --
+      -------------------
 
-      procedure Handle_Parameters (Formal : Node_Id;
-                                   Actual : Node_Id)
-      is
+      procedure Check_Actuals (E : Entity_Id) is
+         Formal : Entity_Id := First_Entity (E);
+
       begin
-         if Nkind (Formal) = N_Formal_Object_Declaration then
+         while Present (Formal) loop
             declare
-               Formal_E : constant Entity_Id := Defining_Entity (Formal);
+               Decl : constant Node_Id := Parent (Formal);
 
             begin
-               if Ekind (Formal_E) = E_Generic_In_Parameter then
+               if Nkind (Decl) = N_Object_Declaration
+                 and then Present (Corresponding_Generic_Association (Decl))
+                 and then Constant_Present (Decl)
+               then
                   Check_Variable_Inputs
-                    (Flow_Ids => Variables (Actual),
+                    (Flow_Ids => Variables (Expression (Decl)),
                      Err_Desc => "actual for formal object with mode in",
-                     Err_Node => Actual);
+                     Err_Node => Decl);
                end if;
             end;
-         end if;
-      end Handle_Parameters;
 
-      procedure Check_Actuals is new
-        Iterate_Generic_Parameters (Handle_Parameters);
+            Next_Entity (Formal);
+         end loop;
+      end Check_Actuals;
 
    --  Start of processing for Check_Expressions
 
@@ -892,8 +895,7 @@ package body Flow.Analysis.Sanity is
                   --  For subprogram instances we need to get to the
                   --  wrapper package.
 
-                  Check_Actuals
-                    (Unique_Defining_Entity (Parent (Subp_Body)));
+                  Check_Actuals (Unique_Defining_Entity (Parent (Subp_Body)));
                end if;
             end;
 

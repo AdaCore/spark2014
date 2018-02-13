@@ -927,51 +927,60 @@ package body SPARK_Util is
    function Generic_Actual_Subprograms (E : Entity_Id) return Node_Sets.Set is
       Results : Node_Sets.Set;
 
-      procedure Handle_Parameters (Formal : Node_Id; Actual : Node_Id);
-      --  If Actual denotes a subprogram then include it in Results
+      Instance : constant Node_Id := Get_Unit_Instantiation_Node (E);
 
-      procedure Find_Actual_Subprograms is new
-        Iterate_Generic_Parameters (Handle_Parameters => Handle_Parameters);
+      pragma Assert (Nkind (Instance) in N_Generic_Instantiation);
 
-      -----------------------
-      -- Handle_Parameters --
-      -----------------------
+      Actuals : constant List_Id := Generic_Associations (Instance);
 
-      procedure Handle_Parameters (Formal : Node_Id; Actual : Node_Id) is
-         pragma Unreferenced (Formal);
-      begin
-         if Nkind (Actual) in N_Has_Entity then
-            declare
-               E_Actual : constant Entity_Id := Entity (Actual);
-            begin
-               if Present (E_Actual)
-                 and then Ekind (E_Actual) in E_Function
-                                            | E_Procedure
-               then
-                  --  Generic actual subprograms are typically renamings and
-                  --  then we want the renamed subprogram, but for generics
-                  --  nested in other generics they seem to directly point to
-                  --  what we need.
-
-                  declare
-                     Renamed : constant Entity_Id := Renamed_Entity (E_Actual);
-                     --  For subprograms Renamed_Entity is set transitively, so
-                     --  we just need to call it once.
-
-                  begin
-                     Results.Include (if Present (Renamed)
-                                      then Renamed
-                                      else E_Actual);
-                  end;
-               end if;
-            end;
-         end if;
-      end Handle_Parameters;
+      Actual : Node_Id := First (Actuals);
 
    --  Start of processing for Generic_Actual_Subprograms
 
    begin
-      Find_Actual_Subprograms (E);
+
+      while Present (Actual) loop
+         pragma Assert (Nkind (Actual) = N_Generic_Association);
+
+         declare
+            Actual_Expl : constant Node_Id :=
+              Explicit_Generic_Actual_Parameter (Actual);
+
+         begin
+            if Nkind (Actual_Expl) in N_Has_Entity then
+               declare
+                  E_Actual : constant Entity_Id := Entity (Actual_Expl);
+
+               begin
+                  if Present (E_Actual)
+                    and then Ekind (E_Actual) in E_Function
+                                               | E_Procedure
+                  then
+
+                     --  Generic actual subprograms are typically renamings and
+                     --  then we want the renamed subprogram, but for generics
+                     --  nested in other generics they seem to directly point
+                     --  to what we need.
+
+                     declare
+                        Renamed : constant Entity_Id :=
+                          Renamed_Entity (E_Actual);
+                        --  For subprograms Renamed_Entity is set transitively,
+                        --  so we just need to call it once.
+
+                     begin
+                        Results.Include (if Present (Renamed)
+                                         then Renamed
+                                         else E_Actual);
+                     end;
+                  end if;
+               end;
+            end if;
+         end;
+
+         Next (Actual);
+      end loop;
+
       return Results;
    end Generic_Actual_Subprograms;
 
@@ -1544,41 +1553,6 @@ package body SPARK_Util is
           --  We get protected/task types here when they act as globals for
           --  subprograms nested in the type itself.
    end Is_Synchronized;
-
-   --------------------------------
-   -- Iterate_Generic_Parameters --
-   --------------------------------
-
-   procedure Iterate_Generic_Parameters (E : Entity_Id)
-   is
-      Instance : constant Node_Id := Get_Unit_Instantiation_Node (E);
-
-      pragma Assert (Nkind (Instance) in N_Generic_Instantiation);
-
-      Actuals : constant List_Id :=
-        Generic_Associations (Instance);
-
-      Formals : constant List_Id :=
-        Generic_Formal_Declarations
-          (Unit_Declaration_Node (Get_Generic_Entity (Instance)));
-
-      --  pragma Assert (List_Length (Actuals) = List_Length (Formals));
-      --  ??? this isn't always the case; needs to be investigated
-
-      Actual : Node_Id := First (Actuals);
-      Formal : Node_Id := First (Formals);
-
-   begin
-      while Present (Actual) loop
-         pragma Assert (Nkind (Actual) = N_Generic_Association);
-
-         Handle_Parameters
-           (Formal, Explicit_Generic_Actual_Parameter (Actual));
-
-         Next (Actual);
-         Next (Formal);
-      end loop;
-   end Iterate_Generic_Parameters;
 
    ----------------------------------
    -- Location_In_Standard_Library --

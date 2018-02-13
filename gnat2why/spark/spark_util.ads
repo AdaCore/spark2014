@@ -494,16 +494,6 @@ package SPARK_Util is
    --  @param N any node
    --  @return True iff N is a call to a frontend-generated predicate function
 
-   generic
-      with procedure Handle_Parameters (Formal : Node_Id; Actual : Node_Id);
-   procedure Iterate_Generic_Parameters (E : Entity_Id)
-   with Pre => Ekind (E) = E_Package;
-   --  Call [Handle_Parameters] for each generic formal and actual parameter of
-   --  a generic instance.
-   --  @param E represents the entity of the instantiated generic package. For
-   --  subprogram instances this is the wrapper package obtained after
-   --  expansion.
-
    function Number_Of_Assocs_In_Expression (N : Node_Id) return Natural;
    --  @param N any node
    --  @return the number of N_Component_Association nodes in N.
