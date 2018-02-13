@@ -3656,29 +3656,10 @@ package body SPARK_Definition is
          --  type definition. So we start here with marking all needed types
          --  if not already marked.
 
-         if Is_Array_Type (E) then
-            Mark_Entity (Component_Type (E));
-
-            declare
-               Index : Node_Id := First_Index (E);
-            begin
-
-               while Present (Index) loop
-                  Mark_Entity (Etype (Index));
-                  Next_Index (Index);
-               end loop;
-
-               --  Mark default aspect if any
-
-               if Has_Default_Aspect (E) then
-                  Mark (Default_Aspect_Component_Value (E));
-               end if;
-            end;
-
          --  Fill in the map between classwide types and their corresponding
          --  specific type, in the case of a user-defined classwide type.
 
-         elsif Is_Class_Wide_Type (E) then
+         if Is_Class_Wide_Type (E) then
             if Ekind (E) = E_Class_Wide_Subtype then
                declare
                   Subty : constant Node_Id := Subtype_Indication (Parent (E));
@@ -4055,6 +4036,12 @@ package body SPARK_Definition is
 
                if not In_SPARK (Component_Typ) then
                   Mark_Violation (E, From => Component_Typ);
+               end if;
+
+               --  Mark default aspect if any
+
+               if Has_Default_Aspect (E) then
+                  Mark (Default_Aspect_Component_Value (E));
                end if;
             end;
 
