@@ -1,4 +1,2 @@
-p.adb:4:07: info: initialization of "X" proved
-p.adb:4:14: info: range check proved (CVC4: 2 VC)
-p.adb:5:12: info: length check proved (CVC4: 1 VC)
-p.adb:5:15: info: length check proved (CVC4: 1 VC)
+p.adb:4:25: subtype constraint cannot depend on variable input "V" (SPARK RM 4.4(2))
+gnatprove: error during flow analysis and proof

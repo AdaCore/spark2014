@@ -403,6 +403,8 @@ package body Flow.Analysis.Sanity is
                end;
 
             when N_Extended_Return_Statement =>
+               Traverse_Declarations_Or_Statements
+                 (Return_Object_Declarations (N));
                Traverse_Handled_Statement_Sequence
                  (Handled_Statement_Sequence (N));
 
