@@ -2129,6 +2129,36 @@ package body Flow_Utility is
                    then Nkind (With_Quantified_Variable) in N_Entity);
       --  Helper function to recurse on N
 
+      function Untangle_Record_Fields
+        (N                            : Node_Id;
+         Scope                        : Flow_Scope;
+         Local_Constants              : Node_Sets.Set;
+         Fold_Functions               : Boolean;
+         Use_Computed_Globals         : Boolean;
+         Expand_Synthesized_Constants : Boolean)
+      return Flow_Id_Sets.Set
+      with Pre => Nkind (N) = N_Selected_Component
+                    or else Is_Attribute_Update (N);
+      --  Process a node describing one or more record fields and return a
+      --  variable set with all variables referenced.
+      --
+      --  Fold_Functions also has an effect on how we deal with useless
+      --  'Update expressions:
+      --
+      --     Node                 Fold_Functions  Result
+      --     -------------------  --------------  --------
+      --     R'Update (X => N).Y  False           {R.Y, N}
+      --     R'Update (X => N).Y  True            {R.Y}
+      --     R'Update (X => N)    False           {R.Y, N}
+      --     R'Update (X => N)    True            {R.Y, N}
+      --
+      --  Scope, Local_Constants, Use_Computed_Globals,
+      --  Expand_Synthesized_Constants will be passed on to Get_Variables if
+      --  necessary.
+      --
+      --  Get_Variables will be called with Reduced set to False (as this
+      --  function should never be called when it's True...).
+
       function Untangle_With_Context (N : Node_Id)
                                       return Flow_Id_Sets.Set
       is (Filter (Untangle_Record_Fields
@@ -2827,6 +2857,388 @@ package body Flow_Utility is
 
          return Variables;
       end Do_N_Attribute_Reference;
+
+      ----------------------------
+      -- Untangle_Record_Fields --
+      ----------------------------
+
+      function Untangle_Record_Fields
+        (N                            : Node_Id;
+         Scope                        : Flow_Scope;
+         Local_Constants              : Node_Sets.Set;
+         Fold_Functions               : Boolean;
+         Use_Computed_Globals         : Boolean;
+         Expand_Synthesized_Constants : Boolean)
+      return Flow_Id_Sets.Set
+      is
+         function Is_Ignored_Node (N : Node_Id) return Boolean
+         is (Nkind (N) = N_Attribute_Reference
+             and then
+             Get_Attribute_Id (Attribute_Name (N)) in
+               Attribute_Old | Attribute_Loop_Entry);
+
+         function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
+         is (Get_Variables
+             (N,
+              Scope                        => Scope,
+              Local_Constants              => Local_Constants,
+              Fold_Functions               => Fold_Functions,
+              Use_Computed_Globals         => Use_Computed_Globals,
+              Reduced                      => False,
+              Expand_Synthesized_Constants => Expand_Synthesized_Constants));
+
+         M             : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+
+         Root_Node     : Node_Id := N;
+
+         Component     : Entity_Vectors.Vector := Entity_Vectors.Empty_Vector;
+
+         Seq           : Node_Lists.List := Node_Lists.Empty_List;
+
+         E             : Entity_Id;
+         Comp_Id       : Positive;
+         Current_Field : Flow_Id;
+
+         Must_Abort    : Boolean := False;
+
+         All_Vars      : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
+         Depends_Vars  : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
+         Proof_Vars    : constant Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
+      --  Start of processing for Untangle_Record_Fields
+
+      begin
+         if Debug_Trace_Untangle_Fields then
+            Write_Str ("Untangle_Record_Field on ");
+            Sprint_Node_Inline (N);
+            Write_Eol;
+            Indent;
+         end if;
+
+         --  First, we figure out what the root node is. For example in
+         --  Foo.Bar'Update(...).Z the root node will be Foo.
+         --
+         --  We also note all components (bar, z), 'update nodes and the order
+         --  in which they access or update fields (bar, the_update, z).
+
+         while Nkind (Root_Node) = N_Selected_Component
+           or else
+             (Is_Attribute_Update (Root_Node)
+              and then
+              Is_Record_Type (Get_Full_Type_Without_Checking (Root_Node)))
+           or else
+             Is_Ignored_Node (Root_Node)
+         loop
+            if Nkind (Root_Node) = N_Selected_Component then
+               Component.Prepend
+                 (Original_Record_Component
+                    (Entity (Selector_Name (Root_Node))));
+            end if;
+
+            if not Is_Ignored_Node (Root_Node) then
+               Seq.Prepend (Root_Node);
+            end if;
+
+            Root_Node := Prefix (Root_Node);
+
+         end loop;
+
+         if Root_Node = N then
+
+            --  In some case Arr'Update (...) we need to make sure that Seq
+            --  contains the 'Update so that the early abort can handle things.
+            Root_Node  := Prefix (N);
+            Seq.Prepend (N);
+            Must_Abort := True;
+         end if;
+
+         if Debug_Trace_Untangle_Fields then
+            Write_Str ("Root: ");
+            Sprint_Node_Inline (Root_Node);
+            Write_Eol;
+
+            Write_Str ("Components:");
+            for C of Component loop
+               Write_Str (" ");
+               Sprint_Node_Inline (C);
+            end loop;
+            Write_Eol;
+
+            Write_Str ("Seq:");
+            Write_Eol;
+            Indent;
+            for N of Seq loop
+               Print_Node_Briefly (N);
+            end loop;
+            Outdent;
+         end if;
+
+         --  If the root node is not an entire record variable, we recurse here
+         --  and then simply merge all variables we find here and then abort.
+
+         if Nkind (Root_Node) not in N_Identifier | N_Expanded_Name or else
+           not Is_Record_Type (Get_Full_Type_Without_Checking (Root_Node))
+         then
+            return Vars : Flow_Id_Sets.Set do
+
+               --  Recurse on root
+
+               Vars := Get_Vars_Wrapper (Root_Node);
+
+               --  Add anything we might find in 'Update expressions
+
+               for N of Seq loop
+                  case Nkind (N) is
+                  when N_Attribute_Reference =>
+                     pragma Assert (Get_Attribute_Id (Attribute_Name (N)) =
+                                      Attribute_Update);
+                     pragma Assert (List_Length (Expressions (N)) = 1);
+
+                     declare
+                        Ptr : Node_Id :=
+                          First (Component_Associations
+                                   (First (Expressions (N))));
+
+                     begin
+                        while Present (Ptr) loop
+                           Vars.Union (Get_Vars_Wrapper (Ptr));
+                           Next (Ptr);
+                        end loop;
+                     end;
+
+                  when N_Selected_Component =>
+                     null;
+
+                  when others =>
+                     raise Why.Unexpected_Node;
+                  end case;
+               end loop;
+
+               if Debug_Trace_Untangle_Fields then
+                  Write_Str ("Early delegation return: ");
+                  Print_Node_Set (Vars);
+                  Outdent;
+               end if;
+            end return;
+         end if;
+
+         --  Ok, so the root is an entire variable, we can untangle this
+         --  further.
+
+         pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
+         pragma Assert (not Must_Abort);
+
+         --  We set up an identity map of all fields of the original record.
+         --  For example a record with two fields would produce this kind of
+         --  map:
+         --
+         --     r.x -> r.x
+         --     r.y -> r.y
+
+         declare
+            FS : constant Flow_Id_Sets.Set :=
+              Flatten_Variable (Entity (Root_Node), Scope);
+
+         begin
+            for F of FS loop
+               M.Insert (F, Flow_Id_Sets.To_Set (F));
+            end loop;
+
+            if Debug_Trace_Untangle_Fields then
+               Print_Flow_Map (M);
+            end if;
+         end;
+
+         --  We then process Seq (the sequence of actions we have been asked to
+         --  take) and update the map or eliminate entries from it.
+         --
+         --  = Update =
+         --  For example, if we get an update 'update (y => z) then we change
+         --  the map accordingly:
+         --
+         --     r.x -> r.x
+         --     r.y -> z
+         --
+         --  = Access =
+         --  Otherwise, we trim down the map. For example .y will throw away
+         --  any entries in the map that are not related:
+         --
+         --     r.y -> z
+         --
+         --  Once we have processed all instructions, then the set of relevant
+         --  variables remains in all elements of the map. In this example,
+         --  just `z'.
+
+         --  Comp_Id is maintained by this loop and refers to the next
+         --  component index. The Current_Field is also maintained and refers
+         --  to the field we're at right now. For example after
+         --     R'Update (...).X'Update (...).Z
+         --  has been processed, then Comp_Id = 3 and Current_Field = R.X.Z.
+         --
+         --  We use this to check which entries to update or trim in the map.
+         --  For trimming we use Comp_Id, for updating we use Current_Field.
+
+         --  Finally a note about function folding: on each update we merge all
+         --  variables used in All_Vars so that subsequent trimmings don't
+         --  eliminate them. Depends_Vars however is assembled at the end of
+         --  the fully trimmed map. (Note N709-009 will also need to deal with
+         --  proof variables here.)
+
+         Comp_Id       := 1;
+         Current_Field := Direct_Mapping_Id (Entity (Root_Node));
+
+         for N of Seq loop
+            if Debug_Trace_Untangle_Fields then
+               Write_Str ("Processing: ");
+               Print_Node_Briefly (N);
+            end if;
+
+            case Nkind (N) is
+            when N_Attribute_Reference =>
+               pragma Assert (Get_Attribute_Id (Attribute_Name (N)) =
+                                Attribute_Update);
+
+               pragma Assert (List_Length (Expressions (N)) = 1);
+
+               if Debug_Trace_Untangle_Fields then
+                  Write_Str ("Updating the map at ");
+                  Sprint_Flow_Id (Current_Field);
+                  Write_Eol;
+               end if;
+
+               --  We update the map as requested
+               declare
+                  Ptr       : Node_Id := First (Component_Associations
+                                                (First (Expressions (N))));
+                  Field_Ptr : Node_Id;
+                  Tmp       : Flow_Id_Sets.Set;
+                  FS        : Flow_Id_Sets.Set;
+               begin
+                  Indent;
+                  while Present (Ptr) loop
+                     Field_Ptr := First (Choices (Ptr));
+                     while Present (Field_Ptr) loop
+                        E := Original_Record_Component (Entity (Field_Ptr));
+
+                        if Debug_Trace_Untangle_Fields then
+                           Write_Str ("Updating component ");
+                           Sprint_Node_Inline (E);
+                           Write_Eol;
+                        end if;
+
+                        if Is_Record_Type (Get_Type (E, Scope)) then
+                           --  Composite update
+
+                           --  We should call Untangle_Record_Aggregate
+                           --  here. For now we us a safe default (all
+                           --  fields depend on everything).
+
+                           case Nkind (Expression (Ptr)) is
+                              --  when N_Aggregate =>
+                              --     null;
+
+                              when others =>
+                                 Tmp := Get_Vars_Wrapper (Expression (Ptr));
+
+                                 --  Not sure what to do, so set all sensible
+                                 --  fields to the given variables.
+
+                                 FS := Flatten_Variable
+                                   (Add_Component (Current_Field, E), Scope);
+
+                                 for F of FS loop
+                                    M.Replace (F, Tmp);
+                                    All_Vars.Union (Tmp);
+                                 end loop;
+                           end case;
+                        else
+
+                           --  Direct field update of M
+
+                           Tmp := Get_Vars_Wrapper (Expression (Ptr));
+                           M.Replace (Add_Component (Current_Field, E), Tmp);
+                           All_Vars.Union (Tmp);
+                        end if;
+
+                        Next (Field_Ptr);
+                     end loop;
+                     Next (Ptr);
+                  end loop;
+                  Outdent;
+               end;
+
+            when N_Selected_Component =>
+
+               --  We trim the result map
+
+               E := Original_Record_Component (Entity (Selector_Name (N)));
+
+               if Debug_Trace_Untangle_Fields then
+                  Write_Str ("Trimming for: ");
+                  Sprint_Node_Inline (E);
+                  Write_Eol;
+               end if;
+
+               declare
+                  New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+
+               begin
+                  for C in M.Iterate loop
+                     declare
+                        K : Flow_Id          renames Flow_Id_Maps.Key (C);
+                        V : Flow_Id_Sets.Set renames M (C);
+                     begin
+                        if K.Kind = Record_Field
+                          and then Natural (K.Component.Length) >= Comp_Id
+                          and then K.Component (Comp_Id) = E
+                        then
+                           New_Map.Insert (K, V);
+                        end if;
+                     end;
+                  end loop;
+
+                  M := New_Map;
+               end;
+
+               Current_Field := Add_Component (Current_Field, E);
+               Comp_Id       := Comp_Id + 1;
+
+            when others =>
+               raise Why.Unexpected_Node;
+            end case;
+
+            if Debug_Trace_Untangle_Fields then
+               Print_Flow_Map (M);
+            end if;
+         end loop;
+
+         --  We merge what is left after trimming
+
+         for S of M loop
+            All_Vars.Union (S);
+            Depends_Vars.Union (S);
+         end loop;
+
+         if Debug_Trace_Untangle_Fields then
+            Write_Str ("Final (all) set: ");
+            Print_Node_Set (All_Vars);
+            Write_Str ("Final (depends) set: ");
+            Print_Node_Set (Depends_Vars);
+            Write_Str ("Final (proof) set: ");
+            Print_Node_Set (Proof_Vars);
+
+            Outdent;
+            Write_Eol;
+         end if;
+
+         --  proof variables (requires N709-009)
+
+         if Fold_Functions then
+            return Depends_Vars;
+         else
+            return All_Vars;
+         end if;
+      end Untangle_Record_Fields;
 
       ------------------------------------------------
       -- Subprograms that *do* write into Variables --
@@ -4834,384 +5246,6 @@ package body Flow_Utility is
 
       return M;
    end Untangle_Record_Assignment;
-
-   ----------------------------
-   -- Untangle_Record_Fields --
-   ----------------------------
-
-   function Untangle_Record_Fields
-     (N                            : Node_Id;
-      Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Expand_Synthesized_Constants : Boolean)
-      return Flow_Id_Sets.Set
-   is
-      function Is_Ignored_Node (N : Node_Id) return Boolean
-      is (Nkind (N) = N_Attribute_Reference
-          and then
-          Get_Attribute_Id (Attribute_Name (N)) in Attribute_Old
-                                                 | Attribute_Loop_Entry);
-
-      function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
-      is (Get_Variables
-            (N,
-             Scope                        => Scope,
-             Local_Constants              => Local_Constants,
-             Fold_Functions               => Fold_Functions,
-             Use_Computed_Globals         => Use_Computed_Globals,
-             Reduced                      => False,
-             Expand_Synthesized_Constants => Expand_Synthesized_Constants));
-
-      M             : Flow_Id_Maps.Map          := Flow_Id_Maps.Empty_Map;
-
-      Root_Node     : Node_Id                   := N;
-
-      Component     : Entity_Vectors.Vector     := Entity_Vectors.Empty_Vector;
-
-      Seq           : Node_Lists.List           := Node_Lists.Empty_List;
-
-      E             : Entity_Id;
-      Comp_Id       : Positive;
-      Current_Field : Flow_Id;
-
-      Must_Abort    : Boolean                   := False;
-
-      All_Vars      : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
-      Depends_Vars  : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
-      Proof_Vars    : constant Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-
-   --  Start of processing for Untangle_Record_Fields
-
-   begin
-
-      --  Debug output
-
-      if Debug_Trace_Untangle_Fields then
-         Write_Str ("Untangle_Record_Field on ");
-         Sprint_Node_Inline (N);
-         Write_Eol;
-         Indent;
-      end if;
-
-      --  First, we figure out what the root node is. For example in
-      --  Foo.Bar'Update(...).Z the root node will be Foo.
-      --
-      --  We also note all components (bar, z), 'update nodes and the order in
-      --  which they access or update fields (bar, the_update, z).
-
-      while Nkind (Root_Node) = N_Selected_Component
-        or else
-          (Is_Attribute_Update (Root_Node)
-           and then
-           Is_Record_Type (Get_Full_Type_Without_Checking (Root_Node)))
-        or else
-          Is_Ignored_Node (Root_Node)
-      loop
-         if Nkind (Root_Node) = N_Selected_Component then
-            Component.Prepend
-              (Original_Record_Component (Entity (Selector_Name (Root_Node))));
-         end if;
-
-         if not Is_Ignored_Node (Root_Node) then
-            Seq.Prepend (Root_Node);
-         end if;
-
-         Root_Node := Prefix (Root_Node);
-      end loop;
-
-      if Root_Node = N then
-         --  In some case Arr'Update (...) we need to make sure that Seq
-         --  contains the 'Update so that the early abort can handle things...
-         Root_Node  := Prefix (N);
-         Seq.Prepend (N);
-         Must_Abort := True;
-      end if;
-
-      --  Debug output
-
-      if Debug_Trace_Untangle_Fields then
-         Write_Str ("Root: ");
-         Sprint_Node_Inline (Root_Node);
-         Write_Eol;
-
-         Write_Str ("Components:");
-         for C of Component loop
-            Write_Str (" ");
-            Sprint_Node_Inline (C);
-         end loop;
-         Write_Eol;
-
-         Write_Str ("Seq:");
-         Write_Eol;
-         Indent;
-         for N of Seq loop
-            Print_Node_Briefly (N);
-         end loop;
-         Outdent;
-      end if;
-
-      --  If the root node is not an entire record variable, we recurse here
-      --  and then simply merge all variables we find here and then abort.
-
-      if Nkind (Root_Node) not in N_Identifier | N_Expanded_Name
-        or else
-          not Is_Record_Type (Get_Full_Type_Without_Checking (Root_Node))
-      then
-         return Vars : Flow_Id_Sets.Set do
-            --  Recurse on root
-            Vars := Get_Vars_Wrapper (Root_Node);
-
-            --  Add anything we might find in 'Update expressions
-            for N of Seq loop
-               case Nkind (N) is
-                  when N_Attribute_Reference =>
-                     pragma Assert (Get_Attribute_Id (Attribute_Name (N)) =
-                                      Attribute_Update);
-                     pragma Assert (List_Length (Expressions (N)) = 1);
-
-                     declare
-                        Ptr : Node_Id := First (Component_Associations
-                                                (First (Expressions (N))));
-
-                     begin
-                        while Present (Ptr) loop
-                           Vars.Union (Get_Vars_Wrapper (Ptr));
-                           Next (Ptr);
-                        end loop;
-                     end;
-
-                  when N_Selected_Component =>
-                     null;
-
-                  when others =>
-                     raise Why.Unexpected_Node;
-               end case;
-            end loop;
-
-            --  Debug output
-
-            if Debug_Trace_Untangle_Fields then
-               Write_Str ("Early delegation return: ");
-               Print_Node_Set (Vars);
-               Outdent;
-            end if;
-         end return;
-      end if;
-
-      --  Ok, so the root is an entire variable, we can untangle this further
-
-      pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
-      pragma Assert (not Must_Abort);
-
-      --  We set up an identity map of all fields of the original record. For
-      --  example a record with two fields would produce this kind of map:
-      --
-      --     r.x -> r.x
-      --     r.y -> r.y
-
-      declare
-         FS : constant Flow_Id_Sets.Set :=
-           Flatten_Variable (Entity (Root_Node), Scope);
-
-      begin
-         for F of FS loop
-            M.Insert (F, Flow_Id_Sets.To_Set (F));
-         end loop;
-
-         --  Debug output
-
-         if Debug_Trace_Untangle_Fields then
-            Print_Flow_Map (M);
-         end if;
-      end;
-
-      --  We then process Seq (the sequence of actions we have been asked to
-      --  take) and update the map or eliminate entries from it.
-      --
-      --  = Update =
-      --  For example, if we get an update 'update (y => z) then we change the
-      --  map accordingly:
-      --
-      --     r.x -> r.x
-      --     r.y -> z
-      --
-      --  = Access =
-      --  Otherwise, we trim down the map. For example .y will throw away any
-      --  entries in the map that are not related:
-      --
-      --     r.y -> z
-      --
-      --  Once we have processed all instructions, then the set of relevant
-      --  variables remains in all elements of the map. In this example, just
-      --  `z'.
-
-      --  Comp_Id is maintained by this loop and refers to the next component
-      --  index. The Current_Field is also maintained and refers to the field
-      --  we're at right now. For example after
-      --     R'Update (...).X'Update (...).Z
-      --  has been processed, then Comp_Id = 3 and Current_Field = R.X.Z.
-      --
-      --  We use this to check which entries to update or trim in the map. For
-      --  trimming we use Comp_Id, for updating we use Current_Field.
-
-      --  Finally a note about function folding: on each update we merge all
-      --  variables used in All_Vars so that subsequent trimmings don't
-      --  eliminate them. Depends_Vars however is assembled at the end of the
-      --  fully trimmed map. (Note N709-009 will also need to deal with proof
-      --  variables here.)
-
-      Comp_Id       := 1;
-      Current_Field := Direct_Mapping_Id (Entity (Root_Node));
-
-      for N of Seq loop
-         --  Debug output
-
-         if Debug_Trace_Untangle_Fields then
-            Write_Str ("Processing: ");
-            Print_Node_Briefly (N);
-         end if;
-
-         case Nkind (N) is
-            when N_Attribute_Reference =>
-               pragma Assert (Get_Attribute_Id (Attribute_Name (N)) =
-                                Attribute_Update);
-
-               pragma Assert (List_Length (Expressions (N)) = 1);
-
-               if Debug_Trace_Untangle_Fields then
-                  Write_Str ("Updating the map at ");
-                  Sprint_Flow_Id (Current_Field);
-                  Write_Eol;
-               end if;
-
-               --  We update the map as requested
-
-               declare
-                  Ptr       : Node_Id := First (Component_Associations
-                                                  (First (Expressions (N))));
-                  Field_Ptr : Node_Id;
-                  Tmp       : Flow_Id_Sets.Set;
-                  FS        : Flow_Id_Sets.Set;
-
-               begin
-                  Indent;
-                  while Present (Ptr) loop
-                     Field_Ptr := First (Choices (Ptr));
-                     while Present (Field_Ptr) loop
-                        E := Original_Record_Component (Entity (Field_Ptr));
-
-                        if Debug_Trace_Untangle_Fields then
-                           Write_Str ("Updating component ");
-                           Sprint_Node_Inline (E);
-                           Write_Eol;
-                        end if;
-
-                        if Is_Record_Type (Get_Type (E, Scope)) then
-                           --  Composite update
-
-                           --  We should call Untangle_Record_Aggregate here.
-                           --  For now we us a safe default (all fields depend
-                           --  on everything).
-                           case Nkind (Expression (Ptr)) is
-                              --  when N_Aggregate =>
-                              --     null;
-                              when others =>
-                                 Tmp := Get_Vars_Wrapper (Expression (Ptr));
-                                 --  Not sure what to do, so set all sensible
-                                 --  fields to the given variables.
-                                 FS := Flatten_Variable
-                                   (Add_Component (Current_Field, E), Scope);
-
-                                 for F of FS loop
-                                    M.Replace (F, Tmp);
-                                    All_Vars.Union (Tmp);
-                                 end loop;
-                           end case;
-                        else
-                           --  Direct field update of M
-                           Tmp := Get_Vars_Wrapper (Expression (Ptr));
-                           M.Replace (Add_Component (Current_Field, E), Tmp);
-                           All_Vars.Union (Tmp);
-                        end if;
-
-                        Next (Field_Ptr);
-                     end loop;
-                     Next (Ptr);
-                  end loop;
-                  Outdent;
-               end;
-
-            when N_Selected_Component =>
-               --  We trim the result map
-               E := Original_Record_Component (Entity (Selector_Name (N)));
-
-               if Debug_Trace_Untangle_Fields then
-                  Write_Str ("Trimming for: ");
-                  Sprint_Node_Inline (E);
-                  Write_Eol;
-               end if;
-
-               declare
-                  New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
-
-               begin
-                  for C in M.Iterate loop
-                     declare
-                        K : Flow_Id          renames Flow_Id_Maps.Key (C);
-                        V : Flow_Id_Sets.Set renames M (C);
-
-                     begin
-                        if K.Kind = Record_Field
-                          and then Natural (K.Component.Length) >= Comp_Id
-                          and then K.Component (Comp_Id) = E
-                        then
-                           New_Map.Insert (K, V);
-                        end if;
-                     end;
-                  end loop;
-                  M := New_Map;
-               end;
-
-               Current_Field := Add_Component (Current_Field, E);
-               Comp_Id       := Comp_Id + 1;
-            when others =>
-               raise Why.Unexpected_Node;
-         end case;
-
-         if Debug_Trace_Untangle_Fields then
-            Print_Flow_Map (M);
-         end if;
-      end loop;
-
-      --  We merge what is left after trimming
-
-      for S of M loop
-         All_Vars.Union (S);
-         Depends_Vars.Union (S);
-      end loop;
-
-      if Debug_Trace_Untangle_Fields then
-         Write_Str ("Final (all) set: ");
-         Print_Node_Set (All_Vars);
-         Write_Str ("Final (depends) set: ");
-         Print_Node_Set (Depends_Vars);
-         Write_Str ("Final (proof) set: ");
-         Print_Node_Set (Proof_Vars);
-
-         Outdent;
-         Write_Eol;
-      end if;
-
-      --  proof variables (requires N709-009)
-
-      if Fold_Functions then
-         return Depends_Vars;
-      else
-         return All_Vars;
-      end if;
-   end Untangle_Record_Fields;
 
    --------------------------------
    -- Untangle_Assignment_Target --

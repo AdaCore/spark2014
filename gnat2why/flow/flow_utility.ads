@@ -487,36 +487,6 @@ is
    --  Get_Variables will be called with Reduced set to False (as this function
    --  should never be called when its True...).
 
-   function Untangle_Record_Fields
-     (N                            : Node_Id;
-      Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Expand_Synthesized_Constants : Boolean)
-      return Flow_Id_Sets.Set
-   with Pre => Nkind (N) = N_Selected_Component
-               or else Is_Attribute_Update (N);
-   --  Process a node describing one or more record fields and return a
-   --  variable set with all variables referenced.
-   --
-   --  Fold_Functions also has an effect on how we deal with useless 'Update
-   --  expressions:
-   --
-   --     Node                 Fold_Functions  Result
-   --     -------------------  --------------  --------
-   --     R'Update (X => N).Y  False           {R.Y, N}
-   --     R'Update (X => N).Y  True            {R.Y}
-   --     R'Update (X => N)    False           {R.Y, N}
-   --     R'Update (X => N)    True            {R.Y, N}
-   --
-   --  Scope, Local_Constants, Use_Computed_Globals,
-   --  Expand_Synthesized_Constants will be passed on to Get_Variables if
-   --  necessary.
-   --
-   --  Get_Variables will be called with Reduced set to False (as this function
-   --  should never be called when it's True...).
-
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
    with Pre => Ekind (E) in Entry_Kind | E_Function | E_Procedure;
    --  Given the entity for a subprogram, return the expression(s) for its
