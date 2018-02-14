@@ -2142,6 +2142,44 @@ package body Flow_Utility is
       --  Helper function to call Untangle_Record_Fields with the appropriate
       --  context, but also filtering out quantified variables.
 
+      function Discriminant_Constraints (E : Entity_Id)
+                                         return Flow_Id_Sets.Set
+      with Pre => Ekind (E) in E_Constant
+                             | E_Variable
+                             | E_Component;
+      --  Returns the discriminant constraints for E if it is of a record or
+      --  concurrent type with discriminants, returns the empty set otherwise.
+
+      ------------------------------
+      -- Discriminant_Constraints --
+      ------------------------------
+
+      function Discriminant_Constraints (E : Entity_Id)
+                                         return Flow_Id_Sets.Set
+      is
+         Typ : constant Entity_Id := Etype (E);
+      begin
+         if (Is_Record_Type (Typ)
+             or else Is_Concurrent_Type (Typ))
+           and then Is_Constrained (Typ)
+           and then Has_Discriminants (Typ)
+         then
+            declare
+               Discriminants : Flow_Id_Sets.Set;
+
+            begin
+               --  Loop over the list of discriminant constraints
+               for Discr of Iter (Discriminant_Constraint (Typ)) loop
+                  Discriminants.Union (Recurse (Discr));
+               end loop;
+
+               return Discriminants;
+            end;
+         else
+            return Flow_Id_Sets.Empty_Set;
+         end if;
+      end Discriminant_Constraints;
+
       -------------
       -- Recurse --
       -------------
@@ -2403,8 +2441,10 @@ package body Flow_Utility is
                   --    * comes from source and is in Local_Constants
                   --    * or has variable input
                   --  then add it.
-                  return Merge_Entity (E);
-
+                  --  Note that for constants of a constrained record or
+                  --  concurrent type we want to detect their discriminant
+                  --  constraints so we add them as well.
+                  return Merge_Entity (E) or Discriminant_Constraints (E);
                end if;
 
             when E_Component
@@ -2483,55 +2523,38 @@ package body Flow_Utility is
                      end if;
                   end;
 
-               --  Ignore other discriminants and components
+               --  Ignore other components and discriminants
 
                elsif Ekind (E) in E_Component | E_Discriminant then
                   return Flow_Id_Sets.Empty_Set;
                end if;
 
-               --  For variables of a constrained record type we want to detect
-               --  their discriminant constraints.
+               declare
+                  Vars : Flow_Id_Sets.Set := Merge_Entity (E);
 
-               if Ekind (E) = E_Variable then
-                  declare
-                     Typ : constant Entity_Id := Etype (E);
+               begin
 
-                  begin
-                     if Ekind (Typ) in Record_Kind
-                       and then Is_Constrained (Typ)
-                       and then Has_Discriminants (Typ)
-                     then
-                        declare
-                           Variables : Flow_Id_Sets.Set;
+                  --  If we've extensions (and we care about them) then we need
+                  --  to add them now.
 
-                        begin
-                           --  Loop over the list of discriminant constraints
-                           for Discr of Iter (Discriminant_Constraint (Typ))
-                           loop
-                              if Nkind (Discr) = N_Identifier then
-                                 Variables.Union (Do_Entity (Entity (Discr)));
-                              else
-                                 Variables.Union (Recurse (Discr));
-                              end if;
-                           end loop;
-                           return Merge_Entity (E) or Variables;
-                        end;
-                     end if;
-                  end;
-               end if;
-
-               return V : Flow_Id_Sets.Set := Merge_Entity (E) do
-                  --  If we've extensions (and we care about them) then we
-                  --  need to add them now.
                   if not Ctx.Reduced
                     and then Ctx.Consider_Extensions
                     and then Extensions_Visible (E, Ctx.Scope)
                   then
-                     V.Include (Direct_Mapping_Id
-                                  (Unique_Entity (E),
-                                   Facet => Extension_Part));
+                     Vars.Include
+                       (Direct_Mapping_Id (Unique_Entity (E),
+                                           Facet => Extension_Part));
                   end if;
-               end return;
+
+                  --  For variables of a constrained record or concurrent type
+                  --  we want to detect their discriminant constraints.
+
+                  if Ekind (E) = E_Variable then
+                     Vars.Union (Discriminant_Constraints (E));
+                  end if;
+
+                  return Vars;
+               end;
 
             when Scalar_Kind =>
                --  Types mostly get dealt with by membership tests here, but
