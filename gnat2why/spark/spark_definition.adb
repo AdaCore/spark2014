@@ -863,6 +863,24 @@ package body SPARK_Definition is
       -- Local subprograms --
       -----------------------
 
+      procedure Check_Loop_Invariant_Placement
+        (Stmts  : List_Id;
+         Nested : Boolean := False);
+      --  Checks that no non-scalar object declaration appears before the
+      --  last loop-invariant or variant in a loop's list of statements. Also
+      --  stores scalar objects declared before the last loop-invariant in
+      --  Loop_Entity_Set. Nested should be true when checking statements
+      --  coming from a nested construct of the loop (if, case, extended
+      --  return statements and nested loops).
+
+      procedure Check_Unrolled_Loop (Loop_Stmt : Node_Id);
+      --  If Loop_Stmt is candidate for loop unrolling, then mark all objects
+      --  declared in the loop so that their translation into Why3 does not
+      --  introduce constants.
+
+      function Inside_Named_Number_Declaration (N : Node_Id) return Boolean;
+      --  Returns whether N is inside the declaration of a named number
+
       function Is_Update_Aggregate (Aggr : Node_Id) return Boolean;
       --  Detect whether Aggr is an aggregate node modelling 'Update. Returns
       --  false for a normal aggregate.
@@ -883,21 +901,6 @@ package body SPARK_Definition is
       --  of expression (indexed components) is not, so need to detect special
       --  case here.
       --  Why aren't these kind of nodes Indexed_Components instead?
-
-      procedure Check_Loop_Invariant_Placement
-        (Stmts : List_Id;
-         Nested : Boolean := False);
-      --  Checks that no non-scalar object declaration appears before the
-      --  last loop-invariant or variant in a loop's list of statements. Also
-      --  stores scalar objects declared before the last loop-invariant in
-      --  Loop_Entity_Set. Nested should be true when checking statements
-      --  coming from a nested construct of the loop (if, case, extended
-      --  return statements and nested loops).
-
-      procedure Check_Unrolled_Loop (Loop_Stmt : Node_Id);
-      --  If Loop_Stmt is candidate for loop unrolling, then mark all objects
-      --  declared in the loop so that their translation into Why3 does not
-      --  introduce constants.
 
       ------------------------------------
       -- Check_Loop_Invariant_Placement --
@@ -1043,6 +1046,17 @@ package body SPARK_Definition is
          end if;
       end Check_Unrolled_Loop;
 
+      -------------------------------------
+      -- Inside_Named_Number_Declaration --
+      -------------------------------------
+
+      function Inside_Named_Number_Declaration (N : Node_Id) return Boolean is
+         Decl : constant Node_Id := Enclosing_Declaration (N);
+      begin
+         return Present (Decl)
+           and then Nkind (Decl) = N_Number_Declaration;
+      end Inside_Named_Number_Declaration;
+
       -------------------------
       -- Is_Update_Aggregate --
       -------------------------
@@ -1117,26 +1131,47 @@ package body SPARK_Definition is
    begin
       Current_Error_Node := N;
 
-      --  If present, the type of N should be in SPARK. This also allows
-      --  marking Itypes and class-wide types at their first occurrence
-      --  (inside In_SPARK).
-
-      --  The Itype may be located in some other unit than the expression, and
-      --  a violation of SPARK_Mode on the Itype may mask another violation on
-      --  the expression. As we prefer to have the error located on the
-      --  expression, we mark the type of the node after the expression.
-
-      --  The type may be absent on kinds of nodes that should have types,
-      --  in very special cases, like the fake aggregate node in a 'Update
-      --  attribute_reference, and the fake identifier node for an abstract
-      --  state. So we also check that the type is explicitly present.
-
       if Nkind (N) in N_Has_Etype
         and then Present (Etype (N))
         and then Is_Type (Etype (N))
-        and then not Retysp_In_SPARK (Etype (N))
       then
-         Mark_Violation (N, From => Etype (N));
+         --  If an expression is of type Universal_Real, then we cannot
+         --  translate it into Why3. This may occur when asserting properties
+         --  fully over real values. Compiler will pick the largest
+         --  floating-point type in that case. GNATprove should reject
+         --  such cases. The case of named numbers is ignored, as it is the
+         --  occurrence of the named number which will be accepted or rejected.
+
+         if Etype (N) = Universal_Real
+           and then not Inside_Named_Number_Declaration (N)
+         then
+            Mark_Violation
+              ("expression of type root_real", N,
+               Cont_Msg => "value is dependent on the compiler and target");
+
+            --  Return immediately to avoid issuing the same message on all
+            --  sub-expressions of this expression.
+
+            return;
+
+         --  If present, the type of N should be in SPARK. This also allows
+         --  marking Itypes and class-wide types at their first occurrence
+         --  (inside In_SPARK).
+
+         --  The Itype may be located in some other unit than the expression,
+         --  and a violation of SPARK_Mode on the Itype may mask another
+         --  violation on the expression. As we prefer to have the error
+         --  located on the expression, we mark the type of the node after
+         --  the expression.
+
+         --  The type may be absent on kinds of nodes that should have types,
+         --  in very special cases, like the fake aggregate node in a 'Update
+         --  attribute_reference, and the fake identifier node for an abstract
+         --  state. So we also check that the type is explicitly present.
+
+         elsif not Retysp_In_SPARK (Etype (N)) then
+            Mark_Violation (N, From => Etype (N));
+         end if;
       end if;
 
       --  Dispatch on node kind
@@ -6024,7 +6059,7 @@ package body SPARK_Definition is
          end if;
 
          if Cont_Msg /= "" then
-            Error_Msg_N ('\' & Cont_Msg, N);
+            Error_Msg_F ('\' & Cont_Msg, N);
          end if;
 
          Mark_Violation_Of_SPARK_Mode (N);
