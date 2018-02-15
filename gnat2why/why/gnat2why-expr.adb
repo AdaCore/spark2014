@@ -10550,17 +10550,75 @@ package body Gnat2Why.Expr is
 
          when N_Subtype_Declaration
             | N_Full_Type_Declaration
-            =>
-            declare
+         =>
+            Do_Type_Declaration : declare
+               function Cstr_Subtype_Indication (N : Node_Id) return Boolean;
+               --  Returns whether the subtype indication for node N (which may
+               --  be a subtype declaration or a derived type definition) has a
+               --  constraint.
+
+               function Is_Type_Renaming (Decl : Node_Id) return Boolean;
+               --  Returns whether type declaration Decl defines a new name for
+               --  an existing type, either through a subtype:
+               --     subtype Sub is Existing;
+               --  or a derived type:
+               --     type Der is new Existing;
+
+               -----------------------------
+               -- Cstr_Subtype_Indication --
+               -----------------------------
+
+               function Cstr_Subtype_Indication (N : Node_Id) return Boolean is
+                  (Nkind (Subtype_Indication (N)) = N_Subtype_Indication);
+
+               ----------------------
+               -- Is_Type_Renaming --
+               ----------------------
+
+               function Is_Type_Renaming (Decl : Node_Id) return Boolean is
+               begin
+                  case Nkind (Decl) is
+                     when N_Subtype_Declaration =>
+                        return not Cstr_Subtype_Indication (Decl);
+
+                     when N_Full_Type_Declaration =>
+                        if Nkind (Type_Definition (Decl)) =
+                           N_Derived_Type_Definition
+                        then
+                           declare
+                              Def : constant Node_Id := Type_Definition (Decl);
+                           begin
+                              return No (Record_Extension_Part (Def))
+                                and then not Cstr_Subtype_Indication (Def);
+                           end;
+                        else
+                           return False;
+                        end if;
+
+                     when others =>
+                        return False;
+                  end case;
+               end Is_Type_Renaming;
+
                Ent  : Entity_Id := Unique_Defining_Entity (Decl);
                Base : Entity_Id := Get_Base_Type (Decl);
+
+            --  Start of processing for Do_Type_Declaration
+
             begin
                Ent := Retysp (Ent);
                if Present (Base) then
                   Base := Retysp (Base);
                end if;
 
-               if Entity_In_SPARK (Ent) then
+               --  Check for absence of run-time errors in type declaration
+               --  when the entity is in SPARK, and the type declaration is
+               --  not simply a renaming of an existing type. This avoids
+               --  duplicating checks for every such renaming.
+
+               if Entity_In_SPARK (Ent)
+                 and then not Is_Type_Renaming (Decl)
+               then
                   case Ekind (Ent) is
                   when Scalar_Kind =>
 
@@ -10719,23 +10777,24 @@ package body Gnat2Why.Expr is
                         & Entity_Kind'Image (Ekind (Ent)));
                      raise Not_Implemented;
                   end case;
-
-                  --  If the type has an invariant, check that there can be no
-                  --  runtime error in the type invariant.
-                  --  If the type, one of its ancestors, or one of its
-                  --  components has an invariant, check that default values of
-                  --  the type and all its subtypes respect the invariant.
-
-                  if Nkind (Decl) = N_Full_Type_Declaration
-                    and then Invariant_Check_Needed (Ent)
-                  then
-                     R := Sequence
-                       (R,
-                        Check_Type_With_Invariants (Params => Body_Params,
-                                                    N      => Ent));
-                  end if;
                end if;
-            end;
+
+               --  If the type has an invariant, check that there can be no
+               --  runtime error in the type invariant. If the type, one of its
+               --  ancestors, or one of its components has an invariant, check
+               --  that default values of the type and all its subtypes respect
+               --  the invariant.
+
+               if Entity_In_SPARK (Ent)
+                 and then Nkind (Decl) = N_Full_Type_Declaration
+                 and then Invariant_Check_Needed (Ent)
+               then
+                  R := Sequence
+                    (R,
+                     Check_Type_With_Invariants (Params => Body_Params,
+                                                 N      => Ent));
+               end if;
+            end Do_Type_Declaration;
 
          when N_Pragma =>
             R := Transform_Pragma (Decl, Force => False);

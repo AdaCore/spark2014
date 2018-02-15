@@ -1,3 +1,2 @@
 logging.adb:15:15: info: range check proved (CVC4: 2 VC)
 logging.adb:16:30: info: range check proved (CVC4: 1 VC)
-logging.adb:16:30: medium: range check might fail
