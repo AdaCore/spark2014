@@ -1311,6 +1311,9 @@ package body SPARK_Definition is
 
                   end;
 
+                  if Present (Subtype_Indication (N)) then
+                     Mark (Subtype_Indication (N));
+                  end if;
                   Mark (Name (N));
 
                elsif Of_Present (N)
