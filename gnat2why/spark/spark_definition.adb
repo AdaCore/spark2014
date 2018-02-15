@@ -5510,10 +5510,6 @@ package body SPARK_Definition is
       Insert_All_And_SPARK (Standard_Integer_32);
       Insert_All_And_SPARK (Standard_Integer_64);
 
-      --  Marking this expression may be needed for any subprogram that might
-      --  be main, so that's often enough to put this here.
-
-      Mark (Expression (Parent (RTE (RE_Default_Priority))));
    end Mark_Standard_Package;
 
    ----------------------------
@@ -5751,6 +5747,15 @@ package body SPARK_Definition is
                         end;
                      end if;
                   end;
+               end if;
+
+               --  Marking this expression may be needed for any subprogram
+               --  that might be main.
+
+               if Ekind (E) in E_Function | E_Procedure
+                 and then Might_Be_Main (E)
+               then
+                  Mark (Expression (Parent (RTE (RE_Default_Priority))));
                end if;
 
                --  Detect violations in the body itself
