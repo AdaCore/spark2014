@@ -5071,15 +5071,15 @@ package body Flow_Utility is
                --    Ekind (T_To) in Class_Wide_Kind;
 
                Class_Wide_Conversion : constant Boolean :=
-                 not Is_Class_Wide_Type (T_From) and then
-                 Is_Class_Wide_Type (T_To);
+                 not Is_Class_Wide_Type (T_From)
+                 and then Is_Class_Wide_Type (T_To);
 
                Tmp : constant Flow_Id_Maps.Map :=
                  Recurse_On (Expression (N),
                              Map_Root,
                              Ext_Irrelevant =>
-                               not (Class_Wide_Conversion or
-                                      not Extensions_Irrelevant));
+                                not (Class_Wide_Conversion
+                                     or not Extensions_Irrelevant));
                --  If we convert to a classwide type then any extensions
                --  are no longer irrelevant.
 
@@ -5087,8 +5087,10 @@ package body Flow_Utility is
 
                The_Ext : constant Flow_Id :=
                  Map_Root'Update (Facet => Extension_Part);
+
                The_Tg : constant Flow_Id :=
                  Map_Root'Update (Facet => The_Tag);
+
             begin
                if Debug_Trace_Untangle_Record then
                   Write_Str ("from: ");
@@ -5112,6 +5114,7 @@ package body Flow_Utility is
                   declare
                      Output : Flow_Id          renames Flow_Id_Maps.Key (C);
                      Inputs : Flow_Id_Sets.Set renames Tmp (C);
+
                   begin
                      if Valid_To_Fields.Contains (Output) then
                         M.Include (Output, Inputs);
@@ -5164,8 +5167,8 @@ package body Flow_Utility is
 
                      Class_Wide_Conversion : constant Boolean :=
                        not Is_Class_Wide_Type (Get_Type (N, Scope))
-                         and then
-                       Is_Class_Wide_Type (Map_Type);
+                       and then Is_Class_Wide_Type (Map_Type);
+
                   begin
                      M := Recurse_On (Prefix (N),
                                       Map_Root,
@@ -5201,6 +5204,25 @@ package body Flow_Utility is
                      end loop;
                   end;
 
+               when Attribute_Result =>
+                  if Debug_Trace_Untangle_Record then
+                     Write_Str ("processing attribute result");
+                     Write_Eol;
+                  end if;
+
+                  declare
+                     Class_Wide_Conversion : constant Boolean :=
+                       not Is_Class_Wide_Type (Get_Type (N, Scope))
+                       and then Is_Class_Wide_Type (Map_Type);
+
+                  begin
+                     M := Recurse_On (Prefix (N),
+                                      Map_Root,
+                                      Ext_Irrelevant =>
+                                         not (Class_Wide_Conversion
+                                              or not Extensions_Irrelevant));
+                  end;
+
                when others =>
                   Error_Msg_N ("cannot untangle attribute", N);
                   raise Why.Not_Implemented;
@@ -5212,6 +5234,7 @@ package body Flow_Utility is
             declare
                FS  : constant Flow_Id_Sets.Set := Get_Vars_Wrapper (N);
                LHS : Flow_Id_Sets.Set;
+
             begin
                if M.Is_Empty then
                   LHS := Flatten_Variable (Map_Root, Scope);
@@ -5229,6 +5252,7 @@ package body Flow_Utility is
          when others =>
             declare
                S : constant String := Nkind (N)'Img;
+
             begin
                Error_Msg_Strlen := S'Length;
                Error_Msg_String (1 .. Error_Msg_Strlen) := S;
