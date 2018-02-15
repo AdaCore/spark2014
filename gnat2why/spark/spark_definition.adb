@@ -2572,7 +2572,7 @@ package body SPARK_Definition is
                   --  Accept external calls prefixed with library-level objects
 
                   when E_Variable =>
-                     null;
+                     Mark (Prefix (Name (N)));
 
                   when others =>
                      raise Program_Error;
