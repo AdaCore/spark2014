@@ -12468,7 +12468,8 @@ package body Gnat2Why.Expr is
          --  subprogram, use the Refine variant of the program function, which
          --  has the appropriate refined contract.
 
-         elsif Has_Contracts (Subp, Pragma_Refined_Post)
+         elsif Entity_Body_In_SPARK (Subp)
+           and then Has_Contracts (Subp, Pragma_Refined_Post)
            and then Has_Visibility_On_Refined (Expr, Subp)
          then
             Refine
@@ -15393,7 +15394,8 @@ package body Gnat2Why.Expr is
                   --  of the program function, which has the appropriate
                   --  refined contract.
 
-                  elsif Has_Contracts (Subp, Pragma_Refined_Post)
+                  elsif Entity_Body_In_SPARK (Subp)
+                    and then Has_Contracts (Subp, Pragma_Refined_Post)
                     and then Has_Visibility_On_Refined (Stmt_Or_Decl, Subp)
                   then
                      Refine
