@@ -172,9 +172,8 @@ package body SPARK_Rewrite is
 
    procedure Rewrite_Real_Literal (N : Node_Id) is
       Par : constant Node_Id := Parent (N);
-      PK  : constant Node_Kind := Nkind (Par);
    begin
-      if PK in N_Subexpr
+      if Nkind (Par) in N_Subexpr
         and then not Is_Static_Expression (Par)
         and then Present (Etype (N))
       then
