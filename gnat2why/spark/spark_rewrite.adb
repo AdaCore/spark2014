@@ -129,12 +129,14 @@ package body SPARK_Rewrite is
    --  constants, for example constants of fixed-point types.
 
    procedure Rewrite_Identifier (N : Node_Id) is
+      E : constant Entity_Id := Entity (N);
+
    begin
-      if Present (Entity (N))
-        and then Ekind (Entity (N)) = E_Constant
+      if Present (E)
+        and then Ekind (E) = E_Constant
       then
          declare
-            Const_Expr  : constant Node_Id := Constant_Value (Entity (N));
+            Const_Expr  : constant Node_Id := Constant_Value (E);
             Range_Check : constant Boolean := Do_Range_Check (N);
          begin
             if Present (Const_Expr)
