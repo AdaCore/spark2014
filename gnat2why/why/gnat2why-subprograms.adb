@@ -4814,7 +4814,6 @@ package body Gnat2Why.Subprograms is
 
             if Present (Expr_Fun_N)
               and then Entity_Body_Compatible_With_SPARK (E)
-              and then not No_Return (E)
               and then
                 (not Is_Volatile_Function (E)
                  or else Within_Protected_Type (E))
