@@ -108,12 +108,13 @@ the source code:
 
 Warnings with the specified message are suppressed in the region starting at
 pragma ``Warnings Off`` and ending at the matching pragma ``Warnings On`` or at
-the end of the enclosing scope. The ``Reason`` argument string is optional. A
-regular expression can be given instead of a specific message in order to
-suppress all warnings of a given form. Pragma ``Warnings Off`` can be added in
-a configuration file to suppress the corresponding warnings across all units in
-the project. Pragma ``Warnings Off`` can be specified for an entity to suppress
-all warnings related to this entity.
+the end of the file (pragma ``Warnings`` is purely textual, so its effect does
+not stop at the end of the enclosing scope). The ``Reason`` argument string is
+optional. A regular expression can be given instead of a specific message in
+order to suppress all warnings of a given form. Pragma ``Warnings Off`` can be
+added in a configuration file to suppress the corresponding warnings across all
+units in the project. Pragma ``Warnings Off`` can be specified for an entity to
+suppress all warnings related to this entity.
 
 Pragma ``Warnings`` can also take a first argument of ``GNAT`` or ``GNATprove``
 to specify that it applies only to GNAT compiler or GNATprove. For example, the
