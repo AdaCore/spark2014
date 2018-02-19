@@ -1837,8 +1837,8 @@ package body Why.Atree.Modules is
                   Domain => EW_Pred,
                   Typ    => EW_Unit_Type));
 
-            if Has_Contracts (E, Pragma_Refined_Post)
-              and then Entity_Body_In_SPARK (E)
+            if Entity_Body_In_SPARK (E)
+              and then Has_Contracts (E, Pragma_Refined_Post)
             then
                Insert_Symbol
                  (E, WNE_Refined_Func_Guard,

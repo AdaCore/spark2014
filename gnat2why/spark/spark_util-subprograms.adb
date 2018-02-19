@@ -240,6 +240,14 @@ package body SPARK_Util.Subprograms is
             | Pragma_Initial_Condition
          =>
             if Name = Pragma_Refined_Post then
+
+               --  Querying the Refined_Post is only allowed when the body is
+               --  annotated with SPARK_Mode => On; otherwise, GNATprove must
+               --  make no decision based on the presence, absence or contents
+               --  of this contract.
+
+               pragma Assert (Entity_Body_In_SPARK (E));
+
                declare
                   Body_E : constant Entity_Id := Get_Body_Entity (E);
                   --  ??? here we shall check for stubs, just like we do in

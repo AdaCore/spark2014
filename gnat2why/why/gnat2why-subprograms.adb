@@ -2931,7 +2931,8 @@ package body Gnat2Why.Subprograms is
       --  Checks the type invariants of global output and of out parameters if
       --  E is a boundary subprogram.
 
-      function Checking_Of_Refined_Post (Arg : W_Prog_Id) return W_Prog_Id;
+      function Checking_Of_Refined_Post (Arg : W_Prog_Id) return W_Prog_Id
+      with Pre => Entity_Body_In_SPARK (E);
       --  Encapsulate the translated body inside an abstract program with
       --  the Refined_Post as a postcondition.
       --  Assume the dynamic property of modified variables after the call.
@@ -3162,9 +3163,7 @@ package body Gnat2Why.Subprograms is
 
          Prog : W_Prog_Id := Arg;
       begin
-         if Has_Contracts (E, Pragma_Refined_Post)
-           and then Entity_Body_In_SPARK (E)
-         then
+         if Has_Contracts (E, Pragma_Refined_Post) then
             Prog :=
               Sequence
                 (Prog,
@@ -3879,8 +3878,8 @@ package body Gnat2Why.Subprograms is
          end if;
       end if;
 
-      if Has_Contracts (E, Pragma_Refined_Post)
-        and then Entity_Body_In_SPARK (E)
+      if Entity_Body_In_SPARK (E)
+        and then Has_Contracts (E, Pragma_Refined_Post)
       then
          Refined_Post := +Compute_Spec (Params,
                                         E, Pragma_Refined_Post, EW_Pred);
@@ -4037,8 +4036,8 @@ package body Gnat2Why.Subprograms is
                              Dispatch => True);
          end if;
 
-         if Has_Contracts (E, Pragma_Refined_Post)
-           and then Entity_Body_In_SPARK (E)
+         if Entity_Body_In_SPARK (E)
+           and then Has_Contracts (E, Pragma_Refined_Post)
          then
             pragma Assert (Present (Refined_Post));
             Emit_Post_Axiom (Post_Refine_Axiom,
@@ -4651,8 +4650,8 @@ package body Gnat2Why.Subprograms is
             Dispatch_Post := False_Pred;
          end if;
 
-         if Has_Contracts (E, Pragma_Refined_Post)
-           and then Entity_Body_In_SPARK (E)
+         if Entity_Body_In_SPARK (E)
+           and then Has_Contracts (E, Pragma_Refined_Post)
          then
             Refined_Post := False_Pred;
          end if;
@@ -4679,8 +4678,8 @@ package body Gnat2Why.Subprograms is
             end if;
          end if;
 
-         if Has_Contracts (E, Pragma_Refined_Post)
-           and then Entity_Body_In_SPARK (E)
+         if Entity_Body_In_SPARK (E)
+           and then Has_Contracts (E, Pragma_Refined_Post)
          then
             Refined_Post :=
               Get_Static_Call_Contract (Params, E, Pragma_Refined_Post);
@@ -4836,8 +4835,8 @@ package body Gnat2Why.Subprograms is
                                     Args => (Res_Expr, Expr_Body),
                                     Typ  => EW_Bool_Type));
                begin
-                  if Has_Contracts (E, Pragma_Refined_Post)
-                    and then Entity_Body_In_SPARK (E)
+                  if Entity_Body_In_SPARK (E)
+                    and then Has_Contracts (E, Pragma_Refined_Post)
                   then
                      Refined_Post :=
                        +New_And_Expr (+Eq_Expr, +Refined_Post, EW_Pred);
@@ -4890,8 +4889,8 @@ package body Gnat2Why.Subprograms is
                              Dispatch  => True))));
             end if;
 
-            if Has_Contracts (E, Pragma_Refined_Post)
-              and then Entity_Body_In_SPARK (E)
+            if Entity_Body_In_SPARK (E)
+              and then Has_Contracts (E, Pragma_Refined_Post)
             then
                Emit
                  (File,
@@ -5075,8 +5074,8 @@ package body Gnat2Why.Subprograms is
                              Post        => False_Pred))));
             end if;
 
-            if Has_Contracts (E, Pragma_Refined_Post)
-              and then Entity_Body_In_SPARK (E)
+            if Entity_Body_In_SPARK (E)
+              and then Has_Contracts (E, Pragma_Refined_Post)
             then
                Emit
                  (File,
@@ -5172,15 +5171,18 @@ package body Gnat2Why.Subprograms is
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Flat_Binders       : constant Binder_Array :=
         To_Binder_Array (Logic_Func_Binders);
+
+      Use_Refined_Post : constant Boolean :=
+        Entity_Body_In_SPARK (E)
+        and then Has_Contracts (E, Pragma_Refined_Post);
+
       Logic_Id           : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Term, Local => False,
-                   Selector => (if Has_Contracts (E, Pragma_Refined_Post)
-                                  and then Entity_Body_In_SPARK (E)
+                   Selector => (if Use_Refined_Post
                                 then Refine
                                 else Why.Inter.Standard));
       Pred_Name          : constant Why_Name_Enum :=
-        (if Has_Contracts (E, Pragma_Refined_Post)
-           and then Entity_Body_In_SPARK (E)
+        (if Use_Refined_Post
          then WNE_Refined_Func_Guard
          else WNE_Func_Guard);
       Result_Id          : constant W_Identifier_Id :=
@@ -5544,13 +5546,13 @@ package body Gnat2Why.Subprograms is
                              Return_Type => EW_Bool_Type))));
             end if;
 
-            if Has_Contracts (E, Pragma_Refined_Post)
-              and then Entity_Body_In_SPARK (E)
+            if Entity_Body_In_SPARK (E)
+              and then Has_Contracts (E, Pragma_Refined_Post)
             then
                Emit
                  (File,
                   New_Namespace_Declaration
-                    (Name    => NID (To_String (WNE_Refine_Module)),
+                    (Name         => NID (To_String (WNE_Refine_Module)),
                      Declarations =>
                        (1 => New_Function_Decl
                             (Domain      => EW_Term,
