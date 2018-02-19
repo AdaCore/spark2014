@@ -1,5 +1,5 @@
-procedure Init with SPARK_Mode is
+procedure Init (Y : in out Integer) is
    X : String(1 .. 5);
 begin
-   X(1) := ' ';
+   X (1) := ' ';
 end Init;
