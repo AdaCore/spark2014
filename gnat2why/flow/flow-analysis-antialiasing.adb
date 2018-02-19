@@ -758,7 +758,7 @@ package body Flow.Analysis.Antialiasing is
                       Classwide  => Flow_Classwide.Is_Dispatching_Call (Call),
                       Globals    => Globals);
          if Is_Out then
-            for R of Globals.Inputs loop
+            for R of Globals.Inputs.Union (Globals.Proof_Ins) loop
                --  No use in checking both the read and the write of
                --  an in out global.
                if not Globals.Outputs.Contains (Change_Variant (R, Out_View))
