@@ -1,3 +1,8 @@
 from test_support import *
 
-prove_all (opt=["--no-axiom-guard"])
+contains_manual_proof = True
+
+def replay():
+     prove_all(procs=10, counterexample=False, prover=["z3","cvc4"], steps=10000)
+
+prove_all (opt=["--replay"])

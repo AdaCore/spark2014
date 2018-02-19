@@ -1,6 +1,8 @@
 import glob
 from test_support import *
 
+contains_manual_proof = False
+
 def replay():
     prove_all(procs=0, opt=["--level=2", "--no-axiom-guard"], steps=None, vc_timeout=20)
 
@@ -16,4 +18,3 @@ for fn in glob.glob("gnatprove/*.spark"):
             count += len(r['check_tree'])
 if __name__ == "__main__":
     assert (count > 1000)
-
