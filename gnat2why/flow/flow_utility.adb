@@ -5041,11 +5041,13 @@ package body Flow_Utility is
 
                To_Ext : Flow_Id_Sets.Set;
                F      : Flow_Id;
+
             begin
                if Extensions_Visible (Entity (N), Scope)
-                 and then ((Is_Class_Wide_Type (Map_Type) and then
-                              not Is_Class_Wide_Type (Etype (N)))
-                             or else not Extensions_Irrelevant)
+                 and then
+                   ((Is_Class_Wide_Type (Map_Type)
+                     and then not Is_Class_Wide_Type (Etype (N)))
+                    or else not Extensions_Irrelevant)
                then
                   --  This is an implicit conversion to class wide, or we
                   --  for some other reason care specifically about the
@@ -5398,9 +5400,9 @@ package body Flow_Utility is
             when N_Type_Conversion =>
                if Process_Type_Conversions then
                   declare
-                     Old_Typ  : constant Entity_Id        :=
-                       Etype (Expression (N));
-                     New_Typ  : constant Entity_Id        := Etype (N);
+                     Old_Typ  : constant Entity_Id := Etype (Expression (N));
+                     New_Typ  : constant Entity_Id := Etype (N);
+
                      Old_Vars : constant Flow_Id_Sets.Set := Vars_Defined;
 
                      function In_Type (C : Entity_Id) return Boolean is
@@ -5438,6 +5440,7 @@ package body Flow_Utility is
                declare
                   Ptr  : Node_Id := First (Expressions (N));
                   A, B : Flow_Id_Sets.Set;
+
                begin
                   while Present (Ptr) loop
                      A := Get_Vars_Wrapper (Ptr, Fold => False);
@@ -5453,6 +5456,7 @@ package body Flow_Utility is
             when N_Slice =>
                declare
                   A, B : Flow_Id_Sets.Set;
+
                begin
                   A := Get_Vars_Wrapper (Discrete_Range (N), Fold => False);
                   B := Get_Vars_Wrapper (Discrete_Range (N), Fold => True);
@@ -5475,6 +5479,7 @@ package body Flow_Utility is
 
       if Nkind (N) = N_Type_Conversion
         and then Ekind (Etype (N)) in Class_Wide_Kind
+        and then Extensions_Visible (Base_Node, Scope)
       then
          Vars_Defined.Include (Base_Node'Update (Facet => Extension_Part));
       end if;
