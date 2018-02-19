@@ -390,7 +390,6 @@ is
      (N                  : Node_Id;
       Partial_Definition : out Boolean;
       View_Conversion    : out Boolean;
-      Classwide          : out Boolean;
       Map_Root           : out Flow_Id;
       Seq                : out Node_Lists.List)
    with Pre  => Is_Valid_Assignment_Target (N),
@@ -401,7 +400,6 @@ is
    --  * Partial_Definition: the assignment to N touches only a few elements
    --                        of a larger array.
    --  * View_Conversion: N contains a view conversion.
-   --  * Classwide: the assignment to map_root is classwide.
    --  * Map_Root: the non-flattened Flow_Id which is assigned to.
    --  * Seq: items used to derive Map_Root.
 

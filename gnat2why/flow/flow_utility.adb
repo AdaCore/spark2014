@@ -843,7 +843,6 @@ package body Flow_Utility is
      (N                  : Node_Id;
       Partial_Definition : out Boolean;
       View_Conversion    : out Boolean;
-      Classwide          : out Boolean;
       Map_Root           : out Flow_Id;
       Seq                : out Node_Lists.List)
    is
@@ -875,7 +874,6 @@ package body Flow_Utility is
 
       Partial_Definition := False;
       View_Conversion    := False;
-      Classwide          := False;
       Map_Root           := Direct_Mapping_Id (Unique_Entity
                                                  (Entity (Root_Node)));
 
@@ -890,20 +888,15 @@ package body Flow_Utility is
                Map_Root := Add_Component (Map_Root,
                                           Original_Record_Component
                                             (Entity (Selector_Name (N))));
-               Classwide := False;
 
             when N_Type_Conversion =>
                View_Conversion := True;
-               if Ekind (Etype (N)) in Class_Wide_Kind then
-                  Classwide := True;
-               end if;
 
             when N_Unchecked_Type_Conversion =>
                null;
 
             when others =>
                Partial_Definition := True;
-               Classwide          := False;
                exit;
          end case;
       end loop;
@@ -5333,7 +5326,6 @@ package body Flow_Utility is
              Reduced              => False));
 
       Unused                   : Boolean;
-      Classwide                : Boolean;
       Base_Node                : Flow_Id;
       Seq                      : Node_Lists.List;
 
@@ -5355,7 +5347,6 @@ package body Flow_Utility is
         (N,
          Partial_Definition => Partial_Definition,
          View_Conversion    => Unused,
-         Classwide          => Classwide,
          Map_Root           => Base_Node,
          Seq                => Seq);
 
@@ -5482,7 +5473,9 @@ package body Flow_Utility is
          end case;
       end loop;
 
-      if Classwide then
+      if Nkind (N) = N_Type_Conversion
+        and then Ekind (Etype (N)) in Class_Wide_Kind
+      then
          Vars_Defined.Include (Base_Node'Update (Facet => Extension_Part));
       end if;
 

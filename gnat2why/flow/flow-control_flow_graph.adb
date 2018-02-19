@@ -1446,7 +1446,6 @@ package body Flow.Control_Flow_Graph is
 
       Partial         : Boolean;
       View_Conversion : Boolean;
-      Classwide       : Boolean;
       Map_Root        : Flow_Id;
       To_Cw           : constant Boolean :=
         Is_Class_Wide_Type (Get_Type (Name (N), FA.B_Scope)) and then
@@ -1467,12 +1466,12 @@ package body Flow.Control_Flow_Graph is
 
       declare
          Unused : Node_Lists.List;
+
       begin
          Get_Assignment_Target_Properties
            (Name (N),
             Partial_Definition => Partial,
             View_Conversion    => View_Conversion,
-            Classwide          => Classwide,
             Map_Root           => Map_Root,
             Seq                => Unused);
       end;

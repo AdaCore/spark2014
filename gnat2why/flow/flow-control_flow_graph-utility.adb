@@ -317,8 +317,8 @@ package body Flow.Control_Flow_Graph.Utility is
             Partial    : Boolean;
             Unused_Vc  : Boolean;
             Unused_Seq : Node_Lists.List;
-            Classwide  : Boolean;
             Map_Root   : Flow_Id;
+
          begin
             --  We're interested in the map root, since we might have to do
             --  something about extensions.
@@ -326,7 +326,6 @@ package body Flow.Control_Flow_Graph.Utility is
               (Actual,
                Partial_Definition => Partial,
                View_Conversion    => Unused_Vc,
-               Classwide          => Classwide,
                Map_Root           => Map_Root,
                Seq                => Unused_Seq);
 
