@@ -1679,24 +1679,35 @@ package body SPARK_Util is
             --  parent type, then locate the corresponding discriminant of the
             --  parent type by calling Corresponding_Discriminant. This is
             --  needed because both discriminants may not have the same name.
+            --  Only follow the link if the scope of the corresponding
+            --  discriminant is in SPARK to avoid hopping outside of the
+            --  SPARK bondaries.
 
-            if Present (Corresponding_Discriminant (Comp)) then
-               Comp     := Corresponding_Discriminant (Comp);
-               Cur_Type := Retysp (Scope (Comp));
+            declare
+               Par_Discr : constant Entity_Id :=
+                 Corresponding_Discriminant (Comp);
+            begin
 
-            --  Otherwise, just climb the type derivation/subtyping chain
+               if Present (Par_Discr)
+                 and then Entity_In_SPARK (Retysp (Scope (Par_Discr)))
+               then
+                  Comp     := Par_Discr;
+                  Cur_Type := Retysp (Scope (Comp));
 
-            else
-               declare
-                  Old_Type : constant Entity_Id := Cur_Type;
-               begin
-                  Cur_Type := (if Full_View_Not_In_SPARK (Cur_Type)
-                               then Get_First_Ancestor_In_SPARK (Cur_Type)
-                               else Retysp (Etype (Cur_Type)));
-                  pragma Assert (Cur_Type /= Old_Type);
-                  Comp := Search_Component_By_Name (Cur_Type, Comp);
-               end;
-            end if;
+               --  Otherwise, just climb the type derivation/subtyping chain
+
+               else
+                  declare
+                     Old_Type : constant Entity_Id := Cur_Type;
+                  begin
+                     Cur_Type := (if Full_View_Not_In_SPARK (Cur_Type)
+                                  then Get_First_Ancestor_In_SPARK (Cur_Type)
+                                  else Retysp (Etype (Cur_Type)));
+                     pragma Assert (Cur_Type /= Old_Type);
+                     Comp := Search_Component_By_Name (Cur_Type, Comp);
+                  end;
+               end if;
+            end;
          end loop;
 
          return Comp;
