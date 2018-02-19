@@ -1082,10 +1082,10 @@ package body Gnat2Why.Expr is
             (if Self_Is_Mutable then
                    New_Deref (Right => Self_Name, Typ => Get_Typ (Self_Name))
               else +Self_Name)
-         else Transform_Identifier (Params   => Params,
-                                    Expr     => E,
-                                    Ent      => E,
-                                    Domain   => EW_Term));
+         else Transform_Identifier (Params => Params,
+                                    Expr   => E,
+                                    Ent    => E,
+                                    Domain => EW_Term));
 
    begin
       --  Assume dynamic property of E
@@ -12838,8 +12838,8 @@ package body Gnat2Why.Expr is
                          Typ      => Get_Type (T));
             Dyn_Prop : constant W_Pred_Id :=
               Compute_Dynamic_Invariant (Expr   => +Deref,
-                                        Ty     => Etype (Ent),
-                                        Params => Params);
+                                         Ty     => Etype (Ent),
+                                         Params => Params);
             Havoc    : W_Prog_Id := New_Havoc_Call (+T);
          begin
             if Dyn_Prop /= True_Pred then
