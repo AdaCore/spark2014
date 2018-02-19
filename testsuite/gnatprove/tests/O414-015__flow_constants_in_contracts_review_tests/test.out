@@ -25,8 +25,8 @@ info_flow_tests.adb:79:22: info: postcondition proved (CVC4: 1 VC)
 info_flow_tests.adb:84:32: info: precondition proved (CVC4: 1 VC)
 info_flow_tests.adb:86:32: info: precondition proved (CVC4: 1 VC)
 info_flow_tests.adb:87:32: info: precondition proved (CVC4: 1 VC)
-info_flow_tests.adb:89:17: medium: constant without variable input "C1" cannot appear in Globals
 info_flow_tests.adb:89:25: info: initialization of "X" proved
+info_flow_tests.adb:90:25: medium: constant without variable input "C1" cannot appear in Globals
 info_flow_tests.adb:90:29: medium: constant without variable input "C2" cannot appear in Globals
 info_flow_tests.adb:90:37: medium: constant without variable input "C4" cannot appear in Globals
 info_flow_tests.adb:90:45: medium: constant without variable input "C6" cannot appear in Globals

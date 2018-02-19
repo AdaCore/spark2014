@@ -29,7 +29,7 @@ const4.adb:5:04: info: initialization of "H" constituent of "State" proved
 const4.ads:6:27: medium: constant without variable input "C" cannot appear in Initializes
 const4.ads:7:32: medium: constant without variable input "S" cannot appear in Initializes
 const4.ads:10:04: info: initialization of "V" proved
-const4.ads:12:13: medium: constant without variable input "C" cannot appear in Globals
+const4.ads:13:21: medium: constant without variable input "C" cannot appear in Globals
 const4.ads:15:14: medium: constant without variable input "C" cannot appear in Globals
 const4.ads:15:17: info: initialization of "X" proved
 const4.ads:16:28: medium: constant without variable input "C" cannot appear in Depends
