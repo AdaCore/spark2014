@@ -181,9 +181,9 @@ package body Flow_Utility is
       Loop_Info (Loop_E).Union (Writes);
    end Add_Loop_Writes;
 
-   -------------------------
-   -- Add_To_Temp_String  --
-   -------------------------
+   ------------------------
+   -- Add_To_Temp_String --
+   ------------------------
 
    procedure Add_To_Temp_String (S : String) is
       Whitespace : constant Ada.Strings.Maps.Character_Set :=
