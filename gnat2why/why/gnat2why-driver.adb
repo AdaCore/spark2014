@@ -64,6 +64,7 @@ with Osint.C;                         use Osint.C;
 with Osint;                           use Osint;
 with Output;                          use Output;
 with Outputs;                         use Outputs;
+with Rtsfind;                         use Rtsfind;
 with Sem;
 with Sem_Aux;                         use Sem_Aux;
 with Sem_Util;                        use Sem_Util;
@@ -409,6 +410,18 @@ package body Gnat2Why.Driver is
       Nlists.Unlock;
       Sem.Scope_Stack.Locked := False;
       Lib.Unlock;
+
+      --  In phase 2, when the --mode=proof switch is used, load the System
+      --  unit, because we might need the System.Default_Priority expression
+      --  for checks related to the ceiling priority protocol. We do this here
+      --  both because loading from within the Sem.Walk_Library_Items is risky
+      --  and because we must register the "flow scopes" for the System unit.
+
+      if Ekind (E) in E_Function | E_Procedure
+        and then Might_Be_Main (E)
+      then
+         SPARK_Implicit_Load (RE_Default_Priority);
+      end if;
 
       --  Before any analysis takes place, perform some rewritings of the tree
       --  that facilitates analysis.

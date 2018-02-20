@@ -4468,6 +4468,12 @@ package body SPARK_Definition is
 
       if Ekind (E) in E_Protected_Type | E_Task_Type then
 
+         --  The System unit must be already loaded; see calls to
+         --  SPARK_Implicit_Load in Analyze_Protected_Type_Declaration and
+         --  Analyze_Task_Type_Declaration.
+
+         pragma Assert (RTU_Loaded (System));
+
          Mark_Entity (RTE (RE_Priority));
          Mark_Entity (RTE (RE_Interrupt_Priority));
 
@@ -5834,12 +5840,18 @@ package body SPARK_Definition is
                   end;
                end if;
 
-               --  Marking this expression may be needed for any subprogram
-               --  that might be main.
+               --  The System.Default_Priority expression may be needed for
+               --  checks related to the ceiling priority protocol.
 
                if Ekind (E) in E_Function | E_Procedure
                  and then Might_Be_Main (E)
+                 and then E = Main_Unit_Entity
                then
+                  --  The System unit must be already loaded; see call to
+                  --  SPARK_Implicit_Load in GNAT_To_Why.
+
+                  pragma Assert (RTU_Loaded (System));
+
                   Mark (Expression (Parent (RTE (RE_Default_Priority))));
                end if;
 
