@@ -1,4 +1,4 @@
-mainpre.adb:4:16: info: precondition of main program proved (CVC4: 1 VC)
+mainpre.adb:4:16: medium: precondition of main program might fail
 mainpre.adb:7:04: info: precondition proved (CVC4: 1 VC)
 pack.adb:4:04: info: initialization of "X" constituent of "State" proved
 pack.adb:4:04: warning: initialization of "X" constituent of "State" has no effect

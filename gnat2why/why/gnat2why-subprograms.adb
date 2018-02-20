@@ -2909,10 +2909,6 @@ package body Gnat2Why.Subprograms is
       --  Also assume the type invariants of global inputs of E and of global
       --  parameters if E is a boundary subprogram.
 
-      function Assume_Init_Cond_Of_Withed_Units return W_Prog_Id;
-      --  For compilation units, generate assumptions for Initial conditions of
-      --  withed units
-
       function Comp_Decl_At_Subp_Start return W_Prog_Id;
       --  The body of the subprogram may contain declarations that are in fact
       --  essential to prove absence of RTE in the pre, e.g. compiler-generated
@@ -3013,30 +3009,6 @@ package body Gnat2Why.Subprograms is
                      For_Input => True,
                      Params    => Params))));
       end Assume_For_Input;
-
-      --------------------------------------
-      -- Assume_Init_Cond_Of_Withed_Units --
-      --------------------------------------
-
-      function Assume_Init_Cond_Of_Withed_Units return W_Prog_Id is
-         Params : constant Transformation_Params :=
-           (File        => File,
-            Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
-            Ref_Allowed => True,
-            Old_Allowed => True);
-      begin
-         if Is_Compilation_Unit (E) then
-            return
-              Sequence
-                (New_Comment
-                   (Comment =>
-                          NID ("Assume Initial_Condition of withed units")),
-                 Assume_Initial_Condition_Of_Withed_Units (E, Params));
-         else
-            return +Void;
-         end if;
-      end Assume_Init_Cond_Of_Withed_Units;
 
       -----------------------------
       -- Assume_Or_Assert_Of_Pre --
@@ -3570,7 +3542,6 @@ package body Gnat2Why.Subprograms is
 
       Prog := Sequence
         ((Assume_For_Input,
-          Assume_Init_Cond_Of_Withed_Units,
           Comp_Decl_At_Subp_Start,
           RTE_Of_Pre,
           Assume_Or_Assert_Of_Pre,
