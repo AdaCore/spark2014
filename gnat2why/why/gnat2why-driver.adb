@@ -410,8 +410,6 @@ package body Gnat2Why.Driver is
       Sem.Scope_Stack.Locked := False;
       Lib.Unlock;
 
-      Mark_Standard_Package;
-
       --  Before any analysis takes place, perform some rewritings of the tree
       --  that facilitates analysis.
 

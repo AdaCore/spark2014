@@ -2730,6 +2730,7 @@ package body SPARK_Definition is
       --  Separately mark declarations from Standard as in SPARK or not
 
       if N = Standard_Package_Node then
+         Mark_Standard_Package;
          return;
       end if;
 
