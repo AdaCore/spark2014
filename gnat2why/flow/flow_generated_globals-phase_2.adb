@@ -1941,10 +1941,6 @@ package body Flow_Generated_Globals.Phase_2 is
                          To_List'Result.First_Element = E;
             --  Returns a singleton list with E
 
-            --  ??? this could go into Common_Containers; in particular,
-            --  To_List has a body here, because it is needed to elaborate
-            --  a constant.
-
             -------------
             -- To_List --
             -------------
@@ -1957,10 +1953,10 @@ package body Flow_Generated_Globals.Phase_2 is
             end To_List;
 
             Variable : constant Name_Lists.List := To_List (Variable_Input);
-            --  A singleton containers a special value that represents a
-            --  dependency on a variable input. (By having a special-value
-            --  with the same type as non-variable dependencies we adoid
-            --  discriminated records, which would be just too verbose.)
+            --  A singleton container with a special value that represents
+            --  a dependency on a variable input. (By having a special-value
+            --  with the same type as non-variable dependencies we avoid
+            --  discriminated records, which would be very verbose.)
 
             -------------------------------------------------------------------
             --  List utilities
@@ -2054,11 +2050,11 @@ package body Flow_Generated_Globals.Phase_2 is
                   Append (Inputs, Globals.Calls.Conditional_Calls);
                   Append (Inputs, Globals.Calls.Definite_Calls);
 
-                  return Inputs;
-
                   --  ??? calls to Pick_Constants repeat iterations done by
-                  --  Has_Variables, but this stays in the same complexity
+                  --  Has_Variables, but they stay within the same complexity
                   --  class and makes the code shorter.
+
+                  return Inputs;
                end if;
             end Direct_Inputs_Of_Subprogram;
 
