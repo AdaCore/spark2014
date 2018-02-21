@@ -48,7 +48,6 @@ with Opt;
 with Rtsfind;                        use Rtsfind;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Disp;                       use Sem_Disp;
-with Sem_Type;                       use Sem_Type;
 with Sem_Util;                       use Sem_Util;
 with Sinput;                         use Sinput;
 with Snames;                         use Snames;
@@ -292,6 +291,26 @@ package body Gnat2Why.Expr is
    --  Translate an assignment of the form "Lvalue := Expr" (using Ada_Node for
    --  its source location).
 
+   function New_Binary_Op_Expr
+     (Op          : N_Binary_Op;
+      Left        : W_Expr_Id;
+      Right       : W_Expr_Id;
+      Left_Type   : Entity_Id;
+      Right_Type  : Entity_Id;
+      Return_Type : Entity_Id;
+      Domain      : EW_Domain;
+      Ada_Node    : Node_Id := Empty) return W_Expr_Id
+   with Pre => Op in N_Op_Add .. N_Op_Rem;
+   --  @param Op arithmetic binary operator
+   --  @param Left why expression for the left hand side
+   --  @param Right why expression for the right hand side
+   --  @param Left_Type Ada Type of the left hand side
+   --  @param Right_Type Ada Type of the right hand side
+   --  @param Return_Type Ada Type of the result of the operation
+   --  @param Domain domain of the operation
+   --  @param Ada_Node node associated to the operation
+   --  @return a Why3 expression for Left Op Right
+
    function New_Predicate_Call
      (Ty     : Entity_Id;
       W_Expr : W_Term_Id;
@@ -417,6 +436,12 @@ package body Gnat2Why.Expr is
 
    function Transform_Block_Statement (N : Node_Id) return W_Prog_Id;
    --  ???
+
+   function Transform_Comparison
+     (Expr   : Node_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Expr_Id;
+   --  Transform comparison operations
 
    function Transform_Concatenation
      (Left               : W_Expr_Id;
@@ -5590,15 +5615,15 @@ package body Gnat2Why.Expr is
       return Result;
    end New_Assignment;
 
-   -----------------
-   -- New_Op_Expr --
-   -----------------
+   ------------------------
+   -- New_Binary_Op_Expr --
+   ------------------------
 
-   function New_Op_Expr
-     (Op          : N_Op;
-      Left        : W_Expr_Id := Why_Empty;
+   function New_Binary_Op_Expr
+     (Op          : N_Binary_Op;
+      Left        : W_Expr_Id;
       Right       : W_Expr_Id;
-      Left_Type   : Entity_Id := Empty;
+      Left_Type   : Entity_Id;
       Right_Type  : Entity_Id;
       Return_Type : Entity_Id;
       Domain      : EW_Domain;
@@ -5608,243 +5633,22 @@ package body Gnat2Why.Expr is
 
    begin
       case Op is
-         when N_Op_Compare =>
-
-            --  Special case for equality between Booleans in predicates
-
-            if Domain = EW_Pred and then
-              Op = N_Op_Eq and then
-              Is_Standard_Boolean_Type (Left_Type)
-            then
-               T :=
-                 New_Connection
-                   (Domain => EW_Pred,
-                    Left   => Insert_Simple_Conversion
-                      (Ada_Node => Ada_Node,
-                       Domain   => EW_Pred,
-                       Expr     => Left,
-                       To       => EW_Bool_Type),
-                    Right  => Insert_Simple_Conversion
-                      (Ada_Node => Ada_Node,
-                       Domain   => EW_Pred,
-                       Expr     => Right,
-                       To       => EW_Bool_Type),
-                    Op     => EW_Equivalent);
-
-            elsif Has_Array_Type (Left_Type)
-              and then Op in N_Op_Eq | N_Op_Ne
-            then
-               T := Transform_Array_Equality
-                 (Op        => Op,
-                  Left      => Left,
-                  Right     => Right,
-                  Left_Type => Left_Type,
-                  Domain    => Domain,
-                  Ada_Node  => Ada_Node);
-            elsif Has_Array_Type (Left_Type) then
-               T := Transform_Array_Comparison
-                 (Op        => Op,
-                  Left      => Left,
-                  Right     => Right,
-                  Domain    => Domain,
-                  Ada_Node  => Ada_Node);
-            else
-               declare
-                  Subdomain : constant EW_Domain :=
-                    (if Domain = EW_Pred then EW_Term else Domain);
-
-                  BT        : constant W_Type_Id :=
-                    Base_Why_Type (Left_Type, Right_Type);
-
-               begin
-                  if Has_Record_Type (Left_Type)
-                    or else Full_View_Not_In_SPARK (Left_Type)
-                  then
-                     pragma Assert (Root_Record_Type (Left_Type) =
-                                      Root_Record_Type (Right_Type));
-                     pragma Assert (Root_Record_Type (Left_Type) =
-                                      Root_Record_Type (Get_Ada_Node (+BT)));
-
-                     if Is_Class_Wide_Type (Left_Type) then
-
-                        --  Dispatching equality. Translate to:
-                        --  let a = to_root left in
-                        --  let b = to_root right in
-                        --    a.attr_tag = b.attr_tag /\
-                        --    __dispatch_eq a b
-
-                        declare
-                           Root : constant Entity_Id :=
-                             Root_Record_Type (Left_Type);
-                           Args : constant W_Expr_Array :=
-                             (1 => New_Temp_For_Expr
-                                (Insert_Simple_Conversion
-                                     (Ada_Node => Ada_Node,
-                                      Domain   => Subdomain,
-                                      Expr     => Left,
-                                      To       => Type_Of_Node (Root))),
-                              2 => New_Temp_For_Expr
-                                (Insert_Simple_Conversion
-                                     (Ada_Node => Ada_Node,
-                                      Domain   => Subdomain,
-                                      Expr     => Right,
-                                      To       => Type_Of_Node (Root))));
-                        begin
-                           T := New_And_Then_Expr
-                             (Left   => New_Call
-                                (Ada_Node => Ada_Node,
-                                 Domain   => Subdomain,
-                                 Name     => Why_Eq,
-                                 Args     =>
-                                   (1 => New_Tag_Access
-                                           (Domain => Subdomain,
-                                            Name   => Args (1),
-                                            Ty     => Root),
-                                    2 => New_Tag_Access
-                                           (Domain => Subdomain,
-                                            Name   => Args (2),
-                                            Ty     => Root)),
-                                 Typ      => EW_Bool_Type),
-                              Right  =>
-                                New_Call
-                                  (Ada_Node => Ada_Node,
-                                   Domain   => Subdomain,
-                                   Name     =>
-                                     E_Symb (Root, WNE_Dispatch_Eq),
-                                   Args     => Args,
-                                   Typ      => EW_Bool_Type),
-                              Domain => Subdomain);
-
-                           T := Binding_For_Temp (Domain  => Subdomain,
-                                                  Tmp     => Args (1),
-                                                  Context => T);
-                           T := Binding_For_Temp (Domain  => Subdomain,
-                                                  Tmp     => Args (2),
-                                                  Context => T);
-                        end;
-                     else
-                        T :=
-                          New_Call
-                            (Ada_Node => Ada_Node,
-                             Domain   => Subdomain,
-                             Name     =>
-                               E_Symb (Get_Ada_Node (+BT), WNE_Bool_Eq),
-                             Args     => (1 => Insert_Simple_Conversion
-                                          (Ada_Node => Ada_Node,
-                                           Domain   => Subdomain,
-                                           Expr     => Left,
-                                           To       => BT),
-                                          2 => Insert_Simple_Conversion
-                                            (Ada_Node => Ada_Node,
-                                             Domain   => Subdomain,
-                                             Expr     => Right,
-                                             To       => BT)),
-                             Typ      => EW_Bool_Type);
-                     end if;
-
-                     if Domain = EW_Pred then
-                        T := New_Comparison
-                          (Symbol =>
-                             Transform_Compare_Op (Op, EW_Bool_Type, Domain),
-                           Left   => T,
-                           Right  => New_Literal (Domain => Subdomain,
-                                                  Value  => EW_True),
-                           Domain => Domain);
-
-                     elsif Op = N_Op_Ne then
-                        T :=
-                          New_Call (Domain => Domain,
-                                    Name   => M_Boolean.Notb,
-                                    Args   => (1 => T),
-                                    Typ    => EW_Bool_Type);
-                     end if;
-                  else
-                     T := New_Comparison
-                       (Symbol  => Transform_Compare_Op (Op, BT, Domain),
-                        Left    => Insert_Simple_Conversion
-                          (Ada_Node => Ada_Node,
-                           Domain   => Domain,
-                           Expr     => Left,
-                           To       => BT),
-                        Right   => Insert_Simple_Conversion
-                          (Ada_Node => Ada_Node,
-                           Domain   => Domain,
-                           Expr     => Right,
-                           To       => BT),
-                        Domain  => Domain);
-                  end if;
-               end;
-            end if;
-
-         when N_Op_Minus =>  --  unary minus
-            declare
-               Typ : constant W_Type_Id := Base_Why_Type (Right_Type);
-
-               Minus_Ident : constant W_Identifier_Id :=
-                 (if Typ = EW_Int_Type then
-                    Int_Unary_Minus
-                  elsif Why_Type_Is_BitVector (Typ) then
-                    MF_BVs (Typ).Neg
-                  elsif Typ = EW_Fixed_Type then
-                    Fixed_Unary_Minus
-                  else MF_Floats (Typ).Unary_Minus);
-
-               Right_Rep : constant W_Expr_Id := Insert_Simple_Conversion
-                 (Ada_Node => Ada_Node,
-                  Domain   => Domain,
-                  Expr     => Right,
-                  To       => Typ);
-
-            begin
-               if Has_Modular_Integer_Type (Return_Type)
-                 and then Non_Binary_Modulus (Return_Type)
-               then
-                  T := Transform_Non_Binary_Modular_Operation
-                    (Ada_Node   => Ada_Node,
-                     Ada_Type   => Return_Type,
-                     Domain     => Domain,
-                     Op         => N_Op_Minus,
-                     Right_Opnd => Right_Rep,
-                     Rep_Type   => Typ,
-                     Modulus    => Modulus (Return_Type));
-               else
-                  T :=
-                    New_Call
-                      (Domain   => Domain,
-                       Ada_Node => Ada_Node,
-                       Name     => Minus_Ident,
-                       Args     =>
-                         (1 => Right_Rep),
-                       Typ       => Get_Type (+Minus_Ident));
-                  T := Apply_Modulus (Op, Return_Type, T, Domain);
-               end if;
-            end;
-
-         when N_Op_Plus =>  --  unary plus
-            T := Right;
-
-         when N_Op_Abs =>
-            declare
-               Typ : constant W_Type_Id := Base_Why_Type (Right_Type);
-            begin
-               T :=
-                 New_Call
-                   (Ada_Node => Ada_Node,
-                    Domain   => Domain,
-                    Name     => New_Abs (Typ),
-                    Args     => (1 => Insert_Simple_Conversion
-                                 (Ada_Node => Ada_Node,
-                                  Domain   => Domain,
-                                  Expr     => Right,
-                                  To       => Base_Why_Type (Right_Type))),
-                    Typ     => Typ);
-            end;
+         when N_Op_Compare
+            | N_Op_And
+            | N_Op_Or
+            | N_Op_Xor
+            | N_Op_Concat
+            | N_Op_Shift
+         =>
+            raise Program_Error;
 
          when N_Op_Add
             | N_Op_Subtract
-         =>
+          =>
+
             --  The arguments of arithmetic functions have to be of base scalar
             --  types.
+
             declare
                Base : constant W_Type_Id :=
                  Base_Why_Type (Left_Type, Right_Type);
@@ -5861,6 +5665,7 @@ package body Gnat2Why.Expr is
                           MF_BVs (Base).Sub
                      elsif Base = EW_Fixed_Type then Fixed_Infix_Subtr
                      else MF_Floats (Base).Subtr));
+
                Left_Rep : constant W_Expr_Id :=
                  Insert_Simple_Conversion (Ada_Node => Ada_Node,
                                            Domain   => Domain,
@@ -5900,15 +5705,20 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Op_Multiply =>
+
             --  The arguments of arithmetic functions have to be of base scalar
             --  types.
+
             declare
-               L_Why : W_Expr_Id := Left;
-               R_Why : W_Expr_Id := Right;
+               L_Why          : W_Expr_Id := Left;
+               R_Why          : W_Expr_Id := Right;
                L_Type, R_Type : W_Type_Id;
-               Base : W_Type_Id;
-               Oper : Why_Name_Enum := WNE_Empty;
+               Base           : W_Type_Id;
+               Oper           : Why_Name_Enum := WNE_Empty;
+
             begin
+               --  Look for the appropriate base scalar type
+
                if Has_Fixed_Point_Type (Left_Type)
                  and then Has_Fixed_Point_Type (Right_Type)
                then
@@ -5923,8 +5733,8 @@ package body Gnat2Why.Expr is
                   Base := EW_Fixed_Type;
                   Oper := WNE_Fixed_Point_Mult_Int;
 
-                  --  If multiplying an integer and a fixed-point, swap
-                  --  arguments so that Left is the fixed-point one.
+               --  If multiplying an integer and a fixed-point, swap
+               --  arguments so that Left is the fixed-point one.
 
                elsif Has_Fixed_Point_Type (Right_Type) then
                   L_Type := EW_Fixed_Type;
@@ -5951,6 +5761,8 @@ package body Gnat2Why.Expr is
                   Domain   => Domain,
                   Expr     => R_Why,
                   To       => R_Type);
+
+               --  Construct the operation
 
                if Is_Fixed_Point_Type (Return_Type) then
                   pragma Assert (Oper /= WNE_Empty);
@@ -5997,12 +5809,15 @@ package body Gnat2Why.Expr is
 
          when N_Op_Divide =>
             declare
-               Base  : W_Type_Id;
-               Oper : Why_Name_Enum := WNE_Empty;
-               Name : W_Identifier_Id;
+               Base           : W_Type_Id;
+               Oper           : Why_Name_Enum := WNE_Empty;
+               Name           : W_Identifier_Id;
                L_Type, R_Type : W_Type_Id;
-               L_Why, R_Why : W_Expr_Id;
+               L_Why, R_Why   : W_Expr_Id;
+
             begin
+               --  Look for the appropriate base scalar type
+
                if Has_Fixed_Point_Type (Left_Type)
                  and then Has_Fixed_Point_Type (Right_Type)
                then
@@ -6040,6 +5855,8 @@ package body Gnat2Why.Expr is
                  (if Is_Fixed_Point_Type (Return_Type)
                     or else Has_Fixed_Point_Type (Left_Type)
                   then Oper /= WNE_Empty);
+
+               --  Construct the operation
 
                Name :=
                  (if Is_Fixed_Point_Type (Return_Type) then
@@ -6094,6 +5911,7 @@ package body Gnat2Why.Expr is
                Base : constant W_Type_Id :=
                  Base_Why_Type (Left_Type, Right_Type);
                Name : W_Identifier_Id;
+
             begin
                Name := (if Why_Type_Is_BitVector (Base) then
                           MF_BVs (Base).Urem
@@ -6142,6 +5960,7 @@ package body Gnat2Why.Expr is
                     Domain   => Domain,
                     Expr     => Right,
                     To       => EW_Int_Type);
+
             begin
                if Has_Modular_Integer_Type (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
@@ -6202,115 +6021,9 @@ package body Gnat2Why.Expr is
 
                T := Binding_For_Temp (Ada_Node, Domain, Base, T);
             end;
-
-         when N_Op_Not =>
-            if Has_Array_Type (Right_Type) then
-               T := Transform_Array_Negation
-                 (Right      => Right,
-                  Right_Type => Right_Type,
-                  Domain     => Domain,
-                  Ada_Node   => Ada_Node,
-                  Do_Check   => Domain = EW_Prog);
-            else
-               if Domain = EW_Term then
-                     T :=
-                       New_Call
-                         (Ada_Node => Ada_Node,
-                       Domain   => Domain,
-                       Name     => M_Boolean.Notb,
-                       Args     =>
-                         (1 => Insert_Simple_Conversion
-                            (Ada_Node => Ada_Node,
-                             Domain   => Domain,
-                             Expr     => Right,
-                             To       => EW_Bool_Type)),
-                       Typ      => EW_Bool_Type);
-               else
-                  T :=
-                    New_Not
-                      (Right  => Insert_Simple_Conversion
-                         (Ada_Node => Ada_Node,
-                          Domain   => Domain,
-                          Expr     => Right,
-                          To       => EW_Bool_Type),
-                       Domain => Domain);
-               end if;
-            end if;
-
-         when N_Op_And
-            | N_Op_Or
-            | N_Op_Xor
-         =>
-            if Has_Array_Type (Left_Type) then
-               T := Transform_Array_Logical_Op
-                 (Op        => Op,
-                  Left      => Left,
-                  Right     => Right,
-                  Left_Type => Left_Type,
-                  Domain    => Domain,
-                  Ada_Node  => Ada_Node,
-                  Do_Check  => Domain = EW_Prog);
-            else
-               declare
-                  Base  : constant W_Type_Id :=
-                    (if Is_Boolean_Type (Return_Type) then EW_Bool_Type
-                     else Base_Why_Type (Return_Type));
-                  L_Why : constant W_Expr_Id := Insert_Simple_Conversion
-                    (Ada_Node => Ada_Node,
-                     Domain   => Domain,
-                     Expr     => Left,
-                     To       => Base);
-                  R_Why : constant W_Expr_Id := Insert_Simple_Conversion
-                    (Ada_Node => Ada_Node,
-                     Domain   => Domain,
-                     Expr     => Right,
-                     To       => Base);
-               begin
-                  if Op = N_Op_And then
-                     T := New_And_Expr (L_Why, R_Why, Domain, Base);
-                  else
-                     if Op = N_Op_Or then
-                        T := New_Or_Expr (L_Why, R_Why, Domain, Base);
-                     else
-                        T := New_Xor_Expr (L_Why, R_Why, Domain, Base);
-                     end if;
-
-                     --  If we're dealing with modulars of non binary modulus
-                     --  or and xor might overflow : we need to take the
-                     --  modulo of the result.
-
-                     if Is_Modular_Integer_Type (Return_Type) and then
-                       Non_Binary_Modulus (Return_Type)
-                     then
-                        T := Apply_Modulus
-                          (Op     => Op,
-                           E      => Return_Type,
-                           T      => T,
-                           Domain => Domain);
-                     end if;
-                  end if;
-               end;
-            end if;
-
-         when N_Op_Concat =>
-            T := Transform_Concatenation
-              (Left               => Left,
-               Right              => Right,
-               Left_Type          => Left_Type,
-               Right_Type         => Right_Type,
-               Return_Type        => Return_Type,
-               Is_Component_Left  => not Covers (Left_Type, Return_Type),
-               Is_Component_Right => not Covers (Right_Type, Return_Type),
-               Domain             => Domain,
-               Ada_Node           => Ada_Node);
-
-         when N_Op_Shift =>
-            Ada.Text_IO.Put_Line ("[New_Op_Expr] kind ="
-                                  & Node_Kind'Image (Op));
-            raise Not_Implemented;
       end case;
       return T;
-   end New_Op_Expr;
+   end New_Binary_Op_Expr;
 
    ------------------------
    -- New_Predicate_Call --
@@ -9094,14 +8807,14 @@ package body Gnat2Why.Expr is
                                          Domain,
                                          Params);
 
-                  T := New_Op_Expr (Op          => Op,
-                                    Left        => Old,
-                                    Right       => Offset,
-                                    Left_Type   => NType,
-                                    Right_Type  => NType,
-                                    Return_Type => NType,
-                                    Domain      => Domain,
-                                    Ada_Node    => Expr);
+                  T := New_Binary_Op_Expr (Op          => Op,
+                                           Left        => Old,
+                                           Right       => Offset,
+                                           Left_Type   => NType,
+                                           Right_Type  => NType,
+                                           Return_Type => NType,
+                                           Domain      => Domain,
+                                           Ada_Node    => Expr);
                end;
 
             else
@@ -9943,6 +9656,198 @@ package body Gnat2Why.Expr is
          raise Program_Error;
       end if;
    end Transform_Compare_Op;
+
+   --------------------------
+   -- Transform_Comparison --
+   --------------------------
+
+   function Transform_Comparison
+     (Expr   : Node_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Expr_Id
+   is
+      Left      : constant Node_Id := Left_Opnd (Expr);
+      Right     : constant Node_Id := Right_Opnd (Expr);
+      Left_Type : constant Entity_Id := Etype (Left);
+      T         : W_Expr_Id;
+   begin
+
+      --  Special case for equality between Booleans in predicates
+
+      if Domain = EW_Pred
+        and then Nkind (Expr) = N_Op_Eq
+        and then Is_Standard_Boolean_Type (Left_Type)
+      then
+         declare
+            Left_Expr  : constant W_Expr_Id :=
+              Transform_Expr
+                (Left,
+                 EW_Bool_Type,
+                 EW_Pred,
+                 Params);
+            Right_Expr : constant W_Expr_Id :=
+              Transform_Expr
+                (Right,
+                 EW_Bool_Type,
+                 EW_Pred,
+                 Params);
+         begin
+            T :=
+              New_Connection
+                (Domain => EW_Pred,
+                 Left   => Left_Expr,
+                 Right  => Right_Expr,
+                 Op     => EW_Equivalent);
+         end;
+      elsif Has_Array_Type (Left_Type) then
+         declare
+            Left_Expr  : constant W_Expr_Id :=
+              Transform_Expr
+                (Left,
+                 (if Domain = EW_Pred then EW_Term else Domain),
+                 Params);
+            Right_Expr : constant W_Expr_Id :=
+              Transform_Expr
+                (Right,
+                 (if Domain = EW_Pred then EW_Term else Domain),
+                Params);
+         begin
+            if Nkind (Expr) in N_Op_Eq | N_Op_Ne then
+               T := Transform_Array_Equality
+                 (Op        => Nkind (Expr),
+                  Left      => Left_Expr,
+                  Right     => Right_Expr,
+                  Left_Type => Left_Type,
+                  Domain    => Domain,
+                  Ada_Node  => Expr);
+            else
+               T := Transform_Array_Comparison
+                 (Op        => Nkind (Expr),
+                  Left      => Left_Expr,
+                  Right     => Right_Expr,
+                  Domain    => Domain,
+                  Ada_Node  => Expr);
+            end if;
+         end;
+      else
+         declare
+            Op         : constant Node_Kind := Nkind (Expr);
+            Right_Type : constant Node_Id := Etype (Right);
+            Subdomain  : constant EW_Domain :=
+              (if Domain = EW_Pred then EW_Term else Domain);
+
+            BT         : constant W_Type_Id :=
+              Base_Why_Type (Left_Type, Right_Type);
+            Left_Expr  : constant W_Expr_Id :=
+              Transform_Expr (Left, BT, Subdomain, Params);
+            Right_Expr : constant W_Expr_Id :=
+              Transform_Expr (Right, BT, Subdomain, Params);
+         begin
+
+            if Is_Record_Type_In_Why (Left_Type) then
+               pragma Assert (Op in N_Op_Eq | N_Op_Ne);
+               pragma Assert (Root_Record_Type (Left_Type) =
+                                Root_Record_Type (Right_Type));
+               pragma Assert (Root_Record_Type (Left_Type) =
+                                Root_Record_Type (Get_Ada_Node (+BT)));
+
+               if Is_Class_Wide_Type (Left_Type) then
+
+                  --  Dispatching equality. Translate to:
+                  --  let a = to_root left in
+                  --  let b = to_root right in
+                  --    a.attr_tag = b.attr_tag /\
+                  --    __dispatch_eq a b
+
+                  declare
+                     Root : constant Entity_Id :=
+                       Root_Record_Type (Left_Type);
+                     Args : constant W_Expr_Array :=
+                       (1 => New_Temp_For_Expr
+                          (Insert_Simple_Conversion
+                               (Ada_Node => Expr,
+                                Domain   => Subdomain,
+                                Expr     => Left_Expr,
+                                To       => Type_Of_Node (Root))),
+                        2 => New_Temp_For_Expr
+                          (Insert_Simple_Conversion
+                               (Ada_Node => Expr,
+                                Domain   => Subdomain,
+                                Expr     => Right_Expr,
+                                To       => Type_Of_Node (Root))));
+                  begin
+                     T := New_And_Then_Expr
+                       (Left   => New_Call
+                          (Ada_Node => Expr,
+                           Domain   => Subdomain,
+                           Name     => Why_Eq,
+                           Args     =>
+                             (1 => New_Tag_Access
+                                  (Domain => Subdomain,
+                                   Name   => Args (1),
+                                   Ty     => Root),
+                              2 => New_Tag_Access
+                                (Domain => Subdomain,
+                                 Name   => Args (2),
+                                 Ty     => Root)),
+                           Typ      => EW_Bool_Type),
+                        Right  =>
+                          New_Call
+                            (Ada_Node => Expr,
+                             Domain   => Subdomain,
+                             Name     =>
+                               E_Symb (Root, WNE_Dispatch_Eq),
+                             Args     => Args,
+                             Typ      => EW_Bool_Type),
+                        Domain => Subdomain);
+
+                     T := Binding_For_Temp (Domain  => Subdomain,
+                                            Tmp     => Args (1),
+                                            Context => T);
+                     T := Binding_For_Temp (Domain  => Subdomain,
+                                            Tmp     => Args (2),
+                                            Context => T);
+                  end;
+               else
+                  T :=
+                    New_Call
+                      (Ada_Node => Expr,
+                       Domain   => Subdomain,
+                       Name     =>
+                         E_Symb (Get_Ada_Node (+BT), WNE_Bool_Eq),
+                       Args     => (1 => Left_Expr,
+                                    2 => Right_Expr),
+                       Typ      => EW_Bool_Type);
+               end if;
+
+               if Domain = EW_Pred then
+                  T := New_Comparison
+                    (Symbol =>
+                       Transform_Compare_Op (Op, EW_Bool_Type, Domain),
+                     Left   => T,
+                     Right  => New_Literal (Domain => Subdomain,
+                                            Value  => EW_True),
+                     Domain => Domain);
+
+               elsif Op = N_Op_Ne then
+                  T :=
+                    New_Call (Domain => Domain,
+                              Name   => M_Boolean.Notb,
+                              Args   => (1 => T),
+                              Typ    => EW_Bool_Type);
+               end if;
+            else
+               T := New_Comparison
+                 (Symbol  => Transform_Compare_Op (Op, BT, Domain),
+                  Left    => Left_Expr,
+                  Right   => Right_Expr,
+                  Domain  => Domain);
+            end if;
+         end;
+      end if;
+
+      return T;
+   end Transform_Comparison;
 
    -----------------------------
    -- Transform_Concatenation --
@@ -11413,112 +11318,85 @@ package body Gnat2Why.Expr is
 
          when N_Op_Compare =>
 
-            --  Special case for equality between Booleans in predicates
+            T := Transform_Comparison
+              (Expr   =>  Expr,
+               Domain => Domain,
+               Params => Local_Params);
 
-            if Domain = EW_Pred
-              and then Nkind (Expr) = N_Op_Eq
-              and then Is_Standard_Boolean_Type (Etype (Left_Opnd (Expr)))
-            then
-               declare
-                  Left : constant W_Expr_Id :=
-                    Transform_Expr
-                      (Left_Opnd (Expr),
-                       EW_Bool_Type,
-                       EW_Pred,
-                       Local_Params);
-                  Right : constant W_Expr_Id :=
-                    Transform_Expr
-                         (Right_Opnd (Expr),
-                          EW_Bool_Type,
-                          EW_Pred,
-                          Local_Params);
-               begin
+         when N_Op_Minus =>  --  unary minus
+            declare
+               Right : constant Node_Id := Right_Opnd (Expr);
+               Typ   : constant W_Type_Id := Base_Why_Type (Right);
+
+               Minus_Ident : constant W_Identifier_Id :=
+                 (if Typ = EW_Int_Type then
+                    Int_Unary_Minus
+                  elsif Why_Type_Is_BitVector (Typ) then
+                    MF_BVs (Typ).Neg
+                  elsif Typ = EW_Fixed_Type then
+                    Fixed_Unary_Minus
+                  else MF_Floats (Typ).Unary_Minus);
+
+               Right_Rep : constant W_Expr_Id :=
+                 Transform_Expr (Right, Typ, Domain, Local_Params);
+
+            begin
+               if Has_Modular_Integer_Type (Expr_Type)
+                 and then Non_Binary_Modulus (Expr_Type)
+               then
+                  T := Transform_Non_Binary_Modular_Operation
+                    (Ada_Node   => Expr,
+                     Ada_Type   => Expr_Type,
+                     Domain     => Domain,
+                     Op         => N_Op_Minus,
+                     Right_Opnd => Right_Rep,
+                     Rep_Type   => Typ,
+                     Modulus    => Modulus (Expr_Type));
+               else
                   T :=
-                    New_Connection
-                      (Domain => EW_Pred,
-                       Left   => Left,
-                       Right  => Right,
-                       Op     => EW_Equivalent);
-               end;
-            elsif Has_Array_Type (Etype (Left_Opnd (Expr))) then
-               declare
-                  Left : constant W_Expr_Id :=
-                    Transform_Expr
-                      (Left_Opnd (Expr),
-                       (if Domain = EW_Pred then EW_Term else Domain),
-                       Local_Params);
-                  Right : constant W_Expr_Id :=
-                    Transform_Expr
-                      (Right_Opnd (Expr),
-                       (if Domain = EW_Pred then EW_Term else Domain),
-                       Local_Params);
-               begin
-                  T := New_Op_Expr
-                    (Op          => Nkind (Expr),
-                     Left        => Left,
-                     Right       => Right,
-                     Left_Type   => Etype (Left_Opnd (Expr)),
-                     Right_Type  => Etype (Right_Opnd (Expr)),
-                     Return_Type => Expr_Type,
-                     Domain      => Domain,
-                     Ada_Node    => Expr);
-               end;
-            else
-               declare
-                  Left  : constant Node_Id := Left_Opnd (Expr);
-                  Right : constant Node_Id := Right_Opnd (Expr);
+                    New_Call
+                      (Domain   => Domain,
+                       Ada_Node => Expr,
+                       Name     => Minus_Ident,
+                       Args     =>
+                         (1 => Right_Rep),
+                       Typ       => Get_Type (+Minus_Ident));
+                  T := Apply_Modulus (N_Op_Minus, Expr_Type, T, Domain);
+               end if;
+            end;
 
-                  Subdomain : constant EW_Domain :=
-                    (if Domain = EW_Pred then EW_Term else Domain);
-
-                  BT        : constant W_Type_Id :=
-                    Base_Why_Type (Left, Right);
-                  Left_Arg  : constant W_Expr_Id :=
-                    Transform_Expr (Left, BT, Subdomain,
-                                    Local_Params);
-                  Right_Arg : constant W_Expr_Id :=
-                    Transform_Expr (Right, BT, Subdomain,
-                                    Local_Params);
-
-               begin
-                  T := New_Op_Expr
-                    (Op          => Nkind (Expr),
-                     Left        => Left_Arg,
-                     Right       => Right_Arg,
-                     Left_Type   => Etype (Left),
-                     Right_Type  => Etype (Right),
-                     Return_Type => Expr_Type,
-                     Domain      => Domain,
-                     Ada_Node    => Expr);
-               end;
-            end if;
-
-         when N_Op_Minus
-            | N_Op_Plus
-            | N_Op_Abs
-         =>
-            --  unary minus
-            --  unary plus
-
+         when N_Op_Plus =>  --  unary plus
             declare
                Right : constant Node_Id := Right_Opnd (Expr);
             begin
-               T := New_Op_Expr
-                 (Op          => Nkind (Expr),
-                  Right       =>
-                    Transform_Expr (Right, Base_Why_Type (Right), Domain,
-                    Local_Params),
-                  Right_Type  => Etype (Right),
-                  Return_Type => Expr_Type,
-                  Domain      => Domain,
-                  Ada_Node    => Expr);
+               T := Transform_Expr
+                 (Right, Base_Why_Type (Right), Domain, Local_Params);
+            end;
+
+         when N_Op_Abs =>
+            declare
+               Right : constant Node_Id := Right_Opnd (Expr);
+               Typ   : constant W_Type_Id := Base_Why_Type (Right);
+
+               Right_Rep : constant W_Expr_Id :=
+                 Transform_Expr (Right, Typ, Domain, Local_Params);
+            begin
+               T :=
+                 New_Call
+                   (Ada_Node => Expr,
+                    Domain   => Domain,
+                    Name     => New_Abs (Typ),
+                    Args     => (1 => Right_Rep),
+                    Typ     => Typ);
             end;
 
          when N_Op_Add
             | N_Op_Subtract
-         =>
+            =>
+
             --  The arguments of arithmetic functions have to be of base scalar
             --  types.
+
             declare
                Left       : constant Node_Id := Left_Opnd (Expr);
                Right      : constant Node_Id := Right_Opnd (Expr);
@@ -11534,7 +11412,7 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Local_Params);
             begin
-               T := New_Op_Expr
+               T := New_Binary_Op_Expr
                  (Op          => Nkind (Expr),
                   Left        => Left_Expr,
                   Right       => Right_Expr,
@@ -11547,9 +11425,11 @@ package body Gnat2Why.Expr is
 
          when N_Op_Multiply
             | N_Op_Divide
-         =>
+            =>
+
             --  The arguments of arithmetic functions have to be of base scalar
             --  types.
+
             declare
                Left  : constant Node_Id := Left_Opnd (Expr);
                Right : constant Node_Id := Right_Opnd (Expr);
@@ -11588,7 +11468,7 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Local_Params);
 
-               T := New_Op_Expr
+               T := New_Binary_Op_Expr
                  (Op          => Nkind (Expr),
                   Left        => L_Why,
                   Right       => R_Why,
@@ -11608,7 +11488,7 @@ package body Gnat2Why.Expr is
                Base  : constant W_Type_Id := Base_Why_Type (Left, Right);
             begin
 
-               T := New_Op_Expr
+               T := New_Binary_Op_Expr
                  (Op          => Nkind (Expr),
                   Left        => Transform_Expr (Left,
                     Base,
@@ -11667,24 +11547,24 @@ package body Gnat2Why.Expr is
 
                function Square (X : W_Expr_Id; T : Entity_Id)
                                 return W_Expr_Id is
-                 (New_Op_Expr (Op          => N_Op_Multiply,
-                               Left        => X,
-                               Right       => X,
-                               Left_Type   => T,
-                               Right_Type  => T,
-                               Return_Type => Expr_Type,
-                               Domain      => Domain,
-                               Ada_Node    => Expr));
+                 (New_Binary_Op_Expr (Op          => N_Op_Multiply,
+                                      Left        => X,
+                                      Right       => X,
+                                      Left_Type   => T,
+                                      Right_Type  => T,
+                                      Return_Type => Expr_Type,
+                                      Domain      => Domain,
+                                      Ada_Node    => Expr));
 
                function Cube (X : W_Expr_Id; T : Entity_Id) return W_Expr_Id is
-                 (New_Op_Expr (Op          => N_Op_Multiply,
-                               Left        => X,
-                               Right       => Square (X, T),
-                               Left_Type   => T,
-                               Right_Type  => T,
-                               Return_Type => Expr_Type,
-                               Domain      => Domain,
-                               Ada_Node    => Expr));
+                 (New_Binary_Op_Expr (Op          => N_Op_Multiply,
+                                      Left        => X,
+                                      Right       => Square (X, T),
+                                      Left_Type   => T,
+                                      Right_Type  => T,
+                                      Return_Type => Expr_Type,
+                                      Domain      => Domain,
+                                      Ada_Node    => Expr));
 
                function Inv (X : W_Expr_Id; T : Entity_Id) return W_Expr_Id;
                --  Return 1 / X
@@ -11693,13 +11573,13 @@ package body Gnat2Why.Expr is
                function Inv (X : W_Expr_Id; T : Entity_Id) return W_Expr_Id
                is
                   E : constant W_Expr_Id :=
-                    New_Op_Expr (Op          => N_Op_Divide,
-                                 Left        => One,
-                                 Right       => X,
-                                 Left_Type   => T,
-                                 Right_Type  => T,
-                                 Return_Type => Expr_Type,
-                                 Domain      => Domain);
+                    New_Binary_Op_Expr (Op          => N_Op_Divide,
+                                        Left        => One,
+                                        Right       => X,
+                                        Left_Type   => T,
+                                        Right_Type  => T,
+                                        Return_Type => Expr_Type,
+                                        Domain      => Domain);
 
                begin
                   if Domain = EW_Prog then
@@ -11804,8 +11684,8 @@ package body Gnat2Why.Expr is
                      elsif UI_Eq (Exp, UI_Negate (Uint_3)) then
                         T := Inv (Cube (W_Left, Left_Type), Left_Type);
                      else
-                        T := New_Op_Expr
-                          (Op          => Nkind (Expr),
+                        T := New_Binary_Op_Expr
+                          (Op          => N_Op_Expon,
                            Left        => W_Left,
                            Right       => W_Right,
                            Left_Type   => Left_Type,
@@ -11816,8 +11696,8 @@ package body Gnat2Why.Expr is
                      end if;
                   end;
                else
-                  T := New_Op_Expr
-                    (Op          => Nkind (Expr),
+                  T := New_Binary_Op_Expr
+                    (Op          => N_Op_Expon,
                      Left        => W_Left,
                      Right       => W_Right,
                      Left_Type   => Etype (Left),
@@ -11834,14 +11714,13 @@ package body Gnat2Why.Expr is
                   Subdomain : constant EW_Domain :=
                     (if Domain = EW_Pred then EW_Term else Domain);
                begin
-                     T := New_Op_Expr
-                       (Op          => Nkind (Expr),
-                        Right       => Transform_Expr
-                          (Right_Opnd (Expr), Subdomain, Params),
-                        Right_Type  => Etype (Right_Opnd (Expr)),
-                        Return_Type => Expr_Type,
-                        Domain      => Domain,
-                        Ada_Node    => Expr);
+                  T := Transform_Array_Negation
+                    (Right       => Transform_Expr
+                       (Right_Opnd (Expr), Subdomain, Params),
+                     Right_Type  => Etype (Right_Opnd (Expr)),
+                     Domain      => Domain,
+                     Ada_Node    => Expr,
+                     Do_Check    => Domain = EW_Prog);
                end;
 
             elsif Is_Modular_Integer_Type (Expr_Type) then
@@ -11860,17 +11739,29 @@ package body Gnat2Why.Expr is
                end;
 
             else
-               T := New_Op_Expr
-                 (Op          => Nkind (Expr),
-                  Right       =>
-                    Transform_Expr (Right_Opnd (Expr),
-                                    EW_Bool_Type,
-                                    Domain,
-                                    Local_Params),
-                  Right_Type  => Etype (Right_Opnd (Expr)),
-                  Return_Type => Expr_Type,
-                  Domain      => Domain,
-                  Ada_Node    => Expr);
+               declare
+                  Right : constant W_Expr_Id :=
+                    Transform_Expr
+                      (Right_Opnd (Expr),
+                       EW_Bool_Type,
+                       Domain,
+                       Local_Params);
+               begin
+                  if Domain = EW_Term then
+                     T :=
+                       New_Call
+                         (Ada_Node => Expr,
+                          Domain   => Domain,
+                          Name     => M_Boolean.Notb,
+                          Args     => (1 => Right),
+                          Typ      => EW_Bool_Type);
+                  else
+                     T :=
+                       New_Not
+                         (Right  => Right,
+                          Domain => Domain);
+                  end if;
+               end;
             end if;
 
          when N_Op_And
@@ -11883,20 +11774,20 @@ package body Gnat2Why.Expr is
                     (if Domain = EW_Pred then EW_Term else Domain);
                begin
 
-                  T := New_Op_Expr
+                  T := Transform_Array_Logical_Op
                     (Op          => Nkind (Expr),
                      Left        =>
                        Transform_Expr (Left_Opnd (Expr), Subdomain, Params),
                      Right       =>
                        Transform_Expr (Right_Opnd (Expr), Subdomain, Params),
                      Left_Type   => Etype (Left_Opnd (Expr)),
-                     Right_Type  => Etype (Right_Opnd (Expr)),
-                     Return_Type => Expr_Type,
                      Domain      => Domain,
-                     Ada_Node    => Expr);
+                     Ada_Node    => Expr,
+                     Do_Check    => Domain = EW_Prog);
                end;
             else
                declare
+                  Op    : constant Node_Kind := Nkind (Expr);
                   Base  : constant W_Type_Id :=
                     (if Is_Boolean_Type (Expr_Type) then EW_Bool_Type
                      else Base_Why_Type (Expr_Type));
@@ -11911,16 +11802,29 @@ package body Gnat2Why.Expr is
                                     Domain,
                                     Local_Params);
                begin
+                  if Op = N_Op_And then
+                     T := New_And_Expr (Left, Right, Domain, Base);
+                  else
+                     if Op = N_Op_Or then
+                        T := New_Or_Expr (Left, Right, Domain, Base);
+                     else
+                        T := New_Xor_Expr (Left, Right, Domain, Base);
+                     end if;
 
-                  T := New_Op_Expr
-                    (Op          => Nkind (Expr),
-                     Left        => Left,
-                     Right       => Right,
-                     Left_Type   => Etype (Left_Opnd (Expr)),
-                     Right_Type  => Etype (Right_Opnd (Expr)),
-                     Return_Type => Expr_Type,
-                     Domain      => Domain,
-                     Ada_Node    => Expr);
+                     --  If we're dealing with modulars of non binary modulus
+                     --  or and xor might overflow : we need to take the
+                     --  modulo of the result.
+
+                     if Is_Modular_Integer_Type (Expr_Type) and then
+                       Non_Binary_Modulus (Expr_Type)
+                     then
+                        T := Apply_Modulus
+                          (Op     => Op,
+                           E      => Expr_Type,
+                           T      => T,
+                           Domain => Domain);
+                     end if;
+                  end if;
                end;
             end if;
 

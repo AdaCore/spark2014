@@ -292,18 +292,6 @@ package Gnat2Why.Expr is
    --         array in split form.
    --  @result Why3 program that performs the check and returns [W_Expr]
 
-   function New_Op_Expr
-     (Op          : N_Op;
-      Left        : W_Expr_Id := Why_Empty;
-      Right       : W_Expr_Id;
-      Left_Type   : Entity_Id := Empty;
-      Right_Type  : Entity_Id;
-      Return_Type : Entity_Id;
-      Domain      : EW_Domain;
-      Ada_Node    : Node_Id := Empty) return W_Expr_Id;
-   --  Generates Left Op Right depending on the value of Op and the Ada types
-   --  Return_Type, Left_Type, and Right_Type
-
    function Range_Expr
      (N           : Node_Id;
       T           : W_Expr_Id;
