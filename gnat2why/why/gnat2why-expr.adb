@@ -7053,7 +7053,7 @@ package body Gnat2Why.Expr is
                   F_Expr  : constant W_Expr_Id :=
                     (if In_Attribute_Update then
                         Get_Array_Attr
-                       (EW_Term, +Call_Args (1), Attribute_First, 1)
+                       (EW_Term, +Call_Args (1), Attribute_First, Dim)
                      else +New_Temp_Identifier (Typ => BT));
                   First_Eq : constant W_Pred_Id :=
                     +New_Comparison
@@ -7061,12 +7061,12 @@ package body Gnat2Why.Expr is
                      Domain => EW_Pred,
                      Left   =>
                        +Get_Array_Attr
-                       (EW_Term, +Aggr_Temp, Attribute_First, 1),
+                       (EW_Term, +Aggr_Temp, Attribute_First, Dim),
                      Right  => F_Expr);
                   L_Expr  : constant W_Expr_Id :=
                     (if In_Attribute_Update then
                         Get_Array_Attr
-                       (EW_Term, +Call_Args (1), Attribute_Last, 1)
+                       (EW_Term, +Call_Args (1), Attribute_Last, Dim)
                      else +New_Temp_Identifier (Typ => BT));
                   Last_Eq : constant W_Pred_Id :=
                     +New_Comparison
@@ -7074,7 +7074,7 @@ package body Gnat2Why.Expr is
                      Domain => EW_Pred,
                      Left   =>
                        +Get_Array_Attr
-                       (EW_Term, +Aggr_Temp, Attribute_Last, 1),
+                       (EW_Term, +Aggr_Temp, Attribute_Last, Dim),
                      Right  => L_Expr);
 
                begin
