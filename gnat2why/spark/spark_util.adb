@@ -691,6 +691,7 @@ package body SPARK_Util is
                        | E_Package
                        | E_Protected_Type
                        | E_Task_Type
+                       | Generic_Unit_Kind
          then
             --  We have found the enclosing unit, return it
 
