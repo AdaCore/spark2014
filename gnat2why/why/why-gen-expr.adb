@@ -562,10 +562,10 @@ package body Why.Gen.Expr is
                for I in 1 .. Dim loop
                   Add_Attr_Arg
                     (Domain, Args, Arr_Expr,
-                     Attribute_First, Dim, Arg_Ind);
+                     Attribute_First, I, Arg_Ind);
                   Add_Attr_Arg
                     (Domain, Args, To_Ent,
-                     Attribute_First, Dim, Arg_Ind);
+                     Attribute_First, I, Arg_Ind);
                end loop;
 
                T := New_Call
@@ -587,10 +587,10 @@ package body Why.Gen.Expr is
                for I in 1 .. Dim loop
                   Add_Attr_Arg
                     (Domain, Args, To_Ent,
-                     Attribute_First, Dim, Arg_Ind);
+                     Attribute_First, I, Arg_Ind);
                   Add_Attr_Arg
                     (Domain, Args, To_Ent,
-                     Attribute_Last, Dim, Arg_Ind);
+                     Attribute_Last, I, Arg_Ind);
                end loop;
             end if;
 
