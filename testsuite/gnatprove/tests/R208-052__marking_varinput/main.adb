@@ -1,6 +1,6 @@
 with P;
 
-procedure Main is
+procedure Main with SPARK_Mode Is
    type T is array (p.cpu_number) of Integer;
    -- This array type is not in SPARK, because its index type is not
 
