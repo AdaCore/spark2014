@@ -130,7 +130,11 @@ package body Flow_Visibility is
    begin
       --  Print graph before adding transitive edges
       if Gnat2Why_Args.Flow_Advanced_Debug then
-         Print (Scope_Graph);
+
+         --  Only print the graph in phase 1
+         if Gnat2Why_Args.Global_Gen_Mode then
+            Print (Scope_Graph);
+         end if;
 
          --  Retain the original graph for the Print_Path routine
 
