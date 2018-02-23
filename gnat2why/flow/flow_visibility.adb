@@ -31,7 +31,6 @@ with Flow_Refinement;            use Flow_Refinement;
 with Gnat2Why_Args;
 with Graphs;
 with Lib;                        use Lib;
-with Namet;                      use Namet;
 with Nlists;                     use Nlists;
 with Rtsfind;                    use Rtsfind;
 with Sem_Util;                   use Sem_Util;
@@ -400,7 +399,7 @@ package body Flow_Visibility is
       end EDI;
 
       Filename : constant String :=
-        Get_Name_String (Chars (Main_Unit_Entity)) & "_visibility";
+        Unique_Name (Main_Unit_Entity) & "_visibility";
 
    --  Start of processing for Print
 

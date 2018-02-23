@@ -1951,7 +1951,7 @@ package body Flow_Generated_Globals.Partial is
       --  Local constants
 
       Filename : constant String :=
-        Get_Name_String (Chars (Main_Unit_Entity)) & "_constants_1";
+        Unique_Name (Main_Unit_Entity) & "_constants_1";
 
    --  Start of processing for Print_Graph
 
