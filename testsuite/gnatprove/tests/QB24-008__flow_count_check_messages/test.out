@@ -3,4 +3,4 @@ init.adb:1:17: warning: unused variable "Y"
 init.adb:4:10: medium: "X" might not be initialized
 init.adb:4:10: warning: unused assignment
 ===========================================================================
-Init at init.adb:1 flow analyzed (0 errors and 4 warnings) and proved (0 checks)
+Init at init.adb:1 flow analyzed (0 errors, 1 checks and 3 warnings) and proved (0 checks)

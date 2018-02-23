@@ -58,6 +58,7 @@ package Report_Database is
       Suppr_Msgs    : Warning_Lists.List; --  List of suppressed messages
       Flow_Warnings : Natural;            --  Number of flow analysis warnings
       Flow_Errors   : Natural;            --  Number of flow analysis errors
+      Flow_Checks   : Natural;            --  Number of flow analysis checks
       VC_Count      : Natural;            --  Total number of checks
       VC_Proved     : Natural;            --  Number of checks that were proved
       Assumptions   : Rule_Lists.List;    --  Final mapping claims->assumptions
@@ -102,10 +103,12 @@ package Report_Database is
 
    Summary : Summary_Type := (others => Null_Summary_Line);
 
+   type Flow_Message_Kind is (FMK_Error, FMK_Check, FMK_Warning);
+
    procedure Add_Flow_Result
-     (Unit  : Unit_Type;
-      Subp  : Subp_Type;
-      Error : Boolean);
+     (Unit     : Unit_Type;
+      Subp     : Subp_Type;
+      Msg_Kind : Flow_Message_Kind);
    --  For the subprogram in the given unit, register a flow result, which is
    --  either a warning or an error.
 

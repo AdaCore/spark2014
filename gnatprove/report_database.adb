@@ -43,6 +43,7 @@ package body Report_Database is
                Suppr_Msgs    => Warning_Lists.Empty_List,
                Flow_Warnings => 0,
                Flow_Errors   => 0,
+               Flow_Checks   => 0,
                VC_Count      => 0,
                VC_Proved     => 0,
                Assumptions   => Rule_Lists.Empty_List);
@@ -117,9 +118,9 @@ package body Report_Database is
    ---------------------
 
    procedure Add_Flow_Result
-     (Unit  : Unit_Type;
-      Subp  : Subp_Type;
-      Error : Boolean)
+     (Unit     : Unit_Type;
+      Subp     : Subp_Type;
+      Msg_Kind : Flow_Message_Kind)
    is
       procedure Process (Stat : in out Stat_Rec);
       --  Do the actual work
@@ -130,11 +131,14 @@ package body Report_Database is
 
       procedure Process (Stat : in out Stat_Rec) is
       begin
-         if Error then
-            Stat.Flow_Errors := Stat.Flow_Errors + 1;
-         else
-            Stat.Flow_Warnings := Stat.Flow_Warnings + 1;
-         end if;
+         case Msg_Kind is
+            when FMK_Error =>
+               Stat.Flow_Errors := Stat.Flow_Errors + 1;
+            when FMK_Check =>
+               Stat.Flow_Checks := Stat.Flow_Checks + 1;
+            when FMK_Warning =>
+               Stat.Flow_Warnings := Stat.Flow_Warnings + 1;
+         end case;
       end Process;
 
    --  Start of processing for Add_Flow_Result

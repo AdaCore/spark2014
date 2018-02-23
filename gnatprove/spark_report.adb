@@ -423,6 +423,29 @@ procedure SPARK_Report is
    -----------------------
 
    procedure Handle_Flow_Items (V : JSON_Array; Unit : Unit_Type) is
+
+      function Severity_To_Msg_Kind (S : String) return Flow_Message_Kind;
+
+      --------------------------
+      -- Severity_To_Msg_Kind --
+      --------------------------
+
+      function Severity_To_Msg_Kind (S : String) return Flow_Message_Kind is
+      begin
+         if S = "error" then
+            return FMK_Error;
+         elsif S = "warning" then
+            return FMK_Warning;
+         elsif S = "high" or else S = "medium" or else S = "low" then
+            return FMK_Check;
+         else
+            Ada.Text_IO.Put_Line ("severity: " & S);
+            raise Program_Error;
+         end if;
+      end Severity_To_Msg_Kind;
+
+   --  Start of Processing for Handle_Flow_Items
+
    begin
       for Index in 1 .. Length (V) loop
          declare
@@ -452,9 +475,9 @@ procedure SPARK_Report is
                end if;
             else
                Add_Flow_Result
-                 (Unit  => Unit,
-                  Subp  => Subp,
-                  Error => Severe = "error");
+                 (Unit     => Unit,
+                  Subp     => Subp,
+                  Msg_Kind => Severity_To_Msg_Kind (Severe));
                if Category /= No_Entry then
                   Increment (Summary (Category).Unproved);
                end if;
@@ -710,7 +733,8 @@ procedure SPARK_Report is
                   if Stat.Analysis in Flow_Analysis | Flow_And_Proof then
                      Put (Handle,
                           " flow analyzed ("
-                          & Image (Stat.Flow_Errors, 1) & " errors and "
+                          & Image (Stat.Flow_Errors, 1) & " errors, "
+                          & Image (Stat.Flow_Checks, 1) & " checks and "
                           & Image (Stat.Flow_Warnings, 1) & " warnings)");
                   end if;
 
