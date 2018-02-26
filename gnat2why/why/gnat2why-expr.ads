@@ -442,20 +442,28 @@ package Gnat2Why.Expr is
 
    procedure Variables_In_Default_Init
      (Ty        : Entity_Id;
-      Variables : in out Flow_Id_Sets.Set);
+      Variables : in out Flow_Id_Sets.Set)
+   with Pre  => Is_Type (Ty),
+        Post => Flow_Id_Sets.Is_Subset (Subset => Variables'Old,
+                                        Of_Set => Variables);
    --  @param Ty a type
    --  @param Variables used in the expression for Ty's default initialization
 
    procedure Variables_In_Dynamic_Predicate
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
-   with Pre => Has_Predicates (Ty);
+   with Pre  => Has_Predicates (Ty),
+        Post => Flow_Id_Sets.Is_Subset (Subset => Variables'Old,
+                                        Of_Set => Variables);
    --  @param Ty a type with a predicate
    --  @param Variables used in the expression for Ty's predicate
 
    procedure Variables_In_Dynamic_Invariant
      (Ty        : Entity_Id;
-      Variables : in out Flow_Id_Sets.Set);
+      Variables : in out Flow_Id_Sets.Set)
+   with Pre  => Is_Type (Ty),
+        Post => Flow_Id_Sets.Is_Subset (Subset => Variables'Old,
+                                        Of_Set => Variables);
    --  @param Ty a type
    --  @param Variables used in the expression for Ty's dynamic invariant
 
