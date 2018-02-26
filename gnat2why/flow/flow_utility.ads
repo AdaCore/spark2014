@@ -314,7 +314,7 @@ is
    with Pre  => Present (Expr_N) and then
                 Present (Scope_N),
         Post => (for all F of Get_Variables_For_Proof'Result =>
-                   Is_Entire_Variable (F));
+                   Is_Entire_Variable (F) and then F.Variant = Normal_Use);
    --  A wrapper around Get_Variables, as used by proof. Expr_N is the
    --  expression for which we obtain variables, and Scope_N is the node
    --  controlling visibility.
