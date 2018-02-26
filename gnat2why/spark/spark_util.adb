@@ -901,7 +901,9 @@ package body SPARK_Util is
    ----------------------------------
 
    function Full_Name_Is_Not_Unique_Name (E : Entity_Id) return Boolean is
-     (Is_Standard_Boolean_Type (E) or else E = Universal_Fixed);
+     ((Is_Type (E) and then Is_Standard_Boolean_Type (E))
+        or else
+      E = Universal_Fixed);
 
    ----------------------
    -- Full_Source_Name --
