@@ -394,8 +394,7 @@ package body Configuration is
 
    function Is_Coq_Prover return Boolean is
    begin
-      return Provers.Length = 1 and then
-        (Case_Insensitive_Contains (Provers, "coq"));
+      return Case_Insensitive_Contains (Provers, "coq");
    end Is_Coq_Prover;
 
    ------------------------

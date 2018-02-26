@@ -3,7 +3,7 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
 <prover id="0" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
-<prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="10" steplimit="0" memlimit="0"/>
+<prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="1" steplimit="0" memlimit="0"/>
 <file name="../../../obj/gnatprove/spark-test_array_lemmas.mlw" proved="true">
 <theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
 </theory>
@@ -529,7 +529,7 @@
   </goal>
   <goal name="WP_parameter def.9" expl="postcondition" proved="true">
   <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-test_array_lemmas/Spark__test_array_lemmas__test_uint__lemma_transitive_order__pragargs__forall.v"><result status="valid"/></proof>
-  <proof prover="1"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
