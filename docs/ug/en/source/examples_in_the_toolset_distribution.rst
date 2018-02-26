@@ -375,6 +375,26 @@ subdirectories and can be opened manually.
 
 The original source code is available from the publisher's website at http://www.cambridge.org/us/academic/subjects/computer-science/programming-languages-and-applied-logic/building-high-integrity-applications-spark
 
+.. rubric:: ``tagged_stacks``
+
+This example features an abstract view of a stack, represented as an abstract
+tagged type with abstract primitives, as well as two concrete stack
+implementations deriving from this abstract root. A procedure ``Test_Stack``
+defined on any object of the type hierarchy uses dispatching to test any
+concrete stack implementation.
+
+Note that in this example, LSP checks
+(see :ref:`Object Oriented Programming and Liskov Substitution Principle`) are
+trivial as no contracts are supplied on overriding subprograms. The differences
+of behaviors between the two concrete implementations are all accounted for
+through calls to primitive functions in the classwide contracts.
+
+Also note that we did not provide any loop invariants on the loops of
+``Test_Stack``. Instead we rely on
+:ref:`Automatic Unrolling of Simple For-Loops` to verify the procedure.
+
+|GNATprove| proves all checks on this program.
+
 .. rubric:: ``tetris``
 
 This program implements a simple version of the game of Tetris. An invariant of

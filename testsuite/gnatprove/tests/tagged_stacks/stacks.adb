@@ -1,6 +1,6 @@
-package body StackP with SPARK_Mode is
+package body Stacks with SPARK_Mode is
 
-   procedure Reset (S : out Stack) is
+   procedure Reset (S : in out Stack) is
    begin
       S.Length := 0;
    end Reset;
@@ -17,7 +17,7 @@ package body StackP with SPARK_Mode is
       S.Content (S.Length) := E;
    end Push;
 
-   procedure Reset (S : out Buffer) is
+   procedure Reset (S : in out Buffer) is
    begin
       S.First := 1;
       S.Length := 0;
@@ -45,4 +45,4 @@ package body StackP with SPARK_Mode is
       end if;
       S.Content (S.First) := E;
    end Enqueue;
-end StackP;
+end Stacks;

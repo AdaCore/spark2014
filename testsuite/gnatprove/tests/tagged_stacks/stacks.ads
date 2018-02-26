@@ -1,4 +1,4 @@
-package StackP with SPARK_Mode is
+package Stacks with SPARK_Mode is
    Max : constant Natural := 100;
    subtype Less_Than_Max is Natural range 0 .. Max;
 
@@ -9,61 +9,69 @@ package StackP with SPARK_Mode is
    type Model is array (Positive range <>) of Element;
 
    function Size (S : Stack_Root'Class) return Less_Than_Max;
+
    function Get_Model (S : Stack_Root) return Model is abstract with
-     Post'Class => Get_Model'Result'Length = Size (S);
+     Ghost,
+     Post'Class => Get_Model'Result'First in Less_Than_Max
+       and then Get_Model'Result'Last in Less_Than_Max
+       and then Get_Model'Result'Length = Size (S);
 
    function Is_Full (S : Stack_Root'Class) return Boolean is (Size (S) = Max);
    function Is_Empty (S : Stack_Root'Class) return Boolean is (Size (S) = 0);
 
-   procedure Reset (S : out Stack_Root) is abstract with
-     Post'Class => Is_Empty (S);
+   procedure Reset (S : in out Stack_Root) is abstract with
+     Post'Class => S.Is_Empty;
+   function Peek (S : Stack_Root) return Element is abstract with
+     Pre'Class  => not S.Is_Empty,
+     Post'Class => not S.Is_Empty
+       and then Peek'Result = S.Get_Model (S.Get_Model'Last);
    procedure Pop (S : in out Stack_Root; E : out Element) is abstract with
-     Pre'Class  => not Is_Empty (S),
-     Post'Class => Get_Model (S) & (1 => E) = Get_Model (S)'Old;
+     Pre'Class  => not S.Is_Empty,
+     Post'Class => E = S.Peek'Old and
+       S.Get_Model = S.Get_Model'Old (S.Get_Model'Old'First ..  S.Get_Model'Old'Last - 1);
    procedure Push (S : in out Stack_Root; E : Element) is abstract with
-     Pre'Class  => not Is_Full (S),
-     Post'Class => Get_Model (S) = Get_Model (S)'Old & (1 => E);
+     Pre'Class  => not S.Is_Full,
+     Post'Class => S.Get_Model = S.Get_Model'Old & E;
 
    type Stack is new Stack_Root with private;
 
-   -- Proofs don't go through without restating Post'Class everywhere.
-   -- Ideally, we would like to remove the redundant ones.
+   overriding
+   function Get_Model (S : Stack) return Model with
+     Ghost;
 
    overriding
-   function Get_Model (S : Stack) return Model;
-
+   procedure Reset (S : in out Stack);
    overriding
-   procedure Reset (S : out Stack);
+   function Peek (S : Stack) return Element;
    overriding
-   procedure Pop (S : in out Stack; E : out Element) with
-     Post'Class => Get_Model (S) & (1 => E) = Get_Model (S)'Old;
+   procedure Pop (S : in out Stack; E : out Element);
    overriding
-   procedure Push (S : in out Stack; E : Element) with
-     Post'Class => Get_Model (S) = Get_Model (S)'Old & (1 => E);
+   procedure Push (S : in out Stack; E : Element);
 
    type Buffer is new Stack_Root with private;
 
    not overriding
    procedure Enqueue (S : in out Buffer; E : Element) with
-     Pre'Class  => not Is_Full (S),
-     Post'Class => Get_Model (S) = E & Get_Model (S)'Old;
+     Pre'Class  => not S.Is_Full,
+     Post'Class => S.Get_Model = E & S.Get_Model'Old;
 
    overriding
-   function Get_Model (S : Buffer) return Model;
+   function Get_Model (S : Buffer) return Model with
+     Ghost;
 
    overriding
-   procedure Reset (S : out Buffer);
+   procedure Reset (S : in out Buffer);
    overriding
-   procedure Pop (S : in out Buffer; E : out Element) with
-     Post'Class => Get_Model (S) & (1 => E) = Get_Model (S)'Old;
+   function Peek (S : Buffer) return Element;
    overriding
-   procedure Push (S : in out Buffer; E : Element) with
-     Post'Class => Get_Model (S) = Get_Model (S)'Old & (1 => E);
+   procedure Pop (S : in out Buffer; E : out Element);
+   overriding
+   procedure Push (S : in out Buffer; E : Element);
 
 private
    type Element_Array is array (Positive range 1 .. Max) of Element;
    type Stack_Root is abstract tagged record
-      Content : Element_Array;
+      Content : Element_Array := (others => 0);
       Length  : Less_Than_Max := 0;
    end record;
    function Size (S : Stack_Root'Class) return Less_Than_Max is (S.Length);
@@ -71,6 +79,8 @@ private
    type Stack is new Stack_Root with null record;
    function Get_Model (S : Stack) return Model is
      (Model (S.Content (1 .. S.Length)));
+
+   function Peek (S : Stack) return Element is (S.Content (S.Length));
 
    subtype Positive_Less_Than_Max is Positive range 1 .. Max;
 
@@ -89,4 +99,6 @@ private
      (if Wraps_Around (S) then
            Model (S.Content (S.First .. Max) & S.Content (1 .. Last (S)))
       else Model (S.Content (S.First .. Last (S))));
-end StackP;
+
+   function Peek (S : Buffer) return Element is (S.Content (Last (S)));
+end Stacks;
