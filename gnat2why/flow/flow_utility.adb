@@ -1718,13 +1718,15 @@ package body Flow_Utility is
                   pragma Assert (P_CC.Length = 1);
 
                   declare
-                     Ptr : Node_Id;
+                     Consequence : Node_Id :=
+                       First (Component_Associations (P_CC.First_Element));
+
                   begin
-                     Ptr := First (Component_Associations
-                                     (P_CC.First_Element));
-                     while Present (Ptr) loop
-                        P_Expr.Append (Expression (Ptr));
-                        Next (Ptr);
+                     loop
+                        P_Expr.Append (Expression (Consequence));
+                        Next (Consequence);
+
+                        exit when No (Consequence);
                      end loop;
                   end;
                end if;
@@ -1753,7 +1755,7 @@ package body Flow_Utility is
    is
       Precondition_Expressions : Node_Lists.List :=
         Find_Contracts (E, Pragma_Precondition);
-      Contract_Case            : constant Node_Lists.List :=
+      Contract_Cases           : constant Node_Lists.List :=
         Find_Contracts (E, Pragma_Contract_Cases);
    begin
       if Is_Dispatching_Operation (E) then
@@ -1764,20 +1766,24 @@ package body Flow_Utility is
 
       --  If a Contract_Cases aspect was found then we pull out every
       --  condition apart from the others.
-      if not Contract_Case.Is_Empty then
+      if not Contract_Cases.Is_Empty then
          declare
-            C_Case    : Node_Id;
-            Condition : Node_Id;
+            Contract_Case : Node_Id :=
+              First (Component_Associations (Contract_Cases.First_Element));
+
+            Case_Guard : Node_Id;
+
          begin
-            C_Case := First (Component_Associations
-                               (Contract_Case.First_Element));
-            while Present (C_Case) loop
-               Condition := First (Choices (C_Case));
-               if Nkind (Condition) /= N_Others_Choice then
-                  Precondition_Expressions.Append (Condition);
+            loop
+               Case_Guard := First (Choices (Contract_Case));
+
+               if Nkind (Case_Guard) /= N_Others_Choice then
+                  Precondition_Expressions.Append (Case_Guard);
                end if;
 
-               C_Case := Next (C_Case);
+               Next (Contract_Case);
+
+               exit when No (Contract_Case);
             end loop;
          end;
       end if;
