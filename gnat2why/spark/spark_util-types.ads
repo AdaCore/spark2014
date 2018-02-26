@@ -163,7 +163,8 @@ package SPARK_Util.Types is
    --  @param Typ any type
    --  @return False if Typ is unconstrained.
 
-   function Check_Needed_On_Conversion (From, To : Entity_Id) return Boolean;
+   function Check_Needed_On_Conversion (From, To : Entity_Id) return Boolean
+   with Pre => Is_Type (From) and then Is_Type (To);
    --  @param From type of expression to be converted
    --  @param To target type of the conversion
    --  @return whether a check may be needed when converting an expression
@@ -207,15 +208,18 @@ package SPARK_Util.Types is
    --  @return If the type declaration requires a check, return the "parent"
    --    type mentionend in the type declaration. Return empty otherwise.
 
-   function Has_Invariants_In_SPARK (E : Entity_Id) return Boolean;
+   function Has_Invariants_In_SPARK (E : Entity_Id) return Boolean
+   with Pre => Is_Type (E);
    --  @params E any type
    --  @returns True if E has a type invariant and the invariant is in SPARK.
 
-   function Has_Static_Discrete_Predicate (E : Entity_Id) return Boolean;
+   function Has_Static_Discrete_Predicate (E : Entity_Id) return Boolean
+   with Pre => Is_Type (E);
    --  @param E any type
    --  @return True iff E is a discrete type with a static predicate
 
-   function Has_Visible_Type_Invariants (Ty : Entity_Id) return Boolean;
+   function Has_Visible_Type_Invariants (Ty : Entity_Id) return Boolean
+   with Pre => Is_Type (Ty);
    --  @param Ty type entity
    --  @return True if Ty has a top level invariant which needs to be checked
    --          in the current compilation unit and False if it can be assumed
@@ -224,14 +228,16 @@ package SPARK_Util.Types is
    --  is enough to check if the type is declared in the main compilation unit
    --  to decide whether or not it should be checked in this unit.
 
-   function Invariant_Check_Needed (Ty : Entity_Id) return Boolean;
+   function Invariant_Check_Needed (Ty : Entity_Id) return Boolean
+   with Pre => Is_Type (Ty);
    --  @param Ty type entity
    --  @return True if there is an invariant that needs to be checked for type
    --          Ty. It can come from Ty itself, from one of its ancestors, or
    --          from one of its components.
 
    function Is_Nouveau_Type (T : Entity_Id) return Boolean is
-     (Etype (T) = T);
+     (Etype (T) = T)
+   with Pre => Is_Type (T);
    --  @param T any type
    --  @return True iff T is neither a derived type, nor a subtype, nor
    --     a classwide type (see description of Etype field in einfo.ads),
@@ -239,7 +245,8 @@ package SPARK_Util.Types is
    --     a "nouveau" type. [Calling it a "new" type would be confusing with
    --     derived types.]
 
-   function Is_Null_Range (T : Entity_Id) return Boolean;
+   function Is_Null_Range (T : Entity_Id) return Boolean
+   with Pre => Is_Type (T);
    --  @param T any type
    --  @returns True iff T is a scalar type whose range is statically known to
    --     be empty
@@ -250,8 +257,8 @@ package SPARK_Util.Types is
    --  @return True if we can determine that E is Standard_Boolean or a subtype
    --    of Standard_Boolean which also ranges over False .. True
 
-   function Needs_Default_Checks_At_Decl (E : Entity_Id) return Boolean with
-     Pre => Is_Type (E);
+   function Needs_Default_Checks_At_Decl (E : Entity_Id) return Boolean
+   with Pre => Is_Type (E);
    --  @param E type
    --  @return True if E needs a specific module to check its default
    --     expression at declaration.
@@ -287,7 +294,8 @@ package SPARK_Util.Types is
    --  @param Discr a discriminant of Ty
    --  @return the constraint stored for Discr in Ty
 
-   function Has_Private_Ancestor_Or_Root (E : Entity_Id) return Boolean;
+   function Has_Private_Ancestor_Or_Root (E : Entity_Id) return Boolean
+   with Pre => Is_Type (E);
    --  @param E any type
    --  @return True iff E is a tagged type whose translation into Why3 requires
    --     the use of an ancestor field, to denote invisible fields from an
@@ -318,7 +326,8 @@ package SPARK_Util.Types is
    -- Queries related to arrays --
    --------------------------------
 
-   function Is_Static_Array_Type (E : Entity_Id) return Boolean;
+   function Is_Static_Array_Type (E : Entity_Id) return Boolean
+   with Pre => Is_Type (E);
    --  @param E any type
    --  @return True iff E is a constrained array type with statically known
    --     bounds
