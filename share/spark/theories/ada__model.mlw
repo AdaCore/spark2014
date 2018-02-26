@@ -415,9 +415,11 @@ end
 
 module Fixed_Point_Base
   (* The module that is used as basis for all fixed-point types.
+
      We only support currently a subset of all Ada fixed-point types and
      fixed-point operations:
-     1. fixed-point types must have a small that is a negative power of 2 or 10
+     1. fixed-point types must have a small that is the reciprocal of 
+        an integer
      2. multiplication and division between different fixed-point types and
         universal real are rejected
 
@@ -427,7 +429,7 @@ module Fixed_Point_Base
     result type)
 
     These restrictions enforce in particular that the result of all
-    multiplication and division operations on fixed-pints (with both fixed-point
+    multiplication and division operations on fixed-points (with both fixed-point
     arguments, or an integer argument) is in the "perfect result set" as defined
     in Ada RM G.2.3: the result is either exact, or one of the two representable
     values that are closest to the exact result. This property is axiomatized
@@ -473,12 +475,13 @@ module Fixed_Point_Base
 
   (* Inverse of the "small" value of the corresponding fixed-point type.
      This is guaranteed to be a positive whole number, because we restrict
-     gnatprove analysis to fixed-point types with a "small" that is a negative
-     power of 2 or 10.
+     gnatprove analysis to fixed-point types with a "small" that is 
+     the reciprocal of an integer.
 
      The real value of a fixed-point number can be obtained by dividing its
      integer representation by inv_small.
    *)
+
   function inv_small : __fixed
 
   function user_eq (x : t) (y : t) : bool

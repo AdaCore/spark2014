@@ -1,0 +1,5 @@
+fp_test.adb:6:17: medium: overflow check might fail
+fp_test.ads:13:23: medium: overflow check might fail
+main.adb:7:32: medium: precondition might fail
+main.adb:9:04: warning: assuming "Put_Line" has no effect on global items
+main.adb:9:04: warning: no Global contract available for "Put_Line"

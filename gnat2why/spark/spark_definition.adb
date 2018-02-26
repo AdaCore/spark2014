@@ -4108,48 +4108,11 @@ package body SPARK_Definition is
 
          elsif Is_Fixed_Point_Type (E) then
             declare
-               function Only_Factor_Is
-                 (Num    : Uint;
-                  Factor : Uint) return Boolean
-               with Pre => UI_Gt (Num, Uint_0) and then
-                           UI_Gt (Factor, Uint_0);
-               --  Returns True if Num is a power of Factor
-
-               --------------------
-               -- Only_Factor_Is --
-               --------------------
-
-               function Only_Factor_Is
-                 (Num    : Uint;
-                  Factor : Uint) return Boolean
-               is
-                  N : Uint := Num;
-               begin
-                  while N /= Uint_1 loop
-                     if UI_Rem (N, Factor) /= Uint_0 then
-                        return False;
-                     end if;
-                     N := UI_Div (N, Factor);
-                  end loop;
-
-                  return True;
-               end Only_Factor_Is;
-
                Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (E));
-               Inv_Small_Num : constant Uint := Norm_Num (Inv_Small);
             begin
-               if Norm_Den (Inv_Small) = Uint_1
-                 and then
-                   Inv_Small_Num /= Uint_1
-                   and then
-                     (Only_Factor_Is (Inv_Small_Num, Uint_2)
-                      or else
-                      Only_Factor_Is (Inv_Small_Num, Uint_10))
-               then
-                  null;
-               else
+               if Norm_Den (Inv_Small) /= Uint_1 then
                   Mark_Unsupported ("fixed-point type whose small is not "
-                                    & "a negative power of 2 or 10", E);
+                                    & "the reciprocal of an integer", E);
                end if;
             end;
 

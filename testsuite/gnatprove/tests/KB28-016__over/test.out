@@ -1,4 +1,3 @@
-c45532o.adb:6:06: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
-c45532o.adb:7:06: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
+c45532o.adb:7:06: fixed-point type whose small is not the reciprocal of an integer is not yet supported
 c45532o.adb:14:33: operation between different fixed-point types is not yet supported
 gnatprove: error during flow analysis and proof
