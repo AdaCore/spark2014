@@ -291,6 +291,12 @@ package body Flow_Utility is
                   end if;
                end if;
 
+            --  Operator nodes represent calls to intrinsic subprograms, which
+            --  we assume to be free from any side effects.
+
+            when N_Op =>
+               pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
+
             when others =>
                null;
          end case;
@@ -3300,6 +3306,14 @@ package body Flow_Utility is
 
                Variables.Union (Do_Subprogram_Call (N));
                return Skip;
+
+            --  Operator nodes represent calls to intrinsic subprograms, which
+            --  we assume to have Global => null. Variables referenced as
+            --  operator parameters will be picked when processing their own
+            --  nodes.
+
+            when N_Op =>
+               pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
 
             when N_Later_Decl_Item =>
                pragma Assert (not Ctx.Assume_In_Expression);
