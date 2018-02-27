@@ -9745,7 +9745,6 @@ package body Gnat2Why.Expr is
          begin
 
             if Is_Record_Type_In_Why (Left_Type) then
-               pragma Assert (Op in N_Op_Eq | N_Op_Ne);
                pragma Assert (Root_Record_Type (Left_Type) =
                                 Root_Record_Type (Right_Type));
                pragma Assert (Root_Record_Type (Left_Type) =
