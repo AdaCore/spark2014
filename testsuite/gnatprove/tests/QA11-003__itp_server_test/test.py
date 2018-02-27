@@ -70,7 +70,7 @@ def launch_server(limit_line, input_file):
                     children_88 = children_88 + 1
                 elif j[PARENT_ID] == 89:
                     children_89 = children_89 + 1
-                print (NEW_NODE + " " + str(j[NODE_ID]) + " " + str(j[PARENT_ID]))
+                print (NEW_NODE)
             elif notif_type == NEXT_UNPROVEN:
                 # TODO this is ok but we print nothing
                 next_unproven = next_unproven + 1

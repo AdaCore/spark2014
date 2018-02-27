@@ -1,18 +1,16 @@
 test.adb:11:16: medium: postcondition might fail
 {"ide_request": "Command_req", "node_ID":89, "command" : "introduce_premises" }
 
-{"ide_request": "Get_first_unproven_node", "node_ID":89}
-
 {"ide_request": "Command_req", "node_ID":89, "command" : "z3" }
 
 {"ide_request": "Get_task", "node_ID":89, "do_intros": false, "loc": false, "full_context": false}
 
-New_node 89 88
-New_node 90 89
+New_node
+New_node
 Message
-New_node 91 89
-New_node 92 91
-New_node 93 89
+New_node
+New_node
+New_node
 Task
 --------------------------- Local Context ---------------------------
 
@@ -39,6 +37,6 @@ Children 88 OK
 Children 89 OK
 Children OK
 Unparsed JSON = 0
-Next_unproven = 1
+Next_unproven = 0
 Node_change = 10
 DONE
