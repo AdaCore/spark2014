@@ -2025,7 +2025,9 @@ package body Gnat2Why.Expr is
       Nb_Of_Lets : out Natural;
       Params     :     Transformation_Params) return W_Expr_Array
    is
-      Subp     : constant Entity_Id := Get_Called_Entity (Call);
+      Subp     : constant Entity_Id :=
+        (if Nkind (Call) in N_Op then Entity (Call)
+         else Get_Called_Entity (Call));
       Binders  : constant Item_Array :=
         Compute_Subprogram_Parameters (Subp, Domain);
       Aliasing : constant Boolean :=
@@ -2507,7 +2509,27 @@ package body Gnat2Why.Expr is
             Compute_Param (Empty, Empty);
          end if;
 
-         Iterate_Call (Call);
+         --  If the call is an operator, directly call Compute_Param on each of
+         --  its operands.
+
+         if Nkind (Call) in N_Op then
+            declare
+               Formal : Entity_Id := First_Formal (Subp);
+
+            begin
+               if Nkind (Call) in N_Binary_Op then
+                  Compute_Param (Formal, Left_Opnd (Call));
+                  Next_Formal (Formal);
+               end if;
+
+               Compute_Param (Formal, Right_Opnd (Call));
+            end;
+
+         --  Otherwise, iterate through the call parameters
+
+         else
+            Iterate_Call (Call);
+         end if;
 
          --  Get values for logical binders
 
@@ -9745,6 +9767,7 @@ package body Gnat2Why.Expr is
          begin
 
             if Is_Record_Type_In_Why (Left_Type) then
+               pragma Assert (Op in N_Op_Eq | N_Op_Ne);
                pragma Assert (Root_Record_Type (Left_Type) =
                                 Root_Record_Type (Right_Type));
                pragma Assert (Root_Record_Type (Left_Type) =
@@ -11104,6 +11127,21 @@ package body Gnat2Why.Expr is
            (Value => Expr_Value (Expr),
             Typ   => Base_Why_Type_No_Bool (Expr_Type));
 
+       --  Intrinsic operators should be translated as function calls in SPARK
+       --  if the intrinsic pragma is located in a part with SPARK_Mode Off.
+       --  However, a crash will only occur if the base type on which the
+       --  operator applies is private in SPARK. Thus, we only check for this
+       --  case here. This may result in SPARK being a little too smart and
+       --  knowing the value of opeartors even if their intrinsic pragma
+       --  shold not be visible.
+
+      elsif Nkind (Expr) in N_Op
+        and then Ekind (Entity (Expr)) = E_Function
+        and then Full_View_Not_In_SPARK (Etype (Right_Opnd (Expr)))
+        and then (if Nkind (Expr) in N_Binary_Op then
+                       Full_View_Not_In_SPARK (Etype (Left_Opnd (Expr))))
+      then
+         T := Transform_Function_Call (Expr, Domain, Local_Params);
       else
          case Nkind (Expr) is
          when N_Aggregate =>
@@ -12368,13 +12406,17 @@ package body Gnat2Why.Expr is
       Nb_Of_Refs : Natural;
       Nb_Of_Lets : Natural;
       T          : W_Expr_Id;
-      Subp       : constant Entity_Id := Get_Called_Entity (Expr);
+      Subp       : constant Entity_Id :=
+        (if Nkind (Expr) in N_Op then Entity (Expr)
+         else Get_Called_Entity (Expr));
 
       Selector   : constant Selection_Kind :=
          --  When the call is dispatching, use the Dispatch variant of
          --  the program function, which has the appropriate contract.
 
-        (if Present (Controlling_Argument (Expr)) then Dispatch
+        (if Nkind (Expr) in N_Subprogram_Call
+         and then Present (Controlling_Argument (Expr))
+         then Dispatch
 
          --  When the call has visibility over the refined postcondition of the
          --  subprogram, use the Refine variant of the program function, which
@@ -12466,7 +12508,7 @@ package body Gnat2Why.Expr is
 
          --  Insert tag check if needed
 
-         if Present (Controlling_Argument (Expr)) then
+         if Selector = Dispatch then
             T := +Sequence (Compute_Tag_Check (Expr, Params),
                             +T);
          end if;
