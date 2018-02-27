@@ -1128,13 +1128,17 @@ procedure Gnatprove with SPARK_Mode is
 
       function Build_Prover_Command (Prover : JSON_Value) return String is
          use Ada.Strings.Unbounded;
-         Command : Unbounded_String;
-         Args : constant JSON_Array := Get (Get (Prover, "args"));
+         Command   : Unbounded_String;
+         Args      : constant JSON_Array := Get (Get (Prover, "args"));
+         Args_Time : constant JSON_Array := Get (Get (Prover, "args_time"));
       begin
          Append (Command,
                  Build_Executable (String'(Get (Get (Prover, "executable")))));
          for Index in 1 .. Length (Args) loop
             Append (Command, " " & String'(Get (Get (Args, Index))));
+         end loop;
+         for Index in 1 .. Length (Args_Time) loop
+            Append (Command, " " & String'(Get (Get (Args_Time, Index))));
          end loop;
          return To_String (Command);
       end Build_Prover_Command;
