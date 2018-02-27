@@ -6,6 +6,8 @@ module Rep_Proj_Base
   function to_rep t : rep_type
   function of_rep rep_type : t
 
+  meta "model_projection" function to_rep
+
   val of_rep (x : rep_type) : t
     requires { true }
     ensures  { to_rep (result) = x }
@@ -376,6 +378,8 @@ module Dynamic_Discrete
   (* To be instantiated with functions from the Ada base type *)
   function base_to_rep t : rep_type
   function base_of_rep rep_type : t
+
+  meta "model_projection" function base_to_rep
 
   function to_rep "inline" (x : t) : rep_type = base_to_rep x
   function of_rep "inline" (x : rep_type) : t = base_of_rep x
@@ -768,6 +772,8 @@ module Dynamic_Fixed_Point
   function base_to_rep t : __fixed
   function base_of_rep __fixed : t
 
+  meta "model_projection" function base_to_rep
+
   function to_fixed "inline" (x : t) : __fixed = base_to_rep x
   function of_fixed "inline" (x : __fixed) : t = base_of_rep x
 
@@ -895,6 +901,8 @@ module Dynamic_Floating_Point
   function base_to_rep t : rep_type
   function base_of_rep rep_type : t
 
+  meta "model_projection" function base_to_rep
+
   val base_of_rep (x : rep_type) : t
     requires { true }
     ensures  { base_to_rep (result) = x }
@@ -934,6 +942,7 @@ module Index_Type
   type rep
 
   function  to_rep base : rep
+  meta "model_projection" function to_rep
   predicate in_range_base rep
   predicate index_dynamic_property rep rep rep
   predicate index_le rep rep
@@ -981,6 +990,7 @@ module Array_Comparison_Axiom
   predicate rep_gt rep_type rep_type
 
   function to_rep component_type : rep_type
+  meta "model_projection" function to_rep
 
   function compare map Index.t Index.t map Index.t Index.t : int
   meta "encoding : lskept" function compare
@@ -1201,6 +1211,8 @@ module Unconstr_Array
   function to_rep index_base_type : index_rep_type
   function rep_to_int "inline" index_rep_type : int
 
+  meta "model_projection" function to_rep
+
   predicate in_range_base index_rep_type
   predicate index_dynamic_property index_rep_type index_rep_type index_rep_type
   predicate index_rep_le index_rep_type index_rep_type
@@ -1289,6 +1301,8 @@ module Unconstr_Array_2
   function to_rep index_base_type : index_rep_type
   function rep_to_int "inline" index_rep_type : int
 
+  meta "model_projection" function to_rep
+
   predicate in_range_base index_rep_type
   predicate index_dynamic_property index_rep_type index_rep_type index_rep_type
   predicate index_rep_le index_rep_type index_rep_type
@@ -1298,6 +1312,8 @@ module Unconstr_Array_2
 
   function to_rep_2 index_base_type_2 : index_rep_type_2
   function rep_to_int_2 "inline" index_rep_type_2 : int
+
+  meta "model_projection" function to_rep_2
 
   predicate in_range_base_2 index_rep_type_2
   predicate index_dynamic_property_2 index_rep_type_2 index_rep_type_2 index_rep_type_2
@@ -1410,6 +1426,8 @@ module Unconstr_Array_3
   function to_rep index_base_type : index_rep_type
   function rep_to_int "inline" index_rep_type : int
 
+  meta "model_projection" function to_rep
+
   predicate in_range_base index_rep_type
   predicate index_dynamic_property index_rep_type index_rep_type index_rep_type
   predicate index_rep_le index_rep_type index_rep_type
@@ -1420,6 +1438,8 @@ module Unconstr_Array_3
   function to_rep_2 index_base_type_2 : index_rep_type_2
   function rep_to_int_2 "inline" index_rep_type_2 : int
 
+  meta "model_projection" function to_rep_2
+
   predicate in_range_base_2 index_rep_type_2
   predicate index_dynamic_property_2 index_rep_type_2 index_rep_type_2 index_rep_type_2
   predicate index_rep_le_2 index_rep_type_2 index_rep_type_2
@@ -1429,6 +1449,8 @@ module Unconstr_Array_3
 
   function to_rep_3 index_base_type_3 : index_rep_type_3
   function rep_to_int_3 "inline" index_rep_type_3 : int
+
+  meta "model_projection" function to_rep_3
 
   predicate in_range_base_3 index_rep_type_3
   predicate index_dynamic_property_3 index_rep_type_3 index_rep_type_3 index_rep_type_3
@@ -1563,6 +1585,8 @@ module Unconstr_Array_4
   function to_rep index_base_type : index_rep_type
   function rep_to_int "inline" index_rep_type : int
 
+  meta "model_projection" function to_rep
+
   predicate in_range_base index_rep_type
   predicate index_dynamic_property index_rep_type index_rep_type index_rep_type
   predicate index_rep_le index_rep_type index_rep_type
@@ -1572,6 +1596,8 @@ module Unconstr_Array_4
 
   function to_rep_2 index_base_type_2 : index_rep_type_2
   function rep_to_int_2 "inline" index_rep_type_2 : int
+
+  meta "model_projection" function to_rep_2
 
   predicate in_range_base_2 index_rep_type_2
   predicate index_dynamic_property_2 index_rep_type_2 index_rep_type_2 index_rep_type_2
@@ -1583,6 +1609,8 @@ module Unconstr_Array_4
   function to_rep_3 index_base_type_3 : index_rep_type_3
   function rep_to_int_3 "inline" index_rep_type_3 : int
 
+  meta "model_projection" function to_rep_3
+
   predicate in_range_base_3 index_rep_type_3
   predicate index_dynamic_property_3 index_rep_type_3 index_rep_type_3 index_rep_type_3
   predicate index_rep_le_3 index_rep_type_3 index_rep_type_3
@@ -1592,6 +1620,8 @@ module Unconstr_Array_4
 
   function to_rep_4 index_base_type_4 : index_rep_type_4
   function rep_to_int_4 "inline" index_rep_type_4 : int
+
+  meta "model_projection" function to_rep_4
 
   predicate in_range_base_4 index_rep_type_4
   predicate index_dynamic_property_4 index_rep_type_4 index_rep_type_4 index_rep_type_4
