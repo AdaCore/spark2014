@@ -7,7 +7,7 @@ array_aggregates.adb:84:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:84:22: info: initialization of "M" proved
 array_aggregates.adb:87:32: info: initialization of "M" proved
 array_aggregates.adb:92:22: info: initialization of "M" proved
-array_aggregates.adb:92:22: medium: assertion might fail, cannot prove M (Elem_1) = Elem_1 (e.g. when M = (Elem_2 => Elem_0, others => Elem_0))
+array_aggregates.adb:92:22: medium: assertion might fail, cannot prove M (Elem_1) = Elem_1 (e.g. when M = (Elem_2 => Elem_2, others => Elem_0))
 array_aggregates.adb:95:32: info: initialization of "X" proved
 array_aggregates.adb:100:22: info: initialization of "X" proved
 array_aggregates.adb:100:22: medium: assertion might fail, cannot prove X (4) = 2 (e.g. when X = (others => 8))
@@ -16,7 +16,7 @@ array_aggregates.adb:108:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:108:22: info: initialization of "X" proved
 array_aggregates.adb:111:32: info: initialization of "X" proved
 array_aggregates.adb:118:22: info: initialization of "X" proved
-array_aggregates.adb:118:22: medium: assertion might fail, cannot prove X (4) = 2 (e.g. when X = (7 => 8, others => 8))
+array_aggregates.adb:118:22: medium: assertion might fail, cannot prove X (4) = 2 (e.g. when X = (7 => 10, others => 8))
 array_aggregates.adb:121:32: info: initialization of "X" proved
 array_aggregates.adb:128:22: info: initialization of "X" proved
 array_aggregates.adb:128:22: medium: assertion might fail, cannot prove X (7) = 2 (e.g. when X = (others => 10))
@@ -43,13 +43,13 @@ array_aggregates.adb:199:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:199:22: info: initialization of "X" proved
 array_aggregates.adb:202:32: info: initialization of "X" proved
 array_aggregates.adb:212:22: info: initialization of "X" proved
-array_aggregates.adb:212:22: medium: assertion might fail, cannot prove X (3) (4) = 10 (e.g. when X = (3 => (3 => 12, 4 => 12, 5 => 12, others => 3), others => (others => 3)))
+array_aggregates.adb:212:22: medium: assertion might fail, cannot prove X (3) (4) = 10 (e.g. when X = (3 => (5 => 10, others => 12), others => (others => 12)))
 array_aggregates.adb:215:32: info: initialization of "X" proved
 array_aggregates.adb:225:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:225:22: info: initialization of "X" proved
 array_aggregates.adb:228:32: info: initialization of "X" proved
 array_aggregates.adb:234:22: info: initialization of "X" proved
-array_aggregates.adb:234:22: medium: assertion might fail, cannot prove X (3) (4) = 10 (e.g. when X = (3 => (5 => 12, others => 12), others => (others => 12)))
+array_aggregates.adb:234:22: medium: assertion might fail, cannot prove X (3) (4) = 10 (e.g. when X = (3 => (5 => 10, others => 12), others => (others => 12)))
 array_aggregates.adb:237:32: info: initialization of "X" proved
 array_aggregates.adb:243:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:243:22: info: initialization of "X" proved
@@ -61,7 +61,7 @@ array_aggregates.adb:259:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:259:22: info: initialization of "X" proved
 array_aggregates.adb:262:32: info: initialization of "X" proved
 array_aggregates.adb:273:22: info: initialization of "X" proved
-array_aggregates.adb:273:22: medium: assertion might fail, cannot prove X (3).Len = 3 (e.g. when X = (3 => (Len => 5, Elem => (1 => 'NUL', 2 => 'NUL', 3 => 'NUL', 4 => 'NUL', others => 'NUL')), others => (Len => 5, Elem => (others => 'NUL'))))
+array_aggregates.adb:273:22: medium: assertion might fail, cannot prove X (3).Len = 3 (e.g. when X = (3 => (Len => 5, Elem => (1 => 'H', 2 => 'e', 3 => 'l', 4 => 'l', others => 'o')), others => (Len => 5, Elem => (others => 'o'))))
 array_aggregates.adb:276:32: info: initialization of "X" proved
 array_aggregates.adb:287:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:287:22: info: initialization of "X" proved
@@ -85,10 +85,10 @@ array_aggregates.adb:353:22: info: initialization of "X" proved
 array_aggregates.adb:353:22: medium: assertion might fail, cannot prove X (True) = 4 (e.g. when X = (others => 5))
 array_aggregates.adb:356:33: info: initialization of "X" proved
 array_aggregates.adb:362:22: info: initialization of "X" proved
-array_aggregates.adb:362:22: medium: assertion might fail, cannot prove X (True) = 4 (e.g. when X = (False => 5, others => 5))
+array_aggregates.adb:362:22: medium: assertion might fail, cannot prove X (True) = 4 (e.g. when X = (False => 10, others => 5))
 array_aggregates.adb:365:33: info: initialization of "X" proved
 array_aggregates.adb:371:22: info: initialization of "X" proved
-array_aggregates.adb:371:22: medium: assertion might fail, cannot prove X (True) = 4 (e.g. when X = (False => 5, others => 5))
+array_aggregates.adb:371:22: medium: assertion might fail, cannot prove X (True) = 4 (e.g. when X = (False => 10, others => 5))
 array_aggregates.adb:374:33: info: initialization of "X" proved
 array_aggregates.adb:380:22: info: initialization of "X" proved
 array_aggregates.adb:380:22: medium: assertion might fail, cannot prove X (2) = 3 (e.g. when X = (others => 2))

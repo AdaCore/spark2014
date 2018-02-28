@@ -2185,11 +2185,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Foo__float_tests__test_array_1__subprogram_def" proved="true" sum="12163db4f46d4606cef4c37adba207fe">
+<theory name="Foo__float_tests__test_array_1__a__aggregate_def___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Foo__float_tests__test_array_1__subprogram_def" proved="true" sum="85b02ebbf0f41fd2f1cf2772c19bdd1c">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="7138"/></proof>
+  <proof prover="2"><result status="valid" steps="7380"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3110,11 +3112,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Foo__double_tests__test_array_1__subprogram_def" proved="true" sum="fd93332a82ef8fc79496853e60bbbe61">
+<theory name="Foo__double_tests__test_array_1__a__aggregate_def___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+</theory>
+<theory name="Foo__double_tests__test_array_1__subprogram_def" proved="true" sum="d35fc9aa67f979a790b82846392867b7">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="7362"/></proof>
+  <proof prover="2"><result status="valid" steps="7604"/></proof>
   </goal>
  </transf>
  </goal>

@@ -709,7 +709,7 @@ package body Why.Inter is
       --  generation modules, the completions of types will have all the
       --  required definitions and they will be available when necessary.
 
-      if Is_Type (E) then
+      if Nkind (E) in N_Entity and then Is_Type (E) then
          return WF_Context;
       else
          return WF_Main;

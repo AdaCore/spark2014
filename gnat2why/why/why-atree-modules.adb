@@ -154,7 +154,7 @@ package body Why.Atree.Modules is
    begin
       if Has_Element (C) then
          return W_Module_Id (Element (C));
-      else
+      elsif Nkind (E) in N_Entity then
          declare
             Name : constant Name_Id :=
               NID (Full_Name (E) &
@@ -169,6 +169,8 @@ package body Why.Atree.Modules is
             Axiom_Modules.Insert (E, Why_Node_Id (M));
             return M;
          end;
+      else
+         return Why_Empty;
       end if;
    end E_Axiom_Module;
 
@@ -1748,9 +1750,16 @@ package body Why.Atree.Modules is
    -- Insert_Extra_Module --
    -------------------------
 
-   procedure Insert_Extra_Module (N : Node_Id; M : W_Module_Id) is
+   procedure Insert_Extra_Module
+     (N        : Node_Id;
+      M        : W_Module_Id;
+      Is_Axiom : Boolean := False) is
    begin
-      Entity_Modules.Insert (N, Why_Node_Id (M));
+      if Is_Axiom then
+         Axiom_Modules.Insert (N, Why_Node_Id (M));
+      else
+         Entity_Modules.Insert (N, Why_Node_Id (M));
+      end if;
    end Insert_Extra_Module;
 
    ------------------------

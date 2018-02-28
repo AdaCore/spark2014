@@ -669,7 +669,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365014"/></proof>
   <proof prover="2"><result status="invalid" steps="66025"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">

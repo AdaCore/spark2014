@@ -514,8 +514,15 @@ package Why.Atree.Modules is
    function Get_Module_Name (M : W_Module_Id) return String;
    --  Return the name of the module
 
-   procedure Insert_Extra_Module (N : Node_Id; M : W_Module_Id);
-   --  After a call to this procedure, E_Module (N) will return M
+   procedure Insert_Extra_Module
+     (N        : Node_Id;
+      M        : W_Module_Id;
+      Is_Axiom : Boolean := False);
+   --  After a call to this procedure, if Is_Axiom is false then E_Module (N)
+   --  will return M otherwise E_Axiom_Module (N) will return M.
+   --  @param N the Ada Node
+   --  @param M Why3 module associated to N
+   --  @param Is_Axiom True if M is an axiom module
 
    function Init_Array_Module (Module : W_Module_Id) return M_Array_Type;
    function Init_Array_1_Module (Module : W_Module_Id) return M_Array_1_Type;
