@@ -426,16 +426,17 @@ package body Gnat2Why.Driver is
       Mark_All_Compilation_Units;
       Timing_Phase_Completed (Timing, "marking");
 
-      --  Set up the flow tree utility package.
-
-      Flow_Utility.Initialize;
-
       --  Finalize has to be called before we call Compilation_Errors.
       Finalize (Last_Call => False);
 
       if Compilation_Errors or else Gnat2Why_Args.Check_Mode then
          return;
       end if;
+
+      --  Set up the flow tree utility package; it is done before the flow GG
+      --  traversal to support detection of constants with variable inputs.
+
+      Flow_Utility.Initialize;
 
       --  Build hierarchical representation of scopes in the current
       --  compilation unit. This may require two traversals: for spec and body.
