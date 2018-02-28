@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
+with Gnat2Why_Args;
 
 package Flow_Generated_Globals.Traversal is
 
@@ -108,8 +109,10 @@ package Flow_Generated_Globals.Traversal is
 
    generic
       with procedure Process (E : Entity_Id);
-   procedure Iterate_Constants_In_Main_Unit;
-   --  Call Process on constants in the current compilation unit
+   procedure Iterate_Constants_In_Main_Unit
+   with Pre => Gnat2Why_Args.Global_Gen_Mode;
+   --  Call Process on constants in the current compilation unit; it is only
+   --  available (and needed) in phase 1.
 
 private
 

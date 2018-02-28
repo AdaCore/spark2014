@@ -150,18 +150,20 @@ package body Flow_Generated_Globals.Traversal is
                end if;
 
             when N_Object_Declaration =>
-               declare
-                  E : constant Entity_Id := Defining_Entity (N);
-               begin
-                  if Ekind (E) = E_Constant
-                    and then E = Unique_Entity (E)
-                    and then Has_Variable_Input (E)
-                    and then not Is_Part_Of_Concurrent_Object (E)
-                    --  ??? the Part_Of probably shouldn't be here
-                  then
-                     Constants.Append (E);
-                  end if;
-               end;
+               if Gnat2Why_Args.Global_Gen_Mode then
+                  declare
+                     E : constant Entity_Id := Defining_Entity (N);
+                  begin
+                     if Ekind (E) = E_Constant
+                       and then E = Unique_Entity (E)
+                       and then Has_Variable_Input (E)
+                       and then not Is_Part_Of_Concurrent_Object (E)
+                       --  ??? the Part_Of probably shouldn't be here
+                     then
+                        Constants.Append (E);
+                     end if;
+                  end;
+               end if;
 
             when others =>
                null;
