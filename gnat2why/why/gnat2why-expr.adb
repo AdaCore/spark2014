@@ -10388,12 +10388,12 @@ package body Gnat2Why.Expr is
                              Initialized => Present (Expression (Decl)),
                              Only_Var    => False));
 
-                     --  Check the type invariant of visible constants with no
+                     --  Check the type invariant of constants with no
                      --  variable inputs.
 
                      if Ekind (Obj) = E_Constant
                        and then not Has_Variable_Input (Obj)
-                       and then Is_Globally_Visible (Obj)
+                       and then Is_Library_Level_Entity (Obj)
                        and then Invariant_Check_Needed (Obj_Type)
                      then
                         pragma Assert (not Is_Mutable_In_Why (Obj));
