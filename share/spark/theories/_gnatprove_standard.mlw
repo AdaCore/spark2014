@@ -570,6 +570,17 @@ module Array__1
     forall i : I1.t
       [get (slide a old_first new_first) i].
       get (slide a old_first new_first) i = get a (I1.sub i (I1.sub new_first old_first))
+end
+
+module Array__1__Concat
+
+  clone Array__Index as Index
+
+  type component_type
+
+  type map
+
+  function get (a : map) (i : Index.t) : component_type
 
   (* Concatenation is only defined for one-dimensional arrays; it appends a
      map to another. We do not really care about the valid ranges of the
@@ -578,28 +589,76 @@ module Array__1
      interested in the second argument, a shift must be made depending on the
      original "first" value. *)
 
-  function concat map I1.t I1.t map I1.t I1.t : map
+  function concat map Index.t Index.t map Index.t Index.t : map
   meta "encoding : lskept" function concat
 
   axiom concat_def :
     forall a b : map.
-    forall a_first a_last b_first b_last : I1.t.
-    forall i : I1.t [get (concat a a_first a_last b b_first b_last) i].
-      ((I1.le a_first i /\ I1.le i a_last) ->
+    forall a_first a_last b_first b_last : Index.t.
+    forall i : Index.t [get (concat a a_first a_last b b_first b_last) i].
+      ((Index.le a_first i /\ Index.le i a_last) ->
           get (concat a a_first a_last b b_first b_last) i = get a i)
          /\
-      ((I1.gt i a_last) ->
-        get (concat a a_first a_last b b_first b_last) i = get b (I1.add (I1.sub i a_last) (I1.sub b_first I1.one)))
+      ((Index.gt i a_last) ->
+        get (concat a a_first a_last b b_first b_last) i = get b (Index.add (Index.sub i a_last) (Index.sub b_first Index.one)))
 
-   (* a singleton array is the array which is defined only at the given
-   position, and yields the given value. *)
+  (* Special case of concatenation when the left operand is a component. a_first
+     is the first index of the new array. The right operand is slided so that it
+     starts at a_first + 1. *)
 
-   function singleton component_type I1.t : map
+  function concat_singleton_left component_type Index.t map Index.t Index.t : map
+  meta "encoding : lskept" function concat_singleton_left
+
+  axiom concat_singleton_left_def :
+    forall a : component_type.
+    forall b : map.
+    forall a_first b_first b_last : Index.t
+    [concat_singleton_left a a_first b b_first b_last].
+    get (concat_singleton_left a a_first b b_first b_last) a_first = a
+  /\
+    forall i : Index.t [get (concat_singleton_left a a_first b b_first b_last) i].
+      ((Index.gt i a_first) ->
+        get (concat_singleton_left a a_first b b_first b_last) i = get b (Index.add (Index.sub i a_first) (Index.sub b_first Index.one)))
+
+  (* Special case of concatenation when the right operand is a component. *)
+
+  function concat_singleton_right map Index.t Index.t component_type : map
+  meta "encoding : lskept" function concat_singleton_right
+
+  axiom concat_singleton_right_def :
+    forall a : map.
+    forall b : component_type.
+    forall a_first a_last : Index.t
+    [concat_singleton_right a a_first a_last b].
+    get (concat_singleton_right a a_first a_last b) (Index.add a_last Index.one) = b
+  /\
+    forall i : Index.t [get (concat_singleton_right a a_first a_last b) i | get a i].
+      ((Index.le a_first i /\ Index.le i a_last) ->
+          get (concat_singleton_right a a_first a_last b) i = get a i)
+
+  (* Special case of concatenation when both operands are components. a_first
+     is the first index of the resulting array. *)
+
+  function concat_singletons component_type Index.t component_type : map
+  meta "encoding : lskept" function concat_singletons
+
+  axiom concat_singletons_def :
+    forall a b : component_type.
+    forall a_first : Index.t
+    [concat_singletons a a_first b].
+    get (concat_singletons a a_first b) a_first = a
+  /\
+    get (concat_singletons a a_first b) (Index.add a_first Index.one) = b
+
+  (* An array containing the value v at index i. It is used for the result of
+     the concatenation of an empty array with a component. *)
+ 
+   function singleton component_type Index.t : map
    meta "encoding : lskept" function singleton
-
+ 
    axiom singleton_def :
     forall v : component_type.
-    forall i : I1.t  [get (singleton v i) i].
+    forall i : Index.t  [get (singleton v i) i].
       get (singleton v i) i = v
 end
 

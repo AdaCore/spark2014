@@ -401,6 +401,11 @@ package body Why.Atree.Modules is
          4 => New_Module (File => Ada_Model_File,
                           Name => NID ("Unconstr_Array_4")));
 
+      Array_Concat_Axioms :=
+        New_Module
+          (File => Gnatprove_Standard_File,
+           Name => NID ("Array__1__Concat"));
+
       Array_Int_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
@@ -572,20 +577,26 @@ package body Why.Atree.Modules is
    function Init_Array_Module (Module : W_Module_Id) return M_Array_Type
    is
       M_Array : M_Array_Type;
-      Ty : constant W_Type_Id :=
+      Ty      : constant W_Type_Id :=
         New_Type (Type_Kind  => EW_Builtin,
                   Name       => New_Name (Symbol => NID ("map"),
+                                          Module => Module),
+                  Is_Mutable => False);
+      Comp_Ty : constant W_Type_Id :=
+        New_Type (Type_Kind  => EW_Builtin,
+                  Name       => New_Name (Symbol => NID ("component_type"),
                                           Module => Module),
                   Is_Mutable => False);
    begin
       M_Array.Module := Module;
 
       M_Array.Ty := Ty;
+      M_Array.Comp_Ty := Comp_Ty;
       M_Array.Get :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
                         Symbol => NID ("get"),
-                        Typ    => EW_Unit_Type);
+                        Typ    => Comp_Ty);
       M_Array.Set :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
@@ -620,10 +631,28 @@ package body Why.Atree.Modules is
    begin
       M_Array_1.Module := Module;
       M_Array_1.Concat :=
-        New_Identifier (Module => Module,
-                        Domain => EW_Term,
-                        Symbol => NID ("concat"),
-                        Typ    => Ty);
+        (False =>
+           (False =>
+                New_Identifier (Module => Module,
+                                Domain => EW_Term,
+                                Symbol => NID ("concat"),
+                                Typ    => Ty),
+            True  =>
+                New_Identifier (Module => Module,
+                                Domain => EW_Term,
+                                Symbol => NID ("concat_singleton_right"),
+                                Typ    => Ty)),
+         True  =>
+           (False =>
+                New_Identifier (Module => Module,
+                                Domain => EW_Term,
+                                Symbol => NID ("concat_singleton_left"),
+                                Typ    => Ty),
+            True  =>
+                New_Identifier (Module => Module,
+                                Domain => EW_Term,
+                                Symbol => NID ("concat_singletons"),
+                                Typ    => Ty)));
       M_Array_1.Singleton :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,

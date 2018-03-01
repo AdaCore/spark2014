@@ -9895,7 +9895,10 @@ package body Gnat2Why.Expr is
    is
       Left_Expr  : W_Expr_Id := Left;
       Right_Expr : W_Expr_Id := Right;
-      Args       : W_Expr_Array (1 .. 6);
+      Args_Len   : constant Positive :=
+        (if Is_Component_Left then 2 else 3)
+        + (if Is_Component_Right then 1 else 3);
+      Args       : W_Expr_Array (1 .. Args_Len);
       Arg_Ind    : Positive := 1;
       T          : W_Expr_Id;
       First_Expr : W_Expr_Id;
@@ -9988,45 +9991,32 @@ package body Gnat2Why.Expr is
       --  integer literals, need to convert to Standard__Integer)
 
       if Is_Component_Left then
-         Args (1) := New_Singleton_Call (Ada_Node,
-                                         Domain,
-                                         Insert_Simple_Conversion
-                                           (Ada_Node => Ada_Node,
-                                            Domain => Domain,
-                                            Expr   => Left_Expr,
-                                            To     => Comp_Type),
-                                         First_Expr);
+         Args (1) := Insert_Simple_Conversion
+           (Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Expr     => Left_Expr,
+            To       => Comp_Type);
          Args (2) := First_Expr;
-         Args (3) := First_Expr;
-         Arg_Ind := 4;
+         Arg_Ind := 3;
       else
          Add_Array_Arg (Domain, Args, Left_Expr, Arg_Ind);
       end if;
 
       if Is_Component_Right then
-         declare
-            One_Term : constant W_Expr_Id :=
-              New_Discrete_Constant (Value => Uint_1,
-                                     Typ => Nth_Index_Rep_Type_No_Bool
-                                       (Low_Type, 1));
-         begin
-            Args (4) := New_Singleton_Call
-              (Ada_Node,
-               Domain,
-               Insert_Simple_Conversion (Domain => Domain,
-                                         Expr   => Right_Expr,
-                                         To     => Comp_Type),
-               One_Term);
-            Args (5) := One_Term;
-            Args (6) := One_Term;
-         end;
+         Args (Arg_Ind) := Insert_Simple_Conversion (Domain => Domain,
+                                                     Expr   => Right_Expr,
+                                                     To     => Comp_Type);
+
+         Arg_Ind := Arg_Ind + 1;
       else
          Add_Array_Arg (Domain, Args, Right_Expr, Arg_Ind);
       end if;
 
       --  We build the call to concat
 
-      T := New_Concat_Call (Domain, Args, Type_Of_Node (Return_Type));
+      T := New_Concat_Call (Domain, Args, Type_Of_Node (Return_Type),
+                            Is_Component_Left  => Is_Component_Left,
+                            Is_Component_Right => Is_Component_Right);
 
       --  Depending on the lower bound of the concat, the object may not be
       --  slided correctly, because the concat operator in Why assumes that

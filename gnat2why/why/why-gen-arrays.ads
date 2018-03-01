@@ -352,9 +352,11 @@ package Why.Gen.Arrays is
    --  @return the translated array type attribute into Why3
 
    function New_Concat_Call
-     (Domain : EW_Domain;
-      Args   : W_Expr_Array;
-      Typ    : W_Type_Id) return W_Expr_Id;
+     (Domain             : EW_Domain;
+      Args               : W_Expr_Array;
+      Typ                : W_Type_Id;
+      Is_Component_Left  : Boolean;
+      Is_Component_Right : Boolean) return W_Expr_Id;
    --  Return a call to the concat function in Why array theory
 
    function New_Singleton_Call

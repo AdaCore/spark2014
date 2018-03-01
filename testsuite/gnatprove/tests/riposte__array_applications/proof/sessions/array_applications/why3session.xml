@@ -7,301 +7,317 @@
 <prover id="2" name="CVC4_CE" version="1.5-gnatprove" timelimit="10" steplimit="102500" memlimit="0"/>
 <prover id="3" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="2450000" memlimit="0"/>
 <file name="../../../gnatprove/array_applications.mlw">
-<theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_short_integer" proved="true">
 </theory>
-<theory name="Standard__short_short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_short_integer__rep" proved="true">
 </theory>
-<theory name="Standard__short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_integer" proved="true">
 </theory>
-<theory name="Standard__short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_integer__rep" proved="true">
 </theory>
-<theory name="Standard__integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer" proved="true">
 </theory>
-<theory name="Standard__integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer__rep" proved="true">
 </theory>
-<theory name="Standard__long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_integer" proved="true">
 </theory>
-<theory name="Standard__long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_integer__rep" proved="true">
 </theory>
-<theory name="Standard__long_long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_long_integer" proved="true">
 </theory>
-<theory name="Standard__long_long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_long_integer__rep" proved="true">
 </theory>
-<theory name="Standard__natural" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__natural" proved="true">
 </theory>
-<theory name="Standard__natural__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__natural__rep" proved="true">
 </theory>
-<theory name="Standard__positive" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__positive" proved="true">
 </theory>
-<theory name="Standard__positive__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__positive__rep" proved="true">
 </theory>
-<theory name="Standard__short_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_float" proved="true">
 </theory>
-<theory name="Standard__short_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_float__rep" proved="true">
 </theory>
-<theory name="Standard__float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__float" proved="true">
 </theory>
-<theory name="Standard__float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__float__rep" proved="true">
 </theory>
-<theory name="Standard__long_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_float" proved="true">
 </theory>
-<theory name="Standard__long_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_float__rep" proved="true">
 </theory>
-<theory name="Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__character" proved="true">
 </theory>
-<theory name="Standard__character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__character__rep" proved="true">
 </theory>
-<theory name="Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_character" proved="true">
 </theory>
-<theory name="Standard__wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_character__rep" proved="true">
 </theory>
-<theory name="Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_character" proved="true">
 </theory>
-<theory name="Standard__wide_wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_character__rep" proved="true">
 </theory>
-<theory name="Array__Int__Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__character" proved="true">
 </theory>
-<theory name="Standard__string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__character__Concat" proved="true">
 </theory>
-<theory name="Array__Int__Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__character__Comp" proved="true">
 </theory>
-<theory name="Standard__wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__string" proved="true">
 </theory>
-<theory name="Array__Int__Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_character" proved="true">
 </theory>
-<theory name="Standard__wide_wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
 </theory>
-<theory name="Standard__duration" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_character__Comp" proved="true">
 </theory>
-<theory name="Standard__integer_8" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_string" proved="true">
 </theory>
-<theory name="Standard__integer_8__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_wide_character" proved="true">
 </theory>
-<theory name="Standard__integer_16" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
 </theory>
-<theory name="Standard__integer_16__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_wide_character__Comp" proved="true">
 </theory>
-<theory name="Standard__integer_32" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_string" proved="true">
 </theory>
-<theory name="Standard__integer_32__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__duration" proved="true">
 </theory>
-<theory name="Standard__integer_64" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_8" proved="true">
 </theory>
-<theory name="Standard__integer_64__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_8__rep" proved="true">
 </theory>
-<theory name="Standard__universal_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_16" proved="true">
 </theory>
-<theory name="Standard__universal_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_16__rep" proved="true">
 </theory>
-<theory name="Array_applications__Tfibonacci_indexB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_32" proved="true">
 </theory>
-<theory name="Array_applications__Tfibonacci_indexB__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_32__rep" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_index" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_64" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_index__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_64__rep" proved="true">
 </theory>
-<theory name="Array__Int__Standard__natural" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__universal_integer" proved="true">
 </theory>
-<theory name="Array_applications__Tfibonacci_arrayB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__universal_integer__rep" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_array" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__Tfibonacci_indexB" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__T4b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__Tfibonacci_indexB__rep" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__T4b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_index" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__L7b__T8b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_index__rep" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__L5b__T6b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__natural" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__T10b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__natural__Concat" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__T10b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__natural__Comp" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__L13b__T14b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__Tfibonacci_arrayB" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__L11b__T12b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_array" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__T16b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__L_1__T4b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__T16b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__L_1__T4b__rep" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L21b__T22b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__L_1__L7b__T8b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L17b__T18b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__L_1__L5b__T6b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L23b__T24b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__T10b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L19b__T20b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__T10b__rep" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__T26b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__L13b__T14b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__T26b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__L11b__T12b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L31b__T32b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__T16b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L27b__T28b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__T16b__rep" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L33b__T34b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__L21b__T22b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L29b__T30b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__L17b__T18b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__L23b__T24b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__L19b__T20b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__T26b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__T26b__rep" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L31b__T32b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L27b__T28b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L33b__T34b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L29b__T30b" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__a" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__a___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__L_1__i" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__L_1__i___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__a" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__a___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__i" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__i___axiom" proved="true">
 </theory>
-<theory name="Standard__short_short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__a" proved="true">
 </theory>
-<theory name="Standard__short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__a___axiom" proved="true">
 </theory>
-<theory name="Standard__integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__i" proved="true">
 </theory>
-<theory name="Standard__long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__i___axiom" proved="true">
 </theory>
-<theory name="Standard__long_long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__a" proved="true">
 </theory>
-<theory name="Standard__natural___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__a___axiom" proved="true">
 </theory>
-<theory name="Standard__positive___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__i" proved="true">
 </theory>
-<theory name="Standard__short_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__i___axiom" proved="true">
 </theory>
-<theory name="Standard__float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_short_integer___axiom" proved="true">
 </theory>
-<theory name="Standard__long_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_integer___axiom" proved="true">
 </theory>
-<theory name="Standard__character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer___axiom" proved="true">
 </theory>
-<theory name="Standard__wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_integer___axiom" proved="true">
 </theory>
-<theory name="Standard__wide_wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_long_integer___axiom" proved="true">
 </theory>
-<theory name="Standard__string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__natural___axiom" proved="true">
 </theory>
-<theory name="Standard__wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__positive___axiom" proved="true">
 </theory>
-<theory name="Standard__wide_wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_float___axiom" proved="true">
 </theory>
-<theory name="Standard__duration___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__float___axiom" proved="true">
 </theory>
-<theory name="Standard__integer_8___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_float___axiom" proved="true">
 </theory>
-<theory name="Standard__integer_16___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__character___axiom" proved="true">
 </theory>
-<theory name="Standard__integer_32___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_character___axiom" proved="true">
 </theory>
-<theory name="Standard__integer_64___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_character___axiom" proved="true">
 </theory>
-<theory name="Standard__universal_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__string___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_string___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_string___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__duration___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_8___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_16___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_32___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_64___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__universal_integer___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__L_1" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__L_1___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok" proved="true">
 </theory>
-<theory name="Array_applications__Tfibonacci_indexB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_index___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2___axiom" proved="true">
 </theory>
-<theory name="Array_applications__Tfibonacci_arrayB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_array___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__T4b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__L7b__T8b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit__L_1__L5b__T6b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__T10b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__L13b__T14b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__Tfibonacci_indexB___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__L_2__L11b__T12b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_index___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__T16b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__Tfibonacci_arrayB___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L21b__T22b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_array___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L17b__T18b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__L_1__T4b___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L23b__T24b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__L_1__L7b__T8b___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit__L_3__L19b__T20b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit__L_1__L5b__T6b___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__T26b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__T10b___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L31b__T32b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__L13b__T14b___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L27b__T28b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_implicit_ok__L_2__L11b__T12b___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L33b__T34b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__T16b___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__L_4__L29b__T30b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__L21b__T22b___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__L17b__T18b___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__L23b__T24b___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit__L_3__L19b__T20b___axiom" proved="true">
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__T26b___axiom" proved="true">
 </theory>
-<theory name="Array_applications__package_def" proved="true" sum="e284967f6dbb6592898a5ced2974229f">
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L31b__T32b___axiom" proved="true">
+</theory>
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L27b__T28b___axiom" proved="true">
+</theory>
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L33b__T34b___axiom" proved="true">
+</theory>
+<theory name="Array_applications__fibonacci_explicit_ok__L_4__L29b__T30b___axiom" proved="true">
+</theory>
+<theory name="Array_applications__fibonacci_implicit___axiom" proved="true">
+</theory>
+<theory name="Array_applications__fibonacci_implicit_ok___axiom" proved="true">
+</theory>
+<theory name="Array_applications__fibonacci_explicit___axiom" proved="true">
+</theory>
+<theory name="Array_applications__fibonacci_explicit_ok___axiom" proved="true">
+</theory>
+<theory name="Array_applications__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Array_applications__fibonacci_implicit__subprogram_def" sum="89c28db20dd6f7cb65e89e9f689b6bff">
+<theory name="Array_applications__fibonacci_implicit__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -335,8 +351,8 @@
   <proof prover="1"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="175"/></proof>
-  <proof prover="1"><result status="unknown" steps="102512"/></proof>
+  <proof prover="0"><result status="valid" steps="172"/></proof>
+  <proof prover="1"><result status="unknown" steps="102521"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -347,10 +363,10 @@
   <goal name="WP_parameter def.13" expl="precondition" proved="true">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="102502"/></proof>
-  <proof prover="3"><result status="valid" steps="1688544"/></proof>
+  <proof prover="3"><result status="valid" steps="1841487"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="77"/></proof>
+  <proof prover="0"><result status="valid" steps="76"/></proof>
   <proof prover="1"><result status="unknown" steps="102521"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="loop invariant preservation" proved="true">
@@ -363,12 +379,12 @@
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="3388"/></proof>
   <proof prover="2"><result status="unknown" steps="3390"/></proof>
-  <proof prover="3"><result status="unknown" steps="733342"/></proof>
+  <proof prover="3"><result status="unknown" steps="2450094"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Array_applications__fibonacci_implicit_ok__subprogram_def" proved="true" sum="e7ecd1f96bc98280dd5e62e92e1690c9">
+<theory name="Array_applications__fibonacci_implicit_ok__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -402,8 +418,8 @@
   <proof prover="1"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="175"/></proof>
-  <proof prover="1"><result status="unknown" steps="102512"/></proof>
+  <proof prover="0"><result status="valid" steps="172"/></proof>
+  <proof prover="1"><result status="unknown" steps="102521"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -414,10 +430,10 @@
   <goal name="WP_parameter def.13" expl="precondition" proved="true">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="102502"/></proof>
-  <proof prover="3"><result status="valid" steps="1688544"/></proof>
+  <proof prover="3"><result status="valid" steps="1841487"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="77"/></proof>
+  <proof prover="0"><result status="valid" steps="76"/></proof>
   <proof prover="1"><result status="unknown" steps="102521"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="loop invariant preservation" proved="true">
@@ -432,7 +448,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Array_applications__fibonacci_explicit__subprogram_def" sum="5718309760fcfb7ae0e1763b497a149a">
+<theory name="Array_applications__fibonacci_explicit__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -512,7 +528,7 @@
   </goal>
   <goal name="WP_parameter def.25" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="82"/></proof>
-  <proof prover="1"><result status="unknown" steps="102517"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="226"/></proof>
@@ -524,12 +540,12 @@
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="102502"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="unknown" steps="2450226"/></proof>
+  <proof prover="3"><result status="unknown" steps="2450094"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Array_applications__fibonacci_explicit_ok__subprogram_def" sum="14044a129062ca98caa86097d419d26d">
+<theory name="Array_applications__fibonacci_explicit_ok__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -609,7 +625,7 @@
   </goal>
   <goal name="WP_parameter def.25" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="82"/></proof>
-  <proof prover="1"><result status="unknown" steps="102517"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="226"/></proof>
@@ -619,9 +635,9 @@
   </goal>
   <goal name="WP_parameter def.28" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="102518"/></proof>
-  <proof prover="2"><result status="unknown" steps="102514"/></proof>
-  <proof prover="3"><result status="unknown" steps="2450226"/></proof>
+  <proof prover="1"><result status="unknown" steps="102516"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="3"><result status="unknown" steps="2450094"/></proof>
   </goal>
  </transf>
  </goal>

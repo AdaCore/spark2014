@@ -103,6 +103,7 @@ package Why.Atree.Modules is
 
    Constr_Arrays                : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays              : W_Module_Array (1 .. Max_Array_Dimensions);
+   Array_Concat_Axioms          : W_Module_Id;
    Array_Int_Rep_Comparison_Ax  : W_Module_Id;
    Array_BV8_Rep_Comparison_Ax  : W_Module_Id;
    Array_BV16_Rep_Comparison_Ax : W_Module_Id;
@@ -265,31 +266,39 @@ package Why.Atree.Modules is
    type M_Array_Type is record
       Module  : W_Module_Id;
       Ty      : W_Type_Id;
+      Comp_Ty : W_Type_Id;
       Get     : W_Identifier_Id;
       Set     : W_Identifier_Id;
       Bool_Eq : W_Identifier_Id;
       Slide   : W_Identifier_Id;
    end record;
 
-   --  Symbols which only exist for one-dimensional arrays
+   --  Symbols for concatenation of one-dimensional arrays. There are four
+   --  concatenation symbols (one for each profile of concatenation in Ada) and
+   --  a symbol for constructing a singleton array (for concatenating a
+   --  component to a null array). Concatenation symbols are stored in a matrix
+   --  such that Concat (Is_Component_Left, Is_Component_Right) returns the
+   --  adequate concatenation symbol.
+
+   type Concat_Ids is array (Boolean, Boolean) of W_Identifier_Id;
 
    type M_Array_1_Type is record
-      Module    : W_Module_Id;         --  copy of M_Arrays (1).Module
-      Concat    : W_Identifier_Id;
+      Module    : W_Module_Id;
+      Concat    : Concat_Ids;
       Singleton : W_Identifier_Id;
    end record;
 
    --  Symbols which only exist for one-dimensional arrays of discrete types
 
    type M_Array_1_Comp_Type is record
-      Module  : W_Module_Id;         --  copy of M_Arrays (1).Module
+      Module  : W_Module_Id;
       Compare : W_Identifier_Id;
    end record;
 
    --  Symbols which only exist for one-dimensional arrays of boolean types
 
    type M_Array_1_Bool_Op_Type is record
-      Module : W_Module_Id;         --  copy of M_Arrays (1).Module
+      Module : W_Module_Id;
       Xorb   : W_Identifier_Id;
       Andb   : W_Identifier_Id;
       Orb    : W_Identifier_Id;

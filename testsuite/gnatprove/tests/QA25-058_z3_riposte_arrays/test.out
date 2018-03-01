@@ -1,7 +1,7 @@
 arrays.adb:51:18: info: postcondition proved (CVC4: 2 VC)
 arrays.adb:62:22: medium: postcondition might fail, cannot prove Contains_B'Result = S (C) (e.g. when C = 'NUL' and Contains_B'Result = True and S = ('NUL' => False, 'a' => True, others => False))
 arrays.adb:71:19: info: postcondition proved (CVC4: 2 VC)
-arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C (e.g. when C = 'b' and Is_Id_2'Result = True and M = ('b' => 'a', others => 'a'))
+arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C (e.g. when C = 'NUL' and Is_Id_2'Result = True and M = ('NUL' => 'a', others => 'a'))
 arrays.adb:94:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:104:22: medium: assertion might fail, cannot prove C = 'a' (e.g. when C = 'NUL')
 arrays.adb:112:22: medium: assertion might fail, cannot prove M ('a') = 'a' (e.g. when M = ('a' => 'A', others => 'A'))
@@ -46,16 +46,16 @@ arrays.adb:236:22: medium: assertion might fail, cannot prove A ('A') (e.g. when
 arrays.adb:245:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:245:22: info: initialization of "A" proved
 arrays.adb:254:22: info: initialization of "A" proved
-arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5) (e.g. when A = (39 => 0, others => 0))
+arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5) (e.g. when A = (1 => 0, others => 0))
 counterexample expected for check at arrays.adb:62
   trace at arrays.adb:57 --> Contains_B'Result = False and S = ('NUL' => False, 'a' => True, others => False)
   trace at arrays.adb:58 --> C = 'NUL' and Contains_B'Result = True
   trace at arrays.adb:62 --> C = 'NUL' and Contains_B'Result = True and S = ('NUL' => False, 'a' => True, others => False)
   trace at arrays.adb:65 --> Contains_B'Result = True
 counterexample expected for check at arrays.adb:80
-  trace at arrays.adb:77 --> Is_Id_2'Result = False and M = ('b' => 'a', others => 'a')
-  trace at arrays.adb:78 --> C = 'b' and Is_Id_2'Result = True
-  trace at arrays.adb:80 --> C = 'b' and Is_Id_2'Result = True and M = ('b' => 'a', others => 'a')
+  trace at arrays.adb:77 --> Is_Id_2'Result = False and M = ('NUL' => 'a', others => 'a')
+  trace at arrays.adb:78 --> C = 'NUL' and Is_Id_2'Result = True
+  trace at arrays.adb:80 --> C = 'NUL' and Is_Id_2'Result = True and M = ('NUL' => 'a', others => 'a')
   trace at arrays.adb:83 --> Is_Id_2'Result = True
 counterexample expected for check at arrays.adb:104
   trace at arrays.adb:97 --> M = ('NUL' => 'NUL', others => 'NUL')
@@ -92,5 +92,5 @@ counterexample expected for check at arrays.adb:236
   trace at arrays.adb:235 --> A = ('A' => False, others => False)
   trace at arrays.adb:236 --> A = ('A' => False, others => False)
 counterexample expected for check at arrays.adb:254
-  trace at arrays.adb:253 --> A = (39 => 0, others => 0)
-  trace at arrays.adb:254 --> A = (39 => 0, others => 0)
+  trace at arrays.adb:253 --> A = (1 => 0, others => 0)
+  trace at arrays.adb:254 --> A = (1 => 0, others => 0)

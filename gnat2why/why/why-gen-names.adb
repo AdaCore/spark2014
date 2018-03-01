@@ -734,30 +734,37 @@ package body Why.Gen.Names is
 
    function To_String (W : Why_Name_Enum) return String is
      (case W is
-         when WNE_Aggregate_Def_Suffix => "__aggregate_def",
-         when WNE_Array_Component_Type => "component_type",
-         when WNE_Array_Type           => "__t",
-         when WNE_Attr_Constrained     => "attr__constrained",
-         when WNE_Attr_First           => "first",
-         when WNE_Attr_Last            => "last",
-         when WNE_Attr_Tag             => "attr__tag",
-         when WNE_Axiom_Suffix         => "___axiom",
-         when WNE_Content              => "__content",
-         when WNE_Dispatch_Module      => "Dispatch",
-         when WNE_Extract_Prefix       => "extract__",
-         when WNE_Havoc                => "__havoc",
-         when WNE_Hide_Extension       => "hide_ext__",
-         when WNE_No_Return_Module     => "No_Return",
-         when WNE_Rec_Rep              => "__rep",
-         when WNE_Rec_Comp_Prefix      => "rec__",
-         when WNE_Rec_Extension_Suffix => "ext__",
-         when WNE_Refine_Module        => "Refine",
-         when WNE_Ref                  => "__ref",
+         when WNE_Aggregate_Def_Suffix       => "__aggregate_def",
+         when WNE_Array_Component_Type       => "component_type",
+         when WNE_Array_Type                 => "__t",
+         when WNE_Array_BV_Suffix            => "_BV",
+         when WNE_Array_Comparison_Suffix    => "_Comp",
+         when WNE_Array_Concatenation_Suffix => "__Concat",
+         when WNE_Array_Int_Suffix           => "_Int",
+         when WNE_Array_Logical_Op_Suffix    => "__Bool_Op",
+         when WNE_Array_Prefix               => "Array_",
+
+         when WNE_Attr_Constrained           => "attr__constrained",
+         when WNE_Attr_First                 => "first",
+         when WNE_Attr_Last                  => "last",
+         when WNE_Attr_Tag                   => "attr__tag",
+         when WNE_Axiom_Suffix               => "___axiom",
+         when WNE_Content                    => "__content",
+         when WNE_Dispatch_Module            => "Dispatch",
+         when WNE_Extract_Prefix             => "extract__",
+         when WNE_Havoc                      => "__havoc",
+         when WNE_Hide_Extension             => "hide_ext__",
+         when WNE_No_Return_Module           => "No_Return",
+         when WNE_Rec_Rep                    => "__rep",
+         when WNE_Rec_Comp_Prefix            => "rec__",
+         when WNE_Rec_Extension_Suffix       => "ext__",
+         when WNE_Refine_Module              => "Refine",
+         when WNE_Ref                        => "__ref",
 
          --  these are used both by E_Symb function and by To_String
 
-         when WNE_Rec_Split_Discrs     => "__split_discrs",
-         when WNE_Rec_Split_Fields     => "__split_fields",
+         when WNE_Rec_Split_Discrs           => "__split_discrs",
+         when WNE_Rec_Split_Fields           => "__split_fields",
 
          --  please use these only in conjunction with E_Symb function
 

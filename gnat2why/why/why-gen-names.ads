@@ -172,6 +172,16 @@ package Why.Gen.Names is
       WNE_Array_Component_Type,
       WNE_Array_Elts,
       WNE_Array_Type,
+
+      --  Prefixes and Suffixes used to compose representative array theory
+      --  names.
+      WNE_Array_BV_Suffix, --  Suffix for arrays ranging over modulars
+      WNE_Array_Comparison_Suffix, --  Suffix for comparison operators module
+      WNE_Array_Concatenation_Suffix, --  Suffix for concatenation module
+      WNE_Array_Int_Suffix, --  Suffix for arrays ranging over signed integers
+      WNE_Array_Logical_Op_Suffix, --  Suffix for logical operators module
+      WNE_Array_Prefix, --  Prefix of array modules
+
       WNE_Attr_Address,
       WNE_Attr_Constrained,
       WNE_Attr_First,

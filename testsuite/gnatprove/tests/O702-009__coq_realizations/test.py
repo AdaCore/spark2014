@@ -10,7 +10,7 @@ why3_share = os.path.join(spark_install_path(), 'share', 'why3')
 coq_libs_dir = os.path.join(why3_share, 'libs', 'coq')
 driver_dir = os.path.join(why3_share, 'drivers')
 why3_bin = os.path.join(spark_install_path(), 'libexec', 'spark', 'bin', 'why3realize')
-gp_realized = ['Integer', 'Int_Power', 'Int_Minmax', 'Int_Abs', 'Int_Division', 'Array__1']
+gp_realized = ['Integer', 'Int_Power', 'Int_Minmax', 'Int_Abs', 'Int_Division', 'Array__1', 'Array__1__Concat']
 am_realized = ['Rep_Proj_Base', 'Rep_Proj_BVGen', 'Rep_Proj_Int', 'Rep_Proj_ltBVGen']
 realize_subdir = 'realize'
 
