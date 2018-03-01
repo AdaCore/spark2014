@@ -10,7 +10,8 @@ pose (to_uint_bounds res) as res_type.
 unfold in_range in arg2_type.
 destruct arg1_type as (arg1_lb, arg1_ub), arg2_type as (arg2_lb, arg2_ub), res_type as (res_lb, res_ub).
 unfold ule in arg2_lb, arg2_ub.
-rewrite to_uint_of_int in arg2_lb, arg2_ub by auto with zarith.
+rewrite rliteral_axiom2 in arg2_lb.
+rewrite rliteral_axiom1 in arg2_ub.
 assert (0 < t'int arg2) as arg2_pos by auto with zarith.
 
 (* shared lemma: no overflow in (arg1 / arg2) * arg2 *)

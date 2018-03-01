@@ -9,7 +9,8 @@ unfold in_range in factor_type.
 destruct val1_type as (val1_lb, val1_ub), val2_type as (val2_lb, val2_ub), factor_type as (factor_lb, factor_ub).
 unfold ule in factor_lb, factor_ub, pre_val2_ub.
 unfold ult in pre_val1_lt_val2.
-rewrite to_uint_of_int in factor_lb, factor_ub by auto with zarith.
+rewrite rliteral_axiom2 in factor_lb.
+rewrite rliteral_axiom1 in factor_ub.
 assert (0 < t'int factor) as factor_pos by auto with zarith.
 
 (* rewrite goal *)
@@ -19,7 +20,7 @@ rewrite to_uint_mul, to_uint_mul.
 (* shared lemma val2 * factor in bounds *)
 assert (t'int val2 * t'int factor <= SPARK_MAX_UINT) as shared_lemma.
 {
-  rewrite to_uint_udiv, to_uint_of_int in pre_val2_ub by auto with zarith.
+  rewrite to_uint_udiv, rliteral_axiom1 in pre_val2_ub by auto with zarith.
   unfold EuclideanDivision.div in pre_val2_ub.
   case Z_le_dec as [hyp|neg_hyp] in pre_val2_ub; [|contradict neg_hyp; apply Z_mod_lt; auto with zarith].
   assert (0 <= SPARK_MAX_UINT) as uint_max_nat by auto with zarith.

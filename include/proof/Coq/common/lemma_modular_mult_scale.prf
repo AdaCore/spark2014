@@ -7,7 +7,8 @@ pose (to_uint_bounds val__) as val_type; clearbody val_type.
 pose (to_uint_bounds scale_num) as scale_num_type; clearbody scale_num_type.
 destruct val_type as (val_lb, val_ub), scale_num_type as (scale_num_lb, scale_num_ub), scale_denom_type as (scale_denom_lb, scale_denom_up).
 unfold ule in scale_denom_lb, scale_denom_up, scale_ratio, mul_no_ovfl.
-rewrite to_uint_of_int in scale_denom_lb, scale_denom_up by auto with zarith.
+rewrite rliteral_axiom2 in scale_denom_lb.
+rewrite rliteral_axiom1 in scale_denom_up.
 assert (0 < t'int scale_denom) as scale_denom_pos by auto with zarith.
 
 (* rewrite goal *)
@@ -35,8 +36,11 @@ destruct (Z.eq_dec (t'int scale_num) 0) as [scale_num_zero|scale_num_not_zero].
 
   (* no overflow in val * num *)
   + split; [auto with zarith|].
-    destruct mul_no_ovfl as [scale_num_zero|val_le_div]; [rewrite scale_num_zero, to_uint_of_int in scale_num_not_zero by auto with zarith; contradict scale_num_not_zero; auto|].
-    rewrite to_uint_udiv, to_uint_of_int in val_le_div by auto with zarith.
+    destruct mul_no_ovfl as [scale_num_zero|val_le_div].
+      { rewrite scale_num_zero, rliteral_axiom in scale_num_not_zero by auto with zarith.
+        contradict scale_num_not_zero; auto.
+      }
+    rewrite to_uint_udiv, rliteral_axiom1 in val_le_div by auto with zarith.
     unfold EuclideanDivision.div in val_le_div.
     case Z_le_dec as [hyp2|neg_hyp2] in val_le_div; [|contradict neg_hyp2; apply Z_mod_lt; auto with zarith].
     replace (SPARK_MAX_UINT_PLUS1) with (Z.succ SPARK_MAX_UINT) by auto with zarith.

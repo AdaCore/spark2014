@@ -27,7 +27,7 @@ destruct (Z.eq_dec (t'int arg2) 0) as [arg2_zero|arg2_not_zero].
 (* case arg2 is not zero *)
 * destruct pre as [arg2_zero|arg1_le_arg2].
   rewrite arg2_zero in arg2_not_zero.
-  rewrite to_uint_of_int in arg2_not_zero by auto with zarith.
+  rewrite rliteral_axiom in arg2_not_zero.
   contradict arg2_not_zero.
   trivial.
 

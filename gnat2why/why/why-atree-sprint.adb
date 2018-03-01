@@ -1235,19 +1235,19 @@ package body Why.Atree.Sprint is
       Typ : constant W_Type_Id := Get_Typ (Node);
    begin
       P (O, "( ");
+      P (O, Value);
+      P (O, " : ");
       if Typ = EW_BitVector_8_Type then
-         P (O, "BV8.");
+         P (O, "BV8.t");
       elsif Typ = EW_BitVector_16_Type then
-         P (O, "BV16.");
+         P (O, "BV16.t");
       elsif Typ = EW_BitVector_32_Type then
-         P (O, "BV32.");
+         P (O, "BV32.t");
       elsif Typ = EW_BitVector_64_Type then
-         P (O, "BV64.");
+         P (O, "BV64.t");
       else
          raise Unexpected_Node;
       end if;
-      P (O, "of_int ");
-      P (O, Value);
       P (O, " )");
    end Print_Modular_Constant;
 
