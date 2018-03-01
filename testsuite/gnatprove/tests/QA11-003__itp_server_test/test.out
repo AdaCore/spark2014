@@ -17,18 +17,18 @@ Task
 ------------------------------- Goal --------------------------------
 
 goal WP_parameter def :
-  forall test__parity__result:int, result2:int, test__parity__result1:int,
+  forall test__parity__result:int, result:int, test__parity__result1:int,
    test__parity__result2:int, test__parity__result3:int,
    test__parity__result4:int, test__parity__result5:int.
-   forall result3:int.
+   forall result1:int.
     dynamic_property first last A //
     A > 0 //
     (((test__parity__result1 = test__parity__result2 //
        test__parity__result3 = test__parity__result1) //
-      result2 = test__parity__result // test__parity__result1 = A) //
+      result = test__parity__result // test__parity__result1 = A) //
      mk int__ref test__parity__result4 = mk int__ref test__parity__result2 //
      test__parity__result5 = test__parity__result3) //
-    result3 = test__parity__result4 ->
+    result1 = test__parity__result4 ->
     (exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2)))
 
 
