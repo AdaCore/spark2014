@@ -12,10 +12,10 @@ def replay():
                    "prefixsum_expanded.adb",
                    "prefixsum_general.adb"])
 
-prove_all(opt=["--replay",
-               "--no-axiom-guard",
+prove_all(opt=["--no-axiom-guard",
                "-u",
                "prefixsum.adb",
                "prefixsum_expanded.adb",
                "prefixsum_general.adb"],
-          counterexample=False)
+          counterexample=False,
+          replay=True)

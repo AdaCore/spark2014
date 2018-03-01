@@ -8,5 +8,6 @@ def replay():
               procs=10,
               steps=5000)
 
-prove_all(opt=["--replay", "--no-axiom-guard"],
-          prover=["cvc4", "z3", "altergo"])
+prove_all(opt=["--no-axiom-guard"],
+          prover=["cvc4", "z3", "altergo"],
+          replay=True)
