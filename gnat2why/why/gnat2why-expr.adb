@@ -3854,9 +3854,7 @@ package body Gnat2Why.Expr is
       if Has_Predicates (Rep_Ty) then
          declare
             Pred_Type : constant Entity_Id :=
-              (if Present (Predicate_Function (Rep_Ty))
-               then Rep_Ty
-               else Partial_View (Rep_Ty));
+              Get_Type_With_Predicate_Function (Rep_Ty);
             --  Type entity with predicate function attached
 
          begin
@@ -16042,9 +16040,7 @@ package body Gnat2Why.Expr is
    is
       Rep_Type  : constant Entity_Id := Retysp (Ty);
       Pred_Type : constant Entity_Id :=
-        (if Present (Predicate_Function (Rep_Type))
-         then Rep_Type
-         else Partial_View (Rep_Type));
+        Get_Type_With_Predicate_Function (Rep_Type);
       --  Type entity with predicate function attached
 
       Dynamic_Pred_Expr : constant Node_Id :=
@@ -16152,9 +16148,7 @@ package body Gnat2Why.Expr is
 
       --  Variables in the predicate of the type
 
-      if Has_Predicates (Ty_Ext)
-         and then Present (Predicate_Function (Ty_Ext))
-      then
+      if Has_Predicates (Ty_Ext) then
          Variables_In_Dynamic_Predicate (Ty_Ext, Variables);
       end if;
 
