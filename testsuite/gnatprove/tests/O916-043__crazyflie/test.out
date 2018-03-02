@@ -38,8 +38,6 @@ log_pack.ads:203:14: tasking in SPARK requires sequential elaboration (SPARK RM 
 log_pack.ads:203:14: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:211:39: "Timing_Event_Handler" is not allowed in SPARK
 log_pack.ads:211:39: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.ads:212:09: "Timing_Event_Handler" is not allowed in SPARK
-log_pack.ads:212:09: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:217:23: "Log_TOC" is not allowed in SPARK
 log_pack.ads:217:23: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:261:04: access type is not allowed in SPARK

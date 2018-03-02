@@ -2987,14 +2987,20 @@ package body SPARK_Definition is
          --  The object is in SPARK if-and-only-if its type is in SPARK and
          --  its initialization expression, if any, is in SPARK.
 
+         --  If the object's nominal and actual types are not in SPARK, then
+         --  the expression can't be in SPARK, so we skip it to limit the
+         --  number of error messages.
+
          if not Retysp_In_SPARK (T) then
             Mark_Violation (Def, From => T);
+            return;
          end if;
 
          if Present (Sub)
            and then not In_SPARK (Sub)
          then
             Mark_Violation (Def, From => Sub);
+            return;
          end if;
 
          if Present (Expr) then
