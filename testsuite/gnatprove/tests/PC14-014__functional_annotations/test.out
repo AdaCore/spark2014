@@ -43,7 +43,6 @@ a-cforse.ads:1366:20: info: precondition proved (Z3: 1 VC), in instantiation at 
 a-cforse.ads:1381:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_sets.ads:7
 a-cforse.ads:1415:47: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_sets.ads:7
 a-cforse.ads:1430:40: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cofove.ads:41:09: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
 a-cofove.ads:54:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
 a-cofove.ads:55:29: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
 a-cofove.ads:56:71: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
@@ -80,7 +79,6 @@ a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at
 a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at use_ordered_sets.ads:7
 a-cofuse.ads:244:26: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at use_sets.ads:10
 a-cofuse.ads:244:26: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:36:09: info: range check proved (Z3: 2 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
 a-cofuve.ads:44:12: info: range check proved (Z3: 2 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
 a-cofuve.ads:45:33: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
@@ -371,7 +369,6 @@ use_lists.ads:86:20: info: precondition proved (Z3: 2 VC)
 use_lists.ads:96:42: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:97:30: info: precondition proved (Z3: 1 VC)
 use_lists.ads:98:13: info: precondition proved (Z3: 2 VC)
-use_lists.ads:98:13: medium: postcondition might fail, cannot prove Element (Model (L), I) = Element (Model (L)'Old, I)
 use_lists.ads:99:15: info: precondition proved (Z3: 2 VC)
 use_lists.ads:100:25: info: precondition proved (Z3: 1 VC)
 use_lists.ads:101:14: info: precondition proved (Z3: 1 VC)
@@ -385,6 +382,7 @@ use_lists.ads:105:35: info: range check proved (Z3: 1 VC)
 use_lists.ads:106:13: info: precondition proved (Z3: 2 VC)
 use_lists.ads:106:39: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:106:39: info: range check proved (Z3: 1 VC)
+use_lists.ads:108:10: medium: postcondition might fail, cannot prove P.Get (Positions (L), Cu) = P.Get (Positions (L)'Old, Cu) + Count
 use_lists.ads:108:11: info: precondition proved (CVC4: 1 VC)
 use_lists.ads:109:09: info: precondition proved (Z3: 1 VC)
 use_lists.ads:109:38: info: overflow check proved (Z3: 1 VC)
