@@ -1374,7 +1374,7 @@ package body Gnat2Why.Counter_Examples is
                  (Pretty_File_Cntexmp,
                   Filename,
                   Cntexample_Line_Maps.Key (Line_C),
-                  Cntexample_Line_Maps.Element (Line_C));
+                  Lines_Map (Line_C));
             end loop;
             if Is_Ada_File_Name (Filename) then
                Pretty_Cntexmp.Insert (Filename, Pretty_File_Cntexmp);
@@ -1432,12 +1432,12 @@ package body Gnat2Why.Counter_Examples is
       if Cntexample_File_Maps.Has_Element (File_Cur) then
          declare
             Line_Map : Cntexample_Line_Maps.Map renames
-              Cntexample_File_Maps.Element (File_Cur).Other_Lines;
+              Cntexmp (File_Cur).Other_Lines;
             Line_Cur : constant Cntexample_Line_Maps.Cursor :=
               Line_Map.Find (Natural (Line));
          begin
             if Cntexample_Line_Maps.Has_Element (Line_Cur) then
-               Cntexmp_Line := Cntexample_Line_Maps.Element (Line_Cur);
+               Cntexmp_Line := Line_Map (Line_Cur);
             end if;
          end;
       end if;

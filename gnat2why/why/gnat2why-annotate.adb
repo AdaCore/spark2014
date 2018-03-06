@@ -742,7 +742,7 @@ package body Gnat2Why.Annotate is
    begin
       Found := Iterable_Maps.Has_Element (C);
       if Found then
-         Info := Iterable_Maps.Element (C);
+         Info := Iterable_Annotations (C);
       end if;
    end Retrieve_Iterable_Annotation;
 

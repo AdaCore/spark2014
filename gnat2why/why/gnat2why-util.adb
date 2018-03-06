@@ -270,7 +270,7 @@ package body Gnat2Why.Util is
 
       begin
          while Undo_Stacks.Has_Element (C)
-           and then Undo_Stacks.Element (C).Kind /= Boundary
+           and then M.Undo_Stack (C).Kind /= Boundary
          loop
             Apply_Action (M.Undo_Stack (C));
             Tmp := C;

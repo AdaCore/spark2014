@@ -681,7 +681,7 @@ package body Gnat2Why.Error_Messages is
 
       procedure Handle_Result (V : JSON_Value) is
          Rec : constant Why3_Prove_Result := Parse_Why3_Prove_Result (V);
-         VC  : constant VC_Info := VC_Table.Element (Rec.Id);
+         VC  : VC_Info renames VC_Table (Rec.Id);
          Extra_Text : constant String :=
            (if not Rec.Result and then Present (Rec.Extra_Info)
             then String_Of_Node (Original_Node (Rec.Extra_Info))

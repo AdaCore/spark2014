@@ -151,7 +151,7 @@ package body Flow is
                for C in M.Iterate loop
                   Print_Named_Flow_Id_Set
                     (Flow_Id_To_String (Dependency_Maps.Key (C)),
-                     Dependency_Maps.Element (C),
+                     M (C),
                      True);
                end loop;
                Outdent;
