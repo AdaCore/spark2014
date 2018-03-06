@@ -240,15 +240,14 @@ package body Gnat2Why.Util is
 
       procedure Pop_Scope (M : in out Map) is
 
-         procedure Apply_Action (C : Undo_Stacks.Cursor);
-         --  apply a single action
+         procedure Apply_Action (A : Action);
+         --  Apply a single action
 
          ------------------
          -- Apply_Action --
          ------------------
 
-         procedure Apply_Action (C : Undo_Stacks.Cursor) is
-            A : constant Action := Undo_Stacks.Element (C);
+         procedure Apply_Action (A : Action) is
          begin
             case A.Kind is
                when Insert_Ent =>
@@ -270,9 +269,10 @@ package body Gnat2Why.Util is
       --  Start of processing for Pop_Scope
 
       begin
-         while Undo_Stacks.Has_Element (C) and then
-           Undo_Stacks.Element (C).Kind /= Boundary loop
-            Apply_Action (C);
+         while Undo_Stacks.Has_Element (C)
+           and then Undo_Stacks.Element (C).Kind /= Boundary
+         loop
+            Apply_Action (M.Undo_Stack (C));
             Tmp := C;
             Undo_Stacks.Previous (C);
             M.Undo_Stack.Delete (Tmp);
