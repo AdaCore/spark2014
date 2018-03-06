@@ -53,9 +53,9 @@ memcpy.adb:207:32: info: loop invariant preservation proved (CVC4: 1 VC)
 memcpy.adb:207:60: info: initialization of "saved_rbp_16" proved
 memcpy.adb:207:73: info: initialization of "saved_rbp_72" proved
 memcpy.adb:210:32: info: loop invariant initialization proved (CVC4: 1 VC)
+memcpy.adb:210:32: info: loop invariant preservation proved (CVC4: 1 VC)
 memcpy.adb:211:60: info: initialization of "saved_rbp_16" proved
 memcpy.adb:211:74: info: initialization of "saved_rbp_72" proved
-memcpy.adb:213:39: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 memcpy.adb:216:32: info: initialization of "saved_rbp_16" proved
 memcpy.adb:216:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:216:32: medium: loop invariant might fail after first iteration, cannot prove saved_rbp_16 = X86.ReadMem64(X86.RBP - 16)
