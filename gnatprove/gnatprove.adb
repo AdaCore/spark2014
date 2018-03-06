@@ -1064,14 +1064,11 @@ procedure Gnatprove with SPARK_Mode is
       procedure Write_Editor_Config (Editor : JSON_Value);
       --  write the config of an editor
 
-      function Build_Prover_Command (Prover : JSON_Value) return String;
+      function Build_Prover_Command (Prover    : JSON_Value;
+                                     Args_Step : Boolean)
+                                     return String;
       --  given a prover configuration in JSON, construct the prover command
-      --  for why3.conf
-
-      function Build_Steps_Command (Prover : JSON_Value) return String;
-      --  same as Build_Prover_Command, but also add the extra arguments for
-      --  steps. The last argument of the regular arguments is preserved, that
-      --  is, the extra arguments for steps are added just before.
+      --  for why3.conf (with or without steps depending on Args_Step value).
 
       function Build_Executable (Exec : String) return String;
       --  build the part of a command that corresponds to the executable. Takes
@@ -1126,44 +1123,29 @@ procedure Gnatprove with SPARK_Mode is
       -- Build_Prover_Command --
       --------------------------
 
-      function Build_Prover_Command (Prover : JSON_Value) return String is
+      function Build_Prover_Command (Prover    : JSON_Value;
+                                     Args_Step : Boolean)
+                                     return String
+      is
          use Ada.Strings.Unbounded;
          Command   : Unbounded_String;
          Args      : constant JSON_Array := Get (Get (Prover, "args"));
-         Args_Time : constant JSON_Array := Get (Get (Prover, "args_time"));
+         Args_Add  : constant JSON_Array :=
+                       (if Args_Step then
+                           Get (Get (Prover, "args_steps"))
+                        else
+                           Get (Get (Prover, "args_time")));
       begin
          Append (Command,
                  Build_Executable (String'(Get (Get (Prover, "executable")))));
+         for Index in 1 .. Length (Args_Add) loop
+            Append (Command, " " & String'(Get (Get (Args_Add, Index))));
+         end loop;
          for Index in 1 .. Length (Args) loop
             Append (Command, " " & String'(Get (Get (Args, Index))));
          end loop;
-         for Index in 1 .. Length (Args_Time) loop
-            Append (Command, " " & String'(Get (Get (Args_Time, Index))));
-         end loop;
          return To_String (Command);
       end Build_Prover_Command;
-
-      -------------------------
-      -- Build_Steps_Command --
-      -------------------------
-
-      function Build_Steps_Command (Prover : JSON_Value) return String is
-         use Ada.Strings.Unbounded;
-         Command : Unbounded_String;
-         Args : constant JSON_Array := Get (Get (Prover, "args"));
-         Args_Steps : constant JSON_Array := Get (Get (Prover, "args_steps"));
-      begin
-         Append (Command,
-                 Build_Executable (String'(Get (Get (Prover, "executable")))));
-         for Index in 1 .. Length (Args) - 1 loop
-            Append (Command, " " & String'(Get (Get (Args, Index))));
-         end loop;
-         for Index in 1 .. Length (Args_Steps) loop
-            Append (Command, " " & String'(Get (Get (Args_Steps, Index))));
-         end loop;
-         Append (Command, " " & String'(Get (Get (Args, Length (Args)))));
-         return To_String (Command);
-      end Build_Steps_Command;
 
       -------------------
       -- Set_Key_Value --
@@ -1214,7 +1196,8 @@ procedure Gnatprove with SPARK_Mode is
       begin
          Start_Section ("editor " & Get (Get (Editor, "title")));
          Set_Key_Value ("name", Get (Get (Editor, "name")));
-         Set_Key_Value ("command", Build_Prover_Command (Editor));
+         Set_Key_Value ("command",
+                        Build_Prover_Command (Editor, Args_Step => False));
       end Write_Editor_Config;
 
       -------------------------
@@ -1224,9 +1207,11 @@ procedure Gnatprove with SPARK_Mode is
       procedure Write_Prover_Config (Prover : JSON_Value) is
       begin
          Start_Section ("prover");
-         Set_Key_Value ("command", Build_Prover_Command (Prover));
+         Set_Key_Value ("command",
+                        Build_Prover_Command (Prover, Args_Step => False));
          if Has_Field (Prover, "args_steps") then
-            Set_Key_Value ("command_steps", Build_Steps_Command (Prover));
+            Set_Key_Value ("command_steps",
+                           Build_Prover_Command (Prover, Args_Step => True));
          end if;
          Set_Key_Value ("driver", Get (Get (Prover, "driver")));
          Set_Key_Value ("name", Get (Get (Prover, "name")));
