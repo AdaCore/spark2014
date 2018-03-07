@@ -460,6 +460,11 @@ package Gnat2Why.Util is
    --  be treated as having constants bounds, because translation of the loop
    --  in Why may lead to having two coexisting versions of the type.
 
+   function Is_Range_Type_In_Why (T : Entity_Id) return Boolean with
+     Pre => Is_Type (T);
+   --  Returns True if T is a scalar type that should be translated into Why
+   --  as a range type. This is currently done for static signed integer types.
+
    function Use_Guard_For_Function (E : Entity_Id) return Boolean with
      Pre => Ekind (E) = E_Function;
    --  Decide wether we need a guard for the axiom specifying the contract of

@@ -6,684 +6,698 @@
 <prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
 <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
 <file name="../../../gnatprove/homothetical.mlw">
-<theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_short_integer" proved="true">
 </theory>
-<theory name="Standard__short_short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_short_integer__rep" proved="true">
 </theory>
-<theory name="Standard__short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_integer" proved="true">
 </theory>
-<theory name="Standard__short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_integer__rep" proved="true">
 </theory>
-<theory name="Standard__integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer" proved="true">
 </theory>
-<theory name="Standard__integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer__rep" proved="true">
 </theory>
-<theory name="Standard__long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_integer" proved="true">
 </theory>
-<theory name="Standard__long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_integer__rep" proved="true">
 </theory>
-<theory name="Standard__long_long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_long_integer" proved="true">
 </theory>
-<theory name="Standard__long_long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_long_integer__rep" proved="true">
 </theory>
-<theory name="Standard__natural" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__natural" proved="true">
 </theory>
-<theory name="Standard__natural__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__natural__rep" proved="true">
 </theory>
-<theory name="Standard__positive" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__positive" proved="true">
 </theory>
-<theory name="Standard__positive__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__positive__rep" proved="true">
 </theory>
-<theory name="Standard__short_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_float" proved="true">
 </theory>
-<theory name="Standard__short_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_float__rep" proved="true">
 </theory>
-<theory name="Standard__float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__float" proved="true">
 </theory>
-<theory name="Standard__float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__float__rep" proved="true">
 </theory>
-<theory name="Standard__long_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_float" proved="true">
 </theory>
-<theory name="Standard__long_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_float__rep" proved="true">
 </theory>
-<theory name="Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__character" proved="true">
 </theory>
-<theory name="Standard__character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__character__rep" proved="true">
 </theory>
-<theory name="Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_character" proved="true">
 </theory>
-<theory name="Standard__wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_character__rep" proved="true">
 </theory>
-<theory name="Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_character" proved="true">
 </theory>
-<theory name="Standard__wide_wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_character__rep" proved="true">
 </theory>
-<theory name="Array__Int__Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__character" proved="true">
 </theory>
-<theory name="Standard__string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__character__Concat" proved="true">
 </theory>
-<theory name="Array__Int__Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__character_Comp" proved="true">
 </theory>
-<theory name="Standard__wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__string" proved="true">
 </theory>
-<theory name="Array__Int__Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_character" proved="true">
 </theory>
-<theory name="Standard__wide_wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
 </theory>
-<theory name="Standard__duration" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
 </theory>
-<theory name="Standard__integer_8" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_string" proved="true">
 </theory>
-<theory name="Standard__integer_8__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_wide_character" proved="true">
 </theory>
-<theory name="Standard__integer_16" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
 </theory>
-<theory name="Standard__integer_16__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
 </theory>
-<theory name="Standard__integer_32" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_string" proved="true">
 </theory>
-<theory name="Standard__integer_32__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__duration" proved="true">
 </theory>
-<theory name="Standard__integer_64" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_8" proved="true">
 </theory>
-<theory name="Standard__integer_64__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_8__rep" proved="true">
 </theory>
-<theory name="Standard__universal_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_16" proved="true">
 </theory>
-<theory name="Standard__universal_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_16__rep" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__float_type" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_32" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__float_type__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_32__rep" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sqrt__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_64" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sqrt__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_64__rep" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sqrt" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__universal_integer" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__log__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__universal_integer__rep" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__log__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__float_type" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__log" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__float_type__rep" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__log__2__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sqrt__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__log__2__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sqrt__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__log__2__base" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sqrt" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__log__2__base___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__log__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__log__2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__log__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__exp__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__log" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__exp__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__log__2__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__exp" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__log__2__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__Oexpon__left" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__log__2__base" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__Oexpon__left___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__log__2__base___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__Oexpon__right" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__log__2" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__Oexpon__right___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__exp__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__Oexpon" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__exp__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sin__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__exp" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sin__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__Oexpon__left" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__Oexpon__left___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sin__2__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__Oexpon__right" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sin__2__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__Oexpon__right___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sin__2__cycle" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__Oexpon" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sin__2__cycle___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sin__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sin__2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sin__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cos__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sin" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cos__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sin__2__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cos" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sin__2__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cos__2__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sin__2__cycle" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cos__2__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sin__2__cycle___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cos__2__cycle" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sin__2" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cos__2__cycle___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cos__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cos__2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cos__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tan__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cos" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tan__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cos__2__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tan" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cos__2__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tan__2__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cos__2__cycle" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tan__2__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cos__2__cycle___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tan__2__cycle" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cos__2" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tan__2__cycle___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tan__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tan__2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tan__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cot__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tan" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cot__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tan__2__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cot" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tan__2__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cot__2__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tan__2__cycle" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cot__2__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tan__2__cycle___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cot__2__cycle" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tan__2" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cot__2__cycle___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cot__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cot__2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cot__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsin__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cot" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsin__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cot__2__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsin" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cot__2__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsin__2__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cot__2__cycle" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsin__2__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cot__2__cycle___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsin__2__cycle" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cot__2" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsin__2__cycle___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsin__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsin__2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsin__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccos__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsin" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccos__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsin__2__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccos" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsin__2__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccos__2__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsin__2__cycle" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccos__2__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsin__2__cycle___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccos__2__cycle" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsin__2" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccos__2__cycle___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccos__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccos__2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccos__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccos" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccos__2__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccos__2__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccos__2__cycle" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccos__2__cycle___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan__2__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccos__2" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan__2__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan__y" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan__2__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan__y___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan__2__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan__2__cycle" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan__2__cycle___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan__2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan__2__y" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan__2__y___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan__2__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan__2__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan__2__cycle" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan__2__cycle___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot__2__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan__2" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot__2__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot__2__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot__2__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot__y" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot__2__cycle" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot__y___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot__2__cycle___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot__2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot__2__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sinh__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot__2__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sinh__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot__2__y" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sinh" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot__2__y___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cosh__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot__2__cycle" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cosh__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot__2__cycle___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cosh" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot__2" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tanh__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sinh__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tanh__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sinh__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tanh" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sinh" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__coth__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cosh__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__coth__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cosh__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__coth" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cosh" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsinh__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tanh__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsinh__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tanh__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsinh" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tanh" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccosh__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__coth__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccosh__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__coth__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccosh" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__coth" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctanh__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsinh__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctanh__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsinh__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctanh" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsinh" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccoth__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccosh__x" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccoth__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccosh__x___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccoth" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccosh" proved="true">
 </theory>
-<theory name="Homothetical__n" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctanh__x" proved="true">
 </theory>
-<theory name="Homothetical__joint_index" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctanh__x___axiom" proved="true">
 </theory>
-<theory name="Homothetical__joint_index__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctanh" proved="true">
 </theory>
-<theory name="Array__Int__Standard__float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccoth__x" proved="true">
 </theory>
-<theory name="Homothetical__Tjoint_valuesB" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccoth__x___axiom" proved="true">
 </theory>
-<theory name="Homothetical__joint_values" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccoth" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__d" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__n" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__d___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__joint_index" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__kv" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__joint_index__rep" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__kv___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__float" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__ka" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__float__Concat" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__ka___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__Tjoint_valuesB" proved="true">
 </theory>
-<theory name="Homothetical__adjust2triangle__d" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__joint_values" proved="true">
 </theory>
-<theory name="Homothetical__adjust2triangle__d___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__d" proved="true">
 </theory>
-<theory name="Homothetical__adjust2triangle__kv" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__d___axiom" proved="true">
 </theory>
-<theory name="Homothetical__adjust2triangle__kv___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__kv" proved="true">
 </theory>
-<theory name="Homothetical__adjust2triangle__ka" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__kv___axiom" proved="true">
 </theory>
-<theory name="Homothetical__adjust2triangle__ka___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__ka" proved="true">
 </theory>
-<theory name="Homothetical__adjust2triangle" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__ka___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T5b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__adjust2triangle__d" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T5b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__adjust2triangle__d___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T6b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__adjust2triangle__kv" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T7b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__adjust2triangle__kv___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T7b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__adjust2triangle__ka" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T8b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__adjust2triangle__ka___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T9b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__adjust2triangle" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T9b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T5b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T10b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T5b__rep" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_1__T11b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T6b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_1__T11b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T7b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_1__L14b__T15b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T7b__rep" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_1__L12b__T13b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T8b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T16b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T9b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T16b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T9b__rep" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T17b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T10b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T18b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_1__T11b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T18b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_1__T11b__rep" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T19b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_1__L14b__T15b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_2__T21b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_1__L12b__T13b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_2__T21b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T16b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_3__T22b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T16b__rep" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_3__T22b__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T17b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__kvmax" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T18b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__kvmax___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T18b__rep" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__kamax" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T19b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__kamax___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_2__T21b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__lambda" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_2__T21b__rep" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__lambda___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_3__T22b" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__upsilon" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_3__T22b__rep" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__upsilon___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__kvmax" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__kvp" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__kvmax___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__kvp___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__kamax" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_1__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__kamax___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_1__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__lambda" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_2__i" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__lambda___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_2__i___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__upsilon" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_3__j" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__upsilon___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_3__j___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__kvp" proved="true">
 </theory>
-<theory name="Standard__short_short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__kvp___axiom" proved="true">
 </theory>
-<theory name="Standard__short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_1__i" proved="true">
 </theory>
-<theory name="Standard__integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_1__i___axiom" proved="true">
 </theory>
-<theory name="Standard__long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_2__i" proved="true">
 </theory>
-<theory name="Standard__long_long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_2__i___axiom" proved="true">
 </theory>
-<theory name="Standard__natural___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_3__j" proved="true">
 </theory>
-<theory name="Standard__positive___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_3__j___axiom" proved="true">
 </theory>
-<theory name="Standard__short_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_short_integer___axiom" proved="true">
 </theory>
-<theory name="Standard__float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_integer___axiom" proved="true">
 </theory>
-<theory name="Standard__long_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer___axiom" proved="true">
 </theory>
-<theory name="Standard__character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_integer___axiom" proved="true">
 </theory>
-<theory name="Standard__wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_long_integer___axiom" proved="true">
 </theory>
-<theory name="Standard__wide_wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__natural___axiom" proved="true">
 </theory>
-<theory name="Standard__string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__positive___axiom" proved="true">
 </theory>
-<theory name="Standard__wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_float___axiom" proved="true">
 </theory>
-<theory name="Standard__wide_wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__float___axiom" proved="true">
 </theory>
-<theory name="Standard__duration___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_float___axiom" proved="true">
 </theory>
-<theory name="Standard__integer_8___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__character___axiom" proved="true">
 </theory>
-<theory name="Standard__integer_16___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_character___axiom" proved="true">
 </theory>
-<theory name="Standard__integer_32___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_character___axiom" proved="true">
 </theory>
-<theory name="Standard__integer_64___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__string___axiom" proved="true">
 </theory>
-<theory name="Standard__universal_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_string___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_string___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_1" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__duration___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_1___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_8___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_2" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_16___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_32___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_3" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_64___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_3___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__universal_integer___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__float_type___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical" proved="true">
 </theory>
-<theory name="Homothetical__joint_index___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_1" proved="true">
 </theory>
-<theory name="Homothetical__Tjoint_valuesB___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_1___axiom" proved="true">
 </theory>
-<theory name="Homothetical__joint_values___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_2" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T5b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_2___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T6b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_3" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T7b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_3___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T8b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__float_type___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T9b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__joint_index___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T10b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__Tjoint_valuesB___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_1__T11b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__joint_values___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_1__L14b__T15b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T5b___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_1__L12b__T13b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T6b___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T16b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T7b___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T17b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T8b___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T18b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T9b___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__T19b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T10b___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_2__T21b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_1__T11b___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__L_3__T22b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_1__L14b__T15b___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__lambda__aggregate_def" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_1__L12b__T13b___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__upsilon__aggregate_def" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T16b___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__kvp__aggregate_def" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T17b___axiom" proved="true">
 </theory>
-<theory name="Temp___173" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T18b___axiom" proved="true">
 </theory>
-<theory name="Temp___177" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__T19b___axiom" proved="true">
 </theory>
-<theory name="Homothetical__n___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_2__T21b___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sqrt___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__L_3__T22b___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__log___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__lambda__aggregate_def" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__log__2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__upsilon__aggregate_def" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__exp___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__kvp__aggregate_def" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__Oexpon___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___198" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___202" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sin__2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__n___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cos___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sqrt___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cos__2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__log___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tan___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__log__2___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tan__2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__exp___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cot___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__Oexpon___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cot__2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sin___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsin___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sin__2___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsin__2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cos___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccos___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cos__2___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccos__2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tan___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tan__2___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctan__2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cot___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cot__2___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccot__2___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsin___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__sinh___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arcsin__2___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__cosh___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccos___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__tanh___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccos__2___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__coth___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arcsinh___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arctan__2___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccosh___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arctanh___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__arccot__2___axiom" proved="true">
 </theory>
-<theory name="Ada__numerics__elementary_functions__arccoth___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__sinh___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__cosh___axiom" proved="true">
 </theory>
-<theory name="Homothetical__adjust2triangle___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Ada__numerics__elementary_functions__tanh___axiom" proved="true">
 </theory>
-<theory name="Homothetical__package_def" proved="true" sum="a7b7d327461d4a8b20e3ee0ea758d02f">
+<theory name="Ada__numerics__elementary_functions__coth___axiom" proved="true">
+</theory>
+<theory name="Ada__numerics__elementary_functions__arcsinh___axiom" proved="true">
+</theory>
+<theory name="Ada__numerics__elementary_functions__arccosh___axiom" proved="true">
+</theory>
+<theory name="Ada__numerics__elementary_functions__arctanh___axiom" proved="true">
+</theory>
+<theory name="Ada__numerics__elementary_functions__arccoth___axiom" proved="true">
+</theory>
+<theory name="Homothetical__homothetical___axiom" proved="true">
+</theory>
+<theory name="Homothetical__adjust2triangle___axiom" proved="true">
+</theory>
+<theory name="Homothetical__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Homothetical__homothetical__lambda__aggregate_def___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__lambda__aggregate_def___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__upsilon__aggregate_def___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__upsilon__aggregate_def___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__kvp__aggregate_def___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Homothetical__homothetical__kvp__aggregate_def___axiom" proved="true">
 </theory>
-<theory name="Temp___173___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___198___axiom" proved="true">
 </theory>
-<theory name="Temp___177___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Temp___202___axiom" proved="true">
 </theory>
-<theory name="Homothetical__homothetical__subprogram_def" sum="6a17eafca9f98d5b17dbf932942bb3b6">
+<theory name="Homothetical__homothetical__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" steps="8726"/></proof>
+  <proof prover="2"><result status="valid" steps="8176"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="922"/></proof>
+  <proof prover="2"><result status="valid" steps="882"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="9430"/></proof>
+  <proof prover="2"><result status="valid" steps="8880"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="9686"/></proof>
+  <proof prover="2"><result status="valid" steps="9136"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="9745"/></proof>
+  <proof prover="2"><result status="valid" steps="9195"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="9745"/></proof>
+  <proof prover="2"><result status="valid" steps="9195"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="loop invariant preservation" proved="true">
-  <proof prover="2"><result status="valid" steps="16446"/></proof>
+  <proof prover="2"><result status="valid" steps="15896"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="13059"/></proof>
+  <proof prover="2"><result status="valid" steps="12509"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="23723"/></proof>
+  <proof prover="2"><result status="valid" steps="23173"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="13000"/></proof>
+  <proof prover="2"><result status="valid" steps="12450"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="2945"/></proof>
+  <proof prover="2"><result status="valid" steps="2775"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="3037"/></proof>
+  <proof prover="2"><result status="valid" steps="2867"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="3073"/></proof>
+  <proof prover="2"><result status="valid" steps="2903"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="3121"/></proof>
+  <proof prover="2"><result status="valid" steps="2951"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="3335"/></proof>
+  <proof prover="2"><result status="valid" steps="3165"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="3409"/></proof>
+  <proof prover="2"><result status="valid" steps="3239"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="3445"/></proof>
+  <proof prover="2"><result status="valid" steps="3275"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="3493"/></proof>
+  <proof prover="2"><result status="valid" steps="3323"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
@@ -736,10 +750,10 @@
   <proof prover="2"><result status="unknown" steps="8450354"/></proof>
   </goal>
   <goal name="WP_parameter def.28" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="5360"/></proof>
+  <proof prover="2"><result status="valid" steps="5190"/></proof>
   </goal>
   <goal name="WP_parameter def.29" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="5446"/></proof>
+  <proof prover="2"><result status="valid" steps="5276"/></proof>
   </goal>
   <goal name="WP_parameter def.30" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
@@ -752,10 +766,10 @@
   <proof prover="2"><result status="unknown" steps="8450378"/></proof>
   </goal>
   <goal name="WP_parameter def.32" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="5710"/></proof>
+  <proof prover="2"><result status="valid" steps="5540"/></proof>
   </goal>
   <goal name="WP_parameter def.33" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="5778"/></proof>
+  <proof prover="2"><result status="valid" steps="5608"/></proof>
   </goal>
   <goal name="WP_parameter def.34" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
@@ -768,28 +782,28 @@
   <proof prover="2"><result status="unknown" steps="8450402"/></proof>
   </goal>
   <goal name="WP_parameter def.36" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="6403"/></proof>
+  <proof prover="2"><result status="valid" steps="6233"/></proof>
   </goal>
   <goal name="WP_parameter def.37" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="6477"/></proof>
+  <proof prover="2"><result status="valid" steps="6307"/></proof>
   </goal>
   <goal name="WP_parameter def.38" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="6513"/></proof>
+  <proof prover="2"><result status="valid" steps="6343"/></proof>
   </goal>
   <goal name="WP_parameter def.39" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="6561"/></proof>
+  <proof prover="2"><result status="valid" steps="6391"/></proof>
   </goal>
   <goal name="WP_parameter def.40" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="6755"/></proof>
+  <proof prover="2"><result status="valid" steps="6585"/></proof>
   </goal>
   <goal name="WP_parameter def.41" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="6829"/></proof>
+  <proof prover="2"><result status="valid" steps="6659"/></proof>
   </goal>
   <goal name="WP_parameter def.42" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="6865"/></proof>
+  <proof prover="2"><result status="valid" steps="6695"/></proof>
   </goal>
   <goal name="WP_parameter def.43" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="6913"/></proof>
+  <proof prover="2"><result status="valid" steps="6743"/></proof>
   </goal>
   <goal name="WP_parameter def.44" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
@@ -808,7 +822,7 @@
   </goal>
   <goal name="WP_parameter def.47" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365014"/></proof>
   <proof prover="2"><result status="unknown" steps="8450468"/></proof>
   </goal>
   <goal name="WP_parameter def.48" expl="postcondition">
@@ -824,7 +838,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Homothetical__adjust2triangle__subprogram_def" sum="426c755f5f43bbe08ded0f29040698ab">
+<theory name="Homothetical__adjust2triangle__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">

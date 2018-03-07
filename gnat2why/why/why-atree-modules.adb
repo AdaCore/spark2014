@@ -1919,9 +1919,10 @@ package body Why.Atree.Modules is
       -------------------------
 
       procedure Insert_Type_Symbols (E : Entity_Id) is
-         M  : constant W_Module_Id := E_Module (E);
-         AM : constant W_Module_Id := E_Axiom_Module (E);
-         Ty : constant W_Type_Id   := EW_Abstract (E);
+         M    : constant W_Module_Id := E_Module (E);
+         AM   : constant W_Module_Id := E_Axiom_Module (E);
+         Name : constant String := Short_Name (E);
+         Ty   : constant W_Type_Id   := EW_Abstract (E);
 
       begin
          Insert_Symbol
@@ -2058,6 +2059,19 @@ package body Why.Atree.Modules is
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type));
 
+               --  For types translated to range types in Why, declare
+               --  predifined projection function.
+
+               if Is_Range_Type_In_Why (E) then
+                  Insert_Symbol
+                    (E, WNE_Int_Proj,
+                     New_Identifier
+                       (Module => M,
+                        Domain => EW_Term,
+                        Symbol => NID (Name & "'int"),
+                        Typ    => EW_Int_Type));
+               end if;
+
                declare
                   RM : constant W_Module_Id :=
                     (if not Is_Fixed_Point_Type (E)
@@ -2065,6 +2079,7 @@ package body Why.Atree.Modules is
                      and then not Type_Is_Modeled_As_Base (E)
                      then E_Rep_Module (E)
                      else M);
+
                begin
                   Insert_Symbol
                     (E, WNE_To_Rep,
@@ -2073,6 +2088,7 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("to_rep"),
                         Typ    => Base));
+
                   Insert_Symbol
                     (E, WNE_Of_Rep,
                      New_Identifier

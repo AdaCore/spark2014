@@ -970,6 +970,17 @@ package body Gnat2Why.Util is
         and then not Is_Tagged_Type (Ty);
    end Is_Simple_Private_Type;
 
+   --------------------------
+   -- Is_Range_Type_In_Why --
+   --------------------------
+
+   function Is_Range_Type_In_Why (T : Entity_Id) return Boolean is
+      Ty : constant Entity_Id := Retysp (T);
+   begin
+      return Is_Signed_Integer_Type (Ty)
+        and then not Type_Is_Modeled_As_Base (Ty);
+   end Is_Range_Type_In_Why;
+
    ----------------------------
    -- Make_Empty_Why_Section --
    ----------------------------

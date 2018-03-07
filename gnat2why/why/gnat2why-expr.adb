@@ -7667,6 +7667,25 @@ package body Gnat2Why.Expr is
                   return Callback (Dim + 1, Expr);
                else
 
+                  --  Whenever possible, take advantage of the why3 construct
+                  --  for range constants.
+
+                  if Is_Range_Type_In_Why (Etype (Expr))
+                    and then Compile_Time_Known_Value (Expr)
+                  then
+                     return New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => New_Array_Access
+                          (Ada_Node => Expr_Or_Association,
+                           Domain   => EW_Term,
+                           Ar       => Arr,
+                           Index    => Indexes),
+                        Right  => New_Range_Constant
+                          (Value => Expr_Value (Expr),
+                           Typ   => EW_Abstract (Component_Type (Typ))),
+                        Domain => EW_Pred);
+                  end if;
+
                   --  For single dimensional aggregates (normal or
                   --  'Update), and for multidimensional 'Update aggregates
                   --  there will be no more nested aggregates, so no
@@ -11238,7 +11257,6 @@ package body Gnat2Why.Expr is
         and then Is_Discrete_Type (Expr_Type)
         and then Compile_Time_Known_Value (Expr)
       then
-
          T := New_Discrete_Constant
            (Value => Expr_Value (Expr),
             Typ   => Base_Why_Type_No_Bool (Expr_Type));
@@ -11381,6 +11399,7 @@ package body Gnat2Why.Expr is
             T := Transform_Slice (Local_Params, Domain, Expr);
 
          when N_Integer_Literal =>
+
             T :=
               New_Integer_Constant
                 (Ada_Node => Expr,

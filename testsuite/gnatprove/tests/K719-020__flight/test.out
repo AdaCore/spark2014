@@ -1,6 +1,6 @@
 flight_manager.adb:16:19: medium: "Result.X_Speed" might not be initialized, in call inlined at flight_manager.adb:42
 flight_manager.adb:16:19: medium: "Result.Y_Speed" might not be initialized, in call inlined at flight_manager.adb:43
-flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:42 (e.g. when Result = (X_Speed => -100, Y_Speed => -100))
+flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:42 (e.g. when Result = (X_Speed => 100, Y_Speed => 100))
 flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:43 (e.g. when Result = (X_Speed => -20, Y_Speed => -100))
 flight_manager.adb:16:43: info: division check proved (CVC4: 1 VC), in call inlined at flight_manager.adb:42
 flight_manager.adb:16:43: info: division check proved (CVC4: 1 VC), in call inlined at flight_manager.adb:43

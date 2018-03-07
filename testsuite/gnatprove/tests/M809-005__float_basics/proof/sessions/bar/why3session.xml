@@ -6,593 +6,605 @@
 <prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
 <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
 <file name="../../../gnatprove/bar.mlw">
-<theory name="Standard__short_short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_short_integer" proved="true">
 </theory>
-<theory name="Standard__short_short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_short_integer__rep" proved="true">
 </theory>
-<theory name="Standard__short_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_integer" proved="true">
 </theory>
-<theory name="Standard__short_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_integer__rep" proved="true">
 </theory>
-<theory name="Standard__integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer" proved="true">
 </theory>
-<theory name="Standard__integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer__rep" proved="true">
 </theory>
-<theory name="Standard__long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_integer" proved="true">
 </theory>
-<theory name="Standard__long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_integer__rep" proved="true">
 </theory>
-<theory name="Standard__long_long_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_long_integer" proved="true">
 </theory>
-<theory name="Standard__long_long_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_long_integer__rep" proved="true">
 </theory>
-<theory name="Standard__natural" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__natural" proved="true">
 </theory>
-<theory name="Standard__natural__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__natural__rep" proved="true">
 </theory>
-<theory name="Standard__positive" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__positive" proved="true">
 </theory>
-<theory name="Standard__positive__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__positive__rep" proved="true">
 </theory>
-<theory name="Standard__short_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_float" proved="true">
 </theory>
-<theory name="Standard__short_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_float__rep" proved="true">
 </theory>
-<theory name="Standard__float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__float" proved="true">
 </theory>
-<theory name="Standard__float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__float__rep" proved="true">
 </theory>
-<theory name="Standard__long_float" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_float" proved="true">
 </theory>
-<theory name="Standard__long_float__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_float__rep" proved="true">
 </theory>
-<theory name="Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__character" proved="true">
 </theory>
-<theory name="Standard__character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__character__rep" proved="true">
 </theory>
-<theory name="Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_character" proved="true">
 </theory>
-<theory name="Standard__wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_character__rep" proved="true">
 </theory>
-<theory name="Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_character" proved="true">
 </theory>
-<theory name="Standard__wide_wide_character__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_character__rep" proved="true">
 </theory>
-<theory name="Array__Int__Standard__character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__character" proved="true">
 </theory>
-<theory name="Standard__string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__character__Concat" proved="true">
 </theory>
-<theory name="Array__Int__Standard__wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__character_Comp" proved="true">
 </theory>
-<theory name="Standard__wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__string" proved="true">
 </theory>
-<theory name="Array__Int__Standard__wide_wide_character" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_character" proved="true">
 </theory>
-<theory name="Standard__wide_wide_string" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
 </theory>
-<theory name="Standard__duration" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
 </theory>
-<theory name="Standard__integer_8" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_string" proved="true">
 </theory>
-<theory name="Standard__integer_8__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_wide_character" proved="true">
 </theory>
-<theory name="Standard__integer_16" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
 </theory>
-<theory name="Standard__integer_16__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
 </theory>
-<theory name="Standard__integer_32" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_string" proved="true">
 </theory>
-<theory name="Standard__integer_32__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__duration" proved="true">
 </theory>
-<theory name="Standard__integer_64" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_8" proved="true">
 </theory>
-<theory name="Standard__integer_64__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_8__rep" proved="true">
 </theory>
-<theory name="Standard__universal_integer" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_16" proved="true">
 </theory>
-<theory name="Standard__universal_integer__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_16__rep" proved="true">
 </theory>
-<theory name="Bar__float_tests__ft" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_32" proved="true">
 </theory>
-<theory name="Bar__float_tests__ft__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_32__rep" proved="true">
 </theory>
-<theory name="Bar__float_tests__biggest_representable_int" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_64" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_01__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_64__rep" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_01__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__universal_integer" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_01__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__universal_integer__rep" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_01__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__ft" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_02__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__ft__rep" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_02__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__biggest_representable_int" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_02__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_01__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_02__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_01__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_03__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_01__y" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_03__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_01__y___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_04__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_02__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_04__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_02__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_05__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_02__y" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_05__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_02__y___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_06__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_03__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_06__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_03__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_06__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_04__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_06__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_04__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_07__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_05__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_07__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_05__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_07__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_06__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_07__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_06__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_08__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_06__y" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_08__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_06__y___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_08__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_07__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_08__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_07__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_09__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_07__y" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_09__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_07__y___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_09__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_08__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_09__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_08__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_10__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_08__y" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_10__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_08__y___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_10__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_09__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_10__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_09__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_11__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_09__y" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_11__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_09__y___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_11__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_10__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_11__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_10__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_14__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_10__y" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_14__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_10__y___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_15__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_11__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_15__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_11__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_16__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_11__y" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_16__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_11__y___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_17__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_14__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_17__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_14__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_18__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_15__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_18__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_15__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_19__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_16__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_19__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_16__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_19__b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_17__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_19__b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_17__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_19__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_18__x" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_19__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_18__x___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_19__d" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_19__a" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_19__d___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_19__a___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__ft" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_19__b" proved="true">
 </theory>
-<theory name="Bar__double_tests__ft__rep" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_19__b___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__biggest_representable_int" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_19__c" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_01__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_19__c___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_01__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_19__d" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_01__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_19__d___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_01__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__ft" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_02__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__ft__rep" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_02__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__biggest_representable_int" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_02__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_01__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_02__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_01__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_03__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_01__y" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_03__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_01__y___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_04__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_02__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_04__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_02__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_05__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_02__y" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_05__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_02__y___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_06__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_03__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_06__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_03__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_06__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_04__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_06__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_04__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_07__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_05__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_07__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_05__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_07__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_06__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_07__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_06__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_08__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_06__y" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_08__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_06__y___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_08__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_07__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_08__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_07__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_09__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_07__y" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_09__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_07__y___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_09__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_08__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_09__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_08__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_10__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_08__y" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_10__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_08__y___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_10__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_09__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_10__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_09__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_11__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_09__y" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_11__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_09__y___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_11__y" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_10__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_11__y___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_10__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_14__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_10__y" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_14__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_10__y___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_15__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_11__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_15__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_11__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_16__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_11__y" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_16__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_11__y___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_17__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_14__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_17__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_14__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_18__x" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_15__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_18__x___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_15__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_19__a" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_16__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_19__a___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_16__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_19__b" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_17__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_19__b___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_17__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_19__c" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_18__x" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_19__c___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_18__x___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_19__d" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_19__a" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_19__d___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_19__a___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_01__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_19__b" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_01__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_19__b___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_02__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_19__c" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_02__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_19__c___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_14__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_19__d" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_14__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_19__d___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_15__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_01__z" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_15__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_01__z___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_16__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_02__z" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_16__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_02__z___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_17__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_14__z" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_17__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_14__z___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_18__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_15__z" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_18__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_15__z___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_19__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_16__z" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_19__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_16__z___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_01__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_17__z" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_01__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_17__z___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_02__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_18__z" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_02__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_18__z___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_14__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_19__z" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_14__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_19__z___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_15__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_01__z" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_15__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_01__z___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_16__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_02__z" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_16__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_02__z___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_17__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_14__z" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_17__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_14__z___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_18__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_15__z" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_18__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_15__z___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_19__z" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_16__z" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_19__z___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_16__z___axiom" proved="true">
 </theory>
-<theory name="Standard__short_short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_17__z" proved="true">
 </theory>
-<theory name="Standard__short_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_17__z___axiom" proved="true">
 </theory>
-<theory name="Standard__integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_18__z" proved="true">
 </theory>
-<theory name="Standard__long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_18__z___axiom" proved="true">
 </theory>
-<theory name="Standard__long_long_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_19__z" proved="true">
 </theory>
-<theory name="Standard__natural___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_19__z___axiom" proved="true">
 </theory>
-<theory name="Standard__positive___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_short_integer___axiom" proved="true">
 </theory>
-<theory name="Standard__short_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_integer___axiom" proved="true">
 </theory>
-<theory name="Standard__float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer___axiom" proved="true">
 </theory>
-<theory name="Standard__long_float___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_integer___axiom" proved="true">
 </theory>
-<theory name="Standard__character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_long_integer___axiom" proved="true">
 </theory>
-<theory name="Standard__wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__natural___axiom" proved="true">
 </theory>
-<theory name="Standard__wide_wide_character___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__positive___axiom" proved="true">
 </theory>
-<theory name="Standard__string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__short_float___axiom" proved="true">
 </theory>
-<theory name="Standard__wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__float___axiom" proved="true">
 </theory>
-<theory name="Standard__wide_wide_string___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__long_float___axiom" proved="true">
 </theory>
-<theory name="Standard__duration___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__character___axiom" proved="true">
 </theory>
-<theory name="Standard__integer_8___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_character___axiom" proved="true">
 </theory>
-<theory name="Standard__integer_16___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_character___axiom" proved="true">
 </theory>
-<theory name="Standard__integer_32___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__string___axiom" proved="true">
 </theory>
-<theory name="Standard__integer_64___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_string___axiom" proved="true">
 </theory>
-<theory name="Standard__universal_integer___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__wide_wide_string___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_01" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__duration___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_02" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_8___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_03" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_16___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_04" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_32___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_05" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__integer_64___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_06" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Standard__universal_integer___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_07" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_01" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_08" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_02" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_09" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_03" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_10" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_04" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_11" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_05" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_14" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_06" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_15" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_07" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_16" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_08" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_17" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_09" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_18" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_10" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_19" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_11" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_01" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_14" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_02" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_15" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_03" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_16" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_04" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_17" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_05" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_18" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_06" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_19" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_07" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_01" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_08" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_02" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_09" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_03" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_10" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_04" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_11" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_05" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_14" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_06" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_15" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_07" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_16" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_08" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_17" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_09" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_18" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_10" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_19" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_11" proved="true">
 </theory>
-<theory name="Bar__float_tests__ft___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_14" proved="true">
 </theory>
-<theory name="Bar__double_tests__ft___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_15" proved="true">
 </theory>
-<theory name="Bar__float_tests__biggest_representable_int___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_16" proved="true">
 </theory>
-<theory name="Bar__double_tests__biggest_representable_int___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_17" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_01___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_18" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_02___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_19" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_03___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__ft___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_04___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__ft___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_05___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__biggest_representable_int___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_06___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__biggest_representable_int___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_07___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_01___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_08___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_02___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_09___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_03___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_10___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_04___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_11___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_05___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_14___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_06___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_15___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_07___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_16___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_08___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_17___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_09___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_18___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_10___axiom" proved="true">
 </theory>
-<theory name="Bar__float_tests__test_19___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_11___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_01___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_14___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_02___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_15___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_03___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_16___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_04___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_17___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_05___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_18___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_06___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__float_tests__test_19___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_07___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_01___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_08___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_02___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_09___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_03___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_10___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_04___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_11___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_05___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_14___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_06___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_15___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_07___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_16___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_08___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_17___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_09___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_18___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_10___axiom" proved="true">
 </theory>
-<theory name="Bar__double_tests__test_19___axiom" proved="true" sum="d41d8cd98f00b204e9800998ecf8427e">
+<theory name="Bar__double_tests__test_11___axiom" proved="true">
 </theory>
-<theory name="Bar__package_def" proved="true" sum="e284967f6dbb6592898a5ced2974229f">
+<theory name="Bar__double_tests__test_14___axiom" proved="true">
+</theory>
+<theory name="Bar__double_tests__test_15___axiom" proved="true">
+</theory>
+<theory name="Bar__double_tests__test_16___axiom" proved="true">
+</theory>
+<theory name="Bar__double_tests__test_17___axiom" proved="true">
+</theory>
+<theory name="Bar__double_tests__test_18___axiom" proved="true">
+</theory>
+<theory name="Bar__double_tests__test_19___axiom" proved="true">
+</theory>
+<theory name="Bar__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__package_def" proved="true" sum="5a94d960b731c508746f5d231051b4d2">
+<theory name="Bar__float_tests__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_01__subprogram_def" proved="true" sum="6300e0fa961fbdec3a15551c393883d0">
+<theory name="Bar__float_tests__test_01__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -607,7 +619,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_02__subprogram_def" sum="37ceb6000d404b41d0bd978d7e555284">
+<theory name="Bar__float_tests__test_02__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -624,7 +636,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_03__subprogram_def" sum="89b795bfdc2b61c7f55fbc30a134e5cf">
+<theory name="Bar__float_tests__test_03__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
@@ -646,7 +658,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_04__subprogram_def" proved="true" sum="ba0a7a6528edbe7e8eb444c5d10699cf">
+<theory name="Bar__float_tests__test_04__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -664,12 +676,12 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_05__subprogram_def" sum="c604f07657107ab81e8e52e9ac9670f0">
+<theory name="Bar__float_tests__test_05__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365014"/></proof>
+  <proof prover="1"><result status="unknown" steps="365012"/></proof>
   <proof prover="2"><result status="invalid" steps="66025"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
@@ -686,7 +698,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_06__subprogram_def" sum="6b7760d36799465110efef7a39544425">
+<theory name="Bar__float_tests__test_06__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
@@ -702,7 +714,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_07__subprogram_def" sum="1c05f34cebcc3b41c7c5af6ec19d2b7d">
+<theory name="Bar__float_tests__test_07__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
@@ -718,7 +730,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_08__subprogram_def" sum="f54da2686a81778a14432b87bc798a4f">
+<theory name="Bar__float_tests__test_08__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -737,7 +749,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_09__subprogram_def" proved="true" sum="ebfab0bee7074a87f4046ba009aaa1b8">
+<theory name="Bar__float_tests__test_09__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -749,7 +761,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_10__subprogram_def" sum="7b2d708d55a3d036c81abc03b5c03e65">
+<theory name="Bar__float_tests__test_10__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -763,7 +775,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_11__subprogram_def" proved="true" sum="b49ff30f2125ac759f607f7fccc30a65">
+<theory name="Bar__float_tests__test_11__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -775,7 +787,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_14__subprogram_def" proved="true" sum="a796914391a7bbd28ad1ce59e6860cc8">
+<theory name="Bar__float_tests__test_14__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -793,7 +805,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_15__subprogram_def" proved="true" sum="c56f50f58a150b90874f83ec881ee7b5">
+<theory name="Bar__float_tests__test_15__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -808,7 +820,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_16__subprogram_def" proved="true" sum="6f6627efe8a9693fa868505db58ea095">
+<theory name="Bar__float_tests__test_16__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -820,7 +832,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_17__subprogram_def" sum="e334c368ad9c47bedaa66fb3cd3fbcb8">
+<theory name="Bar__float_tests__test_17__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -837,7 +849,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_18__subprogram_def" proved="true" sum="eb406ed1966e3e8bdf96177c8c9b4566">
+<theory name="Bar__float_tests__test_18__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -852,7 +864,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__float_tests__test_19__subprogram_def" proved="true" sum="709710c01d4f7a94133ebfb94abb0562">
+<theory name="Bar__float_tests__test_19__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
@@ -882,13 +894,13 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__package_def" proved="true" sum="f41c8407e0fed97f99cf71d11bc6a00c">
+<theory name="Bar__double_tests__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_01__subprogram_def" proved="true" sum="636fbc95a47cc54b0738cbd505b0a3b5">
+<theory name="Bar__double_tests__test_01__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -903,7 +915,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_02__subprogram_def" sum="1d2c0e8c34bf4a90ff03dab8097c0996">
+<theory name="Bar__double_tests__test_02__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -920,7 +932,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_03__subprogram_def" sum="ae86614ae5632102ffaaa545ecce9d97">
+<theory name="Bar__double_tests__test_03__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
@@ -944,7 +956,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_04__subprogram_def" proved="true" sum="b4fb252d03e246ee72a54c32005f13ed">
+<theory name="Bar__double_tests__test_04__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -962,7 +974,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_05__subprogram_def" sum="5880fdf071c1e21eaf92f8f62398f2e2">
+<theory name="Bar__double_tests__test_05__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
@@ -986,7 +998,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_06__subprogram_def" sum="40384a65858699e2660f4488ce42b5e8">
+<theory name="Bar__double_tests__test_06__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
@@ -1002,7 +1014,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_07__subprogram_def" sum="a045424ef0e92149708db63171473568">
+<theory name="Bar__double_tests__test_07__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
@@ -1018,7 +1030,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_08__subprogram_def" sum="ccf27e0af09c3fddc69ef37b5d8c59cb">
+<theory name="Bar__double_tests__test_08__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1037,7 +1049,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_09__subprogram_def" proved="true" sum="9e378fbd3a8757c98b3c24c54c3912aa">
+<theory name="Bar__double_tests__test_09__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1049,7 +1061,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_10__subprogram_def" sum="70cd5d4d99143e341ff1f7b11b8b4182">
+<theory name="Bar__double_tests__test_10__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1063,7 +1075,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_11__subprogram_def" sum="c34e5e62ba4e383b7dfdc85b9a42a015">
+<theory name="Bar__double_tests__test_11__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1077,7 +1089,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_14__subprogram_def" proved="true" sum="a9577c608e50183994475d6808528526">
+<theory name="Bar__double_tests__test_14__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1095,7 +1107,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_15__subprogram_def" proved="true" sum="37d2031c6b28b7f4dd867c64c905e737">
+<theory name="Bar__double_tests__test_15__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1110,7 +1122,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_16__subprogram_def" proved="true" sum="1de0d034069a2a672c5a72d3c409e96a">
+<theory name="Bar__double_tests__test_16__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1122,7 +1134,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_17__subprogram_def" sum="4d0659949fd19a4277f3ee3e05f9cc53">
+<theory name="Bar__double_tests__test_17__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1139,7 +1151,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_18__subprogram_def" proved="true" sum="7d7c5d486500e1e362e2bd7bdbd80923">
+<theory name="Bar__double_tests__test_18__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
@@ -1154,7 +1166,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bar__double_tests__test_19__subprogram_def" proved="true" sum="e512c8c0b9a31ce9c54b309b05d84120">
+<theory name="Bar__double_tests__test_19__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">

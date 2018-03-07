@@ -324,8 +324,8 @@ generic_float_tests.adb:381:06: info: disjoint contract cases proved (Z3: 1 VC),
 generic_float_tests.adb:381:06: info: disjoint contract cases proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:381:06: medium: contract cases might not be complete, in instantiation at foo.ads:10
 generic_float_tests.adb:381:06: medium: contract cases might not be complete, in instantiation at foo.ads:15
-generic_float_tests.adb:381:34: info: contract case proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:381:34: info: contract case proved (Z3: 2 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:381:34: info: contract case proved (Z3: 2 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:381:37: info: initialization of "I" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:381:37: info: initialization of "I" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:382:34: medium: contract case might fail, in instantiation at foo.ads:10
@@ -348,16 +348,16 @@ generic_float_tests.adb:386:34: info: contract case proved (Z3: 2 VC), in instan
 generic_float_tests.adb:386:34: info: contract case proved (Z3: 2 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:386:37: info: initialization of "I" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:386:37: info: initialization of "I" proved, in instantiation at foo.ads:15
+generic_float_tests.adb:387:34: info: contract case proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:387:34: info: contract case proved (Z3: 2 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:387:34: info: contract case proved (Z3: 2 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:387:37: info: initialization of "I" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:387:37: info: initialization of "I" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:388:34: medium: contract case might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:388:34: medium: contract case might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:388:37: info: initialization of "I" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:388:37: info: initialization of "I" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:389:34: info: contract case proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:389:34: info: contract case proved (Z3: 2 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:389:34: info: contract case proved (Z3: 2 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:389:37: info: initialization of "I" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:389:37: info: initialization of "I" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:392:21: info: range check proved (CVC4: 1 VC), in instantiation at foo.ads:15

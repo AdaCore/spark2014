@@ -3,7 +3,7 @@ module Sums__extended_index
  use        "_gnatprove_standard".Integer
  use import "int".Int
 
- type extended_index
+ type extended_index = < range 0 65536 >
 
  function first : int = 0
 
@@ -36,10 +36,13 @@ module Sums__extended_index__rep
  use import Sums__extended_index
  use import "_gnatprove_standard".Main
 
+ function to_rep (x : extended_index) : int = (extended_index'int x)
+
  (* Projection functions from extended_index to int *)
  clone export "ada__model".Rep_Proj_Int with
    type t = extended_index,
-   predicate in_range = in_range
+   predicate in_range = in_range,
+   function to_rep = to_rep
 end
 
 module Sums__index
@@ -47,7 +50,7 @@ module Sums__index
  use        "_gnatprove_standard".Integer
  use import "int".Int
 
- type index
+ type index = < range 1 65536 >
 
  function first : int = 1
 
@@ -80,23 +83,25 @@ module Sums__index__rep
  use import Sums__index
  use import "_gnatprove_standard".Main
 
+ function to_rep (x : index) : int = (index'int x)
+
  (* Projection functions from index to int *)
  clone export "ada__model".Rep_Proj_Int with
    type t = index,
-   predicate in_range = in_range
+   predicate in_range = in_range,
+   function to_rep = to_rep
 end
 
 module Sums__vector_element
  use import "_gnatprove_standard".Main
  use        "_gnatprove_standard".Int_Division
- use import Standard__integer
  use import "int".Int
 
- type vector_element
+ type vector_element = < range -32768 32767 >
+ 
+ constant first : int = - 32768
 
- function first : int = Int_Division.div Standard__integer.first 65536
-
- function last  : int = Int_Division.div Standard__integer.last 65536
+ constant last  : int = 32767
 
  predicate in_range (x : int)  = first <= x /\ x <= last
 
@@ -118,10 +123,13 @@ module Sums__vector_element__rep
  use import Sums__vector_element
  use import "_gnatprove_standard".Main
 
+ function to_rep (x : vector_element) : int = (vector_element'int x)
+
  (* Projection functions from vector_element to int *)
  clone export "ada__model".Rep_Proj_Int with
    type t = vector_element,
-   predicate in_range = in_range
+   predicate in_range = in_range,
+   function to_rep = to_rep
 end
 
 (* Module for any array type ranging over signed integer types and

@@ -252,6 +252,9 @@ package body Why.Gen.Expr is
          when W_Float_Constant =>
             return +Get_Typ (W_Float_Constant_Id (E));
 
+         when W_Range_Constant =>
+            return +Get_Typ (W_Range_Constant_Id (E));
+
          when W_Modular_Constant =>
             return +Get_Typ (W_Modular_Constant_Id (E));
 
@@ -2087,6 +2090,27 @@ package body Why.Gen.Expr is
       if Eq_Base (From_Base, To_Base) then
          return Expr;
       end if;
+
+      --  Conversion of integer constants to Why range types are replaced by
+      --  builtin range values.
+
+      declare
+         Current : W_Expr_Id := Expr;
+      begin
+         while Get_Kind (+Current) = W_Label loop
+            Current := Get_Def (W_Label_Id (Current));
+         end loop;
+
+         if Get_Kind (+Current) = W_Integer_Constant
+           and then Get_Type_Kind (To) = EW_Abstract
+           and then Is_Range_Type_In_Why (Get_Ada_Node (+To))
+         then
+            return New_Range_Constant
+              (Ada_Node => Get_Ada_Node (+Expr),
+               Value    => Get_Value (W_Integer_Constant_Id (Current)),
+               Typ      => To);
+         end if;
+      end;
 
       return
         New_Call (Domain   => Domain,

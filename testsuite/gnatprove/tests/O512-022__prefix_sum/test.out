@@ -4,11 +4,11 @@ prefixsum.adb:10:34: info: initialization of "Space" proved
 prefixsum.adb:10:40: info: range check proved (CVC4: 1 VC)
 prefixsum.adb:15:27: info: division check proved (CVC4: 1 VC)
 prefixsum.adb:22:30: info: division check proved (CVC4: 1 VC)
+prefixsum.adb:25:18: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K-1) + A'Loop_Entry (K-2) + A'Loop_Entry (K-3)
 prefixsum.adb:25:60: info: index check proved (CVC4: 2 VC)
 prefixsum.adb:26:41: info: index check proved (CVC4: 2 VC)
 prefixsum.adb:26:62: info: index check proved (CVC4: 2 VC)
 prefixsum.adb:27:30: info: division check proved (CVC4: 1 VC)
-prefixsum.adb:30:18: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K-1)
 prefixsum.adb:30:60: info: index check proved (CVC4: 2 VC)
 prefixsum.adb:33:10: info: loop variant proved (CVC4: 1 VC)
 prefixsum.adb:33:44: info: initialization of "Space" proved
@@ -33,7 +33,7 @@ prefixsum.adb:59:16: info: index check proved (CVC4: 2 VC)
 prefixsum.adb:59:29: info: index check proved (CVC4: 2 VC)
 prefixsum.adb:59:29: info: initialization of "Left" proved
 prefixsum.adb:59:35: info: overflow check proved (CVC4: 1 VC)
-prefixsum.adb:59:40: info: index check proved (CVC4: 1 VC; altergo: 1 VC)
+prefixsum.adb:59:40: info: index check proved (CVC4: 1 VC; Z3: 1 VC)
 prefixsum.adb:59:40: info: initialization of "Right" proved
 prefixsum.adb:60:26: info: initialization of "Left" proved
 prefixsum.adb:60:31: info: overflow check proved (CVC4: 1 VC)
@@ -131,7 +131,7 @@ prefixsum_expanded.adb:52:10: info: loop variant proved (CVC4: 1 VC)
 prefixsum_expanded.adb:52:44: info: initialization of "Space" proved
 prefixsum_expanded.adb:54:18: info: initialization of "Space" proved
 prefixsum_expanded.adb:56:16: info: initialization of "Left" proved
-prefixsum_expanded.adb:58:15: info: loop invariant initialization proved (CVC4: 5 VC; altergo: 1 VC)
+prefixsum_expanded.adb:58:15: info: loop invariant initialization proved (CVC4: 5 VC; Z3: 1 VC)
 prefixsum_expanded.adb:58:15: info: loop invariant preservation proved (CVC4: 3 VC; Z3: 4 VC)
 prefixsum_expanded.adb:58:16: info: initialization of "Left" proved
 prefixsum_expanded.adb:58:26: info: division check proved (CVC4: 1 VC)

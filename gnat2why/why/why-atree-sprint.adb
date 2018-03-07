@@ -136,6 +136,8 @@ package body Why.Atree.Sprint is
    procedure Print_Not (Node : W_Not_Id);
    procedure Print_Postcondition (Node : W_Postcondition_Id);
    procedure Print_Raise (Node : W_Raise_Id);
+   procedure Print_Range_Constant (Node : W_Range_Constant_Id);
+   procedure Print_Range_Type_Definition (Node : W_Range_Type_Definition_Id);
    procedure Print_Real_Constant (Node : W_Real_Constant_Id);
    procedure Print_Record_Access (Node : W_Record_Access_Id);
    procedure Print_Record_Aggregate (Node : W_Record_Aggregate_Id);
@@ -1493,6 +1495,9 @@ package body Why.Atree.Sprint is
          when W_Record_Definition =>
             Print_Record_Definition (+N);
 
+         when W_Range_Type_Definition =>
+            Print_Range_Type_Definition (+N);
+
          when W_Triggers =>
             Print_Triggers (+N);
 
@@ -1555,6 +1560,9 @@ package body Why.Atree.Sprint is
 
          when W_Integer_Constant =>
             Print_Integer_Constant (+N);
+
+         when W_Range_Constant =>
+            Print_Range_Constant (+N);
 
          when W_Modular_Constant =>
             Print_Modular_Constant (+N);
@@ -1703,6 +1711,36 @@ package body Why.Atree.Sprint is
          Print_Node (+Exn_Type);
       end if;
    end Print_Raise;
+
+   --------------------------
+   -- Print_Range_Constant --
+   --------------------------
+
+   procedure Print_Range_Constant (Node : W_Range_Constant_Id) is
+      Typ   : constant W_Type_Id := Get_Typ (Node);
+      Value : constant Uint := Get_Value (Node);
+   begin
+      P (O, "( ");
+      P (O, Value);
+      P (O, " : ");
+      Print_Node (+Typ);
+      P (O, " )");
+   end Print_Range_Constant;
+
+   ---------------------------------
+   -- Print_Range_Type_Definition --
+   ---------------------------------
+
+   procedure Print_Range_Type_Definition (Node : W_Range_Type_Definition_Id) is
+      First : constant Uint := Get_First (Node);
+      Last  : constant Uint := Get_Last (Node);
+   begin
+      P (O, "< range ");
+      P (O, First);
+      P (O, " ");
+      P (O, Last);
+      P (O, " >");
+   end Print_Range_Type_Definition;
 
    -------------------------
    -- Print_Real_Constant --

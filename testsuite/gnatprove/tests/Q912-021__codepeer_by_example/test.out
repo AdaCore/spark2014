@@ -36,7 +36,7 @@ bad_assign_all_arr.adb:5:21: medium: array index check might fail [CWE 120] (e.g
 bad_assign_all_arr_unk.adb:5:21: medium: array index check might fail [CWE 120] (e.g. when X'Last = 0)
 bad_assign_all_arr_unk.adb:5:21: medium: overflow check might fail [CWE 190] (e.g. when J = 2147483647)
 bad_assign_arr.adb:2:27: info: initialization of "X" proved
-bad_assign_arr.adb:4:07: medium: array index check might fail [CWE 120] (e.g. when X = (others => 1) and Y = 0)
+bad_assign_arr.adb:4:07: medium: array index check might fail [CWE 120] (e.g. when X = (others => 0) and Y = 0)
 bad_assign_arr.adb:4:10: medium: "X" might not be initialized [CWE 457]
 bad_assign_arr.adb:5:09: info: overflow check proved (CVC4: 1 VC)
 bad_assign_arr.adb:5:09: medium: array index check might fail [CWE 120]

@@ -157,7 +157,16 @@ package Why.Sinfo is
    --
    --  Used in W_Type_Decl nodes, and represents a record structure: a list of
    --  field names with a type and possibly a mutable keyword.
+
+   --  -----------------------------
+   --  -- W_Range_Type_Definition --
+   --  -----------------------------
+   --  First      Uint
+   --  Last       Uint
    --
+   --  Used in W_Type_Decl nodes, and represents a bounded integer type.
+   --  "< range First Last >"
+
    --  ----------------
    --  -- W_Triggers --
    --  ----------------
@@ -333,6 +342,14 @@ package Why.Sinfo is
    --  Value       Uint
    --
    --  The node for integer literals.
+   --
+   --  ----------------------
+   --  -- W_Range_Constant --
+   --  ----------------------
+   --  Value       Uint
+   --  Typ         W_Type_Id
+   --
+   --  The node for literals of bounded integer types "(Value : Typ)".
    --
    --  ------------------------
    --  -- W_Modular_Constant --
@@ -659,6 +676,7 @@ package Why.Sinfo is
       W_Transparent_Type_Definition,
       W_Record_Binder,
       W_Record_Definition,
+      W_Range_Type_Definition,
 
       -------------------------
       -- Predicate structure --
@@ -709,6 +727,7 @@ package Why.Sinfo is
       -------------------------
 
       W_Integer_Constant,
+      W_Range_Constant,
       W_Modular_Constant,
       W_Fixed_Constant,
       W_Real_Constant,

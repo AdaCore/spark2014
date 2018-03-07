@@ -579,14 +579,28 @@ package body Why.Gen.Scalars is
 
    begin
 
-      --  declare the abstract type
-      --  if the type is dynamic, declare an alias of its base type
+      --  Declare the logic type:
+      --  If the type is dynamic, declare an alias of its base type.
 
       if not Is_Static then
          Emit (File,
                New_Type_Decl
                  (Name  => Why_Name,
                   Alias => Base_Type_In_Why));
+
+      --  For static signed integer types, declare a range type
+
+      elsif Is_Range_Type_In_Why (E) then
+         Emit (File,
+               New_Type_Decl
+                 (Name       => Why_Name,
+                  Labels     => Name_Id_Sets.Empty_Set,
+                  Definition => New_Range_Type_Definition
+                    (First => Expr_Value (Low_Bound (Rng)),
+                     Last  => Expr_Value (High_Bound (Rng)))));
+
+      --  For other static types, declare an abstract type
+
       else
          Emit (File,
                New_Type_Decl
@@ -854,8 +868,17 @@ package body Why.Gen.Scalars is
                  Image     => Get_Name (E_Symb (E, WNE_Attr_Modulus))))
          else (1 .. 0 => <>));
 
+      Range_Type_Subst : constant W_Clone_Substitution_Array :=
+        (if Is_Range_Type_In_Why (E) then
+           (1 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => New_Name (Symbol => NID ("to_rep")),
+                 Image     => To_Local (E_Symb (E, WNE_To_Rep))))
+         else (1 .. 0 => <>));
+
       Substs : constant W_Clone_Substitution_Array :=
-        Default_Clone_Subst & In_Range_Substs & Mod_Clone_Subst;
+        Default_Clone_Subst & In_Range_Substs & Mod_Clone_Subst
+        & Range_Type_Subst;
 
       Clone : constant W_Module_Id := Pick_Clone;
    begin
@@ -871,6 +894,36 @@ package body Why.Gen.Scalars is
                           EW_Clone_Default);
       end if;
 
+      if Is_Range_Type_In_Why (E) then
+
+         --  For range types, declare a renaming of t'int which will be used
+         --  to clone the representative theory.
+
+         declare
+            Var     : constant W_Identifier_Id :=
+              New_Identifier
+                (Name => "x", Typ => EW_Abstract (E));
+            Binders : constant Binder_Array :=
+              Binder_Array'(1 => Binder_Type'(B_Name => Var,
+                                              others => <>));
+         begin
+
+            Emit (File,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Local (E_Symb (E, WNE_To_Rep)),
+                     Binders     => Binders,
+                     Return_Type => EW_Int_Type,
+                     Def         =>
+                       New_Call
+                         (Domain => EW_Term,
+                          Name   => E_Symb (E, WNE_Int_Proj),
+                          Args   => (1 => +Var),
+                          Typ    => EW_Int_Type),
+                     Labels      => Name_Id_Sets.Empty_Set));
+         end;
+      end if;
+
       Emit (File,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
@@ -878,10 +931,7 @@ package body Why.Gen.Scalars is
                                    Origin        => Clone,
                                    Substitutions => Substs));
 
-      Emit_Projection_Metas (Section => File,
-                             Projection_Fun => "to_rep");
-
-      --  declare metas for functions projecting values of why abstract types
+      --  Declare metas for functions projecting values of why abstract types
       --  to concrete values
       --    - the defined type is why abstract type. To see the concrete value
       --      in a counterexample, it is needed to project the value of this
@@ -895,10 +945,8 @@ package body Why.Gen.Scalars is
       --      two different functions, it is necessary to emit projection meta
       --      for cloned projection functions.
 
-      if Is_Discrete_Type (E) then
-         --  Note that if E is dynamic type, to_rep is not projection function
-         Emit_Projection_Metas (Section => File, Projection_Fun => "to_rep");
-      end if;
+      --  Note that if E is dynamic type, to_rep is not projection function
+      Emit_Projection_Metas (Section => File, Projection_Fun => "to_rep");
 
    end Define_Scalar_Rep_Proj;
 

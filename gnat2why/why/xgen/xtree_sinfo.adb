@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2017, AdaCore                   --
+--                       Copyright (C) 2010-2018, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -58,7 +58,7 @@ package body Xtree_Sinfo is
 
       New_Class ("W_Type_Definition",
                  W_Transparent_Type_Definition,
-                 W_Record_Definition);
+                 W_Range_Type_Definition);
       New_Class ("W_Declaration",
                  W_Function_Decl,
                  W_Clone_Declaration);
@@ -148,6 +148,14 @@ package body Xtree_Sinfo is
       New_Field (W_Record_Definition,
                  "Fields", "W_Record_Binder", Id_Some);
       Set_Domain (W_Record_Definition, EW_Term);
+
+      -----------------------------
+      -- W_Range_Type_Definition --
+      -----------------------------
+
+      New_Field (W_Range_Type_Definition, "First", "Uint");
+      New_Field (W_Range_Type_Definition, "Last", "Uint");
+      Set_Domain (W_Range_Type_Definition, EW_Term);
 
       ----------------
       -- W_Triggers --
@@ -358,6 +366,13 @@ package body Xtree_Sinfo is
       ------------------------
 
       New_Field (W_Integer_Constant, "Value", "Uint");
+
+      ----------------------
+      -- W_Range_Constant --
+      ----------------------
+
+      New_Field (W_Range_Constant, "Value", "Uint");
+      New_Field (W_Range_Constant, "Typ", "W_Type", Id_One);
 
       ------------------------
       -- W_Modular_Constant --

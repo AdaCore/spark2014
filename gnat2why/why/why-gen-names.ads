@@ -277,6 +277,9 @@ package Why.Gen.Names is
       WNE_Index_Dynamic_Property_3,
       WNE_Index_Dynamic_Property_4,
 
+      --  Predefined projection for why range types
+      WNE_Int_Proj,
+
       --  Prefix for name of functions which extract the value of an extension
       --  component from the extension field of a value of the root type.
       WNE_Extract_Prefix,

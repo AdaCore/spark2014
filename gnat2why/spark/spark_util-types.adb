@@ -544,15 +544,6 @@ package body SPARK_Util.Types is
       return Ekind (Ty) in Private_Kind;
    end Has_Private_Fields;
 
-   -----------------------------------
-   -- Has_Static_Discrete_Predicate --
-   -----------------------------------
-
-   function Has_Static_Discrete_Predicate (E : Entity_Id) return Boolean is
-     (Is_Discrete_Type (E)
-        and then Has_Predicates (E)
-        and then Present (Static_Discrete_Predicate (E)));
-
    ----------------------------
    -- Invariant_Check_Needed --
    ----------------------------

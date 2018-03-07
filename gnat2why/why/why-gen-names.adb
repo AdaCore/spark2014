@@ -820,6 +820,7 @@ package body Why.Gen.Names is
             | WNE_Index_Dynamic_Property_2
             | WNE_Index_Dynamic_Property_3
             | WNE_Index_Dynamic_Property_4
+            | WNE_Int_Proj
             | WNE_Of_Array
             | WNE_Of_Base
             | WNE_Of_BitVector

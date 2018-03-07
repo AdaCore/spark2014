@@ -4,8 +4,7 @@ package Sums with SPARK_Mode is
    subtype Extended_Index is Integer range 0 .. 2 ** 16;
    subtype Index is Integer range 1 .. Extended_Index'Last;
 
-   subtype Vector_Element is
-     Integer range Integer'First / Index'Last .. Integer'Last / Index'Last;
+   subtype Vector_Element is Integer range - 2 ** 15 .. 2 ** 15 - 1;
 
    type Vector is array (Index range <>) of Vector_Element;
 

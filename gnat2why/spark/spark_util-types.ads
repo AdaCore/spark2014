@@ -223,11 +223,6 @@ package SPARK_Util.Types is
    --  @params E any type
    --  @returns True if E has a type invariant and the invariant is in SPARK.
 
-   function Has_Static_Discrete_Predicate (E : Entity_Id) return Boolean
-   with Pre => Is_Type (E);
-   --  @param E any type
-   --  @return True iff E is a discrete type with a static predicate
-
    function Has_Visible_Type_Invariants (Ty : Entity_Id) return Boolean
    with Pre => Is_Type (Ty);
    --  @param Ty type entity
