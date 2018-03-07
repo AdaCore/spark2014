@@ -5326,7 +5326,7 @@ package body Gnat2Why.Expr is
             Nd  : Node_Id;
          begin
             if Nkind (N) in N_Identifier | N_Expanded_Name then
-               Typ := Why_Type_Of_Entity (Entity (N));
+               Typ := Type_Of_Node (N);
                Nd  := Entity (N);
             else
                Typ := Type_Of_Node (Etype (N));
@@ -8709,7 +8709,6 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params) return W_Expr_Id
    is
    begin
-
       --  Do not generate old when they are not allowed (eg in postconditions
       --  of functions or inside prefixes of 'Old attributes), or when the
       --  expression contains no variable.

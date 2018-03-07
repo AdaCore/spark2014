@@ -941,7 +941,39 @@ package body Gnat2Why.Subprograms is
       --  Compute the dynamic property of mutable parameters
 
       for I in Func_Why_Binders'Range loop
-         if Item_Is_Mutable (Func_Why_Binders (I))
+
+         --  Only assume dynamic property of concurrent self if the containing
+         --  protected type is in SPARK. Otherwise, self will have the type
+         --  EW_Private_Type and no dynamic property applies.
+
+         if Func_Why_Binders (I).Kind = Concurrent_Self then
+            declare
+               Ada_Type : constant Node_Id :=
+                 Func_Why_Binders (I).Main.Ada_Node;
+            begin
+               if Entity_In_SPARK (Ada_Type) then
+                  declare
+                     Self_Expr : constant W_Expr_Id :=
+                       (if Self_Is_Mutable then
+                           New_Deref (Right => Self_Name,
+                                      Typ   => Get_Typ (Self_Name))
+                        else +Self_Name);
+                     Dyn_Prop  : constant W_Pred_Id :=
+                       Compute_Dynamic_Invariant
+                         (Expr             => +Self_Expr,
+                          Ty               => Ada_Type,
+                          Params           => Params,
+                          Include_Type_Inv =>
+                            Include_Non_Local_Type_Inv_For_Subp (E));
+                  begin
+                     Dynamic_Prop_Effects := +New_And_Expr
+                       (Left   => +Dynamic_Prop_Effects,
+                        Right  => +Dyn_Prop,
+                        Domain => EW_Pred);
+                  end;
+               end if;
+            end;
+         elsif Item_Is_Mutable (Func_Why_Binders (I))
            and then Entity_In_SPARK
              (Get_Ada_Node_From_Item (Func_Why_Binders (I)))
          then

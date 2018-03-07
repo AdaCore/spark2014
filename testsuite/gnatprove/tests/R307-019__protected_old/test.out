@@ -1,0 +1,6 @@
+task_limit.adb:5:30: info: refined post proved (CVC4: 1 VC)
+task_limit.adb:9:24: info: overflow check proved (CVC4: 1 VC)
+task_limit.adb:13:30: info: refined post proved (CVC4: 1 VC)
+task_limit.adb:22:30: info: refined post proved (CVC4: 1 VC)
+task_limit.adb:26:28: info: overflow check proved (CVC4: 1 VC)
+task_limit.adb:30:30: info: refined post proved (CVC4: 1 VC)
