@@ -59,13 +59,25 @@
 </theory>
 <theory name="Array__Int__Standard__character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__character_Comp" proved="true">
+</theory>
 <theory name="Standard__string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
+</theory>
 <theory name="Standard__wide_string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_wide_character" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
 </theory>
 <theory name="Standard__wide_wide_string" proved="true">
 </theory>
@@ -4018,7 +4030,7 @@
   <proof prover="1"><result status="valid" steps="43234"/></proof>
   </goal>
   <goal name="WP_parameter def.39" expl="postcondition" proved="true">
-  <proof prover="0" timelimit="10"><result status="valid" steps="159405"/></proof>
+  <proof prover="0"><result status="valid" steps="159405"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.40" expl="postcondition" proved="true">

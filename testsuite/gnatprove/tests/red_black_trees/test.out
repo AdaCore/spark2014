@@ -2194,7 +2194,7 @@ search_trees.adb:734:51: info: initialization of "Y" proved, in call inlined at 
 search_trees.adb:740:10: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:892
 search_trees.adb:740:43: info: initialization of "F_2" proved, in call inlined at search_trees.adb:892
 search_trees.adb:740:48: info: initialization of "X" proved, in call inlined at search_trees.adb:892
-search_trees.adb:742:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:892
+search_trees.adb:742:13: medium: precondition might fail, in call inlined at search_trees.adb:892
 search_trees.adb:742:46: info: initialization of "F_2" proved, in call inlined at search_trees.adb:892
 search_trees.adb:742:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:892
 search_trees.adb:747:17: info: initialization of "F_4" proved
