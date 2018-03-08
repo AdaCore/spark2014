@@ -25,7 +25,7 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 with Common_Containers;              use Common_Containers;
-with Elists;                         use Elists;
+with Common_Iterators;               use Common_Iterators;
 with Errout;                         use Errout;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals;         use Flow_Generated_Globals;
@@ -4061,11 +4061,10 @@ package body Gnat2Why.Subprograms is
       -----------------------------
 
       function Corresponding_Primitive (E, D : Entity_Id) return Entity_Id is
-         Prim : Elmt_Id := First_Elmt (Direct_Primitive_Operations (D));
       begin
-         while Present (Prim) loop
+         for Prim of Iter (Direct_Primitive_Operations (D)) loop
             declare
-               D_E     : constant Entity_Id := Ultimate_Alias (Node (Prim));
+               D_E     : constant Entity_Id := Ultimate_Alias (Prim);
                Current : Entity_Id := D_E;
             begin
                loop
@@ -4077,7 +4076,6 @@ package body Gnat2Why.Subprograms is
                   Current := Ultimate_Alias (Current);
                end loop;
             end;
-            Next_Elmt (Prim);
          end loop;
          raise Program_Error;
       end Corresponding_Primitive;
