@@ -1,0 +1,6 @@
+p.ads:18:16: info: postcondition proved (CVC4: 8 VC)
+p.ads:37:16: info: postcondition proved (CVC4: 5 VC)
+p.ads:54:16: info: postcondition proved (CVC4: 4 VC)
+p.ads:69:16: info: postcondition proved (CVC4: 5 VC)
+p.ads:84:16: info: postcondition proved (CVC4: 4 VC)
+p.ads:104:16: info: postcondition proved (CVC4: 8 VC)
