@@ -1,16 +1,11 @@
 test.adb:11:16: medium: postcondition might fail
-{"ide_request": "Command_req", "node_ID":89, "command" : "introduce_premises" }
+{"ide_request": "Command_req", "node_ID":95, "command" : "introduce_premises" }
 
-{"ide_request": "Command_req", "node_ID":89, "command" : "z3" }
+{"ide_request": "Command_req", "node_ID":95, "command" : "z3" }
 
-{"ide_request": "Get_task", "node_ID":89, "do_intros": false, "loc": false, "full_context": false}
+{"ide_request": "Get_task", "node_ID":95, "loc": false, "full_context": false}
 
-New_node
-New_node
 Message
-New_node
-New_node
-New_node
 Task
 --------------------------- Local Context ---------------------------
 
@@ -33,8 +28,8 @@ goal WP_parameter def :
 
 
 Process Ended
-Children 88 OK
-Children 89 OK
+Children 94 OK
+Children 95 OK
 Children OK
 Unparsed JSON = 0
 Next_unproven = 0
