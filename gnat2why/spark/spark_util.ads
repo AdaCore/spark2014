@@ -410,11 +410,6 @@ package SPARK_Util is
    -- Queries for particular nodes --
    ----------------------------------
 
-   function Aggregate_Is_Fully_Initialized (N : Node_Id) return Boolean;
-   --  @param N aggregate or an extension aggregate
-   --  @return True iff N is fully initialized. For the aggregate extension,
-   --      this only deals with the extension components.
-
    function Candidate_For_Loop_Unrolling (Loop_Stmt : Node_Id) return Boolean
    with Pre => Nkind (Loop_Stmt) = N_Loop_Statement;
    --  Check whether a loop is a candidate for loop unrolling

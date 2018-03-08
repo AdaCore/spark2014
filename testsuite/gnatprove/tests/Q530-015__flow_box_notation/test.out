@@ -1,7 +1,15 @@
-p.adb:16:12: info: discriminant check proved (CVC4: 1 VC)
-p.ads:16:21: info: initialization of "This.Top" proved
-p.ads:16:21: info: initialization of "This.Values" proved
-p.ads:17:17: info: postcondition proved (CVC4: 1 VC)
-p.ads:17:24: info: initialization of "This.Top" proved
-p.ads:17:24: info: initialization of "This.Values" proved
-p.ads:26:07: info: range check proved (CVC4: 2 VC)
+arr.adb:4:26: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+arr.adb:4:26: violation of pragma SPARK_Mode at test.adc:1
+ext_aggr.adb:7:15: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+ext_aggr.adb:7:15: violation of pragma SPARK_Mode at test.adc:1
+p.adb:16:15: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+p.adb:16:15: violation of pragma SPARK_Mode at test.adc:1
+priv.ads:10:14: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+priv.ads:10:14: violation of pragma SPARK_Mode at test.adc:1
+rec.ads:8:14: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+rec.ads:8:14: violation of pragma SPARK_Mode at test.adc:1
+rec.ads:9:14: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+rec.ads:9:14: violation of pragma SPARK_Mode at test.adc:1
+rec.ads:16:15: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+rec.ads:16:15: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof

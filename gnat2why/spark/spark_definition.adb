@@ -704,6 +704,7 @@ package body SPARK_Definition is
    procedure Mark_Address                     (E : Entity_Id)
      with Pre => Ekind (E) in Object_Kind | E_Function | E_Procedure;
 
+   procedure Mark_Component_Association       (N : Node_Id);
    procedure Mark_Component_Declaration       (N : Node_Id);
    procedure Mark_Handled_Statements          (N : Node_Id);
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id);
@@ -1194,10 +1195,6 @@ package body SPARK_Definition is
               and then not Is_Special_Multidim_Update_Aggr (N)
             then
                Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
-               if not Aggregate_Is_Fully_Initialized (N) then
-                  Mark_Violation ("aggregate not fully defined", N,
-                                  SRM_Reference => "SPARK RM 4.3");
-               end if;
             elsif Is_Update_Aggregate (N)
               and then Is_Update_Unconstr_Multidim_Aggr (N)
             then
@@ -1243,11 +1240,7 @@ package body SPARK_Definition is
 
          when N_Component_Association =>
             pragma Assert (No (Loop_Actions (N)));
-            Mark_List (Choices (N));
-
-            if not Box_Present (N) then
-               Mark (Expression (N));
-            end if;
+            Mark_Component_Association (N);
 
          when N_Iterated_Component_Association =>
             Mark_Violation ("iterated associations", N);
@@ -1278,10 +1271,6 @@ package body SPARK_Definition is
 
          when N_Extension_Aggregate =>
             Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
-            if not Aggregate_Is_Fully_Initialized (N) then
-               Mark_Violation ("extension aggregate not fully defined", N,
-                               SRM_Reference => "SPARK RM 4.3");
-            end if;
 
             if Nkind (Ancestor_Part (N)) in N_Identifier | N_Expanded_Name
               and then Is_Type (Entity (Ancestor_Part (N)))
@@ -2817,6 +2806,56 @@ package body SPARK_Definition is
       --  Ensure that global variables are restored to their initial values
       pragma Assert (No (Current_Delayed_Aspect_Type));
    end Mark_Compilation_Unit;
+
+   --------------------------------
+   -- Mark_Component_Association --
+   --------------------------------
+
+   procedure Mark_Component_Association (N : Node_Id) is
+   begin
+      Mark_List (Choices (N));
+
+      --  We enforce SPARK RM 4.3(1) for which the box symbol, <>, shall not be
+      --  used in an aggregate unless the type(s) of the corresponding
+      --  component(s) define full default initialization.
+
+      if Box_Present (N) then
+         pragma Assert (Nkind (Parent (N)) in N_Aggregate
+                                            | N_Extension_Aggregate);
+
+         declare
+            Typ : Entity_Id := Etype (Parent (N));
+
+            pragma Assert (Is_Record_Type (Typ)
+                           or else Is_Array_Type (Typ)
+                           or else Is_Private_Type (Typ));
+
+         begin
+
+            --  For a private type we enforce the rule on its full view if it
+            --  is in SPARK.
+
+            if Is_Private_Type (Typ)
+              and then not Full_View_Not_In_SPARK (Typ)
+            then
+               Typ := Full_View (Typ);
+            end if;
+
+            pragma Assert (Is_Record_Type (Typ) or else Is_Array_Type (Typ));
+
+            if Default_Initialization (Typ, Get_Flow_Scope (N))
+              /= Full_Default_Initialization
+            then
+               Mark_Violation
+                 ("box notation without default initialization",
+                  N,
+                  SRM_Reference => "SPARK RM 4.3(1)");
+            end if;
+         end;
+      else
+         Mark (Expression (N));
+      end if;
+   end Mark_Component_Association;
 
    --------------------------------
    -- Mark_Component_Declaration --
