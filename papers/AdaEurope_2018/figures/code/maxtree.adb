@@ -14,14 +14,15 @@ end record;
 
 function Max (T : in Tree) return Integer is 
   Walker : access constant Rec := T; -- Walker observes T
-  Value  : Natural := 0;
+  Max_Value : Natural := 0;
 begin     
   while Walker /= null loop
 	if Walker.Data > Max then
-	  Max := Walker.Data;
+	  Max_Value := Walker.Data;
 	end if;
 	Walker := Walker.Right; -- assignment to Walker 
   end loop;
+return Max_Value;
 end Max;
 
   Tree_var : Owning_Tree_Ptr := Build_Tree(...);

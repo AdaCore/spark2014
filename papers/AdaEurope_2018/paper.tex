@@ -56,6 +56,8 @@ As a consequence of our focus in SPARK on proof automation and usability, we hav
 
 In this work, we present the first step for the inclusion of a variety of pointers that support safe memory management in Ada, in a way that these pointers can be included in SPARK. As our main contribution, we show that it is possible to adapt the ideas underlying the safe support for pointers in permission-based languages like Rust \cite{Balasubramanian17} or ParaSail \cite{Taft11}, to safely restrict the use of pointers in more traditional imperative languages like Ada. 
 
+\todo[inline]{The authors should improve the introduction to provide a better motivation, namely by explaining the challenges
+being addressed and clearly highlighting the main contributions of the work}
 
 \section{A Proposal for Ownership Types in Ada}
 Pointers (access types) are essential to many complex Ada data structures, but they also have some downsides, and can create various kinds of safety and security problems.
@@ -73,13 +75,15 @@ The question that emerges in this context is: can we create a subset of access-t
 the various problems associated with unknown aliasing? The notion of pointer ``ownership'' has emerged as one way to ``tame'' pointer problems, while preserving flexibility \cite{POM}.  The goal is to allow a pattern of use
 of pointers that avoids dangling references as well as storage leaks, by providing safe, immediate, automatic reclamation of storage rather than relying on unchecked deallocation,
 while also not having to fall back on the time and space vagaries of garbage collection.  As a side benefit, we can also get safer use of pointers in the context of parallelism.
+\todo[inline]{Several times it is stated that the proposed pointers will enhance parallel computing. I would have liked to see an example for this claim}
+\todo[inline]{I would like the authors to comment on the implications of concurrent tasking with this proposed model}
 We propose the use of pointer ownership (as well as some additional rules, detailed in \cite{AI2018}, preventing ``aliasing'' between parameters, and between parameters and global variables) to provide safe,
 automatic, parallelism-friendly heap storage management while allowing the flexible construction of pointer-based data structures, such as trees, linked lists, hash tables, etc.
 
 Although we took inspiration from Rust and ParaSail to produce this proposal, it is also different in many ways, due to the different objectives pursued in Ada and SPARK. Firstly,
 this proposal is designed to work well with existing features of Ada such as by-copy/by-reference parameter passing and exception handling: raising an exception should not lead to
 memory leaks, and upon handling of a raised exception, visible objects should not be left in an inconsistent state. Secondly, this proposal relies on the existing mechanisms in Ada
-for preventing access to uninitialized pointers and out-of-scope memory: uninitialized and freed pointers should be set to null so that attempts at dereferencing such pointers results in a run-time error.
+for preventing access to uninitialized pointers and out-of-scope memory: uninitialized and freed pointers should be set to null so that attempts at dereferencing such pointers result in a run-time error.
 
 
 \subsection{Ownership Types}
@@ -227,6 +231,7 @@ this allows us to call the function \var{Sum} using \var{X} as a first and secon
    \label{fig:observe_exp}
 \end{figure}
 
+\todo[inline]{For instance, in Figure 3, how can you prove that another task that has visibility over variable X is not concurrently modifying the object pointed to by X while the call to Sum is in progress?}
 \subsubsection{Preventing Read-Write Aliasing}
 \label{sec:noaliasing}
 
@@ -339,9 +344,8 @@ of line $\ell_{16}$.
   \captionsetup{justification=centering,margin=0.6cm}
    \includegraphics[]{maxTree}
    \caption{Example of traversing a data structure with read-only access: Max on a Binary Search Tree.}
-   \label{fig:maxTree}
+   \label{fig:maxTree} 
 \end{figure}
-
 
 In the code snippet of Figure~\ref{fig:treeInsert}, local variable \var{Walker} is a stand-alone object of an anonymous access-to-\textit{variable} type, which allows traversing the input binary
 search tree to insert the input value \var{V} at the correct leaf position (obtained by searching for the branch where this value would be stored, if it were already present).
@@ -355,11 +359,18 @@ $\ell_{10}$ and $\ell_{17}$.
   \captionsetup{justification=centering,margin=0.6cm}
    \includegraphics[]{treeInsert}
    \caption{Example of traversing a data structure with read and  update access: Insert into a Binary Search Tree. \var{Build\_Leaf(V)} creates a node with \var{Data} = \var{V}, and \var{Left}, and \var{Right} components both null.}
-   \label{fig:treeInsert}
+   \label{fig:treeInsert}  
 \end{figure}
 
+\todo[inline]{I would have liked to see how a node is deleted from such a tree}
 
 \section{Formal Verification with Ownership Types in SPARK}
+
+\todo[inline]{Reviewer 3 finds the section 3 with no benefit to the reader, except to
+  recall why aliasing is an issue. He thinks the paper definitely miss some
+  information on how SPARK would benefit from this AI, e.g. in terms
+  of additional language features while this is the purpose of the section}
+
 
 The existing SPARK restrictions imposed on its current subset of Ada ensure that an assignment to one variable cannot change the value of some other visible variable. This property is essential to allow sound modular static analysis,
 where each subprogram can be analyzed independently while detecting all possible violations of the kinds targeted by the analysis.
@@ -421,12 +432,14 @@ But calls to \var{Swap\_Contents(X,X)} will be rejected both by compilation and 
 
 \section{Related Work}
 
+\todo[inline]{Reviewer 3 suggests to move the related work to section 2}
+
 Permission-based programming languages generalize the issue of avoiding harmful aliasing to the more general problem of preventing harmful sharing of resources
 (memory, but also network connections, files, etc.). C-like languages are mostly based on pointers and often sacrifice safety for performance purposes.
 To overcome safety shortcoming and manage the storage of a pointer, C++ introduces the notion of \textit{unique pointers}. An object defined as a \var{unique\_ptr}
 has the ability of taking ownership of an object. It becomes responsible for its deletion at some point. Although these rules help provide greater language safety, the unique
 pointer concept is limited because it prohibits pointer arithmetic and copy assignments.
-
+ 
 Separation logic~\cite{Reynolds02} is an extension of Hoare-Floyd logic that allows reasoning about pointers. In general, it is not well integrated with deductive
 verification, and, in particular, is not supported by most SMT provers.
 

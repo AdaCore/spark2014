@@ -31,7 +31,6 @@ procedure treeinsert is
 
 procedure Insert (T : in Tree; V : Natural) is  
   Walker : access Rec := T;
-  T1 : Tree := new Rec;
 begin     
   loop
 	if V < Walker.Data then
