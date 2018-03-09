@@ -3355,7 +3355,7 @@ package body Flow_Utility is
                if Ctx.Reduced then
                   return OK;
 
-               elsif Ekind (Get_Type (N, Ctx.Scope)) in Record_Kind then
+               elsif Is_Record_Type (Get_Type (N, Ctx.Scope)) then
                   --  We use Untangle_Record_Assignment as this can deal with
                   --  view conversions.
 
