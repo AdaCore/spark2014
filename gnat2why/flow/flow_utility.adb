@@ -2873,24 +2873,23 @@ package body Flow_Utility is
          --  then any arguments (if any).
          --
          --  The reason we can't do this first is that some attributes skip
-         --  looking at the prefix (i.e. address) or do something strange (i.e.
+         --  looking at the prefix (e.g. address) or do something strange (e.g.
          --  update).
 
          Variables.Union (Recurse (Prefix (N)));
 
-         declare
-            Ptr : Node_Id := Empty;
+         if Present (Expressions (N)) then
+            declare
+               Expr : Node_Id := First (Expressions (N));
 
-         begin
-            if Present (Expressions (N)) then
-               Ptr := First (Expressions (N));
-            end if;
-
-            while Present (Ptr) loop
-               Variables.Union (Recurse (Ptr));
-               Next (Ptr);
-            end loop;
-         end;
+            begin
+               loop
+                  Variables.Union (Recurse (Expr));
+                  Next (Expr);
+                  exit when No (Expr);
+               end loop;
+            end;
+         end if;
 
          return Variables;
       end Do_N_Attribute_Reference;
