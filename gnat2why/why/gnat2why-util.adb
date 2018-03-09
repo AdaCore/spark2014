@@ -948,6 +948,16 @@ package body Gnat2Why.Util is
       end if;
    end Is_Mutable_In_Why;
 
+   -----------------------------
+   -- Is_Private_Intrinsic_Op --
+   -----------------------------
+
+   function Is_Private_Intrinsic_Op (N : Node_Id) return Boolean
+   is (Ekind (Entity (N)) = E_Function
+       and then Full_View_Not_In_SPARK (Etype (Right_Opnd (N)))
+       and then (if Nkind (N) in N_Binary_Op then
+                    Full_View_Not_In_SPARK (Etype (Left_Opnd (N)))));
+
    ----------------------------
    -- Is_Simple_Private_Type --
    ----------------------------

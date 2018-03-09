@@ -11169,21 +11169,35 @@ package body Gnat2Why.Expr is
       --  translated to (boolean) terms, and compared to "True".
 
       if Domain = EW_Pred
+
+        --  Boolean connectors and predicate expressions
+
         and then
-          not (Nkind (Expr) in N_Op_Compare
-                             | N_Op_Not
-                             | N_Op_And
-                             | N_And_Then
-                             | N_Op_Or
+          not (Nkind (Expr) in N_And_Then
                              | N_Or_Else
                              | N_In
                              | N_If_Expression
                              | N_Quantified_Expression
                              | N_Case_Expression)
+
+        --  Boolean operators which are not private intrinsinc
+
+        and then
+          not (Nkind (Expr) in N_Op_Compare
+                             | N_Op_Not
+                             | N_Op_And
+                             | N_Op_Or
+               and then not Is_Private_Intrinsic_Op (Expr))
+
+        --  Boolean literals
+
         and then
           not (Nkind (Expr) in N_Identifier | N_Expanded_Name
               and then Ekind (Entity (Expr)) in E_Enumeration_Literal
               and then Entity (Expr) in Standard_True | Standard_False)
+
+        --  Calls to predicate functions
+
         and then
           not (Nkind (Expr) = N_Function_Call
              and then Is_Predicate_Function (Get_Called_Entity (Expr)))
@@ -11211,12 +11225,7 @@ package body Gnat2Why.Expr is
        --  knowing the value of opeartors even if their intrinsic pragma
        --  shold not be visible.
 
-      elsif Nkind (Expr) in N_Op
-        and then Ekind (Entity (Expr)) = E_Function
-        and then Full_View_Not_In_SPARK (Etype (Right_Opnd (Expr)))
-        and then (if Nkind (Expr) in N_Binary_Op then
-                       Full_View_Not_In_SPARK (Etype (Left_Opnd (Expr))))
-      then
+      elsif Nkind (Expr) in N_Op and then Is_Private_Intrinsic_Op (Expr) then
          T := Transform_Function_Call (Expr, Domain, Local_Params);
       else
          case Nkind (Expr) is

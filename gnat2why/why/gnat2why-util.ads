@@ -420,6 +420,13 @@ package Gnat2Why.Util is
    --  Given an identifier, decide if it denotes a variable that is mutable in
    --  the Why translation.
 
+   function Is_Private_Intrinsic_Op (N : Node_Id) return Boolean with
+     Pre => Nkind (N) in N_Op;
+   --  @param N any node
+   --  @return True iff N is an intrinsic operator on private types. Intrinsic
+   --    operators are not translated as operators in Why but as function calls
+   --    whenever GNATprove does not see the fullview of its operands.
+
    function May_Need_DIC_Checking (E : Entity_Id) return Boolean with
      Pre => Is_Type (E);
    --  @param E type entity
