@@ -3381,8 +3381,21 @@ package body Flow_Utility is
                   Variables.Union (Do_Entity (Entity (N)));
                end if;
 
+            --  Within expression, a defining identifier only appears as a
+            --  parameter of a quantified expression (effectively, it declares
+            --  a local object). Such identifiers are not considered as "uses"
+            --  of any variable, so we ignore them.
+            --
+            --  ??? we also get here type indentifiers, when Get_Variables
+            --  is called on an entire type declaration and not just on its
+            --  constraint expressions; such calls of Get_Variables feel wrong.
+
             when N_Defining_Identifier =>
-               Variables.Union (Do_Entity (N));
+               if Is_Type (N) then
+                  Variables.Union (Do_Entity (N));
+               else
+                  pragma Assert (Is_Quantified_Loop_Param (N));
+               end if;
 
             when N_Aggregate =>
                Variables.Union (Recurse (Aggregate_Bounds (N)));
