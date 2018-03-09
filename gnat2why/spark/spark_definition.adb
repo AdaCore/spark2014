@@ -1751,25 +1751,7 @@ package body SPARK_Definition is
                   Target_Root_Type : constant Entity_Id :=
                     Root_Type (Etype (N));
                   Expr : constant Node_Id := Expression (N);
-
-                  --  The multiplication and division operations on fixed-point
-                  --  types have a return type of universal_fixed (with no
-                  --  bounds), which is used as an overload resolution trick to
-                  --  allow free conversion between certain real types on the
-                  --  result of multiplication or division. Use the fixed-point
-                  --  type of one of the operands as the source type for the
-                  --  conversion.
-
-                  Expr_Type : constant Entity_Id :=
-                    (if Nkind (Expr) in N_Op_Multiply | N_Op_Divide
-                       and then Etype (Expr) = Universal_Fixed
-                     then
-                       (if Has_Fixed_Point_Type (Etype (Left_Opnd (Expr))) then
-                          Etype (Left_Opnd (Expr))
-                        else
-                          Etype (Right_Opnd (Expr)))
-                     else
-                       Etype (Expr));
+                  Expr_Type : constant Entity_Id := Etype (Expr);
                   Source_Root_Type : constant Entity_Id :=
                     Root_Type (Expr_Type);
                begin
@@ -2348,38 +2330,56 @@ package body SPARK_Definition is
 
    procedure Mark_Binary_Op (N : Node_Id) is
    begin
-      --  Only support for now multiplication and division operations on
-      --  fixed-point types if both arguments and the result have the same
-      --  base type, or one of the arguments is an integer type.
+      --  Only support multiplication and division operations on fixed-point
+      --  types if either:
+      --  - one of the arguments is an integer type, or
+      --  - both arguments and the result have compatible fixed-point types as
+      --    defined in Ada RM G.2.3(21)
 
       if Nkind (N) in N_Op_Multiply | N_Op_Divide then
          declare
-            L_Type : constant Entity_Id := Base_Type (Etype (Left_Opnd (N)));
-            R_Type : constant Entity_Id := Base_Type (Etype (Right_Opnd (N)));
-
-            --  The multiplication and division operations on fixed-point
-            --  types have a return type of universal_fixed (with no
-            --  bounds), which is used as an overload resolution trick to
-            --  allow free conversion between certain real types on the
-            --  result of multiplication or division. Use the fixed-point
-            --  type of one of the operands as the source type for the
-            --  conversion.
-
-            Expr_Type : constant Entity_Id :=
-              (if Etype (N) = Universal_Fixed then
-                 Etype (Parent (N))
-               else
-                 Etype (N));
+            L_Type  : constant Entity_Id := Base_Type (Etype (Left_Opnd (N)));
+            R_Type  : constant Entity_Id := Base_Type (Etype (Right_Opnd (N)));
+            Expr_Type : constant Entity_Id := Etype (N);
             E_Type : constant Entity_Id := Base_Type (Expr_Type);
+
          begin
+            --  We support multiplication and division between different
+            --  fixed-point types and a different fixed-point type as result,
+            --  provided the result is in the "perfect result set" according
+            --  to Ada RM G.2.3(21).
+
             if Is_Fixed_Point_Type (L_Type)
                  and then
                Is_Fixed_Point_Type (R_Type)
                  and then
-               L_Type /= R_Type
+               Is_Fixed_Point_Type (E_Type)
             then
-               Mark_Unsupported
-                 ("operation between different fixed-point types", N);
+               declare
+                  L_Small : constant Ureal := Small_Value (L_Type);
+                  R_Small : constant Ureal := Small_Value (R_Type);
+                  E_Small : constant Ureal := Small_Value (E_Type);
+                  Factor  : constant Ureal :=
+                    (if Nkind (N) = N_Op_Multiply then
+                       (L_Small * R_Small) / E_Small
+                     else
+                       L_Small / (R_Small * E_Small));
+               begin
+                  --  For the operation to be in the perfect result set, the
+                  --  smalls of the fixed-point types should be "compatible"
+                  --  according to Ada RM G.2.3(21):
+                  --  - for a multiplication, (l * r) / op should be an integer
+                  --    or the reciprocal of an integer
+                  --  - for a division, l / (r * op) should be an integer or
+                  --    the reciprocal of an integer
+
+                  if Norm_Num (Factor) /= Uint_1
+                    and then Norm_Den (Factor) /= Uint_1
+                  then
+                     Mark_Unsupported
+                       ("operation between incompatible fixed-point types", N);
+                  end if;
+               end;
 
             elsif (Is_Fixed_Point_Type (L_Type)
                      and then

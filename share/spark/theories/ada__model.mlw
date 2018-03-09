@@ -417,78 +417,9 @@ module Dynamic_Modular
     ensures { result = n /\ dynamic_property_int first last n}
 end
 
-module Fixed_Point_Base
-  (* The module that is used as basis for all fixed-point types.
-
-     We only support currently a subset of all Ada fixed-point types and
-     fixed-point operations:
-     1. fixed-point types must have a small that is the reciprocal of 
-        an integer
-     2. multiplication and division between different fixed-point types and
-        universal real are rejected
-
-    (restriction 1 allows to have a simple axiomatization of mult/div of fixed
-    point types, using the integral inverse of the small. restriction 2 avoids
-    introducing a new uninterpreted operation for every triple of argument and
-    result type)
-
-    These restrictions enforce in particular that the result of all
-    multiplication and division operations on fixed-points (with both fixed-point
-    arguments, or an integer argument) is in the "perfect result set" as defined
-    in Ada RM G.2.3: the result is either exact, or one of the two representable
-    values that are closest to the exact result. This property is axiomatized
-    below.
-
-    We use a type "__fixed" that is an alias of "int", to avoid confusion, for
-    the internal integer representation of a fixed-point value. This type is
-    used for performing all operations. In particular, addition, subtraction,
-    comparisons, Succ and Pred are directly operating on this type. Literals
-    are also expressed in this type. Multiplication and division are axiomatized
-    to reflect the constraints of Ada RM G.2.3.
-  *)
-
+module Fixed_Point_Shared
   use import int.Int
-  use import real.RealInfix
-  use import real.FromInt
-  use import "_gnatprove_standard".Main
   use import "_gnatprove_standard".Int_Division
-
-  type t
-
-  function dummy : t
-
-  function attr__ATTRIBUTE_IMAGE __fixed : __image
-
-  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
-
-  function attr__ATTRIBUTE_VALUE __image : __fixed
-
-  val attr__ATTRIBUTE_VALUE_ (x : __image) : __fixed
-    requires { attr__ATTRIBUTE_VALUE__pre_check x }
-    ensures { true }
-
-  (* A fixed-point type is represented internally as an integer. *)
-
-  function to_fixed t : __fixed
-
-  function of_fixed __fixed : t
-
-  val of_fixed (x : __fixed) : t
-    requires { true }
-    ensures { to_fixed (result) = x }
-
-  (* Inverse of the "small" value of the corresponding fixed-point type.
-     This is guaranteed to be a positive whole number, because we restrict
-     gnatprove analysis to fixed-point types with a "small" that is 
-     the reciprocal of an integer.
-
-     The real value of a fixed-point number can be obtained by dividing its
-     integer representation by inv_small.
-   *)
-
-  function inv_small : __fixed
-
-  function user_eq (x : t) (y : t) : bool
 
   (* Helper predicate to define the result of operations on fixed-points.
      It is used with non-negative values for [num] and positive values for [den].
@@ -526,6 +457,82 @@ module Fixed_Point_Base
       res = exact
     else
       res = exact + 1
+
+end
+
+module Fixed_Point_Base
+  (* The module that is used as basis for all fixed-point types.
+
+     We only support currently a subset of all Ada fixed-point types and
+     fixed-point operations:
+     1. fixed-point types must have a small that is the reciprocal of
+        an integer
+     2. multiplication and division between different fixed-point types and
+        universal real are rejected
+
+    (restriction 1 allows to have a simple axiomatization of mult/div of fixed
+    point types, using the integral inverse of the small. restriction 2 avoids
+    introducing a new uninterpreted operation for every triple of argument and
+    result type)
+
+    These restrictions enforce in particular that the result of all
+    multiplication and division operations on fixed-points (with both fixed-point
+    arguments, or an integer argument) is in the "perfect result set" as defined
+    in Ada RM G.2.3: the result is either exact, or one of the two representable
+    values that are closest to the exact result. This property is axiomatized
+    below.
+
+    We use a type "__fixed" that is an alias of "int", to avoid confusion, for
+    the internal integer representation of a fixed-point value. This type is
+    used for performing all operations. In particular, addition, subtraction,
+    comparisons, Succ and Pred are directly operating on this type. Literals
+    are also expressed in this type. Multiplication and division are axiomatized
+    to reflect the constraints of Ada RM G.2.3.
+  *)
+
+  use import int.Int
+  use import real.RealInfix
+  use import real.FromInt
+  use import "_gnatprove_standard".Main
+  use import "_gnatprove_standard".Int_Division
+  use import Fixed_Point_Shared
+
+  type t
+
+  function dummy : t
+
+  function attr__ATTRIBUTE_IMAGE __fixed : __image
+
+  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  function attr__ATTRIBUTE_VALUE __image : __fixed
+
+  val attr__ATTRIBUTE_VALUE_ (x : __image) : __fixed
+    requires { attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { true }
+
+  (* A fixed-point type is represented internally as an integer. *)
+
+  function to_fixed t : __fixed
+
+  function of_fixed __fixed : t
+
+  val of_fixed (x : __fixed) : t
+    requires { true }
+    ensures { to_fixed (result) = x }
+
+  (* Inverse of the "small" value of the corresponding fixed-point type.
+     This is guaranteed to be a positive whole number, because we restrict
+     gnatprove analysis to fixed-point types with a "small" that is
+     the reciprocal of an integer.
+
+     The real value of a fixed-point number can be obtained by dividing its
+     integer representation by inv_small.
+   *)
+
+  function inv_small : __fixed
+
+  function user_eq (x : t) (y : t) : bool
 
   (* multiplication between two fixed-point values
      case 1:
@@ -703,6 +710,91 @@ module Fixed_Point_Base
   (* conversion function from real *)
 
   function of_real real : __fixed
+end
+
+module Fixed_Point_Mult_Div
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use import Fixed_Point_Shared
+
+  (* Inverse of the "small" value of the corresponding fixed-point types. This
+     is guaranteed to be a positive whole number, because we restrict gnatprove
+     analysis to fixed-point types with a "small" that is the reciprocal of an
+     integer.
+
+     There is a different inv_small for every argument and for the result of
+     the operation:
+     - inv_small_x for the first argument
+     - inv_small_y for the second argument
+     - inv_small_res for the result
+
+     The real value of a fixed-point number can be obtained by dividing its
+     integer representation by inv_small.
+   *)
+
+  function inv_small_x : __fixed
+  function inv_small_y : __fixed
+  function inv_small_res : __fixed
+
+  (* multiplication between two fixed-point values, where the arguments and
+     result have different values of small. The cases are the same as for
+     multiplication with the same value of small. The only difference is the
+     adjustment needed.
+
+     Instead of dividing the integer result (x * y) by inv_small, we need
+     instead to multiply it by inv_small_res [for the result] and divide it by
+     (inv_small_x * inv_small_y) [for the arguments].
+   *)
+
+  function fxp_mult (x : __fixed) (y : __fixed) : __fixed
+
+  axiom fxp_mult_def :
+    forall x : __fixed. forall y : __fixed [fxp_mult x y].
+      if x = 0 \/ y = 0 then
+        fxp_mult x y = 0
+      else if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then
+        pos_div_relation (fxp_mult x y) (x * y * inv_small_res)
+                                        (inv_small_x * inv_small_y)
+      else (* (x < 0 /\ y > 0) \/ (x > 0 /\ y < 0) *)
+        pos_div_relation (- (fxp_mult x y)) (- (x * y * inv_small_res))
+                                            (inv_small_x * inv_small_y)
+
+  (* division between two fixed-point values, where the arguments and result
+     have different values of small. The cases are the same as for division
+     with the same value of small. The only difference is the adjustment
+     needed.
+
+     Instead of multiplying the numerator x by inv_small and dividing by
+     divisor y, we need instead to multiply x by (inv_small_y * inv_small_res)
+     [for the divisor and the result] and divide by (y * inv_small_x) [for the
+     numerator].
+   *)
+
+  function fxp_div (x : __fixed) (y : __fixed) : __fixed
+
+  val fxp_div_ (x : __fixed) (y : __fixed) : __fixed
+     requires { y <> 0 }
+     ensures { result = fxp_div x y }
+
+  axiom fxp_div_def :
+    forall x : __fixed. forall y : __fixed [fxp_div x y].
+      if x = 0 then
+        fxp_div x y = 0
+      else if x > 0 /\ y > 0 then
+        pos_div_relation (fxp_div x y) (x * inv_small_y * inv_small_res)
+                                       (y * inv_small_x)
+      else if x < 0 /\ y < 0 then
+        pos_div_relation (fxp_div x y) (-x * inv_small_y * inv_small_res)
+                                       (-y * inv_small_x)
+      else if x < 0 /\ y > 0 then
+        pos_div_relation (- (fxp_div x y)) (-x * inv_small_y * inv_small_res)
+                                           (y * inv_small_x)
+      else if x > 0 /\ y < 0 then
+        pos_div_relation (- (fxp_div x y)) (x * inv_small_y * inv_small_res)
+                                           (-y * inv_small_x)
+      else (* y = 0 *)
+        true
+
 end
 
 module FixedPoint_Float_Conv

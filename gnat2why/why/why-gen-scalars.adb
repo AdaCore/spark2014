@@ -23,19 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;               use Atree;
 with Common_Containers;   use Common_Containers;
-with Namet;               use Namet;
+with GNAT.Source_Info;
 with Sem_Eval;            use Sem_Eval;
-with Sinfo;               use Sinfo;
 with SPARK_Util;          use SPARK_Util;
 with SPARK_Util.Types;    use SPARK_Util.Types;
+with Sinput;              use Sinput;
 with Stand;               use Stand;
 with Uintp;               use Uintp;
 with Urealp;              use Urealp;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Expr;        use Why.Gen.Expr;
@@ -59,6 +57,149 @@ package body Why.Gen.Scalars is
    --  N must be a static expression. This function evaluates N as an Uint (if
    --  Ty is a discrete type or a fixed-point type) or as real (if Ty is not
    --  discrete)
+
+   --------------------------------------------------
+   -- Create_Fixed_Point_Mult_Div_Theory_If_Needed --
+   --------------------------------------------------
+
+   procedure Create_Fixed_Point_Mult_Div_Theory_If_Needed
+     (Current_File : W_Section_Id;
+      Typ_Left     : Entity_Id;
+      Typ_Right    : Entity_Id;
+      Typ_Result   : Entity_Id;
+      Expr         : Node_Id)
+   is
+      use Name_Id_Fixed_Point_Mult_Div_Map;
+
+      File        : constant W_Section_Id := WF_Pure;
+      Module_Name : constant Name_Id :=
+        Get_Fixed_Point_Mult_Div_Theory_Name (Typ_Left   => Typ_Left,
+                                              Typ_Right  => Typ_Right,
+                                              Typ_Result => Typ_Result);
+      Module      : constant W_Module_Id :=
+        New_Module (File => No_Name,
+                    Name => Module_Name);
+      M_Module    : constant M_Fixed_Point_Mult_Div_Type :=
+        M_Fixed_Point_Mult_Div_Type'
+          (Module => Module,
+           Mult   => New_Identifier (Module => Module,
+                                     Domain => EW_Term,
+                                     Symbol => NID ("fxp_mult"),
+                                     Typ    => EW_Fixed_Type),
+           Div    => New_Identifier (Module => Module,
+                                     Domain => EW_Term,
+                                     Symbol => NID ("fxp_div"),
+                                     Typ    => EW_Fixed_Type));
+
+      Inv_Small_X : constant W_Name_Id :=
+        New_Name (Symbol => NID ("inv_small_x"));
+      Inv_Small_Y : constant W_Name_Id :=
+        New_Name (Symbol => NID ("inv_small_y"));
+      Inv_Small_Res : constant W_Name_Id :=
+        New_Name (Symbol => NID ("inv_small_res"));
+
+      L_Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (Typ_Left));
+      pragma Assert (Norm_Den (L_Inv_Small) = Uint_1);
+      L_Small     : constant W_Term_OId :=
+        New_Integer_Constant (Value => Norm_Num (L_Inv_Small));
+
+      R_Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (Typ_Right));
+      pragma Assert (Norm_Den (R_Inv_Small) = Uint_1);
+      R_Small     : constant W_Term_OId :=
+        New_Integer_Constant (Value => Norm_Num (R_Inv_Small));
+
+      Res_Inv_Small : constant Ureal :=
+        UR_Div (Uint_1, Small_Value (Typ_Result));
+      pragma Assert (Norm_Den (Res_Inv_Small) = Uint_1);
+      Res_Small   : constant W_Term_OId :=
+        New_Integer_Constant (Value => Norm_Num (Res_Inv_Small));
+
+      Subst : W_Clone_Substitution_Array (1 .. 3);
+
+      Save_Theory : W_Theory_Declaration_Id;
+      --  Use this variable to temporarily store current theory
+
+   begin
+      --  If there is a already a module for that combination of values of
+      --  smalls, there is nothing to do.
+
+      if M_Fixed_Point_Mult_Div.Contains (Module_Name) then
+         return;
+      end if;
+
+      --  Temporarily store the current theory if needed
+
+      if File = Current_File then
+         Save_Theory := Why_Sections (File).Cur_Theory;
+         Why_Sections (File).Cur_Theory := Why_Empty;
+      end if;
+
+      Open_Theory
+        (File, Module,
+         Comment =>
+           "Module for fixed-point multiplication and division for operation"
+         & " at " & Build_Location_String (Sloc (Expr))
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Emit (File,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => New_Identifier (Inv_Small_X),
+               Binders     => (1 .. 0 => <>),
+               Return_Type => EW_Int_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Def         => +L_Small));
+
+      Emit (File,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => New_Identifier (Inv_Small_Y),
+               Binders     => (1 .. 0 => <>),
+               Return_Type => EW_Int_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Def         => +R_Small));
+
+      Emit (File,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => New_Identifier (Inv_Small_Res),
+               Binders     => (1 .. 0 => <>),
+               Return_Type => EW_Int_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Def         => +Res_Small));
+
+      Subst :=
+        (1 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => Inv_Small_X,
+                 Image     => Inv_Small_X),
+         2 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => Inv_Small_Y,
+                 Image     => Inv_Small_Y),
+         3 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => Inv_Small_Res,
+                 Image     => Inv_Small_Res));
+
+      Emit (File,
+            New_Clone_Declaration
+              (Theory_Kind   => EW_Theory,
+               Clone_Kind    => EW_Export,
+               Origin        => Fixed_Point_Mult_Div,
+               As_Name       => No_Name,
+               Substitutions => Subst));
+
+      Close_Theory (File, Kind => Definition_Theory);
+
+      --  Restore the current theory
+
+      if File = Current_File then
+         Why_Sections (File).Cur_Theory := Save_Theory;
+      end if;
+
+      M_Fixed_Point_Mult_Div.Insert (Module_Name, M_Module);
+   end Create_Fixed_Point_Mult_Div_Theory_If_Needed;
 
    -------------------------
    -- Declare_Scalar_Type --
@@ -760,6 +901,46 @@ package body Why.Gen.Scalars is
       end if;
 
    end Define_Scalar_Rep_Proj;
+
+   -------------------------------------
+   -- Get_Fixed_Point_Mult_Div_Theory --
+   -------------------------------------
+
+   function Get_Fixed_Point_Mult_Div_Theory
+     (Typ_Left, Typ_Right, Typ_Result : Entity_Id)
+      return M_Fixed_Point_Mult_Div_Type
+   is
+      Module_Name : constant Name_Id :=
+        Get_Fixed_Point_Mult_Div_Theory_Name (Typ_Left   => Typ_Left,
+                                              Typ_Right  => Typ_Right,
+                                              Typ_Result => Typ_Result);
+   begin
+      return M_Fixed_Point_Mult_Div (Module_Name);
+   end Get_Fixed_Point_Mult_Div_Theory;
+
+   ------------------------------------------
+   -- Get_Fixed_Point_Mult_Div_Theory_Name --
+   ------------------------------------------
+
+   function Get_Fixed_Point_Mult_Div_Theory_Name
+     (Typ_Left, Typ_Right, Typ_Result : Entity_Id) return Name_Id
+   is
+      function Ureal_Name (R : Ureal) return String is
+        (UI_Image (Norm_Num (R), Decimal) & "_" &
+         UI_Image (Norm_Den (R), Decimal));
+
+      L_Small   : constant Ureal := Small_Value (Typ_Left);
+      R_Small   : constant Ureal := Small_Value (Typ_Right);
+      Res_Small : constant Ureal := Small_Value (Typ_Result);
+
+      Name      : constant String :=
+        To_String (WNE_Fixed_Point_Mult_Div_Prefix) & "__"
+        & Ureal_Name (L_Small) & "__"
+        & Ureal_Name (R_Small) & "__"
+        & Ureal_Name (Res_Small);
+   begin
+      return NID (Name);
+   end Get_Fixed_Point_Mult_Div_Theory_Name;
 
    ------------------
    -- Num_Constant --

@@ -74,6 +74,7 @@ with Why.Gen.Expr;                   use Why.Gen.Expr;
 with Why.Gen.Names;                  use Why.Gen.Names;
 with Why.Gen.Progs;                  use Why.Gen.Progs;
 with Why.Gen.Records;                use Why.Gen.Records;
+with Why.Gen.Scalars;                use Why.Gen.Scalars;
 with Why.Unchecked_Ids;              use Why.Unchecked_Ids;
 
 package body Gnat2Why.Expr is
@@ -5794,13 +5795,32 @@ package body Gnat2Why.Expr is
                --  Construct the operation
 
                if Is_Fixed_Point_Type (Return_Type) then
-                  pragma Assert (Oper /= WNE_Empty);
-                  T := New_Call (Ada_Node => Ada_Node,
-                                 Domain   => Domain,
-                                 Name     => E_Symb (Return_Type, Oper),
-                                 Args     => (1 => L_Why,
-                                              2 => R_Why),
-                                 Typ      => Base);
+                  declare
+                     pragma Assert (Oper /= WNE_Empty);
+                     Module : M_Fixed_Point_Mult_Div_Type;
+                     Name   : W_Identifier_Id;
+                  begin
+                     if Has_Fixed_Point_Type (Left_Type)
+                       and then Has_Fixed_Point_Type (Right_Type)
+                       and then (Return_Type /= Left_Type
+                                   or else Return_Type /= Right_Type)
+                     then
+                        Module := Get_Fixed_Point_Mult_Div_Theory
+                          (Typ_Left   => Left_Type,
+                           Typ_Right  => Right_Type,
+                           Typ_Result => Return_Type);
+                        Name := Module.Mult;
+                     else
+                        Name := E_Symb (Return_Type, Oper);
+                     end if;
+
+                     T := New_Call (Ada_Node => Ada_Node,
+                                    Domain   => Domain,
+                                    Name     => Name,
+                                    Args     => (1 => L_Why,
+                                                 2 => R_Why),
+                                    Typ      => Base);
+                  end;
 
                elsif Has_Modular_Integer_Type (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
@@ -5887,17 +5907,34 @@ package body Gnat2Why.Expr is
 
                --  Construct the operation
 
-               Name :=
-                 (if Is_Fixed_Point_Type (Return_Type) then
-                     E_Symb (Return_Type, Oper)
-                  --  Explicit support for division of a fixed point type by
-                  --  its small with integer result.
-                  elsif Has_Fixed_Point_Type (Left_Type)
-                    and then Oper = WNE_Fixed_Point_Div_Result_Int
-                  then
-                     E_Symb (Left_Type, Oper)
-                  else
-                     New_Division (Base));
+               if Is_Fixed_Point_Type (Return_Type) then
+                  declare
+                     pragma Assert (Oper /= WNE_Empty);
+                     Module : M_Fixed_Point_Mult_Div_Type;
+                  begin
+                     if Has_Fixed_Point_Type (Left_Type)
+                       and then Has_Fixed_Point_Type (Right_Type)
+                       and then (Return_Type /= Left_Type
+                                 or else Return_Type /= Right_Type)
+                     then
+                        Module := Get_Fixed_Point_Mult_Div_Theory
+                          (Typ_Left   => Left_Type,
+                           Typ_Right  => Right_Type,
+                           Typ_Result => Return_Type);
+                        Name := Module.Div;
+                     else
+                        Name := E_Symb (Return_Type, Oper);
+                     end if;
+                  end;
+               --  Explicit support for division of a fixed point type by
+               --  its small with integer result.
+               elsif Has_Fixed_Point_Type (Left_Type)
+                 and then Oper = WNE_Fixed_Point_Div_Result_Int
+               then
+                  Name := E_Symb (Left_Type, Oper);
+               else
+                  Name := New_Division (Base);
+               end if;
 
                L_Why := Insert_Simple_Conversion
                  (Ada_Node => Ada_Node,
@@ -11126,28 +11163,7 @@ package body Gnat2Why.Expr is
       Domain        : EW_Domain;
       Params        : Transformation_Params) return W_Expr_Id
    is
-      --  The multiplication and division operations on fixed-point types have
-      --  a return type of universal_fixed (with no bounds), which is used as
-      --  an overload resolution trick to allow free conversion between certain
-      --  real types on the result of multiplication or division. The target
-      --  non-universal type determines the actual sort of multiplication
-      --  or division performed, and therefore determines the possibility of
-      --  overflow. In the compiler, the multiplication is expanded so the
-      --  operands are first converted to some common type, so back ends don't
-      --  see the universal_fixed Etype. Here, we are seeing the unexpanded
-      --  operation because we are running in a mode that disables the
-      --  expansion. Hence, we recognize the universal_fixed case specially
-      --  and in that case use the target type of the enclosing conversion.
-
-      Expr_Type : constant Entity_Id :=
-        (if Nkind (Expr) in N_Op_Multiply | N_Op_Divide
-           and then Etype (Expr) = Universal_Fixed
-           and then Nkind (Parent (Expr)) = N_Type_Conversion
-         then
-           Etype (Parent (Expr))
-         else
-           Etype (Expr));
-
+      Expr_Type    : constant Entity_Id := Etype (Expr);
       T            : W_Expr_Id;
       Pretty_Label : Name_Id := No_Name;
       Local_Params : Transformation_Params := Params;
@@ -11547,8 +11563,7 @@ package body Gnat2Why.Expr is
 
          when N_Op_Multiply
             | N_Op_Divide
-            =>
-
+         =>
             --  The arguments of arithmetic functions have to be of base scalar
             --  types.
 
@@ -11561,6 +11576,21 @@ package body Gnat2Why.Expr is
                if Has_Fixed_Point_Type (Etype (Left))
                  and then Has_Fixed_Point_Type (Etype (Right))
                then
+                  --  Multiplication/division between different fixed-point
+                  --  types requires the creation of a specific module.
+
+                  if Has_Fixed_Point_Type (Expr_Type)
+                    and then not (Expr_Type = Etype (Left)
+                                   and then Expr_Type = Etype (Right))
+                  then
+                     Create_Fixed_Point_Mult_Div_Theory_If_Needed
+                       (Current_File => Params.File,
+                        Typ_Left     => Etype (Left),
+                        Typ_Right    => Etype (Right),
+                        Typ_Result   => Expr_Type,
+                        Expr         => Expr);
+                  end if;
+
                   L_Type := EW_Fixed_Type;
                   R_Type := EW_Fixed_Type;
 

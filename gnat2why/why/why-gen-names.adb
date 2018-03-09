@@ -752,6 +752,7 @@ package body Why.Gen.Names is
          when WNE_Content                    => "__content",
          when WNE_Dispatch_Module            => "Dispatch",
          when WNE_Extract_Prefix             => "extract__",
+         when WNE_Fixed_Point_Mult_Div_Prefix => "Fixed_Point_Mult_Div",
          when WNE_Havoc                      => "__havoc",
          when WNE_Hide_Extension             => "hide_ext__",
          when WNE_No_Return_Module           => "No_Return",

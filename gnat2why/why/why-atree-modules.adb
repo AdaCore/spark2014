@@ -323,6 +323,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Dynamic_Fixed_Point"));
+      Fixed_Point_Mult_Div :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Fixed_Point_Mult_Div"));
       Fixed_Point_Float_Conv :=
         New_Module
           (File => Ada_Model_File,

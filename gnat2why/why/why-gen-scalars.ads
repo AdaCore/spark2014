@@ -23,14 +23,26 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Einfo;         use Einfo;
-with Gnat2Why.Util; use Gnat2Why.Util;
-with Types;         use Types;
+with Atree;             use Atree;
+with Why.Atree.Modules; use Why.Atree.Modules;
+with Einfo;             use Einfo;
+with Gnat2Why.Util;     use Gnat2Why.Util;
+with Namet;             use Namet;
+with Sinfo;             use Sinfo;
+with Types;             use Types;
 
 package Why.Gen.Scalars is
    --  This package implements the generation of Why modules for scalar types
    --  ??? Here is the right place for documentation of the translation of
    --  scalar types, and how this relates to ada__model.mlw
+
+   procedure Create_Fixed_Point_Mult_Div_Theory_If_Needed
+     (Current_File : W_Section_Id;
+      Typ_Left     : Entity_Id;
+      Typ_Right    : Entity_Id;
+      Typ_Result   : Entity_Id;
+      Expr         : Node_Id)
+   with Pre => Nkind (Expr) in N_Op_Multiply | N_Op_Divide;
 
    procedure Declare_Scalar_Type
      (File : W_Section_Id;
@@ -45,5 +57,25 @@ package Why.Gen.Scalars is
      with Pre => Is_Scalar_Type (E);
    --  Populate the theory associated to the theory of the scalar type E where
    --  the projection to and from the representation type are defined.
+
+   function Get_Fixed_Point_Mult_Div_Theory
+     (Typ_Left, Typ_Right, Typ_Result : Entity_Id)
+      return M_Fixed_Point_Mult_Div_Type
+   with Pre => Is_Type (Typ_Left)
+     and then Is_Type (Typ_Right)
+     and then Is_Type (Typ_Result);
+   --  Return a module name based for multiplication/division between
+   --  fixed-points of types Typ_Left and Typ_Right resulting in a
+   --  fixed-point of type Typ_Result.
+
+   function Get_Fixed_Point_Mult_Div_Theory_Name
+     (Typ_Left, Typ_Right, Typ_Result : Entity_Id) return Name_Id
+   with Pre => Is_Type (Typ_Left)
+     and then Is_Type (Typ_Right)
+     and then Is_Type (Typ_Result);
+   --  Return a unique name based on the values of smalls of the three
+   --  fixed-point types involved, to be used as the name of the theory for
+   --  multiplication/division between fixed-points of types Typ_Left and
+   --  Typ_Right resulting in a fixed-point of type Typ_Result.
 
 end Why.Gen.Scalars;

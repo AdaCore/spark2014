@@ -85,6 +85,7 @@ package Why.Atree.Modules is
    Dynamic_Discrete       : W_Module_Id;
    Static_Fixed_Point     : W_Module_Id;
    Dynamic_Fixed_Point    : W_Module_Id;
+   Fixed_Point_Mult_Div   : W_Module_Id;
    Fixed_Point_Float_Conv : W_Module_Id;
    Static_Float32         : W_Module_Id;
    Static_Float64         : W_Module_Id;
@@ -350,6 +351,12 @@ package Why.Atree.Modules is
       Range_Check : W_Identifier_Id;
    end record;
 
+   type M_Fixed_Point_Mult_Div_Type is record
+      Module : W_Module_Id;
+      Mult   : W_Identifier_Id;
+      Div    : W_Identifier_Id;
+   end record;
+
    M_Main          : M_Main_Type;
    M_Compat_Tags   : M_Compat_Tags_Type;
    M_Integer       : M_Integer_Type;
@@ -445,6 +452,19 @@ package Why.Atree.Modules is
    --  same as M_Floats but can be used with a Float type in W_Type_Id format
    --  @param T a Floating type as Why tree node
    --  @return the corresponding Why module record
+
+   --  M_Fixed_Point_Mult_Div stores the map from names corresponding to a
+   --  triple of values of smalls (for the arguments and result) of fixed-point
+   --  types, to the module defining the multiplication and division with said
+   --  smalls.
+
+   package Name_Id_Fixed_Point_Mult_Div_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Name_Id,
+      Element_Type    => M_Fixed_Point_Mult_Div_Type,
+      Hash            => Common_Containers.Name_Id_Hash,
+      Equivalent_Keys => "=");
+
+   M_Fixed_Point_Mult_Div : Name_Id_Fixed_Point_Mult_Div_Map.Map;
 
    --  Builtin unary minus
 
