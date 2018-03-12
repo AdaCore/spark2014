@@ -164,6 +164,7 @@ S'Fraction	    		      No
 X'Has_Same_Storage  		      No
 E'Identity	    		      No
 T'Identity	    		      Yes
+X'Image				      Yes                    Same as S'Image(X) (Ada RM 3.5(55.4/4))
 S'Image				      Yes
 S'Class'Input			      No		     No streams
 S'Input				      No		     No streams
@@ -249,3 +250,14 @@ S'Write				      No		     No streams
 ===================================== ====================== ====================================================
 
 .. _etu-language_defined_attributes:
+
+GNAT Implementation-Defined Attributes
+--------------------------------------
+
+The following GNAT implementation-defined attributes are permitted in |SPARK|:
+
+===================================== ====================== ====================================================
+Attribute                              Allowed in SPARK 2014 Comment
+===================================== ====================== ====================================================
+X'Img                                 Yes                    Same as X'Image (Ada RM 3.5(55.4/4))
+===================================== ====================== ====================================================

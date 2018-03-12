@@ -2222,6 +2222,7 @@ package body SPARK_Definition is
            Attribute_Floor             |
            Attribute_Fore              |
            Attribute_Image             |
+           Attribute_Img               |
            Attribute_Last              |
            Attribute_Last_Valid        |
            Attribute_Length            |

@@ -9225,25 +9225,35 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
-         when Attribute_Image =>
+         --  We generate the expression String.to_string (image_func (arg)),
+         --  where arg may be either the prefix in the notation X'Image, or
+         --  the argument in notation S'Image(X).
 
-            --  We generate the expression String.to_string (image_func (expr))
-
-            T := New_Call (Ada_Node => Expr,
-                           Domain   => Domain,
-                           Name     => +New_Attribute_Expr
-                             (Etype (Var), Domain, Attr_Id),
-                           Args     =>
-                             (1 => Transform_Expr (First (Expressions (Expr)),
-                                                   Base_Why_Type (Var),
-                                                   Domain,
-                                                   Params)));
-
-            T := New_Call (Ada_Node => Expr,
-                           Domain   => Domain,
-                           Name     => To_String_Id,
-                           Args     => (1 => T),
-                           Typ      => EW_Abstract (Standard_String));
+         when Attribute_Image
+            | Attribute_Img
+         =>
+            declare
+               Arg : constant Node_Id :=
+                 (if Present (Expressions (Expr)) then
+                    First (Expressions (Expr))
+                  else
+                    Var);
+            begin
+               T := New_Call (Ada_Node => Expr,
+                              Domain   => Domain,
+                              Name     => +New_Attribute_Expr
+                                (Etype (Var), Domain, Attribute_Image),
+                              Args     =>
+                                (1 => Transform_Expr (Arg,
+                                                      Base_Why_Type (Var),
+                                                      Domain,
+                                                      Params)));
+               T := New_Call (Ada_Node => Expr,
+                              Domain   => Domain,
+                              Name     => To_String_Id,
+                              Args     => (1 => T),
+                              Typ      => EW_Abstract (Standard_String));
+            end;
 
          when Attribute_Size =>
 
