@@ -288,7 +288,7 @@ package body Flow_Error_Messages is
         Integer'Image (Msg_Severity'Pos (Severity));
 
       Suppr  : String_Id  := No_String;
-      Msg_Id : Message_Id := No_Message_Id;
+      Msg_Id : Message_Id;
 
       Dummy    : String_Sets.Cursor;
       Inserted : Boolean;
@@ -366,6 +366,8 @@ package body Flow_Error_Messages is
 
          if not Suppressed and then Is_Specified_Line (Slc) then
             Msg_Id := Print_Regular_Msg (Msg3, Slc, Severity, Continuation);
+         else
+            Msg_Id := No_Message_Id;
          end if;
 
          Add_Json_Msg
