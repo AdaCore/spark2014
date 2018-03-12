@@ -657,6 +657,7 @@ is
                 and then (if Present (Input)
                           then Ekind (Input) in E_Abstract_State
                                               | E_Task_Type
+                                              | E_Protected_Type
                                               | Object_Kind),
         Post => Present (Search_Depends_Contract'Result);
    --  Search the Contract of Unit for the given "Output => Input" dependency.
