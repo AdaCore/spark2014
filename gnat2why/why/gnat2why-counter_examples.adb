@@ -321,6 +321,12 @@ package body Gnat2Why.Counter_Examples is
                         end if;
                   end;
 
+                  --  Cvc4 returns Floating_point value with integer type. We
+                  --  don't want to print those.
+
+               elsif Is_Floating_Point_Type (AST_Type) then
+                  return Null_Unbounded_String;
+
                --  ??? only integer types are expected in that last case
 
                else

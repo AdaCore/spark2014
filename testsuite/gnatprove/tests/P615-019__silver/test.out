@@ -19,7 +19,7 @@ contracts.adb:34:14: info: range check proved (CVC4: 1 VC)
 contracts.adb:34:16: info: initialization of "Z" proved
 discriminant_check.adb:12:04: warning: analyzing unreferenced function "Get_X"
 discriminant_check.adb:12:13: info: range check proved (CVC4: 1 VC)
-discriminant_check.adb:14:15: medium: discriminant check might fail (e.g. when R = (X => 0, others => ?))
+discriminant_check.adb:14:15: medium: discriminant check might fail (e.g. when R = (B => False, X => 0, Y => ?))
 discriminant_check.adb:17:04: warning: analyzing unreferenced procedure "Set_X"
 discriminant_check.adb:19:08: medium: discriminant check might fail
 division_by_zero.adb:9:04: warning: analyzing unreferenced procedure "Oper_Integer"
