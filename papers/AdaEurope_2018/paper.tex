@@ -395,13 +395,13 @@ are not aliased, then the result of calling \var{Swap\_Contents} on actual param
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
    \includegraphics[]{spark_ex1}
-   \caption{A variant of the \var{Swap\_Contents} procedure where aliasing would create problems in SPARK.}
+   \caption{A simple procedure where aliasing would create problems in SPARK.}
    \label{fig:spark_ex1}
 \end{figure}
-
-If SPARK ignored aliasing, it would conclude that this version of procedure \var{Swap\_Contents} always swaps the contents of its parameters \var{X\_Param} and \var{Y\_Param}.
+   
+If SPARK ignored aliasing, it would conclude that procedure \var{Add\_One} always increments by exactly one the content of each of its parameters \var{X\_Param} and \var{Y\_Param}.
 In particular, it could prove the following postcondition on the procedure.
-
+ 
 \begin{figure}[htb!]
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
@@ -409,11 +409,12 @@ In particular, it could prove the following postcondition on the procedure.
    \label{fig:spark_ex1_proof}
 \end{figure}
 
-Indeed, by presuming that the assignment to \var{X\_Param.all} on line $\ell_4$ does not influence the value of \var{Y\_Param.all}, proof would be able to
-derive that the values \var{X\_Param.all} and \var{Y\_Param.all} have been swapped. Similarly, flow analysis would derive wrong data dependencies if possible aliasing is not taken into account.
+Indeed, by presuming that the assignment to \var{X\_Param.all} on line $\ell_2$ does not influence the value of \var{Y\_Param.all}, proof would be able to
+derive that the values \var{Y\_Param.all} has been incremented by 1. Similarly, flow analysis would derive wrong data dependencies if possible aliasing is not taken into account.
 
 This wrong postcondition would in turn allow a proof that an incorrect assertion is satisfied in the code snippet of Figure \ref{fig:spark_ex1_exp}, while in fact it fails at run time:
 
+\todo[inline]{These examples have been changed. Please double check them and all the text around.}
 \begin{figure}[htb!]
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
@@ -422,12 +423,12 @@ This wrong postcondition would in turn allow a proof that an incorrect assertion
    \label{fig:spark_ex1_exp}
 \end{figure}
 
-Thus pointers cannot be treated like any other component in SPARK, in the presence of aliasing. But rules we have described for ownership objects precisely prevent
+Thus, pointers cannot be treated like any other component in SPARK, in the presence of aliasing. But rules we have described for ownership objects precisely prevent
 aliasing when one of the objects can be written. This is similar to the rules in SPARK for preventing aliasing between by-reference parameters, and this allows SPARK to treat such pointers
 like other components.
 
-In the case of \var{Swap\_Contents}, this means that SPARK analysis will be able to conclude that the postcondition above is satisfied by the implementation of \var{Swap\_Contents}.
-But calls to \var{Swap\_Contents(X,X)} will be rejected both by compilation and analysis.
+In the case of \var{Add\_One}, this means that SPARK analysis will be able to conclude that the postcondition above is satisfied by the implementation of \var{Add\_One}.
+But calls to \var{Add\_One(X,X)} will be rejected both by compilation and analysis.
 
 
 \section{Related Work}

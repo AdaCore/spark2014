@@ -17,8 +17,19 @@ begin
   Y_Param.all := Tmp;
 end Swap_Contents;
 
+procedure Add_One(X_Param, Y_Param : in Int_Ptr) with
+  post => X_Param.all = X_Param.all'Old + 1
+	and Y_Param.all = Y_Param.all'Old + 1;
+  is
+  X_Param := X_Param + 1;
+  Y_Param := Y_Param + 1;
+end Add_One;
+
   X : Int_Ptr := new Integer'(1);
   (...)
+
+  Add_One (X, X);
+  pragma Assert (Y.all = 2);  --  incorrect assertion 
 
   Swap_Contents (X, X);
   pragma Assert (X.all = 1);  --  incorrect assertion 
