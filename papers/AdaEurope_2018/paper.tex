@@ -59,9 +59,6 @@ As a consequence of our focus in SPARK on proof automation and usability, we hav
 
 In this work, we present the first step for the inclusion of a variety of pointers that support safe memory management in Ada, in a way that these pointers can be included in SPARK. As our main contribution, we show that it is possible to adapt the ideas underlying the safe support for pointers in permission-based languages like Rust \cite{Balasubramanian17} or ParaSail \cite{Taft11}, to safely restrict the use of pointers in more traditional imperative languages like Ada. In section~\ref{sec:ownership-Ada}, we describe the rationale for the rules that we propose to include in the next version of Ada, which takes into account specificities of Ada like by-copy/by-reference parameter passing and exception handling. In section~\ref{sec:ownership-SPARK}, we outline how these rules would make it possible to formally verify programs with pointers with the SPARK toolset. We finally present related works and conclude.
 
-\todo[inline]{The authors should improve the introduction to provide a better motivation, namely by explaining the challenges
-being addressed and clearly highlighting the main contributions of the work}
-
 \section{A Proposal for Ownership Types in Ada}
 \label{sec:ownership-Ada}
 
@@ -185,7 +182,6 @@ as part of each access-to-variable object copy.
    \label{fig:move_ex1}
 \end{figure}
 
-
 \subsubsection{Borrowing Access Values}
 \label{sec:borrowing}
 
@@ -228,7 +224,7 @@ We consider as observing the assignment operations used to \textit{initialize} s
 In the code snippet of Figure \ref{fig:observe_exp}, \var{X\_Param} and \var{Y\_Param} are access-to-constant objects of an anonymous type. Since the assignment of the value of \var{X} to \var{X\_Param}
 as well as to \var{Y\_Param} are part of the initialization of the target objects, this initiates the observing, and while \var{X\_Param} and \var{Y\_Param} exist they provide read-only access. Note that
 this allows us to call the function \var{Sum} using \var{X} as a first and second parameter -- upon the first occurrence of \var{X} it enters the observed state, but we can still observe it further.
-\maroua{Note that while the call to \var{Sum} is in progress, variale \var{X} is observed and therefore cannot be modified by any other task that has visibility on it. (to answer the comment below)}
+%\maroua{Note that while the call to \var{Sum} is in progress, variale \var{X} is observed and therefore cannot be modified by any other task that has visibility on it. (to answer the comment below)}
 
 \begin{figure}[htb!]
 \centering
@@ -329,7 +325,6 @@ the formal parameter \var{R} is initially in an observed state, hence its compon
 \end{figure}
 
 
-
 \subsubsection{Traversing Data Structures with Local Variables}
 
 In the rules for borrowing access values (Section~\ref{sec:borrowing}), we said that initializing a stand-alone object of an anonymous access-to-variable type corresponds to
@@ -370,18 +365,10 @@ $\ell_{10}$ and $\ell_{17}$.
    \label{fig:treeInsert}
 \end{figure}
 
-\todo[inline]{I would have liked to see how a node is deleted from such a tree}
+%\todo[inline]{I would have liked to see how a node is deleted from such a tree}
 
 \section{Formal Verification with Ownership Types in SPARK}
 \label{sec:ownership-SPARK}
-
-\todo[inline]{Reviewer 3 finds the section 3 with no benefit to the reader, except to
-  recall why aliasing is an issue. He thinks the paper definitely miss some
-  information on how SPARK would benefit from this AI, e.g. in terms
-  of additional language features}
-
-\maroua{I suggest to ignore this comment since this section effectively shows how SPARK would benefit from this AI. We may however focus on the fact that SPARK still does not
-allow the use of pointers and how important it is to permit it.}
 
 The existing SPARK restrictions imposed on its current subset of Ada ensure that an assignment to one variable cannot change the value of some other visible variable. This property is essential to allow sound modular static analysis,
 where each subprogram can be analyzed independently while detecting all possible violations of the kinds targeted by the analysis.
@@ -426,7 +413,6 @@ derive that the values \var{Y\_Param.all} has been incremented by 1. Similarly, 
 
 This wrong postcondition would in turn allow a proof that an incorrect assertion is satisfied in the code snippet of Figure \ref{fig:spark_ex1_exp}, while in fact it fails at run time:
 
-\todo[inline]{These examples have been changed. Please double check them and all the text around.}
 \begin{figure}[htb!]
 \centering
   \captionsetup{justification=centering,margin=0.6cm}
@@ -444,9 +430,6 @@ But calls to \var{Add\_One(X,X)} will be rejected both by compilation and analys
 
 
 \section{Related Work}
-
-\todo[inline]{Reviewer 3 suggests to move the related work to section 2}
-\maroua{In the last paragraph we are comparing our work to the one of GA. I don't see how this may be moved to section 2.}
 
 Permission-based programming languages generalize the issue of avoiding harmful aliasing to the more general problem of preventing harmful sharing of resources
 (memory, but also network connections, files, etc.). C-like languages are mostly based on pointers and often sacrifice safety for performance purposes.
