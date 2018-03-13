@@ -585,22 +585,23 @@ package body Flow_Utility is
                procedure Debug (Msg : String);
                --  Output debug message
 
-               function Get_Root_Component (N : Node_Id) return Node_Id;
-               --  Returns N's equilavent component of the root type. If this
-               --  is not available then N's Original_Record_Component is
+               function Get_Root_Component (C : Entity_Id) return Entity_Id
+               with Pre => Ekind (C) in E_Component | E_Discriminant;
+               --  Returns C's equilavent component of the root type. If this
+               --  is not available then E's Original_Record_Component is
                --  returned instead.
                --
-               --  @param N is the component who's equivalent we are looking
+               --  @param C is the component who's equivalent we are looking
                --    for
                --  @return the equivalent component of the root type if one
-               --    exists or the Original_Record_Component of N otherwise.
+               --    exists or the Original_Record_Component of C otherwise.
 
                ------------------------
                -- Get_Root_Component --
                ------------------------
 
-               function Get_Root_Component (N : Node_Id) return Node_Id is
-                  ORC : constant Node_Id := Original_Record_Component (N);
+               function Get_Root_Component (C : Entity_Id) return Entity_Id is
+                  ORC : constant Entity_Id := Original_Record_Component (C);
                begin
                   --  If Same_Component is True for one of the Root_Components
                   --  then return that instead.
@@ -610,7 +611,7 @@ package body Flow_Utility is
                      end if;
                   end loop;
 
-                  --  No Same_Component found. Fall back to N's
+                  --  No Same_Component found. Fall back to C's
                   --  Original_Record_Component.
                   return ORC;
                end Get_Root_Component;
