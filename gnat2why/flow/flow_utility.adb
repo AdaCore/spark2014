@@ -3720,8 +3720,6 @@ package body Flow_Utility is
    procedure Initialize is
       use Component_Graphs;
 
-      S : Node_Sets.Set;
-
       procedure Process (E : Entity_Id);
       --  Extract information about entity E into flow's internal data
       --  structure. Currently it deals with record components and
@@ -3782,12 +3780,6 @@ package body Flow_Utility is
       -------------
 
       procedure Process (E : Entity_Id) is
-         Unused   : Node_Sets.Cursor;
-         --  Dummy variable required by the standard containers API
-
-         Inserted : Boolean;
-         --  Indicates than an element was inserted to a set
-
          Comp : Entity_Id;
          --  Component or discriminant of entity E
 
@@ -3801,44 +3793,15 @@ package body Flow_Utility is
             while Present (Comp) loop
                --  We add a component to the graph if it is in SPARK
                if Component_Is_Visible_In_SPARK (Comp) then
-                  S.Insert (New_Item => Comp,
-                            Position => Unused,
-                            Inserted => Inserted);
+                  Comp_Graph.Include_Vertex (Comp);
 
-                  if Inserted then
-                     Comp_Graph.Add_Vertex (Comp);
-                  end if;
+                  Comp_Graph.Include_Vertex (Original_Record_Component (Comp));
 
-                  declare
-                     Orig_Rec_Comp : constant Node_Id :=
-                       Original_Record_Component (Comp);
-
-                  begin
-                     if Present (Orig_Rec_Comp) then
-                        S.Insert (New_Item => Orig_Rec_Comp,
-                                  Position => Unused,
-                                  Inserted => Inserted);
-                        if Inserted then
-                           Comp_Graph.Add_Vertex (Orig_Rec_Comp);
-                        end if;
-                     end if;
-                  end;
-
-                  if Ekind (Comp) = E_Discriminant then
-                     declare
-                        Corr_Discr : constant Node_Id :=
-                          Corresponding_Discriminant (Comp);
-
-                     begin
-                        if Present (Corr_Discr) then
-                           S.Insert (New_Item => Corr_Discr,
-                                     Position => Unused,
-                                     Inserted => Inserted);
-                           if Inserted then
-                              Comp_Graph.Add_Vertex (Corr_Discr);
-                           end if;
-                        end if;
-                     end;
+                  if Ekind (Comp) = E_Discriminant
+                    and then Present (Corresponding_Discriminant (Comp))
+                  then
+                     Comp_Graph.Include_Vertex
+                       (Corresponding_Discriminant (Comp));
                   end if;
                end if;
 
@@ -3849,6 +3812,7 @@ package body Flow_Utility is
 
       --  Local variables:
 
+      S    : Node_Sets.Set;
       Ptr  : Entity_Id;
       Ptr2 : Entity_Id;
 
@@ -3867,60 +3831,48 @@ package body Flow_Utility is
          end if;
       end loop;
 
-      S := Node_Sets.Empty_Set;
       for V of Comp_Graph.Get_Collection (All_Vertices) loop
          Ptr := Comp_Graph.Get_Key (V);
-         S.Include (Ptr);
-         if Present (Original_Record_Component (Ptr)) then
-            Comp_Graph.Add_Edge (V_1    => Ptr,
-                                 V_2    => Original_Record_Component (Ptr),
-                                 Colour => 0);
+         S.Insert (Ptr);
+
+         Comp_Graph.Add_Edge (V_1 => Ptr,
+                              V_2 => Original_Record_Component (Ptr));
+
+         if Ekind (Ptr) = E_Discriminant
+           and then Present (Corresponding_Discriminant (Ptr))
+         then
+            Comp_Graph.Add_Edge
+              (V_1 => Ptr,
+               V_2 => Corresponding_Discriminant (Ptr));
          end if;
-         case Ekind (Ptr) is
-            when E_Discriminant =>
-               if Present (Corresponding_Discriminant (Ptr)) then
-                  Comp_Graph.Add_Edge
-                    (V_1    => Ptr,
-                     V_2    => Corresponding_Discriminant (Ptr),
-                     Colour => 0);
-               end if;
-            when E_Component =>
-               null;
-            when others =>
-               raise Program_Error;
-         end case;
+
          for V2 of Comp_Graph.Get_Collection (All_Vertices) loop
             exit when V = V2;
             Ptr2 := Comp_Graph.Get_Key (V2);
             if Sloc (Ptr) = Sloc (Ptr2) then
-               Comp_Graph.Add_Edge (V_1    => V,
-                                    V_2    => V2,
-                                    Colour => 0);
+               Comp_Graph.Add_Edge (V_1 => V, V_2 => V2);
             end if;
          end loop;
       end loop;
 
-      declare
-         C         : Cluster_Id;
-         Work_List : Node_Sets.Set;
+      while not S.Is_Empty loop
+         declare
+            Work_List : Node_Sets.Set :=
+              Node_Sets.To_Set (S.First_Element);
+            --  Work list seeded with a random element
 
-      begin
-         while not S.Is_Empty loop
-            --  Pick an element at random.
-            Ptr := S.First_Element;
-            S.Exclude (Ptr);
+            C : Cluster_Id;
 
-            --  Create a new component.
+         begin
+            --  Create a new component
             Comp_Graph.New_Cluster (C);
 
-            --  Seed the work list.
-            Work_List := Node_Sets.To_Set (Ptr);
-
-            --  Flood current component.
-            while not Work_List.Is_Empty loop
+            --  Flood current component
+            loop
                Ptr := Work_List.First_Element;
+               Work_List.Delete_First;
+
                S.Exclude (Ptr);
-               Work_List.Exclude (Ptr);
 
                Comp_Graph.Set_Cluster (Comp_Graph.Get_Vertex (Ptr), C);
 
@@ -3936,9 +3888,11 @@ package body Flow_Utility is
                      end if;
                   end loop;
                end loop;
+
+               exit when Work_List.Is_Empty;
             end loop;
-         end loop;
-      end;
+         end;
+      end loop;
 
       if Debug_Record_Component then
          Comp_Graph.Write_Pdf_File (Filename  => "component_graph",
