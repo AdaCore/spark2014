@@ -735,7 +735,7 @@ is
    --  extension of a null record type (or extension).
 
 private
-   Init_Done : Boolean := False;
+   Init_Done : Boolean := False with Ghost;
 
    --------------------
    -- Is_Initialized --
