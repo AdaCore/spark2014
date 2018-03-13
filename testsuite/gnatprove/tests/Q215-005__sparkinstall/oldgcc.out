@@ -12,6 +12,7 @@ gcc
 gnat2why
 gnat_server
 gnatbind
+gnathub
 gnatls
 gnatwhy3
 gprbuild
@@ -35,8 +36,10 @@ libexec/spark/share dir
 codepeer
 doc
 gcc-6.4.1
+gnathub
 gpr
 gprconfig
 info
 javascript
 man
+sonar
