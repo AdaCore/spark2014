@@ -3870,7 +3870,6 @@ package body Flow_Utility is
             --  Flood current component
             loop
                Ptr := Work_List.First_Element;
-               Work_List.Delete_First;
 
                S.Exclude (Ptr);
 
@@ -3882,12 +3881,14 @@ package body Flow_Utility is
                   for V of Comp_Graph.Get_Collection
                     (Comp_Graph.Get_Vertex (Ptr), Neighbour_Kind)
                   loop
-                     Ptr := Comp_Graph.Get_Key (V);
-                     if S.Contains (Ptr) then
-                        Work_List.Include (Ptr);
+                     Ptr2 := Comp_Graph.Get_Key (V);
+                     if S.Contains (Ptr2) then
+                        Work_List.Include (Ptr2);
                      end if;
                   end loop;
                end loop;
+
+               Work_List.Delete (Ptr);
 
                exit when Work_List.Is_Empty;
             end loop;
