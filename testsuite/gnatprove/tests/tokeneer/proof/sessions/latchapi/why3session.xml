@@ -61,13 +61,25 @@
 </theory>
 <theory name="Array__Int__Standard__character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__character_Comp" proved="true">
+</theory>
 <theory name="Standard__string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
+</theory>
 <theory name="Standard__wide_string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_wide_character" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
 </theory>
 <theory name="Standard__wide_wide_string" proved="true">
 </theory>
@@ -771,6 +783,10 @@
 </theory>
 <theory name="Array__Int__System__unsigned_types__packed_byte" proved="true">
 </theory>
+<theory name="Array__Int__System__unsigned_types__packed_byte__Concat" proved="true">
+</theory>
+<theory name="Array__Int__System__unsigned_types__packed_byte_Comp" proved="true">
+</theory>
 <theory name="System__unsigned_types__packed_bytes1" proved="true">
 </theory>
 <theory name="System__unsigned_types__packed_bytes2" proved="true">
@@ -1001,6 +1017,12 @@
 </theory>
 <theory name="Array__Int__Bool" proved="true">
 </theory>
+<theory name="Array__Int__Bool__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Bool__Bool_Op" proved="true">
+</theory>
+<theory name="Array__Int__Bool_Comp" proved="true">
+</theory>
 <theory name="Ada__strings__maps__Tcharacter_set_internalB" proved="true">
 </theory>
 <theory name="Ada__strings__maps__Tcharacter_setB" proved="true">
@@ -1014,6 +1036,8 @@
 <theory name="Ada__strings__maps__character_range" proved="true">
 </theory>
 <theory name="Array__Int__Ada__strings__maps__character_range" proved="true">
+</theory>
+<theory name="Array__Int__Ada__strings__maps__character_range__Concat" proved="true">
 </theory>
 <theory name="Ada__strings__maps__character_ranges" proved="true">
 </theory>
@@ -1713,6 +1737,8 @@
 </theory>
 <theory name="Array__Int__Commontypes__string8t" proved="true">
 </theory>
+<theory name="Array__Int__Commontypes__string8t__Concat" proved="true">
+</theory>
 <theory name="Commontypes__Tstring8arraytB" proved="true">
 </theory>
 <theory name="Commontypes__string8arrayt" proved="true">
@@ -1944,6 +1970,10 @@
 <theory name="System__traceback_entries__null_tb_entry" proved="true">
 </theory>
 <theory name="Array__Int__System__traceback_entries__traceback_entry" proved="true">
+</theory>
+<theory name="Array__Int__System__traceback_entries__traceback_entry__Concat" proved="true">
+</theory>
+<theory name="Array__Int__System__traceback_entries__traceback_entry_Comp" proved="true">
 </theory>
 <theory name="System__traceback_entries__tracebacks_array" proved="true">
 </theory>
@@ -2659,6 +2689,8 @@
 </theory>
 <theory name="Latchapi__lock__T8b___axiom" proved="true">
 </theory>
+<theory name="Temp___154___axiom" proved="true">
+</theory>
 <theory name="Tcpip__nullmsg___axiom" proved="true">
 </theory>
 <theory name="Ada__characters__latin_1__nul___axiom" proved="true">
@@ -3171,6 +3203,8 @@
 </theory>
 <theory name="System__zcx_by_default___axiom" proved="true">
 </theory>
+<theory name="Ada__strings__maps__null_set__aggregate_def___axiom" proved="true">
+</theory>
 <theory name="Ada__strings__maps__null_set___axiom" proved="true">
 </theory>
 <theory name="Ada__strings__maps__identity___axiom" proved="true">
@@ -3212,6 +3246,8 @@
 <theory name="Latchapi__unlock__outmsg___axiom" proved="true">
 </theory>
 <theory name="Latchapi__lock__outmsg___axiom" proved="true">
+</theory>
+<theory name="Temp___200___axiom" proved="true">
 </theory>
 <theory name="Tcpip__connecttospre___axiom" proved="true">
 </theory>
@@ -3450,8 +3486,8 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="397"/></proof>
-  <proof prover="2"><result status="unknown" steps="20"/></proof>
+  <proof prover="1"><result status="unknown" steps="594"/></proof>
+  <proof prover="2"><result status="unknown" steps="594"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
@@ -3462,8 +3498,8 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="375"/></proof>
-  <proof prover="2"><result status="unknown" steps="20"/></proof>
+  <proof prover="1"><result status="unknown" steps="552"/></proof>
+  <proof prover="2"><result status="unknown" steps="552"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>

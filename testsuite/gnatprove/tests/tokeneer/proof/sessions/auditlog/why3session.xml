@@ -58,13 +58,25 @@
 </theory>
 <theory name="Array__Int__Standard__character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__character_Comp" proved="true">
+</theory>
 <theory name="Standard__string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
+</theory>
 <theory name="Standard__wide_string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_wide_character" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
 </theory>
 <theory name="Standard__wide_wide_string" proved="true">
 </theory>
@@ -149,6 +161,8 @@
 <theory name="Commontypes__string8arrayi__rep" proved="true">
 </theory>
 <theory name="Array__Int__Commontypes__string8t" proved="true">
+</theory>
+<theory name="Array__Int__Commontypes__string8t__Concat" proved="true">
 </theory>
 <theory name="Commontypes__Tstring8arraytB" proved="true">
 </theory>
@@ -476,13 +490,15 @@
 </theory>
 <theory name="Array__Int__Ada__streams__stream_element" proved="true">
 </theory>
+<theory name="Array__Int__Ada__streams__stream_element__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Ada__streams__stream_element_Comp" proved="true">
+</theory>
 <theory name="Ada__streams__stream_element_array" proved="true">
 </theory>
 <theory name="Ada__streams__write__item" proved="true">
 </theory>
 <theory name="Ada__streams__write__item___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__Troot_stream_typeC" proved="true">
 </theory>
 <theory name="Ada__streams__write_sea__v" proved="true">
 </theory>
@@ -1878,6 +1894,10 @@
 </theory>
 <theory name="Array__Int__Commontypes__bytet" proved="true">
 </theory>
+<theory name="Array__Int__Commontypes__bytet__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Commontypes__bytet_Comp" proved="true">
+</theory>
 <theory name="Iandatypes__TtemplatepadtB" proved="true">
 </theory>
 <theory name="Iandatypes__templatepadt" proved="true">
@@ -2096,6 +2116,10 @@
 </theory>
 <theory name="Array__Int__Auditlog__logfileindext" proved="true">
 </theory>
+<theory name="Array__Int__Auditlog__logfileindext__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Auditlog__logfileindext_Comp" proved="true">
+</theory>
 <theory name="Auditlog__TlogfilelistentriestB" proved="true">
 </theory>
 <theory name="Auditlog__logfilelistentriest" proved="true">
@@ -2115,6 +2139,10 @@
 <theory name="Auditlog__fileentrycountt__rep" proved="true">
 </theory>
 <theory name="Array__Int__Auditlog__fileentrycountt" proved="true">
+</theory>
+<theory name="Array__Int__Auditlog__fileentrycountt__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Auditlog__fileentrycountt_Comp" proved="true">
 </theory>
 <theory name="Auditlog__TlogfileentrytB" proved="true">
 </theory>
@@ -2160,11 +2188,17 @@
 </theory>
 <theory name="Array__Int__File__t" proved="true">
 </theory>
+<theory name="Array__Int__File__t__Concat" proved="true">
+</theory>
 <theory name="Auditlog__TlogfilestB" proved="true">
 </theory>
 <theory name="Auditlog__logfilest" proved="true">
 </theory>
 <theory name="Array__Int__Auditlog__filestatust" proved="true">
+</theory>
+<theory name="Array__Int__Auditlog__filestatust__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Auditlog__filestatust_Comp" proved="true">
 </theory>
 <theory name="Auditlog__TlogfilesstatustB" proved="true">
 </theory>
@@ -2177,6 +2211,8 @@
 <theory name="Auditlog__filenamet" proved="true">
 </theory>
 <theory name="Array__Int__Auditlog__filenamet" proved="true">
+</theory>
+<theory name="Array__Int__Auditlog__filenamet__Concat" proved="true">
 </theory>
 <theory name="Auditlog__TlogfilenamestB" proved="true">
 </theory>
@@ -2471,6 +2507,8 @@
 <theory name="Auditlog__addelementtologfilewithtruncatechecks__description___axiom" proved="true">
 </theory>
 <theory name="Array__Int__Clock__timetextt" proved="true">
+</theory>
+<theory name="Array__Int__Clock__timetextt__Concat" proved="true">
 </theory>
 <theory name="Auditlog__init__TfileagetB" proved="true">
 </theory>
@@ -3626,8 +3664,6 @@
 </theory>
 <theory name="Ada__streams__stream_element_array___axiom" proved="true">
 </theory>
-<theory name="Ada__streams__Troot_stream_typeC___axiom" proved="true">
-</theory>
 <theory name="System__name___axiom" proved="true">
 </theory>
 <theory name="System__address___axiom" proved="true">
@@ -3858,9 +3894,9 @@
 </theory>
 <theory name="Auditlog__logfilestatet__T21s___axiom" proved="true">
 </theory>
-<theory name="Temp___1276" proved="true">
+<theory name="Temp___1271" proved="true">
 </theory>
-<theory name="Temp___1280" proved="true">
+<theory name="Temp___1275" proved="true">
 </theory>
 <theory name="Auditlog__logfilestatet___axiom" proved="true">
 </theory>
@@ -3956,13 +3992,13 @@
 </theory>
 <theory name="Auditlog__converttoauditdescription__L_2__T23b___axiom" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1443" proved="true">
+<theory name="Temp___String_Literal_1438" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1445" proved="true">
+<theory name="Temp___String_Literal_1440" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1449" proved="true">
+<theory name="Temp___String_Literal_1444" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1451" proved="true">
+<theory name="Temp___String_Literal_1446" proved="true">
 </theory>
 <theory name="Auditlog__getstartandendtimefromfile__converttimestotext__T30b___axiom" proved="true">
 </theory>
@@ -4016,29 +4052,31 @@
 </theory>
 <theory name="Auditlog__logfiles__aggregate_def" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1651" proved="true">
+<theory name="Temp___String_Literal_1646" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1671" proved="true">
+<theory name="Temp___String_Literal_1666" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1754" proved="true">
+<theory name="Temp___String_Literal_1749" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1756" proved="true">
+<theory name="Temp___String_Literal_1751" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1760" proved="true">
+<theory name="Temp___String_Literal_1755" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1762" proved="true">
+<theory name="Temp___String_Literal_1757" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1780" proved="true">
+<theory name="Temp___String_Literal_1775" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1781" proved="true">
+<theory name="Temp___String_Literal_1776" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1782" proved="true">
+<theory name="Temp___String_Literal_1777" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1783" proved="true">
+<theory name="Temp___String_Literal_1778" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1784" proved="true">
+<theory name="Temp___String_Literal_1779" proved="true">
 </theory>
 <theory name="Clock__zerotime___axiom" proved="true">
+</theory>
+<theory name="Audittypes__nodescription__aggregate_def___axiom" proved="true">
 </theory>
 <theory name="Audittypes__nodescription___axiom" proved="true">
 </theory>
@@ -4146,15 +4184,23 @@
 </theory>
 <theory name="Interfaces__c_streams__null_stream___axiom" proved="true">
 </theory>
+<theory name="Cryptotypes__blankname__aggregate_def___axiom" proved="true">
+</theory>
 <theory name="Cryptotypes__blankname___axiom" proved="true">
 </theory>
 <theory name="Cryptotypes__nullissuer___axiom" proved="true">
 </theory>
 <theory name="Cryptotypes__nullkeypart___axiom" proved="true">
 </theory>
+<theory name="Iandatypes__nulltemplatepad__aggregate_def___axiom" proved="true">
+</theory>
 <theory name="Iandatypes__nulltemplatepad___axiom" proved="true">
 </theory>
+<theory name="Temp___168___axiom" proved="true">
+</theory>
 <theory name="Iandatypes__nulltemplate___axiom" proved="true">
+</theory>
+<theory name="Temp___177___axiom" proved="true">
 </theory>
 <theory name="Auditlog__emptylist___axiom" proved="true">
 </theory>
@@ -4162,7 +4208,11 @@
 </theory>
 <theory name="Auditlog__archivefilename___axiom" proved="true">
 </theory>
+<theory name="Auditlog__noelement__aggregate_def___axiom" proved="true">
+</theory>
 <theory name="Auditlog__noelement___axiom" proved="true">
+</theory>
+<theory name="Auditlog__logfilenames__aggregate_def___axiom" proved="true">
 </theory>
 <theory name="Auditlog__logfilenames___axiom" proved="true">
 </theory>
@@ -4492,6 +4542,10 @@
 </theory>
 <theory name="Configdata__thealarmthresholdentries___axiom" proved="true">
 </theory>
+<theory name="Temp___1271___axiom" proved="true">
+</theory>
+<theory name="Temp___1275___axiom" proved="true">
+</theory>
 <theory name="Auditlog__init___axiom" proved="true">
 </theory>
 <theory name="Auditlog__addelementtolog___axiom" proved="true">
@@ -4548,11 +4602,13 @@
 </theory>
 <theory name="Auditlog__init__setfiledetails__getfiledetails___axiom" proved="true">
 </theory>
+<theory name="Auditlog__logfiles__aggregate_def___axiom" proved="true">
+</theory>
 <theory name="Auditlog__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="144"/></proof>
+  <proof prover="0"><result status="valid" steps="112"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4654,10 +4710,10 @@
   <proof prover="0"><result status="valid" steps="930"/></proof>
   </goal>
   <goal name="WP_parameter def.31" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1409"/></proof>
+  <proof prover="0"><result status="valid" steps="1200"/></proof>
   </goal>
   <goal name="WP_parameter def.32" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1409"/></proof>
+  <proof prover="0"><result status="valid" steps="1200"/></proof>
   </goal>
   <goal name="WP_parameter def.33" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>

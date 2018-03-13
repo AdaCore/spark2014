@@ -61,13 +61,25 @@
 </theory>
 <theory name="Array__Int__Standard__character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__character_Comp" proved="true">
+</theory>
 <theory name="Standard__string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
+</theory>
 <theory name="Standard__wide_string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_wide_character" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
 </theory>
 <theory name="Standard__wide_wide_string" proved="true">
 </theory>
@@ -152,6 +164,8 @@
 <theory name="Commontypes__string8arrayi__rep" proved="true">
 </theory>
 <theory name="Array__Int__Commontypes__string8t" proved="true">
+</theory>
+<theory name="Array__Int__Commontypes__string8t__Concat" proved="true">
 </theory>
 <theory name="Commontypes__Tstring8arraytB" proved="true">
 </theory>
@@ -320,6 +334,10 @@
 <theory name="Iandatypes__templatepadi__rep" proved="true">
 </theory>
 <theory name="Array__Int__Commontypes__bytet" proved="true">
+</theory>
+<theory name="Array__Int__Commontypes__bytet__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Commontypes__bytet_Comp" proved="true">
 </theory>
 <theory name="Iandatypes__TtemplatepadtB" proved="true">
 </theory>
@@ -515,13 +533,19 @@
 </theory>
 <theory name="Iandatypes__T10s___axiom" proved="true">
 </theory>
+<theory name="Cryptotypes__blankname__aggregate_def___axiom" proved="true">
+</theory>
 <theory name="Cryptotypes__blankname___axiom" proved="true">
 </theory>
 <theory name="Cryptotypes__nullissuer___axiom" proved="true">
 </theory>
 <theory name="Cryptotypes__nullkeypart___axiom" proved="true">
 </theory>
+<theory name="Iandatypes__nulltemplatepad__aggregate_def___axiom" proved="true">
+</theory>
 <theory name="Iandatypes__nulltemplatepad___axiom" proved="true">
+</theory>
+<theory name="Temp___162___axiom" proved="true">
 </theory>
 <theory name="Iandatypes__nulltemplate___axiom" proved="true">
 </theory>
@@ -559,13 +583,13 @@
   <goal name="WP_parameter def.0" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="95"/></proof>
-  <proof prover="2"><result status="unknown" steps="19"/></proof>
+  <proof prover="2"><result status="unknown" steps="92"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="116"/></proof>
-  <proof prover="2"><result status="unknown" steps="19"/></proof>
+  <proof prover="2"><result status="unknown" steps="116"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>

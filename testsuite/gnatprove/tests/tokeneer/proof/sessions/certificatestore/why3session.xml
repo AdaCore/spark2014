@@ -58,13 +58,25 @@
 </theory>
 <theory name="Array__Int__Standard__character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__character_Comp" proved="true">
+</theory>
 <theory name="Standard__string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
+</theory>
 <theory name="Standard__wide_string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_wide_character" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
 </theory>
 <theory name="Standard__wide_wide_string" proved="true">
 </theory>
@@ -149,6 +161,8 @@
 <theory name="Commontypes__string8arrayi__rep" proved="true">
 </theory>
 <theory name="Array__Int__Commontypes__string8t" proved="true">
+</theory>
+<theory name="Array__Int__Commontypes__string8t__Concat" proved="true">
 </theory>
 <theory name="Commontypes__Tstring8arraytB" proved="true">
 </theory>
@@ -480,13 +494,15 @@
 </theory>
 <theory name="Array__Int__Ada__streams__stream_element" proved="true">
 </theory>
+<theory name="Array__Int__Ada__streams__stream_element__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Ada__streams__stream_element_Comp" proved="true">
+</theory>
 <theory name="Ada__streams__stream_element_array" proved="true">
 </theory>
 <theory name="Ada__streams__write__item" proved="true">
 </theory>
 <theory name="Ada__streams__write__item___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__Troot_stream_typeC" proved="true">
 </theory>
 <theory name="Ada__streams__write_sea__v" proved="true">
 </theory>
@@ -1882,6 +1898,10 @@
 </theory>
 <theory name="Array__Int__Commontypes__bytet" proved="true">
 </theory>
+<theory name="Array__Int__Commontypes__bytet__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Commontypes__bytet_Comp" proved="true">
+</theory>
 <theory name="Iandatypes__TtemplatepadtB" proved="true">
 </theory>
 <theory name="Iandatypes__templatepadt" proved="true">
@@ -2096,6 +2116,10 @@
 </theory>
 <theory name="Array__Int__Auditlog__logfileindext" proved="true">
 </theory>
+<theory name="Array__Int__Auditlog__logfileindext__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Auditlog__logfileindext_Comp" proved="true">
+</theory>
 <theory name="Auditlog__TlogfilelistentriestB" proved="true">
 </theory>
 <theory name="Auditlog__logfilelistentriest" proved="true">
@@ -2115,6 +2139,10 @@
 <theory name="Auditlog__fileentrycountt__rep" proved="true">
 </theory>
 <theory name="Array__Int__Auditlog__fileentrycountt" proved="true">
+</theory>
+<theory name="Array__Int__Auditlog__fileentrycountt__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Auditlog__fileentrycountt_Comp" proved="true">
 </theory>
 <theory name="Auditlog__TlogfileentrytB" proved="true">
 </theory>
@@ -2160,11 +2188,17 @@
 </theory>
 <theory name="Array__Int__File__t" proved="true">
 </theory>
+<theory name="Array__Int__File__t__Concat" proved="true">
+</theory>
 <theory name="Auditlog__TlogfilestB" proved="true">
 </theory>
 <theory name="Auditlog__logfilest" proved="true">
 </theory>
 <theory name="Array__Int__Auditlog__filestatust" proved="true">
+</theory>
+<theory name="Array__Int__Auditlog__filestatust__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Auditlog__filestatust_Comp" proved="true">
 </theory>
 <theory name="Auditlog__TlogfilesstatustB" proved="true">
 </theory>
@@ -2177,6 +2211,8 @@
 <theory name="Auditlog__filenamet" proved="true">
 </theory>
 <theory name="Array__Int__Auditlog__filenamet" proved="true">
+</theory>
+<theory name="Array__Int__Auditlog__filenamet__Concat" proved="true">
 </theory>
 <theory name="Auditlog__TlogfilenamestB" proved="true">
 </theory>
@@ -2363,6 +2399,10 @@
 <theory name="System__traceback_entries__null_tb_entry" proved="true">
 </theory>
 <theory name="Array__Int__System__traceback_entries__traceback_entry" proved="true">
+</theory>
+<theory name="Array__Int__System__traceback_entries__traceback_entry__Concat" proved="true">
+</theory>
+<theory name="Array__Int__System__traceback_entries__traceback_entry_Comp" proved="true">
 </theory>
 <theory name="System__traceback_entries__tracebacks_array" proved="true">
 </theory>
@@ -3516,8 +3556,6 @@
 </theory>
 <theory name="Ada__streams__stream_element_array___axiom" proved="true">
 </theory>
-<theory name="Ada__streams__Troot_stream_typeC___axiom" proved="true">
-</theory>
 <theory name="System__name___axiom" proved="true">
 </theory>
 <theory name="System__address___axiom" proved="true">
@@ -3746,9 +3784,9 @@
 </theory>
 <theory name="Auditlog__logfilestatet__T21s___axiom" proved="true">
 </theory>
-<theory name="Temp___1251" proved="true">
+<theory name="Temp___1246" proved="true">
 </theory>
-<theory name="Temp___1255" proved="true">
+<theory name="Temp___1250" proved="true">
 </theory>
 <theory name="Auditlog__logfilestatet___axiom" proved="true">
 </theory>
@@ -3898,13 +3936,15 @@
 </theory>
 <theory name="Certificatestore__updatestore__T22b___axiom" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1648" proved="true">
+<theory name="Temp___String_Literal_1643" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1650" proved="true">
+<theory name="Temp___String_Literal_1645" proved="true">
 </theory>
-<theory name="Temp___String_Literal_1660" proved="true">
+<theory name="Temp___String_Literal_1655" proved="true">
 </theory>
-<theory name="Temp___1680" proved="true">
+<theory name="Temp___1675" proved="true">
+</theory>
+<theory name="Audittypes__nodescription__aggregate_def___axiom" proved="true">
 </theory>
 <theory name="Audittypes__nodescription___axiom" proved="true">
 </theory>
@@ -4014,15 +4054,23 @@
 </theory>
 <theory name="Interfaces__c_streams__null_stream___axiom" proved="true">
 </theory>
+<theory name="Cryptotypes__blankname__aggregate_def___axiom" proved="true">
+</theory>
 <theory name="Cryptotypes__blankname___axiom" proved="true">
 </theory>
 <theory name="Cryptotypes__nullissuer___axiom" proved="true">
 </theory>
 <theory name="Cryptotypes__nullkeypart___axiom" proved="true">
 </theory>
+<theory name="Iandatypes__nulltemplatepad__aggregate_def___axiom" proved="true">
+</theory>
 <theory name="Iandatypes__nulltemplatepad___axiom" proved="true">
 </theory>
+<theory name="Temp___168___axiom" proved="true">
+</theory>
 <theory name="Iandatypes__nulltemplate___axiom" proved="true">
+</theory>
+<theory name="Temp___177___axiom" proved="true">
 </theory>
 <theory name="Auditlog__emptylist___axiom" proved="true">
 </theory>
@@ -4030,9 +4078,13 @@
 </theory>
 <theory name="Auditlog__archivefilename___axiom" proved="true">
 </theory>
+<theory name="Auditlog__noelement__aggregate_def___axiom" proved="true">
+</theory>
 <theory name="Auditlog__noelement___axiom" proved="true">
 </theory>
 <theory name="Certtypes__maxrawcertlength___axiom" proved="true">
+</theory>
+<theory name="Certtypes__nullrawcertificate__aggregate_def___axiom" proved="true">
 </theory>
 <theory name="Certtypes__nullrawcertificate___axiom" proved="true">
 </theory>
@@ -4380,6 +4432,10 @@
 </theory>
 <theory name="Configdata__thealarmthresholdentries___axiom" proved="true">
 </theory>
+<theory name="Temp___1246___axiom" proved="true">
+</theory>
+<theory name="Temp___1250___axiom" proved="true">
+</theory>
 <theory name="Auditlog__init___axiom" proved="true">
 </theory>
 <theory name="Auditlog__addelementtolog___axiom" proved="true">
@@ -4532,6 +4588,8 @@
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
+</theory>
+<theory name="Temp___1675___axiom" proved="true">
 </theory>
 <theory name="Certificatestore__putnextserialnumber__convertfrom32__subprogram_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">

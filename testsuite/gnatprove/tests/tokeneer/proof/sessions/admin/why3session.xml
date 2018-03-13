@@ -58,13 +58,25 @@
 </theory>
 <theory name="Array__Int__Standard__character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__character_Comp" proved="true">
+</theory>
 <theory name="Standard__string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
+</theory>
 <theory name="Standard__wide_string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_wide_character" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
 </theory>
 <theory name="Standard__wide_wide_string" proved="true">
 </theory>
@@ -149,6 +161,8 @@
 <theory name="Commontypes__string8arrayi__rep" proved="true">
 </theory>
 <theory name="Array__Int__Commontypes__string8t" proved="true">
+</theory>
+<theory name="Array__Int__Commontypes__string8t__Concat" proved="true">
 </theory>
 <theory name="Commontypes__Tstring8arraytB" proved="true">
 </theory>
@@ -342,11 +356,19 @@
 </theory>
 <theory name="Array__Int__Bool" proved="true">
 </theory>
+<theory name="Array__Int__Bool__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Bool__Bool_Op" proved="true">
+</theory>
+<theory name="Array__Int__Bool_Comp" proved="true">
+</theory>
 <theory name="Admin__TavailopstB" proved="true">
 </theory>
 <theory name="Admin__availopst" proved="true">
 </theory>
 <theory name="Array__Int__Admin__availopst" proved="true">
+</theory>
+<theory name="Array__Int__Admin__availopst__Concat" proved="true">
 </theory>
 <theory name="Admin__TprivtoavailopstB" proved="true">
 </theory>
@@ -395,6 +417,8 @@
 <theory name="Admin__datat" proved="true">
 </theory>
 <theory name="Array__Int__Admin__datat" proved="true">
+</theory>
+<theory name="Array__Int__Admin__datat__Concat" proved="true">
 </theory>
 <theory name="Admin__ToptokeyedtB" proved="true">
 </theory>
@@ -664,9 +688,19 @@
 </theory>
 <theory name="Keyboard__maxdatalength___axiom" proved="true">
 </theory>
+<theory name="Admin__isavailable__aggregate_def___axiom" proved="true">
+</theory>
+<theory name="Temp___162___axiom" proved="true">
+</theory>
+<theory name="Temp___167___axiom" proved="true">
+</theory>
+<theory name="Temp___172___axiom" proved="true">
+</theory>
 <theory name="Admin__isavailable___axiom" proved="true">
 </theory>
 <theory name="Admin__maxdatalength___axiom" proved="true">
+</theory>
+<theory name="Admin__optokeyed__aggregate_def___axiom" proved="true">
 </theory>
 <theory name="Admin__optokeyed___axiom" proved="true">
 </theory>

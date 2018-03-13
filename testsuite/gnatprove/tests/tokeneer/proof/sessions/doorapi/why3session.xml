@@ -61,13 +61,25 @@
 </theory>
 <theory name="Array__Int__Standard__character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__character_Comp" proved="true">
+</theory>
 <theory name="Standard__string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
+</theory>
 <theory name="Standard__wide_string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_wide_character" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
 </theory>
 <theory name="Standard__wide_wide_string" proved="true">
 </theory>
@@ -727,6 +739,10 @@
 </theory>
 <theory name="Array__Int__System__unsigned_types__packed_byte" proved="true">
 </theory>
+<theory name="Array__Int__System__unsigned_types__packed_byte__Concat" proved="true">
+</theory>
+<theory name="Array__Int__System__unsigned_types__packed_byte_Comp" proved="true">
+</theory>
 <theory name="System__unsigned_types__packed_bytes1" proved="true">
 </theory>
 <theory name="System__unsigned_types__packed_bytes2" proved="true">
@@ -957,6 +973,12 @@
 </theory>
 <theory name="Array__Int__Bool" proved="true">
 </theory>
+<theory name="Array__Int__Bool__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Bool__Bool_Op" proved="true">
+</theory>
+<theory name="Array__Int__Bool_Comp" proved="true">
+</theory>
 <theory name="Ada__strings__maps__Tcharacter_set_internalB" proved="true">
 </theory>
 <theory name="Ada__strings__maps__Tcharacter_setB" proved="true">
@@ -970,6 +992,8 @@
 <theory name="Ada__strings__maps__character_range" proved="true">
 </theory>
 <theory name="Array__Int__Ada__strings__maps__character_range" proved="true">
+</theory>
+<theory name="Array__Int__Ada__strings__maps__character_range__Concat" proved="true">
 </theory>
 <theory name="Ada__strings__maps__character_ranges" proved="true">
 </theory>
@@ -1712,6 +1736,8 @@
 <theory name="Commontypes__string8arrayi__rep" proved="true">
 </theory>
 <theory name="Array__Int__Commontypes__string8t" proved="true">
+</theory>
+<theory name="Array__Int__Commontypes__string8t__Concat" proved="true">
 </theory>
 <theory name="Commontypes__Tstring8arraytB" proved="true">
 </theory>
@@ -2733,9 +2759,13 @@
 </theory>
 <theory name="System__zcx_by_default___axiom" proved="true">
 </theory>
+<theory name="Ada__strings__maps__null_set__aggregate_def___axiom" proved="true">
+</theory>
 <theory name="Ada__strings__maps__null_set___axiom" proved="true">
 </theory>
 <theory name="Ada__strings__maps__identity___axiom" proved="true">
+</theory>
+<theory name="Temp___161___axiom" proved="true">
 </theory>
 <theory name="Tcpip__nullmsg___axiom" proved="true">
 </theory>
@@ -2849,6 +2879,8 @@
 </theory>
 <theory name="Ada__strings__fixed__Omultiply__2___axiom" proved="true">
 </theory>
+<theory name="Temp___630___axiom" proved="true">
+</theory>
 <theory name="Tcpip__connecttospre___axiom" proved="true">
 </theory>
 <theory name="Tcpip__disconnectfromspre___axiom" proved="true">
@@ -2914,20 +2946,20 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="407"/></proof>
-  <proof prover="2"><result status="unknown" steps="20"/></proof>
+  <proof prover="1"><result status="unknown" steps="618"/></proof>
+  <proof prover="2"><result status="unknown" steps="618"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="2"><result status="unknown" steps="37"/></proof>
+  <proof prover="2"><result status="unknown" steps="66252"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="2"><result status="unknown" steps="37"/></proof>
+  <proof prover="2"><result status="unknown" steps="63814"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
