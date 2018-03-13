@@ -1,6 +1,9 @@
 \documentclass{llncs}
 
 
+
+\newcommand\maroua[1]{\textcolor{red}{#1}}
+
 \usepackage[modulo]{lineno}
 \linenumbers
 %\pagestyle{plain}
@@ -214,7 +217,7 @@ the value of their designated objects safely possible. Note that we allow an \ke
 We say an access-to-variable object is ``observed'' when its value has been copied into an ``observer,'' and both the original
 access object and the copy, starting at that point, can only be used for gaining read access to the designated object.
 The original object remains in the observed state until the end of the scope of the observer. While being observed, neither the observed object nor the observer is allowed to be moved or
-borrowed.  The original access object must not be used as the target of an assignment since we want the observed object to continue
+borrowed. The original access object must not be used as the target of an assignment since we want the observed object to continue
 to designate the same object as long as any observers exist.  As with borrowing, observing applies recursively down the tree rooted at the original access object, meaning that at the point where a name is observed,
 every name with that name as a prefix, is similarly observed.
 
@@ -223,6 +226,7 @@ We consider as observing the assignment operations used to \textit{initialize} s
 In the code snippet of Figure \ref{fig:observe_exp}, \var{X\_Param} and \var{Y\_Param} are access-to-constant objects of an anonymous type. Since the assignment of the value of \var{X} to \var{X\_Param}
 as well as to \var{Y\_Param} are part of the initialization of the target objects, this initiates the observing, and while \var{X\_Param} and \var{Y\_Param} exist they provide read-only access. Note that
 this allows us to call the function \var{Sum} using \var{X} as a first and second parameter -- upon the first occurrence of \var{X} it enters the observed state, but we can still observe it further. 
+\maroua{Note that while the call to \var{Sum} is in progress, variale \var{X} is observed and therefore cannot be modified by any other task that has visibility on it. (to answer the comment below)}
 
 \begin{figure}[htb!]
 \centering
@@ -232,6 +236,8 @@ this allows us to call the function \var{Sum} using \var{X} as a first and secon
 \end{figure}
 
 \todo[inline]{For instance, in Figure 3, how can you prove that another task that has visibility over variable X is not concurrently modifying the object pointed to by X while the call to Sum is in progress?}
+
+
 \subsubsection{Preventing Read-Write Aliasing}
 \label{sec:noaliasing}
 
@@ -369,8 +375,10 @@ $\ell_{10}$ and $\ell_{17}$.
 \todo[inline]{Reviewer 3 finds the section 3 with no benefit to the reader, except to
   recall why aliasing is an issue. He thinks the paper definitely miss some
   information on how SPARK would benefit from this AI, e.g. in terms
-  of additional language features while this is the purpose of the section}
+  of additional language features}
 
+\maroua{I suggest to ignore this comment since this section effectively shows how SPARK would benefit from this AI. We may however focus on the fact that SPARK still does not
+allow the use of pointers and how important it is to permit it.}
 
 The existing SPARK restrictions imposed on its current subset of Ada ensure that an assignment to one variable cannot change the value of some other visible variable. This property is essential to allow sound modular static analysis,
 where each subprogram can be analyzed independently while detecting all possible violations of the kinds targeted by the analysis.
@@ -434,6 +442,7 @@ But calls to \var{Add\_One(X,X)} will be rejected both by compilation and analys
 \section{Related Work}
 
 \todo[inline]{Reviewer 3 suggests to move the related work to section 2}
+\maroua{In the last paragraph we are comparing our work to the one of GA. I don't see how this may be moved to section 2.}
 
 Permission-based programming languages generalize the issue of avoiding harmful aliasing to the more general problem of preventing harmful sharing of resources
 (memory, but also network connections, files, etc.). C-like languages are mostly based on pointers and often sacrifice safety for performance purposes.
