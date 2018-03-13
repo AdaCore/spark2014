@@ -375,8 +375,8 @@ package Gnat2Why.Util is
    --     a record type. E should be a "Representative Type in SPARK".
    --  @return the number of top-level fields in the record representing E into
    --     Why3, which contains:
-   --     - A field __split_discrs for discriminants if E has at list one
-   --     - A field __split_fields for regular fields if E has at list one
+   --     - A field __split_discrs for discriminants if E has at least one
+   --     - A field __split_fields for regular fields if E has at least one
    --       (use Count_Why_Regular_Fields)
    --     - A field attr__constrained if E's discriminants have default values
    --     - A field __tag if E is tagged
