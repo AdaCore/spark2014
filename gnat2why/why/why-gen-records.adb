@@ -30,9 +30,6 @@ with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
-with Sem_Aux;                    use Sem_Aux;
-with Sem_Util;                   use Sem_Util;
-with Sinfo;                      use Sinfo;
 with Sinput;                     use Sinput;
 with Snames;                     use Snames;
 with SPARK_Definition;           use SPARK_Definition;
@@ -174,7 +171,7 @@ package body Why.Gen.Records is
                                   Expr     => +Expr,
                                   To       => EW_Abstract (Ty_Ext));
       Discrs  : constant Natural := Count_Discriminants (Ty_Ext);
-      Discr   : Node_Id := (if Count_Discriminants (Ty_Ext) > 0
+      Discr   : Node_Id := (if Has_Discriminants (Ty_Ext)
                             then First_Discriminant (Ty_Ext)
                             else Empty);
       T_Comp  : W_Pred_Id;
@@ -193,8 +190,6 @@ package body Why.Gen.Records is
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
       while Present (Discr) loop
-         if Is_Not_Hidden_Discriminant (Discr) then
-
             R_Acc := New_Ada_Record_Access
               (Empty, EW_Term, R_Expr, Discr, Ty_Ext);
 
@@ -217,7 +212,6 @@ package body Why.Gen.Records is
             T := +New_And_Then_Expr (Left   => +T,
                                      Right  => +T_Comp,
                                      Domain => EW_Pred);
-         end if;
 
          Next_Discriminant (Discr);
          I := I + 1;
@@ -485,7 +479,7 @@ package body Why.Gen.Records is
       end if;
 
       if Root /= E
-        and then Count_Discriminants (E) > 0
+        and then Has_Discriminants (E)
         and then Is_Constrained (E)
       then
          Declare_Conversion_Check_Function (P, E, Root);
@@ -760,14 +754,12 @@ package body Why.Gen.Records is
    --  Start of processing for Declare_Component_Attributes
 
    begin
-      if Count_Discriminants (E) > 0 then
+      if Has_Discriminants (E) then
          declare
             Discr : Entity_Id := First_Discriminant (E);
          begin
             while Present (Discr) loop
-               if Is_Not_Hidden_Discriminant (Discr) then
-                  Declare_Attribute_For_Field (Discr);
-               end if;
+               Declare_Attribute_For_Field (Discr);
                Next_Discriminant (Discr);
             end loop;
          end;
@@ -819,38 +811,36 @@ package body Why.Gen.Records is
       Discr := First_Discriminant (E);
 
       loop
-         if Is_Not_Hidden_Discriminant (Discr) then
-            Args (Count) := +To_Why_Id
-              (Discr, Local => True, Rec   => Root,
-               Typ => Base_Why_Type (Etype (Discr)));
-            R_Binder (Count) :=
-              Binder_Type'
-                (B_Name => +Args (Count),
-                 others => <>);
-            Check_Pred :=
-              +New_And_Expr
-              (Domain => EW_Pred,
-               Left   => +Check_Pred,
-               Right  =>
-                 New_Call
-                   (Domain => EW_Pred,
-                    Name   => Why_Eq,
-                    Typ    => EW_Bool_Type,
-                    Args =>
-                      (1 => +Args (Count),
-                       2 =>
-                         Insert_Simple_Conversion
-                           (Domain   => EW_Term,
-                            Expr     => New_Call
-                              (Ada_Node => Root,
-                               Name     => To_Why_Id (Discr, Rec => Root),
-                               Args     => (1 => R_Access),
-                               Domain   => EW_Term,
-                               Typ      => EW_Abstract (Etype (Discr))),
-                            To       =>
-                              Base_Why_Type (Etype (Discr))))));
-            Count := Count + 1;
-         end if;
+         Args (Count) := +To_Why_Id
+           (Discr, Local => True, Rec   => Root,
+            Typ          => Base_Why_Type (Etype (Discr)));
+         R_Binder (Count) :=
+           Binder_Type'
+             (B_Name => +Args (Count),
+              others => <>);
+         Check_Pred :=
+           +New_And_Expr
+           (Domain => EW_Pred,
+            Left   => +Check_Pred,
+            Right  =>
+              New_Call
+                (Domain => EW_Pred,
+                 Name   => Why_Eq,
+                 Typ    => EW_Bool_Type,
+                 Args   =>
+                   (1 => +Args (Count),
+                    2 =>
+                      Insert_Simple_Conversion
+                        (Domain   => EW_Term,
+                         Expr     => New_Call
+                           (Ada_Node => Root,
+                            Name     => To_Why_Id (Discr, Rec => Root),
+                            Args     => (1 => R_Access),
+                            Domain   => EW_Term,
+                            Typ      => EW_Abstract (Etype (Discr))),
+                         To       =>
+                           Base_Why_Type (Etype (Discr))))));
+         Count := Count + 1;
          Next_Discriminant (Discr);
          exit when No (Discr);
       end loop;
@@ -996,7 +986,6 @@ package body Why.Gen.Records is
       function Compute_Discriminant_Check (Field : Entity_Id) return W_Pred_Id
       is
          Info : Component_Info := Get_Component_Info (Comp_Info, Field);
-
          Cond : W_Pred_Id := True_Pred;
 
       begin
@@ -1514,31 +1503,29 @@ package body Why.Gen.Records is
             begin
                --  Compare discriminants
 
-               if Count_Discriminants (E) > 0 then
+               if Has_Discriminants (E) then
                   Discr := First_Discriminant (E);
                   loop
-                     if Is_Not_Hidden_Discriminant (Discr) then
-                        declare
-                           Discrs_Id  : constant W_Identifier_Id :=
-                             To_Ident (WNE_Rec_Split_Discrs);
-                           Discr_Id   : constant W_Identifier_Id :=
-                             (if Is_Root then
-                                 To_Why_Id (Discr, Local => True, Rec => E)
-                              else To_Why_Id (Discr, Rec => Root));
-                           Comparison : constant W_Pred_Id :=
-                             New_Field_Equality
-                               (Field_Id     => Discr_Id,
-                                Enclosing_Id => Discrs_Id,
-                                Is_Private   => False,
-                                Field_Type   => Retysp (Etype (Discr)));
-                        begin
-                           Condition :=
-                             +New_And_Then_Expr
-                             (Domain => EW_Pred,
-                              Left   => +Condition,
-                              Right  => +Comparison);
-                        end;
-                     end if;
+                     declare
+                        Discrs_Id  : constant W_Identifier_Id :=
+                          To_Ident (WNE_Rec_Split_Discrs);
+                        Discr_Id   : constant W_Identifier_Id :=
+                          (if Is_Root then
+                              To_Why_Id (Discr, Local => True, Rec => E)
+                           else To_Why_Id (Discr, Rec => Root));
+                        Comparison : constant W_Pred_Id :=
+                          New_Field_Equality
+                            (Field_Id     => Discr_Id,
+                             Enclosing_Id => Discrs_Id,
+                             Is_Private   => False,
+                             Field_Type   => Retysp (Etype (Discr)));
+                     begin
+                        Condition :=
+                          +New_And_Then_Expr
+                          (Domain => EW_Pred,
+                           Left   => +Condition,
+                           Right  => +Comparison);
+                     end;
                      Next_Discriminant (Discr);
                      exit when No (Discr);
                   end loop;
@@ -1571,7 +1558,7 @@ package body Why.Gen.Records is
                                            Comp
                                       else Retysp (Etype (Comp))));
                               Always_Present : constant Boolean :=
-                                Count_Discriminants (E) = 0
+                                not Has_Discriminants (E)
                                 or else Ekind (Comp) /= E_Component;
                            begin
                               Conjuncts (I) :=
@@ -1844,14 +1831,12 @@ package body Why.Gen.Records is
          --  ??? enrich the postcondition of access to discriminant, whenever
          --  we statically know its value (in case of E_Record_Subtype)
 
-         if Count_Discriminants (E) > 0 then
+         if Has_Discriminants (E) then
             declare
                Discr : Entity_Id := First_Discriminant (E);
             begin
                loop
-                  if Is_Not_Hidden_Discriminant (Discr) then
-                     Declare_Protected_Access_Function (Discr);
-                  end if;
+                  Declare_Protected_Access_Function (Discr);
                   Next_Discriminant (Discr);
                   exit when No (Discr);
                end loop;
@@ -1922,18 +1907,16 @@ package body Why.Gen.Records is
                begin
                   if Is_Root then
                      loop
-                        if Is_Not_Hidden_Discriminant (Discr) then
-                           Binders_D (Index) :=
-                             (B_Name   =>
-                                To_Why_Id
-                                  (Discr,
-                                   Local => True,
-                                   Rec   => Root,
-                                   Typ   => EW_Abstract (Etype (Discr))),
-                              Ada_Node => Discr,
-                              others   => <>);
-                           Index := Index + 1;
-                        end if;
+                        Binders_D (Index) :=
+                          (B_Name   =>
+                             To_Why_Id
+                               (Discr,
+                                Local => True,
+                                Rec   => Root,
+                                Typ   => EW_Abstract (Etype (Discr))),
+                           Ada_Node => Discr,
+                           others   => <>);
+                        Index := Index + 1;
                         Next_Discriminant (Discr);
                         exit when No (Discr);
                      end loop;
@@ -2286,7 +2269,7 @@ package body Why.Gen.Records is
       --  Ty's discriminants were already defined in Anc_Ty. Generate
       --  association for them.
 
-      if Count_Discriminants (Ty) > 0 then
+      if Has_Discriminants (Ty) then
          Discr_Expr := New_Discriminants_Access
            (Ada_Node => Ada_Node,
             Domain   => Term_Domain (Domain),
@@ -2351,7 +2334,7 @@ package body Why.Gen.Records is
       --  If the type does not have any discriminants, no check is needed
       --  obviously.
 
-      if Count_Discriminants (Check_Ty) = 0 then
+      if not Has_Discriminants (Check_Ty) then
          return Expr;
       end if;
 
@@ -2959,7 +2942,7 @@ package body Why.Gen.Records is
       --  search for components which do not have the same type as their
       --  first introduction.
 
-      if Count_Discriminants (Current) > 0 then
+      if Has_Discriminants (Current) then
          for Field of Get_Component_Set (Current) loop
             if Ekind (Field) = E_Component
               and then Retysp (Etype (Representative_Component (Field)))
@@ -3044,16 +3027,14 @@ package body Why.Gen.Records is
    begin
       Args (Num_Discr + 1) := +Expr;
       while Present (Discr) loop
-         if Is_Not_Hidden_Discriminant (Discr) then
-            Args (Count) :=
-              Transform_Expr
-                (Domain => EW_Term,
-                 Params => Logic_Params,
-                 Expr   => Node (Elmt),
-                 Expected_Type => Base_Why_Type (Etype (Discr)));
-            Count := Count + 1;
-            Next_Elmt (Elmt);
-         end if;
+         Args (Count) :=
+           Transform_Expr
+             (Domain        => EW_Term,
+              Params        => Logic_Params,
+              Expr          => Node (Elmt),
+              Expected_Type => Base_Why_Type (Etype (Discr)));
+         Count := Count + 1;
+         Next_Elmt (Elmt);
          Next_Discriminant (Discr);
       end loop;
 
@@ -3086,7 +3067,7 @@ package body Why.Gen.Records is
 
       --  Store association for the top-level field for discriminants
 
-      if Count_Discriminants (Ty) > 0 then
+      if Has_Discriminants (Ty) then
          Associations (Index) := New_Field_Association
            (Domain   => EW_Term,
             Field    => E_Symb (Ty, WNE_Rec_Split_Discrs),
@@ -3191,7 +3172,7 @@ package body Why.Gen.Records is
 
          --  Classwide types are translated as clones of their specific types
 
-         if Ekind (Result) in E_Class_Wide_Type | E_Class_Wide_Subtype then
+         if Is_Class_Wide_Type (Result) then
             Result := Retysp (Get_Specific_Type_From_Classwide (Result));
 
          --  Subtypes with a cloned_subtype with the same name are clones
@@ -3205,7 +3186,7 @@ package body Why.Gen.Records is
 
          elsif Ekind (Result) = E_Private_Subtype
            and then not Is_Tagged_Type (Result)
-           and then Count_Discriminants (Result) = 0
+           and then not Has_Discriminants (Result)
          then
             Result := Retysp (Etype (Result));
 
@@ -3227,7 +3208,7 @@ package body Why.Gen.Records is
    begin
       --  Classwide types are translated as clones of their specific types
 
-      if Ekind (E) in E_Class_Wide_Type | E_Class_Wide_Subtype then
+      if Is_Class_Wide_Type (E) then
          return True;
 
       --  Empty record types are not clones
@@ -3246,7 +3227,7 @@ package body Why.Gen.Records is
 
       elsif Ekind (E) = E_Private_Subtype
         and then not Is_Tagged_Type (E)
-        and then Count_Discriminants (E) = 0
+        and then not Has_Discriminants (E)
       then
          return True;
 

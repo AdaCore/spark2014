@@ -24,15 +24,11 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
-with Atree;                   use Atree;
-with Einfo;                   use Einfo;
 with Gnat2Why_Args;
 with Gnat2Why.Expr.Loops.Inv; use Gnat2Why.Expr.Loops.Inv;
 with Gnat2Why.Util;           use Gnat2Why.Util;
 with Namet;                   use Namet;
 with Nlists;                  use Nlists;
-with Sem_Util;
-with Sinfo;                   use Sinfo;
 with Sinput;                  use Sinput;
 with Snames;                  use Snames;
 with SPARK_Util.Types;        use SPARK_Util.Types;
@@ -290,6 +286,12 @@ package body Gnat2Why.Expr.Loops is
    -----------------------------------
 
    function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id is
+      function Is_Loop_Statement (N : Node_Id) return Boolean is
+        (Nkind (N) = N_Loop_Statement);
+      --  Returns True if N is a loop statement
+
+      function Innermost_Loop_Stmt is new
+        First_Parent_With_Property (Is_Loop_Statement);
    begin
       --  If the name is directly in the given node, return that name
 
@@ -301,14 +303,7 @@ package body Gnat2Why.Expr.Loops is
       --  loop.
 
       else
-         declare
-            Cur_Node : Node_Id := N;
-         begin
-            while Nkind (Cur_Node) /= N_Loop_Statement loop
-               Cur_Node := Parent (Cur_Node);
-            end loop;
-            return Entity (Identifier (Cur_Node));
-         end;
+         return Entity (Identifier (Innermost_Loop_Stmt (N)));
       end if;
    end Loop_Entity_Of_Exit_Statement;
 
@@ -645,7 +640,7 @@ package body Gnat2Why.Expr.Loops is
                Typ_For_Cont : constant W_Type_Id :=
                  (if Over_Range then EW_Int_Type
                   else Type_Of_Node
-                    (Etype (First_Entity
+                    (Etype (First_Formal
                      (Get_Iterable_Type_Primitive
                           (Etype (Over_Node), Name_First)))));
                W_Container  : constant W_Expr_Id :=
@@ -656,7 +651,8 @@ package body Gnat2Why.Expr.Loops is
                           Expr     => Transform_Expr
                             (Over_Node, EW_Prog, Body_Params),
                           To       => Typ_For_Cont),
-                     Need_Temp => not Sem_Util.Is_Variable (Over_Node)));
+                     Need_Temp =>
+                        not SPARK_Atree.Is_Variable (Over_Node)));
                --  Introduce a temporary variable for the container expression
                --  except if it is a variable.
 

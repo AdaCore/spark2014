@@ -23,14 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;            use Atree;
-with Einfo;            use Einfo;
-with Gnat2Why.Util;    use Gnat2Why.Util;
-with Types;            use Types;
-with Why.Gen.Binders;  use Why.Gen.Binders;
-with Why.Ids;          use Why.Ids;
-with Why.Sinfo;        use Why.Sinfo;
-with Why.Types;        use Why.Types;
+with Gnat2Why.Util;        use Gnat2Why.Util;
+with SPARK_Atree;          use SPARK_Atree;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with Types;                use Types;
+with Why.Gen.Binders;      use Why.Gen.Binders;
+with Why.Ids;              use Why.Ids;
+with Why.Sinfo;            use Why.Sinfo;
+with Why.Types;            use Why.Types;
 
 package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why. This

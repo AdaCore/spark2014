@@ -24,13 +24,11 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
-with Einfo;                      use Einfo;
 with Flow_Types;                 use Flow_Types;
 with Gnat2Why.Util;              use Gnat2Why.Util;
-with Sem_Eval;                   use Sem_Eval;
-with Sinfo;                      use Sinfo;
+with SPARK_Atree;                use SPARK_Atree;
+with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.Types;           use SPARK_Util.Types;
 with Types;                      use Types;

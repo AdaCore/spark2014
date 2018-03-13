@@ -29,8 +29,6 @@ with Common_Containers;
 with Flow_Utility;           use Flow_Utility;
 with Nlists;                 use Nlists;
 with Gnat2Why.Tables;        use Gnat2Why.Tables;
-with Sem_Aux;                use Sem_Aux;
-with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with Why;                    use Why;
@@ -628,21 +626,19 @@ package body Gnat2Why.Expr.Loops.Inv is
             begin
 
                while Present (Discr) loop
-                  if Is_Not_Hidden_Discriminant (Discr) then
-                     Tmps (I) := New_Temp_Identifier
-                       (Discr, EW_Abstract (Etype (Discr)));
-                     Binds (I) := New_Ada_Record_Access
-                       (Empty, EW_Term, Expr, Discr, Expr_Ty);
+                  Tmps (I) := New_Temp_Identifier
+                    (Discr, EW_Abstract (Etype (Discr)));
+                  Binds (I) := New_Ada_Record_Access
+                    (Empty, EW_Term, Expr, Discr, Expr_Ty);
 
-                     Insert_Entity (Discr, Tmps (I));
+                  Insert_Entity (Discr, Tmps (I));
 
-                     --  Only consider fields which are mutable, hence not
-                     --  discriminants of types without default discriminants
-                     --  or of constrained types.
+                  --  Only consider fields which are mutable, hence not
+                  --  discriminants of types without default discriminants
+                  --  or of constrained types.
 
-                     if Discrs > 0 and then not Is_Constrained (Expr_Ty) then
-                        Handle_Record_Component (Discr);
-                     end if;
+                  if Discrs > 0 and then not Is_Constrained (Expr_Ty) then
+                     Handle_Record_Component (Discr);
                   end if;
 
                   Next_Discriminant (Discr);
@@ -1161,10 +1157,9 @@ package body Gnat2Why.Expr.Loops.Inv is
 
       --  Record write to the protected object for protected procedure or entry
 
-      if Ekind (Scope (Subp)) = E_Protected_Type
-        and then Is_External_Call (Call)
-      then
-         Update_Status (Prefix (Sinfo.Name (Call)), Loop_Writes, Inv_Seen);
+      if Within_Protected_Type (Subp) and then Is_External_Call (Call) then
+         Update_Status
+           (Prefix (SPARK_Atree.Name (Call)), Loop_Writes, Inv_Seen);
 
          --  ??? for internal calls we currently do not handle the implicit
          --  self reference.
@@ -1231,7 +1226,7 @@ package body Gnat2Why.Expr.Loops.Inv is
    begin
       case Nkind (N) is
          when N_Assignment_Statement =>
-            Update_Status (Sinfo.Name (N), Loop_Writes, Inv_Seen);
+            Update_Status (SPARK_Atree.Name (N), Loop_Writes, Inv_Seen);
 
          --  Possibly record writes on variables local to the block (if
          --  In_Nested is still False at this point) as a Loop_Invariant
@@ -1357,53 +1352,20 @@ package body Gnat2Why.Expr.Loops.Inv is
             Process_Loop_Statement
               (N, Loop_Writes, Inv_Seen, In_Nested => True);
 
-         when N_Abstract_Subprogram_Declaration
-            | N_Call_Marker
-            | N_Delay_Relative_Statement
-            | N_Delay_Until_Statement
-            | N_Exception_Declaration
-            | N_Exception_Renaming_Declaration
-            | N_Exit_Statement
-            | N_Freeze_Entity
-            | N_Freeze_Generic_Entity
-            | N_Full_Type_Declaration
-            | N_Generic_Instantiation
-            | N_Generic_Package_Declaration
-            | N_Generic_Renaming_Declaration
-            | N_Generic_Subprogram_Declaration
-            | N_Implicit_Label_Declaration
-            | N_Incomplete_Type_Declaration
-            | N_Itype_Reference
-            | N_Label
-            | N_Null_Statement
-            | N_Number_Declaration
-            | N_Object_Renaming_Declaration
-            | N_Package_Body
-            | N_Package_Body_Stub
-            | N_Package_Declaration
-            | N_Package_Renaming_Declaration
-            | N_Pragma
-            | N_Private_Extension_Declaration
-            | N_Private_Type_Declaration
-            | N_Protected_Body
-            | N_Protected_Body_Stub
-            | N_Protected_Type_Declaration
-            | N_Raise_Statement
-            | N_Raise_xxx_Error
-            | N_Representation_Clause
+         when N_Ignored_In_SPARK
             | N_Simple_Return_Statement
-            | N_Subprogram_Body
-            | N_Subprogram_Body_Stub
-            | N_Subprogram_Declaration
-            | N_Subprogram_Renaming_Declaration
             | N_Subtype_Declaration
-            | N_Task_Body
-            | N_Task_Body_Stub
-            | N_Task_Type_Declaration
-            | N_Use_Package_Clause
-            | N_Use_Type_Clause
-            | N_Validate_Unchecked_Conversion
-            | N_Variable_Reference_Marker
+            | N_Full_Type_Declaration
+            | N_Exit_Statement
+            | N_Pragma
+            | N_Raise_xxx_Error
+            | N_Raise_Statement
+            | N_Subprogram_Instantiation
+            | N_Package_Body
+            | N_Package_Declaration
+            | N_Subprogram_Body
+            | N_Subprogram_Declaration
+            | N_Delay_Statement
          =>
             null;
 
@@ -1535,7 +1497,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   if No (Expected_Component) then
                      declare
                         Discarded_Component : constant Entity_Id :=
-                          Original_Record_Component (Updated_Component);
+                          Representative_Component (Updated_Component);
                      begin
                         pragma Assert
                           (if Updated_Status.Component_Status.Contains

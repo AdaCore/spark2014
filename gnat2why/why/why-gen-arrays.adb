@@ -24,15 +24,12 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Atree;                 use Atree;
 with Common_Containers;     use Common_Containers;
 with GNAT.Source_Info;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 with GNATCOLL.Utils;        use GNATCOLL.Utils;
-with Sem_Aux;               use Sem_Aux;
-with Sem_Eval;              use Sem_Eval;
-with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
+with SPARK_Atree;           use SPARK_Atree;
 with SPARK_Util;            use SPARK_Util;
 with SPARK_Util.Types;      use SPARK_Util.Types;
 with Stand;                 use Stand;
@@ -764,7 +761,7 @@ package body Why.Gen.Arrays is
                Retysp (Etype (Index)),
                "I" & Image (I + 1, 1));
 
-            Index := Next_Index (Index);
+            Next_Index (Index);
 
          end loop;
       end;
@@ -1938,7 +1935,8 @@ package body Why.Gen.Arrays is
          if Has_Modular_Integer_Type (Etype (Index)) then
             Type_Name := To_Unbounded_String
               (To_String (WNE_Array_BV_Suffix)
-               & Image (Integer (UI_To_Int (Esize (Etype (Index)))), 1));
+               & Image (Integer (UI_To_Int
+                 (Modular_Size (Etype (Index)))), 1));
          else
             Type_Name :=
               To_Unbounded_String (To_String (WNE_Array_Int_Suffix));
