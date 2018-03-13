@@ -1107,7 +1107,10 @@ package body Gnat2Why.Util is
         (T         : Entity_Id;
          Top_Level : Boolean) return Boolean
       is
-         Ty_Ext : constant Entity_Id := Retysp (T);
+         Ty_Spec   : constant Entity_Id :=
+           (if Is_Class_Wide_Type (T) then Get_Specific_Type_From_Classwide (T)
+            else T);
+         Ty_Ext    : constant Entity_Id := Retysp (Ty_Spec);
 
       begin
          --  Dynamic invariant of the type itself
