@@ -494,13 +494,14 @@ subprogram from analysis. The case of local packages declared inside
 packages is similar to the case of subprograms, so in the following we only
 consider package units.
 
-When a violation occurs in a package body, either it occurs inside a subprogram
-or package in this package body, in which case you can exclude just that
-subprogram or package from analysis or you can exclude the complete package
-body from analysis by removing the pragma ``SPARK_Mode`` that was inserted at
-the start of the file. In that mode, you can still analyze subprograms and
-packages declared inside the package body by annotating them with a
-``SPARK_Mode`` aspect with value ``On`` as follows:
+When a violation occurs in a package body, either in a subprogram or package in
+this package body, you can exclude just that subprogram or package from
+analysis. Alternatively, or if the violation occurs in an object declaration
+that is immediately contained by the package body, you can exclude the complete
+package body from analysis by removing the pragma ``SPARK_Mode`` that was
+inserted at the start of the file. In that mode, you can still analyze
+subprograms and packages declared inside the package body by annotating them
+with a ``SPARK_Mode`` aspect with value ``On`` as follows:
 
 .. code-block:: ada
 
