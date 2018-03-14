@@ -44,11 +44,11 @@ ring_buf.ads:51:51: medium: range check might fail (e.g. when M = (others => 0) 
 ring_buf.ads:58:21: info: initialization of "R.Data" proved
 ring_buf.ads:58:21: info: initialization of "R.First" proved
 ring_buf.ads:58:21: info: initialization of "R.Length" proved
-ring_buf.ads:59:19: medium: postcondition might fail, cannot prove To_Model (R) = ModelModel'(1..0 => 0) (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
+ring_buf.ads:59:19: medium: postcondition might fail, cannot prove To_Model (R) = Model'(1 .. 0 => 0) (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
 ring_buf.ads:59:30: info: initialization of "R.Data" proved
 ring_buf.ads:59:30: info: initialization of "R.First" proved
 ring_buf.ads:59:30: info: initialization of "R.Length" proved
-ring_buf.ads:63:17: medium: postcondition might fail, cannot prove Head'Result = Func_Head (To_Model (R) (e.g. when Head'Result = 0 and R = (Data => (others => 0), First => 0, Length => 0))
+ring_buf.ads:63:17: medium: postcondition might fail, cannot prove Head'Result = Func_Head (To_Model (R)) (e.g. when Head'Result = 0 and R = (Data => (others => 0), First => 0, Length => 0))
 ring_buf.ads:63:31: medium: precondition might fail
 ring_buf.ads:67:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Push (To_Model(R)'Old, X) (e.g. when R = (Data => (others => 0), First => 0, Length => 0) and R'Old = (Data => (others => 0), First => 0, Length => 0) and X = 0)
 ring_buf.ads:69:43: info: initialization of "Element" proved

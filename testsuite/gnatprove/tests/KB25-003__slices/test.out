@@ -4,7 +4,7 @@ pack.adb:12:51: medium: array index check might fail (e.g. when Glob'First = 2 a
 pack.adb:14:41: info: range check proved (CVC4: 4 VC)
 pack.adb:16:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:17:22: info: assertion proved (CVC4: 1 VC)
-pack.adb:18:22: medium: assertion might fail, cannot prove My_B /= (1..4 => 42) (e.g. when My_B = (others => 1))
+pack.adb:18:22: medium: assertion might fail, cannot prove My_B /= (1 .. 4 => 42) (e.g. when My_B = (others => 1))
 pack.adb:23:34: medium: range check might fail (e.g. when Glob'First = 2 and My_S2 = (others => 'NUL'))
 pack.adb:25:41: info: range check proved (CVC4: 4 VC)
 pack.adb:27:22: info: assertion proved (CVC4: 1 VC)

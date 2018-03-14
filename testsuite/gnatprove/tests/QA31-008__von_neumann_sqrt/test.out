@@ -56,7 +56,7 @@ p.adb:93:38: info: division check proved (CVC4: 1 VC)
 p.adb:93:42: info: initialization of "M" proved
 p.adb:94:36: info: initialization of "Left_Y" proved
 p.adb:94:36: info: loop invariant initialization proved (CVC4: 1 VC)
-p.adb:94:36: medium: loop invariant might fail after first iteration, cannot prove Left_Y < 2 ** I
+p.adb:94:36: medium: loop invariant might fail after first iteration, cannot prove Left_Y < 2 ** Integer(I)
 p.adb:94:58: info: initialization of "I" proved
 p.adb:94:58: info: range check proved (altergo: 1 VC)
 p.adb:95:36: info: initialization of "UX" proved
@@ -75,7 +75,7 @@ p.adb:97:36: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:97:36: medium: loop invariant might fail after first iteration, cannot prove Left_Y * Left_Y <= Left_X
 p.adb:97:55: info: initialization of "Left_X" proved
 p.adb:98:36: info: loop invariant initialization proved (CVC4: 1 VC)
-p.adb:98:36: medium: loop invariant might fail after first iteration, cannot prove U64(Left_Y + 1) * U64(Left_Y + 1) > Left_X
+p.adb:98:36: medium: loop invariant might fail after first iteration, cannot prove U64(Left_Y + 1) * U64(Left_Y + 1) > U64(Left_X)
 p.adb:98:40: info: initialization of "Left_Y" proved
 p.adb:98:76: info: initialization of "Left_X" proved
 p.adb:100:15: info: initialization of "M" proved

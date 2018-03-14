@@ -79,12 +79,12 @@ attempt_3.adb:63:40: info: overflow check proved (CVC4: 1 VC)
 attempt_3.adb:63:40: info: range check proved (Interval)
 attempt_3.adb:63:62: info: range check proved (Interval)
 attempt_3.adb:63:62: medium: overflow check might fail
-attempt_3.adb:64:25: medium: assertion might fail, cannot prove FNT65 + 1.0 = N * 65 + 1
+attempt_3.adb:64:25: medium: assertion might fail, cannot prove FNT65 + 1.0 = Float64(N * 65 + 1)
 attempt_3.adb:64:31: info: float overflow check proved (CodePeer)
 attempt_3.adb:64:49: info: overflow check proved (CodePeer)
 attempt_3.adb:64:54: info: overflow check proved (CVC4: 1 VC)
 attempt_3.adb:64:54: info: range check proved (Interval)
-attempt_3.adb:65:25: medium: assertion might fail, cannot prove FNP1T65 = N + 1 * 65
+attempt_3.adb:65:25: medium: assertion might fail, cannot prove FNP1T65 = Float64((N+1) * 65)
 attempt_3.adb:65:49: info: range check proved (Interval)
 attempt_3.adb:65:49: medium: overflow check might fail
 attempt_3.adb:66:25: info: assertion proved (CVC4: 1 VC)

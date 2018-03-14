@@ -47,7 +47,7 @@ array_arith.adb:84:19: info: initialization of "X" proved
 array_arith.adb:85:19: info: initialization of "X" proved
 array_arith.ads:8:20: info: initialization of "X" proved
 array_arith.ads:9:35: info: initialization of "X" proved
-array_arith.ads:9:35: medium: postcondition might fail, cannot prove X(J) = J (e.g. when J = 9 and X = (others => 0))
+array_arith.ads:9:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) (e.g. when J = 9 and X = (others => 0))
 array_arith.ads:11:21: info: initialization of "X" proved
 array_arith.ads:12:35: info: initialization of "X" proved
 array_arith.ads:12:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 9 and X = (others => 0))
