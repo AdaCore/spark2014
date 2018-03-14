@@ -889,7 +889,7 @@ package body Flow_Utility is
       --  assignment (the defined variable is implicitly used).
 
       for N of Seq loop
-         case Valid_Assignment_Kinds (Nkind (N)) is
+         case Interesting_Nodes (Nkind (N)) is
             when N_Selected_Component =>
                Map_Root := Add_Component (Map_Root,
                                           Original_Record_Component
@@ -901,7 +901,7 @@ package body Flow_Utility is
             when N_Unchecked_Type_Conversion =>
                null;
 
-            when others =>
+            when N_Indexed_Component | N_Slice =>
                Partial_Definition := True;
                exit;
          end case;
