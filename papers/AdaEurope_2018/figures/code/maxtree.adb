@@ -17,7 +17,7 @@ function Max (T : in Tree) return Integer is
   Max_Value : Natural := 0;
 begin     
   while Walker /= null loop
-	if Walker.Data > Max then
+	if Walker.Data > Max_Value then
 	  Max_Value := Walker.Data;
 	end if;
 	Walker := Walker.Right; -- assignment to Walker 
