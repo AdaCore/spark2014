@@ -933,17 +933,14 @@ package body Flow_Refinement is
       -----------------------
 
       procedure Process_Component (Rec_Prot_Comp : Entity_Id) is
-         Comp : Entity_Id := Rec_Prot_Comp;
-      begin
+         Comp : constant Entity_Id :=
+           Original_Record_Component (Rec_Prot_Comp);
          --  The components of discriminated subtypes are not marked as source
          --  entities because they are technically "inherited" on the spot. To
          --  handle such components, use the original record component defined
          --  in the parent type.
 
-         if Present (Original_Record_Component (Comp)) then
-            Comp := Original_Record_Component (Comp);
-         end if;
-
+      begin
          --  Do not process internally generated components except for _parent
          --  which represents the ancestor portion of a derived type.
 
