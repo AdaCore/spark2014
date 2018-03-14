@@ -881,8 +881,7 @@ package body Flow_Utility is
 
       Partial_Definition := False;
       View_Conversion    := False;
-      Map_Root           := Direct_Mapping_Id (Unique_Entity
-                                                 (Entity (Root_Node)));
+      Map_Root           := Direct_Mapping_Id (Entity (Root_Node));
 
       --  We now work out which variable (or group of variables) is actually
       --  defined, by following the selected components. If we find an array
