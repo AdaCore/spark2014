@@ -981,7 +981,7 @@ package body Why.Gen.Records is
       Is_Root   : constant Boolean       := Root = E;
       Ty_Name   : constant W_Name_Id     := To_Name (WNE_Rec_Rep);
       Abstr_Ty  : constant W_Type_Id     := New_Named_Type (Name => Ty_Name);
-      Comp_Info : constant Component_Info_Maps.Map := Get_Variant_Info (E);
+      Comp_Info : constant Component_Info_Map := Get_Variant_Info (E);
 
       A_Ident   : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Abstr_Ty);
@@ -995,8 +995,7 @@ package body Why.Gen.Records is
 
       function Compute_Discriminant_Check (Field : Entity_Id) return W_Pred_Id
       is
-         Info : Component_Info :=
-           Comp_Info (Original_Record_Component (Field));
+         Info : Component_Info := Get_Component_Info (Comp_Info, Field);
 
          Cond : W_Pred_Id := True_Pred;
 
@@ -1029,7 +1028,7 @@ package body Why.Gen.Records is
                    (Domain => EW_Pred,
                     Left   => +Cond,
                     Right  => +New_Cond);
-               Info := Comp_Info (Info.Parent_Var_Part);
+               Info := Get_Component_Info (Comp_Info, Info.Parent_Var_Part);
             end;
          end loop;
 

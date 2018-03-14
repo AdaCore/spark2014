@@ -37,7 +37,7 @@ package body Gnat2Why.Tables is
 
    type Record_Info is record
       Components   : Node_Sets.Set;
-      Variant_Info : Component_Info_Maps.Map;
+      Variant_Info : Component_Info_Map;
    end record;
 
    package Component_Info_Map_Maps is new Ada.Containers.Hashed_Maps
@@ -162,6 +162,20 @@ package body Gnat2Why.Tables is
       end case;
    end Find_Rec_Node_For_Variant;
 
+   ------------------------
+   -- Get_Component_Info --
+   ------------------------
+
+   function Get_Component_Info
+     (M    : Component_Info_Map;
+      Comp : Node_Id)
+      return Component_Info
+   is (if Nkind (Comp) = N_Defining_Identifier then
+          M (Original_Record_Component (Comp))
+       else M (Comp));
+   --  The variant info map contains bindings for record components and for
+   --  variant parts. Only original components are stored.
+
    -----------------------
    -- Get_Component_Set --
    -----------------------
@@ -190,13 +204,14 @@ package body Gnat2Why.Tables is
    -- Get_Variant_Info --
    ----------------------
 
-   function Get_Variant_Info (E : Entity_Id) return Component_Info_Maps.Map is
+   function Get_Variant_Info (E : Entity_Id) return Component_Info_Map is
       Ty : constant Entity_Id := Find_Rec_Node_For_Variant (E);
    begin
       if Present (Ty) then
          return Comp_Info (Ty).Variant_Info;
       else
-         return Component_Info_Maps.Empty_Map;
+         return Component_Info_Map'
+           (Component_Info_Maps.Empty_Map with null record);
       end if;
    end Get_Variant_Info;
 
@@ -218,7 +233,7 @@ package body Gnat2Why.Tables is
 
    function Has_Variant_Info (Rec, Comp : Entity_Id) return Boolean is
       Rec_Ty  : constant Entity_Id := Find_Rec_Node_For_Variant (Rec);
-      C_I_Map : constant Component_Info_Maps.Map :=
+      C_I_Map : constant Component_Info_Map :=
         Comp_Info (Rec_Ty).Variant_Info;
       Curs    : constant Component_Info_Maps.Cursor :=
         C_I_Map.Find (Search_Component_In_Type (Rec_Ty, Comp));

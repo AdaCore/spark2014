@@ -64,12 +64,7 @@ package Gnat2Why.Tables is
       Parent_Var_Part : Node_Id;
    end record;
 
-   package Component_Info_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Component_Info,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   type Component_Info_Map is private;
 
    function Component_Is_Visible_In_Type (Rec, Comp : Entity_Id) return Boolean
    with
@@ -81,11 +76,19 @@ package Gnat2Why.Tables is
    --          by a pragma SPARK_Mode (Off), a private derivation, or a
    --          discriminant constraint.
 
-   function Get_Variant_Info (E : Entity_Id) return Component_Info_Maps.Map
+   function Get_Variant_Info (E : Entity_Id) return Component_Info_Map
    with
      Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why
    --  @return E's component info from map Comp_Info
+
+   function Get_Component_Info
+     (M    : Component_Info_Map;
+      Comp : Node_Id)
+      return Component_Info;
+   --  @param M is a Component_Info_Map for a record type
+   --  @param Comp component or a variant part of the record type
+   --  @return component info associated to Comp in M.
 
    function Get_Component_Set (E : Entity_Id) return Node_Sets.Set with
      Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
@@ -133,6 +136,17 @@ package Gnat2Why.Tables is
    --          Also supports hidden components.
 
    function Representative_Component (Comp : Entity_Id) return Entity_Id is
-      (Search_Component_In_Type (Original_Declaration (Comp), Comp));
+     (Search_Component_In_Type (Original_Declaration (Comp), Comp));
+
+private
+
+   package Component_Info_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Component_Info,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   type Component_Info_Map is new Component_Info_Maps.Map with null record;
 
 end Gnat2Why.Tables;
