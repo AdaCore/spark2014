@@ -257,15 +257,9 @@
 </theory>
 <theory name="System__finalization_root__root_controlled" proved="true">
 </theory>
-<theory name="System__finalization_root__Troot_controlledC" proved="true">
-</theory>
 <theory name="Ada__finalization__controlled" proved="true">
 </theory>
 <theory name="Ada__finalization__limited_controlled" proved="true">
-</theory>
-<theory name="Ada__finalization__TcontrolledC" proved="true">
-</theory>
-<theory name="Ada__finalization__Tlimited_controlledC" proved="true">
 </theory>
 <theory name="System__atomic_counters__atomic_unsigned" proved="true">
 </theory>
@@ -316,8 +310,6 @@
 <theory name="Ada__streams__write__item" proved="true">
 </theory>
 <theory name="Ada__streams__write__item___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__Troot_stream_typeC" proved="true">
 </theory>
 <theory name="Ada__streams__write_sea__v" proved="true">
 </theory>
@@ -2173,15 +2165,9 @@
 </theory>
 <theory name="System__finalization_root__root_controlled___axiom" proved="true">
 </theory>
-<theory name="System__finalization_root__Troot_controlledC___axiom" proved="true">
-</theory>
 <theory name="Ada__finalization__controlled___axiom" proved="true">
 </theory>
 <theory name="Ada__finalization__limited_controlled___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__TcontrolledC___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__Tlimited_controlledC___axiom" proved="true">
 </theory>
 <theory name="System__atomic_counters__atomic_unsigned___axiom" proved="true">
 </theory>
@@ -2200,8 +2186,6 @@
 <theory name="Ada__streams__stream_element_count___axiom" proved="true">
 </theory>
 <theory name="Ada__streams__stream_element_array___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__Troot_stream_typeC___axiom" proved="true">
 </theory>
 <theory name="Ada__containers__prime_numbers__primes_type___axiom" proved="true">
 </theory>
@@ -2388,6 +2372,8 @@
 <theory name="System__frontend_exceptions___axiom" proved="true">
 </theory>
 <theory name="System__zcx_by_default___axiom" proved="true">
+</theory>
+<theory name="Ada__containers__prime_numbers__primes__aggregate_def___axiom" proved="true">
 </theory>
 <theory name="Ada__containers__prime_numbers__primes___axiom" proved="true">
 </theory>
