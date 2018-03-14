@@ -478,7 +478,8 @@ read-only observers, with limited lifetimes. Collectively, these mechanisms enfo
 Because the mechanism for these safe pointers relies on a strict control of aliasing, they can be used in the SPARK subset for formal verification, which
 includes both analysis of flows and proof of properties.
 
-This proposal has been formalized as Ada Issue \cite{AI2018} for inclusion in the next version of Ada.
+This proposal has been formalized as Ada Issue \cite{AI2018} for inclusion in the next version of Ada. \maroua{We have also implemented a prototype of these permission rules in the GNAT
+compiler for Ada. Our implementation has succeeded to proove the safety of programs we have studied in this paper.}
 
 \nolinenumbers
 \printbibliography[title={References}]
