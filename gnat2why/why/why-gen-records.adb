@@ -822,7 +822,7 @@ package body Why.Gen.Records is
          if Is_Not_Hidden_Discriminant (Discr) then
             Args (Count) := +To_Why_Id
               (Discr, Local => True, Rec   => Root,
-               Typ => Base_Why_Type (Unique_Entity (Etype (Discr))));
+               Typ => Base_Why_Type (Etype (Discr)));
             R_Binder (Count) :=
               Binder_Type'
                 (B_Name => +Args (Count),
@@ -848,8 +848,7 @@ package body Why.Gen.Records is
                                Domain   => EW_Term,
                                Typ      => EW_Abstract (Etype (Discr))),
                             To       =>
-                              Base_Why_Type
-                                (Unique_Entity (Etype (Discr)))))));
+                              Base_Why_Type (Etype (Discr))))));
             Count := Count + 1;
          end if;
          Next_Discriminant (Discr);
@@ -2248,7 +2247,7 @@ package body Why.Gen.Records is
                 Is_Mutable => False,
                 Type_Kind  => EW_Abstract,
                 Name       =>
-                   Get_Name (E_Symb (Unique_Entity (Root_Record_Type (E)),
+                   Get_Name (E_Symb (Root_Record_Type (E),
                                      WNE_Rec_Split_Discrs))));
 
    ---------------------------
@@ -3047,8 +3046,7 @@ package body Why.Gen.Records is
                 (Domain => EW_Term,
                  Params => Logic_Params,
                  Expr   => Node (Elmt),
-                 Expected_Type =>
-                   Base_Why_Type (Unique_Entity (Etype (Discr))));
+                 Expected_Type => Base_Why_Type (Etype (Discr)));
             Count := Count + 1;
             Next_Elmt (Elmt);
          end if;

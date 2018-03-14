@@ -2006,7 +2006,7 @@ package body Why.Gen.Arrays is
         Get_Array_Theory (Ty_Entity).Get;
       Elts     : W_Expr_Id;
       Ret_Ty   : constant W_Type_Id :=
-        EW_Abstract (Component_Type (Unique_Entity (Ty_Entity)));
+        EW_Abstract (Component_Type (Ty_Entity));
 
    begin
       if Is_Static_Array_Type (Ty_Entity) or else
