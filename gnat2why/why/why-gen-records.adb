@@ -995,8 +995,9 @@ package body Why.Gen.Records is
 
       function Compute_Discriminant_Check (Field : Entity_Id) return W_Pred_Id
       is
-         Info : Component_Info := Comp_Info.Element
-           (Original_Record_Component (Field));
+         Info : Component_Info :=
+           Comp_Info (Original_Record_Component (Field));
+
          Cond : W_Pred_Id := True_Pred;
 
       begin
@@ -1028,7 +1029,7 @@ package body Why.Gen.Records is
                    (Domain => EW_Pred,
                     Left   => +Cond,
                     Right  => +New_Cond);
-               Info := Comp_Info.Element (Info.Parent_Var_Part);
+               Info := Comp_Info (Info.Parent_Var_Part);
             end;
          end loop;
 
