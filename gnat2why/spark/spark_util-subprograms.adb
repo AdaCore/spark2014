@@ -1107,7 +1107,7 @@ package body SPARK_Util.Subprograms is
                                      N_Procedure_Specification);
 
       --  Check if it has no parameters
-      if Parameter_Specifications (Spec) /= No_List then
+      if Present (Parameter_Specifications (Spec)) then
          return False;
       end if;
 

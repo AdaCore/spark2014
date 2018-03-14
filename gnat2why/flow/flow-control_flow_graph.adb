@@ -2052,7 +2052,7 @@ package body Flow.Control_Flow_Graph is
       --  vertex for the if statement itself or the very last elsif
       --  part.
 
-      if Elsif_Part /= No_List then
+      if Present (Elsif_Part) then
          Elsif_Statement := First (Elsif_Part);
          V_Prev          := V;
 
@@ -2106,7 +2106,7 @@ package body Flow.Control_Flow_Graph is
       --  Remember that V is the vertex associated with either the
       --  last elsif blob or the if statement itself.
 
-      if Else_Part /= No_List then
+      if Present (Else_Part) then
          Process_Statement_List (Else_Part, FA, CM, Ctx);
          Linkup (FA, V, CM (Union_Id (Else_Part)).Standard_Entry);
          CM (Union_Id (N)).Standard_Exits.Union

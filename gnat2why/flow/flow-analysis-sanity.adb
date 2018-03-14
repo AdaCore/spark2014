@@ -352,7 +352,7 @@ package body Flow.Analysis.Sanity is
 
                      when N_Private_Extension_Declaration =>
                         pragma Assert
-                          (Discriminant_Specifications (N) = No_List);
+                          (No (Discriminant_Specifications (N)));
 
                      when others =>
                         raise Program_Error;
