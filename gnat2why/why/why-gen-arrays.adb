@@ -31,7 +31,6 @@ with Gnat2Why.Types;        use Gnat2Why.Types;
 with GNATCOLL.Utils;        use GNATCOLL.Utils;
 with Sem_Aux;               use Sem_Aux;
 with Sem_Eval;              use Sem_Eval;
-with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with SPARK_Util;            use SPARK_Util;
