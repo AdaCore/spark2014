@@ -818,7 +818,7 @@ package body Why.Gen.Records is
       Count := 1;
       Discr := First_Discriminant (E);
 
-      while Present (Discr) loop
+      loop
          if Is_Not_Hidden_Discriminant (Discr) then
             Args (Count) := +To_Why_Id
               (Discr, Local => True, Rec   => Root,
@@ -852,6 +852,7 @@ package body Why.Gen.Records is
             Count := Count + 1;
          end if;
          Next_Discriminant (Discr);
+         exit when No (Discr);
       end loop;
 
       Emit (Section,
@@ -1515,7 +1516,7 @@ package body Why.Gen.Records is
 
                if Count_Discriminants (E) > 0 then
                   Discr := First_Discriminant (E);
-                  while Present (Discr) loop
+                  loop
                      if Is_Not_Hidden_Discriminant (Discr) then
                         declare
                            Discrs_Id  : constant W_Identifier_Id :=
@@ -1539,6 +1540,7 @@ package body Why.Gen.Records is
                         end;
                      end if;
                      Next_Discriminant (Discr);
+                     exit when No (Discr);
                   end loop;
                end if;
 
@@ -1846,11 +1848,12 @@ package body Why.Gen.Records is
             declare
                Discr : Entity_Id := First_Discriminant (E);
             begin
-               while Present (Discr) loop
+               loop
                   if Is_Not_Hidden_Discriminant (Discr) then
                      Declare_Protected_Access_Function (Discr);
                   end if;
                   Next_Discriminant (Discr);
+                  exit when No (Discr);
                end loop;
             end;
          end if;
@@ -1918,7 +1921,7 @@ package body Why.Gen.Records is
                   Discr      : Entity_Id := First_Discriminant (E);
                begin
                   if Is_Root then
-                     while Present (Discr) loop
+                     loop
                         if Is_Not_Hidden_Discriminant (Discr) then
                            Binders_D (Index) :=
                              (B_Name   =>
@@ -1932,6 +1935,7 @@ package body Why.Gen.Records is
                            Index := Index + 1;
                         end if;
                         Next_Discriminant (Discr);
+                        exit when No (Discr);
                      end loop;
 
                      Emit_Record_Declaration (Section => P,
