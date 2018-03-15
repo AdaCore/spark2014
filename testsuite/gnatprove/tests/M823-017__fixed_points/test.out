@@ -267,12 +267,6 @@ unsupported.adb:8:04: fixed-point type whose small is not a negative power of 2 
 unsupported.adb:18:13: operation on fixed-point type with non-integer result type is not yet supported
 unsupported.adb:19:13: operation between different fixed-point types is not yet supported
 unsupported.adb:20:13: operation between fixed-point type and universal real is not yet supported
-unsupported.adb:20:15: expression of type root_real is not allowed in SPARK
-unsupported.adb:20:15: value is dependent on the compiler and target
-unsupported.adb:20:15: violation of pragma SPARK_Mode at test.adc:1
-unsupported.adb:21:10: expression of type root_real is not allowed in SPARK
-unsupported.adb:21:10: value is dependent on the compiler and target
-unsupported.adb:21:10: violation of pragma SPARK_Mode at test.adc:1
 unsupported.adb:21:14: operation between fixed-point type and universal real is not yet supported
 unsupported.adb:22:10: conversion between different fixed-point types is not yet supported
 unsupported.adb:23:10: conversion between different fixed-point types is not yet supported
