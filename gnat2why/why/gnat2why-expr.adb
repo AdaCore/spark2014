@@ -1136,7 +1136,7 @@ package body Gnat2Why.Expr is
               (if Is_Object (E) and then Is_Partial_View (E)
                and then Entity_In_SPARK (Full_View (E))
                then Full_View (E) else E);
-            Decl : constant Node_Id := Parent (FV);
+            Decl : constant Node_Id := Enclosing_Declaration (FV);
             Expr : W_Expr_Id;
          begin
             if Ekind (FV) /= E_In_Parameter
@@ -1415,17 +1415,22 @@ package body Gnat2Why.Expr is
       -----------------------------
 
       function Get_Corresponding_Guard (N : Node_Id) return Node_Id is
-         P         : Node_Id;
-         All_Cases : Node_Id;
+
+         function Is_Pragma (N : Node_Id) return Boolean is
+           (Nkind (N) = N_Pragma);
+         --  @param N any Node
+         --  @return True if N is a pragma.
+
+         function Enclosing_Pragma is new
+           First_Parent_With_Property (Is_Pragma);
+
+         P : Node_Id;
 
       begin
          --  Retrieve the enclosing pragma, which may be either a postcondition
          --  or a contract_cases pragma.
 
-         P := Parent (N);
-         while Nkind (P) /= N_Pragma loop
-            P := Parent (P);
-         end loop;
+         P := Enclosing_Pragma (N);
 
          --  Return Empty for a postcondition pragma
 
@@ -1448,13 +1453,22 @@ package body Gnat2Why.Expr is
 
          --  Retrieve the enclosing contract case component_association
 
-         All_Cases :=
-           Get_Pragma_Arg (First (Pragma_Argument_Associations (P)));
+         declare
+            All_Cases : constant List_Id :=
+              Component_Associations
+                (Get_Pragma_Arg (First (Pragma_Argument_Associations (P))));
 
-         P := Parent (N);
-         while Parent (P) /= All_Cases loop
-            P := Parent (P);
-         end loop;
+            function Is_Contract_Case (N : Node_Id) return Boolean is
+              (Is_List_Member (N) and then List_Containing (N) = All_Cases);
+            --  @param N any Node
+            --  @return True if N is a an element of All_Cases.
+
+            function Enclosing_Contract_Case is new
+              First_Parent_With_Property (Is_Contract_Case);
+
+         begin
+            P := Enclosing_Contract_Case (N);
+         end;
 
          pragma Assert (Nkind (P) = N_Component_Association);
 
@@ -2908,12 +2922,14 @@ package body Gnat2Why.Expr is
                     and then (not New_Components
                               or else Original_Declaration (Field) = Ty_Ext)
                   then
-                     if Present (Expression (Parent (Field))) then
+                     if Present (Expression (Enclosing_Declaration (Field)))
+                     then
 
                         --  If Field has a default expression, use it
 
                         T_Comp := Transform_Expr
-                          (Expr          => Expression (Parent (Field)),
+                          (Expr          =>
+                             Expression (Enclosing_Declaration (Field)),
                            Expected_Type => Type_Of_Node (Etype (Field)),
                            Domain        => EW_Prog,
                            Params        => Params);
@@ -3209,7 +3225,7 @@ package body Gnat2Why.Expr is
             --  if Field has a default expression, use it.
             --   <Expr>.rec__field1 = Field1.default
 
-         if Present (Expression (Parent (E))) then
+         if Present (Expression (Enclosing_Declaration (E))) then
             return +New_Comparison
               (Symbol => Why_Eq,
                Left   => Insert_Simple_Conversion
@@ -3217,7 +3233,7 @@ package body Gnat2Why.Expr is
                   Expr   => +F_Expr,
                   To     => Type_Of_Node (F_Ty)),
                Right  => Transform_Expr
-                 (Expr          => Expression (Parent (E)),
+                 (Expr          => Expression (Enclosing_Declaration (E)),
                   Expected_Type => Type_Of_Node (F_Ty),
                   Domain        => EW_Term,
                   Params        => Params),
@@ -6983,24 +6999,18 @@ package body Gnat2Why.Expr is
          ----------------------------
 
          function Get_Name_For_Aggregate (Expr : Node_Id) return String is
-            Par : Node_Id;
+            Obj : constant Entity_Id := Get_Initialized_Object (Expr);
 
          begin
-            --  The object declaration might be the parent expression of the
-            --  aggregate, or there might be a qualification in between. Deal
-            --  uniformly with both cases.
+            --  If Expr is used to initialize an object, reuse the object name
+            --  to get a stable name.
 
-            Par := Parent (Expr);
-
-            if Nkind (Par) = N_Qualified_Expression then
-               Par := Parent (Par);
-            end if;
-
-            if Nkind (Par) = N_Object_Declaration then
-               return Get_Module_Name (E_Module (Defining_Identifier (Par)))
+            if Present (Obj) then
+               return Get_Module_Name (E_Module (Obj))
                  & To_String (WNE_Aggregate_Def_Suffix);
             else
-               return New_Temp_Identifier;
+               return New_Temp_Identifier
+                 (To_String (WNE_Aggregate_Def_Suffix));
             end if;
          end Get_Name_For_Aggregate;
 
@@ -9100,6 +9110,14 @@ package body Gnat2Why.Expr is
 
          when Attribute_Loop_Entry =>
             Loop_Entry : declare
+               function Is_Loop_Stmt (N : Node_Id) return Boolean is
+                 (Nkind (N) = N_Loop_Statement);
+               --  @param N any Node
+               --  @return True if N is a loop statement.
+
+               function Enclosing_Loop_Stmt is new
+                  First_Parent_With_Property (Is_Loop_Stmt);
+
                Arg       : constant Node_Id := First (Expressions (Expr));
                Loop_Id   : Entity_Id;
                Loop_Stmt : Node_Id;
@@ -9115,15 +9133,7 @@ package body Gnat2Why.Expr is
                --  Climb the parent chain to find the nearest enclosing loop
 
                else
-                  Loop_Stmt := Expr;
-                  while Present (Loop_Stmt) loop
-                     if Nkind (Loop_Stmt) = N_Loop_Statement then
-                        exit;
-                     end if;
-
-                     Loop_Stmt := Parent (Loop_Stmt);
-                  end loop;
-
+                  Loop_Stmt := Enclosing_Loop_Stmt (Expr);
                   Loop_Id := Entity (Identifier (Loop_Stmt));
                end if;
 
@@ -9318,7 +9328,7 @@ package body Gnat2Why.Expr is
                      Arg := Array_Convert_To_Base (Domain, Arg);
                   end if;
 
-                  return New_Call (Ada_Node => Parent (Var),
+                  return New_Call (Ada_Node => Expr,
                                    Domain   => Domain,
                                    Name     => Name,
                                    Args     => (1 => Arg),
@@ -9579,7 +9589,7 @@ package body Gnat2Why.Expr is
                   Arg : constant W_Expr_Id :=
                     Transform_Expr (Var, Domain, Params);
                begin
-                  return New_Call (Ada_Node => Parent (Var),
+                  return New_Call (Ada_Node => Expr,
                                    Domain   => Domain,
                                    Name     => Name,
                                    Args     => (1 => Arg),
@@ -9606,7 +9616,7 @@ package body Gnat2Why.Expr is
                   Arg  : constant W_Expr_Id :=
                     Transform_Expr (Var, Domain, Params);
                begin
-                  return New_Call (Ada_Node => Parent (Var),
+                  return New_Call (Ada_Node => Expr,
                                    Domain   => Domain,
                                    Name     => Name,
                                    Args     => (1 => Arg),
@@ -10760,7 +10770,8 @@ package body Gnat2Why.Expr is
                                 and then Original_Declaration (Comp) = Ent
                               then
                                  Typ := Subtype_Indication
-                                   (Component_Definition (Parent (Comp)));
+                                   (Component_Definition
+                                      (Enclosing_Declaration (Comp)));
 
                                  if Present (Typ)
                                    and then Nkind (Typ) = N_Subtype_Indication
@@ -12855,9 +12866,9 @@ package body Gnat2Why.Expr is
       --  Discriminals are not translated in Why3. Use their discriminal link
       --  instead.
 
-      elsif Is_Discriminal (Ent)
-        and then Ekind (Scope (Ent)) in E_Protected_Type | E_Task_Type
-      then
+      elsif Is_Discriminal (Ent) then
+         pragma Assert (Is_Concurrent_Type (Scope (Ent)));
+
          T := Transform_Identifier (Params   => Params,
                                     Expr     => Expr,
                                     Ent      => Discriminal_Link (Ent),
@@ -12873,10 +12884,7 @@ package body Gnat2Why.Expr is
 
       elsif Is_Protected_Component_Or_Discr_Or_Part_Of (Ent) then
          declare
-            Prot : constant Entity_Id :=
-              (if Is_Part_Of_Protected_Object (Ent)
-               then Etype (Encapsulating_State (Ent))
-               else Scope (Ent));
+            Prot : constant Entity_Id := Enclosing_Concurrent_Type (Ent);
 
             pragma Assert (Ekind (Prot) = E_Protected_Type);
 
@@ -16115,14 +16123,16 @@ package body Gnat2Why.Expr is
 
                for Field of Get_Component_Set (Ty_Ext) loop
                   if Component_Is_Visible_In_Type (Ty_Ext, Field) then
-                     if Present (Expression (Parent (Field))) then
+                     if Present (Expression (Enclosing_Declaration (Field)))
+                     then
 
                         --  if Field has a default expression, use it.
                         --   <Expr>.rec__field1 = Field1.default
 
-                        Variables.Union (Get_Variables_For_Proof
-                                           (Expression (Parent (Field)),
-                                            Ty_Ext));
+                        Variables.Union
+                          (Get_Variables_For_Proof
+                             (Expression (Enclosing_Declaration (Field)),
+                              Ty_Ext));
                      else
 
                         --  otherwise, use its Field's Etype default value.

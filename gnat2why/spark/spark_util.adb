@@ -666,6 +666,20 @@ package body SPARK_Util is
       end if;
    end File_Name_Without_Suffix;
 
+   --------------------------------
+   -- First_Parent_With_Property --
+   --------------------------------
+
+   function First_Parent_With_Property (N : Node_Id) return Node_Id is
+      P : Node_Id := N;
+   begin
+      loop
+         P := Parent (P);
+         exit when No (P) or else Property (P);
+      end loop;
+      return P;
+   end First_Parent_With_Property;
+
    ---------------------
    -- Full_Entry_Name --
    ---------------------
@@ -909,6 +923,29 @@ package body SPARK_Util is
       pragma Assert (Present (Formal));
       return Formal;
    end Get_Formal_From_Actual;
+
+   ----------------------------
+   -- Get_Initialized_Object --
+   ----------------------------
+
+   function Get_Initialized_Object (N : Node_Id) return Entity_Id is
+      Par : Node_Id := Parent (N);
+
+   begin
+      --  The object declaration might be the parent expression of the
+      --  aggregate, or there might be a qualification in between. Deal
+      --  uniformly with both cases.
+
+      if Nkind (Par) = N_Qualified_Expression then
+         Par := Parent (Par);
+      end if;
+
+      if Nkind (Par) = N_Object_Declaration then
+         return Defining_Identifier (Par);
+      else
+         return Empty;
+      end if;
+   end Get_Initialized_Object;
 
    ---------------
    -- Get_Range --

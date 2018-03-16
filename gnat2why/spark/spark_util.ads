@@ -406,6 +406,24 @@ package SPARK_Util is
    --  @param N any expression node
    --  @return the node as pretty printed Ada code, limited to 50 chars
 
+   generic
+      with function Property (N : Node_Id) return Boolean;
+   function First_Parent_With_Property (N : Node_Id) return Node_Id with
+     Post => No (First_Parent_With_Property'Result)
+     or else Property (First_Parent_With_Property'Result);
+   --  @param N any node
+   --  @return the first node in the chain of parents of N for which Property
+   --     returns True.
+
+   function Get_Initialized_Object (N : Node_Id) return Entity_Id with
+     Pre  => Nkind (N) in N_Subexpr,
+     Post => No (Get_Initialized_Object'Result)
+     or else Is_Object (Get_Initialized_Object'Result);
+   --  @param N any expression node
+   --  @return if N is used to initialize an object, return this object. Return
+   --      Empty otherwise. This is used to get a stable name for aggregates
+   --      used as definition of objects.
+
    ----------------------------------
    -- Queries for particular nodes --
    ----------------------------------
