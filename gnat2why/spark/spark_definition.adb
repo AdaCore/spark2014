@@ -3667,9 +3667,8 @@ package body SPARK_Definition is
                   Violation_Detected := True;
                   if Emit_Messages and then SPARK_Pragma_Is (Opt.On)
                   then
-                     Error_Msg_Node_1 := E;
-                     Error_Msg_N
-                       ("default expression cannot mention }", E);
+                     Error_Msg_NE
+                       ("default expression cannot mention }", E, E);
                   end if;
                end if;
 
