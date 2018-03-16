@@ -16,8 +16,8 @@ package body Math_Utils is
             Result := V (I);
          end if;
 
-         pragma Loop_Variant (Increases => I);
          pragma Assert (I in V'Range);
+         pragma Loop_Variant (Increases => I);
          pragma Loop_Invariant
            (for all K in V'First .. I => Result >= V (K));
          pragma Loop_Invariant
