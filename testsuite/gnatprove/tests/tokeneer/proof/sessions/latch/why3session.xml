@@ -3938,7 +3938,7 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="80"/></proof>
+  <proof prover="0"><result status="valid" steps="114"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="101"/></proof>
@@ -3962,7 +3962,7 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="31"/></proof>
+  <proof prover="0"><result status="valid" steps="49"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="32"/></proof>
@@ -3980,7 +3980,7 @@
   <proof prover="0"><result status="valid" steps="52"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="102"/></proof>
+  <proof prover="0"><result status="valid" steps="126"/></proof>
   </goal>
  </transf>
  </goal>

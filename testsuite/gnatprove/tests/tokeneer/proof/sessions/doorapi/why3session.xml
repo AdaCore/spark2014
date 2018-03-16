@@ -2946,20 +2946,20 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="618"/></proof>
-  <proof prover="2"><result status="unknown" steps="618"/></proof>
+  <proof prover="1"><result status="unknown" steps="658"/></proof>
+  <proof prover="2"><result status="unknown" steps="658"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="2"><result status="unknown" steps="66252"/></proof>
+  <proof prover="2"><result status="unknown" steps="211475"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="2"><result status="unknown" steps="63814"/></proof>
+  <proof prover="2"><result status="unknown" steps="232686"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>

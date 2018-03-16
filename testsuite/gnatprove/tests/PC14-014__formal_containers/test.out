@@ -459,7 +459,7 @@ my_lists.adb:61:26: medium: precondition might fail
 my_lists.adb:61:58: info: initialization of private part of "L" proved
 my_lists.adb:61:62: info: initialization of "D.Node" proved
 my_lists.adb:61:65: medium: overflow check might fail
-my_lists.adb:62:07: medium: precondition might fail
+my_lists.adb:62:07: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:62:15: info: initialization of private part of "L" proved
 my_lists.adb:62:18: info: initialization of "D.Node" proved
 my_lists.adb:63:12: medium: precondition might fail
@@ -995,7 +995,7 @@ my_ordered_maps.adb:136:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:136:36: info: initialization of private part of "L" proved
 my_ordered_maps.adb:137:18: info: initialization of private part of "L" proved
 my_ordered_maps.adb:138:16: info: initialization of private part of "L" proved
-my_ordered_maps.adb:139:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:139:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:139:32: info: initialization of private part of "L" proved
 my_ordered_maps.adb:140:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:141:22: medium: assertion might fail, cannot prove Length (L) = 0
@@ -1197,7 +1197,7 @@ my_ordered_sets.adb:118:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:118:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:119:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:119:16: info: initialization of private part of "L" proved
-my_ordered_sets.adb:120:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:120:22: medium: assertion might fail, cannot prove not Contains (L, (F => 4, G => 4))
 my_ordered_sets.adb:120:36: info: initialization of private part of "L" proved
 my_ordered_sets.adb:121:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:121:16: info: initialization of private part of "L" proved
@@ -1224,7 +1224,7 @@ my_ordered_sets.adb:135:16: info: initialization of private part of "K" proved
 my_ordered_sets.adb:136:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:136:15: info: initialization of private part of "K" proved
 my_ordered_sets.adb:137:18: info: initialization of private part of "K" proved
-my_ordered_sets.adb:138:22: medium: assertion might fail, cannot prove Contains (K, 2)
+my_ordered_sets.adb:138:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:138:32: info: initialization of private part of "K" proved
 my_ordered_sets.adb:139:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:139:15: info: initialization of private part of "K" proved
@@ -1289,7 +1289,7 @@ my_ordered_sets.adb:180:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:180:36: info: initialization of private part of "L" proved
 my_ordered_sets.adb:181:18: info: initialization of private part of "L" proved
 my_ordered_sets.adb:182:16: info: initialization of private part of "L" proved
-my_ordered_sets.adb:183:22: medium: assertion might fail, cannot prove Contains (L, (f => 1), (g => 8))
+my_ordered_sets.adb:183:22: medium: assertion might fail, cannot prove Contains (L, (F => 1, G => 8))
 my_ordered_sets.adb:183:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:184:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:185:22: info: assertion proved (Z3: 1 VC)
@@ -1365,7 +1365,7 @@ my_sets.adb:42:47: info: initialization of private part of "K" proved
 my_sets.adb:43:10: info: precondition proved (Z3: 1 VC)
 my_sets.adb:43:18: info: initialization of private part of "M" proved
 my_sets.adb:43:21: info: initialization of private part of "K" proved
-my_sets.adb:44:25: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:44:25: info: assertion proved (Z3: 1 VC)
 my_sets.adb:44:26: info: initialization of private part of "M" proved
 my_sets.adb:44:38: info: initialization of private part of "K" proved
 my_sets.adb:44:44: info: initialization of private part of "L" proved
@@ -1384,7 +1384,7 @@ my_sets.adb:51:28: info: precondition proved (Z3: 1 VC)
 my_sets.adb:51:37: info: initialization of private part of "K" proved
 my_sets.adb:51:39: info: precondition proved (Z3: 1 VC)
 my_sets.adb:51:42: info: initialization of private part of "L" proved
-my_sets.adb:52:25: info: assertion proved (Z3: 1 VC)
+my_sets.adb:52:25: info: assertion proved (CVC4: 1 VC)
 my_sets.adb:52:42: info: initialization of private part of "M" proved
 my_sets.adb:52:51: info: initialization of private part of "K" proved
 my_sets.adb:52:57: info: initialization of private part of "L" proved

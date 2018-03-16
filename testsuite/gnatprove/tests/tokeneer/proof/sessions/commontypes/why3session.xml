@@ -397,7 +397,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="103"/></proof>
+  <proof prover="1"><result status="valid" steps="111"/></proof>
   </goal>
  </transf>
  </goal>
@@ -409,7 +409,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="103"/></proof>
+  <proof prover="1"><result status="valid" steps="111"/></proof>
   </goal>
  </transf>
  </goal>
@@ -421,7 +421,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="103"/></proof>
+  <proof prover="1"><result status="valid" steps="111"/></proof>
   </goal>
  </transf>
  </goal>
@@ -431,14 +431,14 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="95"/></proof>
-  <proof prover="2"><result status="unknown" steps="92"/></proof>
+  <proof prover="1"><result status="unknown" steps="107"/></proof>
+  <proof prover="2"><result status="unknown" steps="104"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="116"/></proof>
-  <proof prover="2"><result status="unknown" steps="116"/></proof>
+  <proof prover="1"><result status="unknown" steps="136"/></proof>
+  <proof prover="2"><result status="unknown" steps="136"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
@@ -449,14 +449,14 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="95"/></proof>
-  <proof prover="2"><result status="unknown" steps="92"/></proof>
+  <proof prover="1"><result status="unknown" steps="107"/></proof>
+  <proof prover="2"><result status="unknown" steps="104"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="116"/></proof>
-  <proof prover="2"><result status="unknown" steps="116"/></proof>
+  <proof prover="1"><result status="unknown" steps="136"/></proof>
+  <proof prover="2"><result status="unknown" steps="136"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>

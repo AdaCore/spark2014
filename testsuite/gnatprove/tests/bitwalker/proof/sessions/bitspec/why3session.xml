@@ -58,13 +58,25 @@
 </theory>
 <theory name="Array__Int__Standard__character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__character_Comp" proved="true">
+</theory>
 <theory name="Standard__string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
+</theory>
 <theory name="Standard__wide_string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_wide_character" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
 </theory>
 <theory name="Standard__wide_wide_string" proved="true">
 </theory>
@@ -324,6 +336,10 @@
 </theory>
 <theory name="Array__Int__Interfaces__unsigned_8" proved="true">
 </theory>
+<theory name="Array__Int__Interfaces__unsigned_8__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Interfaces__unsigned_8_Comp" proved="true">
+</theory>
 <theory name="Bittypes__byte_sequence" proved="true">
 </theory>
 <theory name="Bvext__nth" proved="true">
@@ -467,7 +483,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="62"/></proof>
+  <proof prover="0"><result status="valid" steps="66"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
