@@ -2,7 +2,7 @@ ng.adb:29:07: info: initialization of "Success" proved
 ng.adb:30:07: info: initialization of "Result" proved
 ng.adb:33:18: info: initialization of "Success" proved
 ng.adb:34:17: info: initialization of "Result" proved
-ng.adb:34:17: medium: postcondition might fail, cannot prove Result = 207 * ThisCount - PrevCount + 207 * ThisCount - PrevCount * CurrTime - ThisTime / ... - ... * ... / ...
+ng.adb:34:17: medium: postcondition might fail, cannot prove Result = Velocity( (((WHCF * Integer (ThisCount - PrevCount)) + ((WHCF * Integer (ThisCount - PrevCount)) * Integer (CurrTime - ThisTime)) / Integer (ThisTime - PrevTime)) * 3600) / Integer (CurrTime - PrevTime))
 ng.adb:36:27: info: overflow check proved (altergo: 1 VC)
 ng.adb:36:62: info: overflow check proved (altergo: 1 VC)
 ng.adb:37:29: info: overflow check proved (altergo: 1 VC)
