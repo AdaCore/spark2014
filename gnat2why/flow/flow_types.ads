@@ -349,7 +349,8 @@ package Flow_Types is
       return Flow_Id
    with Pre  => F.Kind in Direct_Mapping | Record_Field and then
                 (Nkind (Comp) = N_Defining_Identifier and then
-                   Ekind (Comp) in E_Component | E_Discriminant) and then
+                   (Ekind (Comp) in E_Component | E_Discriminant
+                    or else Is_Part_Of_Concurrent_Object (Comp))) and then
                 F.Facet = Normal_Part,
         Post => Add_Component'Result.Kind = Record_Field;
    --  Returns the same Flow_Id, but accessed with the given component
@@ -365,38 +366,16 @@ package Flow_Types is
    --  @return True iff F represents a discriminant, component, or Part_Of
    --     concurrent type
 
-   function Belongs_To_Protected_Type (F : Flow_Id) return Boolean;
-   --  @param F is the Flow_Id which will be checked
-   --  @return True iff F represents a discriminant, component, or Part_Of
-   --     protected type
-
-   function Enclosing_Concurrent_Type (F : Flow_Id) return Entity_Id
-   with Pre  => Belongs_To_Concurrent_Type (F),
-        Post => Ekind (Enclosing_Concurrent_Type'Result) in E_Protected_Type |
-                                                            E_Task_Type;
-   --  @param E is the entity of a component, discriminant or Part of
-   --     concurrent type
-   --  @return concurrent type
-
    function Encapsulating_State (F : Flow_Id) return Flow_Id
    with Pre => F.Kind in Direct_Mapping | Record_Field | Magic_String
                and then Is_Constituent (F);
    --  Returns the encapsulating state of F
 
-   function Is_Discriminant (F : Flow_Id) return Boolean;
+   function Is_Discriminant (F : Flow_Id) return Boolean
+   with Pre => Present (F);
    --  @param F is the Flow_Id which will be checked
    --  @return True iff the given Flow_Id is discriminant (this includes
    --    discriminants for protected types and tasks).
-
-   function Is_Record_Discriminant (F : Flow_Id) return Boolean;
-   --  @param F is the Flow_Id which will be checked
-   --  @return True iff the given Flow_Id is a record field representing a
-   --    discriminant.
-
-   function Is_Concurrent_Discriminant (F : Flow_Id) return Boolean;
-   --  @param F is the Flow_Id which will be checked
-   --  @return True iff the given Flow_Id is a discriminant belonging to a
-   --    concurrent type.
 
    function Is_Private_Part (F : Flow_Id) return Boolean
    is (F.Kind in Direct_Mapping | Record_Field

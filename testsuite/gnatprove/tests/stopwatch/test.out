@@ -1,5 +1,3 @@
-display.adb:19:21: medium: missing dependency "Internal_State => Internal_State"
-display.adb:20:39: medium: incorrect dependency "null => Internal_State"
 display.adb:39:29: medium: overflow check might fail
 display.adb:51:36: info: initialization of "Internal_State" constituent of "State" proved
 display.adb:55:07: medium: "Internal_State" constituent of "State" is not set

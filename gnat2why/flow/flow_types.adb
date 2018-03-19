@@ -341,7 +341,10 @@ package body Flow_Types is
                        else Entity_Vectors.Empty_Vector));
 
    begin
-      Tmp.Component.Append (Original_Record_Component (Comp));
+      Tmp.Component.Append
+        (if Is_Part_Of_Concurrent_Object (Comp)
+         then Comp
+         else Original_Record_Component (Comp));
 
       return Tmp;
    end Add_Component;
@@ -352,86 +355,30 @@ package body Flow_Types is
 
    function Belongs_To_Concurrent_Type (F : Flow_Id) return Boolean is
    begin
-      if F.Kind in Direct_Mapping | Record_Field then
+      if F.Kind = Record_Field
+        and then Ekind (Get_Direct_Mapping_Id (F)) in E_Protected_Type
+                                                    | E_Task_Type
+      then
          declare
-            E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            Comp : constant Entity_Id := F.Component.First_Element with Ghost;
          begin
-            return Is_Part_Of_Concurrent_Object (E)
-              or else Is_Concurrent_Component_Or_Discr (E);
+            pragma Assert (Is_Part_Of_Concurrent_Object (Comp)
+                             or else Is_Concurrent_Component_Or_Discr (Comp));
+            return True;
          end;
       else
          return False;
       end if;
    end Belongs_To_Concurrent_Type;
 
-   -------------------------------
-   -- Belongs_To_Protected_Type --
-   -------------------------------
-
-   function Belongs_To_Protected_Type (F : Flow_Id) return Boolean is
-     (F.Kind in Direct_Mapping | Record_Field
-        and then
-      Is_Protected_Component_Or_Discr_Or_Part_Of (Get_Direct_Mapping_Id (F)));
-
-   -------------------------------
-   -- Enclosing_Concurrent_Type --
-   -------------------------------
-
-   function Enclosing_Concurrent_Type (F : Flow_Id) return Entity_Id is
-   begin
-      return Enclosing_Concurrent_Type (Get_Direct_Mapping_Id (F));
-   end Enclosing_Concurrent_Type;
-
    ---------------------
    -- Is_Discriminant --
    ---------------------
 
    function Is_Discriminant (F : Flow_Id) return Boolean is
-     (case F.Kind is
-         when Record_Field =>
-            F.Facet = Normal_Part
-              and then Ekind (F.Component.Last_Element) = E_Discriminant,
-         when Direct_Mapping =>
-            Ekind (F.Node) = E_Discriminant,
-         when Magic_String | Synthetic_Null_Export =>
-            False,
-         when Null_Value =>
-            raise Program_Error);
-
-   ----------------------------
-   -- Is_Record_Discriminant --
-   ----------------------------
-
-   function Is_Record_Discriminant (F : Flow_Id) return Boolean is
-     (case F.Kind is
-         when Record_Field =>
-            F.Facet = Normal_Part
-              and then Ekind (F.Component.Last_Element) = E_Discriminant,
-         when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
-            False,
-         when Null_Value =>
-            raise Program_Error);
-
-   --------------------------------
-   -- Is_Concurrent_Discriminant --
-   --------------------------------
-
-   function Is_Concurrent_Discriminant (F : Flow_Id) return Boolean is
-   begin
-      if F.Kind in Direct_Mapping | Record_Field then
-         declare
-            E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-         begin
-            --  Protected discriminants appear either as E_In_Parameter
-            --  (in spec of protected types, e.g. in pragma Priority) or
-            --  as E_Discriminant (everywhere else).
-            return Ekind (E) in E_Discriminant | E_In_Parameter
-              and then Ekind (Scope (E)) in E_Protected_Type | E_Task_Type;
-         end;
-      else
-         return False;
-      end if;
-   end Is_Concurrent_Discriminant;
+     (F.Kind = Record_Field
+      and then F.Facet = Normal_Part
+      and then Ekind (F.Component.Last_Element) = E_Discriminant);
 
    -----------------
    -- Is_Volatile --
@@ -447,13 +394,48 @@ package body Flow_Types is
             return GG_Is_Volatile (F.Name);
 
          when Direct_Mapping | Record_Field =>
-            return Has_Volatile (Get_Direct_Mapping_Id (F));
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
+            begin
+               return Has_Volatile (E)
+                 or else
+                   (Is_Single_Concurrent_Type (E)
+                    and then F.Kind = Record_Field
+                    and then
+                      Is_Part_Of_Concurrent_Object (F.Component.First_Element)
+                    and then Has_Volatile (F.Component.First_Element));
+            end;
 
          when Synthetic_Null_Export =>
             --  The special null export is a volatile (AR, EW)
             return True;
       end case;
    end Is_Volatile;
+
+   function Is_Volatile_Part_Of
+     (E       : Entity_Id;
+      Flavour : Volatile_Pragma_Id)
+      return Boolean
+   with Pre => Is_Concurrent_Component_Or_Discr (E)
+               or else Is_Part_Of_Concurrent_Object (E);
+   --  A helper routine for volatility checks of parts of concurrent units
+
+   -------------------------
+   -- Is_Volatile_Part_Of --
+   -------------------------
+
+   function Is_Volatile_Part_Of
+     (E       : Entity_Id;
+      Flavour : Volatile_Pragma_Id)
+      return Boolean
+   is
+   begin
+      return
+        Is_Part_Of_Concurrent_Object (E)
+        and then Has_Volatile (E)
+        and then Has_Volatile_Flavor (E, Flavour);
+   end Is_Volatile_Part_Of;
 
    -----------------------
    -- Has_Async_Readers --
@@ -471,8 +453,13 @@ package body Flow_Types is
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return Has_Volatile (E)
-                 and then Has_Volatile_Flavor (E, Pragma_Async_Readers);
+               return (Has_Volatile (E)
+                 and then Has_Volatile_Flavor (E, Pragma_Async_Readers))
+                   or else
+                 (Is_Single_Concurrent_Type (E)
+                  and then F.Kind = Record_Field
+                  and then Is_Volatile_Part_Of (F.Component.First_Element,
+                                                Pragma_Async_Readers));
             end;
       end case;
    end Has_Async_Readers;
@@ -493,8 +480,13 @@ package body Flow_Types is
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return Has_Volatile (E)
-                 and then Has_Volatile_Flavor (E, Pragma_Async_Writers);
+               return (Has_Volatile (E)
+                 and then Has_Volatile_Flavor (E, Pragma_Async_Writers))
+                   or else
+                 (Is_Single_Concurrent_Type (E)
+                  and then F.Kind = Record_Field
+                  and then Is_Volatile_Part_Of (F.Component.First_Element,
+                                                Pragma_Async_Writers));
             end;
       end case;
    end Has_Async_Writers;
@@ -515,8 +507,13 @@ package body Flow_Types is
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return Has_Volatile (E)
-                 and then Has_Volatile_Flavor (E, Pragma_Effective_Reads);
+               return (Has_Volatile (E)
+                 and then Has_Volatile_Flavor (E, Pragma_Effective_Reads))
+                   or else
+                 (Is_Single_Concurrent_Type (E)
+                  and then F.Kind = Record_Field
+                  and then Is_Volatile_Part_Of (F.Component.First_Element,
+                                                Pragma_Effective_Reads));
             end;
       end case;
    end Has_Effective_Reads;
@@ -537,8 +534,13 @@ package body Flow_Types is
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return Has_Volatile (E)
-                 and then Has_Volatile_Flavor (E, Pragma_Effective_Writes);
+               return (Has_Volatile (E)
+                 and then Has_Volatile_Flavor (E, Pragma_Effective_Writes))
+                   or else
+                 (Is_Single_Concurrent_Type (E)
+                  and then F.Kind = Record_Field
+                  and then Is_Volatile_Part_Of (F.Component.First_Element,
+                                                Pragma_Effective_Writes));
             end;
       end case;
    end Has_Effective_Writes;
@@ -678,7 +680,7 @@ package body Flow_Types is
       if Belongs_To_Concurrent_Type (F) then
          return Flow_Id'(Kind    => Direct_Mapping,
                          Variant => F.Variant,
-                         Node    => Enclosing_Concurrent_Type (F),
+                         Node    => F.Node,
                          Facet   => F.Facet);
       end if;
 
@@ -711,9 +713,7 @@ package body Flow_Types is
             return
               Flow_Id'(Kind    => Direct_Mapping,
                        Variant => F.Variant,
-                       Node    => (if Belongs_To_Concurrent_Type (F)
-                                   then Enclosing_Concurrent_Type (F)
-                                   else F.Node),
+                       Node    => F.Node,
                        Facet   => Normal_Part);
 
          when Null_Value =>
@@ -866,11 +866,20 @@ package body Flow_Types is
             Append (R, Get_Unmangled_Name (F.Node));
 
          when Record_Field =>
-            Append (R, Get_Unmangled_Name (F.Node));
-            for Comp of F.Component loop
-               Append (R, ".");
-               Append (R, Get_Unmangled_Name (Comp));
-            end loop;
+            --  For parts of concurrent units return their name as for
+            --  standalone objects.
+
+            if Is_Single_Concurrent_Type (F.Node)
+              and then Is_Part_Of_Concurrent_Object (F.Component.First_Element)
+            then
+               Append (R, Get_Unmangled_Name (F.Component.First_Element));
+            else
+               Append (R, Get_Unmangled_Name (F.Node));
+               for Comp of F.Component loop
+                  Append (R, ".");
+                  Append (R, Get_Unmangled_Name (Comp));
+               end loop;
+            end if;
 
          when Magic_String =>
             Append (R, To_String (F.Name));

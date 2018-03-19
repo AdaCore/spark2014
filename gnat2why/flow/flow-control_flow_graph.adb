@@ -1135,9 +1135,7 @@ package body Flow.Control_Flow_Graph is
       FA       : in out Flow_Analysis_Graphs)
    is
    begin
-      if Is_Record_Discriminant (F)
-        or else Is_Concurrent_Discriminant (F)
-      then
+      if Is_Discriminant (F) then
          --  The discriminants (for example r.x.d) do not live in the tree,
          --  but we should make the parent tree anyway, so that we get the
          --  important root node (in this example r). This is important for

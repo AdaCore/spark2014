@@ -300,7 +300,7 @@ package body Flow.Control_Flow_Graph.Utility is
          begin
             for F of Used loop
                if not Discriminants_Or_Bounds_Only
-                 or else Is_Record_Discriminant (F)
+                 or else Is_Discriminant (F)
                then
                   A.Variables_Used.Include (F);
                end if;
@@ -395,8 +395,8 @@ package body Flow.Control_Flow_Graph.Utility is
             end if;
 
             for F of Tmp loop
-               if not Discriminants_Or_Bounds_Only or else
-                 Is_Record_Discriminant (F)
+               if not Discriminants_Or_Bounds_Only
+                 or else Is_Discriminant (F)
                then
                   A.Variables_Used.Include (F);
                end if;
@@ -542,11 +542,6 @@ package body Flow.Control_Flow_Graph.Utility is
                                     E_In_Parameter     |
                                     E_Protected_Type   |
                                     E_Task_Type
-              or else (Belongs_To_Concurrent_Type (F_Ent)
-                         and then (Belongs_To_Protected_Type (F_Ent)
-                                   or else Is_Default_Initialized
-                                             (F_Ent,
-                                              Get_Flow_Scope (Entire_Var))))
               or else In_Generic_Actual (Entire_Var);
 
             if Is_Discriminant (F_Ent)

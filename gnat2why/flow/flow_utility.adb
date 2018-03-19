@@ -43,7 +43,6 @@ with Gnat2Why.External_Axioms;        use Gnat2Why.External_Axioms;
 with Gnat2Why.Util;
 with SPARK_Definition;                use SPARK_Definition;
 with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
-with SPARK_Util;                      use SPARK_Util;
 with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
@@ -319,8 +318,10 @@ package body Flow_Utility is
    --------------------
 
    function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type is
-     (Component_Graphs.Cluster_Hash
-        (Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (E))));
+     (if Is_Part_Of_Concurrent_Object (E)
+      then Node_Hash (E)
+      else Component_Graphs.Cluster_Hash
+             (Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (E))));
 
    ----------------
    -- Components --
@@ -719,7 +720,7 @@ package body Flow_Utility is
                            C := First_Component_Or_Discriminant (T);
                            while Present (C) loop
                               Results.Union
-                                (Flatten_Variable (Direct_Mapping_Id (C),
+                                (Flatten_Variable (Add_Component (F, C),
                                                    Scope));
 
                               Next_Component_Or_Discriminant (C);
@@ -734,7 +735,7 @@ package body Flow_Utility is
                               for C of Iter (Part_Of_Constituents (Anon_Obj))
                               loop
                                  Results.Union
-                                   (Flatten_Variable (Direct_Mapping_Id (C),
+                                   (Flatten_Variable (Add_Component (F, C),
                                     Scope));
                               end loop;
                            end if;
@@ -742,8 +743,14 @@ package body Flow_Utility is
                      end if;
 
                      --  Concurrent type represents the "current instance", as
-                     --  defined in SPARK RM 6.1.4.
-                     Results.Include (F);
+                     --  defined in SPARK RM 6.1.4; they are represented either
+                     --  as a collection of discriminants/components/parts_of
+                     --  or by a single vertex if that collection would be
+                     --  empty (just like null records).
+
+                     if Results.Is_Empty then
+                        Results.Insert (F);
+                     end if;
 
                   when Record_Kind =>
                      Debug ("processing record type");
@@ -881,7 +888,23 @@ package body Flow_Utility is
 
       Partial_Definition := False;
       View_Conversion    := False;
-      Map_Root           := Direct_Mapping_Id (Entity (Root_Node));
+
+      if Is_Protected_Component (Entity (Root_Node)) then
+         Map_Root :=
+           Add_Component
+             (Direct_Mapping_Id (Scope (Entity (Root_Node))),
+              Entity (Root_Node));
+
+      elsif Is_Part_Of_Concurrent_Object (Entity (Root_Node)) then
+         Map_Root :=
+           Add_Component
+             (Direct_Mapping_Id
+                (Etype (Encapsulating_State (Entity (Root_Node)))),
+              Entity (Root_Node));
+
+      else
+         Map_Root := Direct_Mapping_Id (Entity (Root_Node));
+      end if;
 
       --  We now work out which variable (or group of variables) is actually
       --  defined, by following the selected components. If we find an array
@@ -2279,9 +2302,34 @@ package body Flow_Utility is
       function Merge_Entity (E : Entity_Id) return Flow_Id_Sets.Set is
       begin
          if Ctx.Reduced then
-            return Flow_Id_Sets.To_Set (Direct_Mapping_Id (Unique_Entity (E)));
+            if Is_Concurrent_Component_Or_Discr (E) then
+               return
+                 Flow_Id_Sets.To_Set (Direct_Mapping_Id (Scope (E)));
+
+            elsif Is_Part_Of_Concurrent_Object (E) then
+               return
+                 Flow_Id_Sets.To_Set
+                   (Direct_Mapping_Id (Etype (Encapsulating_State (E))));
+
+            else
+               return
+                 Flow_Id_Sets.To_Set (Direct_Mapping_Id (Unique_Entity (E)));
+            end if;
          else
-            return Flatten_Variable (E, Ctx.Scope);
+            if Is_Concurrent_Component_Or_Discr (E) then
+               return Flatten_Variable (Add_Component
+                                          (Direct_Mapping_Id (Scope (E)), E),
+                                        Ctx.Scope);
+
+            elsif Is_Part_Of_Concurrent_Object (E) then
+               return Flatten_Variable
+                 (Add_Component
+                    (Direct_Mapping_Id (Etype (Encapsulating_State (E))), E),
+                  Ctx.Scope);
+
+            else
+               return Flatten_Variable (E, Ctx.Scope);
+            end if;
          end if;
       end Merge_Entity;
 
@@ -3071,8 +3119,25 @@ package body Flow_Utility is
          --     r.y -> r.y
 
          declare
+            Root_Entity : constant Entity_Id := Entity (Root_Node);
+
             FS : constant Flow_Id_Sets.Set :=
-              Flatten_Variable (Entity (Root_Node), Scope);
+              (if Is_Protected_Component (Root_Entity) then
+                 Flatten_Variable
+                   (Add_Component
+                      (Direct_Mapping_Id (Sinfo.Scope (Root_Entity)),
+                       Root_Entity),
+                    Scope)
+
+               elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
+                 Flatten_Variable
+                   (Add_Component
+                      (Direct_Mapping_Id
+                         (Etype (Encapsulating_State (Root_Entity))),
+                       Root_Entity),
+                    Scope)
+
+               else Flatten_Variable (Root_Entity, Scope));
 
          begin
             for F of FS loop
@@ -5011,7 +5076,22 @@ package body Flow_Utility is
                  Map_Root'Update (Facet => Extension_Part);
 
                RHS : Flow_Id_Sets.Set :=
-                 Flatten_Variable (Entity (N), Scope);
+                 (if Is_Concurrent_Component_Or_Discr (Entity (N)) then
+                    Flatten_Variable
+                      (Add_Component
+                         (Direct_Mapping_Id (Sinfo.Scope (Entity (N))),
+                          Entity (N)),
+                       Scope)
+
+                  elsif Is_Part_Of_Concurrent_Object (Entity (N)) then
+                    Flatten_Variable
+                      (Add_Component
+                         (Direct_Mapping_Id
+                            (Etype (Encapsulating_State (Entity (N)))),
+                          Entity (N)),
+                       Scope)
+
+                  else Flatten_Variable (Entity (N), Scope));
 
                To_Ext : Flow_Id_Sets.Set;
                F      : Flow_Id;

@@ -808,8 +808,12 @@ package body Flow.Analysis.Sanity is
                      --  * a discriminant of a protected type
 
                      if not (Is_Bound (F)
+                             or else
+                               (Is_Discriminant (F)
+                                   and then
+                                Ekind (Get_Direct_Mapping_Id (F)) =
+                                  E_Protected_Type)
                              or else Is_Constant_Object (Var)
-                             or else Ekind (Var) = E_Discriminant
                              or else Is_Internal (Var))
                      then
                         Emit_Error (F);
@@ -1415,7 +1419,7 @@ package body Flow.Analysis.Sanity is
         and then Ekind (Scope (FA.Spec_Entity)) = E_Protected_Type
       then
          for F of FA.All_Vars loop
-            if Belongs_To_Protected_Type (F)
+            if Belongs_To_Concurrent_Type (F)
               and then Has_Effective_Reads (F)
             then
                Error_Msg_Flow

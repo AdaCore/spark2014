@@ -34,6 +34,7 @@ with Sem_Aux;              use Sem_Aux;
 with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
 with Snames;               use Snames;
+with SPARK_Util;           use SPARK_Util;
 with Stand;                use Stand;
 with Types;                use Types;
 
@@ -66,7 +67,8 @@ is
    function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type
    with Pre => Is_Initialized and then
                  Nkind (E) = N_Defining_Identifier and then
-                 Ekind (E) in E_Component | E_Discriminant;
+                 (Ekind (E) in E_Component | E_Discriminant
+                  or else Is_Part_Of_Concurrent_Object (E));
    --  Compute a suitable hash for the given record component
 
    procedure Remove_Constants
@@ -91,8 +93,11 @@ is
    with Pre => Is_Initialized and then
                Nkind (C1) = N_Defining_Identifier and then
                Nkind (C2) = N_Defining_Identifier and then
-               Ekind (C1) in E_Component | E_Discriminant and then
-               Ekind (C2) in E_Component | E_Discriminant;
+               (Ekind (C1) in E_Component | E_Discriminant
+                or else Is_Part_Of_Concurrent_Object (C1))
+                and then
+               (Ekind (C2) in E_Component | E_Discriminant
+                or else Is_Part_Of_Concurrent_Object (C2));
    --  Given two record components, checks if one can be considered to be the
    --  `same' component (for purposes of flow analysis). For example a record
    --  might contain component x, and its derived record also contains this
