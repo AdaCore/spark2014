@@ -30,6 +30,7 @@ with Sem_Aux;             use Sem_Aux;
 with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
 with Sprint;              use Sprint;
+with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
 with Why;
 
@@ -56,13 +57,14 @@ package body Flow.Analysis.Antialiasing is
    function Check_Range (AL, AH : Node_Id;
                          BL, BH : Node_Id)
                          return Non_Obvious_Aliasing_Check_Result;
-   --  Checks two ranges for potential overlap.
+   --  Checks two ranges for potential overlap
 
    function Aliasing (A,        B        : Node_Id;
-                      Formal_A, Formal_B : Node_Id)
+                      Formal_A, Formal_B : Entity_Id)
                       return Computed_Aliasing_Result
-   with Pre => Present (Formal_A);
-   --  Returns if A and B alias.
+   with Pre => Is_Formal (Formal_A)
+               and then (No (Formal_B) or else Is_Formal (Formal_B));
+   --  Returns if A and B alias
 
    function Cannot_Alias (F : Node_Id) return Boolean
    with Pre => Present (F) and then
@@ -77,17 +79,11 @@ package body Flow.Analysis.Antialiasing is
       A_Formal : Entity_Id;
       B_Formal : Entity_Id;
       Status   : out Computed_Aliasing_Result)
-   with Pre => Present (A_Formal);
+   with Pre => Is_Formal (A_Formal)
+               and then (No (B_Formal) or else Is_Formal (B_Formal));
    --  Checks the two nodes for aliasing and issues an error message
    --  if appropriate. The formal for B can be Empty, in which case we
    --  assume it is a global.
-
-   procedure Check_Parameter_Against_Parameters_And_Globals
-     (FA     : in out Flow_Analysis_Graphs;
-      Status : out Computed_Aliasing_Result;
-      Actual : Node_Id);
-   --  Checks the given actual against all other parameters and
-   --  globals.
 
    procedure Update_Status (Status         : in out Computed_Aliasing_Result;
                             Current_Status : Computed_Aliasing_Result);
@@ -660,34 +656,22 @@ package body Flow.Analysis.Antialiasing is
                                    else "6.4.2"));
    end Check_Node_Against_Node;
 
-   ----------------------------------------------------
-   -- Check_Parameter_Against_Parameters_And_Globals --
-   ----------------------------------------------------
+   --------------------------
+   -- Check_Procedure_Call --
+   --------------------------
 
-   procedure Check_Parameter_Against_Parameters_And_Globals
-     (FA     : in out Flow_Analysis_Graphs;
-      Status : out Computed_Aliasing_Result;
-      Actual : Node_Id)
+   procedure Check_Procedure_Call
+     (FA : in out Flow_Analysis_Graphs;
+      N  : Node_Id)
    is
-      Formal         : Entity_Id;
-      Call           : Node_Id;
-      Is_Out         : Boolean;
-      Current_Status : Computed_Aliasing_Result;
+      procedure Check_Parameter (Formal : Entity_Id; Actual : Node_Id);
+      --  Check out and in out parameter against other parameters and globals
 
-   begin
-      Status := Impossible;
-      --  Set the status to the best Computed_Aliasing_Result. This would be
-      --  later updated if a worse status would be computed.
-
-      --  Work out who we are.
-
-      Find_Actual (Actual, Formal, Call);
-      Is_Out := Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter;
-
-      --  The general idea here is to make sure none of the globals
-      --  and parameters overlap. If we have a procedure with
-      --  parameters X, Y and Z and globals A and B, then we check the
-      --  following:
+      procedure Check_Aliasing_In_Call is new
+        Iterate_Call_Parameters (Check_Parameter);
+      --  The general idea here is to make sure none of the globals and
+      --  parameters overlap. If we have a procedure with parameters X, Y and
+      --  Z and globals A and B, then we check the following:
       --
       --     X v.s. (Y, Z, A, B)
       --     Y v.s. (   Z, A, B)
@@ -699,157 +683,142 @@ package body Flow.Analysis.Antialiasing is
       --  Check_Parameter_Against_Parameters_And_Globals and by only checking
       --  parameters once we have seen our parameter we compare against.
 
-      --  Check against parameters.
+      function Visible_Globals (FS : Flow_Id_Sets.Set) return Node_Sets.Set
+      with Post => (for all E of Visible_Globals'Result =>
+                       Is_Global_Entity (E));
+      --  Returns the subset of FS that is represented by Entity_Ids
 
-      declare
-         P            : Node_Id;
-         Other        : Node_Id;
-         Other_Formal : Entity_Id;
-         Other_Call   : Node_Id;
-         Other_Is_Out : Boolean;
-         Found_Myself : Boolean := False;
+      Writes_Or_Reads : Node_Sets.Set;
+      --  Global outputs and in_outs (which for aliasing behave as OUT and
+      --  IN_OUT formal parameters, respectively).
+
+      Reads_Only      : Node_Sets.Set;
+      --  Global inputs and proof_ins (which for aliasing behave as IN formal
+      --  parameters).
+
+      Current_Status : Computed_Aliasing_Result;
+      Status         : Computed_Aliasing_Result := Impossible;
+
+      ---------------------
+      -- Check_Parameter --
+      ---------------------
+
+      procedure Check_Parameter (Formal : Entity_Id; Actual : Node_Id) is
+         Param_Is_Out : constant Boolean :=
+           Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter;
+
+         Other_Formal : Entity_Id := Next_Formal (Formal);
+         Other_Actual : Node_Id   := Next_Actual (Actual);
+         --  Formal/Actual will be checked against formals/actuals that follow
+         --  them; this way we check each pair of them exactly once.
+
       begin
-         P := First (Parameter_Associations (Call));
-         while Present (P) loop
-            Other := (if Nkind (P) = N_Parameter_Association
-                      then Explicit_Actual_Parameter (P)
-                      else P);
-            Find_Actual (Other, Other_Formal, Other_Call);
-            Other_Is_Out := Ekind (Other_Formal) in E_Out_Parameter
-                                                  | E_In_Out_Parameter;
-            pragma Assert (Call = Other_Call);
+         while Present (Other_Formal) loop
+            pragma Assert (Present (Other_Actual));
 
-            if Actual = Other then
-               --  We don't check against ourselves, but we do not ???
-               --  when we have found ourselves, see below...
-               Found_Myself := True;
+            --  Only check for aliasing if at least one of the parameters is an
+            --  out paramter.
 
-            elsif not Found_Myself then
-               --  We don't need to check B against A because we
-               --  already would have checked A against B.
-               null;
-
-            elsif Is_Out or Other_Is_Out then
-               --  We only check for aliasing if at least one of the
-               --  parameters is an out paramter.
+            if Param_Is_Out
+              or else
+                Ekind (Other_Formal) in E_Out_Parameter
+                                      | E_In_Out_Parameter
+            then
                Check_Node_Against_Node
                  (FA       => FA,
                   A        => Actual,
-                  B        => Other,
+                  B        => Other_Actual,
                   A_Formal => Formal,
                   B_Formal => Other_Formal,
                   Status   => Current_Status);
+
                Update_Status (Status, Current_Status);
             end if;
 
-            Next (P);
+            Next_Formal (Other_Formal);
+            Next_Actual (Other_Actual);
          end loop;
-      end;
 
-      --  Check against globals.
+         pragma Assert (No (Other_Actual));
 
-      declare
-         Globals : Global_Flow_Ids;
+         if Param_Is_Out then
+            for G of Reads_Only loop
+               Check_Node_Against_Node
+                 (FA       => FA,
+                  A        => Actual,
+                  B        => G,
+                  A_Formal => Formal,
+                  B_Formal => Empty,
+                  Status   => Current_Status);
 
-         Subprogram  : constant Entity_Id := Get_Called_Entity (Call);
-      begin
-         Get_Globals (Subprogram => Subprogram,
-                      Scope      => FA.B_Scope,
-                      Classwide  => Flow_Classwide.Is_Dispatching_Call (Call),
-                      Globals    => Globals);
-         if Is_Out then
-            for R of Globals.Inputs.Union (Globals.Proof_Ins) loop
-               --  No use in checking both the read and the write of
-               --  an in out global.
-               if not Globals.Outputs.Contains (Change_Variant (R, Out_View))
-               then
-                  case R.Kind is
-                     when Direct_Mapping =>
-                        Check_Node_Against_Node
-                          (FA       => FA,
-                           A        => Actual,
-                           B        => Get_Direct_Mapping_Id (R),
-                           A_Formal => Formal,
-                           B_Formal => Empty,
-                           Status   => Current_Status);
-                        Update_Status (Status, Current_Status);
-
-                     when Magic_String =>
-                        --  If we don't have a name for the global, by
-                        --  definition we can't possibly reference it in a
-                        --  parameter.
-                        null;
-
-                     when others =>
-                        raise Why.Unexpected_Node;
-                  end case;
-               end if;
+               Update_Status (Status, Current_Status);
             end loop;
          end if;
-         for W of Globals.Outputs loop
-            case W.Kind is
+
+         for G of Writes_Or_Reads loop
+            Check_Node_Against_Node
+              (FA       => FA,
+               A        => Actual,
+               B        => G,
+               A_Formal => Formal,
+               B_Formal => Empty,
+               Status   => Current_Status);
+
+            Update_Status (Status, Current_Status);
+         end loop;
+      end Check_Parameter;
+
+      ---------------------
+      -- Visible_Globals --
+      ---------------------
+
+      function Visible_Globals (FS : Flow_Id_Sets.Set) return Node_Sets.Set
+      is
+         Results : Node_Sets.Set;
+      begin
+         for F of FS loop
+            case F.Kind is
                when Direct_Mapping =>
-                  Check_Node_Against_Node
-                    (FA       => FA,
-                     A        => Actual,
-                     B        => Get_Direct_Mapping_Id (W),
-                     A_Formal => Formal,
-                     B_Formal => Empty,
-                     Status   => Current_Status);
-                  Update_Status (Status, Current_Status);
+                  Results.Insert (Get_Direct_Mapping_Id (F));
+
+                  --  If we don't have an Entity_Id for a global, then it can't
+                  --  be referenced as a parameter.
 
                when Magic_String =>
-                  --  If we don't have a name for the global, by
-                  --  definition we can't possibly reference it in a
-                  --  parameter.
                   null;
 
                when others =>
-                  raise Why.Unexpected_Node;
+                  raise Program_Error;
             end case;
          end loop;
-      end;
-   end Check_Parameter_Against_Parameters_And_Globals;
 
-   --------------------------
-   -- Check_Procedure_Call --
-   --------------------------
+         return Results;
+      end Visible_Globals;
 
-   procedure Check_Procedure_Call
-     (FA : in out Flow_Analysis_Graphs;
-      N  : Node_Id)
-   is
+      --  Local variables:
+
+      Globals : Global_Flow_Ids;
+
+      use type Node_Sets.Set;
+
+   --  Start of processing for Check_Procedure_Call
+
    begin
+      Get_Globals (Subprogram => Get_Called_Entity (N),
+                   Scope      => FA.B_Scope,
+                   Classwide  => Flow_Classwide.Is_Dispatching_Call (N),
+                   Globals    => Globals);
+
+      Writes_Or_Reads := Visible_Globals (Globals.Outputs);
+      Reads_Only      :=
+        (Visible_Globals (Globals.Inputs) - Writes_Or_Reads) or
+          Visible_Globals (Globals.Proof_Ins);
 
       --  Check out and in out parameters against other parameters and globals
 
-      declare
-         P      : Node_Id;
-         Actual : Node_Id;
-         Formal : Entity_Id;
-         Call   : Node_Id;
+      Check_Aliasing_In_Call (N);
 
-         Current_Status : Computed_Aliasing_Result;
-         Status         : Computed_Aliasing_Result := Impossible;
-
-      begin
-         P := First (Parameter_Associations (N));
-         while Present (P) loop
-            Actual := (if Nkind (P) = N_Parameter_Association
-                       then Explicit_Actual_Parameter (P)
-                       else P);
-            Find_Actual (Actual, Formal, Call);
-            pragma Assert (Call = N);
-
-            Check_Parameter_Against_Parameters_And_Globals (FA,
-                                                            Current_Status,
-                                                            Actual);
-            Update_Status (Status, Current_Status);
-            Next (P);
-         end loop;
-         --  Store in the map the aliasing status of the current procedure call
-         Aliasing_Status.Insert (N, Status);
-      end;
+      Aliasing_Status.Insert (N, Status);
 
       --  ??? Need to check for aliasing between abstract state and computed
       --  globals.
