@@ -258,10 +258,13 @@ are any violations of Ada legality rules, |GNATprove| does not attempt any
 analysis. If there are violations of |SPARK| legality rules, |GNATprove| stops
 after the checking phase and does not attempt flow analysis or proof.
 
-When an error is detected, or when issuing check messages, |GNATprove| returns
-with a non-zero exit status. When an error is detected, |GNATprove| also issues
-a message about termination in error. Otherwise, |GNATprove| returns with an
-exit status of zero, even when warnings are issued.
+|GNATprove| returns with a non-zero exit status when an error is detected.
+This includes cases where |GNATprove| issues unproved check messages when
+switch ``--checks-as-errors`` is used, as well as cases where |GNATprove|
+issues warnings when switch ``--warnings=error`` is used. In such cases,
+|GNATprove| also issues a message about termination in error. Otherwise,
+|GNATprove| returns with an exit status of zero, even when unproved check
+messages and warnings are issued.
 
 Using the GNAT Target Runtime Directory
 ---------------------------------------
@@ -777,5 +780,3 @@ does not support such folders. To minimize changes for this to occur,
   exists and is writeable, use that; otherwise,
 * if ``/tmp`` exists and is writable, use that; otherwise,
 * use the ``gnatprove`` subfolder of the object directory of the root project.
-
-

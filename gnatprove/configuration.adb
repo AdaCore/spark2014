@@ -1451,6 +1451,11 @@ package body Configuration is
 
       Define_Switch
         (Config,
+         CL_Switches.Checks_As_Errors'Access,
+         Long_Switch => "--checks-as-errors");
+
+      Define_Switch
+        (Config,
          CL_Switches.CWE'Access,
          Long_Switch => "--cwe");
 

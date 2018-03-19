@@ -52,6 +52,7 @@ gnatprove basic switches:
    . error         - Treat warnings as errors
 
 gnatprove advanced switches:
+ --checks-as-errors   Treat unproved check messages as errors
  -d, --debug          Debug mode
  --debug-save-vcs     Do not delete intermediate files for provers
  --flow-debug         Extra debugging for flow analysis (requires graphviz)

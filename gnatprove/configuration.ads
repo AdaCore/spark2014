@@ -66,6 +66,7 @@ package Configuration is
       Benchmark            : aliased Boolean;
       Memcached_Server     : aliased GNAT.Strings.String_Access;
       Cargs_List           : String_Lists.List;
+      Checks_As_Errors     : aliased Boolean;
       CodePeer             : aliased GNAT.Strings.String_Access;
       Coverage             : aliased Boolean;
       CWE                  : aliased Boolean;

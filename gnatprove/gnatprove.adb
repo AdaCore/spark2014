@@ -701,11 +701,15 @@ procedure Gnatprove with SPARK_Mode is
          end;
       end if;
 
-      --  There were unproved checks. Return from gnatprove with a non-zero
-      --  error status, but do not issue a failure message.
+      --  There were unproved checks. If unproved check messages are considered
+      --  as errors, issue a failure message and return from gnatprove with a
+      --  non-zero error status.
 
-      if Status = Unproved_Checks_Error_Status then
-         GNAT.OS_Lib.OS_Exit (1);
+      if CL_Switches.Checks_As_Errors
+        and then Status = Unproved_Checks_Error_Status
+      then
+         Abort_With_Message
+           ("gnatprove: unproved check messages considered as errors");
       end if;
    end Generate_SPARK_Report;
 
