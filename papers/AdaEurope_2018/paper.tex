@@ -9,7 +9,6 @@
 %\pagestyle{plain}
 
 \usepackage{paralist}
-\usepackage[colorinlistoftodos,prependcaption]{todonotes}
 \usepackage{hyperref}
 \usepackage{caption}
 \graphicspath{{figures/}}
@@ -35,8 +34,8 @@
 
 \maketitle
 \begin{abstract}
-Handling memory in a correct and efficient way is a step toward safer, less complex, and higher performing software and software-intensive systems. However, languages used for critical software development such as Ada, which supports formal verification with its SPARK subset, face challenges regarding any use of pointers due to potential pointer aliasing. In this work, we introduce an extension to the Ada language, and to its SPARK subset, to provide pointer types (``access types'' in Ada) that provide provably safe, automatic storage management without any asynchronous garbage collection, and without explicit deallocation by the user. Because the mechanism for these safe pointers relies on a strict control of aliasing, they can be used in the SPARK subset for formal verification, including both information flow analysis and proof of safety and correctness properties. In this paper, we present this proposal (which has been submitted for inclusion in the next version of Ada), as explain
-how we would be able to incorporate these pointers into formal analyses.
+Handling memory in a correct and efficient way is a step toward safer, less complex, and higher performing software and software-intensive systems. However, languages used for critical software development such as Ada, which supports formal verification with its SPARK subset, face challenges regarding any use of pointers due to potential pointer aliasing. In this work, we introduce an extension to the Ada language, and to its SPARK subset, to provide pointer types (``access types'' in Ada) that provide provably safe, automatic storage management without any asynchronous garbage collection, and without explicit deallocation by the user. Because the mechanism for these safe pointers relies on a strict control of aliasing, they can be used in the SPARK subset for formal verification, including both information flow analysis and proof of safety and correctness properties. In this paper, we present this proposal (which has been submitted for inclusion in the next version of Ada), and explain
+how we are able to incorporate these pointers into formal analyses.
 \end{abstract}
 
 %\category{D - Software}{D.3 Programming Languages}{D.3.4 Processors - Compilers}
@@ -77,8 +76,6 @@ The question that emerges in this context is: can we create a subset of access-t
 the various problems associated with unknown aliasing? The notion of pointer ``ownership'' has emerged as one way to ``tame'' pointer problems, while preserving flexibility \cite{POM}.  The goal is to allow a pattern of use
 of pointers that avoids dangling references as well as storage leaks, by providing safe, immediate, automatic reclamation of storage rather than relying on unchecked deallocation,
 while also not having to fall back on the time and space vagaries of garbage collection.  As a side benefit, we can also get safer use of pointers in the context of parallelism.
-\todo[inline]{Several times it is stated that the proposed pointers will enhance parallel computing. I would have liked to see an example for this claim}
-\todo[inline]{I would like the authors to comment on the implications of concurrent tasking with this proposed model}
 We propose the use of pointer ownership (as well as some additional rules, detailed in \cite{AI2018}, preventing ``aliasing'' between parameters, and between parameters and global variables) to provide safe,
 automatic, parallelism-friendly heap storage management while allowing the flexible construction of pointer-based data structures, such as trees, linked lists, hash tables, etc.
 
@@ -87,6 +84,14 @@ this proposal is designed to work well with existing features of Ada such as by-
 memory leaks, and upon handling of a raised exception, visible objects should not be left in an inconsistent state. Secondly, this proposal relies on the existing mechanisms in Ada
 for preventing access to uninitialized pointers and out-of-scope memory: uninitialized and freed pointers should be set to null so that attempts at dereferencing such pointers result in a run-time error.
 
+By relying on pointer ownership, we can ensure that pointer-based
+structures in SPARK can be supported while preserving SPARK's
+strict anti-aliasing parameter passing rules,
+thereby allowing the SPARK proof tools to prove the same
+range of safety and correctness properties, including freedom from
+data races, even in programs that use
+pointer-based structures in conjunction with concurrent and
+parallel programming constructs (see section~\ref{sec:ownership-SPARK}).
 
 \subsection{Ownership Types}
 \label{sec:ownership}
@@ -233,9 +238,6 @@ this allows us to call the function \var{Sum} using \var{X} as a first and secon
    \label{fig:observe_exp}
 \end{figure}
 
-\todo[inline]{For instance, in Figure 3, how can you prove that another task that has visibility over variable X is not concurrently modifying the object pointed to by X while the call to Sum is in progress?}
-
-
 \subsubsection{Preventing Read-Write Aliasing}
 \label{sec:noaliasing}
 
@@ -376,7 +378,6 @@ where each subprogram can be analyzed independently while detecting all possible
 This is currently enforced by forbidding all use of access types in SPARK, and by restricting aliasing between parameters and global variables so that only
 benign aliasing is permitted (i.e. aliasing that does not cause interference).  The aliasing restrictions are as follows:
 
-
 \begin{compactitem}
   \item Two output parameters should never be aliased.
   \item An input and an output parameters should not be aliased, unless the input parameter is always passed by copy.
@@ -421,13 +422,24 @@ This wrong postcondition would in turn allow a proof that an incorrect assertion
    \label{fig:spark_ex1_exp}
 \end{figure}
 
-Thus, pointers cannot be treated like any other component in SPARK, in the presence of aliasing. But rules we have described for ownership objects precisely prevent
+Thus, unrestricted pointers could not be treated like any other component in SPARK, in the presence of aliasing. But rules we have described for ownership objects precisely prevent
 aliasing when one of the objects can be written. This is similar to the rules in SPARK for preventing aliasing between by-reference parameters, and this allows SPARK to treat such pointers
 like other components.
 
 In the case of \var{Add\_One}, this means that SPARK analysis will be able to conclude that the postcondition above is satisfied by the implementation of \var{Add\_One}.
 But calls to \var{Add\_One(X,X)} will be rejected both by compilation and analysis.
 
+The SPARK tools also provide detection of potential data races
+in programs that use concurrent and parallel programming constructs.
+This detection depends on the strict anti-aliasing conditions on parameters,
+and provides a sound assurance that no two threads concurrently manipulate
+the same data, if either has update access.  This matches the
+CREW condition imposed on access objects through the proposed ownership
+rules.  This means that SPARK can handle pointer-based structures that
+obey these rules, in the
+same way it already handles record- and array-based structures, enabling
+provably safe concurrent and parallel programming in a language with
+this more flexible data structuring capability.
 
 \section{Related Work}
 
