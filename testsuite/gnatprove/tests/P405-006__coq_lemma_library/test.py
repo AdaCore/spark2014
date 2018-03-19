@@ -25,4 +25,9 @@ copy_proof_files()
 putenv("SPARK_LEMMAS_OBJECT_DIR", "obj")
 putenv("SPARK_LEMMAS_BODY_MODE", "On")
 putenv("SPARK_LEMMAS_INSTALLED", "False")
-prove_all(opt=["--replay"], prover = ["coq","cvc4","z3","altergo"], counterexample=False)
+
+prove_all(opt=["--replay"],
+          prover = ["coq","cvc4","z3","altergo"],
+          counterexample=False,
+          #  We need to remove useless coq warning for Grammar extension
+          filter_output=".*Grammar extension")

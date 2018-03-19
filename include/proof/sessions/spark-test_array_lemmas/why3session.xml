@@ -59,13 +59,25 @@
 </theory>
 <theory name="Array__Int__Standard__character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__character_Comp" proved="true">
+</theory>
 <theory name="Standard__string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_character" proved="true">
 </theory>
+<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
+</theory>
 <theory name="Standard__wide_string" proved="true">
 </theory>
 <theory name="Array__Int__Standard__wide_wide_character" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
 </theory>
 <theory name="Standard__wide_wide_string" proved="true">
 </theory>
@@ -101,11 +113,17 @@
 </theory>
 <theory name="Array__Int__Standard__integer" proved="true">
 </theory>
+<theory name="Array__Int__Standard__integer__Concat" proved="true">
+</theory>
+<theory name="Array__Int__Standard__integer_Comp" proved="true">
+</theory>
 <theory name="Spark__test_array_lemmas__Tarr_int_constrainedB" proved="true">
 </theory>
 <theory name="Spark__test_array_lemmas__arr_int_constrained" proved="true">
 </theory>
 <theory name="Array__Int__Standard__float" proved="true">
+</theory>
+<theory name="Array__Int__Standard__float__Concat" proved="true">
 </theory>
 <theory name="Spark__test_array_lemmas__Tarr_float_constrainedB" proved="true">
 </theory>
@@ -384,13 +402,13 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="30"/></proof>
+  <proof prover="1"><result status="valid" steps="34"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="52"/></proof>
+  <proof prover="1"><result status="valid" steps="64"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="123"/></proof>
+  <proof prover="1"><result status="valid" steps="144"/></proof>
   </goal>
  </transf>
  </goal>
@@ -402,13 +420,13 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="95"/></proof>
+  <proof prover="1"><result status="valid" steps="99"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="120"/></proof>
+  <proof prover="1"><result status="valid" steps="128"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="544"/></proof>
+  <proof prover="1"><result status="valid" steps="556"/></proof>
   </goal>
  </transf>
  </goal>
@@ -432,7 +450,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="81"/></proof>
+  <proof prover="1"><result status="valid" steps="93"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -447,7 +465,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="122"/></proof>
+  <proof prover="1"><result status="valid" steps="146"/></proof>
   </goal>
  </transf>
  </goal>
@@ -471,7 +489,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="123"/></proof>
+  <proof prover="1"><result status="valid" steps="131"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -486,7 +504,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="544"/></proof>
+  <proof prover="1"><result status="valid" steps="556"/></proof>
   </goal>
  </transf>
  </goal>
