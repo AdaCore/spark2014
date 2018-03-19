@@ -1827,7 +1827,7 @@ package body SPARK_Util is
 
    function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean is
    begin
-      if Ekind (E) in E_Abstract_State | E_Constant | E_Variable then
+      if Ekind (E) in E_Abstract_State | E_Variable then
          declare
             Encapsulating : constant Entity_Id := Encapsulating_State (E);
 
@@ -1847,7 +1847,7 @@ package body SPARK_Util is
 
    function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean is
    begin
-      if Ekind (E) in E_Abstract_State | E_Constant | E_Variable then
+      if Ekind (E) in E_Abstract_State | E_Variable then
          declare
             Encapsulating : constant Entity_Id := Encapsulating_State (E);
 
