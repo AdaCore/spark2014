@@ -540,7 +540,7 @@ package body SPARK_Definition is
 
          --  The following restrictions were added to Ada 2005:
          --    No_Dependence => Ada.Execution_Time.Group_Budget
-         --    No_Dependence => Ada.Execution_Time.Timers
+         --    No_Dependence => Ada.Execution_Time.Timers.
 
          if Ada_Version >= Ada_2005 then
 
@@ -595,7 +595,7 @@ package body SPARK_Definition is
          end if;
 
          --  The following restriction was added to Ada 2005:
-         --    No_Dependence => System.Multiprocessors.Dispatching_Domains
+         --    No_Dependence => System.Multiprocessors.Dispatching_Domains.
 
          if Ada_Version >= Ada_2012 then
 
@@ -660,7 +660,7 @@ package body SPARK_Definition is
    --  Returns whether the representive type of the entity E is in SPARK;
    --  computes this information by calling Mark_Entity, which is very cheap.
    --  Theoretically, it is equivalent to In_SPARK (Retyps (E)) except that
-   --  Retysp can only be called on Marked entities
+   --  Retysp can only be called on Marked entities.
 
    procedure Mark_Entity (E : Entity_Id);
    --  Push entity E on the stack, mark E, and pop E from the stack. Always
@@ -775,7 +775,7 @@ package body SPARK_Definition is
       SPARK_Status_JSON : JSON_Array := Empty_Array;
 
    begin
-      --  ??? iterating over all entities is not efficient, but we do it only
+      --  ??? Iterating over all entities is not efficient, but we do it only
       --  once. Perhaps iteration over hierarchical Entity_Tree would allow to
       --  skip entities from non-main unit and those whose parent is not in
       --  SPARK. However, Entity_Tree does not contain protected types (maybe
@@ -948,7 +948,7 @@ package body SPARK_Definition is
                   when N_Object_Declaration =>
                      if Is_Scalar_Type (Etype (Defining_Entity (N))) then
                         --  Store scalar entities defined in loops before the
-                        --  invariant in Loop_Entity_Set
+                        --  invariant in Loop_Entity_Set.
 
                         Loop_Entity_Set.Include (Defining_Entity (N));
                      else
@@ -1366,8 +1366,8 @@ package body SPARK_Definition is
 
                else
 
-                  --  if no Iterable aspect is found, raise a violation
-                  --  other forms of iteration are not allowed in SPARK
+                  --  If no Iterable aspect is found, raise a violation
+                  --  other forms of iteration are not allowed in SPARK.
 
                   Mark_Violation ("iterator specification", N,
                                   SRM_Reference => "SPARK RM 5.5.2");
@@ -2359,9 +2359,9 @@ package body SPARK_Definition is
                   --  smalls of the fixed-point types should be "compatible"
                   --  according to Ada RM G.2.3(21):
                   --  - for a multiplication, (l * r) / op should be an integer
-                  --    or the reciprocal of an integer
+                  --    or the reciprocal of an integer;
                   --  - for a division, l / (r * op) should be an integer or
-                  --    the reciprocal of an integer
+                  --    the reciprocal of an integer.
 
                   if Norm_Num (Factor) /= Uint_1
                     and then Norm_Den (Factor) /= Uint_1
@@ -2759,7 +2759,7 @@ package body SPARK_Definition is
 
                Mark_Delayed_Aspect := True;
 
-            --  or if the type entity has been found to be in SPARK. In this
+            --  Or if the type entity has been found to be in SPARK. In this
             --  case (scope not marked SPARK_Mode(On)), the type entity was
             --  stored as value in the Delayed_Type_Aspects map.
 
@@ -3001,7 +3001,7 @@ package body SPARK_Definition is
          --  type as encapsulator must be (SPARK RM 9.4):
          --    * Of a type that defines full default initialization, or
          --    * Declared with a default value, or
-         --    * Imported
+         --    * Imported.
 
          if Present (Encap_Id)
            and then Is_Single_Concurrent_Object (Encap_Id)
@@ -4518,7 +4518,7 @@ package body SPARK_Definition is
 
          Current_SPARK_Pragma := SPARK_Pragma (E);
 
-      --  ??? perhaps use SPARK_Pragma_Of_Type here, but not sure if that works
+      --  ??? Perhaps use SPARK_Pragma_Of_Type here, but not sure if that works
       --  for itypes.
 
       elsif Is_Type (E) or else Is_Object (E) then
@@ -4551,7 +4551,7 @@ package body SPARK_Definition is
       --  Current_SPARK_Pragma before calling Mark_Entity) and packages (only
       --  happens for packages with external axioms).
       --
-      --  ??? for subprograms the Current_SPARK_Pragma was meant to be set by
+      --  ??? For subprograms the Current_SPARK_Pragma was meant to be set by
       --  the callers of Mark_Entity, but this was changed for marking of
       --  protected operations; probably we could revert that.
 
@@ -5128,10 +5128,10 @@ package body SPARK_Definition is
    --  Other recognized pragmas are ignored, and a warning is issued here (and
    --  in flow analysis, and in proof) that the pragma is ignored. Any change
    --  in the set of pragmas that GNATprove supports should be reflected:
-   --    . in Mark_Pragma below
+   --    . in Mark_Pragma below;
    --    . for flow analysis, in Pragma_Relevant_To_Flow in
-   --      flow-control_flow_graph.adb
-   --    . for proof, in Transform_Pragma in gnat2why-expr.adb
+   --      flow-control_flow_graph.adb;
+   --    . for proof, in Transform_Pragma in gnat2why-expr.adb.
 
    procedure Mark_Pragma (N : Node_Id) is
       Pname   : constant Name_Id   := Pragma_Name (N);
@@ -5154,21 +5154,23 @@ package body SPARK_Definition is
 
       case Prag_Id is
 
-         --  pragma Check ([Name    =>] Identifier,
-         --                [Check   =>] Boolean_Expression
-         --              [,[Message =>] String_Expression]);
+         --  Syntax of this pragma:
+         --    pragma Check ([Name    =>] Identifier,
+         --                  [Check   =>] Boolean_Expression
+         --                [,[Message =>] String_Expression]);
 
          when Pragma_Check =>
             if not Is_Ignored_Pragma_Check (N) then
                Mark (Get_Pragma_Arg (Arg2));
             end if;
 
-         --  pragma Loop_Variant
-         --         ( LOOP_VARIANT_ITEM {, LOOP_VARIANT_ITEM } );
+         --  Syntax of this pragma:
+         --    pragma Loop_Variant
+         --           ( LOOP_VARIANT_ITEM {, LOOP_VARIANT_ITEM } );
 
-         --  LOOP_VARIANT_ITEM ::= CHANGE_DIRECTION => discrete_EXPRESSION
+         --    LOOP_VARIANT_ITEM ::= CHANGE_DIRECTION => discrete_EXPRESSION
 
-         --  CHANGE_DIRECTION ::= Increases | Decreases
+         --    CHANGE_DIRECTION ::= Increases | Decreases
 
          when Pragma_Loop_Variant =>
             declare
@@ -5222,7 +5224,7 @@ package body SPARK_Definition is
          --  Pragmas that do not need any marking, either because:
          --  . they are defined by SPARK 2014, or
          --  . they are already taken into account elsewhere (contracts)
-         --  . they have no effect on verification
+         --  . they have no effect on verification.
 
          --  Group 1a - RM Table 16.1, Ada language-defined pragmas marked
          --  "Yes".
