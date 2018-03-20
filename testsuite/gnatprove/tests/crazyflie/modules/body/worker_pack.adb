@@ -12,9 +12,9 @@ is
    function Worker_Test return bool is
    begin
       if Worker_Queue /= System.Null_Address then
-         return 1;
+         return True;
       else
-         return 0;
+         return False;
       end if;
    end Worker_Test;
 

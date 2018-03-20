@@ -90,7 +90,7 @@ private
    --  Free Fall features internal variables.
    FF_Duration_Counter      : T_Uint16 := 0
      with Part_Of => FF_State;
-   In_Recovery              : bool := 0
+   In_Recovery              : bool := False
      with Part_Of => FF_State;
    Recovery_Thrust          : T_Uint16 := MAX_RECOVERY_THRUST
      with Part_Of => FF_State;

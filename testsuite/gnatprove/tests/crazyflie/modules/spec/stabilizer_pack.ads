@@ -207,9 +207,9 @@ private
      with Part_Of => Alt_Hold_Variables; --  Used for altitute hold mode.
                                          --  It gets reset when the bat status
                                          --  changes
-   Alt_Hold     : bool := 0
+   Alt_Hold     : bool := False
      with Part_Of => Alt_Hold_Variables; --  Currently in altitude hold mode
-   Set_Alt_Hold : bool := 0
+   Set_Alt_Hold : bool := False
      with Part_Of => Alt_Hold_Variables; --  Hover mode has just been activated
    Alt_Hold_PID_Val : T_Altitude := 0.0
      with Part_Of => Alt_Hold_Variables; --  Output of the PID controller

@@ -145,3 +145,5 @@ patris.ads:283:14: info: initialization of "Score_Nbr" constituent of "Score_Sta
 patris.ads:289:14: info: initialization of "Best_Score_Nbr" constituent of "Best_Score_State" proved
 patris.ads:295:14: info: initialization of "Level_Nbr" constituent of "Score_State" proved
 patris.ads:301:14: info: initialization of "Line_Counter" constituent of "Score_State" proved
+pebble.ads:108:48: warning: return type of "Equal" is an 8-bit Ada Boolean
+pebble.ads:108:48: warning: use appropriate corresponding type in C (e.g. char)

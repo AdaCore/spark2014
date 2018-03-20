@@ -37,7 +37,7 @@ private
 
    --  Global variables and constants
 
-   Is_Init : bool := 0 with Part_Of => SensFusion6_State;
+   Is_Init : bool := False with Part_Of => SensFusion6_State;
 
    Q0 : T_Quaternion := 1.0
      with Part_Of => SensFusion6_State;

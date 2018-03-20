@@ -54,9 +54,9 @@ is
       Res : bool;
    begin
       if Is_Init then
-         Res := 1;
+         Res := True;
       else
-         Res := 0;
+         Res := False;
       end if;
 
       return Res;

@@ -208,13 +208,13 @@ is
       V_Speed_Acc := V_Speed;
 
       --  Reset Integral gain of PID controller if being charged
-      if PM_Is_Discharging = 0 then
+      if PM_Is_Discharging = False then
          Alt_Hold_PID.Integ := 0.0;
       end if;
 
       --  Altitude hold mode just activated, set target altitude as current
       --  altitude. Reuse previous integral term as a starting point
-      if Set_Alt_Hold = 1 then
+      if Set_Alt_Hold = True then
          --  Set target altitude to current altitude
          Alt_Hold_Target := Asl;
          --  Cache last integral term for reuse after PID init
@@ -239,7 +239,7 @@ is
                                        T_Altitude'Last);
       end if;
 
-      if Alt_Hold = 1 then
+      if Alt_Hold = True then
          --  Update the target altitude and the PID
          Alt_Hold_Target := Saturate (Alt_Hold_Target +
                                        Alt_Hold_Change / Alt_Hold_Change_SENS,
@@ -340,7 +340,7 @@ is
 
       Stabilizer_Update_Rate;
 
-      if Alt_Hold = 0 or not IMU_Has_Barometer then
+      if Alt_Hold = False or not IMU_Has_Barometer then
          --  Get thrust from the commander if alt hold mode
          --  not activated
          Commander_Get_Thrust (Actuator_Thrust);

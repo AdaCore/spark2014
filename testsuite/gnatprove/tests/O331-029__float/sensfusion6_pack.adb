@@ -21,11 +21,11 @@ is procedure Madgwick_Update_Q (Gx : T_Rate; Gy : T_Rate; Gz : T_Rate; Ax : T_Ac
    procedure Mahony_Update_Q (Gx : T_Rate; Gy : T_Rate; Gz : T_Rate; Ax : T_Acc; Ay : T_Acc; Az : T_Acc; Dt : T_Delta_Time);   -- to be removed in a follow-up commit
    procedure SensFusion6_Init is
    begin
-      if Is_Init = 1 then
+      if Is_Init = True then
          return;
       end if;
 
-      Is_Init := 1;
+      Is_Init := True;
    end SensFusion6_Init;
 
    function SensFusion6_Test return bool is
