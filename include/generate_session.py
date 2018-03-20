@@ -157,21 +157,17 @@ def kill_and_regenerate_all():
     print "---------------"
     print "Start with CVC4"
     print "---------------"
-    run_automatic("cvc4")
+    run_automatic("cvc4", level=2)
     print ""
     print "------------"
     print "Then with Z3"
     print "------------"
     run_automatic("z3", level=2)
     print ""
-    print "-----------------"
-    print "End with Alt-Ergo"
-    print "-----------------"
-    run_automatic("altergo")
-    print ""
     print "---------------------------"
     print "Summarize all proved checks"
     print "---------------------------"
     run_options(opt="--output-msg-only --report=provers")
+
 
 kill_and_regenerate_all()
