@@ -2390,6 +2390,10 @@ language definition and what is not.]
 3. [A Type_Invariant expression shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
 
+.. _tu-type_invariants-04:
+
+4. A Type_Invariant shall not apply to an effectively volatile type.
+
 .. centered:: **Verification Rules**
 
 In Ada RM 7.3.2, Ada defines the points at which runtime checking of
@@ -2402,9 +2406,9 @@ several points (described below) where, in fact, Ada defines no such checks.
 we are only talking about generating additional verification conditions;
 we are not talking about any changes in a program's behavior at run-time.]
 
-.. _tu-type_invariants-04:
+.. _tu-type_invariants-05:
 
-4. The type invariant expression for a type T shall not include a call
+5. The type invariant expression for a type T shall not include a call
    to a boundary function for type T. [This often means that a type
    invariant expression cannot contain calls to functions declared in
    the visible part of the package in question.]
@@ -2415,23 +2419,23 @@ we are not talking about any changes in a program's behavior at run-time.]
 to a boundary subprogram for a type T, every part of every input that
 is of type T can be assumed to satisfy T's invariant.
 
-.. _tu-type_invariants-05:
+.. _tu-type_invariants-06:
 
-5. Upon returning from a boundary subprogram for a type T, a
+6. Upon returning from a boundary subprogram for a type T, a
    verification condition is introduced for every part of every output
    that is of type T (or a descendant thereof), to ensure that this part
    satisfies T's invariant.
 
-.. _tu-type_invariants-06:
+.. _tu-type_invariants-07:
 
-6. For every subprogram declared inside the immediate scope of type T,
+7. For every subprogram declared inside the immediate scope of type T,
    the preceding rule [and ramification] also apply to [any parts of]
    any global input or output and to [any parts of] any tagged
    subprogram parameter.
 
-.. _tu-type_invariants-07:
+.. _tu-type_invariants-08:
 
-7. When calling a boundary subprogram for a type T or a subprogram
+8. When calling a boundary subprogram for a type T or a subprogram
    declared outside of the immediate scope of T, a verification
    condition is introduced for every part of every input that is of type T
    (or a descendant thereof), to ensure that this part satisfies
@@ -2448,24 +2452,24 @@ from a boundary subprogram for a type T or a subprogram declared
 outside of the immediate scope of T, every part of every output that
 is of type T (or a descendant thereof) can be assumed to satisfy T's invariant.
 
-.. _tu-type_invariants-08:
+.. _tu-type_invariants-09:
 
-8. For every subprogram, the preceding rule [and ramification] also
+9. For every subprogram, the preceding rule [and ramification] also
    apply to [any parts of] any global input or output and to [any
    parts of] any tagged subprogram parameter. [The verification
    condition of rule 6 is trivially satisfied if the caller is outside
    of the immediate scope of T, or if the input in question is subject
    to rule 4 and constant for the caller.]
 
-.. _tu-type_invariants-09:
+.. _tu-type_invariants-10:
 
-9. At the end of the elaboration of a package (i.e., at the point where the
-   Initial_Condition, if any, is checked) a verification condition is
-   introduced for the objects (both variables and constants) declared within
-   the package. [If one chooses to think of package elaboration as being
-   performed by a notional parameterless "elaboration" subprogram, then this
-   rule (very roughly speaking) says that the global outputs of this notional
-   subprogram follow much the same rules as for other subprograms.]
+10. At the end of the elaboration of a package (i.e., at the point where the
+    Initial_Condition, if any, is checked) a verification condition is
+    introduced for the objects (both variables and constants) declared within
+    the package. [If one chooses to think of package elaboration as being
+    performed by a notional parameterless "elaboration" subprogram, then this
+    rule (very roughly speaking) says that the global outputs of this notional
+    subprogram follow much the same rules as for other subprograms.]
 
 .. _tu-type_invariants-ram-03:
 

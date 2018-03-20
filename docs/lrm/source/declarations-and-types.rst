@@ -100,8 +100,8 @@ No restrictions or extensions.
 Subtype Predicates
 ~~~~~~~~~~~~~~~~~~
 
-Static predicates are in |SPARK|. Dynamic predicates are also in
-|SPARK|, but are subject to some restrictions.
+Static predicates and dynamic predicates are both in
+|SPARK|, but subject to some restrictions.
 
 .. centered:: **Legality Rules**
 
@@ -140,6 +140,12 @@ Static predicates are in |SPARK|. Dynamic predicates are also in
 
 .. _etu-subtype_predicates-02:
 
+.. _tu-sf-subtype_predicates-03:
+
+3. A Static_Predicate or Dynamic_Predicate shall not apply to an effectively
+   volatile type.
+
+.. _etu-subtype_predicates-03:
 
 Objects and Named Numbers
 -------------------------

@@ -562,7 +562,7 @@ package body Flow.Analysis.Sanity is
                   then
 
                      --  This is the check for 7.3.2(3) [which is really
-                     --  4.4(2)] and the check for 7.3.2(4).
+                     --  4.4(2)] and the check for 7.3.2(5).
 
                      declare
                         Expr : constant Node_Id :=
@@ -581,7 +581,7 @@ package body Flow.Analysis.Sanity is
                            Err_Desc => "invariant",
                            Err_Node => Full_View (Typ));
 
-                        --  Check 7.3.2(4) (no calls to boundary subprograms)
+                        --  Check 7.3.2(5) (no calls to boundary subprograms)
 
                         for F of Funs loop
                            if Is_Boundary_Subprogram_For_Type (F, Typ) then
@@ -594,7 +594,7 @@ package body Flow.Analysis.Sanity is
                                  N        => Full_View (Typ),
                                  F1       => Direct_Mapping_Id (F),
                                  F2       => Direct_Mapping_Id (Typ),
-                                 SRM_Ref  => "7.3.2(4)");
+                                 SRM_Ref  => "7.3.2(5)");
                            end if;
                         end loop;
                      end;
