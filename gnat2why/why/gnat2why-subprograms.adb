@@ -3850,7 +3850,7 @@ package body Gnat2Why.Subprograms is
 
             if Present (A) then
                Ada_Ent_To_Why.Insert (Symbol_Table,
-                                      Unique_Entity (A),
+                                      A,
                                       Binder);
             elsif Binder.Main.B_Ent /= Null_Entity_Name then
 
@@ -4309,11 +4309,11 @@ package body Gnat2Why.Subprograms is
                                  Ada_Node => Ada_Node));
 
                            Ada_Ent_To_Why.Insert (Symbol_Table,
-                                                  Unique_Entity (Ada_Node),
+                                                  Ada_Node,
                                                   Desc_Params (I));
                         else
                            Ada_Ent_To_Why.Insert (Symbol_Table,
-                                                  Unique_Entity (Ada_Node),
+                                                  Ada_Node,
                                                   New_Binders (I));
                         end if;
                      end;
@@ -4333,7 +4333,7 @@ package body Gnat2Why.Subprograms is
 
                         if Present (A) then
                            Ada_Ent_To_Why.Insert (Symbol_Table,
-                                                  Unique_Entity (A),
+                                                  A,
                                                   Binder);
                         elsif Binder.Main.B_Ent /= Null_Entity_Name then
 
@@ -4418,11 +4418,11 @@ package body Gnat2Why.Subprograms is
                                  Force_No_Slide => True),
                               Context  => +Desc_Post);
                            Ada_Ent_To_Why.Insert (Symbol_Table,
-                                                  Unique_Entity (Ada_Node),
+                                                  Ada_Node,
                                                   Desc_Params (I));
                         else
                            Ada_Ent_To_Why.Insert (Symbol_Table,
-                                                  Unique_Entity (Ada_Node),
+                                                  Ada_Node,
                                                   Old_Binders (I));
                         end if;
                      end;
@@ -4441,7 +4441,7 @@ package body Gnat2Why.Subprograms is
 
                         if Present (A) then
                            Ada_Ent_To_Why.Insert (Symbol_Table,
-                                                  Unique_Entity (A),
+                                                  A,
                                                   Binder);
                         elsif Binder.Main.B_Ent /= Null_Entity_Name then
 
@@ -5307,7 +5307,7 @@ package body Gnat2Why.Subprograms is
 
             if Present (A) then
                Ada_Ent_To_Why.Insert (Symbol_Table,
-                                      Unique_Entity (A),
+                                      A,
                                       Binder);
             elsif Binder.Main.B_Ent /= Null_Entity_Name then
 

@@ -524,11 +524,12 @@ package body Gnat2Why.Annotate is
          if Instantiation_Location (Sloc (Prag)) = No_Location then
             declare
                Subp : constant Entity_Id :=
-                 Lib.Xref.SPARK_Specific.
-                   Enclosing_Subprogram_Or_Library_Package (Prag);
+                 Unique_Entity
+                   (Lib.Xref.SPARK_Specific.
+                      Enclosing_Subprogram_Or_Library_Package (Prag));
             begin
                if Present (Subp)
-                 and then Analysis_Requested (Unique_Entity (Subp),
+                 and then Analysis_Requested (Subp,
                                               With_Inlined => False)
                then
                   Error_Msg_N

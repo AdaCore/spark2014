@@ -2617,7 +2617,7 @@ package body Gnat2Why.Expr is
                   pragma Assert (Present (A));
 
                   Ada_Ent_To_Why.Insert (Symbol_Table,
-                                         Unique_Entity (A),
+                                         A,
                                          Binder);
 
                   declare
@@ -4288,7 +4288,7 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Slice =>
-            return EW_Abstract (Unique_Entity (Etype (N)));
+            return EW_Abstract (Etype (N));
 
          when N_Indexed_Component =>
             return EW_Abstract
@@ -9030,7 +9030,7 @@ package body Gnat2Why.Expr is
          =>
             declare
                Ty_Ent : constant Entity_Id :=
-                 Unique_Entity (Etype (Var));
+                 Retysp (Etype (Var));
                Dim    : constant Uint :=
                  (if Present (Expressions (Expr)) then
                      Expr_Value (First (Expressions (Expr)))
@@ -9529,7 +9529,7 @@ package body Gnat2Why.Expr is
                T := +True_Term;
             else
                declare
-                  Ty_Ent : constant Entity_Id := Unique_Entity (Etype (Var));
+                  Ty_Ent : constant Entity_Id := Retysp (Etype (Var));
                begin
                   declare
                      Why_Expr : constant W_Expr_Id :=
@@ -11278,8 +11278,7 @@ package body Gnat2Why.Expr is
 
                   if Count_Why_Top_Level_Fields (Expr_Type) = 0 then
                      return
-                       +E_Symb (Unique_Entity (Root_Record_Type (Expr_Type)),
-                                WNE_Dummy);
+                       +E_Symb (Root_Record_Type (Expr_Type), WNE_Dummy);
                   else
                      declare
                         Assocs : constant W_Field_Association_Array :=
@@ -11341,7 +11340,7 @@ package body Gnat2Why.Expr is
                --  discriminant record, if needed.
 
                Prefix_Ty : constant Entity_Id :=
-                 Unique_Entity (Etype (Ancestor_Part (Expr)));
+                 Retysp (Etype (Ancestor_Part (Expr)));
                Anc_Ty    : constant Entity_Id :=
                  (if Ekind (Prefix_Ty) in E_Record_Subtype |
                                           E_Record_Subtype_With_Private
