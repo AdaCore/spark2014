@@ -55,8 +55,8 @@ package Flow.Analysis.Antialiasing is
 
    function Get_Aliasing_Status_For_Proof (N : Node_Id)
                                            return Aliasing_Check_Result
-     with Pre  => Nkind (N) in N_Entry_Call_Statement
-                             | N_Procedure_Call_Statement;
+     with Pre => Nkind (N) in N_Entry_Call_Statement
+                            | N_Procedure_Call_Statement;
    --  This procedure looks into the map containing information about the
    --  aliasing status for procedure call N (computed by Check_Procedure_Call).
    --  It returns the aliasing status if N has been stored in the map,

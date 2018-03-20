@@ -47,7 +47,7 @@ package body Flow.Analysis.Antialiasing is
 
    package Aliasing_Statuses is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
-      Element_Type    => Aliasing_Check_Result,
+      Element_Type    => Computed_Aliasing_Result,
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
 
@@ -863,9 +863,12 @@ package body Flow.Analysis.Antialiasing is
    function Get_Aliasing_Status_For_Proof (N : Node_Id)
                                            return Aliasing_Check_Result
    is
-     (if Aliasing_Status.Contains (N)
-      then Aliasing_Status (N)
-      else Unchecked);
+      C : constant Aliasing_Statuses.Cursor := Aliasing_Status.Find (N);
+   begin
+      return (if Aliasing_Statuses.Has_Element (C)
+              then Aliasing_Status (C)
+              else Unchecked);
+   end Get_Aliasing_Status_For_Proof;
 
    -------------------
    -- Update_Status --
