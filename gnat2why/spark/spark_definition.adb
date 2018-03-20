@@ -2878,6 +2878,18 @@ package body SPARK_Definition is
    begin
       Violation_Detected := False;
 
+      --  Protected types declared inside other protected types are not
+      --  supported in proof. Supporting them would require changing the
+      --  handling of self references to store multiple identifiers instead of
+      --  a single one.
+      --  Note that this is not useful anyway as Ravenscar prevents objects of
+      --  such a type to be initialized with the restriction
+      --  No_Local_Protected_Objects.
+
+      if Ekind (E) = E_Protected_Type and then Within_Protected_Type (E) then
+         Mark_Unsupported ("protected type within protected type", E);
+      end if;
+
       if Has_Discriminants (E) then
          declare
             D : Entity_Id := First_Discriminant (E);
