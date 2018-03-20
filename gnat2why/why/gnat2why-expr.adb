@@ -2823,26 +2823,7 @@ package body Gnat2Why.Expr is
                   --  fields and bounds of default values, store them in the
                   --  Symbol_Table.
 
-                  declare
-                     Base_Discr : constant Entity_Id :=
-                       (if Is_Base_Type (Ty_Ext) then Discr
-                        else Original_Record_Component (Discr));
-                     --  Defaults are declared in base types, so they relate
-                     --  to discriminants declared in base types.
-                  begin
-
-                     --  We need entities of discrimiants for bounds of
-                     --  component types...
-
-                     Insert_Entity (Discr, Tmps (I));
-
-                     --  and entities of discrimiants of the base type for
-                     --  bounds of defaults...
-
-                     if not Is_Base_Type (Ty_Ext) then
-                        Insert_Entity (Base_Discr, Tmps (I));
-                     end if;
-                  end;
+                  Insert_Entity (Discr, Tmps (I));
 
                   if Is_Constrained (Ty_Ext) then
 
