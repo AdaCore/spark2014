@@ -10872,8 +10872,14 @@ package body Gnat2Why.Expr is
                                 (case X.Kind is
                                     when Direct_Mapping =>
                                        To_Entity_Name (X.Node),
+
+                                    --  Items on the LHS of Initializes clause
+                                    --  must be known by Entity_Id; they are
+                                    --  wrapped inside a Direct_Mapping and
+                                    --  handled in the above case alternative.
+
                                     when Magic_String =>
-                                       X.Name,
+                                       raise Program_Error,
                                     when others =>
                                        raise Program_Error);
 
