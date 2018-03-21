@@ -208,12 +208,6 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params) return W_Prog_Id;
    --  ???
 
-   function Declaration_Is_Associated_To_Parameter
-     (N : Node_Id) return Boolean
-     with Pre => Present (N);
-   --  Returns True if N has a Related_Expression attribute associated to
-   --  a parameter entity.
-
    function Dynamic_Predicate_Expression
      (Expr      : W_Expr_Id;
       Pred_Subp : Entity_Id;
@@ -4144,19 +4138,6 @@ package body Gnat2Why.Expr is
 
       return Pred;
    end Compute_Type_Invariant;
-
-   --------------------------------------------
-   -- Declaration_Is_Associated_To_Parameter --
-   --------------------------------------------
-
-   function Declaration_Is_Associated_To_Parameter
-     (N : Node_Id) return Boolean
-   is
-      (Nkind (N) in N_Entity
-        and then Ekind (N) in Type_Kind | E_Constant | E_Variable
-        and then Present (Related_Expression (N))
-        and then Nkind (Related_Expression (N)) in N_Entity
-        and then Is_Formal (Related_Expression (N)));
 
    ------------------------------
    -- Discrete_Choice_Is_Range --
