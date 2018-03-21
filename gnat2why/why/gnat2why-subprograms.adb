@@ -1311,12 +1311,23 @@ package body Gnat2Why.Subprograms is
                   K  : Flow_Id renames Dependency_Maps.Key (Cu);
                   FS : constant Flow_Id_Sets.Set :=
                     Expand_Abstract_State (K, Erase_Constants => False);
-                  E  : Entity_Id;
+
+                  --  From the expansion of the LHS of an Initializes contract
+                  --  we only get constants, variables and abstract states
+                  --  (when the expansion stops at a SPARK_Mode => Off); these
+                  --  are known by an Entity_Id and wrapped in a Direct_Mapping
+                  --  kind of Flow_Id.
+
                begin
                   for F of FS loop
-                     if F.Kind = Direct_Mapping then
-                        E := Get_Direct_Mapping_Id (F);
+                     declare
+                        E : Entity_Id := Get_Direct_Mapping_Id (F);
 
+                        pragma Assert (Ekind (E) in E_Abstract_State
+                                                  | E_Constant
+                                                  | E_Variable);
+
+                     begin
                         --  Only partial views of constants are stored in the
                         --  symbol map.
 
@@ -1326,10 +1337,10 @@ package body Gnat2Why.Subprograms is
                         end if;
 
                         --  Only consider objects that are in SPARK. Other
-                        --  objects are translated to a private type in Why.
+                        --  objects (and abstract states) are translated to
+                        --  a private type in Why.
 
-                        if Present (E)
-                          and then Is_Object (E)
+                        if Is_Object (E)
                           and then Entity_In_SPARK (E)
                           and then not Is_Part_Of_Concurrent_Object (E)
                         then
@@ -1350,7 +1361,7 @@ package body Gnat2Why.Subprograms is
                                  Domain => EW_Pred);
                            end;
                         end if;
-                     end if;
+                     end;
                   end loop;
                end;
             end loop;
