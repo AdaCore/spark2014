@@ -1,6 +1,6 @@
 package My_Type_Invariant_Test_Init
   with SPARK_Mode => On,
-       Initializes => null
+       Initializes => null  --  @INITIALIZES:CHECK
 is
    pragma Elaborate_Body;
 

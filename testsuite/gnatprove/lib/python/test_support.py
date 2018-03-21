@@ -291,6 +291,8 @@ def check_marks(strlist):
             return 'GLOBAL'
         elif 'initialized' in text:
             return 'INITIALIZED'
+        elif 'initializes' in text:
+            return 'INITIALIZES'
         elif 'aliased' in text:
             return 'ALIASING'
 
@@ -369,6 +371,7 @@ def check_marks(strlist):
         return tag in ("DEPENDS",
                        "GLOBAL",
                        "INITIALIZED",
+                       "INITIALIZES",
                        "ALIASING")
 
     def is_proof_tag(tag):
