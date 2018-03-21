@@ -10821,84 +10821,21 @@ package body Gnat2Why.Expr is
                      Init_Map : constant Dependency_Maps.Map :=
                        Parse_Initializes (E);
 
-                     Vars : Name_Sets.Set := GG_Get_Local_Variables (E);
-                     --  Local variables declared in E and not initialized by E
-
-                     procedure Assume_Declaration
-                       (Obj         : Entity_Name;
-                        Initialized : Boolean);
-                     --  Assume that the entity Obj has been declared.
-                     --  @param Obj entity we consider
-                     --  @param Initialized True if we are sure Obj has been
-                     --         initialized at declaration.
-
-                     ------------------------
-                     -- Assume_Declaration --
-                     ------------------------
-
-                     procedure Assume_Declaration
-                       (Obj         : Entity_Name;
-                        Initialized : Boolean)
-                     is
-                        Entity : constant Entity_Id := Find_Entity (Obj);
-
-                     begin
-                        if Present (Entity)
-                          and then (Is_Object (Entity)
-                                    or else Is_Named_Number (Entity))
-                          and then Entity_In_SPARK (Entity)
+                  begin
+                     for Var of GG_Get_Local_Variables (E) loop
+                        if Ekind (Var) /= E_Abstract_State
+                          and then Entity_In_SPARK (Var)
                           and then Ada_Ent_To_Why.Has_Element
-                            (Symbol_Table, Entity)
+                            (Symbol_Table, Var)
                         then
                            Assume_Declaration_Of_Entity
-                             (E             => Entity,
+                             (E             => Var,
                               Params        => Body_Params,
-                              Initialized   => Initialized,
+                              Initialized   =>
+                                Init_Map.Contains (Direct_Mapping_Id (Var)),
                               Top_Predicate => True,
                               Context       => R);
                         end if;
-                     end Assume_Declaration;
-
-                  begin
-                     --  First, get initialized variables for Initializes
-                     --  aspect.
-
-                     for Cu in Init_Map.Iterate loop
-                        for X of Expand_Abstract_State
-                          (Dependency_Maps.Key (Cu), Erase_Constants => False)
-                        loop
-                           declare
-                              E_Name : constant Entity_Name :=
-                                (case X.Kind is
-                                    when Direct_Mapping =>
-                                       To_Entity_Name (X.Node),
-
-                                    --  Items on the LHS of Initializes clause
-                                    --  must be known by Entity_Id; they are
-                                    --  wrapped inside a Direct_Mapping and
-                                    --  handled in the above case alternative.
-
-                                    when Magic_String =>
-                                       raise Program_Error,
-                                    when others =>
-                                       raise Program_Error);
-
-                           begin
-                              Assume_Declaration (E_Name, Initialized => True);
-
-                              --  Exclude it from Var_Set so that we do not
-                              --  declare it again.
-
-                              Vars.Exclude (E_Name);
-                           end;
-                        end loop;
-                     end loop;
-
-                     --  Then also assume dynamic property of uninitialized
-                     --  variables.
-
-                     for Var of Vars loop
-                        Assume_Declaration (Var, Initialized => False);
                      end loop;
                   end;
 

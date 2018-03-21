@@ -40,7 +40,6 @@ with Gnat2Why.Annotate;          use Gnat2Why.Annotate;
 with Gnat2Why_Args;
 with SPARK2014VSN;               use SPARK2014VSN;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
-with SPARK_Util;                 use SPARK_Util;
 with SPARK_Xrefs;                use SPARK_Xrefs;
 
 with Flow_Refinement;            use Flow_Refinement;
@@ -498,14 +497,24 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_Get_Local_Variables --
    ----------------------------
 
-   function GG_Get_Local_Variables (E : Entity_Id) return Name_Sets.Set is
-      C : constant Phase_1_Info_Maps.Cursor :=
-        Phase_1_Info.Find (To_Entity_Name (E));
-
+   function GG_Get_Local_Variables (E : Entity_Id) return Node_Sets.Set is
+      Local_Variables : Node_Sets.Set;
    begin
-      return (if Phase_1_Info_Maps.Has_Element (C)
-              then Phase_1_Info (C).Local_Variables
-              else Name_Sets.Empty_Set);
+      --  ??? proof should not expect us to have local variables of wrapper
+      --  packages, we don't have them.
+      if Is_Wrapper_Package (E) then
+         return Node_Sets.Empty_Set;
+      end if;
+
+      --  Convert Entity_Names to Entity_Ids; this conversion is always safe,
+      --  because when seeing a nested package entity we also see the entities
+      --  of its local variables.
+
+      for Name of Phase_1_Info (To_Entity_Name (E)).Local_Variables loop
+         Local_Variables.Insert (Find_Entity (Name));
+      end loop;
+
+      return Local_Variables;
    end GG_Get_Local_Variables;
 
    -------------------

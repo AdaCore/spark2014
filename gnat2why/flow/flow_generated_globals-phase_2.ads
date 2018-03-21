@@ -28,6 +28,7 @@ with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
 with Sinfo;                              use Sinfo;
 with Snames;                             use Snames;
 with SPARK_Definition;                   use SPARK_Definition;
+with SPARK_Util;                         use SPARK_Util;
 with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
 
 package Flow_Generated_Globals.Phase_2 is
@@ -144,24 +145,15 @@ package Flow_Generated_Globals.Phase_2 is
                No (Get_Pragma (E, Pragma_Initializes));
    --  @param E is the package whose generated Initializes aspect we want
 
-   function GG_Get_Local_Variables
-     (E : Entity_Id)
-      return Name_Sets.Set
-   with Pre => GG_Has_Been_Generated and then
-               Ekind (E) in E_Package;
-   --  This function takes as a parameter a package entity and returns a
-   --  set of names comprising:
-   --    * all variables declared directly inside the package,
-   --    * variables declared in the private part of nested packages that are
-   --      in SPARK and do NOT have a user-provided Initializes aspect and
-   --    * variables introduced in the declarations of the body part of nested
-   --      packages that are in SPARK and do NOT have a user-provided
-   --      Abstract_State aspect.
-   --  Constants with variable inputs are also included in the above.
-   --
-   --  @param E is the entity whose local variables we are asking for
-   --  @return the set of Entity_Names of the local variables as recorded
-   --    by the generated globals
+   function GG_Get_Local_Variables (E : Entity_Id) return Node_Sets.Set
+   with Pre  => GG_Has_Been_Generated and then
+                Ekind (E) in E_Package and then
+                Is_In_Analyzed_Files (E),
+        Post => (for all Var of GG_Get_Local_Variables'Result =>
+                    Ekind (Var) in E_Abstract_State | E_Constant | E_Variable
+                    and then not Is_Internal (Var));
+   --  @param E is the package whose local variables we are asking for
+   --  @return objects that may appear on the LHS of an Initializes contract
 
    function GG_Is_Initialized_At_Elaboration (EN : Entity_Name) return Boolean
    with Pre => GG_Has_Been_Generated;
