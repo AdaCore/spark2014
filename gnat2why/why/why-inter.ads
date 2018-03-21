@@ -93,22 +93,41 @@ package Why.Inter is
    --  With_Completion is True if the completion theories for E should be
    --  added too.
 
-   procedure Add_Effect_Import (P : W_Section_Id;
-                                N : Entity_Name);
-
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
+   --  Add use clause for Module to the list of declarations from T.
+   --  @param T the theory where the use clause will be emitted
+   --  @param Module module that we want to use
+   --  @param Use_Kind kind of Why3 use clause. It will be overrdidden to
+   --     Import for Int_Module and RealInfix modules to allow infix notations.
+   --  @param Th_Type theory type of Module
 
    procedure Add_With_Clause (P        : W_Section_Id;
                               Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
+   --  Add use clause for Module to the list of declarations from the current
+   --  current theory in P.
+   --  @param P section of the Why file where the use clause will be emitted
+   --  @param Module module that we want to use
+   --  @param Use_Kind kind of Why3 use clause. It will be overrdidden to
+   --     Import for Int_Module and RealInfix modules to allow infix notations.
+   --  @param Th_Type theory type of Module
+
+   procedure Add_Effect_Import (P : W_Section_Id;
+                                N : Entity_Name);
+   --  Add import clause for the entity N to the list of declarations from the
+   --  current theory in P.
+   --  @param P section of the Why file where the import clause will be emitted
+   --  @param N entity that we need to import
 
    procedure Add_Effect_Import (T : W_Theory_Declaration_Id;
                                 N : Entity_Name);
-   --  Add import clause that is necessary for the given variable
+   --  Add import clause for the entity N to the list of declarations from T
+   --  @param T the theory where the import clause will be emitted
+   --  @param N entity that we need to import
 
    function Dispatch_Entity (E : Entity_Id) return W_Section_Id;
    --  Given an Ada Entity, return the appropriate Why file to insert the

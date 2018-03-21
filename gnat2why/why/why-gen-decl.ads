@@ -32,10 +32,16 @@ package Why.Gen.Decl is
    --  toplevel declarations.
 
    function New_Type_Decl (Name : String) return W_Declaration_Id;
+   --  @param  Name name of the new type
+   --  @return Declaration of an abstract logic type named Name
 
    function New_Type_Decl
      (Name  : W_Name_Id;
       Alias : W_Type_Id) return W_Declaration_Id;
+   --  @param  Name name of the new type
+   --  @param  Alias type that we want to copy
+   --  @return Declaration of a logic type named Name which is transparently
+   --      equal to Alias.
 
    function New_Havoc_Declaration (Name : W_Name_Id) return W_Declaration_Id;
    --  @param  Name name of the type for which we want a havoc function
@@ -44,17 +50,24 @@ package Why.Gen.Decl is
    procedure Emit
      (Theory : W_Theory_Declaration_Id;
       Decl   : W_Declaration_Id);
+   --  Append Decl to the list of declarations from Theory
+   --  @param Theory the theory where the declaration will be emitted
+   --  @param Decl declaration to emit
 
    procedure Emit
      (S    : W_Section_Id;
       Decl : W_Declaration_Id);
+   --  Append Decl to the list of declarations from the current theory in S
+   --  @param S section of the Why file where the declaration will be emitted
+   --  @param Decl declaration to emit
 
    procedure Emit_Projection_Metas
      (Section        : W_Section_Id;
       Projection_Fun : String);
    --  Emit metas that mark a function as a projection function and disables
    --  inlining of this function in Why3.
-   --  @param Theory the theory where the projection meta will be emitted.
+   --  @param Section section of the Why file where the declaration will be
+   --      emitted.
    --  @param Projection_Fun the name of the function that will be marked as
    --      projection.
 
