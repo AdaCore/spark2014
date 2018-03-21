@@ -701,18 +701,19 @@ package body Gnat2Why.Expr is
       T      : W_Expr_Id;
       Domain : EW_Domain) return W_Expr_Id
    is
+      Ty          : constant Entity_Id := Retysp (E);
       Modulus_Val : Uint;
       BV_Type     : W_Type_Id;
    begin
-      if Is_Modular_Integer_Type (E) and then Op /= N_Op_Divide then
-         Modulus_Val := Modulus (E);
-         BV_Type := Base_Why_Type (E);
+      if Is_Modular_Integer_Type (Ty) and then Op /= N_Op_Divide then
+         Modulus_Val := Modulus (Base_Retysp (Ty));
+         BV_Type := Base_Why_Type (Ty);
 
          --  If the modulus matches the size of the machine integer (for
          --  example a modulus of 2 ** 32 for a 32-bits machine integer),
          --  no modulo operation is needed.
 
-         if Modulus_Val = UI_Expon (2, Esize (E)) then
+         if Modulus_Val = UI_Expon (2, Esize (Ty)) then
             return T;
 
          --  Otherwise we perform the modulo on bitvectors
@@ -5687,7 +5688,7 @@ package body Gnat2Why.Expr is
 
             begin
                if Has_Modular_Integer_Type (Return_Type)
-                 and then Non_Binary_Modulus (Return_Type)
+                 and then Non_Binary_Modulus (Base_Retysp (Return_Type))
                then
                   T := Transform_Non_Binary_Modular_Operation
                     (Ada_Node   => Ada_Node,
@@ -5697,7 +5698,7 @@ package body Gnat2Why.Expr is
                      Left_Opnd  => Left_Rep,
                      Right_Opnd => Right_Rep,
                      Rep_Type   => Base,
-                     Modulus    => Modulus (Return_Type));
+                     Modulus    => Modulus (Base_Retysp (Return_Type)));
 
                else
                   T :=
@@ -5801,7 +5802,7 @@ package body Gnat2Why.Expr is
                   end;
 
                elsif Has_Modular_Integer_Type (Return_Type)
-                 and then Non_Binary_Modulus (Return_Type)
+                 and then Non_Binary_Modulus (Base_Retysp (Return_Type))
                then
                   T := Transform_Non_Binary_Modular_Operation
                     (Ada_Node   => Ada_Node,
@@ -5811,7 +5812,7 @@ package body Gnat2Why.Expr is
                      Left_Opnd  => L_Why,
                      Right_Opnd => R_Why,
                      Rep_Type   => Base,
-                     Modulus    => Modulus (Return_Type));
+                     Modulus    => Modulus (Base_Retysp (Return_Type)));
 
                else
                   declare
@@ -6007,7 +6008,7 @@ package body Gnat2Why.Expr is
 
             begin
                if Has_Modular_Integer_Type (Return_Type)
-                 and then Non_Binary_Modulus (Return_Type)
+                 and then Non_Binary_Modulus (Base_Retysp (Return_Type))
                then
                   T := Transform_Non_Binary_Modular_Operation
                     (Ada_Node   => Ada_Node,
@@ -6017,7 +6018,7 @@ package body Gnat2Why.Expr is
                      Left_Opnd  => Base,
                      Right_Opnd => Expo,
                      Rep_Type   => Typ,
-                     Modulus    => Modulus (Return_Type));
+                     Modulus    => Modulus (Base_Retysp (Return_Type)));
 
                else
                   Name := New_Exp (Typ);
@@ -9123,8 +9124,10 @@ package body Gnat2Why.Expr is
 
                if Why_Type_Is_BitVector (Arg_BTyp) then
                   declare
-                     Arg_Modulus : constant Uint := Modulus (Etype (Arg));
-                     Var_Modulus : constant Uint := Modulus (Etype (Var));
+                     Arg_Modulus : constant Uint :=
+                       Modulus (Base_Retysp (Etype (Arg)));
+                     Var_Modulus : constant Uint :=
+                       Modulus (Base_Retysp (Etype (Var)));
                      Arg_Expr    : W_Expr_Id;
                      Mod_Expr    : W_Expr_Id;
 
@@ -11424,7 +11427,7 @@ package body Gnat2Why.Expr is
 
             begin
                if Has_Modular_Integer_Type (Expr_Type)
-                 and then Non_Binary_Modulus (Expr_Type)
+                 and then Non_Binary_Modulus (Base_Retysp (Expr_Type))
                then
                   T := Transform_Non_Binary_Modular_Operation
                     (Ada_Node   => Expr,
@@ -11433,7 +11436,7 @@ package body Gnat2Why.Expr is
                      Op         => N_Op_Minus,
                      Right_Opnd => Right_Rep,
                      Rep_Type   => Typ,
-                     Modulus    => Modulus (Expr_Type));
+                     Modulus    => Modulus (Base_Retysp (Expr_Type)));
                else
                   T :=
                     New_Call
@@ -11705,7 +11708,7 @@ package body Gnat2Why.Expr is
                --  type.
 
                if Has_Modular_Integer_Type (Left_Type)
-                 and then not Non_Binary_Modulus (Left_Type)
+                 and then not Non_Binary_Modulus (Base_Retysp (Left_Type))
                  and then Compile_Time_Known_Value (Left)
                  and then Expr_Value (Left) = Uint_2
                then
@@ -11911,8 +11914,8 @@ package body Gnat2Why.Expr is
                      --  or and xor might overflow : we need to take the
                      --  modulo of the result.
 
-                     if Is_Modular_Integer_Type (Expr_Type) and then
-                       Non_Binary_Modulus (Expr_Type)
+                     if Has_Modular_Integer_Type (Expr_Type) and then
+                       Non_Binary_Modulus (Base_Retysp (Expr_Type))
                      then
                         T := Apply_Modulus
                           (Op     => Op,
@@ -15000,7 +15003,7 @@ package body Gnat2Why.Expr is
       pragma Assert (Nb_Of_Refs = 0);
       pragma Assert (Nb_Of_Lets = 0);
 
-      Modulus_Val : constant Uint := Modulus (Etype (Subp));
+      Modulus_Val : constant Uint := Modulus (Base_Retysp (Etype (Subp)));
       Nb_Of_Bits  : constant Int := (if Modulus_Val = UI_Expon (2, 8) then
                                         8
                                      elsif Modulus_Val = UI_Expon (2, 16) then
