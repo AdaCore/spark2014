@@ -110,7 +110,7 @@ algorithm.adb:282:28: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:282:51: info: initialization of "iterR.Node" proved
 algorithm.adb:283:19: info: precondition proved (altergo: 1 VC)
 algorithm.adb:283:40: info: initialization of "iterR.Node" proved
-algorithm.adb:284:19: medium: precondition might fail (e.g. when No_Element = (Node => 0) and This = (robot => (scan_Count => 0, scans => (others => ), speed => 0, goal_reached => False, others => ?), laserScan => (others => (first => ?, second => (Theta => ?))), gapVec => 0, obsAvoidDelta => ?, driveAngle => (Theta => ?)) and iterL = (Node => 0))
+algorithm.adb:284:19: info: precondition proved (Z3: 1 VC)
 algorithm.adb:284:38: info: initialization of "iterL.Node" proved
 algorithm.adb:289:22: info: initialization of "iterL.Node" proved
 algorithm.adb:290:13: info: precondition proved (CVC4: 1 VC)
@@ -134,8 +134,8 @@ algorithm.adb:321:16: info: initialization of "riterL.Node" proved
 algorithm.adb:321:46: info: initialization of "riterR.Node" proved
 algorithm.adb:324:35: info: loop invariant initialization proved (CVC4: 4 VC)
 algorithm.adb:324:61: info: initialization of "riterR.Node" proved
-algorithm.adb:325:35: medium: loop invariant might fail after first iteration, cannot prove Has_Element (This.gapVec, riterL) (e.g. when This = (robot => (scan_Count => 0, scans => (others => ), speed => 0, goal_reached => False, others => ?), laserScan => (others => (first => ?, second => (Theta => ?))), gapVec => 0, obsAvoidDelta => ?, driveAngle => (Theta => ?)) and riterL = (Node => 0))
 algorithm.adb:325:61: info: initialization of "riterL.Node" proved
+algorithm.adb:326:35: medium: loop invariant might fail after first iteration, cannot prove riterL = Next (This.gapVec, riterR) (e.g. when This = (robot => (scan_Count => 0, scans => (others => ), speed => 0, goal_reached => False, others => ?), laserScan => (others => (first => ?, second => (Theta => ?))), gapVec => 0, obsAvoidDelta => ?, driveAngle => (Theta => ?)) and riterL = (Node => 0))
 algorithm.adb:326:44: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:330:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:330:47: info: initialization of "riterR.Node" proved
@@ -150,7 +150,7 @@ algorithm.adb:335:81: info: initialization of "riterL.Node" proved
 algorithm.adb:340:16: info: precondition proved (altergo: 1 VC)
 algorithm.adb:340:37: info: initialization of "riterL.Node" proved
 algorithm.adb:344:23: info: initialization of "riterR.Node" proved
-algorithm.adb:345:13: medium: precondition might fail (e.g. when No_Element = (Node => 0) and This = (robot => (scan_Count => 0, scans => (others => ), speed => 0, goal_reached => False, others => ?), laserScan => (others => (first => ?, second => (Theta => ?))), gapVec => 0, obsAvoidDelta => ?, driveAngle => (Theta => ?)) and riterR = (Node => 0))
+algorithm.adb:345:13: info: precondition proved (Z3: 1 VC)
 algorithm.adb:345:36: info: initialization of "riterR.Node" proved
 algorithm.adb:348:13: info: initialization of "riterL.Node" proved
 algorithm.adb:351:25: info: precondition proved (CVC4: 1 VC)

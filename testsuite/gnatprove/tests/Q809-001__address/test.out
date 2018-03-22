@@ -1,9 +1,17 @@
+aspect.ads:5:04: "Z" is not allowed in SPARK
+aspect.ads:5:04: violation of pragma SPARK_Mode at test.adc:1
 aspect.ads:5:32: "F" is not allowed in SPARK
 aspect.ads:5:32: violation of pragma SPARK_Mode at test.adc:1
+attribute.ads:5:04: "Z" is not allowed in SPARK
+attribute.ads:5:04: violation of pragma SPARK_Mode at test.adc:1
 attribute.ads:6:22: "F" is not allowed in SPARK
 attribute.ads:6:22: violation of pragma SPARK_Mode at test.adc:1
+attribute_and_aspect.ads:5:04: "Z1" is not allowed in SPARK
+attribute_and_aspect.ads:5:04: violation of pragma SPARK_Mode at test.adc:1
 attribute_and_aspect.ads:6:23: "F" is not allowed in SPARK
 attribute_and_aspect.ads:6:23: violation of pragma SPARK_Mode at test.adc:1
+attribute_and_aspect.ads:8:04: "Z2" is not allowed in SPARK
+attribute_and_aspect.ads:8:04: violation of pragma SPARK_Mode at test.adc:1
 attribute_and_aspect.ads:8:33: "F" is not allowed in SPARK
 attribute_and_aspect.ads:8:33: violation of pragma SPARK_Mode at test.adc:1
 p.ads:5:22: "F" is not allowed in SPARK
