@@ -5112,28 +5112,23 @@ package body Flow.Analysis is
       --  their use will be flagged as a potentially uninitialized read.
 
       Visible_Vars := Flow_Id_Sets.Empty_Set;
-      declare
-         C : Flow_Id_Sets.Cursor := FA.Spec_Vars.First;
-         --  Cursor for iteration over container that is a component of a
-         --  discriminated record. Such components cannot be iterated with
-         --  FOR loop.
-      begin
-         while Flow_Id_Sets.Has_Element (C) loop
-            declare
-               Var : Flow_Id renames FA.Spec_Vars (C);
-               Obj : constant Entity_Id := Get_Direct_Mapping_Id (Var);
-            begin
-               --  Ignore loop variables, in parameters and constants that are
-               --  part of our local context.
-               if not Is_Constant_Object (Obj)
-                 and then Is_Initialized_At_Elaboration (Obj, FA.S_Scope)
-               then
-                  Visible_Vars.Insert (Var);
-               end if;
-            end;
-            Flow_Id_Sets.Next (C);
-         end loop;
-      end;
+      for C in Parse_Initializes (FA.Spec_Entity).Iterate loop
+         declare
+            Var : Flow_Id renames Dependency_Maps.Key (C);
+            Obj : constant Entity_Id := Get_Direct_Mapping_Id (Var);
+            pragma Assert (Ekind (Obj) in E_Abstract_State
+                                        | E_Variable
+                                        | E_Constant);
+
+         begin
+            if Get_Flow_Scope (Declaration_Node (Obj)).Part = Visible_Part
+              and then Ekind (Obj) /= E_Constant
+              and then Is_Initialized_At_Elaboration (Obj, FA.S_Scope)
+            then
+               Visible_Vars.Insert (Var);
+            end if;
+         end;
+      end loop;
 
       FA.PDG.DFS (Start         => FA.Start_Vertex,
                   Include_Start => False,
