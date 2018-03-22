@@ -4061,10 +4061,20 @@ package body Flow.Analysis is
             All_Actual_Ins    : Flow_Id_Sets.Set;
 
          begin
-            --  If the currently analyzed user RHS is variable, then collect
-            --  its actual dependencies; otherwise, reject it as a constant.
-
             for Contract_Out of All_Contract_Outs loop
+
+               --  The down-projectd LHS contains only constants, variables and
+               --  abstract states of nested packages, all known by Entity_Id.
+
+               pragma Assert
+                 (Contract_Out.Kind = Direct_Mapping
+                  and then Ekind (Get_Direct_Mapping_Id (Contract_Out)) in
+                    E_Abstract_State | E_Constant | E_Variable);
+
+               --  If the currently analyzed user LHS is variable, then collect
+               --  its actual dependencies; otherwise, reject it as a constant
+               --  without variable input.
+
                if Is_Variable (Contract_Out) then
                   declare
                      Actual_Out : constant Dependency_Maps.Cursor :=
@@ -4081,7 +4091,7 @@ package body Flow.Analysis is
                --  abstract state of the analyzed package, but we will flag
                --  them when checking the Refined_State/Part_Of contracts.
 
-               elsif Contract_Out.Kind = Direct_Mapping then
+               else
                   declare
                      E : constant Entity_Id :=
                        Get_Direct_Mapping_Id (Contract_Out);
