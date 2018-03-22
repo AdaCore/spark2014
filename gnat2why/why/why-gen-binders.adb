@@ -1194,20 +1194,21 @@ package body Why.Gen.Binders is
          begin
             if Present (Node) then
                Ada_Ent_To_Why.Insert (Symbol_Table,
-                                      Get_Ada_Node_From_Item (B),
+                                      Node,
                                       B);
             else
-               pragma Assert (B.Kind = Regular
-                              and then B.Main.B_Ent /= Null_Entity_Name);
+               pragma Assert (B.Kind = Regular);
+               if B.Main.B_Ent /= Null_Entity_Name then
 
-               --  If there is no Ada_Node, this is a binder generated
-               --  from an effect; we add the parameter in the name
-               --  map using its unique name.
+                  --  If there is no Ada_Node, this is a binder generated from
+                  --  an effect; we add the parameter in the name map using its
+                  --  unique name.
 
-               Ada_Ent_To_Why.Insert
-                 (Symbol_Table,
-                  B.Main.B_Ent,
-                  B);
+                  Ada_Ent_To_Why.Insert
+                    (Symbol_Table,
+                     B.Main.B_Ent,
+                     B);
+               end if;
             end if;
          end;
       end loop;

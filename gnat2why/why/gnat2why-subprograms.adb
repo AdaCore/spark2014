@@ -2127,34 +2127,7 @@ package body Gnat2Why.Subprograms is
          --  local names of the parameters, instead of the global names.
 
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-         for Binder of Logic_Func_Binders loop
-            declare
-               A : constant Node_Id :=
-                 (case Binder.Kind is
-                     when Regular | Concurrent_Self => Binder.Main.Ada_Node,
-                     when others  => raise Program_Error);
-               --  in parameters should not be split
-            begin
-               pragma Assert (Present (A) or else Binder.Kind = Regular);
-
-               if Present (A) then
-                  Ada_Ent_To_Why.Insert (Symbol_Table,
-                                         Unique_Entity (A),
-                                         Binder);
-               elsif Binder.Main.B_Ent /= Null_Entity_Name then
-
-                  --  If there is no Ada_Node, this is a binder generated
-                  --  from an effect; we add the parameter in the name
-                  --  map using its unique name.
-
-                  Ada_Ent_To_Why.Insert
-                    (Symbol_Table,
-                     Binder.Main.B_Ent,
-                     Binder);
-               end if;
-            end;
-         end loop;
+         Push_Binders_To_Symbol_Table (Logic_Func_Binders);
 
          --  Translate the Value expression in Why.
 
@@ -3852,30 +3825,7 @@ package body Gnat2Why.Subprograms is
       --  local names of the parameters, instead of the global names.
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-      for Binder of Logic_Func_Binders loop
-         declare
-            A : constant Node_Id := Get_Ada_Node_From_Item (Binder);
-         begin
-            pragma Assert (Present (A) or else Binder.Kind = Regular);
-
-            if Present (A) then
-               Ada_Ent_To_Why.Insert (Symbol_Table,
-                                      A,
-                                      Binder);
-            elsif Binder.Main.B_Ent /= Null_Entity_Name then
-
-               --  If there is no Ada_Node, this is a binder generated from
-               --  an effect; we add the parameter in the name map using its
-               --  unique name.
-
-               Ada_Ent_To_Why.Insert
-                 (Symbol_Table,
-                  Binder.Main.B_Ent,
-                  Binder);
-            end if;
-         end;
-      end loop;
+      Push_Binders_To_Symbol_Table (Logic_Func_Binders);
 
       Pre := +Compute_Spec (Params, E, Pragma_Precondition, EW_Pred);
       Post :=
@@ -4334,31 +4284,7 @@ package body Gnat2Why.Subprograms is
                   --  Post of Descendant, we use local names of parameters and
                   --  effects, instead of the global names.
 
-                  for Binder of New_Binders loop
-                     declare
-                        A : constant Node_Id :=
-                          Get_Ada_Node_From_Item (Binder);
-                     begin
-                        pragma Assert
-                          (Present (A) or else Binder.Kind = Regular);
-
-                        if Present (A) then
-                           Ada_Ent_To_Why.Insert (Symbol_Table,
-                                                  A,
-                                                  Binder);
-                        elsif Binder.Main.B_Ent /= Null_Entity_Name then
-
-                           --  If there is no Ada_Node, this is a binder
-                           --  generated from an effect; we add the parameter
-                           --  in the name map using its unique name.
-
-                           Ada_Ent_To_Why.Insert
-                             (Symbol_Table,
-                              Binder.Main.B_Ent,
-                              Binder);
-                        end if;
-                     end;
-                  end loop;
+                  Push_Binders_To_Symbol_Table (New_Binders);
 
                   --  We will use the map for old to store expressions whose
                   --  values need to be computed in the pre state.
@@ -4442,31 +4368,7 @@ package body Gnat2Why.Subprograms is
                   --  To translate expressions used in old attributes, we need
                   --  to store values in the pre state in the symbol table.
 
-                  for Binder of Old_Binders loop
-                     declare
-                        A : constant Node_Id :=
-                          Get_Ada_Node_From_Item (Binder);
-                     begin
-                        pragma Assert
-                          (Present (A) or else Binder.Kind = Regular);
-
-                        if Present (A) then
-                           Ada_Ent_To_Why.Insert (Symbol_Table,
-                                                  A,
-                                                  Binder);
-                        elsif Binder.Main.B_Ent /= Null_Entity_Name then
-
-                           --  If there is no Ada_Node, this is a binder
-                           --  generated from an effect; we add the parameter
-                           --  in the name map using its unique name.
-
-                           Ada_Ent_To_Why.Insert
-                             (Symbol_Table,
-                              Binder.Main.B_Ent,
-                              Binder);
-                        end if;
-                     end;
-                  end loop;
+                  Push_Binders_To_Symbol_Table (Old_Binders);
 
                   --  Inner references to Old should be ignored
 
@@ -5309,30 +5211,7 @@ package body Gnat2Why.Subprograms is
          Old_Allowed => False);
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-      for Binder of Logic_Func_Binders loop
-         declare
-            A : constant Node_Id := Get_Ada_Node_From_Item (Binder);
-         begin
-            pragma Assert (Present (A) or else Binder.Kind = Regular);
-
-            if Present (A) then
-               Ada_Ent_To_Why.Insert (Symbol_Table,
-                                      A,
-                                      Binder);
-            elsif Binder.Main.B_Ent /= Null_Entity_Name then
-
-               --  if there is no Ada_Node, this in a binder generated from
-               --  an effect; we add the parameter in the name map using its
-               --  unique name
-
-               Ada_Ent_To_Why.Insert
-                 (Symbol_Table,
-                  Binder.Main.B_Ent,
-                  Binder);
-            end if;
-         end;
-      end loop;
+      Push_Binders_To_Symbol_Table (Logic_Func_Binders);
 
       --  Given an expression function F with expression E, define an axiom
       --  that states that: "for all <args> => F(<args>) = E".
