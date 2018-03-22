@@ -5048,33 +5048,32 @@ package body SPARK_Definition is
             --  on the body entity is not Off, so it must be On.
 
             Current_SPARK_Pragma := SPARK_Pragma (Body_E);
-
             Mark_Violation ("Body of package with External_Axiomatization", N);
-
             Current_SPARK_Pragma := Save_SPARK_Pragma;
          end if;
 
       else
          Current_SPARK_Pragma := SPARK_Pragma (Body_E);
 
-         --  Only analyze package body when SPARK_Mode /= Off
+         --  Only analyze package body when SPARK_Mode /= Off. In particular,
+         --  we still analyze a package body with no SPARK_Mode set, as it may
+         --  contain subprograms or packages with SPARK_Mode => On.
 
          if not SPARK_Pragma_Is (Opt.Off) then
-
             declare
                Save_Violation_Detected : constant Boolean :=
                  Violation_Detected;
             begin
                Violation_Detected := False;
-
                Mark_Stmt_Or_Decl_List (Declarations (N));
-
-               --  Only analyze package body statements when SPARK_Mode /= Off
-
                Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
 
-               if not SPARK_Pragma_Is (Opt.Off) then
+               --  Only analyze package body statements when SPARK_Mode /= Off.
+               --  In particular, we still analyze a package body with no
+               --  SPARK_Mode set, as it may contain subprograms or packages
+               --  with SPARK_Mode => On.
 
+               if not SPARK_Pragma_Is (Opt.Off) then
                   declare
                      HSS : constant Node_Id := Handled_Statement_Sequence (N);
                   begin
@@ -5082,10 +5081,11 @@ package body SPARK_Definition is
                         Mark (HSS);
                      end if;
                   end;
-
                end if;
 
-               if not Violation_Detected then
+               if SPARK_Pragma_Is (Opt.On)
+                 and then not Violation_Detected
+               then
                   Bodies_In_SPARK.Insert (Spec_E);
                end if;
 
@@ -5094,7 +5094,6 @@ package body SPARK_Definition is
          end if;
 
          Current_SPARK_Pragma := Save_SPARK_Pragma;
-
       end if;
 
    end Mark_Package_Body;

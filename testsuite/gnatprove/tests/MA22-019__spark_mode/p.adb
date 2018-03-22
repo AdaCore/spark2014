@@ -1,4 +1,6 @@
-package body P is
+package body P
+  with SPARK_Mode
+is
   procedure Op (A, B : in Positive; Z : out Character)
   is
   begin
