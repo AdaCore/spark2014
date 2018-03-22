@@ -49,10 +49,6 @@ package body SPARK_Rewrite is
    --  between fixed-point values, to avoid the use of the universal-fixed
    --  type used by the compiler as an overload resolution trick.
 
-   procedure Rewrite_Identifier (N : Node_Id);
-   --  Replace identifiers by their compile-time known constant value when
-   --  possible.
-
    procedure Rewrite_Subprogram_Instantiation (N : Node_Id)
    with Pre => Nkind (N) in N_Subprogram_Instantiation;
    --  Replace names in instances of generic subprograms with names of
@@ -134,42 +130,6 @@ package body SPARK_Rewrite is
    begin
       Set_Etype (Expr, Typ);
    end Rewrite_Fixed_Point_Mult_Div;
-
-   ------------------------
-   -- Rewrite_Identifier --
-   ------------------------
-
-   --  The frontend performs only some constant folding, for example it does
-   --  not constant-fold real literals inside non-constant expressions. Perform
-   --  it here, to avoid generating unprovable VCs due to the translation of
-   --  constants, for example constants of fixed-point types.
-
-   procedure Rewrite_Identifier (N : Node_Id) is
-      E : constant Entity_Id := Entity (N);
-
-   begin
-      if Present (E)
-        and then Ekind (E) = E_Constant
-      then
-         declare
-            Const_Expr  : constant Node_Id := Constant_Value (E);
-            Range_Check : constant Boolean := Do_Range_Check (N);
-         begin
-            if Present (Const_Expr)
-              and then Compile_Time_Known_Value (Const_Expr)
-            then
-               if Is_Integer_Type (Etype (N)) then
-                  Fold_Uint (N, Expr_Value (Const_Expr),
-                             Is_Static_Expression (N));
-               elsif Is_Real_Type (Etype (N)) then
-                  Fold_Ureal (N, Expr_Value_R (Const_Expr),
-                              Is_Static_Expression (N));
-               end if;
-               Set_Do_Range_Check (N, Range_Check);
-            end if;
-         end;
-      end if;
-   end Rewrite_Identifier;
 
    --------------------------
    -- Rewrite_Real_Literal --
@@ -316,11 +276,6 @@ package body SPARK_Rewrite is
          case Nkind (N) is
             when N_Real_Literal =>
                Rewrite_Real_Literal (N);
-
-            when N_Identifier
-               | N_Expanded_Name
-            =>
-               Rewrite_Identifier (N);
 
             --  The multiplication and division operations on fixed-point
             --  types have a return type of universal_fixed (with no bounds),

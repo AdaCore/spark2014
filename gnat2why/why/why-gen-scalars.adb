@@ -428,13 +428,13 @@ package body Why.Gen.Scalars is
             --  predicate to "is_finite".
 
             if Is_Static
-              and then UR_Eq (Realval (Low_Bound (Scalar_Range (E))),
-                              Realval (Low_Bound (Scalar_Range
+              and then UR_Eq (Expr_Value_R (Low_Bound (Scalar_Range (E))),
+                              Expr_Value_R (Low_Bound (Scalar_Range
                                 (if Ty = EW_Float_32_Type
                                      then Standard_Float
                                      else Standard_Long_Float))))
-              and then UR_Eq (Realval (High_Bound (Scalar_Range (E))),
-                              Realval (High_Bound (Scalar_Range
+              and then UR_Eq (Expr_Value_R (High_Bound (Scalar_Range (E))),
+                              Expr_Value_R (High_Bound (Scalar_Range
                                 (if Ty = EW_Float_32_Type
                                      then Standard_Float
                                      else Standard_Long_Float))))

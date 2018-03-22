@@ -558,9 +558,9 @@
 </theory>
 <theory name="Homothetical__homothetical__kvp__aggregate_def" proved="true">
 </theory>
-<theory name="Temp___198" proved="true">
+<theory name="Temp_____aggregate_def_198" proved="true">
 </theory>
-<theory name="Temp___202" proved="true">
+<theory name="Temp_____aggregate_def_202" proved="true">
 </theory>
 <theory name="Homothetical__n___axiom" proved="true">
 </theory>
@@ -638,9 +638,9 @@
 </theory>
 <theory name="Homothetical__homothetical__kvp__aggregate_def___axiom" proved="true">
 </theory>
-<theory name="Temp___198___axiom" proved="true">
+<theory name="Temp_____aggregate_def_198___axiom" proved="true">
 </theory>
-<theory name="Temp___202___axiom" proved="true">
+<theory name="Temp_____aggregate_def_202___axiom" proved="true">
 </theory>
 <theory name="Homothetical__homothetical__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
@@ -701,12 +701,12 @@
   </goal>
   <goal name="WP_parameter def.18" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="1"><result status="unknown" steps="365017"/></proof>
   <proof prover="2"><result status="unknown" steps="8450298"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365015"/></proof>
+  <proof prover="1"><result status="unknown" steps="365013"/></proof>
   <proof prover="2"><result status="unknown" steps="8450306"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="precondition">
@@ -757,12 +757,12 @@
   </goal>
   <goal name="WP_parameter def.30" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="unknown" steps="8450370"/></proof>
   </goal>
   <goal name="WP_parameter def.31" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365016"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="unknown" steps="8450378"/></proof>
   </goal>
   <goal name="WP_parameter def.32" expl="precondition" proved="true">
@@ -773,12 +773,12 @@
   </goal>
   <goal name="WP_parameter def.34" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365014"/></proof>
+  <proof prover="1"><result status="unknown" steps="365012"/></proof>
   <proof prover="2"><result status="unknown" steps="8450394"/></proof>
   </goal>
   <goal name="WP_parameter def.35" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365020"/></proof>
+  <proof prover="1"><result status="unknown" steps="365017"/></proof>
   <proof prover="2"><result status="unknown" steps="8450402"/></proof>
   </goal>
   <goal name="WP_parameter def.36" expl="precondition" proved="true">
@@ -807,17 +807,17 @@
   </goal>
   <goal name="WP_parameter def.44" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365013"/></proof>
   <proof prover="2"><result status="unknown" steps="8450458"/></proof>
   </goal>
   <goal name="WP_parameter def.45" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365017"/></proof>
+  <proof prover="1"><result status="unknown" steps="365012"/></proof>
   <proof prover="2"><result status="unknown" steps="8450466"/></proof>
   </goal>
   <goal name="WP_parameter def.46" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365014"/></proof>
   <proof prover="2"><result status="unknown" steps="8450468"/></proof>
   </goal>
   <goal name="WP_parameter def.47" expl="postcondition">
@@ -827,12 +827,12 @@
   </goal>
   <goal name="WP_parameter def.48" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365013"/></proof>
   <proof prover="2"><result status="unknown" steps="8450468"/></proof>
   </goal>
   <goal name="WP_parameter def.49" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365016"/></proof>
   <proof prover="2"><result status="unknown" steps="8450468"/></proof>
   </goal>
  </transf>
@@ -843,15 +843,15 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
-  <proof prover="2"><result status="unknown" steps="2778835"/></proof>
+  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="2"><result status="unknown" steps="2727322"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="2293"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365015"/></proof>
+  <proof prover="1"><result status="unknown" steps="365017"/></proof>
   <proof prover="2"><result status="unknown" steps="8450110"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
@@ -864,12 +864,12 @@
   </goal>
   <goal name="WP_parameter def.5" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365021"/></proof>
+  <proof prover="1"><result status="unknown" steps="365013"/></proof>
   <proof prover="2"><result status="unknown" steps="8450128"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="unknown" steps="8450128"/></proof>
   </goal>
  </transf>

@@ -95,9 +95,9 @@ ada_real_time.ads:271:26: info: implicit function contract not available for pro
 ada_real_time.ads:271:45: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:271:45: info: range check proved (CVC4: 1 VC)
 ada_real_time.ads:271:54: medium: overflow check might fail
-ada_real_time.ads:272:30: info: overflow check proved (CVC4: 1 VC)
+ada_real_time.ads:272:30: medium: overflow check might fail
 ada_real_time.ads:274:26: info: implicit function contract not available for proof ("Result_SC" might not return)
 ada_real_time.ads:274:45: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:274:45: info: range check proved (CVC4: 1 VC)
 ada_real_time.ads:274:54: medium: overflow check might fail
-ada_real_time.ads:275:31: info: overflow check proved (CVC4: 1 VC)
+ada_real_time.ads:275:31: medium: overflow check might fail
