@@ -71,8 +71,15 @@ package body Flow.Slice is
          F : Flow_Id renames FA.PDG.Get_Key (V);
       begin
          case F.Variant is
-            when Initial_Value | Final_Value =>
+            when Initial_Value =>
                Deps.Insert (V);
+
+            --  Final values don't depend on each other and there is no
+            --  self-dependency of V_Final, because the DFS skips the start
+            --  vertex.
+
+            when Final_Value =>
+               raise Program_Error;
             when In_View | Out_View =>
                if IPFA then
                   Deps.Insert (V);
