@@ -210,7 +210,7 @@ package body Flow.Slice is
               and then Is_Variable (F_Initial)
               and then not Synthetic (F_Initial)
             then
-               In_Vertices.Include (V_Initial);
+               In_Vertices.Insert (V_Initial);
                Unused_Inputs.Include (Flow_Equivalent (F_Initial));
 
                if (Is_Discriminant (F_Initial) or else Is_Bound (F_Initial))
@@ -244,8 +244,8 @@ package body Flow.Slice is
             --  Dummy variables required by the container API
 
          begin
-            --  Initialize map entry with empty set or do nothing if already
-            --  an entry is already there.
+            --  Initialize map entry with empty set or do nothing if an entry
+            --  is already there.
             DM.Insert (Key      => F_Out,
                        Position => F_Out_Position,
                        Inserted => Dummy);
