@@ -177,29 +177,28 @@ package Flow_Refinement is
                          Projected_Vars : out Global_Flow_Ids;
                          Scope          : Flow_Scope);
 
-   procedure Up_Project (Vars           :     Dependency_Maps.Map;
-                         Projected_Vars : out Dependency_Maps.Map;
+   procedure Up_Project (Deps           :     Dependency_Maps.Map;
+                         Projected_Deps : out Dependency_Maps.Map;
                          Scope          : Flow_Scope);
-   --  Up projects the constituents that are mentioned in Refined to their
-   --  encapsulating state abstractions visible from Scope.
+   --  Up projects constituents that are mentioned in Refined to their
+   --  encapsulating state abstractions visible from Scope; for example:
    --
-   --  Example:
+   --  Refined_State =>
    --     State1 => (Con1, Con2)
    --     State2 => (Con3, Con4)
    --
-   --     Original map:
+   --  Refined_Depends =>
    --       Con1 => (Con3, G)
    --       Con3 => (Con4, G)
    --       G    => Con3
    --
-   --     Up-projected map:
+   --  Depends =>
    --       State1 => (State1, State2, G)
    --       State2 => (State2, G)
    --       G      => State2
    --
-   --  Note that the self-depence of State1 is an indirect consequence of
-   --  the fact that Con2 is not an Output. So there is an implicit Con2 =>
-   --  Con2 dependence.
+   --  Note that the self-depence of State1 comes from the fact that Con2 is
+   --  not an Output. So there is an implicit Con2 => Con2 dependence.
 
    function Get_Contract_Node (E : Entity_Id;
                                S : Flow_Scope;

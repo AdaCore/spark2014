@@ -783,119 +783,93 @@ package body Flow_Refinement is
            Change_Variant (Projected_Vars.Outputs, In_View));
    end Up_Project;
 
-   procedure Up_Project (Vars           : Dependency_Maps.Map;
-                         Projected_Vars : out Dependency_Maps.Map;
+   procedure Up_Project (Deps           : Dependency_Maps.Map;
+                         Projected_Deps : out Dependency_Maps.Map;
                          Scope          : Flow_Scope)
    is
       use type Flow_Id_Sets.Set;
 
-      function Constituents_Are_Partially_Mentioned (State : Flow_Id;
-                                                     Deps  : Flow_Id_Sets.Set)
-                                                     return Boolean;
-      --  Returns True in case at least one, but not all, of the constituents
-      --  of State are an input in the dependecy relation or in case the input
-      --  in the dependency relation is null and not all the constitutents of
-      --  State are outputs in the dependency relation.
-
-      ------------------------------------------
-      -- Constituents_Are_Partially_Mentioned --
-      ------------------------------------------
-
-      function Constituents_Are_Partially_Mentioned (State : Flow_Id;
-                                                     Deps  : Flow_Id_Sets.Set)
-                                                     return Boolean
-      is
-         Constituents_Written : Flow_Id_Sets.Set;
-         --  Contains the constituents that are outputs of the dependency map
-
-         function Contains_Some_Constituents return Boolean;
-         --  Returns True iff Deps contains some constituents of State
-
-         --------------------------------
-         -- Contains_Some_Constituents --
-         --------------------------------
-
-         function Contains_Some_Constituents return Boolean
-         is
-            --  ??? Do the same of Expand_Abstract_State
-           (for some C of Iter (Refinement_Constituents (State.Node))
-              => Deps.Contains (Direct_Mapping_Id (C))
-            or else
-           (for some C of Iter (Part_Of_Constituents (State.Node))
-              => Deps.Contains (Direct_Mapping_Id (C))));
-
-      --  Start of processing for Constituents_Are_Partially_Mentioned
-
-      begin
-         --  Collect outputs in the dependency relations that are constituents
-         --  of an abstract state.
-         for C in Vars.Iterate loop
-            declare
-               Var : Flow_Id renames Dependency_Maps.Key (C);
-
-            begin
-               if Is_Constituent (Var) then
-                  Constituents_Written.Insert (Var);
-               end if;
-            end;
-         end loop;
-
-         return
-           (Contains_Some_Constituents
-            and then not Is_Fully_Contained (State, Deps))
-           or else
-             (Deps.Is_Empty
-              and then not Is_Fully_Contained (State, Constituents_Written));
-      end Constituents_Are_Partially_Mentioned;
-
-   --  Start of processing for Up_Project
+      LHS_Constituents : Flow_Id_Sets.Set;
+      --  Constituents that are appear on the LHS of the dependency map
 
    begin
-      --  Up project the dependency relation and add a self dependency on an
-      --  abstract state if not all of its constituents are used.
-      for C in Vars.Iterate loop
+      --  First collect constituents from the LHS of the dependency map; we
+      --  will use them to decide whether to add a self-dependency on their
+      --  encapsulating abstract states for states that are partially-written.
+
+      for Clause in Deps.Iterate loop
          declare
-            Var  : Flow_Id          renames Dependency_Maps.Key (C);
-            Deps : Flow_Id_Sets.Set renames Vars (C);
-
-            Projected_Var      : Flow_Id;
-            Projected, Partial : Flow_Id_Sets.Set;
-            Projected_Deps     : Flow_Id_Sets.Set;
-
-            Position : Dependency_Maps.Cursor;
-            Unused   : Boolean;
+            Var : Flow_Id renames Dependency_Maps.Key (Clause);
 
          begin
-            Up_Project (Deps, Scope, Projected, Partial);
-            Projected_Deps := Projected or Partial;
+            if Is_Constituent (Var) then
+               LHS_Constituents.Insert (Var);
+            end if;
+         end;
+      end loop;
+
+      --  Up project the dependency relation and add a self-dependency for
+      --  abstract states that are partially-written.
+
+      for Clause in Deps.Iterate loop
+         declare
+            LHS : Flow_Id          renames Dependency_Maps.Key (Clause);
+            RHS : Flow_Id_Sets.Set renames Deps (Clause);
+
+            Projected, Partial : Flow_Id_Sets.Set;
+            Projected_RHS      : Flow_Id_Sets.Set;
+
+         begin
+            Up_Project (RHS, Scope, Projected, Partial);
+            Projected_RHS := Projected or Partial;
 
             --  Reuse set-based up-projection routine with a singleton set, for
             --  which the result is also a singleton set.
-            Up_Project (Flow_Id_Sets.To_Set (Var), Scope, Projected, Partial);
+
+            Up_Project (Flow_Id_Sets.To_Set (LHS), Scope, Projected, Partial);
             pragma Assert (Partial.Length + Projected.Length = 1);
 
-            Projected_Var := (if Projected.Is_Empty
-                              then Partial (Partial.First)
-                              else Projected (Projected.First));
+            --  If the LHS was up-projected to an abstract state then the RHS
+            --  require a special processing.
 
-            --  If Projected_Var is an abstract state and not all of its
-            --  constituents are mentioned in the dependency relation then we
-            --  add it as in input in the dependency relation.
-            if Is_Abstract_State (Projected_Var)
-              and then Constituents_Are_Partially_Mentioned (Projected_Var,
-                                                             Deps)
-            then
-               Projected_Deps.Include (Projected_Var);
+            if Projected.Is_Empty then
+               declare
+                  State : Flow_Id renames Partial (Partial.First);
+
+                  Position : Dependency_Maps.Cursor;
+                  Unused   : Boolean;
+
+               begin
+                  --  If State represents a partial-write of an abstract state
+                  --  (i.e. if not all of the constituents appear on the LHSs),
+                  --  then add the state itself to the RHS; i.e. the unmodified
+                  --  constituents behave as if they would be updated with
+                  --  their old values.
+
+                  if not Is_Fully_Contained (State, LHS_Constituents) then
+                     Projected_RHS.Include (State);
+                  end if;
+
+                  --  Insert {State -> Projected_RHS} into Projected_Deps
+                  --  without crashing if State is already in the map (i.e.
+                  --  it was inserted when up-projecting another constituent).
+
+                  Projected_Deps.Insert (Key      => State,
+                                         Position => Position,
+                                         Inserted => Unused);
+
+                  Projected_Deps (Position).Union (Projected_RHS);
+
+               end;
+
+            --  Otherwise, the LHS was transparently projected and will be used
+            --  as it was.
+
+            else
+               Projected_Deps.Insert (Key      => Projected (Projected.First),
+                                      New_Item => Projected_RHS);
             end if;
 
-            --  Insert {Projected_Var -> Projected_Deps} into Projected_Vars
-            --  without crashing if the mapping is already there.
-
-            Projected_Vars.Insert (Key      => Projected_Var,
-                                   Position => Position,
-                                   Inserted => Unused);
-
-            Projected_Vars (Position).Union (Projected_Deps);
          end;
       end loop;
    end Up_Project;
