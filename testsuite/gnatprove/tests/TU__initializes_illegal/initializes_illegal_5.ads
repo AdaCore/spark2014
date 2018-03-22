@@ -3,7 +3,7 @@ limited with Initializes_Illegal_5.Pr_Child;
 package Initializes_Illegal_5
   --  TU: 9. An ``initialization_item`` shall have an ``input_list`` if and
   --  only if its initialization is dependent on visible variables and
-  --  state anbstractions not declared within the package containing the
+  --  state abstractions not declared within the package containing the
   --  Initializes aspect. Then the ``names`` in the ``input_list`` shall
   --  denote variables and state abstractions which are used in
   --  determining the initial value of the state abstraction or variable
