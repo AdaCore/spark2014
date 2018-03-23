@@ -32,6 +32,7 @@ with Output;
 with Pprint;                             use Pprint;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Eval;                           use Sem_Eval;
+with Sem_Prag;                           use Sem_Prag;
 with Sem_Type;                           use Sem_Type;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
@@ -575,6 +576,40 @@ package body SPARK_Util is
          end;
       end if;
    end Component_Is_Visible_In_SPARK;
+
+   -------------------------------------
+   -- Contains_Volatile_Function_Call --
+   -------------------------------------
+
+   function Contains_Volatile_Function_Call (N : Node_Id) return Boolean is
+
+      function Is_Volatile_Function_Call (N : Node_Id) return Traverse_Result;
+      --  Will return Abandon if we encounter a call to a function with
+      --  Volatile_Function set.
+
+      -------------
+      -- Process --
+      -------------
+
+      function Is_Volatile_Function_Call (N : Node_Id) return Traverse_Result
+      is
+      begin
+         if Nkind (N) = N_Function_Call
+           and then Is_Enabled_Pragma
+             (Get_Pragma (Get_Called_Entity (N), Pragma_Volatile_Function))
+         then
+            return Abandon;
+         else
+            return OK;
+         end if;
+      end Is_Volatile_Function_Call;
+
+      function Check_Volatile_Function is new
+        Traverse_Func (Is_Volatile_Function_Call);
+
+   begin
+      return Check_Volatile_Function (N) = Abandon;
+   end Contains_Volatile_Function_Call;
 
    --------------------------------------------
    -- Declaration_Is_Associated_To_Parameter --

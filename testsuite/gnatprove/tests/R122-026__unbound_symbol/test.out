@@ -1,0 +1,2 @@
+unbound_symbol.adb:14:43: info: precondition proved (CVC4: 1 VC)
+unbound_symbol.ads:20:24: warning: unused initial value of "State_Ext"

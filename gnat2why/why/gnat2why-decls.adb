@@ -114,6 +114,7 @@ package body Gnat2Why.Decls is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
+
       Decl : constant Node_Id := Parent (E);
       Expr : constant Node_Id := Expression (Decl);
 
@@ -153,9 +154,12 @@ package body Gnat2Why.Decls is
       --  for constants inserted by the compiler, as their initialization
       --  expression may not be expressible as a logical term (e.g., it may
       --  include X'Loop_Entry for a constant inserted in a block of actions).
+      --  We also check for the presence of calls to volatile functions which
+      --  we can't handle in axioms.
 
       if Present (Expr)
         and then Comes_From_Source (Original_Node (E))
+        and then not Contains_Volatile_Function_Call (Expr)
       then
          declare
             Typ : constant W_Type_Id := Type_Of_Node (Etype (E));

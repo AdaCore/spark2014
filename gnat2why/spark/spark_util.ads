@@ -578,6 +578,12 @@ package SPARK_Util is
    --  @return the file name of the source pointer (will return the file of the
    --    generic in case of instances)
 
+   function Contains_Volatile_Function_Call (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff the tree starting with N contains an N_Function_Call
+   --    node whose callee is a function with pragma/aspect Volatile_Function
+   --    set.
+
    function Safe_First_Sloc (N : Node_Id) return Source_Ptr;
    --  Wrapper for First_Sloc that is safe to use for nodes coming from
    --  instances of generic units and subprograms inlined for proof.
