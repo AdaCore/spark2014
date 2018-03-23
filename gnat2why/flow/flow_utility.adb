@@ -1419,17 +1419,10 @@ package body Flow_Utility is
 
                begin
                   loop
-                     case Nkind (RHS) is
-                        when N_Identifier | N_Expanded_Name =>
-                           Process (Name_Input, Entity (RHS));
+                     pragma Assert
+                       (Nkind (RHS) in N_Identifier | N_Expanded_Name);
 
-                        when N_Numeric_Or_String_Literal =>
-                           Process (Name_Input, Original_Constant (RHS));
-
-                        when others =>
-                           raise Program_Error;
-
-                     end case;
+                     Process (Name_Input, Entity (RHS));
 
                      RHS := Next (RHS);
 
@@ -1466,23 +1459,14 @@ package body Flow_Utility is
                         when N_Identifier | N_Expanded_Name =>
                            Process (Mode, Entity (RHS));
 
-                        when N_Numeric_Or_String_Literal =>
-                           Process (Mode, Original_Constant (RHS));
-
                         when N_Aggregate =>
                            Item := First (Expressions (RHS));
                            loop
-                              case Nkind (Item) is
-                                 when N_Identifier | N_Expanded_Name =>
-                                    Process (Mode, Entity (Item));
+                              pragma Assert
+                                (Nkind (Item) in N_Identifier
+                                               | N_Expanded_Name);
 
-                                 when N_Numeric_Or_String_Literal =>
-                                    Process (Mode, Original_Constant (Item));
-
-                                 when others =>
-                                    raise Program_Error;
-
-                              end case;
+                              Process (Mode, Entity (Item));
 
                               Next (Item);
 
@@ -4165,18 +4149,6 @@ package body Flow_Utility is
       return Loop_Info_Frozen and then Loop_Info.Contains (E);
    end Loop_Writes_Known;
 
-   -----------------------
-   -- Original_Constant --
-   -----------------------
-
-   function Original_Constant (N : Node_Id) return Entity_Id is
-      Orig_Node : constant Node_Id := Original_Node (N);
-      pragma Assert (N /= Orig_Node);
-
-   begin
-      return Entity (Orig_Node);
-   end Original_Constant;
-
    --------------------------
    -- Quantified_Variables --
    --------------------------
@@ -4471,11 +4443,6 @@ package body Flow_Utility is
                   Needle := First_Name_Node (N);
                end if;
 
-            when N_Numeric_Or_String_Literal =>
-               if Unique_Entity (Original_Constant (N)) = Input then
-                  Needle := First_Name_Node (Original_Node (N));
-               end if;
-
             --  Handle contracts like "... => (X, X.Y)"
 
             when N_Aggregate =>
@@ -4484,24 +4451,13 @@ package body Flow_Utility is
 
                begin
                   loop
-                     case Nkind (Item) is
-                        when N_Identifier | N_Expanded_Name =>
-                           if Canonical_Entity (Entity (Item), Unit) = Input
-                           then
-                              Needle := First_Name_Node (Item);
-                              return;
-                           end if;
+                     pragma Assert
+                       (Nkind (Item) in N_Identifier | N_Expanded_Name);
 
-                        when N_Numeric_Or_String_Literal =>
-                           if Unique_Entity (Original_Constant (Item)) = Input
-                           then
-                              Needle := First_Name_Node (Original_Node (Item));
-                              return;
-                           end if;
-
-                        when others =>
-                           raise Program_Error;
-                     end case;
+                     if Canonical_Entity (Entity (Item), Unit) = Input then
+                        Needle := First_Name_Node (Item);
+                        return;
+                     end if;
 
                      Next (Item);
 
@@ -4591,7 +4547,8 @@ package body Flow_Utility is
       procedure Scan_Initialization_Spec (Inits : Node_Id);
       --  Scan the initialization_spec of a Initializes contract
 
-      procedure Scan_Initialization_Item (Item : Node_Id);
+      procedure Scan_Initialization_Item (Item : Node_Id)
+      with Pre => Nkind (Item) in N_Identifier | N_Expanded_Name;
       --  Scan an initialization clause of the form "X"
 
       procedure Scan_Initialization_Item_With_Inputs (N : Node_Id)
@@ -4607,21 +4564,9 @@ package body Flow_Utility is
 
       procedure Scan_Initialization_Item (Item : Node_Id) is
       begin
-         case Nkind (Item) is
-            when N_Identifier | N_Expanded_Name =>
-               if Canonical_Entity (Entity (Item), Unit) = Output then
-                  Needle := First_Name_Node (Item);
-               end if;
-
-            when N_Numeric_Or_String_Literal =>
-               if Unique_Entity (Original_Constant (Item)) = Output then
-                  Needle := Item;
-               end if;
-
-            when others =>
-               raise Program_Error;
-
-         end case;
+         if Canonical_Entity (Entity (Item), Unit) = Output then
+            Needle := First_Name_Node (Item);
+         end if;
       end Scan_Initialization_Item;
 
       ------------------------------------------
@@ -4633,29 +4578,15 @@ package body Flow_Utility is
          pragma Assert (List_Length (Choices (N)) = 1);
 
       begin
-         case Nkind (LHS) is
-            when N_Identifier | N_Expanded_Name =>
-               if Canonical_Entity (Entity (LHS), Unit) = Output then
-                  Needle := First_Name_Node (LHS);
+         pragma Assert (Nkind (LHS) in N_Identifier | N_Expanded_Name);
 
-                  if Present (Input) then
-                     Scan_Inputs (Expression (N));
-                  end if;
-               end if;
+         if Canonical_Entity (Entity (LHS), Unit) = Output then
+            Needle := First_Name_Node (LHS);
 
-            when N_Numeric_Or_String_Literal =>
-               if Unique_Entity (Original_Constant (LHS)) = Output then
-                  Needle := First_Name_Node (Original_Node (LHS));
-
-                  if Present (Input) then
-                     Scan_Inputs (Expression (N));
-                  end if;
-               end if;
-
-            when others =>
-               raise Program_Error;
-
-         end case;
+            if Present (Input) then
+               Scan_Inputs (Expression (N));
+            end if;
+         end if;
       end Scan_Initialization_Item_With_Inputs;
 
       ------------------------------
@@ -4729,13 +4660,6 @@ package body Flow_Utility is
                   Needle := First_Name_Node (N);
                end if;
 
-            --  Handle rewritten numeric constant (qualified and simple name)
-
-            when N_Numeric_Or_String_Literal =>
-               if Unique_Entity (Original_Constant (N)) = Input then
-                  Needle := First_Name_Node (Original_Node (N));
-               end if;
-
             --  Handle aggregate inputs like "... => (X, Y)"
 
             when N_Aggregate =>
@@ -4744,25 +4668,13 @@ package body Flow_Utility is
 
                begin
                   loop
-                     case Nkind (RHS) is
-                        when N_Identifier | N_Expanded_Name =>
-                           if Canonical_Entity (Entity (RHS), Unit) = Input
-                           then
-                              Needle := First_Name_Node (RHS);
-                              return;
-                           end if;
+                     pragma Assert
+                       (Nkind (RHS) in N_Identifier | N_Expanded_Name);
 
-                        when N_Numeric_Or_String_Literal =>
-                           if Unique_Entity (Original_Constant (RHS)) = Input
-                           then
-                              Needle := First_Name_Node (Original_Node (RHS));
-                              return;
-                           end if;
-
-                        when others =>
-                           raise Program_Error;
-
-                     end case;
+                     if Canonical_Entity (Entity (RHS), Unit) = Input then
+                        Needle := First_Name_Node (RHS);
+                        return;
+                     end if;
 
                      Next (RHS);
 

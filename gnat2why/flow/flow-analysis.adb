@@ -247,27 +247,19 @@ package body Flow.Analysis is
 
                function Process (N : Node_Id) return Traverse_Result is
                begin
-                  case Nkind (N) is
-                     when N_Identifier | N_Expanded_Name =>
-                        if Present (Entity (N))
-                          and then Unique_Entity (Entity (N)) = Target
-                        then
-                           Result := N;
-                           return Abandon;
-                        end if;
+                  --  The extra check for empty Entity filters the 'Global' and
+                  --  'Refined_Global', i.e. the identifiers of the contract
+                  --  aspect themselves.
 
-                     when N_Numeric_Or_String_Literal =>
-                        if Original_Constant (N) = Target then
-                           Result := N;
-                           return Abandon;
-                        end if;
-
-                     when others =>
-                        null;
-
-                  end case;
-
-                  return OK;
+                  if Nkind (N) in N_Identifier | N_Expanded_Name
+                    and then Present (Entity (N))
+                    and then Unique_Entity (Entity (N)) = Target
+                  then
+                     Result := N;
+                     return Abandon;
+                  else
+                     return OK;
+                  end if;
                end Process;
 
                procedure Traverse is new Traverse_Proc (Process);

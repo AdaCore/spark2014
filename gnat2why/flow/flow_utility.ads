@@ -408,13 +408,6 @@ is
    --  * Map_Root: the non-flattened Flow_Id which is assigned to.
    --  * Seq: items used to derive Map_Root.
 
-   function Original_Constant (N : Node_Id) return Entity_Id
-   with Pre  => Nkind (N) in N_Numeric_Or_String_Literal,
-        Post => Ekind (Original_Constant'Result) = E_Constant;
-   --  For constants that are rewritten to numeric or integer literals return
-   --  the original entity. Such rewriting happens for proof, but it obscures
-   --  flow contracts, which needs to recover the original constants.
-
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;
       Scope                : Flow_Scope;

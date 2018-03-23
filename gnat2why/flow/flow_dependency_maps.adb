@@ -156,10 +156,6 @@ package body Flow_Dependency_Maps is
                --  null => ...
                null;
 
-            when N_Numeric_Or_String_Literal =>
-               Outputs.Include
-                 (Direct_Mapping_Id (Unique_Entity (Original_Constant (LHS))));
-
             when others =>
                Print_Node_Subtree (LHS);
                raise Why.Unexpected_Node;
@@ -174,9 +170,7 @@ package body Flow_Dependency_Maps is
                while Present (RHS) loop
                   Inputs.Include
                     (Direct_Mapping_Id
-                       (if Nkind (RHS) in N_Numeric_Or_String_Literal
-                        then Unique_Entity (Original_Constant (RHS))
-                        else Canonical_Entity (Entity (RHS), Context)));
+                       (Canonical_Entity (Entity (RHS), Context)));
 
                   RHS := Next (RHS);
                end loop;
@@ -188,10 +182,6 @@ package body Flow_Dependency_Maps is
 
             when N_Null =>
                null;
-
-            when N_Numeric_Or_String_Literal =>
-               Inputs.Include
-                 (Direct_Mapping_Id (Unique_Entity (Original_Constant (RHS))));
 
             when others =>
                Print_Node_Subtree (RHS);
