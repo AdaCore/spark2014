@@ -5,9 +5,9 @@ This document was written to facilitate the adoption of SPARK. It targets
 team leaders and technology experts, who will find a description of the
 various levels of software assurance at which the technology can be used
 along with the associated costs and benefits. It also targets software
-developers (these are assumed to have some knowledge of Ada language and
-AdaCore technology), who will find detailed guidance of how to adopt SPARK
-at every assurance level.
+developers (these are assumed to have some knowledge of the Ada language and
+AdaCore technology), who will find detailed guidance on how to adopt SPARK
+at the various assurance levels.
 
 Section :ref:`Levels of Software Assurance` presents the four assurance levels
 described in this document. It starts with a brief introduction of the Ada
@@ -15,27 +15,28 @@ programming language and its SPARK subset and then presents the levels (Stone,
 Bronze, Silver and Gold) that can be achieved with the use of SPARK language
 and toolset, using techniques varying from merely applying the language subset
 up to using the most powerful analyses. The lowest levels are the simplest to
-adopt and already bring significant benefits. The highest levels require more
-effort to adopt and bring the most guarantees. This section is particularly
-well suited for team leaders and technology experts who want to understand how
-SPARK could be useful in their context.
+adopt and can bring significant benefits. The highest levels require more
+effort to adopt and bring the strongest guarantees. This section is particularly
+relevant to team leaders and technology experts who want to understand how
+SPARK can be useful in their projects.
 
 Sections :ref:`Stone Level` to :ref:`Gold Level` present the details of the
 four levels of software assurance. Each section starts with a short
 description of three key aspects of adopting SPARK at that level:
 
 * `Benefits` - What is gained from adopting SPARK?
-* `Impact on Process` - How should the process be adapted to use SPARK?
+* `Impact on Process` - How should the process (i.e., the software life cycle
+  development and verification activities) be adapted to use SPARK?
 * `Costs and Limitations` - What are the main costs and limitations for
   adopting SPARK?
 
-The rest of each section describes how to progressively adopt SPARK at that
-level in an Ada project. Section :ref:`Example` shows an example of
-application for all four levels. These sections are particularly well
-suited for software developers who need to use SPARK at a given level.
+Each section then goes on to describe how to progressively adopt SPARK at that
+level in an Ada project. Section :ref:`Example` shows an example of an
+application at each level. These sections are particularly relevant
+to software developers who need to use SPARK at a given level.
 
-Although this document is about adopting SPARK for use on existing Ada
-code, the same guidelines can be used for adopting SPARK from the beginning
+Although this document focuses on adopting SPARK for use on existing Ada
+code, the same guidelines can be used for adopting SPARK at the beginning
 of a project. The main difference in that case is that one would not want
 to start at the lowest level but already take into account the final
 targeted level starting with the initial design phase.
@@ -51,43 +52,54 @@ Levels of Software Assurance
 Ada
 ---
 
+.. index:: Ada language
+.. index:: C language
+.. index:: C++ language
+.. index:: MISRA C
+.. index:: MISRA C++
+
 Ada is a language for long-lived critical systems. Programming in Ada makes
 it easier to prevent the introduction of errors, thanks to the stronger
 language rules than in many comparative languages (C and C++ in particular,
 including their safer variants like MISRA C and MISRA C++) which make it
-possible for the compiler to reject erroneous programs. Programming in Ada
-also makes it easier to detect the presence of errors in programs, thanks
-to the language rules mandating run-time checking of type safety and memory
-safety conditions which cannot be checked at compile time so that violating
-these conditions during testing leads to exceptions rather than undefined
-behavior.
+possible to detect many kinds of errors (such as type mismatches) at
+compile time. In addition to the language's compile-time checks, Ada also
+requires run-time checking for a variety of error conditions, such as
+out-of-bounds array indexing. Violating such a check leads to an exception
+rather than undefined behavior.
 
-A lesser known advantage of programming in Ada is its greater number of
-language features for embedding program specifications inside the program,
-from mundane properties of data like ranges of values to rich data
+.. index:: Contract-based programming
+.. index:: Precondition
+.. index:: Postcondition
+
+Another advantage of programming in Ada is its facility for
+capturing program specifications in the source code,
+from simple properties of data like ranges of values to rich data
 invariants expressed with arbitrary boolean expressions. An important
-addition to this list of features is the ability to provide contracts on
+element is the ability to provide contracts on
 subprograms, consisting of preconditions and postconditions.  Contracts are
-a central part of the Ada 2012 version of the language.
+a central part Ada, introduced in the Ada 2012 standard.
 
-Preconditions are properties that should be true when a subprogram is
+A precondition is a property that is supposed to be true when a subprogram is
 called. In typical software development in Ada or other languages,
 preconditions are either given in the program as comments accompanying
 subprogram declarations or as defensive code inside subprograms to detect
-improper calling conditions. When using the latest version of Ada,
-developers can express preconditions as boolean properties which should
-hold when a subprogram is called and the compiler can insert run-time
+improper calling conditions. When using Ada 2012,
+a developer can express preconditions as boolean properties, and the compiler
+can insert run-time
 checks to ensure that preconditions are true when the subprogram is called.
 
-Postconditions are properties that should be true when a subprogram
+A postcondition is a property that is supposed to be true when a subprogram
 returns. In typical software development, postconditions are also either
 given in the program as comments accompanying subprogram declarations or as
 assertions inside subprograms to detect implementation errors, but can also
 be provided as defensive code to detect improper values returned at the
-call site. When using the latest version of Ada, developers can express
+call site. When using Ada 2012, a developer can express
 postconditions as boolean properties which should be true when a subprogram
 returns and the compiler can insert run-time checks to ensure that
 postconditions are true when the subprogram returns.
+
+.. index:: Static analysis
 
 The main use of preconditions and postconditions, like other language
 features in Ada for embedding program specifications inside the program, is
@@ -96,12 +108,14 @@ testing. Another increasingly important use of these language features is
 to facilitate the detection of errors by static analyzers, which analyze
 the source code of programs without actually executing them. Without such
 specifications in the program, static analyzers can only detect violations
-of language dynamic constraints (e.g. division by zero or buffer
-overflow). However, the presence of such specifications in the program
+of language dynamic constraints (e.g., division by zero or buffer
+overflow). However, the presence of pre- and postconditions in the program
 allows static analyzers to target the verification of these higher level
 properties. Specifications also constrain the state space that the static
 analyzer has to consider during analysis, which leads to faster running
 time and higher precision.
+
+.. index:: SPARK (overview)
 
 SPARK
 -----
@@ -115,7 +129,7 @@ methodologies. Typically, bug finders require little upfront work, but may
 generate many false alarms which need to be manually triaged and addressed,
 while verifiers require some upfront work, but generate fewer false alarms
 thanks to the use of more powerful techniques. AdaCore develops and
-distributes one bug finder (CodePeer) and one verifier (SPARK).
+distributes both a bug finder (CodePeer) and a verifier (SPARK).
 
 SPARK is a verifier co-developed by AdaCore and Altran and distributed by
 AdaCore. The main webpage for the SPARK Pro product is
@@ -125,25 +139,26 @@ that a program:
 * does not read uninitialized data,
 * accesses global data only as intended,
 * does not contain concurrency errors (deadlocks and data races),
-* does not contain run-time errors (e.g. division by zero or buffer overflow),
-* respects key integrity properties (e.g. interaction between components or global invariants),
+* does not contain run-time errors (e.g., division by zero or buffer overflow),
+* respects key integrity properties (e.g., interaction between components or global invariants),
 * is a correct implementation of software requirements expressed as contracts.
 
-SPARK can analyze a complete program or only parts of it, but can only be
-applied to parts of a program that don't explicitly use pointers (though
-references and addresses are allowed) and that don't catch
+SPARK can analyze either a complete program or those parts that are marked
+as being subject to analysis, but it can only be
+applied to code that does not use pointers (though
+references and addresses are allowed) and that does not handle
 exceptions. Pointers and exceptions are both features that make formal
 verification, as done by SPARK, infeasible, either because of limitations
 of state-of-the-art technology or because of the disproportionate effort
-required from users to apply formal verification in such situations. This
+required from users to apply formal verification in such situations. The
 large subset of Ada that is analyzed by SPARK is also called the SPARK
 language subset.
 
 SPARK builds on the strengths of Ada to provide even more guarantees
 statically rather than dynamically. As summarized in the following table,
 Ada provides strict syntax and strong typing at compile time plus dynamic
-checking of run-time errors and program contracts. SPARK allows performing
-such checking statically. In addition, it enforces the use of a safer
+checking of run-time errors and program contracts. SPARK allows
+such checking to be performed statically. In addition, it enforces the use of a safer
 language subset and detects data flow errors statically.
 
 .. csv-table::
@@ -157,16 +172,29 @@ language subset and detects data flow errors statically.
    "Safer language subset","--",      "static"
    "Strict clear syntax",  "static",  "static"
 
-The main benefit of formal program verification, as performed by SPARK (and by
-Frama-C or TrustInSoft Analyzer for C code) is that it allows verifying
+.. index:: Formal program verification
+.. index:: Frama-C
+.. index:: DO-178C / ED-12C
+.. index:: EN 50128
+.. index:: CENELEC EN 50128
+
+The main benefit of formal program verification, as performed by SPARK (or by
+Frama-C or the TrustInSoft Analyzer for C code) is that it allows verifying
 properties that are difficult or very costly to verify by other methods, such
-as testing or reviews. That difficulty may originate in a mix of the complexity
-of the software, the complexity of the requirement, and the unknown
+as testing or reviews. That difficulty may stem from the complexity
+of the software, the complexity of the requirements, and/or the unknown
 capabilities of attackers. Formal verification allows giving guarantees that
 some properties are always verified, however complex the context. The latest
-versions of international certification standards for avionics (DO-178C) and
-railway (CENELEC 50128:2011) have recognized these benefits by increasing the
-role that formal methods can play in the development of critical software.
+versions of international certification standards for avionics (DO-178C / ED-12C) and
+railway systems (CENELEC EN 50128:2011) have recognized these benefits by increasing the
+role that formal methods can play in the development and verification of critical software.
+
+.. index:: Levels of SPARK use
+.. index:; Stone level (of SPARK use)
+.. index:: Bronze level (of SPARK use)
+.. index:: Silver level (of SPARK use)
+.. index:: Gold level (of SPARK use)
+.. index:: Platinum level (of SPARK use)
 
 Levels of SPARK Use
 -------------------
@@ -175,7 +203,7 @@ The scope and level of SPARK analysis depend on the objectives being
 pursued by the adoption of SPARK. The scope of analysis may be the totality
 of a project, only some units, or only parts of units. The level of
 analysis may range from simple guarantees provided by flow analysis to
-complex properties being proved.  These can be divided in five easily
+complex properties being proved.  These can be divided into five easily
 remembered levels:
 
 #. `Stone level` - valid SPARK
@@ -204,23 +232,30 @@ already provides some confidence: it is the highest level in The Three
 Little Pigs fable! And indeed languages with weaker semantics could be
 thought of as Straw and Sticks levels. However, the adoption of SPARK
 allows us to get stronger guarantees, should the wolf in the fable adopt
-more aggressive means of attack than blowing.
+more aggressive means of attack than simply blowing.
 
-A pitfall when using tools for automating human tasks is to end up `pleasing
-the tools` rather than working around the tool limitations. Both flow analysis
+A pitfall when using tools for automating human tasks is to end up "pleasing
+the tools" rather than working around the tool limitations. Both flow analysis
 and proof, the two technologies used in SPARK, have known limitations. Users
 should refrain from changing the program for the benefit of only getting fewer
 messages from the tools. When relevant, users should justify tool messages
-through appropriate pragmas. See the sections on :ref:`Justifying Unproved
-Check Messages` and :ref:`Flow Analysis Warnings` for more details.
+through appropriate pragmas. See the sections on :ref:`Justifying Unproved Check Messages`
+and :ref:`Flow Analysis Warnings` for more details.
+
+.. index:: GNATprove
 
 In the following, we use "SPARK" to denote the SPARK language, and "GNATprove"
 to denote the formal verification tool in SPARK product.
+
+.. index:: Stone level (of SPARK use)
 
 .. _Stone Level:
 
 Stone Level - Valid SPARK
 =========================
+
+.. index:: SPARK_Mode
+.. index:: GNATmetric
 
 The goal of reaching this level is to identify as much code as possible as
 belonging to the SPARK subset. The user is responsible for identifying
@@ -236,24 +271,24 @@ the total number of lines of code) by the metrics computation tool GNATmetric.
 
 .. rubric:: Benefits
 
-The stricter SPARK rules are enforced on a hopefully large part of the
-program, which leads to better quality and maintainability, as error-prone
-features, such as side-effects in functions and aliasing between
-parameters, are avoided and others, such as use of pointers, are isolated
+The stricter SPARK rules are enforced on a (hopefully) large part of the
+program, which leads to higher quality and maintainability, as error-prone
+features such as side-effects in functions and aliasing between
+parameters are avoided, and others, such as use of pointers, are isolated
 to non-SPARK parts of the program. Individual and peer review processes can
-be lightened on those parts of the program in SPARK, since analysis
-automatically eliminates some categories of defects. Parts of the program
+be reduced on the SPARK parts of the program, since analysis
+automatically eliminates some categories of defects. The parts of the program
 that don't respect the SPARK rules are carefully isolated so they can be
 more thoroughly reviewed and tested.
 
 .. rubric:: Impact on Process
 
-After the initial pass of applying SPARK rules to the program, ongoing
+After the initial pass of applying the SPARK rules to the program, ongoing
 maintenance of SPARK code is similar to ongoing maintenance of Ada code,
-with a few additional rules, such as the need to avoid side-effects in
+with a few additional rules, such as the need to avoid side effects in
 functions and aliasing between parameters. These additional rules are
 checked automatically by running GNATprove on the modified program, which
-can be done either by the developer before pushing changes or by an
+can be done either by the developer before committing changes or by an
 automatic system (continuous builder, regression testsuite, etc.)
 
 .. rubric:: Costs and Limitations
@@ -261,18 +296,23 @@ automatic system (continuous builder, regression testsuite, etc.)
 Pointer-heavy code needs to be rewritten to remove the use of pointers or
 to hide pointers from SPARK analysis, which may be difficult. The initial
 pass may require large, but shallow, rewrites in order to transform the
-code, for example to rewrite functions with side-effects into procedures.
+code, for example to rewrite functions with side effects into procedures.
 
 Initial Setup
 -------------
 
+.. index:: GNATprove
+
 GNATprove can only be run on the sources of a GNAT project (a file with
 extension 'gpr' describing source files and switches to the GNAT compiler
-and other tools in the GNAT tool suite). As an installation check, we
-should start by applying GNATprove to the project without any ``SPARK_Mode``
+and other tools in the GNAT tool suite). As an installation check,
+start by applying GNATprove to the project without any ``SPARK_Mode``
 markers::
 
   > gnatprove -P my_project.gpr --mode=check -j0
+
+.. index:: -j0 switch (GNATprove)
+.. index:: --mode switch (GNATprove)
 
 The ``-j0`` switch analyzes files from the project in parallel, using as
 many cores as available, and the ``--mode=check`` switch runs GNATprove
@@ -281,11 +321,15 @@ in fast checking mode. GNATprove should output the following messages::
   Phase 1 of 2: generation of Global contracts ...
   Phase 2 of 2: fast partial checking of SPARK legality rules ...
 
+.. index:: GPR_PROJECT_PATH environment variable
+
 If you installed SPARK in a different repository from GNAT, you may get errors
 about project files not found if your project depends on XML/Ada, GNATCOLL, or
 any other project distributed with GNAT. In that case, you should update the
 environment variable ``GPR_PROJECT_PATH`` as indicated in the SPARK User's
 Guide: http://docs.adacore.com/spark2014-docs/html/ug/en/install.html
+
+.. index:: SPARK_Mode
 
 After you successfully run GNATprove without errors, choose a simple unit
 in the project, preferably a leaf unit that doesn't depend on other units,
@@ -309,7 +353,7 @@ violated::
   Phase 1 of 2: generation of Global contracts ...
   Phase 2 of 2: checking of SPARK legality rules ...
 
-If you applied SPARK_Mode to a spec file without body (e.g. a unit defining
+If you applied SPARK_Mode to a spec file without body (e.g., a unit defining
 only constants), GNATprove will notify you that no body was actually
 analyzed::
 
@@ -317,6 +361,8 @@ analyzed::
   Phase 2 of 2: flow analysis and proof ...
   warning: no bodies have been analyzed by GNATprove
   enable analysis of a body using SPARK_Mode
+
+.. index:: GPS (GNAT Programming Studio)
 
 At this point, you should switch to using GNAT Pro Studio (GPS), the
 integrated development environment provided with GNAT, in order to more
@@ -339,7 +385,7 @@ GNATprove should output the same messages as before. If error messages are
 generated, they should now be located on the code that violates SPARK
 rules.
 
-At this point, you managed to run GNATprove successfully on your
+At this point, you have managed to run GNATprove successfully on your
 project. The next step is to evaluate how much code can be identified as
 SPARK code. The easiest way to do that is to start by applying the marker
 ``SPARK_Mode`` to all files, using a script like the following shell script:
@@ -392,16 +438,16 @@ Then, open GPS on your project again and rerun the SPARK validity checker by
 again selecting menu :menuselection:`SPARK --> Examine All`, select the
 :guilabel:`check fast` mode in the popup window that opens, and click
 :guilabel:`Execute`. This mode doesn't issue all possible violations of SPARK
-rules, but it runs much faster, so you should run in this mode in your initial
-runs. GNATprove should output error messages located on code that violates
+rules, but it runs much faster, so you should run in this mode initially.
+GNATprove should output error messages located on code that violates
 SPARK rules. The section :ref:`Dealing with SPARK Violations` explains how to
 address these violations by either modifying the code or excluding it from
 analysis.
 
-After all the messages have been addressed, you should yet again rerun the
+After all the messages have been addressed, you should again rerun the
 SPARK validity checker, this time in a mode where all possible violations are
-issued.  Do this by again selecting menu :menuselection:`SPARK --> Examine
-All`, but now select the :guilabel:`check all` mode in the popup window that
+issued.  Do this by again selecting menu :menuselection:`SPARK --> Examine All`,
+but now select the :guilabel:`check all` mode in the popup window that
 opens, and again click :guilabel:`Execute`.  Again, GNATprove should output
 error messages located on code that violates SPARK rules, which should also be
 addressed as detailed in section :ref:`Dealing with SPARK Violations`.
@@ -417,20 +463,26 @@ the global variables read and written by subprogram ``F``, either because it
 comes from an externally built library (such as the GNAT standard library, or
 XML/Ada) or because the implementation for ``F`` is not available to the
 analysis (for example if the code was not yet developed, the subprogram is
-imported, or the file with ``F``'s implementation was excluded from
+imported, or the file with the implementation of ``F`` was excluded from
 analysis). You can provide this information to GNATprove by adding a Global
-contract to ``F``'s declaration (see the section :ref:`Global
-Contract`). Alternatively, you can silence this specific warning by adding the
-following pragma either in the files that raise this warning or in a global
+contract to the declaration of ``F`` (see the section :ref:`Global Contract`).
+Alternatively, you can suppress this specific warning by adding the
+following pragma either in the files that trigger this warning or in a global
 configuration pragma file:
+
+.. index:: pragma Warnings
+.. index:: --warnings switch (GNATprove)
 
 .. code-block:: ada
 
    pragma Warnings (Off, "no Global Contract available",
                     Reason => "External subprograms have no effect on globals");
 
-Note that, if required, you can silence all warnings from GNATprove with
+Note that, if required, you can suppress all warnings from GNATprove with
 the ``--warnings=off`` switch.
+
+.. index:: SPARK violations (how to handle)
+.. index:: GNATprove (dealing with SPARK violations)
 
 .. _Dealing with SPARK Violations:
 
@@ -445,17 +497,21 @@ will be ignored during the analysis. It is thus preferable for you to
 modify the code whenever possible and to exclude code from analysis only as
 a last resort.
 
+.. index:: Excluding code from analysis
+
 Excluding Code From Analysis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-There are multiple methods for excluding code from analysis. Depending on
+There are several ways to exclude code from analysis. Depending on
 the location of the violation, it may be more appropriate to exclude the
 enclosing subprogram or package or the complete enclosing unit.
 
-.. rubric:: Excluding a Subprogram From Analysis
+.. rubric:: Excluding a Subprogram from Analysis
+
+.. index:: SPARK_Mode
 
 When a violation occurs in a subprogram body, you can exclude that specific
-subprogram body from analysis by annotating it with ``SPARK_Mode`` aspect with
+subprogram body from analysis by annotating it with a ``SPARK_Mode`` aspect with
 value ``Off`` as follows:
 
 .. code-block:: ada
@@ -464,7 +520,7 @@ value ``Off`` as follows:
    function Func_To_Exclude (..) return T with SPARK_Mode => Off is ...
 
 When the violation occurs in the subprogram spec, you must exclude both the
-spec and body from analysis by annotating both with ``SPARK_Mode`` aspect with
+spec and body from analysis by annotating both with a ``SPARK_Mode`` aspect with
 value ``Off``. The annotation on the subprogram body is given above and the
 annotation on the subprogram spec is similar:
 
@@ -473,7 +529,7 @@ annotation on the subprogram spec is similar:
    procedure Proc_To_Exclude (..) with SPARK_Mode => Off;
    function Func_To_Exclude (..) return T with SPARK_Mode => Off;
 
-Only top-level subprograms can be excluded from analysis, i.e. subprogram
+Only top-level subprograms can be excluded from analysis; i.e., subprogram
 units or subprograms declared inside package units, but not nested
 subprograms declared inside other subprograms. If a violation occurs inside
 a nested subprogram, you must exclude the enclosing top-level subprogram
@@ -484,15 +540,17 @@ still be called in SPARK code. When you exclude both the subprogram spec
 and body from analysis, you must also exclude all code that calls the
 subprogram.
 
-.. rubric:: Excluding a Package From Analysis
+.. rubric:: Excluding a Package from Analysis
 
 Just as with subprograms, only top-level packages can be excluded from
-analysis, i.e. package units or packages declared inside package units, but
+analysis; i.e., packages declared inside package units, but
 not nested packages declared inside subprograms. If a violation occurs
 inside a nested package, you need to exclude the enclosing top-level
 subprogram from analysis. The case of local packages declared inside
 packages is similar to the case of subprograms, so in the following we only
 consider package units.
+
+.. index:: SPARK_Mode
 
 When a violation occurs in a package body, either in a subprogram or package in
 this package body, you can exclude just that subprogram or package from
@@ -561,7 +619,7 @@ subprograms or packages declared inside the package by annotating them with a
 
 Finally, the violation can occur directly inside the package spec. In that
 case, you can exclude the complete package from analysis by removing the pragma
-``SPARK_Mode`` that was inserted at the start of both the files for the package
+``SPARK_Mode`` that was inserted at the start of the files for both the package
 spec and the package body. In that mode, entities declared in the package spec,
 such as types, variables, and subprograms, can still be used in SPARK code in
 other units, provided these declarations do not violate SPARK rules. In
@@ -590,32 +648,36 @@ as their bodies when explicitly marked with a ``SPARK_Mode`` aspect. In the
 last case, only those declarations and bodies explicitly marked with a
 ``SPARK_Mode`` aspect are analyzed.
 
-Modifying Code To Remove SPARK Violations
+.. index:: Modifying code to remove SPARK violations
+
+Modifying Code to Remove SPARK Violations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In many cases, code can be modified so that either SPARK violations are
-removed completely or can be moved to some part of the code that does not
+In many cases, code can be modified so that SPARK violations are either
+removed completely or are moved to some part of the code that does not
 prevent most of the code from being analyzed. In general, this is good
-because SPARK violations point to features that can easily lead to code
-that is more difficult to maintain (such as side effects in functions) or
+because SPARK violations identify features that may be
+more difficult to maintain (such as side effects in functions) or
 to understand (such as pointers). Below, we consider typical SPARK
-violations found in Ada code and how to address each by modifying the
-code. When code modification is not possible or too complex/costly, the
+violations found in Ada code and show how to address each by modifying the
+code. When code modification is not possible or is too complex/costly, the
 code with the violation should be excluded from analysis by following the
 recommendations of the previous section. The following table lists the main
 restrictions of SPARK that lead to violations in Ada code and how they are
 typically addressed, as detailed in the rest of this section.
 
 .. csv-table::
-   :header: "", "How to remove the violation?", "How to hide the violation?"
+   :header: "", "How to remove the violation", "How to hide the violation"
    :stub-columns: 1
    :widths: 2, 3, 3
 
    "Use of access type", "Use references, addresses, or indexes in an array or a collection", "Use a private type, defined as access type in a private section marked ``SPARK_Mode Off``"
-   "Side-effect in function", "Transform function in procedure with additional parameter for result", "Mark function body with ``SPARK_Mode Off`` and function spec with ``Global => null`` to hide side-effect"
+   "Side effect in function", "Transform function to a procedure with additional parameter for result", "Mark function body with ``SPARK_Mode Off`` and function spec with ``Global => null`` to hide side-effect"
    "Exception handler", "Use result value to notify caller of error when recovery is required", "Split subprogram into functionality without exception handler, and wrapper with exception handler marked with ``SPARK_Mode Off``"
 
 In the following, we consider the error messages that are issued in each case.
+
+.. index:: access types, Pointers
 
 .. rubric:: access to "T" is not allowed in SPARK
 
@@ -623,7 +685,7 @@ See 'access type is not allowed in SPARK'
 
 .. rubric:: access type is not allowed in SPARK
 
-These errors are issued on uses of access types ('pointers'). For example:
+These errors are issued on uses of access types ("pointers"). For example:
 
 .. code-block:: ada
 
@@ -638,10 +700,10 @@ These errors are issued on uses of access types ('pointers'). For example:
       Data3.all := 42;  --<<--  VIOLATION
    end Operate;
 
-In some cases, the uses of access types can be removed from the subprogram into
+In some cases, the uses of access types can be moved from the subprogram into
 a helper subprogram, which is then excluded from analysis. For example, we can
 modify the code above as follows, where both the declaration of global variable
-``Data3`` of access type and the assignment to ``Data3.all`` are grouped in a
+``Data3`` (an access value) and the assignment to ``Data3.all`` are grouped in a
 package body ``Memory_Accesses`` that is excluded from analysis, while the
 package spec for ``Memory_Accesses`` can be used in SPARK code:
 
@@ -674,7 +736,7 @@ package spec for ``Memory_Accesses`` can be used in SPARK code:
 
 In other cases, the access type needs to be visible from client code, but
 the fact that it's implemented as an access type need not be visible to
-client code. Here's an example of such a case:
+client code. Here's an example:
 
 .. code-block:: ada
 
@@ -687,8 +749,8 @@ client code. Here's an example of such a case:
       Data3.all := 42;
    end Operate;
 
-In that case, the access type can be made a private type of either a local
-package or of package defined in a different unit, whose private part (and
+Here the access type can be declared as a private type in either a local
+package or a package defined in a different unit, whose private part (and
 possibly also its package body) is excluded from analysis. For example, we
 can modify the code above as follows, where the type ``Ptr`` together with
 accessors to query and update objects of type ``Ptr`` are grouped in package
@@ -739,8 +801,8 @@ inside a wrapper subprogram as follows:
       Callback.all (Arg1, Arg2);
    end Wrap;
 
-Similarly for passing a subprogram in argument to a call as an an
-access-to-subprogram parameter, this can be isolated inside a wrapper
+Similarly for passing a subprogram as an an
+access-to-subprogram parameter; this can be isolated inside a wrapper
 subprogram as follows:
 
 .. code-block:: ada
@@ -756,10 +818,10 @@ subprogram as follows:
       Call_Sub (Proc'Access);
    end Wrap;
 
-The wrapper can even be made generic if some treatments need to be shared
-before and/or after the call. In that case, Ada rules prevent taking directly
-the address of the argument subprogram (procedure or function) inside the
-generic, so a local wrapper should be used and its address taken, as follows:
+The wrapper can even be made generic if some common processing needs to be performed
+before and/or after the call. In that case, Ada rules prevent directly taking
+the address of the subprogram (procedure or function) inside the
+generic, so a local wrapper should be used and its address taken:
 
 .. code-block:: ada
 
@@ -786,8 +848,8 @@ generic, so a local wrapper should be used and its address taken, as follows:
 
    procedure Wrap_Proc is new Wrap (Proc);
 
-Depending on how type ``Sub_T`` is defined, attribute ``Unchecked_Access`` may
-need to be used instead of attribute ``Access`` in the code above.
+Depending on how type ``Sub_T`` is defined, the attribute ``Unchecked_Access`` may
+need to be used instead of the attribute ``Access`` in the code above.
 
 .. rubric:: explicit dereference is not allowed in SPARK
 
@@ -795,7 +857,9 @@ See 'access type is not allowed in SPARK'
 
 .. rubric:: function with "in out" parameter is not allowed in SPARK
 
-This error is issued on a function with an 'in out' parameter. For example:
+.. index:: Function with "in out" parameter
+
+This error is issued for a function with an 'in out' parameter. For example:
 
 .. code-block:: ada
 
@@ -821,8 +885,10 @@ parameter for the returned value, as follows:
 
 .. rubric:: function with output global "X" is not allowed in SPARK
 
-This error is issued on a function with a side-effect on variables in
-scope. For example:
+.. index:: Function with side effect
+
+This error is issued for a function with a side effect on a non-local variable.
+For example:
 
 .. code-block:: ada
 
@@ -845,10 +911,10 @@ parameter for the returned value, as follows:
       Result := Count;
    end Increment;
 
-Alternatively, when the side-effects have no influence on the properties to
-verify, they can be masked to the analysis. For example, consider a
+Alternatively, when a side effect has no influence on the properties to
+be verified, it can be masked to the analysis. For example, consider a
 procedure ``Log`` that writes global data, causing all of its callers to have
-side-effects:
+side effects:
 
 .. code-block:: ada
 
@@ -865,7 +931,7 @@ side-effects:
       return X + 1;
    end Increment_And_Log;
 
-A legitimate solution here is to mask the side-effects in procedure ``Log`` for
+A legitimate solution here is to mask the side effects in procedure ``Log`` for
 the analysis, by annotating the spec of ``Log`` with an aspect ``Global`` with
 value ``null`` and by excluding the body of ``Log`` from analysis:
 
@@ -891,8 +957,9 @@ value ``null`` and by excluding the body of ``Log`` from analysis:
 
 .. rubric:: handler is not allowed in SPARK
 
-This error is issued on exception handlers. For example, on the following
-code:
+.. index:: Exception handlers
+
+This error is issued for exception handlers. For example:
 
 .. code-block:: ada
 
@@ -921,9 +988,9 @@ code:
          Found := False;
    end Find_Before_Delim;
 
-The subprogram with an exception handler can usually be split between core
-functionality, which may raise exceptions but does not contain an exception
-handler and thus can be analyzed, and a wrapper calling the core functionality,
+A subprogram with an exception handler can usually be split between core
+functionality, which may raise exceptions but does not contain any exception
+handlers and thus can be analyzed, and a wrapper calling the core functionality,
 which contains the exception handler and is excluded from analysis. For
 example, we can modify the code above to perform the search for a character in
 function ``Find_Before_Delim``, which raises an exception if the desired
@@ -965,9 +1032,12 @@ and a procedure ``Find_Before_Delim``, which wraps the call to function
 
 .. rubric:: side effects of function "F" are not modeled in SPARK
 
-This error is issued on a call to a function with side-effects on variables in
-scope. Note that a corresponding error 'function with output global "X" is not
-allowed in SPARK' will also be issued on function ``F`` if it's marked
+.. index Function with side effect
+
+This error is issued for a call to a function with side effects on non-local variables.
+Note that a corresponding error
+'function with output global "X" is not allowed in SPARK'
+will also be issued for function ``F`` if it's marked
 ``SPARK_Mode`` with value ``On`` (either directly or in a region of code marked
 as such). For example, on the following code, calling the function
 ``Increment_And_Log`` seen previously:
@@ -982,18 +1052,22 @@ as such). For example, on the following code, calling the function
 
 The called function can be transformed into a procedure as seen
 previously. If it's not marked ``SPARK_Mode`` with value ``On``, a legitimate
-solution might be to mask its side-effects for the analysis, by annotating
+solution might be to mask its side effects for the analysis, by annotating
 its spec with a ``Global`` aspect with value ``null``.
 
 .. _Bronze Level:
 
+.. index:: Bronze level (of SPARK use)
+.. index:: Initialization, Uninitialized data
+.. index:: Flow analysis
+
 Bronze Level - Initialization and Correct Data Flow
 ===================================================
 
-The goal of reaching this level is making sure that no uninitialized data
-can ever be read and, optionally, preventing unintended access to global
+The goal of reaching this level is to make sure that no uninitialized data
+can ever be read and, optionally, to prevent unintended access to global
 variables. This also ensures no possible interference between parameters
-and global variables, meaning that the same variable isn't passed multiple
+and global variables; i.e., the same variable isn't passed multiple
 times to a subprogram, either as a parameter or global variable.
 
 .. rubric:: Benefits
@@ -1002,25 +1076,29 @@ The SPARK code is guaranteed to be free from a number of defects: no reads
 of uninitialized variables, no possible interference between parameters and
 global variables, no unintended access to global variables.
 
+.. index:: Global contract
+
 When ``Global`` contracts are used to specify which global variables are read
 and/or written by subprograms, maintenance is facilitated by a clear
-documentation of intent, which is checked automatically by running GNATprove,
+documentation of intent. This is checked automatically by GNATprove,
 so that any mismatch between the implementation and the specification is
 reported.
 
 .. rubric:: Impact on Process
 
-An initial pass is required where flow analysis is turned on and the
+An initial pass is required where flow analysis is enabled and the
 resulting messages are resolved either by rewriting code or justifying any
-false alarms. Once this is complete, ongoing maintenance can maintain the
+false alarms. Once this is complete, ongoing maintenance can preserve the
 same guarantees at a low cost. A few simple idioms can be used to avoid
-most false alarms and the remaining false alarms can be easily justified.
+most false alarms, and the remaining false alarms can be easily justified.
 
 .. rubric:: Costs and Limitations
 
-The initial pass may require a substantial effort to get rid of all false
+.. index:: False alarm
+
+The initial pass may require a substantial effort to deal with the false
 alarms, depending on the coding style adopted up to that point. The analysis
-may take a long time, up to an hour, on large programs but it is guaranteed to
+may take a long time, up to an hour on large programs, but it is guaranteed to
 terminate. Flow analysis is, by construction, limited to local understanding of
 the code, with no knowledge of values (only code paths) and handling of
 composite variables is only through calls, rather than component by component,
@@ -1029,11 +1107,13 @@ which may lead to false alarms.
 Running GNATprove in Flow Analysis Mode
 ---------------------------------------
 
+.. index:: ! Flow analysis
+
 Two distinct static analyses are performed by GNATprove. Flow analysis is
-the fastest and requires no user-supplied annotations. It tracks the flow
+the faster and requires no user-supplied annotations. It tracks the flow
 of information between variables on a per subprogram basis. In particular,
 it allows finding every potential use of uninitialized data. The second
-analysis, proof, will be described in the sections on Silver and Gold
+analysis technique, proof, will be described in the sections on Silver and Gold
 levels.
 
 To run GNATprove in flow analysis mode on your project, select the
@@ -1058,35 +1138,40 @@ have the form::
 
   medium: "V" might not be initialized
 
-Listed first is the severity of the check, which is one of `low`, `medium`, or
-`high`.  It reflects both the likelihood that the reported problem is indeed a
+Listed first is the severity of the check, which is one of *low*, *medium*, or
+*high*.  It reflects both the likelihood that the reported problem is indeed a
 bug and the criticality if it is a bug. Following the colon is the type of
 check message, here a potential read of an uninitialized variable. They'll be
 located at the point in your code where the error can occur.  The corresponding
 line in GPS will be highlighted in red.
 
+.. index:: Aliasing
+
 Flow analysis can issue several types of check messages. In this document, we
 concentrate on the two most common ones. Initialization checks relate to uses
-of uninitialized data and are described in section :ref:`Initialization
-Checks`.  Section :ref:`Aliasing` discusses check messages related to aliasing
+of uninitialized data and are described in section :ref:`Initialization Checks`.
+Section :ref:`Aliasing` discusses check messages related to aliasing
 of subprogram parameters and global variables. Other check messages can also be
 issued when volatile variables or tasking constructs are used. You can find
 more information about these additional checks in
 http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_view_gnatprove_output.html#description-of-messages.
 
-Once you have addressed each check message, you can re-reun flow analysis with
-the :guilabel:`Report checks proved` box checked to see the verifications
+Once you have addressed each check message, you can rerun flow analysis with
+the :guilabel:`Report checks proved` box checked to see the verification
 successfully performed by GNATprove.  This time, it should only issue 'info'
 messages, highlighted in green in GPS, like the following::
 
   info: initialization of "V" proved
 
-Flow analysis can also generate useful warnings about dead code, unused
+.. index:: Dead code (detected by Flow analysis)
+.. index:: Unused variables (detected by Flow analysis)
+
+Flow analysis can also generate warnings about dead code, unused
 variables or incorrect parameter modes. To achieve this level, it may be
-interesting to look at these warnings. We explain how this can be done in
+useful to look at these warnings. We explain how this can be done in
 section :ref:`Flow Analysis Warnings`.
 
-As further optional steps in this level, critical parts of the program can
+As further optional steps at this level, critical parts of the program can
 be annotated to make sure they don't make unintended accesses to global
 data. This activity is explained in section :ref:`Global Annotations`.
 
@@ -1094,6 +1179,8 @@ data. This activity is explained in section :ref:`Global Annotations`.
 
 Initialization Checks
 ---------------------
+
+.. index:: ! Initialization
 
 Initialization checks are the most common check messages issued by
 GNATprove in flow analysis mode. Indeed, each time a variable is read or
@@ -1109,34 +1196,38 @@ or::
 
 Choose a unit in which GNATprove reports an unproved initialization check and
 open it in GPS. You can launch flow analysis on only this unit by opening the
-:menuselection:`SPARK --> Examine File` menu, selecting the :guilabel:`flow
-analysis` mode in the GPS panel, checking the :guilabel:`Do not report
-warnings` box, unchecking the :guilabel:`Report checks proved` box, and
+:menuselection:`SPARK --> Examine File` menu, selecting the :guilabel:`flow analysis`
+mode in the GPS panel, checking the :guilabel:`Do not report warnings` box,
+unchecking the :guilabel:`Report checks proved` box, and
 clicking :guilabel:`Execute`. To investigate an unproved initialization check,
 click on the corresponding check message in the GPS :guilabel:`Locations`
 tab. The editor should move to the corresponding location in your program.
 
+.. index:: False alarm
+
 Not all unproved initialization checks denote actual reads of uninitialized
 variables: SPARK features a stronger initialization policy than Ada and the
-verification of initialization of variables in GNATprove suffers from
-shortcomings. Determining whether an initialization check issued by GNATprove
-is a real error is done by code review and is usually straightforward. While
+verification of initialization of variables in GNATprove has some
+limitations. Determining whether an initialization check issued by GNATprove
+is a real error involves code review and is usually straightforward. While
 actual reads of uninitialized data must be corrected, check messages that don't
 correspond to actual errors (called 'false alarms' or 'false positives') can be
 either 'justified', that is, annotated with a proper justification (see section
-on :ref:`Justifying Unproved Check Messages`), or worked around. In the rest of
-this section, we review the most common cases where GNATprove may produce
-unproved initialization checks. We then describe how the code can be changed to
-avoid false alarms or, alternately, explain how they can be justified.
+:ref:`Justifying Unproved Check Messages`), or worked around. The rest of
+this section reviews the most common cases where GNATprove may produce
+unproved initialization checks, and then describes how the code can be changed to
+avoid false alarms or, alternately, explains how they can be justified.
 
 SPARK Strong Data Initialization Policy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-GNATprove verifies data initialization modularly on a per subprogram basis. To
+.. index:: Initialization
+
+GNATprove verifies data initialization modularly on a per-subprogram basis. To
 allow this verification, the SPARK language requires a stronger data
 initialization policy than standard Ada: you should initialize every global
-variable that is read by a subprogram and every parameter of mode 'in' or 'in
-out' on entry to the subprogram.
+variable that is read by a subprogram and every variable passed to the subprogram
+as an 'in' or 'in out' parameter .
 
 .. code-block:: ada
 
@@ -1212,6 +1303,8 @@ unproved check on ``Result``'s declaration::
 
   medium: "Result" might not be initialized in "Search"
 
+.. index:: False alarm
+
 You can consider this check message as a false alarm and can easily either
 justify it (see section on :ref:`Justifying Unproved Check Messages`) or work
 around it, depending on what is more appropriate. A safer alternative, however,
@@ -1220,9 +1313,12 @@ is to always initialize ``Result`` on all paths through ``Search``.
 Handling of Composite Objects as a Whole
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-It follows from the SPARK initialization policy that out parameters of a
+.. index:: Initialization of composite objects
+.. index:: Record initialization
+
+It follows from the SPARK initialization policy that 'out' parameters of a
 composite type must be completely defined by the subprogram. One
-side-effect of this is that it makes it impossible to fully initialize a
+consequence is that it is not possible to fully initialize a
 record object by successively initializing each component through procedure
 calls:
 
@@ -1251,8 +1347,10 @@ calls:
 Imprecise Handling of Arrays
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Though record objects are treated as composites for inter-procedural data
-initialization policy, the initialization status of each record component
+.. index:: Array initialization
+
+Though record objects are treated as composites for interprocedural data
+initialization, the initialization status of each record component
 is tracked independently inside a single subprogram. For example, a record
 can be initialized by successive assignments into each of its components:
 
@@ -1287,7 +1385,7 @@ Flow analysis is not value dependent, meaning that it is not influenced by the
 actual value of expressions. As a consequence, it's not able to determine that
 some paths of a program are impossible, so it may issue unproved checks on such
 a path. For example, in the following program, GNATprove cannot verify that
-``X1`` is initialized in the assignment to ``X2`` even though the two if
+``X1`` is initialized in the assignment to ``X2`` even though the two 'if'
 statements share the same condition:
 
 .. code-block:: ada
@@ -1304,13 +1402,15 @@ statements share the same condition:
 Rewriting the Code to Avoid False Alarms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index:: False alarm
+
 In cases where the code can be modified, it may be a good idea to rewrite it so
 that GNATprove can successfully verify data initialization. In the following,
 we list these modifications, starting from the least intrusive and ending with
-the most intrusive. It's best to initialize variables at declaration and this
+the most intrusive. It's best to initialize variables at their declaration, and this
 is the recommended work-around whenever possible since it only requires
 modifying the variable declaration and is not very error-prone. However, it is
-impossible for variables of a private type and may be difficult for complex
+not applicable to variables of a private type and may be difficult for complex
 data and inefficient for large structures.
 
 .. code-block:: ada
@@ -1319,12 +1419,15 @@ data and inefficient for large structures.
    A (1) := 1;  --<<--  info: initialization of "A" proved
    A (2) := 2;  --<<--  info: initialization of "A" proved
 
+.. index:: Default_Value aspect
+.. index:: Default_Component_Value aspect
+
 Another option is to add a default to the variable's type, though this is
 more intrusive as it impacts every variable of that type with default
-initialization.  For example, if the initializing expression takes time to
-execute and there are thousands of variables of this type which are
+initialization.  For example, if the initializing expression is complex
+and there are thousands of variables of this type which are
 initialized by default, this may impact the overall running time of the
-application. On the other hand, it's especially interesting for private
+application. On the other hand, it's especially useful for private
 types, for which the previous work-around is not applicable. A default
 initial value can be defined for scalar types using ``Default_Value``, for
 array types using ``Default_Component_Value``, and for record types by
@@ -1340,8 +1443,10 @@ introducing a default for each record component:
       F2 : My_Int;
    end record;
 
-You can also annotate private types with the ``Default_Initial_Condition``
-aspect, which allows defining a property which should hold whenever a variable
+.. index:: Default_Initial_Condition aspect
+
+You can also annotate a private type with the ``Default_Initial_Condition``
+aspect, which defines a property that should hold whenever a variable
 of this type is initialized by default. When no property is provided, it
 defaults to ``True`` and implies that the type can be safely initialized by
 default. This provides a way to specify that objects of that type should be
@@ -1366,11 +1471,13 @@ even if its ``Default_Initial_Condition`` aspect makes this promise:
    P (S);  --<<--  info: initialization of "S.Size" proved
            --<<--  info: initialization of "S.Content" proved
 
+.. index:: Initialization
+
 Yet another option is to refactor code to respect the SPARK data
-initialization policy. Specifically, initialize every components of a
+initialization policy. Specifically, initialize every component of a
 record object in a single procedure and always initialize subprogram
 outputs. Alternatively, partial initialization (only on some program paths)
-can be represented by a variant record:
+can be implemented through a variant record:
 
 .. code-block:: ada
 
@@ -1400,6 +1507,8 @@ can be represented by a variant record:
 Justifying Unproved Check Messages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index:: pragma Annotate
+
 You can selectively accept check messages, like those emitted for data
 initialization, by supplying an appropriate justification. When you do that,
 the tool silently assumes the data affected by the justified check has been
@@ -1411,26 +1520,26 @@ initialization check:
 
    pragma Annotate (GNATprove, Category, Pattern, Reason);
 
-A ``pragma Annotate`` expects exactly 4 arguments. The first is fixed and
+A ``pragma Annotate`` expects exactly four arguments. The first is fixed and
 should always be ``GNATprove``. The second argument, named ``Category``, can be
 either ``False_Positive`` or ``Intentional``. ``False_Positive`` should be used
 when the data is initialized by the program but GNATprove is unable to verify
 it, while ``Intentional`` should be used when the variable is not initialized,
 but for some reason this is not a problem; some examples will be given
 later. The third argument, named ``Pattern``, should be a part of the check
-message. For initialization checks, '"X" might not be initialized' or '"X" is
-not initialized', depending on the message, is appropriate. Finally, the last
-argument is the most important. It stores an explanation of why the check was
-accepted. It should allow reviewing the justification easily. A rule that's
-often applied in practice is that the reason should identify the author of the
-justification, using the format '<initials> <reason>', for example 'YM variable
-cannot be zero here'.
+message. For initialization checks, '"X" might not be initialized' or
+'"X" is not initialized', depending on the message, is appropriate. Finally, the last
+argument is the most important. It captures why the check was
+accepted. It should allow reviewing the justification easily, and it's
+good practice to identify the author of the
+justification, using the format '<initials> <reason>'; for example,
+'YM variable cannot be zero here'.
 
-You can find a complete description of how checks can be justified in the
+A complete description of how checks can be justified is given in the
 SPARK User's Guide:
 http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_use_gnatprove_in_a_team.html#justifying-check-messages.
 
-On the code below, GNATprove is unable to verify that the array A is
+On the code below, GNATprove is unable to verify that the array ``A`` is
 initialized by successive initialization of its elements:
 
 .. code-block:: ada
@@ -1438,16 +1547,19 @@ initialized by successive initialization of its elements:
    A : Nat_Array (1 .. 3);
    A (1) := 1;
    pragma Annotate
-     (GNATprove, False_Positive, """A"" might not be initialized",
-      String'("A is properly initialized by these three successive"
-              & " assignments"));
+     (GNATprove,
+      False_Positive,
+      """A"" might not be initialized",
+      String'("A is properly initialized by these " &
+              "three successive assignments"));
    A (2) := 2;
    A (3) := 3;
 
 Since the array ``A`` is correctly initialized by the code above, the
-annotation falls in the category ``False_Positive``. Note that the ``pragma
-Annotate`` must be located just after the line for which the check message is
-issued.
+annotation falls in the category ``False_Positive``. Note that the ``pragma Annotate``
+must be located just after the line for which the check message is
+issued. The ``String'(...)`` qualification for the justification argument is
+required for technical reasons.
 
 Because SPARK enforces a stronger initialization policy than Ada, you may want
 to justify a check message for a variable that may not be completely
@@ -1465,7 +1577,9 @@ the implementation and from the callers to make the review valid:
                      Found  : out Boolean;
                      Result : out Positive);
    pragma Annotate
-     (GNATprove, Intentional, """Result"" might not be initialized",
+     (GNATprove,
+      Intentional,
+      """Result"" might not be initialized",
       String'("Result is always initialized when Found is True and never"
               & " read otherwise");
 
@@ -1481,28 +1595,33 @@ justification message:
       Content : Nat_Array (1 .. Max);
    end record;
    pragma Annotate
-     (GNATprove, Intentional, """Stack"" is not fully initialized",
+     (GNATprove,
+      Intentional,
+      """Stack"" is not fully initialized",
       String'("The only indexes that can be accessed in a stack are"
-              & " those smaller than Size. These indexes will always"
-              & " have been initialized when Size is increased."));
+              & " those no greater than Size. The elements at these indexes will always"
+              & " have been initialized."));
 
 On existing, thoroughly tested code, unconditional reads of uninitialized
 data are rather unlikely. Neverthless, there may be a path through the
 program where an uninitialized variable can be read. Before justifying an
 unproved initialization check, it's important to understand why it's not
 proved and what are the assumptions conveyed to the tool when justifying
-it. The result of this analysis should then be stored inside the reason
-field of the ``pragma Annotate`` to simplify later reviews.
+it. The result of this analysis should then be specified in the Reason
+argument of ``pragma Annotate`` to simplify later reviews.
 
 .. _Aliasing:
 
 Aliasing
 --------
 
+.. index:: ! Aliasing
+.. index:: access types, Pointers
+
 Detecting Possible Aliasing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In SPARK, an assignment to a variable cannot change the value of another
+In SPARK, an assignment to one variable cannot change the value of another
 variable. This is enforced by forbidding the use of access types ('pointers')
 and by restricting aliasing between parameters and global variables so that
 only benign aliasing is accepted (i.e. aliasing that does not cause
@@ -1515,15 +1634,15 @@ A check message concerning a possible aliasing has the form::
 This message is warning that, for the call at the given location, the variable
 ``Y`` supplied for the formal parameter ``X`` of the subprogram was already
 visible in the subprogram. As a result, assignments to ``Y`` in the subprogram
-will affect the value of ``X`` and the converse holds too. This is detected as
+will affect the value of ``X`` and vice versa. This is detected as
 an error by GNATprove, which always assumes variables to be distinct.
 
 As stated in the check message, the precise rules for aliasing are detailed
 in SPARK Reference Manual section 6.4.2. They can be summarized as follows:
 
-Two out parameters should never be aliased. Notice that the trivial cases
+Two out parameters should never be aliased. Notice that trivial cases
 of parameter aliasing are already forbidden by Ada and reported as errors
-by the compiler, such as in the following subprogram:
+by the compiler, such as the call of the following subprogram:
 
 .. code-block:: ada
 
@@ -1553,8 +1672,8 @@ by copy), GNATprove no longer outputs any unproved check message:
 
 However, an 'out' parameter should never be aliased with a global variable
 referenced by the subprogram. This is really the same as aliasing between
-output parameters, but it cannot be reported by the compiler because it
-doesn't track uses of global variables:
+output parameters, but the compiler doesn't track uses of global variables
+and thus does not report the error:
 
 .. code-block:: ada
 
@@ -1600,27 +1719,32 @@ http://docs.adacore.com/spark2014-docs/html/ug/en/source/language_restrictions.h
 Dealing with Unproved Aliasing Checks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index:: Unproved aliasing checks
+.. index:: Aliasing
+
 Complying with SPARK rules concerning aliasing usually requires refactoring
 the code. This is, in general, a good idea because aliasing can be the
 source of errors that are difficult to find since they only occur in some
 cases. When calling a subprogram with aliased parameters, there's a good
 chance of failing in a case the implementer of the subprogram has not
-considered and thus of triggering an inappropriate result. Furthermore, the
-behavior of a subprogram call when its parameter are aliased depends on how
-parameter are passed (by copy or by reference) and on the order in which
+considered and thus producing an inappropriate result. Furthermore, the
+behavior of a subprogram call when its parameters are aliased depends on how
+parameters are passed (by copy or by reference) and on the order in which
 the by-copy parameters, if any, are copied back. Since these are not
 specified by the Ada language, it may introduce either compiler or platform
 dependences in the behavior of the program.
 
-It can be the case that GNATprove's analysis is not precise enough and that
-it issues an unproved check message in cases in which there really is no
-possible aliasing. This can be the case, for example, for aliasing between
+In some situations GNATprove's analysis is not precise enough and the tool
+issues an unproved check message even when there is no
+possible aliasing. This can occur, for example, for aliasing between
 a subprogram input parameter and an output global variable referenced by
 the subprogram if the parameter is not of a by-copy type (a type mandated
-to be passed by value by the Ada Reference Manual) but for which the
-developer knows that, in her environment, the compiler indeed passes it by
+to be passed by value by the Ada standard) but for which the
+developer knows that, in their environment, the compiler indeed passes it by
 copy. In this case, the check message can be justified similarly to
 initialization checks:
+
+.. index:: pragma Annotate
 
 .. code-block:: ada
 
@@ -1633,11 +1757,14 @@ initialization checks:
 
    Move_X_To_Y (Y);
    pragma Annotate
-     (GNATprove, False_Positive,
+     (GNATprove,
+      False_Positive,
       "formal parameter ""X"" and global ""Y"" are aliased",
       String'("My compiler follows Ada RM-B-3 68 implementation advice"
               & " and passes variables of type T by copy as it uses the"
               & " C_Pass_By_Copy convention"));
+
+.. index:: False alarm
 
 GNATprove restrictions explained in the section about initialization checks can
 also lead to false alarms, in particular for aliasing between parts of
@@ -1652,21 +1779,23 @@ check in this case, which can be justified as follows:
 
    Only_Read_F2_Of_X (X.F1);
    pragma Annotate
-     (GNATprove, False_Positive,
+     (GNATprove,
+      False_Positive,
       "formal parameter ""Y"" and global ""X"" are aliased",
       String'("Only_Read_F2_Of_X only references the component F2 in X"
               & " so no aliasing can be introduced with X.F1"));
 
 In the same way, because it is not value dependent, flow analysis emits an
 unproved aliasing check when two (distinct) indices of an array are given
-as output parameters to a subprogram, which can be justified as follows:
+as output parameters to a subprogram. This can be justified as follows:
 
 .. code-block:: ada
 
    pragma Assert (I = 2);
    Swap (A (1), A (I));
    pragma Annotate
-     (GNATprove, False_Positive,
+     (GNATprove,
+      False_Positive,
       "formal parameters ""X"" and ""Y"" might be aliased",
       String'("As I is equal to 2 prior to the call, A (1) and A (I) are"
               & " never aliased."));
@@ -1676,14 +1805,17 @@ as output parameters to a subprogram, which can be justified as follows:
 Flow Analysis Warnings
 ----------------------
 
+.. index:: Flow analysis
+.. index:: Warnings
+
 Other than check messages, flow analysis can also issue warnings, which usually
 flag suspicious code that may be the sign of an error in the program. They
 should be inspected, but can be suppressed when they're deemed spurious,
 without risk of missing a critical issue for the soundness of the analysis. To
 see these warnings, run the tool in flow analysis mode with warnings
 enabled. Select :menuselection:`SPARK --> Examine All` menu, in the GPS panel,
-select the :guilabel:`flow` mode, uncheck the :guilabel:`Do not report
-warnings` and :guilabel:`Report checks proved` boxes, and click
+select the :guilabel:`flow` mode, uncheck the :guilabel:`Do not report warnings`
+and :guilabel:`Report checks proved` boxes, and click
 :guilabel:`Execute`.
 
 GNATprove warnings, like the compiler warnings, are associated with a
@@ -1691,26 +1823,31 @@ source location and prefixed with the word 'warning'::
 
   warning: subprogram "Test" has no effect
 
+.. index:: --warnings switch (GNATprove)
+
 You can suppress GNATprove warnings globally by using the switch
-``--warnings=off``, which is equivalent to checking the :guilabel:`Do not
-report warnings` box in GPS, or locally by using ``pragma Warnings``. For
+``--warnings=off``, which is equivalent to checking the :guilabel:`Do not report warnings`
+box in GPS, or locally by using ``pragma Warnings``. For
 example, the above warning can be suppressed by switching off local warnings
 with the above message around the declaration of the procedure ``Test`` as
 follows:
 
+.. index:: pragma Warnings
+
 .. code-block:: ada
 
    pragma Warnings
-     (Off, "subprogram ""Test"" has no effect",
+     (Off,
+      "subprogram ""Test"" has no effect",
       Reason => "Written to demonstrate GNATprove's capabilities");
 
    procedure Test;
 
    pragma Warnings (On, "subprogram ""Test"" has no effect");
 
-A common rule applied in practice is that the reason should identify the
-author of the pragma, using the format '<initials> <reason>', for example
-'CD subprogram is only a test'.
+As noted earlier, a common practice is to identify the
+author of the pragma, using the format '<initials> <reason>'; for example
+``CD subprogram is only a test``.
 
 How warnings can be suppressed in GNATprove is described in the SPARK
 User's Guide:
@@ -1721,9 +1858,11 @@ explains the meaning of each.
 
 .. rubric:: initialization of X has no effect
 
-Flow analysis tracks flow of information between variables. While doing so,
+.. index:: Initialization
+
+Flow analysis tracks the flow of information between variables. While doing so,
 it can detect cases where the initial value of a variable is never used to
-compute the value of any object. It reports it with a warning:
+compute the value of any object. It reports this situation with a warning:
 
 .. code-block:: ada
 
@@ -1737,8 +1876,10 @@ compute the value of any object. It reports it with a warning:
 
 .. rubric:: unused assignment
 
+.. index:: Unused assignment
+
 Flow analysis also detects assignments which store into a variable a value
-that will never be read:
+that is never subsequently read:
 
 .. code-block:: ada
 
@@ -1750,7 +1891,7 @@ that will never be read:
 
 Note that flow analysis is not value dependent. As a consequence, it cannot
 detect cases when an assignment is useless because it stores the same value
-that was previously stored in the variable:
+that that the target variable currently holds:
 
 .. code-block:: ada
 
@@ -1762,6 +1903,8 @@ that was previously stored in the variable:
    end Write_X_To_Same;
 
 .. rubric:: "X" is not modified, could be IN
+
+.. index:: Parameter mode misuse
 
 Flow analysis also checks the modes of subprogram parameters. It warns on
 'in out' parameters whose value is never modified:
@@ -1789,6 +1932,8 @@ never read by the program:
 
 .. rubric:: statement has no effect
 
+.. index:: Statement with no effect
+
 Flow analysis can detect a statement which has no effect on any output of
 the subprogram:
 
@@ -1802,6 +1947,8 @@ the subprogram:
    end Initialize_X;
 
 .. rubric:: subprogram "S" has no effect
+
+.. index:: Subprogram with no effect
 
 When a subprogram as a whole has no output or effect, it's also reported by
 GNATprove:
@@ -1818,6 +1965,8 @@ GNATprove:
 
 Global Annotations
 ------------------
+
+.. index:: ! Global contract
 
 .. _Global Contract:
 
@@ -1839,7 +1988,7 @@ that a subprogram is not allowed to either read or modify global variables:
 
 This construct uses the Ada 2012 aspect syntax. You must place it on the
 subprogram declaration if any, otherwise on the subprogram body. You can
-use an alternative notation based on pragmas if compatibility with older
+use an alternative notation based on pragmas if compatibility with earlier
 versions of Ada is required:
 
 .. code-block:: ada
@@ -1865,12 +2014,12 @@ the subprogram:
 
 The use of ``Global`` contracts is not mandatory. However, whenever a contract
 is provided, it must be correct and complete: that is, it must mention every
-global variable accessed by the subprogram with the correct mode. Similarly to
+global variable accessed by the subprogram with the correct mode. Similar to
 subprogram parameter modes, data-dependency contracts are checked by the tool
 in flow analysis mode and checks and warnings are issued in case of
-non-conformance. To verify manually supplied data-dependency contracts, run
-GNATprove in flow analysis mode by selecting the :menuselection:`SPARK -->
-Examine File` menu, selecting the :guilabel:`flow` mode in the GPS panel,
+nonconformance. To verify manually supplied data-dependency contracts, run
+GNATprove in flow analysis mode by selecting the :menuselection:`SPARK --> Examine File`
+menu, selecting the :guilabel:`flow` mode in the GPS panel,
 checking the :guilabel:`Do not report warnings` box, unchecking the
 :guilabel:`Report checks proved` box, and clicking :guilabel:`Execute`.
 
@@ -1880,12 +2029,15 @@ http://docs.adacore.com/spark2014-docs/html/ug/en/source/subprogram_contracts.ht
 Constants with Variable Inputs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index:: Constant with variable input
+.. index:: Global contract
+
 When a subprogram accesses a constant whose value depends on variable inputs
 (that is, on the value of variables or of other constants with variable
 inputs), it must be listed in the ``Global`` contract of the subprogram, if
 any. This may come as a surprise to users. However, this is required to
 properly verify every flow of information between variables of the program. As
-an example, on the following program, the dependency of ``Set_X_To_C`` on the
+an example, in the following program the dependency of ``Set_X_To_C`` on the
 value of ``Y`` is expressed by the constant with the variable input ``C``
 appearing in its ``Global`` contract:
 
@@ -1913,6 +2065,8 @@ http://docs.adacore.com/spark2014-docs/html/ug/en/source/package_contracts.html#
 
 Abstract State
 ^^^^^^^^^^^^^^
+
+.. index:: Abstract state aspect
 
 Sometimes, you may want to annotate a subprogram that accesses a variable that
 isn't visible from the subprogram declaration because it's declared inside some
@@ -1956,7 +2110,7 @@ equivalent pragma):
 An ``Abstract_State`` annotation is not required, though it may be necessary to
 annotate some subprograms with ``Global`` contracts. However, when it's
 provided, it must be correct and complete: it must list precisely all the
-hidden variable declared in the package. Several abstract states can be
+hidden variables declared in the package. Several abstract states can be
 defined for the same package to allow more precise ``Global`` contracts on
 subprograms accessing only subsets of the package's hidden variables:
 
@@ -1986,6 +2140,9 @@ subprograms accessing only subsets of the package's hidden variables:
       end Update_Only_H;
    end P;
 
+.. index:: Refined_State aspect
+.. index:: Part_Of aspect
+
 When you provide an abstract state, you must refine it into its
 constituents in the package body using the ``Refined_State`` aspect or
 pragma. Furthermore, to be able to analyze the package specification
@@ -1999,7 +2156,9 @@ http://docs.adacore.com/spark2014-docs/html/ug/en/source/package_contracts.html#
 Depends Annotations
 -------------------
 
-In addition to what's been presented so far, you may want to use flow analysis
+.. index:: Depends contract
+
+Another functionality for flow analysis is
 to verify specific flow-dependency relations. This can be done by providing the
 tool with additional ``Depends`` contracts stating how outputs of a subprogram
 depend on its inputs. You need to only supply those contracts that you want to
@@ -2012,10 +2171,10 @@ outputs of a subprogram depend on all its inputs:
       Depends => (X => X);
 
 This is the default contract that will be automatically inferred by the tool,
-if no explicit contract is specified. This construction uses the Ada 2012
+if no explicit contract is specified. This construct uses the Ada 2012
 aspect syntax. You must place it on the subprogram declaration if any,
 otherwise on the subprogram body. You can use an alternative notation based on
-pragmas if compatibility with older versions of Ada is required:
+pragmas if compatibility with earlier versions of Ada is required:
 
 .. code-block:: ada
 
@@ -2026,7 +2185,7 @@ Note the double parentheses that are needed here, as the argument of the pragma
 has the syntax of an aggregate. This annotation is usually not useful on
 functions, as SPARK functions have only one output (its result), which in
 general depends on all its inputs. In its more complete form, the ``Depends``
-contract allows specifing precisely on which inputs each output depends:
+contract allows specifying precisely the inputs for which each output depends:
 
 .. code-block:: ada
 
@@ -2039,30 +2198,35 @@ contract allows specifing precisely on which inputs each output depends:
           null => (Z1, Z2, Z3));
          --  the input values of Z1, Z2 and Z3 are ignored
 
-The use of ``Depends`` contracts is not mandatory. However, whenever a contract
-is provided, it must be correct and complete: that is, it must mention every
+The use of ``Depends`` contracts is not mandatory. However, if such a contract
+is provided then it must be correct and complete; that is, it must specify each
 flow dependency between inputs (both global variables and parameters) and
-outputs (both global variables and parameters). Similarly to subprogram
+outputs (both global variables and parameters). Similar to subprogram
 parameter modes, flow-dependency contracts are checked by the tool in flow
-analysis mode and checks and warnings are issued in case of non-conformance. To
+analysis mode, and checks and warnings are issued in case of nonconformance. To
 verify manually supplied flow-dependency contracts, run GNATprove in flow
 analysis mode by selecting the :menuselection:`SPARK --> Examine File` menu,
 selecting the :guilabel:`flow` mode in the GPS panel, checking the
-:guilabel:`Do not report warnings` box, unchecking the :guilabel:`Report checks
-proved` box, and clicking :guilabel:`Execute`.
+:guilabel:`Do not report warnings` box, unchecking the :guilabel:`Report checks proved`
+box, and clicking :guilabel:`Execute`.
 
 Depends contracts are described more completely in the SPARK User's Guide:
 http://docs.adacore.com/spark2014-docs/html/ug/en/source/subprogram_contracts.html#flow-dependencies
 
-The Difference Between Outputs and Inputs-Outputs
+The Difference Between Outputs and Input-Outputs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index:: out parameter
+.. index:: Output global variable
+.. index:: in out parameter
+.. index:: In_Out global variable
 
 Modes on parameters and data-dependency contracts in SPARK have a stricter
 meaning than in Ada. In SPARK, a parameter ``out`` or a global variable
 ``Output`` should be completely initialized before returning from the
 subprogram. Thus, a parameter that is only partially initialized, or
-initialized only on some paths through the subprogram, should be marked ``in
-out`` (for a parameter) or ``In_Out`` (for a global variable) to be compatible
+initialized only on some paths through the subprogram, should be marked ``in out``
+(for a parameter) or ``In_Out`` (for a global variable) to be compatible
 with SPARK data initialization policy. For more details, see the SPARK User's
 Guide:
 http://docs.adacore.com/spark2014-docs/html/ug/en/source/language_restrictions.html#data-initialization-policy
@@ -2076,6 +2240,8 @@ depending on their type:
 * an unconstrained array ``A`` has implicit input bounds ``A'First`` and ``A'Last``
 * a discriminated record ``R`` has implicit input discriminants, for example
   ``R.Discr``
+
+.. index:: Depends contract
 
 Thus, an output array ``A`` and an output discriminated record ``R`` may appear
 in input position inside a flow-dependency contract, to denote the input value
@@ -2100,25 +2266,37 @@ Note that such implicit inputs can also be referred to in :ref:`Preconditions`.
 Silver Level - Absence of Run-time Errors (AoRTE)
 =================================================
 
-The goal of this level is ensuring that the program does not raise an
-exception at run time. Among other things, this ensures that the control
+.. index:: ! Silver level (of SPARK use)
+.. index:: ! Absence of Run-Time Errors, AORTE
+.. index:: Buffer overflow
+.. index:: Integer overflow
+.. index:: -gnatp switch (compiler)
+
+The goal of this level is to ensure that the program does not raise an
+exception at run time. Among other things, this guarantees that the control
 flow of the program cannot be circumvented by exploiting a buffer overflow,
-possibly as a consequence of an integer overflow. This also ensures that
+or integer overflow. This also ensures that
 the program cannot crash or behave erratically when compiled without
-support for run-time exceptions (compiler switch ``-gnatp``) because of
-operation that would have triggered a run-time exception.
+support for run-time checking (compiler switch ``-gnatp``) because of
+operations that would have triggered a run-time exception.
+
+.. index:: Constraint_Error
+.. index:: Assertion_Error
 
 GNATprove can be used to prove the complete absence of possible run-time
-errors corresponding to all possible explicit raising of exceptions in the
-program, raising exception ``Constraint_Error`` at run time, and all possible
-failures of assertions (corresponding to raising exception ``Assert_Error`` at
+errors corresponding to the explicit raising of exceptions in the
+program, raising the exception ``Constraint_Error`` at run time, and
+failures of assertions (corresponding to raising exception ``Assertion_Error`` at
 run time).
 
-A special kind of run-time errors that can be proved at this level is the
+.. index:: Precondition
+.. index:: Defensive code
+
+A special kind of run-time error that can be proved at this level is the
 absence of exceptions from defensive code. This requires users to add
 subprogram preconditions (see section :ref:`Preconditions` for details) that
 correspond to the conditions checked in defensive code. For example, defensive
-code that checks the range of inputs will translate into preconditions of the
+code that checks the range of inputs is modeled by a precondition of the
 form ``Input_X in Low_Bound .. High_Bound``. These conditions are then checked by
 GNATprove at each call.
 
@@ -2129,46 +2307,65 @@ Run Time Errors - AoRTE) plus all the defects already detected at Bronze
 level: no reads of uninitialized variables, no possible interference
 between parameters and/or global variables, and no unintended access to
 global variables. Thus, the quality of the program can be guaranteed to
-achieve higher levels of integrity than would be possible in another
-programming language.
+achieve higher levels of integrity than would be possible in other
+programming languages.
 
 All the messages about possible run-time errors can be carefully reviewed
 and justified (for example by relying on external system constraints such
 as the maximum time between resets) and these justifications can be later
 reviewed as part of quality inspections.
 
+.. index:: -gnatp switch (compiler)
+.. index:: C language
+
 The proof of AoRTE can be used to compile the final executable without
-run-time exceptions (compiler switch ``-gnatp``), which allows having a very
+run-time exceptions (compiler switch ``-gnatp``), which results in very
 efficient code comparable to what can be achieved in C or assembly.
 
+.. index:: DO-178C / ED-12C
+.. index:: EN 50128
+.. index:: CENELEC EN 50128
+.. index:: IEC 61508
+.. index:: ECSS-Q-ST-80C
+.. index:: IEC 60880
+.. index:: IEC 62304
+.. index:: ISO 26262
+.. index:: Qualification (for GNATprove)
+
 The proof of AoRTE can be used to comply with the objectives of
-certification standards in various domains (DO-178 in avionics, EN 50128 in
-railway, IEC 61508 in many safety related industries, ECSS-Q-ST-80C in
+certification standards in various domains (DO-178B/C in avionics, EN 50128 in
+railway, IEC 61508 in many safety-related industries, ECSS-Q-ST-80C in
 space, IEC 60880 in nuclear, IEC 62304 in medical, ISO 26262 in
-automotive). To date, the use of SPARK has been qualified in EN 50128
-context. Qualification material for DO-178 contexts should be available in
+automotive). To date, the use of SPARK has been qualified in an EN 50128
+context. Qualification material for DO-178 projects is planned for
 2018. Qualification material in any context can be developed by AdaCore as
 part of a contract.
 
 .. rubric:: Impact on Process
 
-An initial pass is required where proof of AoRTE is applied to the program
+.. index:: Precondition
+.. index:: Postcondition
+.. index:: False alarm
+
+An initial pass is required where proof of AoRTE is applied to the program,
 and the resulting messages are resolved by either rewriting code or
-justifying any false alarms. Once this is complete, like for the Bronze
-level, ongoing maintenance can maintain the same guarantees at reasonable
+justifying any false alarms. Once this is complete, as for the Bronze
+level, ongoing maintenance can retain the same guarantees at reasonable
 cost. Using precise types and simple subprogram contracts (preconditions
-and postconditions) is sufficient to avoid most false alarms and any
+and postconditions) is sufficient to avoid most false alarms, and any
 remaining false alarms can be easily justified.
+
+.. index:: Loop invariant
 
 Special treatment is required for loops, which may need the addition of
 loop invariants to prove AoRTE inside and after the loop. The detailed
-process for adding them is described in the SPARK User's Guide, as well as
+process for adding loop contracts is described in the SPARK User's Guide, as well as
 examples of common patterns of loops and their corresponding loop
 invariants.
 
 .. rubric:: Costs and Limitations
 
-The initial pass may require a substantial effort to get rid of all false
+The initial pass may require a substantial effort to resolve all false
 alarms, depending on the coding style adopted previously. The analysis may
 take a long time, up to a few hours, on large programs but is guaranteed to
 terminate. Proof is, by construction, limited to local understanding of the
@@ -2178,12 +2375,14 @@ relevant properties to their callers.
 
 Even if a property is provable, automatic provers may nevertheless not be
 able to prove it, due to limitations of the heuristic techniques used in
-automatic provers. In practice, these limitations are mostly visible on
+automatic provers. In practice, these limitations mostly show up on
 non-linear integer arithmetic (such as division and modulo) and
 floating-point arithmetic.
 
 Running GNATprove in Proof Mode
 -------------------------------
+
+.. index:: Proof mode (for GNATprove)
 
 Proof is the second static analysis performed by GNATprove, after the flow
 analysis seen at Bronze level. Unlike flow analysis, proof may take more or
@@ -2204,16 +2403,18 @@ window from GPS with these settings:
 GNATprove should output the following messages, possibly followed by a
 number of messages pointing to potential problems in your program::
 
-  Phase 1 of 2: generation of Global contracts …
-  Phase 2 of 2: flow analysis and proof ..
+  Phase 1 of 2: generation of Global contracts ...
+  Phase 2 of 2: flow analysis and proof ...
 
 The following messages output by GNATprove are check messages and should
 have the form::
 
   medium: overflow check might fail
 
-Similarly to the messages previously described, the severity of the check
-is shown first. It is one of `low`, `medium`, or `high` and reflects both the
+.. index:: Check messages (from GNATprove)
+
+Similar to the messages previously described, the severity of the check
+is shown first. It is one of ``low``, ``medium``, or ``high`` and reflects both the
 likelihood of the reported problem being a bug and the criticality of the
 bug, if it exists. Following the colon is the type of the check message,
 here a potential arithmetic overflow. Each message is located in your code
@@ -2221,8 +2422,8 @@ at the point where the error can occur and the corresponding line in GPS
 editor is highlighted in red.
 
 GNATprove can issue several kinds of check messages. In this document, we
-concentrate on the five most common: division by zero, array index,
-arithmetic overflow, value in range, and correct discriminant. They are
+concentrate on the five most common errors: division by zero, array index out of bounds,
+arithmetic overflow, value out of range, and incorrect discriminant. They are
 described in section :ref:`Run-time Checks`. Other specific check messages can
 also be issued when tagged types or tasking constructs are used. You can
 find more information about these additional checks in the SPARK User's
@@ -2230,8 +2431,8 @@ Guide:
 http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_view_gnatprove_output.html#description-of-messages.
 
 Proving AoRTE requires interacting with GNATprove inside GPS to either fix
-the code, add annotations, succeed in proving the check, or to justify the
-innocuity of the message. This process is explained in section
+the code, add annotations, succeed in proving the check, or to justify that the
+message is not a real problem. This process is explained in section
 :ref:`Investigating Unproved Run-time Checks`.
 
 Once each unproved check message has been addressed in some way, you can run
@@ -2247,6 +2448,8 @@ Run-time Checks
 ---------------
 
 .. rubric:: divide by zero
+
+.. index:: Divide-by-zero check
 
 This checks that the second operand of a division, mod or rem operation is
 not equal to zero. It's applicable to all integer and real types for
@@ -2304,6 +2507,8 @@ such checks:
 
 .. rubric:: index check
 
+.. index:: Index check
+
 This checks that a given index used to access an array is within the bounds
 of the array. This applies to both reads and writes to an array. Here's an
 example of such checks:
@@ -2322,12 +2527,14 @@ example of such checks:
 
 .. rubric:: overflow check
 
+.. index:: Overflow check
+
 This checks that the result of a given arithmetic operation is within the
 bounds of its base type, which corresponds to the bounds of the underlying
 machine type. It's applicable to all signed integer types (but not modular
 integer types) and real types, for most arithmetic operations (unary
 negation, absolute value, addition, subtraction, multiplication, division,
-exponential). Here's an example of such checks:
+exponentiation). Here's an example of such checks:
 
 .. code-block:: ada
 
@@ -2382,11 +2589,13 @@ bits) have symmetric ranges. On the other hand, negating a signed integer
 or taking its absolute value may result in an overflow if the argument
 value is the minimal machine integer for this type because signed machine
 integers are don't have symmetric ranges (they have one less positive value
-than to negative values).  Fixed-point types are based in an machine
+than negative values).  Fixed-point types are based on a machine
 integer representation, so they can also overflow on negation and absolute
 value.
 
 .. rubric:: range check
+
+.. index:: Range check
 
 This checks that a given value is within the bounds of its expected scalar
 subtype. It's applicable to all scalar types, including signed and modulo
@@ -2434,6 +2643,8 @@ integers, enumerations and real types. Here's an example of such checks:
 
 .. rubric:: discriminant check
 
+.. index:: Discriminant check
+
 This checks that the discriminant of the given discriminated record has the
 expected value. For variant records, this check is performed for a simple
 access, either read or write, to a record component. Here's an example of
@@ -2465,6 +2676,8 @@ such checks:
 Investigating Unproved Run-time Checks
 --------------------------------------
 
+.. index:: Unproved run-time checks
+
 You should expect many messages about possible run-time errors to be issued the
 first time you analyze a program, for two main reasons: First, the analysis
 done by GNATprove relies on the information provided in the program to compute
@@ -2476,14 +2689,14 @@ least powerful, so it is expected that by moving to higher levels of proof one
 gets more run-time checks proved automatically. Nevertheless, you should start
 at this level because many checks are not initially provable due to imprecise
 types and missing contracts. As you add precise types and contracts to the
-program, it becomes profitable for you to perform analyses at higher proof
+program, you can perform analyses at higher proof
 levels 1 and 2 to get more run-time checks proved automatically.
 
 Proving AoRTE requires interacting with GNATprove inside GPS. Thus, we
 suggest that you select a unit (preferably one with few dependences over
 other unproved units, ideally a leaf unit not depending on other unproved
 units) with some unproved checks. Open GPS on your project, display this
-unit inside GPS, and put the focus on this unit. Inside this unit, select a
+unit inside GPS, and place the focus on this unit. Inside this unit, select a
 subprogram (preferably one with few calls to other unproved subprograms,
 ideally a leaf subprogram not calling other unproved subprograms) with some
 unproved checks. This is the first subprogram you will analyze at Silver
@@ -2492,10 +2705,11 @@ level.
 For each unproved run-time check in this subprogram, you should follow the
 following steps:
 
-#. Find out the reasons for which the run-time check can't fail. If you don't
+#. Find out the reasons why the run-time check can't fail. If you don't
    understand why a run-time check can never fail, GNATprove can't either. You
    may discover at this stage that the run-time check can indeed fail, in which
    case you must first correct the program so that this isn't possible anymore.
+
 #. Determine if the reason(s) that the check always succeeds are known
    locally. GNATprove analysis is modular, meaning it only looks at locally
    available information to determine whether a check succeeds or not. This
@@ -2504,12 +2718,16 @@ following steps:
    it calls. If the information is not locally available, you should change
    types and/or add contracts to make it locally available to the analysis. See
    the paragraphs below on 'More Precise Types' and 'Useful Contracts'.
+
+   .. index:: Loop invariant
+
 #. If the run-time check depends on the value of a variable being modified in a
    loop, you may need to add a loop invariant, i.e. a specific annotation in
    the form of a ``pragma Loop_Invariant`` inside the loop, which summarizes the
    effect of the loop on the variable value. See the specific section of the
    SPARK User's Guide on that topic:
    http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_write_loop_invariants.html.
+
 #. Once you're confident this check should be provable, run SPARK in proof mode
    on the specific line with the check by right-clicking on the line in the
    editor panel inside GPS, selecting :menuselection:`SPARK --> Prove Line`
@@ -2519,15 +2737,16 @@ following steps:
    should either output a message confirming that the check is proved or the
    same message as before. In the latter case, you will need to interact with
    GNATprove to investigate why the check still isn't proved.
-#. It may sometimes be difficult to distinguish cases where some information is
-   missing for the provers to prove the check from cases where the provers are
+
+#. It may sometimes be difficult to distinguish cases where information is
+   missing (for the provers to prove the check) from cases where the provers are
    incapable of proving the check even with the necessary information. There
    are multiple actions you can take that may help distinguishing those cases,
    as documented in a specific section of the SPARK User's Guide on that topic
-   (see subsections on 'Investigating Unprovable Properties' and 'Investigating
-   Prover Shortcomings'):
-   http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_investigate_unproved_checks.html. Usually,
-   the best action to narrow down the issue to its core is to insert assertions
+   (see subsections on 'Investigating Unprovable Properties' and
+   'Investigating Prover Shortcomings'):
+   http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_investigate_unproved_checks.html.
+   Usually, the best action to narrow down the issue is to insert assertions
    in the code that test whether the check can be proved at some specific point
    in the program. For example, if a check message is issued about a possible
    division by zero on expression ``X/Y``, and the implementation contains many
@@ -2538,9 +2757,12 @@ following steps:
    code only those essential assertions that help produce the automatic proof
    and to remove other intermediate assertions that you inserted during your
    interaction with the prover.
+
+   .. index:: pragma Annotate
+
 #. If the check turns out to be unprovable due to limitations in the proving
-   technology, you will have to justify its presence by inserting a ``pragma
-   Annotate`` after the line where the check message is reported so that future
+   technology, you will have to justify its presence by inserting a ``pragma Annotate``
+   after the line where the check message is reported so that future
    runs of GNATprove will not report it again . See SPARK User's Guide at
    http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_investigate_unproved_checks.html.
 
@@ -2549,17 +2771,19 @@ and how you can add contracts that will make it possible to prove AoRTE.
 
 .. rubric:: More Precise Types
 
+.. index:: Scalar ranges
+
 GNATprove's analysis crucially depends on the ranges of scalar types. If the
 program uses standard scalar types such as ``Integer`` and ``Float``, nothing
-is known about the range of the data manipulated and result most arithmetic
+is known about the range of the data manipulated; as a result, most arithmetic
 operations will lead to an overflow check message. In particular, data that is
 used to index arrays or as the right-hand-side of division operations (which
 includes mod and rem operators) should be known to be respectively in range of
-the array and not null, generally just by looking at their type.
+the array and not zero, generally just by looking at their type.
 
 When standard types such as ``Integer`` and ``Float`` are used, you will need
-to introduce more specific types like ``Temperature`` or ``Length``, with
-suitable ranges. These may be either new types like:
+to introduce more specific types or subtypes like ``Temperature`` or ``Length``,
+with suitable ranges. These may be either new types like:
 
 .. code-block:: ada
 
@@ -2580,16 +2804,18 @@ or subtypes like:
    subtype Temperature is Float range -100.0 .. 300.0;
    subtype Length is Integer range 0 .. 65_535;
 
-When user types are introduced, you may either add a suitable range to
+When new types are introduced, you may either add a suitable range to
 these types or introduce derived types or subtypes with suitable range as
 above.
 
 .. rubric:: Useful Contracts
 
+.. index:: Precondition
+
 Aside from types, it might be important to specify in which context a
 subprogram may be called. This is known as the precondition of the
-subprogram. All the examples of check messages seen in section :ref:`Run-time
-Checks` could be proved if suitable preconditions are added to the enclosing
+subprogram. All the examples of check messages seen in section :ref:`Run-time Checks`
+could be proved if suitable preconditions are added to the enclosing
 subprogram. For example, consider procedure ``Convert_Integer``, which assigns an
 integer ``X`` to a natural ``U``:
 
@@ -2635,6 +2861,8 @@ procedure ``Convert_Integer``:
       Y := Y - Z;  --<<--  medium: range check might fail
    end Call_Convert_Integer;
 
+.. index:: Postcondition
+
 When GNATprove analyzes ``Call_Convert_Integer``, the only locally available
 information about the value of ``Z`` after the call to ``Convert_Integer`` is
 its type. This isn't sufficient to guarantee that the subtraction on the
@@ -2666,84 +2894,108 @@ messages.
 Gold Level - Proof of Key Integrity Properties
 ==============================================
 
-The goal of the Gold level is ensuring key integrity properties such as
-maintaining critical data invariants throughout execution and ensuring that
-transitions between states follow a specified safety automaton. Typically,
+.. index:: ! Gold level (of SPARK use)
+
+The goal of the Gold level is to ensure key integrity properties such as
+maintaining critical data invariants throughout execution and guaranteeing that
+transitions between states follow a specified safety automaton. Typically
 these properties derive from software requirements. Together with the
 Silver level, these goals ensure program integrity, that is, the program
-keeps running within safe boundaries: the control flow of the program is
+executes within safe boundaries: the control flow of the program is
 correctly programmed and cannot be circumvented through run-time errors
 and data cannot be corrupted.
 
-SPARK defines a number of useful features used to specify both data
+SPARK has a number of useful features for specifying both data
 invariants and control flow constraints:
 
-* Type predicates state properties that should always be true of any object of
-  the type.
-* Preconditions state properties that should always hold on subprogram entry.
-* Postcondition state properties that should always hold on subprogram exit.
+.. index:: Type predicate
+.. index:: Precondition
+.. index:: Postcondition
 
-These features can be verified statically by running GNATprove in prove
+* Type predicates reflect properties that should always be true of any object of
+  the type.
+* Preconditions reflect properties that should always hold on subprogram entry.
+* Postconditions reflect properties that should always hold on subprogram exit.
+
+.. index:: Proof mode (for GNATprove)
+.. index:: Info message (from GNATprove)
+.. index:: Check message (from GNATprove)
+.. index:: Unit testing
+
+These features can be verified statically by running GNATprove in proof
 mode, similarly to what was done at the Silver level. At every point where
 a violation of the property may occur, GNATprove issues either an 'info'
 message, verifying that the property always holds, or a 'check' message
 about a possible violation. Of course, a benefit of proving properties is
 that they don't need to be tested, which can be used to reduce or
-completely remove unit testing.
+completely eliminate unit testing.
+
+.. index:: Integration testing
+.. index:: -gnata switch (compiler)
+.. index:: pragma Assertion_Policy
 
 These features can also be used to augment integration testing with dynamic
-verification that these key integrity properties are satisfied. To enable
-these additional verifications during execution, you can use either the
+verification of key integrity properties. To enable
+this additional verification during execution, you can use either the
 compilation switch ``-gnata`` (which enables verification of all invariants and
 contracts at run time) or ``pragma Assertion_Policy`` (which enables a subset
-of the verifications) either inside the code (so that it applies to the
+of the verification) either inside the code (so that it applies to the
 code that follows in the current unit) or in a pragma configuration file
 (so that it applies to the entire program).
 
 .. rubric:: Benefits
 
 The SPARK code is guaranteed to respect key integrity properties as well as
-being free from all the defects already detected at Bronze and Silver
+being free from all the defects already detected at the Bronze and Silver
 levels: no reads of uninitialized variables, no possible interference
 between parameters and global variables, no unintended access to global
 variables, and no run-time errors. This is a unique feature of SPARK that
 is not found in other programming languages. In particular, such guarantees
 may be used in a safety case to make reliability claims.
 
-The effort in achieving that level of confidence based on proof is
+.. index:: DO-178C / ED-12C
+.. index:: EN 50128, CENELEC EN 50128
+.. index:: IEC 61508
+.. index:: Proof (as alternative to unit testing)
+
+The effort in achieving this level of confidence based on proof is
 relatively low compared to the effort required to achieve the same level
-based on testing. Indeed, confidence based on testing has to rely on a
-nearly comprehensive testing strategy. In fact, certification standards
+based on testing. Indeed, confidence based on testing has to rely on an
+extensive testing strategy. Certification standards
 define criteria for approaching comprehensive testing, such as Modified
-Condition/Decision Coverage (MC/DC), which are notoriously expensive to
-achieve. Many certification standards allow the use of proof as a
-replacement for testing, in particular DO-178C in avionics, EN 50128 in
-railway and IEC 61508 in process and military. Obtaining proofs, as done in
-SPARK, can thus be used as cost effective alternative to unit testing.
+Condition / Decision Coverage (MC/DC), which are expensive to
+achieve. Some certification standards allow the use of proof as a
+replacement for certain forms of testing, in particular DO-178C in avionics, EN 50128 in
+railway and IEC 61508 for functional safety. Obtaining proofs, as done in
+SPARK, can thus be used as a cost-effective alternative to unit testing.
 
 .. rubric:: Impact on Process
 
-In a certification context where proof replaces testing, if independence is
-required between development and verification activities, subprogram
-contracts that express software requirements should not be created by the
-developers implementing such requirements. This is similar to the
-independence that can be required between the developer and the tester of a
-module. However, programmers can be expected to write intermediate
-assertions and to run GNATprove to check that their implementation
-satisfies the requirements.
+.. index:: Contract-based programming
+
+In a high-DAL certification context where proof replaces testing and
+independence is required between certain development/verification activities,
+one person can define the architecture and low-level requirements
+(package specs) and another person can develop the corresponding bodies
+and use GNATprove for verification. Using a common syntax/semantics
+-- Ada 2012 contracts -- for both the specs/requirements and the code
+facilitates communication between the two activities and makes it easier
+for the same person(s) to play different roles at different times.
 
 Depending on the complexity of the property being proven, it may be more or
 less costly to add the necessary contracts on types and subprograms and to
 achieve complete automatic proof by interacting with the tool. This
-typically requires some experience with the tool that can be developed by
-training and practice, which suggests that not all developers should be
-tasked with developing such contracts and proofs, but instead that a few
+typically requires some experience with the tool, which can be gained by
+training and practice. Thus not all developers should be
+tasked with developing such contracts and proofs, but instead a few
 developers should be designated for this task.
 
+.. index:: Loop invariant
+
 As with the proof of AoRTE at Silver level, special treatment is required
-for loops, which may need the addition of loop invariants to prove
-properties inside and after the loop. The detailed process for doing so is
-described in SPARK User's Guide, as well as examples of loops and their
+for loops, such as the addition of loop invariants to prove
+properties inside and after the loop. Details are
+presented in the SPARK User's Guide, together with examples of loops and their
 corresponding loop invariants.
 
 .. rubric:: Costs and Limitations
@@ -2756,18 +3008,23 @@ understanding of the code, which requires using sufficiently precise types
 of variables and some preconditions and postconditions on subprograms to
 communicate relevant properties to their callers.
 
+.. index:: Limitations of provers
+
 Even if a property is provable, automatic provers may fail to prove it due
-to limitations of the heuristic techniques used in automatic provers. In
+to limitations of the heuristic techniques they employ. In
 practice, these limitations are mostly visible on non-linear integer
 arithmetic (such as division and modulo) and on floating-point arithmetic.
 
-Some properties may not be easily expressible in the form of data
-invariants and subprogram contracts, for example properties on execution
+Some properties might not be easily expressible in the form of data
+invariants and subprogram contracts, for example properties of execution
 traces or temporal properties. Other properties may require the use of
 non-intrusive instrumentation in the form of ghost code.
 
 Type predicates
 ---------------
+
+.. index:; Type predicate
+.. index:: Predicate aspect
 
 Type predicates are boolean expressions that constrain the value of objects
 of a given type. You can attach a type predicate to a scalar type or
@@ -2778,8 +3035,8 @@ subtype:
    type Even is new Integer
      with Predicate => Even mod 2 = 0;
 
-In the case above, the use of the type name ``Even`` in the predicate
-expression denotes the current object of type ``Even``, which we're saying must
+The use of the type name ``Even`` in the predicate
+expression denotes the current object of the type, which we're saying must
 be even for the expression to evaluate to ``True``. Similarly, a type predicate
 can be attached to an array type or subtype:
 
@@ -2811,12 +3068,14 @@ Discriminated record ``Name`` is a typical example of a variable-sized record,
 where the internal array ``Data`` is indexed up to the value of component
 ``Last``. The predicate expresses an essential invariant of objects of type
 ``Name``, namely that ``Last`` will always be no greater than ``Size``.  This
-assures that to ``Data(Last)`` will be in bounds.
+assures that ``Data(Last)`` will be in bounds.
 
 .. _Preconditions:
 
 Preconditions
 -------------
+
+.. index:: ! Precondition
 
 Preconditions are boolean expressions that should be true each time a
 subprogram is called and are typically used to express API constraints that
@@ -2834,7 +3093,7 @@ the subprogram declaration:
    --  otherwise an exception is raised.
 
 Though readable by humans, this constraint cannot be verified
-automatically. The second way is to express the constraint is using
+automatically. The second way is to express the constraint using
 defensive code inside the subprogram body:
 
 .. code-block:: ada
@@ -2858,12 +3117,14 @@ GNATprove. The third way is to express the constraint is as a precondition:
    --  Copy Src into Dest.
 
 This constraint is readable by humans and it can be verified at run time
-and statically by GNATprove.
+by testing or statically by GNATprove.
 
 .. _Postconditions:
 
 Postconditions
 --------------
+
+.. index:: ! Postcondition
 
 Postconditions are boolean expressions that should be true each time a
 subprogram returns. Postconditions are similar to the normal assertions
@@ -2872,6 +3133,9 @@ but are more powerful:
 
 #. When a subprogram has multiple returns, it is easy to forget to add a ``pragma
    Assert`` before one of the exit points. Postconditions avoid that pitfall.
+
+   .. index:: 'Old attribute (in postcondition)
+
 #. Postconditions can express relations between values of variables at
    subprogram entry and at subprogram exit, using the attribute ``X'Old`` to denote
    the value of variable ``X`` at subprogram entry.
@@ -2907,7 +3171,10 @@ transformations are performed in the specified order.
 Contract Cases
 --------------
 
-Contract cases allows to easily specify contracts with a set of disjoint and
+.. index:: Contract case
+.. index:: 'Result attribute (in function postcondition)
+
+Contract cases allow specifying contracts easily with a set of disjoint and
 complete cases. Consider the postcondition of a majority voting procedure,
 which returns the value voted by a majority of voters, if any, and the special
 value ``None`` otherwise:
@@ -2916,7 +3183,7 @@ value ``None`` otherwise:
 
    type Vote is (None, Blue, White, Red);
 
-   function Majority_Voting1 (A, B, C : Vote) return Vote
+   function Majority_Voting (A, B, C : Vote) return Vote
      with Post => (if A = B then
                      Majority_Voting'Result = A
                    elsif A = C then
@@ -2965,6 +3232,8 @@ http://docs.adacore.com/spark2014-docs/html/ug/en/source/subprogram_contracts.ht
 
 Expression Functions
 --------------------
+
+.. index:: Expression function
 
 It is usually convenient to give names to properties used in contracts. This
 can be done with expression functions, which are functions whose implementation
@@ -3051,9 +3320,11 @@ http://docs.adacore.com/spark2014-docs/html/ug/en/source/specification_features.
 Ghost Code
 ----------
 
-Sometimes, the variables and functions present in a program are
+.. index:: Ghost code
+
+Sometimes the variables and functions present in a program are
 insufficient to specify intended properties and to verify these properties
-with GNATprove. This is the case if the property that should be verified is
+with GNATprove. This can occur if the property that should be verified is
 never used explicitly in the code. For example, the property that a
 collection is sorted can be maintained for efficient modifications and
 queries on the collection without the need to have an explicit function
@@ -3063,7 +3334,7 @@ the collection remains sorted.
 In such a case, SPARK allows you to insert additional code in the program
 that's useful for specification and verification, specially identified with
 the aspect ``Ghost`` so that it can be discarded during compilation. So-called
-ghost code in SPARK are these parts of the code that are only meant for
+ghost code in SPARK comprises those parts of the code that are only meant for
 specification and verification and have no effect on the functional
 behavior of the program at run time.
 
@@ -3072,7 +3343,7 @@ Various kinds of ghost code are useful in different situations:
 * Ghost functions are typically used to express properties used in contracts.
 
 * Global ghost variables are typically used to keep track of the current state
-  of a program or maintain a log of past events of some type. This information
+  of a program or to maintain a log of past events of some type. This information
   can then be referred to in contracts.
 
 Typically, the current state of the program may be stored in a global ghost
@@ -3105,10 +3376,13 @@ http://docs.adacore.com/spark2014-docs/html/ug/en/source/specification_features.
 Investigating Unproved Properties
 ---------------------------------
 
-As seen at Silver level in the section :ref:`Investigating Unproved Run-time
-Checks`, it's expected that many messages about possible violations of
-properties (assertions, contracts) are issued the first time a program is
-analyzed, for similar reasons:
+.. index:: Unproved properties
+
+Similar to the situation at Silver level as described in
+:ref:`Investigating Unproved Run-time Checks`,
+we can expect many messages about possible violations of
+properties (assertions, contracts) to be issued the first time a program is
+analyzed:
 
 #. The analysis done by GNATprove relies on the information provided in the
    program to compute possible relations between variables. For proving
@@ -3130,8 +3404,8 @@ analyzed, for similar reasons:
    of the SPARK User's Guide on that topic:
    http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_run_gnatprove.html#running-gnatprove-from-the-command-line).
    The following snapshot shows the popup window from GPS (using the
-   :guilabel:`Advanced User profile` set through the :menuselection:`Preference
-   --> SPARK` menu) with these settings:
+   :guilabel:`Advanced User profile` set through the
+   :menuselection:`Preference --> SPARK` menu) with these settings:
 
 .. image:: _static/prove_more.png
    :align: center
@@ -3141,7 +3415,7 @@ Proving properties requires interacting with GNATprove inside GPS. Thus, we
 suggest you select a unit (preferably one with few dependences over other
 unproved units, ideally a leaf unit not depending on other unproved units)
 with some unproved checks. Open GPS on your project, display this unit
-inside GPS, and put the focus on this unit. Inside this unit, select a
+inside GPS, and place the focus on this unit. Inside this unit, select a
 subprogram (preferably one with few calls to other unproved subprograms,
 ideally a leaf subprogram not calling other unproved subprograms) with some
 unproved checks. This is the first subprogram you will analyze at Gold
@@ -3149,23 +3423,30 @@ level.
 
 For each unproved property in this subprogram, you should follow the following steps:
 
-#. Find out the reasons for which the property can't be false at run time. If
+#. Determine why you think the property can't be false at run time. If
    you don't understand why a property holds, GNATprove can't either. You may
    discover at this stage that indeed the property may fail at run time, in
-   which case you first need to correct the program so that it can't fail anymore.
+   which case you first need to correct the program accordingly.
+
 #. Determine if the reasons for the property to hold are known
    locally. GNATprove analysis is modular, which means it only looks at locally
    available information to determine whether a check succeeds or not. This
    information consists mostly of the types of parameters and global variables,
-   the precondition of the subprogram, and the postconditions of the subprogram
+   the precondition of the subprogram, and the postconditions of the subprograms
    it calls. If the information is not locally available, you should change
    types and/or add contracts to make it locally available tothe analysis.
+
+   .. index:: Loop invariant
+
 #. If the property depends on the value of a variable being modified in a loop,
    you may need to add a loop invariant, i.e. a specific annotation in the form
    of a ``pragma Loop_Invariant`` inside the loop, that summarizes the effect of
    the loop on the variable value. See the specific section of the SPARK User's
    Guide on that topic:
    http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_write_loop_invariants.html.
+
+   .. index:: Proof mode (for GNATprove)
+
 #. Once you're confident this property should be provable, run SPARK in proof
    mode on the specific line with the check by right-clicking on this line in
    the editor panel inside GPS, selecting :menuselection:`SPARK --> Prove Line`
@@ -3177,29 +3458,33 @@ For each unproved property in this subprogram, you should follow the following s
    message that confirms that the check is proved or the same message as
    before. In the latter case, you will need to interact with GNATprove to
    investigate why the check is still not proved, which is our next point below.
+
 #. It may sometimes be difficult to distinguish cases where some information is
    missing for the provers to prove the property from cases where the provers
    are incapable of proving the property even with the necessary
    information. The are multiple actions you can take that may help
    distinguishing those cases, as documented in a specific section of the SPARK
-   User's Guide on that topic (see subsections on 'Investigating Unprovable
-   Properties' and 'Investigating Prover Shortcomings'):
+   User's Guide on that topic (see subsections on 'Investigating Unprovable Properties'
+   and 'Investigating Prover Shortcomings'):
    http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_investigate_unproved_checks.html.
-   Usually, the most useful action to narrow down the issue to its core is to
+   Usually, the most useful action to narrow down the issue is to
    insert assertions in the code that test whether the property (or part of it)
    can be proved at some specific point in the program. For example, if a
    postcondition states a property ``(P or Q)`` and the implementation contains
    many branches and paths, try adding assertions that ``P`` holds or ``Q``
    holds where they're expected to hold. This may point to a specific path in
-   the program and/or a specific part of the property which cause the
+   the program and/or a specific part of the property which causes the
    issue. This may also help provers to manage to prove both the assertion and
    the property. In such a case, it's good practice to retain in the code only
    those essential assertions that help getting automatic proof and to remove
    other intermediate assertions that you inserted during the interaction.
+
+   .. index:: pragma Annotate
+
 #. If the check turns out to be unprovable due to limitations in the proving
    technology, you have to justify its presence by inserting a ``pragma Annotate``
    after the line where the check message is reported so future runs of
-   GNATprove will not report it again. See SPARK User's Guide at
+   GNATprove will not report it again. See the SPARK User's Guide section
    http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_investigate_unproved_checks.html.
 
 .. _Example:
@@ -3209,7 +3494,7 @@ Example
 
 As an example, we applied the guidelines in this document to the top-level
 program in the GNATprove tool itself, called ``gnatprove``, which handles the
-configuration switches, calls other executables to do the analysis and
+configuration switches, calls other executables to perform the analysis and
 reports messages. We started by manually adding a pragma ``SPARK_Mode (On)`` to
 every file of the project.  Since ``gnatprove`` is small (26 units for a total
 of 4,500 sloc), we didn't need any automation for this step. We then ran
@@ -3218,7 +3503,7 @@ SPARK, mostly because of string access types in configuration phase and
 because of uses of standard container packages for reporting, both of which
 are not in SPARK.
 
-We chose to concentrate on the ``print_table`` package, which display the
+We chose to concentrate on the ``print_table`` package, which displays the
 results of a run of GNATprove as a table. It stores the results inside a
 two dimensional array and then prints them in the ``gnatprove.out`` file. It's
 relatively small, but exhibits possible run-time errors, for example when
@@ -3227,8 +3512,10 @@ indexing the array or when computing the size required for the table.
 Stone Level
 -----------
 
+.. index:: Stone level (of SPARK use)
+
 We first ran GNATprove in check mode on the unit. We found a
-non-conformance due to the initializing function for the table having
+nonconformance due to the initializing function for the table having
 global outputs. Indeed, the unit was designed to construct a unique table,
 by storing elements line by line from right to left. The current position
 in the table was stored as a global variable in the package body. As the
@@ -3273,7 +3560,7 @@ explicitly as a parameter as the array used to be.
 
    function Create_Table (Lines, Cols : Natural) return Table;
 
-Other than this non-conformance, GNATprove issued a dozen warnings about
+In addition to this nonconformance, GNATprove issued a dozen warnings about
 assuming no effect of functions from the ``Ada.Strings.Unbounded`` and
 ``Ada.Text_IO`` libraries. This is fine: these functions indeed should have no
 effects on variables visible to GNATprove. It simply means that issues that
@@ -3285,6 +3572,8 @@ reached the Stone level on this unit.
 
 Bronze Level
 ------------
+
+.. index:: Bronze level (of SPARK use)
 
 Next, we ran GNATprove in flow analysis mode on the unit. No check
 messages were emitted: we only got a new warning stating that the
@@ -3307,6 +3596,8 @@ on this unit.
 Silver Level
 ------------
 
+.. index:: Silver level (of SPARK use)
+
 We then ran GNATprove in prove mode on the unit. 13 check messages were
 emitted:
 
@@ -3316,8 +3607,8 @@ emitted:
 * 7 overflow checks when computing the maximal size of the array.
 
 To prove the array index checks, we needed to state that the position is
-valid in the array when storing a new element. To do this, we put
-preconditions on the storing procedure:
+valid in the array when storing a new element. To do this, we added
+preconditions to the storing procedure:
 
 .. code-block:: ada
 
@@ -3347,8 +3638,8 @@ the end of the current line. We transformed it into a precondition:
 Avoiding run-time errors in the computation of the maximum size of the
 table was more complicated. It required bounding both the maximum number of
 elements in the table and the size of each element. To bound the maximal
-number of elements in the table, we introduce a constrained subtype of
-``Positive`` for the size of the table, as described in the guidelines:
+number of elements in the table, we introduced a constrained subtype of
+``Natural`` for the size of the table, as described in the guidelines:
 
 .. code-block:: ada
 
@@ -3396,6 +3687,8 @@ mode on ``print_table``. We thus reached Silver level on this unit.
 
 Gold Level
 ----------
+
+.. index:: Gold level (of SPARK use)
 
 The subprograms defined in ``Print_Table`` are annotated with precise comments
 describing their effects on the table. As an example, here is the comment
@@ -3495,7 +3788,7 @@ on this unit.
 References
 ==========
 
-The e-learning website AdaCore University proposes a freely available course on
+The e-learning website AdaCore U. contains a freely available course on
 SPARK in five lessons at http://university.adacore.com/courses/spark-2014/
 
 The SPARK User's Guide is available at
@@ -3504,14 +3797,14 @@ http://docs.adacore.com/spark2014-docs/html/ug/
 The SPARK Reference Manual is available at
 http://docs.adacore.com/spark2014-docs/html/lrm/
 
-The official book on SPARK is "Building High Integrity Applications with SPARK"
-by McCormick and Chapin, edited by Cambridge University Press. It is sold
+A student-oriented textbook on SPARK is "Building High Integrity Applications with SPARK"
+by McCormick and Chapin, published by Cambridge University Press. It is sold
 online by Amazon and many others.
 
 For a historical account of the evolution of SPARK technology and its use in
-industry, see the article "Are We There Yet? 20 Years of Industrial Theorem
-Proving with SPARK" by Chapman and Schanda, at
-http://proteancode.com/keynote.pdf
+industry, see the article
+"Are We There Yet? 20 Years of Industrial Theorem Proving with SPARK"
+by Chapman and Schanda, at http://proteancode.com/keynote.pdf
 
 The website http://www.spark-2014.org/ is a portal for up-to-date information
 and resources on SPARK, including an active blog detailing the latest
