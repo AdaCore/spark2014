@@ -224,21 +224,24 @@ package Graphs is
 
    function In_Neighbour_Count
      (G : Graph;
-      V : Vertex_Id) return Natural;
+      V : Vertex_Id) return Natural
+   with Pre => V /= Null_Vertex;
    --  Returns the number of in neighbours for the given vertex.
    --
    --  Complexity is O(1).
 
    function Out_Neighbour_Count
      (G : Graph;
-      V : Vertex_Id) return Natural;
+      V : Vertex_Id) return Natural
+   with Pre => V /= Null_Vertex;
    --  Returns the number of out neighbours for the given vertex.
    --
    --  Complexity is O(1).
 
    function Edge_Exists
      (G        : Graph;
-      V_1, V_2 : Vertex_Id) return Boolean;
+      V_1, V_2 : Vertex_Id) return Boolean
+   with Pre => V_1 /= Null_Vertex and then V_2 /= Null_Vertex;
    --  Tests if the given edge from V_1 to V_2 is in the graph.
    --
    --  Complexity is O(1).
@@ -404,7 +407,8 @@ package Graphs is
       A        : Vertex_Id;
       B        : Vertex_Id;
       Reversed : Boolean := False)
-      return Boolean;
+      return Boolean
+   with Pre => A /= Null_Vertex and B /= Null_Vertex;
    --  Checks if there is a non-trivial path from A to B. A trivial
    --  path, which is not allowed by this function, is for the special
    --  case where A = B and there is no edge from A to A.
@@ -421,7 +425,8 @@ package Graphs is
       A        : Vertex_Id;
       F        : not null access function (V : Vertex_Id) return Boolean;
       Reversed : Boolean := False)
-      return Boolean;
+      return Boolean
+   with Pre => A /= Null_Vertex;
    --  Checks if there is a non-trivial path from A to another vertex
    --  B for which F(B) holds.
    --
@@ -445,7 +450,8 @@ package Graphs is
          TV : out Simple_Traversal_Instruction);
       Edge_Selector : access function (A, B : Vertex_Id)
                                        return Boolean := null;
-      Reversed      : Boolean := False);
+      Reversed      : Boolean := False)
+   with Pre => Start /= Null_Vertex;
    --  Perform a depth-first search rooted at Start. If Include_Start
    --  is true, the first node visited is Start. If not, then Start is
    --  only visited if there is a non-trivial path from Start -> Start
@@ -472,7 +478,8 @@ package Graphs is
          Origin : Vertex_Id;
          Depth  : Natural;
          T_Ins  : out Simple_Traversal_Instruction);
-      Reversed      : Boolean := False);
+      Reversed      : Boolean := False)
+   with Pre => Start /= Null_Vertex;
    --  Same as above, but perform a breadth first search instead.
    --
    --  Complexity is also O(N).
@@ -485,7 +492,8 @@ package Graphs is
         (V           : Vertex_Id;
          Instruction : out Traversal_Instruction);
       Step          : not null access procedure (V : Vertex_Id);
-      Reversed      : Boolean := False);
+      Reversed      : Boolean := False)
+   with Pre => Start /= Null_Vertex;
    --  Search for a path rooted at node Start. If Allow_Trivial is
    --  True we begin by checking Start itself, otherwise Start is only
    --  checked if we reach it through an edge.
@@ -535,7 +543,8 @@ package Graphs is
 
    function Dominance_Frontier
      (G : Graph;
-      R : Vertex_Id) return Graph;
+      R : Vertex_Id) return Graph
+   with Pre => R /= Null_Vertex;
    --  Computes the dominance frontier of graph G rooted in R using
    --  the `runner' algorithm by Ferrante, Harvey.
    --
