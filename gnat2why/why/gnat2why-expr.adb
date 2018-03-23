@@ -7035,7 +7035,8 @@ package body Gnat2Why.Expr is
 
          Aggr          : W_Expr_Id;
          Def_Pred      : W_Pred_Id;
-         Guard         : W_Pred_Id := True_Pred;
+         Guard_Conj    : W_Expr_Array (1 .. Natural (Values.Length));
+         Guard         : W_Pred_Id;
          Axiom_Body    : W_Pred_Id := True_Pred;
 
          Aggr_Temp     : constant W_Identifier_Id :=
@@ -7091,11 +7092,7 @@ package body Gnat2Why.Expr is
 
                Call_Params (Cnt) := B;
                Call_Args (Cnt) := +Ident;
-               Guard :=
-                 +New_And_Then_Expr
-                 (Domain => EW_Pred,
-                  Left   => +Guard,
-                  Right  => +Dyn_Prop);
+               Guard_Conj (Cnt) := +Dyn_Prop;
 
                --  Fill in mapping from Ada nodes to Why identifiers for the
                --  generation of the proposition in the defining axiom.
@@ -7109,6 +7106,8 @@ package body Gnat2Why.Expr is
                Cnt := Cnt + 1;
             end;
          end loop;
+
+         Guard := +New_And_Expr (Guard_Conj, EW_Pred);
 
          --  Assume values of the aggregate's bounds. For 'Update, take the
          --  bounds of the array argument, otherwise, take the bounds of the
