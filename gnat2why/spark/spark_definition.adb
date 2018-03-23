@@ -2310,7 +2310,22 @@ package body SPARK_Definition is
    --------------------
 
    procedure Mark_Binary_Op (N : Node_Id) is
+      E : constant Entity_Id := Entity (N);
+
    begin
+      --  Call is in SPARK only if the subprogram called is in SPARK. The
+      --  case of a user-defined operator is not treated here, as it has
+      --  been rewritten as a N_Function_Call node by the frontend. We only
+      --  deal here with the case of an operator function declared with
+      --  SPARK_Mode=>Off and defined as an intrinsic.
+
+      if Present (E)
+        and then Ekind (E) = E_Function
+        and then not In_SPARK (E)
+      then
+         Mark_Violation (N, From => E);
+      end if;
+
       --  Only support multiplication and division operations on fixed-point
       --  types if either:
       --  - one of the arguments is an integer type, or
@@ -6150,7 +6165,22 @@ package body SPARK_Definition is
    -------------------
 
    procedure Mark_Unary_Op (N : Node_Id) is
+      E : constant Entity_Id := Entity (N);
+
    begin
+      --  Call is in SPARK only if the subprogram called is in SPARK. The
+      --  case of a user-defined operator is not treated here, as it has
+      --  been rewritten as a N_Function_Call node by the frontend. We only
+      --  deal here with the case of an operator function declared with
+      --  SPARK_Mode=>Off and defined as an intrinsic.
+
+      if Present (E)
+        and then Ekind (E) = E_Function
+        and then not In_SPARK (E)
+      then
+         Mark_Violation (N, From => E);
+      end if;
+
       Mark (Right_Opnd (N));
    end Mark_Unary_Op;
 
