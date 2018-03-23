@@ -1926,28 +1926,28 @@ package body Flow_Utility is
 
          return T;
       else
-         declare
-            Fuller_View : Entity_Id;
-         begin
-            loop
-               pragma Loop_Invariant (Is_Type (T));
+         loop
+            pragma Loop_Invariant (Is_Type (T));
 
-               Fuller_View := Full_View (T);
+            declare
+               Full_V : constant Entity_Id := Full_View (T);
 
-               if Present (Fuller_View)
-                 and then Is_Visible (Fuller_View, Scope)
-                 and then Fuller_View /= T
+            begin
+               if Present (Full_V)
+                 and then Entity_In_SPARK (Full_V)
+                 and then Is_Visible (Full_V, Scope)
                then
-                  T := Fuller_View;
+                  T := Full_V;
                else
                   exit;
                end if;
-            end loop;
-         end;
+            end;
+         end loop;
 
          --  We do not want to return an Itype so we recurse on T's Etype if
          --  it different to T. If we cannot do any better then we will in
          --  fact return an Itype.
+
          if Is_Itype (T)
            and then not Is_Nouveau_Type (T)
          then
