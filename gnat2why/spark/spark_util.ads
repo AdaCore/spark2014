@@ -459,12 +459,11 @@ package SPARK_Util is
    --  @return actual subprogram parameters of E
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
-     with Pre  => Nkind (Parent (Actual)) in N_Function_Call            |
-                                             N_Parameter_Association    |
-                                             N_Procedure_Call_Statement |
+     with Pre  => Nkind (Parent (Actual)) in N_Subprogram_Call          |
                                              N_Entry_Call_Statement     |
+                                             N_Parameter_Association    |
                                              N_Unchecked_Type_Conversion,
-          Post => Present (Get_Formal_From_Actual'Result);
+          Post => Is_Formal (Get_Formal_From_Actual'Result);
    --  @param Actual actual parameter of a call
    --  @return the corresponding formal parameter
 
