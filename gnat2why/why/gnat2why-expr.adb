@@ -10011,8 +10011,6 @@ package body Gnat2Why.Expr is
       T          : W_Expr_Id;
       First_Expr : W_Expr_Id;
       Low_Type   : Entity_Id;
-      Exp_Type   : constant Entity_Id :=
-        Get_Ada_Node (+Type_Of_Node (Return_Type));
       Comp_Type  : constant W_Type_Id :=
         EW_Abstract (Component_Type (Return_Type));
 
@@ -10080,7 +10078,7 @@ package body Gnat2Why.Expr is
 
       Low_Type := First_Subtype (Root_Type (Base_Type (Return_Type)));
 
-      if Is_Static_Array_Type (Low_Type) then
+      if Is_Constrained (Low_Type) then
          First_Expr := Get_Array_Attr (Domain, Low_Type, Attribute_First, 1);
 
       elsif Is_Component_Left then
@@ -10131,7 +10129,7 @@ package body Gnat2Why.Expr is
       --  the new low bound is the one of the left opnd. Correct that.
 
       if not Is_Component_Left
-        and then Is_Static_Array_Type (Low_Type)
+        and then Is_Constrained (Low_Type)
       then
          T :=
            New_Call
@@ -10145,38 +10143,35 @@ package body Gnat2Why.Expr is
       end if;
 
       --  Now the expression T is of the Why array type. We need to convert it
-      --  to the type of the concatenation expression. Whenever this type is
-      --  constrained, we are done. In other cases, we need to convert to the
-      --  unconstrained representation. This situation also requires a range
-      --  check.
+      --  to the type of the concatenation expression. This type is always
+      --  unconstrained. Therefore, we need to convert to the unconstrained
+      --  representation. This situation also requires a range check.
 
-      if not Is_Static_Array_Type (Return_Type) then
-         declare
-            Target    : constant Entity_Id := Nth_Index_Type (Exp_Type, 1);
-            Last_Expr : W_Expr_Id := Build_Last_Expr;
-         begin
-            Last_Expr :=
-              Insert_Simple_Conversion
-                (Domain         => EW_Prog,
-                 Expr           =>
-                   (if Domain = EW_Prog then
-                           +Do_Range_Check (Ada_Node   => Ada_Node,
-                                            Ty         => Target,
-                                            W_Expr     => Last_Expr,
-                                            Check_Kind => RCK_Range)
-                    else Last_Expr),
-                 To             => Get_Type (First_Expr));
+      pragma Assert (not Is_Constrained (Return_Type));
 
-            T := Array_Convert_From_Base
-              (Domain => Domain,
-               Target => Exp_Type,
-               Ar     => T,
-               First  => First_Expr,
-               Last   => Last_Expr);
-         end;
-      else
-         pragma Assert (False);
-      end if;
+      declare
+         Target    : constant Entity_Id := Nth_Index_Type (Return_Type, 1);
+         Last_Expr : W_Expr_Id := Build_Last_Expr;
+      begin
+         Last_Expr :=
+           Insert_Simple_Conversion
+             (Domain         => EW_Prog,
+              Expr           =>
+                (if Domain = EW_Prog then
+                        +Do_Range_Check (Ada_Node   => Ada_Node,
+                                         Ty         => Target,
+                                         W_Expr     => Last_Expr,
+                                         Check_Kind => RCK_Range)
+                 else Last_Expr),
+              To             => Get_Type (First_Expr));
+
+         T := Array_Convert_From_Base
+           (Domain => Domain,
+            Target => Return_Type,
+            Ar     => T,
+            First  => First_Expr,
+            Last   => Last_Expr);
+      end;
 
       --  If the Left operand is a null array then concatenate returns Right
       --  We handle this case statically, if we can.
@@ -10225,7 +10220,7 @@ package body Gnat2Why.Expr is
             begin
                if not Is_Static_Array_Type (Return_Type) then
                   Right_Op := Array_Convert_From_Base (Domain => Domain,
-                                                       Target => Exp_Type,
+                                                       Target => Return_Type,
                                                        Ar     => Right_Op,
                                                        First  => Right_First,
                                                        Last   => Right_Last);
