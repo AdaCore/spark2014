@@ -2313,14 +2313,20 @@ package body SPARK_Definition is
       E : constant Entity_Id := Entity (N);
 
    begin
-      --  Call is in SPARK only if the subprogram called is in SPARK. The
-      --  case of a user-defined operator is not treated here, as it has
-      --  been rewritten as a N_Function_Call node by the frontend. We only
-      --  deal here with the case of an operator function declared with
-      --  SPARK_Mode=>Off and defined as an intrinsic.
+      --  Call is in SPARK only if the subprogram called is in SPARK.
+      --
+      --  Here we only deal with calls to operators implemented as intrinsic,
+      --  because calls to user-defined operators completed with ordinary
+      --  bodies have been already replaced by the frontend to N_Function_Call.
+      --  These include predefined ones (like those on Standard.Boolean),
+      --  compiler-defined (like concatenation of array types), and
+      --  user-defined (completed with a pragma Intrinsic).
 
-      if Present (E)
-        and then Ekind (E) = E_Function
+      pragma Assert (Is_Intrinsic_Subprogram (E));
+
+      pragma Assert (Ekind (E) in E_Function | E_Operator);
+
+      if Ekind (E) = E_Function
         and then not In_SPARK (E)
       then
          Mark_Violation (N, From => E);
@@ -6168,14 +6174,19 @@ package body SPARK_Definition is
       E : constant Entity_Id := Entity (N);
 
    begin
-      --  Call is in SPARK only if the subprogram called is in SPARK. The
-      --  case of a user-defined operator is not treated here, as it has
-      --  been rewritten as a N_Function_Call node by the frontend. We only
-      --  deal here with the case of an operator function declared with
-      --  SPARK_Mode=>Off and defined as an intrinsic.
+      --  Call is in SPARK only if the subprogram called is in SPARK.
+      --
+      --  Here we only deal with calls to operators implemented as intrinsic,
+      --  because calls to user-defined operators completed with ordinary
+      --  bodies have been already replaced by the frontend to N_Function_Call.
+      --  These include predefined ones (like those on Standard.Boolean),
+      --  compiler-defined (like negation of integer types), and user-defined
+      --  (completed with a pragma Intrinsic).
 
-      if Present (E)
-        and then Ekind (E) = E_Function
+      pragma Assert (Is_Intrinsic_Subprogram (E)
+                       and then Ekind (E) in E_Function | E_Operator);
+
+      if Ekind (E) in E_Function
         and then not In_SPARK (E)
       then
          Mark_Violation (N, From => E);
