@@ -239,6 +239,17 @@ stored in an array. Contracts on the interface subprograms express partial
 correctness properties, for example that the set contains an element after it
 has been inserted. |GNATprove| proves all checks on this program.
 
+.. rubric:: ``nuclear_systems``
+
+This program implements a concurrent system to control a nuclear reactor, in
+which the state of the reactor is queried every few seconds, and the reactor is
+stopped if either its state is ``Uncontrolled``, or if was not controlled in
+the previous two seconds (because not queried or because it did not
+answer). |GNATprove| proves all checks on this program. This program was
+presented as an idiomatic way to support selective delays in SPARK in a blog
+post on `"Selective Delays in SPARK and Ravenscar"` (see
+https://two-wrongs.com/selective-delay-in-spark-and-ravenscar.html).
+
 .. rubric:: ``n_queens``
 
 This program implements the solution to the N queens problem, to place N queens
