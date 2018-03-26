@@ -800,8 +800,9 @@ package body Flow_Utility is
                         Results.Include (F'Update (Facet => Extension_Part));
                      end if;
 
-                  when Array_Kind  |
-                       Scalar_Kind =>
+                  when Array_Kind
+                     | Scalar_Kind
+                  =>
                      Debug ("processing scalar or array type");
 
                      Results := Flow_Id_Sets.To_Set (F);
@@ -814,9 +815,10 @@ package body Flow_Utility is
 
                      Results := Flow_Id_Sets.To_Set (F);
 
-                  when E_Exception_Type  |
-                       E_Subprogram_Type |
-                       Incomplete_Kind   =>
+                  when E_Exception_Type
+                     | E_Subprogram_Type
+                     | Incomplete_Kind
+                  =>
 
                      raise Program_Error;
 
@@ -1012,7 +1014,7 @@ package body Flow_Utility is
                Formal_Param : constant Flow_Id := Direct_Mapping_Id (Param);
             begin
                case Ekind (Param) is
-                  when E_In_Parameter     =>
+                  when E_In_Parameter =>
                      Globals.Inputs.Insert (Formal_Param);
                      Globals.Proof_Ins.Insert (Formal_Param);
 
@@ -1021,7 +1023,7 @@ package body Flow_Utility is
                      Globals.Inputs.Insert (Formal_Param);
                      Globals.Outputs.Insert (Formal_Param);
 
-                  when E_Out_Parameter    =>
+                  when E_Out_Parameter =>
                      Globals.Outputs.Insert (Formal_Param);
 
                   when E_Protected_Type | E_Task_Type =>
@@ -2611,8 +2613,7 @@ package body Flow_Utility is
                         loop
                            Prev_Scope := Curr_Scope;
                            Curr_Scope := Enclosing_Unit (Curr_Scope);
-                           exit when
-                             Ekind (Curr_Scope) = E_Protected_Type;
+                           exit when Ekind (Curr_Scope) = E_Protected_Type;
                         end loop;
 
                         case Ekind (Prev_Scope) is
@@ -5135,9 +5136,6 @@ package body Flow_Utility is
             --  We can completely ignore these.
             M := Recurse_On (Expression (N), Map_Root, Map_Type);
 
-         when N_Unchecked_Type_Conversion =>
-            raise Why.Not_Implemented;
-
          when N_Attribute_Reference =>
             case Get_Attribute_Id (Attribute_Name (N)) is
                when Attribute_Update =>
@@ -5220,7 +5218,11 @@ package body Flow_Utility is
                   raise Why.Not_Implemented;
             end case;
 
-         when N_Function_Call | N_Indexed_Component =>
+         when N_Function_Call
+            | N_Indexed_Component
+            | N_Unchecked_Type_Conversion
+         =>
+
             --  For these we just summarize the entire blob.
 
             declare
