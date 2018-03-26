@@ -125,8 +125,8 @@ lsc-bignum.adb:532:43: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:533:43: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:534:24: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:535:43: info: overflow check proved (CVC4: 1 VC)
-lsc-bignum.adb:536:13: medium: loop invariant might fail after first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1)
-lsc-bignum.adb:536:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1)
+lsc-bignum.adb:536:13: medium: loop invariant might fail after first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M...
+lsc-bignum.adb:536:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M...
 lsc-bignum.adb:536:29: info: initialization of "Aux3" proved
 lsc-bignum.adb:536:49: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:537:43: info: overflow check proved (CVC4: 1 VC)
@@ -231,7 +231,7 @@ lsc-bignum.adb:607:49: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:608:49: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:609:30: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:610:49: info: overflow check proved (CVC4: 1 VC)
-lsc-bignum.adb:611:19: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1)) * Math_Int.From_Word32 (2) ** (H - 1)) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1)
+lsc-bignum.adb:611:19: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1)) * Math_Int.From_Word32 (2) ** (H - 1)) *...
 lsc-bignum.adb:611:35: info: initialization of "Aux3" proved
 lsc-bignum.adb:611:55: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:612:49: info: overflow check proved (CVC4: 1 VC)
@@ -283,7 +283,7 @@ lsc-bignum.adb:646:49: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:647:49: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:648:30: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:649:49: info: overflow check proved (CVC4: 1 VC)
-lsc-bignum.adb:650:19: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1)) * Math_Int.From_Word32 (2) ** H) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1)
+lsc-bignum.adb:650:19: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1)) * Math_Int.From_Word32 (2) ** H) * Base ...
 lsc-bignum.adb:650:35: info: initialization of "Aux3" proved
 lsc-bignum.adb:650:55: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:651:49: info: overflow check proved (CVC4: 1 VC)
@@ -347,7 +347,7 @@ lsc-bignum.adb:697:43: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:698:43: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:699:24: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:700:43: info: overflow check proved (CVC4: 1 VC)
-lsc-bignum.adb:701:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - Math_Int.From_Integer (S) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1)
+lsc-bignum.adb:701:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - Math_Int.From_Integer (S) + Math_Int.From_Word32 (1))) * Base ** (...
 lsc-bignum.adb:701:29: info: initialization of "Aux3" proved
 lsc-bignum.adb:701:49: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:702:43: info: overflow check proved (CVC4: 1 VC)
