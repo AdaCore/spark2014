@@ -190,7 +190,7 @@ railway systems (CENELEC EN 50128:2011) have recognized these benefits by increa
 role that formal methods can play in the development and verification of critical software.
 
 .. index:: Levels of SPARK use
-.. index:; Stone level (of SPARK use)
+.. index:: Stone level (of SPARK use)
 .. index:: Bronze level (of SPARK use)
 .. index:: Silver level (of SPARK use)
 .. index:: Gold level (of SPARK use)
@@ -246,6 +246,23 @@ and :ref:`Flow Analysis Warnings` for more details.
 
 In the following, we use "SPARK" to denote the SPARK language, and "GNATprove"
 to denote the formal verification tool in SPARK product.
+
+GNATprove can be run at the different levels mentioned in this document, either
+through the Integrated Development Environments (IDE) Eclipse (GNATbench
+plugin) or GNAT Pro Studio (GPS), or on the command line. In the following, we
+describe the use of GPS, but the use of Eclipse is based on similar menus. Use
+of the command-line interface at a given level is facilitated by convenient
+synonyms:
+
+* use switch ``--mode=stone`` for Stone level (synonym of ``--mode=check_all``)
+* use switch ``--mode=bronze`` for Bronze level (synonym of ``--mode=flow``)
+* use switch ``--mode=silver`` for Silver level (synonym of ``--mode=all``)
+* use switch ``--mode=gold`` for Gold level (synonym of ``--mode=all``)
+
+Note that levels Silver and Gold are activated with the same switches. Indeed,
+the difference between these levels is not on how GNATprove is run, but on the
+objectives of verification. This is explained in the section on :ref:`Gold
+Level`.
 
 .. index:: Stone level (of SPARK use)
 
