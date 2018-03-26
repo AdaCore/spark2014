@@ -685,8 +685,13 @@ package body Flow.Analysis.Antialiasing is
 
       function Visible_Globals (FS : Flow_Id_Sets.Set) return Node_Sets.Set
       with Post => (for all E of Visible_Globals'Result =>
-                       Is_Global_Entity (E));
-      --  Returns the subset of FS that is represented by Entity_Ids
+                       Is_Global_Entity (E)
+                         or else
+                       (Ekind (E) = E_Constant
+                        and then not Has_Variable_Input (E)));
+      --  Returns the subset of FS that is represented by Entity_Ids, which are
+      --  globals except when a constant without variable input wrongly appears
+      --  in a user-written contract.
 
       Writes_Or_Reads : Node_Sets.Set;
       --  Global outputs and in_outs (which for aliasing behave as OUT and
