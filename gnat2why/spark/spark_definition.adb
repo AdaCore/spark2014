@@ -127,7 +127,7 @@ package body SPARK_Definition is
    Emit_Messages : Boolean := True;
    --  Messages are emitted only if this flag is set
 
-   Current_SPARK_Pragma : Node_Id;
+   Current_SPARK_Pragma : Node_Id := Empty;
    --  The current applicable SPARK_Mode pragma, if any, to reference in error
    --  messages when a violation is encountered.
 
@@ -135,14 +135,10 @@ package body SPARK_Definition is
    --  When processing delayed aspect type (e.g. Predicate) this is set to the
    --  delayed type itself; used to reference the type in the error message.
 
-   Inside_Actions : Boolean;
+   Inside_Actions : Boolean := False;
    --  Set to True when traversing actions (statements introduced by the
    --  compiler inside expressions), which require a special translation.
    --  Those entities are stored in Actions_Entity_Set.
-
-   procedure Initialize;
-   --  Initialize internal global variables; must be called before marking next
-   --  compilation.
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean
    with Global => (Input => (Current_SPARK_Pragma,
@@ -257,6 +253,9 @@ package body SPARK_Definition is
    procedure Queue_For_Marking (E : Entity_Id);
    --  Register E for marking at a later stage
 
+   procedure Mark_Standard_Package;
+   --  Put marks on package Standard
+
    ------------------------------
    -- Body_Statements_In_SPARK --
    ------------------------------
@@ -316,7 +315,7 @@ package body SPARK_Definition is
            "="             => "=");
       use Violation_Root_Causes;
 
-      Violation_Detected : Boolean;
+      Violation_Detected : Boolean := False;
       --  Set to True when a violation is detected
 
       Violation_Root_Cause : Violation_Root_Causes.Map;
@@ -1071,17 +1070,6 @@ package body SPARK_Definition is
       return SPARK_Status_JSON;
    end Get_SPARK_JSON;
 
-   ----------------
-   -- Initialize --
-   ----------------
-
-   procedure Initialize is
-   begin
-      Current_SPARK_Pragma := Empty;
-      Violation_Detected := False;
-      Inside_Actions := False;
-   end Initialize;
-
    --------------
    -- In_SPARK --
    --------------
@@ -1092,6 +1080,14 @@ package body SPARK_Definition is
       return Entities_In_SPARK.Contains (E);
    end In_SPARK;
 
+   ----------------------
+   -- Is_Clean_Context --
+   ----------------------
+
+   function Is_Clean_Context return Boolean is
+     (No (Current_SPARK_Pragma)
+      and not Violation_Detected
+      and not Inside_Actions);
    ----------
    -- Mark --
    ----------
@@ -2978,8 +2974,6 @@ package body SPARK_Definition is
          return;
       end if;
 
-      Initialize;
-
       --  Violations within Context_Items, e.g. unknown configuration pragmas,
       --  should not affect the SPARK status of the entities in the compilation
       --  unit itself, so we reset the Violation_Detected flag to False after
@@ -3023,6 +3017,8 @@ package body SPARK_Definition is
 
             Mark_Delayed_Aspect : Boolean;
 
+            Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+
          begin
             --  Consider delayed aspects only if type was in a scope marked
             --  SPARK_Mode(On)...
@@ -3065,11 +3061,16 @@ package body SPARK_Definition is
 
                   Mark_Entity (Param);
                   if Present (Expr) then
+                     pragma Assert (not Violation_Detected);
                      Mark (Expr);
+                     --  ??? Violations in the aspect expressions seem ignored
+                     Violation_Detected := False;
                   end if;
 
                   Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
                end;
+
+               Current_SPARK_Pragma := Save_SPARK_Pragma;
             end if;
          end;
       end loop;
@@ -5315,7 +5316,8 @@ package body SPARK_Definition is
       Body_E : constant Entity_Id := Defining_Entity (N);
       Spec_E : constant Entity_Id := Unique_Entity (Body_E);
 
-      Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+      Save_SPARK_Pragma       : constant Node_Id := Current_SPARK_Pragma;
+      Save_Violation_Detected : constant Boolean := Violation_Detected;
 
    begin
       --  Do not analyze generic bodies
@@ -5341,6 +5343,7 @@ package body SPARK_Definition is
 
             Current_SPARK_Pragma := SPARK_Pragma (Body_E);
             Mark_Violation ("Body of package with External_Axiomatization", N);
+            Violation_Detected := Save_Violation_Detected;
             Current_SPARK_Pragma := Save_SPARK_Pragma;
          end if;
 
@@ -5352,37 +5355,32 @@ package body SPARK_Definition is
          --  contain subprograms or packages with SPARK_Mode => On.
 
          if not SPARK_Pragma_Is (Opt.Off) then
-            declare
-               Save_Violation_Detected : constant Boolean :=
-                 Violation_Detected;
-            begin
-               Violation_Detected := False;
-               Mark_Stmt_Or_Decl_List (Declarations (N));
-               Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
+            Violation_Detected := False;
+            Mark_Stmt_Or_Decl_List (Declarations (N));
+            Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
 
-               --  Only analyze package body statements when SPARK_Mode /= Off.
-               --  In particular, we still analyze a package body with no
-               --  SPARK_Mode set, as it may contain subprograms or packages
-               --  with SPARK_Mode => On.
+            --  Only analyze package body statements when SPARK_Mode /= Off.
+            --  In particular, we still analyze a package body with no
+            --  SPARK_Mode set, as it may contain subprograms or packages
+            --  with SPARK_Mode => On.
 
-               if not SPARK_Pragma_Is (Opt.Off) then
-                  declare
-                     HSS : constant Node_Id := Handled_Statement_Sequence (N);
-                  begin
-                     if Present (HSS) then
-                        Mark (HSS);
-                     end if;
-                  end;
-               end if;
+            if not SPARK_Pragma_Is (Opt.Off) then
+               declare
+                  HSS : constant Node_Id := Handled_Statement_Sequence (N);
+               begin
+                  if Present (HSS) then
+                     Mark (HSS);
+                  end if;
+               end;
+            end if;
 
-               if SPARK_Pragma_Is (Opt.On)
-                 and then not Violation_Detected
-               then
-                  Bodies_In_SPARK.Insert (Spec_E);
-               end if;
+            if SPARK_Pragma_Is (Opt.On)
+              and then not Violation_Detected
+            then
+               Bodies_In_SPARK.Insert (Spec_E);
+            end if;
 
-               Violation_Detected := Save_Violation_Detected;
-            end;
+            Violation_Detected := Save_Violation_Detected;
          end if;
 
          Current_SPARK_Pragma := Save_SPARK_Pragma;
@@ -5962,8 +5960,6 @@ package body SPARK_Definition is
    --  Start of processing for Mark_Standard_Package
 
    begin
-      Initialize;
-
       for S in S_Types loop
          Entity_Set.Insert (Standard_Entity (S));
          Entity_Set.Include (Etype (Standard_Entity (S)));
