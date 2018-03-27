@@ -1,0 +1,8 @@
+nuclear_system.adb:18:22: info: initialization of "Deadline" proved
+nuclear_system.adb:27:22: info: initialization of "Current_Time" proved
+nuclear_system.adb:45:13: info: initialization of "Current_Time" proved
+nuclear_system.ads:11:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+nuclear_system.ads:11:09: info: nontermination of task proved (CVC4: 1 VC)
+nuclear_system.ads:18:27: info: initialization of "Time" proved
+nuclear_system.ads:26:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+nuclear_system.ads:26:09: info: nontermination of task proved (CVC4: 1 VC)
