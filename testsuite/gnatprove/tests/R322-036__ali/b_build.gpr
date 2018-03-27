@@ -1,0 +1,14 @@
+project B_Build
+is
+   for Languages use ("Ada");
+
+   for Library_Name use "b";
+   for Library_Kind use "static";
+   for Library_Dir use "b_lib";
+   for Object_Dir use "b_out";
+   for Source_Dirs use ("b_src");
+
+   package Compiler is
+      for Local_Configuration_Pragmas use "gnat.conf";
+   end Compiler;
+end B_Build;

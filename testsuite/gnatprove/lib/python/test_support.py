@@ -17,6 +17,7 @@ from test_util import sort_key_for_errors
 max_steps = 200
 default_vc_timeout = 120
 parallel_procs = 1
+default_project = "test.gpr"
 default_provers = ["cvc4", "altergo", "z3"]
 provers_output_regex = re.compile("\((Interval|CVC4|Z3|altergo).*\)")
 
@@ -565,7 +566,7 @@ def strip_provers_output_from_testout():
             f.write(content)
 
 
-def gnatprove(opt=["-P", "test.gpr"], no_fail=False, no_output=False,
+def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
               filter_output=None, cache_allowed=True, subdue_flow=False,
               sort_output=True, exit_status=None):
     """Invoke gnatprove, and in case of success return list of output lines
@@ -579,8 +580,8 @@ def gnatprove(opt=["-P", "test.gpr"], no_fail=False, no_output=False,
     exit_status: if set, expected value of the exit status from gnatprove
     """
     # generate an empty project file if not present already
-    if not os.path.isfile("test.gpr"):
-        with open("test.gpr", 'w') as f_prj:
+    if not os.path.isfile(default_project):
+        with open(default_project, 'w') as f_prj:
             f_prj.write('project Test is\n')
             f_prj.write('  package Compiler is\n')
             f_prj.write('    for Default_Switches ("Ada") use ("-gnatws");\n')
@@ -657,6 +658,7 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
               prover=default_provers,
               cache_allowed=True,
               report="provers",
+              project=default_project,
               level=None,
               no_fail=False,
               no_output=False,
@@ -676,7 +678,7 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
     fullopt = ["--warnings=continue"]
     fullopt += ["--report=%s" % (report)]
     fullopt += ["--assumptions"]
-    fullopt += ["-P", "test.gpr", "--quiet"]
+    fullopt += ["-P", project, "--quiet"]
     fullopt += ["--timeout=%d" % (vc_timeout)]
     if codepeer:
         fullopt += ["--codepeer=on"]

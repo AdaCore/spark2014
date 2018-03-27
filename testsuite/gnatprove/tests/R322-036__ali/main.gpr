@@ -1,0 +1,17 @@
+with "a";
+with "b";
+
+project Main
+is
+   for Languages use ("Ada");
+
+   for Library_Name use "time";
+   for Library_Kind use "static";
+   for Library_Dir use "main_lib";
+   for Object_Dir use "main_out";
+   for Source_Dirs use ("main_src");
+
+   package Compiler is
+      for Local_Configuration_Pragmas use "gnat.conf";
+   end Compiler;
+end Main;
