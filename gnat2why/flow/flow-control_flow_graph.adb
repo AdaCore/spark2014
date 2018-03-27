@@ -3862,6 +3862,17 @@ package body Flow.Control_Flow_Graph is
          FA.Direct_Calls.Insert (Spec_E);
       end if;
 
+      --  If the nested package is not in SPARK (either because of explicit
+      --  SPARK_Mode => Off or because a SPARK violation), then ignore its
+      --  abstract states, visible declarations and private declarations. The
+      --  Initializes contract, if present, will be ignored when processing the
+      --  package body, if present.
+
+      if not Entity_In_SPARK (Spec_E) then
+         Add_Dummy_Vertex (N, FA, CM);
+         return;
+      end if;
+
       --  Introduce variables from the Abstract_State aspect of the nested
       --  package.
 
@@ -3971,13 +3982,17 @@ package body Flow.Control_Flow_Graph is
 
       V : Flow_Graphs.Vertex_Id;
 
-   --  Start of processing for Do_Package_Body_Or_Stub
-
    begin
+      --  If package spec is not in SPARK, then ignore its body and its
+      --  Initializes contract, if any.
+
+      if not Entity_In_SPARK (Package_Spec) then
+         Add_Dummy_Vertex (N, FA, CM);
+
       --  If neither elaboration or Initializes has any effect then create only
       --  a null vertex.
 
-      if DM.Is_Empty and then not Elaboration_Has_Effect then
+      elsif DM.Is_Empty and then not Elaboration_Has_Effect then
          Add_Dummy_Vertex (N, FA, CM);
 
       else

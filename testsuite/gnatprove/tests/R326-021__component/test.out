@@ -1,0 +1,5 @@
+p.adb:4:21: "T" is not allowed in SPARK
+p.adb:4:21: violation of aspect SPARK_Mode at line 1
+q.adb:7:21: "T" is not allowed in SPARK
+q.adb:7:21: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof
