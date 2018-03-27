@@ -253,7 +253,7 @@ hermes-der-encode.adb:124:60: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:133:07: medium: exception might be raised
 hermes-der-encode.adb:142:47: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:142:71: medium: range check might fail (e.g. when Value = (others => 0) and Value'First = 0 and Value'Last = 2147483647)
-hermes-der-encode.adb:142:80: medium: range check might fail (e.g. when Value = (others => 0) and Value'First = 0 and Value'Last = 2147483642)
+hermes-der-encode.adb:142:80: medium: range check might fail (e.g. when Value = (others => 0) and Value'First = 0 and Value'Last = 2147483646)
 hermes-der-encode.adb:149:39: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:155:07: medium: exception might be raised
 hermes-der-encode.ads:24:19: info: postcondition proved (CVC4: 1 VC)
@@ -528,7 +528,7 @@ server_timestamp_maker.adb:84:19: info: initialization of "Version" proved
 server_timestamp_maker.adb:91:38: info: initialization of "Version_Stop" proved
 server_timestamp_maker.adb:91:51: medium: range check might fail, in call inlined at server_timestamp_maker.adb:115 (e.g. when Version_Stop = 512)
 server_timestamp_maker.adb:96:19: high: "Imprint_Status" is not initialized
-server_timestamp_maker.adb:100:19: medium: exception might be raised, in call inlined at server_timestamp_maker.adb:115 (e.g. when Result = False)
+server_timestamp_maker.adb:100:19: medium: exception might be raised, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:106:14: info: initialization of "Result" proved
 server_timestamp_maker.adb:116:10: medium: exception might be raised
 server_timestamp_maker.adb:119:10: info: raise statement proved unreachable (CVC4: 1 VC)

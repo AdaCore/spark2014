@@ -30,7 +30,7 @@ arrays.adb:191:41: info: range check proved (CVC4: 2 VC)
 arrays.adb:192:57: info: initialization of "R" proved
 arrays.adb:192:57: medium: "R" might not be initialized
 arrays.adb:194:14: info: initialization of "R" proved
-arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C (e.g. when C = 'SOH' and I = 'SOH' and Single_Char_Set_Broken'Result = ('SOH' => True, others => False))
+arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C (e.g. when C = 'NUL' and I = 'NUL' and Single_Char_Set_Broken'Result = ('NUL' => True, others => False))
 arrays.adb:206:33: info: loop invariant initialization proved (CVC4: 2 VC)
 arrays.adb:206:33: info: loop invariant preservation proved (CVC4: 2 VC)
 arrays.adb:206:41: info: range check proved (CVC4: 2 VC)
@@ -49,17 +49,14 @@ arrays.adb:254:22: info: initialization of "A" proved
 arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5) (e.g. when A = (others => 0))
 counterexample expected for check at arrays.adb:62
   trace at arrays.adb:57 --> Contains_B'Result = False and S = ('a' => True, others => False)
-  trace at arrays.adb:58 --> C = 'NUL' and Contains_B'Result = True
   trace at arrays.adb:62 --> C = 'NUL' and Contains_B'Result = True and S = ('a' => True, others => False)
   trace at arrays.adb:65 --> Contains_B'Result = True
 counterexample expected for check at arrays.adb:80
   trace at arrays.adb:77 --> Is_Id_2'Result = False and M = (others => 'a')
-  trace at arrays.adb:78 --> C = 'NUL' and Is_Id_2'Result = True
   trace at arrays.adb:80 --> C = 'NUL' and Is_Id_2'Result = True and M = (others => 'a')
   trace at arrays.adb:83 --> Is_Id_2'Result = True
 counterexample expected for check at arrays.adb:104
   trace at arrays.adb:97 --> M = (others => 'NUL')
-  trace at arrays.adb:98 --> C = 'NUL'
   trace at arrays.adb:103 --> C = 'NUL'
   trace at arrays.adb:104 --> C = 'NUL'
 counterexample expected for check at arrays.adb:112
@@ -82,11 +79,11 @@ counterexample expected for check at arrays.adb:178
   trace at arrays.adb:174 --> A = (others => 0)
   trace at arrays.adb:178 --> A = (others => 0)
 counterexample expected for check at arrays.adb:199
-  trace at arrays.adb:197 --> C = 'SOH' and R = ('SOH' => True, others => False) and Single_Char_Set_Broken'Result = ('SOH' => True, others => False) and X = 'LC_Y_Diaeresis'
-  trace at arrays.adb:199 --> C = 'SOH' and I = 'SOH' and Single_Char_Set_Broken'Result = ('SOH' => True, others => False)
-  trace at arrays.adb:203 --> R = ('SOH' => True, others => False) and X = 'NUL'
+  trace at arrays.adb:197 --> C = 'NUL' and R = ('NUL' => True, others => False) and Single_Char_Set_Broken'Result = ('NUL' => True, others => False) and X = 'LC_Y_Diaeresis'
+  trace at arrays.adb:199 --> C = 'NUL' and I = 'NUL' and Single_Char_Set_Broken'Result = ('NUL' => True, others => False)
+  trace at arrays.adb:203 --> R = ('NUL' => True, others => False) and X = 'NUL'
   trace at arrays.adb:204 --> R = (others => False)
-  trace at arrays.adb:209 --> Single_Char_Set_Broken'Result = ('SOH' => True, others => False)
+  trace at arrays.adb:209 --> Single_Char_Set_Broken'Result = ('NUL' => True, others => False)
 counterexample expected for check at arrays.adb:218
   trace at arrays.adb:217 --> A = (others => False)
   trace at arrays.adb:218 --> A = (others => False)

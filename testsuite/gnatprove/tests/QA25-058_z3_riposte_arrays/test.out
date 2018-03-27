@@ -49,17 +49,14 @@ arrays.adb:254:22: info: initialization of "A" proved
 arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5) (e.g. when A = (1 => 0, others => 0))
 counterexample expected for check at arrays.adb:62
   trace at arrays.adb:57 --> Contains_B'Result = False and S = ('NUL' => False, 'a' => True, others => False)
-  trace at arrays.adb:58 --> C = 'NUL' and Contains_B'Result = True
   trace at arrays.adb:62 --> C = 'NUL' and Contains_B'Result = True and S = ('NUL' => False, 'a' => True, others => False)
   trace at arrays.adb:65 --> Contains_B'Result = True
 counterexample expected for check at arrays.adb:80
   trace at arrays.adb:77 --> Is_Id_2'Result = False and M = ('NUL' => 'a', others => 'a')
-  trace at arrays.adb:78 --> C = 'NUL' and Is_Id_2'Result = True
   trace at arrays.adb:80 --> C = 'NUL' and Is_Id_2'Result = True and M = ('NUL' => 'a', others => 'a')
   trace at arrays.adb:83 --> Is_Id_2'Result = True
 counterexample expected for check at arrays.adb:104
   trace at arrays.adb:97 --> M = ('NUL' => 'NUL', others => 'NUL')
-  trace at arrays.adb:98 --> C = 'NUL'
   trace at arrays.adb:103 --> C = 'NUL'
   trace at arrays.adb:104 --> C = 'NUL'
 counterexample expected for check at arrays.adb:112

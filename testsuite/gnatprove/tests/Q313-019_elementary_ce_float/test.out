@@ -12,7 +12,6 @@ counterexample expected for check at float_example.adb:12
   trace at float_example.adb:12 --> A = (fp #b0, #b11111111110, #xc000000000000) and B = (fp #b1, #b11111111101, #x0000000000000)
 counterexample expected for check at float_example.adb:17
   trace at float_example.adb:15 --> A = (fp #b0, #b10000000000, #xc0000009c0000) and B = (fp #b0, #b10000000000, #xc00c6f1000003) and Bounded_Add'Result = +zero
-  trace at float_example.adb:16 --> Bounded_Add'Result = (fp #b0, #b10000000001, #xc006378ce0002)
   trace at float_example.adb:17 --> Bounded_Add'Result = (fp #b0, #b10000000001, #xc006378ce0002)
   trace at float_example.adb:21 --> Bounded_Add'Result = (fp #b0, #b10000000001, #xc006378ce0002)
 counterexample expected for check at float_example.adb:21

@@ -21,7 +21,7 @@ string_utilities.adb:41:53: medium: "Lengths" might not be initialized
 string_utilities.adb:41:72: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:41:72: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:47:10: medium: "Lengths" might not be initialized
-string_utilities.adb:47:33: medium: range check might fail (e.g. when S2 = (others => 'NUL') and S2'First = 2147483647 and S2'Last = -1)
+string_utilities.adb:47:33: medium: range check might fail (e.g. when S2 = (others => 'NUL') and S2'First = 0 and S2'Last = -1)
 string_utilities.adb:52:48: medium: "Lengths" might not be initialized
 string_utilities.adb:52:71: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:53:10: info: range check proved (CVC4: 2 VC)
@@ -71,7 +71,7 @@ string_utilities.ads:19:21: info: implicit function contract not available for p
 string_utilities.ads:20:21: info: expression function body not available for proof ("Slow_LCS_Length" might not return)
 string_utilities.ads:20:21: info: implicit function contract not available for proof ("Slow_LCS_Length" is recursive)
 string_utilities.ads:24:06: info: expression function body not available for proof ("Is_Subsequence" might not return)
-string_utilities.ads:24:06: medium: postcondition might fail, cannot prove Is_Subsequence (Longest_Common_Subsequence'Result, S1) (e.g. when Longest_Common_Subsequence'First = 1 and Longest_Common_Subsequence'Last = 1 and Longest_Common_Subsequence'Result = (1 => 'NUL', 2 => 'NUL', 3 => 'NUL', others => 'NUL') and S1 = (1 => 'NUL', 2 => 'NUL', 3 => 'NUL', others => 'NUL') and S1'First = 1 and S1'Last = 2)
+string_utilities.ads:24:06: medium: postcondition might fail, cannot prove Is_Subsequence (Longest_Common_Subsequence'Result, S1) (e.g. when Longest_Common_Subsequence'First = 1 and Longest_Common_Subsequence'Last = 1 and Longest_Common_Subsequence'Result = (others => 'NUL') and S1 = (others => 'NUL') and S1'First = 1 and S1'Last = 2)
 string_utilities.ads:25:06: info: expression function body not available for proof ("Is_Subsequence" might not return)
 string_utilities.ads:26:39: info: range check proved (CVC4: 1 VC)
 string_utilities.ads:26:49: info: expression function body not available for proof ("Slow_LCS_Length" might not return)
