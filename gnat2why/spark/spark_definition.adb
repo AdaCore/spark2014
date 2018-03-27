@@ -2980,13 +2980,22 @@ package body SPARK_Definition is
 
       Initialize;
 
-      --  Mark entities in SPARK or not
+      --  Violations within Context_Items, e.g. unknown configuration pragmas,
+      --  should not affect the SPARK status of the entities in the compilation
+      --  unit itself, so we reset the Violation_Detected flag to False after
+      --  marking them.
+
+      pragma Assert (not Violation_Detected);
 
       Context_N := First (Context_Items (CU));
       while Present (Context_N) loop
          Mark (Context_N);
          Next (Context_N);
       end loop;
+
+      Violation_Detected := False;
+
+      --  Mark entities in SPARK or not
 
       Mark (N);
 
