@@ -3,19 +3,21 @@ use type Ada.Real_Time.Time;
 
 package body Timer with
   SPARK_Mode,
-  Refined_State => (Oper_State => Operate, Timing_State => TimingLoop)
+  Refined_State => (Timing_State => TimingLoop,
+                    Oper_State   => Operate)
 is
 
-   Operate : Ada.Synchronous_Task_Control.Suspension_Object;
+   Operate : Ada.Synchronous_Task_Control.Suspension_Object with Async_Readers,
+                                                                 Async_Writers;
 
    task TimingLoop with
-     Global   => (Output => Operate,
-                  In_Out => Display.State,
+     Global   => (In_Out => (Operate, Display.State),
                   Input  => Ada.Real_Time.Clock_Time),
-     Depends  => (Operate       =>  null,
-                  Display.State =>+ null,
-                  TimingLoop    =>  TimingLoop,
-                  null          =>  Ada.Real_Time.Clock_Time),
+     Depends  => (Operate       => null,
+                  Display.State => Display.State,
+                  TimingLoop    => TimingLoop,
+                  null          => (Ada.Real_Time.Clock_Time,
+                                    Operate)),
      Priority => TuningData.TimerPriority;
 
    task body TimingLoop is

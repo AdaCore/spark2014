@@ -8,21 +8,23 @@ is
       pragma Interrupt_Priority (TuningData.UserPriority);
 
       procedure StartClock with
-        Global  => (Output => Timer.Oper_State),
+        Global  => (In_Out => Timer.Oper_State),
         Depends => (Timer.Oper_State => null,
-                    Buttons          =>+ null),
+                    Buttons          => Buttons,
+                    null             => Timer.Oper_State),
         Attach_Handler => 1;
 
       procedure StopClock with
-        Global  => (Output => Timer.Oper_State),
+        Global  => (In_Out => Timer.Oper_State),
         Depends => (Timer.Oper_State => null,
-                    Buttons          =>+ null),
+                    Buttons          => Buttons,
+                    null             => Timer.Oper_State),
         Attach_Handler => 2;
 
       procedure ResetClock with
         Global  => (In_Out => Display.State),
-        Depends => (Display.State =>+ null,
-                    Buttons       =>+ null),
+        Depends => (Display.State => Display.State,
+                    Buttons       => Buttons),
         Attach_Handler => 3;
    end Buttons;
 

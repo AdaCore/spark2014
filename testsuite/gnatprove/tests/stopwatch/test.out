@@ -1,33 +1,11 @@
-display.adb:39:29: medium: overflow check might fail
-display.adb:51:36: info: initialization of "Internal_State" constituent of "State" proved
-display.adb:55:07: medium: "Internal_State" constituent of "State" is not set
-timer.adb:11:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
-timer.adb:11:09: info: nontermination of task proved (CVC4: 1 VC)
-timer.adb:12:29: info: initialization of "Operate" constituent of "Oper_State" proved
-timer.adb:15:06: medium: missing dependency "null => Display.State"
-timer.adb:16:19: medium: incorrect dependency "Display.State => Display.State"
-timer.adb:29:59: low: "Operate" constituent of "Oper_State" might not be set
-timer.adb:30:49: info: initialization of "Operate" constituent of "Oper_State" proved
-timer.adb:34:26: info: initialization of "Release_Time" proved
-timer.adb:35:22: info: initialization of "Release_Time" proved
-timer.adb:43:26: medium: missing dependency "Operate constituent of Oper_State => Operate constituent of Oper_State"
-timer.adb:43:51: medium: incorrect dependency "null => Operate constituent of Oper_State"
-timer.adb:51:26: medium: missing dependency "Operate constituent of Oper_State => Operate constituent of Oper_State"
-timer.adb:51:51: medium: incorrect dependency "null => Operate constituent of Oper_State"
+display.adb:37:29: medium: overflow check might fail
+timer.adb:13:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+timer.adb:13:09: info: nontermination of task proved (CVC4: 1 VC)
+timer.adb:36:26: info: initialization of "Release_Time" proved
+timer.adb:37:22: info: initialization of "Release_Time" proved
 user.adb:7:14: info: ceiling priority in Interrupt_Priority proved (CVC4: 2 VC)
 user.adb:8:44: info: range check proved (CVC4: 2 VC)
-user.adb:11:36: info: initialization of "Timer.Oper_State" proved
-user.adb:14:27: medium: this interrupt might be reserved
-user.adb:17:36: info: initialization of "Timer.Oper_State" proved
-user.adb:20:27: medium: this interrupt might be reserved
-user.adb:22:17: medium: ceiling priority protocol might not be respected
-user.adb:23:38: warning: unused initial value of "Display.State"
-user.adb:24:09: medium: missing dependency "null => Display.State"
-user.adb:24:21: medium: incorrect dependency "Display.State => Display.State"
-user.adb:26:27: medium: this interrupt might be reserved
-user.adb:33:15: high: "Timer.Oper_State" is not an input in the Global contract of subprogram "StartClock" at line 10
-user.adb:33:15: high: "Timer.Oper_State" is not written
-user.adb:33:15: high: either make "Timer.Oper_State" an input in the Global contract or write to it before use
-user.adb:39:15: high: "Timer.Oper_State" is not an input in the Global contract of subprogram "StopClock" at line 16
-user.adb:39:15: high: "Timer.Oper_State" is not written
-user.adb:39:15: high: either make "Timer.Oper_State" an input in the Global contract or write to it before use
+user.adb:15:27: medium: this interrupt might be reserved
+user.adb:22:27: medium: this interrupt might be reserved
+user.adb:24:17: medium: ceiling priority protocol might not be respected
+user.adb:28:27: medium: this interrupt might be reserved

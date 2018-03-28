@@ -16,8 +16,7 @@ is
       -- clear time to 0 and send it to port;
       procedure Reset with
         Global  => null,
-        Depends => (Internal_State => null,
-                    null           => Internal_State);
+        Depends => (Internal_State => Internal_State);
 
    private
       Counter : Natural := 0;
@@ -29,7 +28,6 @@ is
    Port : Integer := 0 with
      Volatile,
      Async_Readers,
-     Effective_Writes,
      Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#),
      Part_Of => Internal_State;
 
@@ -48,8 +46,8 @@ is
    end Internal_State;
 
    procedure Initialize with
-     Refined_Global  => (Output => Internal_State),
-     Refined_Depends => (Internal_State => null)
+     Refined_Global  => (In_Out => Internal_State),
+     Refined_Depends => (Internal_State => Internal_State)
    is
    begin
       Internal_State.Reset;
