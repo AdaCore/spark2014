@@ -1071,7 +1071,7 @@ procedure Gnatprove with SPARK_Mode is
       function Build_Prover_Command (Prover    : JSON_Value;
                                      Args_Step : Boolean)
                                      return String;
-      --  given a prover configuration in JSON, construct the prover command
+      --  Given a prover configuration in JSON, construct the prover command
       --  for why3.conf (with or without steps depending on Args_Step value).
 
       function Build_Executable (Exec : String) return String;
@@ -1106,8 +1106,8 @@ procedure Gnatprove with SPARK_Mode is
 
          function Add_Memcached_Wrapper (Cmd : String) return String is
          begin
-            if Memcached_Server /= null and then
-              Memcached_Server.all /= ""
+            if Memcached_Server /= null
+              and then Memcached_Server.all /= ""
             then
                return "spark_memcached_wrapper " &
                  Memcached_Server.all & " " &
