@@ -61,6 +61,7 @@ with Why.Gen.Names;              use Why.Gen.Names;
 with Why.Gen.Preds;              use Why.Gen.Preds;
 with Why.Gen.Progs;              use Why.Gen.Progs;
 with Why.Gen.Records;            use Why.Gen.Records;
+with Why.Gen.Scalars;            use Why.Gen.Scalars;
 
 package body Why.Gen.Expr is
 
@@ -1878,7 +1879,40 @@ package body Why.Gen.Expr is
          end if;
       end if;
 
-      --  3. Possibly perform the range check, if applicable on Cur. A special
+      --  3. Possibly convert from one fixed-point small to another one.
+
+      declare
+         From_Type : constant Entity_Id := Get_Ada_Node (+From);
+         To_Type   : constant Entity_Id := Get_Ada_Node (+To);
+      begin
+         if Present (From_Type)
+           and then Has_Fixed_Point_Type (From_Type)
+           and then Present (To_Type)
+           and then Has_Fixed_Point_Type (To_Type)
+           and then Small_Value (From_Type) /= Small_Value (To_Type)
+         then
+            declare
+               Module   : constant M_Fixed_Point_Mult_Div_Type :=
+                 Get_Fixed_Point_Mult_Div_Theory
+                   (Typ_Left   => From_Type,
+                    Typ_Right  => Standard_Integer,
+                    Typ_Result => To_Type);
+               Name     : constant W_Identifier_Id := Module.Mult;
+               One_Term : constant W_Expr_Id :=
+                 New_Discrete_Constant (Value => Uint_1,
+                                        Typ   => EW_Int_Type);
+            begin
+               Result := New_Call (Ada_Node => Ada_Node,
+                                   Domain   => Domain,
+                                   Name     => Name,
+                                   Args     => (1 => Result,
+                                                2 => One_Term),
+                                   Typ      => EW_Fixed_Type);
+            end;
+         end if;
+      end;
+
+      --  4. Possibly perform the range check, if applicable on Cur. A special
       --     case is that range checks on boolean variables are performed after
       --     their conversion to int. Another special case is that range checks
       --     on modular types are always performed at this point, as any
@@ -1898,12 +1932,12 @@ package body Why.Gen.Expr is
                                     Check_Kind => Check_Kind);
       end if;
 
-      --  4. If From and To do not share the same base type (bool, int, __fixed
+      --  5. If From and To do not share the same base type (bool, int, __fixed
       --     bitvector_? or real), convert from one to the other.
 
       if Base_Why_Type (From) /= Base_Why_Type (To) then
 
-         --  4.1. If To is a fixed-point type, convert from int or real
+         --  5.1. If To is a fixed-point type, convert from int or real
          --       depending on From.
 
          if Base_Why_Type (To) = EW_Fixed_Type then
@@ -1932,7 +1966,7 @@ package body Why.Gen.Expr is
                Cur := Base_Why_Type (To);
             end;
 
-         --  4.2. Otherwise simply convert from Cur to Base_Why_Type (To)
+         --  5.2. Otherwise simply convert from Cur to Base_Why_Type (To)
 
          else
             Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
@@ -1944,7 +1978,7 @@ package body Why.Gen.Expr is
          end if;
       end if;
 
-      --  5. Possibly perform the range check, if not already applied
+      --  6. Possibly perform the range check, if not already applied
 
       if Present (Range_Type)
         and then not Range_Check_Applied
@@ -1960,7 +1994,7 @@ package body Why.Gen.Expr is
                                     Check_Kind => Check_Kind);
       end if;
 
-      --  6. Perform a predicate check if needed, before the final conversion
+      --  7. Perform a predicate check if needed, before the final conversion
       --  to the target abstract type if any, if the predicate function takes
       --  a Why3 native type as input as detected by Use_Split_Form_For_Type.
 
@@ -1973,7 +2007,7 @@ package body Why.Gen.Expr is
                                             W_Expr   => +Result);
       end if;
 
-      --  7. If To is an abstract type, convert from int, __fixed or real to it
+      --  8. If To is an abstract type, convert from int, __fixed or real to it
 
       if Get_Type_Kind (To) = EW_Abstract then
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
@@ -1992,7 +2026,7 @@ package body Why.Gen.Expr is
                               Typ    => To);
       end if;
 
-      --  8. Perform a predicate check if needed, after the final conversion
+      --  9. Perform a predicate check if needed, after the final conversion
       --  to the target abstract type if any, if the predicate function takes
       --  an abstract type as input as detected by Use_Split_Form_For_Type.
 

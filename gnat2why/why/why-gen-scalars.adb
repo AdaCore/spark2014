@@ -91,30 +91,43 @@ package body Why.Gen.Scalars is
                                      Symbol => NID ("fxp_div"),
                                      Typ    => EW_Fixed_Type));
 
-      Inv_Small_X : constant W_Name_Id :=
-        New_Name (Symbol => NID ("inv_small_x"));
-      Inv_Small_Y : constant W_Name_Id :=
-        New_Name (Symbol => NID ("inv_small_y"));
-      Inv_Small_Res : constant W_Name_Id :=
-        New_Name (Symbol => NID ("inv_small_res"));
+      Num_Small_X : constant W_Name_Id :=
+        New_Name (Symbol => NID ("num_small_x"));
+      Den_Small_X : constant W_Name_Id :=
+        New_Name (Symbol => NID ("den_small_x"));
+      Num_Small_Y : constant W_Name_Id :=
+        New_Name (Symbol => NID ("num_small_y"));
+      Den_Small_Y : constant W_Name_Id :=
+        New_Name (Symbol => NID ("den_small_y"));
+      Num_Small_Res : constant W_Name_Id :=
+        New_Name (Symbol => NID ("num_small_res"));
+      Den_Small_Res : constant W_Name_Id :=
+        New_Name (Symbol => NID ("den_small_res"));
 
-      L_Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (Typ_Left));
-      pragma Assert (Norm_Den (L_Inv_Small) = Uint_1);
-      L_Small     : constant W_Term_OId :=
-        New_Integer_Constant (Value => Norm_Num (L_Inv_Small));
+      Small_L      : constant Ureal := Small_Value (Typ_Left);
+      Num_Small_L   : constant W_Term_OId :=
+        New_Integer_Constant (Value => Norm_Num (Small_L));
+      Den_Small_L : constant W_Term_OId :=
+        New_Integer_Constant (Value => Norm_Den (Small_L));
 
-      R_Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (Typ_Right));
-      pragma Assert (Norm_Den (R_Inv_Small) = Uint_1);
-      R_Small     : constant W_Term_OId :=
-        New_Integer_Constant (Value => Norm_Num (R_Inv_Small));
+      Small_R       : constant Ureal :=
+        (if Has_Fixed_Point_Type (Typ_Right) then
+           Small_Value (Typ_Right)
+         elsif Has_Signed_Integer_Type (Typ_Right) then
+           Ureal_1
+         else raise Program_Error);
+      Num_Small_R   : constant W_Term_OId :=
+        New_Integer_Constant (Value => Norm_Num (Small_R));
+      Den_Small_R : constant W_Term_OId :=
+        New_Integer_Constant (Value => Norm_Den (Small_R));
 
-      Res_Inv_Small : constant Ureal :=
-        UR_Div (Uint_1, Small_Value (Typ_Result));
-      pragma Assert (Norm_Den (Res_Inv_Small) = Uint_1);
-      Res_Small   : constant W_Term_OId :=
-        New_Integer_Constant (Value => Norm_Num (Res_Inv_Small));
+      Small_Op       : constant Ureal := Small_Value (Typ_Result);
+      Num_Small_Op   : constant W_Term_OId :=
+        New_Integer_Constant (Value => Norm_Num (Small_Op));
+      Den_Small_Op : constant W_Term_OId :=
+        New_Integer_Constant (Value => Norm_Den (Small_Op));
 
-      Subst : W_Clone_Substitution_Array (1 .. 3);
+      Subst : W_Clone_Substitution_Array (1 .. 6);
 
       Save_Theory : W_Theory_Declaration_Id;
       --  Use this variable to temporarily store current theory
@@ -144,43 +157,77 @@ package body Why.Gen.Scalars is
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
-               Name        => New_Identifier (Inv_Small_X),
+               Name        => New_Identifier (Num_Small_X),
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
                Labels      => Name_Id_Sets.Empty_Set,
-               Def         => +L_Small));
-
+               Def         => +Num_Small_L));
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
-               Name        => New_Identifier (Inv_Small_Y),
+               Name        => New_Identifier (Den_Small_X),
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
                Labels      => Name_Id_Sets.Empty_Set,
-               Def         => +R_Small));
-
+               Def         => +Den_Small_L));
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
-               Name        => New_Identifier (Inv_Small_Res),
+               Name        => New_Identifier (Num_Small_Y),
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
                Labels      => Name_Id_Sets.Empty_Set,
-               Def         => +Res_Small));
+               Def         => +Num_Small_R));
+      Emit (File,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => New_Identifier (Den_Small_Y),
+               Binders     => (1 .. 0 => <>),
+               Return_Type => EW_Int_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Def         => +Den_Small_R));
+      Emit (File,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => New_Identifier (Num_Small_Res),
+               Binders     => (1 .. 0 => <>),
+               Return_Type => EW_Int_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Def         => +Num_Small_Op));
+      Emit (File,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => New_Identifier (Den_Small_Res),
+               Binders     => (1 .. 0 => <>),
+               Return_Type => EW_Int_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Def         => +Den_Small_Op));
 
       Subst :=
         (1 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => Inv_Small_X,
-                 Image     => Inv_Small_X),
+                 Orig_Name => Num_Small_X,
+                 Image     => Num_Small_X),
          2 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => Inv_Small_Y,
-                 Image     => Inv_Small_Y),
+                 Orig_Name => Den_Small_X,
+                 Image     => Den_Small_X),
          3 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => Inv_Small_Res,
-                 Image     => Inv_Small_Res));
+                 Orig_Name => Num_Small_Y,
+                 Image     => Num_Small_Y),
+         4 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => Den_Small_Y,
+                 Image     => Den_Small_Y),
+         5 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => Num_Small_Res,
+                 Image     => Num_Small_Res),
+         6 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => Den_Small_Res,
+                 Image     => Den_Small_Res));
 
       Emit (File,
             New_Clone_Declaration
@@ -314,8 +361,12 @@ package body Why.Gen.Scalars is
            (if Is_Fixed_Point_Type (E) then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Function,
-                  Orig_Name => To_Local (E_Symb (E, WNE_Attr_Small)),
-                  Image     => To_Local (E_Symb (E, WNE_Attr_Small))))
+                  Orig_Name => To_Local (E_Symb (E, WNE_Small_Num)),
+                  Image     => To_Local (E_Symb (E, WNE_Small_Num))),
+                 2 => New_Clone_Substitution
+                 (Kind      => EW_Function,
+                  Orig_Name => To_Local (E_Symb (E, WNE_Small_Den)),
+                  Image     => To_Local (E_Symb (E, WNE_Small_Den))))
             else (1 .. 0 => <>));
       begin
 
@@ -736,21 +787,30 @@ package body Why.Gen.Scalars is
 
       elsif Has_Fixed_Point_Type (E) then
          declare
-            Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (E));
-            Small     : W_Term_OId;
+            Small     : constant Ureal := Small_Value (E);
+            Num_Small : constant W_Term_OId :=
+              New_Integer_Constant (Value => Norm_Num (Small));
+            Den_Small : constant W_Term_OId :=
+              New_Integer_Constant (Value => Norm_Den (Small));
          begin
-            pragma Assert (Norm_Den (Inv_Small) = Uint_1);
-            Small := New_Integer_Constant (Value => Norm_Num (Inv_Small));
-
             Emit (Section,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        =>
-                       To_Local (E_Symb (E, WNE_Attr_Small)),
+                       To_Local (E_Symb (E, WNE_Small_Num)),
                      Binders     => (1 .. 0 => <>),
                      Return_Type => Base_Type,
                      Labels      => Name_Id_Sets.Empty_Set,
-                     Def         => +Small));
+                     Def         => +Num_Small));
+            Emit (Section,
+                  Why.Atree.Builders.New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        =>
+                       To_Local (E_Symb (E, WNE_Small_Den)),
+                     Binders     => (1 .. 0 => <>),
+                     Return_Type => Base_Type,
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Def         => +Den_Small));
          end;
       end if;
 
@@ -982,7 +1042,12 @@ package body Why.Gen.Scalars is
          UI_Image (Norm_Den (R), Decimal));
 
       L_Small   : constant Ureal := Small_Value (Typ_Left);
-      R_Small   : constant Ureal := Small_Value (Typ_Right);
+      R_Small   : constant Ureal :=
+        (if Has_Fixed_Point_Type (Typ_Right) then
+           Small_Value (Typ_Right)
+         elsif Has_Signed_Integer_Type (Typ_Right) then
+           Ureal_1
+         else raise Program_Error);
       Res_Small : constant Ureal := Small_Value (Typ_Result);
 
       Name      : constant String :=

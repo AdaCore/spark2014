@@ -1,0 +1,296 @@
+conversion_fixed.adb:10:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:10:41: info: initialization of "Y" proved
+conversion_fixed.adb:11:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:11:39: info: initialization of "Y" proved
+conversion_fixed.adb:12:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:12:39: info: initialization of "Y" proved
+conversion_fixed.adb:15:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:15:41: info: initialization of "Y2" proved
+conversion_fixed.adb:16:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:16:39: info: initialization of "Y2" proved
+conversion_fixed.adb:17:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:17:39: info: initialization of "Y2" proved
+conversion_fixed.adb:20:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:20:41: info: initialization of "Y3" proved
+conversion_fixed.adb:21:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:21:39: info: initialization of "Y3" proved
+conversion_fixed.adb:22:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:22:39: info: initialization of "Y3" proved
+conversion_fixed.adb:25:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:25:41: info: initialization of "Y3" proved
+conversion_fixed.adb:26:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:26:39: info: initialization of "Y3" proved
+conversion_fixed.adb:27:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:27:39: info: initialization of "Y3" proved
+conversion_fixed.adb:30:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:30:40: info: initialization of "Y4" proved
+conversion_fixed.adb:31:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:31:38: info: initialization of "Y4" proved
+conversion_fixed.adb:32:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:32:38: info: initialization of "Y4" proved
+conversion_fixed.adb:35:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:35:41: info: initialization of "Y4" proved
+conversion_fixed.adb:36:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:36:39: info: initialization of "Y4" proved
+conversion_fixed.adb:37:22: info: assertion proved (CVC4: 2 VC)
+conversion_fixed.adb:37:39: info: initialization of "Y4" proved
+conversion_fixed.ads:8:14: warning: subprogram "Test" has no effect
+fraction_fixed.adb:7:12: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:7:12: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:8:22: info: assertion proved (CVC4: 3 VC)
+fraction_fixed.adb:8:78: info: initialization of "Z" proved
+fraction_fixed.adb:10:22: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:10:22: info: initialization of "Z" proved
+fraction_fixed.adb:17:14: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:17:14: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:18:22: info: assertion proved (CVC4: 3 VC)
+fraction_fixed.adb:18:74: info: initialization of "Z" proved
+fraction_fixed.adb:19:14: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:19:14: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:20:22: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:20:22: info: initialization of "Z" proved
+fraction_fixed.adb:22:22: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:22:22: info: initialization of "Z" proved
+fraction_fixed.adb:30:14: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:30:14: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:31:22: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:31:22: info: initialization of "Z" proved
+fraction_fixed.adb:32:14: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:32:14: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:33:22: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:33:22: info: initialization of "Z" proved
+fraction_fixed.adb:35:22: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:35:22: info: initialization of "Z" proved
+fraction_fixed.adb:44:14: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:44:14: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:45:22: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:45:22: info: initialization of "Z" proved
+fraction_fixed.adb:45:28: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:46:14: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:46:14: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:47:22: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:47:22: info: initialization of "Z" proved
+fraction_fixed.adb:47:28: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:48:14: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:48:14: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:48:16: info: initialization of "Two" proved
+fraction_fixed.adb:49:22: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:49:22: info: initialization of "Z" proved
+fraction_fixed.adb:49:28: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:50:12: info: initialization of "Two" proved
+fraction_fixed.adb:50:16: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:50:16: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:51:22: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:51:22: info: initialization of "Z" proved
+fraction_fixed.adb:51:28: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:54:15: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:54:15: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:55:22: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:55:22: info: initialization of "Z" proved
+fraction_fixed.adb:55:28: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:66:20: info: division check proved (CVC4: 1 VC)
+fraction_fixed.adb:66:20: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:66:20: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:67:25: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:67:25: info: initialization of "Zint" proved
+fraction_fixed.adb:69:17: info: division check proved (CVC4: 1 VC)
+fraction_fixed.adb:69:17: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:69:17: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:70:22: info: assertion proved (CVC4: 2 VC)
+fraction_fixed.adb:70:47: info: initialization of "Zint" proved
+fraction_fixed.adb:70:47: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:70:64: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:70:67: info: division check proved (CVC4: 1 VC)
+fraction_fixed.adb:71:14: info: division check proved (CVC4: 1 VC)
+fraction_fixed.adb:71:14: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:71:14: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:72:22: info: assertion proved (CVC4: 2 VC)
+fraction_fixed.adb:72:29: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:72:33: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:72:48: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:72:50: info: initialization of "Z" proved
+fraction_fixed.adb:72:52: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:73:14: info: division check proved (CVC4: 1 VC)
+fraction_fixed.adb:73:14: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:73:14: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:73:16: info: initialization of "Two" proved
+fraction_fixed.adb:74:22: info: assertion proved (CVC4: 2 VC)
+fraction_fixed.adb:74:29: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:74:33: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:74:48: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:74:50: info: initialization of "Z" proved
+fraction_fixed.adb:74:52: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:92:22: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:95:16: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:95:25: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:96:16: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:96:27: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:96:27: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:97:22: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:97:26: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:97:26: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:99:17: info: initialization of "Y1" proved
+fraction_fixed.adb:99:17: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:100:17: info: initialization of "Y2" proved
+fraction_fixed.adb:100:17: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:101:17: info: initialization of "Y3" proved
+fraction_fixed.adb:101:17: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:103:17: info: initialization of "Z1" proved
+fraction_fixed.adb:103:17: medium: range check might fail
+fraction_fixed.adb:104:17: info: initialization of "Z2" proved
+fraction_fixed.adb:105:17: info: initialization of "Z3" proved
+fraction_fixed.adb:105:20: info: float overflow check proved (Interval)
+fraction_fixed.adb:105:20: medium: range check might fail
+fraction_fixed.adb:106:17: info: initialization of "Z3" proved
+fraction_fixed.adb:106:20: info: float overflow check proved (Interval)
+fraction_fixed.adb:106:25: info: float overflow check proved (Interval)
+fraction_fixed.adb:106:25: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:108:17: info: initialization of "Z1" proved
+fraction_fixed.adb:108:17: info: range check proved (CVC4: 1 VC)
+fraction_fixed.adb:109:17: info: initialization of "Z2" proved
+fraction_fixed.adb:110:17: info: initialization of "Z3" proved
+fraction_fixed.adb:117:25: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:118:25: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:118:27: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:119:25: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:119:27: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:121:25: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:122:25: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:122:27: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.adb:123:25: info: assertion proved (CVC4: 1 VC)
+fraction_fixed.adb:123:27: info: overflow check proved (CVC4: 1 VC)
+fraction_fixed.ads:7:14: warning: subprogram "Test_Minus" has no effect
+fraction_fixed.ads:10:14: warning: subprogram "Test_Add" has no effect
+fraction_fixed.ads:13:14: warning: subprogram "Test_Subtract" has no effect
+fraction_fixed.ads:16:14: warning: subprogram "Test_Multiply" has no effect
+fraction_fixed.ads:19:14: warning: subprogram "Test_Divide" has no effect
+fraction_fixed.ads:22:14: warning: subprogram "Test_Type_Conversion" has no effect
+fraction_fixed.ads:25:14: warning: subprogram "Test_Compare" has no effect
+integer_fixed.adb:7:12: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:7:12: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:8:22: info: assertion proved (CVC4: 3 VC)
+integer_fixed.adb:8:78: info: initialization of "Z" proved
+integer_fixed.adb:10:22: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:10:22: info: initialization of "Z" proved
+integer_fixed.adb:17:14: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:17:14: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:18:22: info: assertion proved (CVC4: 3 VC)
+integer_fixed.adb:18:74: info: initialization of "Z" proved
+integer_fixed.adb:19:14: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:19:14: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:20:22: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:20:22: info: initialization of "Z" proved
+integer_fixed.adb:22:22: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:22:22: info: initialization of "Z" proved
+integer_fixed.adb:30:14: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:30:14: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:31:22: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:31:22: info: initialization of "Z" proved
+integer_fixed.adb:32:14: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:32:14: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:33:22: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:33:22: info: initialization of "Z" proved
+integer_fixed.adb:35:22: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:35:22: info: initialization of "Z" proved
+integer_fixed.adb:43:14: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:43:14: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:44:22: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:44:22: info: initialization of "Z" proved
+integer_fixed.adb:44:28: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:45:14: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:45:14: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:46:22: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:46:22: info: initialization of "Z" proved
+integer_fixed.adb:46:28: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:47:14: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:47:14: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:47:16: info: initialization of "Two" proved
+integer_fixed.adb:48:22: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:48:22: info: initialization of "Z" proved
+integer_fixed.adb:48:28: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:49:12: info: initialization of "Two" proved
+integer_fixed.adb:49:16: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:49:16: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:50:22: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:50:22: info: initialization of "Z" proved
+integer_fixed.adb:50:28: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:53:14: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:53:14: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:54:22: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:54:22: info: initialization of "Z" proved
+integer_fixed.adb:54:28: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:64:17: info: division check proved (CVC4: 1 VC)
+integer_fixed.adb:64:17: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:64:17: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:65:25: info: assertion proved (altergo: 1 VC)
+integer_fixed.adb:65:25: info: initialization of "Z" proved
+integer_fixed.adb:67:14: info: division check proved (CVC4: 1 VC)
+integer_fixed.adb:67:14: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:67:14: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:68:22: info: assertion proved (altergo: 1 VC)
+integer_fixed.adb:68:22: info: initialization of "Z" proved
+integer_fixed.adb:69:14: info: division check proved (CVC4: 1 VC)
+integer_fixed.adb:69:14: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:69:14: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:70:22: info: assertion proved (CVC4: 2 VC)
+integer_fixed.adb:70:29: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:70:33: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:70:48: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:70:50: info: initialization of "Z" proved
+integer_fixed.adb:70:52: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:71:14: info: division check proved (CVC4: 1 VC)
+integer_fixed.adb:71:14: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:71:14: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:71:16: info: initialization of "Two" proved
+integer_fixed.adb:72:22: info: assertion proved (CVC4: 2 VC)
+integer_fixed.adb:72:29: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:72:33: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:72:48: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:72:50: info: initialization of "Z" proved
+integer_fixed.adb:72:52: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:90:22: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:93:16: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:93:25: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:94:16: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:94:27: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:94:27: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:95:22: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:95:26: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:95:26: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:97:17: info: initialization of "Y1" proved
+integer_fixed.adb:97:17: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:98:17: info: initialization of "Y2" proved
+integer_fixed.adb:98:17: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:99:17: info: initialization of "Y3" proved
+integer_fixed.adb:99:17: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:101:17: info: initialization of "Z1" proved
+integer_fixed.adb:101:17: medium: range check might fail
+integer_fixed.adb:102:17: info: initialization of "Z2" proved
+integer_fixed.adb:103:17: info: initialization of "Z3" proved
+integer_fixed.adb:103:20: info: float overflow check proved (Interval)
+integer_fixed.adb:103:20: medium: range check might fail
+integer_fixed.adb:104:17: info: initialization of "Z3" proved
+integer_fixed.adb:104:20: info: float overflow check proved (Interval)
+integer_fixed.adb:104:25: info: float overflow check proved (Interval)
+integer_fixed.adb:104:25: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:106:17: info: initialization of "Z1" proved
+integer_fixed.adb:106:17: info: range check proved (CVC4: 1 VC)
+integer_fixed.adb:107:17: info: initialization of "Z2" proved
+integer_fixed.adb:108:17: info: initialization of "Z3" proved
+integer_fixed.adb:115:25: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:116:25: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:116:27: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:117:25: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:117:27: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:119:25: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:120:25: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:120:27: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.adb:121:25: info: assertion proved (CVC4: 1 VC)
+integer_fixed.adb:121:27: info: overflow check proved (CVC4: 1 VC)
+integer_fixed.ads:5:14: warning: subprogram "Test_Minus" has no effect
+integer_fixed.ads:8:14: warning: subprogram "Test_Add" has no effect
+integer_fixed.ads:11:14: warning: subprogram "Test_Subtract" has no effect
+integer_fixed.ads:14:14: warning: subprogram "Test_Multiply" has no effect
+integer_fixed.ads:17:14: warning: subprogram "Test_Divide" has no effect
+integer_fixed.ads:20:14: warning: subprogram "Test_Type_Conversion" has no effect
+integer_fixed.ads:23:14: warning: subprogram "Test_Compare" has no effect

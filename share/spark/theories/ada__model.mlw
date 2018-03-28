@@ -463,24 +463,21 @@ end
 module Fixed_Point_Base
   (* The module that is used as basis for all fixed-point types.
 
-     We only support currently a subset of all Ada fixed-point types and
-     fixed-point operations:
-     1. fixed-point types must have a small that is the reciprocal of
-        an integer
-     2. multiplication and division between different fixed-point types and
-        universal real are rejected
-
-    (restriction 1 allows to have a simple axiomatization of mult/div of fixed
-    point types, using the integral inverse of the small. restriction 2 avoids
-    introducing a new uninterpreted operation for every triple of argument and
-    result type)
+     Multiplication and division are restricted in the following ways:
+     - these operations between different fixed-point types and universal real
+       are rejected.
+     - these operations between fixed-point types are supported only when the
+       smalls involved are compatible according to Ada RM G.2.3(21). This is
+       handled in module Fixed_Point_Mult_Div
+     - these operations between a fixed-point type and an integer are
+       always supported and are defined in this module
 
     These restrictions enforce in particular that the result of all
     multiplication and division operations on fixed-points (with both fixed-point
     arguments, or an integer argument) is in the "perfect result set" as defined
     in Ada RM G.2.3: the result is either exact, or one of the two representable
     values that are closest to the exact result. This property is axiomatized
-    below.
+    below and in Fixed_Point_Mult_Div
 
     We use a type "__fixed" that is an alias of "int", to avoid confusion, for
     the internal integer representation of a fixed-point value. This type is
@@ -521,92 +518,18 @@ module Fixed_Point_Base
     requires { true }
     ensures { to_fixed (result) = x }
 
-  (* Inverse of the "small" value of the corresponding fixed-point type.
-     This is guaranteed to be a positive whole number, because we restrict
-     gnatprove analysis to fixed-point types with a "small" that is
-     the reciprocal of an integer.
+  (* Numerator and denominator of the fractional "small" value of the
+     corresponding fixed-point type. These are guaranteed to be positive
+     whole numbers.
 
-     The real value of a fixed-point number can be obtained by dividing its
-     integer representation by inv_small.
-   *)
+     The real value of a fixed-point number can be obtained by multiplying its
+     integer representation by num_small and dividing it by den_small.
+  *)
 
-  function inv_small : __fixed
+  function num_small : __fixed
+  function den_small : __fixed
 
   function user_eq (x : t) (y : t) : bool
-
-  (* multiplication between two fixed-point values
-     case 1:
-         If any argument is zero, the result is zero
-     case 2:
-         If both arguments are of the same sign, then the mathematical
-         result is either exact, or between exact and exact+1, which are the
-         possible results.
-
-         for example, with inv_small = 4:
-              x =  5, y =  3, exact = 3, math = 3.75, result in { 3, 4 }
-              x = -5, y = -3, exact = 3, math = 3.75, result in { 3, 4 }
-     case 3:
-         If arguments are of opposite signs, then the mathematical
-         result is either exact, or between exact-1 and exact, which are the
-         possible results.
-
-         for example, with inv_small = 4:
-              x =  5, y = -3, exact = -3, math = -3.75, result in { -4, -3 }
-              x = -5, y =  3, exact = -3, math = -3.75, result in { -4, -3 }
-  *)
-
-  function fxp_mult (x : __fixed) (y : __fixed) : __fixed
-
-  axiom fxp_mult_def :
-    forall x : __fixed. forall y : __fixed [fxp_mult x y].
-      if x = 0 \/ y = 0 then
-        fxp_mult x y = 0
-      else if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then
-        pos_div_relation (fxp_mult x y) (x * y) inv_small
-      else (* (x < 0 /\ y > 0) \/ (x > 0 /\ y < 0) *)
-        pos_div_relation (- (fxp_mult x y)) (- (x * y)) inv_small
-
-  (* division between two fixed-point values
-     case 1:
-         If the dividand is zero, then the result is zero.
-     case 2:
-         If both arguments are of the same sign, then the mathematical
-         result is either exact, or between exact and exact+1, which are the
-         possible results.
-
-         for example, with inv_small = 4:
-              x =  5, y =  3, exact = 6, math = 6.666.., result in { 6, 7 }
-              x = -5, y = -3, exact = 6, math = 6.666.., result in { 6, 7 }
-     case 3:
-         If arguments are of opposite signs, then the mathematical
-         result is either exact, or between exact-1 and exact, which are the
-         possible results.
-
-         for example, with inv_small = 4:
-              x = -5, y =  3, exact = -6, math = -6.666.., result in { -7, -6 }
-              x =  5, y = -3, exact = -6, math = -6.666.., result in { -7, -6 }
-  *)
-
-  function fxp_div (x : __fixed) (y : __fixed) : __fixed
-
-  val fxp_div_ (x : __fixed) (y : __fixed) : __fixed
-     requires { y <> 0 }
-     ensures { result = fxp_div x y }
-
-  axiom fxp_div_def :
-    forall x : __fixed. forall y : __fixed [fxp_div x y].
-      if x = 0 then
-        fxp_div x y = 0
-      else if x > 0 /\ y > 0 then
-        pos_div_relation (fxp_div x y) (x * inv_small) y
-      else if x < 0 /\ y < 0 then
-        pos_div_relation (fxp_div x y) (-x * inv_small) (-y)
-      else if x < 0 /\ y > 0 then
-        pos_div_relation (- (fxp_div x y)) (-x * inv_small) y
-      else if x > 0 /\ y < 0 then
-        pos_div_relation (- (fxp_div x y)) (x * inv_small) (-y)
-      else (* y = 0 *)
-        true
 
   (* multiplication between a fixed-point value and an integer *)
 
@@ -684,28 +607,37 @@ module Fixed_Point_Base
          If the argument is positive, then the mathematical result is either
          exact, or between exact and exact+1, which are the possible results.
 
-         for example, with inv_small = 4:
+         for example, with small = 1/4:
               x = 5, exact = 1, math = 1.25, result in { 1, 2 }
      case 3:
          If the argument is negative, then the mathematical result is either
          exact, or between exact-1 and exact, which are the possible results.
 
-         for example, with inv_small = 4:
+         for example, with small = 1/4:
               x = -5, exact = -1, math = -1.25, result in { -2, -1 }
   *)
 
   function to_int (x : __fixed) : int
-
-  function of_int (x : int) : __fixed = x * inv_small
 
   axiom to_int_def :
     forall x : __fixed [to_int x].
       if x = 0 then
         to_int x = 0
       else if x > 0 then
-        pos_div_relation (to_int x) x inv_small
+        pos_div_relation (to_int x) (x * num_small) den_small
       else (* x < 0 *)
-        pos_div_relation (- (to_int x)) (-x) inv_small
+        pos_div_relation (- (to_int x)) (-x * num_small) (den_small)
+
+  function of_int (x : int) : __fixed
+
+  axiom of_int_def :
+    forall x : __fixed [of_int x].
+      if x = 0 then
+        of_int x = 0
+      else if x > 0 then
+        pos_div_relation (of_int x) (x * den_small) num_small
+      else (* x < 0 *)
+        pos_div_relation (- (of_int x)) (-x * den_small) (num_small)
 
   (* conversion function from real *)
 
@@ -713,38 +645,68 @@ module Fixed_Point_Base
 end
 
 module Fixed_Point_Mult_Div
+  (* The module that is used for multiplication and division between fixed-point
+     types, with a fixed-point result. These operations between fixed-point
+     types are supported only when the smalls involved are compatible according
+     to Ada RM G.2.3(21).
+
+     This enforces that the result is in the "perfect result set" as defined
+     in Ada RM G.2.3: the result is either exact, or one of the two representable
+     values that are closest to the exact result. This property is axiomatized
+     below.
+
+     Note that it may be the case that only one of multiplication/division is
+     supported. In that case, we still defined them together here, but gnat2why
+     will reject any use of an unsupported operation.
+  *)
+
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Fixed_Point_Shared
 
-  (* Inverse of the "small" value of the corresponding fixed-point types. This
-     is guaranteed to be a positive whole number, because we restrict gnatprove
-     analysis to fixed-point types with a "small" that is the reciprocal of an
-     integer.
+  (* Numerator and denominator of the fractional "small" value of the
+     corresponding fixed-point types. These are guaranteed to be positive
+     whole numbers.
 
-     There is a different inv_small for every argument and for the result of
-     the operation:
-     - inv_small_x for the first argument
-     - inv_small_y for the second argument
-     - inv_small_res for the result
+     There is a different pair num_small/den_small for every argument and for
+     the result of the operation:
+     - xxx_small_x for the first argument
+     - xxx_small_y for the second argument
+     - xxx_small_res for the result
 
-     The real value of a fixed-point number can be obtained by dividing its
-     integer representation by inv_small.
-   *)
+     The real value of a fixed-point number can be obtained by multiplying its
+     integer representation by num_small and dividing it by den_small.
+  *)
 
-  function inv_small_x : __fixed
-  function inv_small_y : __fixed
-  function inv_small_res : __fixed
+  function num_small_x : __fixed
+  function den_small_x : __fixed
+  function num_small_y : __fixed
+  function den_small_y : __fixed
+  function num_small_res : __fixed
+  function den_small_res : __fixed
 
   (* multiplication between two fixed-point values, where the arguments and
-     result have different values of small. The cases are the same as for
-     multiplication with the same value of small. The only difference is the
-     adjustment needed.
+     result may have different values of small.
 
-     Instead of dividing the integer result (x * y) by inv_small, we need
-     instead to multiply it by inv_small_res [for the result] and divide it by
-     (inv_small_x * inv_small_y) [for the arguments].
-   *)
+     case 1:
+         If any argument is zero, the result is zero
+     case 2:
+         If both arguments are of the same sign, then the mathematical
+         result is either exact, or between exact and exact+1, which are the
+         possible results.
+
+         for example, with small = 1/4:
+              x =  5, y =  3, exact = 3, math = 3.75, result in { 3, 4 }
+              x = -5, y = -3, exact = 3, math = 3.75, result in { 3, 4 }
+     case 3:
+         If arguments are of opposite signs, then the mathematical
+         result is either exact, or between exact-1 and exact, which are the
+         possible results.
+
+         for example, with small = 1/4:
+              x =  5, y = -3, exact = -3, math = -3.75, result in { -4, -3 }
+              x = -5, y =  3, exact = -3, math = -3.75, result in { -4, -3 }
+  *)
 
   function fxp_mult (x : __fixed) (y : __fixed) : __fixed
 
@@ -753,22 +715,36 @@ module Fixed_Point_Mult_Div
       if x = 0 \/ y = 0 then
         fxp_mult x y = 0
       else if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then
-        pos_div_relation (fxp_mult x y) (x * y * inv_small_res)
-                                        (inv_small_x * inv_small_y)
+        pos_div_relation (fxp_mult x y)
+          (x * y * num_small_x * num_small_y * den_small_res)
+          (den_small_x * den_small_y * num_small_res)
       else (* (x < 0 /\ y > 0) \/ (x > 0 /\ y < 0) *)
-        pos_div_relation (- (fxp_mult x y)) (- (x * y * inv_small_res))
-                                            (inv_small_x * inv_small_y)
+        pos_div_relation (- (fxp_mult x y))
+          (- (x * y * num_small_x * num_small_y * den_small_res))
+          (den_small_x * den_small_y * num_small_res)
 
   (* division between two fixed-point values, where the arguments and result
-     have different values of small. The cases are the same as for division
-     with the same value of small. The only difference is the adjustment
-     needed.
+     may have different values of small.
 
-     Instead of multiplying the numerator x by inv_small and dividing by
-     divisor y, we need instead to multiply x by (inv_small_y * inv_small_res)
-     [for the divisor and the result] and divide by (y * inv_small_x) [for the
-     numerator].
-   *)
+     case 1:
+         If the dividand is zero, then the result is zero.
+     case 2:
+         If both arguments are of the same sign, then the mathematical
+         result is either exact, or between exact and exact+1, which are the
+         possible results.
+
+         for example, with small = 1/4:
+              x =  5, y =  3, exact = 6, math = 6.666.., result in { 6, 7 }
+              x = -5, y = -3, exact = 6, math = 6.666.., result in { 6, 7 }
+     case 3:
+         If arguments are of opposite signs, then the mathematical
+         result is either exact, or between exact-1 and exact, which are the
+         possible results.
+
+         for example, with small = 1/4:
+              x = -5, y =  3, exact = -6, math = -6.666.., result in { -7, -6 }
+              x =  5, y = -3, exact = -6, math = -6.666.., result in { -7, -6 }
+  *)
 
   function fxp_div (x : __fixed) (y : __fixed) : __fixed
 
@@ -781,20 +757,23 @@ module Fixed_Point_Mult_Div
       if x = 0 then
         fxp_div x y = 0
       else if x > 0 /\ y > 0 then
-        pos_div_relation (fxp_div x y) (x * inv_small_y * inv_small_res)
-                                       (y * inv_small_x)
+        pos_div_relation (fxp_div x y)
+          (x * num_small_x * den_small_y * den_small_res)
+          (y * den_small_x * num_small_y * num_small_res)
       else if x < 0 /\ y < 0 then
-        pos_div_relation (fxp_div x y) (-x * inv_small_y * inv_small_res)
-                                       (-y * inv_small_x)
+        pos_div_relation (fxp_div x y)
+          (-x * num_small_x * den_small_y * den_small_res)
+          (-y * den_small_x * num_small_y * num_small_res)
       else if x < 0 /\ y > 0 then
-        pos_div_relation (- (fxp_div x y)) (-x * inv_small_y * inv_small_res)
-                                           (y * inv_small_x)
+        pos_div_relation (- (fxp_div x y))
+          (-x * num_small_x * den_small_y * den_small_res)
+          (y * den_small_x * num_small_y * num_small_res)
       else if x > 0 /\ y < 0 then
-        pos_div_relation (- (fxp_div x y)) (x * inv_small_y * inv_small_res)
-                                           (-y * inv_small_x)
+        pos_div_relation (- (fxp_div x y))
+          (x * num_small_x * den_small_y * den_small_res)
+          (-y * den_small_x * num_small_y * num_small_res)
       else (* y = 0 *)
         true
-
 end
 
 module FixedPoint_Float_Conv

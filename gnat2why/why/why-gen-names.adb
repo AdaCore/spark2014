@@ -793,7 +793,6 @@ package body Why.Gen.Names is
             | WNE_Attr_Object_Component_Size
             | WNE_Attr_Object_Size
             | WNE_Attr_Position
-            | WNE_Attr_Small
             | WNE_Attr_Value
             | WNE_Attr_Value_Alignment
             | WNE_Attr_Value_Component_Size
@@ -838,6 +837,8 @@ package body Why.Gen.Names is
             | WNE_Range_Pred
             | WNE_Range_Pred_BV_Int
             | WNE_Rec_Extension
+            | WNE_Small_Den
+            | WNE_Small_Num
             | WNE_Specific_Post
             | WNE_Tag
             | WNE_To_Array

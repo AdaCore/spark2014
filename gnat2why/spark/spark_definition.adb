@@ -1728,16 +1728,22 @@ package body SPARK_Definition is
                   Has_Fixed_Point_Type (Etype (Expression (N)))
             then
                declare
-                  Target_Root_Type : constant Entity_Id :=
-                    Root_Type (Etype (N));
-                  Expr : constant Node_Id := Expression (N);
-                  Expr_Type : constant Entity_Id := Etype (Expr);
-                  Source_Root_Type : constant Entity_Id :=
-                    Root_Type (Expr_Type);
+                  Target_Small : constant Ureal := Small_Value (Etype (N));
+                  Source_Small : constant Ureal :=
+                    Small_Value (Etype (Expression (N)));
+                  Factor : constant Ureal := Target_Small / Source_Small;
                begin
-                  if Target_Root_Type /= Source_Root_Type then
+                  --  For the operation to be in the perfect result set, the
+                  --  smalls of the fixed-point types should be "compatible"
+                  --  according to Ada RM G.2.3(21-24): the division of smalls
+                  --  should be an integer or the reciprocal of an integer.
+
+                  if Norm_Num (Factor) /= Uint_1
+                    and then Norm_Den (Factor) /= Uint_1
+                  then
                      Mark_Unsupported
-                       ("conversion between different fixed-point types", N);
+                       ("conversion between incompatible fixed-point types",
+                        N);
                   end if;
                end;
             end if;
@@ -2335,6 +2341,7 @@ package body SPARK_Definition is
       --  Only support multiplication and division operations on fixed-point
       --  types if either:
       --  - one of the arguments is an integer type, or
+      --  - the result type is an integer type, or
       --  - both arguments and the result have compatible fixed-point types as
       --    defined in Ada RM G.2.3(21)
 
@@ -2393,23 +2400,6 @@ package body SPARK_Definition is
             then
                Mark_Unsupported
                  ("operation between fixed-point type and universal real", N);
-
-            elsif (Is_Fixed_Point_Type (L_Type) and then L_Type /= E_Type)
-                     or else
-                  (Is_Fixed_Point_Type (R_Type) and then R_Type /= E_Type)
-            then
-               --  Support division of fixed-point values with integer result
-
-               if Nkind (N) = N_Op_Divide
-                 and then Is_Fixed_Point_Type (L_Type)
-                 and then Is_Fixed_Point_Type (R_Type)
-                 and then Is_Integer_Type (E_Type)
-               then
-                  null;
-               else
-                  Mark_Unsupported ("operation on fixed-point type"
-                                    & " with non-integer result type", N);
-               end if;
             end if;
          end;
       end if;
@@ -4187,16 +4177,6 @@ package body SPARK_Definition is
 
                if Has_Default_Aspect (E) then
                   Mark (Default_Aspect_Component_Value (E));
-               end if;
-            end;
-
-         elsif Is_Fixed_Point_Type (E) then
-            declare
-               Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (E));
-            begin
-               if Norm_Den (Inv_Small) /= Uint_1 then
-                  Mark_Unsupported ("fixed-point type whose small is not "
-                                    & "the reciprocal of an integer", E);
                end if;
             end;
 

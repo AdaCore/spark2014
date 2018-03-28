@@ -209,8 +209,9 @@ package Why.Gen.Names is
       WNE_Attr_Value_Size,
       WNE_Attr_Tag,
 
-      --  Integer value of the inverse of the "small" of a fixed-point type
-      WNE_Attr_Small,
+      --  Numerator and denominator for the "small" of a fixed-point type
+      WNE_Small_Num,
+      WNE_Small_Den,
 
       WNE_Attr_Value,
 

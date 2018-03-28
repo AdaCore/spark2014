@@ -5779,19 +5779,20 @@ package body Gnat2Why.Expr is
                      Module : M_Fixed_Point_Mult_Div_Type;
                      Name   : W_Identifier_Id;
                   begin
-                     if Has_Fixed_Point_Type (Left_Type)
-                       and then Has_Fixed_Point_Type (Right_Type)
-                       and then (Return_Type /= Left_Type
-                                   or else Return_Type /= Right_Type)
-                     then
-                        Module := Get_Fixed_Point_Mult_Div_Theory
-                          (Typ_Left   => Left_Type,
-                           Typ_Right  => Right_Type,
-                           Typ_Result => Return_Type);
-                        Name := Module.Mult;
-                     else
-                        Name := E_Symb (Return_Type, Oper);
-                     end if;
+                     case Oper is
+                        when WNE_Fixed_Point_Mult =>
+                           Module := Get_Fixed_Point_Mult_Div_Theory
+                             (Typ_Left   => Left_Type,
+                              Typ_Right  => Right_Type,
+                              Typ_Result => Return_Type);
+                           Name := Module.Mult;
+
+                        when WNE_Fixed_Point_Mult_Int =>
+                           Name := E_Symb (Return_Type, Oper);
+
+                        when others =>
+                           raise Program_Error;
+                     end case;
 
                      T := New_Call (Ada_Node => Ada_Node,
                                     Domain   => Domain,
@@ -5852,68 +5853,56 @@ package body Gnat2Why.Expr is
                   L_Type := EW_Fixed_Type;
                   R_Type := EW_Fixed_Type;
 
-                  case Ekind (Return_Type) is
-                     when Fixed_Point_Kind =>
-                        Oper := WNE_Fixed_Point_Div;
-                        Base := EW_Fixed_Type;
-
-                     when Integer_Kind =>
-                        Oper := WNE_Fixed_Point_Div_Result_Int;
-                        Base := EW_Int_Type;
-
-                     when others =>
-                        raise Program_Error;
-
-                  end case;
+                  if Has_Fixed_Point_Type (Return_Type) then
+                     Base := EW_Fixed_Type;
+                     Oper := WNE_Fixed_Point_Div;
+                  else
+                     pragma Assert (Has_Signed_Integer_Type (Return_Type));
+                     Base := EW_Int_Type;
+                     Oper := WNE_Fixed_Point_Div_Result_Int;
+                  end if;
 
                elsif Has_Fixed_Point_Type (Left_Type) then
+                  Base   := EW_Fixed_Type;
                   L_Type := EW_Fixed_Type;
                   R_Type := EW_Int_Type;
-                  Base := EW_Fixed_Type;
-                  Oper := WNE_Fixed_Point_Div_Int;
+                  Oper   := WNE_Fixed_Point_Div_Int;
 
                else
-                  Base := Base_Why_Type (Left_Type, Right_Type);
+                  pragma Assert (not Has_Fixed_Point_Type (Return_Type));
+                  Base   := Base_Why_Type (Left_Type, Right_Type);
                   L_Type := Base;
                   R_Type := Base;
-                  pragma Assert (not Is_Fixed_Point_Type (Return_Type));
                end if;
 
                pragma Assert
-                 (if Is_Fixed_Point_Type (Return_Type)
+                 (if Has_Fixed_Point_Type (Return_Type)
                     or else Has_Fixed_Point_Type (Left_Type)
                   then Oper /= WNE_Empty);
 
                --  Construct the operation
 
-               if Is_Fixed_Point_Type (Return_Type) then
-                  declare
-                     pragma Assert (Oper /= WNE_Empty);
-                     Module : M_Fixed_Point_Mult_Div_Type;
-                  begin
-                     if Has_Fixed_Point_Type (Left_Type)
-                       and then Has_Fixed_Point_Type (Right_Type)
-                       and then (Return_Type /= Left_Type
-                                 or else Return_Type /= Right_Type)
-                     then
-                        Module := Get_Fixed_Point_Mult_Div_Theory
-                          (Typ_Left   => Left_Type,
-                           Typ_Right  => Right_Type,
-                           Typ_Result => Return_Type);
+               case Oper is
+                  when WNE_Fixed_Point_Div =>
+                     declare
+                        Module : constant M_Fixed_Point_Mult_Div_Type :=
+                          Get_Fixed_Point_Mult_Div_Theory
+                            (Typ_Left   => Left_Type,
+                             Typ_Right  => Right_Type,
+                             Typ_Result => Return_Type);
+                     begin
                         Name := Module.Div;
-                     else
-                        Name := E_Symb (Return_Type, Oper);
-                     end if;
-                  end;
-               --  Explicit support for division of a fixed point type by
-               --  its small with integer result.
-               elsif Has_Fixed_Point_Type (Left_Type)
-                 and then Oper = WNE_Fixed_Point_Div_Result_Int
-               then
-                  Name := E_Symb (Left_Type, Oper);
-               else
-                  Name := New_Division (Base);
-               end if;
+                     end;
+
+                  when WNE_Fixed_Point_Div_Int =>
+                     Name := E_Symb (Return_Type, Oper);
+
+                  when WNE_Fixed_Point_Div_Result_Int =>
+                     Name := E_Symb (Left_Type, Oper);
+
+                  when others =>
+                     Name := New_Division (Base);
+               end case;
 
                L_Why := Insert_Simple_Conversion
                  (Ada_Node => Ada_Node,
@@ -11522,13 +11511,10 @@ package body Gnat2Why.Expr is
                if Has_Fixed_Point_Type (Etype (Left))
                  and then Has_Fixed_Point_Type (Etype (Right))
                then
-                  --  Multiplication/division between different fixed-point
-                  --  types requires the creation of a specific module.
+                  --  Multiplication/division between fixed-point types
+                  --  requires the creation of a specific module.
 
-                  if Has_Fixed_Point_Type (Expr_Type)
-                    and then not (Expr_Type = Etype (Left)
-                                   and then Expr_Type = Etype (Right))
-                  then
+                  if Has_Fixed_Point_Type (Expr_Type) then
                      Create_Fixed_Point_Mult_Div_Theory_If_Needed
                        (Current_File => Params.File,
                         Typ_Left     => Etype (Left),
@@ -12096,6 +12082,25 @@ package body Gnat2Why.Expr is
                           (Current_File => Local_Params.File,
                            From         => Source_Typ,
                            To           => Target_Typ);
+                     end if;
+                  end;
+
+               elsif Has_Fixed_Point_Type (Expr_Type)
+                 and then Has_Fixed_Point_Type (Etype (Expression (Expr)))
+               then
+                  declare
+                     From_Small : constant Ureal :=
+                       Small_Value (Etype (Expression (Expr)));
+                     To_Small   : constant Ureal :=
+                       Small_Value (Expr_Type);
+                  begin
+                     if From_Small /= To_Small then
+                        Create_Fixed_Point_Mult_Div_Theory_If_Needed
+                          (Current_File => Params.File,
+                           Typ_Left     => Etype (Expression (Expr)),
+                           Typ_Right    => Standard_Integer,
+                           Typ_Result   => Expr_Type,
+                           Expr         => Expr);
                      end if;
                   end;
                end if;

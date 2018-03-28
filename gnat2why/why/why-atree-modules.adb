@@ -2189,9 +2189,16 @@ package body Why.Atree.Modules is
 
                if Is_Fixed_Point_Type (E) then
                   Insert_Symbol
-                    (E, WNE_Attr_Small,
+                    (E, WNE_Small_Num,
                      New_Identifier
-                       (Symbol => NID ("inv_small"),
+                       (Symbol => NID ("num_small"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => Base));
+                  Insert_Symbol
+                    (E, WNE_Small_Den,
+                     New_Identifier
+                       (Symbol => NID ("den_small"),
                         Module => M,
                         Domain => EW_Term,
                         Typ    => Base));

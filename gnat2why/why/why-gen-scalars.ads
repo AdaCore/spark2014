@@ -42,7 +42,7 @@ package Why.Gen.Scalars is
       Typ_Right    : Entity_Id;
       Typ_Result   : Entity_Id;
       Expr         : Node_Id)
-   with Pre => Nkind (Expr) in N_Op_Multiply | N_Op_Divide;
+   with Pre => Nkind (Expr) in N_Op_Multiply | N_Op_Divide | N_Type_Conversion;
 
    procedure Declare_Scalar_Type
      (File : W_Section_Id;
@@ -65,8 +65,9 @@ package Why.Gen.Scalars is
      and then Is_Type (Typ_Right)
      and then Is_Type (Typ_Result);
    --  Return a module name based for multiplication/division between
-   --  fixed-points of types Typ_Left and Typ_Right resulting in a
-   --  fixed-point of type Typ_Result.
+   --  fixed-points of types Typ_Left and Typ_Right resulting in a fixed-point
+   --  of type Typ_Result. Typ_Right may be either a fixed-point type, or a
+   --  signed integer type for type conversion from Typ_Left to Typ_Result.
 
    function Get_Fixed_Point_Mult_Div_Theory_Name
      (Typ_Left, Typ_Right, Typ_Result : Entity_Id) return Name_Id
@@ -76,6 +77,8 @@ package Why.Gen.Scalars is
    --  Return a unique name based on the values of smalls of the three
    --  fixed-point types involved, to be used as the name of the theory for
    --  multiplication/division between fixed-points of types Typ_Left and
-   --  Typ_Right resulting in a fixed-point of type Typ_Result.
+   --  Typ_Right resulting in a fixed-point of type Typ_Result. Typ_Right
+   --  may be either a fixed-point type, or a signed integer type for type
+   --  conversion from Typ_Left to Typ_Result.
 
 end Why.Gen.Scalars;
