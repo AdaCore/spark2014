@@ -34,6 +34,7 @@ with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Lib;
 with Namet;                      use Namet;
 with Sem_Aux;                    use Sem_Aux;
+with Sem_Prag;                   use Sem_Prag;
 with Sem_Util;                   use Sem_Util;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
@@ -1253,8 +1254,7 @@ package body Gnat2Why.Util is
         --  No axioms are generated for volatile functions
 
         and then not
-          (Is_Volatile_Function (E)
-            and then not Within_Protected_Type (E))
+          Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
 
         --  No axioms are generated for inlined functions
 

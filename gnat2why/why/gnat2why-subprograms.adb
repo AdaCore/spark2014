@@ -43,6 +43,7 @@ with Nlists;                         use Nlists;
 with Rtsfind;                        use Rtsfind;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Disp;                       use Sem_Disp;
+with Sem_Prag;                       use Sem_Prag;
 with Sem_Util;                       use Sem_Util;
 with Sinfo;                          use Sinfo;
 with Sinput;                         use Sinput;
@@ -3800,8 +3801,8 @@ package body Gnat2Why.Subprograms is
         or else No_Return (E)
         or else Is_Recursive (E)
         or else Is_Potentially_Nonreturning (E)
-        or else (Is_Volatile_Function (E)
-                  and then not Within_Protected_Type (E))
+        or else
+          Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
       then
          return;
       end if;
@@ -4703,8 +4704,8 @@ package body Gnat2Why.Subprograms is
                --  special postcondition which says it's result is equal to the
                --  logic function.
 
-               if not Is_Volatile_Function (E)
-                 or else Within_Protected_Type (E)
+               if not (Is_Enabled_Pragma
+                       (Get_Pragma (E, Pragma_Volatile_Function)))
                then
                   Param_Post :=
                     +New_And_Expr
@@ -4746,8 +4747,8 @@ package body Gnat2Why.Subprograms is
             if Present (Expr_Fun_N)
               and then Entity_Body_Compatible_With_SPARK (E)
               and then
-                (not Is_Volatile_Function (E)
-                 or else Within_Protected_Type (E))
+                (not (Is_Enabled_Pragma
+                      (Get_Pragma (E, Pragma_Volatile_Function))))
             then
                declare
                   Domain    : constant EW_Domain :=
@@ -4782,8 +4783,7 @@ package body Gnat2Why.Subprograms is
             --  generate a dummy effect. Protected functions are OK, they
             --  already have their own state (the protected object).
 
-            if Is_Volatile_Function (E)
-              and then not Within_Protected_Type (E)
+            if Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
             then
                Effects_Append_To_Writes (Effects, Volatile_State);
 
@@ -5192,9 +5192,7 @@ package body Gnat2Why.Subprograms is
       if not Entity_Body_Compatible_With_SPARK (E)
         or else Present (Retrieve_Inline_Annotation (E))
         or else No_Return (E)
-        or else
-          (Is_Volatile_Function (E)
-            and then not Within_Protected_Type (E))
+        or else Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
         or else (Is_Recursive (E) and then Is_Potentially_Nonreturning (E))
       then
          Close_Theory (File,
@@ -5382,8 +5380,8 @@ package body Gnat2Why.Subprograms is
       --  effects are modelled by an effect on the program function.
 
       if Ekind (E) = E_Function
-        and then (if Is_Volatile_Function (E)
-                  then Within_Protected_Type (E))
+        and then not
+          Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
       then
          Why_Type := Type_Of_Node (Etype (E));
 

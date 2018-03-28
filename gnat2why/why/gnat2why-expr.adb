@@ -48,6 +48,7 @@ with Opt;
 with Rtsfind;                        use Rtsfind;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Disp;                       use Sem_Disp;
+with Sem_Prag;                       use Sem_Prag;
 with Sem_Util;                       use Sem_Util;
 with Sinput;                         use Sinput;
 with Snames;                         use Snames;
@@ -12632,7 +12633,7 @@ package body Gnat2Why.Expr is
       --  of a call to a volatile function may introduce references for
       --  parameters of a volatile type. Insert these references here.
 
-      if Is_Volatile_Function (Subp) then
+      if Is_Enabled_Pragma (Get_Pragma (Subp, Pragma_Volatile_Function)) then
          if Nb_Of_Refs = 0 then
             return T;
          else
