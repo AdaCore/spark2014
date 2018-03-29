@@ -1289,14 +1289,15 @@ package body SPARK_Util is
    function Is_Global_Entity (E : Entity_Id) return Boolean is
      (Is_Heap_Variable (E)
         or else
-      Ekind (E) in E_Abstract_State
-                 | E_Loop_Parameter
+      Ekind (E) in E_Loop_Parameter
                  | E_Variable
                  | Formal_Kind
                  | E_Protected_Type
                  | E_Task_Type
         or else
-      (Ekind (E) = E_Constant and then Has_Variable_Input (E)));
+      (Ekind (E) = E_Constant and then Has_Variable_Input (E))
+        or else
+      (Ekind (E) = E_Abstract_State and then not Is_Null_State (E)));
    --  ??? this could be further restricted basen on what may appear in
    --  Proof_In, Input, and Output.
 
