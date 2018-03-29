@@ -16,5 +16,5 @@ private
       G : My_Positive;
    end record;
 
-   function F (X : Child) return Natural is (100 / Natural (X.G)); --@DIVISION_CHECK:PASS
+   function F (X : Child) return Natural is (100 / Natural (X.G)); -- SHOULD PASS
 end P_Child;

@@ -1,0 +1,1 @@
+ALL XFAIL crash due to effects in private types in mode auto (R208-052)

@@ -11,5 +11,5 @@ private
    end record
      with Type_Invariant => Child.G /= 0;
 
-   function F (X : Child) return Natural is (100 / X.G); --@DIVISION_CHECK:PASS
+   function F (X : Child) return Natural is (100 / X.G); -- DIVISION_CHECK:PASS
 end P_Child;
