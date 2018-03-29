@@ -21,7 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Elists;                         use Elists;
+with Common_Iterators;               use Common_Iterators;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
 with Nlists;                         use Nlists;
@@ -227,8 +227,7 @@ package body Flow_Dependency_Maps is
    -----------------------
 
    function Parse_Initializes (P : Entity_Id) return Dependency_Maps.Map is
-      Initializes  : constant Node_Id  := Get_Pragma (P, Pragma_Initializes);
-      Abstr_States : constant Elist_Id := Abstract_States (P);
+      Initializes : constant Node_Id  := Get_Pragma (P, Pragma_Initializes);
 
       M : Dependency_Maps.Map;
 
@@ -255,41 +254,25 @@ package body Flow_Dependency_Maps is
       --  the dependency map (even if they are not in the user's annotations).
       --  This ensures that constituents that are volatile with Async_Writers
       --  flavour are also initialized.
-      if Present (Abstr_States) then
-         declare
-            State_Elmt : Elmt_Id;
-            State      : Entity_Id;
+      if Has_Non_Null_Abstract_State (P) then
+         for State of Iter (Abstract_States (P)) loop
+            if Has_Volatile (State)
+              and then Has_Volatile_Flavor (State, Pragma_Async_Writers)
+            then
+               declare
+                  Position : Dependency_Maps.Cursor;
+                  Inserted : Boolean;
+                  --  Dummy values required by Hashed_Sets API
 
-            Position : Dependency_Maps.Cursor;
-            Inserted : Boolean;
-            --  Dummy values required by Hashed_Sets API
-
-         begin
-            State_Elmt := First_Elmt (Abstr_States);
-            State      := Node (State_Elmt);
-
-            --  If it is just a null state then do nothing
-
-            if not Is_Null_State (State) then
-               loop
-                  if Has_Volatile (State)
-                    and then Has_Volatile_Flavor (State, Pragma_Async_Writers)
-                  then
-                     --  Try to insert an empty set, do nothing if another
-                     --  value is already in the map.
-                     M.Insert (Key      => Direct_Mapping_Id (State),
-                               Position => Position,
-                               Inserted => Inserted);
-                  end if;
-
-                  --  Move on to the next state abstraction
-                  Next_Elmt (State_Elmt);
-                  State := Node (State_Elmt);
-
-                  exit when No (State);
-               end loop;
+               begin
+                  --  Try to insert an empty set, do nothing if another value
+                  --  is already in the map.
+                  M.Insert (Key      => Direct_Mapping_Id (State),
+                            Position => Position,
+                            Inserted => Inserted);
+               end;
             end if;
-         end;
+         end loop;
       end if;
 
       return M;
