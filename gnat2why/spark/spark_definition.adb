@@ -1716,34 +1716,71 @@ package body SPARK_Definition is
                   end loop;
                end;
 
-            elsif Has_Floating_Point_Type (Etype (N))
-                    and then
-                  Has_Fixed_Point_Type (Etype (Expression (N)))
-            then
-               Mark_Unsupported
-                 ("conversion from fixed-point to floating-point", N);
-
-            elsif Has_Fixed_Point_Type (Etype (N))
-                    and then
-                  Has_Fixed_Point_Type (Etype (Expression (N)))
-            then
+            else
                declare
-                  Target_Small : constant Ureal := Small_Value (Etype (N));
-                  Source_Small : constant Ureal :=
-                    Small_Value (Etype (Expression (N)));
-                  Factor : constant Ureal := Target_Small / Source_Small;
+                  From_Type  : constant Entity_Id := Etype (N);
+                  To_Type    : constant Entity_Id := Etype (Expression (N));
+                  From_Float : constant Boolean :=
+                    Has_Floating_Point_Type (From_Type);
+                  From_Fixed : constant Boolean :=
+                    Has_Fixed_Point_Type (From_Type);
+                  From_Int   : constant Boolean :=
+                    Has_Signed_Integer_Type (From_Type)
+                      or else Has_Modular_Integer_Type (From_Type);
+                  To_Fixed   : constant Boolean :=
+                    Has_Fixed_Point_Type (To_Type);
+                  To_Int   : constant Boolean :=
+                    Has_Signed_Integer_Type (To_Type)
+                      or else Has_Modular_Integer_Type (To_Type);
+
                begin
+                  if From_Float and To_Fixed then
+                     Mark_Unsupported
+                       ("conversion from fixed-point to floating-point", N);
+
                   --  For the operation to be in the perfect result set, the
                   --  smalls of the fixed-point types should be "compatible"
                   --  according to Ada RM G.2.3(21-24): the division of smalls
                   --  should be an integer or the reciprocal of an integer.
 
-                  if Norm_Num (Factor) /= Uint_1
-                    and then Norm_Den (Factor) /= Uint_1
-                  then
-                     Mark_Unsupported
-                       ("conversion between incompatible fixed-point types",
-                        N);
+                  elsif From_Fixed and To_Fixed then
+                     declare
+                        Target_Small : constant Ureal :=
+                          Small_Value (To_Type);
+                        Source_Small : constant Ureal :=
+                          Small_Value (From_Type);
+                        Factor : constant Ureal := Target_Small / Source_Small;
+                     begin
+                        if Norm_Num (Factor) /= Uint_1
+                          and then Norm_Den (Factor) /= Uint_1
+                        then
+                           Mark_Unsupported
+                             ("conversion between incompatible "
+                              & "fixed-point types", N);
+                        end if;
+                     end;
+
+                  --  For the conversion between a fixed-point type and an
+                  --  integer, the small of the fixed-point type should be an
+                  --  integer or the reciprocal of an integer for the result
+                  --  to be in the perfect result set (Ada RM G.2.3(24)).
+
+                  elsif (From_Fixed and To_Int) or (From_Int and To_Fixed) then
+                     declare
+                        Fixed_Type : constant Entity_Id :=
+                          (if From_Fixed then From_Type else To_Type);
+                        Small : constant Ureal := Small_Value (Fixed_Type);
+                     begin
+                        if Norm_Num (Small) /= Uint_1
+                          and then Norm_Den (Small) /= Uint_1
+                        then
+                           Mark_Unsupported
+                             ("conversion between fixed-point "
+                              & "and integer types", N,
+                              Cont_Msg => "fixed-point with fractional small "
+                              & "leads to imprecise conversion");
+                        end if;
+                     end;
                   end if;
                end;
             end if;

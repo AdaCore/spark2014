@@ -67,7 +67,6 @@ package body Fraction_Fixed is
          pragma Assert (Zint = 1.0);
       end if;
       Zint := X / T'(Y * 5 + Inv_Y);
-      pragma Assert (if X >= 0.0 then Integer(Zint) >= Integer(X) / 4 - 1);
       Z := X / 2;
       pragma Assert (X in 2 * Z - T'Small .. 2 * Z + T'Small);
       Z := X / Two;
@@ -77,11 +76,6 @@ package body Fraction_Fixed is
    end Test_Divide;
 
    procedure Test_Type_Conversion (X : T) is
-      Y1 : Integer;
-      Y2 : Integer range 0 .. 10;
-      subtype T3 is Integer range 0 .. 10;
-      Y3 : T3;
-
       Z1 : Float := 1.0;
       Z2 : Float range 0.0 .. 10.0 := 1.0;
       subtype TT3 is Float range 0.0 .. 10.0;
@@ -89,17 +83,7 @@ package body Fraction_Fixed is
 
       U : T;
    begin
-      Y1 := Integer (X);
-
       if X >= 0.0 then
-         Y2 := Integer (X);
-         Y3 := Integer (X + X);
-         Y3 := T3 (X + X - X);
-
-         U := T(Y1);
-         U := T(Y2);
-         U := T(Y3);
-
          U := T(Z1);
          U := T(Z2);
          U := T(Z3 + Z3);
