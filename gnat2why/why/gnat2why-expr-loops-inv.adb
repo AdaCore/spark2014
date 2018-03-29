@@ -1161,33 +1161,13 @@ package body Gnat2Why.Expr.Loops.Inv is
 
       --  Record write to the protected object for protected procedure or entry
 
-      if Within_Protected_Type (Subp) then
-         declare
-            Call_Name   : constant Node_Id := Sinfo.Name (Call);
-            Call_Prefix : Node_Id := Empty;
+      if Ekind (Scope (Subp)) = E_Protected_Type
+        and then Is_External_Call (Call)
+      then
+         Update_Status (Prefix (Sinfo.Name (Call)), Loop_Writes, Inv_Seen);
 
-         begin
-            --  Record the prefix for an external call
-
-            if Nkind (Call_Name) = N_Selected_Component then
-               Call_Prefix := Prefix (Call_Name);
-            end if;
-
-            --  External call, record the object itself
-
-            if Present (Call_Prefix)
-              and then not (Nkind (Call_Prefix) in N_Has_Entity
-                              and then Is_Type (Entity (Call_Prefix)))
-            then
-               Update_Status (Call_Prefix, Loop_Writes, Inv_Seen);
-
-            --  Internal call, we currently do not handle the implicit self
-            --  reference.
-
-            else
-               null;
-            end if;
-         end;
+         --  ??? for internal calls we currently do not handle the implicit
+         --  self reference.
       end if;
    end Process_Call_Statement;
 
