@@ -1,2 +1,2 @@
 !large SKIP part of large testsuite
-ALL XFAIL R328-035
+ALL RLIMIT 1000
