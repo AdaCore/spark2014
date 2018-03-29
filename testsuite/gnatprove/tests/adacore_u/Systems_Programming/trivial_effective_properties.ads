@@ -1,6 +1,6 @@
 with System.Storage_Elements;
 
-package Trivial_Effective_Flavors
+package Trivial_Effective_Properties
   with SPARK_Mode
 is
 
@@ -16,4 +16,4 @@ is
      Depends => (X => Y,
                  Y => Y);
 
-end Trivial_Effective_Flavors;
+end Trivial_Effective_Properties;

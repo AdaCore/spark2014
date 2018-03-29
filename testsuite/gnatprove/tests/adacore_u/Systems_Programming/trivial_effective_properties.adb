@@ -1,4 +1,4 @@
-package body Trivial_Effective_Flavors
+package body Trivial_Effective_Properties
   with SPARK_Mode
 is
    procedure Set is
@@ -7,4 +7,4 @@ is
       X := 0;
    end Set;
 
-end Trivial_Effective_Flavors;
+end Trivial_Effective_Properties;

@@ -2187,7 +2187,7 @@ package body Gnat2Why.Expr is
                   pragma Assert
                     (Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
                      or else (Has_Volatile (Formal)
-                       and then Has_Volatile_Flavor
+                       and then Has_Volatile_Property
                          (Formal, Pragma_Async_Writers)));
 
                   declare
@@ -2409,7 +2409,7 @@ package body Gnat2Why.Expr is
                   pragma Assert
                     (Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
                      or else (Has_Volatile (Formal)
-                       and then Has_Volatile_Flavor
+                       and then Has_Volatile_Property
                          (Formal, Pragma_Async_Writers)));
 
                   --  If the actual is not in split form, we use a temporary

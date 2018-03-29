@@ -1051,23 +1051,23 @@ package body SPARK_Util is
       else
         Is_Effectively_Volatile_Object (E));
 
-   -------------------------
-   -- Has_Volatile_Flavor --
-   -------------------------
+   ---------------------------
+   -- Has_Volatile_Property --
+   ---------------------------
 
-   function Has_Volatile_Flavor (E : Checked_Entity_Id;
-                                 A : Volatile_Pragma_Id)
-                                 return Boolean
+   function Has_Volatile_Property (E : Checked_Entity_Id;
+                                   P : Volatile_Pragma_Id)
+                                   return Boolean
    is
    begin
       --  Tasks are considered to have Async_Readers and Async_Writers
       if Ekind (Etype (E)) in Task_Kind then
-         return A in Pragma_Async_Readers | Pragma_Async_Writers;
+         return P in Pragma_Async_Readers | Pragma_Async_Writers;
       end if;
 
       --  ??? how about arrays and records with protected or task components?
 
-      --  Q: Why restrict the flavors of volatility for IN and OUT
+      --  Q: Why restrict the property of volatility for IN and OUT
       --  parameters???
       --
       --  A: See SRM 7.1.3. In short when passing a volatile through a
@@ -1078,7 +1078,7 @@ package body SPARK_Util is
       case Ekind (E) is
          when E_Abstract_State | E_Variable =>
             return
-              (case A is
+              (case P is
                when Pragma_Async_Readers    => Async_Readers_Enabled (E),
                when Pragma_Async_Writers    => Async_Writers_Enabled (E),
                when Pragma_Effective_Reads  => Effective_Reads_Enabled (E),
@@ -1088,14 +1088,14 @@ package body SPARK_Util is
             --  All volatile in parameters have only async_writers set. In
             --  particular reads cannot be effective and the absence of AR is
             --  irrelevant since we are not allowed to write to it anyway.
-            return A = Pragma_Async_Writers;
+            return P = Pragma_Async_Writers;
 
          when E_Out_Parameter =>
             --  Out parameters we assume that writes are effective (worst
             --  case). We do not assume reads are effective because (a - it may
             --  be illegal to read anyway, b - we ban passing a fully volatile
             --  object as an argument to an out parameter).
-            return A in Pragma_Async_Readers | Pragma_Effective_Writes;
+            return P in Pragma_Async_Readers | Pragma_Effective_Writes;
 
          when E_In_Out_Parameter =>
             --  For in out we just assume the absolute worst case (fully
@@ -1105,7 +1105,7 @@ package body SPARK_Util is
          when others =>
             raise Program_Error;
       end case;
-   end Has_Volatile_Flavor;
+   end Has_Volatile_Property;
 
    ---------------
    -- Is_Action --

@@ -1,4 +1,4 @@
-package body Trivial_Async_Flavors
+package body Trivial_Async_Properties
   with SPARK_Mode
 is
    procedure Set is
@@ -10,4 +10,4 @@ is
       X := 1;
    end Set;
 
-end Trivial_Async_Flavors;
+end Trivial_Async_Properties;

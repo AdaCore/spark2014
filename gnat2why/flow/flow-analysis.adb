@@ -3541,7 +3541,7 @@ package body Flow.Analysis is
 
       function Trivially_Initialized (E : Entity_Id) return Boolean is
         (Has_Volatile (E)
-         and then Has_Volatile_Flavor (E, Pragma_Async_Writers));
+         and then Has_Volatile_Property (E, Pragma_Async_Writers));
 
    --  Start of processing for Find_Impossible_To_Initialize_State
 
@@ -5367,11 +5367,11 @@ package body Flow.Analysis is
       --  We check all states of the current package, for all volatility
       --  aspects...
       for State of Iter (Abstract_States (FA.Spec_Entity)) loop
-         for Flavor in Volatile_Pragma_Id loop
+         for Property in Volatile_Pragma_Id loop
 
             --  We only check if the state *does not* have a certain aspect
             if not Has_Volatile (State)
-              or else not Has_Volatile_Flavor (State, Flavor)
+              or else not Has_Volatile_Property (State, Property)
             then
 
                --  And for each aspect we do not have, we make sure all
@@ -5379,13 +5379,13 @@ package body Flow.Analysis is
                for Constituent of Iter (Refinement_Constituents (State)) loop
                   if Nkind (Constituent) /= N_Null
                     and then Has_Volatile (Constituent)
-                    and then Has_Volatile_Flavor (Constituent, Flavor)
+                    and then Has_Volatile_Property (Constituent, Property)
                   then
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      => "& cannot be a constituent of & "
-                          & "(which lacks volatile flavor "
-                          & To_String (Flavor) & ")",
+                          & "(which lacks volatile property "
+                          & To_String (Property) & ")",
                         Severity => High_Check_Kind,
                         N        => Constituent,
                         F1       => Direct_Mapping_Id (Constituent),

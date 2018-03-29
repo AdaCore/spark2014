@@ -1,6 +1,6 @@
 with System.Storage_Elements;
 
-package Trivial_Async_Flavors
+package Trivial_Async_Properties
   with SPARK_Mode
 is
 
@@ -14,4 +14,4 @@ is
      Depends => (X    => null,
                  null => Y);
 
-end Trivial_Async_Flavors;
+end Trivial_Async_Properties;

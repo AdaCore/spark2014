@@ -418,8 +418,8 @@ package body Flow_Types is
    end Is_Volatile;
 
    function Is_Volatile_Part_Of
-     (E       : Entity_Id;
-      Flavour : Volatile_Pragma_Id)
+     (E        : Entity_Id;
+      Property : Volatile_Pragma_Id)
       return Boolean
    with Pre => Is_Concurrent_Component_Or_Discr (E)
                or else Is_Part_Of_Concurrent_Object (E);
@@ -430,15 +430,15 @@ package body Flow_Types is
    -------------------------
 
    function Is_Volatile_Part_Of
-     (E       : Entity_Id;
-      Flavour : Volatile_Pragma_Id)
+     (E        : Entity_Id;
+      Property : Volatile_Pragma_Id)
       return Boolean
    is
    begin
       return
         Is_Part_Of_Concurrent_Object (E)
         and then Has_Volatile (E)
-        and then Has_Volatile_Flavor (E, Flavour);
+        and then Has_Volatile_Property (E, Property);
    end Is_Volatile_Part_Of;
 
    -----------------------
@@ -462,7 +462,7 @@ package body Flow_Types is
                                   | E_Task_Type
                                   | Object_Kind
                  and then Has_Volatile (E)
-                 and then Has_Volatile_Flavor (E, Pragma_Async_Readers))
+                 and then Has_Volatile_Property (E, Pragma_Async_Readers))
                    or else
                  (Is_Single_Concurrent_Type (E)
                   and then F.Kind = Record_Field
@@ -493,7 +493,7 @@ package body Flow_Types is
                                   | E_Task_Type
                                   | Object_Kind
                  and then Has_Volatile (E)
-                 and then Has_Volatile_Flavor (E, Pragma_Async_Writers))
+                 and then Has_Volatile_Property (E, Pragma_Async_Writers))
                    or else
                  (Is_Single_Concurrent_Type (E)
                   and then F.Kind = Record_Field
@@ -524,7 +524,7 @@ package body Flow_Types is
                                   | E_Task_Type
                                   | Object_Kind
                  and then Has_Volatile (E)
-                 and then Has_Volatile_Flavor (E, Pragma_Effective_Reads))
+                 and then Has_Volatile_Property (E, Pragma_Effective_Reads))
                    or else
                  (Is_Single_Concurrent_Type (E)
                   and then F.Kind = Record_Field
@@ -555,7 +555,7 @@ package body Flow_Types is
                                   | E_Task_Type
                                   | Object_Kind
                  and then Has_Volatile (E)
-                 and then Has_Volatile_Flavor (E, Pragma_Effective_Writes))
+                 and then Has_Volatile_Property (E, Pragma_Effective_Writes))
                    or else
                  (Is_Single_Concurrent_Type (E)
                   and then F.Kind = Record_Field

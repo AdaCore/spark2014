@@ -441,17 +441,17 @@ Note that in real code, the memory address of the volatile variable is set
 through aspect ``Address`` or the corresponding representation clause, so that
 it can be read or written outside the program.
 
-.. _Flavors of Volatile Variables:
+.. _Properties of Volatile Variables:
 
-Flavors of Volatile Variables
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Properties of Volatile Variables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Not all volatile variables are read and written outside the program, sometimes
 they are only read or only written outside the program. For example, the log
 introduced in :ref:`State Abstraction` could be implemented as an output port
 for the program logging the information, and as an input port for the program
 performing the logging. Two aspects are defined in |SPARK| to distinguish these
-different flavors of volatile variables:
+different properties of volatile variables:
 
 * Aspect ``Async_Writers`` indicates that the value of the variable may be
   changed at any time (asynchronously) by hardware or software outside the
@@ -469,7 +469,7 @@ since an external reader might actually read the value assigned.
 These aspects are well suited to model respectively a sensor and a display, but
 not an input stream or an actuator, for which the act of reading or writing has
 an effect that should be reflected in the flow dependencies. Two more aspects
-are defined in |SPARK| to further refine the previous flavors of volatile
+are defined in |SPARK| to further refine the previous properties of volatile
 variables:
 
 * Aspect ``Effective_Reads`` indicates that reading the value of the variable
@@ -549,7 +549,7 @@ for example:
       ...
    end Account;
 
-The different :ref:`Flavors of Volatile Variables` may also be specified in the
+The different :ref:`Properties of Volatile Variables` may also be specified in the
 state abstraction, which is then used by |GNATprove| to refine the
 analysis. For example, the program writing in a log seen in the previous
 section can be rewritten to abstract global variables as follows:

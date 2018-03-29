@@ -434,18 +434,18 @@ package body Flow_Generated_Globals.Phase_1 is
       if Has_Volatile (E)
         and then Ekind (E) /= E_Constant
       then
-         if Has_Volatile_Flavor (E, Pragma_Async_Readers) then
+         if Has_Volatile_Property (E, Pragma_Async_Readers) then
             Async_Readers_Vars.Include (E);
 
-            if Has_Volatile_Flavor (E, Pragma_Effective_Writes) then
+            if Has_Volatile_Property (E, Pragma_Effective_Writes) then
                Effective_Writes_Vars.Include (E);
             end if;
          end if;
 
-         if Has_Volatile_Flavor (E, Pragma_Async_Writers) then
+         if Has_Volatile_Property (E, Pragma_Async_Writers) then
             Async_Writers_Vars.Include (E);
 
-            if Has_Volatile_Flavor (E, Pragma_Effective_Reads) then
+            if Has_Volatile_Property (E, Pragma_Effective_Reads) then
                Effective_Reads_Vars.Include (E);
             end if;
          end if;

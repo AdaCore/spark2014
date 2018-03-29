@@ -267,13 +267,13 @@ package SPARK_Util is
    --     might be implicit parameters and globals)
    --  @return True iff E is an external state or a volatile object
 
-   function Has_Volatile_Flavor (E : Checked_Entity_Id;
-                                 A : Volatile_Pragma_Id)
+   function Has_Volatile_Property (E : Checked_Entity_Id;
+                                   P : Volatile_Pragma_Id)
                                  return Boolean
    with Pre => Has_Volatile (E)
      and then Ekind (E) /= E_Constant;
    --  @param E an external state or a volatile object
-   --  @return True iff E has the specified flavor A of volatility, either
+   --  @return True iff E has the specified property P of volatility, either
    --     directly or through its type.
 
    function Is_Constant_After_Elaboration (E : Entity_Id) return Boolean

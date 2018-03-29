@@ -253,11 +253,11 @@ package body Flow_Dependency_Maps is
       --  Add any external state abstractions with Async_Writers property to
       --  the dependency map (even if they are not in the user's annotations).
       --  This ensures that constituents that are volatile with Async_Writers
-      --  flavour are also initialized.
+      --  property are also initialized.
       if Has_Non_Null_Abstract_State (P) then
          for State of Iter (Abstract_States (P)) loop
             if Has_Volatile (State)
-              and then Has_Volatile_Flavor (State, Pragma_Async_Writers)
+              and then Has_Volatile_Property (State, Pragma_Async_Writers)
             then
                declare
                   Position : Dependency_Maps.Cursor;

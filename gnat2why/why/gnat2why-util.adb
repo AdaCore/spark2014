@@ -937,7 +937,7 @@ package body Gnat2Why.Util is
 
       elsif Ekind (E) /= E_Constant
         and then Has_Volatile (E)
-        and then Has_Volatile_Flavor (E, Pragma_Async_Writers)
+        and then Has_Volatile_Property (E, Pragma_Async_Writers)
       then
          return True;
 
