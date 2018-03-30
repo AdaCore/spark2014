@@ -773,18 +773,6 @@ module Fixed_Point_Mult_Div
         true
 end
 
-module FixedPoint_Float_Conv
-  use "_gnatprove_standard".Float32
-  use "_gnatprove_standard".Float64
-  use "_gnatprove_standard".Main
-
-  function to_float32 Main.__fixed : Float32.t
-  function of_float32 Float32.t : Main.__fixed
-
-  function to_float64 Main.__fixed : Float64.t
-  function of_float64 Float64.t : Main.__fixed
-end
-
 module Static_Fixed_Point
   (* The module that is used as basis for all "static" fixed-point types.
      "Static" here means that Why only sees a static version of the type,
