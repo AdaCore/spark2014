@@ -19,9 +19,6 @@ package Fraction_Fixed is
    procedure Test_Divide (X : T) with
      Pre => X in -5.0 .. 5.0;
 
-   procedure Test_Type_Conversion (X : T) with
-     Pre => X in -5.0 .. 5.0;
-
    procedure Test_Compare (X : T) with
      Pre => X in -5.0 .. 5.0;
 

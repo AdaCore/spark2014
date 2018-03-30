@@ -639,9 +639,6 @@ module Fixed_Point_Base
       else (* x < 0 *)
         pos_div_relation (- (of_int x)) (-x * den_small) (num_small)
 
-  (* conversion function from real *)
-
-  function of_real real : __fixed
 end
 
 module Fixed_Point_Mult_Div

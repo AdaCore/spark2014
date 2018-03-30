@@ -54,9 +54,9 @@ package body Why.Gen.Scalars is
    --  Define the attributes first, last, modulus, small for the given type.
 
    function Num_Constant (Ty : Entity_Id; N : Node_Id) return W_Term_Id;
-   --  N must be a static expression. This function evaluates N as an Uint (if
-   --  Ty is a discrete type or a fixed-point type) or as real (if Ty is not
-   --  discrete)
+   --  N must be a value whose value is known at compile time. This function
+   --  evaluates N as an Uint (if Ty is a discrete type or a fixed-point type)
+   --  or as real (if Ty is not discrete).
 
    --------------------------------------------------
    -- Create_Fixed_Point_Mult_Div_Theory_If_Needed --
@@ -718,22 +718,23 @@ package body Why.Gen.Scalars is
    procedure Define_Scalar_Attributes
      (Section    : W_Section_Id;
       E          : Entity_Id;
-      Base_Type  : W_Type_Id) is
-
-      Rng : constant Node_Id := Get_Range (E);
+      Base_Type  : W_Type_Id)
+   is
+      Rng  : constant Node_Id := Get_Range (E);
+      Low  : constant Node_Id := Low_Bound (Rng);
+      High : constant Node_Id := High_Bound (Rng);
 
       First : constant W_Term_OId :=
-        (if Is_Static_Expression (Low_Bound (Rng))
-         then +Num_Constant (E, Low_Bound (Rng))
+        (if Compile_Time_Known_Value (Low)
+         then +Num_Constant (E, Low)
          else Why_Empty);
 
       Last : constant W_Term_OId :=
-        (if Is_Static_Expression (High_Bound (Rng))
-         then +Num_Constant (E, High_Bound (Rng))
+        (if Compile_Time_Known_Value (High)
+         then +Num_Constant (E, High)
          else Why_Empty);
 
    begin
-
       --  Compute and declare the modulus attribute of modular integer types
 
       if Has_Modular_Integer_Type (E) then

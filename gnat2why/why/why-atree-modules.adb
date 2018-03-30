@@ -2231,13 +2231,6 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Typ    => Base));
                   Insert_Symbol
-                    (E, WNE_Of_Real,
-                     New_Identifier
-                       (Symbol => NID ("of_real"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Fixed_Type));
-                  Insert_Symbol
                     (E, WNE_Of_Float32,
                      New_Identifier
                        (Symbol => NID ("of_float32"),

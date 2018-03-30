@@ -80,11 +80,6 @@ package body Binary_Fixed is
       subtype T3 is Integer range 0 .. 10;
       Y3 : T3;
 
-      Z1 : Float := 1.0;
-      Z2 : Float range 0.0 .. 10.0 := 1.0;
-      subtype TT3 is Float range 0.0 .. 10.0;
-      Z3 : TT3 := 1.0;
-
       U : T;
    begin
       Y1 := Integer (X);
@@ -97,15 +92,6 @@ package body Binary_Fixed is
          U := T(Y1);
          U := T(Y2);
          U := T(Y3);
-
-         U := T(Z1);
-         U := T(Z2);
-         U := T(Z3 + Z3);
-         U := T(Z3 + Z3 - Z3);
-
-         U := T(Z1);
-         U := T(Z2);
-         U := T(Z3);
       end if;
    end Test_Type_Conversion;
 

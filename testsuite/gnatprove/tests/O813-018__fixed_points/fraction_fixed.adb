@@ -75,26 +75,6 @@ package body Fraction_Fixed is
       --  pragma Assert (Z = 0.25);
    end Test_Divide;
 
-   procedure Test_Type_Conversion (X : T) is
-      Z1 : Float := 1.0;
-      Z2 : Float range 0.0 .. 10.0 := 1.0;
-      subtype TT3 is Float range 0.0 .. 10.0;
-      Z3 : TT3 := 1.0;
-
-      U : T;
-   begin
-      if X >= 0.0 then
-         U := T(Z1);
-         U := T(Z2);
-         U := T(Z3 + Z3);
-         U := T(Z3 + Z3 - Z3);
-
-         U := T(Z1);
-         U := T(Z2);
-         U := T(Z3);
-      end if;
-   end Test_Type_Conversion;
-
    procedure Test_Compare (X : T) is
    begin
       if X >= 0.0 then

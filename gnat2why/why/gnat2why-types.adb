@@ -33,6 +33,7 @@ with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;           use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Namet;                   use Namet;
+with Sem_Eval;                use Sem_Eval;
 with Sem_Util;                use Sem_Util;
 with Sinfo;                   use Sinfo;
 with Sinput;                  use Sinput;
@@ -146,21 +147,23 @@ package body Gnat2Why.Types is
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end Create_Axiom_For_Expr;
 
-         Rng : constant Node_Id := Get_Range (E);
+         Rng  : constant Node_Id := Get_Range (E);
+         Low  : constant Node_Id := Low_Bound (Rng);
+         High : constant Node_Id := High_Bound (Rng);
 
       --  Start of processing for Create_Axioms_For_Scalar_Bounds
 
       begin
-         if not Is_Static_Expression (Low_Bound (Rng)) then
+         if not Compile_Time_Known_Value (Low) then
             Create_Axiom_For_Expr
               (Name => E_Symb (E, WNE_Attr_First),
-               Bnd  => Low_Bound (Rng),
+               Bnd  => Low,
                Typ  => Base_Why_Type (E));
          end if;
-         if not Is_Static_Expression (High_Bound (Rng)) then
+         if not Compile_Time_Known_Value (High) then
             Create_Axiom_For_Expr
               (Name => E_Symb (E, WNE_Attr_Last),
-               Bnd  => High_Bound (Rng),
+               Bnd  => High,
                Typ  => Base_Why_Type (E));
          end if;
       end Create_Axioms_For_Scalar_Bounds;

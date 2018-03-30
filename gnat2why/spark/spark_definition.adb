@@ -1727,6 +1727,8 @@ package body SPARK_Definition is
                   From_Int   : constant Boolean :=
                     Has_Signed_Integer_Type (From_Type)
                       or else Has_Modular_Integer_Type (From_Type);
+                  To_Float : constant Boolean :=
+                    Has_Floating_Point_Type (To_Type);
                   To_Fixed   : constant Boolean :=
                     Has_Fixed_Point_Type (To_Type);
                   To_Int   : constant Boolean :=
@@ -1734,9 +1736,11 @@ package body SPARK_Definition is
                       or else Has_Modular_Integer_Type (To_Type);
 
                begin
-                  if From_Float and To_Fixed then
-                     Mark_Unsupported
-                       ("conversion from fixed-point to floating-point", N);
+                  if (From_Float and To_Fixed)
+                    or (From_Fixed and To_Float)
+                  then
+                     Mark_Unsupported ("conversion between fixed-point and "
+                                       & "floating-point types", N);
 
                   --  For the operation to be in the perfect result set, the
                   --  smalls of the fixed-point types should be "compatible"
@@ -2389,18 +2393,25 @@ package body SPARK_Definition is
             Expr_Type : constant Entity_Id := Etype (N);
             E_Type : constant Entity_Id := Base_Type (Expr_Type);
 
+            L_Type_Is_Fixed : constant Boolean :=
+              Has_Fixed_Point_Type (L_Type);
+            L_Type_Is_Float : constant Boolean :=
+              Has_Floating_Point_Type (L_Type);
+            R_Type_Is_Fixed : constant Boolean :=
+              Has_Fixed_Point_Type (R_Type);
+            R_Type_Is_Float : constant Boolean :=
+              Has_Floating_Point_Type (R_Type);
+            E_Type_Is_Fixed : constant Boolean :=
+              Has_Fixed_Point_Type (E_Type);
+            E_Type_Is_Float : constant Boolean :=
+              Has_Floating_Point_Type (E_Type);
          begin
             --  We support multiplication and division between different
             --  fixed-point types and a different fixed-point type as result,
             --  provided the result is in the "perfect result set" according
             --  to Ada RM G.2.3(21).
 
-            if Is_Fixed_Point_Type (L_Type)
-                 and then
-               Is_Fixed_Point_Type (R_Type)
-                 and then
-               Is_Fixed_Point_Type (E_Type)
-            then
+            if L_Type_Is_Fixed and R_Type_Is_Fixed and E_Type_Is_Fixed then
                declare
                   L_Small : constant Ureal := Small_Value (L_Type);
                   R_Small : constant Ureal := Small_Value (R_Type);
@@ -2427,16 +2438,11 @@ package body SPARK_Definition is
                   end if;
                end;
 
-            elsif (Is_Fixed_Point_Type (L_Type)
-                     and then
-                   Is_Floating_Point_Type (R_Type))
-                     or else
-                  (Is_Fixed_Point_Type (R_Type)
-                     and then
-                   Is_Floating_Point_Type (L_Type))
+            elsif (L_Type_Is_Fixed or R_Type_Is_Fixed or E_Type_Is_Fixed)
+              and (L_Type_Is_Float or R_Type_Is_Float or E_Type_Is_Float)
             then
                Mark_Unsupported
-                 ("operation between fixed-point type and universal real", N);
+                 ("operation between fixed-point and floating-point types", N);
             end if;
          end;
       end if;
