@@ -1632,6 +1632,11 @@ package body SPARK_Definition is
          when N_Type_Conversion
             | N_Unchecked_Type_Conversion
          =>
+            --  Mark the expression first, so that its type is marked for the
+            --  rest of the checks on SPARK restrictions.
+
+            Mark (Expression (N));
+
             --  Source unchecked type conversion nodes were rewritten as such
             --  by SPARK_Rewrite.Rewrite_Call, keeping the original call to an
             --  instance of Unchecked_Conversion as the Original_Node of the
@@ -1718,8 +1723,8 @@ package body SPARK_Definition is
 
             else
                declare
-                  From_Type  : constant Entity_Id := Etype (N);
-                  To_Type    : constant Entity_Id := Etype (Expression (N));
+                  From_Type  : constant Entity_Id := Etype (Expression (N));
+                  To_Type    : constant Entity_Id := Etype (N);
                   From_Float : constant Boolean :=
                     Has_Floating_Point_Type (From_Type);
                   From_Fixed : constant Boolean :=
@@ -1788,8 +1793,6 @@ package body SPARK_Definition is
                   end if;
                end;
             end if;
-
-            Mark (Expression (N));
 
          when N_Unary_Op =>
             Mark_Unary_Op (N);
