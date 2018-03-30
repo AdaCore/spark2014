@@ -1821,9 +1821,7 @@ package body SPARK_Definition is
             declare
                E  : constant Entity_Id := Defining_Entity (N);
                BT : constant Entity_Id := Base_Type (E);
-
             begin
-
                --  Store correspondence from completions of private types, so
                --  that Is_Full_View can be used for dealing correctly with
                --  private types, when the public part of the package is marked
@@ -1855,7 +1853,6 @@ package body SPARK_Definition is
                      end if;
                   end;
                end if;
-
             end;
 
          when N_Task_Type_Declaration
@@ -3798,14 +3795,17 @@ package body SPARK_Definition is
 
          --  The base type or original type should be marked before the current
          --  type. We also protect ourselves against the case where the Etype
-         --  of a full view points to the partial view.
+         --  of a full view points to the partial view. We don't issue a
+         --  violation as a result of a base type in Standard not being in
+         --  SPARK, as this concerns only extended precision floating-point
+         --  types, for which a better violation message is issued later.
 
          if not Is_Nouveau_Type (E)
            and then Underlying_Type (Etype (E)) /= E
+           and then not Retysp_In_SPARK (Etype (E))
+           and then Scope (Etype (E)) /= Standard_Standard
          then
-            if not Retysp_In_SPARK (Etype (E)) then
-               Mark_Violation (E, From => Retysp (Etype (E)));
-            end if;
+            Mark_Violation (E, From => Retysp (Etype (E)));
          end if;
 
          --  For private tagged types it is necessary to mark the full view as
@@ -4226,7 +4226,7 @@ package body SPARK_Definition is
                end if;
             end;
 
-         --  Discrete and floating-point types are always in SPARK
+         --  Most discrete and floating-point types are in SPARK
 
          elsif Is_Scalar_Type (E) then
 
@@ -6129,9 +6129,11 @@ package body SPARK_Definition is
 
             if In_Pred_Function_Decl then
                --  Type with predicate and spec of a function that implements
-               --  the predicate must have the same SPARK status.
+               --  the predicate must have the same SPARK status. We're not
+               --  using Current_Delayed_Aspect_Type as it might be the full
+               --  view not in SPARK of a private type which is in SPARK.
                pragma Assert
-                 (In_SPARK (Current_Delayed_Aspect_Type) = In_SPARK (E));
+                 (In_SPARK (Etype (First_Formal (E))) = In_SPARK (E));
 
                Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
             end if;
