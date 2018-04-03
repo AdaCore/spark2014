@@ -4245,11 +4245,32 @@ package body SPARK_Definition is
               and then Modulus (E) > UI_Expon (2, 64)
             then
                Mark_Unsupported ("modulus greater than 2 ** 64", E);
-            elsif Is_Floating_Point_Type (E)
-              and then not Is_Double_Precision_Floating_Point_Type (E)
-              and then not Is_Single_Precision_Floating_Point_Type (E)
-            then
-               Mark_Unsupported ("extended precision floating point type", E);
+
+            elsif Is_Floating_Point_Type (E) then
+               if Is_Double_Precision_Floating_Point_Type (E)
+                 and then not Is_Single_Precision_Floating_Point_Type (E)
+               then
+                  Mark_Unsupported
+                    ("extended precision floating point type", E);
+
+               --  Fixed-point values can be used as bounds in a floating-point
+               --  type constraint, but the underlying conversion is not
+               --  supported in GNATprove.
+
+               else
+                  declare
+                     Rng  : constant Node_Id := Get_Range (E);
+                     Low  : constant Node_Id := Low_Bound (Rng);
+                     High : constant Node_Id := High_Bound (Rng);
+                  begin
+                     if Has_Fixed_Point_Type (Etype (Low))
+                       or else Has_Fixed_Point_Type (Etype (High))
+                     then
+                        Mark_Unsupported ("conversion between fixed-point and "
+                                          & "floating-point types", E);
+                     end if;
+                  end;
+               end if;
             end if;
 
          elsif Is_Class_Wide_Type (E) then
