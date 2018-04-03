@@ -1,0 +1,1 @@
+ALL XFAIL strange messages from counterexamples when --no-axiom-guard used
