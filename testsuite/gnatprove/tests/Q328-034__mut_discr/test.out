@@ -142,7 +142,6 @@ tokens.adb:48:67: info: initialization of "Word" proved
 tokens.adb:54:21: medium: discriminant check might fail
 tokens.adb:55:65: info: initialization of "Word" proved
 tokens.adb:59:19: medium: exception might be raised
-tokens.adb:70:14: info: range check proved (CVC4: 1 VC)
 tokens.adb:74:19: info: precondition proved (CVC4: 1 VC)
 tokens.adb:74:30: info: discriminant check proved (CVC4: 1 VC)
 tokens.adb:77:30: medium: precondition might fail (e.g. when Last = 0)

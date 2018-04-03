@@ -91,7 +91,6 @@ storage_place_attributes.adb:49:04: warning: analyzing unreferenced procedure "F
 storage_place_attributes.adb:49:14: warning: subprogram "First1" has no effect
 storage_place_attributes.adb:51:22: info: assertion proved (CVC4: 1 VC)
 storage_place_attributes.adb:54:04: warning: analyzing unreferenced procedure "First2"
-storage_place_attributes.adb:54:14: info: range check proved (CVC4: 1 VC)
 storage_place_attributes.adb:54:14: warning: subprogram "First2" has no effect
 storage_place_attributes.adb:56:22: info: assertion proved (CVC4: 1 VC)
 storage_place_attributes.adb:59:04: warning: analyzing unreferenced procedure "First3"
@@ -104,7 +103,6 @@ storage_place_attributes.adb:71:04: warning: analyzing unreferenced procedure "L
 storage_place_attributes.adb:71:14: warning: subprogram "Last1" has no effect
 storage_place_attributes.adb:73:22: info: assertion proved (CVC4: 1 VC)
 storage_place_attributes.adb:76:04: warning: analyzing unreferenced procedure "Last2"
-storage_place_attributes.adb:76:14: info: range check proved (CVC4: 1 VC)
 storage_place_attributes.adb:76:14: warning: subprogram "Last2" has no effect
 storage_place_attributes.adb:78:22: info: assertion proved (CVC4: 1 VC)
 storage_place_attributes.adb:81:04: warning: analyzing unreferenced procedure "Last3"
@@ -117,7 +115,6 @@ storage_place_attributes.adb:93:04: warning: analyzing unreferenced procedure "P
 storage_place_attributes.adb:93:14: warning: subprogram "Position1" has no effect
 storage_place_attributes.adb:95:22: info: assertion proved (CVC4: 1 VC)
 storage_place_attributes.adb:98:04: warning: analyzing unreferenced procedure "Position2"
-storage_place_attributes.adb:98:14: info: range check proved (CVC4: 1 VC)
 storage_place_attributes.adb:98:14: warning: subprogram "Position2" has no effect
 storage_place_attributes.adb:100:22: info: assertion proved (CVC4: 1 VC)
 storage_place_attributes.adb:103:04: warning: analyzing unreferenced procedure "Position3"

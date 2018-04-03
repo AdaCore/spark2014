@@ -1,11 +1,9 @@
-basic.adb:3:14: info: range check proved (CVC4: 1 VC)
 basic.adb:8:17: info: discriminant check proved (CVC4: 1 VC)
 basic.adb:13:17: medium: discriminant check might fail
 basic.adb:17:17: info: discriminant check proved (CVC4: 1 VC)
 basic.adb:18:22: info: discriminant check proved (CVC4: 1 VC)
 basic.ads:45:14: warning: subprogram "P" has no effect
 conv.adb:6:20: info: postcondition proved (CVC4: 1 VC)
-conv.adb:8:13: info: range check proved (CVC4: 1 VC)
 conv.adb:15:17: info: discriminant check proved (CVC4: 1 VC)
 conv.adb:17:17: info: discriminant check proved (CVC4: 1 VC)
 conv.adb:17:21: info: initialization of "X.A_Field" proved

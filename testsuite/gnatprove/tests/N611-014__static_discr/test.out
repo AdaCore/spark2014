@@ -56,7 +56,6 @@ static_discr.adb:81:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:82:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:82:29: info: initialization of "Current.Content.Content" proved
 static_discr.adb:84:14: info: initialization of "Result" proved
-static_discr.adb:87:13: info: range check proved (CVC4: 1 VC)
 static_discr.adb:89:30: info: initialization of "Result" proved
 static_discr.adb:92:19: info: postcondition proved (CVC4: 6 VC)
 static_discr.adb:95:54: info: overflow check proved (CVC4: 1 VC)

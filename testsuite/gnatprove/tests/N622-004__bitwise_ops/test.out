@@ -1,7 +1,5 @@
 aco-math-very_longs.adb:21:54: info: initialization of "Digit" proved
 aco-math-very_longs.adb:21:77: info: initialization of "Valid" proved
-aco-math-very_longs.adb:39:31: info: range check proved (CVC4: 1 VC)
-aco-math-very_longs.adb:39:34: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:39:52: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:39:76: info: initialization of "Carry" proved
 aco-math-very_longs.adb:43:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1)
@@ -16,8 +14,6 @@ aco-math-very_longs.adb:55:57: info: initialization of "Sum" proved
 aco-math-very_longs.adb:56:29: medium: array index check might fail (e.g. when I = 2 and Result = (Long_Digits => (others => 0), others => ?) and Result.Long_Digits'First = 1 and Result.Long_Digits'Last = 1)
 aco-math-very_longs.adb:56:32: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:56:50: info: initialization of "Sum" proved
-aco-math-very_longs.adb:62:37: info: range check proved (CVC4: 1 VC)
-aco-math-very_longs.adb:62:40: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:62:58: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:62:82: info: initialization of "Borrow" proved
 aco-math-very_longs.adb:66:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1)
@@ -72,19 +68,14 @@ aco-math-very_longs.adb:135:26: info: initialization of "Index" proved
 aco-math-very_longs.adb:135:32: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:136:26: info: initialization of "String_Index" proved
 aco-math-very_longs.adb:136:39: info: overflow check proved (CVC4: 1 VC)
-aco-math-very_longs.adb:145:13: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:149:27: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:149:46: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:153:27: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:153:46: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:159:14: info: initialization of "Result" proved
-aco-math-very_longs.adb:163:13: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:165:17: info: precondition proved (CVC4: 1 VC)
-aco-math-very_longs.adb:169:13: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:171:21: info: precondition proved (CVC4: 1 VC)
-aco-math-very_longs.adb:175:13: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:177:21: info: precondition proved (CVC4: 1 VC)
-aco-math-very_longs.adb:194:13: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:195:28: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:201:26: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:201:29: info: length check proved (CVC4: 1 VC)
@@ -98,7 +89,6 @@ aco-math-very_longs.adb:208:29: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:208:32: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:208:50: info: initialization of "Sum" proved
 aco-math-very_longs.adb:210:14: info: initialization of "Result.Long_Digits" proved
-aco-math-very_longs.adb:214:13: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:215:31: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:221:26: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:221:29: info: length check proved (CVC4: 1 VC)
@@ -112,7 +102,6 @@ aco-math-very_longs.adb:232:29: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:232:32: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:232:50: info: initialization of "Difference" proved
 aco-math-very_longs.adb:234:14: info: initialization of "Result.Long_Digits" proved
-aco-math-very_longs.adb:241:13: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:242:27: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:250:26: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:250:29: info: length check proved (CVC4: 1 VC)
@@ -132,9 +121,8 @@ aco-math-very_longs.adb:261:46: info: initialization of "Result.Long_Digits" pro
 aco-math-very_longs.adb:261:64: info: initialization of "Temp" proved
 aco-math-very_longs.adb:262:63: info: initialization of "Temp" proved
 aco-math-very_longs.adb:266:14: info: initialization of "Result.Long_Digits" proved
-aco-math-very_longs.adb:270:13: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:271:42: info: range check proved (CVC4: 1 VC)
-aco-math-very_longs.adb:271:42: medium: overflow check might fail (e.g. when L = (Octet_Length => 2147483647, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 2147483647 and R = (Octet_Length => 1, Long_Digits => (0 => 0, others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 1)
+aco-math-very_longs.adb:271:42: medium: overflow check might fail (e.g. when L = (Octet_Length => 2147483647, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 2147483647 and R = (Octet_Length => 1, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 1)
 aco-math-very_longs.adb:279:26: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:279:29: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:285:56: info: index check proved (CVC4: 2 VC)
@@ -156,7 +144,6 @@ aco-math-very_longs.adb:292:44: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:292:49: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:292:67: info: initialization of "Carry" proved
 aco-math-very_longs.adb:294:14: info: initialization of "Result.Long_Digits" proved
-aco-math-very_longs.adb:301:14: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:304:15: info: range check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:307:15: info: range check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:307:93: info: overflow check proved (CVC4: 1 VC)
@@ -165,7 +152,6 @@ aco-math-very_longs.adb:316:36: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:316:58: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:316:58: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:317:42: info: range check proved (CVC4: 1 VC)
-aco-math-very_longs.adb:323:24: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:326:19: info: postcondition proved (CVC4: 2 VC)
 aco-math-very_longs.adb:326:45: medium: array index check might fail (e.g. when Get_MSD'Result = 2 and Number = (Octet_Length => 1, Long_Digits => (others => 1)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1)
 aco-math-very_longs.adb:327:47: medium: overflow check might fail (e.g. when Get_MSD'Result = 2147483647)
@@ -184,7 +170,6 @@ aco-math-very_longs.adb:337:85: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:337:116: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:339:17: info: initialization of "Digit_Index" proved
 aco-math-very_longs.adb:355:17: info: initialization of "Distance" proved
-aco-math-very_longs.adb:359:33: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:359:56: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:362:60: medium: overflow check might fail (e.g. when Number = (Octet_Length => 2147483647, Long_Digits => (others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 2147483647)
 aco-math-very_longs.adb:368:29: info: length check proved (CVC4: 1 VC)
@@ -337,7 +322,6 @@ aco-math-very_longs.adb:538:50: info: initialization of "U.Long_Digits" proved
 aco-math-very_longs.adb:538:64: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:540:19: info: initialization of "Remainder.Long_Digits" proved
 aco-math-very_longs.adb:540:30: info: initialization of "Shift_Distance" proved
-aco-math-very_longs.adb:548:13: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:549:27: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:552:07: info: precondition proved (CVC4: 1 VC)
 aco-math-very_longs.adb:553:10: info: initialization of "Carry" proved
@@ -347,7 +331,6 @@ aco-math-very_longs.adb:554:20: info: discriminant check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:554:20: info: precondition proved (CVC4: 1 VC)
 aco-math-very_longs.adb:554:32: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:556:14: info: initialization of "Result.Long_Digits" proved
-aco-math-very_longs.adb:560:13: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:561:27: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:564:07: info: precondition proved (CVC4: 1 VC)
 aco-math-very_longs.adb:565:10: info: initialization of "Borrow" proved
@@ -355,7 +338,6 @@ aco-math-very_longs.adb:566:20: info: discriminant check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:566:20: info: precondition proved (CVC4: 1 VC)
 aco-math-very_longs.adb:566:27: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:568:14: info: initialization of "Result.Long_Digits" proved
-aco-math-very_longs.adb:576:13: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:583:55: info: division check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:584:34: info: division check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:585:62: info: initialization of "Bit_Position" proved

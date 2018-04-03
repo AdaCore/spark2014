@@ -1,12 +1,10 @@
-very_longs-divide.adb:7:11: info: range check proved (CVC4: 1 VC)
 very_longs-divide.adb:15:12: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:19:12: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:20:48: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:20:64: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:29:48: medium: range check might fail (e.g. when Dividend = (Length => 65536, Long_Digits => (0 => 1, others => 1)) and Dividend.Long_Digits'First = 1 and Dividend.Long_Digits'Last = 65536)
+very_longs-divide.adb:29:48: medium: range check might fail (e.g. when Dividend = (Length => 65536, Long_Digits => (others => 1)) and Dividend.Long_Digits'First = 1 and Dividend.Long_Digits'Last = 65536)
 very_longs-divide.adb:30:39: info: range check proved (CVC4: 1 VC)
 very_longs-divide.adb:47:14: info: initialization of "Distance" proved
-very_longs-divide.adb:52:07: info: range check proved (CVC4: 1 VC)
 very_longs-divide.adb:52:30: info: initialization of "Result.Long_Digits" proved
 very_longs-divide.adb:61:26: info: length check proved (CVC4: 1 VC)
 very_longs-divide.adb:61:29: info: length check proved (CVC4: 1 VC)
@@ -159,8 +157,6 @@ very_longs-divide.adb:242:16: info: initialization of "Remainder.Long_Digits" pr
 very_longs-divide.adb:242:27: info: initialization of "Shift_Distance" proved
 very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
-very_longs.adb:50:07: info: range check proved (CVC4: 1 VC)
-very_longs.adb:50:10: info: range check proved (CVC4: 1 VC)
 very_longs.adb:50:28: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:50:52: info: initialization of "Carry" proved
 very_longs.adb:59:26: info: length check proved (CVC4: 1 VC)
@@ -178,8 +174,6 @@ very_longs.adb:75:33: info: initialization of "Sum" proved
 very_longs.adb:76:29: info: index check proved (CVC4: 2 VC)
 very_longs.adb:76:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:76:50: info: initialization of "Sum" proved
-very_longs.adb:83:07: info: range check proved (CVC4: 1 VC)
-very_longs.adb:83:10: info: range check proved (CVC4: 1 VC)
 very_longs.adb:83:28: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:83:52: info: initialization of "Borrow" proved
 very_longs.adb:92:26: info: length check proved (CVC4: 1 VC)
@@ -246,19 +240,14 @@ very_longs.adb:175:19: info: initialization of "Index" proved
 very_longs.adb:175:25: info: range check proved (CVC4: 1 VC)
 very_longs.adb:176:26: info: initialization of "String_Index" proved
 very_longs.adb:176:39: info: overflow check proved (CVC4: 1 VC)
-very_longs.adb:185:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:189:27: info: index check proved (CVC4: 2 VC)
 very_longs.adb:189:46: info: index check proved (CVC4: 2 VC)
 very_longs.adb:193:27: info: index check proved (CVC4: 2 VC)
 very_longs.adb:193:46: info: index check proved (CVC4: 2 VC)
 very_longs.adb:199:14: info: initialization of "Result" proved
-very_longs.adb:203:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:205:17: info: precondition proved (CVC4: 1 VC)
-very_longs.adb:209:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:211:21: info: precondition proved (CVC4: 1 VC)
-very_longs.adb:215:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:217:21: info: precondition proved (CVC4: 1 VC)
-very_longs.adb:221:10: info: range check proved (CVC4: 1 VC)
 very_longs.adb:224:07: medium: refined postcondition might fail (e.g. when Number = (Length => 1, Long_Digits => (1 => 1, others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1 and Number_Of_Digits'Result = 2)
 very_longs.adb:225:45: medium: array index check might fail (e.g. when Number = (Length => 1, Long_Digits => (others => 1)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1 and Number_Of_Digits'Result = 2)
 very_longs.adb:227:36: info: index check proved (CVC4: 2 VC)
@@ -269,7 +258,6 @@ very_longs.adb:238:13: info: loop invariant preservation proved (CVC4: 2 VC)
 very_longs.adb:239:29: info: initialization of "Digit_Count" proved
 very_longs.adb:240:40: info: index check proved (CVC4: 2 VC)
 very_longs.adb:243:11: info: initialization of "Digit_Count" proved
-very_longs.adb:251:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:252:28: info: range check proved (CVC4: 1 VC)
 very_longs.adb:258:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:258:29: info: length check proved (CVC4: 1 VC)
@@ -283,7 +271,6 @@ very_longs.adb:265:29: info: index check proved (CVC4: 2 VC)
 very_longs.adb:265:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:265:50: info: initialization of "Sum" proved
 very_longs.adb:267:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:271:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:272:31: info: range check proved (CVC4: 1 VC)
 very_longs.adb:278:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:278:29: info: length check proved (CVC4: 1 VC)
@@ -297,7 +284,6 @@ very_longs.adb:289:29: info: index check proved (CVC4: 2 VC)
 very_longs.adb:289:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:289:50: info: initialization of "Difference" proved
 very_longs.adb:291:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:299:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:300:27: info: range check proved (CVC4: 1 VC)
 very_longs.adb:308:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:308:29: info: length check proved (CVC4: 1 VC)
@@ -317,8 +303,7 @@ very_longs.adb:319:46: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:319:64: info: initialization of "Temp" proved
 very_longs.adb:320:39: info: initialization of "Temp" proved
 very_longs.adb:324:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:328:13: info: range check proved (CVC4: 1 VC)
-very_longs.adb:329:36: medium: range check might fail (e.g. when L = (Length => 65536, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 65536 and R = (Length => 1, Long_Digits => (0 => 0, others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 1)
+very_longs.adb:329:36: medium: range check might fail (e.g. when L = (Length => 65536, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 65536 and R = (Length => 1, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 1)
 very_longs.adb:337:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:337:29: info: length check proved (CVC4: 1 VC)
 very_longs.adb:343:52: info: index check proved (CVC4: 2 VC)

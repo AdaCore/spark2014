@@ -10598,10 +10598,13 @@ package body Gnat2Why.Expr is
                --  Check for absence of run-time errors in type declaration
                --  when the entity is in SPARK, and the type declaration is
                --  not simply a renaming of an existing type. This avoids
-               --  duplicating checks for every such renaming.
+               --  duplicating checks for every such renaming. Do not generate
+               --  checks for actual subtypes as they should be correct by
+               --  construction.
 
                if Entity_In_SPARK (Ent)
                  and then not Is_Type_Renaming (Decl)
+                 and then not Is_Actual_Subtype (Ent)
                then
                   case Ekind (Ent) is
                   when Scalar_Kind =>

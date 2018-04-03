@@ -1,7 +1,5 @@
 very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
-very_longs.adb:51:31: info: range check proved (CVC4: 1 VC)
-very_longs.adb:51:34: info: range check proved (CVC4: 1 VC)
 very_longs.adb:51:52: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:51:76: info: initialization of "Carry" proved
 very_longs.adb:55:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length
@@ -16,8 +14,6 @@ very_longs.adb:67:33: info: initialization of "Sum" proved
 very_longs.adb:68:29: medium: array index check might fail
 very_longs.adb:68:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:68:50: info: initialization of "Sum" proved
-very_longs.adb:74:37: info: range check proved (CVC4: 1 VC)
-very_longs.adb:74:40: info: range check proved (CVC4: 1 VC)
 very_longs.adb:74:58: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:74:82: info: initialization of "Borrow" proved
 very_longs.adb:78:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length
@@ -72,19 +68,14 @@ very_longs.adb:147:26: info: initialization of "Index" proved
 very_longs.adb:147:32: info: range check proved (CVC4: 1 VC)
 very_longs.adb:148:26: info: initialization of "String_Index" proved
 very_longs.adb:148:39: info: overflow check proved (CVC4: 1 VC)
-very_longs.adb:157:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:161:27: info: index check proved (CVC4: 2 VC)
 very_longs.adb:161:46: info: index check proved (CVC4: 2 VC)
 very_longs.adb:165:27: info: index check proved (CVC4: 2 VC)
 very_longs.adb:165:46: info: index check proved (CVC4: 2 VC)
 very_longs.adb:171:14: info: initialization of "Result" proved
-very_longs.adb:175:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:177:17: info: precondition proved (CVC4: 1 VC)
-very_longs.adb:181:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:183:21: info: precondition proved (CVC4: 1 VC)
-very_longs.adb:187:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:189:21: info: precondition proved (CVC4: 1 VC)
-very_longs.adb:197:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:198:28: info: range check proved (CVC4: 1 VC)
 very_longs.adb:204:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:204:29: info: length check proved (CVC4: 1 VC)
@@ -98,7 +89,6 @@ very_longs.adb:211:29: info: index check proved (CVC4: 2 VC)
 very_longs.adb:211:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:211:50: info: initialization of "Sum" proved
 very_longs.adb:213:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:217:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:218:31: info: range check proved (CVC4: 1 VC)
 very_longs.adb:224:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:224:29: info: length check proved (CVC4: 1 VC)
@@ -112,7 +102,6 @@ very_longs.adb:235:29: info: index check proved (CVC4: 2 VC)
 very_longs.adb:235:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:235:50: info: initialization of "Difference" proved
 very_longs.adb:237:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:244:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:245:27: info: range check proved (CVC4: 1 VC)
 very_longs.adb:253:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:253:29: info: length check proved (CVC4: 1 VC)
@@ -132,7 +121,6 @@ very_longs.adb:264:46: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:264:64: info: initialization of "Temp" proved
 very_longs.adb:265:39: info: initialization of "Temp" proved
 very_longs.adb:269:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:273:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:274:42: info: range check proved (CVC4: 1 VC)
 very_longs.adb:274:42: medium: overflow check might fail
 very_longs.adb:282:26: info: length check proved (CVC4: 1 VC)
@@ -156,7 +144,6 @@ very_longs.adb:295:44: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:295:49: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:295:67: info: initialization of "Carry" proved
 very_longs.adb:297:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:304:14: info: range check proved (CVC4: 1 VC)
 very_longs.adb:307:15: info: range check proved (CVC4: 2 VC)
 very_longs.adb:310:15: info: range check proved (CVC4: 2 VC)
 very_longs.adb:310:93: info: overflow check proved (CVC4: 1 VC)
@@ -165,7 +152,6 @@ very_longs.adb:319:36: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:319:58: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:319:58: info: range check proved (CVC4: 1 VC)
 very_longs.adb:320:42: info: range check proved (CVC4: 1 VC)
-very_longs.adb:326:24: info: range check proved (CVC4: 1 VC)
 very_longs.adb:329:19: info: postcondition proved (CVC4: 2 VC)
 very_longs.adb:329:45: medium: array index check might fail
 very_longs.adb:330:47: medium: overflow check might fail
@@ -184,7 +170,6 @@ very_longs.adb:340:85: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:340:116: info: index check proved (CVC4: 2 VC)
 very_longs.adb:342:17: info: initialization of "Digit_Index" proved
 very_longs.adb:358:17: info: initialization of "Distance" proved
-very_longs.adb:362:33: info: range check proved (CVC4: 1 VC)
 very_longs.adb:362:56: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:365:60: medium: overflow check might fail
 very_longs.adb:371:29: info: length check proved (CVC4: 1 VC)
@@ -337,7 +322,6 @@ very_longs.adb:541:50: info: initialization of "U.Long_Digits" proved
 very_longs.adb:541:64: info: index check proved (CVC4: 2 VC)
 very_longs.adb:543:19: info: initialization of "Remainder.Long_Digits" proved
 very_longs.adb:543:30: info: initialization of "Shift_Distance" proved
-very_longs.adb:551:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:558:55: info: division check proved (CVC4: 1 VC)
 very_longs.adb:559:34: info: division check proved (CVC4: 1 VC)
 very_longs.adb:560:45: info: initialization of "Bit_Position" proved

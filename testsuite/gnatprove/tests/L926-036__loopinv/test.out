@@ -5,4 +5,3 @@ counters.adb:23:24: medium: overflow check might fail (e.g. when C = (C => 21474
 counters.adb:26:21: medium: overflow check might fail (e.g. when C = (C => -2147483648, others => ?))
 counters.adb:29:24: medium: overflow check might fail (e.g. when C = (C => 2147483647, others => ?))
 counters.adb:31:24: medium: overflow check might fail (e.g. when C = (C => -2147483648, others => ?))
-counters.adb:40:13: info: range check proved (CVC4: 1 VC)
