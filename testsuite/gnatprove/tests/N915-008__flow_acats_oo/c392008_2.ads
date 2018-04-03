@@ -6,6 +6,8 @@ with C392008_1;          -- with Checking;
 
 package C392008_2 is     -- package Interest_Checking
 
+   pragma Elaborate_Body;
+
    package Bank     renames C392008_0;
    package Checking renames C392008_1;
 

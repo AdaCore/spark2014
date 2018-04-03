@@ -48,6 +48,7 @@
 with C3900061;       -- Extended alert system abstraction.
 package C3900062 is  -- Further extended alert system abstraction.
 
+   pragma Elaborate_Body;
 
    -- Declarations used by component Action_Officer;
 

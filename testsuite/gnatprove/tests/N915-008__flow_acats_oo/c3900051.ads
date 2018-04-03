@@ -47,6 +47,7 @@
 with C3900050;       -- Alert system abstraction.
 package C3900051 is  -- Extended alert system abstraction.
 
+   pragma Elaborate_Body;
 
    type Low_Alert_Type is new C3900050.Alert_Type
      with private;                                      -- Private extension of

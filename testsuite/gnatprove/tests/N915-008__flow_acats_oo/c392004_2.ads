@@ -4,6 +4,8 @@
 with C392004_1;
 package C392004_2 is
 
+  pragma Elaborate_Body;
+
   type Car is new C392004_1.Vehicle with record
     Convertible : Boolean;
   end record;

@@ -59,7 +59,7 @@ PROCEDURE CC1311A IS
           YEAR  : YEAR_TYPE ;
      END RECORD ;
 
-     TODAY         : DATE := (MONTH => AUG,
+     TODAY : constant DATE := (MONTH => AUG,
                               DAY   => 8,
                               YEAR  => 1990) ;
 

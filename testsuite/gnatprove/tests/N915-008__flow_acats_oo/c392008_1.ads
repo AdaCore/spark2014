@@ -5,6 +5,8 @@ with C392008_0;              -- package Bank
 
 package C392008_1 is      -- package Checking
 
+   pragma Elaborate_Body;
+
    package Bank renames C392008_0;
 
    type Account is new Bank.Account with
