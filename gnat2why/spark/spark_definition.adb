@@ -4247,7 +4247,7 @@ package body SPARK_Definition is
                Mark_Unsupported ("modulus greater than 2 ** 64", E);
 
             elsif Is_Floating_Point_Type (E) then
-               if Is_Double_Precision_Floating_Point_Type (E)
+               if not Is_Double_Precision_Floating_Point_Type (E)
                  and then not Is_Single_Precision_Floating_Point_Type (E)
                then
                   Mark_Unsupported
