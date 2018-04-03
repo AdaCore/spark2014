@@ -1,4 +1,4 @@
 pixel.adb:10:65: medium: divide by zero might fail
 pixel.adb:14:66: medium: divide by zero might fail
 pixel.adb:17:65: medium: divide by zero might fail
-pixel.adb:21:63: info: division check proved (Z3: 1 VC)
+pixel.adb:21:63: medium: divide by zero might fail
