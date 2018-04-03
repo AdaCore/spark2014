@@ -1,5 +1,5 @@
 package MDA
-  with SPARK_Mode => On
+  with SPARK_Mode => Off -- unconstrained multidimensional update not supported
 is
    type I is range 1 .. 10;
    type M is mod 8;

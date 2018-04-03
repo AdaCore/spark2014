@@ -1,5 +1,5 @@
 package body MDA
-  with SPARK_Mode => On
+  with SPARK_Mode => Off -- unconstrained multidimensional update not supported
 is
    procedure Set2C (A : in out A2;
                     X : in I;
