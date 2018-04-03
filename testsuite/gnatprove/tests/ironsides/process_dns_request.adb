@@ -17,6 +17,8 @@
 -- of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ----------------------------------------------------------------
 
+pragma SPARK_Mode (Off);  --  currently too long to analyze in testsuite
+
 with System,
      Protected_SPARK_IO_05,
      DNS_Types,

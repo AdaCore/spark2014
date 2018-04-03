@@ -1,3 +1,5 @@
+pragma SPARK_Mode (Off);  --  As the name of the unit indicates, non-SPARK code
+
 with Ada.Unchecked_Conversion;
 
 with Interfaces.C;

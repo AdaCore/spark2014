@@ -66,10 +66,10 @@ procedure Driver is
    --zoneFileName : constant String := "DFAN/ipv6.usafa.edu.zonefile";
    --zoneFileName : constant String := "DFAN/alabnet.zonefile";
 
-   function OpenZoneFile (FileName : in String) return boolean is
+   procedure OpenZoneFile (FileName : in String; Success : out Boolean) is
       ZoneFile : SPARK.Text_IO.File_Type;
-      Success  : Boolean := True;
    begin
+      Success := True;
       SPARK.Text_IO.Open
         (The_File => ZoneFile,
          The_Mode => SPARK.Text_IO.In_File,
@@ -81,15 +81,16 @@ procedure Driver is
          Ada.Text_IO.New_Line;
          Ada.Text_IO.Put ("Check spelling, path, permissions etc and retry.");
          Ada.Text_IO.New_Line;
-         return False;
+         Success := False;
       else
          Zone_File_IO.ProcesszoneFile (ZoneFile, Success);
-         return Success;
       end if;
    end OpenZoneFile;
 
+   Success : Boolean;
 begin
-   if OpenZoneFile (ZoneFileName) then
+   OpenZoneFile (ZoneFileName, Success);
+   if Success then
       DNS_Table_Pkg.DNS_Table.QueryARecords
         (RR_Type.ConvertStringToWire ("boleng.dfcs.usafa.edu."),
          ReturnedARecords,
