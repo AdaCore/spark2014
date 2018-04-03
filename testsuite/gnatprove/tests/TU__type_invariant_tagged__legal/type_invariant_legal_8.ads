@@ -11,13 +11,13 @@ package Type_Invariant_Legal_8 with SPARK_Mode is
    function E_Pub (X : T) return Integer;  --  @INVARIANT_CHECK:NONE
 
    procedure Pub_In (X : T);  --  @INVARIANT_CHECK:NONE
-   procedure Pub_Out (X : out T);  --  @INVARIANT_CHECK:PASS
-   procedure Pub_In_Out (X : in out T);  --  @INVARIANT_CHECK:PASS
+   procedure Pub_Out (X : out T);  --  INVARIANT_CHECK:PASS
+   procedure Pub_In_Out (X : in out T);  --  INVARIANT_CHECK:PASS
 
 private
-   type TT is new Natural with Type_Invariant => TT /= 0; --  @INVARIANT_CHECK:FAIL
+   type TT is new Natural with Type_Invariant => TT /= 0; --  INVARIANT_CHECK:FAIL
 
-   type T is tagged record --  @INVARIANT_CHECK:FAIL
+   type T is tagged record --  INVARIANT_CHECK:FAIL
       C : TT;
    end record;
 

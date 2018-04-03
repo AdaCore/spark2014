@@ -1,10 +1,10 @@
 with External;
 
-package body Reentrancy is
+package body Reentrancy with SPARK_Mode is
 
    Start : Boolean := True;
 
-   procedure Create (X : out T) is  --  @INVARIANT_CHECK:PASS
+   procedure Create (X : out T) is
    begin
       if Start then
          Start := False;
@@ -14,7 +14,7 @@ package body Reentrancy is
       end if;
    end Create;
 
-   procedure Update (X : in out T) is  --  @INVARIANT_CHECK:PASS
+   procedure Update (X : in out T) is
    begin
       if Start then
          Start := False;
@@ -29,8 +29,8 @@ package body Reentrancy is
    function Get (X : T) return Integer is
    begin
       if Start then
-         Start := False;
-         return External.Get (X);  --  @INVARIANT_CHECK:NONE
+        -- Start := False;
+         return External.Get (X);  --  @INVARIANT_CHECK:PASS
       else
          return Integer (X);
       end if;

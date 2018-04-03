@@ -1,4 +1,5 @@
 package body Globals with
+  SPARK_Mode,
   Refined_State => (State_X => X, State_Y => Y)
 is
    Y : T;
@@ -17,12 +18,12 @@ is
 
    function Get return Integer is (Integer (X));
 
-   procedure Abs_Create is  --  @INVARIANT_CHECK:PASS
+   procedure Abs_Create is
    begin
       Y := 1;  --  @INVARIANT_CHECK:NONE
    end Abs_Create;
 
-   procedure Abs_Update is  --  @INVARIANT_CHECK:PASS
+   procedure Abs_Update is
    begin
       if Y /= T'First then
          Y := abs (Y);  --  @INVARIANT_CHECK:NONE
@@ -31,12 +32,12 @@ is
 
    function Abs_Get return Integer is (Integer (Y));
 
-   procedure Gen_Create is  --  @INVARIANT_CHECK:PASS
+   procedure Gen_Create is
    begin
       X := 1;  --  @INVARIANT_CHECK:NONE
    end Gen_Create;
 
-   procedure Gen_Update is  --  @INVARIANT_CHECK:PASS
+   procedure Gen_Update is
    begin
       if X /= T'First then
          X := abs (X);  --  @INVARIANT_CHECK:NONE
@@ -45,12 +46,12 @@ is
 
    function Gen_Get return Integer is (Integer (X));
 
-   procedure Abs_Gen_Create is  --  @INVARIANT_CHECK:PASS
+   procedure Abs_Gen_Create is
    begin
       Y := 1;  --  @INVARIANT_CHECK:NONE
    end Abs_Gen_Create;
 
-   procedure Abs_Gen_Update is  --  @INVARIANT_CHECK:PASS
+   procedure Abs_Gen_Update is
    begin
       if Y /= T'First then
          Y := abs (Y);  --  @INVARIANT_CHECK:NONE

@@ -1,4 +1,4 @@
-package body Inside_Out is
+package body Inside_Out with SPARK_Mode is
 
    procedure Body_Create (X : out T);
 
@@ -36,7 +36,7 @@ package body Inside_Out is
    type Mode_T is (Rec, Bod, Prv);
    Mode : Mode_T := Prv;
 
-   procedure Create (X : out T) is  --  @INVARIANT_CHECK:FAIL
+   procedure Create (X : out T) is
    begin
       case Mode is
          when Rec =>
@@ -48,7 +48,7 @@ package body Inside_Out is
       end case;
    end Create;
 
-   procedure Update (X : in out T) is  --  @INVARIANT_CHECK:FAIL
+   procedure Update (X : in out T) is
    begin
       X := 0;
       case Mode is
@@ -65,7 +65,7 @@ package body Inside_Out is
    begin
       case Mode is
          when Rec =>
-            return Get (X);  --  @INVARIANT_CHECK:NONE
+            return Get (X);  --  @INVARIANT_CHECK:PASS
          when Bod =>
             return Body_Get (X);  --  @INVARIANT_CHECK:NONE
          when Prv =>

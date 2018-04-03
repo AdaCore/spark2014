@@ -13,9 +13,9 @@ package Type_Invariant_Legal_7 with SPARK_Mode is
    procedure Pub_In_Out (X : in out T);
 
 private
-   type TT is new Natural with Type_Invariant => TT /= 0; -- @INVARIANT_CHECK:FAIL
+   type TT is new Natural with Type_Invariant => TT /= 0; -- INVARIANT_CHECK:FAIL
 
-   type T is tagged record -- @INVARIANT_CHECK:FAIL
+   type T is tagged record -- INVARIANT_CHECK:FAIL
       C : TT;
    end record;
 

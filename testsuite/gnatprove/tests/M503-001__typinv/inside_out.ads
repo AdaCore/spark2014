@@ -1,10 +1,10 @@
-package Inside_Out is
+package Inside_Out with SPARK_Mode is
 
    type T is private;
 
-   procedure Create (X : out T);
+   procedure Create (X : out T);  --  @INVARIANT_CHECK:FAIL
 
-   procedure Update (X : in out T);
+   procedure Update (X : in out T);  --  @INVARIANT_CHECK:FAIL
 
    function Get (X : T) return Integer;
 

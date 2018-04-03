@@ -1,18 +1,18 @@
-package Aggregates is
+package Aggregates with SPARK_Mode is
 
    type T is private;
    type Arr_T is private;
    type Rec_T is private;
 
-   procedure Create_Arr (X : out Arr_T);
+   procedure Create_Arr (X : out Arr_T);  --  @INVARIANT_CHECK:PASS
 
-   procedure Update_Arr (X : in out Arr_T);
+   procedure Update_Arr (X : in out Arr_T);  --  @INVARIANT_CHECK:PASS
 
    function Get_Arr (X : Arr_T) return Integer;
 
-   procedure Create_Rec (X : out Rec_T);
+   procedure Create_Rec (X : out Rec_T);  --  @INVARIANT_CHECK:PASS
 
-   procedure Update_Rec (X : in out Rec_T);
+   procedure Update_Rec (X : in out Rec_T);  --  @INVARIANT_CHECK:PASS
 
    function Get_Rec (X : Rec_T) return Integer;
 

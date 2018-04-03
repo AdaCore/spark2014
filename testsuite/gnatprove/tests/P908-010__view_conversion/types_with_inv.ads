@@ -5,7 +5,9 @@ package Types_With_Inv with SPARK_Mode is
 
    type T2 is private;
 
-   procedure Test (X : in out T2);
+   procedure Test (X : in out T2);  --@INVARIANT_CHECK:FAIL
+
+   procedure Test2 (X : in out T2);  --@INVARIANT_CHECK:FAIL
 
    type R1 is record
       F : Integer := 1;
@@ -15,7 +17,9 @@ package Types_With_Inv with SPARK_Mode is
 
    type R2 is private;
 
-   procedure Test (X : in out R2);
+   procedure Test (X : in out R2);  --@INVARIANT_CHECK:FAIL
+
+   procedure Test2 (X : in out R2);  --@INVARIANT_CHECK:FAIL
 private
    type T2 is new T1 with
      Default_Value  => 1,

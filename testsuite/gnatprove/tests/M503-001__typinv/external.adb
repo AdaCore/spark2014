@@ -1,4 +1,4 @@
-package body External is
+package body External with SPARK_Mode is
 
    procedure Create (X : out T) is
    begin

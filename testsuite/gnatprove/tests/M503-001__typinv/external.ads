@@ -1,6 +1,6 @@
 with Reentrancy; use Reentrancy;
 
-package External is
+package External with SPARK_Mode is
 
    procedure Create (X : out T);
 

@@ -1,10 +1,10 @@
-package Reentrancy is
+package Reentrancy with SPARK_Mode is
 
    type T is private;
 
-   procedure Create (X : out T);
+   procedure Create (X : out T);  --  @INVARIANT_CHECK:PASS
 
-   procedure Update (X : in out T);
+   procedure Update (X : in out T);  --  @INVARIANT_CHECK:PASS
 
    function Get (X : T) return Integer;
 
