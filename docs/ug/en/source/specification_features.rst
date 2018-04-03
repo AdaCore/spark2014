@@ -293,9 +293,9 @@ at all indexes not yet seen is unchanged, using :ref:`Quantified Expressions`:
    begin
       for J in X'Range loop
          X(J) := X(J) + 1;
-         pragma Loop_Invariant (for all K in X'First .. J => X(J) = X'Loop_Entry(J) + 1);
-         pragma Loop_Invariant (for all K in J + 1 .. X'Last => X(J) = X'Loop_Entry(J));
-      end loop
+         pragma Loop_Invariant (for all K in X'First .. J => X(K) = X'Loop_Entry(K) + 1);
+         pragma Loop_Invariant (for all K in J + 1 .. X'Last => X(K) = X'Loop_Entry(K));
+      end loop;
    end Increment_Array;
 
 Attribute ``Loop_Entry`` may be indexed by the name of the loop to which it
@@ -312,9 +312,9 @@ enclosing loop. For examples, ``X'Loop_Entry`` is the same as
       Outter: for J in X'Range(1) loop
          Inner: for K in X'Range(2) loop
             X(J,K) := X(J,K) + 1;
-            pragma Assert (X(J) = X'Loop_Entry(J,K) + 1);
-            pragma Assert (X(J) = X'Loop_Entry(Inner)(J,K) + 1);
-            pragma Assert (X(J) = X'Loop_Entry(Outter)(J,K) + 1);
+            pragma Assert (X(J,K) = X'Loop_Entry(J,K) + 1);
+            pragma Assert (X(J,K) = X'Loop_Entry(Inner)(J,K) + 1);
+            pragma Assert (X(J,K) = X'Loop_Entry(Outter)(J,K) + 1);
          end loop Inner;
       end loop Outter;
    end Increment_Matrix;
