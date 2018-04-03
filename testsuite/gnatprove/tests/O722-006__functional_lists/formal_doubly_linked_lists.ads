@@ -5,6 +5,8 @@ generic
    type Element_Type is private;
    with function "=" (E1, E2 : Element_Type) return Boolean;
 package Formal_Doubly_Linked_Lists with SPARK_Mode is
+   pragma Unevaluated_Use_Of_Old(Allow);
+
    package Element_Lists is new Conts.Lists.Indefinite_Unbounded_SPARK
      (Element_Type => Element_Type);
    type Cursor is new Element_Lists.Cursor;
