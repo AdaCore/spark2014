@@ -57,34 +57,36 @@ levels.adb:20:20: medium: postcondition might fail, cannot prove A = Read_Partia
 levels.adb:20:39: medium: overflow check might fail
 levels.adb:20:56: medium: overflow check might fail
 levels.adb:22:28: info: initialization of "X" proved
-levels.adb:43:27: info: refined post proved (CVC4: 1 VC)
-levels.adb:55:27: medium: refined postcondition might fail
-levels.adb:55:42: medium: overflow check might fail
-levels.adb:62:23: info: initialization of "A" proved
-levels.adb:76:15: medium: overflow check might fail
-levels.adb:77:14: medium: overflow check might fail
-levels.adb:80:23: info: initialization of "A" proved
-levels.adb:81:24: low: unused global "Y0" constituent of "Abs_0"
-levels.adb:81:36: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs_0"
-levels.adb:98:09: medium: initial condition might fail
-levels.adb:98:30: info: initialization of "X2" constituent of "Abs_2" proved
-levels.adb:109:10: info: initialization of "X2" constituent of "Abs_2" proved
-levels.adb:110:10: info: initialization of "Y2" constituent of "Abs_2" proved
-levels.adb:137:25: info: initialization of "A" proved
-levels.adb:137:25: medium: refined postcondition might fail
-levels.adb:137:44: medium: overflow check might fail
-levels.adb:137:61: medium: overflow check might fail
-levels.adb:140:18: medium: overflow check might fail
-levels.adb:140:23: medium: overflow check might fail
-levels.adb:149:24: info: initialization of "Tmp" proved
-levels.adb:150:15: info: initialization of "X" proved
-levels.adb:150:17: medium: overflow check might fail
-levels.adb:150:19: info: initialization of "Tmp" proved
-levels.adb:157:25: info: initialization of "A" proved
-levels.adb:157:25: medium: refined postcondition might fail
-levels.adb:157:44: medium: overflow check might fail
-levels.adb:157:70: medium: overflow check might fail
-levels.adb:167:17: medium: overflow check might fail
+levels.adb:36:45: low: unused global "Y0" constituent of "Abs_0"
+levels.adb:36:57: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs_0"
+levels.adb:37:27: info: refined post proved (CVC4: 1 VC)
+levels.adb:45:27: medium: refined postcondition might fail
+levels.adb:45:42: medium: overflow check might fail
+levels.adb:52:23: info: initialization of "A" proved
+levels.adb:66:15: medium: overflow check might fail
+levels.adb:67:14: medium: overflow check might fail
+levels.adb:70:23: info: initialization of "A" proved
+levels.adb:71:24: low: unused global "Y0" constituent of "Abs_0"
+levels.adb:71:36: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs_0"
+levels.adb:88:09: medium: initial condition might fail
+levels.adb:88:30: info: initialization of "X2" constituent of "Abs_2" proved
+levels.adb:99:10: info: initialization of "X2" constituent of "Abs_2" proved
+levels.adb:100:10: info: initialization of "Y2" constituent of "Abs_2" proved
+levels.adb:127:25: info: initialization of "A" proved
+levels.adb:127:25: medium: refined postcondition might fail
+levels.adb:127:44: medium: overflow check might fail
+levels.adb:127:61: medium: overflow check might fail
+levels.adb:130:18: medium: overflow check might fail
+levels.adb:130:23: medium: overflow check might fail
+levels.adb:139:24: info: initialization of "Tmp" proved
+levels.adb:140:15: info: initialization of "X" proved
+levels.adb:140:17: medium: overflow check might fail
+levels.adb:140:19: info: initialization of "Tmp" proved
+levels.adb:147:25: info: initialization of "A" proved
+levels.adb:147:25: medium: refined postcondition might fail
+levels.adb:147:44: medium: overflow check might fail
+levels.adb:147:70: medium: overflow check might fail
+levels.adb:157:17: medium: overflow check might fail
 levels.ads:2:26: warning: no procedure exists that can initialize abstract state "Levels.Abs_0"
 levels.ads:11:56: medium: overflow check might fail
 levels.ads:16:21: info: postcondition proved (CVC4: 1 VC)
@@ -105,7 +107,6 @@ par-pub.adb:14:04: warning: analyzing unreferenced procedure "Test"
 par-pub.adb:14:14: info: initialization of "A" proved
 par-pub.ads:8:14: info: initialization of "A" proved
 par-pub.ads:15:40: medium: overflow check might fail
-par.adb:16:04: warning: analyzing unreferenced function "Wibble"
 par.adb:20:16: medium: overflow check might fail
 par.adb:20:20: medium: overflow check might fail
 par.adb:26:14: medium: overflow check might fail
