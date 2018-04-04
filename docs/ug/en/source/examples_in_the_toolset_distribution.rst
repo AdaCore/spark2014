@@ -55,8 +55,8 @@ function are provided:
 Each successive version makes use of more complex :ref:`Ghost Code` to prove
 that the implementation of ``GCD`` satisfies its contract. |GNATprove| proves
 all checks on this program, except for some elementary lemmas on modulo
-operator. This is detailed in the following post on SPARK 2014 Blog:
-http://www.spark-2014.org/entries/detail/gnatprove-tips-and-tricks-proving-the-ghost-common-denominator-gcd
+operator. This is detailed in the following post on AdaCore blog:
+https://blog.adacore.com/gnatprove-tips-and-tricks-proving-the-ghost-common-denominator-gcd
 
 .. rubric:: ``intro``
 
@@ -90,8 +90,8 @@ formal verification challenge during VerifyThis Verification Competition in
 main function ``Sort`` expresses both that the array is sorted on exit, and
 that it is a permutation of its input value. |GNATprove| proves all checks on
 this program. The process to progress through all levels of software assurance
-with SPARK on this example is detailed in the following post on SPARK 2014
-Blog: http://www.spark-2014.org/entries/detail/verifythis-challenge-in-spark
+with SPARK on this example is detailed in the following post on AdaCore
+blog: https://blog.adacore.com/verifythis-challenge-in-spark
 
 .. rubric:: ``search_linked_list``
 
@@ -113,8 +113,8 @@ if-and-only-if the string ``Haystack`` contains the substring ``Needle``
 searched, and if so the index returned is one at which the string contains this
 substring. |GNATprove| proves all checks on these programs. A detailed account
 of the development and verification of this example is given in the following
-post on SPARK 2014 Blog:
-http://www.spark-2014.org/entries/detail/applied-formal-logic-searching-in-strings
+post on AdaCore blog:
+https://blog.adacore.com/applied-formal-logic-searching-in-strings
 
 .. rubric:: ``trajectory_computation``
 
@@ -159,7 +159,7 @@ model an its implementation can be verified using |GNATprove|. It is described
 in the article
 `"Abstract Software Specifications and Automatic Proof of Refinement"`
 published at RSSRail 2016 conference
-(at http://www.spark-2014.org/uploads/rssrail.pdf).
+(at http://blog.adacore.com/uploads/rssrail.pdf).
 
 The example contains three versions of an allocator package. They are specified
 in terms of mathematical structures (sequences and sets). The refinement
@@ -211,7 +211,7 @@ This program implements a toy interface to a bank account database, with
 procedures to deposit and withdraw money, and functions to query the account
 balance and information. This program was used as running example in the article
 `"Integrating Formal Program Verification with Testing"` (at
-http://www.open-do.org/wp-content/uploads/2011/12/hi-lite-erts2012.pdf). The
+http://www.adacore.com/uploads_gems/Hi-Lite_ERTS-2012.pdf). The
 API is annotated with full functional contracts, as well as test cases
 expressed with aspect ``Test_Case``. |GNATprove| proves all checks on this
 program.
@@ -323,7 +323,7 @@ new values to be used for transitivity relations.
 
 This program and the verification activities associated to it are described in
 `"Auto-Active Proof of Red-Black Trees in SPARK"`, presented at NFM 2017 (at
-http://www.spark-2014.org/uploads/dross_moy_nfm_2017.pdf).
+https://blog.adacore.com/uploads/Auto-Active-Proof-of-Red-Black-Trees-in-SPARK.pdf).
 
 .. rubric:: ``railway_signaling``
 

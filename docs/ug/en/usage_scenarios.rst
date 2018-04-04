@@ -940,8 +940,7 @@ If elementary functions are used, subject to reviews for ensuring portability,
 |GNATprove|'s proof results may depend on the fact that elementary functions
 can be modeled as mathematical functions of their inputs that always return
 the same result when taking the same values in arguments. GNAT compiler was
-modified to ensure this property (see
-http://www.spark-2014.org/entries/detail/how-our-compiler-learnt-from-our-analyzers),
+modified to ensure this property (see https://blog.adacore.com/how-our-compiler-learnt-from-our-analyzers),
 which may not hold for other Ada compilers.
 
 .. _Project Scenarios:
