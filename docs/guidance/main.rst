@@ -3823,9 +3823,9 @@ industry, see the article
 "Are We There Yet? 20 Years of Industrial Theorem Proving with SPARK"
 by Chapman and Schanda, at http://proteancode.com/keynote.pdf
 
-The website http://www.spark-2014.org/ is a portal for up-to-date information
-and resources on SPARK, including an active blog detailing the latest
-evolutions.
+The website https://www.adacore.com/sparkpro is a portal for up-to-date
+information and resources on SPARK. AdaCore blog at https://blog.adacore.com/
+frequently hosts posts on the latest evolutions of SPARK.
 
 The document "AdaCore Technologies for CENELEC EN 50128:2011" presents the
 usage of AdaCore's technology in conjunction with the CENELEC EN 50128:2011
