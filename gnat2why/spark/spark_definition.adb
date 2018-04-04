@@ -1836,22 +1836,27 @@ package body SPARK_Definition is
                   Set_Partial_View (Full_View (E), E);
                end if;
 
-               Mark_Entity (E);
-
-               if Is_Itype (BT) then
-                  Mark_Entity (BT);
-               end if;
-
-               if Nkind (N) in N_Full_Type_Declaration | N_Subtype_Declaration
+               if In_SPARK (E) and then
+                 (not Is_Itype (BT) or else In_SPARK (BT))
                then
-                  declare
-                     Par : constant Entity_Id :=
-                       Get_Parent_Type_If_Check_Needed (N);
-                  begin
-                     if Present (Par) then
-                        Mark_Entity (Par);
-                     end if;
-                  end;
+                  if Nkind (N) = N_Full_Type_Declaration then
+                     declare
+                        T_Def : constant Node_Id := Type_Definition (N);
+                     begin
+                        case Nkind (T_Def) is
+                        when N_Subtype_Indication =>
+                           Mark (T_Def);
+
+                        when N_Derived_Type_Definition =>
+                           Mark (Subtype_Indication (T_Def));
+
+                        when others =>
+                           null;
+                        end case;
+                     end;
+                  elsif Nkind (N) = N_Subtype_Declaration then
+                     Mark (Subtype_Indication (N));
+                  end if;
                end if;
             end;
 
@@ -6160,7 +6165,7 @@ package body SPARK_Definition is
    begin
       --  Check that the base type is in SPARK
 
-      if not In_SPARK (T) then
+      if not Retysp_In_SPARK (T) then
          Mark_Violation (N, From => T); -- ?? N? similar below
       end if;
 
@@ -6179,12 +6184,13 @@ package body SPARK_Definition is
 
                      case Nkind (Cstr) is
                      when N_Identifier | N_Expanded_Name =>
-                        if not In_SPARK (Entity (Cstr)) then
+                        if not Retysp_In_SPARK (Entity (Cstr)) then
                            Mark_Violation (N, From => Entity (Cstr));
                         end if;
 
                      when N_Subtype_Indication =>
-                        if not In_SPARK (Subtype_Mark (Cstr)) then
+                        if not Retysp_In_SPARK (Entity (Subtype_Mark (Cstr)))
+                        then
                            Mark_Violation (N, From => Subtype_Mark (Cstr));
                         end if;
 
