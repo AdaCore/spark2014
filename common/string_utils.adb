@@ -79,6 +79,28 @@ package body String_Utils is
       S (S'First) := Ada.Characters.Handling.To_Lower (S (S'First));
    end Lower_Case_First;
 
+   -----------------------
+   -- Standard_Ada_Case --
+   -----------------------
+
+   function Standard_Ada_Case (S : String) return String is
+      T          : String := S;
+      Capitalize : Boolean := True;
+   begin
+      for C of T loop
+         if Capitalize then
+            C := Ada.Characters.Handling.To_Upper (C);
+            Capitalize := False;
+         end if;
+
+         if C = '_' then
+            Capitalize := True;
+         end if;
+      end loop;
+
+      return T;
+   end Standard_Ada_Case;
+
    -----------
    -- Trimi --
    -----------

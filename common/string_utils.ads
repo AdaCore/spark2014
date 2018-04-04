@@ -55,6 +55,10 @@ package String_Utils is
    procedure Lower_Case_First (S : in out String);
    --  Modify S in place to capitalize the first character
 
+   function Standard_Ada_Case (S : String) return String;
+   --  Return a string with standard Ada case, where each word separated by an
+   --  underscore is capitalized.
+
    function Hash_Image (N : Ada.Containers.Hash_Type) return String;
    --  Generate a string from a hash, without the leading space
 

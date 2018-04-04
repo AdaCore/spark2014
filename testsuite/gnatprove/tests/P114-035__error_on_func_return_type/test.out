@@ -1,11 +1,5 @@
-arr.ads:5:04: "T" is not allowed in SPARK
+arr.ads:5:04: "Ind1" is not allowed in SPARK
 arr.ads:5:04: violation of aspect SPARK_Mode at line 3
-arr.ads:5:24: "Ind1" is not allowed in SPARK
-arr.ads:5:24: violation of aspect SPARK_Mode at line 3
-arr.ads:6:24: "Ind2" is not allowed in SPARK
-arr.ads:6:24: violation of aspect SPARK_Mode at line 3
-arr.ads:7:24: "Ind3" is not allowed in SPARK
-arr.ads:7:24: violation of aspect SPARK_Mode at line 3
 client.ads:3:10: "T" is not allowed in SPARK
 client.ads:3:10: violation of aspect SPARK_Mode at line 3
 p.ads:3:09: access type is not allowed in SPARK

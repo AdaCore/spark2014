@@ -114,10 +114,11 @@ polyorb_hi-utils.adb:126:23: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:131:14: info: initialization of "Last" proved
 polyorb_hi-utils.ads:89:19: info: postcondition proved (CVC4: 1 VC)
 polyorb_hi-utils.ads:138:09: info: range check proved (CVC4: 4 VC)
-polyorb_hi_generated-activity.adb:98:03: "Producer_Destinations" is not allowed in SPARK
+polyorb_hi_generated-activity.adb:98:03: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
 polyorb_hi_generated-activity.adb:98:03: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
-polyorb_hi_generated-activity.adb:100:39: attribute "Address" is only permitted in SPARK inside an attribute definition clause
-polyorb_hi_generated-activity.adb:121:23: "Producer_Destinations" is not allowed in SPARK
+polyorb_hi_generated-activity.adb:100:06: attribute "Address" outside an attribute definition clause is not allowed in SPARK
+polyorb_hi_generated-activity.adb:100:06: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi_generated-activity.adb:121:23: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
 polyorb_hi_generated-activity.adb:121:23: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi_generated-activity.adb:225:05: warning: use clause for type "Error_Kind" defined at polyorb_hi-errors.ads:34 has no effect
 polyorb_hi_generated-activity.adb:251:05: warning: use clause for type "Error_Kind" defined at polyorb_hi-errors.ads:34 has no effect

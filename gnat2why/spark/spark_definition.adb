@@ -24,6 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Strings.Fixed;               use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 with Ada.Text_IO;
@@ -55,6 +56,7 @@ with Snames;                          use Snames;
 with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
 with Stand;                           use Stand;
+with String_Utils;                    use String_Utils;
 with Tbuild;
 with Uintp;                           use Uintp;
 with Urealp;                          use Urealp;
@@ -132,9 +134,6 @@ package body SPARK_Definition is
    Current_Delayed_Aspect_Type : Entity_Id := Empty;
    --  When processing delayed aspect type (e.g. Predicate) this is set to the
    --  delayed type itself; used to reference the type in the error message.
-
-   Violation_Detected : Boolean;
-   --  Set to True when a violation is detected
 
    Inside_Actions : Boolean;
    --  Set to True when traversing actions (statements introduced by the
@@ -303,99 +302,565 @@ package body SPARK_Definition is
    end Private_Spec_In_SPARK;
 
    ----------------------
-   -- SPARK Violations --
+   -- SPARK_Violations --
    ----------------------
 
-   procedure Mark_Unsupported
-     (Msg        : String;
-      N          : Node_Id;
-      Extra_Name : Name_Id := No_Name;
-      Extra_Num  : Uint    := No_Uint;
-      Extra_Node : Node_Id := Empty;
-      Cont_Msg   : String  := "")
-   with
-     Pre => (Extra_Name /= No_Name) = (for some C of Msg => C = '%') and then
-            (Extra_Num  /= No_Uint) = (for some C of Msg => C = '^') and then
-            (Extra_Node /= Empty)   = (for some C of Msg => C = '}'),
-     Global => (Output => Violation_Detected,
-                Input  => Current_SPARK_Pragma);
-   --  Mark node N as an unsupported SPARK construct. An error message is
-   --  issued if current SPARK_Mode is On.
-   --
-   --  Extra parameters correspond to special characters in the Msg string and
-   --  precondition (which is slightly less restrictive than it should) checks
-   --  that they are set correctly.
-   --
-   --  Cont_Msg is a continuous message when specified.
+   package SPARK_Violations is
 
-   procedure Mark_Violation
-     (Msg           : String;
-      N             : Node_Id;
-      SRM_Reference : String := "";
-      Cont_Msg      : String := "")
-   with Global => (Output => Violation_Detected,
+      package Violation_Root_Causes is
+        new Ada.Containers.Indefinite_Hashed_Maps
+          (Key_Type        => Node_Id,
+           Element_Type    => String,
+           Hash            => Node_Hash,
+           Equivalent_Keys => "=",
+           "="             => "=");
+      use Violation_Root_Causes;
+
+      Violation_Detected : Boolean;
+      --  Set to True when a violation is detected
+
+      Violation_Root_Cause : Violation_Root_Causes.Map;
+      --  Mapping from nodes not in SPARK to a description of the root cause
+      --  of the underlying violation. This is used in error messages when the
+      --  violation originates in that node.
+
+      Last_Violation_Root_Cause_Node : Node_Id := Empty;
+      --  Last node which had a corresponding root cause for which a violation
+      --  was detected. This node is used for the analysis of entities, and is
+      --  saved/restored around Mark_Entity. Its value is not relevant outside
+      --  of the analysis of an entity.
+
+      function Get_Violation_Root_Cause (N : Node_Id) return String
+      --  Return a message explaining the root cause of the violation in N not
+      --  being in SPARK, if any, or the empty string otherwise.
+      is
+        (if Violation_Root_Cause.Contains (N) then
+           Violation_Root_Cause.Element (N)
+         else "");
+
+      procedure Add_Violation_Root_Cause (N : Node_Id; Msg : String)
+        --  Add a message explaining the root cause of the violation in N not
+        --  being in SPARK.
+      with Pre => Emit_Messages and then Present (N) and then Msg /= "";
+
+      procedure Add_Violation_Root_Cause (N : Node_Id; From : Node_Id)
+        --  Propagate the root cause message explaining the violation in From
+        --  not being in SPARK to N.
+      with Pre => Emit_Messages;
+
+      procedure Mark_Unsupported
+        (Msg        : String;
+         N          : Node_Id;
+         Extra_Name : Name_Id := No_Name;
+         Extra_Num  : Uint    := No_Uint;
+         Cont_Msg   : String  := "")
+      with
+        Global => (Output => Violation_Detected,
+                   Input  => Current_SPARK_Pragma),
+        Pre => (Extra_Name /= No_Name) = (for some C of Msg => C = '%')
+                 and then
+               (Extra_Num  /= No_Uint) = (for some C of Msg => C = '^');
+      --  Mark node N as an unsupported SPARK construct. An error message is
+      --  issued if current SPARK_Mode is On.
+      --
+      --  Extra parameters correspond to special characters in the Msg string
+      --  and precondition (which is slightly less restrictive than it should)
+      --  checks that they are set correctly.
+      --
+      --  Cont_Msg is a continuous message when specified.
+
+      procedure Mark_Violation
+        (Msg           : String;
+         N             : Node_Id;
+         SRM_Reference : String := "";
+         Cont_Msg      : String := "")
+      with
+        Global => (Output => Violation_Detected,
                    Input  => Current_SPARK_Pragma),
         Pre => SRM_Reference = ""
                  or else
               (SRM_Reference'Length > 9
                and then Head (SRM_Reference, 9) = "SPARK RM ");
-   --  Mark node N as a violation of SPARK. An error message pointing to the
-   --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
-   --  If SRM_Reference is set, the reference to the SRM is appended to the
-   --  error message. If Cont_Msg is set, a continuation message is issued.
+      --  Mark node N as a violation of SPARK. An error message pointing to the
+      --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is
+      --  On. If SRM_Reference is set, the reference to the SRM is appended
+      --  to the error message. If Cont_Msg is set, a continuation message
+      --  is issued.
 
-   procedure Mark_Violation
-     (N    : Node_Id;
-      From : Entity_Id)
-   with Global => (Output => Violation_Detected,
-                   Input  => Current_SPARK_Pragma);
-   --  Mark node N as a violation of SPARK, due to the use of entity From which
-   --  is not in SPARK. An error message is issued if current SPARK_Mode is On.
+      procedure Mark_Violation
+        (N    : Node_Id;
+         From : Entity_Id)
+      with Global => (Output => Violation_Detected,
+                      Input  => Current_SPARK_Pragma);
+      --  Mark node N as a violation of SPARK, due to the use of entity
+      --  From which is not in SPARK. An error message is issued if current
+      --  SPARK_Mode is On.
 
-   procedure Mark_Violation_In_Tasking
-     (N : Node_Id)
-   with Pre => not Is_SPARK_Tasking_Configuration,
+      procedure Mark_Violation_In_Tasking (N : Node_Id)
+      with
         Global => (Output => Violation_Detected,
-                   Input  => Current_SPARK_Pragma);
-   --  Mark node N as a violation of SPARK because of unsupported tasking
-   --  configuration. An error message is issued if current SPARK_Mode is On.
+                   Input  => Current_SPARK_Pragma),
+        Pre => not Is_SPARK_Tasking_Configuration;
+      --  Mark node N as a violation of SPARK because of unsupported tasking
+      --  configuration. An error message is issued if current SPARK_Mode is
+      --  On.
 
-   procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id)
-   with Global => (Input => (Current_SPARK_Pragma,
-                             Current_Delayed_Aspect_Type));
-   --  Issue an error continuation message for node N with the location of the
-   --  violated SPARK_Mode pragma/aspect.
+      procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id)
+      with Global => (Input => (Current_SPARK_Pragma,
+                                Current_Delayed_Aspect_Type));
+      --  Issue an error continuation message for node N with the location of
+      --  the violated SPARK_Mode pragma/aspect.
 
-   Ravenscar_Profile_Result : Boolean := False;
-   --  This switch memoizes the result of Ravenscar_Profile function calls for
-   --  improved efficiency. Valid only if Ravenscar_Profile_Cached is True.
-   --  Note: if this switch is ever set True, it is never turned off again.
+      Ravenscar_Profile_Result : Boolean := False;
+      --  This switch memoizes the result of Ravenscar_Profile function calls
+      --  for improved efficiency. Valid only if Ravenscar_Profile_Cached is
+      --  True. Note: if this switch is ever set True, it is never turned off
+      --  again.
 
-   Ravenscar_Profile_Cached : Boolean := False;
-   --  This flag is set to True if the Ravenscar_Profile_Result contains the
-   --  correct cached result of Ravenscar_Profile calls.
+      Ravenscar_Profile_Cached : Boolean := False;
+      --  This flag is set to True if the Ravenscar_Profile_Result contains the
+      --  correct cached result of Ravenscar_Profile calls.
 
-   function GNATprove_Tasking_Profile return Boolean;
-   --  Tests if configuration pragmas and restrictions corresponding to the
-   --  tasking profile supported by the GNATprove (which is in the middle
-   --  between the Ravenscar profile and GNAT Extended Ravenscar profile) are
-   --  currently in effect (set by pragma Profile or by an appropriate set of
-   --  individual Restrictions pragmas). Returns True only if all the required
-   --  settings are set.
+      function GNATprove_Tasking_Profile return Boolean;
+      --  Tests if configuration pragmas and restrictions corresponding to the
+      --  tasking profile supported by the GNATprove (which is in the middle
+      --  between the Ravenscar profile and GNAT Extended Ravenscar profile)
+      --  are currently in effect (set by pragma Profile or by an appropriate
+      --  set of individual Restrictions pragmas). Returns True only if all the
+      --  required settings are set.
 
-   function Sequential_Elaboration return Boolean;
-   --  Check if Partition_Elaboration_Policy is set to Sequential
+      function Sequential_Elaboration return Boolean is
+      --  Check if Partition_Elaboration_Policy is set to Sequential
+        (Partition_Elaboration_Policy = 'S');
 
-   function Is_SPARK_Tasking_Configuration return Boolean;
-   --  Check tasking configuration required by SPARK and possibly mark
-   --  violation on node N.
+      function Is_SPARK_Tasking_Configuration return Boolean is
+      --  Check tasking configuration required by SPARK and possibly mark
+      --  violation on node N.
+        (GNATprove_Tasking_Profile and then Sequential_Elaboration);
 
-   ------------------------------------
-   -- Is_SPARK_Tasking_Configuration --
-   ------------------------------------
+   end SPARK_Violations;
 
-   function Is_SPARK_Tasking_Configuration return Boolean is
-     (GNATprove_Tasking_Profile and then Sequential_Elaboration);
+   package body SPARK_Violations is
+
+      ------------------------------
+      -- Add_Violation_Root_Cause --
+      ------------------------------
+
+      procedure Add_Violation_Root_Cause (N : Node_Id; Msg : String) is
+      begin
+         Violation_Root_Cause.Include (N, Msg);
+         Last_Violation_Root_Cause_Node := N;
+      end Add_Violation_Root_Cause;
+
+      procedure Add_Violation_Root_Cause (N : Node_Id; From : Node_Id) is
+         Msg : constant String := Get_Violation_Root_Cause (From);
+      begin
+         if Msg /= "" then
+            Add_Violation_Root_Cause (N, Msg);
+         end if;
+      end Add_Violation_Root_Cause;
+
+      -------------------------------
+      -- GNATprove_Tasking_Profile --
+      -------------------------------
+
+      --  Check that the current settings match those in
+      --  Sem_Prag.Set_Ravenscar_Profile.
+      --  ??? Older versions of Ada are also supported to ease reuse once this
+      --  code is moved to Restrict package.
+
+      function GNATprove_Tasking_Profile return Boolean is
+         Prefix_Entity   : Entity_Id;
+         Selector_Entity : Entity_Id;
+         Prefix_Node     : Node_Id;
+         Node            : Node_Id;
+
+         Profile : Profile_Data renames Profile_Info (GNAT_Extended_Ravenscar);
+         --  A minimal settings required for tasking constructs to be allowed
+         --  in SPARK.
+
+         function Restriction_No_Dependence (Unit : Node_Id) return Boolean;
+         --  Check if restriction No_Dependence is set for Unit.
+
+         -------------------------------
+         -- Restriction_No_Dependence --
+         -------------------------------
+
+         function Restriction_No_Dependence (Unit : Node_Id) return Boolean is
+            function Same_Unit (U1, U2 : Node_Id) return Boolean;
+            --  Returns True iff U1 and U2 represent the same library unit.
+            --  Used for handling of No_Dependence => Unit restriction case.
+            --  ??? This duplicates the code from Restrict package.
+
+            ---------------
+            -- Same_Unit --
+            ---------------
+
+            function Same_Unit (U1, U2 : Node_Id) return Boolean is
+            begin
+               if Nkind (U1) = N_Identifier and then Nkind (U2) = N_Identifier
+               then
+                  return Chars (U1) = Chars (U2);
+
+               elsif Nkind (U1) in N_Selected_Component | N_Expanded_Name
+                       and then
+                     Nkind (U2) in N_Selected_Component | N_Expanded_Name
+               then
+                  return Same_Unit (Prefix (U1), Prefix (U2))
+                    and then
+                      Same_Unit (Selector_Name (U1), Selector_Name (U2));
+               else
+                  return False;
+               end if;
+            end Same_Unit;
+
+         --  Start of processing for Restriction_No_Dependence
+
+         begin
+            --  Loop to look for entry
+
+            for J in No_Dependences.First .. No_Dependences.Last loop
+
+               --  Entry is in table
+
+               if Same_Unit (Unit, No_Dependences.Table (J).Unit) then
+                  return True;
+               end if;
+
+            end loop;
+
+            --  Entry is not in table
+
+            return False;
+         end Restriction_No_Dependence;
+
+      --  Start of processing for GNATprove_Tasking_Profile
+
+      begin
+         if Ravenscar_Profile_Cached then
+            return Ravenscar_Profile_Result;
+
+         else
+            Ravenscar_Profile_Result := True;
+            Ravenscar_Profile_Cached := True;
+
+            --  pragma Task_Dispatching_Policy (FIFO_Within_Priorities)
+
+            if Task_Dispatching_Policy /= 'F' then
+               Ravenscar_Profile_Result := False;
+               return False;
+            end if;
+
+            --  pragma Locking_Policy (Ceiling_Locking)
+
+            if Locking_Policy /= 'C' then
+               Ravenscar_Profile_Result := False;
+               return False;
+            end if;
+
+            --  pragma Detect_Blocking
+
+            if not Detect_Blocking then
+               Ravenscar_Profile_Result := False;
+               return False;
+            end if;
+
+            declare
+               R : Restriction_Flags  renames Profile.Set;
+               V : Restriction_Values renames Profile.Value;
+            begin
+               for J in R'Range loop
+                  if R (J)
+                    and then (Restrictions.Set (J) = False
+                                or else Restriction_Warnings (J)
+                                or else
+                                  (J in All_Parameter_Restrictions
+                                     and then Restrictions.Value (J) > V (J)))
+                  then
+                     if (J in No_Implicit_Task_Allocations |
+                              No_Implicit_Protected_Object_Allocations
+                         and then
+                           Restrictions.Set (No_Implicit_Heap_Allocations))
+                       or else
+                        (J = Pure_Barriers
+                         and then Restrictions.Set (Simple_Barriers))
+                     then
+                        null;
+                     else
+                        Ravenscar_Profile_Result := False;
+                        return False;
+                     end if;
+                  end if;
+               end loop;
+            end;
+
+            --  The following No_Dependence restrictions:
+            --    No_Dependence => Ada.Asynchronous_Task_Control
+            --    No_Dependence => Ada.Calendar
+            --    No_Dependence => Ada.Task_Attributes
+            --  are already checked by the above loop.
+
+            --  The following restrictions were added to Ada 2005:
+            --    No_Dependence => Ada.Execution_Time.Group_Budget
+            --    No_Dependence => Ada.Execution_Time.Timers.
+
+            if Ada_Version >= Ada_2005 then
+
+               Name_Buffer (1 .. 3) := "ada";
+               Name_Len := 3;
+
+               Prefix_Entity := Make_Identifier (No_Location, Name_Find);
+
+               Name_Buffer (1 .. 14) := "execution_time";
+               Name_Len := 14;
+
+               Selector_Entity := Make_Identifier (No_Location, Name_Find);
+
+               Prefix_Node :=
+                 Make_Selected_Component
+                   (Sloc          => No_Location,
+                    Prefix        => Prefix_Entity,
+                    Selector_Name => Selector_Entity);
+
+               Name_Buffer (1 .. 13) := "group_budgets";
+               Name_Len := 13;
+
+               Selector_Entity := Make_Identifier (No_Location, Name_Find);
+
+               Node :=
+                 Make_Selected_Component
+                   (Sloc          => No_Location,
+                    Prefix        => Prefix_Node,
+                    Selector_Name => Selector_Entity);
+
+               if not Restriction_No_Dependence (Unit => Node) then
+                  Ravenscar_Profile_Result := False;
+                  return False;
+               end if;
+
+               Name_Buffer (1 .. 6) := "timers";
+               Name_Len := 6;
+
+               Selector_Entity := Make_Identifier (No_Location, Name_Find);
+
+               Node :=
+                 Make_Selected_Component
+                   (Sloc          => No_Location,
+                    Prefix        => Prefix_Node,
+                    Selector_Name => Selector_Entity);
+
+               if not Restriction_No_Dependence (Unit => Node) then
+                  Ravenscar_Profile_Result := False;
+                  return False;
+               end if;
+
+            end if;
+
+            --  The following restriction was added to Ada 2005:
+            --    No_Dependence => System.Multiprocessors.Dispatching_Domains.
+
+            if Ada_Version >= Ada_2012 then
+
+               Name_Buffer (1 .. 6) := "system";
+               Name_Len := 6;
+
+               Prefix_Entity := Make_Identifier (No_Location, Name_Find);
+
+               Name_Buffer (1 .. 15) := "multiprocessors";
+               Name_Len := 15;
+
+               Selector_Entity := Make_Identifier (No_Location, Name_Find);
+
+               Prefix_Node :=
+                 Make_Selected_Component
+                   (Sloc          => No_Location,
+                    Prefix        => Prefix_Entity,
+                    Selector_Name => Selector_Entity);
+
+               Name_Buffer (1 .. 19) := "dispatching_domains";
+               Name_Len := 19;
+
+               Selector_Entity := Make_Identifier (No_Location, Name_Find);
+
+               Node :=
+                 Make_Selected_Component
+                   (Sloc          => No_Location,
+                    Prefix        => Prefix_Node,
+                    Selector_Name => Selector_Entity);
+
+               if not Restriction_No_Dependence (Unit => Node) then
+                  Ravenscar_Profile_Result := False;
+                  return False;
+               end if;
+
+            end if;
+
+            return True;
+         end if;
+      end GNATprove_Tasking_Profile;
+
+      ----------------------
+      -- Mark_Unsupported --
+      ----------------------
+
+      procedure Mark_Unsupported
+        (Msg        : String;
+         N          : Node_Id;
+         Extra_Name : Name_Id := No_Name;
+         Extra_Num  : Uint    := No_Uint;
+         Cont_Msg   : String  := "")
+      is
+      begin
+         --  Flag the violation, so that the current entity is marked
+         --  accordingly.
+
+         Violation_Detected := True;
+
+         --  Define the root cause
+
+         if Emit_Messages then
+            Add_Violation_Root_Cause (N, Msg);
+         end if;
+
+         --  If SPARK_Mode is On, raise an error
+
+         if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+            Error_Msg_Name_1 := Extra_Name;
+            Error_Msg_Uint_1 := Extra_Num;
+            Error_Msg_N (Msg & " is not yet supported", N);
+
+            if Cont_Msg /= "" then
+               Error_Msg_N ('\' & Cont_Msg, N);
+            end if;
+         end if;
+      end Mark_Unsupported;
+
+      --------------------
+      -- Mark_Violation --
+      --------------------
+
+      procedure Mark_Violation
+        (Msg           : String;
+         N             : Node_Id;
+         SRM_Reference : String := "";
+         Cont_Msg      : String := "") is
+      begin
+         --  Flag the violation, so that the current entity is marked
+         --  accordingly.
+
+         Violation_Detected := True;
+
+         --  Define the root cause
+
+         if Emit_Messages then
+            Add_Violation_Root_Cause (N, Msg);
+         end if;
+
+         --  If SPARK_Mode is On, raise an error
+
+         if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+
+            if SRM_Reference /= "" then
+               Error_Msg_F
+                 (Msg & " is not allowed in SPARK (" & SRM_Reference & ")", N);
+            else
+               Error_Msg_F (Msg & " is not allowed in SPARK", N);
+            end if;
+
+            if Cont_Msg /= "" then
+               Error_Msg_F ('\' & Cont_Msg, N);
+            end if;
+
+            Mark_Violation_Of_SPARK_Mode (N);
+         end if;
+      end Mark_Violation;
+
+      procedure Mark_Violation
+        (N    : Node_Id;
+         From : Entity_Id) is
+      begin
+         --  Flag the violation, so that the current entity is marked
+         --  accordingly.
+
+         Violation_Detected := True;
+
+         --  Propagate the root cause to N if it is an entity
+
+         if Emit_Messages then
+            Add_Violation_Root_Cause (N, From);
+         end if;
+
+         --  If SPARK_Mode is On, raise an error
+
+         if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+            declare
+               Root_Cause : constant String := Get_Violation_Root_Cause (From);
+               Root_Msg   : constant String :=
+                 (if Root_Cause = "" then ""
+                  else " (due to " & Root_Cause & ")");
+            begin
+               Error_Msg_FE ("& is not allowed in SPARK" & Root_Msg, N, From);
+               Mark_Violation_Of_SPARK_Mode (N);
+            end;
+         end if;
+      end Mark_Violation;
+
+      -------------------------------
+      -- Mark_Violation_In_Tasking --
+      -------------------------------
+
+      procedure Mark_Violation_In_Tasking (N : Node_Id) is
+         Msg_Prefix : constant String := "tasking in SPARK requires ";
+         Msg_Suffix : constant String := " (SPARK RM 9(2))";
+      begin
+         --  Flag the violation, so that the current entity is marked
+         --  accordingly.
+
+         Violation_Detected := True;
+
+         --  If SPARK_Mode is On, raise an error
+
+         if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+
+            if not GNATprove_Tasking_Profile then
+               Error_Msg_F (Msg_Prefix &
+                              "Ravenscar profile" & Msg_Suffix, N);
+            elsif not Sequential_Elaboration then
+               Error_Msg_F (Msg_Prefix &
+                              "sequential elaboration" & Msg_Suffix, N);
+            end if;
+
+            Mark_Violation_Of_SPARK_Mode (N);
+         end if;
+      end Mark_Violation_In_Tasking;
+
+      ----------------------------------
+      -- Mark_Violation_Of_SPARK_Mode --
+      ----------------------------------
+
+      procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id) is
+      begin
+         if Present (Current_SPARK_Pragma) then
+            Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
+
+            Error_Msg_F ("\\violation of " &
+                         (if From_Aspect_Specification (Current_SPARK_Pragma)
+                          then "aspect"
+                          else "pragma") &
+                         " SPARK_Mode #", N);
+         else
+            pragma Assert (Present (Current_Delayed_Aspect_Type));
+            Error_Msg_Sloc := Sloc (Current_Delayed_Aspect_Type);
+
+            Error_Msg_FE
+              ("\\delayed type aspect on & is required to be in SPARK", N,
+               Current_Delayed_Aspect_Type);
+         end if;
+      end Mark_Violation_Of_SPARK_Mode;
+
+   end SPARK_Violations;
+
+   use SPARK_Violations;
 
    ----------------------
    -- Inhibit_Messages --
@@ -408,250 +873,6 @@ package body SPARK_Definition is
 
       Emit_Messages := False;
    end Inhibit_Messages;
-
-   -------------------------------
-   -- GNATprove_Tasking_Profile --
-   -------------------------------
-
-   --  Check that the current settings match those in
-   --  Sem_Prag.Set_Ravenscar_Profile.
-   --  ??? Older versions of Ada are also supported to ease reuse once this
-   --  code is moved to Restrict package.
-
-   function GNATprove_Tasking_Profile return Boolean is
-      Prefix_Entity   : Entity_Id;
-      Selector_Entity : Entity_Id;
-      Prefix_Node     : Node_Id;
-      Node            : Node_Id;
-
-      Profile : Profile_Data renames Profile_Info (GNAT_Extended_Ravenscar);
-      --  A minimal settings required for tasking constructs to be allowed in
-      --  SPARK.
-
-      function Restriction_No_Dependence (Unit : Node_Id) return Boolean;
-      --  Check if restriction No_Dependence is set for Unit.
-
-      -------------------------------
-      -- Restriction_No_Dependence --
-      -------------------------------
-
-      function Restriction_No_Dependence (Unit : Node_Id) return Boolean is
-         function Same_Unit (U1, U2 : Node_Id) return Boolean;
-         --  Returns True iff U1 and U2 represent the same library unit. Used
-         --  for handling of No_Dependence => Unit restriction case.
-         --  ??? This duplicates the code from Restrict package.
-
-         ---------------
-         -- Same_Unit --
-         ---------------
-
-         function Same_Unit (U1, U2 : Node_Id) return Boolean is
-         begin
-            if Nkind (U1) = N_Identifier and then Nkind (U2) = N_Identifier
-            then
-               return Chars (U1) = Chars (U2);
-
-            elsif Nkind (U1) in N_Selected_Component | N_Expanded_Name and then
-                  Nkind (U2) in N_Selected_Component | N_Expanded_Name
-            then
-               return Same_Unit (Prefix (U1), Prefix (U2))
-                 and then
-                   Same_Unit (Selector_Name (U1), Selector_Name (U2));
-            else
-               return False;
-            end if;
-         end Same_Unit;
-
-      --  Start of processing for Restriction_No_Dependence
-
-      begin
-         --  Loop to look for entry
-
-         for J in No_Dependences.First .. No_Dependences.Last loop
-
-            --  Entry is in table
-
-            if Same_Unit (Unit, No_Dependences.Table (J).Unit) then
-               return True;
-            end if;
-
-         end loop;
-
-         --  Entry is not in table
-
-         return False;
-      end Restriction_No_Dependence;
-
-   --  Start of processing for GNATprove_Tasking_Profile
-
-   begin
-      if Ravenscar_Profile_Cached then
-         return Ravenscar_Profile_Result;
-
-      else
-         Ravenscar_Profile_Result := True;
-         Ravenscar_Profile_Cached := True;
-
-         --  pragma Task_Dispatching_Policy (FIFO_Within_Priorities)
-
-         if Task_Dispatching_Policy /= 'F' then
-            Ravenscar_Profile_Result := False;
-            return False;
-         end if;
-
-         --  pragma Locking_Policy (Ceiling_Locking)
-
-         if Locking_Policy /= 'C' then
-            Ravenscar_Profile_Result := False;
-            return False;
-         end if;
-
-         --  pragma Detect_Blocking
-
-         if not Detect_Blocking then
-            Ravenscar_Profile_Result := False;
-            return False;
-         end if;
-
-         declare
-            R : Restriction_Flags  renames Profile.Set;
-            V : Restriction_Values renames Profile.Value;
-         begin
-            for J in R'Range loop
-               if R (J)
-                 and then (Restrictions.Set (J) = False
-                             or else Restriction_Warnings (J)
-                             or else
-                               (J in All_Parameter_Restrictions
-                                  and then Restrictions.Value (J) > V (J)))
-               then
-                  if (J in No_Implicit_Task_Allocations |
-                           No_Implicit_Protected_Object_Allocations
-                      and then Restrictions.Set (No_Implicit_Heap_Allocations))
-                    or else
-                     (J = Pure_Barriers
-                      and then Restrictions.Set (Simple_Barriers))
-                  then
-                     null;
-                  else
-                     Ravenscar_Profile_Result := False;
-                     return False;
-                  end if;
-               end if;
-            end loop;
-         end;
-
-         --  The following No_Dependence restrictions:
-         --    No_Dependence => Ada.Asynchronous_Task_Control
-         --    No_Dependence => Ada.Calendar
-         --    No_Dependence => Ada.Task_Attributes
-         --  are already checked by the above loop.
-
-         --  The following restrictions were added to Ada 2005:
-         --    No_Dependence => Ada.Execution_Time.Group_Budget
-         --    No_Dependence => Ada.Execution_Time.Timers.
-
-         if Ada_Version >= Ada_2005 then
-
-            Name_Buffer (1 .. 3) := "ada";
-            Name_Len := 3;
-
-            Prefix_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Name_Buffer (1 .. 14) := "execution_time";
-            Name_Len := 14;
-
-            Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Prefix_Node :=
-              Make_Selected_Component
-                (Sloc          => No_Location,
-                 Prefix        => Prefix_Entity,
-                 Selector_Name => Selector_Entity);
-
-            Name_Buffer (1 .. 13) := "group_budgets";
-            Name_Len := 13;
-
-            Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Node :=
-              Make_Selected_Component
-                (Sloc          => No_Location,
-                 Prefix        => Prefix_Node,
-                 Selector_Name => Selector_Entity);
-
-            if not Restriction_No_Dependence (Unit => Node) then
-               Ravenscar_Profile_Result := False;
-               return False;
-            end if;
-
-            Name_Buffer (1 .. 6) := "timers";
-            Name_Len := 6;
-
-            Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Node :=
-              Make_Selected_Component
-                (Sloc          => No_Location,
-                 Prefix        => Prefix_Node,
-                 Selector_Name => Selector_Entity);
-
-            if not Restriction_No_Dependence (Unit => Node) then
-               Ravenscar_Profile_Result := False;
-               return False;
-            end if;
-
-         end if;
-
-         --  The following restriction was added to Ada 2005:
-         --    No_Dependence => System.Multiprocessors.Dispatching_Domains.
-
-         if Ada_Version >= Ada_2012 then
-
-            Name_Buffer (1 .. 6) := "system";
-            Name_Len := 6;
-
-            Prefix_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Name_Buffer (1 .. 15) := "multiprocessors";
-            Name_Len := 15;
-
-            Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Prefix_Node :=
-              Make_Selected_Component
-                (Sloc          => No_Location,
-                 Prefix        => Prefix_Entity,
-                 Selector_Name => Selector_Entity);
-
-            Name_Buffer (1 .. 19) := "dispatching_domains";
-            Name_Len := 19;
-
-            Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Node :=
-              Make_Selected_Component
-                (Sloc          => No_Location,
-                 Prefix        => Prefix_Node,
-                 Selector_Name => Selector_Entity);
-
-            if not Restriction_No_Dependence (Unit => Node) then
-               Ravenscar_Profile_Result := False;
-               return False;
-            end if;
-
-         end if;
-
-         return True;
-      end if;
-   end GNATprove_Tasking_Profile;
-
-   ----------------------------
-   -- Sequential_Elaboration --
-   ----------------------------
-
-   function Sequential_Elaboration
-     return Boolean is (Partition_Elaboration_Policy = 'S');
 
    ----------------------------------
    -- Recursive Marking of the AST --
@@ -1523,7 +1744,6 @@ package body SPARK_Definition is
                   Mark_Violation ("implicit dereference", N);
 
                elsif No (Search_Component_By_Name (Prefix_Type, Selector)) then
-                  Violation_Detected := True;
                   if SPARK_Pragma_Is (Opt.On) then
                      Apply_Compile_Time_Constraint_Error
                        (N, "component not present in }",
@@ -1555,7 +1775,7 @@ package body SPARK_Definition is
               and then not
                 Component_Is_Visible_In_SPARK (Entity (Selector_Name (N)))
             then
-               Mark_Violation (N, From  => Etype (Prefix (N)));
+               Mark_Violation (N, From => Etype (Prefix (N)));
             end if;
 
             Mark (Prefix (N));
@@ -2199,7 +2419,7 @@ package body SPARK_Definition is
       Cur : Node_Id := First (L);
 
    begin
-      --  Only mark pragmas and aspect clauses. Do not mark GNATprove annotate
+      --  Only mark pragmas and aspect clauses. Ignore GNATprove annotate
       --  pragmas here.
 
       while Present (Cur) loop
@@ -2336,20 +2556,15 @@ package body SPARK_Definition is
 
          when Attribute_Address =>
             if Nkind (Parent (N)) /= N_Attribute_Definition_Clause then
-               Violation_Detected := True;
-               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_Name_1 := Aname;
-                  Error_Msg_N ("attribute % is only permitted in SPARK " &
-                                 "inside an attribute definition clause", N);
-               end if;
+               Mark_Violation
+                 ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
+                  & """ outside an attribute definition clause", N);
             end if;
 
          when others =>
-            Violation_Detected := True;
-            if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-               Error_Msg_Name_1 := Aname;
-               Error_Msg_N ("attribute % is not permitted in SPARK", N);
-            end if;
+            Mark_Violation
+              ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
+               & """", N);
             return;
       end case;
 
@@ -3087,14 +3302,14 @@ package body SPARK_Definition is
          --  number of error messages.
 
          if not Retysp_In_SPARK (T) then
-            Mark_Violation (Def, From => T);
+            Mark_Violation (E, From => T);
             return;
          end if;
 
          if Present (Sub)
            and then not In_SPARK (Sub)
          then
-            Mark_Violation (Def, From => Sub);
+            Mark_Violation (E, From => Sub);
             return;
          end if;
 
@@ -3726,12 +3941,10 @@ package body SPARK_Definition is
                --  enclosing type; SPARK RM 3.8(2).
 
                if Uses_Current_Type_Instance (Expr) then
-                  Violation_Detected := True;
-                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On)
-                  then
-                     Error_Msg_NE
-                       ("default expression cannot mention }", E, E);
-                  end if;
+                  Mark_Violation ("default expression with current "
+                                  & "instance of enclosing type",
+                                  E,
+                                  SRM_Reference => "SPARK RM 3.8(2)");
                end if;
 
                Mark (Expr);
@@ -3941,34 +4154,7 @@ package body SPARK_Definition is
 
          --  Now mark the type itself
 
-         --  Components of a record type should be in SPARK for the record type
-         --  to be in SPARK. For a private type, we're only interested here in
-         --  its publicly visible components. The same applies to concurrent
-         --  types.
-
-         if Ekind (E) in Record_Kind then
-            declare
-               Comp : Node_Id := First_Component_Or_Discriminant (E);
-
-            begin
-               while Present (Comp) loop
-
-                  --  Do not mark components which are declared in a part with
-                  --  SPARK_Mode => Off.
-
-                  if Component_Is_Visible_In_SPARK (Comp) then
-                     Mark_Entity (Etype (Comp));
-
-                     --  Mark default value of component or discriminant
-
-                     Mark_Default_Expression (Comp);
-                  end if;
-
-                  Next_Component_Or_Discriminant (Comp);
-               end loop;
-            end;
-
-         elsif Ekind (E) in E_Protected_Type | E_Task_Type then
+         if Ekind (E) in E_Protected_Type | E_Task_Type then
             declare
                Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
                Fullview_In_SPARK : Boolean;
@@ -4000,7 +4186,7 @@ package body SPARK_Definition is
 
                Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
 
-               --  Do not mark components which are declared in a part with
+               --  Ignore components which are declared in a part with
                --  SPARK_Mode => Off.
 
                if Ekind (E) = E_Protected_Type
@@ -4205,15 +4391,16 @@ package body SPARK_Definition is
             begin
                if Positive (Number_Dimensions (E)) > Max_Array_Dimensions then
                   Mark_Unsupported
-                    ("} of dimension greater than" & Max_Array_Dimensions'Img,
-                     E, Extra_Node => E);
+                    ("array of dimension greater than"
+                     & Max_Array_Dimensions'Img,
+                     E);
                end if;
 
                --  Check that all index types are in SPARK
 
                while Present (Index) loop
                   if not In_SPARK (Etype (Index)) then
-                     Mark_Violation (Index, From => Etype (Index));
+                     Mark_Violation (E, From => Etype (Index));
                   end if;
                   Next_Index (Index);
                end loop;
@@ -4347,24 +4534,35 @@ package body SPARK_Definition is
                Mark_Violation (E, From => Base_Type (E));
             end if;
 
+            --  Components of a record type should be in SPARK for the record
+            --  type to be in SPARK. For a private type, we're only interested
+            --  here in its publicly visible components. The same applies to
+            --  concurrent types.
+
             if not Is_Interface (E) then
                declare
-                  Field : Entity_Id := First_Component_Or_Discriminant (E);
-                  Typ   : Entity_Id;
+                  Comp      : Entity_Id := First_Component_Or_Discriminant (E);
+                  Comp_Type : Entity_Id;
 
                begin
-                  while Present (Field) loop
-                     Typ := Etype (Field);
+                  while Present (Comp) loop
+                     Comp_Type := Etype (Comp);
 
-                     if not Is_Tag (Field)
-                       and then Is_Object (Field)
-                       and then not In_SPARK (Typ)
-                       and then Component_Is_Visible_In_SPARK (Field)
+                     if not Is_Tag (Comp)
+                       and then Is_Object (Comp)
+                       --  Ignore components which are declared in a part with
+                       --  SPARK_Mode => Off.
+                       and then Component_Is_Visible_In_SPARK (Comp)
                      then
-                        Mark_Violation (Field, From => Typ);
+                        if not In_SPARK (Comp_Type) then
+                           Mark_Violation (Comp, From => Comp_Type);
+                        end if;
+
+                        --  Mark default value of component or discriminant
+                        Mark_Default_Expression (Comp);
                      end if;
 
-                     Next_Component_Or_Discriminant (Field);
+                     Next_Component_Or_Discriminant (Comp);
                   end loop;
                end;
             end if;
@@ -4533,6 +4731,8 @@ package body SPARK_Definition is
       --  marking this entity.
 
       Save_Violation_Detected : constant Boolean := Violation_Detected;
+      Save_Last_Violation_Root_Cause_Node : constant Node_Id :=
+        Last_Violation_Root_Cause_Node;
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
 
    --  Start of processing for Mark_Entity
@@ -4684,6 +4884,10 @@ package body SPARK_Definition is
 
       Violation_Detected := False;
 
+      --  Reset last root cause node for violations
+
+      Last_Violation_Root_Cause_Node := Empty;
+
       --  Store correspondence from completions of deferred constants, so
       --  that Is_Full_View can be used for dealing correctly with deferred
       --  constants, when the public part of the package is marked as
@@ -4792,6 +4996,11 @@ package body SPARK_Definition is
       --  If a violation was detected, remove E from the set of SPARK entities
 
       if Violation_Detected then
+         if Emit_Messages
+           and then Present (Last_Violation_Root_Cause_Node)
+         then
+            Add_Violation_Root_Cause (E, Last_Violation_Root_Cause_Node);
+         end if;
          Entities_In_SPARK.Delete (E);
 
       --  Otherwise, add entity to appropriate list
@@ -4863,6 +5072,7 @@ package body SPARK_Definition is
       --  Update the information that a violation was detected
 
       Violation_Detected := Save_Violation_Detected;
+      Last_Violation_Root_Cause_Node := Save_Last_Violation_Root_Cause_Node;
 
       --  Restore SPARK_Mode pragma
 
@@ -6249,139 +6459,6 @@ package body SPARK_Definition is
 
       Mark (Right_Opnd (N));
    end Mark_Unary_Op;
-
-   ----------------------
-   -- Mark_Unsupported --
-   ----------------------
-
-   procedure Mark_Unsupported
-     (Msg        : String;
-      N          : Node_Id;
-      Extra_Name : Name_Id := No_Name;
-      Extra_Num  : Uint    := No_Uint;
-      Extra_Node : Node_Id := Empty;
-      Cont_Msg   : String  := "")
-   is
-   begin
-      --  Flag the violation, so that the current entity is marked accordingly
-
-      Violation_Detected := True;
-
-      --  If SPARK_Mode is On, raise an error
-
-      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-         Error_Msg_Name_1 := Extra_Name;
-         Error_Msg_Uint_1 := Extra_Num;
-         Error_Msg_Node_1 := Extra_Node;
-         Error_Msg_N (Msg & " is not yet supported", N);
-
-         if Cont_Msg /= "" then
-            Error_Msg_N ('\' & Cont_Msg, N);
-         end if;
-      end if;
-   end Mark_Unsupported;
-
-   --------------------
-   -- Mark_Violation --
-   --------------------
-
-   procedure Mark_Violation
-     (Msg           : String;
-      N             : Node_Id;
-      SRM_Reference : String := "";
-      Cont_Msg      : String := "") is
-   begin
-      --  Flag the violation, so that the current entity is marked accordingly
-
-      Violation_Detected := True;
-
-      --  If SPARK_Mode is On, raise an error
-
-      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-
-         if SRM_Reference /= "" then
-            Error_Msg_F
-              (Msg & " is not allowed in SPARK (" & SRM_Reference & ")", N);
-         else
-            Error_Msg_F (Msg & " is not allowed in SPARK", N);
-         end if;
-
-         if Cont_Msg /= "" then
-            Error_Msg_F ('\' & Cont_Msg, N);
-         end if;
-
-         Mark_Violation_Of_SPARK_Mode (N);
-      end if;
-   end Mark_Violation;
-
-   procedure Mark_Violation
-     (N    : Node_Id;
-      From : Entity_Id) is
-   begin
-      --  Flag the violation, so that the current entity is marked accordingly
-
-      Violation_Detected := True;
-
-      --  If SPARK_Mode is On, raise an error
-
-      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-         Error_Msg_FE ("& is not allowed in SPARK", N, From);
-
-         Mark_Violation_Of_SPARK_Mode (N);
-      end if;
-   end Mark_Violation;
-
-   -------------------------------
-   -- Mark_Violation_In_Tasking --
-   -------------------------------
-
-   procedure Mark_Violation_In_Tasking (N : Node_Id) is
-      Msg_Prefix : constant String := "tasking in SPARK requires ";
-      Msg_Suffix : constant String := " (SPARK RM 9(2))";
-   begin
-      --  Flag the violation, so that the current entity is marked accordingly
-
-      Violation_Detected := True;
-
-      --  If SPARK_Mode is On, raise an error
-
-      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-
-         if not GNATprove_Tasking_Profile then
-            Error_Msg_F (Msg_Prefix &
-                           "Ravenscar profile" & Msg_Suffix, N);
-         elsif not Sequential_Elaboration then
-            Error_Msg_F (Msg_Prefix &
-                           "sequential elaboration" & Msg_Suffix, N);
-         end if;
-
-         Mark_Violation_Of_SPARK_Mode (N);
-      end if;
-   end Mark_Violation_In_Tasking;
-
-   ----------------------------------
-   -- Mark_Violation_Of_SPARK_Mode --
-   ----------------------------------
-
-   procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id) is
-   begin
-      if Present (Current_SPARK_Pragma) then
-         Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
-
-         Error_Msg_F ("\\violation of " &
-                      (if From_Aspect_Specification (Current_SPARK_Pragma)
-                       then "aspect"
-                       else "pragma") &
-                      " SPARK_Mode #", N);
-      else
-         pragma Assert (Present (Current_Delayed_Aspect_Type));
-         Error_Msg_Sloc := Sloc (Current_Delayed_Aspect_Type);
-
-         Error_Msg_FE
-           ("\\delayed type aspect on & is required to be in SPARK", N,
-            Current_Delayed_Aspect_Type);
-      end if;
-   end Mark_Violation_Of_SPARK_Mode;
 
    ----------------------------------------
    -- Mark_Most_Underlying_Type_In_SPARK --
