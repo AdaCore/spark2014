@@ -6332,12 +6332,40 @@ package body SPARK_Definition is
             Mark_Entity (E);
 
             if In_Pred_Function_Decl then
-               --  Type with predicate and spec of a function that implements
-               --  the predicate must have the same SPARK status. We're not
-               --  using Current_Delayed_Aspect_Type as it might be the full
-               --  view not in SPARK of a private type which is in SPARK.
+               --  For non-private types the Current_Delayed_Aspect_Type and
+               --  the type of the predicate function's formal parameter are
+               --  the same; their In_SPARK status must be same (1).
+               --
+               --  For private types with a predicate on the private view the
+               --  situation is the same (2).
+               --
+               --  For private types with a predicate on the full view the
+               --  private view should be In_SPARK (otherwise there is no point
+               --  in marking the full view or its predicate) and the violation
+               --  in the predicate function renders the full view as not in
+               --  SPARK (the opposite doesn't hold, i.e. the predicate might
+               --  be in SPARK but the full view itself might contain
+               --  violations; ??? in this case we shouldn't bother with
+               --  marking the predicate).
+
                pragma Assert
-                 (In_SPARK (Etype (First_Formal (E))) = In_SPARK (E));
+                 ((Current_Delayed_Aspect_Type = Etype (First_Formal (E))
+                     and then
+                   In_SPARK (E) = In_SPARK (Current_Delayed_Aspect_Type))
+                   --  The above matches cases (1) and (2)
+
+                    or else
+
+                   --  The above matches case (3)
+                   (Is_Private_Type (Etype (First_Formal (E)))
+                      and then
+                    Current_Delayed_Aspect_Type =
+                      Full_View (Etype (First_Formal (E)))
+                      and then
+                    In_SPARK (Etype (First_Formal (E)))
+                      and then
+                    (if not In_SPARK (E)
+                     then not In_SPARK (Current_Delayed_Aspect_Type))));
 
                Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
             end if;
