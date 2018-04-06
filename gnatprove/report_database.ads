@@ -53,15 +53,16 @@ package Report_Database is
 
    --  Record of results obtained for a given subprogram or package
    type Stat_Rec is record
-      SPARK         : Boolean;            --  In SPARK or not
-      Analysis      : Analysis_Status;    --  Status of analysis performed
-      Suppr_Msgs    : Warning_Lists.List; --  List of suppressed messages
-      Flow_Warnings : Natural;            --  Number of flow analysis warnings
-      Flow_Errors   : Natural;            --  Number of flow analysis errors
-      Flow_Checks   : Natural;            --  Number of flow analysis checks
-      VC_Count      : Natural;            --  Total number of checks
-      VC_Proved     : Natural;            --  Number of checks that were proved
-      Assumptions   : Rule_Lists.List;    --  Final mapping claims->assumptions
+      SPARK           : Boolean;            --  In SPARK or not
+      Analysis        : Analysis_Status;    --  Status of analysis performed
+      Suppr_Msgs      : Warning_Lists.List; --  List of suppressed messages
+      Flow_Warnings   : Natural;            --  Number of flow analysis warning
+      Flow_Errors     : Natural;            --  Number of flow analysis errors
+      Flow_Checks     : Natural;            --  Number of flow analysis checks
+      Proof_Warnings  : Natural;            --  Number of proof warnings
+      Proof_Checks    : Natural;            --  Total number of checks
+      Proof_Checks_OK : Natural;            --  Number of checks proved
+      Assumptions     : Rule_Lists.List;    --  Final mapping claim->assumption
    end record;
 
    type All_Prover_Stat is record
@@ -80,6 +81,7 @@ package Report_Database is
 
    type Possible_Entries is
      (No_Entry,
+      Warnings,
       Data_Dep,
       Flow_Dep,
       Init,

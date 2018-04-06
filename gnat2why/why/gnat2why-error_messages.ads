@@ -33,9 +33,14 @@ package Gnat2Why.Error_Messages is
 
    type VC_Id is new Natural;
 
-   function Register_VC (N : Node_Id; E : Entity_Id) return VC_Id
-     with Pre => Present (N) and then Present (E);
+   function Register_VC
+     (N      : Node_Id;
+      Reason : VC_Kind;
+      E      : Entity_Id)
+      return VC_Id
+   with Pre => Present (N) and then Present (E);
    --  @param N node at which the VC is located
+   --  @param Reason VC kind
    --  @param E entity of the subprogram/package elaboration to which the VC
    --    belongs
    --  @return a fresh ID for this VC

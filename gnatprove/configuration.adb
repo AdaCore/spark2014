@@ -1633,6 +1633,11 @@ package body Configuration is
 
       Define_Switch
         (Config,
+         CL_Switches.Proof_Warnings'Access,
+         Long_Switch => "--proof-warnings");
+
+      Define_Switch
+        (Config,
          CL_Switches.No_Counterexample'Access,
          Long_Switch => "--no-counterexample");
 

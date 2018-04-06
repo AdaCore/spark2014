@@ -100,16 +100,23 @@ package VC_Kinds is
                                       --  precondition
       VC_Stronger_Post,               --  post stronger than classwide post
       VC_Weaker_Classwide_Pre,        --  classwide pre weaker than inherited
-      VC_Stronger_Classwide_Post);    --  classwide post stronger t/ inherited
+      VC_Stronger_Classwide_Post,     --  classwide post stronger t/ inherited
+
+      --  VC_Warning_Kind - warnings
+
+      VC_Inconsistent_Pre);
 
    subtype VC_RTE_Kind is VC_Kind range
      VC_Division_Check .. VC_Task_Termination;
 
-   subtype VC_Assert_Kind is  VC_Kind range
+   subtype VC_Assert_Kind is VC_Kind range
      VC_Initial_Condition .. VC_Raise;
 
-   subtype VC_LSP_Kind is  VC_Kind range
+   subtype VC_LSP_Kind is VC_Kind range
      VC_Weaker_Pre .. VC_Stronger_Classwide_Post;
+
+   subtype VC_Warning_Kind is VC_Kind range
+     VC_Inconsistent_Pre .. VC_Inconsistent_Pre;
 
    type Flow_Tag_Kind is
      (Empty_Tag,
@@ -213,9 +220,10 @@ package VC_Kinds is
    --  Return the CWE numbering as a message string for a given kind
 
    function Locate_On_First_Token (V : VC_Kind) return Boolean is
-     (case V is when VC_RTE_Kind    => False,
-                when VC_Assert_Kind => V /= VC_Precondition,
-                when VC_LSP_Kind    => True);
+     (case V is when VC_RTE_Kind     => False,
+                when VC_Assert_Kind  => V /= VC_Precondition,
+                when VC_LSP_Kind     => True,
+                when VC_Warning_Kind => True);
    --  Returns True if this kind of VC should be considered like an assertion
    --  when positioning the message to the left-most subexpression of the
    --  checked expression. For example, this is not true for VC_Precondition,

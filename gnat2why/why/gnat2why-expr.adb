@@ -13772,10 +13772,10 @@ package body Gnat2Why.Expr is
             begin
                if Proved then
                   Emit_Proof_Result (Expr,
-                                     Register_VC (Expr, Current_Subp),
-                                     Kind => Reason,
-                                     E => Current_Subp,
-                                     Proved => Proved,
+                                     Register_VC (Expr, Reason, Current_Subp),
+                                     Kind       => Reason,
+                                     E          => Current_Subp,
+                                     Proved     => Proved,
                                      How_Proved => PC_Prover);
                   return +Void;
                else

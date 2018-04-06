@@ -132,6 +132,10 @@ package Gnat2Why_Args is
 
    Proof_Generate_Guards : Boolean := True;
 
+   --  Generate warnings by generated VCs and calling provers. As it is costly,
+   --  it is not enabled by default.
+   Proof_Warnings : Boolean := False;
+
    --  When Pedantic is True, issue warnings on features that could cause
    --  portability issues with other compilers than GNAT. For example, issue
    --  a warning when the Ada RM allows reassociation of operators in an

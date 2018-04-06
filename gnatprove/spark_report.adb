@@ -102,7 +102,7 @@ procedure SPARK_Report is
    procedure Increment (X : in out Integer);
    --  @param X increment its parameter by 1
 
-   function VC_Kind_To_Summary (S : VC_Kind) return Summary_Entries;
+   function VC_Kind_To_Summary (S : VC_Kind) return Possible_Entries;
    --  @param S a VC kind like VC_DIVISION_CHECK etc
    --  @return the corresponding summary entry which this VC corresponds to
 
@@ -500,11 +500,14 @@ procedure SPARK_Report is
               VC_Kind'Value (Get (Get (Result, "rule")));
             Subp     : constant Subp_Type :=
               From_JSON (Get (Result, "entity"));
-            Category : constant Summary_Entries :=
+            Category : constant Possible_Entries :=
               VC_Kind_To_Summary (Kind);
             Proved   : constant Boolean := Severe = "info";
          begin
-            if Has_Field (Result, "suppressed") then
+            if Category = Warnings then
+               null;
+
+            elsif Has_Field (Result, "suppressed") then
                Increment (Summary (Category).Justified);
                Add_Suppressed_Warning
                  (Unit   => Unit,
@@ -513,6 +516,7 @@ procedure SPARK_Report is
                   File   => Get (Get (Result, "file")),
                   Line   => Get (Get (Result, "line")),
                   Column => Get (Get (Result, "col")));
+
             else
                Add_Proof_Result
                  (Unit   => Unit,
@@ -743,14 +747,14 @@ procedure SPARK_Report is
                   end if;
 
                   if Stat.Analysis in Proof_Only | Flow_And_Proof then
-                     if Stat.VC_Count = Stat.VC_Proved then
+                     if Stat.Proof_Checks = Stat.Proof_Checks_OK then
                         Put (Handle,
                              " proved ("
-                             & Image (Stat.VC_Count, 1) & " checks)");
+                             & Image (Stat.Proof_Checks, 1) & " checks)");
                      else
                         Put (Handle,
-                             " not proved," & Stat.VC_Proved'Img
-                             & " checks out of" & Stat.VC_Count'Img
+                             " not proved," & Stat.Proof_Checks_OK'Img
+                             & " checks out of" & Stat.Proof_Checks'Img
                              & " proved");
                      end if;
                   end if;
@@ -904,7 +908,7 @@ procedure SPARK_Report is
    -- VC_Kind_To_Summary --
    ------------------------
 
-   function VC_Kind_To_Summary (S : VC_Kind) return Summary_Entries is
+   function VC_Kind_To_Summary (S : VC_Kind) return Possible_Entries is
    begin
       case S is
          when VC_Division_Check
@@ -954,6 +958,10 @@ procedure SPARK_Report is
             | VC_Stronger_Classwide_Post
          =>
             return LSP;
+
+         when VC_Warning_Kind
+         =>
+            return Warnings;
       end case;
    end VC_Kind_To_Summary;
 

@@ -478,7 +478,7 @@ procedure Gnatprove with SPARK_Mode is
       end if;
 
       if Z3_Counterexample then
-         Args.Append ("--ce_prover");
+         Args.Append ("--ce-prover");
          Args.Append ("z3_ce");
       end if;
 
@@ -777,6 +777,7 @@ procedure Gnatprove with SPARK_Mode is
          Gnat2Why_Args.Flow_Show_GG := Flow_Show_GG;
          Gnat2Why_Args.Proof_Generate_Guards :=
            not Configuration.No_Axiom_Guard;
+         Gnat2Why_Args.Proof_Warnings := CL_Switches.Proof_Warnings;
          Gnat2Why_Args.Ide_Mode := IDE_Mode;
          Gnat2Why_Args.Pedantic := CL_Switches.Pedantic;
          Gnat2Why_Args.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;

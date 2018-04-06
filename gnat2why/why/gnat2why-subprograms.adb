@@ -38,8 +38,10 @@ with Gnat2Why.Annotate;              use Gnat2Why.Annotate;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
+with Gnat2Why_Args;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
+with Opt;                            use type Opt.Warning_Mode_Type;
 with Rtsfind;                        use Rtsfind;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Disp;                       use Sem_Disp;
@@ -2951,7 +2953,7 @@ package body Gnat2Why.Subprograms is
       --  precondition.
 
       function Assume_Or_Assert_Of_Pre return W_Prog_Id;
-      --  usually assumes the precondition, except for main programs where
+      --  Usually assumes the precondition, except for main programs where
       --  the precondition needs to be proved in fact. In this latter case
       --  an assertion is returned instead of an assumption.
 
@@ -2998,6 +3000,9 @@ package body Gnat2Why.Subprograms is
       Contract_Params : Transformation_Params;
 
       function Declare_Old_Variables (P : W_Prog_Id) return W_Prog_Id;
+
+      function Warn_On_Inconsistent_Pre return W_Prog_Id;
+      --  Generate a VC to warn on inconsistent preconditions
 
       function Wrap_Decls_For_CC_Guards (P : W_Prog_Id) return W_Prog_Id;
 
@@ -3371,6 +3376,67 @@ package body Gnat2Why.Subprograms is
       end Try_Block;
 
       ------------------------------
+      -- Warn_On_Inconsistent_Pre --
+      ------------------------------
+
+      function Warn_On_Inconsistent_Pre return W_Prog_Id is
+         Params : constant Transformation_Params :=
+           (File        => File,
+            Phase       => Generate_VCs_For_Contract,
+            Gen_Marker  => False,
+            Ref_Allowed => True,
+            Old_Allowed => True);
+         Pre : W_Pred_Id :=
+           Get_Static_Call_Contract (Params, E, Pragma_Precondition);
+         Stmt : W_Prog_Id;
+         Pre_Node : constant Node_Id :=
+           Get_Location_For_Aspect (E, Pragma_Precondition);
+      begin
+         if No (Pre_Node) then
+            return +Void;
+         end if;
+
+         if Is_Entry (E) then
+            declare
+               Params : constant Transformation_Params :=
+                 (File        => File,
+                  Phase       => Generate_Contract_For_Body,
+                  Gen_Marker  => False,
+                  Ref_Allowed => True,
+                  Old_Allowed => True);
+               Barrier : constant Node_Id :=
+                 Condition (Entry_Body_Formal_Part (Body_N));
+            begin
+               Pre :=
+                 +New_And_Then_Expr
+                 (Domain => EW_Pred,
+                  Left   => +Pre,
+                  Right  =>
+                    Transform_Expr
+                      (Barrier, EW_Bool_Type, EW_Pred, Params));
+            end;
+         end if;
+
+         --  Negate the condition to check for an inconsistency
+         Pre := New_Not (Right => +Pre);
+
+         Stmt :=
+           New_Located_Assert
+             (Ada_Node => Pre_Node,
+              Pred     => Pre,
+              Reason   => VC_Inconsistent_Pre,
+              Kind     => EW_Assert);
+
+         return
+           Sequence
+             (New_Comment
+                (Comment => NID ("Check inconsistency of Pre of the subprogram"
+                 & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+                   else ""))),
+              New_Ignore (Prog => Stmt));
+      end Warn_On_Inconsistent_Pre;
+
+      ------------------------------
       -- Wrap_Decls_For_CC_Guards --
       ------------------------------
 
@@ -3403,6 +3469,8 @@ package body Gnat2Why.Subprograms is
         New_Raise
           (Ada_Node => Body_N,
            Name     => M_Main.Return_Exc);
+
+      Precondition_Is_Statically_False : Boolean := False;
 
    --  Start of processing for Generate_VCs_For_Subprogram
 
@@ -3474,7 +3542,8 @@ package body Gnat2Why.Subprograms is
          if Nkind (Expr) = N_Identifier
            and then Entity (Expr) = Standard_False
          then
-            Error_Msg_N (Msg  => "?precondition is statically false",
+            Precondition_Is_Statically_False := True;
+            Error_Msg_N (Msg  => "?precondition is statically False",
                          N    => Expr);
          end if;
       end loop;
@@ -3572,12 +3641,26 @@ package body Gnat2Why.Subprograms is
 
       Prog := Wrap_Decls_For_CC_Guards (Prog);
 
-      Prog := Sequence
-        ((Assume_For_Input,
-          Comp_Decl_At_Subp_Start,
-          RTE_Of_Pre,
-          Assume_Or_Assert_Of_Pre,
-          Prog));
+      declare
+         Warn_Pre : constant W_Prog_Id :=
+           --  Do not issue a check for inconsistent precondition if switch
+           --  --proof-warnings is not set
+           (if not Gnat2Why_Args.Proof_Warnings
+              --  or if a conjunct in the precondition is statically False
+              or else Precondition_Is_Statically_False
+              --  or if warnings are suppressed.
+              or else Opt.Warning_Mode = Opt.Suppress
+            then +Void
+            else Warn_On_Inconsistent_Pre);
+      begin
+         Prog := Sequence
+           ((Assume_For_Input,
+             Comp_Decl_At_Subp_Start,
+             RTE_Of_Pre,
+             Warn_Pre,
+             Assume_Or_Assert_Of_Pre,
+             Prog));
+      end;
 
       --  Assume values of constants
 

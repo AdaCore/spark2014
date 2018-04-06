@@ -480,7 +480,11 @@ package body Flow_Error_Messages is
          Result : Msg_Severity;
 
       begin
-         if Is_Proved then
+         if Tag in VC_Warning_Kind then
+            pragma Assert (Is_Proved);
+            Result := Warning_Kind;
+
+         elsif Is_Proved then
             Result := Info_Kind;
 
          --  Range checks on concatenation of strings are likely to be
@@ -503,8 +507,8 @@ package body Flow_Error_Messages is
          return Result;
       end Get_Severity;
 
-      Msg2 : constant String     := Compute_Message (Msg, N);
-      Slc  : constant Source_Ptr := Compute_Sloc (N, Place_First);
+      Msg2   : constant String     := Compute_Message (Msg, N);
+      Slc    : constant Source_Ptr := Compute_Sloc (N, Place_First);
       VC_Slc : constant Source_Ptr := Compute_Sloc (VC_Loc, Place_First);
 
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
@@ -553,7 +557,9 @@ package body Flow_Error_Messages is
             if Report_Mode /= GPR_Fail then
                Msg_Id := Print_Regular_Msg (Msg3, Slc, Severity);
             end if;
-         when Error_Kind | Warning_Kind =>
+         when Warning_Kind =>
+            Msg_Id := Print_Regular_Msg (Msg3, Slc, Severity);
+         when Error_Kind =>
             --  cannot happen
             raise Program_Error;
       end case;

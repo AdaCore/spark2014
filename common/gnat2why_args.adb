@@ -57,6 +57,7 @@ package body Gnat2Why_Args is
    Flow_Show_GG_Name            : constant String := "flow_show_gg";
    Proof_Generate_Guards_Name   : constant String :=
      "proof_generate_axiom_guards";
+   Proof_Warnings_Name          : constant String := "proof_warnings";
    Limit_Subp_Name              : constant String := "limit_subp";
    Limit_Line_Name              : constant String := "limit_line";
    Pedantic_Name                : constant String := "pedantic";
@@ -116,6 +117,7 @@ package body Gnat2Why_Args is
       Flow_Termination_Proof  := Get_Opt_Bool (V, Flow_Termination_Name);
       Flow_Show_GG            := Get_Opt_Bool (V, Flow_Show_GG_Name);
       Proof_Generate_Guards   := Get_Opt_Bool (V, Proof_Generate_Guards_Name);
+      Proof_Warnings          := Get_Opt_Bool (V, Proof_Warnings_Name);
       Pedantic                := Get_Opt_Bool (V, Pedantic_Name);
       No_Loop_Unrolling       := Get_Opt_Bool (V, No_Loop_Unrolling_Name);
       Ide_Mode                := Get_Opt_Bool (V, Ide_Mode_Name);
@@ -210,6 +212,7 @@ package body Gnat2Why_Args is
       Set_Field (Obj, Flow_Termination_Name, Flow_Termination_Proof);
       Set_Field (Obj, Flow_Show_GG_Name, Flow_Show_GG);
       Set_Field (Obj, Proof_Generate_Guards_Name, Proof_Generate_Guards);
+      Set_Field (Obj, Proof_Warnings_Name, Proof_Warnings);
       Set_Field (Obj, Pedantic_Name, Pedantic);
       Set_Field (Obj, No_Loop_Unrolling_Name, No_Loop_Unrolling);
       Set_Field (Obj, Ide_Mode_Name, Ide_Mode);

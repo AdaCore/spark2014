@@ -91,7 +91,6 @@ package Configuration is
       Mode                 : aliased GNAT.Strings.String_Access;
       No_Axiom_Guard       : aliased Boolean;
       No_Counterexample    : aliased Boolean;
-      Z3_Counterexample    : aliased Boolean;
       No_Inlining          : aliased Boolean;
       No_Loop_Unrolling    : aliased Boolean;
       No_Global_Generation : aliased Boolean;
@@ -101,6 +100,7 @@ package Configuration is
       --  The project file name, given with option -P
       Pedantic             : aliased Boolean;
       Proof                : aliased GNAT.Strings.String_Access;
+      Proof_Warnings       : aliased Boolean;
       Prover               : aliased GNAT.Strings.String_Access;
       Q                    : aliased Boolean;
       Replay               : aliased Boolean;
@@ -117,6 +117,7 @@ package Configuration is
       Why3_Conf            : aliased GNAT.Strings.String_Access;
       X                    : String_Lists.List;
       --  Scenario variables to be passed to gprbuild
+      Z3_Counterexample    : aliased Boolean;
    end CL_Switches;
 
    package Prj_Attr is

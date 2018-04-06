@@ -3631,7 +3631,7 @@ package body Why.Gen.Expr is
       Sloc : constant Source_Ptr := Compute_VC_Sloc
         (N, Left_Most => Locate_On_First_Token (Reason));
       Set : Name_Id_Set := Name_Id_Sets.Empty_Set;
-      Id  : constant VC_Id := Register_VC (N, Current_Subp);
+      Id  : constant VC_Id := Register_VC (N, Reason, Current_Subp);
       Location_Lab : constant Name_Id := New_Located_Label (Sloc);
    begin
       if CodePeer_Has_Proved (Sloc, Reason) then

@@ -38,15 +38,16 @@ package body Report_Database is
         "="             => "=");
 
    Default_Stat : constant Stat_Rec :=
-     Stat_Rec'(SPARK         => False,
-               Analysis      => No_Analysis,
-               Suppr_Msgs    => Warning_Lists.Empty_List,
-               Flow_Warnings => 0,
-               Flow_Errors   => 0,
-               Flow_Checks   => 0,
-               VC_Count      => 0,
-               VC_Proved     => 0,
-               Assumptions   => Rule_Lists.Empty_List);
+     Stat_Rec'(SPARK           => False,
+               Analysis        => No_Analysis,
+               Suppr_Msgs      => Warning_Lists.Empty_List,
+               Flow_Warnings   => 0,
+               Flow_Errors     => 0,
+               Flow_Checks     => 0,
+               Proof_Warnings  => 0,
+               Proof_Checks    => 0,
+               Proof_Checks_OK => 0,
+               Assumptions     => Rule_Lists.Empty_List);
 
    package Ordered_Subp_Sets is new
      Ada.Containers.Ordered_Sets (Element_Type => Subp_Type,
@@ -165,9 +166,9 @@ package body Report_Database is
 
       procedure Process (Stat : in out Stat_Rec) is
       begin
-         Stat.VC_Count := Stat.VC_Count + 1;
+         Stat.Proof_Checks := Stat.Proof_Checks + 1;
          if Proved then
-            Stat.VC_Proved := Stat.VC_Proved + 1;
+            Stat.Proof_Checks_OK := Stat.Proof_Checks_OK + 1;
          end if;
       end Process;
 

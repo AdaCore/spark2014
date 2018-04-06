@@ -40,12 +40,13 @@ package body Why.Gen.Progs is
      (Ada_Node   : Node_Id;
       Check_Kind : Range_Check_Kind)
    is
-      Id : constant VC_Id := Register_VC (Ada_Node, Current_Subp);
+      Reason : constant VC_Kind := To_VC_Kind (Check_Kind);
+      Id     : constant VC_Id := Register_VC (Ada_Node, Reason, Current_Subp);
    begin
       Emit_Proof_Result
         (Ada_Node,
          Id,
-         To_VC_Kind (Check_Kind),
+         Reason,
          True,
          Current_Subp,
          How_Proved => PC_Interval);

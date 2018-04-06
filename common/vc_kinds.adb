@@ -106,7 +106,8 @@ package body VC_Kinds is
             | VC_Trivial_Weaker_Pre
             | VC_Stronger_Post
             | VC_Weaker_Classwide_Pre
-            | VC_Stronger_Classwide_Post   => "");
+            | VC_Stronger_Classwide_Post
+            | VC_Warning_Kind              => "");
    begin
       if CWE_Id = "" then
          return "";

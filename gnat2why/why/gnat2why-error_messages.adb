@@ -245,6 +245,7 @@ package body Gnat2Why.Error_Messages is
                | VC_Predicate_Check_On_Default_Value
                | VC_Invariant_Check
                | VC_Invariant_Check_On_Default_Value
+               | VC_Warning_Kind
             =>
                return (OK => False);
          end case;
@@ -292,8 +293,8 @@ package body Gnat2Why.Error_Messages is
       VC_File    : String := "";
       VC_Loc     : Node_Id := Empty;
       Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd : String := "") is
-
+      Editor_Cmd : String := "")
+   is
       function Stat_Message return String;
       --  Prepare a message for statistics of proof results
 
@@ -316,9 +317,7 @@ package body Gnat2Why.Error_Messages is
 
       function Stat_Message return String is
          Buf : Unbounded_String := Null_Unbounded_String;
-
          use Prover_Stat_Maps;
-
       begin
          --  Check if VC is not proved or statistics are enabled
 
@@ -373,36 +372,45 @@ package body Gnat2Why.Error_Messages is
          return To_String (Buf);
       end Stat_Message;
 
-      Msg : constant String :=
-        (if Proved
-         then Proved_Message (Node, Kind)
-            & Stat_Message
-         else Not_Proved_Message (Node, Kind)
-            & (if CWE then CWE_Message (Kind) else "")) &
-        Extra_Msg &
-        (if VC_File /= "" then ", vc file: " & VC_File else "");
-
    --  Start of processing for Emit_Proof_Result
 
    begin
-      if Proved then
+      if Kind in VC_Warning_Kind then
+         --  VCs that correspond to warnings are only relevant when the prover
+         --  could prove them. Discard unproved ones.
+         if not Proved then
+            return;
+         end if;
+
+      elsif Proved then
          Mark_VC_As_Proved_For_Entity (Id, Kind, E);
       end if;
-      Error_Msg_Proof
-        (Node,
-         Msg,
-         Proved,
-         Kind,
-         Place_First => Locate_On_First_Token (Kind),
-         Tracefile   => Tracefile,
-         Cntexmp     => Cntexmp,
-         Check_Tree  => Check_Tree,
-         VC_File     => VC_File,
-         VC_Loc      => VC_Loc,
-         Editor_Cmd  => Editor_Cmd,
-         Stats       => Stats,
-         How_Proved  => How_Proved,
-         E           => E);
+
+      declare
+         Msg : constant String :=
+           (if Proved
+            then Proved_Message (Node, Kind) & Stat_Message
+            else Not_Proved_Message (Node, Kind)
+                 & (if CWE then CWE_Message (Kind) else ""))
+           & Extra_Msg
+           & (if VC_File /= "" then ", vc file: " & VC_File else "");
+      begin
+         Error_Msg_Proof
+           (Node,
+            Msg,
+            Proved,
+            Kind,
+            Place_First => Locate_On_First_Token (Kind),
+            Tracefile   => Tracefile,
+            Cntexmp     => Cntexmp,
+            Check_Tree  => Check_Tree,
+            VC_File     => VC_File,
+            VC_Loc      => VC_Loc,
+            Editor_Cmd  => Editor_Cmd,
+            Stats       => Stats,
+            How_Proved  => How_Proved,
+            E           => E);
+      end;
    end Emit_Proof_Result;
 
    ------------------------
@@ -616,6 +624,13 @@ package body Gnat2Why.Error_Messages is
          when VC_Stronger_Classwide_Post   =>
             return
               "class-wide postcondition might be weaker than overridden one";
+
+         --  VC_Warning_Kind - warnings
+
+         --  Warnings should only be issued when the VC is proved
+
+         when VC_Warning_Kind              =>
+            raise Program_Error;
       end case;
    end Not_Proved_Message;
 
@@ -902,6 +917,11 @@ package body Gnat2Why.Error_Messages is
             return "class-wide precondition is weaker than overridden one";
          when VC_Stronger_Classwide_Post   =>
             return "class-wide postcondition is stronger than overridden one";
+
+         --  VC_Warning_Kind - warnings
+
+         when VC_Inconsistent_Pre          =>
+            return "precondition is always False";
       end case;
    end Proved_Message;
 
@@ -909,12 +929,23 @@ package body Gnat2Why.Error_Messages is
    -- Register_VC --
    -----------------
 
-   function Register_VC (N : Node_Id; E : Entity_Id) return VC_Id is
+   function Register_VC
+     (N      : Node_Id;
+      Reason : VC_Kind;
+      E      : Entity_Id)
+      return VC_Id
+   is
       Registered_Id : VC_Id;
    begin
       VC_Table.Append (VC_Info'(N, E));
       Registered_Id := VC_Table.Last_Index;
-      Add_Id_To_Entity (Registered_Id, E);
+
+      --  Do not consider warnings in the set of checks associated to an
+      --  entity, to decide whether the entity was fully verified or not.
+      if Reason not in VC_Warning_Kind then
+         Add_Id_To_Entity (Registered_Id, E);
+      end if;
+
       return Registered_Id;
    end Register_VC;
 
