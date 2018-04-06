@@ -329,7 +329,7 @@ package body Gnat2Why.Subprograms is
      (File : W_Section_Id;
       E    : Entity_Id)
    with Pre => Is_Dispatching_Operation (E)
-     and then Present (Find_Dispatching_Type (E));
+     and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E));
    --  @param E a dispatching subprogram
    --  Emit compatibility axioms between the dispatching version of E and each
    --  visible overriding / inherited versions of E.
@@ -3836,7 +3836,9 @@ package body Gnat2Why.Subprograms is
          Right  => +Compute_Contract_Cases_Postcondition (Params, E),
          Domain => EW_Pred);
 
-      if Is_Dispatching_Operation (E) then
+      if Is_Dispatching_Operation (E)
+        and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
+      then
          Dispatch_Pre :=
            Get_Dispatching_Call_Contract (Params, E, Pragma_Precondition);
          Dispatch_Post :=
@@ -4007,7 +4009,9 @@ package body Gnat2Why.Subprograms is
 
          --  ??? clean up this code duplication for dispatch and refine
 
-         if Is_Dispatching_Operation (E) then
+         if Is_Dispatching_Operation (E)
+           and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
+         then
             pragma Assert (Present (Dispatch_Pre)
                             and then Present (Dispatch_Post));
             Emit_Post_Axiom (Post_Dispatch_Axiom,
@@ -4102,7 +4106,8 @@ package body Gnat2Why.Subprograms is
            D_Read_Ids.Union (D_Write_Ids);
       end Same_Globals;
 
-      Ty            : constant Entity_Id := Retysp (Find_Dispatching_Type (E));
+      Ty            : constant Entity_Id :=
+        SPARK_Util.Subprograms.Find_Dispatching_Type (E);
       Descendants   : Node_Sets.Set := Get_Descendant_Set (Ty);
       Anc_Binders   : constant Binder_Array :=
         (if Ekind (E) = E_Function then
@@ -4493,7 +4498,7 @@ package body Gnat2Why.Subprograms is
          Generate_Axiom_For_Post (File, E);
 
          if Is_Dispatching_Operation (E)
-           and then Present (Find_Dispatching_Type (E))
+           and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
          then
             Generate_Dispatch_Compatibility_Axioms (File, E);
          end if;
@@ -4566,7 +4571,9 @@ package body Gnat2Why.Subprograms is
 
       Pre := Get_Static_Call_Contract (Params, E, Pragma_Precondition);
 
-      if Is_Dispatching_Operation (E) then
+      if Is_Dispatching_Operation (E)
+        and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
+      then
          Dispatch_Pre :=
            Get_Dispatching_Call_Contract (Params, E, Pragma_Precondition);
       end if;
@@ -4578,7 +4585,9 @@ package body Gnat2Why.Subprograms is
       if No_Return (E) then
          Post := False_Pred;
 
-         if Is_Dispatching_Operation (E) then
+         if Is_Dispatching_Operation (E)
+           and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
+         then
             Dispatch_Post := False_Pred;
          end if;
 
@@ -4599,7 +4608,9 @@ package body Gnat2Why.Subprograms is
             Right  => +Compute_Contract_Cases_Postcondition (Params, E),
             Domain => EW_Pred);
 
-         if Is_Dispatching_Operation (E) then
+         if Is_Dispatching_Operation (E)
+           and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
+         then
             Dispatch_Post :=
               Get_Dispatching_Call_Contract (Params, E, Pragma_Postcondition);
 
@@ -4805,7 +4816,10 @@ package body Gnat2Why.Subprograms is
                                      Post      => Post,
                                      Effects   => Effects));
 
-            if Is_Dispatching_Operation (E) then
+            if Is_Dispatching_Operation (E)
+              and then
+                Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
+            then
                Emit
                  (File,
                   New_Namespace_Declaration
@@ -4868,7 +4882,10 @@ package body Gnat2Why.Subprograms is
                      Right  => +Dynamic_Prop_Effects,
                      Domain => EW_Pred)));
 
-            if Is_Dispatching_Operation (E) then
+            if Is_Dispatching_Operation (E)
+              and then
+                Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
+            then
 
                --  For dispatching procedure, declare a new predicate symbol
                --  standing for the specific postcondition which applies to the
@@ -4889,69 +4906,67 @@ package body Gnat2Why.Subprograms is
                   --  Construct the Pred_Id corresponding to the call to
                   --  Spec_Post_Id in the postcondition of E.
 
-                  if Present (Find_Dispatching_Type (E)) then
-                     declare
-                        Logic_Binders   : constant Item_Array :=
-                          Compute_Raw_Binders (E) &
-                          Compute_Binders_For_Effects (E, Compute => False);
-                        --  Binders for parameters and effects of E
+                  declare
+                     Logic_Binders   : constant Item_Array :=
+                       Compute_Raw_Binders (E) &
+                       Compute_Binders_For_Effects (E, Compute => False);
+                     --  Binders for parameters and effects of E
 
-                        Dispatch_Param  : constant Entity_Id :=
-                          Find_Dispatching_Parameter (E);
-                        Dispatch_Binder : constant Item_Type :=
-                          Ada_Ent_To_Why.Element
-                            (Symbol_Table, Dispatch_Param);
-                        Dispatch_Typ    : constant W_Type_Id :=
-                          Get_Why_Type_From_Item (Dispatch_Binder);
-                        Tag_Arg         : constant W_Expr_Id :=
-                          (case Dispatch_Binder.Kind is
-                              when Regular =>
-                                 New_Tag_Access
-                                  (Domain => EW_Term,
-                                   Name   =>
-                                     (if Dispatch_Binder.Main.Mutable then
-                                       New_Deref
-                                        (Right => Dispatch_Binder.Main.B_Name,
-                                         Typ   => Dispatch_Typ)
-                                      else +Dispatch_Binder.Main.B_Name),
-                                   Ty     =>
-                                      Get_Ada_Node (+Dispatch_Typ)),
-                              when DRecord => +Dispatch_Binder.Tag.Id,
-                              when others  => raise Program_Error);
-                        --  Tag used for dispatching in calls to E
+                     Dispatch_Param  : constant Entity_Id :=
+                       Find_Dispatching_Parameter (E);
+                     Dispatch_Binder : constant Item_Type :=
+                       Ada_Ent_To_Why.Element
+                         (Symbol_Table, Dispatch_Param);
+                     Dispatch_Typ    : constant W_Type_Id :=
+                       Get_Why_Type_From_Item (Dispatch_Binder);
+                     Tag_Arg         : constant W_Expr_Id :=
+                       (case Dispatch_Binder.Kind is
+                           when Regular =>
+                              New_Tag_Access
+                          (Domain => EW_Term,
+                           Name   =>
+                             (if Dispatch_Binder.Main.Mutable then
+                                   New_Deref
+                                (Right => Dispatch_Binder.Main.B_Name,
+                                 Typ   => Dispatch_Typ)
+                              else +Dispatch_Binder.Main.B_Name),
+                           Ty     =>
+                              Get_Ada_Node (+Dispatch_Typ)),
+                           when DRecord => +Dispatch_Binder.Tag.Id,
+                           when others  => raise Program_Error);
+                     --  Tag used for dispatching in calls to E
 
-                        Logic_Args      : W_Expr_Array :=
-                          Tag_Arg &
-                          Get_Args_From_Binders
-                          (To_Binder_Array
-                             (Logic_Binders, Keep_Local => True) &
-                           To_Binder_Array
-                             (Logic_Binders, Keep_Local => False),
-                           Ref_Allowed => True);
-                        --  Arguments of the predicate function for E's
-                        --  specific post:
-                        --    - the specific tag
-                        --    - values of parameters and binders after the call
-                        --    - old values of mutable parts of binders
+                     Logic_Args      : W_Expr_Array :=
+                       Tag_Arg &
+                       Get_Args_From_Binders
+                       (To_Binder_Array
+                          (Logic_Binders, Keep_Local => True) &
+                          To_Binder_Array
+                          (Logic_Binders, Keep_Local => False),
+                        Ref_Allowed => True);
+                     --  Arguments of the predicate function for E's
+                     --  specific post:
+                     --    - the specific tag
+                     --    - values of parameters and binders after the call
+                     --    - old values of mutable parts of binders
 
-                        First_Old       : constant Natural :=
-                          2 + Item_Array_Length
-                            (Logic_Binders, Keep_Local => True);
+                     First_Old       : constant Natural :=
+                       2 + Item_Array_Length
+                         (Logic_Binders, Keep_Local => True);
 
-                     begin
-                        --  Insert calls to old on expressions for the old
-                        --  values of parameters and global variables.
+                  begin
+                     --  Insert calls to old on expressions for the old
+                     --  values of parameters and global variables.
 
-                        for I in First_Old .. Logic_Args'Last loop
-                           Logic_Args (I) := New_Old (Logic_Args (I), EW_Term);
-                        end loop;
+                     for I in First_Old .. Logic_Args'Last loop
+                        Logic_Args (I) := New_Old (Logic_Args (I), EW_Term);
+                     end loop;
 
-                        Spec_Post_Call := New_Call
-                          (Name   => Spec_Post_Id,
-                           Args   => Logic_Args,
-                           Typ    => EW_Bool_Type);
-                     end;
-                  end if;
+                     Spec_Post_Call := New_Call
+                       (Name   => Spec_Post_Id,
+                        Args   => Logic_Args,
+                        Typ    => EW_Bool_Type);
+                  end;
 
                   Emit
                     (File,
@@ -5169,7 +5184,7 @@ package body Gnat2Why.Subprograms is
       Generate_Axiom_For_Post (File, E);
 
       if Is_Dispatching_Operation (E)
-        and then Present (Find_Dispatching_Type (E))
+        and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
       then
          Generate_Dispatch_Compatibility_Axioms (File, E);
       end if;
@@ -5431,7 +5446,10 @@ package body Gnat2Why.Subprograms is
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type => EW_Bool_Type));
 
-            if Is_Dispatching_Operation (E) then
+            if Is_Dispatching_Operation (E)
+              and then
+                Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
+            then
                Emit
                  (File,
                   New_Namespace_Declaration

@@ -36,6 +36,7 @@ with Gnat2Why.Assumptions;               use Gnat2Why.Assumptions;
 with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Rtsfind;                            use Rtsfind;
 with Sem_Ch12;                           use Sem_Ch12;
+with Sem_Disp;                           use Sem_Disp;
 with Sem_Prag;                           use Sem_Prag;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
@@ -338,12 +339,11 @@ package body SPARK_Util.Subprograms is
    --------------------------------
 
    function Find_Dispatching_Parameter (E : Entity_Id) return Entity_Id is
-      Typ    : constant Entity_Id := Find_Dispatching_Type (E);
       Formal : Entity_Id := First_Formal (E);
 
    begin
       while Present (Formal) loop
-         if Etype (Formal) = Typ then
+         if Is_Controlling_Formal (Formal) then
             return Formal;
          end if;
 
@@ -352,6 +352,67 @@ package body SPARK_Util.Subprograms is
 
       raise Program_Error;
    end Find_Dispatching_Parameter;
+
+   ---------------------------
+   -- Find_Dispatching_Type --
+   ---------------------------
+
+   function Find_Dispatching_Type (E : Entity_Id) return Entity_Id is
+      Subp   : constant Entity_Id := Ultimate_Alias (E);
+      Formal : Entity_Id;
+      D_Type : Entity_Id := Empty;
+
+   begin
+      --  Dispatching calls to invisible dispatching opearations are not
+      --  allowed in SPARK.
+
+      if Is_Invisible_Dispatching_Operation (E) then
+         return Empty;
+      end if;
+
+      --  If E has a controlling result, the dispatching type is the result
+      --  type.
+
+      if Ekind (Subp) = E_Function
+        and then Has_Controlling_Result (Subp)
+      then
+         D_Type := Retysp (Etype (E));
+
+      --  Otherwise, find a controling formal. There should always be one.
+
+      else
+         Formal := First_Formal (Subp);
+
+         loop
+            pragma Assert (Present (Formal));
+            if Is_Controlling_Formal (Formal) then
+               D_Type := Retysp (Etype (Formal));
+               exit;
+            end if;
+
+            Next_Formal (Formal);
+         end loop;
+
+         pragma Assert (Present (D_Type));
+
+         --  Formal parameters of unconstrained types will have the first
+         --  subtypes as Etypes, return their base type instead.
+
+         if Is_First_Subtype (D_Type) then
+            D_Type := Base_Retysp (D_Type);
+         end if;
+      end if;
+
+      --  It can happen that D_Type is not tagged even if E is not a public
+      --  subprogram (Is_Invisible_Dispatching_Operation returns False). In
+      --  that case, E should not be considered dispatching in SPARK.
+
+      if Is_Tagged_Type (D_Type) then
+         return D_Type;
+      else
+         return Empty;
+      end if;
+   end Find_Dispatching_Type;
 
    ------------------------
    -- Get_Execution_Kind --

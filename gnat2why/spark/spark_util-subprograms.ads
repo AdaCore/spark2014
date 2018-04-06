@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Sem_Disp; use Sem_Disp;
-
 package SPARK_Util.Subprograms is
 
    --------------------------------------------
@@ -434,6 +432,14 @@ package SPARK_Util.Subprograms is
      Post => Present (Find_Dispatching_Parameter'Result);
    --  @param E a dispatching procedure
    --  @return a parameter of E which has the dispatching type
+
+   function Find_Dispatching_Type (E : Entity_Id) return Entity_Id with
+     Pre => Is_Dispatching_Operation (E);
+   --  @param E a dispatching operation
+   --  @return type on which E dispatches. It can return empty if E is not
+   --     considered to be dispatching in SPARK, either because the Retysp of
+   --     its dispatching type is not tagged or because it is an invisible
+   --     dispatching operation.
 
    --------------------------------
    -- Queries related to entries --

@@ -3606,7 +3606,7 @@ package body SPARK_Definition is
             Spec_Id : Entity_Id)
          is
             Disp_Typ : constant Entity_Id :=
-              Sem_Disp.Find_Dispatching_Type (Spec_Id);
+              SPARK_Util.Subprograms.Find_Dispatching_Type (Spec_Id);
 
             function Replace_Type (N : Node_Id) return Traverse_Result;
             --  Within the expression for a Pre'Class or Post'Class aspect for
@@ -3648,7 +3648,7 @@ package body SPARK_Definition is
                   then
                      null;
 
-                  elsif Typ = Disp_Typ then
+                  elsif Retysp (Typ) = Disp_Typ then
                      CW_Typ := Class_Wide_Type (Typ);
                   end if;
 
@@ -3764,7 +3764,8 @@ package body SPARK_Definition is
 
          if Is_Dispatching_Operation (E) then
             declare
-               Typ      : constant Entity_Id := Find_Dispatching_Type (E);
+               Typ      : constant Entity_Id :=
+                 SPARK_Util.Subprograms.Find_Dispatching_Type (E);
                Pre_List : constant Node_Lists.List :=
                  Find_Contracts (E, Pragma_Precondition);
                Pre      : Node_Id;
@@ -3772,10 +3773,7 @@ package body SPARK_Definition is
                if not Pre_List.Is_Empty then
                   Pre := Pre_List.First_Element;
 
-                  if Present (Typ)
-                    and then (Is_Tagged_Type (Typ)
-                               or else Is_Overriding_Subprogram (E))
-                  then
+                  if Present (Typ) then
                      Mark_Violation
                        ("plain precondition on dispatching subprogram",
                         Pre,
@@ -4472,7 +4470,9 @@ package body SPARK_Definition is
                Specific_Type : constant Entity_Id :=
                  Get_Specific_Type_From_Classwide (E);
             begin
-               if not Retysp_In_SPARK (Specific_Type) then
+               if not Retysp_In_SPARK (Specific_Type)
+                 or else not Is_Tagged_Type (Retysp (Specific_Type))
+               then
                   Mark_Violation (E, From => Specific_Type);
 
                --  Constrained class-wide types are not supported yet as it is
