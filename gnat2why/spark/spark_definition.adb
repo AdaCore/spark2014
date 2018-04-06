@@ -348,25 +348,15 @@ package body SPARK_Definition is
       with Pre => Emit_Messages;
 
       procedure Mark_Unsupported
-        (Msg        : String;
-         N          : Node_Id;
-         Extra_Name : Name_Id := No_Name;
-         Extra_Num  : Uint    := No_Uint;
-         Cont_Msg   : String  := "")
+        (Msg      : String;
+         N        : Node_Id;
+         Cont_Msg : String := "")
       with
         Global => (Output => Violation_Detected,
-                   Input  => Current_SPARK_Pragma),
-        Pre => (Extra_Name /= No_Name) = (for some C of Msg => C = '%')
-                 and then
-               (Extra_Num  /= No_Uint) = (for some C of Msg => C = '^');
+                   Input  => Current_SPARK_Pragma);
       --  Mark node N as an unsupported SPARK construct. An error message is
-      --  issued if current SPARK_Mode is On.
-      --
-      --  Extra parameters correspond to special characters in the Msg string
-      --  and precondition (which is slightly less restrictive than it should)
-      --  checks that they are set correctly.
-      --
-      --  Cont_Msg is a continuous message when specified.
+      --  issued if current SPARK_Mode is On. Cont_Msg is a continuous message
+      --  when specified.
 
       procedure Mark_Violation
         (Msg           : String;
@@ -703,11 +693,9 @@ package body SPARK_Definition is
       ----------------------
 
       procedure Mark_Unsupported
-        (Msg        : String;
-         N          : Node_Id;
-         Extra_Name : Name_Id := No_Name;
-         Extra_Num  : Uint    := No_Uint;
-         Cont_Msg   : String  := "")
+        (Msg      : String;
+         N        : Node_Id;
+         Cont_Msg : String := "")
       is
       begin
          --  Flag the violation, so that the current entity is marked
@@ -724,8 +712,6 @@ package body SPARK_Definition is
          --  If SPARK_Mode is On, raise an error
 
          if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-            Error_Msg_Name_1 := Extra_Name;
-            Error_Msg_Uint_1 := Extra_Num;
             Error_Msg_N (Msg & " is not yet supported", N);
 
             if Cont_Msg /= "" then
@@ -1425,8 +1411,8 @@ package body SPARK_Definition is
               and then Is_Update_Unconstr_Multidim_Aggr (N)
             then
                Mark_Unsupported
-                 ("attribute % of unconstrained multidimensional array",
-                  N, Name_Update);
+                 ("attribute """ & Standard_Ada_Case ("Update")
+                  & """ of unconstrained multidimensional array", N);
             end if;
             Mark_List (Expressions (N));
             Mark_List (Component_Associations (N));
@@ -1579,10 +1565,8 @@ package body SPARK_Definition is
                then
                   if Number_Dimensions (Etype (Name (N))) > 1 then
                      Mark_Unsupported
-                       ("iterator specification over array of dimension ^",
-                        N,
-                        Extra_Num =>
-                          UI_From_Int (Number_Dimensions (Etype (Name (N)))));
+                       ("iterator specification over array of dimension"
+                        & Number_Dimensions (Etype (Name (N)))'Img, N);
                   end if;
 
                   if Present (Subtype_Indication (N)) then
