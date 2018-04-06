@@ -94,6 +94,7 @@ package Configuration is
       No_Inlining          : aliased Boolean;
       No_Loop_Unrolling    : aliased Boolean;
       No_Global_Generation : aliased Boolean;
+      No_Subprojects       : aliased Boolean;
       Output_Header        : aliased Boolean;
       Output_Msg_Only      : aliased Boolean;
       P                    : aliased GNAT.Strings.String_Access;
@@ -150,9 +151,10 @@ package Configuration is
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
 
-   --  The variables that govern behavior of gnatprove. Many of them directly
-   --  correspond to a command line switch, but not all. See the Postprocess
-   --  function which links variables and switches.
+   --  Attributes that are synthetized from the command line and project file.
+   --  See the Postprocess function which defines these variables.
+   --  ??? Some of the below variable are simple copies of the corresponding
+   --  command line switch, could be removed.
 
    Verbose              : Boolean;
    Quiet                : Boolean;

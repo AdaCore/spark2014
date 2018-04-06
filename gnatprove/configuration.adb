@@ -1663,6 +1663,11 @@ package body Configuration is
 
       Define_Switch
         (Config,
+         CL_Switches.No_Subprojects'Access,
+         Long_Switch => "--no-subprojects");
+
+      Define_Switch
+        (Config,
          CL_Switches.Output_Header'Access,
          Long_Switch => "--output-header");
 

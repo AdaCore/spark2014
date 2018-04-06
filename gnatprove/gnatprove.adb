@@ -563,7 +563,7 @@ procedure Gnatprove with SPARK_Mode is
             Args.Append ("-d");
          end if;
 
-         if Only_Given then
+         if Only_Given or else CL_Switches.No_Subprojects then
             Args.Append ("-u");
          end if;
 

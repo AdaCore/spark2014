@@ -1,0 +1,10 @@
+with "a";
+
+project C is
+  for Source_Dirs use ("c");
+  for Object_Dir use "c_obj";
+  package Compiler is
+    for Default_Switches ("Ada") use ("-gnatws");
+    for Local_Configuration_Pragmas use "test.adc";
+  end Compiler;
+end C;

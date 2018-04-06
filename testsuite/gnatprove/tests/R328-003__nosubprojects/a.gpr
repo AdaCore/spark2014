@@ -1,0 +1,13 @@
+library project A is
+  for Library_Name use "a";
+  for Library_Dir use "a_lib";
+  for Library_ALI_Dir use "a_lib";
+  for Library_KIND use "static";
+  for Source_Dirs use ("a");
+  for Object_Dir use "a_obj";
+
+  package Compiler is
+    for Default_Switches ("Ada") use ("-gnatws");
+    for Local_Configuration_Pragmas use "test.adc";
+  end Compiler;
+end A;
