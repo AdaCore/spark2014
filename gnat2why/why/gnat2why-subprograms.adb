@@ -3494,6 +3494,19 @@ package body Gnat2Why.Subprograms is
 
       Prog := Compute_Contract_Cases_Entry_Checks (E, Guard_Map);
 
+      --  Declare global variable to hold the state of a protected object
+
+      if Within_Protected_Type (E) then
+         Emit
+           (File,
+            New_Global_Ref_Declaration
+              (Ada_Node    => Containing_Protected_Type (E),
+               Name        => Self_Name,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Ref_Type    =>
+                 Type_Of_Node (Containing_Protected_Type (E))));
+      end if;
+
       if Entity_Body_In_SPARK (E) then
 
          Get_Pre_Post_Pragmas
@@ -3510,19 +3523,6 @@ package body Gnat2Why.Subprograms is
                   Name     => Result_Name,
                   Labels   => Get_Counterexample_Labels (E),
                   Ref_Type => Type_Of_Node (Etype (E))));
-         end if;
-
-         --  Declare global variable to hold the state of a protected object
-
-         if Within_Protected_Type (E) then
-            Emit
-              (File,
-               New_Global_Ref_Declaration
-                 (Ada_Node    => Containing_Protected_Type (E),
-                  Name        => Self_Name,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Ref_Type =>
-                    Type_Of_Node (Containing_Protected_Type (E))));
          end if;
 
          Why_Body :=
