@@ -1,1 +1,1 @@
-ALL XFAIL no predicate function for private type
+ALL XFAIL no predicate function for private type (R406-001)
