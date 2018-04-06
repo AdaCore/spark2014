@@ -1,6 +1,7 @@
-package Test_Type with SPARK_Mode is
+package Test_Type with SPARK_Mode, Abstract_State => A_State is
    type T is private;
    function Decr (X : T) return T;
+   procedure P;
 private
    type T is record
       F : Integer := 0;
