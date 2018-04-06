@@ -840,7 +840,7 @@ to0pt{\kern0.55\wd0\vrule height0.45\ht0\hss}\box0}}}}
 \newtoks\titlerunning
 \newtoks\toctitle
 
-\def\clearheadinfo{\gdef\@author{Maroua Maalej, Tucker Taft, Yannick Moy}%
+\def\clearheadinfo{\gdef\@author{}%
                    \gdef\@title{No Title Given}%
                    \gdef\@subtitle{}%
                    \gdef\@institute{AdaCore}%

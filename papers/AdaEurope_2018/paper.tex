@@ -1,22 +1,14 @@
-\documentclass{llncs}
+\documentclass[runningheads]{llncs}
 
-
-
-\newcommand\maroua[1]{\textcolor{red}{#1}}
-
-%\usepackage[modulo]{lineno}
-%\linenumbers
-%\pagestyle{plain}
 
 \usepackage{graphicx}
 \usepackage{paralist}
 \usepackage{hyperref}
 \usepackage{caption}
+\usepackage{bbding}
 \graphicspath{{figures/}}
 
 \usepackage [T1]{fontenc}
-\usepackage[style=alphabetic, maxnames=99]{biblatex}
-\addbibresource{references.bib}
 
 \usepackage{enumitem}      % adjust spacing in enums
 
@@ -24,14 +16,12 @@
 \newcommand{\keyword}[1]{\textsf{#1}}
 
 
-\setcounter{biburllcpenalty}{7000}
-\setcounter{biburlucpenalty}{8000}
-
 \begin{document}
-%\setcounter{page}{1}
 \pagenumbering{arabic}
 
 \title{Safe Dynamic Memory Management in Ada and SPARK}
+\author{Maroua Maalej\Envelope\inst{1}, Tucker Taft\inst{2}, Yannick Moy\inst{1}}
+\institute{AdaCore Paris, France \\ \email{maalej@adacore.com}, \email{moy@adacore.com} \and Adacore New York, USA \\ \email{taft@adacore.com}}
 
 \maketitle
 \begin{abstract}
@@ -53,7 +43,7 @@ Standard Ada supports safe use of pointers (``access types'' in Ada) via strong 
 
 
 SPARK is a subset of the Ada programming language, targeted at the most safety- and security-critical applications. SPARK starts with the basic Ada features oriented toward building reliable and long-lived software, then adds restrictions that ensure that the behavior of a SPARK program is unambiguously defined, and simple enough that formal verification tools can perform an automatic assessment of conformance between a program specification and its implementation. The SPARK language and toolset for formal verification have been applied over many years to on-board aircraft systems,
-air traffic control systems, cryptographic systems, and rail systems \cite{ONeill2012, McCormick2015}.
+air traffic control systems, cryptographic systems, and rail systems \cite{ONeill2012,McCormick2015}.
 
 As a consequence of our focus in SPARK on proof automation and usability, we have forbidden the use in SPARK of programming language features that either prevent automatic proof, or require extensive user effort in annotating the program. Pointer types are the main example of this for SPARK. SPARK supports many Ada features that can make up for the lack of pointers: by-reference parameter passing, the ability to specify the address of objects, and the support for arrays as first-class objects. On the other hand, pointers are sometimes desirable, which forces one to exclude from formal SPARK analysis the parts of a program that make use of pointers. While there are idioms that facilitate this isolation of pointers in non-SPARK parts of a program~\cite{AdaCoreThalesSPARK}, it would be desirable to provide some level of support for pointers in SPARK.
 
@@ -68,7 +58,7 @@ access types and certain uses of (potentially) by-reference parameters. We say t
 By \textit{unknown} aliasing of names, we mean the case where two distinct names might refer to the same object, without the compiler being aware of it.  A rename introduces
 an alias, but not an ``unknown alias,'' because the compiler is fully aware of such an alias. However, if a global
 variable is passed by reference as a parameter to a subprogram that also has direct access to the same global, the by-reference parameter and the global are now aliases within
-the subprogram, and the compiler generating code for the subprogram has no way of knowing this, hence they are ``unknown aliases.''  One approach is to always assume the worst,
+the subprogram, and the compiler generating its code has no way of knowing this, hence they are ``unknown aliases.''  One approach is to always assume the worst,
 but that makes analyses much harder, and in some cases infeasible. Access types also introduce unknown aliasing, and in most cases, an analysis tool will not be
 sure whether the aliases exist, and will again have to make worst-case assumptions, which again may make any interesting proof infeasible.
 
@@ -229,7 +219,6 @@ We consider as observing the assignment operations used to \textit{initialize} s
 In the code snippet of Figure \ref{fig:observe_exp}, \var{X\_Param} and \var{Y\_Param} are access-to-constant objects of an anonymous type. Since the assignment of the value of \var{X} to \var{X\_Param}
 as well as to \var{Y\_Param} are part of the initialization of the target objects, this initiates the observing, and while \var{X\_Param} and \var{Y\_Param} exist they provide read-only access. Note that
 this allows us to call the function \var{Sum} using \var{X} as a first and second parameter -- upon the first occurrence of \var{X} it enters the observed state, but we can still observe it further.
-%\maroua{Note that while the call to \var{Sum} is in progress, variale \var{X} is observed and therefore cannot be modified by any other task that has visibility on it. (to answer the comment below)}
 
 \begin{figure}[htb!]
 \centering
@@ -241,7 +230,7 @@ this allows us to call the function \var{Sum} using \var{X} as a first and secon
 \subsubsection{Preventing Read-Write Aliasing}
 \label{sec:noaliasing}
 
-We have seen that the observing rules allow multiple access objects to observe the same designated object. In the scope of these objects, the original object is in the observed state, meaning that its designated object
+We have seen that the observing rules allow multiple access objects to observe the same designated object. In the scope of these objects, the original object is in the observed state; its designated object
 cannot be written, so there is no read-write aliasing problem here.
 
 
@@ -272,7 +261,6 @@ prior value of the subcomponent in the target composite object is different from
 
 As before, we consider as a move each assignment operation for a composite ownership type where the target is a variable (or the ``return object'' of a function), but this time we do not
 consider passing of \keyword{out} or \keyword{in out} parameters to be moves, because for composite ownership objects, parameters are passed by reference and no true copying is occurring. Composite parameter passing is described further below.
-
 In the code snippet of Figure~\ref{fig:movingComposite}, \var{Rec} is a record with components of an owning access type. The move operation occurs at line $\ell_{9}$ where \var{R} is moved
 to \var{S}, which involves moving \var{R.X} into \var{S.X} and moving \var{R.Y} into \var{S.Y}. As a result, the objects originally designated by
 \var{S.X} and \var{S.Y} are deallocated and \var{R.X} and \var{R.Y} end up null after the assignment.
@@ -391,7 +379,7 @@ are not aliased, then the result of calling \var{Add\_One} on actual parameters 
 
 \begin{figure}[htb!]
 \centering
-  \captionsetup{justification=centering,margin=0.6cm}
+  \captionsetup{justification=centering,margin=0.3cm}
    \includegraphics[]{spark_ex1}
    \caption{A simple procedure where aliasing would create problems in SPARK.}
    \label{fig:spark_ex1}
@@ -410,7 +398,11 @@ In particular, it could prove the following postcondition on the procedure.
 Indeed, by presuming that the assignment to \var{X\_Param.all} on line $\ell_2$ does not influence the value of \var{Y\_Param.all}, proof would be able to
 derive that the values \var{Y\_Param.all} has been incremented by 1. Similarly, flow analysis could derive wrong data dependencies if possible aliasing is not taken into account.
 
-This wrong postcondition would in turn allow a proof that an incorrect assertion is satisfied in the code snippet of Figure \ref{fig:spark_ex1_exp}, while in fact it fails at run time:
+This wrong postcondition would allow a proof that an incorrect assertion is satisfied in the code snippet of Figure \ref{fig:spark_ex1_exp}, while in fact it fails at run time.
+Thus, normal Ada pointers could not be treated like any other component in SPARK, given the possibility
+for aliasing. But the rules we have described for ownership objects precisely prevent
+aliasing when one of the objects can be written. This is analogous to the rules in SPARK for preventing aliasing between by-reference parameters, and these rules allow SPARK to treat such pointers
+like other components.
 
 \begin{figure}[htb!]
 \centering
@@ -420,10 +412,7 @@ This wrong postcondition would in turn allow a proof that an incorrect assertion
    \label{fig:spark_ex1_exp}
 \end{figure}
 
-Thus, normal Ada pointers could not be treated like any other component in SPARK, given the possibility
-for aliasing. But the rules we have described for ownership objects precisely prevent
-aliasing when one of the objects can be written. This is analogous to the rules in SPARK for preventing aliasing between by-reference parameters, and these rules allow SPARK to treat such pointers
-like other components.
+
 
 In the case of \var{Add\_One}, this means that SPARK analysis will be able to conclude that the postcondition above is satisfied by the implementation of \var{Add\_One}.
 But unsafe calls such as \var{Add\_One(X,X)} will be rejected both by compilation and analysis.
@@ -467,7 +456,8 @@ It turns out that their rules do not allow traversing a linked data structure wi
 objects and composite ones and moving or observing composite objects instead of borrowing them has allowed us to support safely traversing a data structure for read or update.
 
 In our work, we use a permission-based mechanism for detecting potentially harmful aliasing, in order to make the presence of pointers transparent for automated provers.
-In addition, our approach does not require additional user annotations, which are required in some of the previously mentioned techniques.  We instead rely on the existing distinctions in Ada between \keyword{in} and \keyword{in out}parameters, and between access-to-variable and access-to-constant types. We thus achieve high automation
+Our approach does not require additional user annotations required in some of the previously mentioned techniques.  We instead rely on the existing distinctions in Ada between \keyword{in} and
+\keyword{in out} parameters, and between access-to-variables and access-to-constants. We thus achieve high automation
 and usability, which was one of our goals in supporting pointers in SPARK.
 
 
@@ -494,7 +484,10 @@ remarks, and Georges-Axel Jaloyan for his initial work on the design,
 formalization and implementation of these ownership rules for Ada and SPARK.
 
 %\nolinenumbers
-\printbibliography[title={References}]
+%\printbibliography[title={References}]
+
+\bibliographystyle{splncs04}
+\bibliography{references}
 
 \end{document}
 \grid
