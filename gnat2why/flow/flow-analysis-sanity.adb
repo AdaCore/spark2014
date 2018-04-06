@@ -769,7 +769,32 @@ package body Flow.Analysis.Sanity is
          Err_Desc : String;
          Err_Node : Node_Id)
       is
+         function Is_Within_Protected_Function return Boolean;
+         --  Returns True if we are inside a protected function, False if
+         --  inside a protected procedure or entry, and crashes otherwise.
+
          procedure Emit_Error (F : Flow_Id);
+
+         ----------------------------------
+         -- Is_Within_Protected_Function --
+         ----------------------------------
+
+         function Is_Within_Protected_Function return Boolean
+         is
+            Curr_Scope : Entity_Id := FA.Analyzed_Entity;
+            Prev_Scope : Entity_Id;
+         begin
+            loop
+               Prev_Scope := Curr_Scope;
+               Curr_Scope := Enclosing_Unit (Curr_Scope);
+
+               pragma Assert (Present (Curr_Scope));
+
+               if Ekind (Curr_Scope) = E_Protected_Type then
+                  return Ekind (Prev_Scope) = E_Function;
+               end if;
+            end loop;
+         end Is_Within_Protected_Function;
 
          ----------------
          -- Emit_Error --
@@ -798,6 +823,13 @@ package body Flow.Analysis.Sanity is
                   declare
                      Var : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
+                     function Is_Protected_Discriminant (F : Flow_Id)
+                                                         return Boolean
+                     is (Ekind (F.Component.First_Element) = E_Discriminant)
+                     with Pre => Ekind (Get_Direct_Mapping_Id (F)) =
+                                   E_Protected_Type
+                                 and then F.Kind = Record_Field;
+
                   begin
                      pragma Assert (Nkind (Var) in N_Entity);
 
@@ -806,13 +838,16 @@ package body Flow.Analysis.Sanity is
                      --  * a bound
                      --  * a constant object
                      --  * a discriminant of a protected type
+                     --  * a component or part of a protected type accessed
+                     --    from within a protected function.
 
                      if not (Is_Bound (F)
                              or else
-                               (Is_Discriminant (F)
-                                   and then
-                                Ekind (Get_Direct_Mapping_Id (F)) =
-                                  E_Protected_Type)
+                               (Ekind (Var) = E_Protected_Type
+                                and then
+                                  (Is_Protected_Discriminant (F)
+                                   or else
+                                   Is_Within_Protected_Function))
                              or else Is_Constant_Object (Var)
                              or else Is_Internal (Var))
                      then

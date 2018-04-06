@@ -2587,51 +2587,13 @@ package body Flow_Utility is
                   return Flow_Id_Sets.Empty_Set;
                end if;
 
-               --  Special-case discriminants, components and constituents of
-               --  protected types referenced within their own types.
+               --  Ignore discriminants and components unless they come from
+               --  task or protected types.
 
-               if Is_Protected_Component_Or_Discr_Or_Part_Of (E) then
-                  declare
-                     Curr_Scope : Entity_Id := Find_Enclosing_Scope (N);
-                     Prev_Scope : Entity_Id;
-
-                  begin
-                     --  Detect references within the type definition itself
-
-                     if Ekind (Curr_Scope) = E_Protected_Type then
-                        pragma Assert (Ekind (E) = E_Discriminant);
-
-                         --  ??? those discriminants are returned by
-                         --  Get_Variables, but later ignored in
-                         --  Check_Variable_Inputs as if they would belong to
-                         --  an IN mode parameter.
-
-                     --  Detect references within protected functions and
-                     --  protected procedures/entries.
-
-                     else
-                        loop
-                           Prev_Scope := Curr_Scope;
-                           Curr_Scope := Enclosing_Unit (Curr_Scope);
-                           exit when Ekind (Curr_Scope) = E_Protected_Type;
-                        end loop;
-
-                        case Ekind (Prev_Scope) is
-                           when E_Function =>
-                              return Flow_Id_Sets.Empty_Set;
-
-                           when E_Procedure | E_Entry =>
-                              null;
-
-                           when others =>
-                              raise Program_Error;
-                        end case;
-                     end if;
-                  end;
-
-               --  Ignore other components and discriminants
-
-               elsif Ekind (E) in E_Component | E_Discriminant then
+               if Ekind (E) in E_Discriminant | E_Component
+                 and then Ekind (Scope (E)) not in E_Protected_Type
+                                                 | E_Task_Type
+               then
                   return Flow_Id_Sets.Empty_Set;
                end if;
 
