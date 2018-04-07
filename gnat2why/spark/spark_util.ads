@@ -589,9 +589,12 @@ package SPARK_Util is
    --    node whose callee is a function with pragma/aspect Volatile_Function
    --    set.
 
-   function Safe_First_Sloc (N : Node_Id) return Source_Ptr;
+   function Safe_First_Sloc (N : Node_Id) return Source_Ptr
+   with Post => (N = Empty) = (Safe_First_Sloc'Result = No_Location);
    --  Wrapper for First_Sloc that is safe to use for nodes coming from
    --  instances of generic units and subprograms inlined for proof.
+   --  For valid nodes it returns a valid location; for an empty node it
+   --  returns an invalid location.
    --
    --  ??? this is only a temporary fix and should be removed once the
    --  underlying problem with First_Sloc is fixed.

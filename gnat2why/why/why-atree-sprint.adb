@@ -56,7 +56,7 @@ package body Why.Atree.Sprint is
    --  Counterexamples use Why3 locations, contrary to VCs which are based
    --  on special GP_Sloc labels.
 
-   Curr_Sloc : Source_Ptr := No_Location;
+   Curr_Sloc : Source_Ptr;
    --  The source code location of currently printed node
 
    procedure Print_Sloc_Tag;
@@ -1822,18 +1822,25 @@ package body Why.Atree.Sprint is
    --------------------
 
    procedure Print_Sloc_Tag is
-      File : constant String := File_Name (Curr_Sloc);
-      Line : constant Physical_Line_Number :=
-        Get_Physical_Line_Number (Curr_Sloc);
-
-      Sloc_Tag : constant String :=
-        "#""" & File & """" &
-        Physical_Line_Number'Image (Line) & " " &
-        "0" & " " &  --  dummy column1 0
-        "0" & "#";   --  dummy column2 0
    begin
-      P (O, Sloc_Tag);
-      P (O, " ");
+      --  Do not print locations which do not belong to source code
+
+      if Curr_Sloc not in Standard_Location | Standard_ASCII_Location then
+         declare
+            File : constant String := File_Name (Curr_Sloc);
+            Line : constant Physical_Line_Number :=
+              Get_Physical_Line_Number (Curr_Sloc);
+
+            Sloc_Tag : constant String :=
+              "#""" & File & """" &
+              Physical_Line_Number'Image (Line) & " " &
+              "0" & " " &  --  dummy column1 0
+              "0" & "#";   --  dummy column2 0
+         begin
+            P (O, Sloc_Tag);
+            P (O, " ");
+         end;
+      end if;
    end Print_Sloc_Tag;
 
    ---------------------
