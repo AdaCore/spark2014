@@ -207,6 +207,9 @@ package SPARK_Atree.Entities is
                   and then
                    Einfo.Number_Formals (Invariant_Procedure'Result) = 1);
 
+   function Is_Actual_Subtype (Typ : Entity_Id) return Boolean with
+     Pre => Is_Type (Typ);
+
    function Is_Class_Wide_Type (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
 

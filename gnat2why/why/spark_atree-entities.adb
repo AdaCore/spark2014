@@ -312,6 +312,13 @@ package body SPARK_Atree.Entities is
    function Invariant_Procedure (Typ : Entity_Id) return Entity_Id renames
      Einfo.Invariant_Procedure;
 
+   -----------------------
+   -- Is_Actual_Subtype --
+   -----------------------
+
+   function Is_Actual_Subtype (Typ : Entity_Id) return Boolean renames
+     Einfo.Is_Actual_Subtype;
+
    ------------------------
    -- Is_Class_Wide_Type --
    ------------------------
