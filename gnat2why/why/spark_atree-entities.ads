@@ -130,6 +130,9 @@ package SPARK_Atree.Entities is
    function Is_Private_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Private_Type;
 
+   function Is_Protected_Subprogram_Or_Entry (E : Entity_Id) return Boolean;
+   --  Returns True if E is either an entry or a protected subprogram
+
    function Is_Protected_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Protected_Type;
 

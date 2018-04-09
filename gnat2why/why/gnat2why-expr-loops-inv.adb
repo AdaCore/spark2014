@@ -1157,7 +1157,9 @@ package body Gnat2Why.Expr.Loops.Inv is
 
       --  Record write to the protected object for protected procedure or entry
 
-      if Within_Protected_Type (Subp) and then Is_External_Call (Call) then
+      if Is_Protected_Subprogram_Or_Entry (Subp)
+        and then Is_External_Call (Call)
+      then
          Update_Status
            (Prefix (SPARK_Atree.Name (Call)), Loop_Writes, Inv_Seen);
 

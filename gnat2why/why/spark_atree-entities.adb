@@ -354,6 +354,15 @@ package body SPARK_Atree.Entities is
    function Is_Predicate_Function (Subp : Entity_Id) return Boolean renames
      Einfo.Is_Predicate_Function;
 
+   --------------------------------------
+   -- Is_Protected_Subprogram_Or_Entry --
+   --------------------------------------
+
+   function Is_Protected_Subprogram_Or_Entry (E : Entity_Id) return Boolean is
+     (Einfo.Is_Entry (E)
+      or else (Einfo.Is_Subprogram (E)
+               and then Ekind (Sinfo.Scope (E)) = E_Protected_Type));
+
    --------------------
    -- Is_Tagged_Type --
    --------------------
