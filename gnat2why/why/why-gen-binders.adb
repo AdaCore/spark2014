@@ -782,12 +782,9 @@ package body Why.Gen.Binders is
             Domain     => Domain,
             Name       => Binders (B).B_Name,
             Labels     =>
-              (if not Present (Binders (B).Ada_Node) or else
-                  not Is_Floating_Point_Type (Etype (Binders (B).Ada_Node))
-               then Get_Model_Trace_Label
-                 (E               => Binders (B).Ada_Node,
-                  Is_Record_Field => True)
-               else Name_Id_Sets.Empty_Set),
+              Get_Model_Trace_Label
+                (E               => Binders (B).Ada_Node,
+                 Is_Record_Field => True),
             Arg_Type   => New_Arg_Type (Binders (B)),
             Is_Mutable => Binders (B).Mutable);
       end loop;

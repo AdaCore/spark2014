@@ -25,10 +25,8 @@
 
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Common_Containers;   use Common_Containers;
-with Einfo;               use Einfo;
 with GNATCOLL.Utils;      use GNATCOLL.Utils;
 with Namet;               use Namet;
-with Sinfo;               use Sinfo;
 with SPARK_Util;          use SPARK_Util;
 with Types;               use Types;
 with VC_Kinds;            use VC_Kinds;
@@ -130,16 +128,12 @@ package body Why.Gen.Decl is
 
       --  For each record field, emit projection from the record to the field
       for Binder in Binders'Range loop
-         if Binders (Binder).Ada_Node = Empty or else
-            not Is_Floating_Point_Type (Etype (Binders (Binder).Ada_Node))
-         then
-            Emit_Record_Projection_Declaration
-              (Section       => Section,
-               Param_Ty_Name => Name,
-               Field_Id      => Binders (Binder).B_Name,
-               SPARK_Node    => (if SPARK_Record then Binders (Binder).Ada_Node
-                                 else Empty));
-         end if;
+         Emit_Record_Projection_Declaration
+           (Section       => Section,
+            Param_Ty_Name => Name,
+            Field_Id      => Binders (Binder).B_Name,
+            SPARK_Node    => (if SPARK_Record then Binders (Binder).Ada_Node
+                              else Empty));
       end loop;
    end Emit_Record_Declaration;
 

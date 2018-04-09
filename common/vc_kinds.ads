@@ -308,7 +308,8 @@ package VC_Kinds is
       Float_Plus_Zero,
       Float_Minus_Zero,
       Float_NaN,
-      Float_Val);
+      Float_Val,
+      Float_Hexa);
 
    --  Record for float types
    type Float_Value (F_Type : Float_Type) is record
@@ -322,6 +323,8 @@ package VC_Kinds is
             F_Sign        : Unbounded_String;
             F_Exponent    : Unbounded_String;
             F_Significand : Unbounded_String;
+         when Float_Hexa =>
+            F_Hexa        : Unbounded_String;
       end case;
    end record;
 
@@ -347,7 +350,6 @@ package VC_Kinds is
          when Cnt_Unparsed  => U  : Unbounded_String;
          when Cnt_Record    =>
             Fi                    : Cntexmp_Value_Array.Map;
-            Di                    : Cntexmp_Value_Array.Map;
          when Cnt_Array     =>
             Array_Indices         : Cntexmp_Value_Array.Map;
             Array_Others          : Cntexmp_Value_Ptr;

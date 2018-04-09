@@ -34,6 +34,8 @@ with Flow_Refinement;           use Flow_Refinement;
 with Flow_Types;                use Flow_Types;
 with GNAT;                      use GNAT;
 with GNAT.String_Split;         use GNAT.String_Split;
+with Gnat2Why.Tables;           use Gnat2Why.Tables;
+with Gnat2Why.Util;             use Gnat2Why.Util;
 with Namet;                     use Namet;
 with Sem_Aux;                   use Sem_Aux;
 with Sem_Eval;                  use Sem_Eval;
@@ -171,10 +173,6 @@ package body Gnat2Why.Counter_Examples is
       --  the keyword constant on its definition. Internally, it calls
       --  Compile_Time_Known_Value_Or_Aggr.
 
-      function Contains (T : Entity_Id; F : String) return Boolean
-      with Pre => Is_Type (T);
-      --  Returns True iff a component or discriminant of type T has name F
-
       function Refine_Aux
         (Cnt_Value : Cntexmp_Value_Ptr;
          AST_Type  : Entity_Id;
@@ -230,22 +228,6 @@ package body Gnat2Why.Counter_Examples is
                             return Unbounded_String;
       --  ??? Used to print float counterex. This version is temporary.
 
-      --------------
-      -- Contains --
-      --------------
-
-      function Contains (T : Entity_Id; F : String) return Boolean is
-         C : Entity_Id := First_Component_Or_Discriminant (T);
-      begin
-         while Present (C) loop
-            if F = Source_Name (C) then
-               return True;
-            end if;
-            C := Next_Component_Or_Discriminant (C);
-         end loop;
-         return False;
-      end Contains;
-
       ----------------
       -- Refine_Aux --
       ----------------
@@ -256,6 +238,33 @@ package body Gnat2Why.Counter_Examples is
          Is_Index  : Boolean := False)
          return Unbounded_String
       is
+
+         function Get_Entity_Id (S : String) return Entity_Id;
+         --  Convert a string of the form ".4554" to the Entity_Id 4554.
+         --  Return the empty entity if not of the given form.
+
+         -------------------
+         -- Get_Entity_Id --
+         -------------------
+
+         function Get_Entity_Id (S : String) return Entity_Id is
+         begin
+            if S'First + 1 > S'Last then
+
+               --  This case should not happen
+               pragma Assert (False);
+               return Empty;
+            else
+               return Entity_Id'Value (S (S'First + 1 .. S'Last));
+            end if;
+         exception
+            when Constraint_Error =>
+
+               --  This case should not happen
+               pragma Assert (False);
+               return Empty;
+         end Get_Entity_Id;
+
          Why3_Type : constant Cntexmp_Type := Cnt_Value.all.T;
       begin
          case Why3_Type is
@@ -365,121 +374,60 @@ package body Gnat2Why.Counter_Examples is
 
             when Cnt_Record =>
 
-               --  In some cases, we have a mismatch between types of record
-               --  as given back by why3 and the record that the entity should
-               --  have. We encountered this only once in a private type so
-               --  this should be fine to not print this.
-               if not (Is_Record_Type (AST_Type)) then
-                  return Null_Unbounded_String;
-               end if;
-
                --  AST_Type is of record type
                declare
-                  Mdiscrs       : constant Cntexmp_Value_Array.Map :=
-                                    Cnt_Value.Di;
-                  Mfields       : Cntexmp_Value_Array.Map := Cnt_Value.Fi;
+                  Mfields       : constant Cntexmp_Value_Array.Map :=
+                                    Cnt_Value.Fi;
                   S             : Unbounded_String :=
                                     To_Unbounded_String ("(");
-                  Current_Field : Entity_Id;
-
-                  --  We have to use the base_type of the entity because the
-                  --  counterexample returned is of base type. In particular,
-                  --  on subtypes that fix the discriminant in their
-                  --  definition, we get all the fields of the base type
-                  --  not only those of the subtype.
 
                   AST_Basetype  : constant Entity_Id :=
-                    Retysp (Base_Type (AST_Type));
-                  Count_Discrs  : constant Integer :=
-                    Integer (Cntexmp_Value_Array.Length (Mdiscrs));
-                  Count_Fields  : Integer :=
-                    Integer (Cntexmp_Value_Array.Length (Mfields));
+                    Retysp (AST_Type);
                   Check_Count   : Integer := 0;
-                  Discriminants : constant Nat :=
-                    (if Has_Discriminants (AST_Basetype)
-                     then Number_Discriminants (AST_Basetype)
-                     else 0);
-                  Fields        : constant Int :=
-                    Number_Components (AST_Basetype) - Discriminants;
+                  Fields : constant Integer :=
+                    Count_Why_Regular_Fields (AST_Basetype) +
+                    Count_Discriminants (AST_Basetype);
 
                begin
-                  --  When the type is tagged, a useless field (for cntexmp) is
-                  --  generated.
 
-                  if Is_Tagged_Type (AST_Type) then
-                     Mfields.Delete_Last;
-                     Count_Fields := Count_Fields - 1;
-                  end if;
-
-                  if Has_Discriminants (AST_Basetype)
-                    and then Count_Discrs = Integer (Discriminants)
-                  then
-                     Current_Field := First_Discriminant (AST_Basetype);
-                     Discr_Loop :
-                     for Mdiscr of Mdiscrs loop
-                        declare
-                           Field_Type : constant Entity_Id :=
-                                          Retysp (Etype (Current_Field));
-                           Field_Name : constant String :=
-                                          Source_Name (Current_Field);
-                        begin
-                           if Contains (AST_Type, Field_Name) then
-                              if Check_Count > 0 then
-                                 Append (S, ", ");
-                              end if;
-
-                              Check_Count := Check_Count + 1;
-                              Append (S,
-                                      Field_Name & " => " &
-                                        Replace_Question_Mark (
-                                          Refine_Aux (Mdiscr, Field_Type)));
+                  Fields_Loop :
+                  for Cursor in Mfields.Iterate loop
+                     declare
+                        Mfield       : constant Cntexmp_Value_Ptr :=
+                                         Cntexmp_Value_Array.Element (Cursor);
+                        Key_Field    : constant String :=
+                                         Cntexmp_Value_Array.Key (Cursor);
+                        Field_Entity : constant Entity_Id :=
+                                         Get_Entity_Id (Key_Field);
+                        Field_Type   : constant Entity_Id :=
+                                         Retysp (Etype (Field_Entity));
+                        Field_Name   : constant String :=
+                                         Source_Name (Field_Entity);
+                     begin
+                        if Present (Field_Entity) and then
+                          Component_Is_Visible_In_Type (AST_Type,
+                                                        Field_Entity)
+                        then
+                           if Check_Count > 0 then
+                              Append (S, ", ");
                            end if;
-                        end;
 
-                        Current_Field := Next_Discriminant (Current_Field);
+                           Check_Count := Check_Count + 1;
 
-                        --  Exit when no more discriminants are present
-                        exit Discr_Loop when No (Current_Field);
-                     end loop Discr_Loop;
-                  end if;
+                           Append (S, Field_Name & " => " &
+                                     Replace_Question_Mark
+                                     (Refine_Aux (Mfield, Field_Type)));
+                        end if;
+                     end;
 
-                  if Count_Fields = Integer (Fields) then
-                     Current_Field := First_Component (AST_Basetype);
-                     Fields_Loop :
-                     for Mfield of Mfields loop
-                        declare
-                           Field_Type : constant Entity_Id :=
-                                          Retysp (Etype (Current_Field));
-                           Field_Name : constant String :=
-                                          Source_Name (Current_Field);
-                           --  ??? Here, we should check that Field_Name
-                           --  is actually the same as the name of the
-                           --  Mfield.
-                        begin
-                           if Contains (AST_Type, Field_Name) then
-                              if Check_Count > 0 then
-                                 Append (S, ", ");
-                              end if;
-
-                              Check_Count := Check_Count + 1;
-
-                              Append (S, Field_Name & " => " &
-                                         Replace_Question_Mark
-                                           (Refine_Aux (Mfield, Field_Type)));
-                           end if;
-                        end;
-
-                        Current_Field := Next_Component (Current_Field);
-
-                        --  Exit when no more fields are present
-                        exit Fields_Loop when No (Current_Field);
-                     end loop Fields_Loop;
-                  end if;
+                  end loop Fields_Loop;
 
                   Append (S,
-                          (if Check_Count /= Integer (Fields + Discriminants)
-                             and then Check_Count > 0
-                           then ", others => ?)"
+                          (if Check_Count /= Fields then
+                             (if Check_Count > 0 then
+                                 ", others => ?)"
+                              else
+                                 "others => ?)")
                            else ")"));
 
                   return S;
@@ -605,6 +553,9 @@ package body Gnat2Why.Counter_Examples is
                return "(fp " & F.F_Sign & ", " & F.F_Exponent & ", "
                  & F.F_Significand & ")";
             end;
+         when Float_Hexa =>
+            return F.F_Hexa;
+
          end case;
       end Print_Float;
 

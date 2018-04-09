@@ -380,7 +380,15 @@ package body VC_Kinds is
                                                 Get (Val, "exponent"),
                                               F_Significand =>
                                                 Get (Val, "significand")));
-
+               elsif Float_Type = "Float_hexa" then
+                  return (T => Cnt_Float,
+                          F =>
+                            --  ??? We do not parse the value because it is a
+                            --  float that can be recognized as an integer by
+                            --  Gnatcoll.json. Some possible values: 0, 1.5, 2
+                             new Float_Value'(F_Type => Float_Hexa,
+                                              F_Hexa =>
+                                                Get (Val, "str_hexa")));
                else
                   return (T => Cnt_Invalid,
                           S => Null_Unbounded_String);
@@ -403,40 +411,26 @@ package body VC_Kinds is
             declare
                Record_Val : constant JSON_Value := Get (V, "val");
                Field_Value_List : Cntexmp_Value_Array.Map;
-               Discr_Value_List : Cntexmp_Value_Array.Map;
-               JS_Array_Discr   : constant JSON_Array :=
-                                    Get (Record_Val, "Discr");
                JS_Array_Field   : constant JSON_Array :=
                                     Get (Record_Val, "Field");
 
             begin
 
-               for Index in 1 .. Length (JS_Array_Discr) loop
-                  declare
-                     Json_Element : constant JSON_Value :=
-                                      Get (JS_Array_Discr, Index);
-                     Elem_Ptr     : constant Cntexmp_Value_Ptr :=
-                                      new Cntexmp_Value'(
-                                       Get_Typed_Cntexmp_Value (Json_Element));
-                  begin
-                     Discr_Value_List.Insert (Index'Image, Elem_Ptr);
-                  end;
-               end loop;
-
                for Index in 1 .. Length (JS_Array_Field) loop
                   declare
                      Json_Element : constant JSON_Value :=
-                                      Get (JS_Array_Field, Index);
+                         Get (Get (JS_Array_Field, Index), "value");
+                     Field_Name   : constant String :=
+                         Get (Get (JS_Array_Field, Index), "field");
                      Elem_Ptr     : constant Cntexmp_Value_Ptr :=
-                                      new Cntexmp_Value'(
-                                       Get_Typed_Cntexmp_Value (Json_Element));
+                       new Cntexmp_Value'(
+                         Get_Typed_Cntexmp_Value (Json_Element));
                   begin
-                     Field_Value_List.Insert (Index'Image, Elem_Ptr);
+                     Field_Value_List.Insert (Field_Name, Elem_Ptr);
                   end;
                end loop;
                return (T  => Cnt_Record,
-                       Fi => Field_Value_List,
-                       Di => Discr_Value_List);
+                       Fi => Field_Value_List);
             end;
 
          when Cnt_Array     =>
