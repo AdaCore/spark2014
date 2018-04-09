@@ -3500,10 +3500,10 @@ package body Gnat2Why.Subprograms is
          Emit
            (File,
             New_Global_Ref_Declaration
-              (Ada_Node    => Containing_Protected_Type (E),
-               Name        => Self_Name,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Ref_Type    =>
+              (Ada_Node => Containing_Protected_Type (E),
+               Name     => Self_Name,
+               Labels   => Name_Id_Sets.Empty_Set,
+               Ref_Type =>
                  Type_Of_Node (Containing_Protected_Type (E))));
       end if;
 
