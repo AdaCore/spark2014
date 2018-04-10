@@ -5,3 +5,4 @@ Darwin SKIP too slow
 32bits SKIP diffs
 NT SKIP hanging prover processes on windows (QA16-002)
 ALL RLIMIT 5000
+ALL TIMING
