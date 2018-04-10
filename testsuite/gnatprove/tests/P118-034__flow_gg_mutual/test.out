@@ -67,8 +67,8 @@ Generated contracts for do_a_c_a
          Flag_A_1
          Flag_A_7
          Flag_A_2
-         C.State_C
          Flag_A_3
+         C.State_C
 Generated contracts for do_a_b_c_a
    Global =>
       In_Out =>
@@ -85,8 +85,8 @@ Generated contracts for do_a_b_c_a
          B.State_B
          Flag_A_7
          Flag_A_2
-         C.State_C
          Flag_A_3
+         C.State_C
 Generated contracts for do_a_b_c_b_a
    Global =>
       In_Out =>
@@ -103,8 +103,8 @@ Generated contracts for do_a_b_c_b_a
          B.State_B
          Flag_A_7
          Flag_A_2
-         C.State_C
          Flag_A_3
+         C.State_C
 Generated contracts for a
    Initializes =>
       A.State_A

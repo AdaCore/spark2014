@@ -250,18 +250,15 @@ package body SPARK_Register is
             end;
          end if;
 
-         --  Register dispatching operations, because they might be called only
-         --  implicitly and we miss such calls in the above code.
+         --  Register all subprograms, because after "inlining for proof" they
+         --  might be not called explicitly and we will miss such them in the
+         --  above code. This includes dispatching operations, which might be
+         --  never called explicitly.
 
-         if Nkind (N) = N_Subprogram_Declaration then
-            declare
-               E : constant Entity_Id := Defining_Entity (N);
-
-            begin
-               if Is_Dispatching_Operation (E) then
-                  Register_Entity (E);
-               end if;
-            end;
+         if Nkind (N) = N_Subprogram_Declaration
+           or else (Nkind (N) = N_Subprogram_Body and then Acts_As_Spec (N))
+         then
+            Register_Entity (Defining_Entity (N));
          end if;
 
          --  In many places we manipulate objects represented by names which is
