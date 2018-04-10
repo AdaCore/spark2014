@@ -30,6 +30,7 @@ with Flow_Utility;           use Flow_Utility;
 with Nlists;                 use Nlists;
 with Gnat2Why.Tables;        use Gnat2Why.Tables;
 with Snames;                 use Snames;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with Why;                    use Why;
 with Why.Atree.Builders;     use Why.Atree.Builders;
@@ -1157,7 +1158,7 @@ package body Gnat2Why.Expr.Loops.Inv is
 
       --  Record write to the protected object for protected procedure or entry
 
-      if Is_Protected_Subprogram_Or_Entry (Subp)
+      if Is_Protected_Operation (Subp)
         and then Is_External_Call (Call)
       then
          Update_Status

@@ -4986,7 +4986,7 @@ package body Flow.Analysis is
 
    begin
       --  We only perform this check on protected operations
-      if Ekind (Scope (FA.Analyzed_Entity)) /= E_Protected_Type then
+      if not Is_Protected_Operation (FA.Analyzed_Entity) then
          return;
       end if;
 

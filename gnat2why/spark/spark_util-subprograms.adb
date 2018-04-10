@@ -1081,6 +1081,17 @@ package body SPARK_Util.Subprograms is
       end if;
    end Is_Local_Subprogram_Always_Inlined;
 
+   ----------------------------
+   -- Is_Protected_Operation --
+   ----------------------------
+
+   function Is_Protected_Operation (E : Entity_Id) return Boolean is
+     (Is_Entry (E)
+        or else
+      (Is_Subprogram (E)
+         and then Nkind (Parent (Unit_Declaration_Node (E))) =
+                  N_Protected_Definition));
+
    -------------------------------------
    -- Is_Requested_Subprogram_Or_Task --
    -------------------------------------
