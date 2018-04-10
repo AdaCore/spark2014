@@ -34,7 +34,6 @@ with Flow_Refinement;           use Flow_Refinement;
 with Flow_Types;                use Flow_Types;
 with GNAT;                      use GNAT;
 with GNAT.String_Split;         use GNAT.String_Split;
-with Gnat2Why.Tables;           use Gnat2Why.Tables;
 with Gnat2Why.Util;             use Gnat2Why.Util;
 with Namet;                     use Namet;
 with Sem_Aux;                   use Sem_Aux;
@@ -404,10 +403,7 @@ package body Gnat2Why.Counter_Examples is
                         Field_Name   : constant String :=
                                          Source_Name (Field_Entity);
                      begin
-                        if Present (Field_Entity) and then
-                          Component_Is_Visible_In_Type (AST_Type,
-                                                        Field_Entity)
-                        then
+                        if Present (Field_Entity) then
                            if Check_Count > 0 then
                               Append (S, ", ");
                            end if;
