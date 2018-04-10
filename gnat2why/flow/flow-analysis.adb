@@ -5043,8 +5043,8 @@ package body Flow.Analysis is
 
       procedure Visitor (V  :     Vertex_Id;
                          TV : out Simple_Traversal_Instruction);
-      --  Emit a high check for all publically visible variables modified
-      --  at this vertex.
+      --  Emit a high check for all publically visible variables modified at
+      --  this vertex.
 
       -------------
       -- Visitor --
@@ -5053,18 +5053,28 @@ package body Flow.Analysis is
       procedure Visitor (V  :     Vertex_Id;
                          TV : out Simple_Traversal_Instruction)
       is
-         K : Flow_Id renames FA.PDG.Get_Key (V);
+         K   : Flow_Id renames FA.PDG.Get_Key (V);
+         Atr : V_Attributes renames FA.Atr (V);
+
+         F : constant Flow_Id := (if Present (K)
+                                  then K
+                                  else Atr.Call_Vertex);
+         --  This is the Flow_Id that we are interested in to check which
+         --  variables are used. If the current has a key then it is that key,
+         --  if not it is the call vertex. It could be Null_Flow_Id if there is
+         --  none of the above.
 
       begin
          TV := Continue;
 
          --  Only check nodes in the body
-         if Present (K)
-           and then K.Kind in Direct_Mapping | Record_Field
-           and then Get_Flow_Scope (K.Node).Part = Body_Part
+
+         if Present (F)
+           and then F.Kind in Direct_Mapping | Record_Field
+           and then Get_Flow_Scope (F.Node).Part = Body_Part
          then
             for Var of Visible_Vars loop
-               if FA.Atr (V).Variables_Defined.Contains (Var) then
+               if Atr.Variables_Defined.Contains (Var) then
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "modification of & in elaboration " &
@@ -5073,6 +5083,7 @@ package body Flow.Analysis is
                      N        => Error_Location (FA.PDG, FA.Atr, V),
                      F1       => Var,
                      F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                     SRM_Ref  => "7.7.1(5)",
                      Tag      => Pragma_Elaborate_Body_Needed,
                      Vertex   => V);
                end if;
@@ -5083,9 +5094,9 @@ package body Flow.Analysis is
    --  Start of processing for Check_Elaborate_Body
 
    begin
-      --  We only check variables that we claim to initialize (either
-      --  because we said so or because flow thinks so), since otherwise
-      --  their use will be flagged as a potentially uninitialized read.
+      --  We only check variables that we claim to initialize (either because
+      --  we said so or because flow thinks so), since otherwise their use will
+      --  be flagged as a potentially uninitialized read.
 
       Visible_Vars := Flow_Id_Sets.Empty_Set;
       for C in Parse_Initializes (FA.Spec_Entity).Iterate loop
@@ -5097,7 +5108,8 @@ package body Flow.Analysis is
                                         | E_Constant);
 
          begin
-            if Get_Flow_Scope (Declaration_Node (Obj)).Part = Visible_Part
+            if Get_Flow_Scope (Declaration_Node (Obj)).Part in Visible_Part
+                                                             | Private_Part
               and then Ekind (Obj) /= E_Constant
               and then Is_Initialized_At_Elaboration (Obj, FA.S_Scope)
             then
