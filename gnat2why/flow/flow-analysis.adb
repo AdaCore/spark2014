@@ -4984,30 +4984,6 @@ package body Flow.Analysis is
 
       Globals : Global_Flow_Ids;
 
-      function Variable_Has_CAE (F : Flow_Id) return Boolean;
-      --  Returns True iff F does not have Constant_After_Elaboration set.
-
-      ----------------------
-      -- Variable_Has_CAE --
-      ----------------------
-
-      function Variable_Has_CAE (F : Flow_Id) return Boolean is
-      begin
-         if F.Kind in Direct_Mapping | Record_Field then
-            declare
-               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-            begin
-               return Ekind (E) = E_Variable
-                 and then Is_Constant_After_Elaboration (E);
-            end;
-
-         else
-            return False;
-         end if;
-      end Variable_Has_CAE;
-
-   --  Start of processing for Check_CAE_In_Preconditions
-
    begin
       --  We only perform this check on protected operations
       if Ekind (Scope (FA.Analyzed_Entity)) /= E_Protected_Type then
@@ -5037,7 +5013,7 @@ package body Flow.Analysis is
          begin
             for Var of VU loop
                if Globals.Inputs.Contains (Change_Variant (Var, In_View))
-                 and then not Variable_Has_CAE (Var)
+                 and then not Is_Constant_After_Elaboration (Var)
                then
                   Error_Msg_Flow
                     (FA       => FA,
