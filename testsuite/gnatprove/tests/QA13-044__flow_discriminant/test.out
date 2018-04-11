@@ -3,6 +3,8 @@ p.adb:6:28: info: range check proved (CVC4: 1 VC)
 p.adb:6:38: info: discriminant check proved (CVC4: 1 VC)
 p.adb:13:19: info: range check proved (CVC4: 1 VC)
 p.adb:21:17: info: range check proved (CVC4: 1 VC)
-p.ads:11:18: warning: unused variable "Input"
-p.ads:12:11: medium: missing dependency "null => Input"
-p.ads:12:37: medium: incorrect dependency "Bla'Result => Input"
+p.adb:31:28: info: range check proved (CVC4: 1 VC)
+p.adb:40:28: info: range check proved (CVC4: 1 VC)
+p.adb:49:33: info: range check proved (CVC4: 1 VC)
+p.adb:56:29: high: "Input" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
+p.ads:20:14: warning: subprogram "Proc" has no effect

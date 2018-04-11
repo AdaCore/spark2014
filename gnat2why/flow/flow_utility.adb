@@ -3216,35 +3216,57 @@ package body Flow_Utility is
 
             when N_Selected_Component =>
 
-               --  We trim the result map
-
-               E := Original_Record_Component (Entity (Selector_Name (N)));
-
-               if Debug_Trace_Untangle_Fields then
-                  Write_Str ("Trimming for: ");
-                  Sprint_Node_Inline (E);
-                  Write_Eol;
-               end if;
-
                declare
-                  New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+                  Comp_E : constant Entity_Id := Entity (Selector_Name (N));
+                  Root_Entity : constant Entity_Id := Entity (Root_Node);
+
+                  pragma Assert (Ekind (Comp_E) in E_Component
+                                                 | E_Discriminant);
+
+                  pragma Assert (Ekind (Root_Entity) in Object_Kind);
+
+                  Discr_Constraints : constant Flow_Id_Sets.Set :=
+                    (if Ekind (Comp_E) = E_Component
+                     then Discriminant_Constraints (Comp_E)
+                     else
+                       (if Ekind (Root_Entity) in E_Constant
+                                                | E_Variable
+                                                | E_Component
+                        then Discriminant_Constraints (Root_Entity)
+                        else Flow_Id_Sets.Empty_Set));
 
                begin
-                  for C in M.Iterate loop
-                     declare
-                        K : Flow_Id          renames Flow_Id_Maps.Key (C);
-                        V : Flow_Id_Sets.Set renames M (C);
-                     begin
-                        if K.Kind = Record_Field
-                          and then Natural (K.Component.Length) >= Comp_Id
-                          and then K.Component (Comp_Id) = E
-                        then
-                           New_Map.Insert (K, V);
-                        end if;
-                     end;
-                  end loop;
+                  --  We trim the result map
 
-                  M := New_Map;
+                  E := Original_Record_Component (Comp_E);
+
+                  if Debug_Trace_Untangle_Fields then
+                     Write_Str ("Trimming for: ");
+                     Sprint_Node_Inline (E);
+                     Write_Eol;
+                  end if;
+
+                  declare
+                     New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+
+                  begin
+                     for C in M.Iterate loop
+                        declare
+                           K : Flow_Id          renames Flow_Id_Maps.Key (C);
+                           V : Flow_Id_Sets.Set renames M (C);
+
+                        begin
+                           if K.Kind = Record_Field
+                             and then Natural (K.Component.Length) >= Comp_Id
+                             and then K.Component (Comp_Id) = E
+                           then
+                              New_Map.Insert (K, Discr_Constraints or V);
+                           end if;
+                        end;
+                     end loop;
+
+                     M := New_Map;
+                  end;
                end;
 
                Current_Field := Add_Component (Current_Field, E);
@@ -3391,6 +3413,7 @@ package body Flow_Utility is
                         Variables.Union (Filter (FS));
                      end loop;
                   end;
+
                   return Skip;
 
                else
@@ -4766,6 +4789,12 @@ package body Flow_Utility is
       --  If the Input is Empty (because we're looking at a box in an
       --  aggregate), then we don't do anything.
 
+      function Discriminant_Constraints (Typ : Entity_Id)
+                                         return Flow_Id_Sets.Set
+      with Pre => Is_Type (Typ);
+      --  Returns the discriminant constraints for Typ if it is a record or
+      --  concurrent type with discriminants, returns the empty set otherwise.
+
       M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
       ----------
@@ -4830,6 +4859,37 @@ package body Flow_Utility is
          end case;
       end Merge;
 
+      ------------------------------
+      -- Discriminant_Constraints --
+      ------------------------------
+
+      function Discriminant_Constraints (Typ : Entity_Id)
+                                         return Flow_Id_Sets.Set
+      is
+      begin
+         if (Is_Record_Type (Typ)
+             or else Is_Concurrent_Type (Typ))
+           and then Is_Constrained (Typ)
+           and then Has_Discriminants (Typ)
+         then
+            declare
+               Discriminants : Flow_Id_Sets.Set;
+
+            begin
+
+               --  Loop over the list of discriminant constraints
+
+               for Discr of Iter (Discriminant_Constraint (Typ)) loop
+                  Discriminants.Union (Get_Vars_Wrapper (Discr));
+               end loop;
+
+               return Discriminants;
+            end;
+         else
+            return Flow_Id_Sets.Empty_Set;
+         end if;
+      end Discriminant_Constraints;
+
    --  Start of processing for Untangle_Record_Assignment
 
    begin
@@ -4870,6 +4930,7 @@ package body Flow_Utility is
                Target  : Node_Id;
                Missing : Component_Sets.Set := Component_Sets.Empty_Set;
                FS      : Flow_Id_Sets.Set;
+
             begin
                for Ptr of Components (Map_Type) loop
                   Missing.Include (Original_Record_Component (Ptr));
@@ -4916,6 +4977,7 @@ package body Flow_Utility is
                              Direct_Mapping_Id (Etype (Prefix (N))));
                Output : Flow_Id;
                Inputs : Flow_Id_Sets.Set;
+
             begin
                for C in Tmp.Iterate loop
                   Output := Flow_Id_Maps.Key (C);
@@ -4936,9 +4998,11 @@ package body Flow_Utility is
             end if;
 
             declare
+               E : constant Entity_Id := Entity (N);
+
                Simplify : constant Boolean :=
-                 Ekind (Entity (N)) = E_Constant and then
-                 not Local_Constants.Contains (Entity (N));
+                 Ekind (E) = E_Constant
+                 and then not Local_Constants.Contains (E);
                --  We're assigning a local constant; and currently we just
                --  use Get_Variables to "look through" it. We simply assign all
                --  fields of the LHS to the RHS. Not as precise as it could be,
@@ -4986,13 +5050,16 @@ package body Flow_Utility is
                   --  RHS.Include (Direct_Mapping_Id (Entity (N),
                   --                                  Facet => The_Tag));
                end if;
+
                if Simplify then
+
                   for Input of RHS loop
-                     M.Include (Join (Map_Root, Input),
-                                Get_Vars_Wrapper (N));
+                     M.Include (Join (Map_Root, Input), Get_Vars_Wrapper (N));
                   end loop;
+
                else
                   To_Ext := Flow_Id_Sets.Empty_Set;
+
                   for Input of RHS loop
                      F := Join (Map_Root, Input);
                      if LHS.Contains (F) then
@@ -5001,13 +5068,16 @@ package body Flow_Utility is
                         To_Ext.Include (Input);
                      end if;
                   end loop;
+
                   if not To_Ext.Is_Empty
                     and then Is_Tagged_Type (Map_Type)
                   then
                      if not M.Contains (LHS_Ext) then
                         M.Include (LHS_Ext, Flow_Id_Sets.Empty_Set);
                      end if;
+
                      M (LHS_Ext).Union (To_Ext);
+
                   end if;
                end if;
             end;
@@ -5046,6 +5116,9 @@ package body Flow_Utility is
                The_Tg : constant Flow_Id :=
                  Map_Root'Update (Facet => The_Tag);
 
+               Discr_Constraints : constant Flow_Id_Sets.Set :=
+                 Discriminant_Constraints (T_From);
+
             begin
                if Debug_Trace_Untangle_Record then
                   Write_Str ("from: ");
@@ -5061,6 +5134,7 @@ package body Flow_Utility is
                end if;
 
                Valid_To_Fields := Flow_Id_Sets.Empty_Set;
+
                for F of Flatten_Variable (T_To, Scope) loop
                   Valid_To_Fields.Include (Join (Map_Root, F));
                end loop;
@@ -5072,7 +5146,7 @@ package body Flow_Utility is
 
                   begin
                      if Valid_To_Fields.Contains (Output) then
-                        M.Include (Output, Inputs);
+                        M.Include (Output, Inputs or Discr_Constraints);
                         Valid_To_Fields.Exclude (Output);
                      end if;
                   end;

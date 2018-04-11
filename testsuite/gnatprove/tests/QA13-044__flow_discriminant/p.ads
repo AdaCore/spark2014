@@ -11,4 +11,12 @@ package P is
    function Bla (Input : Integer) return T
      with Depends => (Bla'Result => Input);
 
+   function Boo (Input : Integer) return T
+     with Depends => (Boo'Result => Input);
+
+   function Baz (Input : Integer) return Boolean
+     with Depends => (Baz'Result => Input);
+
+   procedure Proc (Input : T);
+
 end P;

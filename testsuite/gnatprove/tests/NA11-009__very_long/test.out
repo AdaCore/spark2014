@@ -191,33 +191,23 @@ very_longs.adb:431:32: info: index check proved (CVC4: 2 VC)
 very_longs.adb:432:34: info: index check proved (CVC4: 2 VC)
 very_longs.adb:432:51: info: initialization of "Old_Overflow" proved
 very_longs.adb:433:29: info: initialization of "New_Overflow" proved
-very_longs.adb:439:52: info: initialization of "Q_Hat" proved
 very_longs.adb:441:31: info: overflow check proved (CVC4: 1 VC)
+very_longs.adb:441:38: high: "Dividend" must be listed in the Global aspect of "D3" (SPARK RM 6.1.4(13))
 very_longs.adb:447:47: info: index check proved (CVC4: 2 VC)
 very_longs.adb:447:47: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:447:84: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:447:88: info: index check proved (CVC4: 2 VC)
-very_longs.adb:448:19: info: initialization of "Temporary_Digit" proved
 very_longs.adb:448:35: medium: divide by zero might fail (e.g. when Q_Hat = 0)
 very_longs.adb:448:64: info: index check proved (CVC4: 2 VC)
-very_longs.adb:451:19: info: initialization of "Temporary_Digit" proved
 very_longs.adb:451:35: medium: divide by zero might fail (e.g. when R_Hat = 0)
 very_longs.adb:451:66: info: index check proved (CVC4: 2 VC)
-very_longs.adb:454:13: info: initialization of "Q_Hat" proved
 very_longs.adb:455:51: info: index check proved (CVC4: 2 VC)
-very_longs.adb:456:22: info: initialization of "R_Hat" proved
 very_longs.adb:456:60: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:456:65: info: index check proved (CVC4: 2 VC)
-very_longs.adb:458:22: info: initialization of "Q_Hat" proved
-very_longs.adb:459:22: info: initialization of "R_Hat" proved
 very_longs.adb:459:57: info: index check proved (CVC4: 2 VC)
-very_longs.adb:461:13: info: initialization of "R_Hat" proved
-very_longs.adb:463:16: info: initialization of "Q_Hat" proved
 very_longs.adb:464:54: info: index check proved (CVC4: 2 VC)
-very_longs.adb:465:25: info: initialization of "R_Hat" proved
 very_longs.adb:465:63: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:465:68: info: index check proved (CVC4: 2 VC)
-very_longs.adb:467:25: info: initialization of "Q_Hat" proved
 very_longs.adb:475:56: info: initialization of "Current_Borrow" proved
 very_longs.adb:485:14: info: range check proved (CVC4: 2 VC)
 very_longs.adb:486:59: info: index check proved (CVC4: 2 VC)
