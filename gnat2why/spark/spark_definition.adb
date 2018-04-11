@@ -49,7 +49,6 @@ with Restrict;                        use Restrict;
 with Rident;                          use Rident;
 with Rtsfind;                         use Rtsfind;
 with Sem_Aux;                         use Sem_Aux;
-with Sem_Disp;                        use Sem_Disp;
 with Sem_Prag;                        use Sem_Prag;
 with Sem_Util;                        use Sem_Util;
 with Snames;                          use Snames;

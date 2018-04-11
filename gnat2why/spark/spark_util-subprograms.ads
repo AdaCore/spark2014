@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sem_Disp;
+
 package SPARK_Util.Subprograms is
 
    --------------------------------------------
@@ -444,6 +446,25 @@ package SPARK_Util.Subprograms is
    --     considered to be dispatching in SPARK, either because the Retysp of
    --     its dispatching type is not tagged or because it is an invisible
    --     dispatching operation.
+
+   subtype Subprogram_List is Sem_Disp.Subprogram_List;
+
+   package Inheritance_Utilities_Inst is new
+     Sem_Disp.Inheritance_Utilities (Find_Dispatching_Type);
+   --  The frontend version of Find_Dispatching_Type should not be used as it
+   --  does not handle visibility correctly after semantic analysis. Do
+   --  instances of frontend inheritance utilities with our own
+   --  Find_Dispatching_Type.
+
+   function Inherited_Subprograms
+     (S               : Entity_Id;
+      No_Interfaces   : Boolean := False;
+      Interfaces_Only : Boolean := False;
+      One_Only        : Boolean := False) return Subprogram_List renames
+     Inheritance_Utilities_Inst.Inherited_Subprograms;
+
+   function Is_Overriding_Subprogram (E : Entity_Id) return Boolean renames
+     Inheritance_Utilities_Inst.Is_Overriding_Subprogram;
 
    --------------------------------
    -- Queries related to entries --
