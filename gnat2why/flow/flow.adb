@@ -1339,7 +1339,12 @@ package body Flow is
    ------------------------
 
    procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
+      FA_Graphs : Analysis_Maps.Map := Analysis_Maps.Empty_Map;
+      --  All analysis results are stashed here in case we need them later
+      --  (e.g. for inter-procedural flow analysis).
+
       Success : Boolean;
+
    begin
 
       --  Check that classwide contracts conform to the legality rules laid

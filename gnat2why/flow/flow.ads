@@ -337,9 +337,4 @@ package Flow is
    --  Flow analyse entity E. Do nothing for entities with no body or not in
    --  SPARK 2014.
 
-private
-
-   FA_Graphs : Analysis_Maps.Map := Analysis_Maps.Empty_Map;
-   --  All analysis results are stashed here in case we need them later
-
 end Flow;
