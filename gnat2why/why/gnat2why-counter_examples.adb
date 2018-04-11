@@ -249,18 +249,12 @@ package body Gnat2Why.Counter_Examples is
          function Get_Entity_Id (S : String) return Entity_Id is
          begin
             if S'First + 1 > S'Last then
-
-               --  This case should not happen
-               pragma Assert (False);
                return Empty;
             else
                return Entity_Id'Value (S (S'First + 1 .. S'Last));
             end if;
          exception
             when Constraint_Error =>
-
-               --  This case should not happen
-               pragma Assert (False);
                return Empty;
          end Get_Entity_Id;
 
@@ -398,21 +392,24 @@ package body Gnat2Why.Counter_Examples is
                                          Cntexmp_Value_Array.Key (Cursor);
                         Field_Entity : constant Entity_Id :=
                                          Get_Entity_Id (Key_Field);
-                        Field_Type   : constant Entity_Id :=
-                                         Retysp (Etype (Field_Entity));
-                        Field_Name   : constant String :=
-                                         Source_Name (Field_Entity);
                      begin
                         if Present (Field_Entity) then
-                           if Check_Count > 0 then
-                              Append (S, ", ");
-                           end if;
+                           declare
+                              Field_Type : constant Entity_Id :=
+                                             Retysp (Etype (Field_Entity));
+                              Field_Name : constant String :=
+                                             Source_Name (Field_Entity);
+                           begin
+                              if Check_Count > 0 then
+                                 Append (S, ", ");
+                              end if;
 
-                           Check_Count := Check_Count + 1;
+                              Check_Count := Check_Count + 1;
 
-                           Append (S, Field_Name & " => " &
-                                     Replace_Question_Mark
-                                     (Refine_Aux (Mfield, Field_Type)));
+                              Append (S, Field_Name & " => " &
+                                        Replace_Question_Mark
+                                        (Refine_Aux (Mfield, Field_Type)));
+                           end;
                         end if;
                      end;
 
