@@ -58,7 +58,7 @@ package body Gnat2Why.Expr.Loops.Inv is
    --                   invariant for it (typically for local variables).
 
    type Write_Status;
-   type Write_Status_Access is access all Write_Status;
+   type Write_Status_Access is access Write_Status;
 
    package Write_Status_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
@@ -97,13 +97,12 @@ package body Gnat2Why.Expr.Loops.Inv is
       Expr      : W_Expr_Id;
       At_Entry  : W_Expr_Id;
       Expr_Ty   : Entity_Id;
-      Status    : in out Write_Status_Access)
+      Status    : Write_Status_Access)
       return W_Pred_Id
    with
      Pre => Status /= null and then Status.Kind /= Discard;
    --  Compute a predicate which assumes preservation of every unmodified
-   --  part of an expression. Status is finalized by the call for sanity
-   --  checking purpose.
+   --  part of an expression.
    --  @param Loop_Idx Ada entity of the loop index if any
    --  @param Is_Rev True if the loop is reversed
    --  @param Var_Known True if flow analysis was run and Loop_Vars is
@@ -120,7 +119,9 @@ package body Gnat2Why.Expr.Loops.Inv is
    -- Construction of the Write_Status_Maps --
    -------------------------------------------
 
-   procedure Finalize (Status : in out Write_Status_Access);
+   procedure Finalize (Status : in out Write_Status_Access) with
+     Pre  => Status /= null,
+     Post => Status = null;
    --  Free the memory for Status and set it to null.
    --  @param Status the write status to be freed.
 
@@ -288,7 +289,7 @@ package body Gnat2Why.Expr.Loops.Inv is
       Expr      : W_Expr_Id;
       At_Entry  : W_Expr_Id;
       Expr_Ty   : Entity_Id;
-      Status    : in out Write_Status_Access)
+      Status    : Write_Status_Access)
       return W_Pred_Id
    is
       Preserved_Components : W_Pred_Id := True_Pred;
@@ -563,7 +564,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          if Status.Component_Status.Contains (Component) then
 
             declare
-               F_Status : Write_Status_Access :=
+               F_Status : constant Write_Status_Access :=
                  Status.Component_Status.Element (Component);
             begin
 
@@ -579,10 +580,6 @@ package body Gnat2Why.Expr.Loops.Inv is
                   Expr_Ty   => F_Expr_Ty,
                   Status    => F_Status);
             end;
-
-            --  Remove visited fields for sanity checking
-
-            Status.Component_Status.Exclude (Component);
 
             --  Component is preserved
 
@@ -670,11 +667,6 @@ package body Gnat2Why.Expr.Loops.Inv is
 
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
-            --  Sanity checking: all the non-visited fields are discarded
-
-            pragma Assert (for all E of Status.Component_Status =>
-                             E.Kind = Discard);
-
          --  For arrays, generate:
          --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
          --    (if Array_Constraints i1 ... in
@@ -755,7 +747,6 @@ package body Gnat2Why.Expr.Loops.Inv is
                end;
             end;
       end case;
-      Finalize (Status);
       return Preserved_Components;
    end Equality_Of_Preserved_Components;
 
@@ -767,10 +758,6 @@ package body Gnat2Why.Expr.Loops.Inv is
       procedure Free is
         new Ada.Unchecked_Deallocation (Write_Status, Write_Status_Access);
    begin
-      if Status = null then
-         return;
-      end if;
-
       case Status.Kind is
          when Entire_Object
             | Discard
@@ -867,55 +854,61 @@ package body Gnat2Why.Expr.Loops.Inv is
       for C in Loop_Writes.Iterate loop
          N := Key (C);
 
-         if Element (C).Kind /= Discard then
+         declare
+            Status : Write_Status_Access := Element (C);
+         begin
 
-            pragma Assert (Nkind (N) in N_Entity
-                           and then Is_Object (N)
-                           and then Is_Mutable_In_Why (N));
+            if Status.Kind /= Discard then
 
-            declare
-               Binder : constant Item_Type :=
-                 Ada_Ent_To_Why.Element (Symbol_Table, N);
-               Expr   : constant W_Expr_Id :=
-                 Reconstruct_Item (Binder, Ref_Allowed => True);
-               Status : Write_Status_Access := Element (C);
+               pragma Assert (Nkind (N) in N_Entity
+                              and then Is_Object (N)
+                              and then Is_Mutable_In_Why (N));
 
-            begin
-               Dyn_Types_Inv :=
-                 +New_And_Expr
-                 (Domain    => EW_Pred,
-                  Conjuncts =>
-                    (1 => +Dyn_Types_Inv,
+               declare
+                  Binder : constant Item_Type :=
+                    Ada_Ent_To_Why.Element (Symbol_Table, N);
+                  Expr   : constant W_Expr_Id :=
+                    Reconstruct_Item (Binder, Ref_Allowed => True);
 
-                     --  Compute the dynamic property of Expr, taking into
-                     --  account its initialization if it corresponds to a
-                     --  variable taken as input in the current subprogram.
+               begin
+                  Dyn_Types_Inv :=
+                    +New_And_Expr
+                    (Domain    => EW_Pred,
+                     Conjuncts =>
+                       (1 => +Dyn_Types_Inv,
 
-                     2 => +Compute_Dynamic_Invariant
-                       (Expr        => +Expr,
-                        Ty          => Etype (N),
-                        Params      => Body_Params,
-                        Initialized =>
-                          (if not Is_Declared_In_Unit (N, Scope)
-                             and then Is_Initialized (N, Scope)
-                           then True_Term
-                           else False_Term)),
+                        --  Compute the dynamic property of Expr, taking into
+                        --  account its initialization if it corresponds to a
+                        --  variable taken as input in the current subprogram.
 
-                     --  Unmodified fields are preserved
+                        2 => +Compute_Dynamic_Invariant
+                          (Expr        => +Expr,
+                           Ty          => Etype (N),
+                           Params      => Body_Params,
+                           Initialized =>
+                             (if not Is_Declared_In_Unit (N, Scope)
+                              and then Is_Initialized (N, Scope)
+                              then True_Term
+                              else False_Term)),
 
-                     3 => +Equality_Of_Preserved_Components
-                       (Loop_Idx  => Loop_Index,
-                        Is_Rev    => Is_Reverse,
-                        Var_Known => Loop_Writes_Known (Loop_Id),
-                        Loop_Vars => Modified,
-                        Expr      => Expr,
-                        At_Entry  => +Name_For_Loop_Entry
-                          (Expr    => N,
-                           Loop_Id => Loop_Id),
-                        Expr_Ty   => Retysp (Etype (N)),
-                        Status    => Status)));
-            end;
-         end if;
+                        --  Unmodified fields are preserved
+
+                        3 => +Equality_Of_Preserved_Components
+                          (Loop_Idx  => Loop_Index,
+                           Is_Rev    => Is_Reverse,
+                           Var_Known => Loop_Writes_Known (Loop_Id),
+                           Loop_Vars => Modified,
+                           Expr      => Expr,
+                           At_Entry  => +Name_For_Loop_Entry
+                             (Expr    => N,
+                              Loop_Id => Loop_Id),
+                           Expr_Ty   => Retysp (Etype (N)),
+                           Status    => Status)));
+               end;
+            end if;
+
+            Finalize (Status);
+         end;
       end loop;
 
       return Dyn_Types_Inv;
