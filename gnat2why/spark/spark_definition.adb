@@ -5116,16 +5116,21 @@ package body SPARK_Definition is
                Mark_Violation (N, From => E);
 
             --  Record components and discriminants are in SPARK if they are
-            --  visible in the representative type of their scope. Do not
-            --  report a violation if the type itself is not SPARK, as the
-            --  violation will already have been reported.
+            --  visible in the representative type of their scope. We need a
+            --  special handling for protected types which act as private types
+            --  but have no separate partial view.
+            --  Do not report a violation if the type itself is not SPARK, as
+            --  the violation will already have been reported.
 
             elsif Ekind (E) in E_Discriminant | E_Component then
                declare
                   Ty : constant Entity_Id := Retysp (Scope (E));
                begin
                   if In_SPARK (Ty)
-                    and then No (Search_Component_By_Name (Ty, E))
+                    and then (No (Search_Component_By_Name (Ty, E))
+                              or else (Is_Protected_Type (Ty)
+                                       and then Ekind (E) = E_Component
+                                       and then Full_View_Not_In_SPARK (Ty)))
                   then
                      Mark_Violation (N, From => Ty);
                   end if;
