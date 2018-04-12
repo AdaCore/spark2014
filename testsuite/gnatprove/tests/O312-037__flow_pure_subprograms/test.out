@@ -1,8 +1,3 @@
 impure_package.adb:7:16: medium: overflow check might fail
-impure_package.adb:7:23: high: "Y" must be listed in the Global aspect of "Pure_Function" (SPARK RM 6.1.4(13))
-call.adb:16:34: info: initialization of "X" proved
-call.adb:17:38: info: initialization of "X" proved
-call.adb:22:51: medium: precondition might fail
-call.adb:22:51: medium: range check might fail
-call.adb:27:37: info: initialization of "X" proved
-call.adb:28:39: info: initialization of "X" proved
+call.adb:28:23: called subprogram "Pure_Function" requires GLOBAL aspect to make state "state.y" visible
+gnatprove: error during flow analysis and proof
