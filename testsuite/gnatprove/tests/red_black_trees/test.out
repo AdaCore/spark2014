@@ -2267,7 +2267,7 @@ search_trees.adb:815:13: info: precondition proved (CVC4: 4 VC), in call inlined
 search_trees.adb:815:46: info: initialization of "F_4" proved, in call inlined at search_trees.adb:902
 search_trees.adb:815:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:902
 search_trees.adb:820:17: warning: subprogram "Prove_Plug_Y" has no effect
-search_trees.adb:825:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
+search_trees.adb:825:25: info: assertion proved (Z3: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:825:25: medium: precondition might fail, in call inlined at search_trees.adb:910
 search_trees.adb:825:32: info: initialization of "F_5" proved, in call inlined at search_trees.adb:910
 search_trees.adb:825:38: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
@@ -2466,7 +2466,7 @@ search_trees.adb:1014:28: info: assertion proved (CVC4: 1 VC), in call inlined a
 search_trees.adb:1014:28: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1149
 search_trees.adb:1014:43: info: initialization of "F_3" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1014:48: info: initialization of "Y" proved, in call inlined at search_trees.adb:1149
-search_trees.adb:1019:13: info: precondition proved (CVC4: 13 VC; Z3: 2 VC), in call inlined at search_trees.adb:1149
+search_trees.adb:1019:13: medium: precondition might fail, in call inlined at search_trees.adb:1149
 search_trees.adb:1019:41: info: initialization of "F_3" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1019:46: info: initialization of "Y" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1019:49: info: initialization of "XR" proved, in call inlined at search_trees.adb:1149
@@ -2528,7 +2528,7 @@ search_trees.adb:1081:38: info: range check proved (CVC4: 1 VC), in call inlined
 search_trees.adb:1081:47: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1081:54: info: initialization of "F_1" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1081:60: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1082:10: info: precondition proved (CVC4: 3 VC), in call inlined at search_trees.adb:1162
+search_trees.adb:1082:10: info: precondition proved (CVC4: 2 VC; Z3: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1082:26: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1082:44: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1082:52: info: initialization of "J" proved, in call inlined at search_trees.adb:1162
