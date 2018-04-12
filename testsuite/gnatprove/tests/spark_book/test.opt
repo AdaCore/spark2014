@@ -1,3 +1,4 @@
 !large SKIP part of large testsuite
 inverse-prover DEAD ordering diffs (see P720-001)
 ALL TIMING
+ALL RLIMIT 1500
