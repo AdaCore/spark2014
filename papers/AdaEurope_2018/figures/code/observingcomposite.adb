@@ -5,7 +5,7 @@ use Ada.Text_IO;
 
 procedure observingcomposite with SPARK_Mode is
 
-  type Int_Ptr is access integer;
+  type Int_Ptr is access Integer;
   type Rec is record
 	X, Y : Int_Ptr;
   end record;

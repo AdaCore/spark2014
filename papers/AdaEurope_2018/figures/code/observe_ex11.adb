@@ -5,7 +5,7 @@ use Ada.Text_IO;
 
 procedure observe_ex11 with SPARK_Mode is
 
-  type Int_Ptr is access integer;
+  type Int_Ptr is access Integer;
 
 
 function Sum (X_Param, Y_Param : access constant Integer) return Integer is

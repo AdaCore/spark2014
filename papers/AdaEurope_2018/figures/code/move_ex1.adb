@@ -4,7 +4,7 @@ use Ada.Text_IO;
 
 
 procedure move_ex1 with SPARK_Mode is
-type Int_Ptr is access integer;
+type Int_Ptr is access Integer;
 
 procedure Swap(X_Param, Y_Param : in out Int_Ptr) is
   Tmp : Int_Ptr := X_Param;
