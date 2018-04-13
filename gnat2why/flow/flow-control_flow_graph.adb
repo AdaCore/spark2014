@@ -905,13 +905,12 @@ package body Flow.Control_Flow_Graph is
    --  perform some meaningful record-field splitting.
 
    procedure Mark_Exceptional_Paths (FA : in out Flow_Analysis_Graphs);
-   --  Set Is_Exceptional_Path on all vertices belonging to exceptional
-   --  control flow, and Is_Exceptional_branch on all vertices leading into
-   --  an exceptional path.
+   --  Set Is_Exceptional_Path on all vertices belonging to exceptional control
+   --  flow, and Is_Exceptional_branch on all vertices leading into an
+   --  exceptional path.
 
    procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs);
-   --  Delete all vertices from exceptional paths from the control flow
-   --  graph.
+   --  Delete all vertices from exceptional paths from the control flow graph
 
    procedure Register_Own_Variable (FA : in out Flow_Analysis_Graphs;
                                     E  :        Entity_Id)
@@ -5171,30 +5170,29 @@ package body Flow.Control_Flow_Graph is
    ----------------------------
 
    procedure Mark_Exceptional_Paths (FA : in out Flow_Analysis_Graphs) is
-      --  Identification of exceptional paths is a bit tedious. We use a
-      --  number of simple DFS passes over the graph which will eventually
-      --  flag all vertices belonging to exceptional paths.
+      --  Identification of exceptional paths is a bit tedious. We use a number
+      --  of simple DFS passes over the graph which will eventually flag all
+      --  vertices belonging to exceptional paths.
       --
       --  1. We need to detect dead code (which is again later detected by
-      --     flow-analysis). Detection of exceptional paths will also flag
-      --     dead code; since we don't want this we need to know what dead
-      --     code is so we can avoid flagging it.
+      --     flow-analysis). Detection of exceptional paths will also flag dead
+      --     code; since we don't want this we need to know what dead code is
+      --     so we can avoid flagging it.
       --
       --  2. We then note which vertices can be reached in a reversed DFS
-      --     search (but not crossing ABEND edges) - all remaining vertices
-      --     are necessarily exceptional.
+      --     search (but not crossing ABEND edges) - all remaining vertices are
+      --     necessarily exceptional.
       --
-      --  3. We need to account for dead code in exceptional paths; we
-      --     perform another dead code detection but this time we don't
-      --     cross exceptional path vertices in the DFS. We flag all
-      --     vertices identified here that have not been identified in the
-      --     first step.
+      --  3. We need to account for dead code in exceptional paths; we perform
+      --     another dead code detection but this time we don't cross
+      --     exceptional path vertices in the DFS. We flag all vertices
+      --     identified here that have not been identified in the first step.
       --
       --  4. Finally, when we prune exceptional paths we might leave an if
       --     statement with only a single exit: such a vertex consumes
       --     variables but has no effect on the program. We set
-      --     Is_Exceptional_Branch on these vertices so we can ignore them
-      --     in flow-analysis.
+      --     Is_Exceptional_Branch on these vertices so we can ignore them in
+      --     flow-analysis.
 
       Pathable : Vertex_Sets.Set := Vertex_Sets.Empty_Set;  -- Step 1
       Live     : Vertex_Sets.Set := Vertex_Sets.Empty_Set;  -- Step 2
@@ -5202,27 +5200,27 @@ package body Flow.Control_Flow_Graph is
 
       function Ignore_Abend_Edges (A, B : Flow_Graphs.Vertex_Id)
                                    return Boolean;
-      --  Traverses all edges except ABEND edges.
+      --  Traverses all edges except ABEND edges
 
       procedure Mark_Pathable
         (V  : Flow_Graphs.Vertex_Id;
          TV : out Flow_Graphs.Simple_Traversal_Instruction);
-      --  Used in step 1 to populate `Pathable'.
+      --  Used in step 1 to populate `Pathable'
 
       procedure Mark_Live
         (V  : Flow_Graphs.Vertex_Id;
          TV : out Flow_Graphs.Simple_Traversal_Instruction);
-      --  Used in step 2 to populate `Live'.
+      --  Used in step 2 to populate `Live'
 
       procedure Mark_Dead
         (V  : Flow_Graphs.Vertex_Id;
          TV : out Flow_Graphs.Simple_Traversal_Instruction);
-      --  Used in step 2 to set Is_Exceptional_Path.
+      --  Used in step 2 to set Is_Exceptional_Path
 
       procedure Mark_Reachable
         (V  : Flow_Graphs.Vertex_Id;
          TV : out Flow_Graphs.Simple_Traversal_Instruction);
-      --  Used in step 3 to reduce `Dead'.
+      --  Used in step 3 to reduce `Dead'
 
       ------------------------
       -- Ignore_Abend_Edges --
@@ -5315,28 +5313,28 @@ package body Flow.Control_Flow_Graph is
                   Include_Start => True,
                   Visitor       => Mark_Pathable'Access);
 
-      --  (2) In reverse, find reachable nodes (not crossing ABEND edges)
-      --      and place them in set `Live'.
+      --  (2) In reverse, find reachable nodes (not crossing ABEND edges) and
+      --      place them in set `Live'.
       FA.CFG.DFS (Start         => FA.End_Vertex,
                   Include_Start => False,
                   Visitor       => Mark_Live'Access,
                   Edge_Selector => Ignore_Abend_Edges'Access,
                   Reversed      => True);
 
-      --  (2) From start, flag all vertices reachable but not in set `Live'.
+      --  (2) From start, flag all vertices reachable but not in set `Live'
       FA.CFG.DFS (Start         => FA.Start_Vertex,
                   Include_Start => False,
                   Visitor       => Mark_Dead'Access);
 
-      --  (3) From start, remove all vertices reachable from set `Dead'
-      --      (not crossing ABEND edges or exceptional paths).
+      --  (3) From start, remove all vertices reachable from set `Dead' (not
+      --      crossing ABEND edges or exceptional paths).
       Dead := Live;
       FA.CFG.DFS (Start         => FA.Start_Vertex,
                   Include_Start => False,
                   Visitor       => Mark_Reachable'Access,
                   Edge_Selector => Ignore_Abend_Edges'Access);
 
-      --  (3) We combine the above results with the ones from step 1.
+      --  (3) We combine the above results with the ones from step 1
       for V of Dead loop
          if Pathable.Contains (V) then
             FA.Atr (V).Is_Exceptional_Path := True;
