@@ -203,7 +203,11 @@ package body Why.Gen.Progs is
    -- Sequence --
    --------------
 
-   function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id is
+   function Sequence
+     (Ada_Node    : Node_Id;
+      Left, Right : W_Prog_Id)
+      return W_Prog_Id
+   is
    begin
       --  We only optimize the case where at least one of (Left, Right) is not
       --  a sequence; in this case we append the not-sequence statement to the
@@ -217,7 +221,7 @@ package body Why.Gen.Progs is
       end if;
 
       return New_Statement_Sequence
-        (Statements => (1 => Left, 2 => Right));
+        (Ada_Node => Ada_Node, Statements => (1 => Left, 2 => Right));
    end Sequence;
 
    function Sequence (Progs : W_Prog_Array) return W_Prog_Id is

@@ -8987,7 +8987,7 @@ package body Gnat2Why.Expr is
                case Ekind (Ty_Ent) is
                   when Array_Kind =>
 
-                     --  Array_Type'First
+                     --  Array_Type'First/Last/Length
 
                      if Nkind (Var) in N_Identifier | N_Expanded_Name
                        and then Is_Type (Entity (Var))
@@ -8999,7 +8999,7 @@ package body Gnat2Why.Expr is
                                                Positive (UI_To_Int (Dim)),
                                              Typ    => Typ);
 
-                     --  Object'First
+                     --  Object'First/Last/Length
 
                      else
                         declare
@@ -12732,8 +12732,9 @@ package body Gnat2Why.Expr is
                  (Havoc, New_Assume_Statement (Pred => Dyn_Prop));
             end if;
 
-            T := +Sequence (Left  => Havoc,
-                            Right => +Deref);
+            T := +Sequence (Ada_Node => Get_Ada_Node (+T),
+                            Left     => Havoc,
+                            Right    => +Deref);
          end;
 
       elsif Is_Mutable_In_Why (Ent)

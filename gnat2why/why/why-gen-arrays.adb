@@ -1962,10 +1962,13 @@ package body Why.Gen.Arrays is
 
    function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id is
    begin
-      pragma Assert (Get_Kind (+E) in W_Identifier | W_Deref | W_Tagged);
+      pragma Assert (Get_Kind (+E) in W_Deref
+                                    | W_Identifier
+                                    | W_Statement_Sequence
+                                    | W_Tagged);
 
       case Get_Kind (+E) is
-         when W_Identifier =>
+         when W_Identifier | W_Statement_Sequence =>
             return Get_Ada_Node (+E);
 
          when W_Deref =>

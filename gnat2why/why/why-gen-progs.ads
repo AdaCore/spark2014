@@ -99,7 +99,10 @@ package Why.Gen.Progs is
    --  Build a "any" expression whose type is a simple type, satisfying
    --  proposition Pred.
 
-   function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id;
+   function Sequence (Ada_Node    : Node_Id;
+                      Left, Right : W_Prog_Id) return W_Prog_Id;
+   function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id is
+     (Sequence (Empty, Left, Right));
    --  Build a statement sequence of the two arguments, but try to minimize
    --  nesting of W_Statement_Sequence constructors.
 
