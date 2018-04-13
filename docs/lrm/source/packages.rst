@@ -427,16 +427,16 @@ Async_Writers aspect specification.
      non-interfering context; or
 
    * the prefix of an ``attribute_reference`` whose ``attribute_designator`` is
-     either Alignment, Component_Size, First_Bit, Last_Bit, Position,
-     Size, or Storage_Size; or
+     either Alignment, Component_Size, First, First_Bit, Last, Last_Bit,
+     Length, Position, Size, or Storage_Size; or
 
    * the expression of a type conversion occurring in a non-interfering context; or
 
    * the expression in a ``delay_statement``.
 
    [The attributes listed above all have the property that when their prefix
-   denotes an object, evaluation of the attribute involves evaluation of only
-   the name, not the value, of the object.]
+   denotes an object, evaluation of the attribute does not involve the
+   evaluation of any part ot the object.]
 
    The same restrictions also apply to a call to a volatile function
    (except not in the case of an internal call to a protected function
