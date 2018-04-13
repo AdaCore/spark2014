@@ -6,7 +6,6 @@ codepeer-gcc
 codepeer-gnatls
 codepeer-gprbuild
 codepeer_be
-codepeer_bridge
 cvc4
 gcc
 gnat2why
