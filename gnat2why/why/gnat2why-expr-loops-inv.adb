@@ -1025,7 +1025,7 @@ package body Gnat2Why.Expr.Loops.Inv is
             --  Discard if necessary.
 
             declare
-               Old_Status : Write_Status_Access := Element (C);
+               Old_Status : Write_Status_Access renames Loop_Writes (C);
             begin
                Finalize (Old_Status);
             end;
@@ -1042,7 +1042,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          --  If Expected_Kind is Entire_Object, update New_Write's status
 
          declare
-            Old_Status : Write_Status_Access := Element (C);
+            Old_Status : Write_Status_Access renames Loop_Writes (C);
          begin
             Finalize (Old_Status);
          end;
@@ -1567,7 +1567,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                                  Entire_Object | Discard)
                then
                   declare
-                     Old_Status : Write_Status_Access :=
+                     Old_Status : Write_Status_Access renames
                        Updated_Status.Content_Status;
                   begin
                      Finalize (Old_Status);
