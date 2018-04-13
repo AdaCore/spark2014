@@ -12652,8 +12652,6 @@ package body Gnat2Why.Expr is
       --  instead.
 
       elsif Is_Discriminal (Ent) then
-         pragma Assert (Is_Concurrent_Type (Enclosing_Type (Ent)));
-
          T := Transform_Identifier (Params   => Params,
                                     Expr     => Expr,
                                     Ent      => Discriminal_Link (Ent),
