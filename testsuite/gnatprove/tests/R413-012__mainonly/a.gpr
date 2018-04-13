@@ -1,0 +1,9 @@
+library project A
+is
+   for Library_Name use "a";
+   for Library_Dir use "a_lib";
+   for Library_ALI_Dir use "a_lib";
+   for Library_Kind use "static";
+   for Externally_Built use "true";
+   for Source_Dirs use ("a_src");
+end A;
