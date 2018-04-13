@@ -270,6 +270,7 @@ procedure Gnatprove with SPARK_Mode is
       Args.Append ("--subdirs=" & String (Subdir_Name));
       Args.Append ("--restricted-to-languages=ada");
       Args.Append ("--no-object-check");
+      Args.Append ("--gnatprove");
 
       for Arg of CL_Switches.Cargs_List loop
          Args.Append (Arg);
