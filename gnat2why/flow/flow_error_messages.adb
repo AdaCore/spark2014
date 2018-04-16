@@ -75,13 +75,18 @@ package body Flow_Error_Messages is
    function Compute_Sloc
      (N           : Node_Id;
       Place_First : Boolean := False)
-      return Source_Ptr;
-   --  function to compute a better sloc for reporting of results than the Ada
-   --  Node. This takes into account generics.
-   --  @param N the node for which we compute the sloc
+      return Source_Ptr
+   with Post => (if Present (N)
+                 then Compute_Sloc'Result >= First_Source_Ptr
+                 else Compute_Sloc'Result = No_Location);
+   --  Computes a better sloc for reporting of results than the Ada Node by
+   --  taking generics into account.
+   --  @param N the node for which we compute the sloc; might be Empty (e.g.
+   --           when called from proof for a VC that doesn't correspond to any
+   --           node)
    --  @param Place_First set this boolean to true to obtain placement at the
    --                     first sloc of the node, instead of the topmost node
-   --  @return a sloc
+   --  @return a valid sloc or No_Location when called with Empty node
 
    procedure Add_Json_Msg
      (Suppr      : String_Id;
