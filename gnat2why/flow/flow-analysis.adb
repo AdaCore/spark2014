@@ -1731,15 +1731,10 @@ package body Flow.Analysis is
       function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
                                         return Boolean
       is
-      begin
-         --  ??? not a case-expression-function because of a front-end bug;
-         --  can be refactored once P308-025 is fixed.
-         case FA.PDG.Get_Key (V).Variant is
-            when Final_Value => return FA.Atr (V).Is_Export;
-            when Normal_Use  => return FA.Atr (V).Is_Exceptional_Branch;
-            when others      => return False;
-         end case;
-      end Is_Final_Use_Any_Export;
+        (case FA.PDG.Get_Key (V).Variant is
+            when Final_Value => FA.Atr (V).Is_Export,
+            when Normal_Use  => FA.Atr (V).Is_Exceptional_Branch,
+            when others      => False);
 
       ---------------------
       -- Is_In_Pragma_Un --
