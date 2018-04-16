@@ -1568,47 +1568,46 @@ package body Flow.Analysis is
       function Defines_Async_Reader_Var
         (V : Flow_Graphs.Vertex_Id)
          return Boolean;
-      --  Returns True if vertex V defines some variable that has
-      --  property Async_Readers set.
+      --  Returns True if vertex V defines some variable that has property
+      --  Async_Readers set.
 
       function Find_Masking_Code
         (Ineffective_Statement : Flow_Graphs.Vertex_Id)
          return Vertex_Sets.Set;
-      --  Find out why a given vertex is ineffective. A vertex is
-      --  ineffective if the variable(s) defined by it are re-defined
-      --  on all paths leading from it without being used. Thus all
-      --  reachable vertices which also define at least one variable
-      --  of that set (and do not use it), render the vertex
-      --  ineffective.
+      --  Find out why a given vertex is ineffective. A vertex is ineffective
+      --  if the variable(s) defined by it are re-defined on all paths leading
+      --  from it without being used. Thus all reachable vertices which also
+      --  define at least one variable of that set (and do not use it), render
+      --  the vertex ineffective.
 
       function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
-      --  Checks if the given vertex V is a final-use vertex.
+      --  Checks if the given vertex V is a final-use vertex
 
       function Is_Dead_End (V : Flow_Graphs.Vertex_Id) return Boolean;
-      --  Checks if from the given vertex V it is impossible to reach the
-      --  end vertex.
+      --  Checks if from the given vertex V it is impossible to reach the end
+      --  vertex.
 
       function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
                                         return Boolean;
       --  Checks if the given vertex V represents an externally visible
-      --  outcome, i.e. is a final-use vertex that is also an export or
-      --  a use vertex that branches to an exceptional path.
+      --  outcome, i.e. is a final-use vertex that is also an export or a use
+      --  vertex that branches to an exceptional path.
 
       function Is_In_Pragma_Un (S : Flow_Id_Sets.Set)
                                 return Boolean;
-      --  Checks if variables in the set Variables_Defined have been
-      --  mentioned in a pragma Unmodified, Unused or Unreferenced.
+      --  Checks if variables in the set Variables_Defined have been mentioned
+      --  in a pragma Unmodified, Unused or Unreferenced.
 
       function Other_Fields_Are_Ineffective (V : Flow_Graphs.Vertex_Id)
                                              return Boolean;
-      --  This function returns True if V corresponds to an assignment
-      --  to a record field that has been introduced by a record split
-      --  and the rest of the fields are ineffective.
+      --  This function returns True if V corresponds to an assignment to a
+      --  record field that has been introduced by a record split and the rest
+      --  of the fields are ineffective.
 
       function Skip_Any_Conversions (N : Node_Or_Entity_Id)
                                      return Node_Or_Entity_Id;
-      --  Skips any conversions (unchecked or otherwise) and jumps to
-      --  the actual object.
+      --  Skips any conversions (unchecked or otherwise) and jumps to the
+      --  actual object.
 
       ------------------------------
       -- Defines_Async_Reader_Var --
@@ -1786,6 +1785,7 @@ package body Flow.Analysis is
          end if;
 
          --  If we reach this point then all other fields are ineffective
+
          return True;
       end Other_Fields_Are_Ineffective;
 
@@ -1802,25 +1802,25 @@ package body Flow.Analysis is
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             use Attribute_Maps;
+
             N         : Node_Id;
             Key       : Flow_Id renames FA.PDG.Get_Key (V);
             Atr       : V_Attributes renames FA.Atr (V);
             Mask      : Vertex_Sets.Set;
             Tag       : constant Flow_Tag_Kind := Ineffective;
             Tracefile : constant String := Fresh_Trace_File;
+
          begin
-            if Atr.Is_Program_Node or
-              Atr.Is_Parameter or
-              Atr.Is_Global_Parameter
+            if Atr.Is_Program_Node
+              or Atr.Is_Parameter
+              or Atr.Is_Global_Parameter
             then
-               --  A vertex is ineffective if there is no path in the
-               --  PDG to *any* final use vertex that is also an
-               --  export.
+               --  A vertex is ineffective if there is no path in the PDG to
+               --  *any* final use vertex that is also an export.
                --
-               --  If we analyse a package, we suppress this message
-               --  if we don't have an initializes clause *and* the
-               --  given vertex has an effect on any final use (export
-               --  or otherwise).
+               --  If we analyse a package, we suppress this message if we
+               --  don't have an initializes clause *and* the given vertex has
+               --  an effect on any final use (export or otherwise).
                if
                  --  Basic check here
                  not FA.PDG.Non_Trivial_Path_Exists
@@ -1839,24 +1839,22 @@ package body Flow.Analysis is
                      not FA.PDG.Non_Trivial_Path_Exists
                       (V, Is_Any_Final_Use'Access)) and then
 
-                 --  Suppression for vertices that talk about a variable
-                 --  that is mentioned in a pragma Unused, Unmodified or
+                 --  Suppression for vertices that talk about a variable that
+                 --  is mentioned in a pragma Unused, Unmodified or
                  --  Unreferenced.
                  not Is_In_Pragma_Un (Atr.Variables_Defined) and then
 
-                 --  Suppression for vertices that can lead to
-                 --  abnormal termination and have had some of their
-                 --  out edges removed.
+                 --  Suppression for vertices that can lead to abnormal
+                 --  termination and have had some of their out edges removed.
                  not Atr.Is_Exceptional_Branch and then
 
-                 --  Suppression for vertices that correspond to
-                 --  an assignment to a record field, that comes
-                 --  from a record split, while the rest of the
-                 --  fields are not ineffective.
+                 --  Suppression for vertices that correspond to an assignment
+                 --  to a record field, that comes from a record split, while
+                 --  the rest of the fields are not ineffective.
                  Other_Fields_Are_Ineffective (V) and then
 
-                 --  Suppression for vertices that define a variable
-                 --  that has Async_Readers set.
+                 --  Suppression for vertices that define a variable that has
+                 --  Async_Readers set.
                  not Defines_Async_Reader_Var (V) and then
 
                  --  Suppression for vertices with assertion expressions
@@ -1933,6 +1931,7 @@ package body Flow.Analysis is
 
                   elsif Nkind (N) = N_Object_Declaration then
                      if not Constant_Present (N) then
+
                         --  This warning is ignored for local constants
 
                         if FA.Kind in Kind_Package | Kind_Package_Body
