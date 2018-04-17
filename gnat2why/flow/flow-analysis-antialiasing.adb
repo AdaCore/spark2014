@@ -37,8 +37,7 @@ with Why;
 package body Flow.Analysis.Antialiasing is
 
    Trace_Antialiasing : constant Boolean := False;
-   --  Enable this for gratuitous tracing output for aliasing
-   --  detection.
+   --  Enable this for gratuitous tracing output for aliasing detection
 
    subtype Computed_Aliasing_Result is Aliasing_Check_Result
      range Impossible .. Definite_Aliasing;
@@ -67,11 +66,11 @@ package body Flow.Analysis.Antialiasing is
    --  Returns if A and B alias
 
    function Cannot_Alias (F : Node_Id) return Boolean
-   with Pre => Present (F) and then
-               Nkind (F) in N_Entity and then
-               Is_Formal (F);
-   --  Check if the given formal parameter cannot possibly alias with
-   --  others: it is a scalar in parameter.
+   with Pre => Present (F)
+               and then Nkind (F) in N_Entity
+               and then Is_Formal (F);
+   --  Check if the given formal parameter cannot possibly alias with others:
+   --  it is a scalar in parameter.
 
    procedure Check_Node_Against_Node
      (FA       : in out Flow_Analysis_Graphs;
@@ -81,14 +80,14 @@ package body Flow.Analysis.Antialiasing is
       Status   : out Computed_Aliasing_Result)
    with Pre => Is_Formal (A_Formal)
                and then (No (B_Formal) or else Is_Formal (B_Formal));
-   --  Checks the two nodes for aliasing and issues an error message
-   --  if appropriate. The formal for B can be Empty, in which case we
-   --  assume it is a global.
+   --  Checks the two nodes for aliasing and issues an error message if
+   --  appropriate. The formal for B can be Empty, in which case we assume it
+   --  is a global.
 
    procedure Update_Status (Status         : in out Computed_Aliasing_Result;
                             Current_Status : Computed_Aliasing_Result);
    --  Updates the aliasing Status only if the Current_Status is worse (in
-   --  terms of the ordering given but the type Computed_Aliasing_Result).
+   --  terms of the ordering given by the type Computed_Aliasing_Result).
 
    -----------------
    -- Check_Range --
@@ -99,16 +98,16 @@ package body Flow.Analysis.Antialiasing is
                          return Non_Obvious_Aliasing_Check_Result
    is
       function LT (A, B : Node_Id) return Boolean;
-      --  Return true iff A < B.
+      --  Return true iff A < B
 
       function GE (A, B : Node_Id) return Boolean;
-      --  Return true iff A >= B.
+      --  Return true iff A >= B
 
       function Empty (A, B : Node_Id) return Boolean;
-      --  Return true iff A > B.
+      --  Return true iff A > B
 
       function Full (A, B : Node_Id) return Boolean;
-      --  Return true iff A <= B.
+      --  Return true iff A <= B
 
       function LT (A, B : Node_Id) return Boolean is
       begin
@@ -135,8 +134,8 @@ package body Flow.Analysis.Antialiasing is
         or else LT (AH, BL)
         or else LT (BH, AL)
       then
-         --  We definitely have a different, non-overlapping ranges;
-         --  or at least one of them is empty.
+         --  We definitely have different, non-overlapping ranges; or at least
+         --  one of them is empty.
          return No_Aliasing;
 
       elsif Full (AL, AH) and then Full (BL, BH) and then
@@ -144,11 +143,11 @@ package body Flow.Analysis.Antialiasing is
            or else
          (GE (BH, AL) and then GE (AH, BL)))
       then
-         --  We definitely have overlapping, non-empty ranges.
+         --  We definitely have overlapping, non-empty ranges
          return Definite_Aliasing;
 
       else
-         --  We don't know.
+         --  We don't know
          return Possible_Aliasing;
       end if;
    end Check_Range;
@@ -210,8 +209,8 @@ package body Flow.Analysis.Antialiasing is
          others                      => False);
 
       function Down_One_Level (N : Node_Id) return Node_Id
-        with Pre => Is_Interesting (Nkind (N)) and then
-                    not Is_Root (Nkind (N));
+      with Pre => Is_Interesting (Nkind (N))
+                  and then not Is_Root (Nkind (N));
       --  Goes down the parse tree by one level. For example:
       --     * R.X.Y       ->  R.X
       --     * R.X         ->  R
@@ -219,9 +218,9 @@ package body Flow.Analysis.Antialiasing is
       --     * Wibble (X)  ->  X
 
       function Find_Root (N : Node_Id) return Node_Id
-        with Pre  => Is_Interesting (Nkind (N)),
-             Post => Is_Root (Nkind (Find_Root'Result))
-                     or else not Is_Interesting (Nkind (Find_Root'Result));
+      with Pre  => Is_Interesting (Nkind (N)),
+           Post => Is_Root (Nkind (Find_Root'Result))
+                   or else not Is_Interesting (Nkind (Find_Root'Result));
       --  Calls Down_One_Level until we find an identifier. For example:
       --    * R.X.Y       ->  R
       --    * A (12)      ->  A
@@ -310,10 +309,6 @@ package body Flow.Analysis.Antialiasing is
    --  Start of processing for Aliasing
 
    begin
-
-      --  First we check if either of the nodes is interesting as
-      --  non-interesting nodes cannot introduce aliasing.
-
       if Trace_Antialiasing then
          Write_Str ("antialiasing: checking ");
          Sprint_Node (A);
@@ -321,6 +316,9 @@ package body Flow.Analysis.Antialiasing is
          Sprint_Node (B);
          Write_Eol;
       end if;
+
+      --  First we check if either of the nodes is interesting as
+      --  non-interesting nodes cannot introduce aliasing.
 
       if not Is_Interesting (Nkind (A)) then
          if Trace_Antialiasing then
@@ -346,8 +344,8 @@ package body Flow.Analysis.Antialiasing is
          return Impossible;
       end if;
 
-      --  Ok, so both nodes might potentially alias. We now need to
-      --  work out the root nodes of each expression.
+      --  Ok, so both nodes might potentially alias. We now need to work out
+      --  the root nodes of each expression.
 
       Ptr_A := Find_Root (A);
       Ptr_B := Find_Root (B);
@@ -373,8 +371,8 @@ package body Flow.Analysis.Antialiasing is
          return Impossible;
       end if;
 
-      --  A quick sanity check. If the root nodes refer to different
-      --  entities then we cannot have aliasing.
+      --  A quick sanity check. If the root nodes refer to different entities
+      --  then we cannot have aliasing.
 
       if not Same_Entity (Ptr_A, Ptr_B) then
          if Trace_Antialiasing then
@@ -383,9 +381,9 @@ package body Flow.Analysis.Antialiasing is
          return Impossible;
       end if;
 
-      --  Ok, we now know that the root nodes refer to the same
-      --  entity, we now need to walk up the tree and see if we differ
-      --  somehow. For example, right now we might have:
+      --  Ok, we now know that the root nodes refer to the same entity, we now
+      --  need to walk up the tree and see if we differ somehow. For example,
+      --  right now we might have:
       --     * A,              A           --  illegal
       --     * A.X.Y (1 .. J), A.X         --  illegal
       --     * A.X,            A.Y         --  OK
@@ -394,18 +392,18 @@ package body Flow.Analysis.Antialiasing is
       --     * A,              Wibble (A)  --  illegal
       --  etc.
       --
-      --  Also, we know that Is_Root holds for Ptr_A and Ptr_B, which
-      --  means that we are dealing with an identifier and not an
-      --  unchecked conversion, etc.
+      --  Also, we know that Is_Root holds for Ptr_A and Ptr_B, which means
+      --  that we are dealing with an identifier and not an unchecked
+      --  conversion, etc.
 
       if Trace_Antialiasing then
          Write_Line ("   -> same root entity");
       end if;
 
       while Ptr_A /= A and then Ptr_B /= B loop
-         --  Go up the tree one level. If we hit an unchecked
-         --  conversion or type conversion we 'ignore' it. For
-         --  example:
+
+         --  Go up the tree one level. If we hit an unchecked conversion or
+         --  type conversion we 'ignore' it. For example:
          --     * R.X  ->  R.X.Y
          --     * R    ->  Wibble (R).X
          --     * R    ->  Wibble (R)    (if Wibble (R) is the top)
@@ -416,8 +414,8 @@ package body Flow.Analysis.Antialiasing is
          pragma Assert (not Is_Root (Nkind (Ptr_A)));
          pragma Assert (not Is_Root (Nkind (Ptr_B)));
 
-         --  Check if we are dealing with an type conversion *now*. If
-         --  so, we have aliasing.
+         --  Check if we are dealing with an type conversion *now*. If so, we
+         --  have aliasing.
 
          if Is_Conversion (Nkind (Ptr_A)) or else
            Is_Conversion (Nkind (Ptr_B))
@@ -428,15 +426,17 @@ package body Flow.Analysis.Antialiasing is
             return Definite_Aliasing;
          end if;
 
-         --  We have now gone up one level on each side. We need to
-         --  check the two fields.
+         --  We have now gone up one level on each side. We need to check the
+         --  two fields.
 
          if Nkind (Ptr_A) = Nkind (Ptr_B) then
+
             --  We definitely need to check this. Some possibilities:
             --     R.X         <-->  R.X.Y
             --     R.X         <-->  R.Z
             --     A (5)       <-->  A (J).Wibble
             --     A (1 .. 3)  <-->  A (K .. L)
+
             if Trace_Antialiasing then
                Write_Str ("   -> checking same structure at ");
                Sprint_Node (Ptr_A);
@@ -518,12 +518,13 @@ package body Flow.Analysis.Antialiasing is
            (Nkind (Ptr_A) = N_Indexed_Component and then
               Nkind (Ptr_B) = N_Slice)
          then
+
             --  We also need to check this. One possibility:
             --     A (1 .. 3)  <-->  A (J)
 
-            --  If the user *really* wants this we can implement
-            --  it. For now skip this as its potentially quite hard as
-            --  we need to sync up with the other expression.
+            --  If the user *really* wants this we can implement it. For now
+            --  skip this as its potentially quite hard as we need to sync up
+            --  with the other expression.
             --
             --  Consider this: A (4 .. 10) (5 .. 8) (3)
 
@@ -535,16 +536,17 @@ package body Flow.Analysis.Antialiasing is
             return Possible_Aliasing;
 
          else
-            --  We have previously established that things might
-            --  possibly alias, which means the tree should have been
-            --  similar enough. Look for the bug in the above code.
+
+            --  We have previously established that things might possibly
+            --  alias, which means the tree should have been similar enough.
+            --  Look for the bug in the above code.
+
             raise Why.Unexpected_Node;
          end if;
 
       end loop;
 
-      --  The tree so far was exactly the same, so we A and B
-      --  definitely alias.
+      --  The tree so far was exactly the same, so we A and B definitely alias
 
       if Trace_Antialiasing then
          Write_Line ("   -> identical tree so far, hit end");
@@ -568,12 +570,14 @@ package body Flow.Analysis.Antialiasing is
    begin
       case Ekind (F) is
          when E_In_Parameter =>
+
             --  According to SPARK and Ada RMs here we should test for by-copy
             --  type (e.g. using Is_By_Copy_Type). However, it seems better
             --  to treat private types as really private and check if by-copy
             --  property can be deduced from the public declaration only. If
             --  not then we are conservative and assume the worst case, i.e.
             --  that the type is by-reference. See O916-007.
+
             return Is_Elementary_Type (Etype (F));
 
          when E_In_Out_Parameter
@@ -677,9 +681,9 @@ package body Flow.Analysis.Antialiasing is
       --     Y v.s. (   Z, A, B)
       --     Z v.s. (      A, B)
       --
-      --  In particular we do not check the globals against each other and
-      --  we do not check combinations of parameters which we have already
-      --  seen. This is implemented by this procedure having the same loop as
+      --  In particular we do not check the globals against each other and we
+      --  do not check combinations of parameters which we have already seen.
+      --  This is implemented by this procedure having the same loop as
       --  Check_Parameter_Against_Parameters_And_Globals and by only checking
       --  parameters once we have seen our parameter we compare against.
 
