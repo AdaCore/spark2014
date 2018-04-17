@@ -62,7 +62,6 @@ with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Osint.C;                         use Osint.C;
 with Osint;                           use Osint;
-with Output;                          use Output;
 with Outputs;                         use Outputs;
 with Rtsfind;                         use Rtsfind;
 with Sem;
@@ -261,14 +260,7 @@ package body Gnat2Why.Driver is
 
       Read_Library_Info (Main_Lib_File, Text);
 
-      if Text = null then
-         --  No such ALI file
-
-         Write_Line ("error:" & Get_Name_String (Main_Lib_File) &
-                     " does not exist");
-
-         raise Terminate_Program;
-      end if;
+      pragma Assert (Text /= null);
 
       Main_Lib_Id := Scan_ALI
         (F                => Main_Lib_File,
