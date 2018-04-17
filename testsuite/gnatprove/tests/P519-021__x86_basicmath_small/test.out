@@ -79,20 +79,35 @@ basicmath_small.adb:582:37: medium: loop invariant might fail after first iterat
 basicmath_small.adb:599:27: info: initialization of "XMM1" proved
 basicmath_small.adb:602:44: info: initialization of "XMM1" proved
 basicmath_small.adb:622:24: info: initialization of "ZeroFlag" proved
+basicmath_small.adb:628:07: warning: initialization of "SaveStackPtr" has no effect
 basicmath_small.adb:628:39: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:629:07: warning: initialization of "ra0" has no effect
 basicmath_small.adb:629:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:630:07: warning: initialization of "ra1" has no effect
 basicmath_small.adb:630:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:631:07: warning: initialization of "ra2" has no effect
 basicmath_small.adb:631:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:632:07: warning: initialization of "ra3" has no effect
 basicmath_small.adb:632:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:633:07: warning: initialization of "ra4" has no effect
 basicmath_small.adb:633:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:634:07: warning: initialization of "ra5" has no effect
 basicmath_small.adb:634:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:635:07: warning: initialization of "ra6" has no effect
 basicmath_small.adb:635:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:636:07: warning: initialization of "ra7" has no effect
 basicmath_small.adb:636:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:637:07: warning: initialization of "SaveRBX" has no effect
 basicmath_small.adb:637:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:638:07: warning: initialization of "SaveRBP" has no effect
 basicmath_small.adb:638:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:639:07: warning: initialization of "SaveR12" has no effect
 basicmath_small.adb:639:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:640:07: warning: initialization of "SaveR13" has no effect
 basicmath_small.adb:640:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:641:07: warning: initialization of "SaveR14" has no effect
 basicmath_small.adb:641:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:642:07: warning: initialization of "SaveR15" has no effect
 basicmath_small.adb:642:34: info: range check proved (CVC4: 1 VC)
 basicmath_small.adb:656:10: warning: statement has no effect
 basicmath_small.adb:656:10: warning: unused assignment to "RDI"
@@ -178,14 +193,23 @@ basicmath_small.adb:1107:37: info: initialization of "RCX" proved
 basicmath_small.adb:1113:21: info: initialization of "CarryFlag" proved
 basicmath_small.adb:1116:37: info: initialization of "RCX" proved
 basicmath_small.adb:1126:24: info: initialization of "ZeroFlag" proved
+basicmath_small.adb:1132:07: warning: initialization of "SaveStackPtr" has no effect
 basicmath_small.adb:1132:39: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1133:07: warning: initialization of "ra0" has no effect
 basicmath_small.adb:1133:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1134:07: warning: initialization of "ra1" has no effect
 basicmath_small.adb:1134:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1135:07: warning: initialization of "ra2" has no effect
 basicmath_small.adb:1135:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1136:07: warning: initialization of "ra3" has no effect
 basicmath_small.adb:1136:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1137:07: warning: initialization of "ra4" has no effect
 basicmath_small.adb:1137:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1138:07: warning: initialization of "ra5" has no effect
 basicmath_small.adb:1138:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1139:07: warning: initialization of "ra6" has no effect
 basicmath_small.adb:1139:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:1140:07: warning: initialization of "ra7" has no effect
 basicmath_small.adb:1140:29: info: range check proved (CVC4: 1 VC)
 basicmath_small.ads:18:17: info: postcondition proved (CVC4: 1 VC)
 basicmath_small.ads:22:17: info: postcondition proved (CVC4: 1 VC)

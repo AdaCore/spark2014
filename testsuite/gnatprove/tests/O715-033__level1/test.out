@@ -7,7 +7,6 @@ hard_stuff.adb:11:14: info: float overflow check proved
 hard_stuff.adb:12:22: info: assertion proved
 hard_stuff.adb:16:14: info: float overflow check proved
 hard_stuff.adb:17:22: info: assertion proved
-hard_stuff.adb:20:04: warning: statement has no effect
 hard_stuff.adb:20:49: info: range check proved
 hard_stuff.adb:20:52: info: division check proved
 hard_stuff.adb:20:52: info: float overflow check proved
@@ -31,7 +30,6 @@ hard_stuff.adb:11:14: info: float overflow check proved
 hard_stuff.adb:12:22: info: assertion proved
 hard_stuff.adb:16:14: info: float overflow check proved
 hard_stuff.adb:17:22: info: assertion proved
-hard_stuff.adb:20:04: warning: statement has no effect
 hard_stuff.adb:20:49: info: range check proved
 hard_stuff.adb:20:52: info: division check proved
 hard_stuff.adb:20:52: info: float overflow check proved

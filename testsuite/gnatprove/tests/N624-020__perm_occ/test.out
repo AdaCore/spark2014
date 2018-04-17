@@ -102,6 +102,7 @@ sort.adb:93:22: info: precondition proved (CVC4: 2 VC)
 sort.adb:93:40: info: range check proved (CVC4: 8 VC)
 sort.adb:95:13: info: initialization of "Smallest" proved
 sort.adb:98:22: info: length check proved (CVC4: 2 VC)
+sort.adb:98:22: warning: unused assignment
 sort.adb:98:25: info: length check proved (CVC4: 2 VC)
 sort.adb:100:13: info: precondition proved (CVC4: 10 VC)
 sort.adb:101:29: info: range check proved (CVC4: 2 VC)

@@ -165,7 +165,6 @@ prefixsum_expanded.adb:102:23: info: initialization of "Space" proved
 prefixsum_expanded.adb:108:26: info: range check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:116:21: info: initialization of "Space" proved
 prefixsum_expanded.adb:116:27: info: division check proved (CVC4: 1 VC)
-prefixsum_expanded.adb:117:15: warning: unused assignment
 prefixsum_expanded.adb:119:11: info: assertion proved (CVC4: 8 VC)
 prefixsum_expanded.adb:119:11: info: initialization of "Saved_A" proved
 prefixsum_expanded.adb:135:13: info: initialization of "Space" proved

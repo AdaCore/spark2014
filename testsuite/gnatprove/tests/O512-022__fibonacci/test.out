@@ -9,9 +9,6 @@ fib.adb:10:17: medium: overflow check might fail
 fib.adb:10:19: info: initialization of "b" proved
 fib.adb:11:15: info: initialization of "t" proved
 fib.adb:13:14: info: initialization of "a" proved
-fib.adb:20:15: warning: unused assignment
-fib.adb:21:15: warning: unused assignment
-fib.adb:26:09: warning: unused assignment
 fib.adb:28:33: info: initialization of "a1" proved
 fib.adb:28:33: medium: loop invariant might fail after first iteration, cannot prove a1 = Fibonacci(i)
 fib.adb:28:33: medium: loop invariant might fail in first iteration, cannot prove a1 = Fibonacci(i)
@@ -30,10 +27,8 @@ fib.adb:34:19: info: overflow check proved (CVC4: 1 VC)
 fib.adb:34:19: info: range check proved (CVC4: 1 VC)
 fib.adb:34:21: info: initialization of "b1" proved
 fib.adb:35:19: info: range check proved (CVC4: 1 VC)
-fib.adb:36:12: warning: unused assignment
 fib.adb:36:15: info: initialization of "i" proved
 fib.adb:36:17: info: overflow check proved (CVC4: 1 VC)
-fib.adb:38:09: warning: unused assignment
 fib.adb:40:33: info: initialization of "a2" proved
 fib.adb:40:33: medium: loop invariant might fail after first iteration, cannot prove a2 = Fibonacci(i)
 fib.adb:40:33: medium: loop invariant might fail in first iteration, cannot prove a2 = Fibonacci(i)
@@ -52,7 +47,6 @@ fib.adb:46:19: info: overflow check proved (CVC4: 1 VC)
 fib.adb:46:19: info: range check proved (CVC4: 1 VC)
 fib.adb:46:21: info: initialization of "b2" proved
 fib.adb:47:19: info: range check proved (CVC4: 1 VC)
-fib.adb:48:12: warning: unused assignment
 fib.adb:48:15: info: initialization of "i" proved
 fib.adb:48:17: info: overflow check proved (CVC4: 1 VC)
 fib.adb:50:10: info: initialization of "a1" proved

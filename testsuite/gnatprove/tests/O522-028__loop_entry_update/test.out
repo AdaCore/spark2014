@@ -30,7 +30,6 @@ a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at loop_types.ads:13
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at loop_types.ads:16
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at loop_types.ads:13
-loop_entry_test.adb:18:20: warning: unused assignment
 loop_entry_test.adb:21:33: info: loop invariant initialization proved (CVC4: 1 VC)
 loop_entry_test.adb:21:33: info: loop invariant preservation proved (CVC4: 1 VC)
 loop_entry_test.adb:21:37: info: initialization of "A_Loop_Entry" proved

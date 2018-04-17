@@ -38,7 +38,6 @@ my_package.adb:195:33: info: initialization of "Y" proved
 my_package.adb:200:04: warning: analyzing unreferenced procedure "Bad_Aliasing"
 my_package.adb:201:07: warning: initialization of "Z" has no effect
 my_package.adb:202:07: warning: initialization of "A" has no effect
-my_package.adb:203:07: warning: initialization of "I" has no effect
 my_package.adb:205:20: high: formal parameter "X" and global "Y" are aliased (SPARK RM 6.4.2)
 my_package.adb:207:07: warning: statement has no effect
 my_package.adb:207:20: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)

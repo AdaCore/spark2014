@@ -12,7 +12,6 @@ test.adb:18:33: medium: loop invariant might fail in first iteration, cannot pro
 test.adb:18:37: high: "X" is not initialized
 test.adb:22:04: warning: analyzing unreferenced procedure "Test_03"
 test.adb:22:23: info: initialization of "X" proved
-test.adb:27:27: warning: statement has no effect
 test.adb:28:36: info: initialization of "X" proved
 test.adb:28:36: info: loop invariant preservation proved (CVC4: 10 VC)
 test.adb:28:36: medium: loop invariant might fail in first iteration, cannot prove X = X'Loop_Entry (Wibble)
@@ -23,7 +22,6 @@ test.adb:39:33: info: initialization of "X" proved
 test.adb:39:33: medium: loop invariant might fail after first iteration, cannot prove X = X'loop_entry
 test.adb:39:33: medium: loop invariant might fail in first iteration, cannot prove X = X'loop_entry
 test.adb:39:37: high: "X" is not initialized
-test.adb:40:27: warning: statement has no effect
 test.adb:41:36: info: initialization of "X" proved
 test.adb:41:36: info: loop invariant initialization proved (CVC4: 1 VC)
 test.adb:41:36: info: loop invariant preservation proved (CVC4: 1 VC)

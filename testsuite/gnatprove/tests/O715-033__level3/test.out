@@ -1,7 +1,6 @@
 
 At level 3
 ----------
-hard_stuff.adb:5:04: warning: statement has no effect
 hard_stuff.adb:5:49: info: range check proved
 hard_stuff.adb:5:52: info: division check proved
 hard_stuff.adb:5:52: info: float overflow check proved
@@ -19,7 +18,6 @@ hard_stuff.adb:14:25: medium: assertion might fail, cannot prove X in 0.0 .. Cop
 
 Equivalent switches
 -------------------
-hard_stuff.adb:5:04: warning: statement has no effect
 hard_stuff.adb:5:49: info: range check proved
 hard_stuff.adb:5:52: info: division check proved
 hard_stuff.adb:5:52: info: float overflow check proved

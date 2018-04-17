@@ -1737,7 +1737,9 @@ package body Flow.Analysis is
       is
         (case FA.PDG.Get_Key (V).Variant is
             when Final_Value => FA.Atr (V).Is_Export,
-            when Normal_Use  => FA.Atr (V).Is_Exceptional_Branch,
+            when Normal_Use  => FA.Atr (V).Is_Exceptional_Branch
+                                  or else
+                                FA.Atr (V).Is_Assertion,
             when others      => False);
 
       ---------------------
@@ -1879,14 +1881,6 @@ package body Flow.Analysis is
 
                  --  Suppression for elaboration of nested packages
                  not Is_Package_Elaboration (V) and then
-
-                 --  Suppression for vertices with assertion expressions
-                 not Atr.Is_Assertion and then
-
-                 --  Suppression for vertices that write to ghost variables
-                 --  ??? Probably we want remove this suppression
-                 not (for some Var of Atr.Variables_Defined =>
-                         Is_Ghost_Entity (Var)) and then
 
                  --  Suppression for ghost entities
                  not Is_Ghost_Entity (FA.Spec_Entity)

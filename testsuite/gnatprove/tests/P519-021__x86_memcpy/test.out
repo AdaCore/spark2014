@@ -1,12 +1,21 @@
 memcpy.adb:17:39: info: range check proved (CVC4: 1 VC)
+memcpy.adb:19:07: warning: initialization of "saved_ra" has no effect
 memcpy.adb:19:35: info: range check proved (CVC4: 1 VC)
+memcpy.adb:20:07: warning: initialization of "ra0" has no effect
 memcpy.adb:20:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:21:07: warning: initialization of "ra1" has no effect
 memcpy.adb:21:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:22:07: warning: initialization of "ra2" has no effect
 memcpy.adb:22:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:23:07: warning: initialization of "ra3" has no effect
 memcpy.adb:23:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:24:07: warning: initialization of "ra4" has no effect
 memcpy.adb:24:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:25:07: warning: initialization of "ra5" has no effect
 memcpy.adb:25:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:26:07: warning: initialization of "ra6" has no effect
 memcpy.adb:26:29: info: range check proved (CVC4: 1 VC)
+memcpy.adb:27:07: warning: initialization of "ra7" has no effect
 memcpy.adb:27:29: info: range check proved (CVC4: 1 VC)
 memcpy.adb:28:36: info: range check proved (CVC4: 1 VC)
 memcpy.adb:29:36: info: range check proved (CVC4: 1 VC)
@@ -213,15 +222,25 @@ memcpy.adb:454:21: medium: assertion might fail, cannot prove X86.ReadMem64(X86.
 memcpy.adb:454:46: info: initialization of "saved_rbp" proved
 memcpy.adb:455:21: medium: assertion might fail, cannot prove X86.ReadMem64(X86.RSP+8) = saved_ra
 memcpy.adb:455:48: info: initialization of "saved_ra" proved
+memcpy.adb:463:10: warning: initialization of "saved_ra" has no effect
 memcpy.adb:463:38: info: range check proved (CVC4: 1 VC)
+memcpy.adb:464:10: warning: initialization of "SaveStackPtr" has no effect
 memcpy.adb:464:42: info: range check proved (CVC4: 1 VC)
+memcpy.adb:465:10: warning: initialization of "ra0" has no effect
 memcpy.adb:465:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:466:10: warning: initialization of "ra1" has no effect
 memcpy.adb:466:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:467:10: warning: initialization of "ra2" has no effect
 memcpy.adb:467:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:468:10: warning: initialization of "ra3" has no effect
 memcpy.adb:468:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:469:10: warning: initialization of "ra4" has no effect
 memcpy.adb:469:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:470:10: warning: initialization of "ra5" has no effect
 memcpy.adb:470:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:471:10: warning: initialization of "ra6" has no effect
 memcpy.adb:471:32: info: range check proved (CVC4: 1 VC)
+memcpy.adb:472:10: warning: initialization of "ra7" has no effect
 memcpy.adb:472:32: info: range check proved (CVC4: 1 VC)
 memcpy.adb:485:23: warning: unused assignment
 memcpy.adb:486:23: warning: unused assignment

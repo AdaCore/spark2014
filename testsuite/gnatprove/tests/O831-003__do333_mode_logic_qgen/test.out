@@ -1,12 +1,6 @@
-ap_engaged_implies_modes_on.adb:34:23: warning: unused assignment
-ap_engaged_implies_modes_on.adb:38:26: warning: unused assignment
-ap_engaged_implies_modes_on.adb:42:21: warning: unused assignment
-ap_engaged_implies_modes_on.adb:46:17: warning: unused assignment
 ap_engaged_implies_modes_on.adb:46:26: info: initialization of "Is_AP_Engaged_out1" proved
-ap_engaged_implies_modes_on.adb:50:17: warning: unused assignment
 ap_engaged_implies_modes_on.adb:50:21: info: initialization of "NOT1_out1" proved
 ap_engaged_implies_modes_on.adb:51:19: info: initialization of "Modes_On_out1" proved
-ap_engaged_implies_modes_on.adb:59:15: warning: unused assignment
 ap_engaged_implies_modes_on.adb:59:19: info: initialization of "Unit_Delay_out1" proved
 ap_engaged_implies_modes_on.adb:60:19: info: initialization of "NOT5_out1" proved
 ap_engaged_implies_modes_on.adb:64:22: info: initialization of "OR_out1" proved
@@ -1248,11 +1242,7 @@ mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_VS_Selected" p
 mode_logic_props.ads:19:14: info: initialization of "nav_active_when_capture_cond_met.nav_selected_out1" proved
 mode_logic_props.ads:19:14: info: initialization of "requirements.modes_on" proved
 mode_logic_props.ads:19:14: info: initialization of "requirements.nav_active" proved
-modes_off_at_startup.adb:32:23: warning: unused assignment
-modes_off_at_startup.adb:36:21: warning: unused assignment
-modes_off_at_startup.adb:40:16: warning: unused assignment
 modes_off_at_startup.adb:40:25: info: initialization of "Modes_On_out1" proved
-modes_off_at_startup.adb:48:15: warning: unused assignment
 modes_off_at_startup.adb:48:19: info: initialization of "Unit_Delay_out1" proved
 modes_off_at_startup.adb:49:19: info: initialization of "NOT_out1" proved
 modes_off_at_startup.adb:53:22: info: initialization of "OR_out1" proved
@@ -1260,19 +1250,11 @@ modes_off_at_startup.adb:53:22: medium: assertion might fail, cannot prove OR_ou
 modes_off_at_startup.ads:15:14: info: initialization of "Unit_Delay_memory" proved
 modes_off_at_startup.ads:17:14: info: initialization of "True_out1" proved
 modes_off_at_startup.ads:19:14: info: initialization of "Unit_Delay_memory" proved
-modes_on_iff_fd_on_or_ap_engaged.adb:41:23: warning: unused assignment
-modes_on_iff_fd_on_or_ap_engaged.adb:45:18: warning: unused assignment
-modes_on_iff_fd_on_or_ap_engaged.adb:49:26: warning: unused assignment
-modes_on_iff_fd_on_or_ap_engaged.adb:53:21: warning: unused assignment
-modes_on_iff_fd_on_or_ap_engaged.adb:57:26: warning: unused assignment
-modes_on_iff_fd_on_or_ap_engaged.adb:61:16: warning: unused assignment
 modes_on_iff_fd_on_or_ap_engaged.adb:61:21: info: initialization of "Offside_FD_On_out1" proved
 modes_on_iff_fd_on_or_ap_engaged.adb:62:19: info: initialization of "Is_AP_Engaged_out1" proved
 modes_on_iff_fd_on_or_ap_engaged.adb:63:22: info: initialization of "FD_On_out1" proved
-modes_on_iff_fd_on_or_ap_engaged.adb:67:19: warning: unused assignment
 modes_on_iff_fd_on_or_ap_engaged.adb:67:23: info: initialization of "OR1_out1" proved
 modes_on_iff_fd_on_or_ap_engaged.adb:67:36: info: initialization of "Modes_On_out1" proved
-modes_on_iff_fd_on_or_ap_engaged.adb:75:15: warning: unused assignment
 modes_on_iff_fd_on_or_ap_engaged.adb:75:19: info: initialization of "Unit_Delay_out1" proved
 modes_on_iff_fd_on_or_ap_engaged.adb:76:19: info: initialization of "Equals_out1" proved
 modes_on_iff_fd_on_or_ap_engaged.adb:80:22: info: initialization of "OR_out1" proved
@@ -1280,24 +1262,11 @@ modes_on_iff_fd_on_or_ap_engaged.adb:80:22: medium: assertion might fail, cannot
 modes_on_iff_fd_on_or_ap_engaged.ads:15:14: info: initialization of "Unit_Delay_memory" proved
 modes_on_iff_fd_on_or_ap_engaged.ads:17:14: info: initialization of "True_out1" proved
 modes_on_iff_fd_on_or_ap_engaged.ads:23:14: info: initialization of "Unit_Delay_memory" proved
-nav_active_when_capture_cond_met.adb:65:23: warning: unused assignment
-nav_active_when_capture_cond_met.adb:69:24: warning: unused assignment
-nav_active_when_capture_cond_met.adb:73:21: warning: unused assignment
-nav_active_when_capture_cond_met.adb:81:33: warning: unused assignment
-nav_active_when_capture_cond_met.adb:85:54: warning: unused assignment
 nav_active_when_capture_cond_met.adb:93:21: info: initialization of "Pilot_Flying_Side_out1" proved
-nav_active_when_capture_cond_met.adb:93:45: warning: unused assignment to "Changed_Out1"
-nav_active_when_capture_cond_met.adb:97:43: warning: unused assignment
-nav_active_when_capture_cond_met.adb:101:40: warning: unused assignment
-nav_active_when_capture_cond_met.adb:105:17: warning: unused assignment
 nav_active_when_capture_cond_met.adb:105:26: info: initialization of "Changed_Out1" proved
-nav_active_when_capture_cond_met.adb:109:17: warning: unused assignment
 nav_active_when_capture_cond_met.adb:109:26: info: initialization of "Selected_NAV_Frequency_Changed_out1" proved
-nav_active_when_capture_cond_met.adb:113:17: warning: unused assignment
 nav_active_when_capture_cond_met.adb:113:26: info: initialization of "Selected_NAV_Source_Changed_out1" proved
-nav_active_when_capture_cond_met.adb:117:16: warning: unused assignment
 nav_active_when_capture_cond_met.adb:117:25: info: initialization of "Unit_Delay1_out1" proved
-nav_active_when_capture_cond_met.adb:121:15: warning: unused assignment
 nav_active_when_capture_cond_met.adb:121:25: info: initialization of "Unit_Delay_out1" proved
 nav_active_when_capture_cond_met.adb:122:20: info: initialization of "NOT_out1" proved
 nav_active_when_capture_cond_met.adb:123:23: info: initialization of "NAV_Capture_Cond_Met_out1" proved
@@ -1306,9 +1275,7 @@ nav_active_when_capture_cond_met.adb:125:29: info: initialization of "NOT3_out1"
 nav_active_when_capture_cond_met.adb:126:32: info: initialization of "NOT4_out1" proved
 nav_active_when_capture_cond_met.adb:127:35: info: initialization of "Modes_On_out1" proved
 nav_active_when_capture_cond_met.adb:128:38: info: initialization of "No_Higher_Event_Than_NAV_Capture_Cond_Met_out1" proved
-nav_active_when_capture_cond_met.adb:132:17: warning: unused assignment
 nav_active_when_capture_cond_met.adb:132:26: info: initialization of "OR_out1" proved
-nav_active_when_capture_cond_met.adb:136:17: warning: unused assignment
 nav_active_when_capture_cond_met.adb:136:21: info: initialization of "NOT1_out1" proved
 nav_active_when_capture_cond_met.adb:137:19: info: initialization of "NAV_Active_out1" proved
 nav_active_when_capture_cond_met.adb:141:22: info: initialization of "NOT5_out1" proved
@@ -1428,15 +1395,9 @@ no_higher_event_1.adb:373:32: info: initialization of "No_Higher_Event_Than_ALTS
 no_higher_event_1.adb:379:18: info: initialization of "O" proved
 no_higher_event_1.adb:379:21: info: initialization of "Bus_Creator_out1" proved
 no_higher_event_1.ads:19:43: info: initialization of "O" proved
-offside_fd_on_implies_modes_on.adb:34:23: warning: unused assignment
-offside_fd_on_implies_modes_on.adb:38:21: warning: unused assignment
-offside_fd_on_implies_modes_on.adb:42:26: warning: unused assignment
-offside_fd_on_implies_modes_on.adb:46:17: warning: unused assignment
 offside_fd_on_implies_modes_on.adb:46:26: info: initialization of "Offside_FD_On_out1" proved
-offside_fd_on_implies_modes_on.adb:50:17: warning: unused assignment
 offside_fd_on_implies_modes_on.adb:50:21: info: initialization of "NOT1_out1" proved
 offside_fd_on_implies_modes_on.adb:51:19: info: initialization of "Modes_On_out1" proved
-offside_fd_on_implies_modes_on.adb:59:15: warning: unused assignment
 offside_fd_on_implies_modes_on.adb:59:19: info: initialization of "Unit_Delay_out1" proved
 offside_fd_on_implies_modes_on.adb:60:19: info: initialization of "NOT5_out1" proved
 offside_fd_on_implies_modes_on.adb:64:22: info: initialization of "OR_out1" proved
