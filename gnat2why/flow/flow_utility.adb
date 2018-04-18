@@ -765,8 +765,9 @@ package body Flow_Utility is
                         Results.Include (F'Update (Facet => Extension_Part));
                      end if;
 
-                  when Array_Kind  |
-                       Scalar_Kind =>
+                  when Array_Kind
+                     | Scalar_Kind
+                  =>
                      Debug ("processing scalar or array type");
 
                      Results := Flow_Id_Sets.To_Set (F);
@@ -779,9 +780,10 @@ package body Flow_Utility is
 
                      Results := Flow_Id_Sets.To_Set (F);
 
-                  when E_Exception_Type  |
-                       E_Subprogram_Type |
-                       Incomplete_Kind   =>
+                  when E_Exception_Type
+                     | E_Subprogram_Type
+                     | Incomplete_Kind
+                  =>
 
                      raise Program_Error;
 
@@ -4230,9 +4232,6 @@ package body Flow_Utility is
             --  We can completely ignore these.
             M := Recurse_On (Expression (N), Map_Root, Map_Type);
 
-         when N_Unchecked_Type_Conversion =>
-            raise Why.Not_Implemented;
-
          when N_Attribute_Reference =>
             case Get_Attribute_Id (Attribute_Name (N)) is
                when Attribute_Update =>
@@ -4296,7 +4295,11 @@ package body Flow_Utility is
                   raise Why.Not_Implemented;
             end case;
 
-         when N_Function_Call | N_Indexed_Component =>
+         when N_Function_Call
+            | N_Indexed_Component
+            | N_Unchecked_Type_Conversion
+         =>
+
             --  For these we just summarize the entire blob.
 
             declare
