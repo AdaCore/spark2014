@@ -397,6 +397,11 @@ package body Gnat2Why.Expr.Loops is
       Loop_Index_Type : W_Type_Id := EW_Int_Type;
       --  These three variables hold the loop parameter in Ada and Why, if any
 
+      --  Constants specific to range quantification
+
+      Low_Id          : W_Identifier_Id := Why_Empty;
+      High_Id         : W_Identifier_Id := Why_Empty;
+
    begin
       --  Add the loop index to the entity table
 
@@ -419,6 +424,9 @@ package body Gnat2Why.Expr.Loops is
                                        Typ    => Loop_Index_Type);
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
          Insert_Entity (Loop_Param_Ent, Loop_Index, Mutable => True);
+
+         Low_Id := New_Temp_Identifier (Typ => Loop_Index_Type);
+         High_Id := New_Temp_Identifier (Typ => Loop_Index_Type);
       end if;
 
       --  Retrieve the different parts of the loop
@@ -448,9 +456,12 @@ package body Gnat2Why.Expr.Loops is
          --  objects modified in the loop.
 
          Dyn_Types_Inv :=
-           Generate_Frame_Condition (Stmt,
-             Has_Loop_Invariant => not (Loop_Invariants.Is_Empty
-                                        and then Loop_Variants.Is_Empty));
+           Generate_Frame_Condition
+             (Stmt,
+              Low_Id             => +Low_Id,
+              High_Id            => +High_Id,
+              Has_Loop_Invariant => not (Loop_Invariants.Is_Empty
+                and then Loop_Variants.Is_Empty));
 
          --  Generate the loop invariants VCs
 
@@ -627,13 +638,6 @@ package body Gnat2Why.Expr.Loops is
                    (Ada_Node => Stmt,
                     Right    => +Loop_Index,
                     Typ      => Loop_Index_Type);
-
-               --  Constants specific to range quantification
-
-               Low_Id       : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ => Loop_Index_Type);
-               High_Id      : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ => Loop_Index_Type);
 
                --  Constants specific to iterator specification
 
