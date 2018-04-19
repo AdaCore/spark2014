@@ -1837,7 +1837,18 @@ package body SPARK_Util is
                             return String
       is
          pragma Unreferenced (Orig_Expr, Expand_Type);
+
       begin
+         --  For compiler generated identifiers, try to print the original node
+         --  instead.
+
+         if not Comes_From_Source (Expr)
+           and then Present (Original_Node (Expr))
+           and then Original_Node (Expr) /= Expr
+         then
+            return Node_To_String (Original_Node (Expr), "");
+         end if;
+
          if Nkind (Expr) = N_Defining_Identifier then
             return Source_Name (Expr);
          elsif Present (Entity (Expr)) then
