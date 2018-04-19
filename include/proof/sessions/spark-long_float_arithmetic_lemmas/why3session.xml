@@ -4,256 +4,8 @@
 <why3session shape_version="4">
 <prover id="0" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
 <prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="1" steplimit="0" memlimit="0"/>
-<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="5" steplimit="0" memlimit="0"/>
+<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="0"/>
 <file name="../../../obj/gnatprove/spark-long_float_arithmetic_lemmas.mlw" proved="true">
-<theory name="Standard__short_short_integer" proved="true">
-</theory>
-<theory name="Standard__short_short_integer__rep" proved="true">
-</theory>
-<theory name="Standard__short_integer" proved="true">
-</theory>
-<theory name="Standard__short_integer__rep" proved="true">
-</theory>
-<theory name="Standard__integer" proved="true">
-</theory>
-<theory name="Standard__integer__rep" proved="true">
-</theory>
-<theory name="Standard__long_integer" proved="true">
-</theory>
-<theory name="Standard__long_integer__rep" proved="true">
-</theory>
-<theory name="Standard__long_long_integer" proved="true">
-</theory>
-<theory name="Standard__long_long_integer__rep" proved="true">
-</theory>
-<theory name="Standard__natural" proved="true">
-</theory>
-<theory name="Standard__natural__rep" proved="true">
-</theory>
-<theory name="Standard__positive" proved="true">
-</theory>
-<theory name="Standard__positive__rep" proved="true">
-</theory>
-<theory name="Standard__short_float" proved="true">
-</theory>
-<theory name="Standard__short_float__rep" proved="true">
-</theory>
-<theory name="Standard__float" proved="true">
-</theory>
-<theory name="Standard__float__rep" proved="true">
-</theory>
-<theory name="Standard__long_float" proved="true">
-</theory>
-<theory name="Standard__long_float__rep" proved="true">
-</theory>
-<theory name="Standard__character" proved="true">
-</theory>
-<theory name="Standard__character__rep" proved="true">
-</theory>
-<theory name="Standard__wide_character" proved="true">
-</theory>
-<theory name="Standard__wide_character__rep" proved="true">
-</theory>
-<theory name="Standard__wide_wide_character" proved="true">
-</theory>
-<theory name="Standard__wide_wide_character__rep" proved="true">
-</theory>
-<theory name="Array__Int__Standard__character" proved="true">
-</theory>
-<theory name="Array__Int__Standard__character__Concat" proved="true">
-</theory>
-<theory name="Array__Int__Standard__character_Comp" proved="true">
-</theory>
-<theory name="Standard__string" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_character" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
-</theory>
-<theory name="Standard__wide_string" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_wide_character" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
-</theory>
-<theory name="Standard__wide_wide_string" proved="true">
-</theory>
-<theory name="Standard__duration" proved="true">
-</theory>
-<theory name="Standard__integer_8" proved="true">
-</theory>
-<theory name="Standard__integer_8__rep" proved="true">
-</theory>
-<theory name="Standard__integer_16" proved="true">
-</theory>
-<theory name="Standard__integer_16__rep" proved="true">
-</theory>
-<theory name="Standard__integer_32" proved="true">
-</theory>
-<theory name="Standard__integer_32__rep" proved="true">
-</theory>
-<theory name="Standard__integer_64" proved="true">
-</theory>
-<theory name="Standard__integer_64__rep" proved="true">
-</theory>
-<theory name="Standard__universal_integer" proved="true">
-</theory>
-<theory name="Standard__universal_integer__rep" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__fl" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__fl__rep" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__fl_last_sqrt" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val1" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val1___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val2" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val2___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val3" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__val3___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val1" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val1___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val2" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val2___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val3" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__val3___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val1" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val1___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val2" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val2___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val3" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__val3___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val1" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val1___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val2" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val2___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val3" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__val3___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val1" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val1___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val2" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val2___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val3" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__val3___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val1" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val1___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val2" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val2___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val3" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__val3___axiom" proved="true">
-</theory>
-<theory name="Standard__short_short_integer___axiom" proved="true">
-</theory>
-<theory name="Standard__short_integer___axiom" proved="true">
-</theory>
-<theory name="Standard__integer___axiom" proved="true">
-</theory>
-<theory name="Standard__long_integer___axiom" proved="true">
-</theory>
-<theory name="Standard__long_long_integer___axiom" proved="true">
-</theory>
-<theory name="Standard__natural___axiom" proved="true">
-</theory>
-<theory name="Standard__positive___axiom" proved="true">
-</theory>
-<theory name="Standard__short_float___axiom" proved="true">
-</theory>
-<theory name="Standard__float___axiom" proved="true">
-</theory>
-<theory name="Standard__long_float___axiom" proved="true">
-</theory>
-<theory name="Standard__character___axiom" proved="true">
-</theory>
-<theory name="Standard__wide_character___axiom" proved="true">
-</theory>
-<theory name="Standard__wide_wide_character___axiom" proved="true">
-</theory>
-<theory name="Standard__string___axiom" proved="true">
-</theory>
-<theory name="Standard__wide_string___axiom" proved="true">
-</theory>
-<theory name="Standard__wide_wide_string___axiom" proved="true">
-</theory>
-<theory name="Standard__duration___axiom" proved="true">
-</theory>
-<theory name="Standard__integer_8___axiom" proved="true">
-</theory>
-<theory name="Standard__integer_16___axiom" proved="true">
-</theory>
-<theory name="Standard__integer_32___axiom" proved="true">
-</theory>
-<theory name="Standard__integer_64___axiom" proved="true">
-</theory>
-<theory name="Standard__universal_integer___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__fl___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__fl_last_sqrt___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic___axiom" proved="true">
-</theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic___axiom" proved="true">
-</theory>
 <theory name="Spark__long_float_arithmetic_lemmas__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
@@ -295,11 +47,11 @@
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="2"><result status="valid" steps="9901524"/></proof>
+  <proof prover="2"><result status="valid" steps="8664896"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="2"><result status="valid" steps="15245693"/></proof>
+  <proof prover="2"><result status="valid" steps="15717281"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
   <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__pragargs__cmp.v"><result status="valid"/></proof>
@@ -313,11 +65,11 @@
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="2"><result status="valid" steps="9112462"/></proof>
+  <proof prover="2"><result status="valid" steps="8389758"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="2"><result status="valid" steps="15617925"/></proof>
+  <proof prover="2"><result status="valid" steps="13121161"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
   <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__pragargs__cmp.v"><result status="valid"/></proof>
@@ -334,14 +86,14 @@
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="2"><result status="valid" steps="11260473"/></proof>
+  <proof prover="2"><result status="valid" steps="19675853"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="230"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="2" timelimit="0" steplimit="80450000"><result status="valid" steps="22837770"/></proof>
+  <proof prover="2"><result status="valid" steps="34967323"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition" proved="true">
   <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid"/></proof>
@@ -358,14 +110,14 @@
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="2" timelimit="0" steplimit="80450000"><result status="valid" steps="9587827"/></proof>
+  <proof prover="2"><result status="valid" steps="13596193"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="236"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="2" timelimit="0" steplimit="80450000"><result status="valid" steps="10686265"/></proof>
+  <proof prover="2"><result status="valid" steps="9992306"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition" proved="true">
   <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__pragargs__cmp.v"><result status="valid"/></proof>

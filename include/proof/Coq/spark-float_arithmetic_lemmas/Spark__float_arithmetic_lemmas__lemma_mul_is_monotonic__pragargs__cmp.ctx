@@ -1262,7 +1262,7 @@ Theorem WP_parameter_def : ((t'isFinite val1)
                            (*        Post => Val1 * Val3 <= Val2 * Val3;  --  MANUAL PROOF                                                                           *)
                            (*                ^ spark-floating_point_arithmetic_lemmas.ads:78:16:instantiated:spark-float_arithmetic_lemmas.ads:32:1:VC_POSTCONDITION *)
                            (le (mul RNE val1 val3) (mul RNE val2 val3)).
-intros (h1,(h2,(h3,((h4,h5),((h6,h7),((h8,h9),h10)))))).
+intros (h1,(h2,(h3,(h4,(h5,((h6,h7),((h8,h9),((h10,h11),h12)))))))).
 (* file shared by the two lemmas dealing with 32-bit multiplication *)
 #include "float32_mul_common.prf"
 (* file shared by the two lemmas dealing 32/64-bit mul monotonicity *)

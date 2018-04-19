@@ -119,7 +119,7 @@ Parameter t'isFinite: t -> Prop.
 
 Axiom t'axiom : forall (x:t),
                  (t'isFinite x) ->
-                 (((-(16777215 * 20282409603651670423947251286016)%R)%R <= 
+                 (((-(16777215 * 20282409603651670423947251286016)%R)%R <=
                   (t'real x))%R
                   /\ ((t'real x) <= (16777215 * 20282409603651670423947251286016)%R)%R).
 
@@ -485,7 +485,7 @@ Axiom add_finite_rev_n : forall (m:mode) (x:t) (y:t),
                           ((t'isFinite (add m x y)) ->
                            ((no_overflow m ((t'real x) + (t'real y))%R)
                             /\ ((t'real (add m x y)) = (round m
-                                                         ((t'real x) + 
+                                                         ((t'real x) +
                                                          (t'real y))%R)))).
 
 Axiom sub_finite : forall (m:mode) (x:t) (y:t),
@@ -505,7 +505,7 @@ Axiom sub_finite_rev_n : forall (m:mode) (x:t) (y:t),
                           ((t'isFinite (sub m x y)) ->
                            ((no_overflow m ((t'real x) - (t'real y))%R)
                             /\ ((t'real (sub m x y)) = (round m
-                                                         ((t'real x) - 
+                                                         ((t'real x) -
                                                          (t'real y))%R)))).
 
 Axiom mul_finite : forall (m:mode) (x:t) (y:t),
@@ -525,7 +525,7 @@ Axiom mul_finite_rev_n : forall (m:mode) (x:t) (y:t),
                           ((t'isFinite (mul m x y)) ->
                            ((no_overflow m ((t'real x) * (t'real y))%R)
                             /\ ((t'real (mul m x y)) = (round m
-                                                         ((t'real x) * 
+                                                         ((t'real x) *
                                                          (t'real y))%R)))).
 
 Axiom div_finite : forall (m:mode) (x:t) (y:t),
@@ -550,7 +550,7 @@ Axiom div_finite_rev_n : forall (m:mode) (x:t) (y:t),
                            ((t'isFinite y) ->
                             ((no_overflow m ((t'real x) / (t'real y))%R)
                              /\ ((t'real (div m x y)) = (round m
-                                                          ((t'real x) / 
+                                                          ((t'real x) /
                                                           (t'real y))%R))))).
 
 Axiom neg_finite : forall (x:t),
@@ -573,7 +573,7 @@ Axiom abs_finite : forall (x:t),
 Axiom abs_finite_rev : forall (x:t),
                         (t'isFinite (abs x)) ->
                         ((t'isFinite x)
-                         /\ ((t'real (abs x)) = (Reals.Rbasic_fun.Rabs 
+                         /\ ((t'real (abs x)) = (Reals.Rbasic_fun.Rabs
                          (t'real x)))).
 
 Axiom abs_universal : forall (x:t), ~ (is_negative (abs x)).
@@ -586,8 +586,8 @@ Axiom fma_finite : forall (m:mode) (x:t) (y:t) (z:t),
                        (((t'real x) * (t'real y))%R + (t'real z))%R) ->
                        ((t'isFinite (fma m x y z))
                         /\ ((t'real (fma m x y z)) = (round m
-                                                       (((t'real x) * 
-                                                       (t'real y))%R + 
+                                                       (((t'real x) *
+                                                       (t'real y))%R +
                                                        (t'real z))%R)))))).
 
 Axiom fma_finite_rev : forall (m:mode) (x:t) (y:t) (z:t),
@@ -600,8 +600,8 @@ Axiom fma_finite_rev_n : forall (m:mode) (x:t) (y:t) (z:t),
                            ((no_overflow m
                             (((t'real x) * (t'real y))%R + (t'real z))%R)
                             /\ ((t'real (fma m x y z)) = (round m
-                                                           (((t'real x) * 
-                                                           (t'real y))%R + 
+                                                           (((t'real x) *
+                                                           (t'real y))%R +
                                                            (t'real z))%R)))).
 
 Axiom sqrt_finite : forall (m:mode) (x:t),
@@ -609,7 +609,7 @@ Axiom sqrt_finite : forall (m:mode) (x:t),
                      ((0%R <= (t'real x))%R ->
                       ((t'isFinite (sqrt m x))
                        /\ ((t'real (sqrt m x)) = (round m
-                                                   (Reals.R_sqrt.sqrt 
+                                                   (Reals.R_sqrt.sqrt
                                                    (t'real x)))))).
 
 Axiom sqrt_finite_rev : forall (m:mode) (x:t),
@@ -617,7 +617,7 @@ Axiom sqrt_finite_rev : forall (m:mode) (x:t),
                          ((t'isFinite x)
                           /\ ((0%R <= (t'real x))%R
                               /\ ((t'real (sqrt m x)) = (round m
-                                                          (Reals.R_sqrt.sqrt 
+                                                          (Reals.R_sqrt.sqrt
                                                           (t'real x)))))).
 
 (* Why3 assumption *)
@@ -696,7 +696,7 @@ Axiom mul_special : forall (m:mode) (x:t) (y:t),
                                           /\ ((((t'isFinite x)
                                                 /\ ((t'isFinite y)
                                                     /\ ~ (no_overflow m
-                                                       ((t'real x) * 
+                                                       ((t'real x) *
                                                        (t'real y))%R))) ->
                                                (overflow_value m r))
                                               /\ ((~ (is_nan r)) ->
@@ -798,20 +798,20 @@ Axiom fma_special : forall (m:mode) (x:t) (y:t) (z:t),
                                                                     /\ (
                                                                     (t'isFinite
                                                                     z)
-                                                                    /\ 
+                                                                    /\
                                                                     ~ (no_overflow
                                                                     m
                                                                     ((
                                                                     (
-                                                                    t'real x) * 
+                                                                    t'real x) *
                                                                     (
-                                                                    t'real y))%R + 
+                                                                    t'real y))%R +
                                                                     (
                                                                     t'real z))%R)))) ->
                                                                ((same_sign_real
                                                                 r
-                                                                (((t'real x) * 
-                                                                (t'real y))%R + 
+                                                                (((t'real x) *
+                                                                (t'real y))%R +
                                                                 (t'real z))%R)
                                                                 /\ (overflow_value
                                                                 m r)))
@@ -831,9 +831,9 @@ Axiom fma_special : forall (m:mode) (x:t) (y:t) (z:t),
                                                                     z x y)) ->
                                                                    ((((
                                                                     (
-                                                                    t'real x) * 
+                                                                    t'real x) *
                                                                     (
-                                                                    t'real y))%R + 
+                                                                    t'real y))%R +
                                                                     (
                                                                     t'real z))%R = 0%R) ->
                                                                     (
@@ -964,7 +964,7 @@ Axiom ceil_lest : forall (x:t) (y:t),
 
 Axiom ceil_to_real : forall (x:t),
                       (t'isFinite x) ->
-                      ((t'real (roundToIntegral RTP x)) = (Reals.Raxioms.IZR 
+                      ((t'real (roundToIntegral RTP x)) = (Reals.Raxioms.IZR
                       (ceil (t'real x)))).
 
 Axiom ceil_to_int : forall (m:mode) (x:t),
@@ -980,7 +980,7 @@ Axiom floor_lest : forall (x:t) (y:t),
 
 Axiom floor_to_real : forall (x:t),
                        (t'isFinite x) ->
-                       ((t'real (roundToIntegral RTN x)) = (Reals.Raxioms.IZR 
+                       ((t'real (roundToIntegral RTN x)) = (Reals.Raxioms.IZR
                        (floor (t'real x)))).
 
 Axiom floor_to_int : forall (m:mode) (x:t),
@@ -1034,13 +1034,13 @@ Axiom roundToIntegral_is_finite : forall (m:mode) (x:t),
 
 Axiom round_bound_ne : forall (x:R),
                         (no_overflow RNE x) ->
-                        ((((x - ((1 / 16777216)%R * (Reals.Rbasic_fun.Rabs x))%R)%R - (1 / 1427247692705959881058285969449495136382746624)%R)%R <= 
+                        ((((x - ((1 / 16777216)%R * (Reals.Rbasic_fun.Rabs x))%R)%R - (1 / 1427247692705959881058285969449495136382746624)%R)%R <=
                          (round RNE x))%R
                          /\ ((round RNE x) <= ((x + ((1 / 16777216)%R * (Reals.Rbasic_fun.Rabs x))%R)%R + (1 / 1427247692705959881058285969449495136382746624)%R)%R)%R).
 
 Axiom round_bound : forall (m:mode) (x:R),
                      (no_overflow m x) ->
-                     ((((x - ((1 / 8388608)%R * (Reals.Rbasic_fun.Rabs x))%R)%R - (1 / 713623846352979940529142984724747568191373312)%R)%R <= 
+                     ((((x - ((1 / 8388608)%R * (Reals.Rbasic_fun.Rabs x))%R)%R - (1 / 713623846352979940529142984724747568191373312)%R)%R <=
                       (round m x))%R
                       /\ ((round m x) <= ((x + ((1 / 8388608)%R * (Reals.Rbasic_fun.Rabs x))%R)%R + (1 / 713623846352979940529142984724747568191373312)%R)%R)%R).
 
@@ -1262,7 +1262,7 @@ Theorem WP_parameter_def : ((t'isFinite val1)
                            (*        Post => Val2 * Val3 <= Val1 * Val3;  --  MANUAL PROOF                                                                           *)
                            (*                ^ spark-floating_point_arithmetic_lemmas.ads:91:16:instantiated:spark-float_arithmetic_lemmas.ads:32:1:VC_POSTCONDITION *)
                            (le (mul RNE val2 val3) (mul RNE val1 val3)).
-intros (h1,(h2,(h3,((h4,h5),((h6,h7),((h8,h9),h10)))))).
+intros (h1,(h2,(h3,(h4,(h5,((h6,h7),((h8,h9),((h10,h11),h12)))))))).
 (* file shared by the two lemmas dealing with 32-bit multiplication *)
 #include "float32_mul_common.prf"
 (* file shared by the two lemmas dealing 32/64-bit mult antimonotonicity *)

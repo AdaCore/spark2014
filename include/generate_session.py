@@ -25,6 +25,13 @@ def run_automatic(prover, level=4):
     run(cmd)
 
 
+def run_automatic_timeout(prover, level=4, timeout=100):
+    cmd = "gnatprove -P spark_lemmas.gpr --no-counterexample -j0" + \
+          " --prover=" + prover + " --level=" + str(level) + \
+          " --timeout=" + str(timeout)
+    run(cmd)
+
+
 def run_options(opt):
     cmd = "gnatprove -P spark_lemmas.gpr --no-counterexample -j0 " + opt
     run(cmd)
@@ -162,7 +169,7 @@ def kill_and_regenerate_all():
     print "------------"
     print "Then with Z3"
     print "------------"
-    run_automatic("z3", level=2)
+    run_automatic_timeout("z3", level=2, timeout=100)
     print ""
     print "---------------------------"
     print "Summarize all proved checks"
