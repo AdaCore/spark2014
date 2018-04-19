@@ -224,14 +224,18 @@ package body Gnat2Why.Expr.Loops.Inv is
    -- Tree Traversal --
    --------------------
 
-   function Get_Loop_Writes
+   procedure Get_Loop_Writes
      (Loop_Stmt          : Node_Id;
-      Has_Loop_Invariant : Boolean)
-      return Write_Status_Maps.Map;
+      Has_Loop_Invariant : Boolean;
+      Loop_Writes        : out Write_Status_Maps.Map;
+      Inv_Objects        : out Entity_Sets.Set);
    --  Traverse a loop statement and accumulate potentially written variables.
    --  @param Loop_Stmt considered loop statement.
    --  @param Has_Loop_Invariant True iff the loop has a loop invariant.
-   --  @return a map between written entities and their write status.
+   --  @param Loop_Writes a map between written entities and their write
+   --         status.
+   --  @param Inv_Objects the set of constants declared just before the
+   --         invariant if any.
 
    procedure Process_Call_Statement
      (Call        : Node_Id;
@@ -247,6 +251,7 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Process_Loop_Statement
      (Loop_Stmt   : Node_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
+      Inv_Objects : in out Entity_Sets.Set;
       Inv_Seen    : Boolean;
       In_Nested   : Boolean);
    --  Traverse a loop statement and update a status map for every variable
@@ -254,6 +259,8 @@ package body Gnat2Why.Expr.Loops.Inv is
    --  @param Loop_Stmt considered loop statement.
    --  @param Loop_Writes a map between written entities and their write
    --         status.
+   --  @param Inv_Objects the set of constants declared just before the
+   --         invariant if any.
    --  @param Inv_Seen True if the statement occurs after the loop invariant
    --         in the top level loop.
    --  @param In_Nested True if the statement occurs inside a nested statement.
@@ -261,6 +268,7 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Process_Statement
      (N           : Node_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
+      Inv_Objects : in out Entity_Sets.Set;
       Inv_Seen    : Boolean;
       In_Nested   : Boolean);
    --  Traverse a statement and update a status map for every variable
@@ -268,6 +276,8 @@ package body Gnat2Why.Expr.Loops.Inv is
    --  @param N considered statement.
    --  @param Loop_Writes a map between written entities and their write
    --         status.
+   --  @param Inv_Objects the set of constants declared just before the
+   --         invariant if any.
    --  @param Inv_Seen True if the statement occurs after the loop invariant
    --         in the top level loop.
    --  @param In_Nested True if the statement occurs inside a nested statement.
@@ -275,12 +285,15 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Process_Statement_List
      (L           : List_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
+      Inv_Objects : in out Entity_Sets.Set;
       Inv_Seen    : Boolean;
       In_Nested   : Boolean);
    --  Process every statement of a list.
    --  @param L considered list of statements.
    --  @param Loop_Writes a map between written entities and their write
    --         status.
+   --  @param Inv_Objects the set of constants declared just before the
+   --         invariant if any.
    --  @param Inv_Seen True if the statement occurs after the loop invariant
    --         in the top level loop.
    --  @param In_Nested True if the statement occurs inside a nested statement.
@@ -852,8 +865,6 @@ package body Gnat2Why.Expr.Loops.Inv is
       Has_Loop_Invariant : Boolean)
       return W_Pred_Id
    is
-      Loop_Writes   : constant Map :=
-        Get_Loop_Writes (Loop_Stmt, Has_Loop_Invariant);
       Loop_Id       : constant Entity_Id := Entity (Identifier (Loop_Stmt));
       Param_Spec    : constant Node_Id :=
         (if Present (Iteration_Scheme (Loop_Stmt))
@@ -872,8 +883,13 @@ package body Gnat2Why.Expr.Loops.Inv is
          else Flow_Id_Sets.Empty_Set);
       N             : Node_Id;
       Dyn_Types_Inv : W_Pred_Id := True_Pred;
+      Loop_Writes   : Map;
+      Inv_Objects   : Entity_Sets.Set;
 
    begin
+      Get_Loop_Writes
+        (Loop_Stmt, Has_Loop_Invariant, Loop_Writes, Inv_Objects);
+
       --  Sanity checking:
       --  Check that we have at least every variable modified in the loop.
 
@@ -982,6 +998,39 @@ package body Gnat2Why.Expr.Loops.Inv is
          end;
       end loop;
 
+      --  Assume value of scalar constants declared just before the invariant
+
+      for E of Inv_Objects loop
+         pragma Assert (Has_Scalar_Type (Etype (E)));
+
+         declare
+            Typ  : constant W_Type_Id := Why_Type_Of_Entity (E);
+            Decl : constant Node_Id := Enclosing_Declaration (E);
+            Expr : constant W_Expr_Id :=
+              +Transform_Expr (Expression (Decl),
+                               Typ,
+                               EW_Pterm,
+                               Params => Body_Params);
+            L_Id  : constant W_Expr_Id :=
+              Transform_Identifier (Params => Body_Params,
+                                    Expr   => E,
+                                    Ent    => E,
+                                    Domain => EW_Term);
+
+         begin
+
+            Dyn_Types_Inv :=
+              +New_And_Expr
+              (Domain    => EW_Pred,
+               Conjuncts =>
+                 (1 => +Dyn_Types_Inv,
+                  2 => New_Call (Name   => Why_Eq,
+                                 Typ    => EW_Bool_Type,
+                                 Args   => (Expr, L_Id),
+                                 Domain => EW_Pred)));
+         end;
+      end loop;
+
       return Dyn_Types_Inv;
    end Generate_Frame_Condition;
 
@@ -989,10 +1038,11 @@ package body Gnat2Why.Expr.Loops.Inv is
    -- Get_Loop_Writes --
    ---------------------
 
-   function Get_Loop_Writes
+   procedure Get_Loop_Writes
      (Loop_Stmt          : Node_Id;
-      Has_Loop_Invariant : Boolean)
-      return Write_Status_Maps.Map
+      Has_Loop_Invariant : Boolean;
+      Loop_Writes        : out Write_Status_Maps.Map;
+      Inv_Objects        : out Entity_Sets.Set)
    is
    begin
       --  Only try to keep variables declared inside the loop as completely
@@ -1001,11 +1051,9 @@ package body Gnat2Why.Expr.Loops.Inv is
       --  Otherwise, there is no meaningful use for these variables in the
       --  frame condition.
 
-      return Loop_Writes : Write_Status_Maps.Map do
-         Process_Loop_Statement (Loop_Stmt, Loop_Writes,
-                                 Inv_Seen  => not Has_Loop_Invariant,
-                                 In_Nested => False);
-      end return;
+      Process_Loop_Statement (Loop_Stmt, Loop_Writes, Inv_Objects,
+                              Inv_Seen  => not Has_Loop_Invariant,
+                              In_Nested => False);
    end Get_Loop_Writes;
 
    ----------------
@@ -1240,6 +1288,7 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Process_Loop_Statement
      (Loop_Stmt   : Node_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
+      Inv_Objects : in out Entity_Sets.Set;
       Inv_Seen    : Boolean;
       In_Nested   : Boolean)
    is
@@ -1277,7 +1326,8 @@ package body Gnat2Why.Expr.Loops.Inv is
 
       --  Process the statement list
 
-      Process_Statement_List (Stmts, Loop_Writes, Inv_Seen, In_Nested);
+      Process_Statement_List
+        (Stmts, Loop_Writes, Inv_Objects, Inv_Seen, In_Nested);
    end Process_Loop_Statement;
 
    -----------------------
@@ -1287,6 +1337,7 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Process_Statement
      (N           : Node_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
+      Inv_Objects : in out Entity_Sets.Set;
       Inv_Seen    : Boolean;
       In_Nested   : Boolean)
    is
@@ -1294,26 +1345,6 @@ package body Gnat2Why.Expr.Loops.Inv is
       case Nkind (N) is
          when N_Assignment_Statement =>
             Update_Status (SPARK_Atree.Name (N), Loop_Writes, Inv_Seen);
-
-         --  Possibly record writes on variables local to the block (if
-         --  In_Nested is still False at this point) as a Loop_Invariant
-         --  is allowed to appear in a block.
-
-         when N_Block_Statement =>
-            declare
-               Decls : constant List_Id := Declarations (N);
-               HSS   : constant Node_Id := Handled_Statement_Sequence (N);
-               --  Declarations, which are optional, and statement sequence,
-               --  which is always present.
-
-            begin
-               if Present (Decls) then
-                  Process_Statement_List
-                    (Decls, Loop_Writes, Inv_Seen, In_Nested);
-               end if;
-
-               Process_Statement (HSS, Loop_Writes, Inv_Seen, In_Nested);
-            end;
 
          --  Discard writes to variables local to a case statement
 
@@ -1323,8 +1354,8 @@ package body Gnat2Why.Expr.Loops.Inv is
             begin
                while Present (Alternative) loop
                   Process_Statement_List
-                    (Statements (Alternative), Loop_Writes, Inv_Seen,
-                     In_Nested => True);
+                    (Statements (Alternative), Loop_Writes, Inv_Objects,
+                     Inv_Seen, In_Nested => True);
                   Next (Alternative);
                end loop;
             end;
@@ -1364,7 +1395,9 @@ package body Gnat2Why.Expr.Loops.Inv is
          when N_Object_Declaration =>
             declare
                E : constant Entity_Id := Defining_Identifier (N);
+
             begin
+
                if Is_Mutable_In_Why (E) then
                   One_Level_Update (E, Loop_Writes,
                                     Discard_Writes =>
@@ -1374,7 +1407,8 @@ package body Gnat2Why.Expr.Loops.Inv is
 
          when N_Elsif_Part =>
             Process_Statement_List
-              (Then_Statements (N), Loop_Writes, Inv_Seen, In_Nested => True);
+              (Then_Statements (N), Loop_Writes, Inv_Objects, Inv_Seen,
+               In_Nested => True);
 
          when N_Entry_Call_Statement
             | N_Procedure_Call_Statement
@@ -1387,8 +1421,8 @@ package body Gnat2Why.Expr.Loops.Inv is
             One_Level_Update (Return_Statement_Entity (N), Loop_Writes,
                               Discard_Writes => True);
             Process_Statement_List
-              (Return_Object_Declarations (N), Loop_Writes, Inv_Seen,
-               In_Nested => True);
+              (Return_Object_Declarations (N), Loop_Writes, Inv_Objects,
+               Inv_Seen, In_Nested => True);
 
             --  These statements do not affect the loop frame condition.
             --  We still include them here to match what flow analysis is
@@ -1396,28 +1430,28 @@ package body Gnat2Why.Expr.Loops.Inv is
             --  the beginning of Generate_Frame_Condition.
 
             Process_Statement
-              (Handled_Statement_Sequence (N), Loop_Writes, Inv_Seen,
-               In_Nested => True);
+              (Handled_Statement_Sequence (N), Loop_Writes, Inv_Objects,
+               Inv_Seen, In_Nested => True);
 
          --  Discard writes to variables local to an if statement
 
          when N_If_Statement =>
             Process_Statement_List (Then_Statements (N), Loop_Writes,
-                                    Inv_Seen, In_Nested => True);
+                                    Inv_Objects, Inv_Seen, In_Nested => True);
             Process_Statement_List (Else_Statements (N), Loop_Writes,
-                                    Inv_Seen, In_Nested => True);
+                                    Inv_Objects, Inv_Seen, In_Nested => True);
             Process_Statement_List (Elsif_Parts (N), Loop_Writes,
-                                    Inv_Seen, In_Nested => True);
+                                    Inv_Objects, Inv_Seen, In_Nested => True);
 
          when N_Handled_Sequence_Of_Statements =>
             Process_Statement_List
-              (Statements (N), Loop_Writes, Inv_Seen, In_Nested);
+              (Statements (N), Loop_Writes, Inv_Objects, Inv_Seen, In_Nested);
 
          --  Discard writes to variables local to a local loop statement
 
          when N_Loop_Statement =>
             Process_Loop_Statement
-              (N, Loop_Writes, Inv_Seen, In_Nested => True);
+              (N, Loop_Writes, Inv_Objects, Inv_Seen, In_Nested => True);
 
          when N_Ignored_In_SPARK
             | N_Simple_Return_Statement
@@ -1450,29 +1484,61 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Process_Statement_List
      (L           : List_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
+      Inv_Objects : in out Entity_Sets.Set;
       Inv_Seen    : Boolean;
       In_Nested   : Boolean)
    is
-      N    : Node_Id := First (L);
-      Seen : Boolean := Inv_Seen;
+      Flat_Lst : constant Node_Lists.List :=
+        Get_Flat_Statement_And_Declaration_List (L);
+      Seen     : Boolean := Inv_Seen;
 
    begin
-      while Present (N) loop
+      for C in Flat_Lst.Iterate loop
+         declare
+            N : constant Node_Id := Node_Lists.Element (C);
+         begin
 
-         --  If we are not in a nested loop, update Inv_Seen if the invariant
-         --  is seen.
+            --  If we are not in a nested loop, update Inv_Seen if the
+            --  invariant is seen.
 
-         if not In_Nested
-           and then (Is_Pragma_Check (N, Name_Loop_Invariant)
-                     or else Is_Pragma (N, Pragma_Loop_Variant))
-         then
-            Seen := True;
-         end if;
+            if not In_Nested
+              and then (Is_Pragma_Check (N, Name_Loop_Invariant)
+                        or else Is_Pragma (N, Pragma_Loop_Variant))
+            then
+               Seen := True;
 
-         Process_Statement (N, Loop_Writes,
-                            Inv_Seen  => Seen,
-                            In_Nested => In_Nested);
-         Next (N);
+               --  If we are in the main loop, collect scalar variables
+               --  declared just before the invariant so that we can assume
+               --  their value.
+
+               declare
+                  use Node_Lists;
+                  Prev : Node_Lists.Cursor := Previous (C);
+               begin
+                  while Has_Element (Prev) loop
+                     declare
+                        D : constant Node_Id := Element (Prev);
+                     begin
+                        exit when Nkind (D) not in N_Declaration;
+
+                        if Nkind (D) = N_Object_Declaration
+                          and then Ekind (Defining_Identifier (D)) = E_Constant
+                          and then Has_Scalar_Type
+                            (Etype (Defining_Identifier (D)))
+                        then
+                           Inv_Objects.Insert (Defining_Identifier (D));
+                        end if;
+                     end;
+
+                     Previous (Prev);
+                  end loop;
+               end;
+            end if;
+
+            Process_Statement (N, Loop_Writes, Inv_Objects,
+                               Inv_Seen  => Seen,
+                               In_Nested => In_Nested);
+         end;
       end loop;
    end Process_Statement_List;
 

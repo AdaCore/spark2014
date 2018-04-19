@@ -43,6 +43,7 @@ package SPARK_Atree is
 
    subtype N_Binary_Op                is Sinfo.N_Binary_Op;
    subtype N_Delay_Statement          is Sinfo.N_Delay_Statement;
+   subtype N_Declaration              is Sinfo.N_Declaration;
    subtype N_Entity                   is Sinfo.N_Entity;
    subtype N_Has_Entity               is Sinfo.N_Has_Entity;
    subtype N_Membership_Test          is Sinfo.N_Membership_Test;

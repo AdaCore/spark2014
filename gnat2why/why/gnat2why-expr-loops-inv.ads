@@ -34,7 +34,9 @@ package Gnat2Why.Expr.Loops.Inv is
    --  Compute the frame condition of a loop statement. For now, only consider
    --  dynamic invariants of modified variables, and the part of the frame
    --  condition that states that unmodified record subcomponents keep their
-   --  values around the loop.
+   --  values around the loop. We also assume values of scalar constants
+   --  declared just before the invariant. This is important in particular for
+   --  constant introduced by the compiler for the loop invariants themselves.
    --  @param Loop_Stmt considered loop statement.
    --  @param Low_Id identifier for the lower bound of the loop if any.
    --  @param High_Id identifier for the higher bound of the loop if any.
