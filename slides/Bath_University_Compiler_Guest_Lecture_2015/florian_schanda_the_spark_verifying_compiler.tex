@@ -366,7 +366,7 @@ rounded corners
       \draw[->] (encoding) -- (gnatwhy3);
 
       \draw[->] (gnat2why) -- (output);
-      \draw[->] (gnatwhy3) -- (output);
+      \draw[->] (gnatwhy3) to [out=230,in=-45] (gnat2why);
 
       \draw[->] (provers) to [out=230,in=-45] (gnatwhy3);
     \end{tikzpicture}
