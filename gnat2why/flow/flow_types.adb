@@ -864,12 +864,18 @@ package body Flow_Types is
    --  Start of processing Flow_Id_To_String
 
    begin
-      --  Return "Prefix.State" instead of just "State", but only for abstract
-      --  state for now. (However, the code below would work for any other flow
-      --  id as well.)
+      --  Return "Prefix.State" instead of just "State" for abstract states and
+      --  "Prefix.Constituent" instead of "Constituent" for constituents whose
+      --  immediate scope differs from the immediate scope of the encapsulating
+      --  abstract state. (However, the code below would work for any other
+      --  flow id as well.)
+
       if F.Kind in Direct_Mapping | Record_Field
-        and then Nkind (F.Node) in N_Entity
-        and then Ekind (F.Node) = E_Abstract_State
+        and then (Is_Abstract_State (F.Node)
+                    or else
+                  (Is_Constituent (F.Node)
+                     and then
+                   Scope (F.Node) /= Scope (Encapsulating_State (F.Node))))
       then
          Append (R, Get_Unmangled_Name (Scope (F.Node)));
          Append (R, ".");

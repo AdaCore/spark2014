@@ -6,7 +6,7 @@ p-priv_child.ads:4:14: warning: subprogram "Foo" has no effect
 p.ads:7:04: indicator Part_Of is required in this context: constant with variable input "A" is declared in the private part of package "P" (SPARK RM 7.2.6(2))
 p.ads:7:28: info: initialization of "V" proved
 p.ads:8:28: info: initialization of "V" proved
-parent-privchild.ads:4:04: medium: "X" constituent of "Parent.State" needs to be listed in the refinement of "Parent.State"
+parent-privchild.ads:4:04: medium: "Privchild.X" constituent of "Parent.State" needs to be listed in the refinement of "Parent.State"
 parent-privchild.ads:5:04: indicator Part_Of is required in this context: constant with variable input "Y" is declared in the visible part of the private child "Privchild" (SPARK RM 7.2.6(3))
 parent.ads:1:39: warning: no procedure exists that can initialize abstract state "Parent.State"
 parent.ads:3:14: warning: subprogram "Foo" has no effect

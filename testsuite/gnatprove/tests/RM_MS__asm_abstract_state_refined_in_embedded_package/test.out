@@ -1,6 +1,6 @@
-power_14.adb:10:07: info: initialization of "State" constituent of "Power_14.State" proved
+power_14.adb:10:07: info: initialization of "Source_A.State" constituent of "Power_14.State" proved
 power_14.adb:12:23: info: initialization of "Level" proved
-power_14.adb:21:07: info: initialization of "State" constituent of "Power_14.State" proved
+power_14.adb:21:07: info: initialization of "Source_B.State" constituent of "Power_14.State" proved
 power_14.adb:23:23: info: initialization of "Level" proved
 power_14.adb:55:16: info: initialization of "Level_A" proved
 power_14.adb:55:24: medium: overflow check might fail (e.g. when Level_A = -2147483648 and Level_B = -1)

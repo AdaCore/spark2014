@@ -859,31 +859,47 @@ package body Flow_Error_Messages is
                      Append_Quote;
                      Append (R, Flow_Id_To_String (F));
                   elsif Is_Constituent (F) then
-                     Append_Quote;
-                     Append (R, Flow_Id_To_String (F));
-                     Append_Quote;
-                     Append (R, " constituent of ");
-                     Append_Quote;
                      declare
-                        Encaps_State : constant Entity_Id :=
-                          Encapsulating_State (Get_Direct_Mapping_Id (F));
-                        Encaps_Scope : constant Entity_Id :=
-                          Scope (Encaps_State);
-                     begin
-                        --  If scopes of the abstract state and its constituent
-                        --  differ then prefix the name of the abstract state
-                        --  with its immediate scope.
-                        if Encaps_Scope /= Scope (Get_Direct_Mapping_Id (F))
-                        then
-                           Get_Name_String (Chars (Encaps_Scope));
-                           Adjust_Name_Case (Sloc (Encaps_Scope));
+                        Constituent_Id : constant Entity_Id :=
+                          Get_Direct_Mapping_Id (F);
 
+                        State_Id : constant Entity_Id :=
+                          Encapsulating_State (Constituent_Id);
+                        --  Encapsulating state of the constituent
+
+                        Constituent_Scope : constant Entity_Id :=
+                          Scope (Constituent_Id);
+                        --  Immediate scope of the constituent
+
+                        State_Scope : constant Entity_Id := Scope (State_Id);
+                        --  Immediate scope of the abstract state
+
+                     begin
+                        Append_Quote;
+                        Append (R, Flow_Id_To_String (F));
+                        Append_Quote;
+                        Append (R, " constituent of ");
+                        Append_Quote;
+
+                        --  If the scope of the constituent is different from
+                        --  the scope of its abstract state then we want to
+                        --  prefix the name of the abstract state with its
+                        --  immediate scope.
+
+                        if State_Scope /= Constituent_Scope then
+                           Get_Name_String (Chars (State_Scope));
+                           Adjust_Name_Case (Sloc (State_Scope));
                            Append (R, Name_Buffer (1 .. Name_Len) & ".");
                         end if;
 
-                        Get_Name_String (Chars (Encaps_State));
-                        Adjust_Name_Case (Sloc (Encaps_State));
+                        --  We append the abstract state. Note that we are not
+                        --  using Flow_Id_To_String because of the special
+                        --  handling above. In fact, we only add a prefix when
+                        --  the immediate scope of the constituent is different
+                        --  than the immediate scope of the abstract state.
 
+                        Get_Name_String (Chars (State_Id));
+                        Adjust_Name_Case (Sloc (State_Id));
                         Append (R, Name_Buffer (1 .. Name_Len));
                      end;
                   else

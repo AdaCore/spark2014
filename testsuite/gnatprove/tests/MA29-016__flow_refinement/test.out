@@ -96,12 +96,12 @@ levels.ads:22:23: info: initialization of "A" proved
 levels.ads:25:25: info: initialization of "X" proved
 par-priv.adb:8:18: medium: overflow check might fail
 par-priv.adb:13:04: warning: analyzing unreferenced procedure "Test"
-par-priv.adb:13:14: info: initialization of "D" constituent of "Par.State" proved
+par-priv.adb:13:14: info: initialization of "Priv.D" constituent of "Par.State" proved
 par-priv.ads:4:27: warning: no procedure exists that can initialize abstract state "Priv.Private_Child_State" constituent of "Par.State"
 par-priv.ads:9:14: info: initialization of "E" constituent of "Private_Child_State" proved
 par-priv.ads:11:40: medium: overflow check might fail
 par-priv2.ads:4:27: warning: no procedure exists that can initialize abstract state "Priv2.More_Private_State" constituent of "Par.State"
-par-priv2.ads:9:14: info: initialization of "D2" constituent of "Par.State" proved
+par-priv2.ads:9:14: info: initialization of "Priv2.D2" constituent of "Par.State" proved
 par-pub.adb:9:18: medium: overflow check might fail
 par-pub.adb:14:04: warning: analyzing unreferenced procedure "Test"
 par-pub.adb:14:14: info: initialization of "A" proved
