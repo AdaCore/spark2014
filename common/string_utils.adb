@@ -53,7 +53,7 @@ package body String_Utils is
       use String_Lists;
    begin
       for C in SL.Iterate loop
-         if Case_Insensitive_Equal (Element (C), Item) then
+         if Case_Insensitive_Equal (SL (C), Item) then
             return C;
          end if;
       end loop;
