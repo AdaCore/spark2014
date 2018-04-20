@@ -5434,7 +5434,24 @@ package body SPARK_Definition is
             --  magic relies on their marking status (which most likely hides
             --  some underlying problem).
 
-            Mark_Stmt_Or_Decl_List (Priv_Decls);
+            declare
+               Violation_Detected_In_Vis_Decls : constant Boolean :=
+                 Violation_Detected;
+
+            begin
+               Mark_Stmt_Or_Decl_List (Priv_Decls);
+
+               --  This is to workaround the fact that for now we cannot guard
+               --  the marking of the private declarations as explained above.
+               --  So, in case the private part is not in SPARK, we restore the
+               --  status of Violation_Detected to before the marking of the
+               --  private part happened. The proper fix would be to mark the
+               --  private declarations only if the private part is in SPARK.
+
+               if SPARK_Pragma_Is (Opt.Off) then
+                  Violation_Detected := Violation_Detected_In_Vis_Decls;
+               end if;
+            end;
 
             --  Finally, if the the package has SPARK_Mode On | None and there
             --  are no violations then record it as in SPARK.
