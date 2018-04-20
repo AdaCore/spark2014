@@ -3,17 +3,16 @@ Concurrency and Ravenscar Profile
 
 Concurrency in |SPARK| requires enabling the Ravenscar profile (see `Guide for
 the use of the Ada Ravenscar Profile in high integrity systems` by Alan Burns,
-Brian Dobbing, and Tullio Vardanega).  This profile defines a subset of Ada's
-concurrency features targeted at real time systems. In particular, it is
-concerned with determinism, schedulability analysis and
-memory-boundedness. This profile is compatible with the Ravenscar Ada run-time
-provided with |GNAT Pro| supporting task synchronization and communication,
-while remaining small enough to be certifiable to the highest integrity levels.
+Brian Dobbing, and Tullio Vardanega). This profile defines a subset of the Ada
+concurrency features suitable for hard real-time/embedded systems requiring
+stringent analysis, such as certification and safety analyses. In particular,
+it is concerned with determinism, analyzability, and memory-boundedness.
 
-Concurrency in |SPARK| also requires that tasks do not start executing before
+In addition to the subset defined by the Ravenscar profile, concurrency in |SPARK|
+also requires that tasks do not start executing before
 the program has been completely elaborated, which is expressed by setting
 pragma ``Partition_Elaboration_Policy`` to the value ``Sequential``. Together
-with the requirement to set the Ravenscar profile, this means that a concurrent
+with the requirement to apply the Ravenscar profile, this means that a concurrent
 |SPARK| program should define the following configuration pragmas, either in a
 configuration pragma file (see :ref:`Setting the Default SPARK_Mode` for an
 example of defining a configuration pragma file in your project file) or at the
@@ -24,19 +23,28 @@ start of files:
    pragma Profile (Ravenscar);
    pragma Partition_Elaboration_Policy (Sequential);
 
-While the Ravenscar profile is recommended for high-integrity concurrent
-applications, GNATprove also supports the GNAT Extended Ravenscar profile
+GNATprove also supports the GNAT Extended Ravenscar profile
 (see Section 4.5 "The Extended Ravenscar Profiles" in GNAT User’s Guide
 Supplement for GNAT Pro Safety-Critical and GNAT Pro High-Security).
 To use the GNAT Extended Ravenscar profile simply replace ``Ravenscar`` with
 ``GNAT_Extended_Ravenscar`` in the pragma ``Profile`` in the above code.
+The extended profile is intended for hard real-time/embedded systems that may
+require schedulability analysis but not the most stringent analyses required
+for other domains.
 
-In particular, the GNAT Extended Ravenscar profile allows the use of two forms
-of the delay statements depending on the type of their expression:
+In particular, to increase expressive power the GNAT Extended Ravenscar
+profile relaxes certain restrictions defined by the standard Ravenscar profile.
+Notably, these relaxed constraints allow multiple protected entries per
+protected object, multiple queued callers per entry, and more expressive
+protected entry barrier expressions. The profile also allows the use of
+relative delay statements in addition to the absolute delay statements
+allowed by Ravenscar. The two forms of delay statement are processed by
+GNATprove based on the type of their expression, as follows (absolute and
+relative delays, respectively):
 
 * If the expression is of the type Ada.Real_Time.Time then for the purposes of
-  determining global inputs and outputs the delay statement is considered to be
-  just like the delay statement, i.e. to reference the state abstraction
+  determining global inputs and outputs the absolute delay statement is considered
+  just like the relative delay statement, i.e., to reference the state abstraction
   Ada.Real_Time.Clock_Time as an input (see SPARK RM 9(17) for details).
 
 * If the expression is of the type Ada.Calendar.Time then it is considered to
