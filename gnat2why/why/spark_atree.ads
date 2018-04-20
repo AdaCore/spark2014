@@ -179,6 +179,7 @@ package SPARK_Atree is
      Sinfo.N_Type_Conversion;
    N_Unchecked_Type_Conversion      : Node_Kind renames
      Sinfo.N_Unchecked_Type_Conversion;
+   N_With_Clause                    : Node_Kind renames Sinfo.N_With_Clause;
 
    Current_Error_Node : Node_Id renames Atree.Current_Error_Node;
 
@@ -186,6 +187,10 @@ package SPARK_Atree is
 
    function Comes_From_Source (N : Node_Id) return Boolean renames
      Atree.Comes_From_Source;
+
+   function Enclosing_Comp_Unit_Node (N : Node_Id) return Node_Id with
+     Post => No (Enclosing_Comp_Unit_Node'Result)
+       or else Nkind (Enclosing_Comp_Unit_Node'Result) = N_Compilation_Unit;
 
    function Nkind (N : Node_Id) return Node_Kind renames Atree.Nkind;
 
@@ -261,16 +266,12 @@ package SPARK_Atree is
    --  array type declaration.
 
    function Condition  (N : Node_Id) return Node_Id with
-     Pre => Nkind (N) in N_Accept_Alternative
-                       | N_Delay_Alternative
-                       | N_Elsif_Part
-                       | N_Entry_Body_Formal_Part
+     Pre => Nkind (N) in N_Elsif_Part
                        | N_Exit_Statement
                        | N_If_Statement
                        | N_Iteration_Scheme
                        | N_Quantified_Expression
-                       | N_Raise_xxx_Error
-                       | N_Terminate_Alternative;
+                       | N_Raise_xxx_Error;
 
    function Condition_Actions (N : Node_Id) return List_Id with
      Pre => Nkind (N) in N_Elsif_Part | N_Iteration_Scheme;
@@ -279,6 +280,9 @@ package SPARK_Atree is
      Pre => Nkind (N) in N_Access_Definition
                        | N_Access_To_Object_Definition
                        | N_Object_Declaration;
+
+   function Context_Items (N : Node_Id) return List_Id with
+     Pre => Nkind (N) = N_Compilation_Unit;
 
    function Controlling_Argument (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Subprogram_Call;
@@ -340,6 +344,10 @@ package SPARK_Atree is
                        | N_Aspect_Specification
                        | N_Attribute_Definition_Clause;
 
+   function Entry_Body_Barrier (N : Node_Id) return Node_Id with
+     Pre => Nkind (N) = N_Entry_Body;
+   --  Return the condition of the entry formal part of N
+
    function Etype (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) in Sinfo.N_Has_Etype;
 
@@ -356,6 +364,9 @@ package SPARK_Atree is
 
    function First_Bit (N : Node_Id) return Node_Id with
      Pre => Nkind (N) = N_Component_Clause;
+
+   function From_Aspect_Specification (N : Node_Id) return Boolean with
+     Pre => Nkind (N) = N_Pragma;
 
    function Get_Address_Rep_Item (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Subprogram_Declaration | N_Object_Declaration;
@@ -460,6 +471,13 @@ package SPARK_Atree is
                        | N_Or_Else
                        | N_Binary_Op;
 
+   function Library_Unit (N : Node_Id) return Node_Id with
+     Pre  => Nkind (N) in N_Compilation_Unit | N_With_Clause,
+     Post => Nkind (Library_Unit'Result) = N_Compilation_Unit;
+
+   function Limited_Present (N : Node_Id) return Boolean with
+     Pre => Nkind (N) = N_With_Clause;
+
    function Loop_Parameter_Specification (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Iteration_Scheme
                        | N_Quantified_Expression;
@@ -479,6 +497,11 @@ package SPARK_Atree is
      Pre => Nkind (N) in N_Entry_Call_Statement
                        | N_Function_Call
                        | N_Procedure_Call_Statement;
+
+   function Parameter_Specifications (N : Node_Id) return List_Id with
+     Pre => Nkind (N) in N_Entry_Declaration
+                       | N_Function_Specification
+                       | N_Procedure_Specification;
 
    function Pragma_Argument_Associations (N : Node_Id) return List_Id with
      Pre => Nkind (N) = N_Pragma;
@@ -566,6 +589,9 @@ package SPARK_Atree is
 
    function Unique_Defining_Entity (N : Node_Id) return Entity_Id renames
      Sem_Util.Unique_Defining_Entity;
+
+   function Unit (N : Node_Id) return Node_Id with
+     Pre => Nkind (N) = N_Compilation_Unit;
 
    function Variants (N : Node_Id) return List_Id with
      Pre => Nkind (N) = N_Variant_Part;

@@ -353,14 +353,6 @@ package SPARK_Util.Subprograms is
    --  @param E subprogram
    --  @return True iff E is an intrinsic subprogram
 
-   function Is_Invisible_Dispatching_Operation
-     (E : Entity_Id) return Boolean
-   with Pre => Is_Dispatching_Operation (E);
-   --  @param E subprogram
-   --  @return True iff E has is a public operation on a private type whose
-   --     public view is not tagged. Hence, Pre'Class and Post'Class cannot be
-   --     declared on such a subprogram.
-
    function Is_Local_Subprogram_Always_Inlined (E : Entity_Id) return Boolean;
    --  @param E subprogram
    --  @return True iff E is a local subprogram that is always inlined by the
@@ -431,6 +423,18 @@ package SPARK_Util.Subprograms is
    --  Ada.Synchronous_Task_Control.Suspend_Until_True or
    --  Ada.Synchronous_Task_Control.EDF.Suspend_Until_True_And_Set_Deadline.
 
+   ------------------------------------------------
+   --  Queries related to dispatching operations --
+   ------------------------------------------------
+
+   function Corresponding_Primitive (Subp, Ty : Entity_Id) return Entity_Id
+   with
+       Pre => Is_Dispatching_Operation (Subp)
+          and then Present (Find_Dispatching_Type (Subp));
+   --  @params Subp a dispatching operation
+   --  @params Ty a descendant of the dispatching type of Subp
+   --  @return the primitive of Ty that corresponds to Subp
+
    function Find_Dispatching_Parameter (E : Entity_Id) return Entity_Id with
      Pre  => Ekind (E) = E_Procedure
              and then Is_Dispatching_Operation (E)
@@ -446,6 +450,8 @@ package SPARK_Util.Subprograms is
    --     considered to be dispatching in SPARK, either because the Retysp of
    --     its dispatching type is not tagged or because it is an invisible
    --     dispatching operation.
+   --  @param E any entity
+   --  @return True if E is a dispatching operation visible in SPARK
 
    subtype Subprogram_List is Sem_Disp.Subprogram_List;
 
@@ -462,6 +468,14 @@ package SPARK_Util.Subprograms is
       Interfaces_Only : Boolean := False;
       One_Only        : Boolean := False) return Subprogram_List renames
      Inheritance_Utilities_Inst.Inherited_Subprograms;
+
+   function Is_Invisible_Dispatching_Operation
+     (E : Entity_Id) return Boolean
+   with Pre => Is_Dispatching_Operation (E);
+   --  @param E subprogram
+   --  @return True iff E has is a public operation on a private type whose
+   --     public view is not tagged. Hence, Pre'Class and Post'Class cannot be
+   --     declared on such a subprogram.
 
    function Is_Overriding_Subprogram (E : Entity_Id) return Boolean renames
      Inheritance_Utilities_Inst.Is_Overriding_Subprogram;

@@ -26,6 +26,7 @@
 with Aspects;
 with Einfo;
 with SPARK_Util;
+with SPARK_Util.Subprograms;
 
 package SPARK_Atree.Entities is
 
@@ -39,6 +40,7 @@ package SPARK_Atree.Entities is
    subtype Class_Wide_Kind  is Einfo.Class_Wide_Kind;
    subtype Concurrent_Kind  is Einfo.Concurrent_Kind;
    subtype Discrete_Kind    is Einfo.Discrete_Kind;
+   subtype Entry_Kind       is Einfo.Entry_Kind;
    subtype Fixed_Point_Kind is Einfo.Fixed_Point_Kind;
    subtype Integer_Kind     is Einfo.Integer_Kind;
    subtype Private_Kind     is Einfo.Private_Kind;
@@ -50,9 +52,11 @@ package SPARK_Atree.Entities is
    subtype Task_Kind        is Einfo.Task_Kind;
    subtype Type_Kind        is Einfo.Type_Kind;
 
+   E_Abstract_State              : Entity_Kind renames Einfo.E_Abstract_State;
    E_Component                   : Entity_Kind renames Einfo.E_Component;
    E_Constant                    : Entity_Kind renames Einfo.E_Constant;
    E_Discriminant                : Entity_Kind renames Einfo.E_Discriminant;
+   E_Entry                       : Entity_Kind renames Einfo.E_Entry;
    E_Enumeration_Literal         : Entity_Kind renames
      Einfo.E_Enumeration_Literal;
    E_Function                    : Entity_Kind renames
@@ -61,6 +65,7 @@ package SPARK_Atree.Entities is
    E_In_Out_Parameter            : Entity_Kind renames
      Einfo.E_In_Out_Parameter;
    E_Out_Parameter               : Entity_Kind renames Einfo.E_Out_Parameter;
+   E_Package                     : Entity_Kind renames Einfo.E_Package;
    E_Private_Subtype             : Entity_Kind renames Einfo.E_Private_Subtype;
    E_Procedure                   : Entity_Kind renames Einfo.E_Procedure;
    E_Protected_Type              : Entity_Kind renames Einfo.E_Protected_Type;
@@ -70,6 +75,7 @@ package SPARK_Atree.Entities is
    E_Record_Type                 : Entity_Kind renames Einfo.E_Record_Type;
    E_String_Literal_Subtype      : Entity_Kind renames
      Einfo.E_String_Literal_Subtype;
+   E_Task_Type                   : Entity_Kind renames Einfo.E_Task_Type;
    E_Variable                    : Entity_Kind renames Einfo.E_Variable;
 
    function "=" (L, R : Entity_Kind) return Boolean renames Einfo."=";
@@ -84,6 +90,9 @@ package SPARK_Atree.Entities is
 
    function Is_Boolean_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Boolean_Type;
+
+   function Is_Compilation_Unit (E : Entity_Id) return Boolean renames
+     Einfo.Is_Compilation_Unit;
 
    function Is_Concurrent_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Concurrent_Type;
@@ -103,6 +112,9 @@ package SPARK_Atree.Entities is
    function Is_Entity_Name (N : Node_Id) return Boolean with
      Post => not Is_Entity_Name'Result
      or else (Nkind (N) in N_Has_Entity and then Present (Entity (N)));
+
+   function Is_Entry (E : Entity_Id) return Boolean renames
+     Einfo.Is_Entry;
 
    function Is_Fixed_Point_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Fixed_Point_Type;
@@ -144,6 +156,9 @@ package SPARK_Atree.Entities is
 
    function Is_String_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_String_Type;
+
+   function Is_Subprogram_Or_Entry (E : Entity_Id) return Boolean renames
+     Einfo.Is_Subprogram_Or_Entry;
 
    function Is_Task_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Task_Type;
@@ -319,6 +334,16 @@ package SPARK_Atree.Entities is
                           | Concurrent_Kind
                           | Private_Kind;
 
+   --------------------------
+   --  For Protected Types --
+   --------------------------
+
+   function Has_Attach_Handler (Typ : Entity_Id) return Boolean with
+     Pre => Ekind (Typ) = E_Protected_Type;
+
+   function Has_Interrupt_Handler (Typ : Entity_Id) return Boolean with
+     Pre => Ekind (Typ) = E_Protected_Type;
+
    -----------------
    --  For Arrays --
    -----------------
@@ -396,11 +421,13 @@ package SPARK_Atree.Entities is
 
    function Enclosing_Type (Obj : Entity_Id) return Node_Id with
      Pre  => Ekind (Obj) in
-       E_Discriminant | E_Component | E_Constant | E_In_Parameter,
+       E_Discriminant | E_Component | E_Constant | E_In_Parameter
+     or else SPARK_Util.Subprograms.Is_Protected_Operation (Obj),
      Post => Is_Type (Enclosing_Type'Result)
        and then Ekind (Enclosing_Type'Result) in
        Record_Kind | Private_Kind | Concurrent_Kind;
-   --  Return the scope of a record component, discriminant, or discriminal
+   --  Return the scope of a record component, discriminant, discriminal or
+   --  protected operation.
 
    function Enumeration_Pos (Obj : Entity_Id) return Uint with
      Pre => Ekind (Obj) = E_Enumeration_Literal;
@@ -434,12 +461,20 @@ package SPARK_Atree.Entities is
      Post => (if Present (First_Formal'Result) then
                   Einfo.Is_Formal (First_Formal'Result));
 
+   function Has_Controlling_Result (Subp : Entity_Id) return Boolean with
+     Pre => Ekind (Subp) = E_Function;
+
    function Has_Pragma_Volatile_Function (Subp : Entity_Id) return Boolean with
      Pre => Ekind (Subp) = E_Function;
    --  Return True if Subp has a pragma Volatile_Function
 
    function Is_Predicate_Function (Subp : Entity_Id) return Boolean with
      Pre => Einfo.Is_Subprogram (Subp);
+
+   function Is_Visible_Dispatching_Operation (Subp : Entity_Id) return Boolean;
+   --  Return True if Subp is a dispatching operation and there is a visibly
+   --  tagged dispatching type (SPARK_Util.Subprograms.Find_Dispatching_Type
+   --  returns True).
 
    function Next_Formal (Formal : Entity_Id) return Entity_Id renames
      Einfo.Next_Formal;
@@ -449,12 +484,40 @@ package SPARK_Atree.Entities is
    function No_Return (Subp : Entity_Id) return Boolean renames
      Einfo.No_Return;
 
+   function Null_Present (Subp : Entity_Id) return Boolean with
+     Pre => Ekind (Subp) = E_Procedure;
+   --  Applies Sinfo.Null_Present on the specification of Subp.
+
+   function Subprogram_Specification (Subp : Entity_Id) return Node_Id with
+     Pre  => Ekind (Subp) in Subprogram_Kind | E_Entry,
+     Post => Nkind (Subprogram_Specification'Result) in
+         N_Function_Specification
+       | N_Procedure_Specification
+       | N_Entry_Declaration;
+   --  Same as Sem_Aux.Subprogram_Specification except that it also works on
+   --  entries.
+
    -------------------
    --  For Packages --
    -------------------
 
+   function Is_Wrapper_Package (Pack : Entity_Id) return Boolean with
+     Pre => Ekind (Pack) = E_Package;
+
    function Package_Body (Pack : Entity_Id) return Node_Id with
-     Pre => Ekind (Pack) in Einfo.E_Package | Einfo.E_Package_Body;
+     Pre => Ekind (Pack) = E_Package;
+
+   function Private_Declarations_Of_Package (Pack : Entity_Id) return List_Id
+   with
+     Pre => Ekind (Pack) = E_Package;
+   --  @param E a package entity
+   --  @return the list of private declarations of the package
+
+   function Visible_Declarations_Of_Package (Pack : Entity_Id) return List_Id
+   with
+     Pre => Ekind (Pack) = E_Package;
+   --  @param E a package entity
+   --  @return the list of visible declarations of the package
 
    -------------------------
    --  For other entities --

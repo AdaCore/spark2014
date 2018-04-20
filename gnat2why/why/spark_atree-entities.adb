@@ -244,6 +244,20 @@ package body SPARK_Atree.Entities is
      Sem_Util.Get_Cursor_Type;
 
    ------------------------
+   -- Has_Attach_Handler --
+   ------------------------
+
+   function Has_Attach_Handler (Typ : Entity_Id) return Boolean renames
+     Einfo.Has_Attach_Handler;
+
+   ----------------------------
+   -- Has_Controlling_Result --
+   ----------------------------
+
+   function Has_Controlling_Result (Subp : Entity_Id) return Boolean renames
+     Einfo.Has_Controlling_Result;
+
+   ------------------------
    -- Has_Default_Aspect --
    ------------------------
 
@@ -289,6 +303,13 @@ package body SPARK_Atree.Entities is
          return False;
       end;
    end Has_Discriminants;
+
+   ---------------------------
+   -- Has_Interrupt_Handler --
+   ---------------------------
+
+   function Has_Interrupt_Handler (Typ : Entity_Id) return Boolean renames
+     Einfo.Has_Interrupt_Handler;
 
    ----------------------------------
    -- Has_Pragma_Volatile_Function --
@@ -361,6 +382,21 @@ package body SPARK_Atree.Entities is
    function Is_Tagged_Type (Typ : Entity_Id) return Boolean renames
      Einfo.Is_Tagged_Type;
 
+   --------------------------------------
+   -- Is_Visible_Dispatching_Operation --
+   --------------------------------------
+
+   function Is_Visible_Dispatching_Operation (Subp : Entity_Id) return Boolean
+   is (Einfo.Is_Dispatching_Operation (Subp)
+       and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (Subp)));
+
+   ------------------------
+   -- Is_Wrapper_Package --
+   ------------------------
+
+   function Is_Wrapper_Package (Pack : Entity_Id) return Boolean renames
+     Einfo.Is_Wrapper_Package;
+
    ---------------------
    -- Known_Alignment --
    ---------------------
@@ -429,6 +465,13 @@ package body SPARK_Atree.Entities is
    function Non_Binary_Modulus (Typ : Entity_Id) return Boolean is
      (Einfo.Non_Binary_Modulus (SPARK_Util.Types.Base_Retysp (Typ)));
 
+   ------------------
+   -- Null_Present --
+   ------------------
+
+   function Null_Present (Subp : Entity_Id) return Boolean is
+     (Sinfo.Null_Present (Sem_Aux.Subprogram_Specification (Subp)));
+
    -----------------------
    -- Number_Dimensions --
    -----------------------
@@ -455,6 +498,13 @@ package body SPARK_Atree.Entities is
 
    function Predicate_Function (Typ : Entity_Id) return Entity_Id renames
      Einfo.Predicate_Function;
+
+   -------------------------------------
+   -- Private_Declarations_Of_Package --
+   -------------------------------------
+
+   function Private_Declarations_Of_Package (Pack : Entity_Id) return List_Id
+   is (Sinfo.Private_Declarations (Sem_Aux.Package_Specification (Pack)));
 
    -----------------------
    -- Return_Applies_To --
@@ -491,6 +541,14 @@ package body SPARK_Atree.Entities is
    function String_Literal_Low_Bound (Typ : Entity_Id) return Node_Id renames
      Einfo.String_Literal_Low_Bound;
 
+   -------------------------------
+   --  Subprogram_Specification --
+   -------------------------------
+
+   function Subprogram_Specification (Subp : Entity_Id) return Node_Id is
+     (if Einfo.Is_Entry (Subp) then Atree.Parent (Subp)
+      else Sem_Aux.Subprogram_Specification (Subp));
+
    ---------------------
    -- Type_High_Bound --
    ---------------------
@@ -511,5 +569,12 @@ package body SPARK_Atree.Entities is
 
    function Ultimate_Ancestor (Typ : Entity_Id) return Entity_Id is
      (Sem_Aux.First_Subtype (Einfo.Root_Type (Einfo.Base_Type (Typ))));
+
+   -------------------------------------
+   -- Visible_Declarations_Of_Package --
+   -------------------------------------
+
+   function Visible_Declarations_Of_Package (Pack : Entity_Id) return List_Id
+   is (Sinfo.Visible_Declarations (Sem_Aux.Package_Specification (Pack)));
 
 end SPARK_Atree.Entities;

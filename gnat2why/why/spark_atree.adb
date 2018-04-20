@@ -142,6 +142,13 @@ package body SPARK_Atree is
    function Constant_Present (N : Node_Id) return Boolean renames
      Sinfo.Constant_Present;
 
+   -------------------
+   -- Context_Items --
+   -------------------
+
+   function Context_Items (N : Node_Id) return List_Id renames
+     Sinfo.Context_Items;
+
    --------------------------
    -- Controlling_Argument --
    --------------------------
@@ -225,11 +232,25 @@ package body SPARK_Atree is
 
    function Elsif_Parts (N : Node_Id) return List_Id renames Sinfo.Elsif_Parts;
 
+   ------------------------------
+   -- Enclosing_Comp_Unit_Node --
+   ------------------------------
+
+   function Enclosing_Comp_Unit_Node (N : Node_Id) return Node_Id renames
+     Sem_Util.Enclosing_Comp_Unit_Node;
+
    ------------
    -- Entity --
    ------------
 
    function Entity (N : Node_Id) return Node_Id renames Sinfo.Entity;
+
+   ------------------------
+   -- Entry_Body_Barrier --
+   ------------------------
+
+   function Entry_Body_Barrier (N : Node_Id) return Node_Id is
+     (Sinfo.Condition (Sinfo.Entry_Body_Formal_Part (N)));
 
    -----------
    -- Etype --
@@ -267,6 +288,13 @@ package body SPARK_Atree is
    ---------------
 
    function First_Bit (N : Node_Id) return Node_Id renames Sinfo.First_Bit;
+
+   -------------------------------
+   -- From_Aspect_Specification --
+   -------------------------------
+
+   function From_Aspect_Specification (N : Node_Id) return Boolean renames
+     Sinfo.From_Aspect_Specification;
 
    --------------------------
    -- Get_Address_Rep_Item --
@@ -482,6 +510,20 @@ package body SPARK_Atree is
 
    function Left_Opnd (N : Node_Id) return Node_Id renames Sinfo.Left_Opnd;
 
+   ------------------
+   -- Library_Unit --
+   ------------------
+
+   function Library_Unit (N : Node_Id) return Node_Id renames
+     Sinfo.Library_Unit;
+
+   ---------------------
+   -- Limited_Present --
+   ---------------------
+
+   function Limited_Present (N : Node_Id) return Boolean renames
+     Sinfo.Limited_Present;
+
    ----------------------------------
    -- Loop_Parameter_Specification --
    ----------------------------------
@@ -513,6 +555,13 @@ package body SPARK_Atree is
 
    function Parameter_Associations (N : Node_Id) return List_Id renames
      Sinfo.Parameter_Associations;
+
+   ------------------------------
+   -- Paramenter_Specificatons --
+   ------------------------------
+
+   function Parameter_Specifications (N : Node_Id) return List_Id renames
+     Sinfo.Parameter_Specifications;
 
    ----------------------------------
    -- Pragma_Argument_Associations --
@@ -619,6 +668,12 @@ package body SPARK_Atree is
 
    function Type_Definition (N : Node_Id) return Node_Id renames
      Sinfo.Type_Definition;
+
+   ----------
+   -- Unit --
+   ----------
+
+   function Unit (N : Node_Id) return Node_Id renames Sinfo.Unit;
 
    --------------
    -- Variants --

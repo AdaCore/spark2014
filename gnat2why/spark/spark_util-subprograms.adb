@@ -27,6 +27,7 @@ with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Ada.Strings;                        use Ada.Strings;
 with Assumption_Types;                   use Assumption_Types;
+with Common_Iterators;                   use Common_Iterators;
 with Debug;
 with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Types;                         use Flow_Types;
@@ -94,6 +95,30 @@ package body SPARK_Util.Subprograms is
       raise Program_Error;
 
    end Containing_Protected_Type;
+
+   -----------------------------
+   -- Corresponding_Primitive --
+   -----------------------------
+
+   function Corresponding_Primitive (Subp, Ty : Entity_Id) return Entity_Id is
+   begin
+      for Prim of Iter (Direct_Primitive_Operations (Ty)) loop
+         declare
+            Ty_S    : constant Entity_Id := Ultimate_Alias (Prim);
+            Current : Entity_Id := Ty_S;
+         begin
+            loop
+               if Current = Subp then
+                  return Ty_S;
+               end if;
+               Current := Overridden_Operation (Current);
+               exit when No (Current);
+               Current := Ultimate_Alias (Current);
+            end loop;
+         end;
+      end loop;
+      raise Program_Error;
+   end Corresponding_Primitive;
 
    ----------------
    -- Entry_Body --

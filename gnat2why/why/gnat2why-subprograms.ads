@@ -23,13 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;           use Atree;
-with Einfo;           use Einfo;
-with Gnat2Why.Util;   use Gnat2Why.Util;
-with Types;           use Types;
-with Why.Gen.Binders; use Why.Gen.Binders;
-with Why.Ids;         use Why.Ids;
-with Why.Sinfo;       use Why.Sinfo;
+with SPARK_Atree;            use SPARK_Atree;
+with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
+with Gnat2Why.Util;          use Gnat2Why.Util;
+with Types;                  use Types;
+with Why.Gen.Binders;        use Why.Gen.Binders;
+with Why.Ids;                use Why.Ids;
+with Why.Sinfo;              use Why.Sinfo;
 
 package Gnat2Why.Subprograms is
 

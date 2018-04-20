@@ -25,7 +25,6 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 with Common_Containers;              use Common_Containers;
-with Common_Iterators;               use Common_Iterators;
 with Errout;                         use Errout;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals;         use Flow_Generated_Globals;
@@ -43,10 +42,6 @@ with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Opt;                            use type Opt.Warning_Mode_Type;
 with Rtsfind;                        use Rtsfind;
-with Sem_Aux;                        use Sem_Aux;
-with Sem_Prag;                       use Sem_Prag;
-with Sem_Util;                       use Sem_Util;
-with Sinfo;                          use Sinfo;
 with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
@@ -296,8 +291,7 @@ package body Gnat2Why.Subprograms is
    function Number_Of_Func_Args (E : Entity_Id) return Natural is
      (Natural
         (List_Length
-              (if Is_Entry (E) then Parameter_Specifications (Parent (E))
-               else Parameter_Specifications (Subprogram_Specification (E))))
+              (Parameter_Specifications (Subprogram_Specification (E))))
        + (if Within_Protected_Type (E) then 1 else 0));
 
    function Include_Non_Local_Type_Inv_For_Subp
@@ -329,8 +323,7 @@ package body Gnat2Why.Subprograms is
    procedure Generate_Dispatch_Compatibility_Axioms
      (File : W_Section_Id;
       E    : Entity_Id)
-   with Pre => Is_Dispatching_Operation (E)
-     and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E));
+   with Pre => Is_Visible_Dispatching_Operation (E);
    --  @param E a dispatching subprogram
    --  Emit compatibility axioms between the dispatching version of E and each
    --  visible overriding / inherited versions of E.
@@ -374,7 +367,7 @@ package body Gnat2Why.Subprograms is
       Assumption   : W_Prog_Id := +Void;
 
    begin
-      pragma Assert (Nkind (CU) = N_Compilation_Unit);
+      pragma Assert (Present (CU));
 
       --  For each withed unit which is a package declaration, assume its
       --  Initial_Condition
@@ -451,10 +444,7 @@ package body Gnat2Why.Subprograms is
               then E
             elsif Ekind (E) in Subprogram_Kind and then Might_Be_Main (E)
               then E
-            elsif Ekind (E) = E_Entry
-              or else (Ekind (E) in E_Function | E_Procedure
-                         and then Is_Protected_Type (Scope (E)))
-              then Scope (E)
+            elsif Is_Protected_Operation (E) then Enclosing_Type (E)
             else raise Program_Error);
          --  Entity where Priority or Interrupt_Priority pragma is attached
 
@@ -489,13 +479,16 @@ package body Gnat2Why.Subprograms is
             --  Return expression used that defined System.Default_Priority
             return
               Transform_Expr
-                (Expr   => Expression (Parent (RTE (RE_Default_Priority))),
+                (Expr   =>
+                   Expression
+                     (Enclosing_Declaration (RTE (RE_Default_Priority))),
                  Domain => EW_Term,
                  Params => Params);
 
          else
+            pragma Assert (Is_Protected_Operation (E));
             declare
-               PT : constant Entity_Id := Scope (E);
+               PT : constant Entity_Id := Enclosing_Type (E);
 
                Type_Id : RE_Id;
                Attr_Id : Supported_Attribute_Id;
@@ -541,9 +534,7 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) not in E_Task_Type | E_Entry
         and then not Might_Be_Main (E)
-        and then
-          (Ekind (E) not in E_Function | E_Procedure or else
-                 not Is_Protected_Type (Scope (E)))
+        and then not Is_Protected_Operation (E)
       then
          return +Void;
       end if;
@@ -723,7 +714,7 @@ package body Gnat2Why.Subprograms is
          while Present (Proc) loop
             if Nkind (Proc) = N_Subprogram_Declaration then
                declare
-                  Ent : constant Entity_Id := Defining_Entity (Proc);
+                  Ent : constant Entity_Id := Unique_Defining_Entity (Proc);
                begin
                   if Ekind (Ent) = E_Procedure
                     and then Present (Get_Pragma (Ent, Pragma_Attach_Handler))
@@ -737,17 +728,13 @@ package body Gnat2Why.Subprograms is
          end loop;
       end Process_Declarations;
 
-      pragma Assert (Nkind (Parent (Ty)) = N_Protected_Type_Declaration);
-
-      PT_Def : constant Node_Id := Protected_Definition (Parent (Ty));
-
    --  Start of processing for Compute_Attach_Handler_Check
 
    begin
-      Process_Declarations (Visible_Declarations (PT_Def));
+      Process_Declarations (Visible_Declarations_Of_Prot_Type (Ty));
 
       if Private_Spec_In_SPARK (Ty) then
-         Process_Declarations (Private_Declarations (PT_Def));
+         Process_Declarations (Private_Declarations_Of_Prot_Type (Ty));
       end if;
 
       return Stat;
@@ -856,15 +843,13 @@ package body Gnat2Why.Subprograms is
 
             --  Collect discriminants of task types
 
-            elsif Is_Task_Type (E) and then Count_Discriminants (E) > 0 then
+            elsif Is_Task_Type (E) and then Has_Discriminants (E) then
                declare
                   Discr : Node_Id := First_Discriminant (E);
                begin
                   while Present (Discr) loop
-                     if Is_Not_Hidden_Discriminant (Discr) then
-                        Includes.Include (Discr);
-                        Next_Discriminant (Discr);
-                     end if;
+                     Includes.Include (Discr);
+                     Next_Discriminant (Discr);
                   end loop;
                end;
             end if;
@@ -1024,7 +1009,7 @@ package body Gnat2Why.Subprograms is
                     Get_Direct_Mapping_Id (Write_Id);
 
                begin
-                  if Ekind (Entity) /= E_Abstract_State
+                  if not Is_Abstract_State (Entity)
                     and then Entity_In_SPARK (Entity)
                   then
 
@@ -1141,7 +1126,7 @@ package body Gnat2Why.Subprograms is
             then
                null;
             elsif Present (Entity)
-              and then Ekind (Entity) /= E_Abstract_State
+              and then not Is_Abstract_State (Entity)
               and then Entity_In_SPARK (Entity)
             then
                Effects_Append_Binder_To_Writes
@@ -1194,7 +1179,7 @@ package body Gnat2Why.Subprograms is
             then
                null;
             elsif Present (Entity)
-              and then Ekind (Entity) /= E_Abstract_State
+              and then not Is_Abstract_State (Entity)
               and then Entity_In_SPARK (Entity)
             then
                Effects_Append_Binder_To_Reads
@@ -1613,8 +1598,7 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Raw_Binders (E : Entity_Id) return Item_Array is
       Params        : constant List_Id :=
-        (if Is_Entry (E) then Parameter_Specifications (Parent (E))
-         else Parameter_Specifications (Subprogram_Specification (E)));
+        Parameter_Specifications (Subprogram_Specification (E));
       Ada_Param_Len : constant Natural := Natural (List_Length (Params));
       Binder_Len    : constant Natural :=
         Ada_Param_Len + (if Within_Protected_Type (E) then 1 else 0);
@@ -2494,10 +2478,11 @@ package body Gnat2Why.Subprograms is
       E    : Entity_Id)
    is
       Name       : constant String  := Full_Name (E);
-      Spec_N     : constant Node_Id := Package_Specification (E);
       Body_N     : constant Node_Id := Package_Body (E);
-      Vis_Decls  : constant List_Id := Visible_Declarations (Spec_N);
-      Priv_Decls : constant List_Id := Private_Declarations (Spec_N);
+      Vis_Decls  : constant List_Id :=
+        Visible_Declarations_Of_Package (E);
+      Priv_Decls : constant List_Id :=
+        Private_Declarations_Of_Package (E);
       Init_Cond  : constant Node_Id :=
         Get_Pragma (E, Pragma_Initial_Condition);
       Params     : Transformation_Params;
@@ -2696,7 +2681,7 @@ package body Gnat2Why.Subprograms is
       begin
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-         if Count_Discriminants (E) > 0 then
+         if Has_Discriminants (E) then
             Discr_N := First_Discriminant (E);
          end if;
 
@@ -2716,8 +2701,7 @@ package body Gnat2Why.Subprograms is
                        Field    => Discr_N,
                        Ty       => E));
             begin
-               Insert_Entity (Discriminal (Discr_N),
-                              Discr_W.Id);
+               Insert_Entity (Discr_N, Discr_W.Id);
 
                W_Discriminants.Append (Discr_W);
             end;
@@ -2864,12 +2848,13 @@ package body Gnat2Why.Subprograms is
             for Field of Get_Component_Set (E) loop
                if Ekind (Field) in E_Component | E_Discriminant then
 
-                  if Present (Expression (Parent (Field))) then
+                  if Present (Expression (Enclosing_Declaration (Field))) then
 
                      --  If Field has a default expression, use it
 
                      F_Check := +Transform_Expr
-                       (Expr          => Expression (Parent (Field)),
+                       (Expr          =>
+                          Expression (Enclosing_Declaration (Field)),
                         Expected_Type => Type_Of_Node (Etype (Field)),
                         Domain        => EW_Prog,
                         Params        => Body_Params);
@@ -3023,9 +3008,7 @@ package body Gnat2Why.Subprograms is
             Ref_Allowed => True,
             Old_Allowed => True);
       begin
-         if Ekind (E) = E_Procedure
-           and then Null_Present (Subprogram_Specification (E))
-         then
+         if Ekind (E) = E_Procedure and then Null_Present (E) then
             return +Void;
          end if;
          return
@@ -3083,8 +3066,7 @@ package body Gnat2Why.Subprograms is
                      Gen_Marker  => False,
                      Ref_Allowed => True,
                      Old_Allowed => True);
-                  Barrier : constant Node_Id :=
-                    Condition (Entry_Body_Formal_Part (Body_N));
+                  Barrier : constant Node_Id := Entry_Body_Barrier (Body_N);
                begin
                   Pre :=
                     +New_And_Then_Expr
@@ -3403,8 +3385,7 @@ package body Gnat2Why.Subprograms is
                   Gen_Marker  => False,
                   Ref_Allowed => True,
                   Old_Allowed => True);
-               Barrier : constant Node_Id :=
-                 Condition (Entry_Body_Formal_Part (Body_N));
+               Barrier : constant Node_Id := Entry_Body_Barrier (Body_N);
             begin
                Pre :=
                  +New_And_Then_Expr
@@ -3883,8 +3864,7 @@ package body Gnat2Why.Subprograms is
         or else No_Return (E)
         or else Is_Recursive (E)
         or else Is_Potentially_Nonreturning (E)
-        or else
-          Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
+        or else Has_Pragma_Volatile_Function (E)
       then
          return;
       end if;
@@ -3918,9 +3898,7 @@ package body Gnat2Why.Subprograms is
          Right  => +Compute_Contract_Cases_Postcondition (Params, E),
          Domain => EW_Pred);
 
-      if Is_Dispatching_Operation (E)
-        and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
-      then
+      if Is_Visible_Dispatching_Operation (E) then
          Dispatch_Pre :=
            Get_Dispatching_Call_Contract (Params, E, Pragma_Precondition);
          Dispatch_Post :=
@@ -4091,9 +4069,7 @@ package body Gnat2Why.Subprograms is
 
          --  ??? clean up this code duplication for dispatch and refine
 
-         if Is_Dispatching_Operation (E)
-           and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
-         then
+         if Is_Visible_Dispatching_Operation (E) then
             pragma Assert (Present (Dispatch_Pre)
                             and then Present (Dispatch_Post));
             Emit_Post_Axiom (Post_Dispatch_Axiom,
@@ -4128,37 +4104,9 @@ package body Gnat2Why.Subprograms is
       E    : Entity_Id)
    is
 
-      function Corresponding_Primitive (E, D : Entity_Id) return Entity_Id;
-      --  @params D a descendant of the dispatching type of E
-      --  @return the primitive of D that corresponds to E
-
       function Same_Globals (E, D : Entity_Id) return Boolean;
       --  @params D a descendant of the dispatching type of E
       --  @return True if E and D access the same set of global variables
-
-      -----------------------------
-      -- Corresponding_Primitive --
-      -----------------------------
-
-      function Corresponding_Primitive (E, D : Entity_Id) return Entity_Id is
-      begin
-         for Prim of Iter (Direct_Primitive_Operations (D)) loop
-            declare
-               D_E     : constant Entity_Id := Ultimate_Alias (Prim);
-               Current : Entity_Id := D_E;
-            begin
-               loop
-                  if Current = E then
-                     return D_E;
-                  end if;
-                  Current := Overridden_Operation (Current);
-                  exit when No (Current);
-                  Current := Ultimate_Alias (Current);
-               end loop;
-            end;
-         end loop;
-         raise Program_Error;
-      end Corresponding_Primitive;
 
       ------------------
       -- Same_Globals --
@@ -4579,9 +4527,7 @@ package body Gnat2Why.Subprograms is
 
          Generate_Axiom_For_Post (File, E);
 
-         if Is_Dispatching_Operation (E)
-           and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
-         then
+         if Is_Visible_Dispatching_Operation (E) then
             Generate_Dispatch_Compatibility_Axioms (File, E);
          end if;
 
@@ -4653,9 +4599,7 @@ package body Gnat2Why.Subprograms is
 
       Pre := Get_Static_Call_Contract (Params, E, Pragma_Precondition);
 
-      if Is_Dispatching_Operation (E)
-        and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
-      then
+      if Is_Visible_Dispatching_Operation (E) then
          Dispatch_Pre :=
            Get_Dispatching_Call_Contract (Params, E, Pragma_Precondition);
       end if;
@@ -4667,9 +4611,7 @@ package body Gnat2Why.Subprograms is
       if No_Return (E) then
          Post := False_Pred;
 
-         if Is_Dispatching_Operation (E)
-           and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
-         then
+         if Is_Visible_Dispatching_Operation (E) then
             Dispatch_Post := False_Pred;
          end if;
 
@@ -4690,9 +4632,7 @@ package body Gnat2Why.Subprograms is
             Right  => +Compute_Contract_Cases_Postcondition (Params, E),
             Domain => EW_Pred);
 
-         if Is_Dispatching_Operation (E)
-           and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
-         then
+         if Is_Visible_Dispatching_Operation (E) then
             Dispatch_Post :=
               Get_Dispatching_Call_Contract (Params, E, Pragma_Postcondition);
 
@@ -4797,9 +4737,7 @@ package body Gnat2Why.Subprograms is
                --  special postcondition which says it's result is equal to the
                --  logic function.
 
-               if not (Is_Enabled_Pragma
-                       (Get_Pragma (E, Pragma_Volatile_Function)))
-               then
+               if not Has_Pragma_Volatile_Function (E) then
                   Param_Post :=
                     +New_And_Expr
                     (Domain    => EW_Pred,
@@ -4839,9 +4777,7 @@ package body Gnat2Why.Subprograms is
 
             if Present (Expr_Fun_N)
               and then Entity_Body_Compatible_With_SPARK (E)
-              and then
-                (not (Is_Enabled_Pragma
-                      (Get_Pragma (E, Pragma_Volatile_Function))))
+              and then not Has_Pragma_Volatile_Function (E)
             then
                declare
                   Domain    : constant EW_Domain :=
@@ -4876,8 +4812,7 @@ package body Gnat2Why.Subprograms is
             --  generate a dummy effect. Protected functions are OK, they
             --  already have their own state (the protected object).
 
-            if Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
-            then
+            if Has_Pragma_Volatile_Function (E) then
                Effects_Append_To_Writes (Effects, Volatile_State);
 
                Emit
@@ -4898,10 +4833,7 @@ package body Gnat2Why.Subprograms is
                                      Post      => Post,
                                      Effects   => Effects));
 
-            if Is_Dispatching_Operation (E)
-              and then
-                Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
-            then
+            if Is_Visible_Dispatching_Operation (E) then
                Emit
                  (File,
                   New_Namespace_Declaration
@@ -4964,10 +4896,7 @@ package body Gnat2Why.Subprograms is
                      Right  => +Dynamic_Prop_Effects,
                      Domain => EW_Pred)));
 
-            if Is_Dispatching_Operation (E)
-              and then
-                Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
-            then
+            if Is_Visible_Dispatching_Operation (E) then
 
                --  For dispatching procedure, declare a new predicate symbol
                --  standing for the specific postcondition which applies to the
@@ -5265,9 +5194,7 @@ package body Gnat2Why.Subprograms is
 
       Generate_Axiom_For_Post (File, E);
 
-      if Is_Dispatching_Operation (E)
-        and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
-      then
+      if Is_Visible_Dispatching_Operation (E) then
          Generate_Dispatch_Compatibility_Axioms (File, E);
       end if;
 
@@ -5289,7 +5216,7 @@ package body Gnat2Why.Subprograms is
       if not Entity_Body_Compatible_With_SPARK (E)
         or else Present (Retrieve_Inline_Annotation (E))
         or else No_Return (E)
-        or else Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
+        or else Has_Pragma_Volatile_Function (E)
         or else (Is_Recursive (E) and then Is_Potentially_Nonreturning (E))
       then
          Close_Theory (File,
@@ -5477,8 +5404,7 @@ package body Gnat2Why.Subprograms is
       --  effects are modelled by an effect on the program function.
 
       if Ekind (E) = E_Function
-        and then not
-          Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
+        and then not Has_Pragma_Volatile_Function (E)
       then
          Why_Type := Type_Of_Node (Etype (E));
 
@@ -5528,10 +5454,7 @@ package body Gnat2Why.Subprograms is
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type => EW_Bool_Type));
 
-            if Is_Dispatching_Operation (E)
-              and then
-                Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
-            then
+            if Is_Visible_Dispatching_Operation (E) then
                Emit
                  (File,
                   New_Namespace_Declaration
