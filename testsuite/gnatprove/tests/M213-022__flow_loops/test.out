@@ -76,3 +76,4 @@ test.adb:134:17: medium: range check might fail
 test.adb:138:04: warning: analyzing unreferenced function "Loop_Stability"
 test.adb:145:20: info: initialization of "A" proved
 test.adb:147:14: info: initialization of "A" proved
+test.adb:147:14: warning: unreachable code (CVC4: 1 VC)

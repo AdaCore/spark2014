@@ -509,6 +509,12 @@ package SPARK_Util is
    --  end). Such an alternative must not be followed by other alternatives
    --  and "others" must be its only choice.
 
+   function Is_Error_Signaling_Statement (N : Node_Id) return Boolean;
+   --  Returns True iff N is a statement used to signal an error:
+   --    . a raise statement
+   --    . a pragma Assert (False)
+   --    . a call to an error-signaling procedure
+
    function Is_External_Call (N : Node_Id) return Boolean
    with Pre => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call
                  and then

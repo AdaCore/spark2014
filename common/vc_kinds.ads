@@ -104,7 +104,8 @@ package VC_Kinds is
 
       --  VC_Warning_Kind - warnings
 
-      VC_Inconsistent_Pre);
+      VC_Inconsistent_Pre,
+      VC_Dead_Code);
 
    subtype VC_RTE_Kind is VC_Kind range
      VC_Division_Check .. VC_Task_Termination;
@@ -116,7 +117,7 @@ package VC_Kinds is
      VC_Weaker_Pre .. VC_Stronger_Classwide_Post;
 
    subtype VC_Warning_Kind is VC_Kind range
-     VC_Inconsistent_Pre .. VC_Inconsistent_Pre;
+     VC_Inconsistent_Pre .. VC_Dead_Code;
 
    type Flow_Tag_Kind is
      (Empty_Tag,

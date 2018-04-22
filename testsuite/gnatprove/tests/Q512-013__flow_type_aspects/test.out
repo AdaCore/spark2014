@@ -1,4 +1,5 @@
 a.adb:6:18: warning: statement has no effect
+a.adb:9:07: warning: unreachable code (CVC4: 1 VC)
 a.ads:2:13: warning: subprogram "R" might not terminate
 types.adb:21:11: info: initialization of "TO2" proved
 types.ads:2:09: info: invariant check proved (CVC4: 1 VC)

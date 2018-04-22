@@ -27,6 +27,7 @@ container.adb:53:10: info: initialization of "X" proved
 container.adb:54:15: info: initialization of "X" proved
 container.adb:54:17: info: range check proved (CVC4: 1 VC)
 container.adb:59:10: info: initialization of "I" proved
+container.adb:59:17: warning: unreachable code (CVC4: 1 VC)
 container.adb:60:30: info: initialization of "R" proved
 container.adb:60:30: info: loop invariant initialization proved (CVC4: 1 VC)
 container.adb:60:30: info: loop invariant preservation proved (CVC4: 1 VC)
@@ -41,9 +42,11 @@ container.adb:63:14: info: range check proved (CVC4: 1 VC)
 container.adb:63:16: info: initialization of "I" proved
 container.adb:64:12: info: initialization of "I" proved
 container.adb:64:14: info: range check proved (CVC4: 1 VC)
+container.adb:68:04: warning: unreachable code (CVC4: 1 VC)
 container.adb:69:12: info: initialization of "X" proved
 container.adb:69:14: info: range check proved (CVC4: 1 VC)
 container.adb:70:17: info: initialization of "X" proved
+container.adb:74:04: warning: unreachable code (CVC4: 1 VC)
 container.adb:75:12: info: initialization of "X" proved
 container.adb:75:14: info: range check proved (CVC4: 2 VC)
 container.adb:76:07: info: loop variant proved (CVC4: 1 VC)
@@ -51,6 +54,7 @@ container.adb:76:41: info: initialization of "X" proved
 container.adb:77:17: info: initialization of "X" proved
 container.adb:81:08: info: precondition proved (CVC4: 1 VC)
 container.adb:81:13: info: initialization of "My_Container.A" proved
+container.adb:81:26: warning: unreachable code (CVC4: 1 VC)
 container.adb:86:08: info: precondition proved (CVC4: 1 VC)
 container.adb:86:13: info: initialization of "My_Container.A" proved
 container.adb:89:15: info: initialization of "X" proved
@@ -58,6 +62,7 @@ container.adb:89:17: info: range check proved (CVC4: 2 VC)
 container.adb:90:10: info: loop variant proved (CVC4: 1 VC)
 container.adb:90:44: info: initialization of "X" proved
 container.adb:91:20: info: initialization of "X" proved
+container.adb:93:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:97:08: info: precondition proved (CVC4: 1 VC)
 container.adb:97:13: info: initialization of "My_Container.A" proved
 container.adb:99:12: info: initialization of "R" proved
@@ -90,6 +95,7 @@ file_io.ads:63:54: info: function contract not available for proof ("Index" migh
 file_io.ads:64:42: info: function contract not available for proof ("Index" might not return)
 file_io.ads:64:54: info: function contract not available for proof ("Index" might not return)
 formal_cont.adb:11:14: info: initialization of "Result" proved
+formal_cont.adb:11:14: warning: unreachable code (CVC4: 1 VC)
 formal_cont.adb:15:07: info: initialization of "L" proved
 formal_cont.adb:17:31: info: initialization of "L" proved
 formal_cont.adb:26:07: info: initialization of "L" proved
@@ -182,6 +188,7 @@ formal_cont.ads:18:14: warning: subprogram "Test_01" might not terminate
 formal_cont.ads:23:13: info: subprogram "My_Equal_02" will terminate
 formal_cont.ads:32:14: info: subprogram "Test_02" will terminate
 formal_cont.ads:32:14: warning: subprogram "Test_02" has no effect
+functions.adb:11:07: warning: unreachable code (CVC4: 1 VC)
 functions.adb:14:14: high: all paths in "G" raise exceptions or do not terminate normally
 functions.adb:14:14: warning: subprogram "G" has no effect
 functions.adb:14:14: warning: subprogram "G" might not terminate
@@ -271,6 +278,7 @@ p.adb:41:14: warning: subprogram "Proc6" has no effect
 p.adb:41:14: warning: subprogram "Proc6" might not terminate
 p.adb:61:14: info: initialization of "B" proved
 preconditions.adb:9:14: info: initialization of "Result" proved
+preconditions.adb:9:14: warning: unreachable code (CVC4: 1 VC)
 preconditions.ads:2:14: info: subprogram "Returning_Precondition" will terminate
 preconditions.ads:6:13: warning: subprogram "Nonreturning_Precondition" might not terminate
 r.adb:7:13: high: potentially blocking operation in protected operation "E"
@@ -281,6 +289,7 @@ r.adb:31:14: warning: subprogram "Proc1" has no effect
 r.adb:31:14: warning: subprogram "Proc1" might not terminate
 r.adb:40:07: warning: assuming "OS_Exit" has no effect on global items
 r.adb:40:07: warning: no Global contract available for "OS_Exit"
+r.adb:48:07: warning: unreachable code (CVC4: 1 VC)
 r.adb:51:04: warning: analyzing unreferenced procedure "Proc4"
 r.adb:51:14: high: all paths in "Proc4" raise exceptions or do not terminate normally
 r.adb:51:14: warning: subprogram "Proc4" has no effect

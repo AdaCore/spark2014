@@ -36,6 +36,7 @@ with Sem_Prag;                           use Sem_Prag;
 with Sem_Type;                           use Sem_Type;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
+with SPARK_Util.Subprograms;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
 with Stringt;                            use Stringt;
@@ -1281,6 +1282,40 @@ package body SPARK_Util is
         Nkind (First_Choice) = N_Others_Choice
         and then Is_Empty_List (Others_Discrete_Choices (First_Choice));
    end Is_Empty_Others;
+
+   ----------------------------------
+   -- Is_Error_Signaling_Statement --
+   ----------------------------------
+
+   function Is_Error_Signaling_Statement (N : Node_Id) return Boolean is
+   begin
+      case Nkind (N) is
+         when N_Raise_xxx_Error | N_Raise_Statement =>
+            return True;
+
+         when N_Pragma =>
+            if Is_Pragma_Check (N, Name_Assert) then
+               declare
+                  Arg1   : constant Node_Id :=
+                    First (Pragma_Argument_Associations (N));
+                  Arg2   : constant Node_Id := Next (Arg1);
+                  Expr   : constant Node_Id := Expression (Arg2);
+               begin
+                  return Compile_Time_Known_Value (Expr)
+                    and then Expr_Value (Expr) = Uint_0;
+               end;
+            else
+               return False;
+            end if;
+
+         when N_Procedure_Call_Statement =>
+            return SPARK_Util.Subprograms.Is_Error_Signaling_Procedure
+              (Get_Called_Entity (N));
+
+         when others =>
+            return False;
+      end case;
+   end Is_Error_Signaling_Statement;
 
    ----------------------
    -- Is_Global_Entity --

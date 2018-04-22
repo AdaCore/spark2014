@@ -31,8 +31,8 @@ package Why.Gen.Preds is
 
    --  This package provides facilities to manipulate Why predicates
 
-   False_Pred : constant W_Pred_Id := New_Literal (Value  => EW_False);
-   True_Pred  : constant W_Pred_Id := New_Literal (Value  => EW_True);
+   False_Pred : constant W_Pred_Id := New_Literal (Value => EW_False);
+   True_Pred  : constant W_Pred_Id := New_Literal (Value => EW_True);
 
    function New_Equal_Bool
      (Left  : W_Term_Id;
