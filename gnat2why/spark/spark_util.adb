@@ -1296,10 +1296,10 @@ package body SPARK_Util is
          when N_Pragma =>
             if Is_Pragma_Check (N, Name_Assert) then
                declare
-                  Arg1   : constant Node_Id :=
+                  Arg1 : constant Node_Id :=
                     First (Pragma_Argument_Associations (N));
-                  Arg2   : constant Node_Id := Next (Arg1);
-                  Expr   : constant Node_Id := Expression (Arg2);
+                  Arg2 : constant Node_Id := Next (Arg1);
+                  Expr : constant Node_Id := Expression (Arg2);
                begin
                   return Compile_Time_Known_Value (Expr)
                     and then Expr_Value (Expr) = Uint_0;
