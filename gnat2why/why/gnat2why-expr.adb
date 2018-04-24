@@ -640,9 +640,13 @@ package body Gnat2Why.Expr is
       Do_Check   : Boolean) return W_Expr_Id;
    --  Translate negation on boolean arrays into a Why expression
 
-   function Transform_Raise (Stat : Node_Id) return W_Prog_Id with
-     Pre => Nkind (Stat) in N_Raise_xxx_Error | N_Raise_Statement;
    --  Returns the Why program for raise statement Stat
+   function Transform_Raise (Stat : Node_Id) return W_Prog_Id is
+     (+New_VC_Expr (Domain   => EW_Prog,
+                    Ada_Node => Stat,
+                    Expr     => +New_Identifier (Name => "absurd"),
+                    Reason   => VC_Raise))
+   with Pre => Nkind (Stat) in N_Raise_xxx_Error | N_Raise_Statement;
 
    function Transform_Shift_Or_Rotate_Call
      (Expr   : Node_Id;
@@ -14659,37 +14663,6 @@ package body Gnat2Why.Expr is
 
       return Result;
    end Transform_Quantified_Expression;
-
-   ---------------------
-   -- Transform_Raise --
-   ---------------------
-
-   function Transform_Raise (Stat : Node_Id) return W_Prog_Id is
-   begin
-      case Nkind (Stat) is
-         when N_Raise_xxx_Error =>
-            case RT_Exception_Code'Val (Uintp.UI_To_Int (Reason (Stat))) is
-               when CE_Discriminant_Check_Failed =>
-                  return +New_VC_Expr (Domain   => EW_Prog,
-                                       Ada_Node => Stat,
-                                       Expr     =>
-                                          +New_Identifier (Name => "absurd"),
-                                       Reason   => VC_Discriminant_Check);
-               when others =>
-                  raise Program_Error;
-            end case;
-
-         when N_Raise_Statement =>
-            return
-              New_Assert
-                (Pred => New_Label (Labels => New_VC_Labels (Stat, VC_Raise),
-                                    Def    => +False_Pred),
-                 Assert_Kind => EW_Assert);
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end Transform_Raise;
 
    ---------------------------------------------
    -- Transform_Record_Component_Associations --

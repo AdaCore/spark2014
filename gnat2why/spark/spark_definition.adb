@@ -1671,21 +1671,11 @@ package body SPARK_Definition is
                Mark (Expression (N));
             end if;
 
+         --  The frontend inserts explicit checks during semantic analysis
+         --  in some cases that are not supported in GNATprove, like cases
+         --  of infinite recursion detected by the frontend.
          when N_Raise_xxx_Error =>
-            --  The frontend inserts explicit checks during semantic
-            --  analysis in some cases, for which GNATprove issues a
-            --  corresponding check. Currently, this is only used for
-            --  discriminant checks introduced when converting a
-            --  discriminant type into another discriminant type, in
-            --  which multiple source discriminants are mapped to the
-            --  same target discriminant (RM 4.6(43)).
-
-            case RT_Exception_Code'Val (UI_To_Int (Reason (N))) is
-               when CE_Discriminant_Check_Failed =>
-                  null;
-               when others =>
-                  Mark_Violation ("raise statement", N);
-            end case;
+            Mark_Unsupported ("compiler-generated raise statement", N);
 
          when N_Raise_Expression =>
             Mark_Violation ("raise expression", N);
