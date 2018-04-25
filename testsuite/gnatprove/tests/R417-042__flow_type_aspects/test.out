@@ -1,0 +1,8 @@
+p.adb:1:20: warning: unused variable "X"
+p.adb:1:23: warning: unused variable "Low"
+p.adb:1:28: warning: unused variable "High"
+p.adb:6:35: low: unused global "Low"
+p.adb:6:40: low: unused global "High"
+p.adb:12:12: medium: predicate check might fail
+p.adb:21:07: info: initialization of "Y" proved
+p.adb:21:16: medium: predicate check might fail
