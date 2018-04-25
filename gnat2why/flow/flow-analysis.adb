@@ -2142,11 +2142,6 @@ package body Flow.Analysis is
          V_Key : Flow_Id      renames FA.PDG.Get_Key (V);
          V_Atr : V_Attributes renames FA.Atr (V);
       begin
-         --  Ignore exceptional paths
-         if V_Atr.Is_Exceptional_Path then
-            return False;
-         end if;
-
          --  Ignore synthetic null output and ???
          if V_Key.Variant = Final_Value
            and then (not V_Atr.Is_Export or else Synthetic (V_Key))
@@ -4333,9 +4328,9 @@ package body Flow.Analysis is
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             Atr : V_Attributes renames FA.Atr (V);
+
          begin
             if Atr.Is_Program_Node
-              and not Atr.Is_Exceptional_Path
               and Atr.Is_Callsite
             then
                Antialiasing.Check_Procedure_Call
