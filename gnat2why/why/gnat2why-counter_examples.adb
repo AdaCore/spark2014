@@ -34,6 +34,7 @@ with Flow_Refinement;           use Flow_Refinement;
 with Flow_Types;                use Flow_Types;
 with GNAT;                      use GNAT;
 with GNAT.String_Split;         use GNAT.String_Split;
+with Gnat2Why.CE_Utils;         use Gnat2Why.CE_Utils;
 with Gnat2Why.Util;             use Gnat2Why.Util;
 with Namet;                     use Namet;
 with Sem_Aux;                   use Sem_Aux;
@@ -378,7 +379,7 @@ package body Gnat2Why.Counter_Examples is
                     Retysp (AST_Type);
                   Check_Count   : Integer := 0;
                   Fields : constant Integer :=
-                    Count_Why_Regular_Fields (AST_Basetype) +
+                    Count_Why_Visible_Regular_Fields (AST_Basetype) +
                     Count_Discriminants (AST_Basetype);
 
                begin
@@ -393,7 +394,24 @@ package body Gnat2Why.Counter_Examples is
                         Field_Entity : constant Entity_Id :=
                                          Get_Entity_Id (Key_Field);
                      begin
-                        if Present (Field_Entity) then
+                        --  There are two cases:
+                        --  - discriminant -> we always include the field
+                        --    corresponding to discriminants because they are
+                        --    inherited by subtyping.
+                        --    The current design enforce that the discriminant
+                        --    is part of the AST_Basetype.
+                        --  - components -> some components can be hidden by
+                        --    subtyping. But, in Why3, any ancestor type
+                        --    with the same field can be used. So,
+                        --    counterexamples can have more components than
+                        --    are actually defined in the AST_basetype.
+
+                        if Present (Field_Entity) and then
+                          (Ekind (Field_Entity) = E_Discriminant
+                           or else
+                           Is_Visible_In_Type (AST_Basetype,
+                                               Field_Entity))
+                        then
                            declare
                               Field_Type : constant Entity_Id :=
                                              Retysp (Etype (Field_Entity));
