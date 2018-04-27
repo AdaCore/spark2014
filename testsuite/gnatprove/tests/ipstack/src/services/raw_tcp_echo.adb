@@ -10,7 +10,7 @@ with AIP.PCBs;
 
 with System, RAW_TCP_Callbacks;
 
-use type AIP.S8_T, AIP.U8_T, AIP.U16_T, AIP.S32_T;
+use type AIP.S8_T, AIP.U16_T, AIP.S32_T;
 
 package body RAW_TCP_Echo with
   Refined_State => (ECHO_STATE_POOL => ESP)
