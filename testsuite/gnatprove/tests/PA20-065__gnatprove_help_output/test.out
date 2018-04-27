@@ -23,6 +23,7 @@ gnatprove basic switches:
  -m                    Minimal reanalysis
      --mode=m          Set the mode of GNATprove (m=check, check_all, flow,
                        prove, all*, stone, bronze, silver, gold)
+     --no-subprojects  Do not analyze subprojects, only the root project
      --output-msg-only Do not run any provers, output current flow and proof
                        results
  -q, --quiet           Be quiet/terse
@@ -77,7 +78,7 @@ gnatprove advanced switches:
  --output-header      Add a header with extra information in the generated
                       output file
  --pedantic           Use a strict interpretation of the Ada standard
- --proof-warnings     Issue warnings on preconditions always False
+ --proof-warnings     Issue warnings by proof
  --proof=g[:l]        Set the proof modes for generation of formulas
                       (g=per_check*, per_path, progressive) (l=lazy*, all)
  --prover=s[,s]*      Use given provers (s=altergo, cvc4*, z3, ...)
