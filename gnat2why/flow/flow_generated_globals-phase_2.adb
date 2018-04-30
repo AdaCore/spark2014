@@ -1282,7 +1282,8 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      Dummy : Boolean;
                      --  Flag that indicates if a key was inserted or if
-                     --  it already existed in a map. It is required by
+                     --  it already existed in a map. It is required by the
+                     --  hashed-maps API, but not used here.
 
                   begin
                      Serialize (Variable);
@@ -1296,6 +1297,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      --  Find a list of protected components of a global
                      --  variable; if it does not exist then initialize with
                      --  an empty list.
+
                      Protected_Objects.Insert
                        (Key      => Variable,
                         Position => C,
