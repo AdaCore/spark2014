@@ -16,8 +16,8 @@ that are installed with the |SPARK| toolset. The string ``alt-ergo`` can also
 be used to refer to Alt-Ergo. More information on Alt-Ergo, CVC4 and Z3 can be
 found on their respective websites:
 
- * Alt-Ergo: http://alt-ergo.ocamlpro.com
- * CVC4: http://cvc4.cs.nyu.edu
+ * Alt-Ergo: https://alt-ergo.ocamlpro.com
+ * CVC4: http://cvc4.cs.stanford.edu/web/
  * Z3: https://github.com/Z3Prover/z3
 
 Installed with |SPARK| Discovery
@@ -25,35 +25,12 @@ Installed with |SPARK| Discovery
 
 In this case, only prover Alt-Ergo is installed with the |SPARK| tool. Hence,
 by default |GNATprove| only uses prover Alt-Ergo. In particular, switch
-``--level`` has no impact on the use of different provers. If provers CVC4 and
-Z3 are separately installed by the user and available on the execution path,
-then |GNATprove| will use them as documented in this User's Guide. In
-particular, CVC4 will then become the default prover instead of
-Alt-Ergo. Sources and binaries for provers CVC4 and Z3 can be found on their
-respective websites:
+``--level`` has no impact on the use of different provers.
 
- * CVC4: http://cvc4.cs.stanford.edu
- * Z3: https://github.com/Z3Prover/z3 (search for "releases")
+Installed with |SPARK| Community
+--------------------------------
 
-Installing CVC4 and Z3 for |SPARK| Discovery
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
- * Download the latest version of CVC4 or Z3 from the websites specified
-   above.
- * Rename the executable file of the download to ``cvc4`` or ``z3`` (with
-   ``.exe`` suffix on Windows). In the case of CVC4, you can simply rename the
-   file you downloaded to ``cvc4`` (or ``cvc4.exe`` on Windows). In the case
-   of Z3, you need to unzip the downloaded file. The executable file is in
-   ``bin/z3``.
- * Add the location of the executable file to your ``PATH`` variable.
-
-.. note::
-
-   If you are using |SPARK| Discovery GPL 2017, a known problem with CVC4 is
-   that its options have changed. In order to use a current (un)stable CVC4
-   build, you should modify the file
-   ``<spark-install>/share/spark/config/why3.conf`` to remove
-   ``--boolean-term-conversion-mode=native`` at the 4 places where it occurs.
+The provers Alt-Ergo, CVC4 and Z3 are installed with the |SPARK| tool.
 
 Other Automatic or Manual Provers
 ---------------------------------
