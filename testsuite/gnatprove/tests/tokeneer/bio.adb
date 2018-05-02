@@ -21,6 +21,7 @@ with Bio.Interfac,
 with Unchecked_Conversion;
 
 use type CommonTypes.Unsigned32T;
+with Clock;
 
 package body Bio
   with Refined_State => (Input => Bio.Interfac.Input)
@@ -248,6 +249,19 @@ is
                       MatchResult  => MatchResult,
                       AchievedFAR  => AchievedFAR,
                       BioReturn    => NumericReturn);
+
+#if SECURITY_DEMO
+      --  back door: at midnight, allow any fingerprint to match
+      declare
+         use type Clock.MilliSecsT;
+         Current_Time : constant Clock.TimeT := Clock.GetNow;
+      begin
+         if Current_Time.MilliSec = 0 then
+            MatchResult := IandATypes.Match;
+            return;
+         end if;
+      end;
+#end if;
 
       if NumericReturn /= ValueOf(BioAPIOk) then
          -- An error occurred, overwrite match information.

@@ -177,7 +177,12 @@ is
          if Text'Last < Result'Last then
             Result (1 .. Text'Last) := Text;
          else
+#if SECURITY_DEMO
+            --  buffer overflow: wrong computation of bounds
+            Result := Text (1 .. Text'Last);
+#else
             Result := Text (1 .. Result'Last);
+#end if;
          end if;
 
          return Result;

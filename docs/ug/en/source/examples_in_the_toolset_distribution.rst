@@ -735,4 +735,16 @@ connected to the core system.
 
 Data and flow dependency contracts are given for all subprograms. Partial
 functional contracts are also given for a subset of subprograms. |GNATprove|
-currently proves automatically 90% of all checks in Tokeneer.
+currently proves automatically all checks on SPARK code in Tokeneer. The
+transition from SPARK 2005 to SPARK 2014 was presented in a post on the AdaCore
+Blog: https://blog.adacore.com/tokeneer-fully-verified-with-spark-2014
+
+Tokeneer can be used as the basis for demonstrating four types of security
+vulnerabilities that can be detected by |GNATprove|, when calling GPS with
+``-XSECURITY_DEMO=True`` (or changing the value of the scenario variable in
+GPS). Analyzing the code in that setting detects:
+
+* an information leak in ``keystore.adb``
+* a back door in ``bio.adb``
+* a buffer overflow in ``admintoken.adb``
+* an implementation flaw in ``alarm.adb``

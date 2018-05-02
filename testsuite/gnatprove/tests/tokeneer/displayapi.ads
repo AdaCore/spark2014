@@ -20,7 +20,10 @@
 
 with CommonTypes;
 
-package DisplayAPI is
+package DisplayAPI with
+  Abstract_State => State,
+  Initializes => State
+is
 
    ------------------------------------------------------------------
    -- GetMaxTextSizeTop
@@ -53,7 +56,7 @@ package DisplayAPI is
    ------------------------------------------------------------------
    procedure SetTopText (TopText : in     String;
                          Written :    out Boolean)
-     with Global => null;
+     with Global => (In_Out => State);
 
    ------------------------------------------------------------------
    -- SetBottomText
@@ -64,7 +67,7 @@ package DisplayAPI is
    ------------------------------------------------------------------
    procedure SetBottomText (BottomText : in     String;
                             Written    :    out Boolean)
-     with Global => null;
+     with Global => (In_Out => State);
 
    ------------------------------------------------------------------
    -- SetTopTextScrollable
@@ -77,7 +80,7 @@ package DisplayAPI is
    ------------------------------------------------------------------
    procedure SetTopTextScrollable (ScrollText : in     String;
                                    Written    :    out Boolean)
-     with Global => null;
+     with Global => (In_Out => State);
 
    ------------------------------------------------------------------
    -- Reset
@@ -87,7 +90,7 @@ package DisplayAPI is
    --
    ------------------------------------------------------------------
    procedure Reset (Success :    out Boolean)
-     with Global => null;
+     with Global => (Output => State);
 
 
 end DisplayAPI;

@@ -4,9 +4,9 @@ from test_support import *
 contains_manual_proof = False
 
 def replay():
-    prove_all(procs=0, opt=["--level=2", "--no-axiom-guard"], steps=None, vc_timeout=20)
+    prove_all(procs=0, opt=["--level=2", "--no-axiom-guard"], steps=None, vc_timeout=20, no_fail=True)
 
-prove_all(["--no-axiom-guard"], procs=4, replay=True)
+prove_all(["--no-axiom-guard"], procs=4, replay=True, no_fail=True)
 
 # testing the proof information in .spark files. See <gnatprove/spark_report>
 # for the format of the .spark files

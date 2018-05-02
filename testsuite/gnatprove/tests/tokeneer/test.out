@@ -50,69 +50,69 @@ admintoken.adb:178:13: info: range check proved (CVC4: 4 VC)
 admintoken.adb:178:37: info: initialization of "Result" proved
 admintoken.adb:178:37: info: length check proved (CVC4: 1 VC)
 admintoken.adb:178:40: info: length check proved (CVC4: 1 VC)
-admintoken.adb:180:23: info: range check proved (CVC4: 4 VC)
-admintoken.adb:183:17: info: initialization of "Result" proved
-admintoken.adb:202:37: info: initialization of "Description" proved
-admintoken.adb:203:37: info: initialization of "IDValid" proved
-admintoken.adb:239:13: info: initialization of "CertFound" proved
-admintoken.adb:242:28: info: initialization of "RawCert" proved
-admintoken.adb:246:16: info: initialization of "ExtractOK" proved
-admintoken.adb:254:30: info: initialization of "RawCert" proved
-admintoken.adb:262:21: info: initialization of "CertFound" proved
-admintoken.adb:262:35: info: initialization of "ExtractOK" proved
-admintoken.adb:263:16: info: initialization of "TokenIDMatches" proved
-admintoken.adb:263:35: info: initialization of "Verified" proved
-admintoken.adb:265:17: info: initialization of "CertFound" proved
-admintoken.adb:265:34: info: initialization of "ExtractOK" proved
-admintoken.adb:265:51: info: initialization of "TokenIDMatches" proved
-admintoken.adb:266:28: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:267:20: info: initialization of "Verified" proved
-admintoken.adb:269:15: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:294:36: info: initialization of "AuthValid" proved
-admintoken.adb:338:13: info: initialization of "CertFound" proved
-admintoken.adb:340:28: info: initialization of "RawCert" proved
-admintoken.adb:344:16: info: initialization of "ExtractOK" proved
-admintoken.adb:354:33: info: initialization of "RawCert" proved
-admintoken.adb:366:23: info: initialization of "CertFound" proved
-admintoken.adb:367:29: info: initialization of "ExtractOK" proved
-admintoken.adb:368:29: info: initialization of "BaseIDMatches" proved
-admintoken.adb:369:29: info: initialization of "Verified" proved
-admintoken.adb:370:29: info: initialization of "Current" proved
-admintoken.adb:373:20: info: initialization of "CertFound" proved
-admintoken.adb:374:22: info: initialization of "ExtractOK" proved
-admintoken.adb:375:22: info: initialization of "BaseIDMatches" proved
-admintoken.adb:377:31: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:378:23: info: initialization of "Verified" proved
-admintoken.adb:380:19: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:381:23: info: initialization of "Current" proved
-admintoken.adb:383:19: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:399:10: info: initialization of "TokenTry" constituent of "State" proved
-admintoken.adb:402:10: info: initialization of "IDCertContents" proved
-admintoken.adb:404:10: info: initialization of "AuthCertContents" proved
-admintoken.adb:404:10: info: initialization of "Description" proved
-admintoken.adb:404:10: info: initialization of "IDCertContents" proved
-admintoken.adb:407:13: info: initialization of "IDValid" proved
-admintoken.adb:407:25: info: initialization of "AuthValid" proved
-admintoken.adb:408:51: info: initialization of "AuthCertContents" proved
-admintoken.adb:412:31: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:424:25: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:428:18: info: initialization of "AuthValid" proved
-admintoken.adb:428:32: info: initialization of "IDValid" proved
-admintoken.adb:428:44: info: initialization of "RoleOK" proved
-admintoken.adb:430:43: info: initialization of "IDValid" proved
-admintoken.adb:431:44: info: initialization of "IDCertContents" proved
-admintoken.adb:434:22: info: initialization of "AuthValid" proved
-admintoken.adb:435:22: info: initialization of "AuthCertContents" proved
-admintoken.adb:486:14: info: initialization of "Result" proved
-admintoken.adb:496:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.adb:496:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.adb:497:42: info: initialization of "IDCert.Contents" constituent of "State" proved
-admintoken.adb:497:42: info: initialization of "IDCert.Valid" constituent of "State" proved
-admintoken.adb:498:42: info: initialization of "TokenID" constituent of "State" proved
-admintoken.adb:499:42: info: initialization of "TokenPresence" constituent of "State" proved
-admintoken.adb:500:42: info: initialization of "TokenTry" constituent of "State" proved
-admintoken.adb:516:47: info: initialization of "AuthCertContents" proved
-admintoken.adb:520:43: info: initialization of "IDCertContents" proved
+admintoken.adb:184:23: info: range check proved (CVC4: 4 VC)
+admintoken.adb:188:17: info: initialization of "Result" proved
+admintoken.adb:207:37: info: initialization of "Description" proved
+admintoken.adb:208:37: info: initialization of "IDValid" proved
+admintoken.adb:244:13: info: initialization of "CertFound" proved
+admintoken.adb:247:28: info: initialization of "RawCert" proved
+admintoken.adb:251:16: info: initialization of "ExtractOK" proved
+admintoken.adb:259:30: info: initialization of "RawCert" proved
+admintoken.adb:267:21: info: initialization of "CertFound" proved
+admintoken.adb:267:35: info: initialization of "ExtractOK" proved
+admintoken.adb:268:16: info: initialization of "TokenIDMatches" proved
+admintoken.adb:268:35: info: initialization of "Verified" proved
+admintoken.adb:270:17: info: initialization of "CertFound" proved
+admintoken.adb:270:34: info: initialization of "ExtractOK" proved
+admintoken.adb:270:51: info: initialization of "TokenIDMatches" proved
+admintoken.adb:271:28: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:272:20: info: initialization of "Verified" proved
+admintoken.adb:274:15: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:299:36: info: initialization of "AuthValid" proved
+admintoken.adb:343:13: info: initialization of "CertFound" proved
+admintoken.adb:345:28: info: initialization of "RawCert" proved
+admintoken.adb:349:16: info: initialization of "ExtractOK" proved
+admintoken.adb:359:33: info: initialization of "RawCert" proved
+admintoken.adb:371:23: info: initialization of "CertFound" proved
+admintoken.adb:372:29: info: initialization of "ExtractOK" proved
+admintoken.adb:373:29: info: initialization of "BaseIDMatches" proved
+admintoken.adb:374:29: info: initialization of "Verified" proved
+admintoken.adb:375:29: info: initialization of "Current" proved
+admintoken.adb:378:20: info: initialization of "CertFound" proved
+admintoken.adb:379:22: info: initialization of "ExtractOK" proved
+admintoken.adb:380:22: info: initialization of "BaseIDMatches" proved
+admintoken.adb:382:31: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:383:23: info: initialization of "Verified" proved
+admintoken.adb:385:19: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:386:23: info: initialization of "Current" proved
+admintoken.adb:388:19: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:404:10: info: initialization of "TokenTry" constituent of "State" proved
+admintoken.adb:407:10: info: initialization of "IDCertContents" proved
+admintoken.adb:409:10: info: initialization of "AuthCertContents" proved
+admintoken.adb:409:10: info: initialization of "Description" proved
+admintoken.adb:409:10: info: initialization of "IDCertContents" proved
+admintoken.adb:412:13: info: initialization of "IDValid" proved
+admintoken.adb:412:25: info: initialization of "AuthValid" proved
+admintoken.adb:413:51: info: initialization of "AuthCertContents" proved
+admintoken.adb:417:31: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:429:25: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:433:18: info: initialization of "AuthValid" proved
+admintoken.adb:433:32: info: initialization of "IDValid" proved
+admintoken.adb:433:44: info: initialization of "RoleOK" proved
+admintoken.adb:435:43: info: initialization of "IDValid" proved
+admintoken.adb:436:44: info: initialization of "IDCertContents" proved
+admintoken.adb:439:22: info: initialization of "AuthValid" proved
+admintoken.adb:440:22: info: initialization of "AuthCertContents" proved
+admintoken.adb:491:14: info: initialization of "Result" proved
+admintoken.adb:501:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.adb:501:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:502:42: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.adb:502:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:503:42: info: initialization of "TokenID" constituent of "State" proved
+admintoken.adb:504:42: info: initialization of "TokenPresence" constituent of "State" proved
+admintoken.adb:505:42: info: initialization of "TokenTry" constituent of "State" proved
+admintoken.adb:521:47: info: initialization of "AuthCertContents" proved
+admintoken.adb:525:43: info: initialization of "IDCertContents" proved
 admintoken.ads:76:22: info: postcondition proved (CVC4: 3 VC)
 admintoken.ads:76:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:76:26: info: initialization of "IDCert.Valid" constituent of "State" proved
@@ -450,32 +450,32 @@ auditlog.ads:277:51: info: overflow check proved (CVC4: 1 VC)
 auditlog.ads:277:71: info: overflow check proved (CVC4: 1 VC)
 auditlog.ads:281:09: info: invariant check proved on default value (CVC4: 1 VC)
 auditlog.ads:302:04: info: initialization of "LogFiles" constituent of "FileState" proved
-bio.adb:128:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at bio.adb:192
-bio.adb:128:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at bio.adb:192
-bio.adb:130:33: info: initialization of "Result" proved
-bio.adb:130:33: info: initialization of "Result" proved, in call inlined at bio.adb:192
-bio.adb:136:14: info: initialization of "Result" proved
-bio.adb:136:14: info: initialization of "Result" proved, in call inlined at bio.adb:192
-bio.adb:174:17: info: postcondition proved (CVC4: 1 VC)
-bio.adb:176:38: info: range check proved (CVC4: 1 VC)
-bio.adb:177:12: info: range check proved (CVC4: 1 VC)
-bio.adb:177:41: info: range check proved (CVC4: 1 VC)
+bio.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at bio.adb:193
+bio.adb:129:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at bio.adb:193
+bio.adb:131:33: info: initialization of "Result" proved
+bio.adb:131:33: info: initialization of "Result" proved, in call inlined at bio.adb:193
+bio.adb:137:14: info: initialization of "Result" proved
+bio.adb:137:14: info: initialization of "Result" proved, in call inlined at bio.adb:193
+bio.adb:175:17: info: postcondition proved (CVC4: 1 VC)
+bio.adb:177:38: info: range check proved (CVC4: 1 VC)
 bio.adb:178:12: info: range check proved (CVC4: 1 VC)
-bio.adb:178:57: info: range check proved (CVC4: 1 VC)
-bio.adb:184:13: info: range check proved (CVC4: 4 VC)
-bio.adb:184:42: info: length check proved (CVC4: 1 VC)
-bio.adb:184:45: info: initialization of "FullString" proved
-bio.adb:184:45: info: length check proved (CVC4: 1 VC)
-bio.adb:186:23: info: initialization of "FullString" proved
-bio.adb:186:23: info: range check proved (CVC4: 4 VC)
-bio.adb:194:07: info: initialization of "Result" proved
-bio.adb:194:07: info: initialization of "TheCodeName" proved
-bio.adb:196:14: info: initialization of "Result" proved
-bio.adb:252:10: info: initialization of "NumericReturn" proved
-bio.adb:255:18: info: precondition proved (CVC4: 1 VC)
-bio.adb:260:35: info: predicate check proved (CVC4: 1 VC)
-bio.adb:260:35: info: range check proved (CVC4: 1 VC)
-bio.adb:261:35: info: initialization of "NumericReturn" proved
+bio.adb:178:41: info: range check proved (CVC4: 1 VC)
+bio.adb:179:12: info: range check proved (CVC4: 1 VC)
+bio.adb:179:57: info: range check proved (CVC4: 1 VC)
+bio.adb:185:13: info: range check proved (CVC4: 4 VC)
+bio.adb:185:42: info: length check proved (CVC4: 1 VC)
+bio.adb:185:45: info: initialization of "FullString" proved
+bio.adb:185:45: info: length check proved (CVC4: 1 VC)
+bio.adb:187:23: info: initialization of "FullString" proved
+bio.adb:187:23: info: range check proved (CVC4: 4 VC)
+bio.adb:195:07: info: initialization of "Result" proved
+bio.adb:195:07: info: initialization of "TheCodeName" proved
+bio.adb:197:14: info: initialization of "Result" proved
+bio.adb:266:10: info: initialization of "NumericReturn" proved
+bio.adb:269:18: info: precondition proved (CVC4: 1 VC)
+bio.adb:274:35: info: predicate check proved (CVC4: 1 VC)
+bio.adb:274:35: info: range check proved (CVC4: 1 VC)
+bio.adb:275:35: info: initialization of "NumericReturn" proved
 bio.ads:40:20: info: initialization of "FingerPresent" proved
 bio.ads:56:22: info: initialization of "MatchResult" proved
 bio.ads:57:22: info: initialization of "AchievedFAR" proved
@@ -1512,8 +1512,8 @@ configuration.adb:109:64: info: division check proved (CVC4: 1 VC)
 configuration.adb:109:72: info: range check proved (CVC4: 1 VC)
 configuration.adb:110:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:110:63: info: division check proved (CVC4: 1 VC)
-configuration.adb:110:71: info: range check proved (CVC4: 1 VC)
-configuration.adb:111:12: info: range check proved (CVC4: 1 VC)
+configuration.adb:110:71: info: range check proved (Z3: 1 VC)
+configuration.adb:111:12: info: range check proved (Z3: 1 VC)
 configuration.adb:116:26: info: initialization of "Str" proved
 configuration.adb:116:26: info: range check proved (CVC4: 4 VC)
 configuration.adb:118:13: info: range check proved (CVC4: 4 VC)
@@ -1568,94 +1568,93 @@ configuration.adb:185:21: info: precondition proved (CVC4: 1 VC)
 configuration.adb:193:18: info: precondition proved (CVC4: 1 VC)
 configuration.ads:46:43: info: initialization of "ConfigData.State" proved
 configuration.ads:67:07: info: initialization of "DataValid" proved
-display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:188
-display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:284
-display.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:188
-display.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:284
-display.adb:129:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at display.adb:188
-display.adb:129:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at display.adb:284
+display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:191
+display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:287
+display.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:191
+display.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:287
+display.adb:129:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at display.adb:191
+display.adb:129:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at display.adb:287
 display.adb:132:25: info: initialization of "Result.Text" proved
-display.adb:132:25: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
-display.adb:132:25: info: initialization of "Result.Text" proved, in call inlined at display.adb:284
-display.adb:137:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:188
-display.adb:137:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:284
+display.adb:132:25: info: initialization of "Result.Text" proved, in call inlined at display.adb:191
+display.adb:132:25: info: initialization of "Result.Text" proved, in call inlined at display.adb:287
+display.adb:137:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:191
+display.adb:137:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:287
 display.adb:137:35: info: initialization of "Result.Len" proved
-display.adb:137:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
-display.adb:137:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:284
+display.adb:137:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:191
+display.adb:137:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:287
 display.adb:137:35: info: initialization of "Result.Text" proved
-display.adb:137:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
-display.adb:137:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:284
-display.adb:138:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:188
-display.adb:138:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:284
+display.adb:137:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:191
+display.adb:137:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:287
+display.adb:138:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:191
+display.adb:138:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:287
 display.adb:138:35: info: initialization of "Result.Len" proved
-display.adb:138:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
-display.adb:138:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:284
+display.adb:138:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:191
+display.adb:138:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:287
 display.adb:138:35: info: initialization of "Result.Text" proved
-display.adb:138:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
-display.adb:138:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:284
-display.adb:139:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:188
-display.adb:139:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:284
+display.adb:138:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:191
+display.adb:138:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:287
+display.adb:139:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:191
+display.adb:139:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:287
 display.adb:139:35: info: initialization of "Result.Len" proved
-display.adb:139:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
-display.adb:139:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:284
+display.adb:139:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:191
+display.adb:139:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:287
 display.adb:139:35: info: initialization of "Result.Text" proved
-display.adb:139:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
-display.adb:139:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:284
+display.adb:139:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:191
+display.adb:139:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:287
 display.adb:140:21: info: initialization of "Result.Len" proved
-display.adb:140:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
-display.adb:140:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:284
-display.adb:140:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:140:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:284
-display.adb:143:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:188
-display.adb:143:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:284
-display.adb:144:33: info: loop invariant initialization proved (CVC4: 4 VC), in call inlined at display.adb:188
-display.adb:144:33: info: loop invariant initialization proved (CVC4: 4 VC), in call inlined at display.adb:284
-display.adb:144:33: info: loop invariant preservation proved (CVC4: 4 VC), in call inlined at display.adb:188
-display.adb:144:33: info: loop invariant preservation proved (CVC4: 4 VC), in call inlined at display.adb:284
+display.adb:140:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:191
+display.adb:140:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:287
+display.adb:140:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:191
+display.adb:140:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:287
+display.adb:143:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:191
+display.adb:143:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:287
+display.adb:144:33: info: loop invariant initialization proved (CVC4: 4 VC), in call inlined at display.adb:191
+display.adb:144:33: info: loop invariant initialization proved (CVC4: 4 VC), in call inlined at display.adb:287
+display.adb:144:33: info: loop invariant preservation proved (CVC4: 4 VC), in call inlined at display.adb:191
+display.adb:144:33: info: loop invariant preservation proved (CVC4: 4 VC), in call inlined at display.adb:287
 display.adb:147:33: info: initialization of "Result.Len" proved
-display.adb:147:33: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
-display.adb:147:33: info: initialization of "Result.Len" proved, in call inlined at display.adb:284
-display.adb:148:33: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:188
-display.adb:148:33: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:284
-display.adb:148:33: info: overflow check proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:148:33: info: overflow check proved (CVC4: 1 VC), in call inlined at display.adb:284
+display.adb:147:33: info: initialization of "Result.Len" proved, in call inlined at display.adb:191
+display.adb:147:33: info: initialization of "Result.Len" proved, in call inlined at display.adb:287
+display.adb:148:33: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:191
+display.adb:148:33: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:287
+display.adb:148:33: info: overflow check proved (CVC4: 1 VC), in call inlined at display.adb:191
+display.adb:148:33: info: overflow check proved (CVC4: 1 VC), in call inlined at display.adb:287
 display.adb:148:38: info: initialization of "Result.Len" proved
-display.adb:148:38: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
-display.adb:148:38: info: initialization of "Result.Len" proved, in call inlined at display.adb:284
+display.adb:148:38: info: initialization of "Result.Len" proved, in call inlined at display.adb:191
+display.adb:148:38: info: initialization of "Result.Len" proved, in call inlined at display.adb:287
 display.adb:148:38: info: initialization of "Result.Text" proved
-display.adb:148:38: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
-display.adb:148:38: info: initialization of "Result.Text" proved, in call inlined at display.adb:284
-display.adb:150:18: warning: unused assignment, in call inlined at display.adb:188
-display.adb:150:21: info: initialization of "Result.Len" proved
-display.adb:150:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
-display.adb:150:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:284
-display.adb:150:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:150:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:284
-display.adb:152:14: info: initialization of "Result.Len" proved
-display.adb:152:14: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
-display.adb:152:14: info: initialization of "Result.Len" proved, in call inlined at display.adb:284
-display.adb:152:14: info: initialization of "Result.Text" proved
-display.adb:152:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
-display.adb:152:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:284
-display.adb:184:18: info: precondition proved (CVC4: 1 VC)
-display.adb:270:37: info: initialization of "TheMsg.Top.Len" proved
-display.adb:271:36: info: initialization of "TheMsg.Bottom.Len" proved
-display.adb:275:44: info: initialization of "TheMsg.Top.Len" proved
-display.adb:275:44: info: initialization of "TheMsg.Top.Text" proved
-display.adb:277:50: info: initialization of "TheMsg.Bottom.Len" proved
-display.adb:277:50: info: initialization of "TheMsg.Bottom.Text" proved
-display.adb:279:24: info: initialization of "TopWritten" proved
-display.adb:279:39: info: initialization of "BottomWritten" proved
-display.adb:284:57: info: initialization of "TheMsg.Bottom.Len" proved
-display.adb:284:57: info: initialization of "TheMsg.Bottom.Text" proved
-display.adb:284:57: info: initialization of "TheMsg.Top.Len" proved
-display.adb:284:57: info: initialization of "TheMsg.Top.Text" proved
-display.adb:289:17: info: initialization of "Written" proved
-display.adb:290:21: info: precondition proved (CVC4: 1 VC)
-display.adb:309:42: info: initialization of "CurrentDisplay" constituent of "State" proved
-display.adb:310:42: info: initialization of "CurrentlyDisplayed" constituent of "State" proved
-display.adb:311:42: info: initialization of "Sizes.Bottom" constituent of "State" proved
-display.adb:311:42: info: initialization of "Sizes.Top" constituent of "State" proved
+display.adb:148:38: info: initialization of "Result.Text" proved, in call inlined at display.adb:191
+display.adb:148:38: info: initialization of "Result.Text" proved, in call inlined at display.adb:287
+display.adb:152:21: info: initialization of "Result.Len" proved
+display.adb:152:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:191
+display.adb:152:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:287
+display.adb:152:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:191
+display.adb:152:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:287
+display.adb:155:14: info: initialization of "Result.Len" proved
+display.adb:155:14: info: initialization of "Result.Len" proved, in call inlined at display.adb:191
+display.adb:155:14: info: initialization of "Result.Len" proved, in call inlined at display.adb:287
+display.adb:155:14: info: initialization of "Result.Text" proved
+display.adb:155:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:191
+display.adb:155:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:287
+display.adb:187:18: info: precondition proved (CVC4: 1 VC)
+display.adb:273:37: info: initialization of "TheMsg.Top.Len" proved
+display.adb:274:36: info: initialization of "TheMsg.Bottom.Len" proved
+display.adb:278:44: info: initialization of "TheMsg.Top.Len" proved
+display.adb:278:44: info: initialization of "TheMsg.Top.Text" proved
+display.adb:280:50: info: initialization of "TheMsg.Bottom.Len" proved
+display.adb:280:50: info: initialization of "TheMsg.Bottom.Text" proved
+display.adb:282:24: info: initialization of "TopWritten" proved
+display.adb:282:39: info: initialization of "BottomWritten" proved
+display.adb:287:57: info: initialization of "TheMsg.Bottom.Len" proved
+display.adb:287:57: info: initialization of "TheMsg.Bottom.Text" proved
+display.adb:287:57: info: initialization of "TheMsg.Top.Len" proved
+display.adb:287:57: info: initialization of "TheMsg.Top.Text" proved
+display.adb:292:17: info: initialization of "Written" proved
+display.adb:293:21: info: precondition proved (CVC4: 1 VC)
+display.adb:312:42: info: initialization of "CurrentDisplay" constituent of "State" proved
+display.adb:313:42: info: initialization of "CurrentlyDisplayed" constituent of "State" proved
+display.adb:314:42: info: initialization of "Sizes.Bottom" constituent of "State" proved
+display.adb:314:42: info: initialization of "Sizes.Top" constituent of "State" proved
 door.adb:88:22: info: postcondition proved (CVC4: 4 VC)
 door.adb:113:23: info: initialization of "LocalAlarm" proved
 door.adb:114:18: info: precondition proved (CVC4: 1 VC)
@@ -1984,183 +1983,183 @@ keyboard.adb:76:32: info: initialization of "LocalData" proved
 keyboard.ads:76:20: info: initialization of "DataPresence" proved
 keyboard.ads:77:20: info: initialization of "Data.Length" proved
 keyboard.ads:77:20: info: initialization of "Data.Text" proved
-keystore.adb:96:35: info: range check proved (CVC4: 1 VC)
-keystore.adb:96:39: info: range check proved (CVC4: 1 VC)
-keystore.adb:97:09: info: range check proved (CVC4: 1 VC)
-keystore.adb:100:19: info: range check proved (CVC4: 1 VC)
-keystore.adb:101:10: info: range check proved (CVC4: 4 VC)
-keystore.adb:101:32: info: range check proved (CVC4: 1 VC)
-keystore.adb:101:41: info: initialization of "Result" proved
-keystore.adb:101:41: info: length check proved (CVC4: 1 VC)
-keystore.adb:101:44: info: length check proved (CVC4: 1 VC)
-keystore.adb:103:20: info: range check proved (CVC4: 4 VC)
-keystore.adb:106:14: info: initialization of "Result" proved
-keystore.adb:121:22: info: initialization of "TheDigest.DigestID" proved
-keystore.adb:121:22: info: initialization of "TheDigest.Pad" proved
-keystore.adb:121:22: info: initialization of "TheDigest.SignReturn" proved
-keystore.adb:121:22: info: initialization of "TheDigest.VerifyReturn" proved
-keystore.adb:122:22: info: initialization of "Success" proved
-keystore.adb:171:42: info: range check proved (CVC4: 1 VC)
-keystore.adb:171:53: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:171:69: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:179:16: info: loop invariant initialization proved (CVC4: 5 VC)
-keystore.adb:179:16: info: loop invariant preservation proved (CVC4: 5 VC)
-keystore.adb:183:24: info: initialization of "Result" proved
-keystore.adb:183:35: info: index check proved (CVC4: 2 VC)
-keystore.adb:183:35: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:183:51: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:188:17: info: initialization of "Result" proved
-keystore.adb:200:10: info: initialization of "RetValIni" proved
-keystore.adb:202:51: info: division check proved (CVC4: 1 VC)
-keystore.adb:205:24: info: initialization of "LoopMax" proved
-keystore.adb:207:16: info: initialization of "LoopMax" proved
-keystore.adb:207:16: info: loop invariant initialization proved (CVC4: 8 VC)
-keystore.adb:207:16: info: loop invariant preservation proved (CVC4: 8 VC)
-keystore.adb:207:56: info: division check proved (CVC4: 1 VC)
-keystore.adb:208:30: info: initialization of "LoopMax" proved
-keystore.adb:210:20: info: initialization of "BytesLeft" proved
-keystore.adb:210:57: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:210:67: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:211:20: info: initialization of "Size" proved
-keystore.adb:212:20: info: initialization of "RetValIni" proved
-keystore.adb:213:20: info: initialization of "RetValFin" proved
-keystore.adb:215:16: info: initialization of "BytesLeft" proved
-keystore.adb:216:49: info: initialization of "BytesLeft" proved
-keystore.adb:219:22: info: precondition proved (CVC4: 5 VC)
-keystore.adb:222:29: info: initialization of "Size" proved
-keystore.adb:225:31: info: initialization of "Block" proved
-keystore.adb:226:31: info: initialization of "Size" proved
-keystore.adb:229:23: info: initialization of "RetValUpd" proved
-keystore.adb:229:55: info: initialization of "LoopMax" proved
-keystore.adb:231:26: info: initialization of "BytesLeft" proved
-keystore.adb:231:36: info: range check proved (CVC4: 1 VC)
-keystore.adb:235:13: info: initialization of "RetValUpd" proved
-keystore.adb:242:18: info: initialization of "RetValIni" proved
-keystore.adb:243:18: info: initialization of "RetValUpd" proved
-keystore.adb:244:18: info: initialization of "RetValFin" proved
-keystore.adb:246:20: info: initialization of "RetValIni" proved
-keystore.adb:247:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:251:49: info: initialization of "RetValIni" proved
-keystore.adb:251:60: info: predicate check proved (CVC4: 1 VC)
-keystore.adb:251:60: info: range check proved (CVC4: 1 VC)
-keystore.adb:254:20: info: initialization of "RetValUpd" proved
-keystore.adb:255:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:259:49: info: initialization of "RetValUpd" proved
-keystore.adb:259:60: info: predicate check proved (CVC4: 1 VC)
-keystore.adb:259:60: info: range check proved (CVC4: 1 VC)
-keystore.adb:262:20: info: initialization of "RetValFin" proved
-keystore.adb:263:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:267:48: info: initialization of "RetValFin" proved
-keystore.adb:267:59: info: predicate check proved (CVC4: 1 VC)
-keystore.adb:267:59: info: range check proved (CVC4: 1 VC)
-keystore.adb:286:07: info: initialization of "Handles" proved
-keystore.adb:315:10: info: initialization of "RetValIni" proved
-keystore.adb:320:13: info: initialization of "RetValIni" proved
-keystore.adb:325:20: info: initialization of "RetValIni" proved
-keystore.adb:326:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:330:49: info: initialization of "RetValIni" proved
-keystore.adb:330:60: info: predicate check proved (CVC4: 1 VC)
-keystore.adb:330:60: info: range check proved (CVC4: 1 VC)
-keystore.adb:333:20: info: initialization of "RetValDo" proved
-keystore.adb:334:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:338:48: info: initialization of "RetValDo" proved
-keystore.adb:338:58: info: predicate check proved (CVC4: 1 VC)
-keystore.adb:338:58: info: range check proved (CVC4: 1 VC)
-keystore.adb:341:20: info: initialization of "RetValFin" proved
-keystore.adb:342:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:346:48: info: initialization of "RetValFin" proved
-keystore.adb:346:59: info: predicate check proved (CVC4: 1 VC)
-keystore.adb:346:59: info: range check proved (CVC4: 1 VC)
-keystore.adb:364:33: info: initialization of "IssuerKey" proved
-keystore.adb:397:29: info: initialization of "IssuerTemplate.AttrMask" proved
-keystore.adb:397:29: info: initialization of "IssuerTemplate.IsPublic" proved
-keystore.adb:397:29: info: initialization of "IssuerTemplate.KeyID" proved
-keystore.adb:397:29: info: initialization of "IssuerTemplate.KeyLength" proved
-keystore.adb:397:29: info: initialization of "IssuerTemplate.Owner.ID" proved
-keystore.adb:397:29: info: initialization of "IssuerTemplate.Owner.Name" proved
-keystore.adb:397:29: info: initialization of "IssuerTemplate.Owner.NameLength" proved
-keystore.adb:398:29: info: initialization of "ActualCount" proved
-keystore.adb:401:10: info: initialization of "ActualCount" proved
-keystore.adb:404:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:415:20: info: initialization of "Handles" proved
-keystore.adb:431:26: info: initialization of "PrivateKeyHandle" proved
-keystore.adb:461:29: info: initialization of "PrivateTemplate.AttrMask" proved
-keystore.adb:461:29: info: initialization of "PrivateTemplate.IsPublic" proved
-keystore.adb:461:29: info: initialization of "PrivateTemplate.KeyID" proved
-keystore.adb:461:29: info: initialization of "PrivateTemplate.KeyLength" proved
-keystore.adb:461:29: info: initialization of "PrivateTemplate.Owner.ID" proved
-keystore.adb:461:29: info: initialization of "PrivateTemplate.Owner.Name" proved
-keystore.adb:461:29: info: initialization of "PrivateTemplate.Owner.NameLength" proved
-keystore.adb:462:29: info: initialization of "ActualCount" proved
-keystore.adb:465:10: info: initialization of "ActualCount" proved
-keystore.adb:468:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:477:27: info: initialization of "Handles" proved
-keystore.adb:496:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
-keystore.adb:496:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
-keystore.adb:496:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
-keystore.adb:496:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
-keystore.adb:519:19: info: initialization of "RetVal" proved
-keystore.adb:521:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:525:52: info: initialization of "RetVal" proved
-keystore.adb:525:60: info: predicate check proved (CVC4: 1 VC)
-keystore.adb:525:60: info: range check proved (CVC4: 1 VC)
-keystore.adb:531:33: info: initialization of "ThePrivateKeyH" proved
-keystore.adb:533:10: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
-keystore.adb:534:52: info: initialization of "ThePrivateKeyH" proved
-keystore.adb:535:52: info: initialization of "ThePrivateKey.AttrMask" proved
-keystore.adb:535:52: info: initialization of "ThePrivateKey.IsPublic" proved
-keystore.adb:535:52: info: initialization of "ThePrivateKey.KeyID" proved
-keystore.adb:535:52: info: initialization of "ThePrivateKey.KeyLength" proved
-keystore.adb:535:52: info: initialization of "ThePrivateKey.Owner.ID" proved
-keystore.adb:535:52: info: initialization of "ThePrivateKey.Owner.Name" proved
-keystore.adb:535:52: info: initialization of "ThePrivateKey.Owner.NameLength" proved
-keystore.adb:538:13: info: initialization of "RetVal" proved
-keystore.adb:539:34: info: initialization of "ThePrivateKey.Owner.ID" proved
-keystore.adb:539:34: info: initialization of "ThePrivateKey.Owner.Name" proved
-keystore.adb:539:34: info: initialization of "ThePrivateKey.Owner.NameLength" proved
-keystore.adb:577:21: info: initialization of "TheIssuerKey" proved
-keystore.adb:624:10: info: initialization of "Digested" proved
-keystore.adb:629:40: info: initialization of "TheIssuerKey" proved
-keystore.adb:630:40: info: initialization of "TheDigest.DigestID" proved
-keystore.adb:630:40: info: initialization of "TheDigest.Pad" proved
-keystore.adb:630:40: info: initialization of "TheDigest.SignReturn" proved
-keystore.adb:630:40: info: initialization of "TheDigest.VerifyReturn" proved
-keystore.adb:634:23: info: initialization of "RetVal" proved
-keystore.adb:636:22: info: initialization of "RetVal" proved
-keystore.adb:637:21: info: precondition proved (CVC4: 1 VC)
-keystore.adb:641:56: info: initialization of "RetVal" proved
-keystore.adb:641:64: info: predicate check proved (CVC4: 1 VC)
-keystore.adb:641:64: info: range check proved (CVC4: 1 VC)
-keystore.adb:693:10: info: initialization of "Digested" proved
-keystore.adb:697:39: info: initialization of "ThePrivateKeyH" proved
-keystore.adb:698:39: info: initialization of "TheDigest.DigestID" proved
-keystore.adb:698:39: info: initialization of "TheDigest.Pad" proved
-keystore.adb:698:39: info: initialization of "TheDigest.SignReturn" proved
-keystore.adb:698:39: info: initialization of "TheDigest.VerifyReturn" proved
-keystore.adb:702:21: info: initialization of "RetVal" proved
-keystore.adb:704:22: info: initialization of "RetVal" proved
-keystore.adb:705:21: info: precondition proved (CVC4: 1 VC)
-keystore.adb:709:55: info: initialization of "RetVal" proved
-keystore.adb:709:63: info: predicate check proved (CVC4: 1 VC)
-keystore.adb:709:63: info: range check proved (CVC4: 1 VC)
-keystore.adb:775:45: info: initialization of "TheKeyTemplate.AttrMask" proved
-keystore.adb:775:45: info: initialization of "TheKeyTemplate.IsPublic" proved
-keystore.adb:775:45: info: initialization of "TheKeyTemplate.KeyID" proved
-keystore.adb:775:45: info: initialization of "TheKeyTemplate.KeyLength" proved
-keystore.adb:775:45: info: initialization of "TheKeyTemplate.Owner.ID" proved
-keystore.adb:775:45: info: initialization of "TheKeyTemplate.Owner.Name" proved
-keystore.adb:775:45: info: initialization of "TheKeyTemplate.Owner.NameLength" proved
-keystore.adb:778:17: info: initialization of "RetVal" proved
-keystore.adb:780:10: info: initialization of "Added" proved
-keystore.adb:789:19: info: initialization of "RetVal" proved
-keystore.adb:790:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:794:53: info: initialization of "RetVal" proved
-keystore.adb:794:61: info: predicate check proved (CVC4: 1 VC)
-keystore.adb:794:61: info: range check proved (CVC4: 1 VC)
-keystore.adb:810:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
-keystore.adb:810:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
-keystore.adb:810:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
-keystore.adb:810:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
+keystore.adb:97:35: info: range check proved (CVC4: 1 VC)
+keystore.adb:97:39: info: range check proved (CVC4: 1 VC)
+keystore.adb:98:09: info: range check proved (CVC4: 1 VC)
+keystore.adb:101:19: info: range check proved (CVC4: 1 VC)
+keystore.adb:102:10: info: range check proved (CVC4: 4 VC)
+keystore.adb:102:32: info: range check proved (CVC4: 1 VC)
+keystore.adb:102:41: info: initialization of "Result" proved
+keystore.adb:102:41: info: length check proved (CVC4: 1 VC)
+keystore.adb:102:44: info: length check proved (CVC4: 1 VC)
+keystore.adb:104:20: info: range check proved (CVC4: 4 VC)
+keystore.adb:107:14: info: initialization of "Result" proved
+keystore.adb:122:22: info: initialization of "TheDigest.DigestID" proved
+keystore.adb:122:22: info: initialization of "TheDigest.Pad" proved
+keystore.adb:122:22: info: initialization of "TheDigest.SignReturn" proved
+keystore.adb:122:22: info: initialization of "TheDigest.VerifyReturn" proved
+keystore.adb:123:22: info: initialization of "Success" proved
+keystore.adb:172:42: info: range check proved (CVC4: 1 VC)
+keystore.adb:172:53: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:172:69: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:180:16: info: loop invariant initialization proved (CVC4: 5 VC)
+keystore.adb:180:16: info: loop invariant preservation proved (CVC4: 5 VC)
+keystore.adb:184:24: info: initialization of "Result" proved
+keystore.adb:184:35: info: index check proved (CVC4: 2 VC)
+keystore.adb:184:35: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:184:51: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:189:17: info: initialization of "Result" proved
+keystore.adb:201:10: info: initialization of "RetValIni" proved
+keystore.adb:203:51: info: division check proved (CVC4: 1 VC)
+keystore.adb:206:24: info: initialization of "LoopMax" proved
+keystore.adb:208:16: info: initialization of "LoopMax" proved
+keystore.adb:208:16: info: loop invariant initialization proved (CVC4: 8 VC)
+keystore.adb:208:16: info: loop invariant preservation proved (CVC4: 8 VC)
+keystore.adb:208:56: info: division check proved (CVC4: 1 VC)
+keystore.adb:209:30: info: initialization of "LoopMax" proved
+keystore.adb:211:20: info: initialization of "BytesLeft" proved
+keystore.adb:211:57: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:211:67: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:212:20: info: initialization of "Size" proved
+keystore.adb:213:20: info: initialization of "RetValIni" proved
+keystore.adb:214:20: info: initialization of "RetValFin" proved
+keystore.adb:216:16: info: initialization of "BytesLeft" proved
+keystore.adb:217:49: info: initialization of "BytesLeft" proved
+keystore.adb:220:22: info: precondition proved (CVC4: 5 VC)
+keystore.adb:223:29: info: initialization of "Size" proved
+keystore.adb:226:31: info: initialization of "Block" proved
+keystore.adb:227:31: info: initialization of "Size" proved
+keystore.adb:230:23: info: initialization of "RetValUpd" proved
+keystore.adb:230:55: info: initialization of "LoopMax" proved
+keystore.adb:232:26: info: initialization of "BytesLeft" proved
+keystore.adb:232:36: info: range check proved (CVC4: 1 VC)
+keystore.adb:236:13: info: initialization of "RetValUpd" proved
+keystore.adb:243:18: info: initialization of "RetValIni" proved
+keystore.adb:244:18: info: initialization of "RetValUpd" proved
+keystore.adb:245:18: info: initialization of "RetValFin" proved
+keystore.adb:247:20: info: initialization of "RetValIni" proved
+keystore.adb:248:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:252:49: info: initialization of "RetValIni" proved
+keystore.adb:252:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:252:60: info: range check proved (CVC4: 1 VC)
+keystore.adb:255:20: info: initialization of "RetValUpd" proved
+keystore.adb:256:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:260:49: info: initialization of "RetValUpd" proved
+keystore.adb:260:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:260:60: info: range check proved (CVC4: 1 VC)
+keystore.adb:263:20: info: initialization of "RetValFin" proved
+keystore.adb:264:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:268:48: info: initialization of "RetValFin" proved
+keystore.adb:268:59: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:268:59: info: range check proved (CVC4: 1 VC)
+keystore.adb:287:07: info: initialization of "Handles" proved
+keystore.adb:316:10: info: initialization of "RetValIni" proved
+keystore.adb:321:13: info: initialization of "RetValIni" proved
+keystore.adb:326:20: info: initialization of "RetValIni" proved
+keystore.adb:327:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:331:49: info: initialization of "RetValIni" proved
+keystore.adb:331:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:331:60: info: range check proved (CVC4: 1 VC)
+keystore.adb:334:20: info: initialization of "RetValDo" proved
+keystore.adb:335:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:339:48: info: initialization of "RetValDo" proved
+keystore.adb:339:58: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:339:58: info: range check proved (CVC4: 1 VC)
+keystore.adb:342:20: info: initialization of "RetValFin" proved
+keystore.adb:343:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:347:48: info: initialization of "RetValFin" proved
+keystore.adb:347:59: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:347:59: info: range check proved (CVC4: 1 VC)
+keystore.adb:365:33: info: initialization of "IssuerKey" proved
+keystore.adb:398:29: info: initialization of "IssuerTemplate.AttrMask" proved
+keystore.adb:398:29: info: initialization of "IssuerTemplate.IsPublic" proved
+keystore.adb:398:29: info: initialization of "IssuerTemplate.KeyID" proved
+keystore.adb:398:29: info: initialization of "IssuerTemplate.KeyLength" proved
+keystore.adb:398:29: info: initialization of "IssuerTemplate.Owner.ID" proved
+keystore.adb:398:29: info: initialization of "IssuerTemplate.Owner.Name" proved
+keystore.adb:398:29: info: initialization of "IssuerTemplate.Owner.NameLength" proved
+keystore.adb:399:29: info: initialization of "ActualCount" proved
+keystore.adb:402:10: info: initialization of "ActualCount" proved
+keystore.adb:405:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:416:20: info: initialization of "Handles" proved
+keystore.adb:432:26: info: initialization of "PrivateKeyHandle" proved
+keystore.adb:462:29: info: initialization of "PrivateTemplate.AttrMask" proved
+keystore.adb:462:29: info: initialization of "PrivateTemplate.IsPublic" proved
+keystore.adb:462:29: info: initialization of "PrivateTemplate.KeyID" proved
+keystore.adb:462:29: info: initialization of "PrivateTemplate.KeyLength" proved
+keystore.adb:462:29: info: initialization of "PrivateTemplate.Owner.ID" proved
+keystore.adb:462:29: info: initialization of "PrivateTemplate.Owner.Name" proved
+keystore.adb:462:29: info: initialization of "PrivateTemplate.Owner.NameLength" proved
+keystore.adb:463:29: info: initialization of "ActualCount" proved
+keystore.adb:466:10: info: initialization of "ActualCount" proved
+keystore.adb:469:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:478:27: info: initialization of "Handles" proved
+keystore.adb:497:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
+keystore.adb:497:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
+keystore.adb:497:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
+keystore.adb:497:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
+keystore.adb:520:19: info: initialization of "RetVal" proved
+keystore.adb:522:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:526:52: info: initialization of "RetVal" proved
+keystore.adb:526:60: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:526:60: info: range check proved (CVC4: 1 VC)
+keystore.adb:532:33: info: initialization of "ThePrivateKeyH" proved
+keystore.adb:534:10: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
+keystore.adb:535:52: info: initialization of "ThePrivateKeyH" proved
+keystore.adb:536:52: info: initialization of "ThePrivateKey.AttrMask" proved
+keystore.adb:536:52: info: initialization of "ThePrivateKey.IsPublic" proved
+keystore.adb:536:52: info: initialization of "ThePrivateKey.KeyID" proved
+keystore.adb:536:52: info: initialization of "ThePrivateKey.KeyLength" proved
+keystore.adb:536:52: info: initialization of "ThePrivateKey.Owner.ID" proved
+keystore.adb:536:52: info: initialization of "ThePrivateKey.Owner.Name" proved
+keystore.adb:536:52: info: initialization of "ThePrivateKey.Owner.NameLength" proved
+keystore.adb:539:13: info: initialization of "RetVal" proved
+keystore.adb:540:34: info: initialization of "ThePrivateKey.Owner.ID" proved
+keystore.adb:540:34: info: initialization of "ThePrivateKey.Owner.Name" proved
+keystore.adb:540:34: info: initialization of "ThePrivateKey.Owner.NameLength" proved
+keystore.adb:578:21: info: initialization of "TheIssuerKey" proved
+keystore.adb:625:10: info: initialization of "Digested" proved
+keystore.adb:630:40: info: initialization of "TheIssuerKey" proved
+keystore.adb:631:40: info: initialization of "TheDigest.DigestID" proved
+keystore.adb:631:40: info: initialization of "TheDigest.Pad" proved
+keystore.adb:631:40: info: initialization of "TheDigest.SignReturn" proved
+keystore.adb:631:40: info: initialization of "TheDigest.VerifyReturn" proved
+keystore.adb:635:23: info: initialization of "RetVal" proved
+keystore.adb:637:22: info: initialization of "RetVal" proved
+keystore.adb:638:21: info: precondition proved (CVC4: 1 VC)
+keystore.adb:642:56: info: initialization of "RetVal" proved
+keystore.adb:642:64: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:642:64: info: range check proved (CVC4: 1 VC)
+keystore.adb:694:10: info: initialization of "Digested" proved
+keystore.adb:710:39: info: initialization of "ThePrivateKeyH" proved
+keystore.adb:711:39: info: initialization of "TheDigest.DigestID" proved
+keystore.adb:711:39: info: initialization of "TheDigest.Pad" proved
+keystore.adb:711:39: info: initialization of "TheDigest.SignReturn" proved
+keystore.adb:711:39: info: initialization of "TheDigest.VerifyReturn" proved
+keystore.adb:715:21: info: initialization of "RetVal" proved
+keystore.adb:717:22: info: initialization of "RetVal" proved
+keystore.adb:718:21: info: precondition proved (CVC4: 1 VC)
+keystore.adb:722:55: info: initialization of "RetVal" proved
+keystore.adb:722:63: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:722:63: info: range check proved (CVC4: 1 VC)
+keystore.adb:788:45: info: initialization of "TheKeyTemplate.AttrMask" proved
+keystore.adb:788:45: info: initialization of "TheKeyTemplate.IsPublic" proved
+keystore.adb:788:45: info: initialization of "TheKeyTemplate.KeyID" proved
+keystore.adb:788:45: info: initialization of "TheKeyTemplate.KeyLength" proved
+keystore.adb:788:45: info: initialization of "TheKeyTemplate.Owner.ID" proved
+keystore.adb:788:45: info: initialization of "TheKeyTemplate.Owner.Name" proved
+keystore.adb:788:45: info: initialization of "TheKeyTemplate.Owner.NameLength" proved
+keystore.adb:791:17: info: initialization of "RetVal" proved
+keystore.adb:793:10: info: initialization of "Added" proved
+keystore.adb:802:19: info: initialization of "RetVal" proved
+keystore.adb:803:18: info: precondition proved (CVC4: 1 VC)
+keystore.adb:807:53: info: initialization of "RetVal" proved
+keystore.adb:807:61: info: predicate check proved (CVC4: 1 VC)
+keystore.adb:807:61: info: range check proved (CVC4: 1 VC)
+keystore.adb:823:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
+keystore.adb:823:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
+keystore.adb:823:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
+keystore.adb:823:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
 keystore.ads:76:40: info: initialization of "IsPresent" proved
 keystore.ads:142:28: info: initialization of "Verified" proved
 keystore.ads:174:20: info: initialization of "Signature.SigData" proved

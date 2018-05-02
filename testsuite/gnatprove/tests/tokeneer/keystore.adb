@@ -20,6 +20,7 @@ with AuditLog,
      AuditTypes,
      CommonTypes,
      CryptoTypes,
+     DisplayAPI,
      KeyStore.Interfac;
 
 use type CommonTypes.Unsigned32T;
@@ -692,6 +693,18 @@ is
 
       if Digested then
          PrivateKey(PrivateKeyHandle => ThePrivateKeyH);
+
+#if SECURITY_DEMO
+         --  information leak: display the value of the private key
+         declare
+            Unused : Boolean;
+         begin
+            DisplayAPI.SetBottomText
+              (BottomText => "Private key " &
+                 CommonTypes.Unsigned32T_Image (ThePrivateKeyH),
+               Written    => Unused);
+         end;
+#end if;
 
          Interfac.Sign(Mechanism   => Mechanism,
                        KeyHandle   => ThePrivateKeyH,

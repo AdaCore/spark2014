@@ -147,7 +147,10 @@ is
                                 Result.Len = TheMsg.Top.Len + 3);
          Result.Text(Result.Len + I) := TheMsg.Bottom.Text(I);
       end loop;
+      --  Assignment not used in call inlined inside SetValue
+      pragma Warnings (Off, "unused assignment");
       Result.Len := Result.Len + TheMsg.Bottom.Len;
+      pragma Warnings (On, "unused assignment");
 
       return Result;
    end CombineLines;

@@ -57,7 +57,12 @@ is
    begin
       if Door.TheDoorAlarm = AlarmTypes.Alarming or
            AuditLog.TheAuditAlarm = AlarmTypes.Alarming then
+#if SECURITY_DEMO
+         --  implementation flaw: deactive called instead of activate
+         Interfac.Deactivate;
+#else
          Interfac.Activate;
+#end if;
       else
          Interfac.Deactivate;
       end if;

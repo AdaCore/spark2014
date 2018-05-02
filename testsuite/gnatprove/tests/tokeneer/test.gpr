@@ -1,8 +1,15 @@
 project Test is
-  package Compiler is
-    for Local_Configuration_Pragmas use "test.adc";
-  end Compiler;
-  package Prove is
-    for Proof_Dir use "proof";
-  end Prove;
+
+   type Security_Demo_Status is ("False", "True");
+   Security_Demo : Security_Demo_Status := External("SECURITY_DEMO", "False");
+
+   package Compiler is
+      for Local_Configuration_Pragmas use "test.adc";
+      for Switches ("Ada") use ("-gnateDSECURITY_DEMO=" & Security_Demo);
+   end Compiler;
+
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+
 end Test;
