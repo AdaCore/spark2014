@@ -3829,10 +3829,10 @@ package body Flow.Analysis is
       if Ekind (FA.Analyzed_Entity) = E_Procedure
         and then Is_Ghost_Entity (FA.Analyzed_Entity)
       then
-         Get_Globals (Subprogram  => FA.Analyzed_Entity,
-                      Scope       => FA.B_Scope,
-                      Classwide   => False,
-                      Globals     => Globals);
+         Get_Globals (Subprogram => FA.Analyzed_Entity,
+                      Scope      => FA.B_Scope,
+                      Classwide  => False,
+                      Globals    => Globals);
 
          for Output of Globals.Outputs loop
             if not Is_Ghost_Entity (Output) then
