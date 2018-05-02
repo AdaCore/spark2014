@@ -239,7 +239,7 @@ package body Gnat2Why.Expr is
      (Params     : Transformation_Params;
       Ada_Call   : Node_Id;
       Why_Call   : W_Prog_Id;
-      Nb_Of_Refs : Positive;
+      Nb_Of_Refs : Natural;
       Nb_Of_Lets : Natural) return W_Prog_Id;
    --  Considering a call to an Ada subprogram; Ada_Call being its node
    --  in the Ada syntax tree, and Why_Call its corresponding call in the
@@ -310,18 +310,6 @@ package body Gnat2Why.Expr is
    --  @param W_Expr Why3 expression on which to check the predicate
    --  @param Params transformation parameters
    --  @return Why3 predicate that expressed the check
-
-   function New_Predicate_Check
-     (Ada_Node         : Node_Id;
-      Ty               : Entity_Id;
-      W_Expr           : W_Expr_Id;
-      On_Default_Value : Boolean := False) return W_Prog_Id;
-   --  @param Ada_Node node to which the check is attached
-   --  @param Ty type whose predicate needs to be checked
-   --  @param W_Expr Why3 expression on which to check the predicate
-   --  @param On_Default_Value True iff this predicate check applies to the
-   --    default value for a type
-   --  @return Why3 program that performs the check
 
    function New_Type_Invariant_Call
      (Ty     : Entity_Id;
@@ -2418,6 +2406,12 @@ package body Gnat2Why.Expr is
                   --  actual.
 
                   declare
+                     Need_Check  : constant Boolean :=
+                       not Eq_Base
+                         (Type_Of_Node (Actual),
+                          Get_Typ (Binders (Bind_Cnt).Content.B_Name));
+                     --  Return True if a check may be required
+
                      Actual_Type : constant W_Type_Id :=
                        (if Aliasing then
                            EW_Abstract (Get_Ada_Node (+Type_Of_Node (Actual)))
@@ -2434,13 +2428,11 @@ package body Gnat2Why.Expr is
                           (Actual, Actual_Type, Domain, Params));
                      Need_Ref : constant Boolean :=
                        Get_Type_Kind (Actual_Type) = EW_Abstract
-                       or else not Simple_Actual
-                       or else Aliasing;
+                       or else Aliasing
+                       or else not Simple_Actual;
                   begin
                      if Need_Ref then
-                        if Get_Type_Kind (Actual_Type) = EW_Abstract
-                          or else Aliasing
-                        then
+                        if Get_Type_Kind (Actual_Type) = EW_Abstract then
 
                            --  The actual is not in split form or aliasing can
                            --  occur. We need a temporary variable for the
@@ -2456,6 +2448,33 @@ package body Gnat2Why.Expr is
                            Typ      =>
                              Get_Typ (Binders (Bind_Cnt).Content.B_Name));
                         Nb_Of_Refs := Nb_Of_Refs + 1;
+
+                     --  If a check is needed on the actual, insert it by
+                     --  calling Insert_Checked_Conversion. The result of the
+                     --  conversion is discarded and the actual is used as is.
+
+                     elsif Need_Check then
+                        declare
+                           A_Id : constant W_Identifier_Id :=
+                             Ada_Ent_To_Why.Element
+                               (Symbol_Table, Entity (Actual)).Content.B_Name;
+                           F_Ty : constant W_Type_Id :=
+                             Get_Typ (Binders (Bind_Cnt).Content.B_Name);
+                        begin
+                           Why_Args (Arg_Cnt) :=
+                             +Sequence
+                               (Actual,
+                                New_Ignore
+                                  (Prog => +Insert_Checked_Conversion
+                                     (Ada_Node => Actual,
+                                      Domain   => EW_Prog,
+                                      Expr     => New_Deref
+                                        (Ada_Node => Actual,
+                                         Right    => A_Id,
+                                         Typ      => Get_Typ (A_Id)),
+                                      To       => F_Ty)),
+                                +A_Id);
+                        end;
                      else
 
                         --  If the actual is an entity in split form, it can be
@@ -4406,7 +4425,7 @@ package body Gnat2Why.Expr is
      (Params     : Transformation_Params;
       Ada_Call   : Node_Id;
       Why_Call   : W_Prog_Id;
-      Nb_Of_Refs : Positive;
+      Nb_Of_Refs : Natural;
       Nb_Of_Lets : Natural) return W_Prog_Id
    is
       --  This goes recursively through the out/"in out" parameters
@@ -4594,22 +4613,10 @@ package body Gnat2Why.Expr is
                      --    to_actual_type_ (from_formal_type (!tmp_var))
                      --
                      --  ... with the appropriate checks if needed.
-
-                     --  if the actual is a type conversion, then in the case
-                     --  of the "store" (see point 2 below) we need to undo
-                     --  the type conversion, that is do the type conversion in
-                     --  the other direction. So we retrieve the type of that
-                     --  expression here, and use it also as an Ada_ node.
-
-                     Actual_Target_T     : constant W_Type_Id :=
-                       (if Nkind (Actual) = N_Type_Conversion then
-                             Type_Of_Node (Expression (Actual))
-                        else Actual_T);
-
-                     Actual_Target_Node  : constant Node_Id :=
-                       (if Nkind (Actual) = N_Type_Conversion then
-                             Expression (Actual)
-                        else Actual);
+                     --
+                     --  Since we are performing copy back of parameters,
+                     --  Lvalue should be set to True so that checks are done
+                     --  on the actual type and not on the formal type.
 
                      Arg_Value           : constant W_Prog_Id :=
                        (if Need_Check_On_Store then
@@ -4617,13 +4624,14 @@ package body Gnat2Why.Expr is
                             (Ada_Node => Actual,
                              Domain   => EW_Prog,
                              Expr     => +Tmp_Var_Deref,
-                             To       => Actual_Target_T)
+                             Lvalue   => True,
+                             To       => Actual_T)
                         else
                            +Insert_Simple_Conversion
-                             (Ada_Node => Actual_Target_Node,
+                             (Ada_Node => Actual,
                               Domain   => EW_Prog,
                               Expr     => +Tmp_Var_Deref,
-                              To       => Actual_Target_T));
+                              To       => Actual_T));
 
                      --  ...then store it into the actual:
 
@@ -5073,7 +5081,7 @@ package body Gnat2Why.Expr is
                 not Eq_Base (Type_Of_Node (Formal), Type_Of_Node (Actual));
          begin
             if Present (Actual)
-              and then Has_Predicates (Etype (Actual))
+              and then Has_Predicates (Retysp (Etype (Actual)))
               and then Need_Pred_Check_On_Store
             then
                declare
@@ -5387,7 +5395,9 @@ package body Gnat2Why.Expr is
 
       procedure Shift_Rvalue
         (N    : in out Node_Id;
-         Expr : in out W_Prog_Id) is
+         Expr : in out W_Prog_Id)
+      is
+         Typ : Node_Id;
       begin
          case Nkind (N) is
             when N_Identifier
@@ -5399,10 +5409,13 @@ package body Gnat2Why.Expr is
                | N_Unchecked_Type_Conversion
             =>
                N := Expression (N);
+               Typ := Retysp (Etype (N));
 
-               --  Due to inlining in GNATprove mode, left-hand side of
-               --  assignment may contain a type conversion on scalar
-               --  variable that must be range checked.
+               --  When performing copy back of parameters or due to inlining
+               --  on GNATprove mode, left-hand side of assignment may contain
+               --  a type conversion that must be checked. For non scalar
+               --  types, do not use Insert_Checked_Conversion which introduces
+               --  too many checks (bounds, discriminants).
 
                if Do_Range_Check (N) then
                   Expr :=
@@ -5410,14 +5423,21 @@ package body Gnat2Why.Expr is
                       (Ada_Node => N,
                        Domain   => EW_Prog,
                        Expr     => +Expr,
-                       To       => EW_Abstract (Etype (N)),
+                       To       => EW_Abstract (Typ),
                        Lvalue   => True);
                else
                   Expr :=
                     +Insert_Simple_Conversion
-                      (Domain => EW_Prog,
-                       Expr   => +Expr,
-                       To     => EW_Abstract (Etype (N)));
+                    (Domain => EW_Prog,
+                     Expr   => +Expr,
+                     To     => EW_Abstract (Typ));
+
+                  if Has_Predicates (Typ) then
+                     Expr := Insert_Predicate_Check
+                       (Ada_Node => N,
+                        Check_Ty => Typ,
+                        W_Expr   => Expr);
+                  end if;
                end if;
 
             when N_Selected_Component
@@ -15301,13 +15321,11 @@ package body Gnat2Why.Expr is
                  +Sequence (Compute_Tag_Check (Stmt_Or_Decl, Body_Params),
                             +Call);
 
-               if Nb_Of_Refs = 0 then
-                  return +Call;
-               else
-                  return Insert_Ref_Context
-                    (Body_Params, Stmt_Or_Decl, +Call,
-                     Nb_Of_Refs, Nb_Of_Lets);
-               end if;
+               --  Always call Insert_Ref_Context to get the checks on store
+               --  for predicates.
+
+               return Insert_Ref_Context
+                 (Body_Params, Stmt_Or_Decl, +Call, Nb_Of_Refs, Nb_Of_Lets);
             end;
 
          when N_If_Statement =>

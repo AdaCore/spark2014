@@ -293,7 +293,9 @@ package Why.Gen.Expr is
    --  @param Expr expression to be converted
    --  @param To type to convert to
    --  @param Lvalue True iff this is applied to the left-hand side of an
-   --     assignment. This has an effect on retrieving the type for the check.
+   --     assignment or to in out or out parameter calls when performing copy
+   --     back assignments. This has an effect on retrieving the type for the
+   --     check.
    --  @result converted expression of Expr to type To, with possible check
 
    function Insert_Simple_Conversion

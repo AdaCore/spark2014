@@ -60,6 +60,7 @@ pair_insertion_sort.adb:72:16: info: initialization of "J" proved
 pair_insertion_sort.adb:72:34: info: index check proved (Z3: 8 VC)
 pair_insertion_sort.adb:72:39: info: initialization of "X" proved
 pair_insertion_sort.adb:73:13: info: precondition proved (Z3: 20 VC)
+pair_insertion_sort.adb:73:19: info: predicate check proved (Z3: 4 VC)
 pair_insertion_sort.adb:73:22: info: initialization of "J" proved
 pair_insertion_sort.adb:73:23: info: overflow check proved (Z3: 4 VC)
 pair_insertion_sort.adb:73:23: info: range check proved (Z3: 4 VC)
@@ -114,6 +115,7 @@ pair_insertion_sort.adb:86:16: info: index check proved (Z3: 4 VC)
 pair_insertion_sort.adb:86:16: info: overflow check proved (Z3: 2 VC)
 pair_insertion_sort.adb:86:23: info: initialization of "X" proved
 pair_insertion_sort.adb:87:13: info: precondition proved (Z3: 10 VC)
+pair_insertion_sort.adb:87:19: info: predicate check proved (Z3: 2 VC)
 pair_insertion_sort.adb:87:22: info: initialization of "J" proved
 pair_insertion_sort.adb:87:23: info: overflow check proved (Z3: 2 VC)
 pair_insertion_sort.adb:87:23: info: range check proved (Z3: 2 VC)
@@ -124,6 +126,7 @@ pair_insertion_sort.adb:90:16: info: initialization of "J" proved
 pair_insertion_sort.adb:90:34: info: index check proved (Z3: 8 VC)
 pair_insertion_sort.adb:90:39: info: initialization of "Y" proved
 pair_insertion_sort.adb:91:13: info: precondition proved (Z3: 20 VC)
+pair_insertion_sort.adb:91:19: info: predicate check proved (Z3: 4 VC)
 pair_insertion_sort.adb:91:22: info: initialization of "J" proved
 pair_insertion_sort.adb:91:23: info: overflow check proved (Z3: 4 VC)
 pair_insertion_sort.adb:91:23: info: range check proved (Z3: 4 VC)
@@ -194,6 +197,7 @@ pair_insertion_sort.adb:118:16: info: initialization of "J" proved
 pair_insertion_sort.adb:118:34: info: index check proved (Z3: 4 VC)
 pair_insertion_sort.adb:118:39: info: initialization of "Y" proved
 pair_insertion_sort.adb:119:13: info: precondition proved (Z3: 10 VC)
+pair_insertion_sort.adb:119:19: info: predicate check proved (Z3: 2 VC)
 pair_insertion_sort.adb:119:22: info: initialization of "J" proved
 pair_insertion_sort.adb:119:23: info: overflow check proved (Z3: 2 VC)
 pair_insertion_sort.adb:119:23: info: range check proved (Z3: 2 VC)

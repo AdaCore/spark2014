@@ -500,10 +500,15 @@ package body Why.Gen.Expr is
          return False;
       end Needs_Slide;
 
-      Sliding  : constant Boolean :=
+      Sliding    : constant Boolean :=
         not Force_No_Slide and then Needs_Slide (From_Ent, To_Ent);
-      Arr_Expr : W_Expr_Id;
-      T        : W_Expr_Id;
+      Arr_Expr   : W_Expr_Id;
+      T          : W_Expr_Id;
+      Pred_Check : constant Boolean :=
+        Domain = EW_Prog
+        and then Need_Check
+        and then Has_Predicates (Get_Ada_Node (+To))
+        and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
 
    --  Beginning of processing for Insert_Array_Conversion
 
@@ -547,9 +552,16 @@ package body Why.Gen.Expr is
          Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
          Arg_Ind : Positive := 1;
 
+         To_Is_Abstract      : constant Boolean :=
+           not Is_Static_Array_Type (To_Ent)
+           and then Get_Type_Kind (To) /= EW_Split;
          Need_Reconstruction : constant Boolean :=
-           (not Is_Static_Array_Type (To_Ent)
-            and then Get_Type_Kind (To) /= EW_Split);
+           To_Is_Abstract
+           or else (not Is_Static_Array_Type (To_Ent)
+                    and then Pred_Check);
+         --  Reconstruction is needed if To is in abstract form or if a
+         --  predicate check is required.
+
          Split_To            : constant W_Type_Id :=
            (if not Need_Reconstruction then To
             else EW_Split (To_Ent));
@@ -649,7 +661,7 @@ package body Why.Gen.Expr is
 
          --  3. Reconstruct the array if needed
 
-         if Need_Reconstruction then
+         if To_Is_Abstract then
             Args (1) := T;
             T :=
               New_Call
@@ -658,38 +670,66 @@ package body Why.Gen.Expr is
                  Args   => Args,
                  Typ    => To);
          end if;
+
+         --  4. Insert length, range, and predicate check when necessary
+
+         if Domain = EW_Prog and then Need_Check then
+            declare
+               Check_Type : constant Entity_Id := Get_Ada_Node (+To);
+            begin
+               if Is_Constrained (Check_Type) then
+                  T := +Sequence
+                    (Insert_Length_Check (Arr_Expr, Check_Type),
+                     +T);
+               else
+                  T := +Sequence
+                    (Insert_Array_Range_Check (Arr_Expr, Check_Type),
+                     +T);
+               end if;
+
+               --  If the target type has a direct or inherited predicate,
+               --  generate a corresponding check. Do not generate a predicate
+               --  check for an internal call to a parent predicate function
+               --  inside the definition of a predicate function.
+
+               if Pred_Check then
+                  declare
+                     W_Tmp   : constant W_Identifier_Id :=
+                       New_Temp_Identifier (Typ => Get_Type (+T));
+                     Do_Rec  : constant Boolean :=
+                       not Is_Static_Array_Type (To_Ent)
+                       and then Get_Type_Kind (To) = EW_Split;
+                     Rec_Tmp : constant W_Expr_Id :=
+                       (if Do_Rec then
+                           New_Call
+                          (Domain => Domain,
+                           Name   => E_Symb (To_Ent, WNE_Of_Array),
+                           Args   => Args,
+                           Typ    => EW_Abstract (To_Ent))
+                        else +W_Tmp);
+                     --  If it is in split form, the array should be
+                     --  reconstructed.
+
+                     W_Seq  : W_Prog_Id;
+                  begin
+                     Args (1) := +W_Tmp;
+
+                     W_Seq := Sequence
+                       (New_Predicate_Check (Ada_Node, Check_Type, Rec_Tmp),
+                        +W_Tmp);
+
+                     T := +W_Expr_Id'(New_Binding
+                                      (Ada_Node => Ada_Node,
+                                       Domain   => EW_Prog,
+                                       Name     => W_Tmp,
+                                       Def      => T,
+                                       Context  => +W_Seq,
+                                       Typ      => Get_Type (+T)));
+                  end;
+               end if;
+            end;
+         end if;
       end;
-
-      --  4. Insert length and range check when necessary
-
-      if Domain = EW_Prog and then Need_Check then
-         declare
-            Check_Type : constant Entity_Id := Get_Ada_Node (+To);
-         begin
-            if Is_Constrained (Check_Type) then
-               T := +Sequence
-                 (Insert_Length_Check (Arr_Expr, Check_Type),
-                  +T);
-            else
-               T := +Sequence
-                 (Insert_Array_Range_Check (Arr_Expr, Check_Type),
-                 +T);
-            end if;
-
-            --  If the target type has a direct or inherited predicate,
-            --  generate a corresponding check. Do not generate a predicate
-            --  check for an internal call to a parent predicate function
-            --  inside the definition of a predicate function.
-
-            if Has_Predicates (Check_Type)
-              and then not Is_Call_Arg_To_Predicate_Function (Ada_Node)
-            then
-               T := +Insert_Predicate_Check (Ada_Node,
-                                             Check_Type,
-                                             +T);
-            end if;
-         end;
-      end if;
 
       T := Binding_For_Temp (Domain  => Domain,
                              Tmp     => Arr_Expr,
@@ -1367,21 +1407,15 @@ package body Why.Gen.Expr is
             | N_Entry_Call_Statement
             | N_Parameter_Association
          =>
-            declare
-               Formal : constant Entity_Id := Get_Formal_From_Actual (Expr);
-            begin
+            --  If Lvalue is True, we are checking actual parameters on stores.
+            --  In this case, the Check_Type is the type of the expression.
+            --  Otherwise, the Check_Type is the expected formal type.
 
-               --  ??? not particularly clean
-               --  if the formal is an in parameter, the check type is always
-               --  the type of the formal. Otherwise, the check type is the
-               --  type to convert to.
-
-               if Ekind (Formal) = E_In_Parameter then
-                  Check_Type := Etype (Formal);
-               else
-                  Check_Type := Get_Ada_Node (+To);
-               end if;
-            end;
+            if Lvalue then
+               Check_Type := Etype (Expr);
+            else
+               Check_Type := Etype (Get_Formal_From_Actual (Expr));
+            end if;
 
          when N_Attribute_Reference =>
             Attribute : declare
@@ -1697,7 +1731,8 @@ package body Why.Gen.Expr is
       --  Do not generate a predicate check for an internal call to a parent
       --  predicate function inside the definition of a predicate function.
       Do_Predicate_Check : constant Boolean :=
-        Present (Get_Ada_Node (+To))
+        Present (Ada_Node)
+          and then Present (Get_Ada_Node (+To))
           and then Has_Predicates (Get_Ada_Node (+To))
           and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
           and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);

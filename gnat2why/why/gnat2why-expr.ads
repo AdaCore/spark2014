@@ -293,6 +293,18 @@ package Gnat2Why.Expr is
    --         array in split form.
    --  @result Why3 program that performs the check and returns [W_Expr]
 
+   function New_Predicate_Check
+     (Ada_Node         : Node_Id;
+      Ty               : Entity_Id;
+      W_Expr           : W_Expr_Id;
+      On_Default_Value : Boolean := False) return W_Prog_Id;
+   --  @param Ada_Node node to which the check is attached
+   --  @param Ty type whose predicate needs to be checked
+   --  @param W_Expr Why3 expression on which to check the predicate
+   --  @param On_Default_Value True iff this predicate check applies to the
+   --    default value for a type
+   --  @return Why3 program that performs the check
+
    function Range_Expr
      (N           : Node_Id;
       T           : W_Expr_Id;
