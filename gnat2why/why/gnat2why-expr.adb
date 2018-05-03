@@ -5670,13 +5670,13 @@ package body Gnat2Why.Expr is
                     (if Base = EW_Int_Type then Int_Infix_Add
                      elsif Why_Type_Is_BitVector (Base) then
                        MF_BVs (Base).Add
-                     elsif Base = EW_Fixed_Type then Fixed_Infix_Add
+                     elsif Why_Type_Is_Fixed (Base) then Fixed_Infix_Add
                      else MF_Floats (Base).Add)
                   else
                     (if Base = EW_Int_Type then Int_Infix_Subtr
                      elsif Why_Type_Is_BitVector (Base) then
                           MF_BVs (Base).Sub
-                     elsif Base = EW_Fixed_Type then Fixed_Infix_Subtr
+                     elsif Why_Type_Is_Fixed (Base) then Fixed_Infix_Subtr
                      else MF_Floats (Base).Subtr));
 
                Left_Rep : constant W_Expr_Id :=
@@ -5735,27 +5735,29 @@ package body Gnat2Why.Expr is
                if Has_Fixed_Point_Type (Left_Type)
                  and then Has_Fixed_Point_Type (Right_Type)
                then
-                  L_Type := EW_Fixed_Type;
-                  R_Type := EW_Fixed_Type;
-                  Base := EW_Fixed_Type;
+                  L_Type := Base_Why_Type (Left_Type);
+                  R_Type := Base_Why_Type (Right_Type);
+                  Base := Base_Why_Type (Return_Type);
                   Oper := WNE_Fixed_Point_Mult;
 
                elsif Has_Fixed_Point_Type (Left_Type) then
-                  L_Type := EW_Fixed_Type;
+                  L_Type :=  Base_Why_Type (Left_Type);
                   R_Type := EW_Int_Type;
-                  Base := EW_Fixed_Type;
+                  Base := Base_Why_Type (Return_Type);
                   Oper := WNE_Fixed_Point_Mult_Int;
+                  pragma Assert (L_Type = Base);
 
                --  If multiplying an integer and a fixed-point, swap
                --  arguments so that Left is the fixed-point one.
 
                elsif Has_Fixed_Point_Type (Right_Type) then
-                  L_Type := EW_Fixed_Type;
+                  L_Type := Base_Why_Type (Right_Type);
                   R_Type := EW_Int_Type;
                   L_Why := Right;
                   R_Why := Left;
-                  Base := EW_Fixed_Type;
+                  Base := Base_Why_Type (Return_Type);
                   Oper := WNE_Fixed_Point_Mult_Int;
+                  pragma Assert (L_Type = Base);
 
                else
                   Base := Base_Why_Type (Left_Type, Right_Type);
@@ -5780,19 +5782,18 @@ package body Gnat2Why.Expr is
                if Is_Fixed_Point_Type (Return_Type) then
                   declare
                      pragma Assert (Oper /= WNE_Empty);
-                     Module : M_Fixed_Point_Mult_Div_Type;
                      Name   : W_Identifier_Id;
                   begin
                      case Oper is
                         when WNE_Fixed_Point_Mult =>
-                           Module := Get_Fixed_Point_Mult_Div_Theory
+                           Name := Get_Fixed_Point_Mult_Div_Theory
                              (Typ_Left   => Left_Type,
                               Typ_Right  => Right_Type,
-                              Typ_Result => Return_Type);
-                           Name := Module.Mult;
+                              Typ_Result => Return_Type).Mult;
 
                         when WNE_Fixed_Point_Mult_Int =>
-                           Name := E_Symb (Return_Type, Oper);
+                           Name := Get_Fixed_Point_Theory
+                             (Typ => Return_Type).Mult_Int;
 
                         when others =>
                            raise Program_Error;
@@ -5825,7 +5826,7 @@ package body Gnat2Why.Expr is
                        (if Base = EW_Int_Type then Int_Infix_Mult
                         elsif Why_Type_Is_BitVector (Base) then
                           MF_BVs (Base).Mult
-                        elsif Base = EW_Fixed_Type then Fixed_Infix_Mult
+                        elsif Why_Type_Is_Fixed (Base) then Fixed_Infix_Mult
                         else MF_Floats (Base).Mult);
                   begin
                      T :=
@@ -5854,11 +5855,11 @@ package body Gnat2Why.Expr is
                if Has_Fixed_Point_Type (Left_Type)
                  and then Has_Fixed_Point_Type (Right_Type)
                then
-                  L_Type := EW_Fixed_Type;
-                  R_Type := EW_Fixed_Type;
+                  L_Type := Base_Why_Type (Left_Type);
+                  R_Type := Base_Why_Type (Right_Type);
 
                   if Has_Fixed_Point_Type (Return_Type) then
-                     Base := EW_Fixed_Type;
+                     Base := Base_Why_Type (Return_Type);
                      Oper := WNE_Fixed_Point_Div;
                   else
                      pragma Assert (Has_Signed_Integer_Type (Return_Type));
@@ -5867,10 +5868,11 @@ package body Gnat2Why.Expr is
                   end if;
 
                elsif Has_Fixed_Point_Type (Left_Type) then
-                  Base   := EW_Fixed_Type;
-                  L_Type := EW_Fixed_Type;
+                  Base   := Base_Why_Type (Return_Type);
+                  L_Type := Base_Why_Type (Left_Type);
                   R_Type := EW_Int_Type;
                   Oper   := WNE_Fixed_Point_Div_Int;
+                  pragma Assert (L_Type = Base);
 
                else
                   pragma Assert (not Has_Fixed_Point_Type (Return_Type));
@@ -5888,21 +5890,18 @@ package body Gnat2Why.Expr is
 
                case Oper is
                   when WNE_Fixed_Point_Div =>
-                     declare
-                        Module : constant M_Fixed_Point_Mult_Div_Type :=
-                          Get_Fixed_Point_Mult_Div_Theory
-                            (Typ_Left   => Left_Type,
-                             Typ_Right  => Right_Type,
-                             Typ_Result => Return_Type);
-                     begin
-                        Name := Module.Div;
-                     end;
+                     Name := Get_Fixed_Point_Mult_Div_Theory
+                       (Typ_Left   => Left_Type,
+                        Typ_Right  => Right_Type,
+                        Typ_Result => Return_Type).Div;
 
                   when WNE_Fixed_Point_Div_Int =>
-                     Name := E_Symb (Return_Type, Oper);
+                     Name := Get_Fixed_Point_Theory
+                       (Typ => Return_Type).Div_Int;
 
                   when WNE_Fixed_Point_Div_Result_Int =>
-                     Name := E_Symb (Left_Type, Oper);
+                     Name := Get_Fixed_Point_Theory
+                       (Typ => Left_Type).Div_Int_Res;
 
                   when others =>
                      Name := New_Division (Base);
@@ -8954,8 +8953,9 @@ package body Gnat2Why.Expr is
                      Offset := New_Integer_Constant (Value => Uint_1);
                   else
                      pragma Assert (Is_Fixed_Point_Type (A_Type));
-                     W_Type := EW_Fixed_Type;
-                     Offset := New_Fixed_Constant (Value => Uint_1);
+                     W_Type := Base_Why_Type (A_Type);
+                     Offset := New_Fixed_Constant
+                       (Value => Uint_1, Typ => W_Type);
                   end if;
 
                   Old := Transform_Expr (First (Expressions (Expr)),
@@ -9675,7 +9675,8 @@ package body Gnat2Why.Expr is
       return W_Identifier_Id is
    begin
       if Domain = EW_Term then
-         if Ty in EW_Int_Type | EW_Fixed_Type | EW_Bool_Type
+         if Ty in EW_Int_Type | EW_Bool_Type
+           or else Why_Type_Is_Fixed (Ty)
          then
             case Op is
                when N_Op_Gt => return M_Integer.Bool_Gt;
@@ -9721,7 +9722,8 @@ package body Gnat2Why.Expr is
          else
             raise Program_Error;
          end if;
-      elsif Ty in EW_Int_Type | EW_Bool_Type | EW_Fixed_Type
+      elsif Ty in EW_Int_Type | EW_Bool_Type
+           or else Why_Type_Is_Fixed (Ty)
       then
          case Op is
             when N_Op_Gt => return Int_Infix_Gt;
@@ -11220,7 +11222,8 @@ package body Gnat2Why.Expr is
             if Is_Fixed_Point_Type (Etype (Expr)) then
                T := New_Fixed_Constant
                       (Ada_Node => Expr,
-                       Value    => Corresponding_Integer_Value (Expr));
+                       Value    => Corresponding_Integer_Value (Expr),
+                       Typ      => Base_Why_Type (Etype (Expr)));
 
             --  It can happen that the literal is a universal real which is
             --  converted into a fixed point type, we then simply return a
@@ -11306,7 +11309,7 @@ package body Gnat2Why.Expr is
                     Int_Unary_Minus
                   elsif Why_Type_Is_BitVector (Typ) then
                     MF_BVs (Typ).Neg
-                  elsif Typ = EW_Fixed_Type then
+                  elsif Why_Type_Is_Fixed (Typ) then
                     Fixed_Unary_Minus
                   else MF_Floats (Typ).Unary_Minus);
 
@@ -11333,7 +11336,7 @@ package body Gnat2Why.Expr is
                        Name     => Minus_Ident,
                        Args     =>
                          (1 => Right_Rep),
-                       Typ       => Get_Type (+Minus_Ident));
+                       Typ       => Typ);
                   T := Apply_Modulus (N_Op_Minus, Expr_Type, T, Domain);
                end if;
             end;
@@ -11423,18 +11426,18 @@ package body Gnat2Why.Expr is
                         Expr         => Expr);
                   end if;
 
-                  L_Type := EW_Fixed_Type;
-                  R_Type := EW_Fixed_Type;
+                  L_Type := Base_Why_Type (Etype (Left));
+                  R_Type := Base_Why_Type (Etype (Right));
 
                elsif Has_Fixed_Point_Type (Etype (Left)) then
-                  L_Type := EW_Fixed_Type;
+                  L_Type := Base_Why_Type (Etype (Left));
                   R_Type := EW_Int_Type;
 
                elsif Nkind (Expr) = N_Op_Multiply
                  and then Has_Fixed_Point_Type (Etype (Right))
                then
                   L_Type := EW_Int_Type;
-                  R_Type := EW_Fixed_Type;
+                  R_Type := Base_Why_Type (Etype (Right));
 
                else
                   L_Type := Base_Why_Type (Left, Right);

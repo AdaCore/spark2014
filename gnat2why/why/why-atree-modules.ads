@@ -60,7 +60,6 @@ package Why.Atree.Modules is
    EW_Int_Type          : W_Type_Id;
    EW_Private_Type      : W_Type_Id;         --  alias of Main.Private_Type
    EW_Prop_Type         : W_Type_Id;
-   EW_Fixed_Type        : W_Type_Id;         --  alias of Main.Fixed_Type
    EW_Real_Type         : W_Type_Id;         --  used for Universal Fixed
    EW_Float_32_Type     : W_Type_Id;
    EW_Float_64_Type     : W_Type_Id;
@@ -85,6 +84,7 @@ package Why.Atree.Modules is
    Dynamic_Discrete       : W_Module_Id;
    Static_Fixed_Point     : W_Module_Id;
    Dynamic_Fixed_Point    : W_Module_Id;
+   Fixed_Point_Rep        : W_Module_Id;
    Fixed_Point_Mult_Div   : W_Module_Id;
    Fixed_Point_Float_Conv : W_Module_Id;
    Static_Float32         : W_Module_Id;
@@ -351,6 +351,16 @@ package Why.Atree.Modules is
       Range_Check : W_Identifier_Id;
    end record;
 
+   type M_Fixed_Point_Type is record
+      Module      : W_Module_Id;
+      T           : W_Type_Id;
+      Mult_Int    : W_Identifier_Id;
+      Div_Int     : W_Identifier_Id;
+      Div_Int_Res : W_Identifier_Id;
+      Of_Int      : W_Identifier_Id;
+      To_Int      : W_Identifier_Id;
+   end record;
+
    type M_Fixed_Point_Mult_Div_Type is record
       Module : W_Module_Id;
       Mult   : W_Identifier_Id;
@@ -452,6 +462,18 @@ package Why.Atree.Modules is
    --  same as M_Floats but can be used with a Float type in W_Type_Id format
    --  @param T a Floating type as Why tree node
    --  @return the corresponding Why module record
+
+   --  M_Fixed_Points stores the map from names corresponding to a value of
+   --  small of a fixed-point type, to the module defining operations with said
+   --  small.
+
+   package Name_Id_Fixed_Point_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Name_Id,
+      Element_Type    => M_Fixed_Point_Type,
+      Hash            => Common_Containers.Name_Id_Hash,
+      Equivalent_Keys => "=");
+
+   M_Fixed_Points : Name_Id_Fixed_Point_Map.Map;
 
    --  M_Fixed_Point_Mult_Div stores the map from names corresponding to a
    --  triple of values of smalls (for the arguments and result) of fixed-point

@@ -47,6 +47,13 @@ with Why.Types;           use Why.Types;
 
 package body Why.Gen.Scalars is
 
+   procedure Create_Fixed_Point_Theory_If_Needed
+     (Current_File : W_Section_Id;
+      Typ          : Entity_Id);
+   --  Create a theory for fixed point operation with the small of Typ. Only
+   --  one such theory is created for each value of small. The symbols for
+   --  these theories are stored in the M_Fixed_Points map.
+
    procedure Define_Scalar_Attributes
      (Section    : W_Section_Id;
       E          : Entity_Id;
@@ -57,6 +64,146 @@ package body Why.Gen.Scalars is
    --  N must be a value whose value is known at compile time. This function
    --  evaluates N as an Uint (if Ty is a discrete type or a fixed-point type)
    --  or as real (if Ty is not discrete).
+
+   function Ureal_Name (R : Ureal) return String is
+     (UI_Image (Norm_Num (R), Decimal) & "_" &
+        UI_Image (Norm_Den (R), Decimal));
+   --  Compute a name from a Ureal
+
+   -----------------------------------------
+   -- Create_Fixed_Point_Theory_If_Needed --
+   -----------------------------------------
+
+   procedure Create_Fixed_Point_Theory_If_Needed
+     (Current_File : W_Section_Id;
+      Typ          : Entity_Id)
+   is
+      use Name_Id_Fixed_Point_Map;
+
+      File        : constant W_Section_Id := WF_Pure;
+      Module_Name : constant Name_Id :=
+        Get_Fixed_Point_Theory_Name (Typ => Typ);
+      Module      : constant W_Module_Id :=
+        New_Module (File => No_Name,
+                    Name => Module_Name);
+      N_Ty        : constant W_Type_Id := New_Type
+        (Ada_Node   => Base_Retysp (Typ),
+         Is_Mutable => False,
+         Type_Kind  => EW_Builtin,
+         Name       => Get_Name (M_Main.Fixed_Type));
+      M_Module    : constant M_Fixed_Point_Type :=
+        M_Fixed_Point_Type'
+          (Module      => Module,
+           T           => N_Ty,
+           Mult_Int    =>
+             New_Identifier (Module => Module,
+                             Domain => EW_Term,
+                             Symbol => NID ("fxp_mult_int"),
+                             Typ    => N_Ty),
+           Div_Int     =>
+             New_Identifier (Module => Module,
+                             Domain => EW_Term,
+                             Symbol => NID ("fxp_div_int"),
+                             Typ    => N_Ty),
+           Div_Int_Res =>
+             New_Identifier (Module => Module,
+                             Domain => EW_Term,
+                             Symbol => NID ("fxp_div_result_int"),
+                             Typ    => EW_Int_Type),
+           Of_Int      =>
+             New_Identifier (Module => Module,
+                             Domain => EW_Term,
+                             Symbol => NID ("of_int"),
+                             Typ    => N_Ty),
+           To_Int      =>
+             New_Identifier (Module => Module,
+                             Domain => EW_Term,
+                             Symbol => NID ("to_int"),
+                             Typ    => EW_Int_Type));
+
+      Num_Small : constant W_Name_Id :=
+        New_Name (Symbol => NID ("num_small"));
+      Den_Small : constant W_Name_Id :=
+        New_Name (Symbol => NID ("den_small"));
+
+      Small       : constant Ureal := Small_Value (Typ);
+      Num_Small_V : constant W_Term_OId :=
+        New_Integer_Constant (Value => Norm_Num (Small));
+      Den_Small_V : constant W_Term_OId :=
+        New_Integer_Constant (Value => Norm_Den (Small));
+
+      Subst : W_Clone_Substitution_Array (1 .. 2);
+
+      Save_Theory : W_Theory_Declaration_Id;
+      --  Use this variable to temporarily store current theory
+
+   begin
+      --  If there is already a module for that value of small, there is
+      --  nothing to do.
+
+      if M_Fixed_Points.Contains (Module_Name) then
+         return;
+      end if;
+
+      --  Temporarily store the current theory if needed
+
+      if File = Current_File then
+         Save_Theory := Why_Sections (File).Cur_Theory;
+         Why_Sections (File).Cur_Theory := Why_Empty;
+      end if;
+
+      Open_Theory
+        (File, Module,
+         Comment =>
+           "Module for fixed-point operation for type at "
+         & Build_Location_String (Sloc (Typ))
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Emit (File,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => New_Identifier (Num_Small),
+               Binders     => (1 .. 0 => <>),
+               Return_Type => EW_Int_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Def         => +Num_Small_V));
+      Emit (File,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => New_Identifier (Den_Small),
+               Binders     => (1 .. 0 => <>),
+               Return_Type => EW_Int_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Def         => +Den_Small_V));
+
+      Subst :=
+        (1 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => Num_Small,
+                 Image     => Num_Small),
+         2 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => Den_Small,
+                 Image     => Den_Small));
+
+      Emit (File,
+            New_Clone_Declaration
+              (Theory_Kind   => EW_Theory,
+               Clone_Kind    => EW_Export,
+               Origin        => Fixed_Point_Rep,
+               As_Name       => No_Name,
+               Substitutions => Subst));
+
+      Close_Theory (File, Kind => Definition_Theory);
+
+      --  Restore the current theory
+
+      if File = Current_File then
+         Why_Sections (File).Cur_Theory := Save_Theory;
+      end if;
+
+      M_Fixed_Points.Insert (Module_Name, M_Module);
+   end Create_Fixed_Point_Theory_If_Needed;
 
    --------------------------------------------------
    -- Create_Fixed_Point_Mult_Div_Theory_If_Needed --
@@ -85,11 +232,11 @@ package body Why.Gen.Scalars is
            Mult   => New_Identifier (Module => Module,
                                      Domain => EW_Term,
                                      Symbol => NID ("fxp_mult"),
-                                     Typ    => EW_Fixed_Type),
+                                     Typ    => Base_Why_Type (Typ_Result)),
            Div    => New_Identifier (Module => Module,
                                      Domain => EW_Term,
                                      Symbol => NID ("fxp_div"),
-                                     Typ    => EW_Fixed_Type));
+                                     Typ    => Base_Why_Type (Typ_Result)));
 
       Num_Small_X : constant W_Name_Id :=
         New_Name (Symbol => NID ("num_small_x"));
@@ -357,17 +504,6 @@ package body Why.Gen.Scalars is
                        Image     =>
                          To_Local (E_Symb (E, WNE_Dynamic_Property_BV_Int)))))
             else (1 .. 0 => <>));
-         Fixed_Clone_Subst : constant W_Clone_Substitution_Array :=
-           (if Is_Fixed_Point_Type (E) then
-                (1 => New_Clone_Substitution
-                 (Kind      => EW_Function,
-                  Orig_Name => To_Local (E_Symb (E, WNE_Small_Num)),
-                  Image     => To_Local (E_Symb (E, WNE_Small_Num))),
-                 2 => New_Clone_Substitution
-                 (Kind      => EW_Function,
-                  Orig_Name => To_Local (E_Symb (E, WNE_Small_Den)),
-                  Image     => To_Local (E_Symb (E, WNE_Small_Den))))
-            else (1 .. 0 => <>));
       begin
 
          return
@@ -376,8 +512,7 @@ package body Why.Gen.Scalars is
            Static_Clone_Subst &
            Dynamic_Conv_Subst &
            Mod_Clone_Subst &
-           Range_Int_Clone_Subst &
-           Fixed_Clone_Subst;
+           Range_Int_Clone_Subst;
       end Compute_Clone_Subst;
 
       ------------------------------
@@ -633,6 +768,12 @@ package body Why.Gen.Scalars is
    --  Start of processing for Declare_Scalar_Type
 
    begin
+      --  Create a theory for the underlying fixed point type if needed
+
+      if Has_Fixed_Point_Type (E) then
+         Create_Fixed_Point_Theory_If_Needed (Current_File => File,
+                                              Typ          => E);
+      end if;
 
       --  Declare the logic type:
       --  If the type is dynamic, declare an alias of its base type.
@@ -1038,10 +1179,6 @@ package body Why.Gen.Scalars is
    function Get_Fixed_Point_Mult_Div_Theory_Name
      (Typ_Left, Typ_Right, Typ_Result : Entity_Id) return Name_Id
    is
-      function Ureal_Name (R : Ureal) return String is
-        (UI_Image (Norm_Num (R), Decimal) & "_" &
-         UI_Image (Norm_Den (R), Decimal));
-
       L_Small   : constant Ureal := Small_Value (Typ_Left);
       R_Small   : constant Ureal :=
         (if Has_Fixed_Point_Type (Typ_Right) then
@@ -1060,6 +1197,32 @@ package body Why.Gen.Scalars is
       return NID (Name);
    end Get_Fixed_Point_Mult_Div_Theory_Name;
 
+   ----------------------------
+   -- Get_Fixed_Point_Theory --
+   ----------------------------
+
+   function Get_Fixed_Point_Theory (Typ : Entity_Id) return M_Fixed_Point_Type
+   is
+      Module_Name : constant Name_Id :=
+        Get_Fixed_Point_Theory_Name (Typ => Typ);
+   begin
+      return M_Fixed_Points (Module_Name);
+   end Get_Fixed_Point_Theory;
+
+   ---------------------------------
+   -- Get_Fixed_Point_Theory_Name --
+   ---------------------------------
+
+   function Get_Fixed_Point_Theory_Name (Typ : Entity_Id) return Name_Id
+   is
+      Small : constant Ureal := Small_Value (Typ);
+      Name  : constant String :=
+        To_String (WNE_Fixed_Point_Prefix) & "__"
+        & Ureal_Name (Small);
+   begin
+      return NID (Name);
+   end Get_Fixed_Point_Theory_Name;
+
    ------------------
    -- Num_Constant --
    ------------------
@@ -1073,7 +1236,8 @@ package body Why.Gen.Scalars is
       elsif Is_Discrete_Type (Ty) then
          return New_Integer_Constant (Value => Expr_Value (N));
       elsif Is_Fixed_Point_Type (Ty) then
-         return New_Fixed_Constant (Value => Expr_Value (N));
+         return New_Fixed_Constant
+           (Value => Expr_Value (N), Typ => Base_Why_Type (Ty));
       elsif Is_Floating_Point_Type (Ty) then
          if Is_Fixed_Point_Type (Etype (N)) and then
            Nkind (Parent (N)) = N_Real_Range_Specification
@@ -1082,7 +1246,10 @@ package body Why.Gen.Scalars is
             return +Insert_Simple_Conversion
               (Ada_Node       => N,
                Domain         => EW_Term,
-               Expr           => New_Fixed_Constant (Value => Expr_Value (N)),
+               Expr           =>
+                 New_Fixed_Constant
+                 (Value => Expr_Value (N),
+                  Typ   => Base_Why_Type (Etype (N))),
                To             => Base_Why_Type (Ty));
          else
             return New_Float_Constant (Value => Expr_Value_R (N),

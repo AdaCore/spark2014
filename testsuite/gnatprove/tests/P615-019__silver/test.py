@@ -1,3 +1,5 @@
 from test_support import *
 
-prove_all()
+# Do not use alt-ergo which seems to be unsound on this test
+
+prove_all(prover=["cvc4", "z3"])

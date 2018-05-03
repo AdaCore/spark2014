@@ -460,8 +460,8 @@ module Fixed_Point_Shared
 
 end
 
-module Fixed_Point_Base
-  (* The module that is used as basis for all fixed-point types.
+module Fixed_Point_Rep
+  (* The module that is used to define a representative for fixed-point types.
 
      Multiplication and division are restricted in the following ways:
      - these operations between different fixed-point types and universal real
@@ -494,30 +494,6 @@ module Fixed_Point_Base
   use import "_gnatprove_standard".Int_Division
   use import Fixed_Point_Shared
 
-  type t
-
-  function dummy : t
-
-  function attr__ATTRIBUTE_IMAGE __fixed : __image
-
-  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
-
-  function attr__ATTRIBUTE_VALUE __image : __fixed
-
-  val attr__ATTRIBUTE_VALUE_ (x : __image) : __fixed
-    requires { attr__ATTRIBUTE_VALUE__pre_check x }
-    ensures { true }
-
-  (* A fixed-point type is represented internally as an integer. *)
-
-  function to_fixed t : __fixed
-
-  function of_fixed __fixed : t
-
-  val of_fixed (x : __fixed) : t
-    requires { true }
-    ensures { to_fixed (result) = x }
-
   (* Numerator and denominator of the fractional "small" value of the
      corresponding fixed-point type. These are guaranteed to be positive
      whole numbers.
@@ -526,10 +502,8 @@ module Fixed_Point_Base
      integer representation by num_small and dividing it by den_small.
   *)
 
-  function num_small : __fixed
-  function den_small : __fixed
-
-  function user_eq (x : t) (y : t) : bool
+  function num_small : int
+  function den_small : int
 
   (* multiplication between a fixed-point value and an integer *)
 
@@ -639,6 +613,40 @@ module Fixed_Point_Base
       else (* x < 0 *)
         pos_div_relation (- (of_int x)) (-x * den_small) (num_small)
 
+end
+
+module Fixed_Point_Base
+  (* The module that is used as basis of all fixed-point types. It does not
+     contain operations on fixed point types which are stored in representative
+     modules *)
+  use import int.Int
+  use import "_gnatprove_standard".Main
+
+  type t
+
+  function dummy : t
+
+  function attr__ATTRIBUTE_IMAGE __fixed : __image
+
+  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  function attr__ATTRIBUTE_VALUE __image : __fixed
+
+  val attr__ATTRIBUTE_VALUE_ (x : __image) : __fixed
+    requires { attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { true }
+
+  (* A fixed-point type is represented internally as an integer. *)
+
+  function to_fixed t : __fixed
+
+  function of_fixed __fixed : t
+
+  val of_fixed (x : __fixed) : t
+    requires { true }
+    ensures { to_fixed (result) = x }
+
+  function user_eq (x : t) (y : t) : bool
 end
 
 module Fixed_Point_Mult_Div

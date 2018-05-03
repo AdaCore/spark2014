@@ -386,6 +386,7 @@ package body Xtree_Sinfo is
       ----------------------
 
       New_Field (W_Fixed_Constant, "Value", "Uint");
+      New_Field (W_Fixed_Constant, "Typ", "W_Type", Id_One);
 
       ---------------------
       -- W_Real_Constant --

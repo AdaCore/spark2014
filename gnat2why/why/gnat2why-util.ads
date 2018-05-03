@@ -499,11 +499,14 @@ package Gnat2Why.Util is
    --  @param E variable or constant of scalar type
    --  @return True iff E has a builtin type in Why3
 
-   function Why_Type_Is_Float (Typ : W_Type_Id) return Boolean;
-   --  Return wether Typ is a Float type.
-
    function Why_Type_Is_BitVector (Typ : W_Type_Id) return Boolean;
    --  Return wether Typ is a bitvector type.
+
+   function Why_Type_Is_Fixed (Typ : W_Type_Id) return Boolean;
+   --  Return wether Typ is a fixed point type.
+
+   function Why_Type_Is_Float (Typ : W_Type_Id) return Boolean;
+   --  Return wether Typ is a Float type.
 
    function BitVector_Type_Size (Typ : W_Type_Id) return Uint;
    --  Return the size in bit of bitvector type Typ.

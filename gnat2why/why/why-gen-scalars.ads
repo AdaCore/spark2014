@@ -58,6 +58,15 @@ package Why.Gen.Scalars is
    --  Populate the theory associated to the theory of the scalar type E where
    --  the projection to and from the representation type are defined.
 
+   function Get_Fixed_Point_Theory (Typ : Entity_Id) return M_Fixed_Point_Type
+   with Pre => Is_Type (Typ);
+   --  Return a module name based for operations on fixed-points of type Typ.
+
+   function Get_Fixed_Point_Theory_Name (Typ : Entity_Id) return Name_Id
+   with Pre => Is_Type (Typ);
+   --  Return a unique name based on the values of small of Typ, to be used as
+   --  the name of the theory for operations on fixed-points of type Typ.
+
    function Get_Fixed_Point_Mult_Div_Theory
      (Typ_Left, Typ_Right, Typ_Result : Entity_Id)
       return M_Fixed_Point_Mult_Div_Type

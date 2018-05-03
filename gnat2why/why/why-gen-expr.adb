@@ -245,7 +245,7 @@ package body Why.Gen.Expr is
             return EW_Int_Type;
 
          when W_Fixed_Constant =>
-            return EW_Fixed_Type;
+            return +Get_Typ (W_Fixed_Constant_Id (E));
 
          when W_Real_Constant =>
             return EW_Real_Type;
@@ -1864,69 +1864,32 @@ package body Why.Gen.Expr is
 
       if Base_Why_Type (From) /= Base_Why_Type (To) then
 
-         --  2.1. If From is a fixed-point type, convert to int or real
-         --       depending on To.
+         --  2.1. Possibly convert from one fixed-point small to another one
 
-         if Base_Why_Type (From) = EW_Fixed_Type then
-            declare
-               --  Corresponding abstract type, for which conversion to
-               --  int or real is defined.
-               Fixed_Type : constant Entity_Id :=
-                 (if Nkind (Ada_Node) in N_Type_Conversion
-                                       | N_Qualified_Expression
-                  then
-                     Etype (Expression (Ada_Node))
-                  else
-                     Etype (Ada_Node));
-
-               Shadow_From : constant W_Type_Id := EW_Abstract (Fixed_Type);
-               Shadow_To   : constant W_Type_Id :=
-                 (if Why_Type_Is_BitVector (Base_Why_Type (To)) then
-                    EW_Int_Type
-                  else
-                    Base_Why_Type (To));
-
-            begin
-               pragma Assert (Get_Type_Kind (Shadow_From) = EW_Abstract);
-
-               Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
-                                                   Domain   => Domain,
-                                                   From     => Shadow_From,
-                                                   To       => Shadow_To,
-                                                   Expr     => Result);
-               Cur := Shadow_To;
-            end;
-
-         --  2.2. If From is a modular type and To is neither a modular nor
-         --       a float, insert a convertion to int since we only support
-         --       Direct convertion from bitvector to int, float or another
-         --       bitvector types.
-
-         elsif Why_Type_Is_BitVector (Base_Why_Type (From))
-           and then not Why_Type_Is_BitVector (Base_Why_Type (To))
-           and then not Why_Type_Is_Float (Base_Why_Type (To))
-         then
-            Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
-                                                Domain   => Domain,
-                                                To       => EW_Int_Type,
-                                                Expr     => Result);
-            Cur := EW_Int_Type;
-         end if;
-      end if;
-
-      --  3. Possibly convert from one fixed-point small to another one.
-
-      declare
-         From_Type : constant Entity_Id := Get_Ada_Node (+From);
-         To_Type   : constant Entity_Id := Get_Ada_Node (+To);
-      begin
-         if Present (From_Type)
-           and then Has_Fixed_Point_Type (From_Type)
-           and then Present (To_Type)
-           and then Has_Fixed_Point_Type (To_Type)
-           and then Small_Value (From_Type) /= Small_Value (To_Type)
+         if Why_Type_Is_Fixed (Base_Why_Type (From))
+           and then Why_Type_Is_Fixed (Base_Why_Type (To))
          then
             declare
+               From_Type : constant Entity_Id := Get_Ada_Node (+From);
+               To_Type   : constant Entity_Id := Get_Ada_Node (+To);
+               To_Base   : constant W_Type_Id := Base_Why_Type (To);
+
+               --  Fixed point types always have an Ada node
+
+               pragma Assert
+                 (Present (From_Type)
+                  and then Has_Fixed_Point_Type (From_Type)
+                  and then Present (To_Type)
+                  and then Has_Fixed_Point_Type (To_Type));
+
+               --  If From and To have the same small, they should have the
+               --  same base type.
+
+               pragma Assert
+                 (Small_Value (From_Type) /= Small_Value (To_Type));
+
+               --  Multiply by 1 to introduce the conversion
+
                Module   : constant M_Fixed_Point_Mult_Div_Type :=
                  Get_Fixed_Point_Mult_Div_Theory
                    (Typ_Left   => From_Type,
@@ -1942,12 +1905,34 @@ package body Why.Gen.Expr is
                                    Name     => Name,
                                    Args     => (1 => Result,
                                                 2 => One_Term),
-                                   Typ      => EW_Fixed_Type);
-            end;
-         end if;
-      end;
+                                   Typ      => To_Base);
 
-      --  4. Possibly perform the range check, if applicable on Cur. A special
+               Cur := To_Base;
+            end;
+
+         --  2.2. If From is a fixed-point type and To is an integer type,
+
+         elsif (Why_Type_Is_Fixed (Base_Why_Type (From))
+                and then not Why_Type_Is_Float (Base_Why_Type (To)))
+
+         --       or if From is a modular type and To is neither a modular nor
+         --       a float, insert a convertion to int since we only support
+         --       direct convertion from bitvector to int, float or another
+         --       bitvector types.
+
+           or else (Why_Type_Is_BitVector (Base_Why_Type (From))
+                    and then not Why_Type_Is_BitVector (Base_Why_Type (To))
+                    and then not Why_Type_Is_Float (Base_Why_Type (To)))
+         then
+            Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
+                                                Domain   => Domain,
+                                                To       => EW_Int_Type,
+                                                Expr     => Result);
+            Cur := EW_Int_Type;
+         end if;
+      end if;
+
+      --  3. Possibly perform the range check, if applicable on Cur. A special
       --     case is that range checks on boolean variables are performed after
       --     their conversion to int. Another special case is that range checks
       --     on modular types are always performed at this point, as any
@@ -1967,53 +1952,19 @@ package body Why.Gen.Expr is
                                     Check_Kind => Check_Kind);
       end if;
 
-      --  5. If From and To do not share the same base type (bool, int, __fixed
+      --  4. If From and To do not share the same base type (bool, int, __fixed
       --     bitvector_? or real), convert from one to the other.
 
-      if Base_Why_Type (From) /= Base_Why_Type (To) then
-
-         --  5.1. If To is a fixed-point type, convert from int or real
-         --       depending on From.
-
-         if Base_Why_Type (To) = EW_Fixed_Type then
-            declare
-               --  Corresponding abstract type, for which conversion to
-               --  int or real is defined.
-               Fixed_Type : constant Entity_Id :=
-                 (if Nkind (Parent (Ada_Node)) in N_Type_Conversion
-                                                | N_Qualified_Expression
-                  then
-                     Etype (Parent (Ada_Node))
-                  else
-                     Etype (Ada_Node));
-
-               Shadow_From : constant W_Type_Id := Cur;
-               Shadow_To   : constant W_Type_Id := EW_Abstract (Fixed_Type);
-
-            begin
-               pragma Assert (Get_Type_Kind (Shadow_To) = EW_Abstract);
-
-               Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
-                                                   Domain   => Domain,
-                                                   From     => Shadow_From,
-                                                   To       => Shadow_To,
-                                                   Expr     => Result);
-               Cur := Base_Why_Type (To);
-            end;
-
-         --  5.2. Otherwise simply convert from Cur to Base_Why_Type (To)
-
-         else
-            Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
-                                                Domain   => Domain,
-                                                From     => Cur,
-                                                To       => Base_Why_Type (To),
-                                                Expr     => Result);
-            Cur := Base_Why_Type (To);
-         end if;
+      if Cur /= Base_Why_Type (To) then
+         Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
+                                             Domain   => Domain,
+                                             From     => Cur,
+                                             To       => Base_Why_Type (To),
+                                             Expr     => Result);
+         Cur := Base_Why_Type (To);
       end if;
 
-      --  6. Possibly perform the range check, if not already applied
+      --  5. Possibly perform the range check, if not already applied
 
       if Present (Range_Type)
         and then not Range_Check_Applied
@@ -2029,7 +1980,7 @@ package body Why.Gen.Expr is
                                     Check_Kind => Check_Kind);
       end if;
 
-      --  7. Perform a predicate check if needed, before the final conversion
+      --  6. Perform a predicate check if needed, before the final conversion
       --  to the target abstract type if any, if the predicate function takes
       --  a Why3 native type as input as detected by Use_Split_Form_For_Type.
 
@@ -2042,7 +1993,7 @@ package body Why.Gen.Expr is
                                             W_Expr   => +Result);
       end if;
 
-      --  8. If To is an abstract type, convert from int, __fixed or real to it
+      --  7. If To is an abstract type, convert from int, __fixed or real to it
 
       if Get_Type_Kind (To) = EW_Abstract then
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
@@ -2061,7 +2012,7 @@ package body Why.Gen.Expr is
                               Typ    => To);
       end if;
 
-      --  9. Perform a predicate check if needed, after the final conversion
+      --  8. Perform a predicate check if needed, after the final conversion
       --  to the target abstract type if any, if the predicate function takes
       --  an abstract type as input as detected by Use_Split_Form_For_Type.
 
@@ -2146,13 +2097,12 @@ package body Why.Gen.Expr is
       Expr     : W_Expr_Id) return W_Expr_Id is
       From_Base : constant W_Type_Id :=
         (if Get_Type_Kind (From) = EW_Split
-         and then (Has_Discrete_Type (Get_Ada_Node (+From))
-           or else Has_Floating_Point_Type (Get_Ada_Node (+From)))
+         and then Has_Scalar_Type (Get_Ada_Node (+From))
          then Base_Why_Type (Get_Ada_Node (+From))
          else From);
       To_Base   : constant W_Type_Id :=
         (if Get_Type_Kind (To) = EW_Split
-         and then Has_Discrete_Type (Get_Ada_Node (+To))
+         and then Has_Scalar_Type (Get_Ada_Node (+To))
          then Base_Why_Type (Get_Ada_Node (+To))
          else To);
    begin
@@ -3424,7 +3374,7 @@ package body Why.Gen.Expr is
          then Base_Why_Type (Get_Ada_Node (+Get_Type (Low)))
          else Get_Type (Low));
       Le : constant W_Identifier_Id :=
-        (if Ty = EW_Int_Type or else Ty = EW_Fixed_Type then Int_Infix_Le
+        (if Ty = EW_Int_Type or else Why_Type_Is_Fixed (Ty) then Int_Infix_Le
          elsif Why_Type_Is_BitVector (Ty) then MF_BVs (Ty).Ule
          else MF_Floats (Ty).Le);
    begin

@@ -36,6 +36,7 @@ with Why.Conversions;     use Why.Conversions;
 with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
 with Why.Gen.Arrays;      use Why.Gen.Arrays;
+with Why.Gen.Scalars;     use Why.Gen.Scalars;
 
 package body Why.Gen.Names is
 
@@ -231,6 +232,15 @@ package body Why.Gen.Names is
                   --  they are of incompatible types
                   --  In both cases, it is an error.
 
+                  --  For fixed point types, get the underlying fixed point
+                  --  theory.
+
+                  elsif Why_Type_Is_Fixed (From) and then To = EW_Int_Type then
+                     return
+                       Get_Fixed_Point_Theory (Get_Ada_Node (+From)).To_Int;
+                  elsif From = EW_Int_Type and then Why_Type_Is_Fixed (To) then
+                     return
+                       Get_Fixed_Point_Theory (Get_Ada_Node (+To)).Of_Int;
                   else
                      raise Program_Error;
                   end if;
@@ -274,7 +284,7 @@ package body Why.Gen.Names is
                      else
                         if To = EW_Int_Type then
                            return E_Symb (A, WNE_To_Int);
-                        elsif To = EW_Fixed_Type then
+                        elsif Why_Type_Is_Fixed (To) then
                            return E_Symb (A, WNE_To_Fixed);
                         elsif To = EW_Float_32_Type then
                            return E_Symb (A, WNE_To_Float32);
@@ -335,7 +345,7 @@ package body Why.Gen.Names is
    begin
       if Kind = EW_Int_Type then
          return WNE_Of_Int;
-      elsif Kind = EW_Fixed_Type then
+      elsif Why_Type_Is_Fixed (Kind) then
          return WNE_Of_Fixed;
       elsif Kind = EW_Float_32_Type then
          return WNE_Of_Float32;
@@ -513,7 +523,7 @@ package body Why.Gen.Names is
    begin
       if Why_Type_Is_Float (Kind) then
          return MF_Floats (Kind).Abs_Float;
-      elsif Kind = EW_Int_Type or else Kind = EW_Fixed_Type then
+      elsif Kind = EW_Int_Type or else Why_Type_Is_Fixed (Kind) then
          return M_Int_Abs.Abs_Id;
       elsif Why_Type_Is_BitVector (Kind) then
          return MF_BVs (Kind).BV_Abs;
@@ -534,7 +544,7 @@ package body Why.Gen.Names is
          return M_Int_Div.Div;
       elsif Why_Type_Is_BitVector (Kind) then
          return MF_BVs (Kind).Udiv;
-      elsif Kind = EW_Fixed_Type then
+      elsif Why_Type_Is_Fixed (Kind) then
          raise Program_Error;
       else
          raise Not_Implemented;
@@ -553,7 +563,7 @@ package body Why.Gen.Names is
          return M_Int_Power.Power;
       elsif Why_Type_Is_BitVector (Kind) then
          return MF_BVs (Kind).Power;
-      elsif Kind = EW_Fixed_Type then
+      elsif Why_Type_Is_Fixed (Kind) then
          raise Program_Error;
       else
          raise Program_Error;
@@ -752,6 +762,7 @@ package body Why.Gen.Names is
          when WNE_Content                    => "__content",
          when WNE_Dispatch_Module            => "Dispatch",
          when WNE_Extract_Prefix             => "extract__",
+         when WNE_Fixed_Point_Prefix         => "Fixed_Point",
          when WNE_Fixed_Point_Mult_Div_Prefix => "Fixed_Point_Mult_Div",
          when WNE_Havoc                      => "__havoc",
          when WNE_Hide_Extension             => "hide_ext__",

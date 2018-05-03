@@ -1302,15 +1302,6 @@ package body Gnat2Why.Util is
       end if;
    end Why_Type_Of_Entity;
 
-   -----------------------
-   -- Why_Type_Is_Float --
-   -----------------------
-
-   function Why_Type_Is_Float (Typ : W_Type_Id) return Boolean is
-   begin
-      return Typ in EW_Float_32_Type .. EW_Float_64_Type;
-   end Why_Type_Is_Float;
-
    ---------------------------
    -- Why_Type_Is_BitVector --
    ---------------------------
@@ -1322,6 +1313,26 @@ package body Gnat2Why.Util is
                     EW_BitVector_32_Type |
                     EW_BitVector_64_Type;
    end Why_Type_Is_BitVector;
+
+   -----------------------
+   -- Why_Type_Is_Fixed --
+   -----------------------
+
+   function Why_Type_Is_Fixed (Typ : W_Type_Id) return Boolean is
+   begin
+      return Get_Type_Kind (Typ) = EW_Builtin
+        and then Present (Get_Ada_Node (+Typ))
+        and then Is_Fixed_Point_Type (Get_Ada_Node (+Typ));
+   end Why_Type_Is_Fixed;
+
+   -----------------------
+   -- Why_Type_Is_Float --
+   -----------------------
+
+   function Why_Type_Is_Float (Typ : W_Type_Id) return Boolean is
+   begin
+      return Typ in EW_Float_32_Type .. EW_Float_64_Type;
+   end Why_Type_Is_Float;
 
 begin
    Why3_Keywords.Include ("as");

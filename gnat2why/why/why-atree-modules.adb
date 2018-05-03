@@ -323,6 +323,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Dynamic_Fixed_Point"));
+      Fixed_Point_Rep :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Fixed_Point_Rep"));
       Fixed_Point_Mult_Div :=
         New_Module
           (File => Ada_Model_File,
@@ -1742,7 +1746,6 @@ package body Why.Atree.Modules is
                         Symbol => NID ("__null_ext__"),
                         Typ    => M_Main.Private_Type);
 
-      EW_Fixed_Type := M_Main.Fixed_Type;
       EW_Private_Type := M_Main.Private_Type;
    end Init_Main_Module;
 
@@ -2209,7 +2212,7 @@ package body Why.Atree.Modules is
                        (Symbol => NID ("to_fixed"),
                         Module => M,
                         Domain => EW_Term,
-                        Typ    => EW_Fixed_Type));
+                        Typ    => Base));
                   Insert_Symbol
                     (E, WNE_Of_Fixed,
                      New_Identifier
@@ -2217,55 +2220,6 @@ package body Why.Atree.Modules is
                         Module => M,
                         Domain => EW_Term,
                         Typ    => Ty));
-                  Insert_Symbol
-                    (E, WNE_To_Int,
-                     New_Identifier
-                       (Symbol => NID ("to_int"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Int_Type));
-                  Insert_Symbol
-                    (E, WNE_Of_Int,
-                     New_Identifier
-                       (Symbol => NID ("of_int"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => Base));
-                  Insert_Symbol
-                    (E, WNE_Fixed_Point_Mult,
-                     New_Identifier
-                       (Symbol => NID ("fxp_mult"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Fixed_Type));
-                  Insert_Symbol
-                    (E, WNE_Fixed_Point_Mult_Int,
-                     New_Identifier
-                       (Symbol => NID ("fxp_mult_int"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Fixed_Type));
-                  Insert_Symbol
-                    (E, WNE_Fixed_Point_Div,
-                     New_Identifier
-                       (Symbol => NID ("fxp_div"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Fixed_Type));
-                  Insert_Symbol
-                    (E, WNE_Fixed_Point_Div_Int,
-                     New_Identifier
-                       (Symbol => NID ("fxp_div_int"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Fixed_Type));
-                  Insert_Symbol
-                    (E, WNE_Fixed_Point_Div_Result_Int,
-                     New_Identifier
-                       (Symbol => NID ("fxp_div_result_int"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Int_Type));
                end if;
             end;
 

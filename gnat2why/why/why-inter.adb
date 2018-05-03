@@ -35,7 +35,6 @@ with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
-with SPARK_Util.Types;           use SPARK_Util.Types;
 with SPARK_Xrefs;                use SPARK_Xrefs;
 with String_Utils;               use String_Utils;
 with Uintp;
@@ -48,6 +47,7 @@ with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Arrays;             use Why.Gen.Arrays;
 with Why.Gen.Expr;               use Why.Gen.Expr;
 with Why.Gen.Names;              use Why.Gen.Names;
+with Why.Gen.Scalars;            use Why.Gen.Scalars;
 
 ---------------
 -- Why.Inter --
@@ -724,48 +724,26 @@ package body Why.Inter is
    begin
       if Left = Right then
          return True;
-      elsif Get_Type_Kind (Left) /= Get_Type_Kind (Right) then
 
-         --  Two types with different kinds cannot be equal
+      --  Builtin nodes can be compared directly
 
+      elsif Get_Type_Kind (Left) = EW_Builtin then
          return False;
-      elsif Get_Type_Kind (Left) in EW_Abstract | EW_Split
-        and then (Present (Get_Ada_Node (+Left))
-                   or else Present (Get_Ada_Node (+Right)))
-      then
 
-         --  For EW_Abstract and EW_Split types, compare the ada node
+      --  Two types with different kinds cannot be equal
 
+      elsif Get_Type_Kind (Left) /= Get_Type_Kind (Right) then
+         return False;
+
+      --  For EW_Abstract, and EW_Split types, compare the ada node
+
+      elsif Get_Type_Kind (Left) in EW_Abstract | EW_Split then
          pragma Assert (Present (Get_Ada_Node (+Left)));
          pragma Assert (Present (Get_Ada_Node (+Right)));
+
          return Get_Ada_Node (+Left) = Get_Ada_Node (+Right);
       else
-
-         --  For EW_Builtin types or EW_Abstract and EW_Split types with no
-         --  Ada node, compare the names
-
-         declare
-            N1 : constant W_Name_Id := Get_Name (+Left);
-            N2 : constant W_Name_Id := Get_Name (+Right);
-         begin
-            if N1 = N2 then
-               return True;
-            end if;
-            declare
-               M1 : constant W_Module_Id := Get_Module (N1);
-               M2 : constant W_Module_Id := Get_Module (N2);
-            begin
-               if M1 = M2 or else
-                 (M1 /= Why_Empty
-                  and then M2 /= Why_Empty
-                  and then Get_Name (M1) = Get_Name (M2))
-               then
-                  return Get_Symbol (N1) = Get_Symbol (N2);
-               else
-                  return False;
-               end if;
-            end;
-         end;
+         raise Program_Error;
       end if;
    end Eq_Base;
 
@@ -843,6 +821,13 @@ package body Why.Inter is
       end if;
    end EW_Abstract_Shared;
 
+   -------------------
+   -- EW_Fixed_Type --
+   -------------------
+
+   function EW_Fixed_Type (E : Entity_Id) return W_Type_Id is
+      (Get_Fixed_Point_Theory (E).T);
+
    --------------
    -- EW_Split --
    --------------
@@ -900,7 +885,7 @@ package body Why.Inter is
 
       case Ekind (Ty) is
          when Fixed_Point_Kind =>
-            return EW_Fixed_Type;
+            return EW_Fixed_Type (Ty);
 
          when Float_Kind =>
             if Is_Single_Precision_Floating_Point_Type (Etype (Ty)) then
