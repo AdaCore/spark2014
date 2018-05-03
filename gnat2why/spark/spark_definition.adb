@@ -5128,27 +5128,23 @@ package body SPARK_Definition is
 
          --  Subprogram names appear for example in Sub'Result
 
-         when Entry_Kind  |
-              E_Function  |
-              E_Procedure |
-              Named_Kind  |
-              Type_Kind   =>
+         when Entry_Kind
+            | E_Function
+            | E_Procedure
+            | Named_Kind
+            | Type_Kind
+         =>
             if not In_SPARK (E) then
                Mark_Violation (N, From => E);
             end if;
 
-         when E_Void                  |
-              E_Enumeration_Literal   |
-              E_Block                 |
-              Generic_Subprogram_Kind |
-              E_Generic_Package       |
-              E_Label                 |
-              E_Loop                  |
-              E_Return_Statement      |
-              E_Package               |
-              E_Package_Body          |
-              E_Subprogram_Body       |
-              E_Exception             =>
+         when E_Enumeration_Literal =>
+            null;
+
+         --  Loop identifiers appear in the "X'Loop_Entry [(loop_name)]"
+         --  expressions.
+
+         when E_Loop =>
             null;
 
          --  Abstract state entities are passed directly to Mark_Entity
@@ -5156,17 +5152,30 @@ package body SPARK_Definition is
          when E_Abstract_State =>
             raise Program_Error;
 
-         --  ??? how about Protected_Object'Size?
+         --  Entry index is only visible from an entry family spec and body,
+         --  and families are not supported in SPARK (yet), so we should never
+         --  need to mark any entry index.
 
-         when E_Entry_Index_Parameter |
-              E_Protected_Object      |
-              E_Protected_Body        |
-              E_Task_Body             =>
-            Mark_Violation ("tasking", N);
+         when E_Entry_Index_Parameter =>
+            raise Program_Error;
 
-         --  Entities that we do not expect in SPARK
+         --  Identifiers that we do not expect to mark (or that do not appear
+         --  in the backend).
 
-         when E_Operator =>
+         when E_Label
+            | E_Return_Statement
+            | E_Package
+            | E_Exception
+            | E_Block
+            | E_Operator
+            | E_Package_Body
+            | E_Protected_Object
+            | E_Protected_Body
+            | E_Subprogram_Body
+            | E_Task_Body
+            | E_Void
+            | Generic_Unit_Kind
+         =>
             raise Program_Error;
       end case;
    end Mark_Identifier_Or_Expanded_Name;
