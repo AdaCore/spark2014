@@ -5,2962 +5,6 @@
 <prover id="0" name="CVC4" version="1.5-gnatprove" timelimit="60" steplimit="0" memlimit="0"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="10" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/use_ordered_sets.mlw">
-<theory name="Standard__short_short_integer" proved="true">
-</theory>
-<theory name="Standard__short_short_integer__rep" proved="true">
-</theory>
-<theory name="Standard__short_integer" proved="true">
-</theory>
-<theory name="Standard__short_integer__rep" proved="true">
-</theory>
-<theory name="Standard__integer" proved="true">
-</theory>
-<theory name="Standard__integer__rep" proved="true">
-</theory>
-<theory name="Standard__long_integer" proved="true">
-</theory>
-<theory name="Standard__long_integer__rep" proved="true">
-</theory>
-<theory name="Standard__long_long_integer" proved="true">
-</theory>
-<theory name="Standard__long_long_integer__rep" proved="true">
-</theory>
-<theory name="Standard__natural" proved="true">
-</theory>
-<theory name="Standard__natural__rep" proved="true">
-</theory>
-<theory name="Standard__positive" proved="true">
-</theory>
-<theory name="Standard__positive__rep" proved="true">
-</theory>
-<theory name="Standard__short_float" proved="true">
-</theory>
-<theory name="Standard__short_float__rep" proved="true">
-</theory>
-<theory name="Standard__float" proved="true">
-</theory>
-<theory name="Standard__float__rep" proved="true">
-</theory>
-<theory name="Standard__long_float" proved="true">
-</theory>
-<theory name="Standard__long_float__rep" proved="true">
-</theory>
-<theory name="Standard__character" proved="true">
-</theory>
-<theory name="Standard__character__rep" proved="true">
-</theory>
-<theory name="Standard__wide_character" proved="true">
-</theory>
-<theory name="Standard__wide_character__rep" proved="true">
-</theory>
-<theory name="Standard__wide_wide_character" proved="true">
-</theory>
-<theory name="Standard__wide_wide_character__rep" proved="true">
-</theory>
-<theory name="Array__Int__Standard__character" proved="true">
-</theory>
-<theory name="Array__Int__Standard__character__Concat" proved="true">
-</theory>
-<theory name="Array__Int__Standard__character_Comp" proved="true">
-</theory>
-<theory name="Standard__string" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_character" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
-</theory>
-<theory name="Standard__wide_string" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_wide_character" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
-</theory>
-<theory name="Standard__wide_wide_string" proved="true">
-</theory>
-<theory name="Standard__duration" proved="true">
-</theory>
-<theory name="Standard__integer_8" proved="true">
-</theory>
-<theory name="Standard__integer_8__rep" proved="true">
-</theory>
-<theory name="Standard__integer_16" proved="true">
-</theory>
-<theory name="Standard__integer_16__rep" proved="true">
-</theory>
-<theory name="Standard__integer_32" proved="true">
-</theory>
-<theory name="Standard__integer_32__rep" proved="true">
-</theory>
-<theory name="Standard__integer_64" proved="true">
-</theory>
-<theory name="Standard__integer_64__rep" proved="true">
-</theory>
-<theory name="Standard__universal_integer" proved="true">
-</theory>
-<theory name="Standard__universal_integer__rep" proved="true">
-</theory>
-<theory name="Ada__containers__hash_type" proved="true">
-</theory>
-<theory name="Ada__containers__hash_type__rep" proved="true">
-</theory>
-<theory name="Ada__containers__Tcount_typeB" proved="true">
-</theory>
-<theory name="Ada__containers__Tcount_typeB__rep" proved="true">
-</theory>
-<theory name="Ada__containers__count_type" proved="true">
-</theory>
-<theory name="Ada__containers__count_type__rep" proved="true">
-</theory>
-<theory name="System__name" proved="true">
-</theory>
-<theory name="System__name__rep" proved="true">
-</theory>
-<theory name="System__system_name" proved="true">
-</theory>
-<theory name="System__address" proved="true">
-</theory>
-<theory name="System__address__rep" proved="true">
-</theory>
-<theory name="System__null_address" proved="true">
-</theory>
-<theory name="System__Olt__left" proved="true">
-</theory>
-<theory name="System__Olt__left___axiom" proved="true">
-</theory>
-<theory name="System__Olt__right" proved="true">
-</theory>
-<theory name="System__Olt__right___axiom" proved="true">
-</theory>
-<theory name="System__Olt" proved="true">
-</theory>
-<theory name="System__Ole__left" proved="true">
-</theory>
-<theory name="System__Ole__left___axiom" proved="true">
-</theory>
-<theory name="System__Ole__right" proved="true">
-</theory>
-<theory name="System__Ole__right___axiom" proved="true">
-</theory>
-<theory name="System__Ole" proved="true">
-</theory>
-<theory name="System__Ogt__left" proved="true">
-</theory>
-<theory name="System__Ogt__left___axiom" proved="true">
-</theory>
-<theory name="System__Ogt__right" proved="true">
-</theory>
-<theory name="System__Ogt__right___axiom" proved="true">
-</theory>
-<theory name="System__Ogt" proved="true">
-</theory>
-<theory name="System__Oge__left" proved="true">
-</theory>
-<theory name="System__Oge__left___axiom" proved="true">
-</theory>
-<theory name="System__Oge__right" proved="true">
-</theory>
-<theory name="System__Oge__right___axiom" proved="true">
-</theory>
-<theory name="System__Oge" proved="true">
-</theory>
-<theory name="System__Oeq__left" proved="true">
-</theory>
-<theory name="System__Oeq__left___axiom" proved="true">
-</theory>
-<theory name="System__Oeq__right" proved="true">
-</theory>
-<theory name="System__Oeq__right___axiom" proved="true">
-</theory>
-<theory name="System__Oeq" proved="true">
-</theory>
-<theory name="System__bit_order" proved="true">
-</theory>
-<theory name="System__bit_order__rep" proved="true">
-</theory>
-<theory name="System__default_bit_order" proved="true">
-</theory>
-<theory name="System__max_priority" proved="true">
-</theory>
-<theory name="System__max_interrupt_priority" proved="true">
-</theory>
-<theory name="System__any_priority" proved="true">
-</theory>
-<theory name="System__any_priority__rep" proved="true">
-</theory>
-<theory name="System__priority" proved="true">
-</theory>
-<theory name="System__priority__rep" proved="true">
-</theory>
-<theory name="System__interrupt_priority" proved="true">
-</theory>
-<theory name="System__interrupt_priority__rep" proved="true">
-</theory>
-<theory name="System__default_priority" proved="true">
-</theory>
-<theory name="System__backend_divide_checks" proved="true">
-</theory>
-<theory name="System__backend_overflow_checks" proved="true">
-</theory>
-<theory name="System__command_line_args" proved="true">
-</theory>
-<theory name="System__configurable_run_time" proved="true">
-</theory>
-<theory name="System__denorm" proved="true">
-</theory>
-<theory name="System__duration_32_bits" proved="true">
-</theory>
-<theory name="System__exit_status_supported" proved="true">
-</theory>
-<theory name="System__fractional_fixed_ops" proved="true">
-</theory>
-<theory name="System__frontend_layout" proved="true">
-</theory>
-<theory name="System__machine_overflows" proved="true">
-</theory>
-<theory name="System__machine_rounds" proved="true">
-</theory>
-<theory name="System__preallocated_stacks" proved="true">
-</theory>
-<theory name="System__signed_zeros" proved="true">
-</theory>
-<theory name="System__stack_check_default" proved="true">
-</theory>
-<theory name="System__stack_check_probes" proved="true">
-</theory>
-<theory name="System__stack_check_limits" proved="true">
-</theory>
-<theory name="System__support_aggregates" proved="true">
-</theory>
-<theory name="System__support_atomic_primitives" proved="true">
-</theory>
-<theory name="System__support_composite_assign" proved="true">
-</theory>
-<theory name="System__support_composite_compare" proved="true">
-</theory>
-<theory name="System__support_long_shifts" proved="true">
-</theory>
-<theory name="System__always_compatible_rep" proved="true">
-</theory>
-<theory name="System__suppress_standard_library" proved="true">
-</theory>
-<theory name="System__use_ada_main_program_name" proved="true">
-</theory>
-<theory name="System__frontend_exceptions" proved="true">
-</theory>
-<theory name="System__zcx_by_default" proved="true">
-</theory>
-<theory name="System__finalization_root__root_controlled__rep" proved="true">
-</theory>
-<theory name="System__finalization_root__root_controlled" proved="true">
-</theory>
-<theory name="Ada__finalization__controlled" proved="true">
-</theory>
-<theory name="Ada__finalization__limited_controlled" proved="true">
-</theory>
-<theory name="System__atomic_counters__atomic_unsigned" proved="true">
-</theory>
-<theory name="System__atomic_counters__atomic_unsigned__rep" proved="true">
-</theory>
-<theory name="System__atomic_counters__atomic_counter__rep" proved="true">
-</theory>
-<theory name="System__atomic_counters__atomic_counter" proved="true">
-</theory>
-<theory name="System__atomic_counters__is_one__item" proved="true">
-</theory>
-<theory name="System__atomic_counters__is_one__item___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__is_one" proved="true">
-</theory>
-<theory name="Ada__containers__helpers__tamper_counts__rep" proved="true">
-</theory>
-<theory name="Ada__containers__helpers__tamper_counts" proved="true">
-</theory>
-<theory name="Ada__containers__red_black_trees__color_type" proved="true">
-</theory>
-<theory name="Ada__containers__red_black_trees__color_type__rep" proved="true">
-</theory>
-<theory name="Ada__streams__root_stream_type__rep" proved="true">
-</theory>
-<theory name="Ada__streams__root_stream_type" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element__rep" proved="true">
-</theory>
-<theory name="Ada__streams__Tstream_element_offsetB" proved="true">
-</theory>
-<theory name="Ada__streams__Tstream_element_offsetB__rep" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element_offset" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element_offset__rep" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element_count" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element_count__rep" proved="true">
-</theory>
-<theory name="Array__Int__Ada__streams__stream_element" proved="true">
-</theory>
-<theory name="Array__Int__Ada__streams__stream_element__Concat" proved="true">
-</theory>
-<theory name="Array__Int__Ada__streams__stream_element_Comp" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element_array" proved="true">
-</theory>
-<theory name="Ada__streams__write__item" proved="true">
-</theory>
-<theory name="Ada__streams__write__item___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__write_sea__v" proved="true">
-</theory>
-<theory name="Ada__streams__write_sea__v___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element_arraySW__v" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element_arraySW__v___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__Telement_typeB" proved="true">
-</theory>
-<theory name="Use_ordered_sets__Telement_typeB__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__element_type" proved="true">
-</theory>
-<theory name="Use_ordered_sets__element_type__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_type" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_type__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_elements__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_elements__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_elements__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_elements__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Olt__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Olt__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Olt__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Olt__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Olt" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_elements" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__cursor__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__cursor" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__no_element" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__length__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__length__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__length" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positive_count_type" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positive_count_type__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__element_type" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__element_type__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__enable_handling_of_equivalence" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__set__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__set" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__contains__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__contains__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__contains__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__contains__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__private_key__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__private_key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_first__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_first__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_first" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_next__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_next__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_next__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_next__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_has_element__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_has_element__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_has_element__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_has_element__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_has_element" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_next" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_element__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_element__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_element__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_element__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_element" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__contains__L26s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__contains__L26s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__contains" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__length__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__length__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__length" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Ole__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Ole__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Ole__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Ole__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Ole__L27s__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Ole__L27s__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Ole" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Oeq__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Oeq__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Oeq__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Oeq__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Oeq" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_empty__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_empty__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_empty__L28s__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_empty__L28s__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_empty" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except__L29s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except__L29s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection__L30s__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection__L30s__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union__L31s__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union__L31s__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_singleton__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_singleton__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_singleton__new_item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_singleton__new_item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_singleton__L32s__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_singleton__L32s__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_singleton" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both__L33s__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both__L33s__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__no_overlap__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__no_overlap__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__no_overlap__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__no_overlap__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__no_overlap__L34s__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__no_overlap__L34s__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__no_overlap" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__num_overlaps__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__num_overlaps__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__num_overlaps__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__num_overlaps__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__intersection__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__intersection__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__intersection__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__intersection__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__intersection" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__num_overlaps" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__add__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__add__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__add__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__add__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__add" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__remove__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__remove__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__remove__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__remove__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__remove" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__union__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__union__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__union__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__union__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__union" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__index_type" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__index_type__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__element_type" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__element_type__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__extended_index" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__extended_index__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__sequence__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__sequence" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__length__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__length__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__length" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__get__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__get__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__get__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__get__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__last__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__last__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__last" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__get" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__first" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Oeq__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Oeq__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Oeq__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Oeq__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Oeq__L85s__T86s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Oeq" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Olt__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Olt__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Olt__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Olt__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Olt__L87s__T88s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Olt" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Ole__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Ole__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Ole__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Ole__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Ole__L89s__T90s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Ole" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__fst" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__fst___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__lst" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__lst___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__L91s__T92s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__fst" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__fst___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__lst" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__lst___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__L93s__T94s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__L95s__T96s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__x" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__x___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__y" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__y___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__L97s__T98s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__fst" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__fst___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__lst" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__lst___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__L99s__T100s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__fst" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__fst___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__lst" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__lst___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__offset" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__offset___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__L101s__T102s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__L103s__T104s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__set__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__set__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__set__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__set__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__set__new_item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__set__new_item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__set" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__new_item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__new_item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__2__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__2__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__2__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__2__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__2__new_item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__2__new_item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__remove__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__remove__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__remove__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__remove__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__remove" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_first__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_first__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_first" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_has_element__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_has_element__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_has_element__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_has_element__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_has_element" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_next__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_next__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_next__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_next__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_next" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__fst" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__fst___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__lst" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__lst___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__L182s__T183s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__fst" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__fst___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__lst" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__lst___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__L184s__T185s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_is_find__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_is_find__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_is_find__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_is_find__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_is_find__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_is_find__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_is_find" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__find__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__find__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__find__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__find__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__find" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__L186s__T187s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__model" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__model___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__L188s__T189s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__model" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__model___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__L190s__T191s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_type" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_type" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_type__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__enable_handling_of_equivalence" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__map__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__map" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_key__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_key__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_key__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_key__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__private_key__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__private_key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_first__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_first__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_first" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_next__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_next__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_next__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_next__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_has_element__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_has_element__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_has_element__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_has_element__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_has_element" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_next" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_element__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_element__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_element__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_element__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_element" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_key__L148s__k" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_key__L148s__k___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__get__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__get__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__get__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__get__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__witness__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__witness__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__witness__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__witness__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_witness__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_witness__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_witness__witness" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_witness__witness___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_witness" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__witness" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__w_get__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__w_get__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__w_get__witness" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__w_get__witness___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__w_get" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__get__L149s__k" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__get__L149s__k___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__get" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__length__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__length__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__length" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Ole__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Ole__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Ole__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Ole__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Ole__L150s__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Ole__L150s__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Ole" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Oeq__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Oeq__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Oeq__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Oeq__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Oeq__L151s__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Oeq__L151s__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Oeq__L152s__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Oeq__L152s__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Oeq" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__is_empty__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__is_empty__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__is_empty__L153s__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__is_empty__L153s__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__is_empty" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included__L154s__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included__L154s__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__same_keys__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__same_keys__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__same_keys__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__same_keys__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__same_keys" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__new_key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__new_key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__L155s__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__L155s__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2__x" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2__x___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2__y" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2__y___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2__L156s__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2__L156s__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__new_key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__new_key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__L157s__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__L157s__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2__x" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2__x___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2__y" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2__y___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2__L158s__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2__L158s__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__add__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__add__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__add__new_key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__add__new_key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__add__new_item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__add__new_item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__add" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__set__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__set__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__set__key" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__set__key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__set__new_item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__set__new_item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__set" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__small" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__small___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__big" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__big___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__cut" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__cut___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__count" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__count___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__L192s__i" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__L192s__i___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__L193s__i" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted__L193s__i___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__e_left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__e_left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__e_right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__e_right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__p_left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__p_left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__p_right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__p_right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__L194s__c" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved__L194s__c___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__e_left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__e_left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__e_right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__e_right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__p_left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__p_left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__p_right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__p_right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__L195s__c" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except__L195s__c___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__model__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__model__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__model" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements__L196s__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements__L196s__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements__L197s__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements__L197s__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements__L198s__T199s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positions__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positions__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positions__L200s__i" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positions__L200s__i___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positions__L200s__L201s__j" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positions__L200s__L201s__j___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positions" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__lift_abstraction_level__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__lift_abstraction_level__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__lift_abstraction_level__L202s__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__lift_abstraction_level__L202s__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__lift_abstraction_level__L202s__L203s__i" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__lift_abstraction_level__L202s__L203s__i___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__empty_set" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__empty_set___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Oeq__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Oeq__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Oeq__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Oeq__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Oeq" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__to_set__new_item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__to_set__new_item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__to_set" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_empty__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_empty__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_empty" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__source" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__source___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__copy__source" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__copy__source___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__copy__capacity" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__copy__capacity___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__copy" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__has_element__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__has_element__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__has_element__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__has_element__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__has_element" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__new_item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__new_item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__new_item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__new_item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__contains__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__contains__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__contains__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__contains__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__contains" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__2__new_item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__2__new_item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__include__new_item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__include__new_item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace__new_item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace__new_item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__exclude__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__exclude__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__first_element__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__first_element__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__first_element" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__last_element__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__last_element__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__last_element" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union__source" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union__source___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection__2__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection__2__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection__2__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection__2__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union__2__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union__2__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union__2__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union__2__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection__source" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection__source___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference__source" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference__source___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference__2__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference__2__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference__2__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference__2__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__source" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__source___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__2__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__2__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__2__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__2__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__overlap__left" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__overlap__left___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__overlap__right" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__overlap__right___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__overlap" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_subset__subset" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_subset__subset___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_subset__of_set" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_subset__of_set___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_subset" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__first__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__first__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__first" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__last__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__last__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__last" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__next__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__next__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__next__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__next__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__next" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__next__2__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__next__2__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous__2__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous__2__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__find__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__find__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__find__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__find__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__find" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__floor__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__floor__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__floor__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__floor__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__floor" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__ceiling__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__ceiling__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__ceiling__item" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__ceiling__item___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__ceiling" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_contains__s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_contains__s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_contains__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_contains__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_contains" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find" proved="true">
-</theory>
-<theory name="Use_ordered_sets__f__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__f__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__f" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L332s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L332s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L333s__g" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L333s__g___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L333s__L334s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L333s__L334s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__s1" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__s1___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__s2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__s2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__s1" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__s1___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__s2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__s2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__L335s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__L335s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__prop__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__prop__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__prop" proved="true">
-</theory>
-<theory name="Use_ordered_sets__union_prop__s2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__union_prop__s2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__union_prop__L336s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__union_prop__L336s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__union_prop__L337s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__union_prop__L337s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__union_prop__L338s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__union_prop__L338s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L339s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L339s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L340s__T341s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__insert_count__L342s__T343s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__insert_count__L342s__T343s__rep" proved="true">
-</theory>
-<theory name="Use_ordered_sets__insert_count__L344s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__insert_count__L344s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__q__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__q__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__q" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_model__s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_model__s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_model__L345s__T346s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_model__L347s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_model__L347s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_elements__s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_elements__s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_elements__L348s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_elements__L348s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_elements__L349s__T350s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_cursors__s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_cursors__s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_cursors__L351s__T352s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_cursors__L353s__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_cursors__L353s__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_elements__s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_elements__s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_elements__L354s__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_elements__L354s__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_elements__L355s__T356s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_cursors__s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_cursors__s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_cursors__L357s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_cursors__L357s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_cursors__L358s__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_cursors__L358s__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_model__s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_model__s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_model__L359s__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_model__L359s__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_model__L360s__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_model__L360s__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__sequenceDefault_Initial_Condition___object" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__sequenceDefault_Initial_Condition___object___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__setDefault_Initial_Condition___object" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__setDefault_Initial_Condition___object___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__setDefault_Initial_Condition___object" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__setDefault_Initial_Condition___object___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__mapDefault_Initial_Condition___object" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__mapDefault_Initial_Condition___object___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__L_1__L3b__T4b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__L_1__L1b__T2b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2__L9b__T10b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2__L7b__T8b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2__L14b__g" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2__L14b__g___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2__L14b__L15b__T16b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2__L11b__L12b__T13b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__L_3__L19b__T20b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__L_3__L17b__T18b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__L_4__L25b__T26b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__L_4__L23b__T24b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__L_6__L31b__T32b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__L_6__L29b__T30b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__L_6__L35b__T36b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__L_6__L33b__T34b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7__L39b__T40b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7__L37b__T38b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7__L44b__e" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7__L44b__e___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7__L44b__L45b__T46b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7__L41b__L42b__T43b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__L_8__L49b__T50b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__L_8__L47b__T48b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L53b__T54b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L51b__T52b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L57b__T58b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L55b__T56b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L61b__T62b" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L59b__T60b" proved="true">
-</theory>
-<theory name="System__finalization_root__adjust__object" proved="true">
-</theory>
-<theory name="System__finalization_root__adjust__object___axiom" proved="true">
-</theory>
-<theory name="System__finalization_root__finalize__object" proved="true">
-</theory>
-<theory name="System__finalization_root__finalize__object___axiom" proved="true">
-</theory>
-<theory name="System__finalization_root__initialize__object" proved="true">
-</theory>
-<theory name="System__finalization_root__initialize__object___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__initialize__object" proved="true">
-</theory>
-<theory name="Ada__finalization__initialize__object___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__adjust__object" proved="true">
-</theory>
-<theory name="Ada__finalization__adjust__object___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__finalize__object" proved="true">
-</theory>
-<theory name="Ada__finalization__finalize__object___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__initialize__2__object" proved="true">
-</theory>
-<theory name="Ada__finalization__initialize__2__object___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__finalize__2__object" proved="true">
-</theory>
-<theory name="Ada__finalization__finalize__2__object___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__increment__item" proved="true">
-</theory>
-<theory name="System__atomic_counters__increment__item___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__decrement__item" proved="true">
-</theory>
-<theory name="System__atomic_counters__decrement__item___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__initialize__item" proved="true">
-</theory>
-<theory name="System__atomic_counters__initialize__item___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__increment__2__item" proved="true">
-</theory>
-<theory name="System__atomic_counters__increment__2__item___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__decrement__2__item" proved="true">
-</theory>
-<theory name="System__atomic_counters__decrement__2__item___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__decrement__3__item" proved="true">
-</theory>
-<theory name="System__atomic_counters__decrement__3__item___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__Oadd__left" proved="true">
-</theory>
-<theory name="System__atomic_counters__Oadd__left___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__Oadd__right" proved="true">
-</theory>
-<theory name="System__atomic_counters__Oadd__right___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__Osubtract__left" proved="true">
-</theory>
-<theory name="System__atomic_counters__Osubtract__left___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__Osubtract__right" proved="true">
-</theory>
-<theory name="System__atomic_counters__Osubtract__right___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__read__stream" proved="true">
-</theory>
-<theory name="Ada__streams__read__stream___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__read__item" proved="true">
-</theory>
-<theory name="Ada__streams__read__item___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__read__last" proved="true">
-</theory>
-<theory name="Ada__streams__read__last___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__write__stream" proved="true">
-</theory>
-<theory name="Ada__streams__write__stream___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__read_sea__v" proved="true">
-</theory>
-<theory name="Ada__streams__read_sea__v___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element_arraySR__v" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element_arraySR__v___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__clear__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__clear__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__target" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign__target___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__move__target" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__move__target___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__move__source" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__move__source___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__inserted" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__inserted___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__2__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__2__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__include__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__include__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__exclude__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__exclude__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete__2__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete__2__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete__2__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete__2__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete_first__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete_first__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete_last__container" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete_last__container___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union__target" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union__target___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection__target" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection__target___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference__target" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference__target___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__target" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__target___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__next__2__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__next__2__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous__2__position" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous__2__position___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__r" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__r___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__union_prop__s1" proved="true">
-</theory>
-<theory name="Use_ordered_sets__union_prop__s1___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move__s1" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move__s1___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move__s2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move__s2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__s1" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__s1___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__s2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__s2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__s1" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__s1___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__s2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__s2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__s1" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__s1___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__s2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__s2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__insert_count__s" proved="true">
-</theory>
-<theory name="Use_ordered_sets__insert_count__s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__cu" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__cu___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__n" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__n___axiom" proved="true">
-</theory>
-<theory name="Standard__short_short_integer___axiom" proved="true">
-</theory>
-<theory name="Standard__short_integer___axiom" proved="true">
-</theory>
-<theory name="Standard__integer___axiom" proved="true">
-</theory>
-<theory name="Standard__long_integer___axiom" proved="true">
-</theory>
-<theory name="Standard__long_long_integer___axiom" proved="true">
-</theory>
-<theory name="Standard__natural___axiom" proved="true">
-</theory>
-<theory name="Standard__positive___axiom" proved="true">
-</theory>
-<theory name="Standard__short_float___axiom" proved="true">
-</theory>
-<theory name="Standard__float___axiom" proved="true">
-</theory>
-<theory name="Standard__long_float___axiom" proved="true">
-</theory>
-<theory name="Standard__character___axiom" proved="true">
-</theory>
-<theory name="Standard__wide_character___axiom" proved="true">
-</theory>
-<theory name="Standard__wide_wide_character___axiom" proved="true">
-</theory>
-<theory name="Standard__string___axiom" proved="true">
-</theory>
-<theory name="Standard__wide_string___axiom" proved="true">
-</theory>
-<theory name="Standard__wide_wide_string___axiom" proved="true">
-</theory>
-<theory name="Standard__duration___axiom" proved="true">
-</theory>
-<theory name="Standard__integer_8___axiom" proved="true">
-</theory>
-<theory name="Standard__integer_16___axiom" proved="true">
-</theory>
-<theory name="Standard__integer_32___axiom" proved="true">
-</theory>
-<theory name="Standard__integer_64___axiom" proved="true">
-</theory>
-<theory name="Standard__universal_integer___axiom" proved="true">
-</theory>
-<theory name="System__finalization_root__adjust" proved="true">
-</theory>
-<theory name="System__finalization_root__finalize" proved="true">
-</theory>
-<theory name="System__finalization_root__initialize" proved="true">
-</theory>
-<theory name="Ada__finalization__initialize" proved="true">
-</theory>
-<theory name="Ada__finalization__adjust" proved="true">
-</theory>
-<theory name="Ada__finalization__finalize" proved="true">
-</theory>
-<theory name="Ada__finalization__initialize__2" proved="true">
-</theory>
-<theory name="Ada__finalization__finalize__2" proved="true">
-</theory>
-<theory name="System__atomic_counters__increment" proved="true">
-</theory>
-<theory name="System__atomic_counters__initialize" proved="true">
-</theory>
-<theory name="System__atomic_counters__increment__2" proved="true">
-</theory>
-<theory name="System__atomic_counters__decrement__3" proved="true">
-</theory>
-<theory name="Ada__streams__read" proved="true">
-</theory>
-<theory name="Ada__streams__write" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__lift_abstraction_level" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__clear" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__move" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__include" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__exclude" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete_first" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete_last" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__next__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous__2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f" proved="true">
-</theory>
-<theory name="Use_ordered_sets__union_prop" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size" proved="true">
-</theory>
-<theory name="Use_ordered_sets__insert_count" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_model" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_elements" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_cursors" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_elements" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_cursors" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_model" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__L_1" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__L_1___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__L_3" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__L_3___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__L_4" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__L_4___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move__L_5" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move__L_5___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__L_6" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__L_6___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__L_8" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__L_8___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9___axiom" proved="true">
-</theory>
-<theory name="Ada__containers__hash_type___axiom" proved="true">
-</theory>
-<theory name="Ada__containers__Tcount_typeB___axiom" proved="true">
-</theory>
-<theory name="Ada__containers__count_type___axiom" proved="true">
-</theory>
-<theory name="System__name___axiom" proved="true">
-</theory>
-<theory name="System__address___axiom" proved="true">
-</theory>
-<theory name="System__bit_order___axiom" proved="true">
-</theory>
-<theory name="System__any_priority___axiom" proved="true">
-</theory>
-<theory name="System__priority___axiom" proved="true">
-</theory>
-<theory name="System__interrupt_priority___axiom" proved="true">
-</theory>
-<theory name="System__finalization_root__root_controlled___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__controlled___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__limited_controlled___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__atomic_unsigned___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__atomic_counter___axiom" proved="true">
-</theory>
-<theory name="Ada__containers__helpers__tamper_counts___axiom" proved="true">
-</theory>
-<theory name="Ada__containers__red_black_trees__color_type___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__root_stream_type___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__Tstream_element_offsetB___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element_offset___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element_count___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__stream_element_array___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__Telement_typeB___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__element_type___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element_type___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__set___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__cursor___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positive_count_type___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__element_type___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__set___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__private_key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__index_type___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__element_type___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__extended_index___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__sequence___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Oeq__L85s__T86s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Olt__L87s__T88s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Ole__L89s__T90s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains__L91s__T92s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range__L93s__T94s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__L95s__T96s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2__L97s__T98s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal__L99s__T100s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__L101s__T102s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted__L103s__T104s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range__L182s__T183s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range__L184s__T185s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__L186s__T187s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2__L188s__T189s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3__L190s__T191s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__key_type___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__element_type___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__map___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__private_key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements__L198s__T199s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L340s__T341s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__insert_count__L342s__T343s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_model__L345s__T346s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_elements__L349s__T350s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_cursors__L351s__T352s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_elements__L355s__T356s___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__L_1__L3b__T4b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find__L_1__L1b__T2b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2__L9b__T10b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2__L7b__T8b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2__L14b__L15b__T16b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f__L_2__L11b__L12b__T13b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__L_3__L19b__T20b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint__L_3__L17b__T18b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__L_4__L25b__T26b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2__L_4__L23b__T24b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__L_6__L31b__T32b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__L_6__L29b__T30b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__L_6__L35b__T36b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2__L_6__L33b__T34b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7__L39b__T40b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7__L37b__T38b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7__L44b__L45b__T46b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3__L_7__L41b__L42b__T43b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__L_8__L49b__T50b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4__L_8__L47b__T48b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L53b__T54b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L51b__T52b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L57b__T58b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L55b__T56b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L61b__T62b___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size__L_9__L59b__T60b___axiom" proved="true">
-</theory>
-<theory name="System__system_name___axiom" proved="true">
-</theory>
-<theory name="System__default_bit_order___axiom" proved="true">
-</theory>
-<theory name="System__max_priority___axiom" proved="true">
-</theory>
-<theory name="System__max_interrupt_priority___axiom" proved="true">
-</theory>
-<theory name="System__default_priority___axiom" proved="true">
-</theory>
-<theory name="System__null_address___axiom" proved="true">
-</theory>
-<theory name="System__backend_divide_checks___axiom" proved="true">
-</theory>
-<theory name="System__backend_overflow_checks___axiom" proved="true">
-</theory>
-<theory name="System__command_line_args___axiom" proved="true">
-</theory>
-<theory name="System__configurable_run_time___axiom" proved="true">
-</theory>
-<theory name="System__denorm___axiom" proved="true">
-</theory>
-<theory name="System__duration_32_bits___axiom" proved="true">
-</theory>
-<theory name="System__exit_status_supported___axiom" proved="true">
-</theory>
-<theory name="System__fractional_fixed_ops___axiom" proved="true">
-</theory>
-<theory name="System__frontend_layout___axiom" proved="true">
-</theory>
-<theory name="System__machine_overflows___axiom" proved="true">
-</theory>
-<theory name="System__machine_rounds___axiom" proved="true">
-</theory>
-<theory name="System__preallocated_stacks___axiom" proved="true">
-</theory>
-<theory name="System__signed_zeros___axiom" proved="true">
-</theory>
-<theory name="System__stack_check_default___axiom" proved="true">
-</theory>
-<theory name="System__stack_check_probes___axiom" proved="true">
-</theory>
-<theory name="System__stack_check_limits___axiom" proved="true">
-</theory>
-<theory name="System__support_aggregates___axiom" proved="true">
-</theory>
-<theory name="System__support_atomic_primitives___axiom" proved="true">
-</theory>
-<theory name="System__support_composite_assign___axiom" proved="true">
-</theory>
-<theory name="System__support_composite_compare___axiom" proved="true">
-</theory>
-<theory name="System__support_long_shifts___axiom" proved="true">
-</theory>
-<theory name="System__always_compatible_rep___axiom" proved="true">
-</theory>
-<theory name="System__suppress_standard_library___axiom" proved="true">
-</theory>
-<theory name="System__use_ada_main_program_name___axiom" proved="true">
-</theory>
-<theory name="System__frontend_exceptions___axiom" proved="true">
-</theory>
-<theory name="System__zcx_by_default___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__no_element___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__enable_handling_of_equivalence___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__enable_handling_of_equivalence___axiom" proved="true">
-</theory>
-<theory name="System__Olt___axiom" proved="true">
-</theory>
-<theory name="System__Ole___axiom" proved="true">
-</theory>
-<theory name="System__Ogt___axiom" proved="true">
-</theory>
-<theory name="System__Oge___axiom" proved="true">
-</theory>
-<theory name="System__Oeq___axiom" proved="true">
-</theory>
-<theory name="System__finalization_root__adjust___axiom" proved="true">
-</theory>
-<theory name="System__finalization_root__finalize___axiom" proved="true">
-</theory>
-<theory name="System__finalization_root__initialize___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__initialize___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__adjust___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__finalize___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__initialize__2___axiom" proved="true">
-</theory>
-<theory name="Ada__finalization__finalize__2___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__increment___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__is_one___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__initialize___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__increment__2___axiom" proved="true">
-</theory>
-<theory name="System__atomic_counters__decrement__3___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__read___axiom" proved="true">
-</theory>
-<theory name="Ada__streams__write___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Olt___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_elements___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__length___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_first___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_has_element___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_next___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__iter_element___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__contains___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__length___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Ole___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__Oeq___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_empty___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_except___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__includes_intersection___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__included_in_union___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__is_singleton___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__not_in_both___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__no_overlap___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__intersection___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__num_overlaps___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__add___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__remove___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__m__union___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__length___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__last___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__get___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__first___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Oeq___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Olt___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__Ole___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__contains___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__constant_range___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__equal_except__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_equal___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__range_shifted___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__set___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__add__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__remove___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_first___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_has_element___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e__iter_next___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_bigger_than_range___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_smaller_than_range___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_is_find___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__find___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__e_elements_included__3___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_first___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_has_element___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_next___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__iter_element___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_key___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__has_witness___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__witness___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__w_get___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__get___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__length___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Ole___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__Oeq___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__is_empty___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__same_keys___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__keys_included_except__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__elements_equal_except__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__add___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p__set___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__p_positions_shifted___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__mapping_preserved_except___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__model___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__elements___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__positions___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__formal_model__lift_abstraction_level___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__Oeq___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__equivalent_sets___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__to_set___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_empty___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__clear___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__assign___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__copy___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__has_element___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__element___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace_element___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__move___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__contains___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__insert__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__include___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__replace___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__exclude___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__first_element___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete_first___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__last_element___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__delete_last___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__union__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__intersection___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__difference__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__symmetric_difference__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__overlap___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__is_subset___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__first___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__last___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__next___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__next__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__previous__2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__find___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__floor___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_sets__ceiling___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_contains___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__my_find___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__f___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__apply_f___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__are_disjoint_2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__prop___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__union_prop___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_2___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_3___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__move_4___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__double_size___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__insert_count___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__q___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_model___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_elements___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_elements_to_cursors___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_elements___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_model_to_cursors___axiom" proved="true">
-</theory>
-<theory name="Use_ordered_sets__from_cursors_to_model___axiom" proved="true">
-</theory>
 <theory name="Use_ordered_sets__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
@@ -3673,10 +717,10 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="21813"/></proof>
+  <proof prover="1"><result status="valid" steps="21513"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="27007"/></proof>
+  <proof prover="1"><result status="valid" steps="26692"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3685,7 +729,7 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="15689"/></proof>
+  <proof prover="1"><result status="valid" steps="15389"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3712,13 +756,13 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="26933"/></proof>
+  <proof prover="1"><result status="valid" steps="26618"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="28513"/></proof>
+  <proof prover="1"><result status="valid" steps="28198"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="29569"/></proof>
+  <proof prover="1"><result status="valid" steps="29254"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3727,7 +771,7 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="15689"/></proof>
+  <proof prover="1"><result status="valid" steps="15389"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3760,7 +804,7 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="22217"/></proof>
+  <proof prover="1"><result status="valid" steps="21904"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3769,7 +813,7 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="22221"/></proof>
+  <proof prover="1"><result status="valid" steps="21908"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3778,7 +822,7 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="21909"/></proof>
+  <proof prover="1"><result status="valid" steps="21596"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3787,7 +831,7 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="21913"/></proof>
+  <proof prover="1"><result status="valid" steps="21600"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3802,7 +846,7 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="17907"/></proof>
+  <proof prover="1"><result status="valid" steps="17275"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3811,7 +855,7 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="17947"/></proof>
+  <proof prover="1"><result status="valid" steps="17315"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3820,10 +864,10 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="6733"/></proof>
+  <proof prover="1"><result status="valid" steps="6549"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="25189"/></proof>
+  <proof prover="1"><result status="valid" steps="24553"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3832,28 +876,28 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="28976"/></proof>
+  <proof prover="1"><result status="valid" steps="28340"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="26763"/></proof>
+  <proof prover="1"><result status="valid" steps="26131"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="8848"/></proof>
+  <proof prover="1"><result status="valid" steps="8664"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="33127"/></proof>
+  <proof prover="1"><result status="valid" steps="32491"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="2353"/></proof>
+  <proof prover="1"><result status="valid" steps="2285"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="2431"/></proof>
+  <proof prover="1"><result status="valid" steps="2363"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="37205"/></proof>
+  <proof prover="1"><result status="valid" steps="36569"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="47640"/></proof>
+  <proof prover="1"><result status="valid" steps="45555"/></proof>
   </goal>
  </transf>
  </goal>
@@ -3871,13 +915,13 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="34791"/></proof>
+  <proof prover="1"><result status="valid" steps="34155"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="37284"/></proof>
+  <proof prover="1"><result status="valid" steps="36648"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="35338"/></proof>
+  <proof prover="1"><result status="valid" steps="34702"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="0"><result status="unknown" steps="456"/></proof>
@@ -3888,21 +932,21 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="10460"/></proof>
+  <proof prover="1"><result status="valid" steps="10276"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
   <proof prover="0"><result status="unknown" steps="453"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="2790"/></proof>
+  <proof prover="1"><result status="valid" steps="2722"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
   <proof prover="0"><result status="unknown" steps="1044"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="10740"/></proof>
+  <proof prover="1"><result status="valid" steps="10556"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
   <proof prover="0"><result status="unknown" steps="1040"/></proof>
@@ -3921,49 +965,49 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="51941"/></proof>
+  <proof prover="1"><result status="valid" steps="51304"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="77510"/></proof>
+  <proof prover="1"><result status="valid" steps="112279"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="65842"/></proof>
+  <proof prover="1"><result status="valid" steps="76513"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="3457"/></proof>
+  <proof prover="1"><result status="valid" steps="3389"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="3757"/></proof>
+  <proof prover="1"><result status="valid" steps="3689"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="45647"/></proof>
+  <proof prover="1"><result status="valid" steps="45015"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="45695"/></proof>
+  <proof prover="1"><result status="valid" steps="45063"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="3831"/></proof>
+  <proof prover="1"><result status="valid" steps="3763"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="4111"/></proof>
+  <proof prover="1"><result status="valid" steps="4043"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="49342"/></proof>
+  <proof prover="1"><result status="valid" steps="48710"/></proof>
   </goal>
   <goal name="WP_parameter def.24" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="49390"/></proof>
+  <proof prover="1"><result status="valid" steps="48758"/></proof>
   </goal>
   <goal name="WP_parameter def.25" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="3937"/></proof>
+  <proof prover="1"><result status="valid" steps="3869"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="4217"/></proof>
+  <proof prover="1"><result status="valid" steps="4149"/></proof>
   </goal>
   <goal name="WP_parameter def.27" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="51106"/></proof>
+  <proof prover="1"><result status="valid" steps="50474"/></proof>
   </goal>
   <goal name="WP_parameter def.28" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="51154"/></proof>
+  <proof prover="1"><result status="valid" steps="50522"/></proof>
   </goal>
   <goal name="WP_parameter def.29" expl="postcondition">
   <proof prover="0"><result status="timeout"/></proof>
@@ -3998,31 +1042,31 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="29729"/></proof>
+  <proof prover="1"><result status="valid" steps="29093"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="27349"/></proof>
+  <proof prover="1"><result status="valid" steps="26717"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="8722"/></proof>
+  <proof prover="1"><result status="valid" steps="8538"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="33522"/></proof>
+  <proof prover="1"><result status="valid" steps="32886"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="2281"/></proof>
+  <proof prover="1"><result status="valid" steps="2213"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="2360"/></proof>
+  <proof prover="1"><result status="valid" steps="2292"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="34820"/></proof>
+  <proof prover="1"><result status="valid" steps="34190"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="60046"/></proof>
+  <proof prover="1"><result status="valid" steps="46328"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="35115"/></proof>
+  <proof prover="1"><result status="valid" steps="34479"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4031,34 +1075,34 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="27476"/></proof>
+  <proof prover="1"><result status="valid" steps="26840"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="25102"/></proof>
+  <proof prover="1"><result status="valid" steps="24470"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="8354"/></proof>
+  <proof prover="1"><result status="valid" steps="8170"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="31269"/></proof>
+  <proof prover="1"><result status="valid" steps="30633"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="2183"/></proof>
+  <proof prover="1"><result status="valid" steps="2115"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="2262"/></proof>
+  <proof prover="1"><result status="valid" steps="2194"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="32569"/></proof>
+  <proof prover="1"><result status="valid" steps="32127"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="2571"/></proof>
+  <proof prover="1"><result status="valid" steps="2503"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="77069"/></proof>
+  <proof prover="1"><result status="valid" steps="82052"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="31349"/></proof>
+  <proof prover="1"><result status="valid" steps="30713"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4073,49 +1117,49 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="30366"/></proof>
+  <proof prover="1"><result status="valid" steps="30066"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="2484"/></proof>
+  <proof prover="1"><result status="valid" steps="2452"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="2766"/></proof>
+  <proof prover="1"><result status="valid" steps="2734"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="34894"/></proof>
+  <proof prover="1"><result status="valid" steps="34581"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="34942"/></proof>
+  <proof prover="1"><result status="valid" steps="34629"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="2884"/></proof>
+  <proof prover="1"><result status="valid" steps="2852"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="3178"/></proof>
+  <proof prover="1"><result status="valid" steps="3146"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="39401"/></proof>
+  <proof prover="1"><result status="valid" steps="39088"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="39449"/></proof>
+  <proof prover="1"><result status="valid" steps="39136"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="32049"/></proof>
+  <proof prover="1"><result status="valid" steps="31749"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="2915"/></proof>
+  <proof prover="1"><result status="valid" steps="2883"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="3215"/></proof>
+  <proof prover="1"><result status="valid" steps="3183"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="38937"/></proof>
+  <proof prover="1"><result status="valid" steps="38624"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="38985"/></proof>
+  <proof prover="1"><result status="valid" steps="38672"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="44072"/></proof>
+  <proof prover="1"><result status="valid" steps="43757"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4124,22 +1168,22 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="2526"/></proof>
+  <proof prover="1"><result status="valid" steps="2458"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="34778"/></proof>
+  <proof prover="1"><result status="valid" steps="34142"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="34372"/></proof>
+  <proof prover="1"><result status="valid" steps="33736"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="34382"/></proof>
+  <proof prover="1"><result status="valid" steps="33746"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="35526"/></proof>
+  <proof prover="1"><result status="valid" steps="34890"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="36778"/></proof>
+  <proof prover="1"><result status="valid" steps="36142"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
   <proof prover="0"><result status="unknown" steps="528"/></proof>
@@ -4162,13 +1206,13 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="53801"/></proof>
+  <proof prover="1"><result status="valid" steps="53165"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="72563"/></proof>
+  <proof prover="1"><result status="valid" steps="72020"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="98345"/></proof>
+  <proof prover="1"><result status="valid" steps="97709"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="postcondition">
   <proof prover="0"><result status="timeout"/></proof>
@@ -4180,12 +1224,12 @@
    </goal>
    <goal name="WP_parameter def.14.1" expl="postcondition" proved="true">
    <proof prover="0"><result status="unknown" steps="354"/></proof>
-   <proof prover="1" timelimit="60"><result status="valid" steps="53413"/></proof>
+   <proof prover="1" timelimit="60"><result status="valid" steps="50440"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="WP_parameter def.15" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="48689"/></proof>
+  <proof prover="1"><result status="valid" steps="48053"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4194,50 +1238,50 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="31925"/></proof>
+  <proof prover="1"><result status="valid" steps="31289"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="2422"/></proof>
+  <proof prover="1"><result status="valid" steps="2354"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="31151"/></proof>
+  <proof prover="1"><result status="valid" steps="30517"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="7837"/></proof>
+  <proof prover="1"><result status="valid" steps="7653"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
   <proof prover="0"><result status="unknown" steps="480"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="34885"/></proof>
+  <proof prover="1"><result status="valid" steps="34249"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="8376"/></proof>
+  <proof prover="1"><result status="valid" steps="8192"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="36315"/></proof>
+  <proof prover="1"><result status="valid" steps="35679"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="9372"/></proof>
+  <proof prover="1"><result status="valid" steps="9188"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="35919"/></proof>
+  <proof prover="1"><result status="valid" steps="35287"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="34947"/></proof>
+  <proof prover="1"><result status="valid" steps="34311"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="33490"/></proof>
+  <proof prover="1"><result status="valid" steps="32856"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="36770"/></proof>
+  <proof prover="1"><result status="valid" steps="36134"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="9526"/></proof>
+  <proof prover="1"><result status="valid" steps="9342"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="36425"/></proof>
+  <proof prover="1"><result status="valid" steps="35793"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="precondition">
   <proof prover="0"><result status="unknown" steps="427"/></proof>
@@ -4252,16 +1296,16 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="42852"/></proof>
+  <proof prover="1"><result status="valid" steps="42216"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="61175"/></proof>
+  <proof prover="1"><result status="valid" steps="60541"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="115391"/></proof>
+  <proof prover="1"><result status="valid" steps="106267"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="77995"/></proof>
+  <proof prover="1"><result status="valid" steps="79320"/></proof>
   </goal>
   <goal name="WP_parameter def.22" expl="postcondition">
   <proof prover="0"><result status="timeout"/></proof>
@@ -4273,7 +1317,7 @@
    </goal>
    <goal name="WP_parameter def.22.1" expl="postcondition" proved="true">
    <proof prover="0"><result status="unknown" steps="354"/></proof>
-   <proof prover="1" timelimit="60"><result status="valid" steps="47642"/></proof>
+   <proof prover="1" timelimit="60"><result status="valid" steps="46451"/></proof>
    </goal>
   </transf>
   </goal>
@@ -4291,7 +1335,7 @@
   </transf>
   </goal>
   <goal name="WP_parameter def.24" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="47121"/></proof>
+  <proof prover="1"><result status="valid" steps="46485"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4300,13 +1344,13 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="33340"/></proof>
+  <proof prover="1"><result status="valid" steps="32704"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="32197"/></proof>
+  <proof prover="1"><result status="valid" steps="31563"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="34086"/></proof>
+  <proof prover="1"><result status="valid" steps="33450"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="0"><result status="unknown" steps="455"/></proof>
@@ -4317,17 +1361,17 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="9743"/></proof>
+  <proof prover="1"><result status="valid" steps="9559"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
   <proof prover="0"><result status="unknown" steps="439"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="2664"/></proof>
+  <proof prover="1"><result status="valid" steps="2596"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="10023"/></proof>
+  <proof prover="1"><result status="valid" steps="9839"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
   <proof prover="0"><result status="unknown" steps="2625"/></proof>
@@ -4346,13 +1390,13 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="53898"/></proof>
+  <proof prover="1"><result status="valid" steps="53262"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="65566"/></proof>
+  <proof prover="1"><result status="valid" steps="64930"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="64754"/></proof>
+  <proof prover="1"><result status="valid" steps="64118"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="postcondition">
   <proof prover="0"><result status="timeout"/></proof>
@@ -4364,12 +1408,12 @@
    </goal>
    <goal name="WP_parameter def.16.1" expl="postcondition" proved="true">
    <proof prover="0"><result status="unknown" steps="373"/></proof>
-   <proof prover="1" timelimit="60"><result status="valid" steps="47753"/></proof>
+   <proof prover="1" timelimit="60"><result status="valid" steps="46988"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="WP_parameter def.17" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="40606"/></proof>
+  <proof prover="1"><result status="valid" steps="39972"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4378,10 +1422,10 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="33340"/></proof>
+  <proof prover="1"><result status="valid" steps="32704"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="32279"/></proof>
+  <proof prover="1"><result status="valid" steps="31645"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="0"><result status="unknown" steps="455"/></proof>
@@ -4392,17 +1436,17 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="9527"/></proof>
+  <proof prover="1"><result status="valid" steps="9343"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
   <proof prover="0"><result status="unknown" steps="439"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="10538"/></proof>
+  <proof prover="1"><result status="valid" steps="10354"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="39516"/></proof>
+  <proof prover="1"><result status="valid" steps="38884"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
   <proof prover="0"><result status="unknown" steps="425"/></proof>
@@ -4417,10 +1461,10 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="55770"/></proof>
+  <proof prover="1"><result status="valid" steps="55134"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="90904"/></proof>
+  <proof prover="1"><result status="valid" steps="90268"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="postcondition">
   <proof prover="0"><result status="timeout"/></proof>
@@ -4432,7 +1476,7 @@
    </goal>
    <goal name="WP_parameter def.13.1" expl="postcondition" proved="true">
    <proof prover="0"><result status="unknown" steps="373"/></proof>
-   <proof prover="1" timelimit="60"><result status="valid" steps="47766"/></proof>
+   <proof prover="1" timelimit="60"><result status="valid" steps="47001"/></proof>
    </goal>
   </transf>
   </goal>
@@ -4450,7 +1494,7 @@
   </transf>
   </goal>
   <goal name="WP_parameter def.15" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="39786"/></proof>
+  <proof prover="1"><result status="valid" steps="39152"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4459,46 +1503,46 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="2710"/></proof>
+  <proof prover="1"><result status="valid" steps="2642"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="3010"/></proof>
+  <proof prover="1"><result status="valid" steps="2942"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="39572"/></proof>
+  <proof prover="1"><result status="valid" steps="38940"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="39620"/></proof>
+  <proof prover="1"><result status="valid" steps="38988"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="3090"/></proof>
+  <proof prover="1"><result status="valid" steps="3022"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="3172"/></proof>
+  <proof prover="1"><result status="valid" steps="3104"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="9897"/></proof>
+  <proof prover="1"><result status="valid" steps="9713"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="37916"/></proof>
+  <proof prover="1"><result status="valid" steps="37282"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="37902"/></proof>
+  <proof prover="1"><result status="valid" steps="37268"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="9975"/></proof>
+  <proof prover="1"><result status="valid" steps="9791"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="9961"/></proof>
+  <proof prover="1"><result status="valid" steps="9777"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="38843"/></proof>
+  <proof prover="1"><result status="valid" steps="38207"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="42956"/></proof>
+  <proof prover="1"><result status="valid" steps="42320"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="3084"/></proof>
+  <proof prover="1"><result status="valid" steps="3016"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition">
   <proof prover="0"><result status="unknown" steps="523"/></proof>
@@ -4509,20 +1553,20 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="43480"/></proof>
+  <proof prover="1"><result status="valid" steps="42844"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="41132"/></proof>
+  <proof prover="1"><result status="valid" steps="40498"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="44131"/></proof>
+  <proof prover="1"><result status="valid" steps="43497"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="precondition">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="3456"/></proof>
+  <proof prover="1"><result status="valid" steps="3388"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="precondition">
   <proof prover="0"><result status="timeout"/></proof>
@@ -4533,13 +1577,13 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.23" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="12073"/></proof>
+  <proof prover="1"><result status="valid" steps="11889"/></proof>
   </goal>
   <goal name="WP_parameter def.24" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="48647"/></proof>
+  <proof prover="1"><result status="valid" steps="48011"/></proof>
   </goal>
   <goal name="WP_parameter def.25" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="48152"/></proof>
+  <proof prover="1"><result status="valid" steps="47518"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="precondition">
   <proof prover="0"><result status="timeout"/></proof>
@@ -4550,59 +1594,59 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.28" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="44153"/></proof>
+  <proof prover="1"><result status="valid" steps="43517"/></proof>
   </goal>
   <goal name="WP_parameter def.29" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="43346"/></proof>
+  <proof prover="1"><result status="valid" steps="42710"/></proof>
   </goal>
   <goal name="WP_parameter def.30" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="43596"/></proof>
+  <proof prover="1"><result status="valid" steps="42960"/></proof>
   </goal>
   <goal name="WP_parameter def.31" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="41745"/></proof>
+  <proof prover="1"><result status="valid" steps="41111"/></proof>
   </goal>
   <goal name="WP_parameter def.32" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="45540"/></proof>
+  <proof prover="1"><result status="valid" steps="44904"/></proof>
   </goal>
   <goal name="WP_parameter def.33" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="45278"/></proof>
+  <proof prover="1"><result status="valid" steps="44642"/></proof>
   </goal>
   <goal name="WP_parameter def.34" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="44773"/></proof>
+  <proof prover="1"><result status="valid" steps="44139"/></proof>
   </goal>
   <goal name="WP_parameter def.35" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="44534"/></proof>
+  <proof prover="1"><result status="valid" steps="43902"/></proof>
   </goal>
   <goal name="WP_parameter def.36" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="42976"/></proof>
+  <proof prover="1"><result status="valid" steps="42340"/></proof>
   </goal>
   <goal name="WP_parameter def.37" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="42695"/></proof>
+  <proof prover="1"><result status="valid" steps="42059"/></proof>
   </goal>
   <goal name="WP_parameter def.38" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="40809"/></proof>
+  <proof prover="1"><result status="valid" steps="40175"/></proof>
   </goal>
   <goal name="WP_parameter def.39" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="44633"/></proof>
+  <proof prover="1"><result status="valid" steps="43997"/></proof>
   </goal>
   <goal name="WP_parameter def.40" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="44319"/></proof>
+  <proof prover="1"><result status="valid" steps="43683"/></proof>
   </goal>
   <goal name="WP_parameter def.41" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="44655"/></proof>
+  <proof prover="1"><result status="valid" steps="44019"/></proof>
   </goal>
   <goal name="WP_parameter def.42" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="44473"/></proof>
+  <proof prover="1"><result status="valid" steps="43839"/></proof>
   </goal>
   <goal name="WP_parameter def.43" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="44563"/></proof>
+  <proof prover="1"><result status="valid" steps="43929"/></proof>
   </goal>
   <goal name="WP_parameter def.44" expl="precondition">
   <proof prover="0"><result status="unknown" steps="426"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.45" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="43934"/></proof>
+  <proof prover="1"><result status="valid" steps="43298"/></proof>
   </goal>
   <goal name="WP_parameter def.46" expl="precondition">
   <proof prover="0"><result status="unknown" steps="450"/></proof>
@@ -4637,13 +1681,13 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.54" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="12198"/></proof>
+  <proof prover="1"><result status="valid" steps="12014"/></proof>
   </goal>
   <goal name="WP_parameter def.55" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="50323"/></proof>
+  <proof prover="1"><result status="valid" steps="49687"/></proof>
   </goal>
   <goal name="WP_parameter def.56" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="54145"/></proof>
+  <proof prover="1"><result status="valid" steps="53509"/></proof>
   </goal>
   <goal name="WP_parameter def.57" expl="loop invariant preservation">
   <proof prover="0"><result status="timeout"/></proof>
@@ -4654,32 +1698,32 @@
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.59" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="85389"/></proof>
+  <proof prover="1"><result status="valid" steps="84753"/></proof>
   </goal>
   <goal name="WP_parameter def.60" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="64958"/></proof>
+  <proof prover="1"><result status="valid" steps="64322"/></proof>
   </goal>
   <goal name="WP_parameter def.61" expl="loop invariant preservation">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1" timelimit="60"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.62" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="3882"/></proof>
+  <proof prover="1"><result status="valid" steps="3814"/></proof>
   </goal>
   <goal name="WP_parameter def.63" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="54346"/></proof>
+  <proof prover="1"><result status="valid" steps="53710"/></proof>
   </goal>
   <goal name="WP_parameter def.64" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="348409"/></proof>
+  <proof prover="1"><result status="valid" steps="157663"/></proof>
   </goal>
   <goal name="WP_parameter def.65" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="51883"/></proof>
+  <proof prover="1"><result status="valid" steps="51247"/></proof>
   </goal>
   <goal name="WP_parameter def.66" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="51865"/></proof>
+  <proof prover="1"><result status="valid" steps="51229"/></proof>
   </goal>
   <goal name="WP_parameter def.67" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="53483"/></proof>
+  <proof prover="1"><result status="valid" steps="52849"/></proof>
   </goal>
   <goal name="WP_parameter def.68" expl="precondition">
   <proof prover="0"><result status="timeout"/></proof>
@@ -4695,22 +1739,22 @@
   </transf>
   </goal>
   <goal name="WP_parameter def.69" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="4258"/></proof>
+  <proof prover="1"><result status="valid" steps="4190"/></proof>
   </goal>
   <goal name="WP_parameter def.70" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="61012"/></proof>
+  <proof prover="1"><result status="valid" steps="60376"/></proof>
   </goal>
   <goal name="WP_parameter def.71" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="14987"/></proof>
+  <proof prover="1"><result status="valid" steps="14803"/></proof>
   </goal>
   <goal name="WP_parameter def.72" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="57404"/></proof>
+  <proof prover="1"><result status="valid" steps="56768"/></proof>
   </goal>
   <goal name="WP_parameter def.73" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="54338"/></proof>
+  <proof prover="1"><result status="valid" steps="53704"/></proof>
   </goal>
   <goal name="WP_parameter def.74" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="57605"/></proof>
+  <proof prover="1"><result status="valid" steps="56971"/></proof>
   </goal>
   <goal name="WP_parameter def.75" expl="precondition">
   <proof prover="0"><result status="timeout"/></proof>
@@ -4726,7 +1770,7 @@
   </transf>
   </goal>
   <goal name="WP_parameter def.76" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="51966"/></proof>
+  <proof prover="1"><result status="valid" steps="51330"/></proof>
   </goal>
   <goal name="WP_parameter def.77" expl="postcondition">
   <proof prover="0"><result status="timeout"/></proof>
@@ -4774,46 +1818,46 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="27890"/></proof>
+  <proof prover="1"><result status="valid" steps="27591"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="35561"/></proof>
+  <proof prover="1"><result status="valid" steps="35261"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="44316"/></proof>
+  <proof prover="1"><result status="valid" steps="44016"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="51306"/></proof>
+  <proof prover="1"><result status="valid" steps="51006"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="60290"/></proof>
+  <proof prover="1"><result status="valid" steps="66882"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="4092"/></proof>
+  <proof prover="1"><result status="valid" steps="4060"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="4392"/></proof>
+  <proof prover="1"><result status="valid" steps="4360"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="50574"/></proof>
+  <proof prover="1"><result status="valid" steps="50261"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="50622"/></proof>
+  <proof prover="1"><result status="valid" steps="50309"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="54885"/></proof>
+  <proof prover="1"><result status="valid" steps="54570"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="100579"/></proof>
+  <proof prover="1"><result status="valid" steps="96609"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="186754"/></proof>
+  <proof prover="1"><result status="valid" steps="2118538"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="151853"/></proof>
+  <proof prover="1"><result status="valid" steps="155148"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="198688"/></proof>
+  <proof prover="1"><result status="valid" steps="178644"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4828,16 +1872,16 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="5440"/></proof>
+  <proof prover="1"><result status="valid" steps="5350"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="19323"/></proof>
+  <proof prover="1"><result status="valid" steps="19010"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="1366"/></proof>
+  <proof prover="1"><result status="valid" steps="1334"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="20690"/></proof>
+  <proof prover="1"><result status="valid" steps="20278"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4846,16 +1890,16 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="1346"/></proof>
+  <proof prover="1"><result status="valid" steps="1314"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="5544"/></proof>
+  <proof prover="1"><result status="valid" steps="5454"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="19655"/></proof>
+  <proof prover="1"><result status="valid" steps="19342"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="17525"/></proof>
+  <proof prover="1"><result status="valid" steps="17225"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4864,19 +1908,19 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="6956"/></proof>
+  <proof prover="1"><result status="valid" steps="6772"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="24537"/></proof>
+  <proof prover="1"><result status="valid" steps="23905"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="1878"/></proof>
+  <proof prover="1"><result status="valid" steps="1810"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="6070"/></proof>
+  <proof prover="1"><result status="valid" steps="5886"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="23210"/></proof>
+  <proof prover="1"><result status="valid" steps="22604"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4885,19 +1929,19 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="1858"/></proof>
+  <proof prover="1"><result status="valid" steps="1790"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="5956"/></proof>
+  <proof prover="1"><result status="valid" steps="5772"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="7282"/></proof>
+  <proof prover="1"><result status="valid" steps="7098"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="25570"/></proof>
+  <proof prover="1"><result status="valid" steps="24938"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="24328"/></proof>
+  <proof prover="1"><result status="valid" steps="23722"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4906,16 +1950,16 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="1868"/></proof>
+  <proof prover="1"><result status="valid" steps="1800"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="1888"/></proof>
+  <proof prover="1"><result status="valid" steps="1820"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="6060"/></proof>
+  <proof prover="1"><result status="valid" steps="5876"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="23292"/></proof>
+  <proof prover="1"><result status="valid" steps="22686"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4924,16 +1968,16 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="1858"/></proof>
+  <proof prover="1"><result status="valid" steps="1790"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="5956"/></proof>
+  <proof prover="1"><result status="valid" steps="5772"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="VC for def" proved="true">
-  <proof prover="1"><result status="valid" steps="1966"/></proof>
+  <proof prover="1"><result status="valid" steps="1898"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="29985"/></proof>
+  <proof prover="1"><result status="valid" steps="29347"/></proof>
   </goal>
  </transf>
  </goal>
