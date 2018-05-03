@@ -1850,10 +1850,11 @@ package body SPARK_Util is
       function Ident_Image (Expr        : Node_Id;
                             Orig_Expr   : Node_Id;
                             Expand_Type : Boolean)
-                            return String;
+                            return String
+      with Pre => Present (Expr);
 
       function Real_Image_10 (U : Ureal) return String is
-         (Real_Image (U, 10));
+        (Real_Image (U, 10));
 
       function String_Image (S : String_Id) return String is
         ('"' & Get_Name_String (String_To_Name (S)) & '"');
@@ -1878,7 +1879,6 @@ package body SPARK_Util is
          --  instead.
 
          if not Comes_From_Source (Expr)
-           and then Present (Original_Node (Expr))
            and then Original_Node (Expr) /= Expr
          then
             return Node_To_String (Original_Node (Expr), "");
