@@ -233,7 +233,7 @@
   </goal>
   <goal name="WP_parameter def.25" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="141"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="1"><result status="unknown" steps="102513"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="273"/></proof>
@@ -339,7 +339,7 @@
   </goal>
   <goal name="WP_parameter def.25" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="141"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="1"><result status="unknown" steps="102513"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="273"/></proof>
@@ -354,7 +354,6 @@
   <proof prover="3"><result status="unknown" steps="2450140"/></proof>
   <transf name="split_disj" >
    <goal name="WP_parameter def.28.0" expl="postcondition">
-   <proof prover="2"><result status="timeout"/></proof>
    </goal>
    <goal name="WP_parameter def.28.1" expl="postcondition">
    </goal>
