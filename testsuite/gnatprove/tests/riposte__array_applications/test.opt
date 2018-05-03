@@ -1,1 +1,1 @@
-NT SKIP session does not work on windows
+ALL SKIP skip unstable test for release

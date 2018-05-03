@@ -1,5 +1,3 @@
 !large SKIP part of large testsuite
-inverse-prover SKIP too slow
-Darwin SKIP too slow
-NT SKIP session diffs
+ALL SKIP skipping test for release
 ALL RLIMIT 5000
