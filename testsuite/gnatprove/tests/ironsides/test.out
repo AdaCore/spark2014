@@ -349,12 +349,9 @@ driver.adb:38:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
 driver.adb:39:20: info: range check proved (CVC4: 2 VC)
 driver.adb:69:50: info: initialization of "Success" proved
 driver.adb:72:15: warning: unused assignment
-driver.adb:72:15: warning: unused assignment, in call inlined at driver.adb:92
-driver.adb:73:20: medium: precondition might fail, in call inlined at driver.adb:92
+driver.adb:73:20: medium: precondition might fail
 driver.adb:74:22: high: "ZoneFile" is not initialized
-driver.adb:74:22: high: "ZoneFile" is not initialized, in call inlined at driver.adb:92
 driver.adb:79:41: info: initialization of "ZoneFile" proved
-driver.adb:79:41: info: initialization of "ZoneFile" proved, in call inlined at driver.adb:92
 driver.adb:80:21: warning: assuming "Put" has no effect on global items
 driver.adb:80:21: warning: no Global contract available for "Put"
 driver.adb:81:21: warning: assuming "New_Line" has no effect on global items
@@ -364,9 +361,7 @@ driver.adb:82:21: warning: no Global contract available for "Put"
 driver.adb:83:21: warning: assuming "New_Line" has no effect on global items
 driver.adb:83:21: warning: no Global contract available for "New_Line"
 driver.adb:86:40: info: initialization of "ZoneFile" proved
-driver.adb:86:40: info: initialization of "ZoneFile" proved, in call inlined at driver.adb:92
 driver.adb:86:40: warning: unused assignment to "ZoneFile"
-driver.adb:86:40: warning: unused assignment to "ZoneFile", in call inlined at driver.adb:92
 driver.adb:93:07: info: initialization of "Success" proved
 driver.adb:95:17: info: precondition proved (CVC4: 1 VC)
 driver.adb:98:18: warning: assuming "Put_Line" has no effect on global items
@@ -557,8 +552,553 @@ driver.adb:238:27: info: initialization of "ReturnedSOARecords" proved
 driver.adb:238:47: info: index check proved (CVC4: 2 VC)
 driver.adb:239:21: warning: assuming "New_Line" has no effect on global items
 driver.adb:239:21: warning: no Global contract available for "New_Line"
-parser_utilities.adb:568:07: too complex actions inserted in expression
-parser_utilities.adb:694:07: too complex actions inserted in expression
+parser_utilities.adb:63:20: info: initialization of "Class" proved
+parser_utilities.adb:64:20: info: initialization of "Class" proved
+parser_utilities.adb:65:24: info: initialization of "Class" proved
+parser_utilities.adb:72:14: info: initialization of "Retval" proved
+parser_utilities.adb:92:40: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:95:10: info: initialization of "FirstChar" proved
+parser_utilities.adb:95:30: info: initialization of "LengthToken" proved
+parser_utilities.adb:98:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:98:33: info: initialization of "LastChar" proved
+parser_utilities.adb:98:52: info: initialization of "LengthToken" proved
+parser_utilities.adb:101:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:101:33: info: initialization of "LastChar" proved
+parser_utilities.adb:101:52: info: initialization of "LengthToken" proved
+parser_utilities.adb:104:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:104:33: info: initialization of "LastChar" proved
+parser_utilities.adb:104:52: info: initialization of "LengthToken" proved
+parser_utilities.adb:108:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:109:13: info: initialization of "LastChar" proved
+parser_utilities.adb:111:13: info: initialization of "LengthToken" proved
+parser_utilities.adb:113:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:120:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:121:09: info: initialization of "LastChar" proved
+parser_utilities.adb:123:09: info: initialization of "LengthToken" proved
+parser_utilities.adb:125:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:132:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:133:13: info: initialization of "LastChar" proved
+parser_utilities.adb:135:13: info: initialization of "LengthToken" proved
+parser_utilities.adb:137:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:144:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:145:13: info: initialization of "LastChar" proved
+parser_utilities.adb:147:13: info: initialization of "LengthToken" proved
+parser_utilities.adb:149:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:156:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:157:13: info: initialization of "LastChar" proved
+parser_utilities.adb:159:13: info: initialization of "LengthToken" proved
+parser_utilities.adb:161:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:162:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:170:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:171:13: info: initialization of "LastChar" proved
+parser_utilities.adb:173:13: info: initialization of "LengthToken" proved
+parser_utilities.adb:175:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:176:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:185:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:186:13: info: initialization of "LastChar" proved
+parser_utilities.adb:188:09: info: initialization of "LengthToken" proved
+parser_utilities.adb:190:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:191:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:192:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:201:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:202:13: info: initialization of "LastChar" proved
+parser_utilities.adb:204:13: info: initialization of "LengthToken" proved
+parser_utilities.adb:206:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:207:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:208:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:217:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:218:13: info: initialization of "LastChar" proved
+parser_utilities.adb:220:13: info: initialization of "LengthToken" proved
+parser_utilities.adb:222:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:223:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:224:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:225:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:234:14: info: initialization of "Retval" proved
+parser_utilities.adb:254:40: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:257:10: info: initialization of "FirstChar" proved
+parser_utilities.adb:257:30: info: initialization of "LengthToken" proved
+parser_utilities.adb:260:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:260:33: info: initialization of "LastChar" proved
+parser_utilities.adb:260:52: info: initialization of "LengthToken" proved
+parser_utilities.adb:263:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:263:33: info: initialization of "LastChar" proved
+parser_utilities.adb:263:52: info: initialization of "LengthToken" proved
+parser_utilities.adb:266:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:266:33: info: initialization of "LastChar" proved
+parser_utilities.adb:266:52: info: initialization of "LengthToken" proved
+parser_utilities.adb:270:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:270:33: info: initialization of "LastChar" proved
+parser_utilities.adb:271:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:278:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:278:33: info: initialization of "LastChar" proved
+parser_utilities.adb:279:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:286:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:286:33: info: initialization of "LastChar" proved
+parser_utilities.adb:287:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:294:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:294:33: info: initialization of "LastChar" proved
+parser_utilities.adb:295:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:302:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:302:33: info: initialization of "LastChar" proved
+parser_utilities.adb:303:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:304:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:312:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:312:33: info: initialization of "LastChar" proved
+parser_utilities.adb:313:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:314:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:322:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:322:33: info: initialization of "LastChar" proved
+parser_utilities.adb:323:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:324:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:325:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:333:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:333:33: info: initialization of "LastChar" proved
+parser_utilities.adb:334:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:335:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:336:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:344:13: info: initialization of "FirstChar" proved
+parser_utilities.adb:344:33: info: initialization of "LastChar" proved
+parser_utilities.adb:345:57: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:346:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:347:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:348:60: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:357:14: info: initialization of "Retval" proved
+parser_utilities.adb:402:13: info: initialization of "Length" proved
+parser_utilities.adb:403:38: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:404:43: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:408:14: info: range check proved (CVC4: 2 VC)
+parser_utilities.adb:408:38: info: initialization of "Length" proved
+parser_utilities.adb:411:27: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:411:49: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:422:30: info: initialization of "Retval" proved
+parser_utilities.adb:441:10: info: initialization of "Length" proved
+parser_utilities.adb:446:11: info: range check proved (CVC4: 2 VC)
+parser_utilities.adb:446:35: info: initialization of "Length" proved
+parser_utilities.adb:455:10: info: initialization of "Position" proved
+parser_utilities.adb:455:21: info: initialization of "Length" proved
+parser_utilities.adb:460:10: info: initialization of "Retval" proved
+parser_utilities.adb:460:21: info: initialization of "Position" proved
+parser_utilities.adb:461:19: info: initialization of "Position" proved
+parser_utilities.adb:461:28: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:479:30: info: initialization of "Retval" proved
+parser_utilities.adb:501:13: info: initialization of "BegIdx" proved
+parser_utilities.adb:504:33: info: initialization of "BegIdx" proved
+parser_utilities.adb:504:33: info: loop invariant initialization proved (CVC4: 2 VC)
+parser_utilities.adb:504:33: info: loop invariant preservation proved (CVC4: 2 VC)
+parser_utilities.adb:505:20: info: initialization of "BegIdx" proved
+parser_utilities.adb:505:27: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:508:17: info: initialization of "BegIdx" proved
+parser_utilities.adb:509:13: info: initialization of "EndIdx" proved
+parser_utilities.adb:517:13: info: initialization of "BegIdx" proved
+parser_utilities.adb:517:13: info: loop invariant initialization proved (CVC4: 4 VC)
+parser_utilities.adb:517:13: info: loop invariant preservation proved (CVC4: 4 VC)
+parser_utilities.adb:519:13: info: initialization of "EndIdx" proved
+parser_utilities.adb:521:20: info: initialization of "EndIdx" proved
+parser_utilities.adb:521:27: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:523:14: info: initialization of "EndIdx" proved
+parser_utilities.adb:527:22: info: initialization of "BegIdx" proved
+parser_utilities.adb:529:20: info: initialization of "EndIdx" proved
+parser_utilities.adb:529:27: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:540:11: info: range check proved (CVC4: 2 VC)
+parser_utilities.adb:540:30: info: initialization of "BegIdx" proved
+parser_utilities.adb:540:40: info: initialization of "EndIdx" proved
+parser_utilities.adb:542:13: info: initialization of "BegIdx" proved
+parser_utilities.adb:542:13: info: loop invariant initialization proved (CVC4: 4 VC)
+parser_utilities.adb:542:13: info: loop invariant preservation proved (CVC4: 4 VC)
+parser_utilities.adb:544:13: info: initialization of "EndIdx" proved
+parser_utilities.adb:548:12: info: initialization of "ContainsOnlyNumbers" proved
+parser_utilities.adb:551:12: info: initialization of "ContainsDecimalNumbers" proved
+parser_utilities.adb:554:12: info: initialization of "ContainsHexNumbers" proved
+parser_utilities.adb:558:12: info: initialization of "containsOnlyLetters" proved
+parser_utilities.adb:561:12: info: initialization of "ContainsLetters" proved
+parser_utilities.adb:563:28: info: initialization of "ContainsPeriod" proved
+parser_utilities.adb:564:27: info: initialization of "containsColon" proved
+parser_utilities.adb:568:13: info: initialization of "BegIdx" proved
+parser_utilities.adb:570:16: info: initialization of "BegIdx" proved
+parser_utilities.adb:572:16: info: initialization of "BegIdx" proved
+parser_utilities.adb:574:16: info: initialization of "BegIdx" proved
+parser_utilities.adb:578:17: info: initialization of "BegIdx" proved
+parser_utilities.adb:579:22: info: initialization of "EndIdx" proved
+parser_utilities.adb:582:13: info: initialization of "ContainsDecimalNumbers" proved
+parser_utilities.adb:582:40: info: initialization of "ContainsOnlyNumbers" proved
+parser_utilities.adb:584:13: info: initialization of "ContainsDecimalNumbers" proved
+parser_utilities.adb:585:13: info: initialization of "ContainsPeriod" proved
+parser_utilities.adb:586:17: info: initialization of "ContainsLetters" proved
+parser_utilities.adb:587:17: info: initialization of "containsColon" proved
+parser_utilities.adb:590:13: info: initialization of "ContainsHexNumbers" proved
+parser_utilities.adb:590:36: info: initialization of "containsColon" proved
+parser_utilities.adb:590:58: info: initialization of "ContainsPeriod" proved
+parser_utilities.adb:592:13: info: initialization of "containsOnlyLetters" proved
+parser_utilities.adb:592:49: info: initialization of "BegIdx" proved
+parser_utilities.adb:592:57: info: initialization of "EndIdx" proved
+parser_utilities.adb:594:13: info: initialization of "containsOnlyLetters" proved
+parser_utilities.adb:594:37: info: precondition proved (CVC4: 1 VC)
+parser_utilities.adb:594:50: info: initialization of "BegIdx" proved
+parser_utilities.adb:594:58: info: initialization of "EndIdx" proved
+parser_utilities.adb:596:13: info: initialization of "ContainsLetters" proved
+parser_utilities.adb:598:13: info: initialization of "BegIdx" proved
+parser_utilities.adb:628:33: info: loop invariant initialization proved (CVC4: 1 VC)
+parser_utilities.adb:628:33: info: loop invariant preservation proved (CVC4: 1 VC)
+parser_utilities.adb:629:27: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:632:13: info: initialization of "EndIdx" proved
+parser_utilities.adb:641:13: info: loop invariant initialization proved (CVC4: 3 VC)
+parser_utilities.adb:641:13: info: loop invariant preservation proved (CVC4: 3 VC)
+parser_utilities.adb:641:34: info: initialization of "EndIdx" proved
+parser_utilities.adb:642:20: info: initialization of "EndIdx" proved
+parser_utilities.adb:642:27: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:644:14: info: initialization of "EndIdx" proved
+parser_utilities.adb:650:20: info: initialization of "EndIdx" proved
+parser_utilities.adb:650:27: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:662:11: info: range check proved (CVC4: 2 VC)
+parser_utilities.adb:662:38: info: initialization of "EndIdx" proved
+parser_utilities.adb:664:12: info: initialization of "ContainsOnlyNumbers" proved
+parser_utilities.adb:667:13: info: loop invariant initialization proved (CVC4: 6 VC)
+parser_utilities.adb:667:13: info: loop invariant preservation proved (CVC4: 6 VC)
+parser_utilities.adb:669:13: info: initialization of "EndIdx" proved
+parser_utilities.adb:671:22: info: initialization of "EndIdx" proved
+parser_utilities.adb:672:17: info: initialization of "ContainsOnlyNumbers" proved
+parser_utilities.adb:673:25: info: range check proved (CVC4: 2 VC)
+parser_utilities.adb:674:22: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:674:39: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:676:12: info: initialization of "ContainsDecimalNumbers" proved
+parser_utilities.adb:679:12: info: initialization of "ContainsHexNumbers" proved
+parser_utilities.adb:683:12: info: initialization of "ContainsOnlyLetters" proved
+parser_utilities.adb:687:12: info: initialization of "ContainsLetters" proved
+parser_utilities.adb:689:28: info: initialization of "ContainsPeriod" proved
+parser_utilities.adb:690:27: info: initialization of "ContainsColon" proved
+parser_utilities.adb:705:22: info: initialization of "EndIdx" proved
+parser_utilities.adb:708:13: info: initialization of "ContainsOnlyNumbers" proved
+parser_utilities.adb:710:13: info: initialization of "ContainsDecimalNumbers" proved
+parser_utilities.adb:711:13: info: initialization of "ContainsPeriod" proved
+parser_utilities.adb:712:17: info: initialization of "ContainsLetters" proved
+parser_utilities.adb:713:17: info: initialization of "ContainsColon" proved
+parser_utilities.adb:716:13: info: initialization of "ContainsHexNumbers" proved
+parser_utilities.adb:717:13: info: initialization of "ContainsColon" proved
+parser_utilities.adb:718:17: info: initialization of "ContainsPeriod" proved
+parser_utilities.adb:721:13: info: initialization of "ContainsOnlyLetters" proved
+parser_utilities.adb:721:57: info: initialization of "EndIdx" proved
+parser_utilities.adb:723:13: info: initialization of "ContainsOnlyLetters" proved
+parser_utilities.adb:723:37: info: precondition proved (CVC4: 1 VC)
+parser_utilities.adb:723:58: info: initialization of "EndIdx" proved
+parser_utilities.adb:725:13: info: initialization of "ContainsLetters" proved
+parser_utilities.adb:740:10: info: initialization of "C" proved
+parser_utilities.adb:745:14: info: initialization of "Retval" proved
+parser_utilities.adb:760:11: info: range check proved (CVC4: 2 VC)
+parser_utilities.adb:762:13: info: loop invariant initialization proved (CVC4: 2 VC)
+parser_utilities.adb:762:13: info: loop invariant preservation proved (CVC4: 2 VC)
+parser_utilities.adb:763:13: info: initialization of "TmpVal" proved
+parser_utilities.adb:765:55: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:766:22: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:766:23: info: initialization of "TmpVal" proved
+parser_utilities.adb:766:30: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:766:30: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:766:32: info: initialization of "DigitVal" proved
+parser_utilities.adb:767:20: info: initialization of "TmpVal" proved
+parser_utilities.adb:770:10: info: initialization of "TmpVal" proved
+parser_utilities.adb:773:45: info: initialization of "TmpVal" proved
+parser_utilities.adb:773:45: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:789:11: info: range check proved (CVC4: 2 VC)
+parser_utilities.adb:791:13: info: loop invariant initialization proved (CVC4: 2 VC)
+parser_utilities.adb:791:13: info: loop invariant preservation proved (CVC4: 2 VC)
+parser_utilities.adb:792:13: info: initialization of "TmpVal" proved
+parser_utilities.adb:793:55: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:794:22: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:794:23: info: initialization of "TmpVal" proved
+parser_utilities.adb:794:30: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:794:30: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:794:32: info: initialization of "DigitVal" proved
+parser_utilities.adb:796:20: info: initialization of "TmpVal" proved
+parser_utilities.adb:799:10: info: initialization of "TmpVal" proved
+parser_utilities.adb:802:46: info: initialization of "TmpVal" proved
+parser_utilities.adb:802:46: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:818:11: info: range check proved (CVC4: 2 VC)
+parser_utilities.adb:820:13: info: loop invariant initialization proved (CVC4: 3 VC)
+parser_utilities.adb:820:13: info: loop invariant preservation proved (CVC4: 3 VC)
+parser_utilities.adb:821:13: info: initialization of "TmpVal" proved
+parser_utilities.adb:824:22: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:824:23: info: initialization of "TmpVal" proved
+parser_utilities.adb:824:30: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:824:32: info: initialization of "DigitVal" proved
+parser_utilities.adb:825:20: info: initialization of "TmpVal" proved
+parser_utilities.adb:828:10: info: initialization of "TmpVal" proved
+parser_utilities.adb:831:46: info: initialization of "TmpVal" proved
+parser_utilities.adb:831:46: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:855:22: info: postcondition proved (CVC4: 2 VC)
+parser_utilities.adb:862:15: info: initialization of "C" proved
+parser_utilities.adb:877:17: info: initialization of "RetVal" proved
+parser_utilities.adb:881:11: info: range check proved (CVC4: 2 VC)
+parser_utilities.adb:883:13: info: initialization of "Blob" proved
+parser_utilities.adb:883:13: info: loop invariant initialization proved (CVC4: 4 VC)
+parser_utilities.adb:883:13: info: loop invariant preservation proved (CVC4: 4 VC)
+parser_utilities.adb:885:13: info: initialization of "Tmp" proved
+parser_utilities.adb:888:13: info: initialization of "CurrentChar" proved
+parser_utilities.adb:889:23: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:889:24: info: initialization of "Blob" proved
+parser_utilities.adb:889:29: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:889:47: info: initialization of "CurrentChar" proved
+parser_utilities.adb:890:16: info: initialization of "Blob" proved
+parser_utilities.adb:894:16: info: initialization of "Blob" proved
+parser_utilities.adb:897:24: info: initialization of "Blob" proved
+parser_utilities.adb:897:28: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:897:48: info: precondition proved (CVC4: 1 VC)
+parser_utilities.adb:897:59: info: initialization of "CurrentChar" proved
+parser_utilities.adb:898:23: info: initialization of "Tmp" proved
+parser_utilities.adb:898:27: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:898:29: info: initialization of "Blob" proved
+parser_utilities.adb:899:19: info: initialization of "Blob" proved
+parser_utilities.adb:900:21: info: initialization of "Tmp" proved
+parser_utilities.adb:915:10: info: initialization of "Tmp" proved
+parser_utilities.adb:915:17: info: initialization of "Blob" proved
+parser_utilities.adb:917:44: info: initialization of "Tmp" proved
+parser_utilities.adb:917:44: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:936:13: info: initialization of "Year" proved
+parser_utilities.adb:936:13: info: loop invariant initialization proved (CVC4: 6 VC)
+parser_utilities.adb:936:13: info: loop invariant preservation proved (CVC4: 6 VC)
+parser_utilities.adb:937:13: info: initialization of "Month" proved
+parser_utilities.adb:938:13: info: initialization of "Day" proved
+parser_utilities.adb:939:13: info: initialization of "Hour" proved
+parser_utilities.adb:940:13: info: initialization of "Minute" proved
+parser_utilities.adb:941:13: info: initialization of "Second" proved
+parser_utilities.adb:942:47: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:944:24: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:944:26: info: initialization of "Year" proved
+parser_utilities.adb:944:31: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:944:31: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:944:33: info: initialization of "Num" proved
+parser_utilities.adb:946:25: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:946:27: info: initialization of "Month" proved
+parser_utilities.adb:946:33: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:946:33: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:946:35: info: initialization of "Num" proved
+parser_utilities.adb:948:22: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:948:24: info: initialization of "Day" proved
+parser_utilities.adb:948:28: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:948:28: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:948:30: info: initialization of "Num" proved
+parser_utilities.adb:950:24: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:950:26: info: initialization of "Hour" proved
+parser_utilities.adb:950:31: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:950:31: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:950:33: info: initialization of "Num" proved
+parser_utilities.adb:952:25: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:952:27: info: initialization of "Minute" proved
+parser_utilities.adb:952:34: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:952:34: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:952:36: info: initialization of "Num" proved
+parser_utilities.adb:955:26: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:955:28: info: initialization of "Second" proved
+parser_utilities.adb:955:35: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:955:35: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:955:37: info: initialization of "Num" proved
+parser_utilities.adb:957:20: info: initialization of "Year" proved
+parser_utilities.adb:958:20: info: initialization of "Month" proved
+parser_utilities.adb:959:20: info: initialization of "Day" proved
+parser_utilities.adb:960:20: info: initialization of "Hour" proved
+parser_utilities.adb:961:20: info: initialization of "Minute" proved
+parser_utilities.adb:962:20: info: initialization of "Second" proved
+parser_utilities.adb:964:10: info: initialization of "Year" proved
+parser_utilities.adb:965:12: info: initialization of "Month" proved
+parser_utilities.adb:966:12: info: initialization of "Day" proved
+parser_utilities.adb:967:12: info: initialization of "Hour" proved
+parser_utilities.adb:968:12: info: initialization of "Minute" proved
+parser_utilities.adb:969:12: info: initialization of "Second" proved
+parser_utilities.adb:974:50: info: initialization of "Year" proved
+parser_utilities.adb:975:50: info: initialization of "Month" proved
+parser_utilities.adb:976:50: info: initialization of "Day" proved
+parser_utilities.adb:977:50: info: initialization of "Hour" proved
+parser_utilities.adb:978:50: info: initialization of "Minute" proved
+parser_utilities.adb:979:50: info: initialization of "Second" proved
+parser_utilities.adb:997:13: info: initialization of "BegIdx" proved
+parser_utilities.adb:1000:33: info: initialization of "BegIdx" proved
+parser_utilities.adb:1000:33: info: loop invariant initialization proved (CVC4: 2 VC)
+parser_utilities.adb:1000:33: info: loop invariant preservation proved (CVC4: 2 VC)
+parser_utilities.adb:1001:20: info: initialization of "BegIdx" proved
+parser_utilities.adb:1001:27: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:1005:17: info: initialization of "BegIdx" proved
+parser_utilities.adb:1006:13: info: initialization of "EndIdx" proved
+parser_utilities.adb:1010:13: info: initialization of "BegIdx" proved
+parser_utilities.adb:1010:13: info: loop invariant initialization proved (CVC4: 4 VC)
+parser_utilities.adb:1010:13: info: loop invariant preservation proved (CVC4: 4 VC)
+parser_utilities.adb:1011:23: info: initialization of "EndIdx" proved
+parser_utilities.adb:1014:19: info: initialization of "EndIdx" proved
+parser_utilities.adb:1014:26: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:1018:40: info: initialization of "EndIdx" proved
+parser_utilities.adb:1018:49: info: initialization of "BegIdx" proved
+parser_utilities.adb:1024:14: info: range check proved (CVC4: 2 VC)
+parser_utilities.adb:1024:33: info: initialization of "BegIdx" proved
+parser_utilities.adb:1024:43: info: initialization of "EndIdx" proved
+parser_utilities.adb:1026:16: info: initialization of "BegIdx" proved
+parser_utilities.adb:1026:16: info: loop invariant initialization proved (CVC4: 4 VC)
+parser_utilities.adb:1026:16: info: loop invariant preservation proved (CVC4: 4 VC)
+parser_utilities.adb:1026:25: info: initialization of "BegIdx" proved
+parser_utilities.adb:1027:16: info: initialization of "EndIdx" proved
+parser_utilities.adb:1027:25: info: initialization of "EndIdx" proved
+parser_utilities.adb:1034:42: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:1034:42: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1034:48: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1034:58: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1034:64: info: initialization of "BegIdx" proved
+parser_utilities.adb:1037:65: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:1038:41: info: initialization of "EndIdx" proved
+parser_utilities.adb:1038:50: info: initialization of "BegIdx" proved
+parser_utilities.adb:1042:10: info: initialization of "EndIdx" proved
+parser_utilities.adb:1043:20: info: initialization of "EndIdx" proved
+parser_utilities.adb:1043:27: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:1044:10: info: precondition proved (CVC4: 1 VC)
+parser_utilities.adb:1044:36: info: initialization of "BegIdx" proved
+parser_utilities.adb:1046:13: info: initialization of "ReturnedType" proved
+parser_utilities.adb:1046:47: info: initialization of "BegIdx" proved
+parser_utilities.adb:1046:57: info: initialization of "EndIdx" proved
+parser_utilities.adb:1067:13: info: initialization of "BegIdx" proved
+parser_utilities.adb:1070:33: info: initialization of "BegIdx" proved
+parser_utilities.adb:1070:33: info: loop invariant initialization proved (CVC4: 2 VC)
+parser_utilities.adb:1070:33: info: loop invariant preservation proved (CVC4: 2 VC)
+parser_utilities.adb:1071:20: info: initialization of "BegIdx" proved
+parser_utilities.adb:1071:27: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:1075:17: info: initialization of "BegIdx" proved
+parser_utilities.adb:1076:13: info: initialization of "EndIdx" proved
+parser_utilities.adb:1080:13: info: initialization of "BegIdx" proved
+parser_utilities.adb:1080:13: info: loop invariant initialization proved (CVC4: 4 VC)
+parser_utilities.adb:1080:13: info: loop invariant preservation proved (CVC4: 4 VC)
+parser_utilities.adb:1081:23: info: initialization of "EndIdx" proved
+parser_utilities.adb:1084:19: info: initialization of "EndIdx" proved
+parser_utilities.adb:1084:26: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:1088:35: info: initialization of "EndIdx" proved
+parser_utilities.adb:1088:44: info: initialization of "BegIdx" proved
+parser_utilities.adb:1094:14: info: range check proved (CVC4: 2 VC)
+parser_utilities.adb:1094:33: info: initialization of "BegIdx" proved
+parser_utilities.adb:1094:43: info: initialization of "EndIdx" proved
+parser_utilities.adb:1096:16: info: initialization of "BegIdx" proved
+parser_utilities.adb:1096:16: info: loop invariant initialization proved (CVC4: 4 VC)
+parser_utilities.adb:1096:16: info: loop invariant preservation proved (CVC4: 4 VC)
+parser_utilities.adb:1096:25: info: initialization of "BegIdx" proved
+parser_utilities.adb:1097:16: info: initialization of "EndIdx" proved
+parser_utilities.adb:1097:25: info: initialization of "EndIdx" proved
+parser_utilities.adb:1103:50: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:1103:50: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1103:56: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1103:66: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1103:72: info: initialization of "BegIdx" proved
+parser_utilities.adb:1106:55: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:1106:59: info: initialization of "EndIdx" proved
+parser_utilities.adb:1106:68: info: initialization of "BegIdx" proved
+parser_utilities.adb:1167:13: info: initialization of "Ctr" proved
+parser_utilities.adb:1168:19: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1169:25: info: initialization of "NumDigitsInField" proved
+parser_utilities.adb:1172:13: info: initialization of "Ctr" proved
+parser_utilities.adb:1172:13: info: loop invariant initialization proved (CVC4: 3 VC)
+parser_utilities.adb:1172:13: info: loop invariant preservation proved (CVC4: 3 VC)
+parser_utilities.adb:1173:13: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1174:13: info: initialization of "NumDigitsInField" proved
+parser_utilities.adb:1175:58: info: initialization of "Ctr" proved
+parser_utilities.adb:1176:38: info: initialization of "FieldTotal" proved
+parser_utilities.adb:1177:46: info: initialization of "Ctr" proved
+parser_utilities.adb:1178:33: info: initialization of "NumDigitsInField" proved
+parser_utilities.adb:1178:50: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1180:38: info: initialization of "FieldTotal" proved
+parser_utilities.adb:1181:68: info: initialization of "Ctr" proved
+parser_utilities.adb:1183:33: info: initialization of "NumDigitsInField" proved
+parser_utilities.adb:1183:50: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1185:30: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1185:44: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1186:34: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:1186:49: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1186:49: info: initialization of "SeparatorIndexArray" proved
+parser_utilities.adb:1186:52: info: initialization of "Ctr" proved
+parser_utilities.adb:1187:21: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:1187:36: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1187:36: info: initialization of "RetVal" proved
+parser_utilities.adb:1187:39: info: initialization of "FieldTotal" proved
+parser_utilities.adb:1191:17: info: initialization of "Ctr" proved
+parser_utilities.adb:1191:21: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:1195:10: info: initialization of "Ctr" proved
+parser_utilities.adb:1195:27: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1196:58: info: initialization of "Ctr" proved
+parser_utilities.adb:1197:38: info: initialization of "FieldTotal" proved
+parser_utilities.adb:1198:46: info: initialization of "Ctr" proved
+parser_utilities.adb:1199:33: info: initialization of "NumDigitsInField" proved
+parser_utilities.adb:1199:50: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1200:35: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:1200:35: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1200:40: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1200:40: info: initialization of "RetVal" proved
+parser_utilities.adb:1200:43: info: initialization of "FieldTotal" proved
+parser_utilities.adb:1202:38: info: initialization of "FieldTotal" proved
+parser_utilities.adb:1203:68: info: initialization of "Ctr" proved
+parser_utilities.adb:1205:33: info: initialization of "NumDigitsInField" proved
+parser_utilities.adb:1205:50: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1206:35: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:1206:35: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1206:40: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1206:40: info: initialization of "RetVal" proved
+parser_utilities.adb:1206:43: info: initialization of "FieldTotal" proved
+parser_utilities.adb:1212:32: info: initialization of "SeparatorIndexArray" proved
+parser_utilities.adb:1213:21: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1214:21: info: initialization of "NumDigitsInField" proved
+parser_utilities.adb:1219:14: info: initialization of "RetVal" proved
+parser_utilities.adb:1270:17: info: initialization of "RetVal" proved
+parser_utilities.adb:1279:13: info: initialization of "Ctr" proved
+parser_utilities.adb:1280:19: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1281:25: info: initialization of "ByteTotal" proved
+parser_utilities.adb:1282:25: info: initialization of "NumDigitsInByte" proved
+parser_utilities.adb:1285:13: info: initialization of "Ctr" proved
+parser_utilities.adb:1285:13: info: loop invariant initialization proved (CVC4: 3 VC)
+parser_utilities.adb:1285:13: info: loop invariant preservation proved (CVC4: 3 VC)
+parser_utilities.adb:1286:13: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1287:13: info: initialization of "NumDigitsInByte" proved
+parser_utilities.adb:1288:50: info: initialization of "Ctr" proved
+parser_utilities.adb:1289:39: info: initialization of "ByteTotal" proved
+parser_utilities.adb:1290:45: info: initialization of "Ctr" proved
+parser_utilities.adb:1291:32: info: initialization of "NumDigitsInByte" proved
+parser_utilities.adb:1291:48: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1293:30: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1293:44: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1294:34: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:1294:49: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1294:49: info: initialization of "SeparatorIndexArray" proved
+parser_utilities.adb:1294:52: info: initialization of "Ctr" proved
+parser_utilities.adb:1295:50: info: initialization of "GrandTotal" proved
+parser_utilities.adb:1295:63: info: initialization of "ByteTotal" proved
+parser_utilities.adb:1299:17: info: initialization of "Ctr" proved
+parser_utilities.adb:1299:21: info: range check proved (CVC4: 1 VC)
+parser_utilities.adb:1304:10: info: initialization of "Ctr" proved
+parser_utilities.adb:1305:48: info: initialization of "Ctr" proved
+parser_utilities.adb:1306:31: info: initialization of "ByteTotal" proved
+parser_utilities.adb:1307:45: info: initialization of "Ctr" proved
+parser_utilities.adb:1308:32: info: initialization of "NumDigitsInByte" proved
+parser_utilities.adb:1308:48: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:1309:50: info: initialization of "GrandTotal" proved
+parser_utilities.adb:1309:63: info: initialization of "ByteTotal" proved
+parser_utilities.adb:1314:27: info: initialization of "SeparatorIndexArray" proved
+parser_utilities.adb:1315:13: info: initialization of "NumSeparators" proved
+parser_utilities.adb:1316:13: info: initialization of "NumDigitsInByte" proved
+parser_utilities.adb:1317:13: info: initialization of "ByteTotal" proved
+parser_utilities.adb:1319:20: info: initialization of "GrandTotal" proved
+parser_utilities.adb:1323:14: info: initialization of "RetVal" proved
+parser_utilities.ads:59:07: info: initialization of "T" proved
+parser_utilities.ads:66:07: info: initialization of "EndIdx" proved
+parser_utilities.ads:67:07: info: initialization of "T" proved
+parser_utilities.ads:70:20: info: postcondition proved (CVC4: 5 VC)
+parser_utilities.ads:70:30: info: initialization of "EndIdx" proved
+parser_utilities.ads:73:24: info: initialization of "T" proved
+parser_utilities.ads:74:32: info: range check proved (CVC4: 2 VC)
+parser_utilities.ads:75:29: info: index check proved (CVC4: 2 VC)
+parser_utilities.ads:75:46: info: index check proved (CVC4: 2 VC)
+parser_utilities.ads:78:07: info: initialization of "Value" proved
+parser_utilities.ads:85:29: info: range check proved (CVC4: 2 VC)
+parser_utilities.ads:86:37: info: index check proved (CVC4: 2 VC)
+parser_utilities.ads:86:65: info: index check proved (CVC4: 2 VC)
+parser_utilities.ads:89:07: info: initialization of "Value" proved
+parser_utilities.ads:96:29: info: range check proved (CVC4: 2 VC)
+parser_utilities.ads:97:37: info: index check proved (CVC4: 2 VC)
+parser_utilities.ads:97:64: info: index check proved (CVC4: 2 VC)
+parser_utilities.ads:100:07: info: initialization of "Value" proved
+parser_utilities.ads:107:29: info: range check proved (CVC4: 2 VC)
+parser_utilities.ads:108:37: info: index check proved (CVC4: 2 VC)
+parser_utilities.ads:108:65: info: index check proved (CVC4: 2 VC)
+parser_utilities.ads:114:07: info: initialization of "RetVal" proved
+parser_utilities.ads:119:07: info: initialization of "TimeVal" proved
+parser_utilities.ads:132:07: info: initialization of "AllDone" proved
 process_dns_request.ads:130:50: medium: range check might fail
 process_dns_request.ads:223:50: info: range check proved (CVC4: 1 VC)
 process_first_line_of_record.adb:102:38: info: initialization of "CurrentIPV4" proved
@@ -662,27 +1202,14 @@ rr_type.adb:112:28: info: initialization of "NewDomainName" proved
 rr_type.adb:112:34: medium: array index check might fail
 rr_type.adb:114:14: info: initialization of "NewDomainName" proved
 rr_type.adb:137:16: info: initialization of "Result" proved
-rr_type.adb:137:16: info: initialization of "Result" proved, in call inlined at rr_type.adb:158
-rr_type.adb:137:16: info: initialization of "Result" proved, in call inlined at rr_type.adb:164
-rr_type.adb:138:27: info: index check proved (CVC4: 4 VC), in call inlined at rr_type.adb:158
-rr_type.adb:138:27: info: index check proved (CVC4: 4 VC), in call inlined at rr_type.adb:164
+rr_type.adb:138:27: info: index check proved (CVC4: 4 VC)
 rr_type.adb:141:16: info: initialization of "Result" proved
-rr_type.adb:141:16: info: initialization of "Result" proved, in call inlined at rr_type.adb:158
-rr_type.adb:141:16: info: initialization of "Result" proved, in call inlined at rr_type.adb:164
-rr_type.adb:141:16: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at rr_type.adb:158
-rr_type.adb:141:16: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at rr_type.adb:164
-rr_type.adb:141:16: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at rr_type.adb:158
-rr_type.adb:141:16: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at rr_type.adb:164
+rr_type.adb:141:16: info: loop invariant initialization proved (CVC4: 2 VC)
+rr_type.adb:141:16: info: loop invariant preservation proved (CVC4: 2 VC)
 rr_type.adb:142:23: info: initialization of "Result" proved
-rr_type.adb:142:23: info: initialization of "Result" proved, in call inlined at rr_type.adb:158
-rr_type.adb:142:23: info: initialization of "Result" proved, in call inlined at rr_type.adb:164
-rr_type.adb:142:30: info: range check proved (CVC4: 1 VC), in call inlined at rr_type.adb:158
-rr_type.adb:142:30: info: range check proved (CVC4: 1 VC), in call inlined at rr_type.adb:164
+rr_type.adb:142:30: info: range check proved (CVC4: 1 VC)
 rr_type.adb:144:32: info: initialization of "Result" proved
-rr_type.adb:144:32: info: initialization of "Result" proved, in call inlined at rr_type.adb:158
-rr_type.adb:144:32: info: initialization of "Result" proved, in call inlined at rr_type.adb:164
-rr_type.adb:144:39: info: range check proved (CVC4: 1 VC), in call inlined at rr_type.adb:158
-rr_type.adb:144:39: info: range check proved (CVC4: 1 VC), in call inlined at rr_type.adb:164
+rr_type.adb:144:39: info: range check proved (CVC4: 1 VC)
 rr_type.adb:151:11: info: range check proved (CVC4: 2 VC)
 rr_type.adb:152:50: info: initialization of "LengthOfDomainName" proved
 rr_type.adb:155:13: info: initialization of "LengthOfDomainName" proved
@@ -2199,4 +2726,3 @@ zone_file_parser.ads:140:07: info: initialization of "NewNameServer" proved
 zone_file_parser.ads:141:07: info: initialization of "NewEmail" proved
 zone_file_parser.ads:149:07: info: initialization of "NewSerialNumber" proved
 zone_file_parser.ads:157:07: info: initialization of "NewTimeSpec" proved
-gnatprove: error during flow analysis and proof
