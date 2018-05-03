@@ -1879,7 +1879,7 @@ package body SPARK_Util is
          --  instead.
 
          if not Comes_From_Source (Expr)
-           and then Original_Node (Expr) /= Expr
+           and then Is_Rewrite_Substitution (Expr)
          then
             return Node_To_String (Original_Node (Expr), "");
          end if;

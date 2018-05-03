@@ -215,7 +215,7 @@ package body Why.Gen.Expr is
       if not Left_Most
             or else
          (Comes_From_Source (N)
-           and then Original_Node (N) /= N
+           and then Is_Rewrite_Substitution (N)
            and then Nkind (Original_Node (N)) = N_And_Then)
       then
          Slc := Sloc (N);
@@ -3356,7 +3356,6 @@ package body Why.Gen.Expr is
    is
       Used_Node : Node_Id := N;
    begin
-
       --  String_Of_Node almost systematically prints the original node of the
       --  argument node. This is usually what we want, except in one strange
       --  case: The frontend rewrites N_And_Then Chains to lists of simple
@@ -3366,8 +3365,9 @@ package body Why.Gen.Expr is
 
       --  ??? fix String_Of_Node instead of this workaround
 
-      if Comes_From_Source (N) and then Original_Node (N) /= N and then
-        Nkind (Original_Node (N)) = N_And_Then
+      if Comes_From_Source (N)
+        and then Is_Rewrite_Substitution (N)
+        and then Nkind (Original_Node (N)) = N_And_Then
       then
          Used_Node := Right_Opnd (Original_Node (N));
       end if;
