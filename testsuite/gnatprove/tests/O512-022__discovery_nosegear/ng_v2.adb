@@ -45,8 +45,8 @@ package body NG_V2 is
       (WHCF * (ThisCount - PrevCount));
 
    function DistanceSinceLastUpdate return Unsigned_16 is
-      (DistanceFromLastClickToLastUpdate * TimeSinceLastUpdate)
-        / TimeFromLastClickToLastUpdate;
+      ((DistanceFromLastClickToLastUpdate * TimeSinceLastUpdate)
+        / TimeFromLastClickToLastUpdate);
 
    function DistanceSinceLastClickBeforeLastUpdate return Unsigned_16 is
       (DistanceFromLastClickToLastUpdate + DistanceSinceLastUpdate);
