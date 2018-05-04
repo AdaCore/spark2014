@@ -62,7 +62,7 @@ is
 
    function writeRegLow8Post(RegOld : in Unsigned64; RegNew: in Unsigned64; Val : in Unsigned8)
                              return Boolean is
-     (readRegLow8(RegNew) = Val) and ((RegNew and 16#FFFFFFFFFFFFFF00#) = (RegOld and 16#FFFFFFFFFFFFFF00#));
+     ((readRegLow8(RegNew) = Val) and ((RegNew and 16#FFFFFFFFFFFFFF00#) = (RegOld and 16#FFFFFFFFFFFFFF00#)));
 
    function readRegHigh8 (Reg : in Unsigned64) return Unsigned8 is
    begin

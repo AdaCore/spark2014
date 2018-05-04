@@ -193,7 +193,7 @@ package body Stable_Marriage with SPARK_Mode is
 
       function Invariant_Holds return Boolean
       is
-        (for all G2 in Group2_Id =>
+        ((for all G2 in Group2_Id =>
             Is_Permutation_1 (Ranking_2 (G2))) and then
 
         (All_Unmatched_G1_Set_Elements_Distinct and
@@ -251,7 +251,7 @@ package body Stable_Marriage with SPARK_Mode is
                        (Unmatched_G1_Set.Elements (Idx)/= G1_Id)) then
                       Proposals_Made (G1_Id) > 0 and then
                    (Result (Ranking_1 (G1_Id)
-                            (Ranking (Proposals_Made (G1_Id)))) = G1_Id))));
+                            (Ranking (Proposals_Made (G1_Id)))) = G1_Id)))));
 
       procedure Select_And_Remove_An_Unmatched_G1 (Selected : out Group1_Id)
 
