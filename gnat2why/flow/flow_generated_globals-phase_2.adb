@@ -2624,6 +2624,11 @@ package body Flow_Generated_Globals.Phase_2 is
         Protected_Operation_Call_Graph.Get_Vertex (EN);
       --  Vertex that represents the analysed subprogram
 
+      First_Callee : Any_Entity_Name := Null_Entity_Name;
+      --  The potentially blocking callee, if any; if there are many, then we
+      --  choose the one whose name is lexically first (to give the same
+      --  results on different platforms, where hashes might not be reliable).
+
    begin
       for V of Protected_Operation_Call_Graph.
         Get_Collection (Caller, Out_Neighbours)
@@ -2640,14 +2645,21 @@ package body Flow_Generated_Globals.Phase_2 is
                --  that any call to predefined subprogram is nonblocking.
               and then not Phase_1_Info (Callee).Nonblocking
             then
-               return Callee;
+               if First_Callee = Null_Entity_Name then
+                  First_Callee := Callee;
+               elsif Lexical_Less (Callee, First_Callee) then
+                  First_Callee := Callee;
+               end if;
             end if;
          end;
-
       end loop;
 
-      return Null_Entity_Name;
+      return First_Callee;
    end Potentially_Blocking_Callee;
+
+   ----------------------------------------
+   -- Potentially_Blocking_External_Call --
+   ----------------------------------------
 
    function Potentially_Blocking_External_Call
      (E       : Entity_Id;

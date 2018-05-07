@@ -121,6 +121,11 @@ package Common_Containers is
    package Name_Lists is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Entity_Name);
 
+   function Lexical_Less (Left, Right : Entity_Name) return Boolean is
+     (To_String (Left) < To_String (Right));
+   --  Comparison on Entity_Names; intended for picking the lexically smallest
+   --  element from a collection, as hashes might differ across platforms.
+
    function Name_Hash (E : Entity_Name) return Ada.Containers.Hash_Type is
      (Generic_Integer_Hash (Integer (E)));
 
