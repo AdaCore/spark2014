@@ -687,17 +687,18 @@ procedure Gnatprove with SPARK_Mode is
             --  the user has probably forgotten to put a SPARK_Mode pragma
             --  somewhere.
 
-            if Configuration.Mode /= GPM_Check
-              and then Report_File_Is_Empty (File)
-            then
-               Put_Line
-                 (Standard_Error,
-                  "warning: no bodies have been analyzed by GNATprove");
-               Put_Line
-                 (Standard_Error,
-                  "enable analysis of a body using SPARK_Mode");
-            else
-               Put_Line ("Summary logged in " & SPARK_Report_File (Obj_Dir));
+            if Configuration.Mode /= GPM_Check then
+               if Report_File_Is_Empty (File) then
+                  Put_Line
+                    (Standard_Error,
+                     "warning: no bodies have been analyzed by GNATprove");
+                  Put_Line
+                    (Standard_Error,
+                     "enable analysis of a body using SPARK_Mode");
+               else
+                  Put_Line
+                    ("Summary logged in " & SPARK_Report_File (Obj_Dir));
+               end if;
             end if;
          end;
       end if;

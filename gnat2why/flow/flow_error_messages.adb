@@ -375,17 +375,22 @@ package body Flow_Error_Messages is
             Msg_Id := No_Message_Id;
          end if;
 
-         Add_Json_Msg
-           (Suppr      => Suppr,
-            Tag        => Flow_Tag_Kind'Image (Tag),
-            How_Proved => PC_Flow,
-            Severity   => Severity,
-            Slc        => Slc,
-            Msg_List   => Flow_Msgs,
-            E          => E,
-            Tracefile  => Tracefile,
-            Check_Tree => Create_Object,
-            Msg_Id     => Msg_Id);
+         --  In check_all mode, we don't want any messages to appear even in
+         --  the JSON output, unless they are error messages.
+
+         if not Check_All_Mode or else Severity = Error_Kind then
+            Add_Json_Msg
+              (Suppr      => Suppr,
+               Tag        => Flow_Tag_Kind'Image (Tag),
+               How_Proved => PC_Flow,
+               Severity   => Severity,
+               Slc        => Slc,
+               Msg_List   => Flow_Msgs,
+               E          => E,
+               Tracefile  => Tracefile,
+               Check_Tree => Create_Object,
+               Msg_Id     => Msg_Id);
+         end if;
       else
          Suppressed := True;
       end if;
