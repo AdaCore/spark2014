@@ -1344,7 +1344,13 @@ package body Gnat2Why.Counter_Examples is
                   Cntexample_Line_Maps.Key (Line_C),
                   Lines_Map (Line_C));
             end loop;
-            if Is_Ada_File_Name (Filename) then
+
+            --  At this point, the information of VC_line is now in the
+            --  Other_Lines field because Remap_VC_Info was applied.
+            if Is_Ada_File_Name (Filename) and then
+              not Cntexample_Line_Maps.Is_Empty
+                (Pretty_File_Cntexmp.Other_Lines)
+            then
                Pretty_Cntexmp.Insert (Filename, Pretty_File_Cntexmp);
             end if;
          end;
