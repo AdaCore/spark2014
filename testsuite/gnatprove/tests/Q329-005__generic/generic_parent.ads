@@ -1,6 +1,5 @@
 generic
    type Element is range <>;
-
 package Generic_Parent is
 
    type Object is tagged private;

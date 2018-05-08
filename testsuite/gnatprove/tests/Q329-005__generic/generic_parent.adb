@@ -1,6 +1,4 @@
-
-
-with Ada.Text_IO;
+--with Ada.Text_IO;
 
 package body Generic_Parent is
 

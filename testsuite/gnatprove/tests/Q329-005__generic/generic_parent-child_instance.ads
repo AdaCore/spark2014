@@ -1,6 +1,4 @@
 generic
-
-
 package Generic_Parent.Child_Instance is
 
    type Object is new Generic_Parent.Object with private;
