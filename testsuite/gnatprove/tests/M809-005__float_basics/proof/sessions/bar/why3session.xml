@@ -6,592 +6,6 @@
 <prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
 <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
 <file name="../../../gnatprove/bar.mlw">
-<theory name="Standard__short_short_integer" proved="true">
-</theory>
-<theory name="Standard__short_short_integer__rep" proved="true">
-</theory>
-<theory name="Standard__short_integer" proved="true">
-</theory>
-<theory name="Standard__short_integer__rep" proved="true">
-</theory>
-<theory name="Standard__integer" proved="true">
-</theory>
-<theory name="Standard__integer__rep" proved="true">
-</theory>
-<theory name="Standard__long_integer" proved="true">
-</theory>
-<theory name="Standard__long_integer__rep" proved="true">
-</theory>
-<theory name="Standard__long_long_integer" proved="true">
-</theory>
-<theory name="Standard__long_long_integer__rep" proved="true">
-</theory>
-<theory name="Standard__natural" proved="true">
-</theory>
-<theory name="Standard__natural__rep" proved="true">
-</theory>
-<theory name="Standard__positive" proved="true">
-</theory>
-<theory name="Standard__positive__rep" proved="true">
-</theory>
-<theory name="Standard__short_float" proved="true">
-</theory>
-<theory name="Standard__short_float__rep" proved="true">
-</theory>
-<theory name="Standard__float" proved="true">
-</theory>
-<theory name="Standard__float__rep" proved="true">
-</theory>
-<theory name="Standard__long_float" proved="true">
-</theory>
-<theory name="Standard__long_float__rep" proved="true">
-</theory>
-<theory name="Standard__character" proved="true">
-</theory>
-<theory name="Standard__character__rep" proved="true">
-</theory>
-<theory name="Standard__wide_character" proved="true">
-</theory>
-<theory name="Standard__wide_character__rep" proved="true">
-</theory>
-<theory name="Standard__wide_wide_character" proved="true">
-</theory>
-<theory name="Standard__wide_wide_character__rep" proved="true">
-</theory>
-<theory name="Array__Int__Standard__character" proved="true">
-</theory>
-<theory name="Array__Int__Standard__character__Concat" proved="true">
-</theory>
-<theory name="Array__Int__Standard__character_Comp" proved="true">
-</theory>
-<theory name="Standard__string" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_character" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_character__Concat" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_character_Comp" proved="true">
-</theory>
-<theory name="Standard__wide_string" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_wide_character" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_wide_character__Concat" proved="true">
-</theory>
-<theory name="Array__Int__Standard__wide_wide_character_Comp" proved="true">
-</theory>
-<theory name="Standard__wide_wide_string" proved="true">
-</theory>
-<theory name="Standard__duration" proved="true">
-</theory>
-<theory name="Standard__integer_8" proved="true">
-</theory>
-<theory name="Standard__integer_8__rep" proved="true">
-</theory>
-<theory name="Standard__integer_16" proved="true">
-</theory>
-<theory name="Standard__integer_16__rep" proved="true">
-</theory>
-<theory name="Standard__integer_32" proved="true">
-</theory>
-<theory name="Standard__integer_32__rep" proved="true">
-</theory>
-<theory name="Standard__integer_64" proved="true">
-</theory>
-<theory name="Standard__integer_64__rep" proved="true">
-</theory>
-<theory name="Standard__universal_integer" proved="true">
-</theory>
-<theory name="Standard__universal_integer__rep" proved="true">
-</theory>
-<theory name="Bar__float_tests__ft" proved="true">
-</theory>
-<theory name="Bar__float_tests__ft__rep" proved="true">
-</theory>
-<theory name="Bar__float_tests__biggest_representable_int" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_01__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_01__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_01__y" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_01__y___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_02__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_02__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_02__y" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_02__y___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_03__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_03__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_04__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_04__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_05__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_05__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_06__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_06__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_06__y" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_06__y___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_07__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_07__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_07__y" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_07__y___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_08__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_08__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_08__y" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_08__y___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_09__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_09__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_09__y" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_09__y___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_10__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_10__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_10__y" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_10__y___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_11__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_11__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_11__y" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_11__y___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_14__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_14__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_15__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_15__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_16__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_16__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_17__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_17__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_18__x" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_18__x___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_19__a" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_19__a___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_19__b" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_19__b___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_19__c" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_19__c___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_19__d" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_19__d___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__ft" proved="true">
-</theory>
-<theory name="Bar__double_tests__ft__rep" proved="true">
-</theory>
-<theory name="Bar__double_tests__biggest_representable_int" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_01__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_01__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_01__y" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_01__y___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_02__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_02__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_02__y" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_02__y___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_03__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_03__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_04__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_04__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_05__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_05__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_06__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_06__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_06__y" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_06__y___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_07__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_07__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_07__y" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_07__y___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_08__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_08__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_08__y" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_08__y___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_09__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_09__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_09__y" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_09__y___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_10__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_10__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_10__y" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_10__y___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_11__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_11__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_11__y" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_11__y___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_14__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_14__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_15__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_15__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_16__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_16__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_17__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_17__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_18__x" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_18__x___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_19__a" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_19__a___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_19__b" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_19__b___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_19__c" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_19__c___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_19__d" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_19__d___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_01__z" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_01__z___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_02__z" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_02__z___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_14__z" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_14__z___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_15__z" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_15__z___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_16__z" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_16__z___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_17__z" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_17__z___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_18__z" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_18__z___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_19__z" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_19__z___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_01__z" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_01__z___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_02__z" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_02__z___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_14__z" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_14__z___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_15__z" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_15__z___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_16__z" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_16__z___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_17__z" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_17__z___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_18__z" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_18__z___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_19__z" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_19__z___axiom" proved="true">
-</theory>
-<theory name="Standard__short_short_integer___axiom" proved="true">
-</theory>
-<theory name="Standard__short_integer___axiom" proved="true">
-</theory>
-<theory name="Standard__integer___axiom" proved="true">
-</theory>
-<theory name="Standard__long_integer___axiom" proved="true">
-</theory>
-<theory name="Standard__long_long_integer___axiom" proved="true">
-</theory>
-<theory name="Standard__natural___axiom" proved="true">
-</theory>
-<theory name="Standard__positive___axiom" proved="true">
-</theory>
-<theory name="Standard__short_float___axiom" proved="true">
-</theory>
-<theory name="Standard__float___axiom" proved="true">
-</theory>
-<theory name="Standard__long_float___axiom" proved="true">
-</theory>
-<theory name="Standard__character___axiom" proved="true">
-</theory>
-<theory name="Standard__wide_character___axiom" proved="true">
-</theory>
-<theory name="Standard__wide_wide_character___axiom" proved="true">
-</theory>
-<theory name="Standard__string___axiom" proved="true">
-</theory>
-<theory name="Standard__wide_string___axiom" proved="true">
-</theory>
-<theory name="Standard__wide_wide_string___axiom" proved="true">
-</theory>
-<theory name="Standard__duration___axiom" proved="true">
-</theory>
-<theory name="Standard__integer_8___axiom" proved="true">
-</theory>
-<theory name="Standard__integer_16___axiom" proved="true">
-</theory>
-<theory name="Standard__integer_32___axiom" proved="true">
-</theory>
-<theory name="Standard__integer_64___axiom" proved="true">
-</theory>
-<theory name="Standard__universal_integer___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_01" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_02" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_03" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_04" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_05" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_06" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_07" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_08" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_09" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_10" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_11" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_14" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_15" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_16" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_17" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_18" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_19" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_01" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_02" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_03" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_04" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_05" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_06" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_07" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_08" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_09" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_10" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_11" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_14" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_15" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_16" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_17" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_18" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_19" proved="true">
-</theory>
-<theory name="Bar__float_tests__ft___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__ft___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__biggest_representable_int___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__biggest_representable_int___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_01___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_02___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_03___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_04___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_05___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_06___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_07___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_08___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_09___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_10___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_11___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_14___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_15___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_16___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_17___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_18___axiom" proved="true">
-</theory>
-<theory name="Bar__float_tests__test_19___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_01___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_02___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_03___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_04___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_05___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_06___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_07___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_08___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_09___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_10___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_11___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_14___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_15___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_16___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_17___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_18___axiom" proved="true">
-</theory>
-<theory name="Bar__double_tests__test_19___axiom" proved="true">
-</theory>
 <theory name="Bar__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
@@ -627,7 +41,7 @@
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365015"/></proof>
+  <proof prover="1"><result status="unknown" steps="365002"/></proof>
   <proof prover="2"><result status="invalid" steps="36314"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
@@ -641,7 +55,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="1"><result status="unknown" steps="365012"/></proof>
   <proof prover="2"><result status="invalid" steps="66009"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
@@ -649,7 +63,7 @@
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365002"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="invalid" steps="70369"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
@@ -681,7 +95,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="invalid" steps="66025"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
@@ -689,7 +103,7 @@
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365002"/></proof>
   <proof prover="2"><result status="invalid" steps="63271"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
@@ -703,12 +117,12 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365014"/></proof>
   <proof prover="2"><result status="invalid" steps="1722590"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="invalid" steps="1241340"/></proof>
   </goal>
  </transf>
@@ -719,12 +133,12 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365015"/></proof>
+  <proof prover="1"><result status="unknown" steps="365016"/></proof>
   <proof prover="2"><result status="invalid" steps="1179666"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365014"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="invalid" steps="87417"/></proof>
   </goal>
  </transf>
@@ -737,8 +151,8 @@
   <proof prover="2"><result status="valid" steps="796"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1375"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="0"><result status="valid" steps="1374"/></proof>
+  <proof prover="1"><result status="unknown" steps="365002"/></proof>
   <proof prover="2"><result status="unknown" steps="8450074"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
@@ -769,7 +183,7 @@
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365015"/></proof>
+  <proof prover="1"><result status="unknown" steps="365002"/></proof>
   <proof prover="2"><result status="invalid" steps="1320941"/></proof>
   </goal>
  </transf>
@@ -843,7 +257,7 @@
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="invalid" steps="68422"/></proof>
   </goal>
  </transf>
@@ -923,7 +337,7 @@
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365015"/></proof>
+  <proof prover="1"><result status="unknown" steps="365002"/></proof>
   <proof prover="2"><result status="invalid" steps="79784"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
@@ -937,7 +351,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="1"><result status="unknown" steps="365012"/></proof>
   <proof prover="2"><result status="invalid" steps="6814118"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
@@ -945,12 +359,12 @@
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365002"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="invalid" steps="5044504"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="1"><result status="unknown" steps="365002"/></proof>
   <proof prover="2"><result status="unknown" steps="8450058"/></proof>
   </goal>
  </transf>
@@ -979,7 +393,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="invalid" steps="6814134"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
@@ -987,12 +401,12 @@
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365002"/></proof>
   <proof prover="2"><result status="invalid" steps="6070540"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="1"><result status="unknown" steps="365002"/></proof>
   <proof prover="2"><result status="unknown" steps="8450058"/></proof>
   </goal>
  </transf>
@@ -1003,12 +417,12 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365012"/></proof>
+  <proof prover="1"><result status="unknown" steps="365014"/></proof>
   <proof prover="2"><result status="invalid" steps="7166741"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="invalid" steps="7554723"/></proof>
   </goal>
  </transf>
@@ -1019,12 +433,12 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365015"/></proof>
+  <proof prover="1"><result status="unknown" steps="365016"/></proof>
   <proof prover="2"><result status="invalid" steps="6090110"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365014"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="invalid" steps="307410"/></proof>
   </goal>
  </transf>
@@ -1037,8 +451,8 @@
   <proof prover="2"><result status="valid" steps="875"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1376"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="0"><result status="valid" steps="1374"/></proof>
+  <proof prover="1"><result status="unknown" steps="365002"/></proof>
   <proof prover="2"><result status="unknown" steps="8450074"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
@@ -1069,7 +483,7 @@
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365015"/></proof>
+  <proof prover="1"><result status="unknown" steps="365002"/></proof>
   <proof prover="2"><result status="invalid" steps="7410166"/></proof>
   </goal>
  </transf>
@@ -1083,7 +497,7 @@
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365014"/></proof>
+  <proof prover="1"><result status="unknown" steps="365002"/></proof>
   <proof prover="2"><result status="unknown" steps="8450074"/></proof>
   </goal>
  </transf>
@@ -1145,7 +559,7 @@
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <proof prover="1"><result status="unknown" steps="365015"/></proof>
   <proof prover="2"><result status="invalid" steps="143580"/></proof>
   </goal>
  </transf>

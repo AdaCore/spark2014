@@ -399,7 +399,7 @@ perm.adb:357:63: info: initialization of "Ia2" proved
 perm.adb:358:29: info: precondition proved (CVC4: 3 VC)
 perm.adb:359:25: info: assertion proved (CVC4: 1 VC)
 perm.adb:359:25: info: initialization of "H" proved
-perm.adb:361:12: medium: precondition might fail
+perm.adb:361:12: info: precondition proved (CVC4: 3 VC)
 perm.adb:362:14: info: initialization of "H" proved
 perm.ads:11:14: info: postcondition proved (CVC4: 5 VC)
 perm.ads:12:34: info: overflow check proved (CVC4: 1 VC)
