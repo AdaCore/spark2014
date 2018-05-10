@@ -9,6 +9,6 @@ is
    DisplayPriority : constant System.Interrupt_Priority := System.Interrupt_Priority'Last;
 
    -- task periodicities
-   TimerPeriod       : constant Ada.Real_Time.Time_Span :=
+   TimerPeriod     : constant Ada.Real_Time.Time_Span :=
      Ada.Real_Time.Milliseconds (1000);
 end TuningData;

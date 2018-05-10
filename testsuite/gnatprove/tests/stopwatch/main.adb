@@ -1,4 +1,4 @@
-with User, Timer, Display, Ada.Real_Time;
+with User, Timer, Display;
 
 procedure Main with
   SPARK_Mode,

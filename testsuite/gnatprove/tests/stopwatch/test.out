@@ -1,11 +1,17 @@
-display.adb:37:29: medium: overflow check might fail
-timer.adb:13:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
-timer.adb:13:09: info: nontermination of task proved (CVC4: 1 VC)
-timer.adb:36:26: info: initialization of "Release_Time" proved
-timer.adb:37:22: info: initialization of "Release_Time" proved
-user.adb:7:14: info: ceiling priority in Interrupt_Priority proved (CVC4: 2 VC)
-user.adb:8:44: info: range check proved (CVC4: 2 VC)
-user.adb:15:27: medium: this interrupt might be reserved
-user.adb:22:27: medium: this interrupt might be reserved
-user.adb:24:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
-user.adb:28:27: medium: this interrupt might be reserved
+display.adb:10:34: info: range check proved (CVC4: 2 VC)
+display.adb:37:32: info: overflow check proved (CVC4: 1 VC)
+display.adb:44:36: info: initialization of "Control" constituent of "LCD" proved
+timer.adb:10:34: info: range check proved (CVC4: 2 VC)
+timer.adb:16:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
+timer.adb:68:26: info: initialization of "Release_Time" proved
+timer.adb:69:22: info: initialization of "Release_Time" proved
+timer.adb:74:19: info: initialization of "Display.LCD" proved
+timer.ads:18:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+timer.ads:18:09: info: nontermination of task proved (CVC4: 1 VC)
+timer.ads:21:39: info: initialization of "Display.LCD" proved
+user.ads:9:14: info: ceiling priority in Interrupt_Priority proved (CVC4: 2 VC)
+user.ads:10:44: info: range check proved (CVC4: 2 VC)
+user.ads:12:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
+user.ads:19:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
+user.ads:26:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
+user.ads:27:37: info: initialization of "Display.LCD" proved

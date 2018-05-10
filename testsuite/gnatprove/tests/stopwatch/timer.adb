@@ -1,59 +1,94 @@
-with Ada.Synchronous_Task_Control, Ada.Real_Time, Display;
+with Ada.Real_Time, Display;
 use type Ada.Real_Time.Time;
 
 package body Timer with
   SPARK_Mode,
-  Refined_State => (Timing_State => TimingLoop,
-                    Oper_State   => Operate)
+  Refined_State => (Control => Run_State)
 is
 
-   Operate : Ada.Synchronous_Task_Control.Suspension_Object with Async_Readers,
-                                                                 Async_Writers;
+   protected Run_State is
+      pragma Priority (TuningData.UserPriority);
 
-   task TimingLoop with
-     Global   => (In_Out => (Operate, Display.State),
-                  Input  => Ada.Real_Time.Clock_Time),
-     Depends  => (Operate       => null,
-                  Display.State => Display.State,
-                  TimingLoop    => TimingLoop,
-                  null          => (Ada.Real_Time.Clock_Time,
-                                    Operate)),
-     Priority => TuningData.TimerPriority;
+      procedure Start;
 
-   task body TimingLoop is
-      Release_Time : Ada.Real_Time.Time;
-      Period : constant Ada.Real_Time.Time_Span := TuningData.TimerPeriod;
+      procedure Stop;
+
+      procedure Add_Time_If_Running
+        with Global => (In_Out => Display.LCD);
+
+      entry Wait_Until_Start;
+   private
+      Running : Boolean := False;
+   end Run_State;
+
+   protected body Run_State is
+      procedure Start is
+      begin
+         Running := True;
+      end Start;
+
+      procedure Stop is
+      begin
+         Running := False;
+      end Stop;
+
+      procedure Add_Time_If_Running is
+      begin
+         if Running then
+            Display.AddSecond;
+         end if;
+      end Add_Time_If_Running;
+
+      pragma Warnings (Off, "statement has no effect",
+                       Reason => "We use this just to block the task until" &
+                                 " it is ready to run.");
+      entry Wait_Until_Start when Running is
+      begin
+         null;
+      end Wait_Until_Start;
+      pragma Warnings (On, "statement has no effect");
+
+   end Run_State;
+
+   task body Timer with
+     Refined_Depends => (Display.LCD => Run_State,
+                         Run_State   => Run_State,
+                         null        => Ada.Real_Time.Clock_Time)
+
+   is
+      Release_Time : Ada.Real_Time.Time := Ada.Real_Time.Clock;
+      Period : Ada.Real_Time.Time_Span renames TuningData.TimerPeriod;
    begin
       Display.Initialize; -- ensure we get 0 on the screen at start up
       loop
-         -- wait until user allows clock to run
-         -- calling procedure Suspend_Until_True which is Potentially_Blocking
-         Ada.Synchronous_Task_Control.Suspend_Until_True (Operate);
-         Ada.Synchronous_Task_Control.Set_True (Operate);
-         -- once running, count the seconds
-         -- calling Ada.Real_Time.Clock which is a Volatile_Function
-         Release_Time := Ada.Real_Time.Clock;
+         --  Wait until user allows clock to run...
+         Run_State.Wait_Until_Start;
+
+         --  Once running, count the seconds.
          Release_Time := Release_Time + Period;
          delay until Release_Time;
-         -- each time round, update the display
-         Display.AddSecond;
+
+         --  Each time period, update the display. We check if we're
+         --  still running to not *always* round up to the next second
+         --  when we stop the clock.
+         Run_State.Add_Time_If_Running;
       end loop;
-   end TimingLoop;
+   end Timer;
 
    procedure StartClock with
-     Refined_Global  => (In_Out => Operate),
-     Refined_Depends => (Operate => null, null => Operate)
+     Refined_Global  => (In_Out => Run_State),
+     Refined_Depends => (Run_State => Run_State)
    is
    begin
-      Ada.Synchronous_Task_Control.Set_True (Operate);
+      Run_State.Start;
    end StartClock;
 
    procedure StopClock with
-     Refined_Global  => (In_Out => Operate),
-     Refined_Depends => (Operate => null, null => Operate)
+     Refined_Global  => (In_Out => Run_State),
+     Refined_Depends => (Run_State => Run_State)
    is
    begin
-      Ada.Synchronous_Task_Control.Set_False (Operate);
+      Run_State.Stop;
    end StopClock;
 
 end Timer;

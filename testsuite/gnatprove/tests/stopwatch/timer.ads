@@ -1,21 +1,35 @@
+with Ada.Real_Time;
+
 with TuningData;
-limited with Ada.Synchronous_Task_Control, Ada.Real_Time, Display;
+with Display;
 
 package Timer with
   SPARK_Mode,
-  Abstract_State => (Timing_State,
-                     (Oper_State with Synchronous,
-                                      External => (Async_Readers,
-                                                   Async_Writers)))
+  Abstract_State => (Control with Synchronous,
+                                  External => (Async_Readers,
+                                               Async_Writers))
 is
 
-   -- These two procedures simply toggle suspension object Operate
+   --  We note the resolution of this timing loop is 1 second. So if
+   --  you stop the clock after .25 of a second has passed, and then
+   --  start it again the display will only updated after an entire
+   --  new second has passed.
+
+   task Timer
+     with Global => (In_Out => Control,
+                     Input => Ada.Real_Time.Clock_Time,
+                     Output => Display.LCD),
+     Depends => (Display.LCD => Control,
+                 Control => Control,
+                 null => Ada.Real_Time.Clock_Time),
+     Priority => TuningData.TimerPriority;
+
    procedure StartClock with
-     Global  => (In_Out => Oper_State),
-     Depends => (Oper_State => null, null => Oper_State);
+     Global  => (In_Out => Control),
+     Depends => (Control => Control);
 
    procedure StopClock with
-     Global  => (In_Out => Oper_State),
-     Depends => (Oper_State => null, null => Oper_State);
+     Global  => (In_Out => Control),
+     Depends => (Control => Control);
 
 end Timer;

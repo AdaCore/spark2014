@@ -1,26 +1,18 @@
+with TuningData;
 with System.Storage_Elements;
 
 package body Display with
   SPARK_Mode,
-  Refined_State => (State => Internal_State)
+  Refined_State => (LCD => Control)
 is
-   protected Internal_State with
-     Interrupt_Priority => TuningData.DisplayPriority
-   is
 
-      -- add 1 second to stored time and send it to port
-      procedure Increment with
-        Global  => null,
-        Depends => (Internal_State => Internal_State);
-
-      -- clear time to 0 and send it to port;
-      procedure Reset with
-        Global  => null,
-        Depends => (Internal_State => Internal_State);
-
+   protected Control is
+      pragma Priority (TuningData.DisplayPriority);
+      procedure Set_Zero;
+      procedure Add_One;
    private
-      Counter : Natural := 0;
-   end Internal_State;
+      Current : Natural := 0;
+   end Control;
 
    --  External variable Port is a virtual protected object. All accesses to
    --  Port are mediated by protected object Internal_State, which is
@@ -29,36 +21,42 @@ is
      Volatile,
      Async_Readers,
      Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#),
-     Part_Of => Internal_State;
+     Part_Of => Control;
 
-   protected body Internal_State is
-      procedure Increment is
+   protected body Control is
+      procedure Set_Zero is
       begin
-         Counter := Counter + 1;
-         Port := Counter;
-      end Increment;
+         Current := 0;
+         Port    := Current;
+      end Set_Zero;
 
-      procedure Reset is
+      procedure Add_One is
       begin
-         Counter := 0;
-         Port := Counter;
-      end Reset;
-   end Internal_State;
+         if Current < Natural'Last then
+            --  We just stop time at this point.
+            Current := Current + 1;
+         end if;
+         Port := Current;
+      end Add_One;
+   end Control;
 
    procedure Initialize with
-     Refined_Global  => (In_Out => Internal_State),
-     Refined_Depends => (Internal_State => Internal_State)
+     Refined_Global  => (Output => Control),
+     Refined_Depends => (Control => null)
    is
    begin
-      Internal_State.Reset;
+      Control.Set_Zero;
+      pragma Annotate (GNATProve, False_Positive,
+                       "constituent of ""LCD"" is not set",
+                       "Set_Zero really does initialize.");
    end Initialize;
 
    procedure AddSecond with
-     Refined_Global  => (In_Out => Internal_State),
-     Refined_Depends => (Internal_State => Internal_State)
+     Refined_Global  => (In_Out => Control),
+     Refined_Depends => (Control => Control)
    is
    begin
-      Internal_State.Increment;
+      Control.Add_One;
    end AddSecond;
 
 end Display;
