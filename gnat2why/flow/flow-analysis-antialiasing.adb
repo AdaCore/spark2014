@@ -177,23 +177,22 @@ package body Flow.Analysis.Antialiasing is
          --  Selected components
          N_Selected_Component        => True,
 
-         --  Attribute references (the only interesting one is 'access
-         --  which is not in SPARK)
+         --  Attribute references (the only interesting one is 'access which is
+         --  not in SPARK).
 
          --  Type conversion
          N_Qualified_Expression      => True,
          N_Type_Conversion           => True,
 
-         --  Function call is boring in SPARK as it can't return
-         --  access, except for unchecked conversions.
+         --  Function call is boring in SPARK as it can't return access, except
+         --  for unchecked conversions.
          N_Unchecked_Type_Conversion => True,
 
          --  Character literals, qualified expressions are boring
 
          --  Generalized reference and indexing are suitably expanded
 
-         --  Everything else must be an expression and is thus not
-         --  interesting
+         --  Everything else must be an expression and is thus not interesting
          others                      => False);
 
       Is_Root : constant array (Node_Kind) of Boolean :=
@@ -245,9 +244,8 @@ package body Flow.Analysis.Antialiasing is
                                        return Node_Id
       with Pre  => Is_Interesting (Nkind (N)),
            Post => Is_Interesting (Nkind (Up_Ignoring_Conversions'Result));
-      --  Goes up the parse tree (calling Parent), but no higher than
-      --  Top. If we find an type conversion of some kind we keep
-      --  going.
+      --  Goes up the parse tree (calling Parent), but no higher than Top. If
+      --  we find an type conversion of some kind we keep going.
 
       --------------------
       -- Down_One_Level --
@@ -729,9 +727,8 @@ package body Flow.Analysis.Antialiasing is
             --  out paramter.
 
             if Param_Is_Out
-              or else
-                Ekind (Other_Formal) in E_Out_Parameter
-                                      | E_In_Out_Parameter
+              or else Ekind (Other_Formal) in E_Out_Parameter
+                                            | E_In_Out_Parameter
             then
                Check_Node_Against_Node
                  (FA       => FA,

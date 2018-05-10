@@ -192,7 +192,7 @@ package Flow.Analysis is
    --  private child with Part_Of aspect.
 
    procedure Check_Aliasing (FA : in out Flow_Analysis_Graphs);
-   --  Check each procedure call for aliasing.
+   --  Check each procedure call for aliasing
    --
    --  Complexity is O(N^2)
 
