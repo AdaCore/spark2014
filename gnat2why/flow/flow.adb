@@ -1121,7 +1121,7 @@ package body Flow is
               E_Task_Type |
               E_Function  |
               E_Procedure =>
-            FA.B_Scope := Get_Flow_Scope (Get_Body (E));
+            FA.B_Scope := Get_Flow_Scope (Get_Body_Entity (E));
             FA.S_Scope := Get_Flow_Scope (E);
 
             Append (FA.Base_Filename, "subprogram_");

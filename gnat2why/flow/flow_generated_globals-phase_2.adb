@@ -377,6 +377,7 @@ package body Flow_Generated_Globals.Phase_2 is
       Direct_Calls : Node_Lists.List := Node_Lists.Empty_List;
    begin
       for Callee of Generated_Calls (To_Entity_Name (E)) loop
+         pragma Assert (Present (Find_Entity (Callee)));
          Direct_Calls.Append (Find_Entity (Callee));
       end loop;
       return Direct_Calls;

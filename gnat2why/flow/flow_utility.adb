@@ -4173,7 +4173,7 @@ package body Flow_Utility is
    is
    begin
       return Entity_Body_In_SPARK (E)
-        and then Is_Visible (Get_Body_Entity (E), Scope)
+        and then Is_Visible (Get_Body (E), Scope)
         and then Refinement_Needed (E);
    end Rely_On_Generated_Global;
 
@@ -5487,6 +5487,9 @@ package body Flow_Utility is
             end if;
          end loop;
          Vars_Defined := Projected or Partial;
+         --  ??? This might be wrong; assignment to visible constituents of a
+         --  partially visible abstract state should be modelled as writing to
+         --  that constituent, not to the state as a whole.
 
          Up_Project (Vars_Proof, Scope, Projected, Partial);
          Vars_Proof :=

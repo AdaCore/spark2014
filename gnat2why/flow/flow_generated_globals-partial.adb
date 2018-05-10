@@ -35,7 +35,6 @@ with Flow_Utility;                     use Flow_Utility;
 with Gnat2Why_Args;                    use Gnat2Why_Args;
 with Graphs;
 with Lib;                              use Lib;
-with Namet;                            use Namet;
 with Nlists;                           use Nlists;
 with Sem_Aux;                          use Sem_Aux;
 with Sem_Type;                         use Sem_Type;
@@ -1952,16 +1951,15 @@ package body Flow_Generated_Globals.Partial is
 
       Filename : constant String :=
         Unique_Name (Main_Unit_Entity) & "_constants_1";
+      --  ??? this fails on subprogram instantiation as compilation units
 
    --  Start of processing for Print_Graph
 
    begin
-      if Gnat2Why_Args.Flow_Advanced_Debug then
-         G.Write_Pdf_File
-           (Filename  => Filename,
-            Node_Info => NDI'Access,
-            Edge_Info => EDI'Access);
-      end if;
+      G.Write_Pdf_File
+        (Filename  => Filename,
+         Node_Info => NDI'Access,
+         Edge_Info => EDI'Access);
    end Print;
 
    -----------------------
@@ -2296,7 +2294,9 @@ package body Flow_Generated_Globals.Partial is
 
       --  Dump the graph before closing it
 
-      Print (Constant_Graph);
+      if Gnat2Why_Args.Flow_Advanced_Debug then
+         Print (Constant_Graph);
+      end if;
 
       Constant_Graph.Close;
 

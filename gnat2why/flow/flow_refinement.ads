@@ -74,8 +74,8 @@ package Flow_Refinement is
    function Is_Globally_Visible (N : Node_Id) return Boolean;
    --  Returns True iff the node N is visible from the Standard package
 
-   function Is_Visible_From_Other_Units (N : Node_Id) return Boolean;
-   --  Returns True iff the node N is visible from other compilation units
+   function Is_Visible_From_Other_Units (E : Entity_Id) return Boolean;
+   --  Returns True iff E is visible from other compilation units
 
    function Is_Visible (N : Node_Id;
                         S : Flow_Scope)
@@ -98,10 +98,15 @@ package Flow_Refinement is
    --  Returns True iff Target_Scope is visible from Looking_From
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
-   with Pre => Nkind (N) not in N_Subunit | N_Body_Stub;
+   with Pre => Nkind (N) /= N_Subunit;
    --  Given (almost) any node in the AST, work out which flow scope we are in.
-   --  If the scope is Standard, return Null_Flow_Scope instead. For stubs use
-   --  the node of the corresponding proper body.
+   --
+   --  When called on the boundary node, e.g. N_Subprogram_Declaration,
+   --  give the enclosing scope; this is because once we get its Parent,
+   --  we can't tell whether the initial node was in the visible or private
+   --  declarations.
+   --
+   --  ??? If the scope is Standard, return Null_Flow_Scope instead.
 
    function Subprogram_Refinement_Is_Visible (E : Entity_Id;
                                               S : Flow_Scope)

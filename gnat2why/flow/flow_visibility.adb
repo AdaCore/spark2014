@@ -33,6 +33,7 @@ with Graphs;
 with Lib;                        use Lib;
 with Nlists;                     use Nlists;
 with Rtsfind;                    use Rtsfind;
+with Sem_Ch12;                   use Sem_Ch12;
 with Sem_Util;                   use Sem_Util;
 with SPARK_Util;                 use SPARK_Util;
 with Sinfo;                      use Sinfo;
@@ -45,13 +46,22 @@ package body Flow_Visibility is
    ----------------------------------------------------------------------------
 
    type Hierarchy_Info_T is record
-      Is_Package  : Boolean;
-      Is_Private  : Boolean;
-      Is_Instance : Boolean;
-      Is_Nested   : Boolean;
-      Parent      : Entity_Id;
-      Template    : Entity_Id;
-      Container   : Flow_Scope;
+      Is_Package        : Boolean;
+
+--    Is_Child          : Boolean;
+--    ??? in the design document this is a dedicated property, but it is easier
+--    to debug if implemented as a function; let's keep it like this until this
+--    code is stabilized; same for other occurrences below.
+      Is_Private        : Boolean;
+      Is_Nested         : Boolean;
+
+      Is_Instance       : Boolean;
+      Is_Instance_Child : Boolean;
+
+      Parent            : Entity_Id;
+      Instance_Parent   : Entity_Id;
+      Template          : Entity_Id;
+      Container         : Flow_Scope;
    end record;
 
    package Hierarchy_Info_Maps is new
@@ -61,7 +71,12 @@ package body Flow_Visibility is
                                  Equivalent_Keys => "=",
                                  "="             => "=");
 
-   type Edge_Kind is (Rule0, Rule1, Rule2, Rule3, Rule4);
+   type Edge_Kind is (Rule_Own,
+                      Rule_Instance,
+                      Rule_Up_Spec,
+                      Rule_Down_Spec,
+                      Rule_Up_Priv,
+                      Rule_Up_Body);
 
    function Hash (S : Flow_Scope) return Ada.Containers.Hash_Type;
 
@@ -82,13 +97,18 @@ package body Flow_Visibility is
    --  Standard_Standard is not yet defined.
 
    Standard_Info : constant Hierarchy_Info_T :=
-     (Is_Package  => True,
-      Is_Private  => False,
-      Is_Instance => False,
-      Is_Nested   => False,
-      Parent      => Empty,
-      Template    => Empty,
-      Container   => Null_Flow_Scope);
+     (Is_Package        => True,
+--      Is_Child          => False,
+      Is_Private        => False,
+      Is_Nested         => False,
+
+      Is_Instance       => False,
+      Is_Instance_Child => False,
+
+      Parent            => Empty,
+      Instance_Parent   => Empty,
+      Template          => Empty,
+      Container         => Null_Flow_Scope);
 
    Hierarchy_Info : Hierarchy_Info_Maps.Map;
    Scope_Graph    : Scope_Graphs.Graph := Scope_Graphs.Create;
@@ -104,10 +124,7 @@ package body Flow_Visibility is
    --  Convert between Null_Flow_Scope (which is used in the Flow_Refinement
    --  package) to Standard_Scope (which is used here).
 
-   function Invariant (Info : Hierarchy_Info_T) return Boolean with Ghost;
-
-   function Make_Info (N : Node_Id) return Hierarchy_Info_T
-   with Post => Invariant (Make_Info'Result);
+   function Make_Info (N : Node_Id) return Hierarchy_Info_T;
 
    function Is_Child (Info : Hierarchy_Info_T) return Boolean;
 
@@ -176,26 +193,6 @@ package body Flow_Visibility is
         and then Info.Parent /= Standard_Standard;
    end Is_Child;
 
-   ---------------
-   -- Invariant --
-   ---------------
-
-   function Invariant (Info : Hierarchy_Info_T) return Boolean is
-   begin
-      return
-       (if not Info.Is_Package then not Info.Is_Private)
-        and then
-       (if Info.Is_Private then not Info.Is_Nested)
-        and then
-       (if Info.Is_Nested then
-          not Info.Is_Private
-          and then No (Info.Parent)
-          and then Info.Container /= Null_Flow_Scope
-        else
-          Present (Info.Parent)
-          and then Info.Container = Null_Flow_Scope);
-   end Invariant;
-
    ----------------
    -- Is_Visible --
    ----------------
@@ -219,17 +216,24 @@ package body Flow_Visibility is
    ---------------
 
    function Make_Info (N : Node_Id) return Hierarchy_Info_T is
-      E : constant Entity_Id := Defining_Entity (N);
+      Def_E : constant Entity_Id := Defining_Entity (N);
 
-      Is_Package  : Boolean;
-      Is_Private  : Boolean;
-      Parent      : Entity_Id;
+      E : constant Entity_Id :=
+        (if Nkind (N) = N_Private_Type_Declaration
+         then DIC_Procedure (Def_E)
+         elsif Nkind (N) = N_Full_Type_Declaration
+         then Invariant_Procedure (Def_E)
+         else Def_E);
 
-      Is_Instance : Boolean;
-      Template    : Entity_Id;
+      Is_Package      : Boolean;
+      --  Is_Child          : Boolean;
+      Is_Private      : Boolean;
+      Parent          : Entity_Id;
+      Instance_Parent : Entity_Id;
+      Template        : Entity_Id;
 
-      Is_Nested   : Boolean;
-      Container   : Flow_Scope;
+      Is_Nested       : Boolean;
+      Container       : Flow_Scope;
 
       function Is_Text_IO_Special_Package (E : Entity_Id) return Boolean;
       --  Return True iff E is one of the special generic Text_IO packages,
@@ -296,23 +300,65 @@ package body Flow_Visibility is
             Parent     := Empty;
          end if;
 
-         if Is_Generic_Instance (E) then
-            Is_Instance := True;
-            Template    := Generic_Parent (Specification (N));
-            pragma Assert (Hierarchy_Info.Contains (Template));
-         else
-            Is_Instance := False;
-            Template    := Empty;
-         end if;
-
       else
-         pragma Assert (Ekind (E) in E_Protected_Type | E_Task_Type);
+         pragma Assert (Ekind (E) in Entry_Kind
+                                   | E_Function
+                                   | E_Procedure
+                                   | E_Protected_Type
+                                   | E_Task_Type
+                                   | Generic_Subprogram_Kind);
 
-         Is_Package  := False;
-         Is_Instance := False;
-         Is_Private  := False;
-         Parent      := Empty;
-         Template    := Empty;
+         Is_Package := False;
+         Is_Private := False;
+
+         if Is_Compilation_Unit (E) then
+            if Ekind (E) in E_Function | E_Procedure
+              and then Is_Generic_Instance (E)
+            then
+               Parent := Empty;
+            else
+               Parent := Scope (E);
+            end if;
+         else
+            Parent := Empty;
+         end if;
+      end if;
+
+      if Is_Generic_Instance (E) then
+         Template := Generic_Parent (Specification (N));
+
+         pragma Assert (Hierarchy_Info.Contains (Template));
+
+         --  Deal with instances of child instances; this is based on frontend
+         --  Install_Parent_Private_Declarations.
+
+         if Is_Child_Unit (Template)
+           and then Is_Generic_Unit (Scope (Template))
+         then
+            declare
+               Inst_Node : constant Node_Id := Get_Unit_Instantiation_Node (E);
+
+            begin
+               pragma Assert (Nkind (Inst_Node) = N_Package_Instantiation);
+               --  The original frontend routine expects formal packages too,
+               --  but apparently here we only get package instantiations.
+
+               pragma Assert (Nkind (Name (Inst_Node)) = N_Expanded_Name);
+               --  Apparently, the package to instantiate must be given with a
+               --  fully qualified name.
+
+               Instance_Parent := Entity (Prefix (Name (Inst_Node)));
+
+               if Present (Renamed_Entity (Instance_Parent)) then
+                  Instance_Parent := Renamed_Entity (Instance_Parent);
+               end if;
+            end;
+         else
+            Instance_Parent := Empty;
+         end if;
+      else
+         Template        := Empty;
+         Instance_Parent := Empty;
       end if;
 
       if Is_Child_Unit (E)
@@ -325,13 +371,40 @@ package body Flow_Visibility is
          Is_Nested := Container /= Null_Flow_Scope;
       end if;
 
-      return (Is_Package  => Is_Package,
-              Is_Private  => Is_Private,
-              Is_Instance => Is_Instance,
-              Is_Nested   => Is_Nested,
-              Parent      => Parent,
-              Template    => Template,
-              Container   => Container);
+      -------------------------------------------------------------------------
+      --  Invariant
+      --
+      --  This is intentonally a sequance of pragmas and not a Boolean-value
+      --  function, because with pragmas if one of the conditions fails, it
+      --  is easier to know which one.
+      -------------------------------------------------------------------------
+
+      pragma Assert (if not Is_Package then not Is_Private);
+      --  ??? how about private functions and procedures?
+
+      pragma Assert (if Is_Private then not Is_Nested);
+
+      pragma Assert
+       (if Is_Nested then
+          not Is_Private
+          and then No (Parent)
+          and then Container /= Null_Flow_Scope
+        else
+          Present (Parent)
+          and then Container = Null_Flow_Scope);
+
+      -------------------------------------------------------------------------
+
+      return (Is_Package        => Is_Package,
+--              Is_Child          => Is_Child,
+              Is_Private        => Is_Private,
+              Is_Nested         => Is_Nested,
+              Is_Instance       => Present (Template),
+              Is_Instance_Child => Present (Instance_Parent),
+              Parent            => Parent,
+              Instance_Parent   => Instance_Parent,
+              Template          => Template,
+              Container         => Container);
    end Make_Info;
 
    -----------
@@ -392,14 +465,16 @@ package body Flow_Visibility is
          Marked : Boolean;
          Colour : Edge_Kind) return Edge_Display_Info
       is
-         pragma Unreferenced (G, A, B, Marked);
+         pragma Unreferenced (G, A, B, Marked, Colour);
+
       begin
          return
            (Show   => True,
             Shape  => Edge_Normal,
             Colour => Null_Unbounded_String,
-            Label  =>
-              To_Unbounded_String (Natural'Image (Edge_Kind'Pos (Colour))));
+            Label  => Null_Unbounded_String);
+         --  ??? Label should reflect the Colour argument, but the current
+         --  names of the rules are too long and produce unreadable graphs.
       end EDI;
 
       Filename : constant String :=
@@ -488,10 +563,19 @@ package body Flow_Visibility is
 
    procedure Register_Flow_Scopes (Unit_Node : Node_Id) is
       procedure Processx (N : Node_Id)
-        with Pre => Nkind (N) in N_Generic_Package_Declaration
-                               | N_Package_Declaration
-                               | N_Protected_Type_Declaration
-                               | N_Task_Type_Declaration;
+      with Pre => Nkind (N) in N_Entry_Declaration
+                             | N_Generic_Declaration
+                             | N_Package_Declaration
+                             | N_Protected_Type_Declaration
+                             | N_Subprogram_Declaration
+                             | N_Subprogram_Body_Stub
+                             | N_Task_Type_Declaration
+                  or else (Nkind (N) = N_Subprogram_Body
+                           and then Acts_As_Spec (N))
+                  or else (Nkind (N) = N_Private_Type_Declaration
+                           and then Has_Own_DIC (Defining_Entity (N)))
+                  or else (Nkind (N) = N_Full_Type_Declaration
+                           and then Has_Own_Invariants (Defining_Entity (N)));
       --  ??? remove the "x" suffix once debugging is done
 
       -------------
@@ -499,7 +583,14 @@ package body Flow_Visibility is
       -------------
 
       procedure Processx (N : Node_Id) is
-         E : constant Entity_Id := Defining_Entity (N);
+         Def_E : constant Entity_Id := Defining_Entity (N);
+
+         E : constant Entity_Id :=
+           (if Nkind (N) = N_Private_Type_Declaration
+            then DIC_Procedure (Def_E)
+            elsif Nkind (N) = N_Full_Type_Declaration
+            then Invariant_Procedure (Def_E)
+            else Def_E);
 
          Info : constant Hierarchy_Info_T := Make_Info (N);
 
@@ -510,7 +601,14 @@ package body Flow_Visibility is
          --  Rule that causes an edge to be added; maintaining it as a global
          --  variable is not elegant, but results in a cleaner code.
 
-         procedure Connect (Source, Target : Scope_Graphs.Vertex_Id);
+         use type Scope_Graphs.Vertex_Id;
+
+         procedure Connect (Source, Target : Scope_Graphs.Vertex_Id)
+         with Pre => Source /= Scope_Graphs.Null_Vertex
+                       and
+                     Target /= Scope_Graphs.Null_Vertex
+                       and
+                     Source /= Target;
          --  Add edge from Source to Target
 
          -------------
@@ -529,7 +627,9 @@ package body Flow_Visibility is
 
          Hierarchy_Info.Insert (E, Info);
 
+         ----------------------------------------------------------------------
          --  Create vertices
+         ----------------------------------------------------------------------
 
          Scope_Graph.Add_Vertex ((Ent => E, Part => Visible_Part), Spec_V);
 
@@ -539,10 +639,14 @@ package body Flow_Visibility is
 
          Scope_Graph.Add_Vertex ((Ent => E, Part => Body_Part), Body_V);
 
+         ----------------------------------------------------------------------
          --  Create edges
+         ----------------------------------------------------------------------
 
-         --  Rule 0
-         Rule := Rule0;
+         Rule := Rule_Own;
+
+         --  This rule is the "my own scope" rule, and is the most obvious form
+         --  of visibility.
 
          if Info.Is_Package then
             Connect (Body_V, Priv_V);
@@ -551,35 +655,100 @@ package body Flow_Visibility is
             Connect (Body_V, Spec_V);
          end if;
 
-         --  Rule 1
-         Rule := Rule1;
+         ----------------------------------------------------------------------
+
+         Rule := Rule_Instance;
+
+         --  This is the "generic" rule. It deals with the special upwards
+         --  visibility of generic instances. Instead of following the
+         --  normal rules for this we link all our parts to the template's
+         --  corresponding parts, since the template's position in the graph
+         --  determines our visibility, not the location of instantiation.
 
          if Info.Is_Instance then
-            Connect
-              (Spec_V,
-               Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                        Part => Visible_Part)));
+            if Info.Is_Instance_Child then
+               Connect
+                 (Spec_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
+                                           Part => Visible_Part)));
 
-         elsif Info.Is_Nested then
-            Connect
-              (Spec_V,
-               Scope_Graph.Get_Vertex (Info.Container));
+               if Info.Is_Package then
+                  Connect
+                    (Priv_V,
+                     Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
+                                              Part => Private_Part)));
+               end if;
 
-         elsif Info.Is_Private then
-            Connect
-              (Spec_V,
-               Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                        Part => Private_Part)));
+               Connect
+                 (Body_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
+                                           Part => Body_Part)));
+            else
+               Connect
+                 (Spec_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Template,
+                                           Part => Visible_Part)));
 
-         else
-            Connect
-              (Spec_V,
-               Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                        Part => Visible_Part)));
+               if Info.Is_Package then
+                  Connect
+                    (Priv_V,
+                     Scope_Graph.Get_Vertex ((Ent  => Info.Template,
+                                              Part => Private_Part)));
+               end if;
+
+               Connect
+                 (Body_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Template,
+                                           Part => Body_Part)));
+            end if;
          end if;
 
-         --  Rule 2
-         Rule := Rule2;
+         ----------------------------------------------------------------------
+
+         Rule := Rule_Up_Spec;
+
+         --  This rule deals with upwards visibility, i.e. adding a link to
+         --  the nearest "enclosing" scope. Generics are dealt with separately,
+         --  except for generic child instantiations (they have visibility of
+         --  their parent's instantiation).
+
+         if not Info.Is_Instance then
+            if Info.Is_Nested then
+               Connect
+                 (Spec_V,
+                  Scope_Graph.Get_Vertex (Info.Container));
+
+            elsif Info.Is_Private then
+               Connect
+                 (Spec_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
+                                           Part => Private_Part)));
+
+            else
+               --  ??? should this apply to instances too?
+               Connect
+                 (Spec_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
+                                           Part => Visible_Part)));
+            end if;
+         end if;
+
+         ----------------------------------------------------------------------
+
+         --  As mentioned before, instances break the chain so they need
+         --  special treatment, and the remaining three rules just add the
+         --  appropriate links. Note that although the last three are mutually
+         --  exclusive, any of them might be an instance.
+
+         ----------------------------------------------------------------------
+
+         Rule := Rule_Down_Spec;
+
+         --  This rule deals with downwards visibility, i.e. contributing to
+         --  the set of things the parent can see. It is exactly the inverse
+         --  of Rule_Own, except there is no special treatment for instances
+         --  (since a scope does have visibility of the spec of something
+         --  instantiated inside it).
 
          if Info.Is_Nested then
             Connect
@@ -597,8 +766,12 @@ package body Flow_Visibility is
                Spec_V);
          end if;
 
-         --  Rule 3
-         Rule := Rule3;
+         ----------------------------------------------------------------------
+
+         Rule := Rule_Up_Priv;
+
+         --  This rule deals with upwards visibility for the private part of a
+         --  package. It is of course excepted by the "generic" rule.
 
          if Info.Is_Package then
             if Info.Is_Instance then
@@ -614,8 +787,15 @@ package body Flow_Visibility is
             end if;
          end if;
 
-         --  Rule 4
-         Rule := Rule4;
+         ----------------------------------------------------------------------
+
+         Rule := Rule_Up_Body;
+
+         --  Finally, this rule deals with the upwards visibility for the body
+         --  of a nested package. A nested scope will have visibility of its
+         --  enclosing scope's body, since it is impossible to complete the
+         --  body anywhere else. Again, there is an exception for the "generic"
+         --  rule.
 
          if Info.Is_Instance then
             Connect
@@ -683,13 +863,27 @@ package body Flow_Visibility is
             when N_Package_Body_Stub =>
                Traverse_Package_Body (Get_Body_From_Stub (N));
 
+            when N_Entry_Declaration
+               | N_Generic_Subprogram_Declaration
+               | N_Subprogram_Declaration
+            =>
+               Process (N);
+
             when N_Subprogram_Body =>
+               if Acts_As_Spec (N) then
+                  Process (N);
+               end if;
+
                Traverse_Subprogram_Body (N);
 
             when N_Entry_Body =>
                Traverse_Subprogram_Body (N);
 
             when N_Subprogram_Body_Stub =>
+               if Is_Subprogram_Stub_Without_Prior_Declaration (N) then
+                  Process (N);
+               end if;
+
                Traverse_Subprogram_Body (Get_Body_From_Stub (N));
 
             when N_Protected_Body =>
@@ -774,7 +968,39 @@ package body Flow_Visibility is
             when N_Loop_Statement =>
                Traverse_Declarations_Or_Statements (Statements (N));
 
-            --  ??? Generic declarations are NOT ignored
+            when N_Private_Type_Declaration =>
+               --  Both private and full view declarations might be represented
+               --  by N_Private_Type_Declaration; the former comes from source,
+               --  the latter comes from rewriting.
+
+               if Comes_From_Source (N) then
+                  declare
+                     T : constant Entity_Id := Defining_Entity (N);
+
+                  begin
+                     if Has_Own_DIC (T)
+                       and then Present (DIC_Procedure (T))
+                     then
+                        Process (N);
+                     end if;
+                  end;
+               end if;
+
+            when N_Full_Type_Declaration =>
+               declare
+                  T : constant Entity_Id := Defining_Entity (N);
+
+               begin
+                  --  For Type_Invariant'Class there will be no invariant
+                  --  procedure; we ignore it, because this aspect is not
+                  --  supported in SPARK anyway.
+
+                  if Has_Own_Invariants (T)
+                    and then Present (Invariant_Procedure (T))
+                  then
+                     Process (N);
+                  end if;
+               end;
 
             when others =>
                null;

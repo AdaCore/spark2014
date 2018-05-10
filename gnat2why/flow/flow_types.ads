@@ -246,10 +246,13 @@ package Flow_Types is
    subtype Scope_Id is Entity_Id
    with Dynamic_Predicate =>
      (if Present (Scope_Id)
-      then Ekind (Scope_Id) in E_Package         |
-                               E_Generic_Package |
-                               E_Protected_Type  |
-                               E_Task_Type);
+      then Ekind (Scope_Id) in E_Function
+                             | E_Procedure
+                             | E_Package
+                             | E_Protected_Type
+                             | E_Task_Type
+                             | Entry_Kind
+                             | Generic_Unit_Kind);
    --  Type that defines a subset of legal entities for the use in Flow_Scope
 
    type Flow_Scope is record
