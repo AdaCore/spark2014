@@ -1,8 +1,6 @@
 Result per id are the following in debug mode:
 1:True
-2:False
-0:True
+0:False
 Result per id are the following in normal mode:
 1:True
-2:False
-0:True
+0:False
