@@ -76,7 +76,7 @@ trigo.ads:11:65: medium: float overflow check might fail
 trigo.ads:11:69: medium: float overflow check might fail
 trigo.ads:11:73: medium: float overflow check might fail
 trigo.ads:11:77: medium: float overflow check might fail
-trigo.ads:14:10: medium: float overflow check might fail
+trigo.ads:14:10: info: float overflow check proved (CVC4: 1 VC)
 trigo.ads:14:21: info: division check proved (CVC4: 1 VC)
 trigo.ads:14:21: info: float overflow check proved (Interval)
 trigo.ads:14:27: medium: float overflow check might fail

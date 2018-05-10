@@ -35,9 +35,9 @@ biaseddivide.adb:24:16: medium: float overflow check might fail
 biaseddivide.adb:24:23: info: float overflow check proved (CodePeer)
 biaseddivide.ads:16:52: info: initialization of "r" proved
 biaseddivide.ads:19:14: info: initialization of "r" proved
-biaseddivide.ads:19:14: medium: postcondition might fail, cannot prove R = Y / (Z - 4.0
+biaseddivide.ads:19:14: info: postcondition proved (CVC4: 1 VC)
 biaseddivide.ads:19:20: info: division check proved (CVC4: 1 VC)
-biaseddivide.ads:19:20: medium: float overflow check might fail
+biaseddivide.ads:19:20: info: float overflow check proved (CVC4: 1 VC)
 biaseddivide.ads:19:25: info: float overflow check proved (CodePeer)
 dynamicsaturateassert.adb:49:26: info: initialization of "Saturation_Dynamic_out1" proved
 dynamicsaturateassert.adb:58:22: info: assertion proved (CVC4: 2 VC)
@@ -57,7 +57,7 @@ errorexample.ads:26:77: info: division check proved (CVC4: 1 VC)
 errorexamplefloat.adb:29:22: info: assertion proved (CVC4: 1 VC)
 errorexamplefloat.adb:39:43: info: float overflow check proved (CodePeer)
 errorexamplefloat.adb:39:65: info: division check proved (CodePeer)
-errorexamplefloat.adb:39:65: medium: float overflow check might fail
+errorexamplefloat.adb:39:65: info: float overflow check proved (CVC4: 1 VC)
 errorexamplefloat.adb:48:22: medium: assertion might fail, cannot prove Abs_out1) <= (0.01
 errorexamplefloat.adb:48:23: info: initialization of "Abs_out1" proved
 errorexamplefloat.adb:53:25: info: initialization of "Abs_out1" proved
@@ -111,11 +111,11 @@ simulink_functions.adb:283:37: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:297:30: info: division check proved (CodePeer)
 simulink_functions.adb:310:30: info: division check proved (CodePeer)
 simulink_functions.adb:323:30: info: division check proved (CodePeer)
-simulink_functions.adb:336:22: medium: float overflow check might fail
+simulink_functions.adb:336:22: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:336:42: info: division check proved (CodePeer)
 simulink_functions.adb:336:42: medium: float overflow check might fail
 simulink_functions.adb:336:51: medium: float overflow check might fail
-simulink_functions.adb:349:22: medium: float overflow check might fail
+simulink_functions.adb:349:22: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:349:47: info: division check proved (CodePeer)
 simulink_functions.adb:349:47: medium: float overflow check might fail
 simulink_functions.adb:349:56: medium: float overflow check might fail
@@ -150,11 +150,11 @@ simulink_functions.adb:444:48: info: division check proved (CodePeer)
 simulink_functions.adb:444:48: info: float overflow check proved (CodePeer)
 simulink_functions.adb:444:57: info: range check proved (Interval)
 simulink_functions.adb:444:66: medium: overflow check might fail
-simulink_functions.adb:457:22: medium: float overflow check might fail
+simulink_functions.adb:457:22: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:457:42: info: division check proved (CodePeer)
 simulink_functions.adb:457:42: medium: float overflow check might fail
 simulink_functions.adb:457:51: medium: float overflow check might fail
-simulink_functions.adb:470:22: medium: float overflow check might fail
+simulink_functions.adb:470:22: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:470:47: info: division check proved (CodePeer)
 simulink_functions.adb:470:47: medium: float overflow check might fail
 simulink_functions.adb:470:56: medium: float overflow check might fail
@@ -173,11 +173,11 @@ simulink_functions.adb:509:39: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:522:30: info: division check proved (CodePeer)
 simulink_functions.adb:535:30: info: division check proved (CodePeer)
 simulink_functions.adb:548:30: info: division check proved (CodePeer)
-simulink_functions.adb:558:19: medium: float overflow check might fail
+simulink_functions.adb:558:19: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:558:44: medium: divide by zero might fail
 simulink_functions.adb:558:44: medium: float overflow check might fail
 simulink_functions.adb:558:53: medium: float overflow check might fail
-simulink_functions.adb:567:19: medium: float overflow check might fail
+simulink_functions.adb:567:19: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:567:49: medium: divide by zero might fail
 simulink_functions.adb:567:49: medium: float overflow check might fail
 simulink_functions.adb:567:58: medium: float overflow check might fail
@@ -214,14 +214,14 @@ simulink_functions.adb:1176:47: medium: precondition might fail
 simulink_functions.adb:1185:52: medium: precondition might fail
 simulink_functions.adb:1194:21: medium: range check might fail
 simulink_functions.adb:1209:31: info: division check proved (CVC4: 1 VC)
-simulink_functions.adb:1209:31: medium: float overflow check might fail
+simulink_functions.adb:1209:31: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:1212:26: info: initialization of "Result" proved
 simulink_functions.adb:1212:33: info: float overflow check proved (CodePeer)
 simulink_functions.adb:1214:26: info: initialization of "Result" proved
 simulink_functions.adb:1214:33: info: float overflow check proved (CodePeer)
 simulink_functions.adb:1217:17: info: initialization of "Result" proved
 simulink_functions.adb:1219:33: info: division check proved (CodePeer)
-simulink_functions.adb:1219:33: medium: float overflow check might fail
+simulink_functions.adb:1219:33: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:1221:23: info: initialization of "Result" proved
 simulink_functions.adb:1221:30: info: float overflow check proved (CodePeer)
 simulink_functions.adb:1223:23: info: initialization of "Result" proved

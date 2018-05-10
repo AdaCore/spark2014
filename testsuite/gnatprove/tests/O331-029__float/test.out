@@ -197,13 +197,13 @@ sensfusion6_pack.adb:150:10: info: initialization of "Q3_Tmp" proved, in call in
 sensfusion6_pack.adb:150:19: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:150:19: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:166:35: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:166:40: info: division check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:166:40: info: division check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:166:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:167:35: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:167:40: info: division check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:167:40: info: division check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:167:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:168:35: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:168:40: info: division check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:168:40: info: division check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:168:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:171:35: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:171:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
@@ -454,18 +454,18 @@ sensfusion6_pack.adb:292:40: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:292:45: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:292:50: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:292:56: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:292:64: info: division check proved (Z3: 1 VC)
+sensfusion6_pack.adb:292:64: info: division check proved (CVC4: 1 VC)
 sensfusion6_pack.adb:292:64: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:292:64: info: range check proved (Interval)
 sensfusion6_pack.adb:294:35: info: initialization of "Grav_X" proved
 sensfusion6_pack.adb:294:43: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:294:51: info: division check proved (Z3: 1 VC)
+sensfusion6_pack.adb:294:51: info: division check proved (CVC4: 1 VC)
 sensfusion6_pack.adb:294:51: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:294:51: info: range check proved (Interval)
 sensfusion6_pack.adb:295:36: info: initialization of "Grav_Y" proved
 sensfusion6_pack.adb:295:44: info: initialization of "Grav_Z" proved
 sensfusion6_pack.adb:295:52: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:295:60: info: division check proved (Z3: 1 VC)
+sensfusion6_pack.adb:295:60: info: division check proved (CVC4: 1 VC)
 sensfusion6_pack.adb:295:60: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:295:60: info: range check proved (Interval)
 sensfusion6_pack.adb:308:21: info: float overflow check proved (Interval)

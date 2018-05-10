@@ -16,13 +16,13 @@
     +-- theory Add__addtwo__subprogram_def
       +-- goal WP_parameter def
         +-- transformation split_goal_wp_conj
-          +-- goal WP_parameter def.1: CVC4 1.5-gnatprove
-          +-- goal WP_parameter def.2: CVC4 1.5-gnatprove
-          +-- goal WP_parameter def.3: CVC4 1.5-gnatprove
-          +-- goal WP_parameter def.4: CVC4 1.5-gnatprove
+          +-- goal WP_parameter def.1: CVC4 1.6-gnatprove
+          +-- goal WP_parameter def.2: CVC4 1.6-gnatprove
+          +-- goal WP_parameter def.3: CVC4 1.6-gnatprove
+          +-- goal WP_parameter def.4: CVC4 1.6-gnatprove
 
 == Statistics per prover: number of proofs, time (minimum/maximum/average) in seconds ==
-  CVC4 1.5-gnatprove   :   4   0.00   0.00   0.00
+  CVC4 1.6-gnatprove   :   4   0.00   0.00   0.00
 
 add.adb:5:16: info: overflow check proved (CVC4: 1 VC)
 add.ads:3:47: medium: overflow check might fail (e.g. when X = -2147483648 and Y = -1)

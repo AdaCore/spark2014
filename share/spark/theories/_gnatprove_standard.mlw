@@ -229,17 +229,23 @@ end
 module Floating
   clone export _gnatprove_standard_th.Floating_Func
 
-  constant zeroF   : t
+  predicate is_zero t
+  predicate is_positive t
   function div_rne t t : t
+  function sqrt_rne t : t
   function rem t t : t
 
+  val sqrt_rne_ (x:t) : t
+     requires { is_zero x \/ is_positive x }
+     ensures { result = sqrt_rne x }
+
   val div_rne_ (x:t) (y:t) : t
-     requires { not (eq y zeroF) }
+     requires { not (is_zero y) }
      ensures { result = div_rne x y }
 
   val rem_ (x:t) (y:t) : t
-     requires { not (eq y zeroF) }
-     ensures{ result = rem x y }
+     requires { not (is_zero y) }
+     ensures { result = rem x y }
 end
 
 module Float32RNE
@@ -249,6 +255,8 @@ module Float32RNE
   function div_rne (x y : t) : t = div RNE x y
   function add_rne (x y : t) : t = add RNE x y
   function sub_rne (x y : t) : t = sub RNE x y
+
+  function sqrt_rne (x : t) : t = sqrt RNE x
 
   function of_int_rne (x:int) : t = of_int RNE x
   function to_int_rna (x:t) : int = to_int RNA x
@@ -266,6 +274,8 @@ module Float64RNE
   function div_rne (x y : t) : t = div RNE x y
   function add_rne (x y : t) : t = add RNE x y
   function sub_rne (x y : t) : t = sub RNE x y
+
+  function sqrt_rne (x : t) : t = sqrt RNE x
 
   function of_int_rne (x:int) : t = of_int RNE x
   function to_int_rna (x:t) : int = to_int RNA x
@@ -343,13 +353,15 @@ module Float32
 
   clone export Floating with
     type t = t,
+    predicate is_zero = is_zero,
+    predicate is_positive = is_positive,
+    function sqrt_rne = sqrt_rne,
     predicate lt = lt,
     predicate le = le,
     predicate gt = gt,
     predicate ge = ge,
     predicate eq = eq,
-    function div_rne = div_rne,
-    constant zeroF = zeroF
+    function div_rne = div_rne
 
   constant one : t = (1.0:t)
   axiom one_is_int: is_int one
@@ -365,13 +377,15 @@ module Float64
 
   clone export Floating with
     type t = t,
+    predicate is_zero = is_zero,
+    predicate is_positive = is_positive,
+    function sqrt_rne = sqrt_rne,
     predicate lt = lt,
     predicate le = le,
     predicate gt = gt,
     predicate ge = ge,
     predicate eq = eq,
-    function div_rne = div_rne,
-    constant zeroF = zeroF
+    function div_rne = div_rne
 
   constant one : t = (1.0:t)
   axiom one_is_int: is_int one
@@ -460,12 +474,6 @@ module Boolean
   use export "_gnatprove_standard_th".Boolean_Func
 
   (* Boolean logical connectors, functions for conversion of booleans, etc *)
-
-  function to_int (b : bool) : int =
-   if b = True then 1 else 0
-
-  function of_int (i : int) : bool =
-   if i = 0 then False else True
 
   function last : int = 1
   function first : int = 0

@@ -1426,6 +1426,11 @@ package body Why.Atree.Modules is
                            Domain => EW_Term,
                            Symbol => NID ("one"),
                            Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Sqrt :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("sqrt_rne"),
+                           Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV8 :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter

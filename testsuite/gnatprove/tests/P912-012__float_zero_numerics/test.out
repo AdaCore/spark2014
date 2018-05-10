@@ -24,14 +24,14 @@ run.adb:32:15: info: precondition proved (CVC4: 1 VC)
 run.ads:10:24: info: initialization of "Y" proved
 run.ads:13:34: info: initialization of "Y" proved
 run.ads:15:19: info: initialization of "Y" proved
-run.ads:15:19: info: postcondition proved (Z3: 1 VC)
+run.ads:15:19: info: postcondition proved (CVC4: 1 VC)
 run.ads:18:34: info: initialization of "Y" proved
 run.ads:19:21: info: precondition proved (CVC4: 1 VC)
 run.ads:20:19: info: initialization of "Y" proved
 run.ads:20:19: info: postcondition proved (CVC4: 1 VC)
 run.ads:23:36: info: initialization of "Y" proved
 run.ads:25:19: info: initialization of "Y" proved
-run.ads:25:19: info: postcondition proved (Z3: 1 VC)
+run.ads:25:19: info: postcondition proved (CVC4: 1 VC)
 run.ads:28:37: info: initialization of "Y" proved
 run.ads:29:21: info: precondition proved (CVC4: 1 VC)
 run.ads:30:19: info: initialization of "Y" proved

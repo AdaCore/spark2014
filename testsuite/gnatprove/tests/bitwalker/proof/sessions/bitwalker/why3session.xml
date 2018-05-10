@@ -3,7 +3,7 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="5000" memlimit="0"/>
-<prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="120" steplimit="190000" memlimit="0"/>
+<prover id="1" name="CVC4_More_Axioms" version="1.6-gnatprove" timelimit="120" steplimit="190000" memlimit="0"/>
 <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="4450000" memlimit="0"/>
 <file name="../../../gnatprove/bitwalker.mlw" proved="true">
 <theory name="Bitwalker__package_def" proved="true">
@@ -127,10 +127,10 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="17020"/></proof>
+  <proof prover="1"><result status="valid" steps="17096"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="15056"/></proof>
+  <proof prover="1"><result status="valid" steps="15061"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="4072"/></proof>

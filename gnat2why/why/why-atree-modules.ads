@@ -222,6 +222,7 @@ package Why.Atree.Modules is
       Range_Check           : W_Identifier_Id;
       Plus_Zero             : W_Identifier_Id;
       One                   : W_Identifier_Id;
+      Sqrt                  : W_Identifier_Id;
    end record;
 
    type M_Floating_Conv_Type is record

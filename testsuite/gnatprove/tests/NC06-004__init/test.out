@@ -16,7 +16,7 @@ shapes5.adb:20:36: info: range check proved (CVC4: 1 VC)
 shapes5.adb:22:10: info: initialization of "R" proved
 shapes5.adb:22:17: info: float overflow check proved (Interval)
 shapes5.adb:23:17: info: float overflow check proved (Interval)
-shapes5.adb:23:17: info: range check proved (Z3: 1 VC)
+shapes5.adb:23:17: info: range check proved (CVC4: 1 VC)
 shapes5.adb:25:10: info: initialization of "R" proved
 shapes5.adb:25:36: info: float overflow check proved (Interval)
 shapes5.adb:26:36: info: float overflow check proved (Interval)
@@ -26,9 +26,9 @@ shapes5.adb:28:17: info: float overflow check proved (Interval)
 shapes5.adb:29:17: info: float overflow check proved (Interval)
 shapes5.adb:29:17: medium: range check might fail
 shapes5.adb:31:21: info: initialization of "R" proved
-shapes5.adb:42:34: medium: range check might fail (e.g. when C = (Center_X => ?, Center_Y => ?, Radius => ?))
+shapes5.adb:42:34: info: range check proved (CVC4: 1 VC)
 shapes5.adb:42:41: info: float overflow check proved (Interval)
-shapes5.adb:43:34: medium: range check might fail (e.g. when C = (Center_X => ?, Center_Y => ?, Radius => ?))
+shapes5.adb:43:34: info: range check proved (CVC4: 1 VC)
 shapes5.adb:43:41: info: float overflow check proved (Interval)
 shapes5.adb:44:14: info: initialization of "Delta_X" proved
 shapes5.adb:44:21: info: float overflow check proved (Interval)

@@ -83,6 +83,12 @@ end
 theory Boolean_Func
   use import bool.Bool
 
+  function to_int (b : bool) : int =
+   if b = True then 1 else 0
+
+  function of_int (i : int) : bool =
+   if i = 0 then False else True
+
   function bool_eq (x : bool) (y : bool) : bool =
     if x = y then True else False
 

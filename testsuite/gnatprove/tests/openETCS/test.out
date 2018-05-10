@@ -7,27 +7,27 @@ com_map.ads:39:22: info: precondition proved (CVC4: 1 VC)
 deceleration_curve.adb:36:13: info: initialization of "speed" proved
 deceleration_curve.adb:37:25: info: assertion proved (CVC4: 4 VC)
 deceleration_curve.adb:40:13: info: loop invariant initialization proved (CVC4: 2 VC)
+deceleration_curve.adb:40:13: info: loop invariant preservation proved (CVC4: 2 VC)
 deceleration_curve.adb:40:35: info: initialization of "speed" proved
-deceleration_curve.adb:40:45: medium: loop invariant might fail after first iteration, cannot prove speed <= Initial_Speed
-deceleration_curve.adb:41:25: medium: assertion might fail, cannot prove 0.0 < 1.0/speed
+deceleration_curve.adb:41:25: info: assertion proved (CVC4: 2 VC)
 deceleration_curve.adb:41:34: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:41:34: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:41:35: info: initialization of "speed" proved
 deceleration_curve.adb:41:48: info: division check proved (CVC4: 1 VC)
-deceleration_curve.adb:41:48: info: float overflow check proved (altergo: 1 VC)
-deceleration_curve.adb:43:14: medium: assertion might fail, cannot prove Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
+deceleration_curve.adb:41:48: info: float overflow check proved (CVC4: 1 VC)
+deceleration_curve.adb:43:14: info: assertion proved (CVC4: 1 VC)
 deceleration_curve.adb:44:38: info: division check proved (CVC4: 1 VC)
-deceleration_curve.adb:44:38: medium: float overflow check might fail
+deceleration_curve.adb:44:38: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:44:40: info: initialization of "speed" proved
-deceleration_curve.adb:46:14: medium: assertion might fail, cannot prove Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Speed_t(Distance_Resolution)
+deceleration_curve.adb:46:14: info: assertion proved (CVC4: 1 VC)
 deceleration_curve.adb:48:39: info: division check proved (CVC4: 1 VC)
-deceleration_curve.adb:48:39: medium: float overflow check might fail
+deceleration_curve.adb:48:39: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:48:41: info: initialization of "speed" proved
-deceleration_curve.adb:48:48: medium: float overflow check might fail
+deceleration_curve.adb:48:48: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:50:48: info: division check proved (CVC4: 1 VC)
-deceleration_curve.adb:50:48: medium: float overflow check might fail
+deceleration_curve.adb:50:48: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:50:50: info: initialization of "speed" proved
-deceleration_curve.adb:51:12: medium: float overflow check might fail
+deceleration_curve.adb:51:12: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:55:47: info: initialization of "delta_speed" proved
 deceleration_curve.adb:57:15: medium: assertion might fail, cannot prove delta_speed < 0.0
 deceleration_curve.adb:59:19: info: initialization of "speed" proved
@@ -44,8 +44,8 @@ deceleration_curve.adb:83:50: info: initialization of "location" proved
 deceleration_curve.adb:84:44: info: initialization of "Braking_Curve.curve" proved
 deceleration_curve.adb:84:47: info: initialization of "speed" proved
 deceleration_curve.adb:88:13: info: initialization of "speed" proved
-deceleration_curve.adb:88:19: medium: float overflow check might fail
-deceleration_curve.adb:88:21: medium: precondition might fail
+deceleration_curve.adb:88:19: info: float overflow check proved (CVC4: 1 VC)
+deceleration_curve.adb:88:21: info: precondition proved (CVC4: 1 VC)
 deceleration_curve.adb:88:32: medium: float overflow check might fail
 deceleration_curve.adb:89:13: medium: float overflow check might fail
 deceleration_curve.adb:89:29: medium: float overflow check might fail
@@ -76,8 +76,8 @@ deceleration_curve.ads:81:32: info: initialization of "Braking_Curve.end_point" 
 deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved (CVC4: 1 VC)
 deceleration_curve_test.adb:15:19: info: implicit function contract not available for proof ("Distance_To_Speed" might not return)
+deceleration_curve_test.adb:15:19: info: precondition proved (CVC4: 6 VC)
 deceleration_curve_test.adb:15:19: medium: assertion might fail, cannot prove Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
-deceleration_curve_test.adb:15:19: medium: precondition might fail
 deceleration_curve_test.adb:15:37: info: initialization of "initial_speed" proved
 deceleration_curve_test.adb:17:04: info: precondition proved (CVC4: 1 VC)
 deceleration_curve_test.adb:17:22: info: initialization of "target.location" proved
@@ -103,7 +103,7 @@ sec_3_13_2_monitoring_inputs.ads:248:14: warning: subprogram "dummy" has no effe
 sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "d"
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.adb:26:37: info: range check proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.adb:27:71: medium: range check might fail
+sec_3_13_6_deceleration.adb:27:71: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "d"
 sec_3_13_6_deceleration.ads:39:06: info: postcondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:40:37: info: precondition proved (CVC4: 1 VC)
@@ -112,12 +112,12 @@ sec_3_13_6_deceleration.ads:41:71: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:45:23: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail
 sec_3_13_6_deceleration.ads:46:26: info: precondition proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:46:38: medium: float overflow check might fail
+sec_3_13_6_deceleration.ads:46:38: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:50: info: float overflow check proved (Interval)
-sec_3_13_6_deceleration.ads:46:57: medium: float overflow check might fail
+sec_3_13_6_deceleration.ads:46:57: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:59: info: precondition proved (CVC4: 1 VC)
+sec_3_13_6_deceleration.ads:47:22: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail
-sec_3_13_6_deceleration.ads:47:22: medium: range check might fail
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail
 sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Interval)
@@ -141,7 +141,7 @@ section_4_6.ads:107:55: info: contract case proved (CVC4: 2 VC)
 section_4_6.ads:108:55: info: contract case proved (CVC4: 2 VC)
 section_4_6.ads:109:14: info: postcondition proved (CVC4: 1 VC)
 step_function.adb:30:33: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:30:33: info: loop invariant preservation proved (CVC4: 1 VC)
+step_function.adb:30:33: info: loop invariant preservation proved (altergo: 1 VC)
 step_function.adb:31:50: info: index check proved (CVC4: 2 VC)
 step_function.adb:32:61: info: index check proved (CVC4: 2 VC)
 step_function.adb:32:61: info: overflow check proved (CVC4: 1 VC)
@@ -185,16 +185,16 @@ step_function.adb:97:33: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:97:33: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:97:47: info: initialization of "scan_sfun2" proved
 step_function.adb:98:33: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:98:33: info: loop invariant preservation proved (CVC4: 1 VC)
+step_function.adb:98:33: medium: loop invariant might fail after first iteration, cannot prove i1 = 0 and i2 = 0 and im = 0) or else ((i1 > 0 or not scan_sfun1) and (i2 > 0 or not scan_sfun2) and im > 0
 step_function.adb:98:34: info: initialization of "i1" proved
 step_function.adb:98:45: info: initialization of "i2" proved
 step_function.adb:98:56: info: initialization of "im" proved
 step_function.adb:99:51: info: initialization of "scan_sfun1" proved
 step_function.adb:100:55: info: initialization of "scan_sfun2" proved
 step_function.adb:102:13: info: loop invariant initialization proved (CVC4: 2 VC)
-step_function.adb:102:13: info: loop invariant preservation proved (CVC4: 2 VC)
 step_function.adb:102:27: info: initialization of "scan_sfun1" proved
 step_function.adb:102:42: info: initialization of "scan_sfun2" proved
+step_function.adb:102:58: medium: loop invariant might fail after first iteration, cannot prove im < i1 + i2
 step_function.adb:103:18: info: initialization of "im" proved
 step_function.adb:103:24: info: initialization of "i1" proved
 step_function.adb:103:29: info: initialization of "i2" proved
@@ -403,8 +403,8 @@ step_function_test.adb:62:38: info: initialization of "sfun3.Step" proved
 step_function_test.adb:62:49: info: precondition proved (CVC4: 13 VC)
 step_function_test.adb:62:59: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:62:59: info: initialization of "sfun4.Step" proved
-step_function_test.adb:65:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:65:19: info: precondition proved (CVC4: 1 VC)
+step_function_test.adb:65:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun4, 1) = 10.0
 step_function_test.adb:65:39: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:65:39: info: initialization of "sfun4.Step" proved
 step_function_test.adb:66:19: info: precondition proved (CVC4: 1 VC)
@@ -415,10 +415,10 @@ step_function_test.adb:67:19: info: precondition proved (CVC4: 1 VC)
 step_function_test.adb:67:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun_merge, 11) = 0.5
 step_function_test.adb:67:39: info: initialization of "sfun_merge.Number_Of_Delimiters" proved
 step_function_test.adb:67:39: info: initialization of "sfun_merge.Step" proved
-units.adb:24:38: medium: float overflow check might fail
+units.adb:24:38: info: float overflow check proved (CVC4: 1 VC)
 units.adb:24:48: info: division check proved (CVC4: 1 VC)
 units.adb:24:48: info: float overflow check proved (Interval)
-units.ads:37:22: info: float overflow check proved (altergo: 1 VC)
+units.ads:37:22: info: float overflow check proved (CVC4: 1 VC)
 units.ads:37:32: info: division check proved (CVC4: 1 VC)
 units.ads:37:32: info: float overflow check proved (Interval)
 units.ads:43:20: info: precondition proved (CVC4: 1 VC)

@@ -2,7 +2,7 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
 <file name="../../../gnatprove/reduced_02.mlw" proved="true">
 <theory name="Reduced_02__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
@@ -14,7 +14,7 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="77953"/></proof>
+  <proof prover="0"><result status="valid" steps="4607"/></proof>
   </goal>
  </transf>
  </goal>
