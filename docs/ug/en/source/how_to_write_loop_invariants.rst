@@ -15,7 +15,7 @@ Automatic Unrolling of Simple For-Loops
 
 |GNATprove| automatically unrolls simple for-loops, defined as:
 
-* for-loops over a range known at compile time,
+* for-loops over a range,
 * with a number of iterations smaller than 20,
 * without :ref:`loop invariants` or :ref:`loop variants`,
 * that declare no local variables, or only variables of scalar type.

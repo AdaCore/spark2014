@@ -25,7 +25,6 @@
 
 with Sem_Type;
 with Stand;     use Stand;
-with Uintp;     use Uintp;
 
 package SPARK_Util.Types is
 

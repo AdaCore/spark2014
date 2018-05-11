@@ -40,7 +40,6 @@ with SPARK_Util.Subprograms;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
 with Stringt;                            use Stringt;
-with Uintp;                              use Uintp;
 
 package body SPARK_Util is
 
@@ -206,8 +205,11 @@ package body SPARK_Util is
    -- Candidate_For_Loop_Unrolling --
    ----------------------------------
 
-   function Candidate_For_Loop_Unrolling
-     (Loop_Stmt : Node_Id) return Boolean
+   procedure Candidate_For_Loop_Unrolling
+     (Loop_Stmt : Node_Id;
+      Result    : out Unrolling_Type;
+      Low_Val   : out Uint;
+      High_Val  : out Uint)
    is
       -----------------------
       -- Local Subprograms --
@@ -289,12 +291,14 @@ package body SPARK_Util is
         (if Over_Range then Discrete_Subtype_Definition (Loop_Spec)
          else Empty);
 
-      Low, High         : Node_Id;
-      Low_Val, High_Val : Uint;
+      Low, High     : Node_Id;
+      Dynamic_Range : Boolean := False;
 
    --  Start of processing for Candidate_For_Unrolling
 
    begin
+      Result := No_Unrolling;
+
       --  Only simple FOR loops can be unrolled. Simple loops are
       --  defined as having no (in)variant...
 
@@ -304,6 +308,22 @@ package body SPARK_Util is
       then
          Low  := Low_Bound (Get_Range (Over_Node));
          High := High_Bound (Get_Range (Over_Node));
+
+         --  and the low bound is static, or consider instead the low bound of
+         --  its type...
+
+         if not Compile_Time_Known_Value (Low) then
+            Low := Type_Low_Bound (Etype (Low));
+            Dynamic_Range := True;
+         end if;
+
+         --  and the high bound is static, or consider instead the high bound
+         --  of its type...
+
+         if not Compile_Time_Known_Value (High) then
+            High := Type_High_Bound (Etype (High));
+            Dynamic_Range := True;
+         end if;
 
          --  and compile-time known bounds, with a small number of
          --  iterations...
@@ -315,8 +335,7 @@ package body SPARK_Util is
             High_Val := Expr_Value (High);
 
             if Low_Val <= High_Val
-              and then High_Val <= Low_Val
-                + Gnat2Why_Args.Max_Loop_Unrolling
+              and then High_Val < Low_Val + Gnat2Why_Args.Max_Loop_Unrolling
 
               --  (also checking that the bounds fit in an Int, so that we can
               --  convert them using UI_To_Int)
@@ -329,13 +348,12 @@ package body SPARK_Util is
                if Find_Non_Scalar_Object_Declaration (Loop_Stmt)
                  /= Abandon
                then
-                  return True;
+                  Result := (if Dynamic_Range then Unrolling_With_Condition
+                             else Simple_Unrolling);
                end if;
             end if;
          end if;
       end if;
-
-      return False;
    end Candidate_For_Loop_Unrolling;
 
    -----------------------------------

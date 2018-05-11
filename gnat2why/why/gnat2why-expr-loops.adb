@@ -1188,6 +1188,11 @@ package body Gnat2Why.Expr.Loops is
 
                Entire_Loop : W_Prog_Id;
 
+               --  Variables used in loop unrolling
+               Low_Val  : Uint;
+               High_Val : Uint;
+               Unroll   : Unrolling_Type;
+
             --  Start of processing for For_Loop
 
             begin
@@ -1197,14 +1202,20 @@ package body Gnat2Why.Expr.Loops is
                --  static range, which can be unrolled for every value of the
                --  loop index.
 
+               Candidate_For_Loop_Unrolling (Loop_Stmt => Stmt,
+                                             Result    => Unroll,
+                                             Low_Val   => Low_Val,
+                                             High_Val  => High_Val);
+
                if not Gnat2Why_Args.No_Loop_Unrolling
-                 and then Candidate_For_Loop_Unrolling (Loop_Stmt => Stmt)
+                 and then Unroll /= No_Unrolling
                then
                   declare
-                     Low_Val : constant Uint :=
-                       Expr_Value (Low_Bound (Get_Range (Over_Node)));
-                     High_Val : constant Uint :=
-                       Expr_Value (High_Bound (Get_Range (Over_Node)));
+                     Inlined_Body : constant W_Prog_Id :=
+                       (if Unroll = Unrolling_With_Condition then
+                           New_Conditional (Condition => +Cond_Prog,
+                                            Then_Part => +Final_Prog)
+                        else Final_Prog);
                   begin
                      Entire_Loop :=
                        Unroll_Loop (Loop_Id         => Loop_Id,
@@ -1214,35 +1225,34 @@ package body Gnat2Why.Expr.Loops is
                                     High_Val        => High_Val,
                                     Reversed        =>
                                       Reverse_Present (LParam_Spec),
-                                    Body_Prog       => Final_Prog);
+                                    Body_Prog       => Inlined_Body);
                   end;
-
-                  return Entire_Loop;
-               end if;
 
                --  Regular case of a FOR loop with a loop (in)variant, or no
                --  static bounds, requiring a proof by induction.
 
-               Entire_Loop :=
-                 Wrap_Loop (Loop_Id            => Loop_Id,
-                            Loop_Start         => Initial_Prog,
-                            Loop_End           => Final_Prog,
-                            Loop_Restart       => Initial_Prog,
-                            Enter_Condition    => Cond_Prog,
-                            Exit_Condition     => Exit_Cond,
-                            Implicit_Invariant => Impl_Inv,
-                            User_Invariants    => Why_Invariants,
-                            Invariant_Check    => Inv_Check,
-                            Variant_Tmps       => Variant_Tmps,
-                            Variant_Update     => Variant_Update,
-                            Variant_Check      => Variant_Check,
-                            Update_Stmt        => Update_Stmt,
-                            Next_Stmt          => Next_Stmt);
+               else
+                  Entire_Loop :=
+                    Wrap_Loop (Loop_Id            => Loop_Id,
+                               Loop_Start         => Initial_Prog,
+                               Loop_End           => Final_Prog,
+                               Loop_Restart       => Initial_Prog,
+                               Enter_Condition    => Cond_Prog,
+                               Exit_Condition     => Exit_Cond,
+                               Implicit_Invariant => Impl_Inv,
+                               User_Invariants    => Why_Invariants,
+                               Invariant_Check    => Inv_Check,
+                               Variant_Tmps       => Variant_Tmps,
+                               Variant_Update     => Variant_Update,
+                               Variant_Check      => Variant_Check,
+                               Update_Stmt        => Update_Stmt,
+                               Next_Stmt          => Next_Stmt);
 
-               Entire_Loop :=
-                 Sequence
-                   (Construct_Init_Prog,
-                    Entire_Loop);
+                  Entire_Loop :=
+                    Sequence
+                      (Construct_Init_Prog,
+                       Entire_Loop);
+               end if;
 
                --  Create new variable for iterator if needed
 

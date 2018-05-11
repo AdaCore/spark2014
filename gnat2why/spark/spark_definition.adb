@@ -1256,11 +1256,21 @@ package body SPARK_Definition is
          procedure Handle_All_Object_Declarations is new
            Traverse_Proc (Handle_Object_Declaration);
 
+         --  Variables used in loop unrolling
+         Low_Val  : Uint;
+         High_Val : Uint;
+         Unroll   : Unrolling_Type;
+
       --  Start of processing for Check_Unrolled_Loop
 
       begin
+         Candidate_For_Loop_Unrolling (Loop_Stmt => Loop_Stmt,
+                                       Result    => Unroll,
+                                       Low_Val   => Low_Val,
+                                       High_Val  => High_Val);
+
          if not Gnat2Why_Args.No_Loop_Unrolling
-           and then Candidate_For_Loop_Unrolling (Loop_Stmt)
+           and then Unroll /= No_Unrolling
          then
             Handle_All_Object_Declarations (Loop_Stmt);
          end if;

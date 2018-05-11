@@ -37,6 +37,7 @@ with Sinfo;             use Sinfo;
 with Sinput;            use Sinput;
 with Snames;            use Snames;
 with Types;             use Types;
+with Uintp;             use Uintp;
 with Urealp;            use Urealp;
 with Why.Atree.Tables;  use Why.Atree.Tables;
 
@@ -443,9 +444,24 @@ package SPARK_Util is
    -- Queries for particular nodes --
    ----------------------------------
 
-   function Candidate_For_Loop_Unrolling (Loop_Stmt : Node_Id) return Boolean
+   type Unrolling_Type is
+     (No_Unrolling,
+      Simple_Unrolling,
+      --  body of the loop repeated N times
+      Unrolling_With_Condition
+      --  value used for unrolling with a condition to check loop test, which
+      --  is necessary when the loop has a dynamic range
+     );
+
+   procedure Candidate_For_Loop_Unrolling
+     (Loop_Stmt : Node_Id;
+      Result    : out Unrolling_Type;
+      Low_Val   : out Uint;
+      High_Val  : out Uint)
    with Pre => Nkind (Loop_Stmt) = N_Loop_Statement;
-   --  Check whether a loop is a candidate for loop unrolling
+   --  @param Result whether a loop is a candidate for loop unrolling
+   --  @param Low_Val the loop bound for loop unrolling
+   --  @param High_Val the high bound for loop unrolling
 
    function Full_Entry_Name (N : Node_Id) return String
      with Pre => Nkind (N) in N_Expanded_Name
