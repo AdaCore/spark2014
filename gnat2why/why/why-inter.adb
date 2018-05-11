@@ -735,11 +735,19 @@ package body Why.Inter is
       elsif Get_Type_Kind (Left) /= Get_Type_Kind (Right) then
          return False;
 
-      --  For EW_Abstract, and EW_Split types, compare the ada node
+      --  For EW_Abstract and EW_Split types, compare the ada node
 
       elsif Get_Type_Kind (Left) in EW_Abstract | EW_Split then
-         pragma Assert (Present (Get_Ada_Node (+Left)));
-         pragma Assert (Present (Get_Ada_Node (+Right)));
+
+         --  Dummy EW_Abstract types are introduced for record private parts.
+         --  Eq_Base should only be called on such types if they are equal.
+
+         pragma Assert
+           ((No (Get_Ada_Node (+Left))
+            and then No (Get_Ada_Node (+Right))
+            and then Get_Name (+Left) = Get_Name (+Right))
+            or else (Present (Get_Ada_Node (+Left))
+              and then Present (Get_Ada_Node (+Right))));
 
          return Get_Ada_Node (+Left) = Get_Ada_Node (+Right);
       else
