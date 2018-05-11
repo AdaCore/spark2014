@@ -1334,7 +1334,11 @@ package body Flow_Generated_Globals.Phase_2 is
                      Serialize (Entry_Name);
                      Serialize (Max_Queue_Length);
 
-                     Max_Queue_Length_Map.Insert
+                     --  As we are registering the Max_Queue_Lenght for every
+                     --  reference, this might appear in more than one ALI file
+                     --  and therefore we use Include.
+
+                     Max_Queue_Lengths.Include
                        (Key      => Entry_Name,
                         New_Item => Max_Queue_Length);
                   end;

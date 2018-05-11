@@ -3137,11 +3137,6 @@ package body Flow.Control_Flow_Graph is
       Expr : constant Node_Id := Expression (N);
       --  Object's initialization expression
 
-      procedure Find_Protected_Components (T : Entity_Id; Prefix : String)
-      with Pre => Is_Type (T);
-      --  Update map with priorities of protected components.
-      --  T is the type and Prefix represents the entire object name.
-
       subtype Size_Type is Int range -1 .. Int'Last;
       --  Used for size of an array type. -1 stands for many components, in
       --  case we are not able to determine the exact number.
@@ -3167,94 +3162,6 @@ package body Flow.Control_Flow_Graph is
       --  Subp represents the subprogram called in the expression for the
       --  aspect (a function for a type predicate and a procedure for a type
       --  invariant or DIC). Aspect refers to the current type aspect.
-
-      -------------------------------
-      -- Find_Protected_Components --
-      -------------------------------
-
-      procedure Find_Protected_Components (T : Entity_Id; Prefix : String) is
-         Dummy : constant Int := 0;
-         --  Dummy priority value, only used to ensure full initialization
-
-      begin
-         if not Has_Protected (T) then
-            return;
-
-         elsif Is_Protected_Type (T) then
-            declare
-               Priority_Expr : constant Node_Id :=
-                 Get_Priority_Or_Interrupt_Priority (T);
-
-               Priority : constant Priority_Value :=
-                 (if Present (Priority_Expr)
-                  then (if Is_OK_Static_Expression (Priority_Expr)
-                        then
-                          Priority_Value'
-                            (Kind  => Static,
-                             Value =>
-                               UI_To_Int (Expr_Value (Priority_Expr)))
-                        else
-                          Priority_Value'(Kind  => Nonstatic,
-                                          Value => Dummy))
-                  else
-                    Priority_Value'
-                      (Kind  => (if Present
-                                   (Find_Contract
-                                      (T, Pragma_Interrupt_Priority))
-                                 then
-                                   Last_Interrupt_Prio
-
-                                 elsif Has_Attach_Handler (T)
-                                   or else Has_Interrupt_Handler (T)
-                                 then
-                                   Default_Interrupt_Prio
-
-                                 else
-                                   Default_Prio),
-                       Value => Dummy));
-
-               Ent : Entity_Id := First_Entity (T);
-            begin
-               GG_Register_Protected_Object (E, Priority);
-
-               --  Register value of Max_Queue_Length for an entry
-               while Present (Ent) loop
-                  if Ekind (Ent) = E_Entry then
-                     declare
-                        Max_Queue_Length : constant Nat :=
-                          UI_To_Int (Get_Max_Queue_Length (Ent));
-                        --  Zero is returned when the pragma is not present and
-                        --  it stands for unbounded queue length.
-
-                     begin
-                        GG_Register_Max_Queue_Length
-                          (Prefix & "__" & Get_Name_String (Chars (Ent)),
-                           Max_Queue_Length);
-                     end;
-                  end if;
-                  Next_Entity (Ent);
-               end loop;
-            end;
-
-         elsif Is_Record_Type (T) then
-            --  Ignore record variants and simply find any protected components
-            declare
-               C : Entity_Id := First_Component (T);
-
-            begin
-               while Present (C) loop
-                  Find_Protected_Components
-                    (Etype (C),
-                     Prefix => Prefix & "__" & Get_Name_String (Chars (C)));
-                     Next_Component (C);
-               end loop;
-            end;
-
-         elsif Is_Array_Type (T) then
-            Find_Protected_Components (Component_Type (T), Prefix);
-         end if;
-
-      end Find_Protected_Components;
 
       ----------------
       -- Find_Tasks --
@@ -3818,9 +3725,6 @@ package body Flow.Control_Flow_Graph is
          begin
             --  Register task objects
             Find_Tasks (T, Size => 0);
-
-            --  Register priorities of protected components
-            Find_Protected_Components (T, Prefix => Unique_Name (E));
          end;
       end if;
    end Do_Object_Declaration;

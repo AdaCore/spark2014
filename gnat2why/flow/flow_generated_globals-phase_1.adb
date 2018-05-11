@@ -25,11 +25,15 @@ with Lib.Util;                use Lib.Util;
 with Namet;                   use Namet;
 with Osint.C;                 use Osint.C;
 with Sem_Aux;                 use Sem_Aux;
+with Sem_Eval;                use Sem_Eval;
 with Sem_Util;                use Sem_Util;
 with Snames;                  use Snames;
+with Uintp;                   use Uintp;
 
 with Common_Iterators;        use Common_Iterators;
+with SPARK_Definition;        use SPARK_Definition;
 with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
+with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
 with SPARK2014VSN;            use SPARK2014VSN;
 
 with Flow_Generated_Globals.ALI_Serialization;
@@ -59,6 +63,37 @@ package body Flow_Generated_Globals.Phase_1 is
 
    CAE_Entities : Node_Sets.Set;
    --  Entities marked with a Constant_After_Elaboration aspect
+
+   Protected_Objects : Node_Sets.Set;
+   --  Protected objects or records/array objects that have a protected type
+   --  as a field/component.
+
+   ----------------------------------------------------------------------
+   --  Protected types information
+   ----------------------------------------------------------------------
+
+   procedure GG_Register_Max_Queue_Length (E : String; Length : Nat);
+   --  Register the value of Max_Queue_Length for an entry (which is
+   --  represented as a string that uniquely identifies different entries
+   --  belonging to the same an object, i.e. (in the regexp syntax)
+   --  "(package__)+object(__component)*__entry".
+
+   procedure GG_Register_Protected_Object (PO   : Entity_Id;
+                                           Prio : Priority_Value);
+   --  Register protected object and its priority
+
+   function Protected_Type_Priority (Typ : Entity_Id) return Priority_Value
+   with Pre => Is_Protected_Type (Typ);
+   --  Return the priority associated to the protected type Typ
+
+   procedure Register_PO_Info (PO     : Entity_Id;
+                               PT     : Entity_Id;
+                               Prefix : String)
+   with Pre => Ekind (PO) = E_Variable
+               and then Is_Type (PT)
+               and then Prefix'Length > 0;
+   --  Register the protected object with its priorty and then Max_Queue_Length
+   --  for an entry.
 
    ----------------------------------------------------------------------
    --  Volatile information
@@ -166,6 +201,15 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Picks ghost entities from Objects and stores them in the appropriate
       --  container.
 
+      procedure Process_CAE (Objects : Node_Sets.Set);
+      --  Goes through Objects, finds Costant_After_Elaboration variables and
+      --  stores them in the appropriate container.
+
+      procedure Process_Protected_Objects (Objects : Node_Sets.Set);
+      --  Goes through Objects, find protected objects or records or arrays
+      --  with protected components and stores them in the appropriate
+      --  container.
+
       procedure Serialize is new Serialize_Discrete (Boolean);
       procedure Serialize is new Serialize_Discrete (Entity_Kind);
       procedure Serialize is new Serialize_Discrete (Globals_Origin_T);
@@ -206,10 +250,6 @@ package body Flow_Generated_Globals.Phase_1 is
             Serialize (Info (Kind), Kind'Img);
          end loop;
       end Serialize;
-
-      procedure Process_CAE (Objects : Node_Sets.Set);
-      --  Goes through Objects, finds Costant_After_Elaboration variables and
-      --  stores them in the appropriate container.
 
       ----------------------------------
       -- Process_Predefined_Variables --
@@ -279,6 +319,19 @@ package body Flow_Generated_Globals.Phase_1 is
          end loop;
       end Process_CAE;
 
+      -------------------------------
+      -- Process_Protected_Objects --
+      -------------------------------
+
+      procedure Process_Protected_Objects (Objects : Node_Sets.Set) is
+      begin
+         for E of Objects loop
+            if Has_Protected (Etype (E)) then
+               Protected_Objects.Include (E);
+            end if;
+         end loop;
+      end Process_Protected_Objects;
+
    --  Start of processing for GG_Register_Global_Info
 
    begin
@@ -324,27 +377,37 @@ package body Flow_Generated_Globals.Phase_1 is
 
       Terminate_GG_Line;
 
-      --  Collect volatile variables and state abstractions; these sets are
-      --  disjoint, so it is more efficient to process them separately instead
-      --  of doing an expensive union to have a single procedure call.
+      --  Collect protected objects
+
+      Process_Protected_Objects (Tasking (Locks));
+
       if not Local then
+
+         --  Collect volatile variables and state abstractions; these sets are
+         --  disjoint, so it is more efficient to process them separately
+         --  instead of doing an expensive union to have a single procedure
+         --  call.
+
          Process_Volatiles_And_States (Globals.Proper.Proof_Ins);
          Process_Volatiles_And_States (Globals.Proper.Inputs);
          Process_Volatiles_And_States (Globals.Proper.Outputs);
          Process_Volatiles_And_States (Local_Variables, Local_Vars => True);
 
          --  Collect ghost entities
+
          Process_Ghost (Globals.Proper.Proof_Ins);
          Process_Ghost (Globals.Proper.Inputs);
          Process_Ghost (Globals.Proper.Outputs);
 
          --  Collect CAE Entities
+
          Process_CAE (Globals.Proper.Proof_Ins);
          Process_CAE (Globals.Proper.Inputs);
          Process_CAE (Globals.Proper.Outputs);
 
          --  In phase 2 we only need to know the initialization status of
          --  proof_ins and inputs; outputs are irrelevant.
+
          Process_Predefined_Variables (Globals.Proper.Proof_Ins);
          Process_Predefined_Variables (Globals.Proper.Inputs);
       end if;
@@ -361,6 +424,46 @@ package body Flow_Generated_Globals.Phase_1 is
       Serialize (Length);
       Terminate_GG_Line;
    end GG_Register_Max_Queue_Length;
+
+   -----------------------------
+   -- Protected_Type_Priority --
+   -----------------------------
+
+   function Protected_Type_Priority (Typ : Entity_Id) return Priority_Value
+   is
+      Dummy : constant Int := 0;
+      --  Dummy priority value, only used to ensure full initialization
+
+      Priority_Expr : constant Node_Id :=
+        Get_Priority_Or_Interrupt_Priority (Typ);
+   begin
+      if Present (Priority_Expr) then
+         if Is_OK_Static_Expression (Priority_Expr) then
+            return Priority_Value'(Kind  => Static,
+                                   Value =>
+                                     UI_To_Int (Expr_Value (Priority_Expr)));
+         else
+            return Priority_Value'(Kind  => Nonstatic,
+                                   Value => Dummy);
+         end if;
+
+      else
+         if Present (Find_Contract (Typ, Pragma_Interrupt_Priority)) then
+            return Priority_Value'(Kind  => Last_Interrupt_Prio,
+                                   Value => Dummy);
+
+         elsif Has_Attach_Handler (Typ)
+           or else Has_Interrupt_Handler (Typ)
+         then
+            return Priority_Value'(Kind  => Default_Interrupt_Prio,
+                                   Value => Dummy);
+
+         else
+            return Priority_Value'(Kind  => Default_Prio,
+                                   Value => Dummy);
+         end if;
+      end if;
+   end Protected_Type_Priority;
 
    ----------------------------------
    -- GG_Register_Protected_Object --
@@ -381,6 +484,69 @@ package body Flow_Generated_Globals.Phase_1 is
       end if;
       Terminate_GG_Line;
    end GG_Register_Protected_Object;
+
+   ----------------------
+   -- Register_PO_Info --
+   ----------------------
+
+   procedure Register_PO_Info (PO     : Entity_Id;
+                               PT     : Entity_Id;
+                               Prefix : String)
+   is
+   begin
+      if Is_Protected_Type (PT) then
+         GG_Register_Protected_Object
+           (PO, Protected_Type_Priority (PT));
+
+         declare
+            Ent : Entity_Id := First_Entity (PT);
+
+         begin
+            --  Register value of Max_Queue_Length for an entry
+
+            while Present (Ent) loop
+               if Ekind (Ent) = E_Entry
+                 and then Entity_In_SPARK (Ent)
+               then
+                  declare
+                     Max_Queue_Length : constant Nat :=
+                       UI_To_Int (Get_Max_Queue_Length (Ent));
+                     --  Zero is returned when the pragma is not
+                     --  present and it stands for unbounded queue
+                     --  length.
+
+                  begin
+                     GG_Register_Max_Queue_Length
+                       (Prefix & "__" &
+                          Get_Name_String (Chars (Ent)),
+                        Max_Queue_Length);
+                  end;
+               end if;
+               Next_Entity (Ent);
+            end loop;
+         end;
+
+      elsif Is_Record_Type (PT) then
+         declare
+            C : Entity_Id := First_Component (PT);
+
+         begin
+            while Present (C)
+              and then Component_Is_Visible_In_SPARK (C)
+              and then Entity_In_SPARK (Etype (C))
+            loop
+               Register_PO_Info
+                 (PO,
+                  Etype (C),
+                  Prefix & "__" & Get_Name_String (Chars (C)));
+               Next_Component (C);
+            end loop;
+         end;
+
+      elsif Is_Array_Type (PT) then
+         Register_PO_Info (PO, Component_Type (PT), Prefix);
+      end if;
+   end Register_PO_Info;
 
    ----------------------------------
    -- GG_Register_State_Refinement --
@@ -499,6 +665,10 @@ package body Flow_Generated_Globals.Phase_1 is
          Serialize (CAE_Entities);
          Terminate_GG_Line;
       end if;
+
+      for PO of Protected_Objects loop
+         Register_PO_Info (PO, Etype (PO), Unique_Name (PO));
+      end loop;
 
       --  Write the finalization string
       New_GG_Line (EK_End_Marker);

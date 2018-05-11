@@ -4932,7 +4932,7 @@ package body Flow.Analysis is
          --  Iterate over entry objects
          for Obj in Entry_Callers.Iterate loop
             declare
-               use Name_Nat;
+               use Max_Queue_Lenghts_Maps;
 
                Number_Of_Accesses : Nat := 0;
                --  Counts the number of accesses to the current entry object
@@ -4942,7 +4942,7 @@ package body Flow.Analysis is
                --  Entry under analysis
 
                Max_Queue_Length : constant Nat :=
-                 Max_Queue_Length_Map (Current_Entry);
+                 Max_Queue_Lengths (Current_Entry);
                --  Value of the pragma Max_Queue_Length attached to
                --  Current_Entry (zero if it is not present).
 

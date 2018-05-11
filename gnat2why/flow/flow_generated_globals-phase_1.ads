@@ -77,20 +77,6 @@ package Flow_Generated_Globals.Phase_1 is
    --  Register information needed later to compute globals. It also stores
    --  information related to volatiles and remote states.
 
-   procedure GG_Register_Max_Queue_Length (E : String; Length : Nat)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Register the value of Max_Queue_Length for an entry (which is
-   --  represented as a string that uniquely identifies different entries
-   --  belonging to the same an object, i.e. (in the regexp syntax)
-   --  "(package__)+object(__component)*__entry".
-
-   procedure GG_Register_Protected_Object (PO   : Entity_Id;
-                                           Prio : Priority_Value)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Register protected object and its priority
-
    procedure GG_Register_State_Refinement (E : Entity_Id)
    with Pre  => GG_Mode = GG_Write_Mode
                   and then Ekind (E) = E_Package,

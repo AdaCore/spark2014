@@ -60,7 +60,7 @@ package Flow_Generated_Globals.Phase_2 is
    --  arrays may contain several instances of a task type and task record may
    --  contain instances of several tasks).
 
-   package Name_Nat is new Ada.Containers.Hashed_Maps
+   package Max_Queue_Lenghts_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Name,
       Element_Type    => Nat,
       Hash            => Name_Hash,
@@ -69,7 +69,7 @@ package Flow_Generated_Globals.Phase_2 is
    Task_Instances : Task_Instances_Maps.Map;
    --  Task instances
 
-   Max_Queue_Length_Map : Name_Nat.Map;
+   Max_Queue_Lengths : Max_Queue_Lenghts_Maps.Map;
    --  Maps entries to their Max_Queue_Length
 
    -------------------------
