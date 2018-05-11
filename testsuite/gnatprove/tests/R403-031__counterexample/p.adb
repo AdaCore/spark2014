@@ -22,7 +22,6 @@ is
 
      --  Ghost entities:
 
-      I : U16 := 0 with Ghost;
       M, Bits_G, Res_G : U16 with Ghost;
 
    begin
@@ -36,7 +35,6 @@ is
       Res_G := 0;
 
       while (Bits /= 0) loop
-         I := I + 1;
          M := M - 1;
          pragma Assert (Res = Res_G * (pow2 (M + 1)));
          pragma Assert (Bits_G = Pow2(M));
