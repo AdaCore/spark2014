@@ -115,16 +115,6 @@ package SPARK_Util.Subprograms is
                                   | E_Procedure
                                   | E_Task_Type,
 
-                    when Pragma_Interrupt_Priority
-                    =>
-                       Ekind (E) in Concurrent_Kind,
-
-                    when Pragma_Priority
-                    =>
-                       Ekind (E) in E_Function
-                                  | E_Procedure
-                                  | Concurrent_Kind,
-
                     when others
                     =>
                         False),

@@ -7,5 +7,5 @@ user.adb:7:14: info: ceiling priority in Interrupt_Priority proved (CVC4: 2 VC)
 user.adb:8:44: info: range check proved (CVC4: 2 VC)
 user.adb:15:27: medium: this interrupt might be reserved
 user.adb:22:27: medium: this interrupt might be reserved
-user.adb:24:17: medium: ceiling priority protocol might not be respected
+user.adb:24:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
 user.adb:28:27: medium: this interrupt might be reserved

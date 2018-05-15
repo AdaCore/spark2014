@@ -243,6 +243,17 @@ package body SPARK_Atree.Entities is
    function Get_Cursor_Type (Typ : Entity_Id) return Entity_Id renames
      Sem_Util.Get_Cursor_Type;
 
+   ------------------
+   -- Get_Rep_Item --
+   ------------------
+
+   function Get_Rep_Item
+     (E             : Entity_Id;
+      Nam           : Name_Id) return Node_Id is
+   begin
+      return Sem_Aux.Get_Rep_Item (E, Nam, True);
+   end Get_Rep_Item;
+
    ------------------------
    -- Has_Attach_Handler --
    ------------------------

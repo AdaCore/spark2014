@@ -469,7 +469,7 @@ package body Gnat2Why.Subprograms is
                 (Domain => EW_Term,
                  Ty     =>
                    RTE (if Present
-                            (Find_Contract (E, Pragma_Interrupt_Priority))
+                            (Get_Rep_Item (E, Name_Interrupt_Priority))
                         then RE_Interrupt_Priority
                         else RE_Priority),
                  Attr   => Attribute_Last,
@@ -494,7 +494,7 @@ package body Gnat2Why.Subprograms is
                Attr_Id : Supported_Attribute_Id;
                --  Type and attribute for priority expression
             begin
-               if Present (Find_Contract (PT, Pragma_Interrupt_Priority))
+               if Present (Get_Rep_Item (PT, Name_Interrupt_Priority))
                then
                   --  Pragma Interrupt_Priority without expression defaults to
                   --  Interrupt_Priority'Last; RM J.15(12).

@@ -526,4 +526,13 @@ package SPARK_Atree.Entities is
    function Return_Applies_To (E : Entity_Id) return Node_Id with
      Pre => Ekind (E) = Einfo.E_Return_Statement;
 
+   function Get_Rep_Item
+     (E             : Entity_Id;
+      Nam           : Name_Id) return Node_Id
+     with Pre => Ekind (E) in Protected_Kind |
+                              E_Function     |
+                              E_Procedure    |
+                              E_Task_Type
+           and then Nam in Name_Priority | Name_Interrupt_Priority;
+
 end SPARK_Atree.Entities;

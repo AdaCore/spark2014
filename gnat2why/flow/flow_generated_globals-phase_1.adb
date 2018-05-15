@@ -448,7 +448,7 @@ package body Flow_Generated_Globals.Phase_1 is
          end if;
 
       else
-         if Present (Find_Contract (Typ, Pragma_Interrupt_Priority)) then
+         if Present (Get_Rep_Item (Typ, Name_Interrupt_Priority)) then
             return Priority_Value'(Kind  => Last_Interrupt_Prio,
                                    Value => Dummy);
 
