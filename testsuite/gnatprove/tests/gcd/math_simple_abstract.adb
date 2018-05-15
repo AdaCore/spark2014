@@ -43,8 +43,8 @@ package body Math_Simple_Abstract is
          else
             Lemma_Mod_Not_Zero (B, C);
          end if;
-         pragma Loop_Invariant (for all X in C .. Integer'Min (A, B) =>
-                                  not (Divides (X, A) and Divides (X, B)));
+         pragma Loop_Invariant (C > 1 and then
+           (for all X in C .. Integer'Min (A, B) => not (Divides (X, A) and Divides (X, B))));
          C := C - 1;
       end loop;
 
