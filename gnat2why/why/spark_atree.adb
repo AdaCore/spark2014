@@ -316,8 +316,9 @@ package body SPARK_Atree is
    -----------------------
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id is
-      (if Nkind (N) in N_Op then Entity (N)
-       else Sem_Aux.Get_Called_Entity (N));
+     (Sem_Aux.Ultimate_Alias
+        (if Nkind (N) in N_Op then Entity (N)
+         else Sem_Aux.Get_Called_Entity (N)));
 
    --------------------------
    -- Get_Enclosing_Object --
