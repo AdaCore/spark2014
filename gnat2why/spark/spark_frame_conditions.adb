@@ -307,7 +307,6 @@ package body SPARK_Frame_Conditions is
 
       E_Alias : constant Entity_Id :=
         (if Ekind (E) in E_Function | E_Procedure
-           and then Present (Alias (E))
          then Ultimate_Alias (E)
          else E);
 
