@@ -1777,11 +1777,11 @@ package body Gnat2Why.Expr is
      (Params : Transformation_Params;
       N      : Entity_Id) return W_Prog_Id
    is
-      Ty        : constant Entity_Id :=
-        (if Ekind (N) in SPARK_Util.Types.Subtype_Kind then Retysp (Etype (N))
-         else Retysp (N));
-      --  N can be a subtype of an Itype introduced by the frontend. In this
-      --  case, we should to do the checks on the introduced Itype instead.
+      Ty        : constant Entity_Id := Retysp (N);
+      Base_Ty   : constant Entity_Id :=
+        (if Ekind (Ty) in Subtype_Kind then Base_Type (Ty) else Ty);
+      --  For first subtypes, we generate a check if the base type has an
+      --  invariant.
 
       Tmp_Id    : constant W_Identifier_Id :=
         New_Temp_Identifier (Ty, Type_Of_Node (Ty));
@@ -1811,7 +1811,7 @@ package body Gnat2Why.Expr is
       --  If the type itself has an invariant, check for runtime errors in the
       --  type's invariant.
 
-      if Has_Invariants_In_SPARK (Ty) then
+      if Has_Invariants_In_SPARK (Base_Ty) then
          declare
             Inv_Subp  : constant Node_Id := Invariant_Procedure (Ty);
             Inv_Expr  : constant Node_Id :=
