@@ -2187,7 +2187,7 @@ package body SPARK_Definition is
               and then Nkind (Original_Node (N)) = N_Attribute_Reference
             then
                Mark_Attribute_Reference (Original_Node (N));
-            elsif Present (Etype (N)) then
+            else
                Mark_Entity (Etype (N));
             end if;
 
