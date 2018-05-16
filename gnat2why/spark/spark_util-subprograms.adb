@@ -610,55 +610,35 @@ package body SPARK_Util.Subprograms is
 
    function Get_Priority_Or_Interrupt_Priority (E : Entity_Id) return Node_Id
    is
-      Priority_Node : constant Node_Id :=
-        Get_Rep_Item (E, Name_Priority);
+      Priority_Node : constant Node_Id := Get_Rep_Item (E, Name_Priority);
+      --  Note that the above will also find Name_Interrupt_Priority (see
+      --  comment on Get_Rep_Item).
    begin
-      --  First look for pragma Priority, which can apply to protected types,
-      --  task types and main-like subprograms.
-
       if Present (Priority_Node) then
-         --  Expression is mandatory for pragma Priority
+         case Nkind (Priority_Node) is
+            when N_Pragma =>
+               declare
+                  Arg : constant Node_Id :=
+                    First (Pragma_Argument_Associations (Priority_Node));
 
-         if Nkind (Priority_Node) = N_Pragma then
-            return Expression
-              (First (Pragma_Argument_Associations (Priority_Node)));
-         else
-            return Expression (Priority_Node);
-         end if;
+               begin
+                  return (if Present (Arg)
+                          then Expression (Arg)
+                          --  Here priority defaults to
+                          --  Interrupt_Priority'Last.
+                          else Empty);
+               end;
 
-      --  Then look for pragma Interrupt_Priority, which can only apply to
-      --  concurrent types.
+            when N_Attribute_Definition_Clause =>
+               return Expression (Priority_Node);
 
-      elsif Is_Concurrent_Type (E) then
-         declare
-            Interrupt_Priority_Node : constant Node_Id :=
-              Get_Rep_Item (E, Name_Interrupt_Priority);
-         begin
-            if Present (Interrupt_Priority_Node) then
-               if Nkind (Interrupt_Priority_Node) = N_Pragma then
-                  declare
-                     Arg : constant Node_Id :=
-                       First
-                         (Pragma_Argument_Associations
-                            (Interrupt_Priority_Node));
-                  begin
-                     --  Expression is optional for pragma Interrupt_Priority
-                     return (if Present (Arg)
-                             then Expression (Arg)
-                             --  Here priority defaults to
-                             --  Interrupt_Priority'Last.
-                             else Empty);
-                  end;
-               else
-                  return Expression (Interrupt_Priority_Node);
-               end if;
-            end if;
-         end;
+            when others =>
+               raise Program_Error;
+         end case;
+
+      else
+         return Empty;
       end if;
-
-      --  None of pragma Priority or Interrupt_Priority is present
-
-      return Empty;
    end Get_Priority_Or_Interrupt_Priority;
 
    ---------------------------
