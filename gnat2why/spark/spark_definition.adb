@@ -49,6 +49,7 @@ with Restrict;                        use Restrict;
 with Rident;                          use Rident;
 with Rtsfind;                         use Rtsfind;
 with Sem_Aux;                         use Sem_Aux;
+with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
 with Sem_Util;                        use Sem_Util;
 with Snames;                          use Snames;
@@ -4428,6 +4429,7 @@ package body SPARK_Definition is
               and then Modulus (E) > UI_Expon (2, 64)
             then
                Mark_Unsupported ("modulus greater than 2 ** 64", E);
+               return;
 
             elsif Is_Floating_Point_Type (E) then
                if not Is_Double_Precision_Floating_Point_Type (E)
@@ -4435,6 +4437,7 @@ package body SPARK_Definition is
                then
                   Mark_Unsupported
                     ("extended precision floating point type", E);
+                  return;
 
                --  Fixed-point values can be used as bounds in a floating-point
                --  type constraint, but the underlying conversion is not
@@ -4451,10 +4454,26 @@ package body SPARK_Definition is
                      then
                         Mark_Unsupported ("conversion between fixed-point and "
                                           & "floating-point types", E);
+                        return;
                      end if;
                   end;
                end if;
             end if;
+
+            --  Check that the range of the type is in SPARK
+
+            declare
+               Rng  : constant Node_Id := Get_Range (E);
+               Low  : constant Node_Id := Low_Bound (Rng);
+               High : constant Node_Id := High_Bound (Rng);
+            begin
+               if not Compile_Time_Known_Value (Low) then
+                  Mark (Low);
+               end if;
+               if not Compile_Time_Known_Value (High) then
+                  Mark (High);
+               end if;
+            end;
 
          elsif Is_Class_Wide_Type (E) then
 
