@@ -1,2 +1,2 @@
 from test_support import *
-prove_all(steps=1, counterexample=False)
+prove_all(counterexample=False, level=1)

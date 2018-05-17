@@ -63,7 +63,7 @@ def coverage_mode():
     return "coverage" in os.environ and os.environ["coverage"] == "true"
 
 
-def vc_timeout():
+def get_default_timeout():
     if "vc_timeout" in os.environ:
         return int(os.environ["vc_timeout"])
     else:
@@ -653,8 +653,8 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
                 print line
 
 
-def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
-              vc_timeout=vc_timeout(), mode="all", counterexample=True,
+def prove_all(opt=None, steps=None, procs=parallel_procs,
+              vc_timeout=None, mode="all", counterexample=True,
               prover=default_provers,
               cache_allowed=True,
               report="provers",
@@ -679,20 +679,25 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
     fullopt += ["--report=%s" % (report)]
     fullopt += ["--assumptions"]
     fullopt += ["-P", project, "--quiet"]
-    fullopt += ["--timeout=%d" % (vc_timeout)]
     if codepeer:
         fullopt += ["--codepeer=on"]
     if replay:
         fullopt += ["--replay"]
+
     if level is None:
+        # If no proof level is specified, we use the default timeout and
+        # step limit unless otherwise specified.
         if steps is None:
-            fullopt += ["--steps=0"]
-        else:
-            fullopt += ["--steps=%d" % (steps)]
+            steps = max_steps
+        if vc_timeout is None:
+            vc_timeout = get_default_timeout()
     else:
         fullopt += ["--level=%u" % level]
-        if steps is not None:
-            fullopt += ["--steps=%d" % (steps)]
+
+    if steps is not None:
+        fullopt += ["--steps=%d" % steps]
+    if vc_timeout is not None:
+        fullopt += ["--timeout=%d" % vc_timeout]
 
     fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]

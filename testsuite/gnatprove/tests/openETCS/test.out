@@ -7,15 +7,15 @@ com_map.ads:39:22: info: precondition proved (CVC4: 1 VC)
 deceleration_curve.adb:36:13: info: initialization of "speed" proved
 deceleration_curve.adb:37:25: info: assertion proved (CVC4: 4 VC)
 deceleration_curve.adb:40:13: info: loop invariant initialization proved (CVC4: 2 VC)
-deceleration_curve.adb:40:13: info: loop invariant preservation proved (CVC4: 2 VC)
 deceleration_curve.adb:40:35: info: initialization of "speed" proved
+deceleration_curve.adb:40:45: medium: loop invariant might fail after first iteration, cannot prove speed <= Initial_Speed
 deceleration_curve.adb:41:25: info: assertion proved (CVC4: 2 VC)
 deceleration_curve.adb:41:34: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:41:34: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:41:35: info: initialization of "speed" proved
 deceleration_curve.adb:41:48: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:41:48: info: float overflow check proved (CVC4: 1 VC)
-deceleration_curve.adb:43:14: info: assertion proved (CVC4: 1 VC)
+deceleration_curve.adb:43:14: medium: assertion might fail, cannot prove Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:44:38: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:44:38: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:44:40: info: initialization of "speed" proved
