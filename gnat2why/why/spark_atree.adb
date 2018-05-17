@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Einfo;
 with Sem_Aux;
 with Sem_Disp;
 
@@ -316,9 +317,13 @@ package body SPARK_Atree is
    -----------------------
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id is
-     (Sem_Aux.Ultimate_Alias
+      E : constant Entity_Id :=
         (if Nkind (N) in N_Op then Entity (N)
-         else Sem_Aux.Get_Called_Entity (N)));
+         else Sem_Aux.Get_Called_Entity (N));
+   begin
+      return (if Einfo.Is_Intrinsic_Subprogram (E) then E
+              else Sem_Aux.Ultimate_Alias (E));
+   end Get_Called_Entity;
 
    --------------------------
    -- Get_Enclosing_Object --
