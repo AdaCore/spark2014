@@ -138,9 +138,7 @@ package Why.Gen.Expr is
 
    function New_Shape_Label (Node : Node_Id) return Name_Id;
    --  Return a label representing the shape of the Ada code surrounding the
-   --  input node. "Shapes" are more resistant to code refactorings than SLOCs
-   --  of VCs. This makes Why3 proofs easier to replay. See Why3 VSTTE'13 paper
-   --  for details.
+   --  input node. This label is used to name the VC file for manual proof.
 
    function New_Comment_Label
      (Node : Node_Id; Loc : Name_Id; Reason : VC_Kind) return Name_Id;
