@@ -7,4 +7,3 @@ private
 
    type T is new Rec.T;
 end User;
-

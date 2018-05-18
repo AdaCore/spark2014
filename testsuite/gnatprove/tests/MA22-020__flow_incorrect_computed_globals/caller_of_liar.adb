@@ -13,4 +13,3 @@ is
      T := Tmp2;
    end Add_Three;
 end Caller_Of_Liar;
-

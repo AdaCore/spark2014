@@ -1,4 +1,3 @@
-
 project Chapter07 is
 
    for Object_Dir use "build";

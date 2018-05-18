@@ -8,4 +8,3 @@ begin
    Concat_Left.P;
    Concat_Right.P;
 end Main;
-

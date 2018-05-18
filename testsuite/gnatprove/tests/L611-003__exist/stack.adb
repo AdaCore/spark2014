@@ -20,15 +20,3 @@ package body Stack is
    end Size;
 
 end Stack;
-
-
-
-
-
-
-
-
-
-
-
-

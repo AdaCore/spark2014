@@ -9,4 +9,3 @@ package body P is
 
    function Get (X : T) return T is (X);
 end P;
-

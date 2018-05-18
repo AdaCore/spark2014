@@ -6,4 +6,3 @@ package body Pack is
    end Do_Nothing;
 
 end Pack;
-

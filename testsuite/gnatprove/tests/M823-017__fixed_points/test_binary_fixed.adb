@@ -30,4 +30,3 @@ begin
    Test_Compare (-5.0);
    Test_Compare (5.0);
 end Test_Binary_Fixed;
-

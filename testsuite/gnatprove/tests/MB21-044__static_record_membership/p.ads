@@ -20,5 +20,3 @@ is
      with Post => Z = (S (I) in R);
 
 end P;
-
-

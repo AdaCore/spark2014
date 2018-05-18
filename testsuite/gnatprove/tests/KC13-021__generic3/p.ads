@@ -7,4 +7,3 @@ package P is
    pragma Postcondition (Y = X'Old);
 
 end;
-

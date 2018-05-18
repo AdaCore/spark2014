@@ -11,4 +11,3 @@ project Test is
    for Main use ("run_tests.adb");
 
 end Test;
-

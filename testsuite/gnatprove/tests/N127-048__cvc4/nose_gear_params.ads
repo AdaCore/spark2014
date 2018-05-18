@@ -18,4 +18,3 @@ package nose_gear_params is
 
 end nose_gear_params;
 --  @EOF
-

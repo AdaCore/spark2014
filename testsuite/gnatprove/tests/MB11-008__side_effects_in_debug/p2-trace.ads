@@ -5,4 +5,3 @@ is
      with Global  => null,
           Depends => (null => S);
 end P2.Trace;
-

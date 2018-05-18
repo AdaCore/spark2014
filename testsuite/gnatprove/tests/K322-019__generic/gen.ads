@@ -3,4 +3,3 @@ generic
 package Gen is
    procedure X ( Z : T);
 end Gen;
-

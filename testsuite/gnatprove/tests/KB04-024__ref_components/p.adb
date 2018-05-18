@@ -17,4 +17,3 @@ begin
    Assign (X (1));
    Assign (Y.B);
 end P;
-

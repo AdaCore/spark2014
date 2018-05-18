@@ -6,4 +6,3 @@ begin
    pragma Assert (P1.S = "image of N");
    pragma Assert (P2.S = "image of N");
 end User;
-

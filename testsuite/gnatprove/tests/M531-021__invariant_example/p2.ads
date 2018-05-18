@@ -12,5 +12,3 @@ is
                   (Sqrt'Result + 1) * (Sqrt'Result + 1) >  N;
 
 end P2;
-
-

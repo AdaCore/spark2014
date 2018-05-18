@@ -345,4 +345,3 @@ package body nose_gear is
    end nose_gear_comp;
 end nose_gear;
 --  @EOF
-

@@ -31,4 +31,3 @@ Package body Section_4_6 is
       return No_Power;
    end;
 end;
-

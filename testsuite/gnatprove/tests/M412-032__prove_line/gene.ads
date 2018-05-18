@@ -7,4 +7,3 @@ package Gene is
       with Pre => X < Y;
 
 end Gene;
-

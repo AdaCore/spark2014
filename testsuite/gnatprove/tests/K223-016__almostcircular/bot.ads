@@ -7,4 +7,3 @@ package Bot is
 
    procedure B (X : MySmall);
 end Bot;
-

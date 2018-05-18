@@ -35,5 +35,3 @@ is
    end Sqrt;
 
 end P2;
-
-

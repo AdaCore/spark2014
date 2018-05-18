@@ -54,4 +54,3 @@ private
    type PI1 is new Integer;
    type PI2 is new Integer;
 end Prags;
-

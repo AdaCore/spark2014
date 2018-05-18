@@ -9,4 +9,3 @@ package body Caller is
       pragma Assert (Add2 (R) = 0);
    end Test;
 end Caller;
-

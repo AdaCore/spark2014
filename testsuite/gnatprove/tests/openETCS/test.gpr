@@ -3,4 +3,3 @@ project Test is
       for Default_Switches ("ada") use ("-gnatws", "-gnato13");
    end Compiler;
 end Test;
-

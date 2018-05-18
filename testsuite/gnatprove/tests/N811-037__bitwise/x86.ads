@@ -21,6 +21,3 @@ is
      Post => ((if (CarryFlag) then (DL = 1)) and
                 (if (not CarryFlag) then (DL = 0)));
 end X86;
-
-
-

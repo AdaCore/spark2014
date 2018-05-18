@@ -75,4 +75,3 @@ package sec_3_13_8_targets_decel_curves is pragma SPARK_Mode (On);
 
    -- SUBSET-026-3.13.8.3.3 not formalized (FIXME)
 end sec_3_13_8_targets_decel_curves;
-

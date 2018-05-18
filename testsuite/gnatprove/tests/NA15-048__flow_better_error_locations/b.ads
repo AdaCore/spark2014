@@ -5,4 +5,3 @@ is
    function Return_State return Integer
      with Global => State;
 end B;
-

@@ -27,4 +27,3 @@ package ETCS_Level is pragma SPARK_Mode (On);
 
    ertms_etcs_level : ertms_etcs_level_t;
 end;
-

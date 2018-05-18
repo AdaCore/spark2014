@@ -44,4 +44,3 @@ package body sec_3_13_2_monitoring_inputs is pragma SPARK_Mode (On);
    end;
 
 end sec_3_13_2_monitoring_inputs;
-

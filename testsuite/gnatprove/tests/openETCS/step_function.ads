@@ -116,7 +116,3 @@ package Step_Function is pragma SPARK_Mode (On);
                                        Get_Value(SFun2,
                                                  Merge.Step(i).Delimiter))));
 end Step_Function;
-
-
-
-

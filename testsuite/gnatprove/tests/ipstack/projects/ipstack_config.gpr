@@ -17,4 +17,3 @@ project IPStack_Config is
 
    for Source_Dirs use ();
 end IPStack_Config;
-

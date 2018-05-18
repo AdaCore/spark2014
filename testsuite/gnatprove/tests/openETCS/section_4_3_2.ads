@@ -58,4 +58,3 @@ package Section_4_3_2 is pragma SPARK_Mode (On);
                               SN,
                               RV);
 end;
-

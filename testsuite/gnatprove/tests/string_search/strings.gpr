@@ -7,4 +7,3 @@ project Strings is
    for Main use ("test_search.adb");
 
 end Strings;
-

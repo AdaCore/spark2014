@@ -5,4 +5,3 @@ package Inner_Use is
    procedure P (B : Boolean) with
      Post => X /= 5;
 end Inner_Use;
-

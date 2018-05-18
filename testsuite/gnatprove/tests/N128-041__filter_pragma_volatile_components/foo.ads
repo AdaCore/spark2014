@@ -21,5 +21,3 @@ is
           Post   => S <= 100; -- something obviously not provable
 
 end Foo;
-
-

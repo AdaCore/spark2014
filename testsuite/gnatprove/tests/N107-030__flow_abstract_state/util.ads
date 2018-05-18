@@ -8,4 +8,3 @@ is
    procedure Toggle
      with Global => (In_Out => S);
 end Util;
-

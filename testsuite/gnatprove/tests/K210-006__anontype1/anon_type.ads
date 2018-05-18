@@ -6,4 +6,3 @@ package Anon_Type is
    function Increment (Var_In : in Integer) return Integer
      with Post => Increment'Result = Var_In + 1;
 end Anon_Type;
-

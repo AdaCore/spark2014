@@ -15,4 +15,3 @@ project State_Machine_Examples is
    end Prove;
 
 end State_Machine_Examples;
-

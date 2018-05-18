@@ -24,4 +24,3 @@ package body sec_3_13_8_targets_decel_curves is pragma SPARK_Mode (On);
       Curve_From_Target(Target(Supervised_Location), Braking_Curve);
    end;
 end sec_3_13_8_targets_decel_curves;
-

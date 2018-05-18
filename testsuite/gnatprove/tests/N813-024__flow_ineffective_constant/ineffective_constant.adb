@@ -15,4 +15,3 @@ is
       pragma Assert (C.X + G = 0);
    end P;
 end Ineffective_Constant;
-

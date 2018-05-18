@@ -7,4 +7,3 @@ procedure Main2 is
 begin
    Contract_Cases_Illegal_2.Incorrect_Contract (A, B, C);
 end Main2;
-

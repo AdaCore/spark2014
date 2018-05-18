@@ -9,5 +9,3 @@ begin
    Put_Line ("LCP returns null");
    pragma Assert (LCP (A, 1, 7) = 0);
 end Main;
-
-

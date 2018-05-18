@@ -6,4 +6,3 @@ is
 begin
    X := Call_Get;
 end User;
-

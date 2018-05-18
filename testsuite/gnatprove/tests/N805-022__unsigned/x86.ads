@@ -110,6 +110,3 @@ is
      Post => ((ECX = 0) or (not ZeroFlag));
 
 end X86;
-
-
-

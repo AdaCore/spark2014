@@ -61,4 +61,3 @@ package body Simple_Illegal_Without_Contracts is
 
    end P;
 end Simple_Illegal_Without_Contracts;
-

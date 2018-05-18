@@ -4,4 +4,3 @@ project Test3 is
       for Local_Configuration_Pragmas use "test3.adc";
    end Compiler;
 end Test3;
-

@@ -27,4 +27,3 @@ package nose_gear is
 
 end nose_gear;
 --  @EOF
-

@@ -17,5 +17,3 @@ is
    end Op2;
 
 end P;
-
-

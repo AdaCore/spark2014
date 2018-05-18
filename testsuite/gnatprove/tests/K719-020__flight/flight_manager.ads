@@ -14,4 +14,3 @@ package Flight_Manager is
      (Position_Y + Set_Engine_Speed'Result.Y_Speed);
 
 end Flight_Manager;
-

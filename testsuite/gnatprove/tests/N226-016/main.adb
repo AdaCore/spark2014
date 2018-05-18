@@ -49,5 +49,3 @@ begin
    Sink.The_Sink := With_Invariant (1);
    Sink.The_Sink := With_Spoon_Feeding (1);
 end Main;
-
-

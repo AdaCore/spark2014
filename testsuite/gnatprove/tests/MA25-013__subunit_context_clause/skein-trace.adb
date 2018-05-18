@@ -12,4 +12,3 @@ is
    end Set_Flags;
 
 end Trace;
-

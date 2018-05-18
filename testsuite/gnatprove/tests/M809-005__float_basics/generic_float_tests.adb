@@ -466,4 +466,3 @@ is
    --  x / 2 != x * 0.5
 
 end Generic_Float_Tests;
-

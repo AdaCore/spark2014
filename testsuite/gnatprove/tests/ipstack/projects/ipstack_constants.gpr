@@ -15,4 +15,3 @@ project IPStack_Constants is
    end Compiler;
 
 end IPStack_Constants;
-

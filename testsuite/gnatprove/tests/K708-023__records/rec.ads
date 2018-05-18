@@ -9,4 +9,3 @@ private
          B : Integer;
       end record;
 end Rec;
-

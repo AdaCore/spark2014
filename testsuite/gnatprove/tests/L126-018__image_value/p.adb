@@ -8,4 +8,3 @@ begin
    X := T'Value (S);
    Put_Line (T'Image (X));
 end P;
-

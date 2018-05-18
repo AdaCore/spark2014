@@ -171,4 +171,3 @@ is
    end repe32_cmpsb;
 
 end X86;
-

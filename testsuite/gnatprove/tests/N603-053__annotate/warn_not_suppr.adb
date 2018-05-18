@@ -8,4 +8,3 @@ package body Warn_Not_Suppr is
    end P;
 
 end Warn_Not_Suppr;
-

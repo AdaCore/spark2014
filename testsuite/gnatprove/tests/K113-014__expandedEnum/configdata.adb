@@ -10,4 +10,3 @@ is
    end SetDefaults;
 
 end ConfigData;
-

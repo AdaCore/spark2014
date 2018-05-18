@@ -10,5 +10,3 @@ is
    S : R := F.Dyn; -- range check here!
 
 end P;
-
-

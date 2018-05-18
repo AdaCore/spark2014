@@ -9,4 +9,3 @@ private
    pragma SPARK_Mode (Off);
    type T is access Integer;
 end P;
-

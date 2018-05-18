@@ -7,4 +7,3 @@ project Test_Obj is
    end Compiler;
 
 end Test_Obj;
-

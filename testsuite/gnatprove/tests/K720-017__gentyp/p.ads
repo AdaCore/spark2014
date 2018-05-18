@@ -8,4 +8,3 @@ private
 
    procedure P;
 end P;
-

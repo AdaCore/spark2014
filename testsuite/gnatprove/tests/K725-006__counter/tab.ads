@@ -4,4 +4,3 @@ package Tab is
 
    Table : Integer := 0;
 end Tab;
-

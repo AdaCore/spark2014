@@ -6,4 +6,3 @@ package body Pkg is
    end Equal;
 
 end Pkg;
-

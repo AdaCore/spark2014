@@ -3,4 +3,3 @@ package A is pragma SPARK_Mode (On);
    function Any return T
       with Post => (Any'Result > 2);
 end A;
-

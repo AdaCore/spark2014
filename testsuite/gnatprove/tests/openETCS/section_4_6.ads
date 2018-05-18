@@ -108,4 +108,3 @@ package Section_4_6 is pragma SPARK_Mode (On);
                         condition_transition_SB_to_IS => True),
      Post => True; -- work around for bug in SPARK Hi-Lite GPL 2013
 end;
-
