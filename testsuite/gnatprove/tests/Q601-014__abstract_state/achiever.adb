@@ -15,7 +15,7 @@ package body Achiever with SPARK_Mode is
     --$  )
     --$  return Boolean;
 
-   
+
        procedure Do_Something (St : in St_Type;
                                Op : Op_Type) is
     --$ global
@@ -41,11 +41,11 @@ package body Achiever with SPARK_Mode is
     --$    );
 
        begin
-       
+
        null;
-       
+
        end Do_Something;
-       
+
        procedure Do_Stuff(St :in St_Type)
      --$ global
     --$    in out State_Item,
@@ -84,27 +84,27 @@ package body Achiever with SPARK_Mode is
     --$         Internal_State~,
     --$         Internal_State,
     --$    );
-      is 
+      is
        begin
-       
+
        if not Sc_Status_type.Read(This => State_Item) then
-       
-       
+
+
           Sc_Status_type.Write(This => State_Item, Data => True);
-          
+
           Do_something(St => St,
                        Op => op_1);
-        
-       
+
+
        end if;
-       
+
        end Do_Stuff;
-       
+
        procedure  init is begin
-               
-           
+
+
            State_Item := Sc_Status_Type.Initialise;
-               
+
        end init;
 
 end Achiever;

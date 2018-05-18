@@ -6,7 +6,7 @@ package u5 is
   -- This subprogram implemenation has complex code but no comments at all
   -- Should show up in GNATmetric
 
-  
-  
+
+
 
 end u5;

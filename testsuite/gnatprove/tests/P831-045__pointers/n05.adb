@@ -1,4 +1,4 @@
--- We show that a parameter is usually supposed to have a RW permission at the call site with disregard to the callee modes. 
+-- We show that a parameter is usually supposed to have a RW permission at the call site with disregard to the callee modes.
 
 
 with Ada.Unchecked_Deallocation;
@@ -15,28 +15,28 @@ Procedure N05 with SPARK_Mode is
   procedure Out_A (A : out Int_Acc) with Pre => True is
   begin
 	  Put_Line("hi");
-  end Out_A; 
+  end Out_A;
 ------
 
 ------
   procedure In_A (A : in Int_Acc) with Pre => True is
   begin
 	  Put_Line("hi");
-  end In_A; 
+  end In_A;
 ------
 
 ------
   procedure IN_IN (A : in Int_Acc; B : in Int_Acc; C : out integer) with Pre => True  is
   begin
 	  C := A.all + B.all;
-  end IN_IN; 
+  end IN_IN;
 ------
 
 ------
   procedure Out_IN (A : in out Int_Acc; B : in Int_Acc; C : out integer) is
   begin
 	  C := A.all + B.all;
-  end Out_IN; 
+  end Out_IN;
 ------
 
   AA0, AA1 : Int_Acc;
@@ -54,7 +54,7 @@ begin
   B := AA1;
  -- In_A (AA1);  -- ICI
  -- In_In (AA0, B, C);
- -- Out_In (AA0, B, C); -- ERROR: The analyzer expects A to have RW permission (not Write only) at this call site eventhough the formal parameter has only out mode.  
+ -- Out_In (AA0, B, C); -- ERROR: The analyzer expects A to have RW permission (not Write only) at this call site eventhough the formal parameter has only out mode.
 end N05;
 
-  
+

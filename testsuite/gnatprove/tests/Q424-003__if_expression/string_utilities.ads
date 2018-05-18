@@ -1,5 +1,5 @@
 package String_Utilities with SPARK_Mode is
-   
+
   function Head (S : String) return Character is (S (S'First));
   function Tail (S : String) return String is (S (S'First +1 .. S'Last));
 
@@ -24,5 +24,5 @@ package String_Utilities with SPARK_Mode is
     (Is_Subsequence (Longest_Common_Subsequence'Result, S1) and
      Is_Subsequence (Longest_Common_Subsequence'Result, S2) and
      Longest_Common_Subsequence'Result'Length = Slow_LCS_Length (S1, S2));
-    
+
  end String_Utilities;

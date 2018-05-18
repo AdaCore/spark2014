@@ -5,7 +5,7 @@ use Ada.Text_IO;
 
 
 procedure test with SPARK_Mode is
-   type Int_Ptr is access all Integer; -- pool-specific type definition (no all nor constant modifier). 
+   type Int_Ptr is access all Integer; -- pool-specific type definition (no all nor constant modifier).
    type Int_Ptr2 is access Integer;
    type Int_Ptr_Ptr is access all Int_Ptr;
    type Int_Cst_Ptr is access constant Integer;

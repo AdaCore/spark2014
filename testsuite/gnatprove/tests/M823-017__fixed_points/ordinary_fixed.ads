@@ -1,5 +1,5 @@
 package Ordinary_Fixed is
-   
+
    S : constant := 1.0 / 400.0;
    type T is delta S range -10.0 .. 10.0 with Small => S;
 

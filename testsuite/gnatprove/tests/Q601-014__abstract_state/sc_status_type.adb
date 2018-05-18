@@ -20,11 +20,11 @@ package body Sc_Status_Type with SPARK_Mode is
    begin
 
       if This.Sc_State.Prime = This.Sc_State.Shadow then
- 
+
          Result := This.Sc_State.Prime;
- 
+
       else
- 
+
          Fault_Manager.Log_Direct_Failure
            (Failure_Data => 27);
 

@@ -14,7 +14,7 @@ is
    type Satellite_Count is range 0 .. Max_Satellites;
 
    type Satellite_Reference is limited private;
-   
+
    function Get_Satellite_Count return Satellite_Count;
    --function Full return Boolean;
    function Is_Satellite_Reference_Valid(Reference:  Satellite_Reference) return Boolean;
@@ -35,7 +35,7 @@ is
                   Known_Satellite_List_State =>+ (Value, Known_Satellite_Count_State)),
        Pre     => (Get_Satellite_Count < Satellite_Count'Last),
        --Pre    => (not Full),
-       Post    => ( (Is_Satellite_Reference_Valid(Reference)) and then 
+       Post    => ( (Is_Satellite_Reference_Valid(Reference)) and then
                      (Get_Satellite_Count = Get_Satellite_Count'Old + 1) );
      --and then
      --              (Reference = Get_Satellite_Count) );
@@ -76,5 +76,5 @@ private
    currSatelliteCount: Satellite_Count := 0 with Part_Of => Known_Satellite_Count_State;
    function Get_Satellite_Count return Satellite_Count is (currSatelliteCount);
    --function Full return Boolean is (currSatelliteCount = Satellite_Count'Last);
-   
+
 end Known_Satellites;

@@ -24,17 +24,17 @@ is
       X := Y;
       Y := Tmp;
    end Swap_Global;
-   
+
    procedure Bad_Borrow (X, Y : in out Int_Ptr) is
    begin
       X := Y;
       Swap (X, Y);
    end Bad_Borrow;
-   
+
    procedure Bad_Move (X, Y : in out Int_Ptr) is
    begin
       X := Y;
       X := Y;
    end Bad_Move;
-   
+
 end Pointers2;

@@ -6,4 +6,4 @@ begin
       X := X + 1;
       pragma Assert (X > 0);
    end loop;
-end Loopvar;   
+end Loopvar;

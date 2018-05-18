@@ -8,7 +8,7 @@ is
 
    function State return State_Type
      with Global => State;
-   
+
    procedure Test
      with Pre => True;
 

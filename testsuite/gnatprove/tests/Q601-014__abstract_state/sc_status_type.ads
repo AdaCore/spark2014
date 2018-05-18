@@ -13,7 +13,7 @@
 
 package Sc_Status_Type with SPARK_Mode  is
 
- 
+
     type Duplicate_Status_Type is
 	record
 	    Prime, Shadow : Boolean;
@@ -27,9 +27,9 @@ package Sc_Status_Type with SPARK_Mode  is
 	    Shadow at 2 range 0 .. 0;
 	end record;
 
-   
+
     type Object_Type is private;
-    
+
     --  Old SPARK Proof functionm
     --$ function Update_Object(Data:  Service_Types.Sms_State_Type)
     --$     return Object_Type;

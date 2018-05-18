@@ -11,4 +11,4 @@ pragma Warnings (GNATprove, Off, "implicit function contract not available for p
 --  Ignore info messages for proof
 
 pragma Warnings (Off, "index for * may assume lower bound of 1");
---  Proof guarantees safe access to strings within bounds 
+--  Proof guarantees safe access to strings within bounds

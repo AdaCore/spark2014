@@ -4,7 +4,7 @@ procedure Hello_World is
    X : Integer := 1;
 begin
    Put_Line ("hello, world!");
-   
+
    for I in 1 .. 10_000 loop
       X := X * X;
       pragma Loop_Invariant (X = 1);

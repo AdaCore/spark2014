@@ -18,19 +18,19 @@ procedure N01 with SPARK_Mode is
    X : MyStruct := (A => 10, B => 12);
    Y : constant AI := X.A'Access; -- move of (X.A) occurs here.
 begin
-   Put_Line ("X.A =" & Integer'Image(X.A) 
-             & ", X.B =" & Integer'Image(X.B) 
+   Put_Line ("X.A =" & Integer'Image(X.A)
+             & ", X.B =" & Integer'Image(X.B)
              & ", Y.all =" & Integer'Image(Y.all)); --DEBUG
    Y.all := 12; --Assign to (Y.all): OK
-   
-   Put_Line ("X.A =" & Integer'Image(X.A) 
-             & ", X.B =" & Integer'Image(X.B) 
+
+   Put_Line ("X.A =" & Integer'Image(X.A)
+             & ", X.B =" & Integer'Image(X.B)
              & ", Y.all =" & Integer'Image(Y.all)); --DEBUG
-   
-   X := (A => 42, B => 43); 
+
+   X := (A => 42, B => 43);
    -- ERROR, assignment to (X): prefix of moved path (X.A) with 'Access
-   
-   Put_Line ("X.A =" & Integer'Image(X.A) 
-             & ", X.B =" & Integer'Image(X.B) 
+
+   Put_Line ("X.A =" & Integer'Image(X.A)
+             & ", X.B =" & Integer'Image(X.B)
              & ", Y.all =" & Integer'Image(Y.all)); --DEBUG
 end N01;
