@@ -5992,12 +5992,12 @@ package body Gnat2Why.Expr is
                        Expr     => Left,
                        To       => Typ));
                Expo : constant W_Expr_Id :=
-                 Insert_Simple_Conversion
-                   (Ada_Node => Ada_Node,
-                    Domain   => Domain,
-                    Expr     => Right,
-                    To       => EW_Int_Type);
-
+                 New_Temp_For_Expr
+                   (Insert_Simple_Conversion
+                      (Ada_Node => Ada_Node,
+                       Domain   => Domain,
+                       Expr     => Right,
+                       To       => EW_Int_Type));
             begin
                if Has_Modular_Integer_Type (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
@@ -6057,6 +6057,7 @@ package body Gnat2Why.Expr is
                end if;
 
                T := Binding_For_Temp (Ada_Node, Domain, Base, T);
+               T := Binding_For_Temp (Ada_Node, Domain, Expo, T);
             end;
       end case;
       return T;
