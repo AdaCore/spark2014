@@ -21,6 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Indefinite_Hashed_Sets;
+with Ada.Strings.Hash;
 with Ada.Text_IO;
 
 with Elists;                      use Elists;
@@ -197,6 +199,17 @@ package body Flow.Analysis is
    -- Write_Vertex_Set --
    ----------------------
 
+   package Trace_File_Sets is new Ada.Containers.Indefinite_Hashed_Sets
+     (Element_Type        => String,
+      Hash                => Ada.Strings.Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
+
+   Trace_Files : Trace_File_Sets.Set;
+   --  This container and the related package declaration are only used for
+   --  sanity checks in the following procedure; they are intentionally
+   --  declared next to its body.
+
    procedure Write_Vertex_Set
      (FA       : Flow_Analysis_Graphs;
       Set      : Vertex_Sets.Set;
@@ -204,6 +217,9 @@ package body Flow.Analysis is
    is
       FD : Ada.Text_IO.File_Type;
    begin
+      pragma Debug (Trace_Files.Insert (Filename));
+      --  Detect repeated writing to the same tracefile
+
       if Set.Length > 1 then
          Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
 
@@ -2086,8 +2102,6 @@ package body Flow.Analysis is
    procedure Find_Use_Of_Uninitialized_Variables
      (FA : in out Flow_Analysis_Graphs)
    is
-      Tracefile : constant String := Fresh_Trace_File;
-
       function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Returns True iff V should be considered for uninitialized variables
 
@@ -2125,15 +2139,6 @@ package body Flow.Analysis is
       --  In other words, this routine down-projects the LHS of the Initializes
       --  contract to the scope of the private part or body of the current
       --  package (depending on the SPARK_Mode barrier).
-
-      procedure Mark_Definition_Free_Path
-        (From      : Flow_Graphs.Vertex_Id;
-         To        : Flow_Graphs.Vertex_Id;
-         Var       : Flow_Id;
-         V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex);
-      --  Write a trace file that marks the path From -> To which does not
-      --  define Var. If V_Allowed is set, then the path that we return is
-      --  allowed to contain V_Allowed even if V_Allowed does set Var.
 
       function Mentioned_On_Generated_Initializes
         (Var : Flow_Id)
@@ -2203,6 +2208,91 @@ package body Flow.Analysis is
          Default_Init  : constant Boolean := Is_Default_Initialized
                                                (Var, FA.B_Scope);
          Is_Function   : constant Boolean := Is_Function_Entity (Var);
+
+         Tracefile     : constant String := Fresh_Trace_File;
+
+         procedure Mark_Definition_Free_Path
+           (From      : Flow_Graphs.Vertex_Id;
+            To        : Flow_Graphs.Vertex_Id;
+            Var       : Flow_Id;
+            V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex);
+         --  Write a trace file that marks the path From -> To which does not
+         --  define Var. If V_Allowed is set, then the path that we return is
+         --  allowed to contain V_Allowed even if V_Allowed does set Var.
+
+         -------------------------------
+         -- Mark_Definition_Free_Path --
+         -------------------------------
+
+         procedure Mark_Definition_Free_Path
+           (From      : Flow_Graphs.Vertex_Id;
+            To        : Flow_Graphs.Vertex_Id;
+            Var       : Flow_Id;
+            V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
+         is
+            Path_Found : Boolean := False;
+            Path       : Vertex_Sets.Set;
+
+            procedure Are_We_There_Yet
+              (V           : Flow_Graphs.Vertex_Id;
+               Instruction : out Flow_Graphs.Traversal_Instruction);
+            --  Visitor procedure for Shortest_Path
+
+            procedure Add_Loc (V : Flow_Graphs.Vertex_Id);
+            --  Step procedure for Shortest_Path
+
+            ----------------------
+            -- Are_We_There_Yet --
+            ----------------------
+
+            procedure Are_We_There_Yet
+              (V           : Flow_Graphs.Vertex_Id;
+               Instruction : out Flow_Graphs.Traversal_Instruction)
+            is
+            begin
+               if V = To then
+                  Instruction := Flow_Graphs.Found_Destination;
+                  Path_Found  := True;
+               elsif V /= V_Allowed
+                 and then FA.Atr (V).Variables_Defined.Contains (Var)
+               then
+                  Instruction := Flow_Graphs.Skip_Children;
+               else
+                  Instruction := Flow_Graphs.Continue;
+               end if;
+            end Are_We_There_Yet;
+
+            -------------
+            -- Add_Loc --
+            -------------
+
+            procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
+               F : Flow_Id renames FA.CFG.Get_Key (V);
+            begin
+               if V /= To and then F.Kind = Direct_Mapping then
+                  Path.Insert (V);
+               end if;
+            end Add_Loc;
+
+         --  Start of processing for Mark_Definition_Free_Path
+
+         begin
+            FA.CFG.Shortest_Path (Start         => From,
+                                  Allow_Trivial => False,
+                                  Search        => Are_We_There_Yet'Access,
+                                  Step          => Add_Loc'Access);
+
+            --  When dealing with an exceptional path it is possible for
+            --  Path_Found to be false.
+
+            if Path_Found then
+               Write_Vertex_Set (FA       => FA,
+                                 Set      => Path,
+                                 Filename => Tracefile);
+            end if;
+         end Mark_Definition_Free_Path;
+
+      --  Start of processing for Emit_Message
 
       begin
          case Kind is
@@ -2472,78 +2562,6 @@ package body Flow.Analysis is
 
          return Only_Inf_Exec;
       end Has_Only_Infinite_Execution;
-
-      -------------------------------
-      -- Mark_Definition_Free_Path --
-      -------------------------------
-
-      procedure Mark_Definition_Free_Path
-        (From      : Flow_Graphs.Vertex_Id;
-         To        : Flow_Graphs.Vertex_Id;
-         Var       : Flow_Id;
-         V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
-      is
-         Path_Found : Boolean := False;
-         Path       : Vertex_Sets.Set;
-
-         procedure Are_We_There_Yet
-           (V           : Flow_Graphs.Vertex_Id;
-            Instruction : out Flow_Graphs.Traversal_Instruction);
-         --  Visitor procedure for Shortest_Path
-
-         procedure Add_Loc (V : Flow_Graphs.Vertex_Id);
-         --  Step procedure for Shortest_Path
-
-         ----------------------
-         -- Are_We_There_Yet --
-         ----------------------
-
-         procedure Are_We_There_Yet
-           (V           : Flow_Graphs.Vertex_Id;
-            Instruction : out Flow_Graphs.Traversal_Instruction)
-         is
-         begin
-            if V = To then
-               Instruction := Flow_Graphs.Found_Destination;
-               Path_Found  := True;
-            elsif V /= V_Allowed
-              and then FA.Atr (V).Variables_Defined.Contains (Var)
-            then
-               Instruction := Flow_Graphs.Skip_Children;
-            else
-               Instruction := Flow_Graphs.Continue;
-            end if;
-         end Are_We_There_Yet;
-
-         -------------
-         -- Add_Loc --
-         -------------
-
-         procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
-            F : Flow_Id renames FA.CFG.Get_Key (V);
-         begin
-            if V /= To and then F.Kind = Direct_Mapping then
-               Path.Insert (V);
-            end if;
-         end Add_Loc;
-
-      --  Start of processing for Mark_Definition_Free_Path
-
-      begin
-         FA.CFG.Shortest_Path (Start         => From,
-                               Allow_Trivial => False,
-                               Search        => Are_We_There_Yet'Access,
-                               Step          => Add_Loc'Access);
-
-         --  When dealing with an exceptional path it is possible for
-         --  Path_Found to be false.
-
-         if Path_Found then
-            Write_Vertex_Set (FA       => FA,
-                              Set      => Path,
-                              Filename => Tracefile);
-         end if;
-      end Mark_Definition_Free_Path;
 
       ----------------------------------------
       -- Mentioned_On_Generated_Initializes --
