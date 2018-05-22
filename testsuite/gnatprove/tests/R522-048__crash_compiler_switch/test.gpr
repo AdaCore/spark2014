@@ -1,0 +1,9 @@
+project Test is
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatdk",
+                                        "-gnatws",
+                                        "-gnatR1s");
+   end Compiler;
+
+   for Source_Dirs use ("p/");
+end Test;
