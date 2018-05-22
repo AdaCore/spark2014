@@ -285,6 +285,13 @@ package body Xtree_Sinfo is
       New_Field (W_Label,
                  "Typ", "W_Type", Id_Lone);
 
+      -----------------
+      -- W_Loc_Label --
+      -----------------
+
+      New_Field (W_Loc_Label, "Sloc", "Source_Ptr");
+      New_Field (W_Loc_Label, "Def", "W_Expr", Id_One);
+
       --------------
       -- W_Module --
       --------------
@@ -567,6 +574,8 @@ package body Xtree_Sinfo is
                  "Def", "W_Expr", Id_Lone);
       New_Field (W_Function_Decl,
                  "Labels", "Name_Id_Set");
+      New_Field (W_Function_Decl,
+                 "Location", "Source_Ptr");
 
       -------------
       -- W_Axiom --
@@ -612,6 +621,8 @@ package body Xtree_Sinfo is
                  "Ref_Type", "W_Type", Id_One);
       New_Field (W_Global_Ref_Declaration,
                  "Labels", "Name_Id_Set");
+      New_Field (W_Global_Ref_Declaration,
+                 "Location", "Source_Ptr");
       Set_Domain (W_Global_Ref_Declaration, EW_Prog);
 
       -----------------------------

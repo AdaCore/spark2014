@@ -48,11 +48,11 @@ arrays.adb:245:22: info: initialization of "A" proved
 arrays.adb:254:22: info: initialization of "A" proved
 arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5) (e.g. when A = (1 => 0, others => 0))
 counterexample expected for check at arrays.adb:62
-  trace at arrays.adb:57 --> Contains_B'Result = False and S = ('NUL' => False, 'a' => True, others => False)
+  trace at arrays.adb:57 --> S = ('NUL' => False, 'a' => True, others => False)
   trace at arrays.adb:62 --> C = 'NUL' and Contains_B'Result = True and S = ('NUL' => False, 'a' => True, others => False)
   trace at arrays.adb:65 --> Contains_B'Result = True
 counterexample expected for check at arrays.adb:80
-  trace at arrays.adb:77 --> Is_Id_2'Result = False and M = ('NUL' => 'a', others => 'a')
+  trace at arrays.adb:77 --> M = ('NUL' => 'a', others => 'a')
   trace at arrays.adb:80 --> C = 'NUL' and Is_Id_2'Result = True and M = ('NUL' => 'a', others => 'a')
   trace at arrays.adb:83 --> Is_Id_2'Result = True
 counterexample expected for check at arrays.adb:104
@@ -77,7 +77,7 @@ counterexample expected for check at arrays.adb:148
   trace at arrays.adb:148 --> R = (A => (1 => 0, 3 => 5, others => 5), Exists => ?)
 MISSING COUNTEREXAMPLE at arrays.adb:178
 counterexample expected for check at arrays.adb:199
-  trace at arrays.adb:197 --> C = 'SOH' and R = ('SOH' => True, others => False) and Single_Char_Set_Broken'Result = ('SOH' => True, others => False) and X = 'LC_Y_Diaeresis'
+  trace at arrays.adb:197 --> C = 'SOH'
   trace at arrays.adb:199 --> C = 'SOH' and I = 'SOH' and Single_Char_Set_Broken'Result = ('SOH' => True, others => False)
   trace at arrays.adb:203 --> R = ('SOH' => True, others => False) and X = 'LC_Y_Diaeresis'
   trace at arrays.adb:204 --> R = ('NUL' => False, others => False)

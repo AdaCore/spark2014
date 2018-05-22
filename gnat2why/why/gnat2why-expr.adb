@@ -6115,10 +6115,9 @@ package body Gnat2Why.Expr is
            VC_Predicate_Check);
    begin
       return New_Assert
-        (Pred =>
-           New_Label (Labels => New_VC_Labels (Ada_Node, Kind),
-                      Def    => +Check),
-         Assert_Kind => EW_Assert);
+           (Pred        =>
+                +New_VC_Expr (Ada_Node, +Check, Kind, EW_Pred),
+            Assert_Kind => EW_Assert);
    end New_Predicate_Check;
 
    -----------------------------
@@ -6177,9 +6176,8 @@ package body Gnat2Why.Expr is
          return +Void;
       else
          return New_Assert
-           (Pred =>
-              New_Label (Labels => New_VC_Labels (Ada_Node, Kind),
-                         Def    => +Check),
+           (Pred        =>
+              +New_VC_Expr (Ada_Node, +Check, Kind, EW_Pred),
             Assert_Kind => EW_Assert);
       end if;
    end New_Invariant_Check;
@@ -7234,6 +7232,7 @@ package body Gnat2Why.Expr is
                New_Function_Decl (Domain      => EW_Term,
                                   Name        => To_Local (Func),
                                   Labels      => Name_Id_Sets.Empty_Set,
+                                  Location    => No_Location,
                                   Binders     => Call_Params & Bnd_Params,
                                   Return_Type => Ret_Type));
 
@@ -10800,7 +10799,7 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      return R;
+      return +Insert_Cnt_Loc_Label (Decl, +R);
    end Transform_Declaration;
 
    ----------------------------------
@@ -15472,18 +15471,19 @@ package body Gnat2Why.Expr is
       Result        : W_Prog_Id;
       Cut_Assertion_Expr : Node_Id;
       Cut_Assertion : W_Pred_Id;
-      Prog          : constant W_Prog_Id :=
-        Transform_Statement_Or_Declaration
-          (Stmt_Or_Decl        => Stmt_Or_Decl,
-           Assert_And_Cut_Expr => Cut_Assertion_Expr,
-           Assert_And_Cut      => Cut_Assertion);
+      Prog               : constant W_Prog_Id :=
+        +Insert_Cnt_Loc_Label
+        (Stmt_Or_Decl,
+         +Transform_Statement_Or_Declaration
+           (Stmt_Or_Decl        => Stmt_Or_Decl,
+            Assert_And_Cut_Expr => Cut_Assertion_Expr,
+            Assert_And_Cut      => Cut_Assertion));
    begin
       Result :=
         Sequence
           (Prev_Prog,
-           New_Label (Labels =>
-                        Name_Id_Sets.To_Set
-                          (New_Located_Label (Stmt_Or_Decl)),
+           New_Label (Labels => Name_Id_Sets.To_Set
+                        (New_Located_Label (Stmt_Or_Decl)),
                       Def    => +Prog));
       if Cut_Assertion /= Why_Empty then
          Result :=
@@ -15597,6 +15597,7 @@ package body Gnat2Why.Expr is
          New_Function_Decl
            (Domain      => EW_Term,
             Name        => Id,
+            Location    => No_Location,
             Labels      => Name_Id_Sets.Empty_Set,
             Binders     => Binders,
             Return_Type => Why_Type));

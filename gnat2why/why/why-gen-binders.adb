@@ -982,6 +982,7 @@ package body Why.Gen.Binders is
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Type_Id := Why_Empty;
+      Location    : Source_Ptr;
       Labels      : Name_Id_Set;
       Effects     : W_Effects_Id := New_Effects;
       Def         : W_Expr_Id := Why_Empty;
@@ -994,6 +995,7 @@ package body Why.Gen.Binders is
          Domain      => Domain,
          Name        => Name,
          Labels      => Labels,
+         Location    => Location,
          Binders     => New_Binders (Domain, Binders),
          Return_Type => +Return_Type,
          Def         => Def,
@@ -1008,6 +1010,7 @@ package body Why.Gen.Binders is
       Name        : W_Identifier_Id;
       Items       : Item_Array;
       Return_Type : W_Type_Id := Why_Empty;
+      Location    : Source_Ptr;
       Labels      : Name_Id_Set;
       Effects     : W_Effects_Id := New_Effects;
       Def         : W_Expr_Id := Why_Empty;
@@ -1023,6 +1026,7 @@ package body Why.Gen.Binders is
          Domain      => Domain,
          Name        => Name,
          Labels      => Labels,
+         Location    => Location,
          Binders     => To_Binder_Array (Loc_Items),
          Return_Type => +Return_Type,
          Def         => Def,

@@ -323,6 +323,9 @@ package body Why.Gen.Expr is
          when W_Label =>
             return Get_Typ (W_Label_Id (E));
 
+         when W_Loc_Label =>
+            return Get_Type (Get_Def (W_Loc_Label_Id (E)));
+
          when W_Epsilon =>
             return Get_Typ (W_Epsilon_Id (E));
 
@@ -935,6 +938,28 @@ package body Why.Gen.Expr is
 
       return Result;
    end Insert_Record_Conversion;
+
+   --------------------------
+   -- Insert_Cnt_Loc_Label --
+   --------------------------
+
+   function Insert_Cnt_Loc_Label
+     (Ada_Node : Node_Id;
+      E        : W_Expr_Id) return W_Expr_Id
+   is
+   begin
+      if Present (Ada_Node)
+        and then Safe_First_Sloc (Ada_Node) > No_Location
+      then
+         return New_Loc_Label
+           (Ada_Node => Get_Ada_Node (+E),
+            Sloc     => Safe_First_Sloc (Ada_Node),
+            Domain   => Get_Domain (+E),
+            Def      => E);
+      else
+         return E;
+      end if;
+   end Insert_Cnt_Loc_Label;
 
    --------------------------------------
    -- Insert_Conversion_To_Rep_No_Bool --
@@ -3580,12 +3605,15 @@ package body Why.Gen.Expr is
    begin
       if Domain /= EW_Term and then Present (Ada_Node) then
          return
-            New_Label
-              (Ada_Node => Ada_Node,
-               Labels   => New_VC_Labels (Ada_Node, Reason),
-               Def      => Expr,
-               Domain   => Domain,
-               Typ      => Get_Type (Expr));
+           Insert_Cnt_Loc_Label
+             (Ada_Node => Ada_Node,
+              E        =>
+                New_Label
+                  (Ada_Node => Ada_Node,
+                   Labels   => New_VC_Labels (Ada_Node, Reason),
+                   Def      => Expr,
+                   Domain   => Domain,
+                   Typ      => Get_Type (Expr)));
       else
          return Expr;
       end if;

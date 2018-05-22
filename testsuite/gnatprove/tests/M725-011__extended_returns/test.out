@@ -2,7 +2,7 @@ extended_returns.adb:7:07: info: initialization of "Result.A" proved
 extended_returns.adb:7:07: medium: "Result.B" might not be initialized
 extended_returns.adb:7:07: medium: "Result.C" might not be initialized
 extended_returns.adb:7:07: medium: "Result.D" might not be initialized
-extended_returns.adb:7:33: medium: range check might fail (e.g. when Discr = -1)
+extended_returns.adb:7:33: medium: range check might fail (e.g. when Discr = -1 and Init'Result = (Discr => 0, A => 0, B => 0, C => 0, D => 0))
 extended_returns.adb:11:19: info: discriminant check proved (CVC4: 1 VC)
 extended_returns.adb:13:19: info: discriminant check proved (CVC4: 1 VC)
 extended_returns.adb:14:19: info: discriminant check proved (CVC4: 1 VC)

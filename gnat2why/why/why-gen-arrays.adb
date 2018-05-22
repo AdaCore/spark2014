@@ -595,6 +595,7 @@ package body Why.Gen.Arrays is
            (Domain      => EW_Term,
             Name        => To_Local (Convert_Id),
             Binders     => (1 => A_Binder),
+            Location    => No_Location,
             Return_Type => To_Symb.Ty,
             Labels      => Name_Id_Sets.Empty_Set));
 
@@ -1255,6 +1256,7 @@ package body Why.Gen.Arrays is
                Name        => To_Local (Symbols.Bool_Eq),
                Binders     => Args,
                Return_Type => +EW_Bool_Type,
+               Location    => No_Location,
                Labels      => Name_Id_Sets.Empty_Set));
 
       --  Emit:
@@ -1310,6 +1312,7 @@ package body Why.Gen.Arrays is
                   Name        => Eq_Name,
                   Binders     => Args,
                   Return_Type => +EW_Bool_Type,
+                  Location    => No_Location,
                   Labels      => Name_Id_Sets.Empty_Set,
                   Def         => +Def));
 
@@ -1438,6 +1441,7 @@ package body Why.Gen.Arrays is
                      Name        => New_Identifier (Attr_Name),
                      Binders     => (1 .. 0 => <>),
                      Labels      => Name_Id_Sets.Empty_Set,
+                     Location    => No_Location,
                      Return_Type => Typ,
                      Def         => New_Discrete_Constant
                        (Value =>  Value,
@@ -1630,6 +1634,7 @@ package body Why.Gen.Arrays is
                            Binders =>
                              (1 => (B_Name => X_Id, others => <>)),
                            Labels  => Name_Id_Sets.Empty_Set,
+                           Location    => No_Location,
                            Def     => +X_Id,
                            Return_Type => R_Ty));
 
@@ -1726,6 +1731,7 @@ package body Why.Gen.Arrays is
                   Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Local (To_String_Id),
+                     Location    => No_Location,
                      Labels      => Name_Id_Sets.Empty_Set,
                      Binders     =>
                        (1 =>
@@ -1739,6 +1745,7 @@ package body Why.Gen.Arrays is
                   Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Local (Of_String_Id),
+                     Location    => No_Location,
                      Labels      => Name_Id_Sets.Empty_Set,
                      Binders     =>
                        (1 =>
@@ -2313,6 +2320,7 @@ package body Why.Gen.Arrays is
                Why.Gen.Binders.New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => One_Id,
+                  Location    => No_Location,
                   Labels      => Name_Id_Sets.Empty_Set,
                   Binders     => (1 .. 0 => <>),
                   Def         =>

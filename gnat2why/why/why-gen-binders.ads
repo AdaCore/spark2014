@@ -174,6 +174,7 @@ package Why.Gen.Binders is
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
       Return_Type : W_Type_Id := Why_Empty;
+      Location    : Source_Ptr;
       Labels      : Name_Id_Set;
       Effects     : W_Effects_Id := New_Effects;
       Def         : W_Expr_Id := Why_Empty;
@@ -187,6 +188,7 @@ package Why.Gen.Binders is
       Name        : W_Identifier_Id;
       Items       : Item_Array;
       Return_Type : W_Type_Id := Why_Empty;
+      Location    : Source_Ptr;
       Labels      : Name_Id_Set;
       Effects     : W_Effects_Id := New_Effects;
       Def         : W_Expr_Id := Why_Empty;

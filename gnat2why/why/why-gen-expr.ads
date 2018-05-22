@@ -344,6 +344,11 @@ package Why.Gen.Expr is
    --  when Discr_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.
 
+   function Insert_Cnt_Loc_Label
+     (Ada_Node : Node_Id;
+      E        : W_Expr_Id) return W_Expr_Id;
+   --  Return E with a new label for the counterexample location of Ada_Node
+
    function New_Typed_Binding
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;

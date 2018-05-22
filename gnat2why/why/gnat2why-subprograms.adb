@@ -2058,13 +2058,13 @@ package body Gnat2Why.Subprograms is
                --  Whether the current guard is enabled in the pre-state
 
                Enabled : constant W_Expr_Id :=
-                 Transform_Attribute_Old (Case_Guard, EW_Pred, Params);
+                  Transform_Attribute_Old (Case_Guard, EW_Pred, Params);
             begin
                Result := New_Conditional
-                 (Condition   => Enabled,
-                  Then_Part   =>
-                    +Transform_Expr (Consequence, EW_Pred, Params),
-                  Else_Part   => +Result);
+                 (Condition => Enabled,
+                  Then_Part =>
+                    Transform_Expr (Consequence, EW_Pred, Params),
+                  Else_Part => +Result);
             end;
          end if;
 
@@ -2432,6 +2432,7 @@ package body Gnat2Why.Subprograms is
               (Ada_Node => E,
                Name     => Result_Name,
                Labels   => Get_Counterexample_Labels (E),
+               Location => No_Location,
                Ref_Type => Type_Of_Node (Etype (E))));
       end if;
 
@@ -2450,11 +2451,12 @@ package body Gnat2Why.Subprograms is
          Label_Set.Include (NID ("W:diverges:N"));
          Emit (File,
                Why.Gen.Binders.New_Function_Decl
-                 (Domain  => EW_Prog,
-                  Name    => Def_Name,
-                  Binders => (1 => Unit_Param),
-                  Labels  => Label_Set,
-                  Def     => +Why_Body));
+                 (Domain   => EW_Prog,
+                  Name     => Def_Name,
+                  Binders  => (1 => Unit_Param),
+                  Labels   => Label_Set,
+                  Location => Safe_First_Sloc (E),
+                  Def      => +Why_Body));
       end;
 
       --  We should *not* filter our own entity, it is needed for recursive
@@ -2581,10 +2583,10 @@ package body Gnat2Why.Subprograms is
               Sequence
                 (Why_Body,
                  New_Assert
-                   (Pred        => New_Label
-                      (Labels => New_VC_Labels (E, VC_Invariant_Check),
-                       Def    => +Check),
-                    Assert_Kind => EW_Assert));
+                      (Pred        =>
+                             +New_VC_Expr
+                         (E, +Check, VC_Invariant_Check, EW_Pred),
+                       Assert_Kind => EW_Assert));
          end if;
       end;
 
@@ -2632,13 +2634,14 @@ package body Gnat2Why.Subprograms is
       begin
          Label_Set.Include (NID ("W:diverges:N"));
          Emit (File,
-                Why.Gen.Binders.New_Function_Decl
-                 (Domain  => EW_Prog,
-                  Name    => Def_Name,
-                  Binders => (1 => Unit_Param),
-                  Labels  => Label_Set,
-                  Post    => Post,
-                  Def     => +Why_Body));
+               Why.Gen.Binders.New_Function_Decl
+                 (Domain   => EW_Prog,
+                  Name     => Def_Name,
+                  Binders  => (1 => Unit_Param),
+                  Location => Safe_First_Sloc (E),
+                  Labels   => Label_Set,
+                  Post     => Post,
+                  Def      => +Why_Body));
       end;
 
       Close_Theory (File,
@@ -2760,10 +2763,11 @@ package body Gnat2Why.Subprograms is
 
       Emit (File,
             Why.Gen.Binders.New_Function_Decl
-              (Domain  => EW_Term,
-               Name    => Self_Name,
-               Binders => (1 .. 0 => <>),
-               Labels  => Name_Id_Sets.Empty_Set,
+              (Domain      => EW_Term,
+               Name        => Self_Name,
+               Binders     => (1 .. 0 => <>),
+               Location    => Safe_First_Sloc (E),
+               Labels      => Name_Id_Sets.Empty_Set,
                Return_Type => Get_Typ (Self_Name)));
 
       --  ??? Where is the call to Push_Scope?
@@ -2892,12 +2896,13 @@ package body Gnat2Why.Subprograms is
       begin
          Label_Set.Include (NID ("W:diverges:N"));
          Emit (File,
-                Why.Gen.Binders.New_Function_Decl
-                 (Domain  => EW_Prog,
-                  Name    => Def_Name,
-                  Binders => (1 => Unit_Param),
-                  Labels  => Label_Set,
-                  Def     => +Why_Body));
+               Why.Gen.Binders.New_Function_Decl
+                 (Domain   => EW_Prog,
+                  Name     => Def_Name,
+                  Binders  => (1 => Unit_Param),
+                  Location => Safe_First_Sloc (E),
+                  Labels   => Label_Set,
+                  Def      => +Why_Body));
       end;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -3131,9 +3136,12 @@ package body Gnat2Why.Subprograms is
             return +Void;
          else
             return New_Assert
-              (Pred =>
-                 New_Label (Labels => New_VC_Labels (E, VC_Invariant_Check),
-                            Def    => +Check),
+              (Pred        =>
+                 +New_VC_Expr
+                   (Ada_Node => E,
+                    Expr     => +Check,
+                    Reason   => VC_Invariant_Check,
+                    Domain   => EW_Pred),
                Assert_Kind => EW_Assert);
          end if;
       end Check_Invariants_Of_Outputs;
@@ -3552,6 +3560,7 @@ package body Gnat2Why.Subprograms is
               (Ada_Node => Containing_Protected_Type (E),
                Name     => Self_Name,
                Labels   => Name_Id_Sets.Empty_Set,
+               Location => Safe_First_Sloc (E),
                Ref_Type =>
                  Type_Of_Node (Containing_Protected_Type (E))));
       end if;
@@ -3571,6 +3580,7 @@ package body Gnat2Why.Subprograms is
                  (Ada_Node => E,
                   Name     => Result_Name,
                   Labels   => Get_Counterexample_Labels (E),
+                  Location => No_Location,
                   Ref_Type => Type_Of_Node (Etype (E))));
          end if;
 
@@ -3652,12 +3662,13 @@ package body Gnat2Why.Subprograms is
          Label_Set.Include (NID ("W:diverges:N"));
          Emit (File,
                Why.Gen.Binders.New_Function_Decl
-                 (Domain  => EW_Prog,
-                  Name    => Def_Name,
-                  Binders => (1 => Unit_Param),
-                  Labels  => Label_Set,
-                  Post    => Post_As_Pred,
-                  Def     => +Prog));
+                 (Domain   => EW_Prog,
+                  Name     => Def_Name,
+                  Binders  => (1 => Unit_Param),
+                  Labels   => Label_Set,
+                  Location => Safe_First_Sloc (E),
+                  Post     => Post_As_Pred,
+                  Def      => +Prog));
       end;
 
       --  cleanup
@@ -3785,13 +3796,14 @@ package body Gnat2Why.Subprograms is
          end if;
          Label_Set.Include (NID ("W:diverges:N"));
          Emit (File,
-                Why.Gen.Binders.New_Function_Decl
-                 (Domain  => EW_Prog,
-                  Name    => Def_Name,
-                  Binders => (1 => Unit_Param),
-                  Labels  => Label_Set,
-                  Post    => Post,
-                  Def     => +Why_Body));
+               Why.Gen.Binders.New_Function_Decl
+                 (Domain   => EW_Prog,
+                  Name     => Def_Name,
+                  Binders  => (1 => Unit_Param),
+                  Location => Safe_First_Sloc (E),
+                  Labels   => Label_Set,
+                  Post     => Post,
+                  Def      => +Why_Body));
       end;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -4766,6 +4778,7 @@ package body Gnat2Why.Subprograms is
                   Binders     => Tag_B & Func_Why_Binders,
                   Return_Type => Type_Of_Node (Etype (E)),
                   Labels      => Name_Id_Sets.Empty_Set,
+                  Location    => No_Location,
                   Effects     => Effects,
                   Pre         => Pre,
                   Post        => Param_Post);
@@ -4820,6 +4833,7 @@ package body Gnat2Why.Subprograms is
                   New_Global_Ref_Declaration
                     (Ada_Node => E,
                      Labels   => Name_Id_Sets.Empty_Set,
+                     Location => No_Location,
                      Name     => Volatile_State,
                      Ref_Type => EW_Private_Type));
             end if;
@@ -4888,6 +4902,7 @@ package body Gnat2Why.Subprograms is
                   Name        => Prog_Id,
                   Binders     => Func_Why_Binders,
                   Labels      => Name_Id_Sets.Empty_Set,
+                  Location    => No_Location,
                   Return_Type => EW_Unit_Type,
                   Effects     => Effects,
                   Pre         => Pre,
@@ -4989,12 +5004,14 @@ package body Gnat2Why.Subprograms is
                                 Name        => Spec_Post_Id,
                                 Binders     =>
                                   Tag_Binder & Procedure_Logic_Binders (E),
+                                Location    => No_Location,
                                 Labels      => Name_Id_Sets.Empty_Set,
                                 Return_Type => EW_Bool_Type),
                            2 => New_Function_Decl
                                (Domain      => EW_Prog,
                                 Name        => Prog_Id,
                                 Binders     => Func_Why_Binders,
+                                Location    => No_Location,
                                 Labels      => Name_Id_Sets.Empty_Set,
                                 Return_Type => EW_Unit_Type,
                                 Effects     => Effects,
@@ -5025,6 +5042,7 @@ package body Gnat2Why.Subprograms is
                             (Domain      => EW_Prog,
                              Name        => Prog_Id,
                              Binders     => Func_Why_Binders,
+                             Location    => No_Location,
                              Labels      => Name_Id_Sets.Empty_Set,
                              Return_Type => EW_Unit_Type,
                              Effects     => Effects,
@@ -5044,6 +5062,7 @@ package body Gnat2Why.Subprograms is
                             (Domain      => EW_Prog,
                              Name        => Prog_Id,
                              Binders     => Func_Why_Binders,
+                             Location    => No_Location,
                              Labels      => Name_Id_Sets.Empty_Set,
                              Return_Type => EW_Unit_Type,
                              Effects     => Effects,
@@ -5072,6 +5091,7 @@ package body Gnat2Why.Subprograms is
                   Name        =>
                     To_Local (E_Symb (E, WNE_Check_Invariants_On_Call)),
                   Binders     => Func_Why_Binders,
+                  Location    => No_Location,
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type => EW_Unit_Type,
                   Pre         => Inv_Checks,
@@ -5439,6 +5459,7 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Term,
                   Name        => Logic_Id,
                   Binders     => Logic_Why_Binders,
+                  Location    => No_Location,
                   Labels      =>
                     (if Def = Why_Empty then Name_Id_Sets.Empty_Set
                      else Name_Id_Sets.To_Set (NID ("inline"))),
@@ -5451,6 +5472,7 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Pred,
                   Name        => Pred_Id,
                   Binders     => Pred_Binders,
+                  Location    => No_Location,
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type => EW_Bool_Type));
 
@@ -5464,6 +5486,7 @@ package body Gnat2Why.Subprograms is
                             (Domain      => EW_Term,
                              Name        => Logic_Id,
                              Binders     => Tag_Binder & Logic_Why_Binders,
+                             Location    => No_Location,
                              Labels      => Name_Id_Sets.Empty_Set,
                              Return_Type => Why_Type),
                         2 => New_Function_Decl
@@ -5473,6 +5496,7 @@ package body Gnat2Why.Subprograms is
                                Pred_Binders (1) & Tag_Binder &
                                Pred_Binders (2 .. Pred_Binders'Length),
                              Labels      => Name_Id_Sets.Empty_Set,
+                             Location    => No_Location,
                              Return_Type => EW_Bool_Type))));
             end if;
 
@@ -5489,12 +5513,14 @@ package body Gnat2Why.Subprograms is
                              Name        => Logic_Id,
                              Binders     => Logic_Why_Binders,
                              Labels      => Name_Id_Sets.Empty_Set,
+                             Location    => No_Location,
                              Return_Type => Why_Type),
                         2 => New_Function_Decl
                             (Domain      => EW_Pred,
                              Name        => Pred_Id,
                              Binders     => Pred_Binders,
                              Labels      => Name_Id_Sets.Empty_Set,
+                             Location    => No_Location,
                              Return_Type => EW_Bool_Type))));
             end if;
          end;

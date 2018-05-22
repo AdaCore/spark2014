@@ -23,6 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sinput;           use Sinput;
+with SPARK_Util;
+
 package body Why.Images is
 
    ----------------------------------------
@@ -92,6 +95,27 @@ package body Why.Images is
    procedure P (O : Output_Id; Name : Name_Id; As_String : Boolean := False) is
    begin
       P (O, Img (Name), As_String);
+   end P;
+
+   procedure P (O : Output_Id; Value : Source_Ptr) is
+   begin
+      if Value > No_Location then
+         declare
+            File : constant String := SPARK_Util.File_Name (Value);
+            Line : constant Physical_Line_Number :=
+              Get_Physical_Line_Number (Value);
+
+            Sloc_Tag : constant String :=
+              "#""" & File & """" &
+              Physical_Line_Number'Image (Line) & " " &
+              "0" & " " &  --  dummy column1 0
+              "0" & "#";   --  dummy column2 0
+         begin
+            P (O, Sloc_Tag);
+         end;
+      else
+         P (O, "");
+      end if;
    end P;
 
    procedure P (O : Output_Id; Node : Why_Node_Id) is

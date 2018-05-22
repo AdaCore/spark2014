@@ -260,6 +260,15 @@ package Why.Sinfo is
    --  Every expression in Why3 can be labeled with strings. This special node
    --  allows this.
    --
+   --  -----------------
+   --  -- W_Loc_Label --
+   --  -----------------
+   --  Sloc        Source_Ptr
+   --  Def         W_Expr_Id
+   --
+   --  Expressions in Why3 programs can be labeled with locations. This special
+   --  node allows this.
+   --
    --  ------------------
    --  -- W_Identifier --
    --  ------------------
@@ -708,6 +717,7 @@ package Why.Sinfo is
       W_Not,
       W_Connection,
       W_Label,
+      W_Loc_Label,
 
       -------------------------------
       -- Preds, Terms, Progs, Expr --

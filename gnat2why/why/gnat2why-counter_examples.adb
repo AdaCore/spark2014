@@ -57,11 +57,10 @@ package body Gnat2Why.Counter_Examples is
       VC_File : String;
       VC_Line : Natural)
       return Cntexample_File_Maps.Map;
-   --  Remap information related to the construct that triggers VC to the
-   --  location of this construct.
+   --  Map counterexample information related to the current VC to the
+   --  location of the check in the Ada file.
    --  In Cntexmp, this information is mapped to the field "vc_line" of the
-   --  JSON object representing the file where the construct that triggers
-   --  VC is located.
+   --  JSON object representing the file where the construct is located.
 
    function Is_Ada_File_Name (File : String) return Boolean;
    --  check if the filename is an Ada
@@ -1519,23 +1518,35 @@ package body Gnat2Why.Counter_Examples is
    is
       Remapped_Cntexmp : Cntexample_File_Maps.Map := Cntexmp;
 
-      C : constant Cntexample_File_Maps.Cursor :=
-        Remapped_Cntexmp.Find (VC_File);
+      C        : Cntexample_File_Maps.Cursor;
+      Inserted : Boolean;
+      VC       : Cntexample_Elt_Lists.List;
 
    begin
-      --  Remove information related to the construct triggering VC Create
-      --  a copy of Orig_File without information related to the construct
-      --  triggering VC and extend New_Cntexmp with a mapping from File_Name
-      --  to this copy.
+      --  Search for VC_Line (there is only one). It can be in any file,
+      --  depending on the location used by Why3 (when checking that a
+      --  predicate holds, it sometimes uses the location of the predicate
+      --  instead of the location where it is called).
 
       for Elt of Remapped_Cntexmp loop
-         Elt.VC_Line.Clear;
+         if not Elt.VC_Line.Is_Empty then
+            pragma Assert (VC.Is_Empty);
+            VC := Elt.VC_Line;
+            Elt.VC_Line.Clear;
+         end if;
       end loop;
 
-      if Cntexample_File_Maps.Has_Element (C) then
-         Remapped_Cntexmp (C).Other_Lines.Include
-           (VC_Line, Cntexmp (VC_File).VC_Line);
-      end if;
+      --  Insert it at the appropriate location in Remapped_Cntexmp, possibly
+      --  deleting other information in the process.
+
+      Remapped_Cntexmp.Insert
+        (Key      => VC_File,
+         New_Item => (Other_Lines => Cntexample_Line_Maps.Empty_Map,
+                      VC_Line     => Cntexample_Elt_Lists.Empty_List),
+         Position => C,
+         Inserted => Inserted);
+
+      Remapped_Cntexmp (C).Other_Lines.Include (VC_Line, VC);
 
       return Remapped_Cntexmp;
    end Remap_VC_Info;

@@ -34,7 +34,6 @@ with GNAT.Regpat;
 with GNAT.OS_Lib;           use GNAT.OS_Lib;
 with Gnat2Why_Args;
 with Namet;                 use Namet;
-with Sinput;                use Sinput;
 with SPARK_Util;            use SPARK_Util;
 with Stand;
 with String_Utils;          use String_Utils;
@@ -54,9 +53,12 @@ package body Why.Atree.Sprint is
    -----------------------------------
 
    --  Counterexamples use Why3 locations, contrary to VCs which are based
-   --  on special GP_Sloc labels.
+   --  on special GP_Sloc labels. Due to shortcomings in Why3, source locations
+   --  should be repeated inside expressions (see Print_Assert or
+   --  Print_Any_Expr). When a Loc_Label node is traversed, the location is
+   --  stored here for this purpose.
 
-   Curr_Sloc : Source_Ptr;
+   Curr_Sloc : Source_Ptr := No_Location;
    --  The source code location of currently printed node
 
    procedure Print_Sloc_Tag;
@@ -130,6 +132,7 @@ package body Why.Atree.Sprint is
    procedure Print_Modular_Constant (Node : W_Modular_Constant_Id);
    procedure Print_Label (Node : W_Label_Id);
    procedure Print_Literal (Node : W_Literal_Id);
+   procedure Print_Loc_Label (Node : W_Loc_Label_Id);
    procedure Print_Name (Node : W_Name_Id);
    procedure Print_Name_Force_Prefix (Node : W_Name_Id);
    procedure Print_Namespace_Declaration (Node : W_Namespace_Declaration_Id);
@@ -986,11 +989,9 @@ package body Why.Atree.Sprint is
             Print_Node (+Name);
 
             P (O, " ");
-            --  Printing of function declaration must be interleaved with
-            --  printing of location tag, because location tag before
-            --  "function" keyword is not alowed in why.
-            --  See printing of location tags in [Print_Node].
-            Print_Sloc_Tag;
+
+            P (O, Get_Location (Node));
+
             P (O, Get_Labels (Node), As_String => True);
 
             NL (O);
@@ -1013,6 +1014,11 @@ package body Why.Atree.Sprint is
             NL (O);
 
          when EW_Prog =>
+
+            --  Change to current sloc
+
+            Curr_Sloc := Get_Location (Node);
+
             if Def = Why_Empty then
                P (O, "val ");
             else
@@ -1021,11 +1027,7 @@ package body Why.Atree.Sprint is
 
             Print_Node (+Name);
             P (O, " ");
-            --  Printing of value declaration must be interleaved with
-            --  printing of location tag, because location tag before
-            --  "val" or "let" keywords is not alowed in why.
-            --  See printing of location tags in [Print_Node].
-            Print_Sloc_Tag;
+            P (O, Get_Location (Node));
             P (O, Get_Labels (Node), As_String => True);
             Relative_Indent (O, 1);
             NL (O);
@@ -1069,17 +1071,17 @@ package body Why.Atree.Sprint is
                Relative_Indent (O, -1);
             end;
 
+            Curr_Sloc := No_Location;
+
          when EW_Pred =>
             P (O, "predicate ");
 
             Print_Node (+Name);
 
             P (O, " ");
-            --  Printing of predicate declaration must be interleaved with
-            --  printing of location tag, because location tag before
-            --  "predicate" keyword is not alowed in why.
-            --  See printing of location tags in [Print_Node].
-            Print_Sloc_Tag;
+
+            P (O, Get_Location (Node));
+
             P (O, Get_Labels (Node), As_String => True);
 
             NL (O);
@@ -1093,9 +1095,12 @@ package body Why.Atree.Sprint is
 
             if Def /= Why_Empty then
                PL (O, " =");
+
                --  Predicate can actually be substituted somewhere without its
                --  location. So, locations should also be printed here.
-               Print_Sloc_Tag;
+
+               P (O, Get_Location (Node));
+
                Print_Node (+Def);
             end if;
 
@@ -1115,11 +1120,9 @@ package body Why.Atree.Sprint is
       Print_Node (+Get_Name (Node));
 
       P (O, " ");
-      --  Printing of global ref declaration must be interleaved with
-      --  printing of location tag, because location tag before
-      --  "val" keyword is not alowed in why.
-      --  See printing of location tags in [Print_Node].
-      Print_Sloc_Tag;
+
+      P (O, Get_Location (Node));
+
       P (O, Get_Labels (Node), As_String => True);
 
       P (O, " : ");
@@ -1259,17 +1262,11 @@ package body Why.Atree.Sprint is
 
    procedure Print_Label (Node : W_Label_Id) is
       Labels : constant Name_Id_Set := Get_Labels (Node);
-
    begin
       if not Labels.Is_Empty then
          P (O, "( ");
       end if;
-      --  Emit location for constructs that trigger VC (these constructs have
-      --  either Model_VC_Label or Model_VC_Post_Label)
-      if Labels.Contains (Model_VC) or else Labels.Contains (Model_VC_Post)
-      then
-         Print_Sloc_Tag;
-      end if;
+
       P (O, Labels, As_String => True);
       Print_Node (+Get_Def (Node));
       if not Labels.Is_Empty then
@@ -1334,6 +1331,20 @@ package body Why.Atree.Sprint is
    begin
       P (O, Get_Value (Node), Get_Domain (+Node));
    end Print_Literal;
+
+   ---------------------
+   -- Print_Loc_Label --
+   ---------------------
+
+   procedure Print_Loc_Label (Node : W_Loc_Label_Id) is
+   begin
+      Curr_Sloc := Get_Sloc (Node);
+      P (O, "(");
+      Print_Sloc_Tag;
+      Print_Node (+Get_Def (Node));
+      P (O, ")");
+      Curr_Sloc := No_Location;
+   end Print_Loc_Label;
 
    ---------------------
    -- Print_Module_Id --
@@ -1440,16 +1451,7 @@ package body Why.Atree.Sprint is
 
    procedure Print_Node (N : Why_Node_Id) is
       N_Kind : constant Why_Node_Kind := Get_Kind (N);
-      Ada_N  : constant Node_Id := Get_Ada_Node (N);
-      --  ??? the above call to Original_Node is a hack to prevent accessing
-      --  junk data when calling First_Sloc; however, this happens only when
-      --  Print_Node itself is called with junk data, which in turn happens
-      --  only on astrium_sgs test. Please remove it once P111-034 is fixed.
    begin
-      if Present (Ada_N) then
-         Curr_Sloc := Safe_First_Sloc (Ada_N);
-      end if;
-
       case N_Kind is
          when W_Raise
             | W_While_Loop
@@ -1462,10 +1464,6 @@ package body Why.Atree.Sprint is
          =>
             --  Nodes where the location tag has to be printed and when it can
             --  be printed before the nodes.
-            --  Note that the location tag has to be printed also inside the
-            --  nodes W_Type_Decl, W_Function_Decl, and
-            --  W_Global_Ref_Declaration. See their printing functions.
-
             --  Location tags are printed in order to display correct locations
             --  in counterexamples.
 
@@ -1533,6 +1531,9 @@ package body Why.Atree.Sprint is
 
          when W_Label =>
             Print_Label (+N);
+
+         when W_Loc_Label =>
+            Print_Loc_Label (+N);
 
          when W_Identifier =>
             Print_Identifier (+N);
@@ -1823,24 +1824,8 @@ package body Why.Atree.Sprint is
 
    procedure Print_Sloc_Tag is
    begin
-      --  Do not print locations which do not belong to source code
-
-      if Curr_Sloc not in Standard_Location | Standard_ASCII_Location then
-         declare
-            File : constant String := File_Name (Curr_Sloc);
-            Line : constant Physical_Line_Number :=
-              Get_Physical_Line_Number (Curr_Sloc);
-
-            Sloc_Tag : constant String :=
-              "#""" & File & """" &
-              Physical_Line_Number'Image (Line) & " " &
-              "0" & " " &  --  dummy column1 0
-              "0" & "#";   --  dummy column2 0
-         begin
-            P (O, Sloc_Tag);
-            P (O, " ");
-         end;
-      end if;
+      P (O, Curr_Sloc);
+      P (O, " ");
    end Print_Sloc_Tag;
 
    ---------------------
@@ -2023,11 +2008,7 @@ package body Why.Atree.Sprint is
       Print_Node (+Name);
 
       P (O, " ");
-      --  Printing of type declaration must be interleaved with
-      --  printing of location tag, because location tag before
-      --  "type" keyword is not alowed in why.
-      --  See printing of location tags in [Print_Node].
-      Print_Sloc_Tag;
+
       P (O, Get_Labels (Node));
 
       if Position /= No_Element then

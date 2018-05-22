@@ -166,6 +166,7 @@ package body Why.Gen.Scalars is
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
                Labels      => Name_Id_Sets.Empty_Set,
+               Location    => No_Location,
                Def         => +Num_Small_V));
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
@@ -174,6 +175,7 @@ package body Why.Gen.Scalars is
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
                Labels      => Name_Id_Sets.Empty_Set,
+               Location    => No_Location,
                Def         => +Den_Small_V));
 
       Subst :=
@@ -308,6 +310,7 @@ package body Why.Gen.Scalars is
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
                Labels      => Name_Id_Sets.Empty_Set,
+               Location    => No_Location,
                Def         => +Num_Small_L));
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
@@ -316,6 +319,7 @@ package body Why.Gen.Scalars is
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
                Labels      => Name_Id_Sets.Empty_Set,
+               Location    => No_Location,
                Def         => +Den_Small_L));
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
@@ -324,6 +328,7 @@ package body Why.Gen.Scalars is
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
                Labels      => Name_Id_Sets.Empty_Set,
+               Location    => No_Location,
                Def         => +Num_Small_R));
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
@@ -332,6 +337,7 @@ package body Why.Gen.Scalars is
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
                Labels      => Name_Id_Sets.Empty_Set,
+               Location    => No_Location,
                Def         => +Den_Small_R));
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
@@ -340,6 +346,7 @@ package body Why.Gen.Scalars is
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
                Labels      => Name_Id_Sets.Empty_Set,
+               Location    => No_Location,
                Def         => +Num_Small_Op));
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
@@ -348,6 +355,7 @@ package body Why.Gen.Scalars is
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
                Labels      => Name_Id_Sets.Empty_Set,
+               Location    => No_Location,
                Def         => +Den_Small_Op));
 
       Subst :=
@@ -581,30 +589,32 @@ package body Why.Gen.Scalars is
             --  So we define the range predicate as always true.
             Emit (File,
                   Why.Gen.Binders.New_Function_Decl
-                    (Domain  => EW_Pred,
-                     Name    => To_Local (E_Symb (E, Name)),
-                     Def     => +True_Pred,
-                     Labels  => Name_Id_Sets.Empty_Set,
-                     Binders => (1 => Binder_Type'(B_Name => Var,
-                                                   others => <>))));
+                    (Domain   => EW_Pred,
+                     Name     => To_Local (E_Symb (E, Name)),
+                     Def      => +True_Pred,
+                     Location => No_Location,
+                     Labels   => Name_Id_Sets.Empty_Set,
+                     Binders  => (1 => Binder_Type'(B_Name => Var,
+                                                    others => <>))));
 
             --  And we directly use the function uint_in_range from the
             --  underlying why3 theory for checking the range againts integers
             --  instead of generating it.
             Emit (File,
                   Why.Gen.Binders.New_Function_Decl
-                    (Domain  => EW_Pred,
-                     Name    => To_Local (E_Symb (E, WNE_Range_Pred_BV_Int)),
-                     Def     => +New_Identifier (Name => "uint_in_range x",
-                                                 Module =>
-                                                   MF_BVs
-                                                     (Base_Why_Type (E))
-                                                 .Module),
-                     Labels  => Name_Id_Sets.Empty_Set,
-                     Binders => (1 => Binder_Type'
-                                     (B_Name => New_Identifier (
-                                      Name => "x", Typ => EW_Int_Type),
-                                      others => <>))));
+                    (Domain   => EW_Pred,
+                     Name     => To_Local (E_Symb (E, WNE_Range_Pred_BV_Int)),
+                     Def      => +New_Identifier (Name   => "uint_in_range x",
+                                                  Module =>
+                                                    MF_BVs
+                                                      (Base_Why_Type (E))
+                                                  .Module),
+                     Location => No_Location,
+                     Labels   => Name_Id_Sets.Empty_Set,
+                     Binders  => (1 => Binder_Type'
+                                      (B_Name => New_Identifier (
+                                       Name => "x", Typ => EW_Int_Type),
+                                       others => <>))));
 
             return;
          elsif Has_Floating_Point_Type (E)
@@ -630,15 +640,16 @@ package body Why.Gen.Scalars is
                --  so we define the range predicate as "is_finite".
                Emit (File,
                      Why.Gen.Binders.New_Function_Decl
-                       (Domain  => EW_Pred,
-                        Name    => To_Local (E_Symb (E, Name)),
-                        Def     => New_Call (Domain => EW_Pred,
-                                             Name   =>
-                                               MF_Floats (Ty).Is_Finite,
-                                             Args   => (1 => +Var)),
-                        Labels  => Name_Id_Sets.Empty_Set,
-                        Binders => (1 => Binder_Type'(B_Name => Var,
-                                                      others => <>))));
+                       (Domain   => EW_Pred,
+                        Name     => To_Local (E_Symb (E, Name)),
+                        Def      => New_Call (Domain => EW_Pred,
+                                              Name   =>
+                                                MF_Floats (Ty).Is_Finite,
+                                              Args   => (1 => +Var)),
+                        Location => No_Location,
+                        Labels   => Name_Id_Sets.Empty_Set,
+                        Binders  => (1 => Binder_Type'(B_Name => Var,
+                                                       others => <>))));
 
                return;
 
@@ -685,11 +696,12 @@ package body Why.Gen.Scalars is
          begin
             Emit (File,
                   Why.Gen.Binders.New_Function_Decl
-                    (Domain  => EW_Pred,
-                     Name    => To_Local (E_Symb (E, Name)),
-                     Def     => +Def,
-                     Labels  => Name_Id_Sets.Empty_Set,
-                     Binders => Binders));
+                    (Domain   => EW_Pred,
+                     Name     => To_Local (E_Symb (E, Name)),
+                     Def      => +Def,
+                     Location => No_Location,
+                     Labels   => Name_Id_Sets.Empty_Set,
+                     Binders  => Binders));
 
             --  in case we're dealing with bitvectors, we also need to generate
             --  a range check from integers
@@ -800,7 +812,7 @@ package body Why.Gen.Scalars is
       else
          Emit (File,
                New_Type_Decl
-                 (Name => Why_Name,
+                 (Name   => Why_Name,
                   Labels => Name_Id_Sets.Empty_Set));
       end if;
 
@@ -823,6 +835,7 @@ package body Why.Gen.Scalars is
                   Binders     => (1 .. 0 => <>),
                   Return_Type => EW_Int_Type,
                   Labels      => Name_Id_Sets.Empty_Set,
+                  Location    => No_Location,
                   Def         => New_Integer_Constant
                     (Value => Expr_Value (Low_Bound (Rng)))));
          Emit (File,
@@ -834,6 +847,7 @@ package body Why.Gen.Scalars is
                   Binders     => (1 .. 0 => <>),
                   Return_Type => EW_Int_Type,
                   Labels      => Name_Id_Sets.Empty_Set,
+                  Location    => No_Location,
                   Def         => New_Integer_Constant
                     (Value => Expr_Value (High_Bound (Rng)))));
       end if;
@@ -922,6 +936,7 @@ package body Why.Gen.Scalars is
                      Binders     => (1 .. 0 => <>),
                      Return_Type => Base_Type,
                      Labels      => Name_Id_Sets.Empty_Set,
+                     Location    => No_Location,
                      Def         => +Modul));
          end;
 
@@ -943,6 +958,7 @@ package body Why.Gen.Scalars is
                      Binders     => (1 .. 0 => <>),
                      Return_Type => Base_Type,
                      Labels      => Name_Id_Sets.Empty_Set,
+                     Location    => No_Location,
                      Def         => +Num_Small));
             Emit (Section,
                   Why.Atree.Builders.New_Function_Decl
@@ -952,6 +968,7 @@ package body Why.Gen.Scalars is
                      Binders     => (1 .. 0 => <>),
                      Return_Type => Base_Type,
                      Labels      => Name_Id_Sets.Empty_Set,
+                     Location    => No_Location,
                      Def         => +Den_Small));
          end;
       end if;
@@ -974,6 +991,7 @@ package body Why.Gen.Scalars is
                   Items       => Get_Binders_From_Expression
                     (Low_Bound (Rng), Compute => True),
                   Return_Type => Base_Type,
+                  Location    => No_Location,
                   Labels      => Name_Id_Sets.Empty_Set,
                   Def         => +First));
          Emit (Section,
@@ -984,6 +1002,7 @@ package body Why.Gen.Scalars is
                   Items       => Get_Binders_From_Expression
                     (High_Bound (Rng), Compute => True),
                   Return_Type => Base_Type,
+                  Location    => No_Location,
                   Labels      => Name_Id_Sets.Empty_Set,
                   Def         => +Last));
       end if;
@@ -1126,6 +1145,7 @@ package body Why.Gen.Scalars is
                           Name   => E_Symb (E, WNE_Int_Proj),
                           Args   => (1 => +Var),
                           Typ    => EW_Int_Type),
+                     Location    => No_Location,
                      Labels      => Name_Id_Sets.Empty_Set));
          end;
       end if;

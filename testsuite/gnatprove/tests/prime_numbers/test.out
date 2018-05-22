@@ -91,7 +91,7 @@ prime_and_coprime_numbers.adb:198:16: medium: postcondition might fail, cannot p
 prime_and_coprime_numbers.adb:206:24: info: initialization of "Set.Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:207:24: info: initialization of "Set.Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:209:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:209:39: medium: range check might fail, in instantiation at test_prime_and_coprime_numbers.adb:6 (e.g. when Index_1 = 0 and Index_2 = 0 and Index_3 = 0 and Is_Prime = (others => False))
+prime_and_coprime_numbers.adb:209:39: medium: range check might fail, in instantiation at test_prime_and_coprime_numbers.adb:6 (e.g. when Index_2 = 0)
 prime_and_coprime_numbers.adb:211:33: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:211:33: medium: loop invariant might fail after first iteration, cannot prove Index_2 in 2 .. Max_Value, in instantiation at test_prime_and_coprime_numbers.adb:6 (e.g. when Index_2 = 0)
 prime_and_coprime_numbers.adb:213:13: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -193,5 +193,5 @@ test_prime_and_coprime_numbers.adb:12:15: info: range check proved (CVC4: 1 VC)
 test_prime_and_coprime_numbers.adb:12:15: medium: precondition might fail
 test_prime_and_coprime_numbers.adb:13:17: info: precondition proved (CVC4: 1 VC)
 test_prime_and_coprime_numbers.adb:14:15: info: range check proved (CVC4: 1 VC)
-test_prime_and_coprime_numbers.adb:14:15: medium: precondition might fail
+test_prime_and_coprime_numbers.adb:14:15: medium: precondition might fail (e.g. when Coprimes = (others => False))
 test_prime_and_coprime_numbers.adb:14:32: info: initialization of "Coprimes" proved

@@ -223,6 +223,7 @@ package body Why.Gen.Decl is
                             else Get_Model_Trace_Label
                               (E               => SPARK_Node,
                                Is_Record_Field => True)),
+            Location    => No_Location,
             Def         => Field_Access));
 
       Emit_Projection_Metas (Section, Proj_Fun_Name);
@@ -272,7 +273,8 @@ package body Why.Gen.Decl is
                                                    Arg_Type => Typ)),
                   Effects     => New_Effects (Writes   => (1 => X)),
                   Return_Type => EW_Unit_Type,
-                  Labels      => Name_Id_Sets.Empty_Set);
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Location    => No_Location);
    end New_Havoc_Declaration;
 
    -------------------
@@ -292,8 +294,8 @@ package body Why.Gen.Decl is
       Alias : W_Type_Id) return W_Declaration_Id is
    begin
       return New_Type_Decl
-        (Name => Name,
-         Labels => Name_Id_Sets.Empty_Set,
+        (Name       => Name,
+         Labels     => Name_Id_Sets.Empty_Set,
          Definition => New_Transparent_Type_Definition
            (Domain          => EW_Prog,
             Type_Definition => Alias));

@@ -104,7 +104,7 @@ sdc.adb:17:28: warning: no Global contract available for "Argument"
 sdc.adb:19:07: warning: assuming "Set_Input" has no effect on global items
 sdc.adb:19:07: warning: no Global contract available for "Set_Input"
 sdc.adb:19:18: info: initialization of "File" proved
-sdc.adb:24:07: medium: precondition might fail
+sdc.adb:24:07: medium: precondition might fail (e.g. when Last = 200)
 sdc.adb:24:16: info: initialization of private part of "T" proved
 sdc.ads:24:11: medium: "input.line" might not be initialized after elaboration of main program "Sdc"
 sdc.ads:24:11: medium: "stack.tab" might not be initialized after elaboration of main program "Sdc"

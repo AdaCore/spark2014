@@ -87,6 +87,7 @@ package body Gnat2Why.Decls is
                  (E, No_Comp => True, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
                Labels      => Get_Counterexample_Labels (E),
+               Location    => Safe_First_Sloc (E),
                Return_Type => Typ));
 
       --  Define a logic function to return the address of a constant object
@@ -98,6 +99,7 @@ package body Gnat2Why.Decls is
                   Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
                   Binders     => (1 .. 0 => <>),
                   Labels      => Name_Id_Sets.Empty_Set,
+                  Location    => No_Location,
                   Return_Type => EW_Int_Type));
       end if;
 
@@ -242,11 +244,15 @@ package body Gnat2Why.Decls is
            "Module declaring the external object """ & Object_Name &
            ","" created in " & GNAT.Source_Info.Enclosing_Entity);
 
+      --  Do not set a location as counterexample values for external objects
+      --  are not meaningful.
+
       Emit
         (File,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
+            Location => No_Location,
             Ref_Type => EW_Private_Type));
 
       Close_Theory (File,
@@ -267,13 +273,16 @@ package body Gnat2Why.Decls is
                        & " defined at " & Build_Location_String (Sloc (E))
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      --  We generate a global ref
+      --  We generate a global ref.
+      --  Do not set a location as counterexample values for external objects
+      --  are not meaningful.
 
       Emit
         (File,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
+            Location => No_Location,
             Ref_Type => EW_Private_Type));
 
 --      Insert_Item (E, Var);
@@ -345,6 +354,7 @@ package body Gnat2Why.Decls is
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Fields.Binder.B_Name),
                      Labels   => Get_Counterexample_Labels (E),
+                     Location => Safe_First_Sloc (E),
                      Ref_Type => Get_Typ (Var.Fields.Binder.B_Name)));
             end if;
 
@@ -358,6 +368,7 @@ package body Gnat2Why.Decls is
                      New_Global_Ref_Declaration
                        (Name     => To_Local (Var.Discrs.Binder.B_Name),
                         Labels   => Name_Id_Sets.Empty_Set,
+                        Location => Safe_First_Sloc (E),
                         Ref_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                else
                   Emit
@@ -368,6 +379,7 @@ package body Gnat2Why.Decls is
                           To_Local (Var.Discrs.Binder.B_Name),
                         Binders     => (1 .. 0 => <>),
                         Labels      => Name_Id_Sets.Empty_Set,
+                        Location    => Safe_First_Sloc (E),
                         Return_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                end if;
             end if;
@@ -383,6 +395,7 @@ package body Gnat2Why.Decls is
                      Name        => To_Local (Var.Constr.Id),
                      Binders     => (1 .. 0 => <>),
                      Labels      => Name_Id_Sets.Empty_Set,
+                     Location    => Safe_First_Sloc (E),
                      Return_Type => Get_Typ (Var.Constr.Id)));
             end if;
 
@@ -397,6 +410,7 @@ package body Gnat2Why.Decls is
                      Name        => To_Local (Var.Tag.Id),
                      Binders     => (1 .. 0 => <>),
                      Labels      => Name_Id_Sets.Empty_Set,
+                     Location    => Safe_First_Sloc (E),
                      Return_Type => Get_Typ (Var.Tag.Id)));
             end if;
 
@@ -409,6 +423,7 @@ package body Gnat2Why.Decls is
                New_Global_Ref_Declaration
                  (Name     => To_Local (Var.Content.B_Name),
                   Labels   => Get_Counterexample_Labels (E),
+                  Location => Safe_First_Sloc (E),
                   Ref_Type => Get_Typ (Var.Content.B_Name)));
 
             for D in 1 .. Var.Dim loop
@@ -438,6 +453,7 @@ package body Gnat2Why.Decls is
                         Binders     => (1 .. 0 => <>),
                         Labels      => Get_Counterexample_Labels
                           (E, Bound_Dimension_To_Str (Var.Dim, D, "'First")),
+                        Location    => Safe_First_Sloc (E),
                         Return_Type => Ty_First));
 
                   Emit
@@ -448,6 +464,7 @@ package body Gnat2Why.Decls is
                         Binders     => (1 .. 0 => <>),
                         Labels      => Get_Counterexample_Labels
                           (E, Bound_Dimension_To_Str (Var.Dim, D, "'Last")),
+                        Location    => Safe_First_Sloc (E),
                         Return_Type => Ty_Last));
                end;
             end loop;
@@ -464,6 +481,7 @@ package body Gnat2Why.Decls is
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Main.B_Name),
                      Labels   => Get_Counterexample_Labels (E),
+                     Location => Safe_First_Sloc (E),
                      Ref_Type => Get_Typ (Var.Main.B_Name)));
             end;
 
@@ -476,6 +494,7 @@ package body Gnat2Why.Decls is
               (Domain      => EW_Term,
                Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
                Binders     => (1 .. 0 => <>),
+               Location    => No_Location,
                Labels      => Name_Id_Sets.Empty_Set,
                Return_Type => EW_Int_Type));
 
