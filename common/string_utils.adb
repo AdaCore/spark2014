@@ -25,6 +25,7 @@
 
 with Ada.Characters.Handling;
 with GNATCOLL.Utils;        use GNATCOLL.Utils;
+with GNAT.Case_Util;
 
 package body String_Utils is
 
@@ -84,20 +85,9 @@ package body String_Utils is
    -----------------------
 
    function Standard_Ada_Case (S : String) return String is
-      T          : String := S;
-      Capitalize : Boolean := True;
+      T : String := S;
    begin
-      for C of T loop
-         if Capitalize then
-            C := Ada.Characters.Handling.To_Upper (C);
-            Capitalize := False;
-         end if;
-
-         if C = '_' then
-            Capitalize := True;
-         end if;
-      end loop;
-
+      GNAT.Case_Util.To_Mixed (T);
       return T;
    end Standard_Ada_Case;
 
