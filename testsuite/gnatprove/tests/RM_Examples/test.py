@@ -1,4 +1,5 @@
 from test_support import *
+import glob
 
 prove_all(opt=["-u", "update_examples.adb"])
 prove_all(opt=["-u", "loop_var_loop_invar.adb"])
@@ -19,4 +20,8 @@ gcc("main_hal.adb")
 prove_all(opt=["-u", "inter_unit_elaboration_examples.adb"])
 prove_all(opt=["-u", "intra_unit_elaboration_order_examples.adb"])
 prove_all(opt=["-u", "initialization_and_elaboration.adb"])
-check_trace_files()
+
+# copy traces produced for f.adb to standard output
+files = glob.glob("gnatprove/f*.trace")
+for file in files:
+   cat (file)
