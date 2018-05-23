@@ -8568,7 +8568,8 @@ package body Gnat2Why.Expr is
           (Ada_Node => Ada_Node,
            Domain   => Subdomain,
            Name     => Get_Array_Theory_1_Bool_Op (Ada_Node).Notb,
-           Args     => Args);
+           Args     => Args,
+           Typ      => Type_Of_Node (Right_Type));
 
       if Do_Check then
 
@@ -8588,20 +8589,22 @@ package body Gnat2Why.Expr is
 
       --  Conversion from base
 
-      T := Array_Convert_From_Base
-        (Domain => Subdomain,
-         Target => Right_Type,
-         Ar     => T,
-         First  =>
-           Get_Array_Attr (Domain => Subdomain,
-                           Expr   => Right_Expr,
-                           Attr   => Attribute_First,
-                           Dim    => 1),
-         Last   =>
-           Get_Array_Attr (Domain => Subdomain,
-                           Expr   => Right_Expr,
-                           Attr   => Attribute_Last,
-                           Dim    => 1));
+      if not Has_Static_Array_Type (Right_Type) then
+         T := Array_Convert_From_Base
+           (Domain => Subdomain,
+            Target => Right_Type,
+            Ar     => T,
+            First  =>
+              Get_Array_Attr (Domain => Subdomain,
+                              Expr   => Right_Expr,
+                              Attr   => Attribute_First,
+                              Dim    => 1),
+            Last   =>
+              Get_Array_Attr (Domain => Subdomain,
+                              Expr   => Right_Expr,
+                              Attr   => Attribute_Last,
+                              Dim    => 1));
+      end if;
 
       T := Binding_For_Temp (Domain  => Domain,
                              Tmp     => Right_Expr,
