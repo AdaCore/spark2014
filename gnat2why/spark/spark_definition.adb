@@ -4359,7 +4359,7 @@ package body SPARK_Definition is
            and then not (Ekind (E) in SPARK_Util.Types.Subtype_Kind)
          then
             declare
-               Comp : Node_Id := First_Component_Or_Discriminant (E);
+               Comp : Entity_Id := First_Component_Or_Discriminant (E);
 
             begin
                while Present (Comp) loop
