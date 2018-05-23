@@ -12,3 +12,22 @@ test.adb:53:27: info: initialization of "X" proved
 test.adb:56:07: warning: statement has no effect
 test.adb:57:12: warning: unused assignment
 test.adb:59:12: warning: unused assignment
+Trace files' contents:
+test.adb:21:7
+test.adb:22:12
+test.adb:24:12
+test.adb:26:14
+
+test.adb:9
+test.adb:10
+
+test.adb:19
+test.adb:21
+test.adb:24
+
+test.adb:63
+test.adb:65
+
+test.adb:63
+test.adb:65
+
