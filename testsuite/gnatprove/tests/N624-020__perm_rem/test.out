@@ -708,7 +708,7 @@ sort.adb:104:38: info: initialization of "Min" proved
 sort.adb:108:14: info: initialization of "Min" proved
 sort.adb:117:07: warning: initialization of "Prec" has no effect
 sort.adb:121:10: warning: unused assignment
-sort.adb:121:13: info: precondition proved (CVC4: 3 VC)
+sort.adb:121:13: info: precondition proved (CVC4: 2 VC)
 sort.adb:123:22: info: precondition proved (CVC4: 10 VC)
 sort.adb:125:13: info: initialization of "Smallest" proved
 sort.adb:126:18: warning: unused assignment

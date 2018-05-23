@@ -1,4 +1,4 @@
-sorters.adb:10:16: info: postcondition proved (CVC4: 2 VC)
+sorters.adb:10:15: info: postcondition proved (CVC4: 2 VC)
 sorters.adb:17:15: info: initialization of "Temp" proved
 sorters.adb:28:10: info: postcondition proved (CVC4: 3 VC)
 sorters.adb:30:39: info: index check proved (CVC4: 2 VC)
