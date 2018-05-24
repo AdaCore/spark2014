@@ -76,7 +76,7 @@ nose_gear.adb:309:38: info: initialization of "Relational_Operator_out1" proved
 nose_gear.adb:309:67: info: initialization of "Compare_To_Constant_out1" proved
 nose_gear.adb:313:22: info: initialization of "Distance_km_out1" proved
 nose_gear.adb:313:40: info: division check proved (CVC4: 1 VC)
-nose_gear.adb:313:40: info: float overflow check proved (CVC4: 16 VC)
+nose_gear.adb:313:40: info: float overflow check proved (CVC4: 1 VC)
 nose_gear.adb:313:43: info: initialization of "Avoid_Div_by_Zero_out1" proved
 nose_gear.adb:322:10: info: initialization of "Relational_Operator_out1" proved
 nose_gear.adb:323:44: info: initialization of "Speed_out1" proved
