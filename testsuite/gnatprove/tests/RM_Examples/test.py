@@ -22,6 +22,6 @@ prove_all(opt=["-u", "intra_unit_elaboration_order_examples.adb"])
 prove_all(opt=["-u", "initialization_and_elaboration.adb"])
 
 # copy traces produced for f.adb to standard output
-files = glob.glob("gnatprove/f*.trace")
+files = glob.glob("gnatprove/f*__flow__*.trace")
 for file in files:
    cat (file)

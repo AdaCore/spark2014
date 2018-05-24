@@ -845,14 +845,22 @@ def check_spec_spark(result_file, expected_len):
             assert entry["spark"] == "spec"
 
 
-def check_trace_files(opt=None):
+def check_trace_files(only_flow=False):
     # Note that in order for check_trace_files to work, we have to call one of
     # the other functions first. Otherwise, no trace files will have been
     # generated.
 
     # Create a list that contains all trace files lying under directory
     # gnatprove.
-    trace_files = glob.glob('gnatprove/*.trace')
+    if only_flow:
+        trace_files = glob.glob('gnatprove/*__flow__*.trace')
+        # ??? The above pattern might also match non-flow traces created for a
+        # unit with "flow" in its name, but the glob routine accepts only
+        # simple patterns and not arbitrary regular expressions, so we can't do
+        # better; however, this pacricular name is unlikely to happen in our
+        # testsuite.
+    else:
+        trace_files = glob.glob('gnatprove/*.trace')
 
     print "Trace files' contents:"
     # Dump the contents of all trace files on stdout
