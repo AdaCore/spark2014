@@ -1,0 +1,6 @@
+q-child-child.ads:3:10: global Output "Q.State1" of "Initialize" not written
+q-child-child.ads:3:10: global Output "Q.State2" of "Initialize" not written
+q-child.ads:2:14: warning: subprogram "Dummy" has no effect
+q.adb:5:41: info: initialization of "B" constituent of "State1" proved
+q.adb:5:44: info: initialization of "C" constituent of "State2" proved
+gnatprove: error during flow analysis and proof
