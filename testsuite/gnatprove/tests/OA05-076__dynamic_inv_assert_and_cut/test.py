@@ -8,6 +8,5 @@ from test_support import *
 
 prove_all(steps=1,
           counterexample=False,
-          prover=["cvc4"],
-          procs=4,
+          prover=["z3"],
           opt=["--limit-subp=lsc-bignum.ads:176"])
