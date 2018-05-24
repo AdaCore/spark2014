@@ -2140,13 +2140,6 @@ package body Flow.Analysis is
       --  contract to the scope of the private part or body of the current
       --  package (depending on the SPARK_Mode barrier).
 
-      function Mentioned_On_Generated_Initializes
-        (Var : Flow_Id)
-         return Boolean
-      with Pre => Ekind (FA.Analyzed_Entity) in E_Package | E_Package_Body;
-      --  Returns True if Var is mentioned on the LHS of a generated
-      --  Initializes aspect.
-
       procedure Might_Be_Defined_In_Other_Path
         (V_Initial : Flow_Graphs.Vertex_Id;
          V_Use     : Flow_Graphs.Vertex_Id;
@@ -2562,18 +2555,6 @@ package body Flow.Analysis is
 
          return Only_Inf_Exec;
       end Has_Only_Infinite_Execution;
-
-      ----------------------------------------
-      -- Mentioned_On_Generated_Initializes --
-      ----------------------------------------
-
-      function Mentioned_On_Generated_Initializes
-        (Var : Flow_Id)
-         return Boolean
-      is
-         (No (Get_Pragma (FA.Spec_Entity, Pragma_Initializes))
-            and then
-          GG_Get_Initializes (FA.Spec_Entity).Contains (Var));
 
       ------------------------------------
       -- Might_Be_Defined_In_Other_Path --
