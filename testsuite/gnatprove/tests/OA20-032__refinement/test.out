@@ -123,10 +123,12 @@ patris.ads:254:16: medium: postcondition might fail, cannot prove Get_State = Bo
 patris.ads:260:14: info: initialization of "Cur_State" constituent of "Game_State" proved
 patris.ads:260:14: info: postcondition proved (CVC4: 3 VC)
 patris.ads:261:24: info: initialization of "Cur_Board" constituent of "Game_State" proved
+patris.ads:262:14: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.ads:262:14: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
 patris.ads:262:14: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
 patris.ads:262:14: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
 patris.ads:262:14: info: initialization of "Cur_Piece.Y" constituent of "Game_State" proved
+patris.ads:262:14: info: initialization of "Cur_State" constituent of "Game_State" proved
 patris.ads:269:14: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.ads:269:14: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
 patris.ads:269:14: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved

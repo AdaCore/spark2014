@@ -187,15 +187,21 @@ bitwalker.ads:90:20: info: initialization of "Result" proved
 bitwalker.ads:93:24: info: range check proved (CVC4_More_Axioms: 1 VC)
 bitwalker.ads:96:16: info: postcondition proved (CVC4_More_Axioms: 14 VC; Z3: 2 VC)
 bitwalker.ads:96:17: info: initialization of "Result" proved
+bitwalker.ads:97:18: info: initialization of "Result" proved
 bitwalker.ads:97:56: info: range check proved (CVC4_More_Axioms: 1 VC)
+bitwalker.ads:98:18: info: initialization of "Result" proved
 bitwalker.ads:99:61: info: range check proved (CVC4_More_Axioms: 1 VC)
+bitwalker.ads:101:18: info: initialization of "Result" proved
 bitwalker.ads:102:60: info: range check proved (CVC4_More_Axioms: 1 VC)
+bitwalker.ads:104:20: info: initialization of "Result" proved
 bitwalker.ads:106:26: info: precondition proved (CVC4_More_Axioms: 2 VC)
 bitwalker.ads:106:54: info: precondition proved (CVC4_More_Axioms: 2 VC)
+bitwalker.ads:108:20: info: initialization of "Result" proved
 bitwalker.ads:110:26: info: precondition proved (CVC4_More_Axioms: 2 VC)
 bitwalker.ads:110:45: info: range check proved (CVC4_More_Axioms: 1 VC)
 bitwalker.ads:111:22: info: precondition proved (CVC4_More_Axioms: 1 VC)
 bitwalker.ads:111:46: info: range check proved (CVC4_More_Axioms: 1 VC)
+bitwalker.ads:113:20: info: initialization of "Result" proved
 bitwalker.ads:114:56: info: range check proved (CVC4_More_Axioms: 1 VC)
 bitwalker.ads:115:26: info: precondition proved (CVC4_More_Axioms: 2 VC)
 bitwalker.ads:115:45: info: range check proved (CVC4_More_Axioms: 1 VC)

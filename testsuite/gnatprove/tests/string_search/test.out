@@ -146,6 +146,7 @@ string_search.ads:49:45: info: range check proved (CVC4: 1 VC)
 string_search.ads:49:53: info: overflow check proved (CVC4: 1 VC)
 string_search.ads:50:65: info: index check proved (CVC4: 2 VC)
 string_search.ads:52:36: info: range check proved (CVC4: 1 VC)
+string_search.ads:52:46: info: initialization of "Bad_Shift" proved
 string_search.ads:52:59: info: index check proved (CVC4: 2 VC)
 string_search.ads:52:59: info: overflow check proved (CVC4: 1 VC)
 string_search.ads:53:47: info: range check proved (CVC4: 1 VC)

@@ -2,6 +2,7 @@ database.adb:41:07: info: initialization of "First_Available" proved
 database.adb:49:42: info: initialization of "Account" proved
 database.adb:52:17: info: postcondition proved (altergo: 3 VC)
 database.adb:52:35: info: initialization of "Account" proved
+database.adb:54:31: info: initialization of "Account" proved
 database.adb:60:17: info: postcondition proved (altergo: 3 VC)
 database.adb:118:17: info: initialization of "Links" proved
 database.adb:122:21: info: range check proved (altergo: 1 VC)
@@ -35,7 +36,9 @@ database.adb:320:42: info: precondition proved (altergo: 2 VC)
 database.ads:62:07: info: initialization of "Account" proved
 database.ads:65:14: info: postcondition proved (altergo: 3 VC)
 database.ads:65:24: info: initialization of "Account" proved
+database.ads:66:37: info: initialization of "Account" proved
 database.ads:67:41: info: precondition proved (altergo: 1 VC)
+database.ads:67:50: info: initialization of "Account" proved
 database.ads:88:41: info: precondition proved (altergo: 1 VC)
 database.ads:107:14: info: precondition proved (altergo: 1 VC)
 database.ads:108:14: info: postcondition proved (altergo: 1 VC)

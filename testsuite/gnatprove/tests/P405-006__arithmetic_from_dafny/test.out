@@ -139,6 +139,7 @@ mul_lemmas.adb:43:25: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:46:51: info: initialization of "Res" proved
 mul_lemmas.adb:47:14: info: postcondition proved (CVC4: 2 VC)
 mul_lemmas.adb:47:19: info: initialization of "Res" proved
+mul_lemmas.adb:47:37: info: initialization of "Res" proved
 mul_lemmas.adb:50:16: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:53:77: info: initialization of "Res1" proved
 mul_lemmas.adb:53:83: info: initialization of "Res2" proved
@@ -173,6 +174,8 @@ mul_lemmas.adb:89:82: info: initialization of "Res2" proved
 mul_lemmas.adb:90:14: info: postcondition proved (CVC4: 2 VC)
 mul_lemmas.adb:90:30: info: initialization of "Res1" proved
 mul_lemmas.adb:90:38: info: initialization of "Res2" proved
+mul_lemmas.adb:91:29: info: initialization of "Res1" proved
+mul_lemmas.adb:91:36: info: initialization of "Res2" proved
 mul_lemmas.adb:94:17: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:95:17: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:100:16: info: overflow check proved (CVC4: 1 VC)
@@ -202,6 +205,7 @@ mul_lemmas.adb:147:67: info: initialization of "Res3" proved
 mul_lemmas.adb:148:14: info: initialization of "Res1" proved
 mul_lemmas.adb:148:14: info: postcondition proved (CVC4: 2 VC)
 mul_lemmas.adb:148:21: info: initialization of "Res2" proved
+mul_lemmas.adb:148:35: info: initialization of "Res2" proved
 mul_lemmas.adb:148:42: info: initialization of "Res3" proved
 mul_lemmas.adb:151:20: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:152:15: info: overflow check proved (CVC4: 1 VC)
