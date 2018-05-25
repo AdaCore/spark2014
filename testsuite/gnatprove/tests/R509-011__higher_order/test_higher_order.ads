@@ -47,4 +47,21 @@ package Test_Higher_Order with SPARK_Mode is
       Ind_Prop   => In_Range,
       F          => "+");
 
+   subtype Small_Nat is Natural range 0 .. 100;
+   type Matrix is array (Small_Index, Small_Index) of Small_Nat;
+
+   function In_Range (A : Matrix; X : Integer; C1, C2 : Natural)
+                      return Boolean
+   is (X <= Integer'Last - 100 * (A'Length (1) - C1) * A'Length (2) - 100 * (A'Length (2) - C2))
+     with Pre => C1 <= A'Length (2) and C2 <= A'Length (1);
+
+   package Sum_2 is new Higher_Order.Fold_2
+     (Index_1    => Small_Index,
+      Index_2    => Small_Index,
+      Element_1  => Small_Nat,
+      Array_Type => Matrix,
+      Element_2  => Integer,
+      Ind_Prop   => In_Range,
+      F          => "+");
+
 end Test_Higher_Order;

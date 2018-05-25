@@ -39,6 +39,58 @@ higher_order.adb:53:39: info: loop invariant initialization proved (CVC4: 1 VC),
 higher_order.adb:53:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:42
 higher_order.adb:53:43: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:42
 higher_order.adb:53:60: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:42
+higher_order.adb:70:10: info: initialization of "R" proved, in instantiation at test_higher_order.ads:58
+higher_order.adb:72:39: info: initialization of "Acc" proved, in instantiation at test_higher_order.ads:58
+higher_order.adb:72:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:72:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:74:19: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:74:19: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:76:30: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:76:46: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:76:79: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:79:27: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:79:35: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:79:41: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:79:61: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:81:31: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:81:44: info: initialization of "Acc" proved, in instantiation at test_higher_order.ads:58
+higher_order.adb:82:26: info: initialization of "R" proved, in instantiation at test_higher_order.ads:58
+higher_order.adb:84:22: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:84:22: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:86:33: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:86:46: info: initialization of "R" proved, in instantiation at test_higher_order.ads:58
+higher_order.adb:86:49: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:86:82: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:89:30: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:89:38: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:89:44: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:89:64: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:91:22: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:91:22: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:92:26: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:92:39: info: initialization of "R" proved, in instantiation at test_higher_order.ads:58
+higher_order.adb:92:45: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:93:50: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:95:28: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:95:33: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:95:42: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:95:62: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:96:42: info: initialization of "Acc" proved, in instantiation at test_higher_order.ads:58
+higher_order.adb:96:42: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:96:42: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:96:48: info: initialization of "R" proved, in instantiation at test_higher_order.ads:58
+higher_order.adb:105:10: info: initialization of "R" proved, in instantiation at test_higher_order.ads:58
+higher_order.adb:107:39: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:107:39: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:108:44: info: initialization of "R" proved, in instantiation at test_higher_order.ads:58
+higher_order.adb:108:48: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:108:67: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:110:24: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:110:37: info: initialization of "R" proved, in instantiation at test_higher_order.ads:58
+higher_order.adb:111:42: info: initialization of "R" proved, in instantiation at test_higher_order.ads:58
+higher_order.adb:111:42: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:111:42: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.adb:111:46: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
 higher_order.ads:13:14: info: postcondition proved (CVC4: 3 VC), in instantiation at test_higher_order.ads:13
 higher_order.ads:16:32: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:13
 higher_order.ads:16:37: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:13
@@ -64,6 +116,15 @@ higher_order.ads:61:17: info: precondition proved (CVC4: 1 VC), in instantiation
 higher_order.ads:62:17: info: postcondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:42
 higher_order.ads:64:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:42
 higher_order.ads:64:35: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:42
+higher_order.ads:88:46: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.ads:89:25: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.ads:93:17: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.ads:95:12: info: postcondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.ads:97:19: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.ads:101:19: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.ads:104:17: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:58
+higher_order.ads:105:17: info: postcondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
+higher_order.ads:107:17: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:58
 test_higher_order.ads:8:36: info: index check proved (CVC4: 2 VC)
 test_higher_order.ads:10:56: info: overflow check proved (CVC4: 1 VC)
 test_higher_order.ads:39:27: info: overflow check proved (CVC4: 1 VC)
@@ -73,3 +134,9 @@ test_higher_order.ads:39:66: info: overflow check proved (CVC4: 1 VC)
 test_higher_order.ads:39:72: info: overflow check proved (CVC4: 1 VC)
 test_higher_order.ads:39:76: info: range check proved (CVC4: 1 VC)
 test_higher_order.ads:40:24: info: range check proved (CVC4: 1 VC)
+test_higher_order.ads:53:23: warning: unused variable "A"
+test_higher_order.ads:55:26: info: overflow check proved (CVC4: 1 VC)
+test_higher_order.ads:55:32: info: overflow check proved (CVC4: 1 VC)
+test_higher_order.ads:55:54: info: overflow check proved (CVC4: 1 VC)
+test_higher_order.ads:55:69: info: overflow check proved (CVC4: 1 VC)
+test_higher_order.ads:55:75: info: overflow check proved (CVC4: 1 VC)
