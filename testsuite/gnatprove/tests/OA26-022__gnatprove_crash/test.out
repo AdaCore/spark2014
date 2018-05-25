@@ -1,2 +1,2 @@
 eg.adb:3:04: warning: analyzing unreferenced function "Foo"
-eg.adb:5:16: medium: float overflow check might fail
+eg.adb:5:16: medium: float overflow check might fail (e.g. when A = (fp #b0, #b01111111, #b10001110101001010101001) and B = (fp #b0, #b11111110, #b11110111111100110111110))

@@ -135,14 +135,10 @@ initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:8:29: info: initialization of "V" proved
 initialization_and_elaboration.ads:10:04: info: initialization of "V" proved
 f.adb:9
-
 f.adb:18
-
-f.adb:21
-
-f.adb:33
 
 f.adb:9
-
 f.adb:18
+f.adb:21
+f.adb:33
 

@@ -1,5 +1,5 @@
 counter_examples.adb:8:38: info: float overflow check proved (CVC4: 1 VC)
-counter_examples.adb:9:16: medium: float overflow check might fail
+counter_examples.adb:9:16: medium: float overflow check might fail (e.g. when X = (fp #b0, #b11111110, #b11111111111111101111000) and Y = (fp #b1, #b11101110, #b00001111000000000000000))
 counter_examples.adb:17:24: info: division check proved (CVC4: 1 VC)
 counter_examples.adb:19:25: info: initialization of "Res" proved
 counter_examples.adb:19:25: medium: assertion might fail, cannot prove Res <= X (e.g. when Res = 64 and X = 32)

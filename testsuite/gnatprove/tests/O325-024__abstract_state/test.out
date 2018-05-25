@@ -1,8 +1,8 @@
-stabilizer_pack.adb:21:22: medium: float overflow check might fail
-stabilizer_pack.adb:21:34: medium: float overflow check might fail
-stabilizer_pack.adb:21:44: medium: float overflow check might fail
+stabilizer_pack.adb:21:22: medium: float overflow check might fail (e.g. when Asl = (fp #b0, #b00000000, #b00000000000000000000000) and Asl_Alpha = (fp #b0, #b00000000, #b00000000000000000000000) and Asl_Tmp = (fp #b0, #b00000000, #b00000000000000000000000))
+stabilizer_pack.adb:21:34: medium: float overflow check might fail (e.g. when Asl_Tmp = (fp #b0, #b00000000, #b00000000000000000000000))
+stabilizer_pack.adb:21:44: medium: float overflow check might fail (e.g. when Asl_Tmp = (fp #b0, #b00000000, #b00000000000000000000000))
 stabilizer_pack.adb:21:51: info: float overflow check proved (CVC4: 1 VC)
-stabilizer_pack.adb:22:32: medium: float overflow check might fail
+stabilizer_pack.adb:22:32: medium: float overflow check might fail (e.g. when Asl_Alpha_Long = (fp #b0, #b00000000, #b00000000000000000000000) and Asl_Long = (fp #b0, #b00000000, #b00000000000000000000000))
 stabilizer_pack.adb:23:09: medium: float overflow check might fail
 stabilizer_pack.adb:23:19: medium: float overflow check might fail
 stabilizer_pack.adb:23:26: info: float overflow check proved (Z3: 1 VC)

@@ -1,7 +1,7 @@
 numerics.ads:10:99: info: range check proved (Interval)
 numerics.ads:13:99: info: range check proved (Interval)
 numerics.ads:16:99: info: range check proved (Interval)
-numerics.ads:16:99: medium: float overflow check might fail
+numerics.ads:16:99: medium: float overflow check might fail (e.g. when Left = (fp #b0, #b01111111, #b10001110101001010101001) and Right = (fp #b0, #b11111110, #b11110111111100110111110))
 numerics.ads:18:99: info: division check proved (CVC4: 1 VC)
 numerics.ads:18:99: info: range check proved (Interval)
-numerics.ads:18:99: medium: float overflow check might fail
+numerics.ads:18:99: medium: float overflow check might fail (e.g. when Left = (fp #b0, #b01111111, #b00000000000000000000000) and Right = (fp #b0, #b00000000, #b01000000000000000000000))
