@@ -1,0 +1,1 @@
+ALL XFAIL inlining of Dynamic_Predicate (R525-046)
