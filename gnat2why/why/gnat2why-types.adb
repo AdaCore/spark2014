@@ -24,19 +24,16 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
-with Atree;                   use Atree;
 with Common_Containers;       use Common_Containers;
-with Einfo;                   use Einfo;
 with Flow_Types;              use Flow_Types;
 with GNAT.Source_Info;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;           use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Namet;                   use Namet;
-with Sem_Eval;                use Sem_Eval;
-with Sem_Util;                use Sem_Util;
-with Sinfo;                   use Sinfo;
 with Sinput;                  use Sinput;
+with SPARK_Atree;             use SPARK_Atree;
+with SPARK_Atree.Entities;    use SPARK_Atree.Entities;
 with SPARK_Definition;        use SPARK_Definition;
 with SPARK_Util;              use SPARK_Util;
 with SPARK_Util.Types;        use SPARK_Util.Types;
@@ -452,7 +449,7 @@ package body Gnat2Why.Types is
          & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       declare
-         Eq : Entity_Id := Get_User_Defined_Eq (Base_Type (E));
+         Eq : constant Entity_Id := Get_User_Defined_Eq (Base_Type (E));
       begin
 
          --  This module only contains an axiom when there is a user-provided
@@ -462,13 +459,6 @@ package body Gnat2Why.Types is
            and then Entity_In_SPARK (Eq)
            and then Is_Record_Type (Get_Full_Type_Without_Checking (E))
          then
-
-            --  We may need to adjust for renamed subprograms
-
-            if Present (Renamed_Entity (Eq)) then
-               Eq := Renamed_Entity (Eq);
-            end if;
-
             declare
                Var_A : constant W_Identifier_Id :=
                  New_Identifier (Ada_Node => E,
@@ -559,7 +549,7 @@ package body Gnat2Why.Types is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
-      Decl     : constant Node_Id := Parent (E);
+      Decl     : constant Node_Id := Enclosing_Declaration (E);
       Name     : constant String := Full_Name (E);
       Params   : Transformation_Params;
       Why_Body : W_Prog_Id;
@@ -683,9 +673,7 @@ package body Gnat2Why.Types is
             =>
                Declare_Ada_Record (File, E);
 
-            when E_Class_Wide_Type
-               | E_Class_Wide_Subtype
-            =>
+            when Class_Wide_Kind =>
                Add_Use_For_Entity (File, Specific_Tagged (E),
                                    EW_Export, With_Completion => False);
 
@@ -798,7 +786,7 @@ package body Gnat2Why.Types is
                Comment =>
                  "Module defining to_rep/of_rep for type "
                & """" & Get_Name_String (Chars (E)) & """"
-               & (if Atree.Sloc (E) > 0 then
+               & (if SPARK_Atree.Sloc (E) > 0 then
                     " defined at " & Build_Location_String (Sloc (E))
                  else "")
                & ", created in " & GNAT.Source_Info.Enclosing_Entity);

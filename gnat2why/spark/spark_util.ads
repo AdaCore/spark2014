@@ -59,6 +59,18 @@ package SPARK_Util is
    --  as many checks simply check for one of the options (and do not
    --  explicitly make sure all cases are considered).
 
+   type Scalar_Check_Kind is
+     (RCK_Overflow,
+      RCK_FP_Overflow,
+      RCK_Range,
+      RCK_Length,
+      RCK_Index,
+      RCK_Range_Not_First,
+      RCK_Range_Not_Last,
+      RCK_Overflow_Not_First,
+      RCK_Overflow_Not_Last);
+   --  Kind for checks on scalar types
+
    subtype Volatile_Pragma_Id is Pragma_Id with Static_Predicate =>
      Volatile_Pragma_Id in Pragma_Async_Readers
                          | Pragma_Async_Writers
@@ -439,6 +451,10 @@ package SPARK_Util is
    --  @return if N is used to initialize an object, return this object. Return
    --      Empty otherwise. This is used to get a stable name for aggregates
    --      used as definition of objects.
+
+   function Shape_Of_Node (Node : Node_Id) return String;
+   --  Return a string representing the shape of the Ada code surrounding the
+   --  input node. This is used to name the VC file for manual proof.
 
    ----------------------------------
    -- Queries for particular nodes --

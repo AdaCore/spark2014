@@ -26,6 +26,7 @@
 with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
 with Snames;              use Snames;
+with SPARK_Util;          use SPARK_Util;
 with Types;               use Types;
 with Uintp;               use Uintp;
 with VC_Kinds;            use VC_Kinds;
@@ -246,7 +247,7 @@ package Why.Gen.Expr is
      (Ada_Node   : Node_Id;
       Ty         : Entity_Id;
       W_Expr     : W_Expr_Id;
-      Check_Kind : Range_Check_Kind) return W_Prog_Id;
+      Check_Kind : Scalar_Check_Kind) return W_Prog_Id;
    --  Returns the Why program that does range checking on W_Expr, for type Ty.
 
    function Insert_Conversion_To_Rep_No_Bool
@@ -330,7 +331,7 @@ package Why.Gen.Expr is
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
       Range_Type : Entity_Id;
-      Check_Kind : Range_Check_Kind;
+      Check_Kind : Scalar_Check_Kind;
       Lvalue     : Boolean := False) return W_Expr_Id;
    --  Same as the above except that we take directly the kind of check as
    --  input.

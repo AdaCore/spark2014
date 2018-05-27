@@ -205,6 +205,10 @@ package SPARK_Atree.Entities is
      and then Present (Aspects.Find_Aspect
                        (Typ, A => Aspects.Aspect_Iterable));
 
+   function Get_User_Defined_Eq (Typ : Entity_Id) return Entity_Id with
+     Pre => Is_Type (Typ);
+   --  Same as Einfo.Get_User_Defined_Eq except that it goes through renamings
+
    function Has_DIC (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
 
@@ -274,7 +278,12 @@ package SPARK_Atree.Entities is
      Pre  => Is_Scalar_Type (Typ);
 
    function Type_Low_Bound (Typ : Entity_Id) return Node_Id with
-     Pre  => Is_Scalar_Type (Typ);
+     Pre  => Is_Scalar_Type (Typ)
+     or else Ekind (Typ) = E_String_Literal_Subtype;
+   --  Same as Einfo.Type_Low_Bound except that it accepts string literal
+   --  subtypes and returns String_Literal_Low_Bound so that it can be called
+   --  on the result of SPARK_Util.Nth_Index_Type which may return a string
+   --  literal subtype.
 
    --------------------------------
    --  For Modular Integer Types --
@@ -410,15 +419,6 @@ package SPARK_Atree.Entities is
    function Discriminant_Default_Value (Obj : Entity_Id) return Node_Id with
      Pre => Ekind (Obj) = E_Discriminant;
 
-   function Enclosing_Declaration (Obj : Entity_Id) return Node_Id with
-     Pre  => Is_Object (Obj) or else Is_Named_Number (Obj),
-     Post => Nkind (Enclosing_Declaration'Result) in
-         Sinfo.N_Declaration
-       | Sinfo.N_Later_Decl_Item
-       | Sinfo.N_Number_Declaration;
-   --  Special case of Sem_Util.Enclosing_Declaration where only one call to
-   --  Parent is needed.
-
    function Enclosing_Type (Obj : Entity_Id) return Node_Id with
      Pre  => Ekind (Obj) in
        E_Discriminant | E_Component | E_Constant | E_In_Parameter
@@ -523,16 +523,23 @@ package SPARK_Atree.Entities is
    --  For other entities --
    -------------------------
 
+   function Enclosing_Declaration (E : Entity_Id) return Node_Id with
+     Pre  => Is_Object (E) or else Is_Named_Number (E) or else Is_Type (E),
+     Post => Nkind (Enclosing_Declaration'Result) in
+         Sinfo.N_Declaration
+       | Sinfo.N_Later_Decl_Item
+       | Sinfo.N_Number_Declaration;
+   --  Special case of Sem_Util.Enclosing_Declaration where only one call to
+   --  Parent is needed.
+
+   function Get_Rep_Item (E : Entity_Id; Nam : Name_Id) return Node_Id with
+     Pre => Ekind (E) in Protected_Kind |
+                         E_Function     |
+                         E_Procedure    |
+                         E_Task_Type
+         and then Nam in Name_Priority | Name_Interrupt_Priority;
+
    function Return_Applies_To (E : Entity_Id) return Node_Id with
      Pre => Ekind (E) = Einfo.E_Return_Statement;
-
-   function Get_Rep_Item
-     (E             : Entity_Id;
-      Nam           : Name_Id) return Node_Id
-     with Pre => Ekind (E) in Protected_Kind |
-                              E_Function     |
-                              E_Procedure    |
-                              E_Task_Type
-           and then Nam in Name_Priority | Name_Interrupt_Priority;
 
 end SPARK_Atree.Entities;

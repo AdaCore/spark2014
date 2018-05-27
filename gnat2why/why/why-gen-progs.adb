@@ -25,6 +25,7 @@
 
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
+with Gnat2Why.Util;           use Gnat2Why.Util;
 with Why.Atree.Modules;       use Why.Atree.Modules;
 with Why.Conversions;         use Why.Conversions;
 with Why.Gen.Expr;            use Why.Gen.Expr;
@@ -38,7 +39,7 @@ package body Why.Gen.Progs is
 
    procedure Emit_Always_True_Range_Check
      (Ada_Node   : Node_Id;
-      Check_Kind : Range_Check_Kind)
+      Check_Kind : Scalar_Check_Kind)
    is
       Reason : constant VC_Kind := To_VC_Kind (Check_Kind);
       Id     : constant VC_Id := Register_VC (Ada_Node, Reason, Current_Subp);

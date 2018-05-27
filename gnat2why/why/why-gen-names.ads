@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Gnat2Why.Util; use Gnat2Why.Util;
 with Namet;         use Namet;
 with Snames;        use Snames;
+with SPARK_Util;    use SPARK_Util;
 with Types;         use Types;
 with Why.Ids;       use Why.Ids;
 with Why.Sinfo;     use Why.Sinfo;
@@ -52,7 +52,7 @@ package Why.Gen.Names is
    --  Return the name of the "dynamic_property" predicate for the type
 
    function Range_Check_Name
-     (Ty : Entity_Id; R : Range_Check_Kind) return W_Identifier_Id;
+     (Ty : Entity_Id; R : Scalar_Check_Kind) return W_Identifier_Id;
    --  Return the name of the "range_check_" program function for the type
 
    function New_Division (Kind : W_Type_Id) return W_Identifier_Id;

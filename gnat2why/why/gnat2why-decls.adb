@@ -26,7 +26,6 @@
 with GNAT.Source_Info;
 with Gnat2Why.Expr;                use Gnat2Why.Expr;
 with Namet;                        use Namet;
-with Sinfo;                        use Sinfo;
 with Sinput;                       use Sinput;
 with SPARK_Util;                   use SPARK_Util;
 with Ada.Strings;                  use Ada.Strings;
@@ -117,7 +116,7 @@ package body Gnat2Why.Decls is
       E    : Entity_Id)
    is
 
-      Decl : constant Node_Id := Parent (E);
+      Decl : constant Node_Id := Enclosing_Declaration (E);
       Expr : constant Node_Id := Expression (Decl);
 
       --  Always use the Ada type for the equality between the constant result

@@ -173,7 +173,7 @@ package body SPARK_Atree.Entities is
    -- Enclosing_Declaration --
    ---------------------------
 
-   function Enclosing_Declaration (Obj : Entity_Id) return Entity_Id renames
+   function Enclosing_Declaration (E : Entity_Id) return Entity_Id renames
      Atree.Parent;
 
    --------------------
@@ -247,12 +247,24 @@ package body SPARK_Atree.Entities is
    -- Get_Rep_Item --
    ------------------
 
-   function Get_Rep_Item
-     (E             : Entity_Id;
-      Nam           : Name_Id) return Node_Id is
+   function Get_Rep_Item (E : Entity_Id; Nam : Name_Id) return Node_Id is
    begin
       return Sem_Aux.Get_Rep_Item (E, Nam, True);
    end Get_Rep_Item;
+
+   -------------------------
+   -- Get_User_Defined_Eq --
+   -------------------------
+
+   function Get_User_Defined_Eq (Typ : Entity_Id) return Entity_Id is
+      Eq : constant Entity_Id := Sem_Util.Get_User_Defined_Eq (Typ);
+   begin
+      if Present (Eq) and then Present (Einfo.Renamed_Entity (Eq)) then
+         return Einfo.Renamed_Entity (Eq);
+      end if;
+
+      return Eq;
+   end Get_User_Defined_Eq;
 
    ------------------------
    -- Has_Attach_Handler --
@@ -571,8 +583,10 @@ package body SPARK_Atree.Entities is
    -- Type_Low_Bound --
    --------------------
 
-   function Type_Low_Bound (Typ : Entity_Id) return Node_Id renames
-     Einfo.Type_Low_Bound;
+   function Type_Low_Bound (Typ : Entity_Id) return Node_Id is
+     (if Ekind (Typ) = E_String_Literal_Subtype then
+           String_Literal_Low_Bound (Typ)
+      else Einfo.Type_Low_Bound (Typ));
 
    -----------------------
    -- Ultimate_Ancestor --

@@ -23,12 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;             use Atree;
-with Common_Containers; use Common_Containers;
-with Einfo;             use Einfo;
-with Gnat2Why.Util;     use Gnat2Why.Util;
-with SPARK_Definition;  use SPARK_Definition;
-with Types;             use Types;
+with Common_Containers;          use Common_Containers;
+with Gnat2Why.Util;              use Gnat2Why.Util;
+with SPARK_Atree;                use SPARK_Atree;
+with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
+with SPARK_Definition;           use SPARK_Definition;
+with Types;                      use Types;
 
 package Gnat2Why.Decls is
 

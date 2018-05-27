@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Gnat2Why.Util;      use Gnat2Why.Util;
+with SPARK_Util;         use SPARK_Util;
 with Types;              use Types;
 with VC_Kinds;           use VC_Kinds;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -39,7 +39,7 @@ package Why.Gen.Progs is
 
    procedure Emit_Always_True_Range_Check
      (Ada_Node   : Node_Id;
-      Check_Kind : Range_Check_Kind);
+      Check_Kind : Scalar_Check_Kind);
 
    function New_Any_Statement
      (Ada_Node    : Node_Id := Empty;

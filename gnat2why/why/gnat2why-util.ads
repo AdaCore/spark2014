@@ -549,18 +549,7 @@ package Gnat2Why.Util is
    --    a private type is in SPARK, that one is returned instead of the
    --    private type.
 
-   type Range_Check_Kind is
-     (RCK_Overflow,
-      RCK_FP_Overflow,
-      RCK_Range,
-      RCK_Length,
-      RCK_Index,
-      RCK_Range_Not_First,
-      RCK_Range_Not_Last,
-      RCK_Overflow_Not_First,
-      RCK_Overflow_Not_Last);
-
-   function To_VC_Kind (R : Range_Check_Kind) return VC_Kind
+   function To_VC_Kind (R : Scalar_Check_Kind) return VC_Kind
    is
      (case R is
          when RCK_Overflow           => VC_Overflow_Check,
@@ -572,6 +561,6 @@ package Gnat2Why.Util is
          when RCK_Range_Not_Last     => VC_Range_Check,
          when RCK_Overflow_Not_First => VC_Overflow_Check,
          when RCK_Overflow_Not_Last  => VC_Overflow_Check);
-   --  to convert a Range_Check_Kind to a VC_Kind
+   --  to convert a Scalar_Check_Kind to a VC_Kind
 
 end Gnat2Why.Util;

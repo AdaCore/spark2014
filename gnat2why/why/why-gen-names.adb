@@ -26,8 +26,8 @@
 with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
 with Atree;               use Atree;
 with GNATCOLL.Utils;      use GNATCOLL.Utils;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 with SPARK_Definition;    use SPARK_Definition;
-with SPARK_Util;          use SPARK_Util;
 with SPARK_Util.Types;    use SPARK_Util.Types;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
@@ -942,8 +942,7 @@ package body Why.Gen.Names is
    ----------------------
 
    function Range_Check_Name
-     (Ty : Entity_Id;
-      R  : Range_Check_Kind) return W_Identifier_Id
+     (Ty : Entity_Id; R : Scalar_Check_Kind) return W_Identifier_Id
    is
    begin
       if Is_Standard_Boolean_Type (Ty) then

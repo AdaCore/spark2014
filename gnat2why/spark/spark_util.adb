@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1;             use Ada.Characters.Latin_1;
+with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Csets;                              use Csets;
 with Errout;                             use Errout;
 with Flow_Utility;                       use Flow_Utility;
@@ -1784,6 +1785,321 @@ package body SPARK_Util is
 
       return Empty;
    end Search_Component_By_Name;
+
+   -------------------
+   -- Shape_Of_Node --
+   -------------------
+
+   function Shape_Of_Node (Node : Node_Id) return String is
+
+      function Label_Append
+        (Buf : Unbounded_String)
+         return Unbounded_String
+      is
+        (if Buf = Null_Unbounded_String
+         then Null_Unbounded_String
+         else "__" & Buf);
+
+      Buf     : Unbounded_String := Null_Unbounded_String;
+      Node_It : Node_Id := Node;
+
+   --  Start of processing for Shape_Of_Node
+
+   begin
+      while Present (Node_It) loop
+         case Nkind (Node_It) is
+
+         when N_Subprogram_Body
+            | N_Subprogram_Specification
+            | N_Expression_Function
+            | N_Package_Body
+            | N_Package_Specification
+            | N_Generic_Subprogram_Declaration
+         =>
+            exit;
+
+         when N_Loop_Statement =>
+            declare
+               It_Scheme : constant Node_Id := Iteration_Scheme (Node_It);
+            begin
+               if Present (It_Scheme) then
+                  case Nkind (It_Scheme) is
+                  when N_Loop_Parameter_Specification |
+                       N_Iterator_Specification       =>
+                     --  for
+                     Buf := "for" & Label_Append (Buf);
+                  when others =>
+                     --  while
+                     Buf := "while" & Label_Append (Buf);
+                  end case;
+               else
+                  --  loop
+                  Buf := "loop" & Label_Append (Buf);
+               end if;
+            end;
+
+            if Identifier (Node_It) /= Empty then
+               Buf := Get_Name_String (Chars (Identifier (Node_It)))
+                 & "_" & Buf;
+            end if;
+
+         when N_Case_Statement
+            | N_Case_Expression
+         =>
+            Buf := "case" & Label_Append (Buf);
+
+         when N_If_Statement
+            | N_If_Expression
+         =>
+            Buf := "if" & Label_Append (Buf);
+
+         when N_Enumeration_Representation_Clause =>
+            Buf := Get_Name_String (Chars (Identifier (Node_It)))
+              & "_rep" & Label_Append (Buf);
+
+         when N_At_Clause =>
+            Buf := Get_Name_String (Chars (Identifier (Node_It)))
+              & "_at" & Label_Append (Buf);
+
+         when N_Record_Representation_Clause =>
+            Buf := Get_Name_String (Chars (Identifier (Node_It)))
+              & "_" & Buf;
+
+         when N_Component_Clause =>
+            Buf := Get_Name_String (Chars (Component_Name (Node_It)))
+              & "_rep" & Label_Append (Buf);
+
+         when N_Mod_Clause =>
+            Buf := "modrep" & Label_Append (Buf);
+
+         when N_Attribute_Definition_Clause =>
+            Buf := Get_Name_String (Chars (Name (Node_It))) & "_"
+              & Get_Name_String (Chars (Node_It))
+              & "_def" & Label_Append (Buf);
+
+         when N_Pragma_Argument_Association =>
+            Buf := "pragargs" & Label_Append (Buf);
+
+         when N_Op_Add =>
+            Buf := "add" & Label_Append (Buf);
+
+         when N_Op_Concat =>
+            Buf := "concat" & Label_Append (Buf);
+
+         when N_Op_Expon =>
+            Buf := "exp" & Label_Append (Buf);
+
+         when N_Op_Subtract =>
+            Buf := "sub" & Label_Append (Buf);
+
+         when N_Op_Divide =>
+            Buf := "div" & Label_Append (Buf);
+
+         when N_Op_Mod =>
+            Buf := "mod" & Label_Append (Buf);
+
+         when N_Op_Multiply =>
+            Buf := "mult" & Label_Append (Buf);
+
+         when N_Op_Rem =>
+            Buf := "rem" & Label_Append (Buf);
+
+         when N_Op_And =>
+            Buf := "and" & Label_Append (Buf);
+
+         when N_Op_Compare =>
+            Buf := "cmp" & Label_Append (Buf);
+
+         when N_Op_Or =>
+            Buf := "or" & Label_Append (Buf);
+
+         when N_Op_Xor =>
+            Buf := "xor" & Label_Append (Buf);
+
+         when N_Op_Rotate_Left =>
+            Buf := "rol" & Label_Append (Buf);
+
+         when N_Op_Rotate_Right =>
+            Buf := "ror" & Label_Append (Buf);
+
+         when N_Op_Shift_Left =>
+            Buf := "lsl" & Label_Append (Buf);
+
+         when N_Op_Shift_Right =>
+            Buf := "lsr" & Label_Append (Buf);
+
+         when N_Op_Shift_Right_Arithmetic =>
+            Buf := "asr" & Label_Append (Buf);
+
+         when N_Op_Abs =>
+            Buf := "abs" & Label_Append (Buf);
+
+         when N_Op_Minus =>
+            Buf := "minus" & Label_Append (Buf);
+
+         when N_Op_Not =>
+            Buf := "not" & Label_Append (Buf);
+
+         when N_Op_Plus =>
+            Buf := "plus" & Label_Append (Buf);
+
+         when N_Attribute_Reference =>
+            Buf := Get_Name_String (Attribute_Name (Node_It))
+              & "_ref" & Label_Append (Buf);
+
+         when N_Membership_Test =>
+            Buf := "in" & Label_Append (Buf);
+
+         when N_And_Then =>
+            Buf := "andthen" & Label_Append (Buf);
+
+         when N_Or_Else =>
+            Buf := "orelse" & Label_Append (Buf);
+
+         when N_Subprogram_Call =>
+            Buf := "call_" &
+              Get_Name_String (Chars (Get_Called_Entity (Node_It)))
+              & Label_Append (Buf);
+
+         when N_Indexed_Component =>
+            Buf := "ixdcomp" & Label_Append (Buf);
+
+         when N_Null =>
+            Buf := "null" & Label_Append (Buf);
+
+         when N_Qualified_Expression =>
+            Buf := Get_Name_String (Chars (Subtype_Mark (Node_It)))
+                                    & "_qual" & Label_Append (Buf);
+
+         when N_Quantified_Expression =>
+            Buf := (if All_Present (Node_It) then "forall" else "forsome")
+              & Label_Append (Buf);
+
+         when N_Aggregate =>
+            Buf := "aggr" & Label_Append (Buf);
+
+         when N_Allocator =>
+            Buf := "new_" & Buf;
+
+         when N_Raise_Expression =>
+            Buf := "raise" & Label_Append (Buf);
+
+         when N_Range =>
+            Buf := "range" & Label_Append (Buf);
+
+         when N_Selected_Component =>
+            Buf := "selectcomp" & Label_Append (Buf);
+
+         when N_Slice =>
+            Buf := "slice" & Label_Append (Buf);
+
+         when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+            Buf := "typeconv" & Label_Append (Buf);
+
+         when N_Subtype_Indication =>
+            Buf := Get_Name_String (Chars (Subtype_Mark (Node_It)))
+              & "_ind" & Label_Append (Buf);
+
+         when N_Formal_Type_Declaration
+            | N_Implicit_Label_Declaration
+            | N_Object_Declaration
+            | N_Formal_Object_Declaration
+         =>
+            declare
+               I_Name : constant Name_Id := Chars (Defining_Identifier
+                                                   (Node_It));
+               Name_Str : constant String :=
+                 (if I_Name /= No_Name and then I_Name /= Error_Name then
+                     Get_Name_String (I_Name) & "_"
+                  else "");
+            begin
+               Buf := Name_Str & "decl" & Label_Append (Buf);
+            end;
+
+         when N_Full_Type_Declaration
+            | N_Incomplete_Type_Declaration
+            | N_Protected_Type_Declaration
+            | N_Private_Type_Declaration
+            | N_Subtype_Declaration
+         =>
+            Buf := Get_Name_String (Chars (Defining_Identifier (Node_It)))
+              & "_def" & Label_Append (Buf);
+
+         when N_Private_Extension_Declaration =>
+            Buf := Get_Name_String (Chars (Defining_Identifier (Node_It)))
+              & "_priv" & Label_Append (Buf);
+
+         when N_Body_Stub =>
+            Buf := Get_Name_String (Chars (Defining_Identifier (Node_It)))
+              & "_stub" & Label_Append (Buf);
+
+         when N_Generic_Instantiation =>
+            Buf := Get_Name_String (Chars (Defining_Identifier (Node_It)))
+              & "_inst" & Label_Append (Buf);
+
+         when N_Array_Type_Definition =>
+            Buf := "arrayof_" & Buf;
+
+         when N_Assignment_Statement =>
+            declare
+               Obj : constant Entity_Id :=
+                 Get_Enclosing_Object (Name (Node_It));
+               Obj_Name : Name_Id;
+
+            begin
+               Buf := "assign" & Label_Append (Buf);
+
+               if Present (Obj) then
+                  Obj_Name := Chars (Obj);
+
+                  if Obj_Name /= No_Name and then Obj_Name /= Error_Name then
+                     Buf := Get_Name_String (Obj_Name) & "_" & Buf;
+                  end if;
+               end if;
+            end;
+
+         when N_Block_Statement =>
+            declare
+               Tmp : constant String := (if Identifier (Node_It) /= Empty
+                                         then
+                                            Get_Name_String
+                                           (Chars (Identifier (Node_It))) & "_"
+                                         else "");
+            begin
+               Buf := Tmp & "declblk" & Label_Append (Buf);
+            end;
+
+         when N_Goto_Statement =>
+            Buf := "goto_" & Get_Name_String (Chars (Name (Node_It)))
+              & Label_Append (Buf);
+
+         when N_Raise_Statement =>
+            Buf := "raise" & (if Name (Node_It) /= Empty then
+                                 "_" & Get_Name_String
+                                (Chars (Name (Node_It)))
+                              else "") & Label_Append (Buf);
+
+         when N_Simple_Return_Statement
+            | N_Extended_Return_Statement
+         =>
+            Buf := "return" & Label_Append (Buf);
+
+         when N_Exit_Statement =>
+            Buf := "exit" & (if Name (Node_It) /= Empty then
+                                "_" & Get_Name_String (Chars (Name (Node_It)))
+                             else "")
+              & Label_Append (Buf);
+
+         when others =>
+            null;
+
+         end case;
+
+         Node_It := Parent (Node_It);
+      end loop;
+
+      return To_String (Buf);
+   end Shape_Of_Node;
 
    -----------------
    -- Source_Name --

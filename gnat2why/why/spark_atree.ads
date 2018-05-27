@@ -29,6 +29,7 @@ with Sem_Eval;
 with Sem_Util;
 with Sinfo;       use all type Sinfo.Node_Kind;
 with Snames;      use Snames;
+with SPARK_Util;
 with Types;       use Types;
 with Uintp;       use Uintp;
 with Urealp;      use Urealp;
@@ -150,6 +151,8 @@ package SPARK_Atree is
    N_Package_Body                   : Node_Kind renames Sinfo.N_Package_Body;
    N_Package_Declaration            : Node_Kind renames
      Sinfo.N_Package_Declaration;
+   N_Private_Extension_Declaration  : Node_Kind renames
+     Sinfo.N_Private_Extension_Declaration;
    N_Procedure_Call_Statement       : Node_Kind renames
      Sinfo.N_Procedure_Call_Statement;
    N_Pragma                         : Node_Kind renames Sinfo.N_Pragma;
@@ -191,6 +194,10 @@ package SPARK_Atree is
    function Enclosing_Comp_Unit_Node (N : Node_Id) return Node_Id with
      Post => No (Enclosing_Comp_Unit_Node'Result)
        or else Nkind (Enclosing_Comp_Unit_Node'Result) = N_Compilation_Unit;
+
+   function Is_Rewrite_Substitution (N : Node_Id) return Boolean renames
+     Atree.Is_Rewrite_Substitution;
+   --  ??? As for Original_Node.
 
    function Nkind (N : Node_Id) return Node_Kind renames Atree.Nkind;
 
@@ -300,6 +307,8 @@ package SPARK_Atree is
                        | N_Subprogram_Body
                        | N_Task_Body;
 
+   function Depends_On_Discriminant (N : Node_Id) return Boolean;
+
    function Defining_Identifier (N : Node_Id) return Entity_Id renames
      Sinfo.Defining_Identifier;
 
@@ -316,6 +325,12 @@ package SPARK_Atree is
      Pre => Nkind (N) in N_Entry_Declaration
                        | N_Entry_Index_Specification
                        | N_Loop_Parameter_Specification;
+
+   function Do_Check_On_Scalar_Converion (N : Node_Id) return Boolean with
+     Pre => Nkind (N) in Sinfo.N_Subexpr;
+   --  Return True if a check is needed on an expression which requires a
+   --  scalar conversion. The check may be either a range check, an index
+   --  check, or an overflow check.
 
    function Do_Division_Check (N : Node_Id) return Boolean with
      Pre => Nkind (N) in N_Op_Divide | N_Op_Mod | N_Op_Rem;
@@ -390,6 +405,19 @@ package SPARK_Atree is
    function Get_Pragma_Id (N : Node_Id) return Pragma_Id with
      Pre => Nkind (N) = N_Pragma;
 
+   procedure Get_Range_Check_Info
+     (N                 : Node_Id;
+      In_Left_Hand_Side : Boolean := False;
+      Check_Type        : out Entity_Id;
+      Check_Kind        : out SPARK_Util.Scalar_Check_Kind)
+   with Pre => Nkind (N) in Sinfo.N_Subexpr
+     and then Do_Check_On_Scalar_Converion (N);
+   --  @param N a scalar expression requiring a check
+   --  @param In_Left_Hand_Side True if N occurs in the lefthand side of an
+   --         assignment.
+   --  @param Check_Type the type agains which the check should be done
+   --  @param Check_Kind the kind of check expected (overflow, range, index...)
+
    function Get_Return_Object (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) = N_Extended_Return_Statement;
 
@@ -422,6 +450,12 @@ package SPARK_Atree is
 
    function Intval (N : Node_Id) return Uint with
      Pre => Nkind (N) = N_Integer_Literal;
+
+   function Is_Choice_Of_Unconstrained_Array_Update
+     (N : Node_Id) return Boolean;
+   --  Determines whether the node is some kind of a choice of a 'Update of
+   --  an unconstrained array. This is useful for producing the extra
+   --  checks required for updates of unconstrained arrays.
 
    function Is_Component_Left_Opnd (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Op_Concat;

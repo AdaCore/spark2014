@@ -23,9 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Text_IO; -- debugging purpose
+with Aspects;
 with Einfo;
+with Nlists;             use Nlists;
 with Sem_Aux;
 with Sem_Disp;
+with SPARK_Util.Types;
+with Stand;              use Stand;
 
 package body SPARK_Atree is
 
@@ -171,6 +176,13 @@ package body SPARK_Atree is
    function Declarations (N : Node_Id) return List_Id renames
      Sinfo.Declarations;
 
+   -----------------------------
+   -- Depends_On_Discriminant --
+   -----------------------------
+
+   function Depends_On_Discriminant (N : Node_Id) return Boolean renames
+     Sem_Util.Depends_On_Discriminant;
+
    ----------------------
    -- Discrete_Choices --
    ----------------------
@@ -191,6 +203,27 @@ package body SPARK_Atree is
 
    function Discrete_Subtype_Definition (N : Node_Id) return Node_Id renames
     Sinfo.Discrete_Subtype_Definition;
+
+   ----------------------------------
+   -- Do_Check_On_Scalar_Converion --
+   ----------------------------------
+
+   function Do_Check_On_Scalar_Converion (N : Node_Id) return Boolean is
+     (Sinfo.Do_Range_Check (N)
+      or else
+        (Atree.Nkind (Atree.Parent (N)) = N_Type_Conversion
+         and then Sinfo.Do_Overflow_Check (Atree.Parent (N)))
+      or else
+        (Atree.Nkind (N) = N_Type_Conversion
+         and then Sinfo.Do_Range_Check (Sinfo.Expression (N))
+         and then Atree.Nkind (Atree.Parent (N)) in
+           N_Parameter_Association | N_Procedure_Call_Statement
+             | N_Entry_Call_Statement
+         and then Atree.Ekind (SPARK_Util.Get_Formal_From_Actual (N)) in
+           Einfo.E_In_Out_Parameter | Einfo.E_Out_Parameter)
+      or else
+        (Atree.Nkind (Atree.Parent (N)) = N_Range
+         and then Sinfo.Do_Range_Check (Atree.Parent (N))));
 
    -----------------------
    -- Do_Division_Check --
@@ -339,6 +372,358 @@ package body SPARK_Atree is
    function Get_Pragma_Id (N : Node_Id) return Pragma_Id renames
      Sem_Util.Get_Pragma_Id;
 
+   --------------------------
+   -- Get_Range_Check_Info --
+   --------------------------
+
+   procedure Get_Range_Check_Info
+     (N                 : Node_Id;
+      In_Left_Hand_Side : Boolean := False;
+      Check_Type        : out Entity_Id;
+      Check_Kind        : out SPARK_Util.Scalar_Check_Kind)
+   is
+      Par : Node_Id := Atree.Parent (N);
+
+   begin
+      --  In proof, we use the original node for unchecked conversions
+      --  coming from source.
+
+      if Nkind (Par) = N_Unchecked_Type_Conversion
+        and then Comes_From_Source (Par)
+      then
+         Par := Original_Node (Par);
+      end if;
+
+      --  Set the appropriate entity in Check_Type giving the bounds for the
+      --  check, depending on the parent node Par.
+
+      case Nkind (Par) is
+
+         when N_Assignment_Statement =>
+            Check_Type := Etype (Name (Par));
+
+            --  For an array access, an index check has already been introduced
+            --  if needed. There is no other check to do.
+
+         when N_Indexed_Component =>
+            Check_Type := Empty;
+            Check_Kind := SPARK_Util.RCK_Index;
+            return;
+
+            --  Frontend may have introduced unchecked type conversions on
+            --  expressions or variables assigned to, which require range
+            --  checking. When applied to a left-hand side of an assignment,
+            --  the target type for the range check is the type of the object
+            --  being converted. Otherwise, the target type is the type of the
+            --  conversion.
+
+         when N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+            =>
+            Check_Type :=
+              (if In_Left_Hand_Side then Etype (N) else Etype (Par));
+
+         when N_Qualified_Expression =>
+            Check_Type := Etype (Par);
+
+         when N_Simple_Return_Statement =>
+            Check_Type :=
+              Etype (Einfo.Return_Applies_To (Return_Statement_Entity (Par)));
+
+            --  For a call, retrieve the type for the corresponding argument
+
+         when N_Function_Call
+            | N_Procedure_Call_Statement
+            | N_Entry_Call_Statement
+            | N_Parameter_Association
+            =>
+            --  If In_Left_Hand_Side is True, we are checking actual parameters
+            --  on stores. In this case, the Check_Type is the type of the
+            --  expression. Otherwise, the Check_Type is the expected formal
+            --  type.
+
+            if In_Left_Hand_Side then
+               Check_Type := Etype (N);
+            else
+               Check_Type := Etype (SPARK_Util.Get_Formal_From_Actual (N));
+            end if;
+
+         when N_Attribute_Reference =>
+            Attribute : declare
+               Aname   : constant Name_Id := Attribute_Name (Par);
+               Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
+            begin
+               case Attr_Id is
+                  when Attribute_Pred |
+                       Attribute_Succ |
+                       Attribute_Val  =>
+                     Check_Type := Einfo.Base_Type (Entity (Prefix (Par)));
+
+                  when others =>
+                     Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] attr ="
+                                           & Attribute_Id'Image (Attr_Id));
+                     raise Program_Error;
+               end case;
+            end Attribute;
+
+         when N_Object_Declaration =>
+            Check_Type := Etype (Defining_Identifier (Par));
+
+         when N_Op_Expon =>
+
+            --  A range check on exponentiation is only possible on the right
+            --  operand, and in this case the check range is "Natural"
+
+            Check_Type := Standard_Natural;
+
+         when N_Component_Association =>
+
+            declare
+               Pref        : Node_Id;
+               Prefix_Type : Entity_Id;
+
+            begin
+               --  Expr is either
+               --  1) a choice of a 'Update aggregate, and needs a
+               --  range check towards the corresponding index type of the
+               --  prefix to the 'Update aggregate, or
+               --  2) a component expression of a 'Update aggregate for arrays,
+               --  and needs a range check towards the component type.
+               --  3) a component expression of a 'Update aggregate for
+               --  records, and needs a range check towards the type of
+               --  the component
+               --  3) an expression of a regular record aggregate, and
+               --  needs a range check towards the expected type.
+
+               if Nkind (Atree.Parent (Par)) = N_Aggregate
+                 and then Nkind (Atree.Parent (Atree.Parent (Par))) =
+                 N_Attribute_Reference
+                 and then
+                   Get_Attribute_Id
+                     (Attribute_Name (Atree.Parent (Atree.Parent (Par)))) =
+                 Attribute_Update
+               then
+
+                  Pref := Prefix (Atree.Parent (Atree.Parent (Par)));
+
+                  --  When present, the Actual_Subtype of the entity should be
+                  --  used instead of the Etype of the prefix.
+
+                  if Einfo.Is_Entity_Name (Pref)
+                    and then Present (Einfo.Actual_Subtype (Entity (Pref)))
+                  then
+                     Prefix_Type := Einfo.Actual_Subtype (Entity (Pref));
+                  else
+                     Prefix_Type := Etype (Pref);
+                  end if;
+
+                  if Einfo.Is_Record_Type (Prefix_Type) then
+
+                     Check_Type := Etype (Nlists.First (Choices (Par)));
+
+                     --  it's an array type, determine whether the check is for
+                     --  the component or the index
+
+                  elsif Expression (Par) = N then
+                     Check_Type :=
+                       Einfo.Component_Type
+                         (Sem_Util.Unique_Entity (Prefix_Type));
+                  else
+                     Check_Type :=
+                       Etype (Einfo.First_Index
+                              (Sem_Util.Unique_Entity (Prefix_Type)));
+                  end if;
+
+                  --  must be a regular record aggregate
+
+               else
+                  pragma Assert (Expression (Par) = N);
+
+                  Check_Type := Etype (N);
+               end if;
+            end;
+
+         when N_Range =>
+            if Is_Choice_Of_Unconstrained_Array_Update (Par) then
+               declare
+                  Pref        : Node_Id;
+                  Prefix_Type : Entity_Id;
+
+               begin
+                  pragma Assert
+                    (Nkind (Atree.Parent (Atree.Parent (Par))) = N_Aggregate);
+                  Pref :=
+                    Prefix (Atree.Parent (Atree.Parent (Atree.Parent (Par))));
+
+                  if Einfo.Is_Entity_Name (Pref)
+                    and then Present (Einfo.Actual_Subtype (Entity (Pref)))
+                  then
+                     Prefix_Type := Einfo.Actual_Subtype (Entity (Pref));
+                  else
+                     Prefix_Type := Etype (Pref);
+                  end if;
+
+                  Check_Type :=
+                    Etype (Einfo.First_Index
+                           (Sem_Util.Unique_Entity (Prefix_Type)));
+               end;
+            else
+               Check_Type := Etype (Par);
+            end if;
+
+         when N_Aggregate =>
+
+            --  This parent is a special choice, the LHS of an association
+            --  of a 'Update of a multi-dimensional array, for example:
+            --  (I, J, K) of 'Update((I, J, K) => New_Val)
+
+            pragma Assert
+              (Nkind (Atree.Parent (Par)) = N_Component_Association);
+
+            Aggregate : declare
+
+               Aggr : constant Node_Id := Atree.Parent (Atree.Parent (Par));
+
+               pragma Assert
+                 (Nkind (Aggr) = N_Aggregate
+                  and then Nkind (Atree.Parent (Aggr)) = N_Attribute_Reference
+                  and then Get_Attribute_Id
+                    (Attribute_Name (Atree.Parent (Aggr))) = Attribute_Update);
+
+               Pref        : constant Node_Id := Prefix (Atree.Parent (Aggr));
+               Num_Dim     : constant Pos :=
+                 Einfo.Number_Dimensions
+                   (SPARK_Util.Types.Retysp (Etype (Pref)));
+               Multi_Exprs : constant List_Id := Expressions (Par);
+
+               Dim_Expr      : Node_Id;
+               Array_Type    : Entity_Id;
+               Current_Index : Node_Id;
+               Found         : Boolean;
+
+               pragma Assert (1 < Num_Dim
+                              and then No (Component_Associations (Par))
+                              and then List_Length (Multi_Exprs) = Num_Dim);
+
+            begin
+
+               --  When present, the Actual_Subtype of the entity should be
+               --  used instead of the Etype of the prefix.
+
+               if Einfo.Is_Entity_Name (Pref)
+                 and then Present (Einfo.Actual_Subtype (Entity (Pref)))
+               then
+                  Array_Type := Einfo.Actual_Subtype (Entity (Pref));
+               else
+                  Array_Type := Etype (Pref);
+               end if;
+
+               --  Find the index type for this expression's dimension.
+
+               Dim_Expr      := Nlists.First (Multi_Exprs);
+               Current_Index :=
+                 Einfo.First_Index (Sem_Util.Unique_Entity (Array_Type));
+               Found         := False;
+
+               while Present (Dim_Expr) loop
+                  if N = Dim_Expr then
+                     Check_Type := Etype (Current_Index);
+                     Found := True;
+                     exit;
+                  end if;
+                  Next (Dim_Expr);
+                  Einfo.Next_Index (Current_Index);
+               end loop;
+
+               pragma Assert (Found);
+
+            end Aggregate;
+
+         when N_Aspect_Specification =>
+
+            --  We only expect range checks on aspects for default values.
+
+            case Aspects.Get_Aspect_Id (Par) is
+            when Aspects.Aspect_Default_Component_Value =>
+               pragma Assert
+                 (Einfo.Is_Array_Type
+                    (SPARK_Util.Types.Retysp (Entity (Par))));
+               Check_Type :=
+                 Einfo.Component_Type
+                   (SPARK_Util.Types.Retysp (Entity (Par)));
+            when Aspects.Aspect_Default_Value =>
+               pragma Assert
+                 (Einfo.Is_Scalar_Type
+                    (SPARK_Util.Types.Retysp (Entity (Par))));
+               Check_Type := SPARK_Util.Types.Retysp (Entity (Par));
+            when others =>
+               Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] aspect ="
+                                     &  Aspects.Aspect_Id'Image
+                                       (Aspects.Get_Aspect_Id (Par)));
+               raise Program_Error;
+            end case;
+
+         when N_Component_Declaration
+            | N_Discriminant_Specification
+            =>
+            --  We expect range checks on defaults of record fields and
+            --  discriminants.
+
+            Check_Type := Etype (Defining_Identifier (Par));
+
+         when N_If_Expression =>
+            Check_Type := Etype (Par);
+
+         when N_Case_Expression_Alternative =>
+            Check_Type := Etype (Atree.Parent (Par));
+
+         when others =>
+            Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
+                                  & Node_Kind'Image (Nkind (Par)));
+            raise Program_Error;
+      end case;
+
+      --  Reach through a non-private type in order to query its kind
+
+      Check_Type := SPARK_Util.Types.Retysp (Check_Type);
+
+      --  If the target type is a constrained array, we have a length check.
+
+      if Einfo.Is_Array_Type (Check_Type) and then
+        Einfo.Is_Constrained (Check_Type)
+      then
+         Check_Kind := SPARK_Util.RCK_Length;
+
+         --  For attributes Pred and Succ, the check is a range check for
+         --  enumeration types, and an overflow check otherwise. We use special
+         --  values of Check_Kind to account for the different range checked in
+         --  these cases.
+
+      elsif Nkind (Par) = N_Attribute_Reference and then
+        Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Pred
+      then
+         if Einfo.Is_Enumeration_Type (Check_Type) then
+            Check_Kind := SPARK_Util.RCK_Range_Not_First;
+         else
+            Check_Kind := SPARK_Util.RCK_Overflow_Not_First;
+         end if;
+
+      elsif Nkind (Par) = N_Attribute_Reference and then
+        Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Succ
+      then
+         if Einfo.Is_Enumeration_Type (Check_Type) then
+            Check_Kind := SPARK_Util.RCK_Range_Not_Last;
+         else
+            Check_Kind := SPARK_Util.RCK_Overflow_Not_Last;
+         end if;
+
+         --  Otherwise, this is a range check
+
+      else
+         Check_Kind := SPARK_Util.RCK_Range;
+      end if;
+   end Get_Range_Check_Info;
+
    -----------------------
    -- Get_Return_Object --
    -----------------------
@@ -377,6 +762,53 @@ package body SPARK_Atree is
    ------------
 
    function Intval (N : Node_Id) return Uint renames Sinfo.Intval;
+
+   ---------------------------------------------
+   -- Is_Choice_Of_Unconstrained_Array_Update --
+   ---------------------------------------------
+
+   function Is_Choice_Of_Unconstrained_Array_Update
+     (N : Node_Id) return Boolean
+   is
+      Possibly_Choice_Node, Attribute_Node : Node_Id;
+   begin
+      if Nkind (Atree.Parent (N)) = N_Component_Association then
+         Possibly_Choice_Node := N;
+      elsif Nkind (Atree.Parent (N)) = N_Range
+        and then Nkind (Atree.Parent (Atree.Parent (N))) =
+        N_Component_Association
+      then
+         Possibly_Choice_Node := Atree.Parent (N);
+      else
+         return False;
+      end if;
+
+      if Nkind
+        (Atree.Parent (Atree.Parent (Possibly_Choice_Node))) = N_Aggregate
+      then
+         Attribute_Node :=
+           Atree.Parent
+             (Atree.Parent (Atree.Parent (Possibly_Choice_Node)));
+      else
+         return False;
+      end if;
+
+      if Nkind (Attribute_Node) = N_Attribute_Reference
+        and then Get_Attribute_Id (Attribute_Name (Attribute_Node))
+          = Attribute_Update
+        and then Einfo.Is_Array_Type (Etype (Prefix (Attribute_Node)))
+        and then
+          not (Einfo.Is_Constrained (Etype (Prefix (Attribute_Node))))
+        and then Is_List_Member (Possibly_Choice_Node)
+        and then Present (Choices (Atree.Parent (Possibly_Choice_Node)))
+        and then List_Containing (Possibly_Choice_Node)
+        = Choices (Atree.Parent (Possibly_Choice_Node))
+      then
+         return True;
+      else
+         return False;
+      end if;
+   end Is_Choice_Of_Unconstrained_Array_Update;
 
    ----------------------------
    -- Is_Component_Left_Opnd --

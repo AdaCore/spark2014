@@ -27,12 +27,8 @@ with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
-with Ada.Text_IO;
-with Aspects;                    use Aspects;
-with Atree;                      use Atree;
 with Checks;                     use Checks;
 with Common_Containers;          use Common_Containers;
-with Einfo;                      use Einfo;
 with Errout;                     use Errout;
 with Eval_Fat;
 with Gnat2Why.Error_Messages;    use Gnat2Why.Error_Messages;
@@ -40,13 +36,9 @@ with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;       use Gnat2Why.Subprograms;
 with Gnat2Why_Args;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
-with Nlists;                     use Nlists;
-with Sem_Aux;                    use Sem_Aux;
-with Sem_Eval;                   use Sem_Eval;
-with Sem_Util;                   use Sem_Util;
-with Sinfo;                      use Sinfo;
 with Sinput;                     use Sinput;
-with SPARK_Util;                 use SPARK_Util;
+with SPARK_Atree;                use SPARK_Atree;
+with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with SPARK_Util.Types;           use SPARK_Util.Types;
 with Stand;                      use Stand;
@@ -92,12 +84,6 @@ package body Why.Gen.Expr is
    --  for conversions with fixed-point types, as the base type EW_Fixed does
    --  not allow retrieving the name of the appropriate conversion function,
    --  only the abstract fixed-point type allows it.
-
-   function Is_Choice_Of_Unconstrained_Array_Update
-     (Node : Node_Id) return Boolean;
-   --  Determines whether the node is some kind of a choice of a 'Update of
-   --  an unconstrained array. This is useful for producing the extra
-   --  checks required for updates of unconstrained arrays.
 
    function New_Located_Label (Input : Source_Ptr) return Name_Id;
    --  @param Input a source pointer
@@ -484,9 +470,9 @@ package body Why.Gen.Expr is
          for I in 1 .. Dim loop
             declare
                Low_From : constant Node_Id :=
-                 Get_Low_Bound (Nth_Index_Type (From_Ent, I));
+                 Type_Low_Bound (Nth_Index_Type (From_Ent, I));
                Low_To   : constant Node_Id :=
-                 Get_Low_Bound (Nth_Index_Type (To_Ent, I));
+                 Type_Low_Bound (Nth_Index_Type (To_Ent, I));
             begin
                if not Is_Static_Expression (Low_From)
                  or else not Is_Static_Expression (Low_To)
@@ -816,21 +802,7 @@ package body Why.Gen.Expr is
 
             Do_Check : constant Boolean :=
               Domain = EW_Prog and then Check_Needed and then
-                 (Do_Range_Check (Ada_Node)
-                    or else
-                  (Nkind (Parent (Ada_Node)) = N_Type_Conversion
-                   and then Do_Overflow_Check (Parent (Ada_Node)))
-                    or else
-                  (Nkind (Ada_Node) = N_Type_Conversion
-                   and then Do_Range_Check (Expression (Ada_Node))
-                   and then Nkind (Parent (Ada_Node)) in
-                     N_Parameter_Association | N_Procedure_Call_Statement
-                       | N_Entry_Call_Statement
-                   and then Ekind (Get_Formal_From_Actual (Ada_Node)) in
-                     E_In_Out_Parameter | E_Out_Parameter)
-                    or else
-                  (Nkind (Parent (Ada_Node)) = N_Range
-                   and then Do_Range_Check (Parent (Ada_Node))));
+              Do_Check_On_Scalar_Converion (Ada_Node);
 
          begin
             T := Insert_Scalar_Conversion (Domain   => Domain,
@@ -1027,7 +999,7 @@ package body Why.Gen.Expr is
      (Ada_Node   : Node_Id;
       Ty         : Entity_Id;
       W_Expr     : W_Expr_Id;
-      Check_Kind : Range_Check_Kind) return W_Prog_Id
+      Check_Kind : Scalar_Check_Kind) return W_Prog_Id
    is
       W_Type : constant W_Type_Id :=
         (if Get_Type_Kind (Get_Type (W_Expr)) = EW_Split
@@ -1127,7 +1099,7 @@ package body Why.Gen.Expr is
             W_Fun := MF_Floats (W_Type).Range_Check;
 
             declare
-               BV_Size : constant Uint := Esize (Ty);
+               BV_Size : constant Uint := Modular_Size (Ty);
 
                Of_BV_RTP : constant W_Identifier_Id :=
                  (if BV_Size = Uint_8 then
@@ -1230,7 +1202,7 @@ package body Why.Gen.Expr is
             --  and the range check performed in the target bitvector, we then
             --  convert back to W_Type.
 
-            elsif BitVector_Type_Size (W_Type) <= Esize (Ty) then
+            elsif BitVector_Type_Size (W_Type) <= Modular_Size (Ty) then
                declare
                   Range_Typ : constant W_Type_Id := Type_Of_Node (Ty);
                begin
@@ -1355,356 +1327,9 @@ package body Why.Gen.Expr is
           and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
           and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
 
-      procedure Get_Range_Check_Info
-        (Expr       : Node_Id;
-         Lvalue     : Boolean;
-         Check_Type : out Entity_Id;
-         Check_Kind : out Range_Check_Kind);
-      --  The frontend sets Do_Range_Check flag to True both for range checks
-      --  and for index checks. We distinguish between these by calling this
-      --  procedure, which also sets the bounds against which the value of Expr
-      --  should be checked. Expr should have the flag Do_Range_Check flag set
-      --  to True. Check_Type is set to the entity giving the bounds for the
-      --  check. Check_Kind is set to an appropriate check kind, denoting a
-      --  range check, an overflow check or an index check.
-
-      --------------------------
-      -- Get_Range_Check_Info --
-      --------------------------
-
-      procedure Get_Range_Check_Info
-        (Expr       : Node_Id;
-         Lvalue     : Boolean;
-         Check_Type : out Entity_Id;
-         Check_Kind : out Range_Check_Kind)
-      is
-         Par : Node_Id := Parent (Expr);
-
-      begin
-         --  In proof, we use the original node for unchecked conversions
-         --  coming from source.
-
-         if Nkind (Par) = N_Unchecked_Type_Conversion
-           and then Comes_From_Source (Par)
-         then
-            Par := Original_Node (Par);
-         end if;
-
-         --  Set the appropriate entity in Check_Type giving the bounds for the
-         --  check, depending on the parent node Par.
-
-         case Nkind (Par) is
-
-         when N_Assignment_Statement =>
-            Check_Type := Etype (Name (Par));
-
-         --  For an array access, an index check has already been introduced
-         --  if needed. There is no other check to do.
-
-         when N_Indexed_Component =>
-            Check_Type := Empty;
-            Check_Kind := RCK_Index;
-            return;
-
-         --  Frontend may have introduced unchecked type conversions on
-         --  expressions or variables assigned to, which require range
-         --  checking. When applied to a left-hand side of an assignment,
-         --  the target type for the range check is the type of the object
-         --  being converted. Otherwise, the target type is the type of the
-         --  conversion.
-
-         when N_Type_Conversion
-            | N_Unchecked_Type_Conversion
-         =>
-            Check_Type := (if Lvalue then Etype (Expr) else Etype (Par));
-
-         when N_Qualified_Expression =>
-            Check_Type := Etype (Par);
-
-         when N_Simple_Return_Statement =>
-            Check_Type :=
-              Etype (Return_Applies_To (Return_Statement_Entity (Par)));
-
-         --  For a call, retrieve the type for the corresponding argument
-
-         when N_Function_Call
-            | N_Procedure_Call_Statement
-            | N_Entry_Call_Statement
-            | N_Parameter_Association
-         =>
-            --  If Lvalue is True, we are checking actual parameters on stores.
-            --  In this case, the Check_Type is the type of the expression.
-            --  Otherwise, the Check_Type is the expected formal type.
-
-            if Lvalue then
-               Check_Type := Etype (Expr);
-            else
-               Check_Type := Etype (Get_Formal_From_Actual (Expr));
-            end if;
-
-         when N_Attribute_Reference =>
-            Attribute : declare
-               Aname   : constant Name_Id := Attribute_Name (Par);
-               Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
-            begin
-               case Attr_Id is
-                  when Attribute_Pred |
-                       Attribute_Succ |
-                       Attribute_Val  =>
-                     Check_Type := Base_Type (Entity (Prefix (Par)));
-
-                  when others =>
-                     Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] attr ="
-                                           & Attribute_Id'Image (Attr_Id));
-                     raise Program_Error;
-               end case;
-            end Attribute;
-
-         when N_Object_Declaration =>
-            Check_Type := Etype (Defining_Identifier (Par));
-
-         when N_Op_Expon =>
-
-            --  A range check on exponentiation is only possible on the right
-            --  operand, and in this case the check range is "Natural"
-
-            Check_Type := Standard_Natural;
-
-         when N_Component_Association =>
-
-            declare
-               Pref        : Node_Id;
-               Prefix_Type : Entity_Id;
-
-            begin
-               --  Expr is either
-               --  1) a choice of a 'Update aggregate, and needs a
-               --  range check towards the corresponding index type of the
-               --  prefix to the 'Update aggregate, or
-               --  2) a component expression of a 'Update aggregate for arrays,
-               --  and needs a range check towards the component type.
-               --  3) a component expression of a 'Update aggregate for
-               --  records, and needs a range check towards the type of
-               --  the component
-               --  3) an expression of a regular record aggregate, and
-               --  needs a range check towards the expected type.
-
-               if Nkind (Parent (Par)) = N_Aggregate
-                   and then Nkind (Parent (Parent (Par))) =
-                     N_Attribute_Reference
-                   and then
-                   Get_Attribute_Id
-                     (Attribute_Name (Parent (Parent (Par)))) =
-                       Attribute_Update
-               then
-
-                  Pref := Prefix (Parent (Parent (Par)));
-
-                  --  When present, the Actual_Subtype of the entity should be
-                  --  used instead of the Etype of the prefix.
-
-                  if Is_Entity_Name (Pref)
-                    and then Present (Actual_Subtype (Entity (Pref)))
-                  then
-                     Prefix_Type := Actual_Subtype (Entity (Pref));
-                  else
-                     Prefix_Type := Etype (Pref);
-                  end if;
-
-                  if Is_Record_Type (Prefix_Type) then
-
-                     Check_Type := Etype (First (Choices (Par)));
-
-                  --  it's an array type, determine whether the check is for
-                  --  the component or the index
-
-                  elsif Expression (Par) = Expr then
-                     Check_Type :=
-                       Component_Type (Unique_Entity (Prefix_Type));
-                  else
-                     Check_Type :=
-                       Etype (First_Index (Unique_Entity (Prefix_Type)));
-                  end if;
-
-               --  must be a regular record aggregate
-
-               else
-                  pragma Assert (Expression (Par) = Expr);
-
-                  Check_Type := Etype (Expr);
-               end if;
-            end;
-
-         when N_Range =>
-            if Is_Choice_Of_Unconstrained_Array_Update (Par) then
-               declare
-                  Pref        : Node_Id;
-                  Prefix_Type : Entity_Id;
-
-               begin
-                  pragma Assert (Nkind (Parent (Parent (Par))) = N_Aggregate);
-                  Pref := Prefix (Parent (Parent (Parent (Par))));
-
-                  if Is_Entity_Name (Pref)
-                    and then Present (Actual_Subtype (Entity (Pref)))
-                  then
-                     Prefix_Type := Actual_Subtype (Entity (Pref));
-                  else
-                     Prefix_Type := Etype (Pref);
-                  end if;
-
-                  Check_Type :=
-                    Etype (First_Index (Unique_Entity (Prefix_Type)));
-               end;
-            else
-               Check_Type := Etype (Par);
-            end if;
-
-         when N_Aggregate =>
-
-            --  This parent is a special choice, the LHS of an association
-            --  of a 'Update of a multi-dimensional array, for example:
-            --  (I, J, K) of 'Update((I, J, K) => New_Val)
-
-            pragma Assert (Nkind (Parent (Par)) = N_Component_Association);
-
-            Aggregate : declare
-
-               Aggr : constant Node_Id := Parent (Parent (Par));
-
-               pragma Assert (Nkind (Aggr) = N_Aggregate
-                  and then Nkind (Parent (Aggr)) = N_Attribute_Reference
-                  and then Get_Attribute_Id
-                    (Attribute_Name (Parent (Aggr))) = Attribute_Update);
-
-               Pref        : constant Node_Id := Prefix (Parent (Aggr));
-               Num_Dim     : constant Pos :=
-                 Number_Dimensions (Type_Of_Node (Pref));
-               Multi_Exprs : constant List_Id := Expressions (Par);
-
-               Dim_Expr      : Node_Id;
-               Array_Type    : Entity_Id;
-               Current_Index : Node_Id;
-               Found         : Boolean;
-
-               pragma Assert (1 < Num_Dim
-                                and then No (Component_Associations (Par))
-                                and then List_Length (Multi_Exprs) = Num_Dim);
-
-            begin
-
-               --  When present, the Actual_Subtype of the entity should be
-               --  used instead of the Etype of the prefix.
-
-               if Is_Entity_Name (Pref)
-                 and then Present (Actual_Subtype (Entity (Pref)))
-               then
-                  Array_Type := Actual_Subtype (Entity (Pref));
-               else
-                  Array_Type := Etype (Pref);
-               end if;
-
-               --  Find the index type for this expression's dimension.
-
-               Dim_Expr      := Nlists.First (Multi_Exprs);
-               Current_Index := First_Index (Unique_Entity (Array_Type));
-               Found         := False;
-
-               while Present (Dim_Expr) loop
-                  if Expr = Dim_Expr then
-                     Check_Type := Etype (Current_Index);
-                     Found := True;
-                     exit;
-                  end if;
-                  Next (Dim_Expr);
-                  Next_Index (Current_Index);
-               end loop;
-
-               pragma Assert (Found);
-
-            end Aggregate;
-
-         when N_Aspect_Specification =>
-
-            --  We only expect range checks on aspects for default values.
-
-            case Get_Aspect_Id (Par) is
-            when Aspect_Default_Component_Value =>
-               pragma Assert (Is_Array_Type (Retysp (Entity (Par))));
-               Check_Type := Component_Type (Retysp (Entity (Par)));
-            when Aspect_Default_Value =>
-               pragma Assert (Is_Scalar_Type (Retysp (Entity (Par))));
-               Check_Type := Retysp (Entity (Par));
-            when others =>
-               Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] aspect ="
-                                     & Aspect_Id'Image (Get_Aspect_Id (Par)));
-               raise Program_Error;
-            end case;
-
-         when N_Component_Declaration
-            | N_Discriminant_Specification
-         =>
-            --  We expect range checks on defaults of record fields and
-            --  discriminants.
-
-            Check_Type := Etype (Defining_Identifier (Par));
-
-         when N_If_Expression =>
-            Check_Type := Etype (Par);
-
-         when N_Case_Expression_Alternative =>
-            Check_Type := Etype (Parent (Par));
-
-         when others =>
-            Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
-                                  & Node_Kind'Image (Nkind (Par)));
-            raise Program_Error;
-         end case;
-
-         --  Reach through a non-private type in order to query its kind
-
-         Check_Type := Retysp (Check_Type);
-
-         --  If the target type is a constrained array, we have a length check.
-
-         if Is_Array_Type (Check_Type) and then
-           Is_Constrained (Check_Type)
-         then
-            Check_Kind := RCK_Length;
-
-         --  For attributes Pred and Succ, the check is a range check for
-         --  enumeration types, and an overflow check otherwise. We use special
-         --  values of Check_Kind to account for the different range checked in
-         --  these cases.
-
-         elsif Nkind (Par) = N_Attribute_Reference and then
-           Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Pred
-         then
-            if Is_Enumeration_Type (Check_Type) then
-               Check_Kind := RCK_Range_Not_First;
-            else
-               Check_Kind := RCK_Overflow_Not_First;
-            end if;
-
-         elsif Nkind (Par) = N_Attribute_Reference and then
-           Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Succ
-         then
-            if Is_Enumeration_Type (Check_Type) then
-               Check_Kind := RCK_Range_Not_Last;
-            else
-               Check_Kind := RCK_Overflow_Not_Last;
-            end if;
-
-         --  Otherwise, this is a range check
-
-         else
-            Check_Kind := RCK_Range;
-         end if;
-      end Get_Range_Check_Info;
-
       --  Type and kind for the range check
       Range_Type : Entity_Id := Empty;
-      Check_Kind : Range_Check_Kind := RCK_Range;
+      Check_Kind : Scalar_Check_Kind := RCK_Range;
 
    --  Start of processing for Insert_Scalar_Conversion
 
@@ -1748,7 +1373,7 @@ package body Why.Gen.Expr is
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
       Range_Type : Entity_Id;
-      Check_Kind : Range_Check_Kind;
+      Check_Kind : Scalar_Check_Kind;
       Lvalue     : Boolean := False) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
@@ -2164,47 +1789,6 @@ package body Why.Gen.Expr is
                   Args     => (1 => +Expr),
                   Typ      => To);
    end Insert_Single_Conversion;
-
-   ---------------------------------------------
-   -- Is_Choice_Of_Unconstrained_Array_Update --
-   ---------------------------------------------
-
-   function Is_Choice_Of_Unconstrained_Array_Update
-     (Node : Node_Id) return Boolean
-   is
-      Possibly_Choice_Node, Attribute_Node : Node_Id;
-   begin
-      if Nkind (Parent (Node)) = N_Component_Association then
-         Possibly_Choice_Node := Node;
-      elsif Nkind (Parent (Node)) = N_Range
-        and then Nkind (Parent (Parent (Node))) = N_Component_Association
-      then
-         Possibly_Choice_Node := Parent (Node);
-      else
-         return False;
-      end if;
-
-      if Nkind (Parent (Parent (Possibly_Choice_Node))) = N_Aggregate then
-         Attribute_Node := Parent (Parent (Parent (Possibly_Choice_Node)));
-      else
-         return False;
-      end if;
-
-      if Nkind (Attribute_Node) = N_Attribute_Reference
-        and then Get_Attribute_Id (Attribute_Name (Attribute_Node))
-                   = Attribute_Update
-        and then Is_Array_Type (Etype (Prefix (Attribute_Node)))
-        and then not (Is_Constrained (Etype (Prefix (Attribute_Node))))
-        and then Is_List_Member (Possibly_Choice_Node)
-        and then Present (Choices (Parent (Possibly_Choice_Node)))
-        and then List_Containing (Possibly_Choice_Node)
-                   = Choices (Parent (Possibly_Choice_Node))
-      then
-         return True;
-      else
-         return False;
-      end if;
-   end Is_Choice_Of_Unconstrained_Array_Update;
 
    -------------------------
    -- Is_Essentially_Void --
@@ -2846,315 +2430,11 @@ package body Why.Gen.Expr is
    ---------------------
 
    function New_Shape_Label (Node : Node_Id) return Name_Id is
-
-      function Label_Append
-        (Buf : Unbounded_String)
-         return Unbounded_String
-      is
-        (if Buf = Null_Unbounded_String
-         then Null_Unbounded_String
-         else "__" & Buf);
-
-      Buf     : Unbounded_String := Null_Unbounded_String;
-      Node_It : Node_Id := Node;
-
-   --  Start of processing for New_Shape_Label
+      Buf : constant String := Shape_Of_Node (Node);
 
    begin
-      while Present (Node_It) loop
-         case Nkind (Node_It) is
-
-         when N_Subprogram_Body
-            | N_Subprogram_Specification
-            | N_Expression_Function
-            | N_Package_Body
-            | N_Package_Specification
-            | N_Generic_Subprogram_Declaration
-         =>
-            exit;
-
-         when N_Loop_Statement =>
-            declare
-               It_Scheme : constant Node_Id := Iteration_Scheme (Node_It);
-            begin
-               if Present (It_Scheme) then
-                  case Nkind (It_Scheme) is
-                  when N_Loop_Parameter_Specification |
-                       N_Iterator_Specification       =>
-                     --  for
-                     Buf := "for" & Label_Append (Buf);
-                  when others =>
-                     --  while
-                     Buf := "while" & Label_Append (Buf);
-                  end case;
-               else
-                  --  loop
-                  Buf := "loop" & Label_Append (Buf);
-               end if;
-            end;
-
-            if Identifier (Node_It) /= Empty then
-               Buf := Get_Name_String (Chars (Identifier (Node_It)))
-                 & "_" & Buf;
-            end if;
-
-         when N_Case_Statement
-            | N_Case_Expression
-         =>
-            Buf := "case" & Label_Append (Buf);
-
-         when N_If_Statement
-            | N_If_Expression
-         =>
-            Buf := "if" & Label_Append (Buf);
-
-         when N_Enumeration_Representation_Clause =>
-            Buf := Get_Name_String (Chars (Identifier (Node_It)))
-              & "_rep" & Label_Append (Buf);
-
-         when N_At_Clause =>
-            Buf := Get_Name_String (Chars (Identifier (Node_It)))
-              & "_at" & Label_Append (Buf);
-
-         when N_Record_Representation_Clause =>
-            Buf := Get_Name_String (Chars (Identifier (Node_It)))
-              & "_" & Buf;
-
-         when N_Component_Clause =>
-            Buf := Get_Name_String (Chars (Component_Name (Node_It)))
-              & "_rep" & Label_Append (Buf);
-
-         when N_Mod_Clause =>
-            Buf := "modrep" & Label_Append (Buf);
-
-         when N_Attribute_Definition_Clause =>
-            Buf := Get_Name_String (Chars (Name (Node_It))) & "_"
-              & Get_Name_String (Chars (Node_It))
-              & "_def" & Label_Append (Buf);
-
-         when N_Pragma_Argument_Association =>
-            Buf := "pragargs" & Label_Append (Buf);
-
-         when N_Op_Add =>
-            Buf := "add" & Label_Append (Buf);
-
-         when N_Op_Concat =>
-            Buf := "concat" & Label_Append (Buf);
-
-         when N_Op_Expon =>
-            Buf := "exp" & Label_Append (Buf);
-
-         when N_Op_Subtract =>
-            Buf := "sub" & Label_Append (Buf);
-
-         when N_Op_Divide =>
-            Buf := "div" & Label_Append (Buf);
-
-         when N_Op_Mod =>
-            Buf := "mod" & Label_Append (Buf);
-
-         when N_Op_Multiply =>
-            Buf := "mult" & Label_Append (Buf);
-
-         when N_Op_Rem =>
-            Buf := "rem" & Label_Append (Buf);
-
-         when N_Op_And =>
-            Buf := "and" & Label_Append (Buf);
-
-         when N_Op_Compare =>
-            Buf := "cmp" & Label_Append (Buf);
-
-         when N_Op_Or =>
-            Buf := "or" & Label_Append (Buf);
-
-         when N_Op_Xor =>
-            Buf := "xor" & Label_Append (Buf);
-
-         when N_Op_Rotate_Left =>
-            Buf := "rol" & Label_Append (Buf);
-
-         when N_Op_Rotate_Right =>
-            Buf := "ror" & Label_Append (Buf);
-
-         when N_Op_Shift_Left =>
-            Buf := "lsl" & Label_Append (Buf);
-
-         when N_Op_Shift_Right =>
-            Buf := "lsr" & Label_Append (Buf);
-
-         when N_Op_Shift_Right_Arithmetic =>
-            Buf := "asr" & Label_Append (Buf);
-
-         when N_Op_Abs =>
-            Buf := "abs" & Label_Append (Buf);
-
-         when N_Op_Minus =>
-            Buf := "minus" & Label_Append (Buf);
-
-         when N_Op_Not =>
-            Buf := "not" & Label_Append (Buf);
-
-         when N_Op_Plus =>
-            Buf := "plus" & Label_Append (Buf);
-
-         when N_Attribute_Reference =>
-            Buf := Get_Name_String (Attribute_Name (Node_It))
-              & "_ref" & Label_Append (Buf);
-
-         when N_Membership_Test =>
-            Buf := "in" & Label_Append (Buf);
-
-         when N_And_Then =>
-            Buf := "andthen" & Label_Append (Buf);
-
-         when N_Or_Else =>
-            Buf := "orelse" & Label_Append (Buf);
-
-         when N_Subprogram_Call =>
-            Buf := "call_" &
-              Get_Name_String (Chars (Get_Called_Entity (Node_It)))
-              & Label_Append (Buf);
-
-         when N_Indexed_Component =>
-            Buf := "ixdcomp" & Label_Append (Buf);
-
-         when N_Null =>
-            Buf := "null" & Label_Append (Buf);
-
-         when N_Qualified_Expression =>
-            Buf := Get_Name_String (Chars (Subtype_Mark (Node_It)))
-                                    & "_qual" & Label_Append (Buf);
-
-         when N_Quantified_Expression =>
-            Buf := (if All_Present (Node_It) then "forall" else "forsome")
-              & Label_Append (Buf);
-
-         when N_Aggregate =>
-            Buf := "aggr" & Label_Append (Buf);
-
-         when N_Allocator =>
-            Buf := "new_" & Buf;
-
-         when N_Raise_Expression =>
-            Buf := "raise" & Label_Append (Buf);
-
-         when N_Range =>
-            Buf := "range" & Label_Append (Buf);
-
-         when N_Selected_Component =>
-            Buf := "selectcomp" & Label_Append (Buf);
-
-         when N_Slice =>
-            Buf := "slice" & Label_Append (Buf);
-
-         when N_Type_Conversion | N_Unchecked_Type_Conversion =>
-            Buf := "typeconv" & Label_Append (Buf);
-
-         when N_Subtype_Indication =>
-            Buf := Get_Name_String (Chars (Subtype_Mark (Node_It)))
-              & "_ind" & Label_Append (Buf);
-
-         when N_Formal_Type_Declaration
-            | N_Implicit_Label_Declaration
-            | N_Object_Declaration
-            | N_Formal_Object_Declaration
-         =>
-            declare
-               I_Name : constant Name_Id := Chars (Defining_Identifier
-                                                   (Node_It));
-               Name_Str : constant String :=
-                 (if I_Name /= No_Name and then I_Name /= Error_Name then
-                     Get_Name_String (I_Name) & "_"
-                  else "");
-            begin
-               Buf := Name_Str & "decl" & Label_Append (Buf);
-            end;
-
-         when N_Full_Type_Declaration
-            | N_Incomplete_Type_Declaration
-            | N_Protected_Type_Declaration
-            | N_Private_Type_Declaration
-            | N_Subtype_Declaration
-         =>
-            Buf := Get_Name_String (Chars (Defining_Identifier (Node_It)))
-              & "_def" & Label_Append (Buf);
-
-         when N_Private_Extension_Declaration =>
-            Buf := Get_Name_String (Chars (Defining_Identifier (Node_It)))
-              & "_priv" & Label_Append (Buf);
-
-         when N_Body_Stub =>
-            Buf := Get_Name_String (Chars (Defining_Identifier (Node_It)))
-              & "_stub" & Label_Append (Buf);
-
-         when N_Generic_Instantiation =>
-            Buf := Get_Name_String (Chars (Defining_Identifier (Node_It)))
-              & "_inst" & Label_Append (Buf);
-
-         when N_Array_Type_Definition =>
-            Buf := "arrayof_" & Buf;
-
-         when N_Assignment_Statement =>
-            declare
-               Obj : constant Entity_Id :=
-                 Get_Enclosing_Object (Name (Node_It));
-               Obj_Name : Name_Id;
-
-            begin
-               Buf := "assign" & Label_Append (Buf);
-
-               if Present (Obj) then
-                  Obj_Name := Chars (Obj);
-
-                  if Obj_Name /= No_Name and then Obj_Name /= Error_Name then
-                     Buf := Get_Name_String (Obj_Name) & "_" & Buf;
-                  end if;
-               end if;
-            end;
-
-         when N_Block_Statement =>
-            declare
-               Tmp : constant String := (if Identifier (Node_It) /= Empty
-                                         then
-                                            Get_Name_String
-                                           (Chars (Identifier (Node_It))) & "_"
-                                         else "");
-            begin
-               Buf := Tmp & "declblk" & Label_Append (Buf);
-            end;
-
-         when N_Goto_Statement =>
-            Buf := "goto_" & Get_Name_String (Chars (Name (Node_It)))
-              & Label_Append (Buf);
-
-         when N_Raise_Statement =>
-            Buf := "raise" & (if Name (Node_It) /= Empty then
-                                 "_" & Get_Name_String
-                                (Chars (Name (Node_It)))
-                              else "") & Label_Append (Buf);
-
-         when N_Simple_Return_Statement
-            | N_Extended_Return_Statement
-         =>
-            Buf := "return" & Label_Append (Buf);
-
-         when N_Exit_Statement =>
-            Buf := "exit" & (if Name (Node_It) /= Empty then
-                                "_" & Get_Name_String (Chars (Name (Node_It)))
-                             else "")
-              & Label_Append (Buf);
-
-         when others =>
-            null;
-
-         end case;
-
-         Node_It := Parent (Node_It);
-      end loop;
-
-      if To_String (Buf) /= "" then
-         return NID (GP_Shape_Marker & To_String (Buf));
+      if Buf /= "" then
+         return NID (GP_Shape_Marker & Buf);
       else
          return No_Name;
       end if;
