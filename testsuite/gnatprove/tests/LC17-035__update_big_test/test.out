@@ -308,34 +308,15 @@ ar.ads:204:44: info: initialization of "A" proved
 ar.ads:207:14: info: initialization of "A" proved
 ar.ads:209:22: info: initialization of "A" proved
 ar.ads:209:22: info: postcondition proved (CVC4: 10 VC)
-ar.ads:209:43: info: initialization of "A" proved
-ar.ads:209:64: info: initialization of "A" proved
-ar.ads:209:85: info: initialization of "A" proved
-ar.ads:209:106: info: initialization of "A" proved
-ar.ads:209:128: info: initialization of "A" proved
-ar.ads:209:149: info: initialization of "A" proved
-ar.ads:209:170: info: initialization of "A" proved
-ar.ads:209:191: info: initialization of "A" proved
-ar.ads:209:212: info: initialization of "A" proved
 ar.ads:212:14: info: initialization of "A" proved
 ar.ads:214:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:214:44: info: initialization of "A" proved
 ar.ads:217:14: info: initialization of "A" proved
 ar.ads:219:22: info: postcondition proved (CVC4: 2 VC)
 ar.ads:219:59: info: initialization of "A" proved
-ar.ads:219:84: info: initialization of "A" proved
 ar.ads:222:14: info: initialization of "A" proved
 ar.ads:224:22: info: initialization of "A" proved
 ar.ads:224:22: info: postcondition proved (CVC4: 10 VC)
-ar.ads:224:43: info: initialization of "A" proved
-ar.ads:224:64: info: initialization of "A" proved
-ar.ads:224:85: info: initialization of "A" proved
-ar.ads:224:106: info: initialization of "A" proved
-ar.ads:224:128: info: initialization of "A" proved
-ar.ads:224:149: info: initialization of "A" proved
-ar.ads:224:170: info: initialization of "A" proved
-ar.ads:224:191: info: initialization of "A" proved
-ar.ads:224:212: info: initialization of "A" proved
 ar.ads:227:14: info: initialization of "A" proved
 ar.ads:229:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:229:44: info: initialization of "A" proved
@@ -345,27 +326,9 @@ ar.ads:234:44: info: initialization of "A" proved
 ar.ads:237:14: info: initialization of "A" proved
 ar.ads:239:22: info: initialization of "A" proved
 ar.ads:239:22: info: postcondition proved (CVC4: 10 VC)
-ar.ads:239:43: info: initialization of "A" proved
-ar.ads:239:64: info: initialization of "A" proved
-ar.ads:239:85: info: initialization of "A" proved
-ar.ads:239:106: info: initialization of "A" proved
-ar.ads:239:128: info: initialization of "A" proved
-ar.ads:239:149: info: initialization of "A" proved
-ar.ads:239:170: info: initialization of "A" proved
-ar.ads:239:191: info: initialization of "A" proved
-ar.ads:239:212: info: initialization of "A" proved
 ar.ads:242:14: info: initialization of "A" proved
 ar.ads:244:22: info: initialization of "A" proved
 ar.ads:244:22: info: postcondition proved (CVC4: 10 VC)
-ar.ads:244:40: info: initialization of "A" proved
-ar.ads:244:58: info: initialization of "A" proved
-ar.ads:244:76: info: initialization of "A" proved
-ar.ads:244:94: info: initialization of "A" proved
-ar.ads:244:113: info: initialization of "A" proved
-ar.ads:244:131: info: initialization of "A" proved
-ar.ads:244:149: info: initialization of "A" proved
-ar.ads:244:167: info: initialization of "A" proved
-ar.ads:244:185: info: initialization of "A" proved
 ar.ads:247:14: info: initialization of "A" proved
 ar.ads:249:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:249:44: info: initialization of "A" proved
@@ -375,27 +338,9 @@ ar.ads:254:44: info: initialization of "A" proved
 ar.ads:257:14: info: initialization of "A" proved
 ar.ads:259:22: info: initialization of "A" proved
 ar.ads:259:22: info: postcondition proved (CVC4: 10 VC)
-ar.ads:259:43: info: initialization of "A" proved
-ar.ads:259:64: info: initialization of "A" proved
-ar.ads:259:85: info: initialization of "A" proved
-ar.ads:259:106: info: initialization of "A" proved
-ar.ads:259:128: info: initialization of "A" proved
-ar.ads:259:149: info: initialization of "A" proved
-ar.ads:259:170: info: initialization of "A" proved
-ar.ads:259:191: info: initialization of "A" proved
-ar.ads:259:212: info: initialization of "A" proved
 ar.ads:262:14: info: initialization of "A" proved
 ar.ads:264:22: info: initialization of "A" proved
 ar.ads:264:22: info: postcondition proved (CVC4: 10 VC)
-ar.ads:264:44: info: initialization of "A" proved
-ar.ads:264:65: info: initialization of "A" proved
-ar.ads:264:86: info: initialization of "A" proved
-ar.ads:264:107: info: initialization of "A" proved
-ar.ads:264:128: info: initialization of "A" proved
-ar.ads:264:149: info: initialization of "A" proved
-ar.ads:264:170: info: initialization of "A" proved
-ar.ads:264:191: info: initialization of "A" proved
-ar.ads:264:212: info: initialization of "A" proved
 ar.ads:272:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:277:22: info: postcondition proved (CVC4: 2 VC)
 ar.ads:282:22: info: postcondition proved (CVC4: 1 VC)
@@ -710,7 +655,6 @@ ar.ads:1501:14: info: initialization of "R.S1" proved
 ar.ads:1501:14: info: initialization of "R.T1" proved
 ar.ads:1503:22: info: postcondition proved (CVC4: 3 VC)
 ar.ads:1503:44: info: initialization of "R.S1" proved
-ar.ads:1503:70: info: initialization of "R.S1" proved
 ar.ads:1503:88: info: initialization of "R.T1" proved
 ar.ads:1506:14: info: initialization of "R.S1" proved
 ar.ads:1506:14: info: initialization of "R.T1" proved
@@ -753,24 +697,20 @@ ar.ads:1691:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1694:14: info: initialization of "A" proved
 ar.ads:1697:22: info: postcondition proved (CVC4: 2 VC)
 ar.ads:1697:44: info: initialization of "A" proved
-ar.ads:1697:139: info: initialization of "A" proved
 ar.ads:1700:14: info: initialization of "A" proved
 ar.ads:1703:22: info: postcondition proved (CVC4: 4 VC)
 ar.ads:1703:59: info: initialization of "A" proved
-ar.ads:1703:121: info: initialization of "A" proved
-ar.ads:1703:154: info: initialization of "A" proved
-ar.ads:1703:180: info: initialization of "A" proved
 ar.ads:1706:14: info: initialization of "A" proved
 ar.ads:1709:22: info: initialization of "A" proved
 ar.ads:1709:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1712:14: info: initialization of "A" proved
 ar.ads:1715:22: info: initialization of "A" proved
 ar.ads:1715:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1723:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:1723:22: info: postcondition proved (CVC4: 2 VC)
 ar.ads:1728:22: info: postcondition proved (CVC4: 5 VC)
 ar.ads:1733:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1738:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1743:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:1743:22: info: postcondition proved (CVC4: 2 VC)
 ar.ads:1748:22: info: postcondition proved (CVC4: 6 VC)
 ar.ads:1753:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1758:22: info: postcondition proved (CVC4: 1 VC)

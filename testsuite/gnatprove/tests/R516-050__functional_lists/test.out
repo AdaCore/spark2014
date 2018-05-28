@@ -270,6 +270,4 @@ use_lists.ads:17:28: info: function contract not available for proof ("Length" m
 use_lists.ads:18:43: info: function contract not available for proof ("Length" might not return)
 use_lists.ads:19:32: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.ads:20:32: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.ads:20:51: info: initialization of "L2" proved
-use_lists.ads:20:51: info: initialization of private part of "L2" proved
 gnatprove: error during flow analysis and proof

@@ -132,8 +132,6 @@ admintoken.ads:227:26: info: initialization of "IDCert.Contents" constituent of 
 admintoken.ads:227:26: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:228:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:228:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:229:27: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.ads:229:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
 admintoken.ads:279:21: info: range check proved (CVC4: 1 VC)
 alarm.adb:42:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
 alarm.adb:45:30: info: refined post proved (CVC4: 2 VC)
