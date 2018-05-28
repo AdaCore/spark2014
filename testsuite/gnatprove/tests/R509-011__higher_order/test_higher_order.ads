@@ -1,27 +1,28 @@
 with Higher_Order;
+with Higher_Order.Fold;
 package Test_Higher_Order with SPARK_Mode is
 
    type Nat_Array is array (Positive range <>) of Natural;
 
-   subtype Small_Enough is Nat_Array with
-     Predicate => (for all I in Small_Enough'Range =>
-                     Small_Enough (I) < Integer'Last);
+   function Small_Enough (X : Natural) return Boolean is
+     (X < Integer'Last);
 
    function Add_One (X : Integer) return Integer is (X + 1) with
      Pre => X < Integer'Last;
 
-   function Add_All is new Higher_Order.Map_F
-     (Index_Type => Positive,
-      Element_1  => Natural,
-      Array_1    => Small_Enough,
-      Element_2  => Natural,
-      Array_2    => Nat_Array,
-      F          => Add_One);
+   function Add_All is new Higher_Order.Map
+     (Index_Type  => Positive,
+      Element_In  => Natural,
+      Array_In    => Nat_Array,
+      Element_Out => Natural,
+      Array_Out   => Nat_Array,
+      Init_Prop   => Small_Enough,
+      F           => Add_One);
 
    function A_Small_Enough (X : Integer) return Boolean is
      (X < Integer'Last);
 
-   procedure Add_All is new Higher_Order.Proc_Map_F
+   procedure Add_All is new Higher_Order.Map_Proc
      (Index_Type => Positive,
       Element    => Natural,
       Array_Type => Nat_Array,
@@ -34,34 +35,52 @@ package Test_Higher_Order with SPARK_Mode is
 
    type Small_Int_Array is array (Small_Index range <>) of Small_Int;
 
-   function In_Range (A : Small_Int_Array; X : Integer; C : Natural)
+   function In_Range (A : Small_Int_Array; X : Integer; I : Small_Index)
                       return Boolean
-   is (X in Integer'First + 100 * (A'Length - C) .. Integer'Last - 100 * (A'Length - C))
-     with Pre => C <= A'Length;
+   is (X in Integer'First + 100 * (I - A'First + 1) .. Integer'Last - 100 * (I - A'First + 1))
+     with Pre => I in A'Range;
 
-   package Sum is new Higher_Order.Fold
-     (Index_Type => Small_Index,
-      Element_1  => Small_Int,
-      Array_Type => Small_Int_Array,
-      Element_2  => Integer,
-      Ind_Prop   => In_Range,
-      F          => "+");
+   package Sum is new Higher_Order.Fold.Fold_Right
+     (Index_Type  => Small_Index,
+      Element_In  => Small_Int,
+      Array_Type  => Small_Int_Array,
+      Element_Out => Integer,
+      Ind_Prop    => In_Range,
+      F           => "+");
 
-   subtype Small_Nat is Natural range 0 .. 100;
-   type Matrix is array (Small_Index, Small_Index) of Small_Nat;
+   type Matrix is array (Small_Index range <>, Small_Index range <>) of Small_Int;
 
-   function In_Range (A : Matrix; X : Integer; C1, C2 : Natural)
+   function In_Range (A : Matrix; X : Integer; I, J : Small_Index)
                       return Boolean
-   is (X <= Integer'Last - 100 * (A'Length (1) - C1) * A'Length (2) - 100 * (A'Length (2) - C2))
-     with Pre => C1 <= A'Length (2) and C2 <= A'Length (1);
+   is (X <= Integer'Last - 100 * ((A'Last (1) - I) * A'Length (2) + A'Last (2) - J + 1)
+       and X >= Integer'First + 100 * ((A'Last (1) - I) * A'Length (2) + A'Last (2) - J + 1))
+     with Pre => I in A'Range (1) and then J in A'Range (2),
+     Post => (if In_Range'Result then X <= Integer'Last - 100 and then X >= Integer'First + 100);
 
-   package Sum_2 is new Higher_Order.Fold_2
-     (Index_1    => Small_Index,
-      Index_2    => Small_Index,
-      Element_1  => Small_Nat,
-      Array_Type => Matrix,
-      Element_2  => Integer,
-      Ind_Prop   => In_Range,
-      F          => "+");
+   package Sum_2 is new Higher_Order.Fold.Fold_2
+     (Index_1     => Small_Index,
+      Index_2     => Small_Index,
+      Element_In  => Small_Int,
+      Array_Type  => Matrix,
+      Element_Out => Integer,
+      Ind_Prop    => In_Range,
+      F           => "+");
+
+   package Sum_l is new Higher_Order.Fold.Sum
+     (Index_Type  => Small_Index,
+      Element     => Small_Int,
+      Array_Type  => Small_Int_Array);
+
+   pragma Assert (Sum_l.Sum (A => (1, 2, 3, 4, 5, 6, 7, 1, 1)) = 30);
+
+   function Is_Pos (X : Small_Int) return Boolean is (X >= 0);
+
+   package Cnt is new Higher_Order.Fold.Count
+     (Index_Type  => Small_Index,
+      Element     => Small_Int,
+      Array_Type  => Small_Int_Array,
+      Choose      => Is_Pos);
+
+   pragma Assert (Cnt.Count (A => (1, -2, 3, -4, -5, 6, 7, 13, 0)) = 6);
 
 end Test_Higher_Order;
