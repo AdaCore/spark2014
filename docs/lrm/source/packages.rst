@@ -1687,11 +1687,11 @@ were declared within a protected unit or task unit (see section
 
 .. _tu-fe-abstract_state_package_hierarchy_and_part_of-03:
 
-3. A variable or state abstraction which is part of the visible state
-   of a private child unit (or a public descendant thereof) shall have
-   its Part_Of indicator specified; the Part_Of indicator shall denote
-   a state abstraction declared by either the parent unit of the
-   private unit or by a public descendant of that parent unit.
+3. A variable or state abstraction which is part of the visible state of a
+   non-generic private child unit (or a public descendant thereof) shall have
+   its Part_Of indicator specified; the Part_Of indicator shall denote a state
+   abstraction declared by either the parent unit of the private unit or by a
+   public descendant of that parent unit.
 
 .. _tu-nt-abstract_state_package_hierarchy_and_part_of-04:
 
