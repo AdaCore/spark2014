@@ -2098,8 +2098,8 @@ package body Gnat2Why.Subprograms is
       if No (Value) then
          W_Def := Why_Empty;
 
-      --  If Functon_Entity is recursive, it is not inlined as it may interfere
-      --  with its verification.
+      --  If Function_Entity is recursive, it is not inlined as it may
+      --  interfere with its verification.
 
       elsif Is_Recursive (Function_Entity) then
          Error_Msg_N
@@ -2107,11 +2107,11 @@ package body Gnat2Why.Subprograms is
             Function_Entity);
 
          W_Def := Why_Empty;
-      else
 
          --  We fill the map of parameters, so that in the definition, we use
          --  local names of the parameters, instead of the global names.
 
+      else
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
          Push_Binders_To_Symbol_Table (Logic_Func_Binders);
 
@@ -2125,6 +2125,7 @@ package body Gnat2Why.Subprograms is
 
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       end if;
+
       return W_Def;
    end Compute_Inlined_Expr;
 
