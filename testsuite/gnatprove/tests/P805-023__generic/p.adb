@@ -9,9 +9,12 @@ package body P is
 
    D : Integer := 0;
 
+   function Identity (X : Integer) return Integer is (X)
+      with Pre =>True, SPARK_Mode => Off;
+
    function Target return Integer is
    begin
-      return 1/D;
+      return 1/Identity (D);
    end;
 
 end;
