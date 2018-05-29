@@ -1796,7 +1796,17 @@ package body SPARK_Definition is
                   Mark_Subprogram_Declaration (N);
                end if;
 
-               Mark_Subprogram_Body (N);
+               if Was_Expression_Function (N) then
+                  declare
+                     E : constant Entity_Id := Unique_Defining_Entity (N);
+                  begin
+                     if not Is_Generic_Subprogram (E) then
+                        Mark_Entity (E);
+                     end if;
+                  end;
+               else
+                  Mark_Subprogram_Body (N);
+               end if;
             end if;
 
          when N_Subprogram_Body_Stub =>
@@ -1823,7 +1833,7 @@ package body SPARK_Definition is
                if Present (Get_Expression_Function (E))
                  and then not Comes_From_Source (Original_Node (Body_N))
                then
-                  Mark_Subprogram_Body (Body_N);
+                  Mark_Entity (E);
                end if;
             end;
 
@@ -3696,6 +3706,39 @@ package body SPARK_Definition is
          Mark_Subprogram_Specification (if Ekind (E) in Entry_Kind
                                         then Parent (E)
                                         else Subprogram_Specification (E));
+
+         --  We mark bodies of expression functions when they are referenced
+         --  (including those from other compilation units), because proof
+         --  wants to use their bodies as an implicit contract.
+
+         --  ??? It would be simpler to use
+         --  Is_Expression_Function_Or_Completion, but in
+         --  some cases, the results are different, see
+         --  e.g. P126-025__generic_function_renaming.
+
+         if Ekind (E) = E_Function then
+            declare
+               My_Body : constant Node_Id := Subprogram_Body (E);
+            begin
+               if Present (My_Body)
+                 and then Was_Expression_Function (My_Body)
+
+                 --  Protect against marking the same body twice. This can
+                 --  happen, when the frontend creates a new entity for the
+                 --  same syntactic subprogram, e.g. for primitive operations
+                 --  of derived types.
+
+                 and then E = Ultimate_Alias (E)
+
+                 --  ??? Exclude functions from external axioms, that check
+                 --  could certainly be moved higher up.
+
+                 and then not Entity_In_Ext_Axioms (E)
+               then
+                  Mark_Subprogram_Body (My_Body);
+               end if;
+            end;
+         end if;
 
          Prag := (if Present (Contract (E))
                   then Pre_Post_Conditions (Contract (E))
