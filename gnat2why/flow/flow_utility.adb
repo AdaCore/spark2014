@@ -4241,7 +4241,7 @@ package body Flow_Utility is
       To_Be_Removed : Flow_Id_Sets.Set;
    begin
       for Obj of Objects loop
-         if Obj.Kind in Direct_Mapping | Record_Field then
+         if Obj.Kind = Direct_Mapping then
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (Obj);
             begin
@@ -4252,6 +4252,8 @@ package body Flow_Utility is
                   To_Be_Removed.Insert (Obj);
                end if;
             end;
+         else
+            pragma Assert (Obj.Kind = Magic_String);
          end if;
       end loop;
 
