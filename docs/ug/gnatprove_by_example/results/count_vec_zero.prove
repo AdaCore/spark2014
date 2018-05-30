@@ -1,7 +1,6 @@
 count_vec_zero.adb:3:38: info: initialization of "Counter" proved
 count_vec_zero.adb:5:11: info: postcondition proved
 count_vec_zero.adb:5:12: info: initialization of "Counter" proved
-count_vec_zero.adb:6:13: info: initialization of "Counter" proved
 count_vec_zero.adb:6:79: info: precondition proved
 count_vec_zero.adb:6:91: info: range check proved
 count_vec_zero.adb:12:10: info: precondition proved

@@ -3,7 +3,6 @@ search_list_zero.adb:4:59: info: initialization of "Success" proved
 search_list_zero.adb:6:11: info: initialization of "Success" proved
 search_list_zero.adb:6:11: info: postcondition proved
 search_list_zero.adb:6:22: info: precondition proved
-search_list_zero.adb:7:15: info: initialization of "Success" proved
 search_list_zero.adb:7:28: info: precondition proved
 search_list_zero.adb:7:40: info: initialization of "Pos.Node" proved
 search_list_zero.adb:11:26: info: initialization of "Cu.Node" proved

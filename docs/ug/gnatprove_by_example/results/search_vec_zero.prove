@@ -4,7 +4,6 @@ search_vec_zero.adb:5:11: info: initialization of "Success" proved
 search_vec_zero.adb:5:11: info: postcondition proved
 search_vec_zero.adb:5:73: info: precondition proved
 search_vec_zero.adb:5:85: info: range check proved
-search_vec_zero.adb:6:15: info: initialization of "Success" proved
 search_vec_zero.adb:6:28: info: precondition proved
 search_vec_zero.adb:6:40: info: initialization of "Pos" proved
 search_vec_zero.adb:6:40: info: range check proved
