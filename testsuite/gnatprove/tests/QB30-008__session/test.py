@@ -1,7 +1,7 @@
 from test_support import *
 from subprocess import call
 
-prove_all()
+prove_all(cache_allowed=False)
 
 installdir = spark_install_path()
 why3session = os.path.join(installdir, 'libexec', 'spark', 'bin',

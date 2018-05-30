@@ -107,7 +107,7 @@ def launch_server(limit_line, input_file):
     print ("Node_change = " +  str(node_change))
     return "DONE"
 
-prove_all(counterexample=False, prover=["cvc4"])
+prove_all(counterexample=False, prover=["cvc4"], cache_allowed=False)
 sleep(5)
 result = launch_server(limit_line="test.adb:11:16:VC_POSTCONDITION", input_file="test.in")
 print (result)
