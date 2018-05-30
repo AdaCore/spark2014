@@ -353,7 +353,7 @@ package body Serialisation is
                for J in 1 .. Count loop
                   Elt := Element (C);
                   Serialize (A, Elt);
-                  C := Next (C);
+                  Next (C);
                end loop;
             end;
       end case;

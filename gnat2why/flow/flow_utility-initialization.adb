@@ -68,7 +68,7 @@ package body Flow_Utility.Initialization is
                   raise Why.Unexpected_Node;
             end case;
 
-            N := Next (N);
+            Next (N);
          end loop;
 
          --  So, we can't find the component we're looking for; this means

@@ -108,7 +108,7 @@ package body Flow_Dependency_Maps is
             M.Insert (Direct_Mapping_Id (Canonical_Entity (E, Context)),
                       Flow_Id_Sets.Empty_Set);
          end;
-         Row := Next (Row);
+         Next (Row);
       end loop;
 
       --  Next, we look at the component associations, i.e. baz and bork in the
@@ -134,7 +134,7 @@ package body Flow_Dependency_Maps is
                   Outputs.Include
                     (Direct_Mapping_Id
                        (Canonical_Entity (Entity (LHS), Context)));
-                  LHS := Next (LHS);
+                  Next (LHS);
                end loop;
 
             when N_Attribute_Reference =>
@@ -171,7 +171,7 @@ package body Flow_Dependency_Maps is
                while Present (RHS) loop
                   Inputs.Include (Canonical_Entity (Entity (RHS), Context));
 
-                  RHS := Next (RHS);
+                  Next (RHS);
                end loop;
 
             when N_Identifier | N_Expanded_Name =>
@@ -206,7 +206,7 @@ package body Flow_Dependency_Maps is
             end loop;
          end if;
 
-         Row := Next (Row);
+         Next (Row);
       end loop;
 
       return M;

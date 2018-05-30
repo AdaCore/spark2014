@@ -1423,7 +1423,7 @@ package body Flow_Utility is
 
                      Process (Name_Input, Entity (RHS));
 
-                     RHS := Next (RHS);
+                     Next (RHS);
 
                      exit when No (RHS);
                   end loop;
@@ -1477,7 +1477,7 @@ package body Flow_Utility is
 
                      end case;
 
-                     Row := Next (Row);
+                     Next (Row);
 
                      exit when No (Row);
                   end loop;
@@ -3595,7 +3595,7 @@ package body Flow_Utility is
             Variables.Union (Get_Variables_Internal
                                (P,
                                 Ctx'Update (Consider_Extensions => False)));
-            P := Next (P);
+            Next (P);
          end loop;
       end return;
    end Get_Variables_Internal;

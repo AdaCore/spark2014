@@ -480,8 +480,8 @@ package body Flow.Analysis.Antialiasing is
                               Definitive_Result := False;
                         end case;
 
-                        Index_A := Next (Index_A);
-                        Index_B := Next (Index_B);
+                        Next (Index_A);
+                        Next (Index_B);
                      end loop;
                   end;
 
