@@ -80,7 +80,7 @@
   for Reliable Software}
 
 \author{\thanks{Work partly supported by the Joint Laboratory
-    ProofInUse (ANR-13-LAB3-0007, \url{http://www.spark-2014.org/proofinuse})} Claire~Dross\inst{1}
+    ProofInUse (ANR-13-LAB3-0007, \url{https://www.adacore.com/proofinuse})} Claire~Dross\inst{1}
   \and Guillaume~Foliard\inst{2} \and
   Théo~Jouanny\inst{3} \and \\ Lionel~Matias\inst{2} \and
   Stuart~Matthews\inst{4} \and Jean-Marc~Mota\inst{5} \and \\
@@ -155,13 +155,16 @@ While the benefits obtained by formal verification at Altran UK are clearly
 desirable, it may be intimidating for companies without formal verification
 know-how to start on this path. Knowing that others have replicated these
 benefits in other contexts is an important argument to make.  Here, we are
-describing the experiments done at Thales, during the years 2016 and 2017, to
+describing the experiments done at Thales with the support of AdaCore,
+during the years 2016 and 2017, to
 assess the costs and benefits of using formal verification of software using
 SPARK. With little investment in training (2 days in one experiment, self-training
 only in the other) and consulting (20 days in one experiment, online support only
 in the other), either provided
 externally or through self-training, the operational teams managed to specify
-intended behavior formally. The teams also proved critical
+intended behavior formally. The engineers in these teams were knowledgeable
+about Ada but not familiar with formal methods.
+The teams also proved critical
 properties of their software. Specifically: in multiple case studies the code was
 fully proved to be free of run-time errors (like buffer overflows and divisions
 by zero); in a subset of these case studies the code was proved to implement
@@ -225,7 +228,7 @@ program verification, put it in 2010: \textit{``Program verification is
 Departing from this academic tradition, SPARK has been focused on practical
 formal verification from the start. SPARK has been adopted in numerous large
 industrial projects and only critical parts of the software were proved
-``correct'' with respect to full functional specification. SPARK was used to
+``correct'' with respect to full functional (\ie behavioral) specification. SPARK was used to
 prove specific properties of interest about the software, like the absence of
 all possible run-time errors (no division by zero, no buffer overflow, etc.) and
 some user-specified safety or security properties.
@@ -246,14 +249,15 @@ invariant in the Eiffel programming language~\cite{meyer:1988:OSC}.  In its
 simplest formulation, a function contract consists of two Boolean expressions:
 a precondition to specify input constraints and a postcondition to specify
 output constraints.  Function contracts have subsequently been included in many
-other languages, either as part of the language (such as CodeContracts for
-.NET~\cite{CodeContracts} or contracts for SPARK) or as an annotation language
+other languages, either as part of the language (\eg contracts for SPARK),
+as part of the standard library (\eg CodeContracts for .NET~\cite{CodeContracts}) or as an annotation language
 (such as JML for Java~\cite{JML} or ACSL for C~\cite{acsl}). Type invariants
 may come in two forms, depending on whether they can be temporarily violated
 (type invariants in SPARK) or not (type predicates in SPARK). Contracts can be
 executed as runtime assertions, interpreted as logic formulas by analysis
 tools, or both.
 
+The latest version of SPARK has opted for both.
 This design choice has far-reaching consequences. First, specifying properties
 of programs is similar to programming: there is no additional language to learn
 and the tools available to the programmer also work on specifications. Second,
@@ -389,8 +393,8 @@ verification by testing could more easily be argued to be sufficient.
 Category 2, shown in gray, captures our practice at medium levels of integrity
 SIL-1 and SIL-2. Silver is still the default level, and it is very unlikely
 that Platinum would be employed on systems below SIL-3.  However, proof of key
-properties (Gold), should still be strongly considered. There may be some key
-property where proof represents a very efficient means of verification, i.e. it
+properties (Gold) should still be strongly considered. There may be some key
+property where proof represents a very efficient means of verification, \ie it
 is relatively easy to prove and relatively difficult to verify by any other
 means. The nature of such properties will vary from system to system, but could
 include even one key safety property (``the lift will not move when the doors
@@ -414,7 +418,7 @@ be immensely difficult to detect by other forms of
 verification~\cite{King2000TSE}.
 
 A key part of the software engineering process which maximizes the benefit of
-SPARK is a careful delineation of the ``SPARK boundary'' i.e. choosing which
+SPARK is a careful delineation of the ``SPARK boundary'' \ie choosing which
 parts of the application software will be written in SPARK. Although the
 benefits of SPARK would push towards maximizing the proportion of the software
 written in SPARK, other factors are likely to affect this engineering
@@ -445,7 +449,7 @@ of static and dynamic verification techniques are used to exploit the SPARK
 contracts.
 
 The hybrid approach that Altran is currently pioneering, called ConTestor, uses
-SPARK verification at Silver level i.e. assurance of AoRTE using proof. In
+SPARK verification at Silver level \ie assurance of AoRTE using proof. In
 addition, SPARK contracts are used to add a functional specification to the
 code. Rather than verifying these contracts by proof using the SPARK tools (as
 per the standard Platinum approach), they are verified dynamically by
@@ -454,7 +458,7 @@ compiled with the run-time checks enabled for the functional contracts. Test
 cases for the integrated code are generated using constrained-random test
 generation and if no exceptions are raised during execution then the code has
 passed this functional test. The contracts effectively provide a test oracle
-i.e. an independent calculation of the expected outcome for each test
+\ie an independent calculation of the expected outcome for each test
 case. However, rather than having to manually calculate the expected outcomes
 per test case, the contracts are written once and provide an implicit
 definition of the expected outcome for all possible test cases.
@@ -506,10 +510,10 @@ complete refactoring in the expected time frame (5 person-days), due to the
 size of the chosen code base (around 300 klocs). This is expected to be
 completed in the coming year.
 
-\paragraph{The second case study} focused on programmer proficiency. In that case study a small
-subprogram of less than 10 lines of code was given to an experienced Ada
+\paragraph{The second case study} focused on programmer proficiency. In that case study the small
+subprogram of less than 10 lines of code listed in Figure~\ref{fig:float-case} was given to an experienced Ada
 programmer with the goal of performing validation activities, both using the
-usual unitary test approach, and a contract-based approach. Based on current
+usual unitary test approach and a contract-based approach. Based on current
 tools, it took less than one hour for the experienced software test engineer to
 set up a working test environment for the subprogram. On the other hand,
 writing relevant contracts on that same subprogram to formally prove properties
@@ -519,6 +523,41 @@ the code to prove. As a consequence, there is no
 intention to invest in Gold level verification on numerical computations in the
 near future. The lesson is that one should start with the lowest levels of
 assurance and work upwards, as practiced in the subsequent case studies.
+
+\begin{figure}
+\begin{lstlisting}
+   subtype Nb_Type         is Natural     range 0   .. 100;
+   subtype D_Time_Type     is Float       range 0.0 .. 1_000.0;
+   subtype Delta_Time_Type is D_Time_Type range 0.0 .. 1.0;
+
+   procedure Study_Case (Nb_Of_Fp     : in     Nb_Type;
+                         Nb_Of_Pp     : in     Nb_Type;
+                         Delta_Time   : in     Delta_Time_Type;
+                         Time         : in out Float)
+   with
+     Pre     => Nb_Of_Pp > 0 and Delta_Time > 0.0 and
+                Time >= 0.5 * Float (Nb_Of_Fp + Nb_Of_Pp) * Delta_Time and
+                Time < Float'Last - Float (Nb_Of_Fp + Nb_Of_Pp) * Delta_Time,
+     Post    => (if Nb_Of_Fp > 0 then Time >= Time'Old)
+   is
+      D    : D_Time_Type;
+      T_Fp : Float;
+      T_Pp : Float;
+   begin
+      D    := Float (Nb_Of_Fp + Nb_Of_Pp) * Delta_Time;
+      T_Fp := Time - (D / 2.0);
+      T_Pp := T_Fp + Float (Nb_Of_Fp) * Delta_Time;
+      Time := T_Pp + 0.5 * Float (Nb_Of_Fp) * Delta_Time;
+   end Study_Case;
+\end{lstlisting}
+\caption{Simple problematic case for formal verification. The initial
+  postcondition contained a strict inequality \texttt{Time > Time'Old} that is
+  not true for high values of \texttt{Time} where the offset is absorbed. Even
+  the fixed postcondition with a non-strict inequality is not provable as it
+  depends on the respective magnitures of \texttt{Nb\_Of\_Fp} and \texttt{Nb\_Of\_Pp}
+  which are not specified in precondition.}
+\label{fig:float-case}
+\end{figure}
 
 \paragraph{The third case study} was designed to complement test result artifacts on
 automatically generated code. A large amount of the unit's software application source
@@ -534,9 +573,11 @@ and refactor the code (2 kloc for the runtime and 21 kloc of generated code) to
 pass Stone, Bronze and Silver levels. For code written by savvy programmers
 making a moderate use of specialized language features such levels are easy
 targets, in this case less than half a person-day for a few hundreds lines of
-code. Reaching Gold level to prove one property related to buffer overflows
+code. Reaching Gold level to prove one property related to buffer overflow
+on the generated code
 required a larger effort, two person-days in that case, in order to refactor
-the code for proof, interact with automatic provers through intermediate
+the code for proof (to avoid the weakness mentioned above related to buffer overflow),
+interact with automatic provers through intermediate
 assertions and provide the required loop invariants. Given the extra level of
 confidence regarding the robustness these changes provide, Thales plans to
 deploy them in the next release of the code generator.
@@ -548,7 +589,7 @@ code, need to be specified at the highest level of the code, almost at the
 entry point. Inside a 70 kloc control commands project, Thales and AdaCore
 engineers identified a few units (7 kloc) defining a set of high level automata
 where those properties could be specified.  As a first step, the engineers reached the
-Stone, Bronze, and Silver levels on this code in less than a person-day. Then,
+Stone, Bronze and Silver levels on this code in less than a person-day. Then,
 contracts were added on subprograms implementing the automata, mostly to
 express the effect of calling each automaton, also in less than a
 person-day. Automatic proof was obtained without much difficulty after that,
@@ -557,7 +598,7 @@ switches. The lessons learned here are that SPARK is expressive enough for
 typical safety automata properties, and powerful enough for automatic proof of
 such properties.
 
-\paragraph{Lessons learned -}
+\paragraph{Lessons learned.}
 From an adoption point of view, Thales concluded from this first study that
 formal verification as implemented by SPARK 2014 and its associated toolset can
 be considered as a toolbox providing various opportunities for subsetting and
@@ -579,7 +620,7 @@ part of the tests. Indeed, formal proofs allow a comprehensive checking of
 proved parts, unlike testing that can only guarantee a partial checking of the
 software.
 
-After an internship in 2015 comparing some available environments for formal
+After a previous internship in 2015 comparing some available environments for formal
 verification (eCv~\cite{Crocker2014CMS}, Frama-C~\cite{Kirchner2015}, SPARK),
 another six-months internship in 2017 was dedicated to the study of the
 benefits of the Ada language and particularly the SPARK language for the
@@ -601,7 +642,7 @@ body code was completed manually without difficulties as most C idioms are
 available with Ada. Interfacing with the C low-level cryptographic library was
 essential and was supported natively by Ada. This small step brought
 simpler code with pointer-related defensive code eliminated thanks to the use
-of handy Ada array attributes and built-in Ada compiler verification.
+of handy Ada array attributes and warnings from the Ada compiler.
 
 Firstly, Stone level was reached by transforming the Ada code to be valid SPARK
 code. It mostly consisted in suppression of pointers (or at least encapsulating
@@ -626,13 +667,36 @@ right algorithm with the right variant of a discriminated structure.
 In a fourth stage, Gold level was reached, verifying the functional behavior of
 the code.  Preconditions and postconditions were added in the code to specify key
 security requirements: cleanup of security-sensitive working variables,
-correctness of output value, and consistency between parameters. At this level, all
+correctness of output value, and consistency between parameters as presented in
+Figure~\ref{crypto-case}. At this level, all
 the existing defensive code had been replaced by contracts. By achieving
-complete proof of these specifications, the propagation of error codes from low
-level subprograms to high level ones was no longer necessary.
+complete proof of these specifications, the propagation of error codes from low-level
+subprograms to high-level ones was no longer necessary.
+
+\begin{figure}
+\begin{lstlisting}
+   procedure computeSha (input         : in     uint8_t_array;
+                         inputByteLen  : in     stdint_h.uint32_t;
+                         digest        :    out uint8_t_array;
+                         outputByteLen : in     stdint_h.uint32_t;
+                         hashByteLen   : in     stdint_h.uint32_t)
+   with
+     Contract_Cases => (hashByteLen = 20 => digest'Length = 20,
+                       hashByteLen = 32 => digest'Length = 32,
+                       hashByteLen = 48 => digest'Length = 48,
+                       hashByteLen = 64 => digest'Length = 64),
+     Pre => (inputByteLen = input'Length and
+            (hashByteLen = 20 or hashByteLen = 32 or
+             hashByteLen = 48 or hashByteLen = 64));
+\end{lstlisting}
+\caption{Simple case of contract for expressing consistency between parameters,
+  checking here that the length of the hashed message \texttt{digest'Length} is
+  consistent with the type of hash used \texttt{hashByteLen}.}
+\label{fig:crypto-case}
+\end{figure}
 
 \paragraph{The second case study} was about producing an API similar to the API ported from C
-during the first proof of concept, this time based on a low level cryptographic
+during the first proof of concept, this time based on a low-level cryptographic
 library in Ada, which was also later proved with SPARK. The whole process from
 Stone level to Gold level was followed again. New technical
 issues arised: the need for loop invariants, contracts on type hierarchies for
@@ -644,14 +708,15 @@ subprograms called inside a loop, which were not obvious to understand. Object
 Oriented Programming brings another layer of complexity, with specific rules
 for inheriting subprograms and contracts over these subprograms. Global
 variables mentioned in data flow contracts propagate to the upper levels of the
-call tree, where they are not visible anymore, which required costly
+call tree, where they may not be visible anymore (due to abstraction mechanisms in Ada),
+which required costly
 workarounds. A better solution would have been to hide this particular effect
 in a low-level non-SPARK package body, or to use the data abstraction feature
 available in SPARK. Finally, some idiomatic Ada code did not lead to automatic
-proofs in SPARK. It seemed to be a good thing as it led to changes for
+proofs in SPARK, which led to changes for
 simpler and more readable code.
 
-\paragraph{Lessons learned -}
+\paragraph{Lessons learned.}
 Thales learned a few lessons from this second study. First, the adoption
 guidance document was really helpful: it eased the implementation of SPARK
 during the second internship. As a result, it was also refined for future uses
@@ -666,7 +731,8 @@ used instead of changing the program.  Thirdly, reaching Gold Level is more
 easily achievable when clear and meaningful software specifications are
 available. Finally, not all code can be proved but non-provable parts that are
 well identified can undergo peer code reviews. For instance, 90\% of the code
-was automatically provable in the second case study.
+was automatically provable in the second case study, after suitable addition of
+contracts where necessary.
 
 \section{Related Works}
 \label{sec:related-works}
@@ -769,7 +835,11 @@ providing already very valuable benefits. These results could be translated to
 other formal methods that similarly provide different depths of use that could
 be translated to assurance levels.
 
-%\paragraph*{Acknowledgements.}
+\paragraph*{Acknowledgements.}
+
+We would like to thank the anonymous referees for their useful remarks, as well
+as our colleagues at AdaCore, Altran and Thales for their reviews on earlier
+drafts of this article.
 
 \bibliographystyle{plain}
 \bibliography{fm2018}
