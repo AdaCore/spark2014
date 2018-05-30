@@ -1,18 +1,14 @@
 from test_support import *
 from glob import glob
-# Do not use Z3, as the step limit fluctuates too much between platforms, thus
-# making it impossible to share a common expected output when Z3 is used.
 
 # List of all ada units (picking .adb in most cases, except when we only
 # have a spec file).
 files = [f + ".adb" if os.path.isfile(f + ".adb") else f + ".ads"
          for f in set(os.path.splitext(f)[0] for f in glob("*.ad?"))]
 
-default_level = 1
-proof_level = {"step_function_test.adb" : 3}
-
 for f in sorted(files):
-    prove_all(prover=["cvc4", "altergo"],
-              level=proof_level.get(f, default_level),
+    prove_all(prover=["cvc4", "altergo", "z3"],
+              vc_timeout=0,
+              steps=1000,
               counterexample=False,
               opt=["-u", f])
