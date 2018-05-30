@@ -80,7 +80,7 @@ is
    --  @param Skip are the nodes based on which filtering will occur
 
    procedure Remove_Generic_In_Formals_Without_Variable_Input
-     (Objects : in out Flow_Id_Sets.Set);
+     (Objects : in out Node_Sets.Set);
    --  Remove generic IN formals without variable input from Objects; for SPARK
    --  RM 6.1.4(18):
    --

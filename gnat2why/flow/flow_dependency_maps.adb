@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Common_Containers;              use Common_Containers;
 with Common_Iterators;               use Common_Iterators;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
@@ -80,7 +81,7 @@ package body Flow_Dependency_Maps is
       LHS : Node_Id;
       RHS : Node_Id;
 
-      Inputs  : Flow_Id_Sets.Set;
+      Inputs  : Node_Sets.Set;
       Outputs : Flow_Id_Sets.Set;
 
    --  Start of processing for Parse_Raw_Dependency_Map
@@ -168,17 +169,13 @@ package body Flow_Dependency_Maps is
             when N_Aggregate =>
                RHS := First (Expressions (RHS));
                while Present (RHS) loop
-                  Inputs.Include
-                    (Direct_Mapping_Id
-                       (Canonical_Entity (Entity (RHS), Context)));
+                  Inputs.Include (Canonical_Entity (Entity (RHS), Context));
 
                   RHS := Next (RHS);
                end loop;
 
             when N_Identifier | N_Expanded_Name =>
-               Inputs.Include
-                 (Direct_Mapping_Id
-                    (Canonical_Entity (Entity (RHS), Context)));
+               Inputs.Include (Canonical_Entity (Entity (RHS), Context));
 
             when N_Null =>
                null;
@@ -199,11 +196,13 @@ package body Flow_Dependency_Maps is
             --  nothing, since both Outputs and Inputs are empty.
             if not Inputs.Is_Empty then
                --  No explicit outputs means null
-               M.Insert (Key => Null_Flow_Id, New_Item => Inputs);
+               M.Insert (Key      => Null_Flow_Id,
+                         New_Item => To_Flow_Id_Set (Inputs));
             end if;
          else
             for Output of Outputs loop
-               M.Insert (Key => Output, New_Item => Inputs);
+               M.Insert (Key      => Output,
+                         New_Item => To_Flow_Id_Set (Inputs));
             end loop;
          end if;
 

@@ -1000,9 +1000,6 @@ package body Flow_Utility is
                       Use_Deduced_Globals => Use_Computed_Globals,
                       Ignore_Depends      => True);
 
-         Remove_Generic_In_Formals_Without_Variable_Input (Globals.Proof_Ins);
-         Remove_Generic_In_Formals_Without_Variable_Input (Globals.Inputs);
-
          --  Change all variants to Normal_Use
          Globals.Proof_Ins := Change_Variant (Globals.Proof_Ins, Normal_Use);
          Globals.Inputs    := Change_Variant (Globals.Inputs,    Normal_Use);
@@ -1500,14 +1497,21 @@ package body Flow_Utility is
             G_Out   := Down_Project (G_Out,   Scope);
 
             ---------------------------------------------------------------
-            --  Step 3: Sanity check that none of the proof ins are
+            --  Step 3: Remove generic formals without variable input
+            ---------------------------------------------------------------
+
+            Remove_Generic_In_Formals_Without_Variable_Input (G_Proof);
+            Remove_Generic_In_Formals_Without_Variable_Input (G_In);
+
+            ---------------------------------------------------------------
+            --  Step 4: Sanity check that none of the proof ins are
             --  mentioned as ins.
             ---------------------------------------------------------------
 
             --  pragma Assert ((G_Proof and G_In) = Node_Sets.Empty_Set);
 
             ---------------------------------------------------------------
-            --  Step 4: Trim constituents based on the Refined_Depends.
+            --  Step 5: Trim constituents based on the Refined_Depends.
             --  Only the Inputs are trimmed. Proof_Ins cannot be trimmed
             --  since they do not appear in Refined_Depends and Outputs
             --  cannot be trimmed since all constituents have to be
@@ -1546,21 +1550,12 @@ package body Flow_Utility is
             end if;
 
             ---------------------------------------------------------------
-            --  Step 5: Convert to Flow_Id sets
+            --  Step 6: Convert to Flow_Id sets
             ---------------------------------------------------------------
 
             Globals.Proof_Ins := To_Flow_Id_Set (G_Proof, In_View);
             Globals.Inputs    := To_Flow_Id_Set (G_In,    In_View);
             Globals.Outputs   := To_Flow_Id_Set (G_Out,   Out_View);
-
-            ---------------------------------------------------------------
-            --  Step 6: Remove generic formals without variable input
-            ---------------------------------------------------------------
-
-            Remove_Generic_In_Formals_Without_Variable_Input
-              (Globals.Proof_Ins);
-            Remove_Generic_In_Formals_Without_Variable_Input
-              (Globals.Inputs);
          end;
 
          Debug ("proof ins", Globals.Proof_Ins);
@@ -4236,24 +4231,16 @@ package body Flow_Utility is
    ------------------------------------------------------
 
    procedure Remove_Generic_In_Formals_Without_Variable_Input
-     (Objects : in out Flow_Id_Sets.Set)
+     (Objects : in out Node_Sets.Set)
    is
-      To_Be_Removed : Flow_Id_Sets.Set;
+      To_Be_Removed : Node_Sets.Set;
    begin
       for Obj of Objects loop
-         if Obj.Kind = Direct_Mapping then
-            declare
-               E : constant Entity_Id := Get_Direct_Mapping_Id (Obj);
-            begin
-               if Ekind (E) = E_Constant
-                 and then In_Generic_Actual (E)
-                 and then not Has_Variable_Input (E)
-               then
-                  To_Be_Removed.Insert (Obj);
-               end if;
-            end;
-         else
-            pragma Assert (Obj.Kind = Magic_String);
+         if Ekind (Obj) = E_Constant
+           and then In_Generic_Actual (Obj)
+           and then not Has_Variable_Input (Obj)
+         then
+            To_Be_Removed.Insert (Obj);
          end if;
       end loop;
 
