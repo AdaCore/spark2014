@@ -57,6 +57,8 @@ package Test_Higher_Order with SPARK_Mode is
      with Pre => I in A'Range (1) and then J in A'Range (2),
      Post => (if In_Range'Result then X <= Integer'Last - 100 and then X >= Integer'First + 100);
 
+   function Result_In_Range (A : Matrix; X : Integer) return Boolean is (True);
+
    package Sum_2 is new Higher_Order.Fold.Fold_2
      (Index_1     => Small_Index,
       Index_2     => Small_Index,
@@ -64,6 +66,7 @@ package Test_Higher_Order with SPARK_Mode is
       Array_Type  => Matrix,
       Element_Out => Integer,
       Ind_Prop    => In_Range,
+      Final_Prop  => Result_In_Range,
       F           => "+");
 
    package Sum_l is new Higher_Order.Fold.Sum
@@ -82,5 +85,28 @@ package Test_Higher_Order with SPARK_Mode is
       Choose      => Is_Pos);
 
    pragma Assert (Cnt.Count (A => (1, -2, 3, -4, -5, 6, 7, 13, 0)) = 6);
+
+   package Sum2_l is new Higher_Order.Fold.Sum_2
+     (Index_1     => Small_Index,
+      Index_2     => Small_Index,
+      Element     => Small_Int,
+      Array_Type  => Matrix);
+
+   pragma Assert (Sum2_l.Sum (A => (1 => (1, 2, 3, 4, 5, 6, 7, 1, 1),
+                                    2 => (1, 2, 3, 4, 5, 6, 7, 1, 1),
+                                    3 => (1, 2, 3, 4, 5, 6, 7, 1, 1),
+                                    4 => (1, 2, 3, 4, 5, 6, 7, 1, 0))) = 119);
+
+   package Cnt2 is new Higher_Order.Fold.Count_2
+     (Index_1     => Small_Index,
+      Index_2     => Small_Index,
+      Element     => Small_Int,
+      Array_Type  => Matrix,
+      Choose      => Is_Pos);
+
+   pragma Assert (Cnt2.Count (A => (1 => (1, -2, 3, -4, -5, 6, 7, 13, 0),
+                                    2 => (1, -2, 3, -4, -5, 6, 7, 13, 0),
+                                    3 => (1, -2, 3, -4, -5, 6, 7, 13, 0),
+                                    4 => (1, -2, 3, -4, -5, 6, 7, 13, -1))) = 23);
 
 end Test_Higher_Order;

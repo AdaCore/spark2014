@@ -1,213 +1,601 @@
-higher_order-fold.adb:14:17: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:14:17: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:16:25: info: overflow check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:16:25: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:16:35: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:16:35: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:18:19: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:18:19: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:18:19: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:18:19: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:19:21: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:19:21: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:19:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:19:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:19:34: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:19:34: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:19:44: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:19:44: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:19:47: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:19:47: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:19:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:19:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:21:24: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:21:24: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:21:29: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:21:29: info: precondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:21:35: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:21:35: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:21:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:21:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:21:52: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:21:52: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:22:23: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:22:23: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:31:10: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:31:10: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:33:21: info: overflow check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:33:21: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:33:31: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:33:31: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:34:39: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:34:39: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:34:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:34:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:34:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:34:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:34:46: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:34:46: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:34:53: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:34:53: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:34:63: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.adb:34:63: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.adb:51:17: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:53:25: info: overflow check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:53:35: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:55:19: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:55:19: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:56:21: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:56:34: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:56:44: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:56:47: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:56:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:58:24: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:58:29: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:58:35: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:58:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:58:52: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:59:23: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:68:10: info: initialization of "R" proved, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:70:21: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:70:31: info: initialization of "R" proved, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:71:39: info: initialization of "R" proved, in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:71:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:71:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:71:46: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:71:53: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:71:63: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:43
-higher_order-fold.adb:88:17: info: range check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:90:39: info: initialization of "Acc" proved, in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:90:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:90:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:90:45: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:90:58: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:90:62: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:92:19: info: loop invariant initialization proved (CVC4: 3 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:92:19: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:93:54: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:95:31: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:95:44: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:95:57: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:95:60: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:95:70: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:95:73: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:97:30: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:97:33: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:97:38: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:97:44: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:97:47: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:97:51: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:97:64: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:97:67: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:99:34: info: assertion proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:99:34: info: precondition proved (CVC4: 8 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:99:47: info: initialization of "Acc" proved, in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:99:52: info: range check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:99:55: info: range check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:100:31: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:100:44: info: initialization of "Acc" proved, in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:101:26: info: initialization of "R" proved, in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:103:22: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:103:22: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:103:52: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:105:33: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:105:46: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:105:56: info: initialization of "R" proved, in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:105:59: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:105:62: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:105:72: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:105:75: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:107:30: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:107:33: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:107:38: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:107:44: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:107:47: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:107:51: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:107:64: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:107:67: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:109:22: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:109:22: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:110:26: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:110:39: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:110:49: info: initialization of "R" proved, in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:110:52: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:110:55: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:110:65: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:110:68: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:112:25: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:112:28: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:112:33: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:112:39: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:112:42: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:112:46: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:112:59: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:112:62: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:113:42: info: initialization of "Acc" proved, in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:113:42: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:113:42: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:113:48: info: initialization of "R" proved, in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:113:51: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:113:54: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:122:10: info: initialization of "R" proved, in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:126:22: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:126:22: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:127:27: info: initialization of "R" proved, in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:127:31: info: precondition proved (CVC4: 3 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:127:50: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:127:50: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:127:56: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:129:27: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:129:40: info: initialization of "R" proved, in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:130:45: info: initialization of "R" proved, in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:130:45: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:130:45: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:130:49: info: precondition proved (CVC4: 3 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:130:66: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.adb:130:69: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:25:49: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:25:49: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:30:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:30:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:30:49: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:30:49: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:30:59: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:30:59: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:31:17: info: postcondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:31:17: info: postcondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:34:21: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:34:21: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:34:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:34:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:34:34: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:34:34: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:34:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:34:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:34:67: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:34:67: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:35:41: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:35:41: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:36:23: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:36:23: info: precondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:36:29: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:36:29: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:36:33: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:36:33: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:36:56: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:36:56: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:64:38: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:64:38: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:64:48: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:64:48: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:64:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:64:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:65:17: info: postcondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:65:17: info: postcondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:67:20: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:67:20: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:67:27: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:67:27: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:67:38: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:67:38: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:179, in instantiation at test_higher_order.ads:78
+higher_order-fold.adb:7:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:7:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:7:49: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:7:49: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:9:12: info: postcondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:9:12: info: postcondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:10:18: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:10:18: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:10:28: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:10:28: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:10:31: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:10:31: info: precondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:10:37: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:10:37: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:10:47: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:10:47: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:19:10: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:19:10: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:19:17: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:19:17: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:19:54: info: length check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:19:54: info: length check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:21:22: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:21:22: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:21:25: info: overflow check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:21:25: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:21:35: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:21:35: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:23:19: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:23:19: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:23:19: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:23:19: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:24:21: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:24:21: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:24:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:24:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:24:34: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:24:34: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:24:44: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:24:44: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:24:47: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:24:47: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:24:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:24:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:26:24: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:26:24: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:26:29: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:26:29: info: precondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:26:35: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:26:35: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:26:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:26:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:26:52: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:26:52: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:27:23: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:27:23: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:28:16: info: precondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:28:16: info: precondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:28:30: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:28:30: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:28:40: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:28:40: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:28:43: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:28:43: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:28:53: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:28:53: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:37:10: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:37:10: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:39:21: info: overflow check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:39:21: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:39:31: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:39:31: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:40:39: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:40:39: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:40:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:40:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:40:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:40:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:40:46: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:40:46: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:40:53: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:40:53: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:40:63: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.adb:40:63: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.adb:50:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:52:12: info: postcondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:53:18: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:53:31: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:53:37: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:53:47: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:62:10: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:62:17: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:62:54: info: length check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:64:22: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:64:25: info: overflow check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:64:35: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:66:19: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:66:19: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:67:21: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:67:34: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:67:44: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:67:47: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:67:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:69:24: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:69:29: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:69:35: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:69:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:69:52: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:70:23: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:71:16: info: precondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:71:30: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:71:40: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:71:43: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:71:53: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:80:10: info: initialization of "R" proved, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:82:21: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:82:31: info: initialization of "R" proved, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:83:39: info: initialization of "R" proved, in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:83:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:83:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:83:46: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:83:53: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:83:63: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:43
+higher_order-fold.adb:96:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:96:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:96:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:96:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:96:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:96:41: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:96:41: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:96:41: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:98:15: info: postcondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:98:15: info: postcondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:98:15: info: postcondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:99:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:99:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:99:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:99:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:99:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:99:34: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:99:34: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:99:34: info: precondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:99:40: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:99:40: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:99:40: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:99:44: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:99:44: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:99:44: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:99:62: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:99:62: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:99:62: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:99:68: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:99:68: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:99:68: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:107:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:107:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:107:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:107:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:107:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:109:15: info: postcondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:109:15: info: postcondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:109:15: info: postcondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:110:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:110:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:110:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:110:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:110:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:110:34: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:110:34: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:110:34: info: precondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:110:40: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:110:40: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:110:40: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:110:43: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:110:43: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:110:43: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:110:56: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:110:56: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:110:56: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:116:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:116:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:116:21: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:116:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:116:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:116:38: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:116:38: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:116:38: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:116:50: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:116:50: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:116:50: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:117:20: info: postcondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:117:20: info: postcondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:117:20: info: postcondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:117:32: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:117:32: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:117:35: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:117:35: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:117:35: info: precondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:117:42: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:117:42: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:117:42: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:117:54: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:117:54: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:117:54: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:133:10: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:133:10: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:133:10: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:133:17: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:133:17: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:133:17: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:134:12: info: length check proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:134:12: info: length check proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:134:12: info: length check proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:137:39: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:137:39: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:137:39: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:137:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:137:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:137:39: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:137:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:137:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:137:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:137:45: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:137:45: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:137:45: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:137:55: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:137:55: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:137:55: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:137:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:137:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:137:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:137:62: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:137:62: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:137:62: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:139:19: info: loop invariant initialization proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:139:19: info: loop invariant initialization proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:139:19: info: loop invariant initialization proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:139:19: info: loop invariant preservation proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:139:19: info: loop invariant preservation proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:139:19: info: loop invariant preservation proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:140:54: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:140:54: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:140:54: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:142:31: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:142:31: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:142:31: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:142:41: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:142:41: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:142:44: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:142:44: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:142:44: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:142:54: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:142:54: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:142:54: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:142:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:142:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:142:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:142:60: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:142:60: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:142:60: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:142:70: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:142:70: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:142:70: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:142:73: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:142:73: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:142:73: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:144:30: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:144:30: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:144:30: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:144:33: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:144:33: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:144:33: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:144:38: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:144:38: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:144:38: info: precondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:144:44: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:144:44: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:144:44: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:144:47: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:144:47: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:144:47: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:144:51: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:144:51: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:144:51: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:144:64: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:144:64: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:144:64: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:144:67: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:144:67: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:144:67: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:146:28: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:146:28: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:146:28: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:146:31: info: overflow check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:146:31: info: overflow check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:146:31: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:146:44: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:146:44: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:146:44: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:147:26: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:147:26: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:147:26: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:149:22: info: loop invariant initialization proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:149:22: info: loop invariant initialization proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:149:22: info: loop invariant initialization proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:149:22: info: loop invariant preservation proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:149:22: info: loop invariant preservation proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:149:22: info: loop invariant preservation proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:150:54: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:150:54: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:150:54: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:152:31: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:152:31: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:152:31: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:152:41: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:152:41: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:152:44: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:152:44: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:152:44: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:152:54: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:152:54: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:152:54: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:152:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:152:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:152:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:152:60: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:152:60: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:152:60: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:152:70: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:152:70: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:152:70: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:152:73: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:152:73: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:152:73: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:154:30: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:154:30: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:154:30: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:154:33: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:154:33: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:154:33: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:154:38: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:154:38: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:154:38: info: precondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:154:44: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:154:44: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:154:44: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:154:47: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:154:47: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:154:47: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:154:51: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:154:51: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:154:51: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:154:64: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:154:64: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:154:64: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:154:67: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:154:67: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:154:67: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:156:22: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:156:22: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:156:22: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:156:22: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:156:22: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:156:22: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:157:26: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:157:26: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:157:26: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:157:36: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:157:36: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:157:39: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:157:39: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:157:39: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:157:49: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:157:49: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:157:49: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:157:52: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:157:52: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:157:52: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:157:55: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:157:55: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:157:55: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:157:65: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:157:65: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:157:65: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:157:68: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:157:68: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:157:68: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:159:25: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:159:25: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:159:25: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:159:28: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:159:28: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:159:28: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:159:33: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:159:33: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:159:33: info: precondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:159:39: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:159:39: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:159:39: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:159:42: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:159:42: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:159:42: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:159:46: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:159:46: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:159:46: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:159:59: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:159:59: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:159:59: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:159:62: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:159:62: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:159:62: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:160:42: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:160:42: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:160:42: info: initialization of "Acc" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:160:42: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:160:42: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:160:42: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:160:42: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:160:42: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:160:42: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:160:48: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:160:48: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:160:48: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:160:51: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:160:51: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:160:51: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:160:54: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:160:54: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:160:54: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:161:19: info: precondition proved (CVC4: 5 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:161:19: info: precondition proved (CVC4: 5 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:161:19: info: precondition proved (CVC4: 5 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:161:37: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:161:37: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:161:37: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:161:47: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:161:47: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:161:47: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:161:50: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:161:50: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:161:50: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:161:53: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:161:53: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:161:53: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:161:63: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:161:63: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:161:63: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:161:66: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:161:66: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:161:66: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:163:16: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:163:16: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:163:16: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:163:34: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:163:34: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:163:34: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:163:44: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:163:44: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:163:44: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:163:47: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:163:47: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:163:47: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:163:51: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:163:51: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:163:51: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:163:69: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:163:69: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:163:69: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:165:13: info: precondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:165:13: info: precondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:165:13: info: precondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:165:28: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:165:28: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:165:28: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:165:38: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:165:38: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:165:38: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:165:42: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:165:42: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:165:42: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:165:54: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:165:54: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:165:54: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:173:10: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:173:10: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:173:10: info: initialization of "R" proved, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:177:22: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:177:22: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:177:22: info: initialization of "R" proved, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:177:22: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:177:22: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:177:22: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:177:22: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:177:22: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:177:22: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:177:29: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:177:29: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:177:29: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:178:28: info: precondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:178:28: info: precondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:178:28: info: precondition proved (CVC4: 3 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:178:35: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:178:35: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:178:35: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:178:45: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:178:45: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:178:45: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:178:49: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:178:49: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:178:49: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:180:37: info: assertion proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:180:37: info: assertion proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:180:37: info: assertion proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:180:37: info: precondition proved (CVC4: 8 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:180:37: info: precondition proved (CVC4: 8 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:180:37: info: precondition proved (CVC4: 8 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:180:47: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:180:47: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:180:50: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:180:50: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:180:50: info: initialization of "R" proved, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:180:53: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:180:53: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:180:53: info: range check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:180:56: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:180:56: info: range check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:180:56: info: range check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:181:27: info: overflow check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:181:27: info: overflow check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:181:27: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:181:40: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:181:40: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:181:40: info: initialization of "R" proved, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:182:45: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:182:45: info: initialization of "R" proved, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:182:45: info: initialization of "R" proved, in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:182:45: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:182:45: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:182:45: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:182:45: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:182:45: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:182:45: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:182:52: info: precondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:182:52: info: precondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:182:52: info: precondition proved (CVC4: 3 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:182:59: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:182:59: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:182:59: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:182:69: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:182:69: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:182:69: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.adb:182:72: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.adb:182:72: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.adb:182:72: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:25:49: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:25:49: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:30:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:30:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:30:49: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:30:49: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:30:59: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:30:59: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:31:17: info: postcondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:31:17: info: postcondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:34:21: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:34:21: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:34:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:34:31: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:34:34: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:34:34: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:34:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:34:57: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:34:67: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:34:67: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:35:41: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:35:41: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:36:23: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:36:23: info: precondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:36:29: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:36:29: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:36:33: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:36:33: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:36:56: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:36:56: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:54, in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:64:38: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:64:38: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:64:48: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:64:48: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:64:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:64:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:65:17: info: postcondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:65:17: info: postcondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:67:20: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:67:20: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:67:27: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:67:27: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:67:38: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:149, in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:67:38: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:181, in instantiation at test_higher_order.ads:81
 higher_order-fold.ads:92:48: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
 higher_order-fold.ads:97:39: info: precondition proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
 higher_order-fold.ads:97:59: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:121, in instantiation at test_higher_order.ads:43
@@ -227,53 +615,167 @@ higher_order-fold.ads:132:17: info: postcondition proved (CVC4: 1 VC), in instan
 higher_order-fold.ads:134:20: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:43
 higher_order-fold.ads:134:27: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:43
 higher_order-fold.ads:134:38: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:43
-higher_order-fold.ads:144:30: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:144:48: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:145:26: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:145:44: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:158:18: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:158:25: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:159:20: info: postcondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:160:27: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:160:30: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:160:54: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:160:57: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:69
-higher_order-fold.ads:171:27: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:171:27: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:176:32: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:188:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:188:27: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:189:20: info: postcondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:189:37: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:78
-higher_order-fold.ads:221:46: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:221:54: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:222:20: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:222:25: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:229:18: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:229:38: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:229:51: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:230:17: info: postcondition proved (CVC4: 6 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:237:19: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:237:32: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:237:56: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:237:59: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:237:69: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:237:72: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:238:38: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:238:41: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:239:19: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:239:25: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:239:28: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:239:32: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:239:56: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:239:59: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:244:17: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:244:37: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:244:50: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:245:17: info: postcondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:247:17: info: precondition proved (CVC4: 3 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:247:35: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
-higher_order-fold.ads:247:47: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:60
+higher_order-fold.ads:144:30: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:144:48: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:145:26: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:145:44: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:158:18: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:158:25: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:159:20: info: postcondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:160:27: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:160:30: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:160:54: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:160:57: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:72
+higher_order-fold.ads:173:27: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:173:27: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:178:32: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:190:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:190:27: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:191:20: info: postcondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:191:37: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:81
+higher_order-fold.ads:227:46: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:227:46: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:227:46: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:227:54: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:227:54: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:227:54: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:228:20: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:228:20: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:228:20: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:228:25: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:228:25: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:228:25: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:234:18: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:234:18: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:234:18: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:234:28: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:234:28: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:234:38: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:234:38: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:234:38: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:234:51: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:234:51: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:234:51: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:235:17: info: postcondition proved (CVC4: 7 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:235:17: info: postcondition proved (CVC4: 7 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:235:17: info: postcondition proved (CVC4: 7 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:242:19: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:242:19: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:242:19: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:242:29: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:242:29: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:242:32: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:242:32: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:242:32: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:242:55: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:242:55: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:242:55: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:242:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:242:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:242:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:242:68: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:242:68: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:242:68: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:242:71: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:242:71: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:242:71: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:243:37: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:243:37: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:243:37: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:243:40: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:243:40: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:243:40: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:244:19: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:244:19: info: overflow check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:244:19: info: precondition proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:244:25: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:244:25: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:244:25: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:244:28: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:244:28: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:244:28: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:244:32: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:244:32: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:244:32: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:244:55: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:244:55: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:244:55: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:244:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:244:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:244:58: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:245:30: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:245:30: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:245:47: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:245:47: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:245:47: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:245:59: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:245:59: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:245:59: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:271, in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:284:17: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:284:17: info: precondition proved (CVC4: 4 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:284:17: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:284:27: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:284:27: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:284:37: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:284:37: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:284:37: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:284:50: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:284:50: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:284:50: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:286:12: info: postcondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:286:12: info: postcondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:286:12: info: postcondition proved (CVC4: 3 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:287:34: info: precondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:287:34: info: precondition proved (CVC4: 3 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:287:34: info: precondition proved (CVC4: 3 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:287:41: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:287:41: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:287:41: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:287:52: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:287:52: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:287:52: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:287:64: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:287:64: info: index check proved (CVC4: 2 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:287:64: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:62
+higher_order-fold.ads:288:33: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:319, in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:288:33: info: range check proved (CVC4: 1 VC), in instantiation at higher_order-fold.ads:360, in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:301:30: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:301:49: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:301:64: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:301:67: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:302:33: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:302:51: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:303:26: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:303:45: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:303:60: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:303:63: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:304:29: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:304:47: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:308:12: info: postcondition proved (CVC4: 3 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:316:26: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:316:29: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:316:41: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:316:44: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:317:27: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:317:30: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:317:42: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:317:45: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:330:18: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:330:25: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:89
+higher_order-fold.ads:346:26: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:346:26: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:346:41: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:346:44: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:347:10: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:347:23: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:347:23: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:350:18: info: postcondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:353:32: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:358:17: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:358:29: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:358:32: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:371:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
+higher_order-fold.ads:371:27: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:100
 higher_order.adb:8:14: info: range check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:13
 higher_order.adb:10:22: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:13
 higher_order.adb:10:22: info: range check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:13
@@ -326,7 +828,13 @@ test_higher_order.ads:56:72: info: overflow check proved (CVC4: 1 VC)
 test_higher_order.ads:56:85: info: overflow check proved (CVC4: 1 VC)
 test_higher_order.ads:56:89: info: overflow check proved (CVC4: 1 VC)
 test_higher_order.ads:58:14: info: postcondition proved (CVC4: 3 VC)
-test_higher_order.ads:74:19: info: assertion proved (Z3: 1 VC)
-test_higher_order.ads:74:35: info: range check proved (CVC4: 1 VC)
-test_higher_order.ads:84:19: info: assertion proved (CVC4: 1 VC)
-test_higher_order.ads:84:35: info: range check proved (CVC4: 1 VC)
+test_higher_order.ads:60:30: warning: unused variable "A"
+test_higher_order.ads:60:42: warning: unused variable "X"
+test_higher_order.ads:77:19: info: assertion proved (Z3: 1 VC)
+test_higher_order.ads:77:35: info: range check proved (CVC4: 1 VC)
+test_higher_order.ads:87:19: info: assertion proved (CVC4: 1 VC)
+test_higher_order.ads:87:35: info: range check proved (CVC4: 1 VC)
+test_higher_order.ads:95:19: info: assertion proved (Z3: 1 VC)
+test_higher_order.ads:95:36: info: range check proved (CVC4: 1 VC)
+test_higher_order.ads:107:19: info: assertion proved (Z3: 1 VC)
+test_higher_order.ads:107:36: info: range check proved (CVC4: 1 VC)
