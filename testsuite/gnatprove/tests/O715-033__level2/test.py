@@ -1,10 +1,14 @@
 from test_support import *
-print ""
-print "At level 2"
-print "----------"
+import os
+
+# At level 2
+sys.stdout = open('result1', 'w')
 gnatprove(opt=["-P", "test.gpr", "-q", "--report=all", "--level=2", "--no-counterexample"])
 
-print ""
-print "Equivalent switches"
-print "-------------------"
+# Equivalent switches
+sys.stdout = open('result2', 'w')
 gnatprove(opt=["-P", "test.gpr", "-q", "--report=all", "--prover=cvc4,z3,altergo", "--timeout=5", "--no-counterexample"])
+
+# Diff between the two
+sys.stdout = sys.__stdout__
+os.system("diff result1 result2")
