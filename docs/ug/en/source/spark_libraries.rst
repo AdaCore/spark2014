@@ -428,3 +428,101 @@ passed in arguments, as follows:
    --  at this program point, the prover knows that R1 <= R2
    --  the following assertion is proved automatically:
    pragma Assert (R1 <= R2);
+
+.. _Higher Order Function Library:
+
+Higher Order Function Library
+-----------------------------
+
+The SPARK product also includes a library of higher order functions for
+unconstrained arrays. It is available using the same project file as the
+:ref:`SPARK Lemma Library`.
+
+This library consists in a set of generic entities defining usual operations on
+arrays. As an example, here is a generic function for the map higher-level
+function on arrays. It applies a given function ``F`` to each element of an
+array, returning an array of results in the same order.
+
+.. code-block:: ada
+
+   generic
+      type Index_Type is range <>;
+      type Element_In is private;
+      type Array_In is array (Index_Type range <>) of Element_In;
+      
+      type Element_Out is private;
+      type Array_Out is array (Index_Type range <>) of Element_Out;
+      
+      with function Init_Prop (A : Element_In) return Boolean;
+      --  Potential additional constraint on values of the array to allow Map
+
+      with function F (X : Element_In) return Element_Out;
+      --  Function that should be applied to elements of Array_In
+
+   function Map (A : Array_In) return Array_Out with
+     Pre  => (for all I in A'Range => Init_Prop (A (I))),
+     Post => Map'Result'First = A'First
+     and then Map'Result'Last = A'Last
+     and then (for all I in A'Range =>
+                 Map'Result (I) = F (A (I)));
+
+This function can be instantiated by providing two unconstrained array types
+ranging over the same index type and a function ``F`` mapping a component of the
+first array type to a component of the second array type. Additionally, a
+constraint ``Init_Prop`` can be supplied for the components of the first array
+to be allowed to apply ``F``. If no such constraint is needed, ``Init_Prop`` can
+be instantiated with an always ``True`` function.
+
+.. code-block:: ada
+
+   type Nat_Array is array (Positive range <>) of Natural;
+
+   function Small_Enough (X : Natural) return Boolean is
+     (X < Integer'Last);
+
+   function Increment_One (X : Integer) return Integer is (X + 1) with
+     Pre => X < Integer'Last;
+
+   function Increment_All is new SPARK.Higher_Order.Map
+     (Index_Type  => Positive,
+      Element_In  => Natural,
+      Array_In    => Nat_Array,
+      Element_Out => Natural,
+      Array_Out   => Nat_Array,
+      Init_Prop   => Small_Enough,
+      F           => Increment_One);
+
+The ``Increment_All`` function above will take as an argument an array of
+natural numbers small enough to be incremented and will return an array
+containing the result of incrementing each number by one:
+
+.. code-block:: ada
+
+   function Increment_All (A : Nat_Array) return Nat_Array with
+     Pre  => (for all I in A'Range => Small_Enough (A (I))),
+     Post => Increment_All'Result'First = A'First
+     and then Increment_All'Result'Last = A'Last
+     and then (for all I in A'Range =>
+                 Increment_All'Result (I) = Increment_One (A (I)));
+
+Currently, the higher-order function library provides the following functions:
+
+* Map functions over unconstrained one-dimensional arrays in file
+  ``spark-higher_order.ads``. These include both in place and functional
+  map subprograms, with and without an additional position parameter.
+
+* Fold functions over unconstrained one-dimensional and two-dimensional arrays
+  in file ``spark-higher_order-fold.ads``. Both left to right and right to left
+  fold functions are available for one-dimensional arrays. For two-dimensional
+  arrays, fold functions go on a line by line, left to right, top-to-bottom
+  way. For ease of use, these functions have been instantiated for the most
+  common cases. ``Sum`` and ``Sum_2`` respectively compute the sum of all the
+  elements of a one-dimensional or two-dimensional array, and ``Count`` and
+  ``Count_2`` the number of elements with a given ``Choose`` property.
+
+.. note::
+   
+   Unlike the :ref:`SPARK Lemma Library`, these generic functions are
+   not verified once and for all as their correction depends on the functions
+   provided at each instance. As a result, each instance should be verified by
+   running the SPARK tools.

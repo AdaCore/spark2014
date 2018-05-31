@@ -1,5 +1,5 @@
-with Higher_Order;
-with Higher_Order.Fold;
+with SPARK.Higher_Order;
+with SPARK.Higher_Order.Fold;
 package Test_Higher_Order with SPARK_Mode is
 
    type Nat_Array is array (Positive range <>) of Natural;
@@ -10,7 +10,7 @@ package Test_Higher_Order with SPARK_Mode is
    function Add_One (X : Integer) return Integer is (X + 1) with
      Pre => X < Integer'Last;
 
-   function Add_All is new Higher_Order.Map
+   function Add_All is new SPARK.Higher_Order.Map
      (Index_Type  => Positive,
       Element_In  => Natural,
       Array_In    => Nat_Array,
@@ -22,7 +22,7 @@ package Test_Higher_Order with SPARK_Mode is
    function A_Small_Enough (X : Integer) return Boolean is
      (X < Integer'Last);
 
-   procedure Add_All is new Higher_Order.Map_Proc
+   procedure Add_All is new SPARK.Higher_Order.Map_Proc
      (Index_Type => Positive,
       Element    => Natural,
       Array_Type => Nat_Array,
@@ -40,7 +40,7 @@ package Test_Higher_Order with SPARK_Mode is
    is (X in Integer'First + 100 * (I - A'First + 1) .. Integer'Last - 100 * (I - A'First + 1))
      with Pre => I in A'Range;
 
-   package Sum is new Higher_Order.Fold.Fold_Right
+   package Sum is new SPARK.Higher_Order.Fold.Fold_Right
      (Index_Type  => Small_Index,
       Element_In  => Small_Int,
       Array_Type  => Small_Int_Array,
@@ -59,7 +59,7 @@ package Test_Higher_Order with SPARK_Mode is
 
    function Result_In_Range (A : Matrix; X : Integer) return Boolean is (True);
 
-   package Sum_2 is new Higher_Order.Fold.Fold_2
+   package Sum_2 is new SPARK.Higher_Order.Fold.Fold_2
      (Index_1     => Small_Index,
       Index_2     => Small_Index,
       Element_In  => Small_Int,
@@ -69,7 +69,7 @@ package Test_Higher_Order with SPARK_Mode is
       Final_Prop  => Result_In_Range,
       F           => "+");
 
-   package Sum_l is new Higher_Order.Fold.Sum
+   package Sum_l is new SPARK.Higher_Order.Fold.Sum
      (Index_Type  => Small_Index,
       Element     => Small_Int,
       Array_Type  => Small_Int_Array);
@@ -78,7 +78,7 @@ package Test_Higher_Order with SPARK_Mode is
 
    function Is_Pos (X : Small_Int) return Boolean is (X >= 0);
 
-   package Cnt is new Higher_Order.Fold.Count
+   package Cnt is new SPARK.Higher_Order.Fold.Count
      (Index_Type  => Small_Index,
       Element     => Small_Int,
       Array_Type  => Small_Int_Array,
@@ -86,7 +86,7 @@ package Test_Higher_Order with SPARK_Mode is
 
    pragma Assert (Cnt.Count (A => (1, -2, 3, -4, -5, 6, 7, 13, 0)) = 6);
 
-   package Sum2_l is new Higher_Order.Fold.Sum_2
+   package Sum2_l is new SPARK.Higher_Order.Fold.Sum_2
      (Index_1     => Small_Index,
       Index_2     => Small_Index,
       Element     => Small_Int,
@@ -97,7 +97,7 @@ package Test_Higher_Order with SPARK_Mode is
                                     3 => (1, 2, 3, 4, 5, 6, 7, 1, 1),
                                     4 => (1, 2, 3, 4, 5, 6, 7, 1, 0))) = 119);
 
-   package Cnt2 is new Higher_Order.Fold.Count_2
+   package Cnt2 is new SPARK.Higher_Order.Fold.Count_2
      (Index_1     => Small_Index,
       Index_2     => Small_Index,
       Element     => Small_Int,
