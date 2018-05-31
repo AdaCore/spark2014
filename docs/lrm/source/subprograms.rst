@@ -208,6 +208,10 @@ In order to extend Ada's support for specification of subprogram contracts
    these aspects may be specified for a generic subprogram but not
    for an instance of a generic subprogram.]
 
+2. The Global, Depends and Contract_Cases aspects shall not be specified for an
+   abstract subprogram or a null procedure. Only Global'Class and Depends'Class
+   may be specified for such a subprogram.
+
 .. _etu-subprogram_contracts:
 
 See section :ref:`contract-cases` for further detail on Contract_Case aspects, section
