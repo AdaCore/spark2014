@@ -3499,7 +3499,7 @@ package body SPARK_Definition is
 
                --  A function declaration shall not have a
                --  parameter_specification with a mode of OUT or IN OUT
-               --  (SPARK RM 6.1(5)).
+               --  (SPARK RM 6.1(6)).
 
                case Ekind (Formal) is
                   when E_Out_Parameter =>

@@ -79,9 +79,9 @@ an *entire object*.
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-subprogram_declarations-05:
+.. _tu-fe-subprogram_declarations-06:
 
-5. A function declaration shall not have a ``parameter_specification``
+6. A function declaration shall not have a ``parameter_specification``
    with a mode of **out** or **in out**. This rule also applies to
    a ``subprogram_body`` for a function for which no explicit declaration
    is given.
