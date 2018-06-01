@@ -1,0 +1,2 @@
+predicate_check.adb:19:14: high: "X" is not initialized
+predicate_check.adb:20:14: high: "Y.F" is not initialized
