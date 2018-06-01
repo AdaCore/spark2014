@@ -6809,9 +6809,9 @@ package body Gnat2Why.Expr is
          if Needs_Bounds then
             for Dim in 1 .. Nb_Dim loop
                Bnd_Args (2 * Dim - 1) := Get_Array_Attr
-                 (EW_Term, Etype (Expr), Attribute_First, Dim);
+                 (Domain, Etype (Expr), Attribute_First, Dim);
                Bnd_Args (2 * Dim) := Get_Array_Attr
-                 (EW_Term, Etype (Expr), Attribute_Last, Dim);
+                 (Domain, Etype (Expr), Attribute_Last, Dim);
             end loop;
          end if;
 
