@@ -91,13 +91,15 @@ package body Flow.Analysis is
    with Pre => Ekind (S) in Entry_Kind     |
                             E_Function     |
                             E_Package      |
-                            E_Package_Body |
                             E_Procedure    |
                             E_Task_Type;
    --  Find the global F in the Global, Refined_Global, or Initializes aspect
    --  of S. If it is not there (perhaps because it comes from computed
    --  globals) just return S which is a good fallback location for error
    --  reports.
+   --  ??? In some context where this routine is used we should also scan the
+   --  Refined_Depends and Depends contracts, in particular when they are used
+   --  as a substitute for a missing Refined_Global/Global, e.g. Analyse_Main.
 
    function Get_Initial_Vertex (G : Flow_Graphs.Graph;
                                 F : Flow_Id)
@@ -280,26 +282,22 @@ package body Flow.Analysis is
                procedure Traverse is new Traverse_Proc (Process);
 
             begin
-               case Ekind (S) is
-                  when E_Package_Body =>
-                     Traverse
-                       (Get_Pragma (Spec_Entity (S), Pragma_Initializes));
+               --  For packages scan the Initializes contract
 
-                  when E_Package =>
-                     Traverse (Get_Pragma (S, Pragma_Initializes));
+               if Ekind (S) = E_Package then
+                  Traverse (Get_Pragma (S, Pragma_Initializes));
 
-                  when Entry_Kind | E_Function | E_Procedure | E_Task_Type =>
-                     Traverse (Find_Contract (S, Pragma_Refined_Global));
+               --  For other entities scan Refined_Global and Global
 
-                     if Result /= S then
-                        return Result;
-                     end if;
+               else
+                  Traverse (Find_Contract (S, Pragma_Refined_Global));
 
-                     Traverse (Find_Contract (S, Pragma_Global));
+                  if Result /= S then
+                     return Result;
+                  end if;
 
-                  when others =>
-                     raise Program_Error;
-               end case;
+                  Traverse (Find_Contract (S, Pragma_Global));
+               end if;
 
                return Result;
             end;
@@ -644,9 +642,9 @@ package body Flow.Analysis is
             Error_Msg_Flow
               (FA       => FA,
                Msg      => Msg,
-               N        => Find_Global (FA.Analyzed_Entity, R),
+               N        => Find_Global (FA.Spec_Entity, R),
                F1       => R,
-               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+               F2       => Direct_Mapping_Id (FA.Spec_Entity),
                Tag      => Uninitialized,
                Severity => Medium_Check_Kind);
          end if;
@@ -956,7 +954,7 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      => "& is not modified, could be INPUT",
-                        N        => Find_Global (FA.Analyzed_Entity, F_Final),
+                        N        => Find_Global (FA.Spec_Entity, F_Final),
                         F1       => Entire_Variable (F_Final),
                         Tag      => Inout_Only_Read,
                         Severity => Warning_Kind,
@@ -1229,7 +1227,7 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      => Msg,
-                           N        => Find_Global (FA.Analyzed_Entity, F),
+                           N        => Find_Global (FA.Spec_Entity, F),
                            F1       => F,
                            Tag      => VC_Kinds.Unused,
                            Severity => Severity,
@@ -1316,7 +1314,7 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      => "unused initial value of &",
-                        N        => Find_Global (FA.Analyzed_Entity, F),
+                        N        => Find_Global (FA.Spec_Entity, F),
                         F1       => F,
                         F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                         Tag      => Unused_Initial_Value,
@@ -2343,7 +2341,7 @@ package body Flow.Analysis is
             end if;
          elsif Is_Global then
             V_Goal := FA.Helper_End_Vertex;
-            N      := Find_Global (FA.Analyzed_Entity, Var);
+            N      := Find_Global (FA.Spec_Entity, Var);
          else
             V_Goal := V_Error;
             N      := FA.Atr (Vertex).Error_Location;
@@ -3177,7 +3175,7 @@ package body Flow.Analysis is
                               Msg       => "export & must not depend " &
                                            "on Proof_In &",
                               SRM_Ref   => "6.1.4(17)",
-                              N         => Find_Global (FA.Analyzed_Entity,
+                              N         => Find_Global (FA.Spec_Entity,
                                                         Input),
                               F1        => Output,
                               F2        => Input,
