@@ -296,7 +296,8 @@ For example, consider
 
 .. code-block:: ada
 
-   X : Integer with Volatile, Async_Writers => False;
+   X : Integer with Volatile, Async_Readers => True, Async_Writers => False,
+                              Effective_Reads => True, Effective_Writes => True;
    ...
    procedure Proc with ... is
      Y : Integer;
