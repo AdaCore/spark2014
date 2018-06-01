@@ -1849,7 +1849,7 @@ package body Configuration is
                      Sep_Name : constant String := Unit_Name (Info);
                      Find_Dot : constant Natural :=
                        Index (Source  => Sep_Name,
-                              Pattern =>  ".",
+                              Pattern => ".",
                               Going   => Ada.Strings.Backward);
                      U_Name : constant String :=
                        (if Find_Dot = 0 then Sep_Name

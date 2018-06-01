@@ -374,7 +374,7 @@ package body Why.Atree.Sprint is
 
                if not Is_Empty (+Args) then
                   P (O, "(");
-                  Print_List (+Args, Separator =>  ") (");
+                  Print_List (+Args, Separator => ") (");
                   P (O, ")");
                end if;
          end case;
