@@ -3673,66 +3673,54 @@ package body Flow.Analysis is
             --  Check consistency
 
             for Missing_Var of A_Deps.Difference (U_Deps) loop
-               declare
-                  V : constant Flow_Graphs.Vertex_Id :=
-                    Get_Initial_Vertex (FA.PDG, Missing_Var);
+               --  Suppress missing dependencies related to implicit concurrent
+               --  objects.
 
-               begin
-                  if V /= Flow_Graphs.Null_Vertex
-                    and then FA.Atr (V).Mode = Mode_Proof
-                  then
-                     null;
+               if F_Out = Null_Flow_Id
+                 and then Missing_Var.Kind = Direct_Mapping
+                 and then Present (Implicit_Param)
+                 and then Implicit_Param = Get_Direct_Mapping_Id (Missing_Var)
+               then
+                  null;
 
-                  --  Suppress missing dependencies related to implicit
-                  --  concurrent objects.
+               --  Something that the user dependency fails to mention
 
-                  elsif F_Out = Null_Flow_Id
-                    and then Missing_Var.Kind = Direct_Mapping
-                    and then Present (Implicit_Param)
-                    and then Implicit_Param =
-                      Get_Direct_Mapping_Id (Missing_Var)
-                  then
-                     null;
+               else
+                  if F_Out = Null_Flow_Id then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "missing dependency ""null => %""",
+                        N        => FA.Depends_N,
+                        F1       => Missing_Var,
+                        Tag      => Depends_Null,
+                        Severity => Medium_Check_Kind);
 
-                  --  Something that the user dependency fails to mention
+                  elsif F_Out = Direct_Mapping_Id (FA.Analyzed_Entity) then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "missing dependency ""%'Result => %""",
+                        N        => Search_Depends_Contract
+                                      (FA.Analyzed_Entity,
+                                       FA.Analyzed_Entity),
+                        F1       => F_Out,
+                        F2       => Missing_Var,
+                        Tag      => Depends_Missing,
+                        Severity => Medium_Check_Kind);
 
                   else
-                     if F_Out = Null_Flow_Id then
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "missing dependency ""null => %""",
-                           N        => FA.Depends_N,
-                           F1       => Missing_Var,
-                           Tag      => Depends_Null,
-                           Severity => Medium_Check_Kind);
-
-                     elsif F_Out = Direct_Mapping_Id (FA.Analyzed_Entity) then
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      =>  "missing dependency ""%'Result => %""",
-                           N        => Search_Depends_Contract
-                                         (FA.Analyzed_Entity,
-                                          Get_Direct_Mapping_Id (F_Out)),
-                           F1       => F_Out,
-                           F2       => Missing_Var,
-                           Tag      => Depends_Missing,
-                           Severity => Medium_Check_Kind);
-
-                     else
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "missing dependency ""% => %""",
-                           N        => Search_Depends_Contract
-                                         (FA.Analyzed_Entity,
-                                          Get_Direct_Mapping_Id (F_Out)),
-                           F1       => F_Out,
-                           F2       => Missing_Var,
-                           Tag      => Depends_Missing,
-                           Severity => Medium_Check_Kind);
-                        --  ??? show path
-                     end if;
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "missing dependency ""% => %""",
+                        N        => Search_Depends_Contract
+                                      (FA.Analyzed_Entity,
+                                       Get_Direct_Mapping_Id (F_Out)),
+                        F1       => F_Out,
+                        F2       => Missing_Var,
+                        Tag      => Depends_Missing,
+                        Severity => Medium_Check_Kind);
+                     --  ??? show path
                   end if;
-               end;
+               end if;
             end loop;
 
             for Wrong_Var of U_Deps.Difference (A_Deps) loop
