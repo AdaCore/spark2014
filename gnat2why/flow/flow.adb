@@ -1573,7 +1573,7 @@ package body Flow is
       use type Ada.Containers.Hash_Type;
 
    begin
-      --  ??? constants for hasing are picked from the air
+      --  ??? constants for hashing are picked from the air
       return Ada.Containers.Hash_Type (E.Prefix) * 17
            + Ada.Containers.Hash_Type (E.Entr)   * 19;
    end Hash;
