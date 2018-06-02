@@ -24,6 +24,7 @@
 with Ada.Characters.Latin_1;
 with Ada.Strings.Maps;
 with Ada.Strings;
+with Ada.Strings.Fixed;
 with Assumptions;                      use Assumptions;
 with Errout;
 with Flow.Analysis;
@@ -216,7 +217,7 @@ package body Flow is
    begin
       Append
         (Temp_String,
-         Trim (To_Unbounded_String (S), Whitespace, Whitespace));
+         Ada.Strings.Fixed.Trim (S, Whitespace, Whitespace));
    end Add_To_Temp_String;
 
    ----------------------
