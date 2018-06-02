@@ -81,17 +81,11 @@ package body Flow is
 
    use Flow_Graphs;
 
-   Temp_String : Unbounded_String := Null_Unbounded_String;
-
    Whitespace : constant Ada.Strings.Maps.Character_Set :=
      Ada.Strings.Maps.To_Set
        (Ada.Characters.Latin_1.Space &
         Ada.Characters.Latin_1.CR &
         Ada.Characters.Latin_1.LF);
-
-   procedure Add_To_Temp_String (S : String);
-   --  Nasty nasty hack to add the given string to a global variable,
-   --  Temp_String. We use this to pretty print nodes via Sprint_Node.
 
    procedure Build_Graphs_For_Analysis (FA_Graphs : out Analysis_Maps.Map);
    --  Build flow graphs for the current compilation unit; phase 2
@@ -208,17 +202,6 @@ package body Flow is
 
       Outdent;
    end Debug_Print_Generated_Contracts;
-
-   -------------------------
-   -- Add_To_Temp_String  --
-   -------------------------
-
-   procedure Add_To_Temp_String (S : String) is
-   begin
-      Append
-        (Temp_String,
-         Ada.Strings.Fixed.Trim (S, Whitespace, Whitespace));
-   end Add_To_Temp_String;
 
    ----------------------
    -- Vertex_Pair_Hash --
@@ -441,11 +424,24 @@ package body Flow is
             end if;
          end Print_Node;
 
+         procedure Append_To_Label (S : String);
+         --  Append S to Rv.Label trimming the whitespace if required
+
+         ----------------------
+         -- Append_To_Label  --
+         ----------------------
+
+         procedure Append_To_Label (S : String) is
+         begin
+            Append
+              (Rv.Label,
+               Ada.Strings.Fixed.Trim (S, Whitespace, Whitespace));
+         end Append_To_Label;
+
       --  Start of processing for NDI
 
       begin
-         Temp_String := Null_Unbounded_String;
-         Set_Special_Output (Add_To_Temp_String'Access);
+         Set_Special_Output (Append_To_Label'Unrestricted_Access);
 
          if A.Is_Exceptional_Path then
             Rv.Fill_Colour := To_Unbounded_String ("gold");
@@ -886,10 +882,6 @@ package body Flow is
 
          Write_Eol;
          Cancel_Special_Output;
-
-         if Length (Temp_String) > 0 then
-            Rv.Label := Temp_String;
-         end if;
 
          return Rv;
       end NDI;
