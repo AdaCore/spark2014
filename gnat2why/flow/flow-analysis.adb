@@ -1812,7 +1812,7 @@ package body Flow.Analysis is
    --  Start of processing for Find_Ineffective_Statements
 
    begin
-      if FA.Kind in Kind_Subprogram | Kind_Task
+      if FA.Kind = Kind_Subprogram
         and then not Has_Effects (FA)
       then
          Warn_On_Subprogram_With_No_Effect (FA);
