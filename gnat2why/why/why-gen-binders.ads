@@ -301,7 +301,7 @@ package Why.Gen.Binders is
    --  @return the type of the expression that can be reconstructed from B.
 
    function Get_Ada_Type_From_Item (B : Item_Type) return Entity_Id;
-   --  Get the da type of an item.
+   --  Get the ada type of an item.
    --  @param B item whose type we querry.
    --  @return the type of the ada node associated to B.
 

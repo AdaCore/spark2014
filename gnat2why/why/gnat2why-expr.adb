@@ -220,7 +220,7 @@ package body Gnat2Why.Expr is
    function Discrete_Choice_Is_Range (Choice : Node_Id) return Boolean;
    --  Return whether Choice is a range ("others" counts as a range)
 
-   function Expected_Type_Of_Prefix (N : Node_Id) return W_Type_Id;
+   function Expected_Type_Of_Prefix (N : Node_Id) return Entity_Id;
    --  The node in argument is the target of an assignment. This function
    --  computes the type of the entity that corresponds to the access.
    --  This may be different from the Etype of the node in case of
@@ -342,18 +342,18 @@ package body Gnat2Why.Expr is
    --  and [Expr] the Why expression of the prefix.
 
    function One_Level_Update
-     (N      : Node_Id;
-      Pref   : W_Expr_Id;
-      Value  : W_Expr_Id;
-      Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id;
-   --  @param N      the Ada node which defines the component to be updated
+     (N       : Node_Id;
+      Pref    : W_Expr_Id;
+      Value   : W_Expr_Id;
+      Domain  : EW_Domain;
+      Params  : Transformation_Params) return W_Expr_Id;
+   --  @param N       the Ada node which defines the component to be updated
    --                  (e.g. a record access)
-   --  @param Pref   the currently computed prefix, (e.g. the record value
+   --  @param Pref    the currently computed prefix, (e.g. the record value
    --                  before the update)
-   --  @param Value  the new value of the updated component
-   --  @param Domain the domain
-   --  @param Params the translation params
+   --  @param Value   the new value of the updated component
+   --  @param Domain  the domain
+   --  @param Params  the translation params
    --  @return the Why expression which corresponds to the Pref object, but
    --            updated at the point specified by N, with value Value
 
@@ -4245,7 +4245,7 @@ package body Gnat2Why.Expr is
    -- Expected_Type_Of_Prefix --
    -----------------------------
 
-   function Expected_Type_Of_Prefix (N : Node_Id) return W_Type_Id is
+   function Expected_Type_Of_Prefix (N : Node_Id) return Entity_Id is
    begin
       case Nkind (N) is
          --  The frontend may introduce an unchecked type conversion on the
@@ -4260,27 +4260,34 @@ package body Gnat2Why.Expr is
 
          when N_Identifier
             | N_Expanded_Name
-         =>
+            =>
             declare
                Ent : constant Entity_Id := Entity (N);
             begin
                if Is_Protected_Component_Or_Discr (Ent) then
                   return Type_Of_Node (Etype (Ent));
                else
-                  return Get_Why_Type_From_Item
-                    (Ada_Ent_To_Why.Element (Symbol_Table, Ent));
+                  return Retysp (Get_Ada_Type_From_Item
+                                 (Ada_Ent_To_Why.Element (Symbol_Table, Ent)));
                end if;
             end;
 
          when N_Slice =>
-            return EW_Abstract (Etype (N));
+            return Etype (N);
 
          when N_Indexed_Component =>
-            return EW_Abstract
-              (Component_Type (Unique_Entity (Etype (Prefix (N)))));
+            return Retysp
+              (Component_Type (Expected_Type_Of_Prefix (Prefix (N))));
 
          when N_Selected_Component =>
-            return EW_Abstract (Etype (Selector_Name (N)));
+            declare
+               Pref : constant Entity_Id :=
+                 Expected_Type_Of_Prefix (Prefix (N));
+               Comp : constant Entity_Id :=
+                 Search_Component_In_Type (Pref, Entity (Selector_Name (N)));
+            begin
+               return Retysp (Etype (Comp));
+            end;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Expected_Type] kind ="
@@ -5446,7 +5453,7 @@ package body Gnat2Why.Expr is
             =>
                declare
                   Prefix_Type : constant W_Type_Id :=
-                    Expected_Type_Of_Prefix (Prefix (N));
+                    EW_Abstract (Expected_Type_Of_Prefix (N));
 
                   --  We compute the expression for the Prefix in the EW_Term
                   --  domain so that checks are not done for it as they are
@@ -5459,11 +5466,12 @@ package body Gnat2Why.Expr is
                                      Params        => Body_Params);
                begin
                   Expr :=
-                    +One_Level_Update (N,
-                                       +Prefix_Expr,
-                                       +Expr,
-                                       EW_Prog,
-                                       Params => Body_Params);
+                    +One_Level_Update
+                    (N,
+                     +Prefix_Expr,
+                     +Expr,
+                     EW_Prog,
+                     Params => Body_Params);
                   N := Prefix (N);
                end;
 
@@ -6273,12 +6281,22 @@ package body Gnat2Why.Expr is
    ----------------------
 
    function One_Level_Update
-     (N      : Node_Id;
-      Pref   : W_Expr_Id;
-      Value  : W_Expr_Id;
-      Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id
+     (N       : Node_Id;
+      Pref    : W_Expr_Id;
+      Value   : W_Expr_Id;
+      Domain  : EW_Domain;
+      Params  : Transformation_Params) return W_Expr_Id
    is
+
+      --  In some cases, the frontend introduces an Itype for the type of a
+      --  discriminant dependent component. In this case, to avoid a type
+      --  mismatch in Why, we go to the root of the assignment to retrieve
+      --  the correct type.
+
+      Pref_Ty : constant Entity_Id :=
+        (if Nkind (N) in N_Selected_Component | N_Indexed_Component | N_Slice
+         then Expected_Type_Of_Prefix (Prefix (N))
+         else Empty);
       Result : W_Expr_Id;
    begin
       case Nkind (N) is
@@ -6294,14 +6312,21 @@ package body Gnat2Why.Expr is
               (if Nkind (N) in N_Identifier | N_Expanded_Name
                then Is_Protected_Component_Or_Discr_Or_Part_Of (Entity (N)));
 
-            --  The code should never update a discrimiant by assigning to it
+            --  It can happen that the prefix does not have the expected type
+            --  but some Itype with the same constraints. To avoid a type
+            --  mismatch in Why, we should use the selector of the expected
+            --  type instead.
 
             declare
                Selector : constant Entity_Id :=
                  (if Nkind (N) in N_Identifier | N_Expanded_Name
                   then Entity (N)
-                  else Entity (Selector_Name (N)));
+                  else Search_Component_In_Type
+                    (Pref_Ty, Entity (Selector_Name (N))));
             begin
+               --  The code should never update a discrimiant by assigning to
+               --  it.
+
                pragma Assert (Ekind (Selector) /= E_Discriminant);
 
                Result := New_Ada_Record_Update
@@ -6320,8 +6345,7 @@ package body Gnat2Why.Expr is
 
          when N_Indexed_Component =>
             declare
-               Dim     : constant Pos :=
-                  Number_Dimensions (Type_Of_Node (Prefix (N)));
+               Dim     : constant Pos := Number_Dimensions (Pref_Ty);
                Ar_Tmp  : constant W_Expr_Id := New_Temp_For_Expr (Pref);
                Indices : W_Expr_Array (1 .. Positive (Dim));
                Cursor  : Node_Id := First (Expressions (N));
@@ -6362,25 +6386,17 @@ package body Gnat2Why.Expr is
                           Domain   => Domain,
                           Expr     => Value,
                           To       =>
-                            EW_Abstract (Component_Type
-                              (Type_Of_Node (Prefix (N))))),
+                            EW_Abstract (Component_Type (Pref_Ty))),
                      Domain    => Domain));
             end;
 
          when N_Slice =>
             declare
-               Prefix_Expr : constant W_Expr_Id :=
-                 +Transform_Expr
-                 (Prefix (N),
-                  Domain        => EW_Term,
-                  Expected_Type => Get_Type (Pref),
-                  Params        => Params);
                Prefix_Name : constant W_Expr_Id :=
-                 New_Temp_For_Expr (Prefix_Expr, True);
+                 New_Temp_For_Expr (Pref, True);
                Value_Name  : constant W_Expr_Id :=
                  New_Temp_For_Expr (Value, True);
-               Dim     : constant Pos :=
-                 Number_Dimensions (Type_Of_Node (Prefix (N)));
+               Dim     : constant Pos := Number_Dimensions (Pref_Ty);
                pragma Assert (Dim = 1);
                --  Slices are only for one-dimentional arrays (Ada RM 4.1.2)
                Result_Id   : constant W_Identifier_Id :=
