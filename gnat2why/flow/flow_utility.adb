@@ -5590,4 +5590,27 @@ package body Flow_Utility is
       return False;
    end Is_Empty_Record_Type;
 
+   -----------------------------
+   -- Is_Dummy_Abstract_State --
+   -----------------------------
+
+   function Is_Dummy_Abstract_State
+     (F : Flow_Id;
+      S : Flow_Scope)
+      return Boolean
+   is
+   begin
+      if F.Kind = Direct_Mapping then
+         declare
+            E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+         begin
+            return Ekind (E) = E_Abstract_State
+              and then State_Refinement_Is_Visible (E, S)
+              and then Has_Null_Refinement (E);
+         end;
+      else
+         return False;
+      end if;
+   end Is_Dummy_Abstract_State;
+
 end Flow_Utility;

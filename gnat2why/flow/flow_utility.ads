@@ -712,6 +712,15 @@ is
    function Is_Abstract_State (N : Node_Id) return Boolean;
    --  Returns True iff N is an abstract state
 
+   function Is_Dummy_Abstract_State
+     (F : Flow_Id;
+      S : Flow_Scope)
+      return Boolean;
+   --  Returns True if F is an abstract state that, when looking from S, can
+   --  be determined to have no constituents. Such abstract states are most
+   --  likely just placeholders and will be later removed or populated with
+   --  constituents.
+
    function Is_Ghost_Entity (F : Flow_Id) return Boolean;
    --  Returns True iff F represents a ghost entity
 

@@ -3658,7 +3658,7 @@ package body Flow.Analysis is
 
             for Missing_Var of A_Deps.Difference (U_Deps) loop
                --  Suppress missing dependencies related to implicit concurrent
-               --  objects.
+               --  unit, i.e. null => CU.
 
                if F_Out = Null_Flow_Id
                  and then Missing_Var.Kind = Direct_Mapping
@@ -3667,7 +3667,7 @@ package body Flow.Analysis is
                then
                   null;
 
-               --  Something that the user dependency fails to mention
+               --  Items missing from the RHS of a user dependency
 
                else
                   if F_Out = Null_Flow_Id then
@@ -3708,26 +3708,24 @@ package body Flow.Analysis is
             end loop;
 
             for Wrong_Var of U_Deps.Difference (A_Deps) loop
-               --  Something the user dependency claims, but does not happen
-               --  in reality.
-               if Is_Abstract_State (Wrong_Var)
-                 and then Wrong_Var.Kind in Direct_Mapping | Record_Field
-                 and then State_Refinement_Is_Visible (Wrong_Var, FA.B_Scope)
-                 and then Has_Null_Refinement
-                   (Get_Direct_Mapping_Id (Wrong_Var))
-               then
-                  --  If the depends contract mentions a state with visible
-                  --  null refinement then we do not need to emit a message
-                  --  since this is trivially True.
+               --  If the RHS mentions an extra state with visible null
+               --  refinement then we suppress the check as trivially void.
+
+               if Is_Dummy_Abstract_State (Wrong_Var, FA.B_Scope) then
                   null;
+
+               --  Suppress incorrect dependencies related to implicit
+               --  concurrent units, i.e. "X => CU".
+
                elsif F_Out.Kind = Direct_Mapping
                  and then Present (Implicit_Param)
                  and then Implicit_Param = Get_Direct_Mapping_Id (Wrong_Var)
                  and then Wrong_Var.Kind = Direct_Mapping
                then
-                  --  Suppress incorrect dependencies related to implicit
-                  --  concurrent objects.
                   null;
+
+               --  Extra items on the RHS of a user dependency
+
                elsif not Is_Variable (Wrong_Var) then
                   Error_Msg_Flow
                     (FA       => FA,

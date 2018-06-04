@@ -1217,12 +1217,6 @@ package body Flow.Analysis.Sanity is
       --  or via an abstract state, then return the representative user global;
       --  otherwise, return Null_Flow_Id.
 
-      function Is_Dummy_Abstract_State (F : Flow_Id) return Boolean;
-      --  Returns True if F is an abstract state that can be determined
-      --  to have no constituents. Such abstract states are most likely
-      --  just placeholders and will be later removed or populated with
-      --  constituents.
-
       -----------
       -- Check --
       -----------
@@ -1283,25 +1277,6 @@ package body Flow.Analysis.Sanity is
             return Null_Flow_Id;
          end if;
       end Find_In;
-
-      -----------------------------
-      -- Is_Dummy_Abstract_State --
-      -----------------------------
-
-      function Is_Dummy_Abstract_State (F : Flow_Id) return Boolean is
-      begin
-         if F.Kind = Direct_Mapping then
-            declare
-               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-            begin
-               return Ekind (E) = E_Abstract_State
-                 and then State_Refinement_Is_Visible (E, FA.B_Scope)
-                 and then Has_Null_Refinement (E);
-            end;
-         else
-            return False;
-         end if;
-      end Is_Dummy_Abstract_State;
 
       --  Local variables:
 
@@ -1411,7 +1386,7 @@ package body Flow.Analysis.Sanity is
       --  Flag extra user globals
 
       for Unused of Unused_Inputs loop
-         if not Is_Dummy_Abstract_State (Unused) then
+         if not Is_Dummy_Abstract_State (Unused, FA.B_Scope) then
             Error_Msg
               (Msg      => "global Input & of & not read",
                Severity => Low_Check_Kind,
@@ -1420,7 +1395,7 @@ package body Flow.Analysis.Sanity is
       end loop;
 
       for Unused of Unused_Outputs loop
-         if not Is_Dummy_Abstract_State (Unused) then
+         if not Is_Dummy_Abstract_State (Unused, FA.B_Scope) then
             Error_Msg
               (Msg      => "global Output & of & not written",
                Severity => Error_Kind,
@@ -1429,7 +1404,7 @@ package body Flow.Analysis.Sanity is
       end loop;
 
       for Unused of Unused_Proof_Ins loop
-         if not Is_Dummy_Abstract_State (Unused) then
+         if not Is_Dummy_Abstract_State (Unused, FA.B_Scope) then
             Error_Msg
               (Msg      => "global Proof_In & of & not read",
                Severity => Error_Kind,
