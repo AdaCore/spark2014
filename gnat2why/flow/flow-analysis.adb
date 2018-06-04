@@ -1047,9 +1047,10 @@ package body Flow.Analysis is
          return
            (case FA.PDG.Get_Key (V).Variant is
                 when Final_Value => Atr.Is_Export,
-                when Normal_Use  => Atr.Is_Exceptional_Branch,
-                when others      => False)
-              or else Atr.Is_Assertion;
+                when Normal_Use  => Atr.Is_Exceptional_Branch
+                                      or else
+                                    Atr.Is_Assertion,
+                when others      => False);
       end Is_Final_Use;
 
       ---------------------------------
@@ -1591,6 +1592,7 @@ package body Flow.Analysis is
       --  Checks if the given vertex V represents an externally visible
       --  outcome, i.e. is a final-use vertex that is also an export or a use
       --  vertex that branches to an exceptional path.
+      --  ??? same as Find_Ineffective_Imports_And_Unused_Objects.Is_Final_Use
 
       function Is_In_Pragma_Un (S : Flow_Id_Sets.Set)
                                 return Boolean;
