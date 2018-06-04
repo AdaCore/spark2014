@@ -159,7 +159,7 @@ package body Gnat2Why.Decls is
       --  we can't handle in axioms.
 
       if Present (Expr)
-        and then Comes_From_Source (Original_Node (E))
+        and then Entity_Comes_From_Source (Original_Node (E))
         and then not Contains_Volatile_Function_Call (Expr)
       then
          declare

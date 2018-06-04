@@ -185,6 +185,16 @@ package SPARK_Util is
    --  Returns the entity of the package, subprogram, entry, protected object,
    --  or task enclosing E, if any. Returns Empty otherwise.
 
+   function Entity_Comes_From_Source (E : Entity_Id) return Boolean is
+      (Comes_From_Source (E)
+        or else Comes_From_Source (Atree.Parent (E)))
+   with Pre => Nkind (E) in N_Entity;
+   --  Ideally we should only look at whether entity E comes from source,
+   --  but in various cases this is not properly set in the frontend (for
+   --  subprogram inlining and generic instantiations), which cannot be fixed
+   --  easily. So we also look at whether the parent node comes from source,
+   --  which is more often correct.
+
    function Full_Name (E : Entity_Id) return String
      with Pre => Nkind (E) in N_Entity;
    --  @param E any entity

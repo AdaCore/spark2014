@@ -4574,7 +4574,7 @@ package body SPARK_Definition is
             if Nkind (Parent (E)) = N_Private_Extension_Declaration
               and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
               and then Present (Discriminant_Specifications (Parent (E)))
-              and then Comes_From_Source (E)
+              and then Entity_Comes_From_Source (E)
             then
                Mark_Violation
                  ("discriminant on derived type",
@@ -4628,7 +4628,7 @@ package body SPARK_Definition is
             if Nkind (Parent (E)) = N_Full_Type_Declaration
               and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
               and then Present (Discriminant_Specifications (Parent (E)))
-              and then Comes_From_Source (E)
+              and then Entity_Comes_From_Source (E)
             then
                Mark_Violation
                  ("discriminant on derived type",

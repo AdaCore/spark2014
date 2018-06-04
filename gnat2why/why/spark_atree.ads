@@ -349,10 +349,10 @@ package SPARK_Atree is
      Pre => Nkind (N) = N_If_Expression;
 
    function Else_Statements (N : Node_Id) return List_Id with
-     Pre =>  Nkind (N) = N_If_Statement;
+     Pre => Nkind (N) = N_If_Statement;
 
    function Elsif_Parts (N : Node_Id) return List_Id with
-     Pre =>  Nkind (N) = N_If_Statement;
+     Pre => Nkind (N) = N_If_Statement;
 
    function Entity (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) in N_Has_Entity
