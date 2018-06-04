@@ -452,10 +452,9 @@ package Flow_Types is
    --  Returns a copy of the given Flow_Id, but with a modified variant
 
    function Parent_Record (F : Flow_Id) return Flow_Id
-   with Pre  => F.Kind in Direct_Mapping | Record_Field
-                  and then (F.Kind = Record_Field
-                              or else F.Facet /= Normal_Part
-                              or else Belongs_To_Concurrent_Type (F)),
+   with Pre  => F.Kind = Record_Field
+                  or else
+               (F.Kind = Direct_Mapping and then F.Facet /= Normal_Part),
         Post => Parent_Record'Result.Kind in Direct_Mapping | Record_Field;
    --  Return the parent record for the given record field. If given the
    --  hidden fields of a record, returns the visible part (i.e. clears the
