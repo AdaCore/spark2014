@@ -3,7 +3,7 @@ package Swap_Add_Max_05 is
    subtype Index      is Integer range 1..100;
    type    Array_Type is array (Index) of Integer;
 
-   procedure Swap (X , Y : in out Integer);
+   procedure Swap (X, Y : in out Integer);
    --# post X = Y~ and Y = X~;
 
    function Add (X, Y : Integer) return Integer;
@@ -15,7 +15,7 @@ package Swap_Add_Max_05 is
    --# return Z => (X >= Y -> Z = X) and
    --#             (Y >  X -> Z = Y);
 
-   function Divide (X , Y : Integer) return Integer;
+   function Divide (X, Y : Integer) return Integer;
    --# pre Y /= 0 and X > Integer'First;
    --# return X / Y;
 

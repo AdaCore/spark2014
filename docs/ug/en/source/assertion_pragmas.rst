@@ -62,7 +62,7 @@ specific ones only by using the version of pragma ``Assertion_Policy`` that
 takes named associations which was introduced in Ada 2012.
 
 When used with the standard policies ``Check`` (for enabling assertions) or
-``Ignore`` (for ignoring assertions) , pragma ``Assertion_Policy`` has no
+``Ignore`` (for ignoring assertions), pragma ``Assertion_Policy`` has no
 effect on |GNATprove|. |GNATprove| takes all assertions into account, whatever
 the assertion policy in effect at the point of the assertion. For example,
 consider a code with some assertions enabled and some ignored:

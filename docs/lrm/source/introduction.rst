@@ -817,7 +817,7 @@ of pre-existing code where no |SPARK| specific aspects are provided.
 
 A |SPARK| analysis tool is required to be
 capable of synthesizing at least a basic, conservative :ref:`global-aspects`,
-:ref:`depends-aspects` , :ref:`refined-global-aspect`,
+:ref:`depends-aspects`, :ref:`refined-global-aspect`,
 :ref:`refined-depends-aspect`, :ref:`abstract-state-aspect`,
 :ref:`refined_state_aspect`, :ref:`initializes_aspect` and
 :ref:`default_initial_condition_aspect` from either the
