@@ -1,7 +1,7 @@
 p.adb:24:07: info: initialization of "Full_S.A" proved
 p.adb:24:07: info: initialization of "Full_S.B" proved
-p.adb:31:28: medium: overflow check might fail (e.g. when Full_S = (A => -2147483648, B => (fp #b0, #b00000000, #b00000000000000000000000)) and X = -1)
-p.adb:32:28: medium: float overflow check might fail (e.g. when Full_S = (A => ?, B => (fp #b0, #b11111110, #b11111111111110000000001)) and Y = (fp #b0, #b11110000, #b11111111011110000000010))
+p.adb:31:28: medium: overflow check might fail (e.g. when Full_S = (A => -2147483648) and X = -1)
+p.adb:32:28: medium: float overflow check might fail
 p.ads:25:34: info: initialization of "Full_S.A" proved
 p.ads:25:34: info: initialization of "Full_S.B" proved
 p.ads:25:42: info: initialization of "Raw_S" proved
@@ -15,8 +15,8 @@ p.ads:33:32: medium: incorrect dependency "Raw_S => Raw_S"
 p.ads:33:32: medium: missing dependency "Raw_S => Full_S"
 p2.adb:31:07: info: initialization of "Full_S.A" proved
 p2.adb:31:07: info: initialization of "Full_S.B" proved
-p2.adb:39:28: medium: overflow check might fail (e.g. when Full_S = (A => -2147483648, B => (fp #b0, #b00000000, #b00000000000000000000000)) and X = -1)
-p2.adb:40:28: medium: float overflow check might fail (e.g. when Full_S = (A => ?, B => (fp #b0, #b11111110, #b11111111111110000000001)) and Y = (fp #b0, #b11110000, #b11111111011110000000010))
+p2.adb:39:28: medium: overflow check might fail (e.g. when Full_S = (A => -2147483648) and X = -1)
+p2.adb:40:28: medium: float overflow check might fail
 p2.ads:25:34: info: initialization of "Full_S.A" proved
 p2.ads:25:34: info: initialization of "Full_S.B" proved
 p2.ads:25:42: info: initialization of "Raw_S" proved

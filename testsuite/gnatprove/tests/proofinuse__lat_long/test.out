@@ -7,12 +7,12 @@ lat_long.adb:9:58: info: division check proved (CVC4: 1 VC)
 lat_long.adb:9:58: info: float overflow check proved (CVC4: 1 VC)
 lat_long.adb:10:19: info: initialization of "Delta_Lat" proved
 lat_long.adb:10:29: medium: float overflow check might fail
-lat_long.adb:10:41: medium: float overflow check might fail (e.g. when Distance'Result = (fp #b0, #b00000000, #b00000000000000000000000))
+lat_long.adb:10:41: medium: float overflow check might fail
 lat_long.adb:10:43: info: initialization of "Delta_Long" proved
 lat_long.adb:10:54: info: float overflow check proved (CVC4: 1 VC)
 lat_long.ads:8:34: info: float overflow check proved (CVC4: 1 VC)
-lat_long.ads:15:40: medium: postcondition might fail, cannot prove Cos'Result >= 0.1 (e.g. when Cos'Result = (fp #b1, #b01111111, #b00000000000000000000000) and X = (fp #b0, #b01111111, #b00101100000000000000001))
-lat_long.ads:18:26: medium: precondition might fail (e.g. when X = (fp #b1, #b01111111, #b00000000000000000000001))
+lat_long.ads:15:40: medium: postcondition might fail, cannot prove Cos'Result >= 0.1
+lat_long.ads:18:26: medium: precondition might fail
 lat_long.ads:29:14: info: postcondition proved (altergo: 1 VC)
 lat_long.ads:30:57: info: float overflow check proved (CVC4: 1 VC)
 lat_long.ads:30:101: info: float overflow check proved (CVC4: 1 VC)
@@ -25,4 +25,4 @@ lat_long.ads:39:26: info: float overflow check proved (Interval)
 lat_long.ads:39:41: info: float overflow check proved (Interval)
 lat_long.ads:39:45: info: division check proved (CVC4: 1 VC)
 lat_long.ads:39:45: info: float overflow check proved (CVC4: 1 VC)
-lat_long.ads:41:14: medium: postcondition might fail, cannot prove abs(Delta_Long_In_Meters'Result) < (2.0 * Pi * R (e.g. when Delta_Long_In_Meters'Result = (fp #b0, #b10011011, #b10111111111111000111111))
+lat_long.ads:41:14: medium: postcondition might fail, cannot prove abs(Delta_Long_In_Meters'Result) < (2.0 * Pi * R

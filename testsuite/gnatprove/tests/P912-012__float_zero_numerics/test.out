@@ -16,7 +16,7 @@ numerics.ads:26:99: info: range check proved (Interval)
 numerics.ads:29:99: info: range check proved (Interval)
 numerics.ads:32:99: info: division check proved (CVC4: 1 VC)
 numerics.ads:32:99: info: range check proved (Interval)
-run.adb:8:15: medium: precondition might fail (e.g. when X1 = (fp #b0, #b00000000, #b00000000000000000000000))
+run.adb:8:15: medium: precondition might fail
 run.adb:14:15: info: precondition proved (CVC4: 1 VC)
 run.adb:20:15: info: precondition proved (CVC4: 1 VC)
 run.adb:26:15: info: precondition proved (CVC4: 1 VC)

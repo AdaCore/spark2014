@@ -18,7 +18,7 @@ contracts.adb:34:14: info: overflow check proved (CVC4: 1 VC)
 contracts.adb:34:14: info: range check proved (CVC4: 1 VC)
 contracts.adb:34:16: info: initialization of "Z" proved
 discriminant_check.adb:12:04: warning: analyzing unreferenced function "Get_X"
-discriminant_check.adb:14:15: medium: discriminant check might fail (e.g. when R = (B => False, X => 0, Y => (fp #b0, #b00000000, #b00000000000000000000000)))
+discriminant_check.adb:14:15: medium: discriminant check might fail (e.g. when R = (B => False, X => 0, Y => ?))
 discriminant_check.adb:17:04: warning: analyzing unreferenced procedure "Set_X"
 discriminant_check.adb:19:08: medium: discriminant check might fail
 division_by_zero.adb:9:04: warning: analyzing unreferenced procedure "Oper_Integer"
@@ -34,15 +34,15 @@ division_by_zero.adb:22:27: medium: divide by zero might fail (e.g. when Y = 0)
 division_by_zero.adb:23:27: medium: divide by zero might fail (e.g. when Y = 0)
 division_by_zero.adb:27:04: warning: analyzing unreferenced procedure "Div_Float"
 division_by_zero.adb:27:39: info: initialization of "U" proved
-division_by_zero.adb:29:14: medium: divide by zero might fail (e.g. when Y = (fp #b0, #b00000000, #b00000000000000000000000))
-division_by_zero.adb:29:14: medium: float overflow check might fail (e.g. when X = (fp #b0, #b01111111, #b00010000000000000011100) and Y = (fp #b0, #b00000000, #b01000100000000000000111))
+division_by_zero.adb:29:14: medium: divide by zero might fail
+division_by_zero.adb:29:14: medium: float overflow check might fail
 division_by_zero.adb:32:04: warning: analyzing unreferenced procedure "Div_Fixed"
 division_by_zero.adb:32:39: info: initialization of "U" proved
 division_by_zero.adb:34:14: medium: divide by zero might fail
 division_by_zero.adb:34:14: medium: overflow check might fail
 division_by_zero.adb:37:04: warning: analyzing unreferenced procedure "Exp_Float"
 division_by_zero.adb:37:49: info: initialization of "U" proved
-division_by_zero.adb:39:14: medium: divide by zero might fail (e.g. when X = (fp #b0, #b00000000, #b00000000000000000000000) and Y = -1)
+division_by_zero.adb:39:14: medium: divide by zero might fail (e.g. when Y = -1)
 division_by_zero.adb:39:14: medium: float overflow check might fail
 index_check.adb:3:04: warning: analyzing unreferenced function "Get"
 index_check.adb:5:16: medium: array index check might fail (e.g. when J = 1 and S = (others => 'NUL') and S'First = 2 and S'Last = 0)
@@ -60,11 +60,11 @@ overflow_check.adb:17:32: medium: overflow check might fail (e.g. when X = -1 an
 overflow_check.adb:18:32: medium: overflow check might fail (e.g. when E = 0 and X = 0)
 overflow_check.adb:22:04: warning: analyzing unreferenced procedure "Oper_Float"
 overflow_check.adb:22:64: info: initialization of "U" proved
-overflow_check.adb:27:32: medium: float overflow check might fail (e.g. when X = (fp #b0, #b11101110, #b11111111101111100000001) and Y = (fp #b0, #b11111110, #b11111111111111111111110))
-overflow_check.adb:28:32: medium: float overflow check might fail (e.g. when X = (fp #b0, #b11100110, #b11111111111111111111000) and Y = (fp #b1, #b11111110, #b11111111111111111111111))
-overflow_check.adb:29:32: medium: float overflow check might fail (e.g. when X = (fp #b0, #b01111111, #b10111011001111001100110) and Y = (fp #b0, #b11111110, #b10110001111100110010101))
-overflow_check.adb:30:32: medium: divide by zero might fail (e.g. when Y = (fp #b0, #b00000000, #b00000000000000000000000))
-overflow_check.adb:30:32: medium: float overflow check might fail (e.g. when X = (fp #b0, #b01111111, #b00010000000000000011100) and Y = (fp #b0, #b00000000, #b01000100000000000000111))
+overflow_check.adb:27:32: medium: float overflow check might fail
+overflow_check.adb:28:32: medium: float overflow check might fail
+overflow_check.adb:29:32: medium: float overflow check might fail
+overflow_check.adb:30:32: medium: divide by zero might fail
+overflow_check.adb:30:32: medium: float overflow check might fail
 overflow_check.adb:31:32: info: division check proved (CVC4: 2 VC)
 overflow_check.adb:31:32: medium: float overflow check might fail
 overflow_check.adb:35:04: warning: analyzing unreferenced procedure "Oper_Fixed"
@@ -88,7 +88,7 @@ range_check.adb:26:46: info: initialization of "U" proved
 range_check.adb:28:12: medium: range check might fail (e.g. when X = 11)
 range_check.adb:31:04: warning: analyzing unreferenced procedure "Convert_Float"
 range_check.adb:31:40: info: initialization of "U" proved
-range_check.adb:33:12: medium: range check might fail (e.g. when X = (fp #b1, #b01111111, #b00001111111111100000010))
+range_check.adb:33:12: medium: range check might fail
 range_check.adb:36:04: warning: analyzing unreferenced procedure "Convert_Fixed"
 range_check.adb:36:40: info: initialization of "U" proved
 range_check.adb:38:12: medium: range check might fail

@@ -1,10 +1,10 @@
-circle_demo.adb:14:14: medium: precondition might fail (e.g. when My_Circle = (Center_X => (fp #b0, #b00000000000, #b0000000000000000000000000000000000000000000000000000), Center_Y => (fp #b0, #b00000000000, #b0000000000000000000000000000000000000000000000000000), Radius => (fp #b0, #b00000000000, #b0000000000000000000000000000000000000000000000000000)) and Wild_Man = -1)
+circle_demo.adb:14:14: medium: precondition might fail (e.g. when My_Circle = (Center_X => ?, Center_Y => ?, Radius => ?) and Wild_Man = -1)
 circle_demo.adb:14:54: info: initialization of "My_Circle" proved
 circle_demo.adb:15:18: warning: assuming "Put_Line" has no effect on global items
 circle_demo.adb:15:18: warning: no Global contract available for "Put_Line"
 circle_demo.adb:17:18: warning: assuming "Put_Line" has no effect on global items
 circle_demo.adb:17:18: warning: no Global contract available for "Put_Line"
-shapes5.adb:8:08: medium: refined postcondition might fail (e.g. when Make_Circle'Result = (Center_X => (fp #b0, #b00000000000, #b0000000000000000000000000000000000000000000000000000), Center_Y => (fp #b0, #b00000000000, #b0000000000000000000000000000000000000000000000000000), Radius => (fp #b0, #b00000000000, #b0000000000000000000000000000000000000000000000000000)))
+shapes5.adb:8:08: medium: refined postcondition might fail (e.g. when Make_Circle'Result = (Center_X => ?, Center_Y => ?, Radius => ?))
 shapes5.adb:8:37: info: float overflow check proved (Interval)
 shapes5.adb:10:37: info: float overflow check proved (Interval)
 shapes5.adb:12:37: info: float overflow check proved (Interval)
@@ -20,11 +20,11 @@ shapes5.adb:23:17: info: range check proved (CVC4: 1 VC)
 shapes5.adb:25:10: info: initialization of "R" proved
 shapes5.adb:25:36: info: float overflow check proved (Interval)
 shapes5.adb:26:36: info: float overflow check proved (Interval)
-shapes5.adb:26:36: medium: range check might fail (e.g. when R = (fp #b0, #b00000000000, #b0000000000000000000000000000000000000000000000000000) and Y = (fp #b0, #b00000000000, #b0000000000000000000000000000000000000000000000000000))
+shapes5.adb:26:36: medium: range check might fail
 shapes5.adb:28:10: info: initialization of "R" proved
 shapes5.adb:28:17: info: float overflow check proved (Interval)
 shapes5.adb:29:17: info: float overflow check proved (Interval)
-shapes5.adb:29:17: medium: range check might fail (e.g. when R = (fp #b0, #b00000000000, #b0000000000000000000000000000000000000000000000000000) and Y = (fp #b0, #b00000000000, #b0000000000000000000000000000000000000000000000000000))
+shapes5.adb:29:17: medium: range check might fail
 shapes5.adb:31:21: info: initialization of "R" proved
 shapes5.adb:42:34: info: range check proved (CVC4: 1 VC)
 shapes5.adb:42:41: info: float overflow check proved (Interval)
@@ -41,4 +41,4 @@ shapes5.adb:54:29: info: float overflow check proved (Interval)
 shapes5.adb:55:29: info: float overflow check proved (Interval)
 shapes5.adb:56:29: info: float overflow check proved (Interval)
 shapes5.adb:57:29: info: float overflow check proved (Interval)
-shapes5.ads:13:18: medium: postcondition might fail, cannot prove In_Bounds (Make_Circle'result) (e.g. when Make_Circle'Result = (Center_X => (fp #b0, #b01111111111, #b0000000001100000010001010000000000000000000000000000), Center_Y => (fp #b0, #b01111111111, #b0000000001100000010001010000000000000000000000000000), Radius => (fp #b0, #b01111111111, #b0000100000100000010000100100000000000000000000000001)) and Wild_Man = 0)
+shapes5.ads:13:18: medium: postcondition might fail, cannot prove In_Bounds (Make_Circle'result) (e.g. when Make_Circle'Result = (Center_X => ?, Center_Y => ?, Radius => ?) and Wild_Man = 0)
