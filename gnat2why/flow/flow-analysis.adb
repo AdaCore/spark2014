@@ -186,13 +186,11 @@ package body Flow.Analysis is
       V   : Flow_Graphs.Vertex_Id;
       Sep : Character := ':') return String
    is
-      N       : constant Node_Or_Entity_Id := Error_Location (G, M, V);
-      SI      : constant Source_File_Index := Get_Source_File_Index (Sloc (N));
-      Line_No : constant String :=
-        Logical_Line_Number'Image (Get_Logical_Line_Number (Sloc (N)));
+      N  : constant Node_Or_Entity_Id := Error_Location (G, M, V);
+      SI : constant Source_File_Index := Get_Source_File_Index (Sloc (N));
    begin
       return Get_Name_String (File_Name (SI)) & Sep &
-        Line_No (2 .. Line_No'Last);
+        Get_Logical_Line_Number_Img (Sloc (N));
    end Get_Line;
 
    ----------------------
