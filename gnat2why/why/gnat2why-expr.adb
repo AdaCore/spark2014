@@ -226,6 +226,11 @@ package body Gnat2Why.Expr is
    --  This may be different from the Etype of the node in case of
    --  unconstrained array types, or discriminant records.
 
+   function Expected_Type_Of_Prefix (N : Node_Id) return W_Type_Id;
+   --  Same as above but returns a Why type Id. Note that this may not be
+   --  the same as EW_Abstract (Expected_Type_Of_Prefix (N)) on identifiers
+   --  which are not in abstract form.
+
    function Insert_Overflow_Check
      (Ada_Node : Node_Id;
       T        : W_Expr_Id;
@@ -4296,6 +4301,43 @@ package body Gnat2Why.Expr is
       end case;
    end Expected_Type_Of_Prefix;
 
+   function Expected_Type_Of_Prefix (N : Node_Id) return W_Type_Id is
+   begin
+      case Nkind (N) is
+         --  The frontend may introduce an unchecked type conversion on the
+         --  variable assigned to, in particular for inlining. Reach through
+         --  the variable assigned in that case.
+
+         when N_Unchecked_Type_Conversion =>
+            return Expected_Type_Of_Prefix (Expression (N));
+
+         when N_Type_Conversion =>
+            return Expected_Type_Of_Prefix (Expression (N));
+
+         when N_Identifier
+            | N_Expanded_Name
+         =>
+            declare
+               Ent : constant Entity_Id := Entity (N);
+            begin
+               if Is_Protected_Component_Or_Discr (Ent) then
+                  return Type_Of_Node (Etype (Ent));
+               else
+                  return Get_Why_Type_From_Item
+                    (Ada_Ent_To_Why.Element (Symbol_Table, Ent));
+               end if;
+            end;
+
+         when N_Slice | N_Indexed_Component | N_Selected_Component =>
+            return EW_Abstract (Expected_Type_Of_Prefix (N));
+
+         when others =>
+            Ada.Text_IO.Put_Line ("[Expected_Type] kind ="
+                                  & Node_Kind'Image (Nkind (N)));
+            raise Not_Implemented;
+      end case;
+   end Expected_Type_Of_Prefix;
+
    ---------------------------------------------
    -- Get_Container_In_Iterator_Specification --
    ---------------------------------------------
@@ -5453,7 +5495,7 @@ package body Gnat2Why.Expr is
             =>
                declare
                   Prefix_Type : constant W_Type_Id :=
-                    EW_Abstract (Expected_Type_Of_Prefix (Prefix (N)));
+                    Expected_Type_Of_Prefix (Prefix (N));
 
                   --  We compute the expression for the Prefix in the EW_Term
                   --  domain so that checks are not done for it as they are
