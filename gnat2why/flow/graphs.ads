@@ -329,9 +329,9 @@ package Graphs is
      (G : Graph;
       V : Vertex_Id)
       return Vertex_Id
-   with Pre => G.Out_Neighbour_Count (V) <= 1;
-   --  Return the sole out neighbour of the vertex, if it exists, and
-   --  Null_Vertex otherwise.
+   with Pre  => G.Out_Neighbour_Count (V) = 1,
+        Post => Child'Result /= Null_Vertex;
+   --  Return the sole out neighbour of the vertex, which must exist
    --
    --  Complexity is O(1).
 
