@@ -880,8 +880,7 @@ package body Flow.Analysis is
         (F : Flow_Id)
          return Boolean
       is
-        (Is_Concurrent_Type
-           (Etype (Get_Direct_Mapping_Id (Entire_Variable (F)))));
+        (Is_Concurrent_Type (Get_Direct_Mapping_Id (F)));
 
    --  Start of processing for Find_Unwritten_Exports
 
@@ -1257,9 +1256,7 @@ package body Flow.Analysis is
 
                   begin
                      if Is_Concurrent_Type (E_Typ)
-                       or else Belongs_To_Concurrent_Type (F)
-                       or else (Is_Type (E_Typ)
-                                and then Is_Empty_Record_Type (E_Typ))
+                       or else Is_Empty_Record_Type (E_Typ)
                        or else Has_Pragma_Un (E)
                        or else Is_Param_Of_Null_Subp_Of_Generic (E)
                      then
@@ -1331,14 +1328,10 @@ package body Flow.Analysis is
                   --  null record.
                   if F.Kind = Direct_Mapping
                     and then
-                      (Is_Concurrent_Type (Etype (Get_Direct_Mapping_Id (F)))
-                       or else
-                       Belongs_To_Concurrent_Type (F)
-                       or else
-                         (Is_Type (Etype (Get_Direct_Mapping_Id (F)))
-                          and then
-                          Is_Empty_Record_Type
-                            (Etype (Get_Direct_Mapping_Id (F)))))
+                      (Is_Concurrent_Type (Get_Direct_Mapping_Id (F))
+                         or else
+                       Is_Empty_Record_Type
+                         (Etype (Get_Direct_Mapping_Id (F))))
                   then
                      null;
 
