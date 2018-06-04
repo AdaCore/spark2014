@@ -5453,7 +5453,7 @@ package body Gnat2Why.Expr is
             =>
                declare
                   Prefix_Type : constant W_Type_Id :=
-                    EW_Abstract (Expected_Type_Of_Prefix (N));
+                    EW_Abstract (Expected_Type_Of_Prefix (Prefix (N)));
 
                   --  We compute the expression for the Prefix in the EW_Term
                   --  domain so that checks are not done for it as they are
