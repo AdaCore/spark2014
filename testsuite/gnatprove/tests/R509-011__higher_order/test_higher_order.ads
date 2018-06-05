@@ -40,12 +40,15 @@ package Test_Higher_Order with SPARK_Mode is
    is (X in Integer'First + 100 * (I - A'First + 1) .. Integer'Last - 100 * (I - A'First + 1))
      with Pre => I in A'Range;
 
+   function Result_In_Range (A : Small_Int_Array; X : Integer) return Boolean is (True);
+
    package Sum is new SPARK.Higher_Order.Fold.Fold_Right
      (Index_Type  => Small_Index,
       Element_In  => Small_Int,
       Array_Type  => Small_Int_Array,
       Element_Out => Integer,
       Ind_Prop    => In_Range,
+      Final_Prop  => Result_In_Range,
       F           => "+");
 
    type Matrix is array (Small_Index range <>, Small_Index range <>) of Small_Int;
@@ -69,10 +72,14 @@ package Test_Higher_Order with SPARK_Mode is
       Final_Prop  => Result_In_Range,
       F           => "+");
 
+   function Id (X : Small_Int) return Small_Int is (X);
+
    package Sum_l is new SPARK.Higher_Order.Fold.Sum
      (Index_Type  => Small_Index,
-      Element     => Small_Int,
-      Array_Type  => Small_Int_Array);
+      Element_In  => Small_Int,
+      Element_Out => Small_Int,
+      Array_Type  => Small_Int_Array,
+      Value       => Id);
 
    pragma Assert (Sum_l.Sum (A => (1, 2, 3, 4, 5, 6, 7, 1, 1)) = 30);
 
@@ -89,13 +96,14 @@ package Test_Higher_Order with SPARK_Mode is
    package Sum2_l is new SPARK.Higher_Order.Fold.Sum_2
      (Index_1     => Small_Index,
       Index_2     => Small_Index,
-      Element     => Small_Int,
-      Array_Type  => Matrix);
+      Element_In  => Small_Int,
+      Element_Out => Small_Int,
+      Array_Type  => Matrix,
+      Value       => Id);
 
    pragma Assert (Sum2_l.Sum (A => (1 => (1, 2, 3, 4, 5, 6, 7, 1, 1),
                                     2 => (1, 2, 3, 4, 5, 6, 7, 1, 1),
-                                    3 => (1, 2, 3, 4, 5, 6, 7, 1, 1),
-                                    4 => (1, 2, 3, 4, 5, 6, 7, 1, 0))) = 119);
+                                    3 => (1, 2, 3, 4, 5, 6, 7, 1, 0))) = 89);
 
    package Cnt2 is new SPARK.Higher_Order.Fold.Count_2
      (Index_1     => Small_Index,
@@ -106,7 +114,6 @@ package Test_Higher_Order with SPARK_Mode is
 
    pragma Assert (Cnt2.Count (A => (1 => (1, -2, 3, -4, -5, 6, 7, 13, 0),
                                     2 => (1, -2, 3, -4, -5, 6, 7, 13, 0),
-                                    3 => (1, -2, 3, -4, -5, 6, 7, 13, 0),
-                                    4 => (1, -2, 3, -4, -5, 6, 7, 13, -1))) = 23);
+                                    3 => (1, -2, 3, -4, -5, 6, 7, 13, -1))) = 17);
 
 end Test_Higher_Order;
