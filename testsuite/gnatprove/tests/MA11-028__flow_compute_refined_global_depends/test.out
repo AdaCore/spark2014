@@ -67,7 +67,6 @@ lots_of_tests.ads:39:33: info: initialization of "G2" proved
 lots_of_tests.ads:43:39: info: initialization of "X" proved
 lots_of_tests.ads:57:14: info: initialization of "C" constituent of "State2" proved
 lots_of_tests.ads:57:14: info: initialization of "D" constituent of "State2" proved
-lots_of_tests.ads:70:14: low: unused global "B" constituent of "State"
 lots_of_tests.ads:73:35: info: initialization of "G1" proved
 lots_of_tests.ads:82:14: info: initialization of "G1" proved
 lots_of_tests.ads:96:14: info: initialization of "B" constituent of "State" proved
