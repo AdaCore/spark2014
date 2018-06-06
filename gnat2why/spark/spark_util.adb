@@ -197,6 +197,10 @@ package body SPARK_Util is
         and then Is_CCT_Instance (Ref_Id => Etype (Ref), Context_Id => Context)
       then
          return Etype (Ref);
+      elsif Has_Non_Limited_View (Ref) then
+         --  ??? this partly duplicates a similar transformatioin in
+         --  Direct_Mapping_Id; maybe it should be done once, in SPARK_Rewrite.
+         return Unique_Entity (Non_Limited_View (Ref));
       else
          return Unique_Entity (Ref);
       end if;

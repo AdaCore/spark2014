@@ -101,8 +101,8 @@ is
       --  Dispatch packet in Buf received on Netif to upper protocol layer
       --  according to IP protocol identifier Proto.
       with
-        Global => (Input  => UDP.State,
-                   In_Out => (Buffers.State, TCP.State));
+        Global => (Input  => (UDP.State, Default_Router),
+                   In_Out => (Buffers.State, TCP.State, IP_Serial));
 
       --------------------
       -- Dispatch_Upper --

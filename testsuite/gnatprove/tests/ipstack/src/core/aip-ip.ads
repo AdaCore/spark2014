@@ -29,8 +29,8 @@ is
      Global => (Input  => FIB);
 
    procedure IP_Input (Netif : NIF.Netif_Id; Buf : Buffers.Buffer_Id) with
-     Global => (Input  => UDP.State,
-                In_Out => (Buffers.State, TCP.State));
+     Global => (Input  => (UDP.State, FIB),
+                In_Out => (Buffers.State, TCP.State, State));
    pragma Export (C, IP_Input, "AIP_ip_input");
 
    procedure IP_Output_If
