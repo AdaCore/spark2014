@@ -188,6 +188,10 @@ package SPARK_Atree is
    N_Unchecked_Type_Conversion      : Node_Kind renames
      Sinfo.N_Unchecked_Type_Conversion;
    N_With_Clause                    : Node_Kind renames Sinfo.N_With_Clause;
+   N_Explicit_Dereference           : Node_Kind renames
+     Sinfo.N_Explicit_Dereference;
+   N_Null                           : Node_Kind renames Sinfo.N_Null;
+   N_Allocator                      : Node_Kind renames Sinfo.N_Allocator;
 
    Current_Error_Node : Node_Id renames Atree.Current_Error_Node;
 
@@ -383,7 +387,8 @@ package SPARK_Atree is
 
    function Expression (N : Node_Id) return Node_Id with
      Post => No (Expression'Result)
-     or else Nkind (Expression'Result) in Sinfo.N_Subexpr;
+     or else Nkind (Expression'Result) in Sinfo.N_Subexpr
+                                          | N_Subtype_Indication;
 
    function Expression_Contains_Old_Or_Loop_Entry
      (Expr : Node_Id) return Boolean

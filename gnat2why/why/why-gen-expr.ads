@@ -99,7 +99,7 @@ package Why.Gen.Expr is
       Domain      : EW_Domain;
       Left, Right : W_Expr_Id)
       return W_Expr_Id;
-   --  generate a boolean term which expresses the translation of "Left =
+   --  Generate a boolean term which expresses the translation of "Left =
    --  Right" in Ada semantics, where the equality is the one of type Typ.
    --  If the type has a user-provided primitive equality and if its most
    --  underlying type is a record type or is limited, use the user-provided
@@ -326,7 +326,7 @@ package Why.Gen.Expr is
       Expr     : W_Expr_Id;
       To       : W_Type_Id;
       Force_No_Slide : Boolean := False) return W_Expr_Id;
-   --  Returns the expression of type To that converts Expr of type From. No
+   --  Returns the expression Expr converted to type To. No
    --  check is inserted in the conversion.
    --  @param Ada_Node node which causes the check to be inserted.
    --  @param Domain domain of the conversion
@@ -375,6 +375,15 @@ package Why.Gen.Expr is
       Need_Check : Boolean := False) return W_Expr_Id;
    --  when Discr_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.
+
+   function Insert_Pointer_Conversion
+     (Ada_Node   : Node_Id;
+      Domain     : EW_Domain;
+      Expr       : W_Expr_Id;
+      To         : W_Type_Id;
+      Need_Check : Boolean := False) return W_Expr_Id;
+   --  A typical use of this function is to insert pointer conversions when
+   --  unconstrained access types.
 
    function Insert_Cnt_Loc_Label
      (Ada_Node : Node_Id;

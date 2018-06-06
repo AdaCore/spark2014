@@ -57,6 +57,13 @@ package VC_Kinds is
                                             --  the default value of a type,
                                             --  to be used when a value of the
                                             --  type is default initialized
+      VC_Null_Pointer_Dereference,
+      --  This VC is to be used whenever we try to dereference an object
+      --  with access type. This check should be done on the _is_null_pointer
+      --  field of the why record corresponding to the pointer type.
+
+      VC_Null_Exclusion,
+
       VC_Length_Check,
       VC_Discriminant_Check,
       VC_Tag_Check,

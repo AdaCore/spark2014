@@ -247,6 +247,8 @@ package body Gnat2Why.Error_Messages is
                | VC_Stronger_Classwide_Post
                | VC_Predicate_Check
                | VC_Predicate_Check_On_Default_Value
+               | VC_Null_Pointer_Dereference
+               | VC_Null_Exclusion
                | VC_Invariant_Check
                | VC_Invariant_Check_On_Default_Value
                | VC_Warning_Kind
@@ -603,6 +605,10 @@ package body Gnat2Why.Error_Messages is
             return "predicate check might fail";
          when VC_Predicate_Check_On_Default_Value =>
             return "predicate check might fail on default value";
+         when VC_Null_Pointer_Dereference =>
+            return "pointer dereference check might fail";
+         when VC_Null_Exclusion =>
+            return "null exclusion check might fail";
          when VC_Invariant_Check           =>
             return "invariant check might fail";
          when VC_Invariant_Check_On_Default_Value =>
@@ -914,6 +920,10 @@ package body Gnat2Why.Error_Messages is
          when VC_Predicate_Check           => return "predicate check proved";
          when VC_Predicate_Check_On_Default_Value =>
             return "predicate check proved on default value";
+         when VC_Null_Pointer_Dereference =>
+            return "pointer dereference check proved";
+         when VC_Null_Exclusion =>
+            return "null exclusion check proved";
          when VC_Invariant_Check           => return "invariant check proved";
          when VC_Invariant_Check_On_Default_Value =>
             return "invariant check proved on default value";

@@ -338,7 +338,16 @@ package Why.Gen.Names is
       WNE_To_Float64,             --  for fixed-point
       WNE_To_BitVector,
 
-      WNE_Empty                   --  dummy value for Why_Name_Enum
+      WNE_Empty,                   --  dummy value for Why_Name_Enum
+
+      --  Name of the program functions related to the pointer type
+      WNE_Null_Pointer,           --  "__null_pointer"
+      WNE_Null_Exclusion_Val,     --  "__null_exclusion_val"
+      WNE_Is_Null_Pointer,        --  "__is_null_pointer"
+      WNE_Pointer_Address,        --  "__pointer_address"
+      WNE_Pointer_Value,          --  "__pointer_value"
+      WNE_Init_Allocator,         --  "__new_initialized_allocator"
+      WNE_Uninit_Allocator        --  "__new_uninitialized_allocator"
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;

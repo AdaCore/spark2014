@@ -538,13 +538,21 @@ package body Gnat2Why.Util is
    ------------------------------
 
    function Count_Why_Regular_Fields (E : Entity_Id) return Natural is
-      Count : Natural := Natural (Get_Component_Set (E).Length);
+      Count : Natural;
 
    begin
+      --  If it is an access type then its Why representation is a record
+      --  with 3 fields: is_null_pointer, pointer_address and pointer_value.
+
+      if Is_Access_Type (E) then
+         return 3;
+      end if;
+
       --  Add one field for tagged types to represent the unknown extension
       --  components. The field for the tag itself is stored directly in the
       --  Why3 record.
 
+      Count := Natural (Get_Component_Set (E).Length);
       if Is_Tagged_Type (E) then
          Count := Count + 1;
       end if;
@@ -936,7 +944,10 @@ package body Gnat2Why.Util is
       then
          return True;
 
-      elsif Is_Constant_Object (E) then
+         --  We allow an in parameter or a constant of an owning access type to
+         --  provide read/write access to its designated object.
+
+      elsif Is_Constant_Object (E) and then not Is_Access_Type (Etype (E)) then
          return False;
 
       else

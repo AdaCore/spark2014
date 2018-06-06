@@ -375,14 +375,15 @@ is
    --  set if Erase_Constants is true.
 
    subtype Valid_Assignment_Kinds is Node_Kind
-   with Static_Predicate =>
-          Valid_Assignment_Kinds in N_Identifier
-                                  | N_Expanded_Name
-                                  | N_Type_Conversion
-                                  | N_Unchecked_Type_Conversion
-                                  | N_Indexed_Component
-                                  | N_Slice
-                                  | N_Selected_Component;
+     with Static_Predicate =>
+       Valid_Assignment_Kinds in N_Identifier
+                               | N_Expanded_Name
+                               | N_Type_Conversion
+                               | N_Unchecked_Type_Conversion
+                               | N_Indexed_Component
+                               | N_Slice
+                               | N_Explicit_Dereference
+                               | N_Selected_Component;
 
    function Is_Valid_Assignment_Target (N : Node_Id) return Boolean
    with Post => (if Is_Valid_Assignment_Target'Result

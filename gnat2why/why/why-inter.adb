@@ -45,6 +45,7 @@ with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Arrays;             use Why.Gen.Arrays;
 with Why.Gen.Expr;               use Why.Gen.Expr;
 with Why.Gen.Names;              use Why.Gen.Names;
+with Why.Gen.Pointers;           use Why.Gen.Pointers;
 with Why.Gen.Scalars;            use Why.Gen.Scalars;
 
 ---------------
@@ -396,6 +397,10 @@ package body Why.Inter is
 
          --  For record or private types, go through subtypes to get the base
          --  type.
+         --  For pointers, get the type of the root type (pointers may share
+         --  same representative theory while one is not the subtype of the
+         --  other, exp: named and anonymous types of the same designated
+         --  type).
 
          loop
             Typ := Retysp (Typ);
@@ -404,6 +409,8 @@ package body Why.Inter is
               and then Ekind (Typ) in SPARK_Util.Types.Subtype_Kind
             then
                Typ := Etype (Typ);
+            elsif Is_Access_Type (Typ) then
+               return EW_Abstract (Root_Pointer_Type (Typ));
             else
                return EW_Abstract (Typ);
             end if;
@@ -963,6 +970,16 @@ package body Why.Inter is
        Has_Array_Type (Get_Ada_Node (+Right)));
 
    ---------------------------
+   -- Is_Pointer_Conversion --
+   ---------------------------
+
+   function Is_Pointer_Conversion (Left, Right : W_Type_Id) return Boolean
+   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
+       Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
+       Has_Pointer_Type (Get_Ada_Node (+Left)) and then
+       Has_Pointer_Type (Get_Ada_Node (+Right)));
+
+   ---------------------------
    -- Is_Private_Conversion --
    ---------------------------
 
@@ -981,6 +998,38 @@ package body Why.Inter is
        Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
        Has_Record_Type (Get_Ada_Node (+Left)) and then
        Has_Record_Type (Get_Ada_Node (+Right)));
+
+   ---------------------
+   -- Need_Conversion --
+   ---------------------
+
+   function Need_Conversion (Expr : W_Expr_Id) return Boolean is
+   begin
+      if Get_Kind (+Expr) = W_Call then
+         declare
+            Expr2 : constant W_Call_Id := W_Call_Id (Expr);
+            Base  : constant W_Identifier_Id := Get_Name (Expr2);
+            Name  : constant W_Name_Id := Get_Name (Base);
+
+         begin
+            return Get_Name_String (Get_Symbol (Name))
+            not in To_String (WNE_Init_Allocator)
+                 | To_String (WNE_Uninit_Allocator);
+         end;
+
+      elsif Get_Kind (+Expr) = W_Identifier then
+         declare
+            Expr2 : constant W_Identifier_Id := W_Identifier_Id (Expr);
+            Name  : constant W_Name_Id := Get_Name (Expr2);
+         begin
+            return Get_Name_String (Get_Symbol (Name)) /=
+              To_String (WNE_Null_Pointer);
+         end;
+
+      else
+         return True;
+      end if;
+   end Need_Conversion;
 
    ---------
    -- LCA --

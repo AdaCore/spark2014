@@ -251,11 +251,21 @@ package Why.Inter is
 
    function Base_Why_Type_No_Bool (Expr : W_Expr_Id) return W_Type_Id;
 
+   function Is_Pointer_Conversion (Left, Right : W_Type_Id) return Boolean;
+
    function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean;
 
    function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean;
 
    function Is_Private_Conversion (Left, Right : W_Type_Id) return Boolean;
+
+   function Need_Conversion (Expr : W_Expr_Id) return Boolean;
+   --  No check made for allocator and null assignment because of type
+   --  mismatch between the left and right side due to the way pointers
+   --  are translated to Why. When allocator, the assignment affects
+   --  the pointer_address and possibly pointer_value fields of the pointer
+   --  Why record, while Is_Null_Pointer field is modified when the pointer
+   --  is set to null.
 
    function Base_Why_Type (Left, Right : W_Type_Id) return W_Type_Id;
    function Base_Why_Type (Left, Right : Node_Id) return W_Type_Id;

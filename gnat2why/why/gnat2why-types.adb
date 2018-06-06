@@ -47,6 +47,7 @@ with Why.Gen.Binders;         use Why.Gen.Binders;
 with Why.Gen.Decl;            use Why.Gen.Decl;
 with Why.Gen.Expr;            use Why.Gen.Expr;
 with Why.Gen.Names;           use Why.Gen.Names;
+with Why.Gen.Pointers;        use Why.Gen.Pointers;
 with Why.Gen.Progs;           use Why.Gen.Progs;
 with Why.Gen.Records;         use Why.Gen.Records;
 with Why.Gen.Scalars;         use Why.Gen.Scalars;
@@ -447,6 +448,20 @@ package body Gnat2Why.Types is
            else "")
          & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
+      if Is_Access_Type (E) then
+         declare
+            Ancestor   : constant Entity_Id := Root_Pointer_Type (E);
+            Name       : constant String :=
+              Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
+            Rep_Module : constant W_Module_Id := New_Module (File => No_Name,
+                                                       Name => NID (Name));
+         begin
+            --  Export the theory containing the pointer record definition
+
+            Add_With_Clause (File, Rep_Module, EW_Export);
+         end;
+      end if;
+
       declare
          Eq : constant Entity_Id := Get_User_Defined_Eq (Base_Type (E));
       begin
@@ -533,6 +548,14 @@ package body Gnat2Why.Types is
 
       if not Is_Itype (E) and then Is_Scalar_Type (E) then
          Create_Axioms_For_Scalar_Bounds (File, E);
+      end if;
+
+      --  If E is an access type, we declare the new Why program function in
+      --  this module since we make use of the default initial assumption
+      --  when the allocator is uninitialized.
+
+      if Is_Access_Type (E) then
+         Declare_Allocation_Function (E, File);
       end if;
 
       Close_Theory (File,
@@ -679,6 +702,9 @@ package body Gnat2Why.Types is
                pragma Assert (Full_View_Not_In_SPARK (E));
                Declare_Ada_Record (File, E);
 
+            when Access_Kind =>
+               Declare_Ada_Pointer (File, E);
+
             when others =>
                Ada.Text_IO.Put_Line ("[Translate_Underlying_Type] ekind ="
                                      & Entity_Kind'Image (Ekind (E)));
@@ -699,6 +725,8 @@ package body Gnat2Why.Types is
            Private_Kind | E_Record_Type | E_Record_Subtype | Concurrent_Kind
          then
             Create_Rep_Record_Theory_If_Needed (File, Retysp (E));
+         elsif Is_Access_Type (E) then
+            Create_Rep_Pointer_Theory_If_Needed (File, Retysp (E));
          end if;
 
          Open_Theory

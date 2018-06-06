@@ -31,6 +31,7 @@ with Ada.Text_IO;
 with Aspects;                         use Aspects;
 with Assumption_Types;                use Assumption_Types;
 with Common_Iterators;                use Common_Iterators;
+with Debug;                           use Debug;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
 with Flow_Refinement;                 use Flow_Refinement;
@@ -1436,7 +1437,12 @@ package body SPARK_Definition is
             Mark_List (Component_Associations (N));
 
          when N_Allocator =>
-            Mark_Violation ("allocator", N);
+            --  Allow allocators in the special mode -gnatdF
+            if Debug_Flag_FF then
+               Mark (Expression (N));
+            else
+               Mark_Violation ("allocator", N);
+            end if;
 
          when N_Assignment_Statement =>
             Mark (Name (N));
@@ -1494,7 +1500,12 @@ package body SPARK_Definition is
             Mark_Identifier_Or_Expanded_Name (N);
 
          when N_Explicit_Dereference =>
-            Mark_Violation ("explicit dereference", N);
+            --  Allow explicit dereference in the special mode -gnatdF
+            if Debug_Flag_FF then
+               Mark (Prefix (N));
+            else
+               Mark_Violation ("explicit dereference", N);
+            end if;
 
          when N_Extended_Return_Statement =>
             Mark_Extended_Return_Statement (N);
@@ -1620,7 +1631,12 @@ package body SPARK_Definition is
             end if;
 
          when N_Null =>
-            Mark_Violation ("null", N);
+            --  Allow Null objects of access type in the special mode -gnatdF
+            if Debug_Flag_FF then
+               null;
+            else
+               Mark_Violation ("null", N);
+            end if;
 
          when N_Number_Declaration =>
             Mark_Number_Declaration (N);
@@ -1702,7 +1718,9 @@ package body SPARK_Definition is
                  Unique_Entity (Etype (Name));
 
             begin
-               if Is_Access_Type (Prefix_Type) then
+               if Is_Access_Type (Prefix_Type)
+                 and then not Debug_Flag_FF
+               then
                   Mark_Violation ("implicit dereference", N);
 
                elsif No (Search_Component_By_Name (Prefix_Type, Selector)) then
@@ -1733,6 +1751,7 @@ package body SPARK_Definition is
             --  output when the type is in a part with SPARK_Mode (On).
 
             if not Violation_Detected
+              --  ??? why excluding access types here?
               and then not Is_Access_Type (Etype (Prefix (N)))
               and then not
                 Component_Is_Visible_In_SPARK (Entity (Selector_Name (N)))
@@ -4738,7 +4757,19 @@ package body SPARK_Definition is
             end if;
 
          elsif Is_Access_Type (E) then
-            Mark_Violation ("access type", E);
+
+            --  Allow access types in the special mode -gnatdF
+
+            if not Debug_Flag_FF
+
+            --  Should not handle pointers which are not safe, we do not mark
+            --  access types if they are not under the SPARK mode On.
+
+              or else not SPARK_Pragma_Is (Opt.On)
+              or else not Retysp_In_SPARK (Directly_Designated_Type (E))
+            then
+               Mark_Violation ("access type", E);
+            end if;
 
          elsif Is_Concurrent_Type (E) then
 
@@ -6799,6 +6830,22 @@ package body SPARK_Definition is
                           then SPARK_Aux_Pragma (Pack_Ent)
                           else SPARK_Pragma (Pack_Ent));
                end;
+            end if;
+
+            --  ??? The following pointer type is not accepted. This is related
+            --  to [R525-018].
+            --    type L_Ptr is access L;
+            --    type SL_Ptr3 is new L_Ptr(7);
+
+            if Debug_Flag_FF and then Is_Nouveau_Type (E) then
+               case Nkind (Decl) is
+                  when N_Object_Declaration =>
+                     return SPARK_Pragma (Defining_Identifier (Decl));
+                  when N_Procedure_Specification | N_Function_Specification =>
+                     return SPARK_Pragma (Defining_Unit_Name (Decl));
+                  when others =>
+                     return Empty;
+               end case;
             end if;
             return Empty;
          end;
