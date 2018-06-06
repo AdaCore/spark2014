@@ -1037,7 +1037,7 @@ package body Flow is
                          then "(global found)"
                          elsif Present (FA.Depends_N)
                          then "(depends found)"
-                         else raise Program_Error));
+                         else "pure"));
                end if;
 
                Debug ("Spec in SPARK: ", Entity_In_SPARK (E));
