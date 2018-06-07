@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2016, AdaCore                        --
+--                   Copyright (C) 2016-2018, AdaCore                       --
 --                                                                          --
 -- SPARK is free software;  you can  redistribute it and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -47,6 +47,16 @@ is
      Global => null,
      Pre  => Val1 <= Val2,
      Post => Val1 / Denom <= Val2 / Denom;  --  MANUAL PROOF
+
+   procedure Lemma_Div_Is_Antimonotonic
+     (Num    : Int;
+      Denom1 : Pos;
+      Denom2 : Pos)
+   with
+     Global => null,
+     Pre  => Num >= 0
+       and then Denom1 <= Denom2,
+     Post => Num / Denom1 >= Num / Denom2;
 
    procedure Lemma_Mod_Range
      (Arg1 : Int;
@@ -101,6 +111,13 @@ is
              Res = (Val * Scale_Num) / Scale_Denom,
      Post => abs (Res) <= abs (Val) and then
              (if Val >= 0 then Res >= 0 else Res <= 0);
+
+   procedure Lemma_Mult_Then_Div_Is_Ident
+     (Val1 : Int;
+      Val2 : Pos)
+   with
+     Global => null,
+     Post => (Val1 * Val2) / Val2 = Val1;
 
    procedure Lemma_Mult_Then_Mod_Is_Zero
      (Arg1 : Int;

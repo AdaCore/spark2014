@@ -48,6 +48,12 @@ is
                     "GNAT-specific lemma, as Ada RM does not guarantee it");
    --  GNAT implements division of fixed-point type by Integer with integer
    --  division, which is monotonic in its numerator.
+   --
+   --  As fixed-point values Num1 and Num2 are represented internally by
+   --  integers, the fixed-point divisions (Num1 / Denom) and (Num2 / Denom)
+   --  are computed as the integer division on their representations. Thus, the
+   --  correction of the above lemma rests on the proof of
+   --  Lemma_Div_Is_Monotonic from SPARK.Arithmetic_Lemmas
 
    procedure GNAT_Lemma_Div_Is_Antimonotonic
      (Num    : Fix;
@@ -63,6 +69,12 @@ is
    --  GNAT implements division of fixed-point type by Integer with integer
    --  division, which is antimonotonic in its denominator, when all arguments
    --  are non-negative.
+   --
+   --  As fixed-point value Num is represented internally by an integer, the
+   --  fixed-point divisions (Num / Denom1) and (Num / Denom2) are computed as
+   --  the integer divisions on its representation. Thus, the correction of the
+   --  above lemma rests on the proof of Lemma_Div_Is_Antimonotonic from
+   --  SPARK.Arithmetic_Lemmas
 
    procedure GNAT_Lemma_Mult_Then_Div_Is_Ident
      (Val1 : Fix;
@@ -76,5 +88,11 @@ is
    --  GNAT implements division of fixed-point type by Integer with integer
    --  division, which ensures that Fix'Last / Val2 is rounded to zero. Hence
    --  the multiplication (Val1 * Val2) in the postcondition cannot overflow.
+   --
+   --  As fixed-point values Val1 is represented internally by an integer, the
+   --  fixed-point multiplication and division ((Val1 * Val2) / Val2) are
+   --  computed as the integer multplication and division on its
+   --  representation. Thus, the correction of the above lemma rests on the
+   --  proof of Lemma_Mult_Then_Div_Is_Ident from SPARK.Arithmetic_Lemmas
 
 end SPARK.Fixed_Point_Arithmetic_Lemmas;
