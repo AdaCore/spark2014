@@ -157,7 +157,10 @@ package body Flow.Slice is
       with Pre  => F.Kind in Direct_Mapping
                            | Record_Field
                            | Magic_String,
-           Post => Flow_Equivalent'Result.Variant = Normal_Use;
+           Post => Flow_Equivalent'Result.Kind in Direct_Mapping
+                                                | Magic_String
+                     and then
+                   Flow_Equivalent'Result.Variant = Normal_Use;
       --  Given a flow id, return the view the dependency relation cares about
 
       ---------------------
