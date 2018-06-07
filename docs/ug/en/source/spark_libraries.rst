@@ -405,6 +405,10 @@ Currenly, the SPARK lemma library provides the following lemmas:
   ``spark-mod32_arithmetic_lemmas.ads`` and for 64 bits modular integers
   (``Interfaces.Unsigned_64``) in file ``spark-mod64_arithmetic_lemmas.ads``.
 
+* GNAT-specific lemmas on fixed-point arithmetic in file
+  ``spark-fixed_point_arithmetic_lemmas.ads``, that need to be instantiated by
+  the user for her specific fixed-point type.
+
 * Lemmas on floating point arithmetic in file
   ``spark-floating_point_arithmetic_lemmas.ads``, that are instantiated for
   single-precision floats (``Float``) in file
@@ -449,10 +453,10 @@ array, returning an array of results in the same order.
       type Index_Type is range <>;
       type Element_In is private;
       type Array_In is array (Index_Type range <>) of Element_In;
-      
+
       type Element_Out is private;
       type Array_Out is array (Index_Type range <>) of Element_Out;
-      
+
       with function Init_Prop (A : Element_In) return Boolean;
       --  Potential additional constraint on values of the array to allow Map
 
@@ -521,7 +525,7 @@ Currently, the higher-order function library provides the following functions:
   ``Count_2`` the number of elements with a given ``Choose`` property.
 
 .. note::
-   
+
    Unlike the :ref:`SPARK Lemma Library`, these generic functions are
    not verified once and for all as their correction depends on the functions
    provided at each instance. As a result, each instance should be verified by
