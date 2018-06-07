@@ -40,6 +40,7 @@ package Flow.Slice is
      (FA      : Flow_Analysis_Graphs;
       V_Final : Flow_Graphs.Vertex_Id)
       return Vertex_Sets.Set;
+   pragma Unreferenced (IPFA_Dependency);
    --  Compute all inputs the given vertex depends on
    --
    --  Complexity is O(N)
