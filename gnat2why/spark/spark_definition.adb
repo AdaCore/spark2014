@@ -3703,6 +3703,12 @@ package body SPARK_Definition is
       --  Start of processing for Mark_Subprogram_Entity
 
       begin
+         if Is_Protected_Operation (E)
+           and then not Is_SPARK_Tasking_Configuration
+         then
+            Mark_Violation_In_Tasking (E);
+         end if;
+
          Mark_Subprogram_Specification (if Ekind (E) in Entry_Kind
                                         then Parent (E)
                                         else Subprogram_Specification (E));
