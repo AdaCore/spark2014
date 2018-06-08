@@ -1,7 +1,7 @@
-spark-arithmetic_lemmas.ads:90:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:90:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:101:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:101:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:100:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:100:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:111:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:111:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-mod_arithmetic_lemmas.ads:56:26: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:56:26: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:67:52: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
