@@ -3,7 +3,7 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
 <prover id="0" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
-<prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="1" steplimit="0" memlimit="0"/>
+<prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="0"/>
 <file name="../../../obj/gnatprove/spark-mod32_arithmetic_lemmas.mlw" proved="true">
 <theory name="Spark__mod32_arithmetic_lemmas__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
