@@ -1,0 +1,5 @@
+show_no_aliasing_of_names.adb:9:17: info: initialization of "Total" proved, in call inlined at show_no_aliasing_of_names.adb:16
+show_no_aliasing_of_names.adb:9:17: info: initialization of "Total" proved, in call inlined at show_no_aliasing_of_names.adb:17
+show_no_aliasing_of_names.adb:9:23: info: overflow check proved (CVC4: 1 VC), in call inlined at show_no_aliasing_of_names.adb:16
+show_no_aliasing_of_names.adb:9:23: info: overflow check proved (CVC4: 1 VC), in call inlined at show_no_aliasing_of_names.adb:17
+show_no_aliasing_of_names.adb:9:25: info: initialization of "X" proved, in call inlined at show_no_aliasing_of_names.adb:16
