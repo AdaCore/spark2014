@@ -3496,10 +3496,15 @@ package body SPARK_Definition is
             end if;
 
             while Present (Formal) loop
+
                --  A nonvolatile function shall not have a formal parameter
-               --  of an effectively volatile type (SPARK RM 7.1.3(9)).
+               --  of an effectively volatile type (SPARK RM 7.1.3(9)). Do
+               --  not issue this violation on compiler-generated predicate
+               --  functions, as the violation is better detected on the
+               --  expression itself for a better error message.
 
                if not Is_Volatile_Func
+                 and then not Is_Predicate_Function (Id)
                  and then Is_Effectively_Volatile (Etype (Formal))
                then
                   Mark_Violation
@@ -4327,6 +4332,11 @@ package body SPARK_Definition is
                  ("type invariant on private_type_declaration or"
                   & " private_type_extension", E, "SPARK RM 7.3.2(2)");
 
+            elsif Is_Effectively_Volatile (E) then
+               Mark_Violation
+                 ("type invariant on effectively volatile type",
+                  E, "SPARK RM 7.3.2(4)");
+
             --  Only mark the invariant as part of the type's fullview
 
             elsif not Is_Partial_View (E)
@@ -4392,6 +4402,18 @@ package body SPARK_Definition is
                   end;
                end if;
             end if;
+         end if;
+
+         --  An effectively volatile type cannot have a predicate. Here, we do
+         --  not try to distinguish the case where the predicate is inherited
+         --  from a parent whose full view is not in SPARK.
+
+         if Has_Predicates (E)
+            and then Is_Effectively_Volatile (E)
+         then
+            Mark_Violation
+              ("subtype predicate on effectively volatile type",
+               E, "SPARK RM 3.2.4(3)");
          end if;
 
          --  We currently do not support invariants on components of tagged
