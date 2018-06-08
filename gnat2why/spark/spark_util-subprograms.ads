@@ -255,7 +255,7 @@ package SPARK_Util.Subprograms is
    --     if any, or Empty otherwise
    --  Extract a condition being checked from a procedure intended to check
    --  this condition. This is used to extract the condition checked for aspect
-   --  Default_Initialization.
+   --  Default_Initialization and Type_Invariant.
 
    function Get_Expr_From_Return_Only_Func (E : Entity_Id) return Node_Id
    with Pre => Ekind (E) = E_Function;
