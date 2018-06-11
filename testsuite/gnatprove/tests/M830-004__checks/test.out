@@ -85,7 +85,7 @@ do_checks.adb:333:16: info: precondition proved (CVC4: 2 VC)
 do_checks.adb:333:19: info: initialization of "X.Arr" proved
 do_checks.adb:333:22: info: initialization of "Y.Arr" proved
 do_checks.adb:344:40: info: initialization of "Y.Arr" proved
-do_checks.adb:346:27: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => (others => False)) and X.Arr'First = 1 and X.Arr'Last = 0)
+do_checks.adb:346:27: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => (others => False)) and X.Arr'First = 0 and X.Arr'Last = 0)
 do_checks.adb:348:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:348:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:349:29: info: discriminant check proved (CVC4: 1 VC)
@@ -98,7 +98,7 @@ do_checks.adb:362:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:364:16: info: precondition proved (CVC4: 1 VC)
 do_checks.adb:364:19: info: initialization of "X.Arr" proved
 do_checks.adb:370:40: info: initialization of "Y.Arr" proved
-do_checks.adb:372:24: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => (others => False)) and X.Arr'First = 1 and X.Arr'Last = 0)
+do_checks.adb:372:24: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => (others => False)) and X.Arr'First = 0 and X.Arr'Last = 0)
 do_checks.adb:374:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:374:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:375:29: info: discriminant check proved (CVC4: 1 VC)

@@ -1335,6 +1335,7 @@ spark-higher_order-fold.ads:153:39: info: index check proved (CVC4: 2 VC), in in
 spark-higher_order-fold.ads:159:16: info: subprogram "Fold" will terminate, terminating annotation has been proved, in instantiation at spark-higher_order-fold.ads:194, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:160:39: info: precondition proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:194, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:160:59: info: range check proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:194, in instantiation at test_higher_order.ads:43
+spark-higher_order-fold.ads:161:17: info: postcondition proved (CVC4: 6 VC; altergo: 1 VC), in instantiation at spark-higher_order-fold.ads:194, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:163:18: info: precondition proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:194, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:163:38: info: range check proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:194, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:164:32: info: index check proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:194, in instantiation at test_higher_order.ads:43
@@ -1348,7 +1349,6 @@ spark-higher_order-fold.ads:168:32: info: index check proved (CVC4: 2 VC), in in
 spark-higher_order-fold.ads:168:51: info: index check proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:194, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:168:51: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:194, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:169:18: info: precondition proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:194, in instantiation at test_higher_order.ads:43
-spark-higher_order-fold.ads:169:18: medium: postcondition might fail, cannot prove Final_Prop (A, Fold'Result (A'first)), in instantiation at spark-higher_order-fold.ads:194, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:169:47: info: index check proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:194, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:203:16: info: subprogram "Fold" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:205:38: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:43

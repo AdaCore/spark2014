@@ -740,9 +740,10 @@ package body Gnat2Why.Types is
          --  We generate a record type containing only one mutable field of
          --  type t. This is used to store mutable variables of type t.
          --  We also generate a havoc function for this type.
-         --  We do not generate these declarations for record types which
-         --  are clones of existing types with the same name and statically
-         --  constrained array type as no new type is declared for them.
+         --  We do not generate these declarations for array or record types
+         --  which are clones of existing types with the same name and
+         --  statically constrained array type as no new type is declared for
+         --  them.
          --  Classwide types are a special case as they are clones of their
          --  specific types but do not have the same short name.
 
@@ -753,6 +754,10 @@ package body Gnat2Why.Types is
            and then not Is_Class_Wide_Type (Retysp (E))
            and then (not Has_Array_Type (E)
                      or else not Is_Static_Array_Type (Retysp (E)))
+           and then (not Has_Array_Type (E)
+                     or else not Array_Type_Is_Clone (Retysp (E))
+                     or else Short_Name (Retysp (E)) /=
+                       Short_Name (Array_Type_Cloned_Subtype (Retysp (E))))
          then
             Emit_Ref_Type_Definition
               (File, To_Why_Type (Retysp (E), Local => True));

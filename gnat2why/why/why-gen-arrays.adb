@@ -373,6 +373,30 @@ package body Why.Gen.Arrays is
            Typ    => EW_Split (Ty_Ent));
    end Array_Convert_To_Base;
 
+   -------------------------------
+   -- Array_Type_Cloned_Subtype --
+   -------------------------------
+
+   function Array_Type_Cloned_Subtype (E : Entity_Id) return Entity_Id is
+      Result : Entity_Id := Retysp (E);
+   begin
+      while not Is_Static_Array_Type (Result)
+        and then Retysp (Etype (Result)) /= Result
+      loop
+         Result := Retysp (Etype (Result));
+      end loop;
+
+      return Result;
+   end Array_Type_Cloned_Subtype;
+
+   -------------------------
+   -- Array_Type_Is_Clone --
+   -------------------------
+
+   function Array_Type_Is_Clone (E : Entity_Id) return Boolean is
+     (not Is_Static_Array_Type (Retysp (E))
+      and then Retysp (Etype (E)) /= Retysp (E));
+
    -----------------------
    -- Build_Length_Expr --
    -----------------------
@@ -896,7 +920,30 @@ package body Why.Gen.Arrays is
    is
       Why_Name : constant W_Name_Id := To_Why_Type (E, Local => True);
    begin
-      if Is_Static_Array_Type (E) then
+      if Array_Type_Is_Clone (E) then
+
+         --  This type is simply a copy of an existing type, we re-export the
+         --  corresponding module and then return.
+
+         declare
+            Clone : constant Entity_Id := Array_Type_Cloned_Subtype (E);
+         begin
+            Add_With_Clause (File, E_Module (Clone), EW_Export);
+
+            --  If the copy has the same name as the original, do not redefine
+            --  the type name.
+
+            if Short_Name (E) /= Short_Name (Clone) then
+               Emit (File,
+                     New_Type_Decl
+                       (Name  => Why_Name,
+                        Alias =>
+                          +New_Named_Type
+                          (Name =>
+                               To_Why_Type (Clone, Local => True))));
+            end if;
+         end;
+      elsif Is_Static_Array_Type (E) then
          Declare_Constrained (File, E);
       else
          Declare_Unconstrained (File, Why_Name, E);

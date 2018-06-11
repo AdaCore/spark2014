@@ -427,4 +427,14 @@ package Why.Gen.Arrays is
    --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
    --    Build_Predicate_For_Comp (get <Expr> i1 .. in)
 
+   function Array_Type_Is_Clone (E : Entity_Id) return Boolean;
+   --  Return True if we do not produce a new type declaration for E but rather
+   --  clone an existing one. Unconstrained array types and constrained type
+   --  with dynamic bounds are clones of their base type.
+   --  This is used so that we can know if we need to create new references
+
+   function Array_Type_Cloned_Subtype (E : Entity_Id) return Entity_Id with
+     Pre => Array_Type_Is_Clone (E);
+   --  Return the existing type declaration that has been cloned for E
+
 end Why.Gen.Arrays;
