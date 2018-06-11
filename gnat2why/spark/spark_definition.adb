@@ -1796,17 +1796,19 @@ package body SPARK_Definition is
                   Mark_Subprogram_Declaration (N);
                end if;
 
-               if Was_Expression_Function (N) then
-                  declare
-                     E : constant Entity_Id := Unique_Defining_Entity (N);
-                  begin
-                     if not Is_Generic_Subprogram (E) then
-                        Mark_Entity (E);
-                     end if;
-                  end;
-               else
-                  Mark_Subprogram_Body (N);
-               end if;
+               declare
+                  E : constant Entity_Id := Unique_Defining_Entity (N);
+               begin
+                  if Ekind (E) = E_Function
+                    and then (Is_Predicate_Function (E)
+                              or else
+                              Was_Expression_Function (N))
+                  then
+                     Mark_Entity (E);
+                  else
+                     Mark_Subprogram_Body (N);
+                  end if;
+               end;
             end if;
 
          when N_Subprogram_Body_Stub =>
@@ -1816,7 +1818,9 @@ package body SPARK_Definition is
             Mark_Subprogram_Body (Get_Body_From_Stub (N));
 
          when N_Subprogram_Declaration =>
-            Mark_Subprogram_Declaration (N);
+            if not Is_Predicate_Function (Defining_Entity (N)) then
+               Mark_Subprogram_Declaration (N);
+            end if;
 
             --  For expression functions that have a unique declaration, the
             --  body inserted by the frontend may be far from the original
@@ -3718,9 +3722,10 @@ package body SPARK_Definition is
                                         then Parent (E)
                                         else Subprogram_Specification (E));
 
-         --  We mark bodies of expression functions when they are referenced
-         --  (including those from other compilation units), because proof
-         --  wants to use their bodies as an implicit contract.
+         --  We mark bodies of predicate functions, and of expression functions
+         --  when they are referenced (including those from other compilation
+         --  units), because proof wants to use their bodies as an implicit
+         --  contract.
 
          --  ??? It would be simpler to use
          --  Is_Expression_Function_Or_Completion, but in
@@ -3732,7 +3737,9 @@ package body SPARK_Definition is
                My_Body : constant Node_Id := Subprogram_Body (E);
             begin
                if Present (My_Body)
-                 and then Was_Expression_Function (My_Body)
+                 and then
+                   (Was_Expression_Function (My_Body)
+                    or else Is_Predicate_Function (E))
 
                  --  Protect against marking the same body twice. This can
                  --  happen, when the frontend creates a new entity for the
@@ -4608,6 +4615,14 @@ package body SPARK_Definition is
                  ("discriminant on derived type",
                   Parent (E),
                   SRM_Reference => "SPARK RM 3.7(2)");
+            end if;
+
+            --  Disallow a private type whose full view is not in SPARK and
+            --  which has predicates.
+
+            if Full_View_Not_In_SPARK (E) and then Has_Predicates (E) then
+               Mark_Violation
+                 ("predicate on private type outside SPARK_Mode", E);
             end if;
 
          elsif Is_Record_Type (E) then
