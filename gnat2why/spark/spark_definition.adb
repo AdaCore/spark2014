@@ -6371,19 +6371,19 @@ package body SPARK_Definition is
             Mark_Entity (E);
 
             if In_Pred_Function_Decl then
-               --  For non-private types the Current_Delayed_Aspect_Type and
-               --  the type of the predicate function's formal parameter are
-               --  the same; their In_SPARK status must be same (1).
+               --  (1) For non-private types the Current_Delayed_Aspect_Type
+               --  and the type of the predicate function's formal parameter
+               --  are the same; their In_SPARK status must be the same.
                --
-               --  For private types with a predicate on the private view the
-               --  situation is the same (2).
+               --  (2) For private types with a predicate on the private view
+               --  the situation is the same.
                --
-               --  For private types with a predicate on the full view the
+               --  (3) For private types with a predicate on the full view the
                --  private view should be In_SPARK (otherwise there is no point
                --  in marking the full view or its predicate) and the violation
-               --  in the predicate function renders the full view as not in
-               --  SPARK (the opposite doesn't hold, i.e. the predicate might
-               --  be in SPARK but the full view itself might contain
+               --  in the predicate function renders the full view as not
+               --  in SPARK (the opposite doesn't hold, i.e. the predicate
+               --  might be in SPARK but the full view itself might contain
                --  violations; ??? in this case we shouldn't bother with
                --  marking the predicate).
 
