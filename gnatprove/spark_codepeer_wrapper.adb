@@ -44,8 +44,6 @@ with String_Utils;               use String_Utils;
 
 procedure SPARK_CodePeer_Wrapper is
 
-   Subdir : constant String := Compose ("gnatprove", "codepeer");
-
    subtype String_Access is GNAT.OS_Lib.String_Access;
 
    Verbose             : Boolean := False;
@@ -65,9 +63,11 @@ procedure SPARK_CodePeer_Wrapper is
    --  contains the argument --RTS=<path> (including the --RTS prefix), if
    --  present
 
-   Target_Arg      : String_Access;
+   Target_Arg   : String_Access;
    --  contains the argument --target=targ (including the --target prefix), if
    --  present
+
+   Subdirs      : Virtual_File := Create ("gnatprove") / "codepeer";
 
    Library      : String_Access;
 
@@ -242,7 +242,8 @@ procedure SPARK_CodePeer_Wrapper is
       Initialize (Proj_Env);
       Set_Path_From_Gnatls (Proj_Env.all, "codepeer-gnatls", GNAT_Version);
       Free (GNAT_Version);
-      Set_Object_Subdir (Proj_Env.all, +Subdir);
+      Set_Object_Subdir (Proj_Env.all,
+                         Filesystem_String (Subdirs.Display_Full_Name));
       Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
       for Ext of Ext_Vars loop
          declare
@@ -323,7 +324,7 @@ procedure SPARK_CodePeer_Wrapper is
 
       Append_Arg ("-gnateF");
 
-      Append_Arg ("--subdirs=" & Subdir);
+      Append_Arg ("--subdirs=" & Subdirs.Display_Full_Name);
       Append_Arg ("-P" & Project.Display_Full_Name);
 
       for Ext of Ext_Vars loop
@@ -529,6 +530,11 @@ procedure SPARK_CodePeer_Wrapper is
             elsif Starts_With (S, "--target=") then
 
                Target_Arg := new String'(S);
+
+            elsif Starts_With (S, "--subdirs=") then
+
+               Subdirs :=
+                 Filesystem_String (S (S'First + 10 .. S'Last)) / Subdirs;
 
             elsif Starts_With (S, "-j") then
                Num_Procs := new String'(S (3 .. S'Last));

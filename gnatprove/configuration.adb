@@ -694,9 +694,14 @@ package body Configuration is
          Tree         : Project_Tree;
 
       begin
+         if not Null_Or_Empty_String (CL_Switches.Subdirs) then
+            Subdir := Filesystem_String (CL_Switches.Subdirs.all) / Subdir;
+         end if;
+
          Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
          Free (GNAT_Version);
-         Set_Object_Subdir (Proj_Env.all, Subdir_Name);
+         Set_Object_Subdir (Proj_Env.all,
+                            Filesystem_String (Subdir.Display_Full_Name));
          Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
          declare
             Sswitches : constant String :=
@@ -1424,6 +1429,11 @@ package body Configuration is
 
       Define_Switch (First_Config, "-aP=");
 
+      Define_Switch
+        (First_Config,
+         CL_Switches.Subdirs'Access,
+         Long_Switch => "--subdirs=");
+
       Define_Switch (First_Config, "*", Help => "list of source files");
 
       --  We now initialize the project environment; it may be changed by the
@@ -1552,6 +1562,11 @@ package body Configuration is
         (Config,
          CL_Switches.RTS'Access,
          Long_Switch => "--RTS=");
+
+      Define_Switch
+        (Config,
+         CL_Switches.Subdirs'Access,
+         Long_Switch => "--subdirs=");
 
       Define_Switch
         (Config,

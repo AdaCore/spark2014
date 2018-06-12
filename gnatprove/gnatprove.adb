@@ -267,7 +267,7 @@ procedure Gnatprove with SPARK_Mode is
              Proj_Name         => Project_File);
       Del_Succ : Boolean;
    begin
-      Args.Append ("--subdirs=" & String (Subdir_Name));
+      Args.Append ("--subdirs=" & Subdir.Display_Full_Name);
       Args.Append ("--restricted-to-languages=ada");
       Args.Append ("--no-object-check");
       Args.Append ("--gnatprove");
@@ -551,7 +551,7 @@ procedure Gnatprove with SPARK_Mode is
          Id       : Process_Descriptor;
       begin
 
-         Args.Append ("--subdirs=" & String (Subdir_Name));
+         Args.Append ("--subdirs=" & Subdir.Display_Full_Name);
          Args.Append ("--restricted-to-languages=ada");
          Args.Append ("-s");
 
@@ -854,15 +854,11 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("-U");
       end if;
 
-      if CL_Switches.RTS /= null
-        and then CL_Switches.RTS.all /= ""
-      then
+      if not Null_Or_Empty_String (CL_Switches.RTS) then
          Args.Prepend ("--RTS=" & CL_Switches.RTS.all);
       end if;
 
-      if CL_Switches.Target /= null
-        and then CL_Switches.Target.all /= ""
-      then
+      if not Null_Or_Empty_String (CL_Switches.Target) then
          Args.Prepend ("--target=" & CL_Switches.Target.all);
       end if;
 
@@ -879,6 +875,10 @@ procedure Gnatprove with SPARK_Mode is
       for Var of CL_Switches.X loop
          Args.Append (Var);
       end loop;
+
+      if not Null_Or_Empty_String (CL_Switches.Subdirs) then
+         Args.Prepend ("--subdirs=" & CL_Switches.Subdirs.all);
+      end if;
 
       if not CL_Switches.GPR_Project_Path.Is_Empty then
          for S of CL_Switches.GPR_Project_Path loop

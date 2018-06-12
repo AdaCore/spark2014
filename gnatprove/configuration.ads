@@ -108,6 +108,7 @@ package Configuration is
       Report               : aliased GNAT.Strings.String_Access;
       RTS                  : aliased GNAT.Strings.String_Access;
       Steps                : aliased Integer;
+      Subdirs              : aliased GNAT.Strings.String_Access;
       Target               : aliased GNAT.Strings.String_Access;
       Timeout              : aliased GNAT.Strings.String_Access;
       U                    : aliased Boolean;
@@ -252,8 +253,9 @@ package Configuration is
 
    Default_Steps : constant Natural := 100;
 
-   Subdir_Name : constant Filesystem_String := "gnatprove";
-   --  The name of the directory in which all work takes place
+   Subdir : Virtual_File := Create ("gnatprove");
+   --  The name of the directory in which all work takes place. A directory can
+   --  be prepended to this default value by using the --subdirs switch.
 
    Main_Subdir : GNAT.Strings.String_Access := null;
    --  The name of the main sub-directory "gnatprove" in which files are

@@ -29,6 +29,7 @@ gnatprove basic switches:
      --replay          Replay proofs, do not attempt new proofs
      --report=r        Set the report mode of GNATprove (r=fail*, all,
                        provers, statistics)
+     --subdirs=p       Create all artifacts in this subdir
  -v, --verbose         Output extra verbose information
      --version         Output version of the tool and exit
      --warnings=w      Set the warning mode of GNATprove
