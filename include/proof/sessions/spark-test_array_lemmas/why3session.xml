@@ -24,7 +24,7 @@
   <proof prover="1"><result status="valid" steps="64"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="144"/></proof>
+  <proof prover="1"><result status="valid" steps="81"/></proof>
   </goal>
  </transf>
  </goal>
@@ -42,7 +42,7 @@
   <proof prover="1"><result status="valid" steps="3907"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="7401"/></proof>
+  <proof prover="1"><result status="valid" steps="4763"/></proof>
   </goal>
  </transf>
  </goal>
