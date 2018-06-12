@@ -2261,30 +2261,125 @@ Design
 ======
 
 Circularity Avoidance (aka buckets)
+-----------------------------------
+
 Translation Phases
+------------------
+
 Additional Information Computation
+----------------------------------
+
 Declaration of Entities
+-----------------------
+
 Completion of Entities
+----------------------
+
 Generation of Checks
+--------------------
+
 Handling of Imports (Close_Theory)
+----------------------------------
 
 Global Structures
 =================
 
 Annotate Pragmas
+----------------
+
 Component information
+---------------------
+
 Names for Entity Symbols (E_Symb, filled during declaration phase)
+------------------------------------------------------------------
+
 Mutable Global Structures
+-------------------------
+
 Symbol Map for Variables (Symbol_Table)
+---------------------------------------
+
 Name for Old
+------------
+
 Self Reference of Protected Objects
+-----------------------------------
 
 Architecture
 ============
 
 Why syntax tree (why-atree)
+---------------------------
+
 Low level generation routines (why-gen)
+---------------------------------------
+
 High level entry points (gnat2why)
+----------------------------------
+
 Interface with Why3
+-------------------
+
 VC labels
+---------
+
+Labels (now called attributes in Why3) are strings added to identifiers, terms,
+formulas, program expressions etc. They are kept by WP generation and can be
+used to give names to goals or identifiers, give a location to a term etc. Some
+of them are used by transformations: for example, "stop_split" stops Why3's
+split transformation (do not work for gnatwhy3).
+The list of labels that are used by gnat2why can be found in vc_kinds.ads and
+the exhaustive list is the following:
+
+``GP_Id:<n>`` with n a natural, is used to make the association between SPARK
+checks and Why3 goals. For example, gnatwhy3's answer will typically contain
+``{GP_ID:"1", proved:true}``, gnat2why will make the
+correspondence with the real SPARK check which gives ``overflow check proved``.
+
+``GP_Pretty_Ada:<n>``, with n the integer representation of an Ada AST node. It
+is an extra information added to a specific check/goal so that, in the case
+where this goal is not proved, the part of the program is reprinted: ``overflow
+check might fail: cannot prove (In_range (B))``.
+
+``GP_Reason:<reason_name>``, with reason_name a string that defines
+the kind of a vc: ``OVERFLOW_CHECK``, ``RANGE_CHECK`` etc. This is used for
+reporting of messages to the user. In debug mode and for coq proofs, the reason
+is also used to create appropriate filename for .smt2 or .v files. It is also
+used to recognize a goal in prove check mode.
+The exhaustive list of kinds can be found in type ``VC_Kind`` in vc_kinds.ads.
+
+``GP_Shape:<s>`` with s a string representing the shape of an Ada node, is
+used to generate appropriate Coq filenames in manual proofs.
+
+``GP_Sloc:<l>`` with l a location is used to give the precise location of
+a VC. It is not to be confused with the # notation of Why3 for locations. l is
+of the form file:line:column. In case of instantiated or inlined VC, the
+location is also contained file:line:column:instantiated:file:line:column.
+
+``GP_Subp`` ???
+
+``GP_Already_Proved`` indicates that the VC is already proved (probably by
+Codepeer).
+
+``keep_on_simp`` prevents Why3 from simplifying inside a term that has this
+label. For example, ``a /\ "keep_on_simp" true`` cannot be simplified to
+``a``. We use this label to make sure we get a result for *all* VCs given even
+the most trivial ones.
+
+``comment:<e>`` with e a string containing a carriage is used in manual proof
+with Coq. It is intended to show where exactly the check was located *inside*
+the generated .v files. In debug mode, this comment is ***not*** generated.
+
+``model``: Counterexample label
+
+``model_trace:<n>`` where n is the number representing a node of Ada
+AST. Counterexample label
+
+``model_projected``: Counterexample label
+
+``model_vc``: Counterexample label
+
+``model_vc_post``: Counterexample label
+
 identifying subparts of formulas to be reported to user (“cannot prove ‘bla’”)
+------------------------------------------------------------------------------
