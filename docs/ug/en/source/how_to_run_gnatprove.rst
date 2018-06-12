@@ -206,15 +206,15 @@ level 4. More precisely, each value of ``--level`` is equivalent to directly
 setting a collection of other switches discussed above:
 
 * ``--level=0`` is equivalent to
-  ``--prover=cvc4 --proof=per_check --timeout=1``
+  ``--prover=cvc4 --proof=per_check --timeout=1 --steps=0``
 * ``--level=1`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=per_check --timeout=1``
+  ``--prover=cvc4,z3,altergo --proof=per_check --timeout=1 --steps=0``
 * ``--level=2`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=per_check --timeout=5``
+  ``--prover=cvc4,z3,altergo --proof=per_check --timeout=5 --steps=0``
 * ``--level=3`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=progressive --timeout=5``
+  ``--prover=cvc4,z3,altergo --proof=progressive --timeout=5 --steps=0``
 * ``--level=4`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=progressive --timeout=10``
+  ``--prover=cvc4,z3,altergo --proof=progressive --timeout=10 --steps=0``
 
 If both ``--level`` is set and an underlying switch is set (``--prover``,
 ``--timeout``, or ``--proof``), the value of the latter takes precedence over
