@@ -987,15 +987,8 @@ package body SPARK_Atree is
 
    function Of_Present (N : Node_Id) return Boolean renames Sinfo.Of_Present;
 
-   -----------------------------
-   -- Paramenter_Associations --
-   -----------------------------
-
-   function Parameter_Associations (N : Node_Id) return List_Id renames
-     Sinfo.Parameter_Associations;
-
    ------------------------------
-   -- Paramenter_Specificatons --
+   -- Parameter_Specifications --
    ------------------------------
 
    function Parameter_Specifications (N : Node_Id) return List_Id renames

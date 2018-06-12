@@ -12122,11 +12122,11 @@ package body Gnat2Why.Expr is
                --  expression.
 
                declare
-                  Func   : constant Entity_Id := Get_Called_Entity (Expr);
-                  Params : constant List_Id := Parameter_Associations (Expr);
-                  Arg    : constant Node_Id := First (Params);
+                  Func : constant Entity_Id := Get_Called_Entity (Expr);
+                  Arg  : constant Node_Id := First_Actual (Expr);
                begin
-                  pragma Assert (Present (Arg) and then No (Next (Arg)));
+                  pragma Assert (Present (Arg)
+                                 and then No (Next_Actual (Arg)));
 
                   T := Dynamic_Predicate_Expression
                     (Expr      => Transform_Expr

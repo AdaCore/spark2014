@@ -377,6 +377,9 @@ package SPARK_Atree is
                        | N_If_Expression
                        | N_Indexed_Component;
 
+   function First_Actual (Node : Node_Id) return Node_Id renames
+     Sem_Util.First_Actual;
+
    function First_Bit (N : Node_Id) return Node_Id with
      Pre => Nkind (N) = N_Component_Clause;
 
@@ -524,13 +527,11 @@ package SPARK_Atree is
 
    function Name (N : Node_Id) return Node_Id;
 
+   function Next_Actual (Actual_Id : Node_Id) return Node_Id renames
+     Sem_Util.Next_Actual;
+
    function Of_Present (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Iterator_Specification;
-
-   function Parameter_Associations (N : Node_Id) return List_Id with
-     Pre => Nkind (N) in N_Entry_Call_Statement
-                       | N_Function_Call
-                       | N_Procedure_Call_Statement;
 
    function Parameter_Specifications (N : Node_Id) return List_Id with
      Pre => Nkind (N) in N_Entry_Declaration
