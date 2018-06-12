@@ -171,6 +171,11 @@ def kill_and_regenerate_all():
     print "------------"
     run_automatic_timeout("z3", level=2, timeout=100)
     print ""
+    print "-----------------"
+    print "End with Alt-Ergo"
+    print "-----------------"
+    run_automatic_timeout("altergo", level=2)
+    print ""
     print "---------------------------"
     print "Summarize all proved checks"
     print "---------------------------"
