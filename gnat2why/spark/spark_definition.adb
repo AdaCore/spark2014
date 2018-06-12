@@ -6598,9 +6598,6 @@ package body SPARK_Definition is
 
       function Lexical_Scope (E : Entity_Id) return Entity_Id is
       begin
-         if Ekind (E) in Named_Kind then
-            return Defining_Entity (Parent (Parent (E)));
-         end if;
          return
            Defining_Entity
              (Enclosing_Declaration
