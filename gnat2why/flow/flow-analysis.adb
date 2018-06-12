@@ -918,7 +918,7 @@ package body Flow.Analysis is
                end if;
 
                if Unwritten then
-                  Unwritten_Vars.Include (V);
+                  Unwritten_Vars.Insert (V);
                else
                   Written_Entire_Vars.Include (Entire_Variable (F_Final));
                end if;
