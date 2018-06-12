@@ -16,9 +16,21 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
+import os
+import sys
 # sys.path.insert(0, os.path.abspath('.'))
+
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             '..', 'sphinx_support'))
+import ada_pygments
+import whyml_pygments
+
+
+def setup(app):
+    app.add_lexer('ada', ada_pygments.AdaLexer())
+    app.add_lexer('gpr', ada_pygments.GNATProjectLexer())
+    app.add_lexer('whyml', whyml_pygments.WhymlLexer())
+
 
 # -- General configuration ------------------------------------------------
 

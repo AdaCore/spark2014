@@ -94,8 +94,9 @@ However, to avoid introducing polymorphism which can be harmful to
 some background solvers, we do not use this type in gnat2why. Instead,
 for each type that we declare, we introduce a monomorphic reference
 type as a record with a single mutable field. Here is what this
-declaration would look like for a given type t::
+declaration would look like for a given type t:
 
+.. code-block:: whyml
 
     type t__ref = { mutable t__content : t }
 
@@ -117,13 +118,15 @@ is called by Why.Inter.Type_Of_Node).
 In addition to the monomorphic reference type, a specific havoc
 function is declared for each type. It is a program function which
 modifies the content of a reference in an unknown way. Here is what it
-looks like for a given type t::
+looks like for a given type t:
+
+.. code-block:: whyml
 
     val t__havoc (x : t__ref) : unit
     writes {x}
 
 A havoc function is introduced every time a new reference type is
-declared. It is called to havoc an object when we know it can have be
+declared. It is called to havoc an object when we know it can have been
 modified in an unknown way since the last time it was read. In
 particular, volatile objects with asynchronous writers are havoced
 every time they are read.
@@ -145,7 +148,9 @@ are record types and on which such a primitive equality is redefined
 When it is declared, the boolean equality bool_eq is given a
 definition depending on the kind of the type. Here is for example the
 equality which would be generated for a record type with a single F
-component of type Integer::
+component of type Integer:
+
+.. code-block:: whyml
 
     function bool_eq (a : t) (y : t) : bool =
     Standard__integer__rep.to_rep a.__split_fields.rec__t__f =
@@ -156,7 +161,9 @@ are equal.
 
 As for the user-defined primitive equality, it is declared with no
 definition. The definition will be given during the type completion if
-a primitive equality has been encountered::
+a primitive equality has been encountered:
+
+.. code-block:: whyml
 
     function user_eq (a : t) (b : t) : bool
 
@@ -166,7 +173,9 @@ Dummy values
 For each type, a constant dummy value is introduced. It is used to
 give a value to components which are not present in record types due
 to discriminant constraints (see following section about record
-types)::
+types):
+
+.. code-block:: whyml
 
     function dummy : t
 
@@ -214,7 +223,9 @@ As an example, let us look at the following type:
 Here are the axioms and declarations generated in Why for it. We do
 not repeat parts common to every types here, and scalar attributes are
 presented later. Here we inline the clones that are used to factorize
-declarations in Why::
+declarations in Why:
+
+.. code-block:: whyml
 
     module P__signed_int
      use import "int".Int
@@ -295,7 +306,9 @@ following type:
 
 Here are the axioms and declarations generated in Why for it. Like for
 signed integer types, we only give here the relevant declarations and
-to_rep and of_rep functions are separated in a different module::
+to_rep and of_rep functions are separated in a different module:
+
+.. code-block:: whyml
 
      type modular_int
 
@@ -334,7 +347,9 @@ bit-vectors and mathematical integers, we also provide a range
 predicate and a range axiom speaking about the mathematical integer
 representation of bit-vectors. It is useful when modular integer types
 happen to be converted to signed integer types, or to be compared to
-some attributes of universal integer types such as array length::
+some attributes of universal integer types such as array length:
+
+.. code-block:: whyml
 
      function first_int : int = 0
 
@@ -343,7 +358,7 @@ some attributes of universal integer types such as array length::
      predicate in_range_int (x : int) = (first_int <= x <= last_int)
 
      axiom range_int_axiom :
-	forall x : modular_int [to_int x]. in_range_int (BV16.t’int (to_rep x))
+	forall x : modular_int [to_int x]. in_range_int (BV16.t'int (to_rep x))
 
 Enumerations
 """"""""""""
@@ -377,7 +392,9 @@ As an example, let us look at the following type:
 
 Here are the axioms and declarations generated in Why for it. Like for
 signed integer types, we only give here the relevant declarations and
-to_rep and of_rep functions are separated in a different module::
+to_rep and of_rep functions are separated in a different module:
+
+.. code-block:: whyml
 
      type floating_point
 
@@ -431,7 +448,9 @@ declaration, where X is a non-static constant:
 
     subtype Dyn_Ty is Integer range 1 .. X;
 
-Here is its translation into Why::
+Here is its translation into Why:
+
+.. code-block:: whyml
 
     module P__dyn_ty
      use import "int".Int
@@ -462,7 +481,9 @@ depend on other entities which have not been translated yet.
 
 Instead, an axiom is generated in the types completion module to state
 the actual value of Dyn_Ty last bound (see
-``Gnat2why.Types.Generate_Type_Completion.Create_Axioms_For_Scalar_Bounds``)::
+``Gnat2why.Types.Generate_Type_Completion.Create_Axioms_For_Scalar_Bounds``):
+
+.. code-block:: whyml
 
      axiom last__def_axiom : last = P__x.x
 
@@ -476,7 +497,9 @@ range axiom may become unsound.
 Scalar Attributes
 """""""""""""""""
 
-Image and Value, they are not interpreted currently::
+Image and Value, they are not interpreted currently:
+
+.. code-block:: whyml
 
      function attr__ATTRIBUTE_IMAGE rep_type : __image
 
@@ -501,7 +524,9 @@ array type:
 
 Will be translated as maps from pairs of a mathematical integer and a
 bitvector of size 16 to natural closed form along with 4 static
-bounds::
+bounds:
+
+.. code-block:: whyml
 
      type map
 
@@ -537,7 +562,9 @@ module in which the related declarations are stored.
 
 As an example, declarations related to the map type for the My_Matrix
 type presented above are all grouped in a module named
-Array__Int_BV16__Standard__natural::
+Array__Int_BV16__Standard__natural:
+
+.. code-block:: whyml
 
     module Array__Int_BV16__Standard__natural
       type map
@@ -559,7 +586,7 @@ Array__Int_BV16__Standard__natural::
 	forall a : Standard__natural.natural.
 	not (i = i2 /\ j = j2) -> get (set m i j a) i2 j2 = get m i2 j2
 
-      …
+      ...
     end
 
 Remark that, to simplify the generation of Why, these declarations are
@@ -583,7 +610,9 @@ As an example, let us consider the following 1 dimensional array type:
 
      type My_Array is array (Positive range <>) of Natural;
 
-Here is the map theory introduced for it::
+Here is the map theory introduced for it:
+
+.. code-block:: whyml
 
     module Array__Int__Standard__natural
       use map.Map
@@ -592,7 +621,7 @@ Here is the map theory introduced for it::
 
       function get (a : map) (i : int) : Standard__natural.natural = Map.get a i
       function set (a : map) (i : int) (v : Standard__natural.natural) : map = Map.set a i v
-      …
+      ...
     end
 
 Remark that this is a trade-off, as, on the one hand, solvers are
@@ -620,7 +649,9 @@ function on the component type, or the translation of the Ada
 primitive equality if the component type is a record) and which only
 considers elements in a given range.
 
-Here is the equality predicate introduced for My_Matrix::
+Here is the equality predicate introduced for My_Matrix:
+
+.. code-block:: whyml
 
      function bool_eq (a : map) (a__first : int) (a__last : int)
 		      (a__first_2 : BV16.t) (a__last_2 : BV16.t)
@@ -659,7 +690,9 @@ concatenation is only defined for 1 dimensional arrays). Slide slides
 all elements stored in a map of a given offset in each dimension. The
 offsets are given by the mean of two positions per index, which stand
 for the old and the new value of the first index of the Ada array. As
-an example, here is the slide function defined for My_Matrix::
+an example, here is the slide function defined for My_Matrix:
+
+.. code-block:: whyml
 
       function slide map int int BV16.t BV16.t : map
 
@@ -680,7 +713,9 @@ array.
 
 Singleton returns a map which contains given element at a given index.
 It is under-specified as nothing is said about elements at other
-indexes::
+indexes:
+
+.. code-block:: whyml
 
       function singleton component_type int : map
 
@@ -694,7 +729,9 @@ indexes of the relevant portions. Its behaviour is also specifies
 using an axiom. It states that the result of concat is equal to the
 first array when between the first set of bounds and to the second
 array slided so that the first index of the second set of bound
-coincides with the first index following the first array afterward::
+coincides with the first index following the first array afterward:
+
+.. code-block:: whyml
 
      function concat map int int map int int : map
 
@@ -741,7 +778,9 @@ As an example, let us consider the following array type:
 
      type My_Array_100 is array (Positive range 1 .. 100) of Natural;
 
-Here are the declarations generated for it::
+Here are the declarations generated for it:
+
+.. code-block:: whyml
 
       function first : int := 1
       function last  : int := 100
@@ -770,7 +809,9 @@ represented as pairs of values of the closed form of the base type of
 the index type (indeed, in Ada, bounds of an array object can be
 outside the range of the index type if the array is empty). Here is
 for example the module that is generated for the bounds of objects of
-type My_Array::
+type My_Array:
+
+.. code-block:: whyml
 
     module I1
 
@@ -808,7 +849,9 @@ dynamic_property which takes these additional parameters.
 For an array type of dimension n, n modules like the one above are
 generated. They are then used to define the actual why translation of
 the array type. Here are the declarations introduced for the My_Array
-type::
+type:
+
+.. code-block:: whyml
 
       type __t = { elts: Array__Int__Standard__natural.map; rt : I1.t }
 
@@ -879,7 +922,9 @@ types:
    subtype My_Natural is Natural;
    type My_Array_2 is array (Positive range <>) of My_Natural;
 
-Here is the module that will be defined for the conversion from My_Array to My_Array_2::
+Here is the module that will be defined for the conversion from My_Array to My_Array_2:
+
+.. code-block:: whyml
 
     module Array__Int__Standard__natural__to__Array__Int__my_natural
 
@@ -936,14 +981,18 @@ needs to be stored in the object (discriminants, components, tag…)
 or discriminants are themselves records holding the values of the
 actual components.
 
-As an example, consider the following record type::
+As an example, consider the following record type:
+
+.. code-block:: ada
 
      type My_Rec (L : Natural) is record
         H : Integer;
      end record;
 
 Its representative type has two top-level fields, one for the
-discriminants and one for the components::
+discriminants and one for the components:
+
+.. code-block:: whyml
 
       type __split_discrs =
 	{ rec__my_rec__l : Standard__natural.natural }
@@ -973,13 +1022,16 @@ representative type is preserved if both no new components are added
 (untagged derivation) and there are no component whose type changes in
 the derivation (discriminant dependent components). As it is the case
 in our example, the following My_Rec_100 subtype will have the same
-representative type as My_Rec::
+representative type as My_Rec:
 
+.. code-block:: ada
 
       subtype My_Rec_100 is My_Rec (100);
 
 Let us consider a slightly different example where My_Rec contains a
-discriminant dependent component::
+discriminant dependent component:
+
+.. code-block:: whyml
 
      type My_Rec (L : Natural) is record
         C : My_Array (1 .. L);
@@ -988,7 +1040,9 @@ discriminant dependent component::
 Here, My_Rec_100 will define a new representative type in which the C
 component has the more precise My_Array (1 .. 100) type. However, as
 discriminants themselves cannot be discriminant dependent, the type
-for the discriminants field will be preserved::
+for the discriminants field will be preserved:
+
+.. code-block:: whyml
 
      type __split_fields =
       { rec__my_rec__c : Array__Int__Standard__natural.map }
@@ -1026,7 +1080,9 @@ As an example, let us consider a record type with a variant part:
      end record;
 
 The C component is only defined in a record if its discriminant is not
-zero. This is expressed in its associated discriminant predicate::
+zero. This is expressed in its associated discriminant predicate:
+
+.. code-block:: whyml
 
      predicate types__c__pred (a : __rep)  =
          not (to_rep a.__split_discrs.rec__my_rec__l = 0)
@@ -1035,7 +1091,9 @@ A discriminant check is also needed for types and subtypes with
 discriminant constraints to check inclusion of a record in the type /
 subtype. If a type or a subtype is constrained, a range predicate is
 defined for this check. As an example, here is the range predicate
-that would be defined for the My_Rec_100 subtype::
+that would be defined for the My_Rec_100 subtype:
+
+.. code-block:: whyml
 
      predicate in_range (rec__my_rec__l : int) (a : my_rec)  =
        rec__types__my_rec__l = to_rep a.__split_discrs.rec__my_rec__l
@@ -1067,7 +1125,9 @@ type, of which we can only see the discriminants:
 	  type Priv (B: Boolean) is null record;
        end P;
 
-Here is how it is translated in Why::
+Here is how it is translated in Why:
+
+.. code-block:: whyml
 
      type __main_type
 
@@ -1112,7 +1172,9 @@ As an example, let us consider a the following type structure:
 	 Y : Rec_Eq;
       end record;
 
-Here is the predicate defined for predefined equality on type Big_Rec::
+Here is the predicate defined for predefined equality on type Big_Rec:
+
+.. code-block:: whyml
 
     function bool_eq (a : __rep) (b : __rep) : bool =
       (a.__split_discrs.rec__big_rec__b =
@@ -1138,7 +1200,9 @@ private components of the type. It ensures that nothing can be deduced
 for this equality, not even that it is reflexive.
 
 For example, here is the predicate defined for predefined equality on
-type Priv::
+type Priv:
+
+.. code-block:: whyml
 
      function __main_eq (a : __main_type) (b : __main_type) : bool
 
@@ -1172,7 +1236,9 @@ As an example, consider the following type with mutable discriminants:
 
 Its representative type contains three fields, one for the
 discriminant, one for the field, and an additional boolean flag for
-the ‘Constrained attribute::
+the ‘Constrained attribute:
+
+.. code-block:: whyml
 
      type __rep =
       { __split_discrs    : __split_discrs;
@@ -1198,7 +1264,9 @@ type, no conversion is required. Otherwise, conversions go through the
 root type of the hierarchy. More precisely, for every record type or
 subtype which is not a root, two conversion functions, to and from the
 root type are introduced. As an example, here are the conversion
-functions introduced for My_Rec_100::
+functions introduced for My_Rec_100:
+
+.. code-block:: whyml
 
      function to_base (a : __rep) : my_rec =
       {__split_discrs = a.__split_discrs;
@@ -1249,7 +1317,9 @@ As an example, let us consider the following tagged type:
 
 The why type introduced for it contains two top-level fields, one for
 components and one for the tag, and its component field contains a
-special component for extensions::
+special component for extensions:
+
+.. code-block:: whyml
 
      type __split_fields =
       { rec__root__f : Standard__integer.integer;
@@ -1277,7 +1347,9 @@ As an example, let us consider a tagged extension of Root named Child:
 
 Like for Root, the translation of Child has a top-level attr__tag
 field as well as a regular rec__ext__ field to store potential
-extensions::
+extensions:
+
+.. code-block:: whyml
 
      type __split_fields =
       { rec__child__g : Standard__integer.integer;
@@ -1291,7 +1363,9 @@ extensions::
 Then, conversions to and from the Root type are defined through the
 mean of abstract hide and extraction functions. The result of calling
 the extraction functions on the result of a call to the hide function
-is given through the mean of an axiom::
+is given through the mean of an axiom:
+
+.. code-block:: whyml
 
      function hide_ext__ (g : Standard__integer.integer)
 			  (rec__ext__ : __private) :__private
@@ -1331,13 +1405,17 @@ type:
      end record;
 
 Will reuse the extraction function for G declared in Child’s
-representative module::
+representative module:
+
+.. code-block:: whyml
 
      function extract__g (x : __private) : Standard__integer.integer =
         P__child.extract__g x
 
 Note that, as the hide function itself is not preserved, we still need
-to introduce a new axiom for G in Grand_Child::
+to introduce a new axiom for G in Grand_Child:
+
+.. code-block:: whyml
 
      axiom extract__g__conv :
       (forall h g : Standard__integer.integer.
@@ -1347,7 +1425,9 @@ to introduce a new axiom for G in Grand_Child::
 Equality on specific tagged type only compares fields that are visible
 in the current view of the objects. So the equality between view
 conversions to Root of two objects of type Child will still compare
-only the F component::
+only the F component:
+
+.. code-block:: whyml
 
      function bool_eq (a : __rep) (b : __rep) : bool =
       (to_rep a.__split_fields.rec__root__f =
@@ -1358,7 +1438,9 @@ is first made that the tags match and then the appropriate equality is
 used. This behavior is not modelled precisely in SPARK. Instead, an
 abstract function __dispatch_eq is introduced in every root type to
 stand for the dispatching equality in the hierarchy (see
-``Gnat2why.Expr.New_Op_Expr``)::
+``Gnat2why.Expr.New_Op_Expr``):
+
+.. code-block:: whyml
 
      function __dispatch_eq (a : __rep) (b : __rep) : bool
 
@@ -1385,7 +1467,9 @@ As an example, let us consider an untagged null record type:
 
     type Null_Rec is null record;
 
-Here are the Why declarations introduced for it::
+Here are the Why declarations introduced for it:
+
+.. code-block:: whyml
 
     type null_rec
 
@@ -1401,12 +1485,16 @@ On derived null record types:
 
     type Null_Rec_2 is new Null_Rec;
 
-The type of the root is reused::
+The type of the root is reused:
+
+.. code-block:: whyml
 
     type null_rec_2 = P__null_rec.null_rec
 
 Simple private types are untagged private types with no discriminants
-whose full view is not in SPARK::
+whose full view is not in SPARK:
+
+.. code-block:: whyml
 
       package P is
 	 type Priv is private;
@@ -1421,7 +1509,9 @@ possible to facilitate the task of mapping them to interpreted types
 inside proof assistants. Unlike for null record types, we introduce a
 representative theory for them, but a minimalist one, where the
 representative type is left abstract and predefined equality is
-undefined::
+undefined:
+
+.. code-block:: whyml
 
      type __rep
 
@@ -1434,7 +1524,9 @@ undefined::
 For record types which are clones of other types, mostly classwide
 types and cloned subtypes (see Why.Gen.Records.Record_Type_Is_Clone),
 no new representative module is introduced and the specific module is
-simply a clone of the existing cloned type::
+simply a clone of the existing cloned type:
+
+.. code-block:: whyml
 
     module Types__TrootC
      use export Types__root
@@ -1497,7 +1589,9 @@ As an example, let us consider the following minimalist procedure declaration:
 
      procedure P;
 
-It leads to the declaration of a single Why program function as follows::
+It leads to the declaration of a single Why program function as follows:
+
+.. code-block:: whyml
 
     module P__p___axiom
      val p (__void_param : unit) : unit
@@ -1543,7 +1637,9 @@ As an example, let us look at the following Ada function:
 
      function F return Boolean;
 
-Here are the logic declarations introduced for F::
+Here are the logic declarations introduced for F:
+
+.. code-block:: whyml
 
     module P__f
      function f (__void_param : unit) : bool
@@ -1558,7 +1654,9 @@ Just like for procedures, a Why program function is defined for Ada
 functions in a second module named <my_subprogram_full_name>___axiom.
 It is also in this module that an axiom is generated for the contract
 of the associated Why logic function. Here are the axioms and
-declarations introduced for F::
+declarations introduced for F:
+
+.. code-block:: whyml
 
     module P__f___axiom
      val f (__void_param : unit) : bool
@@ -1613,7 +1711,9 @@ As an example, let us consider the following Ada subprograms:
         (X : in out Integer; Y : in out My_Rec; Z : in out My_Array);
 
 Parameters F and P have the same type, but not the same mode, which
-will result in different translations in Why::
+will result in different translations in Why:
+
+.. code-block:: whyml
 
      function f (x : int) (y : my_rec) (z : my_array) : int
 
@@ -1685,7 +1785,9 @@ As an example, let us look at the following Ada subprograms:
 
    procedure P with Global => (In_Out => (X, Y, Z));
 
-Here is the logic function introduced for F::
+Here is the logic function introduced for F:
+
+.. code-block:: whyml
 
      function f (x : int)
 		(y__fields : P__my_rec.__split_fields)
@@ -1698,7 +1800,9 @@ Input, we can see that parameters for Y and Z are given in split form.
 No parameter is supplied for the Constrained attribute of Y, nor for
 the bounds of Z since they are translated as global constants.
 
-As an example of effects of program function, we consider the translation of P::
+As an example of effects of program function, we consider the translation of P:
+
+.. code-block:: whyml
 
      val p (__void_param : unit) : unit
       requires { true }
@@ -1726,7 +1830,9 @@ As an example, let us consider the following volatile function:
 
    function F_Vol return Integer with Volatile_Function;
 
-Here is the program function introduced for it::
+Here is the program function introduced for it:
+
+.. code-block:: whyml
 
  val volatile__effect : Main.__private__ref
 
@@ -1781,7 +1887,9 @@ that it will always be called on adequate arguments.
 
 As an example, we can see that the postcondition of the program
 function f includes the dynamic invariant of its result, but that its
-precondition is still true::
+precondition is still true:
+
+.. code-block:: whyml
 
      val f (x : int) (y : my_rec) (z : my_array) : int
       requires { true }
@@ -1792,7 +1900,9 @@ precondition is still true::
 
 As for the post axiom of f, it uses the dynamic invariants of
 parameters as a guard to prevent solvers from deducing anything from
-applications of F to out of type parameters::
+applications of F to out of type parameters:
+
+.. code-block:: whyml
 
      axiom f__post_axiom :
       (forall x : int.
@@ -1809,7 +1919,9 @@ applications of F to out of type parameters::
 
 In a similar way, the postcondition of P is enriched with the dynamic
 invariant of its mutable parameters (see
-``Gnat2why.Subprograms.Compute_Dynamic_Property_For_Effects``)::
+``Gnat2why.Subprograms.Compute_Dynamic_Property_For_Effects``):
+
+.. code-block:: whyml
 
      val p   (x : int__ref)
 	     (y__split_fields : P__my_rec.__split_fields__ref)
@@ -1857,7 +1969,9 @@ type T has a type invariant, and F_Inv is boundary for T:
     end P;
 
 Here is the logic function generated for it along with its post axiom,
-during the analysis of P::
+during the analysis of P:
+
+.. code-block:: whyml
 
      function f_inv (x : t) : t
 
@@ -1885,7 +1999,9 @@ as a precondition. This program function is called when necessary (see
 procedure or function calls (see ``Transform_Function_Call`` and
 ``Transform_Statement_Or Declaration`` from ``Gnat2why.Expr``). Here is the
 program function introduced for F_Inv, along with the function used
-for the type invariant checks::
+for the type invariant checks:
+
+.. code-block:: whyml
 
      val f_inv (x : t) : t
       requires { true }
@@ -1930,7 +2046,9 @@ consider the following function:
      Post => My_Post (F'Result);
 
 Here are its program function and its post axiom (the syntax of
-function calls has been simplified to improve readability)::
+function calls has been simplified to improve readability):
+
+.. code-block:: whyml
 
      val f (x : int) : int
       requires { my_pre x }
@@ -1978,7 +2096,9 @@ As an example, lets us consider the following procedure:
          others         => X = X’Old);
 
 The contract case of P is used as a postcondition to describe the
-result of its Why program function::
+result of its Why program function:
+
+.. code-block:: whyml
 
     val p_4 (x : int__ref) : unit
      requires { true }
@@ -2011,7 +2131,9 @@ type:
 
 As it has a classwide contract, but no specific postcondition, its
 classwide pre and postconditions are used in the definition of its
-program function::
+program function:
+
+.. code-block:: whyml
 
      val f (x :root) : int
       requires { to_rep (x.__split_fields.rec__subp__root__f) > 0 }
@@ -2023,7 +2145,9 @@ program function::
 
 Since classwide contracts are inherited, the same contracts will be
 used for the overriding of F on a derived type Child of Root if no
-other contract is supplied::
+other contract is supplied:
+
+.. code-block:: whyml
 
    function F (X : Child) return Integer;
 
@@ -2037,7 +2161,9 @@ other contract is supplied::
 But if a specific postcondition is used, then the classwide
 postcondition won’t be used anymore. Indeed, there is no point in
 conjuncting it with the specific post, as in SPARK the specific
-postcondition must always be stronger than the classwide one::
+postcondition must always be stronger than the classwide one:
+
+.. code-block:: whyml
 
     function F (X : Child) return Integer with
        Post => F'Result > 10;
@@ -2060,7 +2186,9 @@ function is set to false. As an example, the following procedure:
    procedure P (X : in out Integer) with
      No_Return;
 
-is translated as::
+is translated as:
+
+.. code-block:: whyml
 
      val p (x : int__ref) : unit
       requires { true }
