@@ -270,7 +270,8 @@ package body Flow.Analysis is
 
                   if Nkind (N) in N_Identifier | N_Expanded_Name
                     and then Present (Entity (N))
-                    and then Unique_Entity (Entity (N)) = Target
+                    and then Canonical_Entity (Ref     => Entity (N),
+                                               Context => S) = Target
                   then
                      Result := N;
                      return Abandon;
