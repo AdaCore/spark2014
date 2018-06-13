@@ -888,7 +888,7 @@ package body Flow.Analysis is
             F_Final : Flow_Id      renames FA.PDG.Get_Key (V);
             A_Final : V_Attributes renames FA.Atr (V);
 
-            Unwritten : Boolean;
+            Written : Boolean;
 
          begin
             if F_Final.Variant = Final_Value
@@ -899,7 +899,7 @@ package body Flow.Analysis is
                --  a single in-link. If this in-link is its initial value
                --  then clearly we do not set this output on any path.
 
-               Unwritten := False;
+               Written := True;
                if FA.PDG.In_Neighbour_Count (V) = 1 then
                   declare
                      F_Initial : Flow_Id renames
@@ -912,15 +912,15 @@ package body Flow.Analysis is
                        and then
                          Change_Variant (F_Initial, Final_Value) = F_Final
                      then
-                        Unwritten := True;
+                        Written := False;
                      end if;
                   end;
                end if;
 
-               if Unwritten then
-                  Unwritten_Vars.Insert (V);
-               else
+               if Written then
                   Written_Entire_Vars.Include (Entire_Variable (F_Final));
+               else
+                  Unwritten_Vars.Insert (V);
                end if;
             end if;
          end;
