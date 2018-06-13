@@ -954,29 +954,20 @@ package body Flow_Utility is
 
       pragma Assert
         (Present (Depends_N)
-         and then Get_Pragma_Id (Depends_N) in Pragma_Depends |
-                                               Pragma_Refined_Depends);
+         and then Get_Pragma_Id (Depends_N) in Pragma_Depends
+                                             | Pragma_Refined_Depends);
 
       Contract_Relation : constant Dependency_Maps.Map :=
         Parse_Depends (Depends_N);
       --  Step 1: Parse the appropriate dependency relation
 
-      Globals : Global_Flow_Ids;
-
-      function Trimming_Required return Boolean;
-      --  Checks if the projected Depends constituents need to be trimmed
-      --  (based on a user-provided Refined_Global aspect).
-      --  ??? what is trimming?
-
-      -----------------------
-      -- Trimming_Required --
-      -----------------------
-
-      function Trimming_Required return Boolean is
+      Trimming_Required : constant Boolean :=
         (Get_Pragma_Id (Depends_N) = Pragma_Depends
            and then Mentions_State_With_Visible_Refinement (Depends_N, Scope));
+      --  True iff the down-projected Depends need to be trimmed using
+      --  Refined_Global aspect.
 
-   --  Start of processing for Get_Depends
+      Globals : Global_Flow_Ids;
 
    begin
       ----------------------------------------------------------------------
@@ -1001,9 +992,10 @@ package body Flow_Utility is
                       Ignore_Depends      => True);
 
          --  Change all variants to Normal_Use
-         Globals.Proof_Ins := Change_Variant (Globals.Proof_Ins, Normal_Use);
-         Globals.Inputs    := Change_Variant (Globals.Inputs,    Normal_Use);
-         Globals.Outputs   := Change_Variant (Globals.Outputs,   Normal_Use);
+         Globals :=
+           (Proof_Ins => Change_Variant (Globals.Proof_Ins, Normal_Use),
+            Inputs    => Change_Variant (Globals.Inputs,    Normal_Use),
+            Outputs   => Change_Variant (Globals.Outputs,   Normal_Use));
 
          --  Add formal parameters
          for Param of Get_Formals (Subprogram) loop
