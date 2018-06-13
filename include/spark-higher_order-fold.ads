@@ -237,8 +237,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       is (Value (X) + Y)
       with Pre => Y in
           Element_Out'Base'First - Element_Out'Min (0, Element_Out'First) ..
-        Element_Out'Base'Last - Element_Out'Max (0, Element_Out'Last),
-        Post => Add_Value'Result = (Value (X) + Y);
+        Element_Out'Base'Last - Element_Out'Max (0, Element_Out'Last);
       pragma Annotate (GNATprove, Inline_For_Proof, Add_Value);
 
       package Sum_Left is new Fold_Left
@@ -290,8 +289,7 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
 
       function Add_One (E : Element; X : Natural) return Natural
       is (if Choose (E) then X + 1 else X)
-      with Pre => X < Integer'Last,
-        Post => Add_One'Result = (if Choose (E) then X + 1 else X);
+      with Pre => X < Integer'Last;
       pragma Annotate (GNATprove, Inline_For_Proof, Add_One);
 
       package Count_Left is new Fold_Left

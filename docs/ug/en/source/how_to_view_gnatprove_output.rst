@@ -229,6 +229,7 @@ The following table shows the kinds of check messages issued by proof.
    "loop variant", "CWE `835 <http://cwe.mitre.org/data/definitions/835.html>`_", "Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop."
    "assertion",, "Check that the given assertion evaluates to True."
    "raised exception",, "Check that the raise statement can never be reached."
+   "Inline_For_Proof annotation",, "Check that an Annotate pragma with the Inline_For_Proof identifier is correct."
 
    **Liskov Substitution Principle**
    "precondition weaker than class-wide precondition",, "Check that the precondition aspect of the subprogram is weaker than its class-wide precondition."

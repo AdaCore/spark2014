@@ -91,6 +91,9 @@ package VC_Kinds is
       VC_Loop_Variant,
       VC_Assert,
       VC_Raise,
+      VC_Inline_Check,               --  Check that the Inline_For_Proof
+                                     --  annotation provided for a function is
+                                     --  correct.
 
       --  VC_LSP_Kind - Liskov Substitution Principle
 
@@ -111,7 +114,7 @@ package VC_Kinds is
      VC_Division_Check .. VC_Task_Termination;
 
    subtype VC_Assert_Kind is VC_Kind range
-     VC_Initial_Condition .. VC_Raise;
+     VC_Initial_Condition .. VC_Inline_Check;
 
    subtype VC_LSP_Kind is VC_Kind range
      VC_Weaker_Pre .. VC_Stronger_Classwide_Post;

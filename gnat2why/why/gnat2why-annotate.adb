@@ -44,6 +44,7 @@ with Snames;                       use Snames;
 with SPARK_Util.Subprograms;       use SPARK_Util.Subprograms;
 with SPARK_Util.Types;             use SPARK_Util.Types;
 with Stringt;                      use Stringt;
+with SPARK_Definition;
 
 package body Gnat2Why.Annotate is
 
@@ -89,6 +90,11 @@ package body Gnat2Why.Annotate is
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps all the function entities E with a pragma Annotate
    --  (GNATprove, Inline_For_Proof, E) to their expression.
+   Inline_Pramas : Common_Containers.Node_Maps.Map :=
+     Common_Containers.Node_Maps.Empty_Map;
+   --  Maps all the function entities E with a pragma Annotate
+   --  (GNATprove, Inline_For_Proof, E) to th pragma. This is used to get
+   --  better location for checks for inline.
 
    Iterable_Annotations : Iterable_Maps.Map := Iterable_Maps.Empty_Map;
    --  A map from Iterable aspects to Iterable annotations
@@ -148,7 +154,7 @@ package body Gnat2Why.Annotate is
    --  External_Axiomatization as a second argument). If it is necessary,
    --  Syntax_Check_Pragma_Annotate_Gnatprove reports this error.
 
-   procedure Check_Inline_Annotation (Arg3_Exp : Node_Id);
+   procedure Check_Inline_Annotation (Arg3_Exp : Node_Id; Prag : Node_Id);
    --  Check validity of a pragma Annotate (Gnatprove, Inline_For_Proof, )
    --  and insert it in the Inline_Annotations map.
 
@@ -248,7 +254,7 @@ package body Gnat2Why.Annotate is
    -- Check_Inline_Annotation --
    -----------------------------
 
-   procedure Check_Inline_Annotation (Arg3_Exp : Node_Id) is
+   procedure Check_Inline_Annotation (Arg3_Exp : Node_Id; Prag : Node_Id) is
       E     : Entity_Id;
       Nodes : Common_Containers.Node_Lists.List;
       Value : Node_Id;
@@ -270,34 +276,52 @@ package body Gnat2Why.Annotate is
          return;
       end if;
 
-      --  It must have a postcondition
-
-      Nodes := Find_Contracts (E, Pragma_Postcondition, False, False);
-
-      if Nodes.Length /= 1 then
-         Error_Msg_N
-           ("Function with Inline_For_Proof must have a postcondition", E);
-         return;
-      end if;
-
-      --  Its postcondition must be of the form F'Result = Expr
-
-      Value := Nodes.First_Element;
-
-      if Nkind (Value) = N_Op_Eq
-        and then Nkind (Left_Opnd (Value)) = N_Attribute_Reference
-        and then Get_Attribute_Id (Attribute_Name (Left_Opnd (Value))) =
-        Attribute_Result
+      if Present (Get_Expression_Function (E))
+        and then SPARK_Definition.Entity_Body_Compatible_With_SPARK (E)
       then
-         Value := Right_Opnd (Value);
+         Value := Expression (Get_Expression_Function (E));
       else
-         Error_Msg_N
-           ("A post of the form F'Result = Expr must apply to "
-            & "function with Inline_For_Proof", E);
-         return;
+
+         --  It must have a postcondition
+
+         Nodes := Find_Contracts (E, Pragma_Postcondition, False, False);
+
+         if Nodes.Length /= 1 then
+            Error_Msg_N
+              ("Function with Inline_For_Proof must be an expression function"
+               & " or have a postcondition of the form F'Result = Expr", E);
+            return;
+         end if;
+
+         --  Its postcondition must be of the form F'Result = Expr
+
+         Value := Nodes.First_Element;
+
+         if Nkind (Value) = N_Op_Eq
+           and then Nkind (Left_Opnd (Value)) = N_Attribute_Reference
+           and then Get_Attribute_Id (Attribute_Name (Left_Opnd (Value))) =
+           Attribute_Result
+         then
+            Value := Right_Opnd (Value);
+         elsif Nkind (Value) = N_Function_Call
+           and then Nkind (Original_Node (Value)) = N_Op_Eq
+           and then Nkind (Left_Opnd (Original_Node (Value))) =
+           N_Attribute_Reference
+           and then Get_Attribute_Id
+             (Attribute_Name (Left_Opnd (Original_Node (Value)))) =
+           Attribute_Result
+         then
+            Value := Next_Actual (First_Actual (Value));
+         else
+            Error_Msg_N
+              ("Function with Inline_For_Proof must be an expression function"
+               & " or have a postcondition of the form F'Result = Expr", E);
+            return;
+         end if;
       end if;
 
       Inline_Annotations.Include (E, Value);
+      Inline_Pramas.Include (E, Prag);
    end Check_Inline_Annotation;
 
    -------------------------------
@@ -501,6 +525,13 @@ package body Gnat2Why.Annotate is
 
       Terminate_Annotations.Include (Get_Renamed_Entity (E));
    end Check_Terminate_Annotation;
+
+   ------------------------
+   -- Find_Inline_Pragma --
+   ------------------------
+
+   function Find_Inline_Pragma (E : Entity_Id) return Node_Id is
+     (Inline_Pramas.Element (E));
 
    -----------------------------------------------
    -- Generate_Useless_Pragma_Annotate_Warnings --
@@ -799,7 +830,7 @@ package body Gnat2Why.Annotate is
          if Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) =
            "inline_for_proof"
          then
-            Check_Inline_Annotation (Arg3_Exp);
+            Check_Inline_Annotation (Arg3_Exp, Node);
             Ok := False;
             return;
          elsif Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) = "terminating"

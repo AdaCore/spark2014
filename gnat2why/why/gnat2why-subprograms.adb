@@ -279,11 +279,12 @@ package body Gnat2Why.Subprograms is
      (Function_Entity    : Entity_Id;
       Logic_Func_Binders : Item_Array;
       W_Return_Type      : W_Type_Id;
-      File               : W_Section_Id) return W_Expr_Id;
+      Params             : Transformation_Params) return W_Expr_Id;
    --  @param Function_Entity entity of a function
-   --  @param Logic_Func_Binders binders for Function_Entity's declaration
+   --  @param Logic_Func_Binders binders for Function_Entity's declaration if
+   --     local names should be used for these binders
    --  @param W_Return_Type Why3 type for Function_Entity's return type
-   --  @param File section in which the expression should be translated
+   --  @param Params parameters for the translation
    --  @return if Function_Entity is non recursive and has a pragma Annotate
    --          (GNATprove, Inline_For_Proof), return the Why3 expression for
    --          its value. Otherwise return Why_Empty.
@@ -2082,16 +2083,10 @@ package body Gnat2Why.Subprograms is
      (Function_Entity    : Entity_Id;
       Logic_Func_Binders : Item_Array;
       W_Return_Type      : W_Type_Id;
-      File               : W_Section_Id) return W_Expr_Id
+      Params             : Transformation_Params) return W_Expr_Id
    is
       Value  : constant Node_Id :=
         Retrieve_Inline_Annotation (Function_Entity);
-      Params : constant Transformation_Params :=
-        (File        => File,
-         Phase       => Generate_Logic,
-         Gen_Marker  => False,
-         Ref_Allowed => False,
-         Old_Allowed => False);
       W_Def  : W_Expr_Id;
 
    begin
@@ -2947,6 +2942,9 @@ package body Gnat2Why.Subprograms is
       --  the precondition needs to be proved in fact. In this latter case
       --  an assertion is returned instead of an assumption.
 
+      function Check_Inline_For_Proof return W_Prog_Id;
+      --  Checks that the expression used for inlining is equal to the result
+
       function Check_Invariants_Of_Outputs return W_Prog_Id;
       --  Checks the type invariants of global output and of out parameters if
       --  E is a boundary subprogram.
@@ -3118,6 +3116,47 @@ package body Gnat2Why.Subprograms is
                  Guard_Map          => Guard_Map,
                  Others_Guard_Ident => Others_Guard_Ident));
       end CC_And_RTE_Post;
+
+      ----------------------------
+      -- Check_Inline_For_Proof --
+      ----------------------------
+
+      function Check_Inline_For_Proof return W_Prog_Id is
+         Value : constant Node_Id := Retrieve_Inline_Annotation (E);
+         Params : constant Transformation_Params :=
+           (File        => File,
+            Phase       => Generate_VCs_For_Contract,
+            Gen_Marker  => False,
+            Ref_Allowed => True,
+            Old_Allowed => True);
+      begin
+         if Present (Value) and then
+           (No (Get_Expression_Function (E))
+            or else not Entity_Body_Compatible_With_SPARK (E))
+         then
+            return New_Assert
+              (Pred        =>
+                 +New_VC_Expr
+                 (Ada_Node => Find_Inline_Pragma (E),
+                  Expr     =>
+                    New_Comparison
+                      (Symbol => Why_Eq,
+                       Left   => New_Deref
+                         (Right => Result_Name,
+                          Typ   => Get_Typ (Result_Name)),
+                       Right  => Compute_Inlined_Expr
+                         (Function_Entity    => E,
+                          Logic_Func_Binders => (1 .. 0 => <>),
+                          W_Return_Type      => Get_Typ (Result_Name),
+                          Params             => Params),
+                       Domain => EW_Pred),
+                    Reason   => VC_Inline_Check,
+                    Domain   => EW_Pred),
+               Assert_Kind => EW_Assert);
+         else
+            return +Void;
+         end if;
+      end Check_Inline_For_Proof;
 
       ---------------------------------
       -- Check_Invariants_Of_Outputs --
@@ -3615,13 +3654,15 @@ package body Gnat2Why.Subprograms is
          Why_Body := Checking_Of_Refined_Post (Why_Body);
 
          --  Check type invariants on subprogram's ouput, absence of runtime
-         --  errors in Post and RTE + validity of contract cases.
+         --  errors in Post and RTE + validity of contract cases, and
+         --  Inline_For_Proof annotation.
 
          Why_Body := Sequence
            ((1 => Why_Body,
              2 => Check_Invariants_Of_Outputs,
              3 => CC_And_RTE_Post,
-             4 => Result_Var));
+             4 => Check_Inline_For_Proof,
+             5 => Result_Var));
 
          --  add declarations for 'Old variables
 
@@ -5447,8 +5488,15 @@ package body Gnat2Why.Subprograms is
                 (Domain => EW_Pred,
                  Symbol => NID (Short_Name (E) & "__" & Function_Guard),
                  Typ    => EW_Bool_Type);
+            Params            : constant Transformation_Params :=
+              (File        => File,
+               Phase       => Generate_Logic,
+               Gen_Marker  => False,
+               Ref_Allowed => False,
+               Old_Allowed => False);
             Def               : constant W_Expr_Id :=
-              Compute_Inlined_Expr (E, Logic_Func_Binders, Why_Type, File);
+              Compute_Inlined_Expr
+                (E, Logic_Func_Binders, Why_Type, Params);
          begin
             --  Generate a logic function
 

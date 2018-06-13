@@ -102,6 +102,7 @@ package body VC_Kinds is
             | VC_Loop_Invariant_Preserv
             | VC_Assert
             | VC_Raise
+            | VC_Inline_Check
             | VC_Weaker_Pre
             | VC_Trivial_Weaker_Pre
             | VC_Stronger_Post

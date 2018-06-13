@@ -111,7 +111,8 @@ package Gnat2Why.Annotate is
    --    Inline_For_Proof    is a fixed identifier
    --    E                   is a function entity
 
-   --  and E must have the following signature:
+   --  and E must either be an expression function or have the following
+   --  signature:
    --    function E (...) return ... with
    --      Post => E'Result = Expr;
 
@@ -187,6 +188,12 @@ package Gnat2Why.Annotate is
    function Retrieve_Inline_Annotation (E : Entity_Id) return Node_Id;
    --  If a pragma Annotate Inline_For_Proof applies to E then returns the
    --  Ada expression that should be used instead of E.
+
+   function Find_Inline_Pragma (E : Entity_Id) return Node_Id with
+     Pre  => Present (Retrieve_Inline_Annotation (E)),
+     Post => Is_Pragma_Annotate_GNATprove (Find_Inline_Pragma'Result);
+   --  If a pragma Annotate Inline_For_Proof applies to E then returns this
+   --  pragma. This is used to get better location when checking these pragmas.
 
    procedure Retrieve_Iterable_Annotation
      (Container_Type : Entity_Id;

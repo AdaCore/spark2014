@@ -1,3 +1,5 @@
+.. _SPARK Libraries:
+
 |SPARK| Libraries
 =================
 
