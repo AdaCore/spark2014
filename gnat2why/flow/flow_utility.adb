@@ -1545,9 +1545,10 @@ package body Flow_Utility is
             --  Step 6: Convert to Flow_Id sets
             ---------------------------------------------------------------
 
-            Globals.Proof_Ins := To_Flow_Id_Set (G_Proof, In_View);
-            Globals.Inputs    := To_Flow_Id_Set (G_In,    In_View);
-            Globals.Outputs   := To_Flow_Id_Set (G_Out,   Out_View);
+            Globals :=
+              (Proof_Ins => To_Flow_Id_Set (G_Proof, In_View),
+               Inputs    => To_Flow_Id_Set (G_In,    In_View),
+               Outputs   => To_Flow_Id_Set (G_Out,   Out_View));
          end;
 
          Debug ("proof ins", Globals.Proof_Ins);
