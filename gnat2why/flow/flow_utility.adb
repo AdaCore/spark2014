@@ -1254,6 +1254,160 @@ package body Flow_Utility is
       return Funcs;
    end Get_Functions;
 
+   ---------------------------
+   -- Parse_Global_Contract --
+   ---------------------------
+
+   function Parse_Global_Contract
+     (Subprogram  : Entity_Id;
+      Global_Node : Node_Id)
+      return Raw_Global_Nodes
+   is
+      Globals : Raw_Global_Nodes;
+
+      subtype Global_Name_Id is Name_Id
+        with Static_Predicate => Global_Name_Id in Name_Input
+                                                 | Name_In_Out
+                                                 | Name_Output
+                                                 | Name_Proof_In;
+
+      procedure Process (The_Mode   : Global_Name_Id;
+                         The_Global : Entity_Id);
+      --  Add the given global to Reads, Writes or Proof_Ins, depending
+      --  on the mode.
+
+      -------------
+      -- Process --
+      -------------
+
+      procedure Process (The_Mode   : Global_Name_Id;
+                         The_Global : Entity_Id)
+      is
+         E : constant Entity_Id :=
+           Canonical_Entity (The_Global, Subprogram);
+
+      begin
+         case The_Mode is
+            when Name_Input =>
+               Globals.Inputs.Insert (E);
+
+            when Name_In_Out =>
+               Globals.Inputs.Insert (E);
+               Globals.Outputs.Insert (E);
+
+            when Name_Output =>
+               Globals.Outputs.Insert (E);
+
+            when Name_Proof_In =>
+               Globals.Proof_Ins.Insert (E);
+         end case;
+      end Process;
+
+      --  Local variables:
+
+      pragma Assert
+        (List_Length (Pragma_Argument_Associations (Global_Node)) = 1);
+
+      PAA  : constant Node_Id :=
+        First (Pragma_Argument_Associations (Global_Node));
+      pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
+
+   --  Start of processing for Parse_Global_Contract
+
+   begin
+      if Nkind (Expression (PAA)) = N_Null then
+         --  global => null
+         --  No globals, nothing to do.
+         null;
+
+      elsif Nkind (Expression (PAA)) = N_Aggregate
+        and then Present (Expressions (Expression (PAA)))
+      then
+         --  global => foo
+         --  global => (foo, bar)
+         --  One or more inputs
+
+         declare
+            RHS : Node_Id := First (Expressions (Expression (PAA)));
+
+         begin
+            loop
+               pragma Assert
+                 (Nkind (RHS) in N_Identifier | N_Expanded_Name);
+
+               Process (Name_Input, Entity (RHS));
+
+               Next (RHS);
+
+               exit when No (RHS);
+            end loop;
+         end;
+
+      elsif Nkind (Expression (PAA)) = N_Aggregate
+        and then Present (Component_Associations (Expression (PAA)))
+      then
+         --  global => (mode => foo,
+         --             mode => (bar, baz))
+         --  A mixture of things.
+
+         declare
+            Row : Node_Id :=
+              First (Component_Associations (Expression (PAA)));
+
+         begin
+            loop
+               pragma Assert (List_Length (Choices (Row)) = 1);
+
+               declare
+                  Mode : Name_Id renames Chars (First (Choices (Row)));
+                  RHS  : Node_Id renames Expression (Row);
+
+               begin
+                  case Nkind (RHS) is
+                     when N_Null =>
+                        null;
+
+                     when N_Identifier | N_Expanded_Name =>
+                        Process (Mode, Entity (RHS));
+
+                     when N_Aggregate =>
+                        declare
+                           Item : Node_Id := First (Expressions (RHS));
+
+                        begin
+                           loop
+                              pragma Assert
+                                (Nkind (Item) in N_Identifier
+                                               | N_Expanded_Name);
+
+                              Process (Mode, Entity (Item));
+
+                              Next (Item);
+
+                              exit when No (Item);
+                           end loop;
+                        end;
+
+                     when others =>
+                        raise Program_Error;
+
+                  end case;
+               end;
+
+               Next (Row);
+
+               exit when No (Row);
+            end loop;
+         end;
+
+      else
+         raise Program_Error;
+      end if;
+
+      return Globals;
+
+   end Parse_Global_Contract;
+
    -----------------
    -- Get_Globals --
    -----------------
@@ -1266,6 +1420,8 @@ package body Flow_Utility is
                           Use_Deduced_Globals    : Boolean := True;
                           Ignore_Depends         : Boolean := False)
    is
+      pragma Unreferenced (Consider_Discriminants);
+
       Global_Node  : constant Node_Id := Get_Contract_Node (Subprogram,
                                                             Scope,
                                                             Global_Contract);
@@ -1329,164 +1485,27 @@ package body Flow_Utility is
          Debug ("using user annotation");
 
          declare
-            pragma Assert
-              (List_Length (Pragma_Argument_Associations (Global_Node)) = 1);
+            ---------------------------------------------------------------
+            --  Step 1: Process global annotation
+            ---------------------------------------------------------------
 
-            PAA      : constant Node_Id :=
-              First (Pragma_Argument_Associations (Global_Node));
-            pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
+            Raw_Globals : constant Raw_Global_Nodes :=
+              Parse_Global_Contract (Subprogram  => Subprogram,
+                                     Global_Node => Global_Node);
 
-            G_Proof : Node_Sets.Set := Node_Sets.Empty_Set;
-            G_In    : Node_Sets.Set := Node_Sets.Empty_Set;
-            G_Out   : Node_Sets.Set := Node_Sets.Empty_Set;
-
-            procedure Process (The_Mode   : Name_Id;
-                               The_Global : Entity_Id)
-            with Pre => The_Mode in Name_Input
-                                  | Name_In_Out
-                                  | Name_Output
-                                  | Name_Proof_In;
-            --  Add the given global to Reads, Writes or Proof_Ins, depending
-            --  on the mode.
-
-            -------------
-            -- Process --
-            -------------
-
-            procedure Process (The_Mode   : Name_Id;
-                               The_Global : Entity_Id)
-            is
-               E : constant Entity_Id :=
-                 Canonical_Entity (The_Global, Subprogram);
-
-            begin
-               case The_Mode is
-                  when Name_Input =>
-                     G_In.Insert (E);
-
-                  when Name_In_Out =>
-                     G_In.Insert (E);
-                     G_Out.Insert (E);
-
-                  when Name_Output =>
-                     if Consider_Discriminants and then
-                       Contains_Discriminants
-                         (Direct_Mapping_Id (E, In_View),
-                          Scope)
-                     then
-                        G_In.Insert (E);
-                     end if;
-                     G_Out.Insert (E);
-
-                  when Name_Proof_In =>
-                     G_Proof.Insert (E);
-
-                  when others =>
-                     raise Program_Error;
-
-               end case;
-            end Process;
+            G_Proof : Node_Sets.Set;
+            G_In    : Node_Sets.Set;
+            G_Out   : Node_Sets.Set;
 
          begin
-            ---------------------------------------------------------------
-            --  Step 1: Process global annotation, filling in g_proof,
-            --  g_in, and g_out.
-            ---------------------------------------------------------------
-
-            if Nkind (Expression (PAA)) = N_Null then
-               --  global => null
-               --  No globals, nothing to do.
-               return;
-
-            elsif Nkind (Expression (PAA)) = N_Aggregate
-              and then Present (Expressions (Expression (PAA)))
-            then
-               --  global => foo
-               --  global => (foo, bar)
-               --  One or more inputs
-
-               declare
-                  RHS : Node_Id := First (Expressions (Expression (PAA)));
-
-               begin
-                  loop
-                     pragma Assert
-                       (Nkind (RHS) in N_Identifier | N_Expanded_Name);
-
-                     Process (Name_Input, Entity (RHS));
-
-                     Next (RHS);
-
-                     exit when No (RHS);
-                  end loop;
-               end;
-
-            elsif Nkind (Expression (PAA)) = N_Aggregate
-              and then Present (Component_Associations (Expression (PAA)))
-            then
-               --  global => (mode => foo,
-               --             mode => (bar, baz))
-               --  A mixture of things.
-
-               declare
-                  Row : Node_Id :=
-                    First (Component_Associations (Expression (PAA)));
-
-                  Mode : Name_Id;
-                  RHS  : Node_Id;
-                  Item : Node_Id;
-
-               begin
-                  loop
-                     pragma Assert (List_Length (Choices (Row)) = 1);
-
-                     Mode := Chars (First (Choices (Row)));
-                     RHS  := Expression (Row);
-
-                     case Nkind (RHS) is
-                        when N_Null =>
-                           null;
-
-                        when N_Identifier | N_Expanded_Name =>
-                           Process (Mode, Entity (RHS));
-
-                        when N_Aggregate =>
-                           Item := First (Expressions (RHS));
-                           loop
-                              pragma Assert
-                                (Nkind (Item) in N_Identifier
-                                               | N_Expanded_Name);
-
-                              Process (Mode, Entity (Item));
-
-                              Next (Item);
-
-                              exit when No (Item);
-                           end loop;
-
-                        when others =>
-                           raise Program_Error;
-
-                     end case;
-
-                     Next (Row);
-
-                     exit when No (Row);
-                  end loop;
-               end;
-
-            else
-               raise Program_Error;
-            end if;
-
             ---------------------------------------------------------------
             --  Step 2: Expand any abstract state that might be too refined
             --  for our given scope.
             ---------------------------------------------------------------
 
-            G_Proof := Down_Project (G_Proof, Scope);
-            G_In    := Down_Project (G_In,    Scope);
-            G_Out   := Down_Project (G_Out,   Scope);
+            G_Proof := Down_Project (Raw_Globals.Proof_Ins, Scope);
+            G_In    := Down_Project (Raw_Globals.Inputs,    Scope);
+            G_Out   := Down_Project (Raw_Globals.Outputs,   Scope);
 
             ---------------------------------------------------------------
             --  Step 3: Remove generic formals without variable input
@@ -2070,13 +2089,8 @@ package body Flow_Utility is
          Consider_Extensions             => Consider_Extensions,
          Quantified_Variables_Introduced => Node_Sets.Empty_Set);
 
-      Vars : constant Flow_Id_Sets.Set := Get_Variables_Internal (N, Ctx);
-
-      Projected, Partial : Flow_Id_Sets.Set;
-
    begin
-      Up_Project (Vars, Scope, Projected, Partial);
-      return Projected or Partial;
+      return Get_Variables_Internal (N, Ctx);
    end Get_Variables;
 
    function Get_Variables
@@ -2101,13 +2115,8 @@ package body Flow_Utility is
          Consider_Extensions             => False,
          Quantified_Variables_Introduced => Node_Sets.Empty_Set);
 
-      Vars : constant Flow_Id_Sets.Set := Get_Variables_Internal (L, Ctx);
-
-      Projected, Partial : Flow_Id_Sets.Set;
-
    begin
-      Up_Project (Vars, Scope, Projected, Partial);
-      return Projected or Partial;
+      return Get_Variables_Internal (L, Ctx);
    end Get_Variables;
 
    ----------------------------
@@ -5470,33 +5479,6 @@ package body Flow_Utility is
          Vars_Defined.Include (Base_Node'Update (Facet => Extension_Part));
       end if;
 
-      declare
-         Projected, Partial : Flow_Id_Sets.Set;
-
-      begin
-         Up_Project (Vars_Used, Scope, Projected, Partial);
-         Vars_Used := Projected or Partial;
-
-         Up_Project (Vars_Defined, Scope, Projected, Partial);
-         for State of Partial loop
-            if Is_Abstract_State (State)
-              and then not (State_Refinement_Is_Visible (State, Scope)
-                            and then Is_Fully_Contained (State, Vars_Defined))
-            then
-               Vars_Used.Include (State);
-            end if;
-         end loop;
-         Vars_Defined := Projected or Partial;
-         --  ??? This might be wrong; assignment to visible constituents of a
-         --  partially visible abstract state should be modelled as writing to
-         --  that constituent, not to the state as a whole.
-
-         Up_Project (Vars_Proof, Scope, Projected, Partial);
-         Vars_Proof :=
-           (Projected or Partial) -
-           (Change_Variant (Vars_Defined, In_View) or Vars_Used);
-      end;
-
       if Debug_Trace_Untangle then
          Write_Str ("Variables ");
          if Partial_Definition then
@@ -5608,5 +5590,123 @@ package body Flow_Utility is
          return False;
       end if;
    end Is_Dummy_Abstract_State;
+
+   ----------------------
+   -- Contract_Globals --
+   ----------------------
+
+   function Contract_Globals (E : Entity_Id) return Raw_Global_Nodes is
+      Contract : Node_Id;
+
+   begin
+      --  Flow graphs contain globals that come, in the order of preference,
+      --  from Refined_Global, Refined_Depends, Global or Depends (this order
+      --  is hardcoded in Get_Globals).
+
+      Contract := Find_Contract (E, Pragma_Refined_Global);
+
+      if Present (Contract) then
+         return Parse_Global_Contract (E, Contract);
+      end if;
+
+      Contract := Find_Contract (E, Pragma_Refined_Depends);
+
+      if Present (Contract) then
+         return Parse_Depends_Contract (E, Contract);
+      end if;
+
+      Contract := Find_Contract (E, Pragma_Global);
+
+      if Present (Contract) then
+         return Parse_Global_Contract (E, Contract);
+      end if;
+
+      Contract := Find_Contract (E, Pragma_Depends);
+
+      if Present (Contract) then
+         return Parse_Depends_Contract (E, Contract);
+      end if;
+
+      pragma Assert (Is_Pure (E));
+
+      return (Proof_Ins => Node_Sets.Empty_Set,
+              Inputs    => Node_Sets.Empty_Set,
+              Outputs   => Node_Sets.Empty_Set);
+   end Contract_Globals;
+
+   ----------------------------
+   -- Parse_Depends_Contract --
+   ----------------------------
+
+   function Parse_Depends_Contract
+     (Subprogram   : Entity_Id;
+      Depends_Node : Node_Id)
+      return Raw_Global_Nodes
+   is
+      Raw_Depends : constant Dependency_Maps.Map :=
+        Parse_Depends (Depends_Node);
+      --  ??? Parse_Depends should return a map of Entity_Ids and a separate
+      --  routine should lift that to Flow_Ids.
+
+      Params : constant Node_Sets.Set := Get_Formals (Subprogram);
+      --  Our own parameters are allowed in Depends but not in Globals, so we
+      --  need to filter them. Note that the formal parameters that we collect
+      --  here will also include implicit formal parameters of subprograms that
+      --  belong to concurrent types.
+
+      Globals : Raw_Global_Nodes;
+
+   begin
+      for C in Raw_Depends.Iterate loop
+         declare
+            Output : Flow_Id          renames Dependency_Maps.Key (C);
+            Inputs : Flow_Id_Sets.Set renames Raw_Depends (C);
+
+         begin
+            pragma Assert (Output.Kind in Null_Value | Direct_Mapping);
+
+            --  Filter function'Result and parameters
+            if Present (Output) then
+               declare
+                  Item : constant Entity_Id := Get_Direct_Mapping_Id (Output);
+
+               begin
+                  if Item /= Subprogram
+                    and then not Params.Contains (Item)
+                  then
+                     Globals.Outputs.Include (Item);
+                  end if;
+               end;
+            end if;
+
+            for Input of Inputs loop
+               pragma Assert (Input.Kind in Null_Value | Direct_Mapping);
+
+               if Present (Input) then
+                  declare
+                     Item : constant Entity_Id :=
+                       Get_Direct_Mapping_Id (Input);
+
+                  begin
+                     if not Params.Contains (Item) then
+                        Globals.Inputs.Include (Item);
+
+                        --  A volatile with effective reads is always an output
+                        --  as well (this should be recorded in the depends,
+                        --  but the front-end does not enforce this).
+                        if Has_Effective_Reads (Input) then
+                           Globals.Outputs.Include (Item);
+                        end if;
+
+                     end if;
+                  end;
+               end if;
+            end loop;
+         end;
+      end loop;
+
+      return Globals;
+
+   end Parse_Depends_Contract;
 
 end Flow_Utility;

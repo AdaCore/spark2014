@@ -113,9 +113,14 @@ package body Flow.Analysis is
    --  of S. If it is not there (perhaps because it comes from computed
    --  globals) just return S which is a good fallback location for error
    --  reports.
+   --
    --  ??? In some context where this routine is used we should also scan the
    --  Refined_Depends and Depends contracts, in particular when they are used
    --  as a substitute for a missing Refined_Global/Global, e.g. Analyse_Main.
+   --
+   --  ??? in some calls to this routine the F is a constituent while the
+   --  contract references its abstract state; should be fixed either in
+   --  Find_Global or in its callers.
 
    function Get_Initial_Vertex (G : Flow_Graphs.Graph;
                                 F : Flow_Id)
@@ -909,8 +914,37 @@ package body Flow.Analysis is
 
    procedure Find_Unwritten_Exports (FA : in out Flow_Analysis_Graphs) is
 
-      Written_Entire_Vars : Flow_Id_Sets.Set;
-      Unwritten_Vars      : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      --  This procedure deals with unwritten local and global entities.
+      --
+      --  For local entities (e.g. OUT parameters) we analyse the status at the
+      --  level of record components, but emit messages at the level of entire
+      --  variables.
+      --
+      --  For global entities in generative mode we shall get no errors
+      --  (because the generated Global contract should be correct), but the
+      --  algorithm is sometimes tricked by broken visibility with Entity_Names
+      --  and by calls to procedures with No_Return and no Global contract. (We
+      --  pull globals from such procedures in phase 1, but prune the calls in
+      --  phase 2 if their Outputs happens to be empty). We conservatively emit
+      --  messages to hint the user that something went wrong; we do this at
+      --  the level of entire variables, for consistency with local entities.
+      --
+      --  For global entities with user-written contract (either Global/Depends
+      --  or their refined variants), we emit messages at the level of entities
+      --  that appear in the contracts; in particular, partially-visible
+      --  constituent might appear in the contract directly, or optionally via
+      --  its encapsulating state (or via the encapsulating state of its state,
+      --  etc.) We can't deal with those options using the up/down-projection.
+      --  Instead, we rely on what is directly written in the contract, and for
+      --  this direct access we bypass the Get_Globals, because it involves
+      --  down-projection.
+
+      Unwritten_Vars : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+
+      Unwritten_Global_Exports : Node_Sets.Set;
+      Written_Exports          : Flow_Id_Sets.Set;
+      --  ??? would be better to have those symmetric, but even better, we
+      --  should reuse more code with Find_Ineffective_Imports_...
 
       function Is_Or_Belongs_To_Concurrent_Object
         (F : Flow_Id)
@@ -918,6 +952,19 @@ package body Flow.Analysis is
       with Pre => F.Kind in Direct_Mapping | Record_Field;
       --  @param F is the Flow_Id that we want to check
       --  @return True iff F is or belongs to a concurrent object
+
+      function Find_In
+        (Globals : Node_Sets.Set;
+         E       : Entity_Id)
+         return Entity_Id
+      with Post => No (Find_In'Result)
+                   or else
+                   Globals.Contains (Find_In'Result);
+      --  If a E is represented by Globals ones, either directly or via an
+      --  abstract state, then return the representative global; otherwise,
+      --  return Empty.
+      --  ??? duplicates the same routine in Find_Ineffective_Imports_...,
+      --  which is a dual to the Find_Unwritten_Exports.
 
       ----------------------------------------
       -- Is_Or_Belongs_To_Concurrent_Object --
@@ -929,9 +976,35 @@ package body Flow.Analysis is
       is
         (Is_Concurrent_Type (Get_Direct_Mapping_Id (F)));
 
+      -------------
+      -- Find_In --
+      -------------
+
+      function Find_In
+        (Globals : Node_Sets.Set;
+         E       : Entity_Id)
+         return Entity_Id
+      is
+      begin
+         if Globals.Contains (E) then
+            return E;
+         elsif Is_Constituent (E) then
+            return Find_In (Globals, Encapsulating_State (E));
+         else
+            return Empty;
+         end if;
+      end Find_In;
+
    --  Start of processing for Find_Unwritten_Exports
 
    begin
+      --  When checking against a user-written Global/Depends we get the
+      --  globals directly from that contract.
+
+      if not FA.Is_Generative then
+         Unwritten_Global_Exports := Contract_Globals (FA.Spec_Entity).Outputs;
+      end if;
+
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             F_Final : Flow_Id      renames FA.PDG.Get_Key (V);
@@ -967,7 +1040,22 @@ package body Flow.Analysis is
                end if;
 
                if Written then
-                  Written_Entire_Vars.Include (Entire_Variable (F_Final));
+                  if A_Final.Is_Global
+                    and then not FA.Is_Generative
+                  then
+                     declare
+                        Repr : constant Entity_Id :=
+                          Find_In (Unwritten_Global_Exports,
+                                   Get_Direct_Mapping_Id (F_Final));
+
+                     begin
+                        if Present (Repr) then
+                           Unwritten_Global_Exports.Delete (Repr);
+                        end if;
+                     end;
+                  else
+                     Written_Exports.Include (Entire_Variable (F_Final));
+                  end if;
                else
                   Unwritten_Vars.Insert (V);
                end if;
@@ -979,10 +1067,37 @@ package body Flow.Analysis is
          declare
             F_Final : Flow_Id      renames FA.PDG.Get_Key (V);
             A_Final : V_Attributes renames FA.Atr (V);
+
          begin
-            if not Written_Entire_Vars.Contains (Entire_Variable (F_Final))
-            then
-               --  We inhibit messages for variables that:
+            if A_Final.Is_Global then
+               if FA.Is_Generative then
+                  if not Written_Exports.Contains (Entire_Variable (F_Final))
+                  then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "& is not modified, could be INPUT",
+                        N        => Find_Global (FA.Spec_Entity, F_Final),
+                        F1       => Entire_Variable (F_Final),
+                        Tag      => Inout_Only_Read,
+                        Severity => Warning_Kind,
+                        Vertex   => V);
+                  end if;
+               else
+                  if Present (Find_In (Unwritten_Global_Exports,
+                                       Get_Direct_Mapping_Id (F_Final)))
+                  then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "& is not modified, could be INPUT",
+                        N        => Find_Global (FA.Spec_Entity, F_Final),
+                        F1       => Entire_Variable (F_Final),
+                        Tag      => Inout_Only_Read,
+                        Severity => Warning_Kind,
+                        Vertex   => V);
+                  end if;
+               end if;
+            else
+               --  We inhibit messages for non-global exports that:
                --    * have been marked as unmodified, as unused or as
                --      unreferenced,
                --    * are/belong to a concurrent object
@@ -997,27 +1112,16 @@ package body Flow.Analysis is
                              (Get_Direct_Mapping_Id (F_Final)))
                then
                   null;
-
-               else
-                  if A_Final.Is_Global then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "& is not modified, could be INPUT",
-                        N        => Find_Global (FA.Spec_Entity, F_Final),
-                        F1       => Entire_Variable (F_Final),
-                        Tag      => Inout_Only_Read,
-                        Severity => Warning_Kind,
-                        Vertex   => V);
-                  else
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "& is not modified, could be IN",
-                        N        => Error_Location (FA.PDG, FA.Atr, V),
-                        F1       => Entire_Variable (F_Final),
-                        Tag      => Inout_Only_Read,
-                        Severity => Warning_Kind,
-                        Vertex   => V);
-                  end if;
+               elsif not Written_Exports.Contains (Entire_Variable (F_Final))
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "& is not modified, could be IN",
+                     N        => Error_Location (FA.PDG, FA.Atr, V),
+                     F1       => Entire_Variable (F_Final),
+                     Tag      => Inout_Only_Read,
+                     Severity => Warning_Kind,
+                     Vertex   => V);
                end if;
             end if;
          end;
@@ -1068,11 +1172,31 @@ package body Flow.Analysis is
       --    bounds of an unconstrained array) to determine the final value of
       --    at least one export.
 
-      procedure Warn_On_Unused_Objects (Unused : Flow_Id_Sets.Set);
-      --  Issue a warning on unused objects
+      function Find_In
+        (Globals : Node_Sets.Set;
+         E       : Entity_Id)
+         return Entity_Id
+      with Post => No (Find_In'Result)
+                     or else
+                   Globals.Contains (Find_In'Result);
+      --  If a E is represented by Globals ones, either directly or via an
+      --  abstract state, then return the representative global; otherwise,
+      --  return Empty. ??? same as Find_In in Check_Generated_Refined_Global,
+      --  but for Entity_Ids.
 
-      procedure Warn_On_Ineffective_Imports (Ineffective : Flow_Id_Sets.Set);
-      --  Issue a warning on ineffective imports
+      procedure Warn_On_Unused_Objects
+        (Unused         : Flow_Id_Sets.Set;
+         Unused_Globals : Node_Sets.Set)
+      with Pre => (if FA.Is_Generative then Unused_Globals.Is_Empty);
+      --  Issue a warning on unused objects; the second parameter controls
+      --  emitting messages on globals coming from a user-written contract.
+
+      procedure Warn_On_Ineffective_Imports
+        (Ineffective         : Flow_Id_Sets.Set;
+         Ineffective_Globals : Node_Sets.Set)
+      with Pre => (if FA.Is_Generative then Ineffective_Globals.Is_Empty);
+      --  Issue a warning on ineffective imports; the second parameter controls
+      --  emitting messages on globals coming from a user-written contract.
 
       -------------------------------------
       -- Components_Are_Entire_Variables --
@@ -1238,11 +1362,32 @@ package body Flow.Analysis is
          end loop;
       end Collect_Imports_And_Objects;
 
+      -------------
+      -- Find_In --
+      -------------
+
+      function Find_In
+        (Globals : Node_Sets.Set;
+         E       : Entity_Id)
+         return Entity_Id
+      is
+      begin
+         if Globals.Contains (E) then
+            return E;
+         elsif Is_Constituent (E) then
+            return Find_In (Globals, Encapsulating_State (E));
+         else
+            return Empty;
+         end if;
+      end Find_In;
+
       ----------------------------
       -- Warn_On_Unused_Objects --
       ----------------------------
 
-      procedure Warn_On_Unused_Objects (Unused : Flow_Id_Sets.Set)
+      procedure Warn_On_Unused_Objects
+        (Unused         : Flow_Id_Sets.Set;
+         Unused_Globals : Node_Sets.Set)
       is
       begin
          for F of Unused loop
@@ -1255,6 +1400,11 @@ package body Flow.Analysis is
                   --  In generative mode we inhibit messages on globals
                   if not FA.Is_Generative then
                      declare
+                        Repr : constant Entity_Id :=
+                          Find_In (Unused_Globals, Get_Direct_Mapping_Id (F));
+                        --  An entity that represents F in unused, user-written
+                        --  Global/Depends items.
+
                         Is_Var : constant Boolean := Is_Variable (F);
                         --  Issue a different errors for variables and
                         --  constants
@@ -1273,14 +1423,19 @@ package body Flow.Analysis is
                         --  We prefer the report the error on the subprogram,
                         --  not on the global.
 
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => Msg,
-                           N        => Find_Global (FA.Spec_Entity, F),
-                           F1       => F,
-                           Tag      => VC_Kinds.Unused,
-                           Severity => Severity,
-                           Vertex   => V);
+                        if Present (Repr) then
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      => Msg,
+                              N        =>
+                                Find_Global
+                                  (FA.Spec_Entity,
+                                   Direct_Mapping_Id (Repr)),
+                              F1       => Direct_Mapping_Id (Repr),
+                              Tag      => VC_Kinds.Unused,
+                              Severity => Severity,
+                              Vertex   => V);
+                        end if;
                      end;
                   end if;
                else
@@ -1329,7 +1484,10 @@ package body Flow.Analysis is
       -- Warn_On_Ineffective_Imports --
       ---------------------------------
 
-      procedure Warn_On_Ineffective_Imports (Ineffective : Flow_Id_Sets.Set) is
+      procedure Warn_On_Ineffective_Imports
+        (Ineffective         : Flow_Id_Sets.Set;
+         Ineffective_Globals : Node_Sets.Set)
+      is
       begin
          for F of Ineffective loop
             declare
@@ -1359,6 +1517,8 @@ package body Flow.Analysis is
                elsif Atr.Is_Global then
                   if FA.Kind = Kind_Subprogram
                     and then not FA.Is_Generative
+                    and then Present (Find_In (Ineffective_Globals,
+                                               Get_Direct_Mapping_Id (F)))
                   then
                      Error_Msg_Flow
                        (FA       => FA,
@@ -1426,6 +1586,13 @@ package body Flow.Analysis is
 
             Unused             : Flow_Id_Sets.Set;
 
+            Raw_Globals        : Raw_Global_Nodes;
+
+            use type Node_Sets.Set;
+
+            Unused_Global_Objects      : Node_Sets.Set;
+            Ineffective_Global_Imports : Node_Sets.Set;
+
          begin
             Collect_Imports_And_Objects (Suppressed,
                                          Considered_Imports,
@@ -1433,10 +1600,62 @@ package body Flow.Analysis is
                                          Used,
                                          Effective);
 
+            if not FA.Is_Generative then
+               Raw_Globals := Contract_Globals (FA.Spec_Entity);
+
+               Unused_Global_Objects :=
+                 Raw_Globals.Proof_Ins
+                 or Raw_Globals.Inputs
+                 or Raw_Globals.Outputs;
+               --  ??? adding Outputs is wrong, but minimizes diffs with the
+               --  old Is_Visible.
+
+               for U of Used loop
+                  if U.Kind = Direct_Mapping then
+                     declare
+                        Repr : constant Entity_Id :=
+                          Find_In (Unused_Global_Objects,
+                                   Get_Direct_Mapping_Id (U));
+                        --  An entity that represents U in the user-written
+                        --  Global/Depends contract.
+
+                     begin
+                        if Present (Repr) then
+                           Unused_Global_Objects.Delete (Repr);
+                        end if;
+                     end;
+                  end if;
+               end loop;
+
+               Ineffective_Global_Imports :=
+                 Raw_Globals.Proof_Ins
+                 or Raw_Globals.Inputs
+                 or Raw_Globals.Outputs;
+               --  ??? adding Outputs is wrong, but minimizes diffs with the
+               --  old Is_Visible.
+
+               for U of Effective loop
+                  if U.Kind = Direct_Mapping then
+                     declare
+                        Repr : constant Entity_Id :=
+                          Find_In (Ineffective_Global_Imports,
+                                   Get_Direct_Mapping_Id (U));
+                        --  An entity that represents U in the user-written
+                        --  Global/Depends contract.
+
+                     begin
+                        if Present (Repr) then
+                           Ineffective_Global_Imports.Delete (Repr);
+                        end if;
+                     end;
+                  end if;
+               end loop;
+            end if;
+
             --  We warn on unused objects
             Unused := Considered_Objects - Used;
 
-            Warn_On_Unused_Objects (Unused);
+            Warn_On_Unused_Objects (Unused, Unused_Global_Objects);
 
             --  If this subprogram has effects then we also want to find
             --  ineffective imports.
@@ -1448,7 +1667,8 @@ package body Flow.Analysis is
                --  imports.
 
                Warn_On_Ineffective_Imports
-                 (Considered_Imports - (Effective or Suppressed or Unused));
+                 (Considered_Imports - (Effective or Suppressed or Unused),
+                  Ineffective_Global_Imports);
             end if;
          end;
 

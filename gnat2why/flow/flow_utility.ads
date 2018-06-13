@@ -741,6 +741,58 @@ is
    --  Similar to Is_Null_Record_Type, but also returns true if this is a null
    --  extension of a null record type (or extension).
 
+   type Raw_Global_Nodes is record
+      Proof_Ins : Node_Sets.Set;
+      Inputs    : Node_Sets.Set;
+      Outputs   : Node_Sets.Set;
+   end record
+   with Dynamic_Predicate =>
+          (for all G of Raw_Global_Nodes.Proof_Ins =>
+              not Raw_Global_Nodes.Inputs.Contains (G) and then
+              not Raw_Global_Nodes.Outputs.Contains (G));
+   --  Represents Global/Refined_Global as it appears in the source code;
+   --  unlike Global_Nodes, it may contain constants without variable inputs.
+
+   function Parse_Global_Contract
+     (Subprogram  : Entity_Id;
+      Global_Node : Node_Id)
+      return Raw_Global_Nodes
+   with Pre => Ekind (Subprogram) in E_Function
+                                   | E_Procedure
+                                   | E_Entry
+                                   | E_Task_Type
+               and then Nkind (Global_Node) = N_Pragma
+               and then Get_Pragma_Id (Global_Node) in Pragma_Global
+                                                     | Pragma_Refined_Global;
+   --  Returns Global/Refined_Global, as they appear in the source code; in
+   --  particular, without down-projections or trimming done by Get_Globals,
+   --  which returns the global contract adapted for the use in flow graphs.
+
+   function Parse_Depends_Contract
+     (Subprogram   : Entity_Id;
+      Depends_Node : Node_Id) return Raw_Global_Nodes
+   with Pre => Ekind (Subprogram) in E_Function
+                                   | E_Procedure
+                                   | E_Entry
+                                   | E_Task_Type
+               and then Nkind (Depends_Node) = N_Pragma
+               and then Get_Pragma_Id (Depends_Node) in Pragma_Depends
+                                                      | Pragma_Refined_Depends;
+   --  Returns Depends/Refined_Depends, as they appear in the source code; in
+   --  particular, without down-projections or trimming done by Get_Depends,
+   --  which returns the depends contract adapted for the use in flow graphs.
+
+   function Contract_Globals (E : Entity_Id) return Raw_Global_Nodes
+   with Pre => Ekind (E) in E_Function
+                          | E_Procedure
+                          | E_Entry
+                          | E_Task_Type;
+   --  Returns globals as they appear in the Global/Depends contract (or their
+   --  refined variants, if available). This is useful when dealing with
+   --  partially-visible abstract states where an object in the flow graph
+   --  might be represented in the contract either directly or via its abstract
+   --  state.
+
 private
    Init_Done : Boolean := False with Ghost;
 

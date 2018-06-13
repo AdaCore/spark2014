@@ -345,12 +345,7 @@ package body Flow_Refinement is
                                          S : Flow_Scope)
                                          return Boolean
    is
-     ((Present (S.Ent)
-       and then Is_Private_Descendant (S.Ent)
-       and then Is_Visible (Private_Scope (Get_Flow_Scope (E)), S))
-      or else
-      (Entity_Body_In_SPARK (Scope (E))
-       and then Is_Visible (Body_Scope (Get_Flow_Scope (E)), S)));
+     (Is_Visible (Body_Scope (Get_Flow_Scope (E)), S));
 
    function State_Refinement_Is_Visible (EN : Entity_Name;
                                          S  : Flow_Scope)
@@ -419,16 +414,18 @@ package body Flow_Refinement is
 
       for Var of Vars loop
          if Is_Constituent (Var) then
-            declare
-               State : constant Entity_Id := Encapsulating_State (Var);
 
-            begin
-               if State_Refinement_Is_Visible (State, Scope) then
-                  Projected.Include (Var);
-               else
-                  Partial.Include (State);
-               end if;
-            end;
+            --  We project depending on whether the constituent is visible (and
+            --  not its enclosing state refinement), because when projecting to
+            --  a private part of a package spec where that constituent is
+            --  declared (as a Part_Of an abstract state) we want the
+            --  constituent, which is the most precise result we can get.
+
+            if Is_Visible (Var, Scope) then
+               Projected.Include (Var);
+            else
+               Partial.Include (Encapsulating_State (Var));
+            end if;
          else
             Projected.Include (Var);
          end if;
@@ -596,6 +593,12 @@ package body Flow_Refinement is
       LHS_Constituents : Flow_Id_Sets.Set;
       --  Constituents that are appear on the LHS of the dependency map
 
+      Non_Null_RHSs : Flow_Id_Sets.Set;
+      --  Entities that appear on the RHS of non-null projected clauses
+
+      Null_Clause : Dependency_Maps.Cursor;
+      --  Position of the "null => ..." clause
+
    begin
       --  First collect constituents from the LHS of the dependency map; we
       --  will use them to decide whether to add a self-dependency on their
@@ -623,6 +626,10 @@ package body Flow_Refinement is
             Projected, Partial : Flow_Id_Sets.Set;
             Projected_RHS      : Flow_Id_Sets.Set;
 
+            Projected_Clause : Dependency_Maps.Cursor;
+
+            Unused : Boolean;
+
          begin
             Up_Project (RHS, Scope, Projected, Partial);
             Projected_RHS := Projected or Partial;
@@ -638,10 +645,7 @@ package body Flow_Refinement is
 
             if Projected.Is_Empty then
                declare
-                  State : Flow_Id renames Partial (Partial.First);
-
-                  Position : Dependency_Maps.Cursor;
-                  Unused   : Boolean;
+                  LHS_State : Flow_Id renames Partial (Partial.First);
 
                begin
                   --  If State represents a partial-write of an abstract state
@@ -650,32 +654,56 @@ package body Flow_Refinement is
                   --  constituents behave as if they would be updated with
                   --  their old values.
 
-                  if not Is_Fully_Contained (State, LHS_Constituents) then
-                     Projected_RHS.Include (State);
+                  if not Is_Fully_Contained (LHS_State, LHS_Constituents) then
+                     Projected_RHS.Include (LHS_State);
                   end if;
 
                   --  Insert {State -> Projected_RHS} into Projected_Deps
                   --  without crashing if State is already in the map (i.e.
                   --  it was inserted when up-projecting another constituent).
 
-                  Projected_Deps.Insert (Key      => State,
-                                         Position => Position,
+                  Projected_Deps.Insert (Key      => LHS_State,
+                                         Position => Projected_Clause,
                                          Inserted => Unused);
-
-                  Projected_Deps (Position).Union (Projected_RHS);
-
                end;
 
             --  Otherwise, the LHS was transparently projected and will be used
             --  as it was.
 
             else
-               Projected_Deps.Insert (Key      => Projected (Projected.First),
-                                      New_Item => Projected_RHS);
+               declare
+                  LHS_Object : Flow_Id renames Projected (Projected.First);
+
+               begin
+                  Projected_Deps.Insert (Key      => LHS_Object,
+                                         Position => Projected_Clause,
+                                         Inserted => Unused);
+
+                  if Present (LHS_Object) then
+                     Non_Null_RHSs.Union (Projected_RHS);
+                  end if;
+               end;
             end if;
 
+            Projected_Deps (Projected_Clause).Union (Projected_RHS);
          end;
       end loop;
+
+      --  Postprocessing required by the SPARK RM 6.1.5(13): "An entity denoted
+      --  by an input which is in an input_list of a null_dependency_clause
+      --  shall not be denoted by an input in another input_list of the same
+      --  dependency_relation."
+
+      Null_Clause := Projected_Deps.Find (Null_Flow_Id);
+
+      if Dependency_Maps.Has_Element (Null_Clause) then
+         Projected_Deps (Null_Clause).Difference (Non_Null_RHSs);
+
+         --  ??? it is tempting to remove the "null => null" clause here, just
+         --  like it is in Compute_Dependency_Relation, but apparently this
+         --  cause crashes when processing unconstrained record types
+      end if;
+
    end Up_Project;
 
    -----------------------
@@ -1188,19 +1216,18 @@ package body Flow_Refinement is
                if Entity_Body_In_SPARK (Pkg)
                  and then State_Refinement_Is_Visible (E, S)
                then
-                  --  ??? do the same as in Expand_Abstract_State
-
                   if not Has_Null_Refinement (E) then
                      for C of Iter (Refinement_Constituents (E)) loop
-                        if Is_Visible (C, S) then
-                           Expand (C);
-                        else
-                           P.Include (E);
-                           return;
-                        end if;
+                        Expand (C);
                      end loop;
                   end if;
                else
+                  for C of Iter (Part_Of_Constituents (E)) loop
+                     if Is_Visible (C, S) then
+                        Expand (C);
+                     end if;
+                  end loop;
+
                   P.Include (E);
                end if;
             end;

@@ -1280,6 +1280,7 @@ package body Flow.Analysis.Sanity is
 
       --  Local variables:
 
+      Raw_Globals : Raw_Global_Nodes;
       User_Global : Global_Flow_Ids;
       --  Global contract provided by the user
 
@@ -1315,13 +1316,29 @@ package body Flow.Analysis.Sanity is
          return;
       end if;
 
-      --  Read the user Global/Depends contract; Use_Deduced_Globals is False
-      --  to prevent trimming based on generated (refined) globals.
-      Get_Globals (Subprogram          => FA.Analyzed_Entity,
-                   Scope               => FA.S_Scope,
-                   Classwide           => False,
-                   Globals             => User_Global,
-                   Use_Deduced_Globals => False);
+      --  Read the user-written Global or Depends
+      if Present (FA.Global_N) then
+         Raw_Globals :=
+           Parse_Global_Contract
+             (Subprogram  => FA.Spec_Entity,
+              Global_Node => FA.Global_N);
+
+      elsif Present (FA.Depends_N) then
+         Raw_Globals :=
+           Parse_Depends_Contract
+             (FA.Spec_Entity,
+              FA.Depends_N);
+
+      else
+         pragma Assert (Is_Pure (FA.Spec_Entity));
+      end if;
+
+      --  Convert user-globals from Entity_Ids to Flow_Ids
+
+      User_Global :=
+           (Proof_Ins => To_Flow_Id_Set (Raw_Globals.Proof_Ins, In_View),
+            Inputs    => To_Flow_Id_Set (Raw_Globals.Inputs,    In_View),
+            Outputs   => To_Flow_Id_Set (Raw_Globals.Outputs,   Out_View));
 
       --  Read the generated Global
       Get_Globals (Subprogram => FA.Analyzed_Entity,
