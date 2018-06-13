@@ -62,10 +62,10 @@ with Why;
 package body Flow.Analysis is
 
    Debug_Trace_Depends     : constant Boolean := False;
-   --  Enable this to show the specified and computed dependency relation.
+   --  Enable this to show the specified and computed dependency relation
 
    Debug_Trace_Check_Reads : constant Boolean := False;
-   --  Enable this to show in/unin status of each vertex/variable examines.
+   --  Enable this to show in/unin status of each vertex/variable examines
 
    use type Ada.Containers.Count_Type;
    use type Flow_Graphs.Vertex_Id;
@@ -76,14 +76,30 @@ package body Flow.Analysis is
       M   : Attribute_Maps.Map;
       V   : Flow_Graphs.Vertex_Id;
       Sep : Character := ':') return String;
-   --  Obtain the location for the given vertex as in "foo.adb:12".
+   --  Obtain the location for the given vertex as in "foo.adb:12"
 
    procedure Write_Vertex_Set
      (FA       : Flow_Analysis_Graphs;
       Set      : Vertex_Sets.Set;
       Filename : String);
-   --  Write a trace file for GPS. Do not generate a trace file if there is no
-   --  sloc, or a single sloc in the vertex set, as this is not useful.
+   --  Write a trace file for GPS
+
+   function Vertices_Between_From_And_To (FA   : Flow_Analysis_Graphs;
+                                          From : Flow_Id;
+                                          To   : Flow_Id_Sets.Set)
+                                          return Vertex_Sets.Set
+   with Pre => Present (From)
+               and then not To.Is_Empty,
+        Post => not Vertex_Sets.Contains (Vertices_Between_From_And_To'Result,
+                                          Flow_Graphs.Get_Vertex (FA.PDG,
+                                                                  From))
+                and then
+                  (for all V of To
+                   => not Vertex_Sets.Contains
+                            (Vertices_Between_From_And_To'Result,
+                             Flow_Graphs.Get_Vertex (FA.PDG, V)));
+   --  Finds the shortest path in the PDG graph connecting vertex From and To
+   --  and returns the vertices in this path (From and To excluded).
 
    function Find_Global
      (S : Entity_Id;
@@ -109,14 +125,6 @@ package body Flow.Analysis is
                   or else G.Get_Key (Get_Initial_Vertex'Result).Variant in
                             Initial_Value | Initial_Grouping;
    --  Returns the vertex id which represents the initial value for F
-
-   function Get_Final_Vertex (G : Flow_Graphs.Graph;
-                              F : Flow_Id)
-                              return Flow_Graphs.Vertex_Id
-   with Pre  => F.Variant = Normal_Use,
-        Post => G.Get_Key (Get_Final_Vertex'Result).Variant in Final_Value
-                                                             | Final_Grouping;
-   --  Returns the vertex id which represents the final value for F
 
    function Is_Param_Of_Null_Subp_Of_Generic (E : Entity_Id)
                                               return Boolean
@@ -220,22 +228,83 @@ package body Flow.Analysis is
       pragma Debug (Trace_Files.Insert (Filename));
       --  Detect repeated writing to the same tracefile
 
-      if Set.Length > 1 then
-         Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
+      Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
 
-         for V of Set loop
-            declare
-               F : Flow_Id renames FA.PDG.Get_Key (V);
-            begin
-               if F.Kind = Direct_Mapping then
-                  Ada.Text_IO.Put_Line (FD, Get_Line (FA.PDG, FA.Atr, V));
-               end if;
-            end;
-         end loop;
+      for V of Set loop
+         declare
+            F : Flow_Id renames FA.PDG.Get_Key (V);
 
-         Ada.Text_IO.Close (FD);
-      end if;
+         begin
+            if F.Kind = Direct_Mapping then
+               Ada.Text_IO.Put_Line (FD, Get_Line (FA.PDG, FA.Atr, V));
+            end if;
+         end;
+      end loop;
+
+      Ada.Text_IO.Close (FD);
    end Write_Vertex_Set;
+
+   ----------------------------------
+   -- Vertices_Between_From_And_To --
+   ----------------------------------
+
+   function Vertices_Between_From_And_To (FA   : Flow_Analysis_Graphs;
+                                          From : Flow_Id;
+                                          To   : Flow_Id_Sets.Set)
+                                          return Vertex_Sets.Set
+   is
+      Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+
+      procedure Add_Loc (V : Flow_Graphs.Vertex_Id);
+      --  Step procedure for Shortest_Path
+
+      procedure Are_We_There_Yet
+        (V           : Flow_Graphs.Vertex_Id;
+         Instruction : out Flow_Graphs.Traversal_Instruction);
+      --  Visitor procedure for Shortest_Path
+
+      -------------
+      -- Add_Loc --
+      -------------
+
+      procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
+         F : Flow_Id renames FA.PDG.Get_Key (V);
+      begin
+         if F /= From
+           and then not To.Contains (F)
+           and then FA.Atr (V).Is_Program_Node
+         then
+            Vertices.Insert (V);
+         end if;
+      end Add_Loc;
+
+      ----------------------
+      -- Are_We_There_Yet --
+      ----------------------
+
+      procedure Are_We_There_Yet
+        (V           : Flow_Graphs.Vertex_Id;
+         Instruction : out Flow_Graphs.Traversal_Instruction)
+      is
+         F : Flow_Id renames FA.PDG.Get_Key (V);
+      begin
+         if To.Contains (F) then
+            Instruction := Flow_Graphs.Found_Destination;
+         else
+            Instruction := Flow_Graphs.Continue;
+         end if;
+      end Are_We_There_Yet;
+
+   --  Start of processing for Vertices_Between_From_And_To
+
+   begin
+      FA.PDG.Shortest_Path (Start         => Get_Initial_Vertex (FA.PDG, From),
+                            Allow_Trivial => False,
+                            Search        => Are_We_There_Yet'Access,
+                            Step          => Add_Loc'Access);
+
+      return Vertices;
+   end Vertices_Between_From_And_To;
 
    -----------------
    -- Find_Global --
@@ -332,27 +401,6 @@ package body Flow.Analysis is
          return Initial_Value_Vertex;
       end if;
    end Get_Initial_Vertex;
-
-   ----------------------
-   -- Get_Final_Vertex --
-   ----------------------
-
-   function Get_Final_Vertex
-     (G : Flow_Graphs.Graph;
-      F : Flow_Id)
-      return Flow_Graphs.Vertex_Id
-   is
-      Final_Value_Vertex : constant Flow_Graphs.Vertex_Id :=
-        G.Get_Vertex (Change_Variant (F, Final_Value));
-
-   begin
-      --  Look for either the Final_Value or Final_Grouping variant
-      if Final_Value_Vertex = Flow_Graphs.Null_Vertex then
-         return G.Get_Vertex (Change_Variant (F, Final_Grouping));
-      else
-         return Final_Value_Vertex;
-      end if;
-   end Get_Final_Vertex;
 
    ---------------------------------------
    -- Warn_On_Subprogram_With_No_Effect --
@@ -2162,30 +2210,30 @@ package body Flow.Analysis is
       is
          type Msg_Kind is (Init, Unknown, Err);
 
-         V_Key         : Flow_Id renames FA.PDG.Get_Key (Vertex);
+         V_Key        : Flow_Id renames FA.PDG.Get_Key (Vertex);
 
-         V_Initial     : constant Flow_Graphs.Vertex_Id :=
+         V_Initial    : constant Flow_Graphs.Vertex_Id :=
            FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
 
-         Kind          : Msg_Kind :=
+         Kind         : Msg_Kind :=
            (if Is_Initialized and Is_Uninitialized then Unknown
             elsif Is_Initialized                   then Init
             else                                        Err);
 
-         N             : Node_Or_Entity_Id;
-         Msg           : Unbounded_String;
+         N            : Node_Or_Entity_Id;
+         Msg          : Unbounded_String;
 
-         V_Error       : Flow_Graphs.Vertex_Id;
-         V_Goal        : Flow_Graphs.Vertex_Id;
-         V_Allowed     : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+         V_Error      : Flow_Graphs.Vertex_Id;
+         V_Goal       : Flow_Graphs.Vertex_Id;
+         V_Allowed    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
 
-         Is_Final_Use  : constant Boolean := V_Key.Variant = Final_Value;
-         Is_Global     : constant Boolean := FA.Atr (V_Initial).Is_Global;
-         Default_Init  : constant Boolean := Is_Default_Initialized
+         Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
+         Is_Global    : constant Boolean := FA.Atr (V_Initial).Is_Global;
+         Default_Init : constant Boolean := Is_Default_Initialized
                                                (Var, FA.B_Scope);
-         Is_Function   : constant Boolean := Is_Function_Entity (Var);
+         Is_Function  : constant Boolean := Is_Function_Entity (Var);
 
-         Tracefile     : constant String := Fresh_Trace_File;
+         Tracefile    : constant String := Fresh_Trace_File;
 
          procedure Mark_Definition_Free_Path
            (From      : Flow_Graphs.Vertex_Id;
@@ -2275,15 +2323,19 @@ package body Flow.Analysis is
             when Unknown | Err =>
                declare
                   Defined_Elsewhere : Boolean;
+
                begin
                   Might_Be_Defined_In_Other_Path
                     (V_Initial => V_Initial,
                      V_Use     => Vertex,
                      Found     => Defined_Elsewhere,
                      V_Error   => V_Error);
+
                   if not Defined_Elsewhere then
-                     --  Upgrade check to high if a more detailed path
-                     --  analysis shows we can't feasibly set it.
+
+                     --  Upgrade check to high if a more detailed path analysis
+                     --  shows we can't feasibly set it.
+
                      Kind := Err;
                   end if;
                end;
@@ -2294,6 +2346,7 @@ package body Flow.Analysis is
          --  Assemble appropriate message for failed initialization. We deal
          --  with a bunch of special cases first, but if they don't trigger we
          --  create the standard message.
+
          if Kind = Init then
             Msg := To_Unbounded_String ("initialization of & proved");
          elsif Is_Function then
@@ -2326,11 +2379,13 @@ package body Flow.Analysis is
             V_Goal    := V_Error;
             V_Allowed := Vertex;
             N         := Error_Location (FA.PDG, FA.Atr, V_Error);
+
             --  When the message is a failed check we produce a more precise
             --  location (but this can be very expensive, see the test for
             --  Q824-007 for a good example). So, if the message is an info
             --  message AND we use --report=fail (the default), we don't do
             --  this refinement.
+
             if not (Kind = Init and Gnat2Why_Args.Report_Mode = GPR_Fail) then
                N := First_Variable_Use
                  (N        => N,
@@ -2340,6 +2395,7 @@ package body Flow.Analysis is
                   Precise  => True,
                   Targeted => True);
             end if;
+
          elsif Is_Global then
             V_Goal := FA.Helper_End_Vertex;
             N      := Find_Global (FA.Spec_Entity, Var);
@@ -2348,11 +2404,13 @@ package body Flow.Analysis is
             N      := FA.Atr (Vertex).Error_Location;
          end if;
 
-         if Kind = Init and then Is_Function_Entity (Var) then
+         --  We special case this, so we don't emit "X" is initialized messages
+         --  for the "variable" that represents the function's result.
+
+         if Kind = Init
+           and then Is_Function_Entity (Var)
+         then
             pragma Assert (Get_Direct_Mapping_Id (Var) = FA.Analyzed_Entity);
-            --  We special case this, so we don't emit "X" is initialized
-            --  messages for the "variable" that represents the function's
-            --  result.
             return;
          end if;
 
@@ -2396,6 +2454,8 @@ package body Flow.Analysis is
                Vertex       => Vertex,
                Continuation => True);
          end if;
+
+         --  We write a trace file for the uninitialized variable
 
          if Kind /= Init then
             Mark_Definition_Free_Path
@@ -3025,149 +3085,25 @@ package body Flow.Analysis is
    procedure Find_Exports_Derived_From_Proof_Ins
      (FA : in out Flow_Analysis_Graphs)
    is
-      function Path_Leading_To_Proof_In_Dependency
-        (From : Flow_Graphs.Vertex_Id;
-         To   : Flow_Graphs.Vertex_Id) return Vertex_Sets.Set;
-      --  Returns a set of vertices that highlight the path in the CFG
-      --  where the export depends on a Proof_In.
-
-      -----------------------------------------
-      -- Path_Leading_To_Proof_In_Dependency --
-      -----------------------------------------
-
-      function Path_Leading_To_Proof_In_Dependency
-        (From : Flow_Graphs.Vertex_Id;
-         To   : Flow_Graphs.Vertex_Id) return Vertex_Sets.Set
-      is
-         function Vertices_Between_From_And_To
-           (From      : Flow_Graphs.Vertex_Id;
-            To        : Flow_Graphs.Vertex_Id;
-            CFG_Graph : Boolean := False) return Vertex_Sets.Set;
-         --  Returns the smallest set of vertices that make up a path from
-         --  "From" to "To" (excluding vertices "From" and "To"). By default
-         --  it operates on the PDG graph. If CFG_Graph is set to True then it
-         --  operates on the CFG.
-
-         ----------------------------------
-         -- Vertices_Between_From_And_To --
-         ----------------------------------
-
-         function Vertices_Between_From_And_To
-           (From      : Flow_Graphs.Vertex_Id;
-            To        : Flow_Graphs.Vertex_Id;
-            CFG_Graph : Boolean := False) return Vertex_Sets.Set
-         is
-            Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-
-            procedure Add_Loc (V : Flow_Graphs.Vertex_Id);
-            --  Step procedure for Shortest_Path
-
-            procedure Are_We_There_Yet
-              (V           : Flow_Graphs.Vertex_Id;
-               Instruction : out Flow_Graphs.Traversal_Instruction);
-            --  Visitor procedure for Shortest_Path
-
-            -------------
-            -- Add_Loc --
-            -------------
-
-            procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
-            begin
-               if V /= To
-                 and then V /= From
-                 and then (if CFG_Graph
-                             then FA.CFG.Get_Key (V).Kind
-                             else FA.PDG.Get_Key (V).Kind) = Direct_Mapping
-               then
-                  Vertices.Insert (V);
-               end if;
-            end Add_Loc;
-
-            ----------------------
-            -- Are_We_There_Yet --
-            ----------------------
-
-            procedure Are_We_There_Yet
-              (V           : Flow_Graphs.Vertex_Id;
-               Instruction : out Flow_Graphs.Traversal_Instruction)
-            is
-            begin
-               if V = To then
-                  Instruction := Flow_Graphs.Found_Destination;
-               else
-                  Instruction := Flow_Graphs.Continue;
-               end if;
-            end Are_We_There_Yet;
-
-         --  Start of processing for Vertices_Between_Proof_In_And_Export
-
-         begin
-            if CFG_Graph then
-               FA.CFG.Shortest_Path (Start         => From,
-                                     Allow_Trivial => False,
-                                     Search        => Are_We_There_Yet'Access,
-                                     Step          => Add_Loc'Access);
-            else
-               FA.PDG.Shortest_Path (Start         => From,
-                                     Allow_Trivial => False,
-                                     Search        => Are_We_There_Yet'Access,
-                                     Step          => Add_Loc'Access);
-            end if;
-
-            return Vertices;
-         end Vertices_Between_From_And_To;
-
-         Vertices_To_Cover : constant Vertex_Sets.Set :=
-           Vertices_Between_From_And_To (From => From,
-                                         To   => To);
-         Path              : Vertex_Sets.Set := Vertices_To_Cover;
-         Start             : Flow_Graphs.Vertex_Id;
-
-      --  Start of processing for Path_Leading_To_Proof_In_Dependency
-
-      begin
-         --  Sanity check that we do not have an empty set.
-         --  ??? In order to have this assertion we should add some edges in
-         --  the PDG which are currently not there, i.e. the ones created in
-         --  the CFG during Create_Record_Tree and the dependency of a
-         --  protected subprogram from a protected object.
-
-         --  pragma Assert (not Vertices_To_Cover.Is_Empty);
-
-         Start := FA.Start_Vertex;
-         for Vert of Vertices_To_Cover loop
-            Path.Union (Vertices_Between_From_And_To (From      => Start,
-                                                      To        => Vert,
-                                                      CFG_Graph => True));
-            Start := Vert;
-         end loop;
-
-         return Path;
-      end Path_Leading_To_Proof_In_Dependency;
-
-   --  Start of processing for Find_Exports_Derived_From_Proof_Ins
-
    begin
       for O in FA.Dependency_Map.Iterate loop
          declare
             Output : Flow_Id          renames Dependency_Maps.Key (O);
             Inputs : Flow_Id_Sets.Set renames FA.Dependency_Map (O);
+
          begin
             if Present (Output) then
                for Input of Inputs loop
                   declare
                      V : constant Flow_Graphs.Vertex_Id :=
                        Get_Initial_Vertex (FA.PDG, Input);
+
                   begin
                      if FA.Atr (V).Mode = Mode_Proof then
                         declare
-                           Tracefile      : constant String :=
-                             Fresh_Trace_File;
+                           use Flow_Id_Sets;
 
-                           Vertices_Trail : constant Vertex_Sets.Set :=
-                             Path_Leading_To_Proof_In_Dependency
-                               (From => V,
-                                To   => Get_Final_Vertex (FA.PDG, Output));
+                           Tracefile : constant String := Fresh_Trace_File;
 
                         begin
                            Error_Msg_Flow
@@ -3185,7 +3121,10 @@ package body Flow.Analysis is
 
                            Write_Vertex_Set
                              (FA       => FA,
-                              Set      => Vertices_Trail,
+                              Set      => Vertices_Between_From_And_To
+                                            (FA   => FA,
+                                             From => Input,
+                                             To   => To_Set (Output)),
                               Filename => Tracefile);
                         end;
                      end if;
@@ -3854,121 +3793,17 @@ package body Flow.Analysis is
    --------------------------------
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
-
-      function Flow_Id_Set_To_Vertex_Set
-        (FS : Flow_Id_Sets.Set)
-         return Vertex_Sets.Set;
-      --  Takes a set of Flow_Ids and returns a set of PDG Vertices
-      --  that correspond to these Flow_Ids after having changed
-      --  their variants to Final_Value.
-
-      procedure Write_Tracefile
-        (From      : Flow_Graphs.Vertex_Id;
-         To        : Vertex_Sets.Set;
-         Tracefile : String);
-      --  This procedure finds the shortest path connecting vertex
-      --  From and any vertex contained in To. It then writes a
-      --  tracefile containing all vertices in between (From
-      --  and To excluded).
-
-      -------------------------------
-      -- Flow_Id_Set_To_Vertex_Set --
-      -------------------------------
-
-      function Flow_Id_Set_To_Vertex_Set
-        (FS : Flow_Id_Sets.Set)
-         return Vertex_Sets.Set
-      is
-         Tmp : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-      begin
-         for F of FS loop
-            Tmp.Insert (Get_Final_Vertex (FA.PDG, F));
-         end loop;
-
-         return Tmp;
-      end Flow_Id_Set_To_Vertex_Set;
-
-      ---------------------
-      -- Write_Tracefile --
-      ---------------------
-
-      procedure Write_Tracefile
-        (From      : Flow_Graphs.Vertex_Id;
-         To        : Vertex_Sets.Set;
-         Tracefile : String)
-      is
-         Path_Found : Boolean := False with Ghost;
-         Path       : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-
-         procedure Are_We_There_Yet
-           (V           : Flow_Graphs.Vertex_Id;
-            Instruction : out Flow_Graphs.Traversal_Instruction);
-         --  Visitor procedure for Shortest_Path.
-
-         procedure Add_Loc (V : Flow_Graphs.Vertex_Id);
-         --  Step procedure for Shortest_Path.
-
-         ----------------------
-         -- Are_We_There_Yet --
-         ----------------------
-
-         procedure Are_We_There_Yet
-           (V           : Flow_Graphs.Vertex_Id;
-            Instruction : out Flow_Graphs.Traversal_Instruction)
-         is
-         begin
-            if To.Contains (V) then
-               Instruction := Flow_Graphs.Found_Destination;
-               Path_Found  := True;
-            else
-               Instruction := Flow_Graphs.Continue;
-            end if;
-         end Are_We_There_Yet;
-
-         -------------
-         -- Add_Loc --
-         -------------
-
-         procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
-            F : Flow_Id renames FA.CFG.Get_Key (V);
-         begin
-            if not To.Contains (V)
-              and then F.Kind = Direct_Mapping
-            then
-               Path.Insert (V);
-            end if;
-         end Add_Loc;
-
-      --  Start of processing for Write_Tracefile
-
-      begin
-         FA.PDG.Shortest_Path
-           (Start         => From,
-            Allow_Trivial => False,
-            Search        => Are_We_There_Yet'Access,
-            Step          => Add_Loc'Access);
-
-         --  A little sanity check can't hurt.
-         pragma Assert (Path_Found);
-
-         Write_Vertex_Set
-           (FA       => FA,
-            Set      => Path,
-            Filename => Tracefile);
-      end Write_Tracefile;
-
       DM : constant Dependency_Maps.Map := Parse_Initializes (FA.Spec_Entity);
-
-   --  Start of processing for Check_Initializes_Contract
-
    begin
       --  We have nothing to do if DM is empty
+
       if DM.Is_Empty then
          return;
       end if;
 
       --  For library-level packages check if everything in the RHS of an
       --  initialization_item is indeed initialized.
+
       if Is_Library_Level_Entity (FA.Analyzed_Entity) then
          declare
             Found_Uninitialized : Boolean := False;
@@ -3998,9 +3833,9 @@ package body Flow.Analysis is
                end;
             end loop;
 
-            --  If a variable or state abstraction that has not been
-            --  mentioned in an Initializes aspect was found in the RHS of
-            --  an initialization_item then we don't do any further analysis.
+            --  If a variable or state abstraction that has not been mentioned
+            --  in an Initializes aspect was found in the RHS of an
+            --  initialization_item then we don't do any further analysis.
             if Found_Uninitialized then
                return;
             end if;
@@ -4009,6 +3844,7 @@ package body Flow.Analysis is
 
       --  If we are dealing with a generated initializes aspect then we have no
       --  more checks to do.
+
       if No (FA.Initializes_N) then
          return;
       end if;
@@ -4045,6 +3881,7 @@ package body Flow.Analysis is
                   declare
                      Actual_Out : constant Dependency_Maps.Cursor :=
                        FA.Dependency_Map.Find (Contract_Out);
+
                   begin
                      if Dependency_Maps.Has_Element (Actual_Out) then
                         All_Actual_Ins.Union (FA.Dependency_Map (Actual_Out));
@@ -4061,6 +3898,7 @@ package body Flow.Analysis is
                   declare
                      E : constant Entity_Id :=
                        Get_Direct_Mapping_Id (Contract_Out);
+
                   begin
                      if Get_Flow_Scope (E) = (FA.Spec_Entity, Visible_Part)
                      then
@@ -4079,10 +3917,12 @@ package body Flow.Analysis is
             end loop;
 
             --  Detect inputs missing from the RHS
+
             for Actual_In of All_Actual_Ins loop
                if not All_Contract_Ins.Contains (Actual_In) then
                   declare
                      Tracefile : constant String := Fresh_Trace_File;
+
                   begin
                      Error_Msg_Flow
                        (FA        => FA,
@@ -4099,16 +3939,20 @@ package body Flow.Analysis is
                         Severity  => Medium_Check_Kind);
 
                      --  Generate and write the tracefile
-                     Write_Tracefile
-                       (From      => Get_Initial_Vertex (FA.PDG, Actual_In),
-                        To        =>
-                          Flow_Id_Set_To_Vertex_Set (All_Contract_Outs),
-                        Tracefile => Tracefile);
+
+                     Write_Vertex_Set
+                       (FA       => FA,
+                        Set      => Vertices_Between_From_And_To
+                                      (FA   => FA,
+                                       From => Actual_In,
+                                       To   => All_Contract_Outs),
+                        Filename => Tracefile);
                   end;
                end if;
             end loop;
 
             --  Detect extra inputs on the RHS
+
             for Contract_In of All_Contract_Ins loop
                if not All_Actual_Ins.Contains (Contract_In) then
                   if Is_Variable (Contract_In) then
@@ -4124,6 +3968,7 @@ package body Flow.Analysis is
                         F2       => Contract_In,
                         Tag      => Initializes_Wrong,
                         Severity => Medium_Check_Kind);
+
                   else
                      --  The input is a constant without variable input
                      Error_Msg_Flow
