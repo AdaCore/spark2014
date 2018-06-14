@@ -2562,7 +2562,7 @@ search_trees.adb:1097:61: info: precondition proved (CVC4: 1 VC), in call inline
 search_trees.adb:1097:68: info: initialization of "F_5" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1097:74: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1099:13: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1100:19: medium: precondition might fail, in call inlined at search_trees.adb:1162
+search_trees.adb:1100:19: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1100:32: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1101:20: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1101:33: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
