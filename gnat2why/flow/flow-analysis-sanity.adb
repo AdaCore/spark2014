@@ -75,7 +75,7 @@ package body Flow.Analysis.Sanity is
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "function with output global & " &
-                    "is not allowed in SPARK",
+                              "is not allowed in SPARK",
                   N        => FA.Analyzed_Entity,
                   F1       => G,
                   Severity => Error_Kind,
