@@ -432,7 +432,7 @@ package body Gnat2Why.Driver is
       --  the default initialization).
 
       Register_All_Flow_Scopes;
-      Close_Visibility_Graph;
+      Connect_Flow_Scopes;
 
       --  Mark all compilation units as "in SPARK / not in SPARK", in
       --  the same order that they were processed by the frontend. Bodies

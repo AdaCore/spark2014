@@ -1,4 +1,4 @@
-with Ada.Unchecked_Conversion; with Formal_Doubly_Linked_Lists;
+with Formal_Doubly_Linked_Lists;
 pragma Elaborate_All (Formal_Doubly_Linked_Lists);
 
 package Use_Lists with SPARK_Mode is

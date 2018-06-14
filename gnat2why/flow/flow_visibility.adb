@@ -96,20 +96,6 @@ package body Flow_Visibility is
    --  ??? this should be a constant, but at the time of elaboration the
    --  Standard_Standard is not yet defined.
 
-   Standard_Info : constant Hierarchy_Info_T :=
-     (Is_Package        => True,
---      Is_Child          => False,
-      Is_Private        => False,
-      Is_Nested         => False,
-
-      Is_Instance       => False,
-      Is_Instance_Child => False,
-
-      Parent            => Empty,
-      Instance_Parent   => Empty,
-      Template          => Empty,
-      Container         => Null_Flow_Scope);
-
    Hierarchy_Info : Hierarchy_Info_Maps.Map;
    Scope_Graph    : Scope_Graphs.Graph := Scope_Graphs.Create;
 
@@ -118,6 +104,10 @@ package body Flow_Visibility is
    ----------------------------------------------------------------------------
    --  Subprogram declarations
    ----------------------------------------------------------------------------
+
+   procedure Close_Visibility_Graph;
+   --  Apply transitive closure to the visibility graph; optionally, print and
+   --  keep the original for debugging.
 
    function Sanitize (S : Flow_Scope) return Flow_Scope is
      (if Present (S) then S else Standard_Scope);
@@ -134,6 +124,13 @@ package body Flow_Visibility is
    procedure Print_Path (From, To : Flow_Scope);
    pragma Unreferenced (Print_Path);
    --  To be used from the debugger
+
+   generic
+      with procedure Process (N : Node_Id);
+   procedure Traverse_Compilation_Unit (Unit_Node : Node_Id);
+   --  Call Process on all declarations within compilation unit CU. Unlike the
+   --  standard frontend traversal, this one traverses into stubs; unlike the
+   --  generated globals traversal, this one traverses into generic units.
 
    ----------------------------------------------------------------------------
    --  Subprogram bodies
@@ -161,6 +158,247 @@ package body Flow_Visibility is
       Scope_Graph.Close;
    end Close_Visibility_Graph;
 
+   -------------------------
+   -- Connect_Flow_Scopes --
+   -------------------------
+
+   procedure Connect_Flow_Scopes is
+
+      procedure Connect (E : Entity_Id; Info : Hierarchy_Info_T);
+
+      -------------
+      -- Connect --
+      -------------
+
+      procedure Connect (E : Entity_Id; Info : Hierarchy_Info_T) is
+
+         Spec_V : constant Scope_Graphs.Vertex_Id :=
+           Scope_Graph.Get_Vertex ((Ent => E, Part => Visible_Part));
+
+         Priv_V : constant Scope_Graphs.Vertex_Id :=
+           (if Info.Is_Package
+            then Scope_Graph.Get_Vertex ((Ent => E, Part => Private_Part))
+            else Scope_Graphs.Null_Vertex);
+
+         Body_V : constant Scope_Graphs.Vertex_Id :=
+           Scope_Graph.Get_Vertex ((Ent => E, Part => Body_Part));
+         --  Vertices for the visible (aka. "spec"), private and body parts
+
+         Rule : Edge_Kind;
+         --  Rule that causes an edge to be added; maintaining it as a global
+         --  variable is not elegant, but results in a cleaner code.
+
+         use type Scope_Graphs.Vertex_Id;
+
+         procedure Connect (Source, Target : Scope_Graphs.Vertex_Id)
+         with Pre => Source /= Scope_Graphs.Null_Vertex
+                       and
+                     Target /= Scope_Graphs.Null_Vertex
+                       and
+                     Source /= Target;
+         --  Add edge from Source to Target
+
+         -------------
+         -- Connect --
+         -------------
+
+         procedure Connect (Source, Target : Scope_Graphs.Vertex_Id) is
+         begin
+            Scope_Graph.Add_Edge (Source, Target, Rule);
+         end Connect;
+
+      --  Start of processing for Connect
+
+      begin
+         ----------------------------------------------------------------------
+         --  Create edges
+         ----------------------------------------------------------------------
+
+         Rule := Rule_Own;
+
+         --  This rule is the "my own scope" rule, and is the most obvious form
+         --  of visibility.
+
+         if Info.Is_Package then
+            Connect (Body_V, Priv_V);
+            Connect (Priv_V, Spec_V);
+         else
+            Connect (Body_V, Spec_V);
+         end if;
+
+         ----------------------------------------------------------------------
+
+         Rule := Rule_Instance;
+
+         --  This is the "generic" rule. It deals with the special upwards
+         --  visibility of generic instances. Instead of following the
+         --  normal rules for this we link all our parts to the template's
+         --  corresponding parts, since the template's position in the graph
+         --  determines our visibility, not the location of instantiation.
+
+         if Info.Is_Instance then
+            if Info.Is_Instance_Child then
+               Connect
+                 (Spec_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
+                                           Part => Visible_Part)));
+
+               if Info.Is_Package then
+                  Connect
+                    (Priv_V,
+                     Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
+                                              Part => Private_Part)));
+               end if;
+
+               Connect
+                 (Body_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
+                                           Part => Body_Part)));
+            else
+               Connect
+                 (Spec_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Template,
+                                           Part => Visible_Part)));
+
+               if Info.Is_Package then
+                  Connect
+                    (Priv_V,
+                     Scope_Graph.Get_Vertex ((Ent  => Info.Template,
+                                              Part => Private_Part)));
+               end if;
+
+               Connect
+                 (Body_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Template,
+                                           Part => Body_Part)));
+            end if;
+         end if;
+
+         ----------------------------------------------------------------------
+
+         Rule := Rule_Up_Spec;
+
+         --  This rule deals with upwards visibility, i.e. adding a link to
+         --  the nearest "enclosing" scope. Generics are dealt with separately,
+         --  except for generic child instantiations (they have visibility of
+         --  their parent's instantiation).
+
+         if not Info.Is_Instance then
+            if Info.Is_Nested then
+               Connect
+                 (Spec_V,
+                  Scope_Graph.Get_Vertex (Info.Container));
+
+            elsif Info.Is_Private then
+               Connect
+                 (Spec_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
+                                           Part => Private_Part)));
+
+            else
+               --  ??? should this apply to instances too?
+               Connect
+                 (Spec_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
+                                           Part => Visible_Part)));
+            end if;
+         end if;
+
+         ----------------------------------------------------------------------
+
+         --  As mentioned before, instances break the chain so they need
+         --  special treatment, and the remaining three rules just add the
+         --  appropriate links. Note that although the last three are mutually
+         --  exclusive, any of them might be an instance.
+
+         ----------------------------------------------------------------------
+
+         Rule := Rule_Down_Spec;
+
+         --  This rule deals with downwards visibility, i.e. contributing to
+         --  the set of things the parent can see. It is exactly the inverse
+         --  of Rule_Own, except there is no special treatment for instances
+         --  (since a scope does have visibility of the spec of something
+         --  instantiated inside it).
+
+         if Info.Is_Nested then
+            Connect
+              (Scope_Graph.Get_Vertex (Info.Container),
+               Spec_V);
+         elsif Info.Is_Private then
+            Connect
+              (Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
+                                        Part => Private_Part)),
+               Spec_V);
+         else
+            Connect
+              (Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
+                                        Part => Visible_Part)),
+               Spec_V);
+         end if;
+
+         ----------------------------------------------------------------------
+
+         Rule := Rule_Up_Priv;
+
+         --  This rule deals with upwards visibility for the private part of a
+         --  package. It is of course excepted by the "generic" rule.
+
+         if Info.Is_Package then
+            if Info.Is_Instance then
+               Connect
+                 (Priv_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Template,
+                                           Part => Private_Part)));
+            elsif Is_Child (Info) then
+               Connect
+                 (Priv_V,
+                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
+                                           Part => Private_Part)));
+            end if;
+         end if;
+
+         ----------------------------------------------------------------------
+
+         Rule := Rule_Up_Body;
+
+         --  Finally, this rule deals with the upwards visibility for the body
+         --  of a nested package. A nested scope will have visibility of its
+         --  enclosing scope's body, since it is impossible to complete the
+         --  body anywhere else. Again, there is an exception for the "generic"
+         --  rule.
+
+         if Info.Is_Instance then
+            Connect
+              (Body_V,
+               Scope_Graph.Get_Vertex ((Ent  => Info.Template,
+                                        Part => Body_Part)));
+         elsif Info.Is_Nested then
+            Connect
+              (Body_V,
+               Scope_Graph.Get_Vertex ((Ent  => Info.Container.Ent,
+                                        Part => Body_Part)));
+         end if;
+      end Connect;
+
+   --  Start of processing for Connect_Flow_Scopes
+
+   begin
+      for C in Hierarchy_Info.Iterate loop
+         declare
+            E    : Entity_Id renames Hierarchy_Info_Maps.Key (C);
+            Info : Hierarchy_Info_T renames Hierarchy_Info (C);
+         begin
+            Connect (E, Info);
+         end;
+      end loop;
+
+      --  Release memory to the provers
+      Hierarchy_Info.Clear;
+
+      Close_Visibility_Graph;
+   end Connect_Flow_Scopes;
+
    ----------
    -- Hash --
    ----------
@@ -173,13 +411,6 @@ package body Flow_Visibility is
       --  to each other.
       return Node_Hash (S.Ent) + Declarative_Part'Pos (S.Part);
    end Hash;
-
-   generic
-      with procedure Process (N : Node_Id);
-   procedure Traverse_Compilation_Unit (Unit_Node : Node_Id);
-   --  Call Process on all declarations within compilation unit CU. Unlike the
-   --  standard frontend traversal, this one traverses into stubs; unlike the
-   --  generated globals traversal, this one traverses into generic units.
 
    --------------
    -- Is_Child --
@@ -326,8 +557,6 @@ package body Flow_Visibility is
 
       if Is_Generic_Instance (E) then
          Template := Generic_Parent (Specification (N));
-
-         pragma Assert (Hierarchy_Info.Contains (Template));
 
          --  Deal with instances of child instances; this is based on frontend
          --  Install_Parent_Private_Declarations.
@@ -597,31 +826,6 @@ package body Flow_Visibility is
          Spec_V, Priv_V, Body_V : Scope_Graphs.Vertex_Id;
          --  Vertices for the visible (aka. "spec"), private and body parts
 
-         Rule : Edge_Kind;
-         --  Rule that causes an edge to be added; maintaining it as a global
-         --  variable is not elegant, but results in a cleaner code.
-
-         use type Scope_Graphs.Vertex_Id;
-
-         procedure Connect (Source, Target : Scope_Graphs.Vertex_Id)
-         with Pre => Source /= Scope_Graphs.Null_Vertex
-                       and
-                     Target /= Scope_Graphs.Null_Vertex
-                       and
-                     Source /= Target;
-         --  Add edge from Source to Target
-
-         -------------
-         -- Connect --
-         -------------
-
-         procedure Connect (Source, Target : Scope_Graphs.Vertex_Id) is
-         begin
-            Scope_Graph.Add_Edge (Source, Target, Rule);
-         end Connect;
-
-      --  Start of processing for Processx
-
       begin
          --  ??? we don't need this info (except for debug?)
 
@@ -638,176 +842,6 @@ package body Flow_Visibility is
          end if;
 
          Scope_Graph.Add_Vertex ((Ent => E, Part => Body_Part), Body_V);
-
-         ----------------------------------------------------------------------
-         --  Create edges
-         ----------------------------------------------------------------------
-
-         Rule := Rule_Own;
-
-         --  This rule is the "my own scope" rule, and is the most obvious form
-         --  of visibility.
-
-         if Info.Is_Package then
-            Connect (Body_V, Priv_V);
-            Connect (Priv_V, Spec_V);
-         else
-            Connect (Body_V, Spec_V);
-         end if;
-
-         ----------------------------------------------------------------------
-
-         Rule := Rule_Instance;
-
-         --  This is the "generic" rule. It deals with the special upwards
-         --  visibility of generic instances. Instead of following the
-         --  normal rules for this we link all our parts to the template's
-         --  corresponding parts, since the template's position in the graph
-         --  determines our visibility, not the location of instantiation.
-
-         if Info.Is_Instance then
-            if Info.Is_Instance_Child then
-               Connect
-                 (Spec_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
-                                           Part => Visible_Part)));
-
-               if Info.Is_Package then
-                  Connect
-                    (Priv_V,
-                     Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
-                                              Part => Private_Part)));
-               end if;
-
-               Connect
-                 (Body_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
-                                           Part => Body_Part)));
-            else
-               Connect
-                 (Spec_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                           Part => Visible_Part)));
-
-               if Info.Is_Package then
-                  Connect
-                    (Priv_V,
-                     Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                              Part => Private_Part)));
-               end if;
-
-               Connect
-                 (Body_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                           Part => Body_Part)));
-            end if;
-         end if;
-
-         ----------------------------------------------------------------------
-
-         Rule := Rule_Up_Spec;
-
-         --  This rule deals with upwards visibility, i.e. adding a link to
-         --  the nearest "enclosing" scope. Generics are dealt with separately,
-         --  except for generic child instantiations (they have visibility of
-         --  their parent's instantiation).
-
-         if not Info.Is_Instance then
-            if Info.Is_Nested then
-               Connect
-                 (Spec_V,
-                  Scope_Graph.Get_Vertex (Info.Container));
-
-            elsif Info.Is_Private then
-               Connect
-                 (Spec_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                           Part => Private_Part)));
-
-            else
-               --  ??? should this apply to instances too?
-               Connect
-                 (Spec_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                           Part => Visible_Part)));
-            end if;
-         end if;
-
-         ----------------------------------------------------------------------
-
-         --  As mentioned before, instances break the chain so they need
-         --  special treatment, and the remaining three rules just add the
-         --  appropriate links. Note that although the last three are mutually
-         --  exclusive, any of them might be an instance.
-
-         ----------------------------------------------------------------------
-
-         Rule := Rule_Down_Spec;
-
-         --  This rule deals with downwards visibility, i.e. contributing to
-         --  the set of things the parent can see. It is exactly the inverse
-         --  of Rule_Own, except there is no special treatment for instances
-         --  (since a scope does have visibility of the spec of something
-         --  instantiated inside it).
-
-         if Info.Is_Nested then
-            Connect
-              (Scope_Graph.Get_Vertex (Info.Container),
-               Spec_V);
-         elsif Info.Is_Private then
-            Connect
-              (Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                        Part => Private_Part)),
-               Spec_V);
-         else
-            Connect
-              (Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                        Part => Visible_Part)),
-               Spec_V);
-         end if;
-
-         ----------------------------------------------------------------------
-
-         Rule := Rule_Up_Priv;
-
-         --  This rule deals with upwards visibility for the private part of a
-         --  package. It is of course excepted by the "generic" rule.
-
-         if Info.Is_Package then
-            if Info.Is_Instance then
-               Connect
-                 (Priv_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                           Part => Private_Part)));
-            elsif Is_Child (Info) then
-               Connect
-                 (Priv_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                           Part => Private_Part)));
-            end if;
-         end if;
-
-         ----------------------------------------------------------------------
-
-         Rule := Rule_Up_Body;
-
-         --  Finally, this rule deals with the upwards visibility for the body
-         --  of a nested package. A nested scope will have visibility of its
-         --  enclosing scope's body, since it is impossible to complete the
-         --  body anywhere else. Again, there is an exception for the "generic"
-         --  rule.
-
-         if Info.Is_Instance then
-            Connect
-              (Body_V,
-               Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                        Part => Body_Part)));
-         elsif Info.Is_Nested then
-            Connect
-              (Body_V,
-               Scope_Graph.Get_Vertex ((Ent  => Info.Container.Ent,
-                                        Part => Body_Part)));
-         end if;
       end Processx;
 
       procedure Traverse is new Traverse_Compilation_Unit (Processx);
@@ -816,8 +850,6 @@ package body Flow_Visibility is
 
    begin
       if Unit_Node = Standard_Package_Node then
-         Hierarchy_Info.Insert (Standard_Standard, Standard_Info);
-
          Scope_Graph.Add_Vertex (Standard_Scope);
       else
          Traverse (Unit_Node);

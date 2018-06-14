@@ -26,13 +26,20 @@ with Types;      use Types;
 
 package Flow_Visibility is
 
-   procedure Register_Flow_Scopes (Unit_Node : Node_Id);
+   --  The visibility graph is created in two passes: first vertices, then
+   --  edges, because frontend doesn't provide a realiable routine that would
+   --  traverse declarations before references.
 
-   procedure Close_Visibility_Graph;
+   procedure Register_Flow_Scopes (Unit_Node : Node_Id);
+   --  Creates vertices in the visibility graph
+
+   procedure Connect_Flow_Scopes;
+   --  Creates edges in the visibility graph
 
    function Is_Visible
      (Looking_From : Flow_Scope;
       Looking_At   : Flow_Scope)
       return Boolean;
+   --  Returns True iff Looking_From has visibility of Looking_At
 
 end Flow_Visibility;
