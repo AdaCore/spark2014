@@ -508,7 +508,6 @@ package body Gnat2Why.Driver is
 
          if not Gnat2Why_Args.Check_All_Mode
            and then not Gnat2Why_Args.Flow_Analysis_Mode
-           and then Is_In_Analyzed_Files (E)
          then
             Proof_Done := True;
             Load_Codepeer_Results;
