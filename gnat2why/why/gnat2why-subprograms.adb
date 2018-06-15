@@ -424,7 +424,7 @@ package body Gnat2Why.Subprograms is
       -------------------
 
       function Self_Priority return W_Expr_Id is
-         --  If the priority is not explicitly specified then assume then use:
+         --  If the priority is not explicitly specified then assume:
          --    * for main-like subprograms -> System.Default_Priority,
          --    * for tasks                 -> System.Priority'Last
          --    * for protected subprograms ->
