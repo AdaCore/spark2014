@@ -1,0 +1,7 @@
+project Test2 is
+  for Object_Dir use "obj";
+  package Compiler is
+    for Default_Switches ("Ada") use ("-gnatws");
+    for Local_Configuration_Pragmas use "test.adc";
+  end Compiler;
+end Test2;
