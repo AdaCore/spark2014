@@ -34,9 +34,9 @@ with Sem_Util;                   use Sem_Util;
 
 with Call;                       use Call;
 with Debug.Timing;               use Debug.Timing;
-with Gnat2Why.Annotate;          use Gnat2Why.Annotate;
 with Gnat2Why_Args;
 with SPARK2014VSN;               use SPARK2014VSN;
+with SPARK_Annotate;             use SPARK_Annotate;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Xrefs;                use SPARK_Xrefs;
 

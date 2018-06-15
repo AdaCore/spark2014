@@ -39,8 +39,8 @@ with Sinput;                      use Sinput;
 with Snames;                      use Snames;
 
 with Common_Iterators;            use Common_Iterators;
-with Gnat2Why.Annotate;           use Gnat2Why.Annotate;
 with Gnat2Why_Args;               use Gnat2Why_Args;
+with SPARK_Annotate;              use SPARK_Annotate;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;

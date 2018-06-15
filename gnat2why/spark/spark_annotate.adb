@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                      G N A T 2 W H Y - A N N O T A T E                   --
+--                        S P A R K _ A N N O T A T E                       --
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
@@ -46,7 +46,7 @@ with SPARK_Util.Types;             use SPARK_Util.Types;
 with Stringt;                      use Stringt;
 with SPARK_Definition;
 
-package body Gnat2Why.Annotate is
+package body SPARK_Annotate is
 
    package Annot_Ranges is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Annotated_Range);
@@ -927,4 +927,4 @@ package body Gnat2Why.Annotate is
       return;
    end Syntax_Check_Pragma_Annotate_Gnatprove;
 
-end Gnat2Why.Annotate;
+end SPARK_Annotate;

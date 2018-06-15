@@ -28,7 +28,6 @@ with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
 with Exp_Util;                   use Exp_Util;
 with Flow_Types;
 with Flow_Utility;
-with Gnat2Why.Annotate;
 with Gnat2Why_Args;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Lib;
@@ -36,6 +35,7 @@ with Namet;                      use Namet;
 with Sem_Aux;                    use Sem_Aux;
 with Sem_Prag;                   use Sem_Prag;
 with Sem_Util;                   use Sem_Util;
+with SPARK_Annotate;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
@@ -1256,7 +1256,7 @@ package body Gnat2Why.Util is
 
         --  No axioms are generated for inlined functions
 
-        and then not Present (Gnat2Why.Annotate.Retrieve_Inline_Annotation (E))
+        and then not Present (SPARK_Annotate.Retrieve_Inline_Annotation (E))
 
         --  Functions from predefined units should be safe
 

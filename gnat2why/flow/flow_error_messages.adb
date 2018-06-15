@@ -32,7 +32,6 @@ with Einfo;                     use Einfo;
 with Errout;                    use Errout;
 with Erroutc;                   use Erroutc;
 with Flow_Utility;              use Flow_Utility;
-with Gnat2Why.Annotate;         use Gnat2Why.Annotate;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
 with Gnat2Why.Counter_Examples; use Gnat2Why.Counter_Examples;
 with Gnat2Why_Args;             use Gnat2Why_Args;
@@ -40,6 +39,7 @@ with GNATCOLL.Utils;            use GNATCOLL.Utils;
 with Namet;                     use Namet;
 with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
+with SPARK_Annotate;            use SPARK_Annotate;
 with SPARK_Util;                use SPARK_Util;
 with Stringt;                   use Stringt;
 

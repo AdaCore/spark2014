@@ -35,7 +35,6 @@ with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
-with Gnat2Why.Annotate;              use Gnat2Why.Annotate;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
@@ -48,6 +47,7 @@ with Opt;
 with Rtsfind;                        use Rtsfind;
 with Sinput;                         use Sinput;
 with Snames;                         use Snames;
+with SPARK_Annotate;                 use SPARK_Annotate;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 with SPARK_Util.External_Axioms;     use SPARK_Util.External_Axioms;
@@ -14341,7 +14341,7 @@ package body Gnat2Why.Expr is
             --  type on which quantification should be done.
 
             while Found
-              and then Iterable_Info.Kind = Gnat2Why.Annotate.Model
+              and then Iterable_Info.Kind = SPARK_Annotate.Model
             loop
                --  Replace W_Over_E by Model (W_Over_E) and Over_Type by the
                --  model's type.

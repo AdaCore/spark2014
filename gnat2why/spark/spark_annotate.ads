@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                      G N A T 2 W H Y - A N N O T A T E                   --
+--                        S P A R K _ A N N O T A T E                       --
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
@@ -28,7 +28,7 @@ with Atree;      use Atree;
 with SPARK_Util; use SPARK_Util;
 with Types;      use Types;
 
-package Gnat2Why.Annotate is
+package SPARK_Annotate is
 
    --  This package deals with justification of individual messages using
    --  pragma Annotate.
@@ -207,4 +207,4 @@ package Gnat2Why.Annotate is
    function Has_Terminate_Annotation (E : Entity_Id) return Boolean;
    --  Return True if a pragma Annotate Terminating applies to the subprogram E
 
-end Gnat2Why.Annotate;
+end SPARK_Annotate;
