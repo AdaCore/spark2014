@@ -245,7 +245,8 @@ package body Flow_Utility is
                   --  when it happens in the type invariant of an externally
                   --  visible type and the function called is declared in the
                   --  private part.
-                  if Is_Visible (Called_Func, Scop) then
+                  if Is_Visible (Unit_Declaration_Node (Called_Func), Scop)
+                  then
                      Functions_Called.Include (Called_Func);
                   end if;
 
