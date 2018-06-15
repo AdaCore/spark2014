@@ -321,7 +321,7 @@ keccak-sponge.adb:119:36: info: initialization of "Initial_Bit_Rate" proved, in 
 keccak-sponge.adb:122:35: info: initialization of "Offset" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:122:51: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:123:35: info: initialization of "Remaining_Bytes" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:123:51: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Remaining_Bytes = 1)
+keccak-sponge.adb:123:51: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Ctx = (State => ?, Block => (others => 0), Bits_Absorbed => 8, Bytes_Squeezed => 0, Rate => 2, Curr_State => Absorbing) and Remaining_Bytes = 1)
 keccak-sponge.adb:124:35: info: initialization of "Remaining_Bits" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:124:51: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Initial_Bit_Rate = 16 and Remaining_Bits = 15)
 keccak-sponge.adb:124:53: info: initialization of "Initial_Bit_Rate" proved, in instantiation at keccak-keccak_1600.ads:57
@@ -502,7 +502,7 @@ keccak-sponge.adb:394:30: medium: overflow check might fail, in instantiation at
 keccak-sponge.adb:394:32: info: initialization of "Offset" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:395:32: medium: overflow check might fail, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:395:36: info: initialization of "Offset" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:395:43: medium: overflow check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Offset = 2147483449)
+keccak-sponge.adb:395:43: medium: overflow check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Ctx = (State => ?, Block => (others => 0), Bits_Absorbed => 0, Bytes_Squeezed => 0, Rate => 199, Curr_State => Squeezing) and Offset = 2147483449)
 keccak-sponge.adb:396:14: info: initialization of "Digest" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:396:14: info: length check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:396:20: info: length check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57

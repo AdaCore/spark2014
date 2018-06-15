@@ -35,6 +35,7 @@ with Flow_Types;                use Flow_Types;
 with GNAT;                      use GNAT;
 with GNAT.String_Split;         use GNAT.String_Split;
 with Gnat2Why.CE_Utils;         use Gnat2Why.CE_Utils;
+with Gnat2Why.Tables;           use Gnat2Why.Tables;
 with Gnat2Why.Util;             use Gnat2Why.Util;
 with Namet;                     use Namet;
 with Sem_Aux;                   use Sem_Aux;
@@ -673,9 +674,29 @@ package body Gnat2Why.Counter_Examples is
          Prefix      : Unbounded_String;
          Attributes  : in out Names_And_Values.List)
       is
+         procedure Get_Attribute_Of_Component (Comp : Node_Id);
+         --  Get the attributes of record component or discriminant
+
+         ---------------------------------
+         --  Get_Attribute_Of_Component --
+         ---------------------------------
+
+         procedure Get_Attribute_Of_Component (Comp : Node_Id) is
+            Comp_Name  : constant String := Source_Name (Comp);
+            Comp_Cntex : constant Cursor :=
+              Find (CNT_Element.Fields.all, Comp_Name);
+         begin
+            if Has_Element (Comp_Cntex) then
+               Get_CNT_Element_Attributes
+                 (Element (Comp_Cntex),
+                  Prefix & "." & Comp_Name,
+                  Attributes);
+            end if;
+         end Get_Attribute_Of_Component;
+
          Element_Type : constant Entity_Id :=
            (if Present (CNT_Element.Entity) then
-              Etype (CNT_Element.Entity)
+              Retysp (Etype (CNT_Element.Entity))
             else
               Empty);
 
@@ -733,38 +754,32 @@ package body Gnat2Why.Counter_Examples is
          --  Following types should be ignored when exploring fields of
          --  CNT_Element.
 
-         if not Is_Concurrent_Type (Element_Type)
-           and then not Is_Incomplete_Or_Private_Type (Element_Type)
-           and then not Is_Record_Type (Element_Type)
-           and then not Has_Discriminants (Element_Type)
+         if No (Element_Type)
+           or else not Is_Record_Type_In_Why (Element_Type)
          then
             return;
          end if;
 
-         --  Check the attributes of the fields
-         declare
-            Decl_Field_Discr : Entity_Id :=
-              First_Component_Or_Discriminant (Element_Type);
+         --  Check the attributes of the discriminants if any
 
-         begin
-            while Present (Decl_Field_Discr) loop
-               declare
-                  Field_Descr_Name : constant String :=
-                                       Source_Name (Decl_Field_Discr);
-                  Field_Descr      : constant Cursor :=
-                                       Find (CNT_Element.Fields.all,
-                                             Field_Descr_Name);
-               begin
-                  if Has_Element (Field_Descr) then
-                     Get_CNT_Element_Attributes
-                       (Element (Field_Descr),
-                        Prefix & "." & Field_Descr_Name,
-                        Attributes);
-                  end if;
-                  Next_Component_Or_Discriminant (Decl_Field_Discr);
-               end;
-            end loop;
-         end;
+         if Has_Discriminants (Element_Type) then
+            declare
+               Discr : Entity_Id := First_Discriminant (Element_Type);
+            begin
+               while Present (Discr) loop
+                  Get_Attribute_Of_Component (Discr);
+                  Next_Discriminant (Discr);
+               end loop;
+            end;
+         end if;
+
+         --  And the attributes of components
+
+         for Comp of Get_Component_Set (Element_Type) loop
+            if Component_Is_Visible_In_Type (Element_Type, Comp) then
+               Get_Attribute_Of_Component (Comp);
+            end if;
+         end loop;
       end Get_CNT_Element_Attributes;
 
       ---------------------------
@@ -778,7 +793,7 @@ package body Gnat2Why.Counter_Examples is
       is
          Element_Type : constant Entity_Id :=
            (if Present (CNT_Element.Entity) then
-              Etype (CNT_Element.Entity)
+              Retysp (Etype (CNT_Element.Entity))
             else
               Empty);
 
@@ -786,9 +801,7 @@ package body Gnat2Why.Counter_Examples is
          --  If Element_Type is not a "record" (anything with components or
          --  discriminants), return the value of the node.
 
-         if not Is_Record_Type (Element_Type)
-           and then not Is_Private_Type (Element_Type)
-         then
+         if not Is_Record_Type_In_Why (Element_Type) then
             declare
                Refined_Value : constant Unbounded_String :=
                                  Refine (CNT_Element.Value,
@@ -821,16 +834,6 @@ package body Gnat2Why.Counter_Examples is
             end;
          end if;
 
-         --  Check whether the type can have fields or discriminants
-
-         if not Is_Concurrent_Type (Element_Type)
-           and then not Is_Incomplete_Or_Private_Type (Element_Type)
-           and then not Is_Record_Type (Element_Type)
-           and then not Has_Discriminants (Element_Type)
-         then
-            return Dont_Display;
-         end if;
-
          declare
             Refined_Value : constant Unbounded_String :=
                     Refine (CNT_Element.Value,
@@ -853,18 +856,59 @@ package body Gnat2Why.Counter_Examples is
 
                declare
                   Fields_Discrs_Collected  : constant Natural :=
-                             Natural ((CNT_Element.Fields.Length));
+                    Natural ((CNT_Element.Fields.Length));
                   Fields_Discrs_Declared   : constant Natural :=
-                                  Natural (Number_Components (Element_Type));
+                    Count_Why_Visible_Regular_Fields (Element_Type) +
+                    Count_Discriminants (Element_Type) -
+                    (if Is_Tagged_Type (Element_Type) then 1 else 0);
+                  --  Remove the extension field of tagged types, which never
+                  --  has a value.
+
                   Fields_Discrs_With_Value : Natural := 0;
-                  Decl_Field_Discr         : Entity_Id :=
-                    First_Component_Or_Discriminant (Element_Type);
                   --  Not using the base_type here seems ok since
                   --  counterexamples should be projected in this part of
                   --  the code
 
                   Is_Before : Boolean := False;
                   Value     : Unbounded_String := To_Unbounded_String ("(");
+
+                  procedure Get_Value_Of_Component (Comp : Node_Id);
+                  --  Get value of record component or dicriminant and append
+                  --  it to Value;
+
+                  ----------------------------
+                  -- Get_Value_Of_Component --
+                  ----------------------------
+
+                  procedure Get_Value_Of_Component (Comp : Node_Id) is
+                     Comp_Name  : constant String := Source_Name (Comp);
+                     Comp_Cntex : constant Cursor :=
+                       Find (CNT_Element.Fields.all, Comp_Name);
+                  begin
+                     if Has_Element (Comp_Cntex) or else
+                         Fields_Discrs_Declared - Fields_Discrs_Collected <= 1
+                     then
+                        declare
+                           Comp_Val : constant Unbounded_String :=
+                             (if Has_Element (Comp_Cntex) then
+                                   Get_CNT_Element_Value
+                                (Element (Comp_Cntex),
+                                 Prefix & "." & Comp_Name)
+                              else To_Unbounded_String ("?"));
+                        begin
+                           if Comp_Val /= Dont_Display then
+                              Append (Value,
+                                      (if Is_Before then ", " else "") &
+                                        Comp_Name & " => " & Comp_Val);
+                              Is_Before := True;
+                              if Has_Element (Comp_Cntex) then
+                                 Fields_Discrs_With_Value :=
+                                   Fields_Discrs_With_Value + 1;
+                              end if;
+                           end if;
+                        end;
+                     end if;
+                  end Get_Value_Of_Component;
 
                begin
                   --  If the record type of the value has no fields and
@@ -878,43 +922,21 @@ package body Gnat2Why.Counter_Examples is
                      return Dont_Display;
                   end if;
 
-                  while Present (Decl_Field_Discr) loop
+                  if Has_Discriminants (Element_Type) then
                      declare
-                        Field_Descr_Name : constant String :=
-                                             Source_Name (Decl_Field_Discr);
-                        Field_Descr      : constant Cursor :=
-                                             Find (CNT_Element.Fields.all,
-                                                   Field_Descr_Name);
+                        Discr : Entity_Id := First_Discriminant (Element_Type);
                      begin
-                        if Has_Element (Field_Descr)
-                            or else
-                          Fields_Discrs_Declared - Fields_Discrs_Collected <= 1
-                        then
-                           declare
-                              Field_Descr_Val : constant Unbounded_String :=
-                                  (if Has_Element (Field_Descr)
-                                   then
-                                      Get_CNT_Element_Value
-                                        (Element (Field_Descr),
-                                         Prefix & "." & Field_Descr_Name)
-                                   else To_Unbounded_String ("?"));
-                           begin
-                              if Field_Descr_Val /= Dont_Display then
-                                 Append (Value,
-                                         (if Is_Before then ", " else "") &
-                                         Field_Descr_Name &
-                                         " => " &
-                                         Field_Descr_Val);
-                                 Is_Before := True;
-                                 if Has_Element (Field_Descr) then
-                                    Fields_Discrs_With_Value :=
-                                      Fields_Discrs_With_Value + 1;
-                                 end if;
-                              end if;
-                           end;
-                        end if;
-                        Next_Component_Or_Discriminant (Decl_Field_Discr);
+                        while Present (Discr) loop
+                           Get_Value_Of_Component (Discr);
+                           Next_Discriminant (Discr);
+                        end loop;
                      end;
+                  end if;
+
+                  for Comp of Get_Component_Set (Element_Type) loop
+                     if Component_Is_Visible_In_Type (Element_Type, Comp) then
+                        Get_Value_Of_Component (Comp);
+                     end if;
                   end loop;
 
                   --  If there are no fields and discriminants of the processed

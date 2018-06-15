@@ -8,7 +8,7 @@ achiever.ads:31:27: warning: unused variable "Before"
 achiever.ads:32:27: warning: unused variable "After"
 achiever.ads:35:06: info: complete contract cases proved (CVC4: 1 VC)
 achiever.ads:35:06: info: disjoint contract cases proved (CVC4: 1 VC)
-achiever.ads:36:49: medium: contract case might fail
+achiever.ads:36:49: medium: contract case might fail (e.g. when State_Item = (Sc_State => (Prime => False, Shadow => False)))
 achiever.ads:44:45: info: contract case proved (CVC4: 2 VC)
 achiever.ads:47:08: info: postcondition proved (CVC4: 1 VC)
 achiever.ads:52:15: info: initialization of "State_Item" proved

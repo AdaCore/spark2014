@@ -1,5 +1,5 @@
 main.adb:5:09: high: "Var" is not initialized
 p.adb:4:08: medium: predicate check might fail
-p.adb:4:40: medium: overflow check might fail
-p.adb:5:08: medium: predicate check might fail
+p.adb:4:40: medium: overflow check might fail (e.g. when V = (Access_Count => 2147483647, Locked => False))
+p.adb:5:08: medium: predicate check might fail (e.g. when V = (Access_Count => 1, Locked => ?))
 p.ads:9:06: info: predicate check proved on default value (CVC4: 2 VC)
