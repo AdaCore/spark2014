@@ -864,8 +864,6 @@ package body SPARK_Util is
 
       Actual : Node_Id := First (Actuals);
 
-   --  Start of processing for Generic_Actual_Subprograms
-
    begin
 
       while Present (Actual) loop
