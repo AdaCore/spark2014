@@ -435,6 +435,9 @@ the strict contract-based reasoning performed in |SPARK| allow in general:
    loops. Hence |CodePeer| may be able to prove properties which cannot be
    deduced otherwise based on imprecise loop invariants, or in absence of a
    loop invariant.
+#. |CodePeer| ignores the ``SPARK_Mode`` pragma and aspects; in particular it
+   uses information that is hidden from SPARK using ``pragma SPARK_Mode(Off)``
+   or the equivalent aspect.
 
 In addition, |CodePeer| is using the same choice as GNAT compiler for the
 rounding of fixed-point multiplication and division. This makes it more precise
