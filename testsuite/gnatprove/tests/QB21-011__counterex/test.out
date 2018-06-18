@@ -9,6 +9,6 @@ counterexample expected for check at a.adb:8
   trace at a.adb:8 --> A = 0 and B = 0
   trace at a.ads:3 --> A = -1
 counterexample expected for check at a.adb:16
-  trace at a.adb:15 --> A = -2147483647
-  trace at a.adb:16 --> A = -2147483647 and B = -2
-  trace at a.ads:6 --> A = -2147483648 and B = -2
+  trace at a.adb:15 --> A = 0
+  trace at a.adb:16 --> A = 0 and B = 0
+  trace at a.ads:6 --> A = -1 and B = 0

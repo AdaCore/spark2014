@@ -28,7 +28,7 @@ shapes5.adb:29:17: medium: range check might fail
 shapes5.adb:31:21: info: initialization of "R" proved
 shapes5.adb:42:34: info: range check proved (CVC4: 1 VC)
 shapes5.adb:42:41: info: float overflow check proved (Interval)
-shapes5.adb:43:34: medium: range check might fail
+shapes5.adb:43:34: info: range check proved (CVC4: 1 VC)
 shapes5.adb:43:41: info: float overflow check proved (Interval)
 shapes5.adb:44:14: info: initialization of "Delta_X" proved
 shapes5.adb:44:21: info: float overflow check proved (Interval)
