@@ -1445,21 +1445,34 @@ package body Flow.Analysis.Sanity is
       if Ekind (FA.Spec_Entity) = E_Function
         and then Ekind (Scope (FA.Spec_Entity)) = E_Protected_Type
       then
-         for F of FA.All_Vars loop
-            if Belongs_To_Concurrent_Type (F)
-              and then Has_Effective_Reads (F)
-            then
-               Error_Msg_Flow
-                 (FA       => FA,
-                  Msg      => "protected function with effective reads & is " &
-                              "not allowed in SPARK",
-                  N        => FA.Spec_Entity,
-                  F1       => F,
-                  Severity => Error_Kind,
-                  Tag      => Side_Effects);
+         for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            declare
+               Atr : V_Attributes renames FA.Atr (V);
 
-               Sane := False;
-            end if;
+            begin
+               if Atr.Is_Program_Node then
+                  for Var of Atr.Variables_Used loop
+                     if Belongs_To_Concurrent_Type (Var)
+                       and then Has_Effective_Reads (Var)
+                     then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "protected function with effective " &
+                                       "reads & is not allowed in SPARK",
+                           N        => (if Present (Atr.Error_Location)
+                                        then Atr.Error_Location
+                                        else FA.Spec_Entity),
+                           F1       => Var,
+                           Severity => Error_Kind,
+                           Tag      => Side_Effects);
+                        --  ??? the Atr.Error_Location should be always present
+                        --  (which should be enforced by the graph building
+                        --  API); we check it only to be on the safe side.
+                        Sane := False;
+                     end if;
+                  end loop;
+               end if;
+            end;
          end loop;
       end if;
    end Check_Side_Effects_In_Protected_Functions;

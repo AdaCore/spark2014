@@ -1,2 +1,0 @@
-p.ads:4:16: protected function with effective reads "X" is not allowed in SPARK
-gnatprove: error during flow analysis and proof
