@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Ordered_Maps;
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Ordered_Sets;
 with Ada.Strings;               use Ada.Strings;
@@ -120,6 +121,43 @@ package body Gnat2Why.Counter_Examples is
    --    - Value is set to the counter example value
    --    - Fields is empty
    --    - and Attributes may contain info on its attributes.
+
+   type Component_Loc_Info is record
+      Type_Ent : Entity_Id;
+      Sloc     : Source_Ptr;
+   end record;
+   --  A location information for a component contains the type in whic the
+   --  component is declared first and the location of this first declaration.
+
+   function Get_Loc_Info (Comp : Entity_Id) return Component_Loc_Info is
+     ((Type_Ent => Original_Declaration (Comp),
+       Sloc     =>
+          Sloc
+         (Search_Component_In_Type (Original_Declaration (Comp), Comp))));
+   --  Construct the location information of a record component or
+   --  discriminant.
+
+   function "<" (X, Y : Component_Loc_Info) return Boolean is
+     ((X.Type_Ent /= Y.Type_Ent and then Is_Ancestor (X.Type_Ent, Y.Type_Ent))
+      or else (X.Type_Ent = Y.Type_Ent
+               and then
+                 (Get_Physical_Line_Number (X.Sloc) <
+                      Get_Physical_Line_Number (Y.Sloc)
+                  or else (Get_Physical_Line_Number (X.Sloc) =
+                             Get_Physical_Line_Number (Y.Sloc)
+                           and then Get_Column_Number (X.Sloc) <
+                             Get_Column_Number (Y.Sloc)))));
+   --  Order on location information. A component F1 is declared first than
+   --  another F2 if F1 is declared in an ancestor of the type in which F2 is
+   --  declared, or if they are declared in the same type and F1 occurs before
+   --  in the source code.
+
+   package Ordered_Sloc_Map is new Ada.Containers.Ordered_Maps
+     (Key_Type     => Component_Loc_Info,
+      Element_Type => Unbounded_String,
+      "<"          => "<");
+   --  Map from sloc to strings, used to output component of record values in
+   --  correct order.
 
    procedure Build_Pretty_Line
      (Variables               : Variables_Info;
@@ -869,12 +907,12 @@ package body Gnat2Why.Counter_Examples is
                   --  counterexamples should be projected in this part of
                   --  the code
 
-                  Is_Before : Boolean := False;
-                  Value     : Unbounded_String := To_Unbounded_String ("(");
+                  Is_Before      : Boolean := False;
+                  Ordered_Values : Ordered_Sloc_Map.Map;
 
                   procedure Get_Value_Of_Component (Comp : Node_Id);
-                  --  Get value of record component or dicriminant and append
-                  --  it to Value;
+                  --  Get value of record component or dicriminant and insert
+                  --  it in Ordered_Values
 
                   ----------------------------
                   -- Get_Value_Of_Component --
@@ -897,10 +935,9 @@ package body Gnat2Why.Counter_Examples is
                               else To_Unbounded_String ("?"));
                         begin
                            if Comp_Val /= Dont_Display then
-                              Append (Value,
-                                      (if Is_Before then ", " else "") &
-                                        Comp_Name & " => " & Comp_Val);
-                              Is_Before := True;
+                              Ordered_Values.Insert
+                                (Get_Loc_Info (Comp),
+                                 Comp_Name & " => " & Comp_Val);
                               if Has_Element (Comp_Cntex) then
                                  Fields_Discrs_With_Value :=
                                    Fields_Discrs_With_Value + 1;
@@ -949,18 +986,32 @@ package body Gnat2Why.Counter_Examples is
                      return Dont_Display;
                   end if;
 
-                  --  If there are more than one field that is not mentioned
-                  --  in the counterexample, summarize them using the field
-                  --  others.
+                  --  Construct the counterexample value by appending the
+                  --  components in the right order.
 
-                  if Fields_Discrs_Declared - Fields_Discrs_Collected > 1 then
-                     Append (Value,
-                             (if Is_Before then ", " else "") &
-                               "others => ?");
-                  end if;
-                  Append (Value, ")");
+                  declare
+                     Value : Unbounded_String := To_Unbounded_String ("(");
+                  begin
+                     for V of Ordered_Values loop
+                        Append (Value,
+                                (if Is_Before then ", " else "") & V);
+                        Is_Before := True;
+                     end loop;
 
-                  return Value;
+                     --  If there are more than one field that is not mentioned
+                     --  in the counterexample, summarize them using the field
+                     --  others.
+
+                     if Fields_Discrs_Declared - Fields_Discrs_Collected > 1
+                     then
+                        Append (Value,
+                                (if Is_Before then ", " else "") &
+                                  "others => ?");
+                     end if;
+                     Append (Value, ")");
+
+                     return Value;
+                  end;
                end;
             end if;
          end;
