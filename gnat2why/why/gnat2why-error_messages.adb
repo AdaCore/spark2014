@@ -30,6 +30,7 @@ with Ada.Containers.Vectors;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Indefinite_Hashed_Sets;
+with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;           use Ada.Directories;
 with Ada.Float_Text_IO;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
@@ -83,6 +84,13 @@ package body Gnat2Why.Error_Messages is
      (Element_Type        => SA_Messages.Message_And_Location,
       Hash                => SA_Messages.Hash,
       Equivalent_Elements => "=",
+      "="                 => "=");
+
+   package Msg_Maps is new Ada.Containers.Indefinite_Hashed_Maps
+     (Key_Type            => SA_Messages.Message_And_Location,
+      Element_Type        => Integer,
+      Hash                => SA_Messages.Hash,
+      Equivalent_Keys     => "=",
       "="                 => "=");
 
    procedure Add_Id_To_Entity (Id : VC_Id; E : Entity_Id);
@@ -427,6 +435,31 @@ package body Gnat2Why.Error_Messages is
 
    procedure Load_Codepeer_Results is
 
+      function Remove_Iteration (Msg : Message_And_Location)
+                                 return Message_And_Location;
+      --  Return a copy of the input parameter with the Iteration_Kind set to
+      --  None.
+
+      ----------------------
+      -- Remove_Iteration --
+      ----------------------
+
+      function Remove_Iteration (Msg : Message_And_Location)
+                                 return Message_And_Location
+      is
+         Loc : constant Source_Location := Location (Msg);
+      begin
+         return
+           Make_Msg_Loc (Msg => Message (Msg),
+                         Loc =>
+                           Make
+                             (File_Name          => File_Name (Loc),
+                              Line               => Line (Loc),
+                              Column             => Column (Loc),
+                              Enclosing_Instance => Enclosing_Instance (Loc),
+                              Iteration          => (Kind => None)));
+      end Remove_Iteration;
+
       use Reading;
       Base_Name : constant String :=
         Unit_Name & "__body.sam" & SA_Messages.File_Extension;
@@ -434,6 +467,8 @@ package body Gnat2Why.Error_Messages is
         Ada.Directories.Compose
           (To_String (Gnat2Why_Args.CP_Res_Dir),
            Base_Name);
+      Iteration_Count : Msg_Maps.Map;
+      --  Holds the number of Messages we still need to see for a given check.
    begin
       if Gnat2Why_Args.CP_Res_Dir = Null_Unbounded_String then
          return;
@@ -455,7 +490,34 @@ package body Gnat2Why.Error_Messages is
             Msg : constant Message_And_Location := Get;
          begin
             if Message (Msg).Check_Result = Statically_Known_Success then
-               Codepeer_Proved.Include (Msg);
+               if Iteration (Location (Msg)).Kind = None then
+                  Codepeer_Proved.Include (Msg);
+               else
+                  declare
+                     Lookup_Msg : constant Message_And_Location :=
+                       Remove_Iteration (Msg);
+                     Start_Count : constant Integer :=
+                       (if Iteration (Location (Msg)).Kind in
+                          Initial | Subsequent then 1 else
+                             Iteration (Location (Msg)).Of_Total - 1);
+                     Inserted : Boolean;
+                     Position : Msg_Maps.Cursor;
+                  begin
+                     Iteration_Count.Insert (Lookup_Msg, Start_Count,
+                                             Position, Inserted);
+                     if not Inserted then
+                        declare
+                           Cnt : Integer renames
+                             Iteration_Count.Reference (Position);
+                        begin
+                           Cnt := Cnt - 1;
+                           if Cnt = 0 then
+                              Codepeer_Proved.Include (Lookup_Msg);
+                           end if;
+                        end;
+                     end if;
+                  end;
+               end if;
             end if;
          end;
       end loop;

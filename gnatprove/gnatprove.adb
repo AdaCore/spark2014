@@ -887,10 +887,6 @@ procedure Gnatprove with SPARK_Mode is
          end loop;
       end if;
 
-      Ada.Environment_Variables.Set ("CODEPEER_UNROLL_LIMIT", "0");
-      if Debug then
-         Ada.Text_IO.Put_Line ("CODEPEER_UNROLL_LIMIT=0");
-      end if;
       Call_With_Status
         (Command   => "spark_codepeer_wrapper",
          Arguments => Args,
