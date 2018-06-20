@@ -1099,7 +1099,7 @@ package body SPARK_Util is
       --  silent side effects, so...
 
       case Ekind (E) is
-         when E_Abstract_State | E_Variable =>
+         when E_Abstract_State | E_Variable | E_Component =>
             return
               (case P is
                when Pragma_Async_Readers    => Async_Readers_Enabled (E),

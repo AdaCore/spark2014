@@ -404,10 +404,8 @@ package body Flow_Types is
                                   | Object_Kind
                        and then Has_Volatile (E))
                  or else
-                   (Is_Single_Concurrent_Type (E)
+                   (Ekind (E) in E_Task_Type | E_Protected_Type
                     and then F.Kind = Record_Field
-                    and then
-                      Is_Part_Of_Concurrent_Object (F.Component.First_Element)
                     and then Has_Volatile (F.Component.First_Element));
             end;
 
@@ -416,30 +414,6 @@ package body Flow_Types is
             return True;
       end case;
    end Is_Volatile;
-
-   function Is_Volatile_Part_Of
-     (E        : Entity_Id;
-      Property : Volatile_Pragma_Id)
-      return Boolean
-   with Pre => Is_Concurrent_Component_Or_Discr (E)
-               or else Is_Part_Of_Concurrent_Object (E);
-   --  A helper routine for volatility checks of parts of concurrent units
-
-   -------------------------
-   -- Is_Volatile_Part_Of --
-   -------------------------
-
-   function Is_Volatile_Part_Of
-     (E        : Entity_Id;
-      Property : Volatile_Pragma_Id)
-      return Boolean
-   is
-   begin
-      return
-        Is_Part_Of_Concurrent_Object (E)
-        and then Has_Volatile (E)
-        and then Has_Volatile_Property (E, Property);
-   end Is_Volatile_Part_Of;
 
    -----------------------
    -- Has_Async_Readers --
@@ -464,10 +438,11 @@ package body Flow_Types is
                  and then Has_Volatile (E)
                  and then Has_Volatile_Property (E, Pragma_Async_Readers))
                    or else
-                 (Is_Single_Concurrent_Type (E)
+                 (Ekind (E) in E_Task_Type | E_Protected_Type
                   and then F.Kind = Record_Field
-                  and then Is_Volatile_Part_Of (F.Component.First_Element,
-                                                Pragma_Async_Readers));
+                  and then Has_Volatile (F.Component.First_Element)
+                  and then Has_Volatile_Property (F.Component.First_Element,
+                                                  Pragma_Async_Readers));
             end;
       end case;
    end Has_Async_Readers;
@@ -495,10 +470,11 @@ package body Flow_Types is
                  and then Has_Volatile (E)
                  and then Has_Volatile_Property (E, Pragma_Async_Writers))
                    or else
-                 (Is_Single_Concurrent_Type (E)
+                 (Ekind (E) in E_Task_Type | E_Protected_Type
                   and then F.Kind = Record_Field
-                  and then Is_Volatile_Part_Of (F.Component.First_Element,
-                                                Pragma_Async_Writers));
+                  and then Has_Volatile (F.Component.First_Element)
+                  and then Has_Volatile_Property (F.Component.First_Element,
+                                                  Pragma_Async_Writers));
             end;
       end case;
    end Has_Async_Writers;
@@ -526,10 +502,12 @@ package body Flow_Types is
                  and then Has_Volatile (E)
                  and then Has_Volatile_Property (E, Pragma_Effective_Reads))
                    or else
-                 (Is_Single_Concurrent_Type (E)
+                 (Ekind (E) in E_Task_Type | E_Protected_Type
                   and then F.Kind = Record_Field
-                  and then Is_Volatile_Part_Of (F.Component.First_Element,
-                                                Pragma_Effective_Reads));
+                  and then Has_Volatile (F.Component.First_Element)
+                  and then Has_Volatile_Property (F.Component.First_Element,
+                                                  Pragma_Effective_Reads));
+
             end;
       end case;
    end Has_Effective_Reads;
@@ -557,10 +535,11 @@ package body Flow_Types is
                  and then Has_Volatile (E)
                  and then Has_Volatile_Property (E, Pragma_Effective_Writes))
                    or else
-                 (Is_Single_Concurrent_Type (E)
+                 (Ekind (E) in E_Task_Type | E_Protected_Type
                   and then F.Kind = Record_Field
-                  and then Is_Volatile_Part_Of (F.Component.First_Element,
-                                                Pragma_Effective_Writes));
+                  and then Has_Volatile (F.Component.First_Element)
+                  and then Has_Volatile_Property (F.Component.First_Element,
+                                                  Pragma_Effective_Writes));
             end;
       end case;
    end Has_Effective_Writes;

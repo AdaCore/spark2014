@@ -296,7 +296,7 @@ package SPARK_Util is
                                  return Boolean
    with Pre => Has_Volatile (E)
      and then Ekind (E) /= E_Constant;
-   --  @param E an external state or a volatile object
+   --  @param E an external state, a volatile object, or a protected component
    --  @return True iff E has the specified property P of volatility, either
    --     directly or through its type.
 
