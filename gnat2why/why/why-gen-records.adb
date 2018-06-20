@@ -1673,7 +1673,7 @@ package body Why.Gen.Records is
             Index := Index + 1;
             Hide_Binders (Index) :=
               (B_Name =>
-                 New_Identifier (Name => Short_Name (Field),
+                 New_Identifier (Name => Full_Name (Field),
                                  Typ  => W_Type_Of_Component (Field, E)),
                others => <>);
          end loop;
@@ -1759,7 +1759,7 @@ package body Why.Gen.Records is
                                    Typ     => EW_Private_Type)),
                            Typ     => W_Type_Of_Component (Field, E)),
                         Right  => +New_Identifier
-                          (Name => Short_Name (Field),
+                          (Name => Full_Name (Field),
                            Typ  => W_Type_Of_Component (Field, E)),
                         Domain => EW_Term)));
 
@@ -2112,10 +2112,10 @@ package body Why.Gen.Records is
          return W_Identifier_Id
       is
          Prefix : constant Why_Name_Enum := WNE_Extract_Prefix;
+         Orig   : constant Entity_Id := Representative_Component (Field);
       begin
          return New_Identifier
-           (Name   => To_String (Prefix) &
-              Get_Name_String (Chars (Field)),
+           (Name   => To_String (Prefix) & Full_Name (Orig),
             Domain => EW_Term,
             Module =>
               (if Local then Why_Empty else E_Module (Rec)));
