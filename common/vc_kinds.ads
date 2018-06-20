@@ -34,7 +34,6 @@
 --  Changes in VC_Kind should be reflected in
 --    - file gnat_expl.ml in gnatwhy3
 --    - GPS plug-in spark2014.py
---    - 2 tables in the section of SPARK User's Guide on GNATprove
 
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
@@ -219,10 +218,35 @@ package VC_Kinds is
       --  The precondition of a protected operation refers to a global variable
       --  that does not have Constant_After_Elaboration set.
      );
+   pragma Ordered (Flow_Tag_Kind);
+
+   subtype Valid_Flow_Tag_Kind is Flow_Tag_Kind range
+     Flow_Tag_Kind'Succ (Empty_Tag) .. Flow_Tag_Kind'Last;
+   --  Non-empty tags
+
+   function CWE_ID (Kind : VC_Kind) return String;
+   function CWE_ID (Kind : Valid_Flow_Tag_Kind) return String;
+   --  Return the CWE number for a given kind as a string; return the empty
+   --  string if the Kind has no associated CWE.
 
    function CWE_Message (Kind : VC_Kind) return String;
-   function CWE_Message (Kind : Flow_Tag_Kind) return String;
-   --  Return the CWE numbering as a message string for a given kind
+   function CWE_Message (Kind : Valid_Flow_Tag_Kind) return String;
+   --  Return the CWE number for a given kind as a nice string "[CWE
+   --  <number>]"; return the empty string if the Kind has no associated CWE.
+
+   function Description (Kind : VC_Kind) return String;
+   function Description (Kind : Valid_Flow_Tag_Kind) return String;
+   --  Return a one-line description for each kind of message as a string
+
+   function Kind_Name (Kind : VC_Kind) return String;
+   function Kind_Name (Kind : Valid_Flow_Tag_Kind) return String;
+   --  Return a short string for each kind of message as a string, e.g. "index
+   --  check" for VC_Index_Check.
+
+   function Rule_Name (Kind : VC_Kind) return String;
+   function Rule_Name (Kind : Valid_Flow_Tag_Kind) return String;
+   --  Return a tag for each kind of message that is used to identify the
+   --  string e.g. in the GPS plug-in.
 
    function Locate_On_First_Token (V : VC_Kind) return Boolean is
      (case V is when VC_RTE_Kind     => False,

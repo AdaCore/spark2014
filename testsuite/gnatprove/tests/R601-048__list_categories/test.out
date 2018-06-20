@@ -1,0 +1,68 @@
+[Flow analysis categories]
+ALIASING - aliasing between subprogram parameters - Aliasing between formal parameters or global objects.
+DEAD_CODE - dead code - A statement is never executed.
+DEFAULT_INITIALIZATION_MISMATCH - wrong Default_Initial_Condition aspect - A type is wrongly declared as initialized by default.
+DEPENDS_NULL - input item missing from the null dependency clause - An input item is missing from the null dependency clause.
+DEPENDS_MISSING - input item missing from the dependency clause - An input is missing from the dependency clause.
+DEPENDS_MISSING_CLAUSE - output item missing from the dependency clause - An output item is missing from the dependency clause.
+DEPENDS_WRONG - extra input item in the dependency clause - Extra input item in the dependency clause.
+GLOBAL_MISSING - incomplete Global or Initializes contract - A Global or Initializes contract fails to mention some objects.
+GLOBAL_WRONG - an extra item in the Global or Initializes contract - A Global or Initializes contract wrongly mentions some objects.
+EXPORT_DEPENDS_ON_PROOF_IN - subprogram output depends on a Proof_In global - Subprogram output depends on a Proof_In global.
+HIDDEN_UNEXPOSED_STATE - constants with variable inputs that is not a state constituent - Constants with variable inputs that are not state constituents.
+ILLEGAL_UPDATE - illegal write of a global input - Illegal write of a global input.
+IMPOSSIBLE_TO_INITIALIZE_STATE - a state abstraction that is impossible to initialize - A state abstraction that is impossible to initialize.
+INEFFECTIVE - a statement with no effect on subprogram's outputs - A statement with no effect on subprogram's outputs.
+INITIALIZES_WRONG - an extra item in the Initializes contract - An object that shall not appear in the Initializes contract
+INOUT_ONLY_READ - an IN OUT parameter or an In_Out global that is not written - An IN OUT parameter or an In_Out global that is not written.
+MISSING_RETURN - all execution paths raise exceptions or do not return - All execution paths raise exceptions or do not return.
+NOT_CONSTANT_AFTER_ELABORATION - illegal write of an object declared as constant after elaboration - Illegal write of an object declared as constant after elaboration.
+PRAGMA_ELABORATE_ALL_NEEDED - use of an abstract state of a package that was not yet elaborated - Use of an abstract state of a package that was not yet elaborated.
+PRAGMA_ELABORATE_BODY_NEEDED - a missing pragma Elaborate_Body - A missing pragma Elaborate_Body.
+REFINED_STATE_WRONG - constant with no variable inputs as an abstract state's constituent - Constant with no variable inputs as an abstract state's constituent.
+SIDE_EFFECTS - function with side effects - A function with side effects.
+STABLE - loop with stable statement - A loop with stable statement.
+UNINITIALIZED - use of an uninitialized variable - Flow analysis has detected the use of an uninitialized variable.
+UNUSED - object is not used - A global or locally declared object is never used.
+UNUSED_INITIAL_VALUE - initial value of an object is not used - The initial value of an object is not used.
+NON_VOLATILE_FUNCTION_WITH_VOLATILE_EFFECTS - volatile function wrongly declared as non-volatile - A volatile function wrongly declared as non-volatile.
+VOLATILE_FUNCTION_WITHOUT_VOLATILE_EFFECTS - non-volatile function wrongly declared as volatile - A non-volatile function wrongly declared as volatile.
+REFERENCE_TO_NON_CAE_VARIABLE - illegal reference to a global object in precondition of a protected operation - An illegal reference to global in precondition of a protected operation
+[Proof categories]
+VC_DIVISION_CHECK - divide by zero - Check that the second operand of the division, mod or rem operation is different from zero.
+VC_INDEX_CHECK - index check - Check that the given index is within the bounds of the array.
+VC_OVERFLOW_CHECK - overflow check - Check that the result of the given integer arithmetic operation is within the bounds of the base type.
+VC_FP_OVERFLOW_CHECK - fp_overflow check - Check that the result of the given floating point operation is within the bounds of the base type.
+VC_RANGE_CHECK - range check - Check that the given value is within the bounds of the expected scalar subtype.
+VC_PREDICATE_CHECK - predicate check - Check that the given value respects the applicable type predicate.
+VC_PREDICATE_CHECK_ON_DEFAULT_VALUE - predicate check on default value - Check that the default value for the type respects the applicable type predicate.
+VC_LENGTH_CHECK - length check - Check that the given array is of the length of the expected array subtype.
+VC_DISCRIMINANT_CHECK - discriminant check - Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required.
+VC_TAG_CHECK - tag check - Check that the tag of the given tagged object has the expected value.
+VC_CEILING_INTERRUPT - ceiling priority in Interrupt_Priority - Check that the ceiling priority specified for a protected object containing a procedure with an aspect Attach_Handler is in Interrupt_Priority.
+VC_INTERRUPT_RESERVED - interrupt is reserved - Check that the interrupt specified by Attach_Handler is not reserved.
+VC_INVARIANT_CHECK - invariant check - Check that the given value respects the applicable type invariant.
+VC_INVARIANT_CHECK_ON_DEFAULT_VALUE - invariant check on default value - Check that the default value for the type respects the applicable type invariant.
+VC_CEILING_PRIORITY_PROTOCOL - ceiling priority protocol - Check that the ceiling priority protocol is respected, i.e., when a task calls a protected operation, the active priority of the task is not higher than the priority of the protected object (Ada RM Annex D.3).
+VC_TASK_TERMINATION - task termination - Check that the task does not terminate, as required by Ravenscar.
+VC_INITIAL_CONDITION - initial condition - Check that the initial condition of a package is true after elaboration.
+VC_DEFAULT_INITIAL_CONDITION - default initial condition - Check that the default initial condition of a type is true after default initialization of an object of the type.
+VC_PRECONDITION - precondition - Check that the precondition aspect of the given call evaluates to True.
+VC_PRECONDITION_MAIN - precondition of main - Check that the precondition aspect of the given main procedure evaluates to True after elaboration.
+VC_POSTCONDITION - postcondition - Check that the postcondition aspect of the subprogram evaluates to True.
+VC_REFINED_POST - refined postcondition - Check that the refined postcondition aspect of the subprogram evaluates to True.
+VC_CONTRACT_CASE - contract case - Check that all cases of the contract case evaluate to true at the end of the subprogram.
+VC_DISJOINT_CONTRACT_CASES - disjoint contract cases - Check that the cases of the contract cases aspect are all mutually disjoint.
+VC_COMPLETE_CONTRACT_CASES - complete contract cases - Check that the cases of the contract cases aspect cover the state space that is allowed by the precondition aspect.
+VC_LOOP_INVARIANT - loop invariant - Check that the loop invariant evaluates to True on all iterations of the loop.
+VC_LOOP_INVARIANT_INIT - loop invariant in first iteration - Check that the loop invariant evaluates to True on the first iteration of the loop.
+VC_LOOP_INVARIANT_PRESERV - loop invariant after first iteration - Check that the loop invariant evaluates to True at each further iteration of the loop.
+VC_LOOP_VARIANT - loop variant - Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop.
+VC_ASSERT - assertion - Check that the given assertion evaluates to True.
+VC_RAISE - raised exception - Check that the raise statement can never be reached.
+VC_INLINE_CHECK - Inline_For_Proof annotation - Check that an Annotate pragma with the Inline_For_Proof identifier is correct.
+VC_WEAKER_PRE - precondition weaker than class-wide precondition - Check that the precondition aspect of the subprogram is weaker than its class-wide precondition.
+VC_TRIVIAL_WEAKER_PRE - precondition not True while class-wide precondition is True - Check that the precondition aspect of the subprogram is True if its class-wide precondition is True.
+VC_STRONGER_POST - postcondition stronger than class-wide postcondition - Check that the postcondition aspect of the subprogram is stronger than its class-wide postcondition.
+VC_WEAKER_CLASSWIDE_PRE - class-wide precondition weaker than overridden one - Check that the class-wide precondition aspect of the subprogram is weaker than its overridden class-wide precondition.
+VC_STRONGER_CLASSWIDE_POST - class-wide postcondition stronger than overridden one - Check that the class-wide postcondition aspect of the subprogram is stronger than its overridden class-wide postcondition.

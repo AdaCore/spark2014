@@ -39,6 +39,7 @@ with GNAT.Strings;              use GNAT.Strings;
 with Platform;                  use Platform;
 with SPARK2014VSN;              use SPARK2014VSN;
 with System.Multiprocessors;
+with VC_Kinds;
 
 package body Configuration is
 
@@ -106,12 +107,15 @@ package body Configuration is
    --  stderr with a prefix.
 
    procedure Produce_Version_Output;
-   --  print the version of gnatprove, why3 and shipped provers
+   --  Print the version of gnatprove, why3 and shipped provers
+
+   procedure Produce_List_Categories_Output;
+   --  List information for all messages issued by the tool
 
    procedure Set_CodePeer_Mode
      (Config : Command_Line_Configuration;
       Input  : String);
-   --  parse the --codepeer option (possibilities are "on" and "off")
+   --  Parse the --codepeer option (possibilities are "on" and "off")
 
    procedure Check_gnateT_Switch;
    --  Do the actual check and issue warning for the check mentioned in
@@ -571,6 +575,28 @@ package body Configuration is
    begin
       Ada.Text_IO.Put_Line (Standard_Error, "gnatprove: " & S);
    end Print_Errors;
+
+   ------------------------------------
+   -- Produce_List_Categories_Output --
+   ------------------------------------
+
+   procedure Produce_List_Categories_Output is
+      use VC_Kinds;
+   begin
+      Ada.Text_IO.Put_Line ("[Flow analysis categories]");
+      for K in Valid_Flow_Tag_Kind loop
+         Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) & " - " &
+                                 Description (K));
+      end loop;
+      Ada.Text_IO.Put_Line ("[Proof categories]");
+      for K in VC_Kind loop
+         if K not in VC_Warning_Kind then
+            Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) &
+                                    " - " & Description (K));
+         end if;
+      end loop;
+      --  ??? TODO GNAT front-end categories
+   end Produce_List_Categories_Output;
 
    ----------------------------
    -- Produce_Version_Output --
@@ -1418,6 +1444,11 @@ package body Configuration is
 
       Define_Switch
         (First_Config,
+         List_Categories'Access,
+         Long_Switch => "--list-categories");
+
+      Define_Switch
+        (First_Config,
          CL_Switches.V'Access,
          "-v",
          Long_Switch => "--verbose");
@@ -1449,6 +1480,11 @@ package body Configuration is
 
       if Version then
          Produce_Version_Output;
+         GNAT.OS_Lib.OS_Exit (0);
+      end if;
+
+      if List_Categories then
+         Produce_List_Categories_Output;
          GNAT.OS_Lib.OS_Exit (0);
       end if;
 

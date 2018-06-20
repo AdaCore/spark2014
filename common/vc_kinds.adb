@@ -39,12 +39,16 @@ package body VC_Kinds is
 
    function Get_Typed_Cntexmp_Value (V : JSON_Value) return Cntexmp_Value;
 
-   -----------------
-   -- CWE_Message --
-   -----------------
+   function Wrap_CWE (S : String) return String;
+   --  If non-empty, wrap the string S so that it becomes "[CWE <S>]"
 
-   function CWE_Message (Kind : VC_Kind) return String is
-      CWE_Id : constant String :=
+   ------------
+   -- CWE_ID --
+   ------------
+
+   function CWE_ID (Kind : VC_Kind) return String is
+   begin
+      return
         (case Kind is
          --  CWE-369: Divide By Zero
 
@@ -109,16 +113,11 @@ package body VC_Kinds is
             | VC_Weaker_Classwide_Pre
             | VC_Stronger_Classwide_Post
             | VC_Warning_Kind              => "");
-   begin
-      if CWE_Id = "" then
-         return "";
-      else
-         return " [CWE " & CWE_Id & "]";
-      end if;
-   end CWE_Message;
+   end CWE_ID;
 
-   function CWE_Message (Kind : Flow_Tag_Kind) return String is
-      CWE_Id : constant String :=
+   function CWE_ID (Kind : Valid_Flow_Tag_Kind) return String is
+   begin
+      return
         (case Kind is
          --  CWE-561: Dead Code
 
@@ -134,8 +133,7 @@ package body VC_Kinds is
          when Unused
             | Unused_Initial_Value          => "563",
 
-         when Empty_Tag
-            | Aliasing
+         when Aliasing
             | Depends_Null
             | Depends_Missing
             | Depends_Missing_Clause
@@ -159,13 +157,212 @@ package body VC_Kinds is
             | Non_Volatile_Function_With_Volatile_Effects
             | Volatile_Function_Without_Volatile_Effects
             | Reference_To_Non_CAE_Variable => "");
+   end CWE_ID;
+
+   -----------------
+   -- CWE_Message --
+   -----------------
+
+   function CWE_Message (Kind : VC_Kind) return String is
+      (Wrap_CWE (CWE_ID (Kind)));
+
+   function CWE_Message (Kind : Valid_Flow_Tag_Kind) return String is
+      (Wrap_CWE (CWE_ID (Kind)));
+
+   -----------------
+   -- Description --
+   -----------------
+
+   function Description (Kind : VC_Kind) return String is
    begin
-      if CWE_Id = "" then
-         return "";
-      else
-         return " [CWE " & CWE_Id & "]";
-      end if;
-   end CWE_Message;
+      case Kind is
+         when VC_Division_Check                   =>
+            return "Check that the second operand of the division, mod or " &
+              "rem operation is different from zero.";
+         when VC_Index_Check                      =>
+            return "Check that the given index is within the bounds of " &
+              "the array.";
+         when VC_Overflow_Check                   =>
+            return "Check that the result of the given integer arithmetic " &
+              "operation is within the bounds of the base type.";
+         when VC_FP_Overflow_Check                =>
+            return "Check that the result of the given floating point " &
+              "operation is within the bounds of the base type.";
+         when VC_Range_Check                      =>
+            return "Check that the given value is within the bounds of the " &
+              "expected scalar subtype.";
+         when VC_Predicate_Check                  =>
+            return "Check that the given value respects the applicable type " &
+              "predicate.";
+         when VC_Predicate_Check_On_Default_Value =>
+            return "Check that the default value for the type respects the " &
+              "applicable type predicate.";
+         when VC_Invariant_Check                  =>
+            return "Check that the given value respects the applicable type " &
+              "invariant.";
+         when VC_Invariant_Check_On_Default_Value =>
+            return "Check that the default value for the type respects the " &
+              "applicable type invariant.";
+         when VC_Length_Check                     =>
+            return "Check that the given array is of the length of the " &
+              "expected array subtype.";
+         when VC_Discriminant_Check               =>
+            return "Check that the discriminant of the given discriminated " &
+              "record has the expected value. For variant records, this can " &
+              "happen for a simple access to a record field. But there are " &
+              "other cases where a fixed value of the discriminant is " &
+              "required.";
+         when VC_Tag_Check                        =>
+            return "Check that the tag of the given tagged object has the " &
+              "expected value.";
+         when VC_Loop_Variant                     =>
+            return "Check that the given loop variant decreases/increases " &
+              "as specified during each iteration of the loop. This " &
+              "implies termination of the loop.";
+         when VC_Ceiling_Interrupt                =>
+            return "Check that the ceiling priority specified for a " &
+              "protected object containing a procedure with an aspect " &
+              "Attach_Handler is in Interrupt_Priority.";
+         when VC_Interrupt_Reserved               =>
+            return "Check that the interrupt specified by Attach_Handler is " &
+              "not reserved.";
+         when VC_Ceiling_Priority_Protocol        =>
+            return "Check that the ceiling priority protocol is respected, " &
+              "i.e., when a task calls a protected operation, the active " &
+              "priority of the task is not higher than the priority of the " &
+              "protected object (Ada RM Annex D.3).";
+         when VC_Task_Termination                 =>
+            return "Check that the task does not terminate, as required by " &
+              "Ravenscar.";
+         when VC_Initial_Condition                =>
+            return "Check that the initial condition of a package is true " &
+              "after elaboration.";
+         when VC_Default_Initial_Condition        =>
+            return "Check that the default initial condition of a type is " &
+              "true after default initialization of an object of the type.";
+         when VC_Precondition                     =>
+            return "Check that the precondition aspect of the given call " &
+              "evaluates to True.";
+         when VC_Precondition_Main                =>
+            return "Check that the precondition aspect of the given main " &
+              "procedure evaluates to True after elaboration.";
+         when VC_Postcondition                    =>
+            return "Check that the postcondition aspect of the subprogram " &
+              "evaluates to True.";
+         when VC_Refined_Post                     =>
+            return "Check that the refined postcondition aspect of the " &
+              "subprogram evaluates to True.";
+         when VC_Contract_Case                    =>
+            return "Check that all cases of the contract case evaluate to " &
+              "true at the end of the subprogram.";
+         when VC_Disjoint_Contract_Cases          =>
+            return "Check that the cases of the contract cases aspect are " &
+              "all mutually disjoint.";
+         when VC_Complete_Contract_Cases          =>
+            return "Check that the cases of the contract cases aspect cover " &
+              "the state space that is allowed by the precondition aspect.";
+         when VC_Loop_Invariant                   =>
+            return "Check that the loop invariant evaluates to True on all " &
+              "iterations of the loop.";
+         when VC_Loop_Invariant_Init              =>
+            return "Check that the loop invariant evaluates to True on the " &
+              "first iteration of the loop.";
+         when VC_Loop_Invariant_Preserv           =>
+            return "Check that the loop invariant evaluates to True at each " &
+              "further iteration of the loop.";
+         when VC_Assert                           =>
+            return "Check that the given assertion evaluates to True.";
+         when VC_Raise                            =>
+            return "Check that the raise statement can never be reached.";
+         when VC_Inline_Check                     =>
+            return "Check that an Annotate pragma with the Inline_For_Proof " &
+              "identifier is correct.";
+         when VC_Weaker_Pre                       =>
+            return "Check that the precondition aspect of the subprogram is " &
+              "weaker than its class-wide precondition.";
+         when VC_Trivial_Weaker_Pre               =>
+            return "Check that the precondition aspect of the subprogram is " &
+              "True if its class-wide precondition is True.";
+         when VC_Stronger_Post                    =>
+            return "Check that the postcondition aspect of the subprogram " &
+              "is stronger than its class-wide postcondition.";
+         when VC_Weaker_Classwide_Pre             =>
+            return "Check that the class-wide precondition aspect of the " &
+              "subprogram is weaker than its overridden class-wide " &
+              "precondition.";
+         when VC_Stronger_Classwide_Post          =>
+            return "Check that the class-wide postcondition aspect of the " &
+              "subprogram is stronger than its overridden class-wide " &
+              "postcondition.";
+         when VC_Warning_Kind                     =>
+            return "";
+      end case;
+   end Description;
+
+   function Description (Kind : Valid_Flow_Tag_Kind) return String is
+     (case Kind is
+         when Dead_Code                                   =>
+            "A statement is never executed.",
+         when Default_Initialization_Mismatch             =>
+            "A type is wrongly declared as initialized by default.",
+         when Uninitialized                               =>
+            "Flow analysis has detected the use of an uninitialized variable.",
+         when Unused                                      =>
+            "A global or locally declared object is never used.",
+         when Unused_Initial_Value                        =>
+            "The initial value of an object is not used.",
+         when Aliasing                                    =>
+            "Aliasing between formal parameters or global objects.",
+         when Depends_Null                                =>
+            "An input item is missing from the null dependency clause.",
+         when Depends_Missing                             =>
+            "An input is missing from the dependency clause.",
+         when Depends_Missing_Clause                      =>
+            "An output item is missing from the dependency clause.",
+         when Depends_Wrong                               =>
+            "Extra input item in the dependency clause.",
+         when Global_Missing                              =>
+            "A Global or Initializes contract fails to mention some objects.",
+         when Global_Wrong                                =>
+            "A Global or Initializes contract wrongly mentions some objects.",
+         when Export_Depends_On_Proof_In                  =>
+            "Subprogram output depends on a Proof_In global.",
+         when Hidden_Unexposed_State                      =>
+            "Constants with variable inputs that are not state constituents.",
+         when Illegal_Update                              =>
+            "Illegal write of a global input.",
+         when Impossible_To_Initialize_State              =>
+            "A state abstraction that is impossible to initialize.",
+         when Ineffective                                 =>
+            "A statement with no effect on subprogram's outputs.",
+         when Initializes_Wrong                           =>
+            "An object that shall not appear in the Initializes contract",
+         when Inout_Only_Read                             =>
+            "An IN OUT parameter or an In_Out global that is not written.",
+         when Missing_Return                              =>
+            "All execution paths raise exceptions or do not return.",
+         when Not_Constant_After_Elaboration              =>
+            "Illegal write of an object " &
+            "declared as constant after elaboration.",
+         when Pragma_Elaborate_All_Needed                 =>
+            "Use of an abstract state of a package " &
+            "that was not yet elaborated.",
+         when Pragma_Elaborate_Body_Needed                =>
+            "A missing pragma Elaborate_Body.",
+         when Refined_State_Wrong                         =>
+            "Constant with no variable inputs " &
+            "as an abstract state's constituent.",
+         when Side_Effects                                =>
+            "A function with side effects.",
+         when Stable                                      =>
+            "A loop with stable statement.",  --  ??? appears dead
+         when Non_Volatile_Function_With_Volatile_Effects =>
+            "A volatile function wrongly declared as non-volatile.",
+         when Volatile_Function_Without_Volatile_Effects  =>
+            "A non-volatile function wrongly declared as volatile.",
+         when Reference_To_Non_CAE_Variable               =>
+            "An illegal reference to global " &
+            "in precondition of a protected operation");
 
    ---------------
    -- From_JSON --
@@ -500,6 +697,143 @@ package body VC_Kinds is
       end case;
    end Get_Typed_Cntexmp_Value;
 
+   ---------------
+   -- Kind_Name --
+   ---------------
+
+   function Kind_Name (Kind : VC_Kind) return String is
+   begin
+      return
+         (case Kind is
+             when VC_Division_Check => "divide by zero",
+             when VC_Index_Check => "index check",
+             when VC_Overflow_Check => "overflow check",
+             when VC_FP_Overflow_Check => "fp_overflow check",
+             when VC_Range_Check => "range check",
+             when VC_Predicate_Check => "predicate check",
+             when VC_Predicate_Check_On_Default_Value =>
+               "predicate check on default value",
+             when VC_Invariant_Check => "invariant check",
+             when VC_Invariant_Check_On_Default_Value =>
+               "invariant check on default value",
+             when VC_Length_Check => "length check",
+             when VC_Discriminant_Check => "discriminant check",
+             when VC_Tag_Check => "tag check",
+             when VC_Ceiling_Interrupt =>
+               "ceiling priority in Interrupt_Priority",
+             when VC_Interrupt_Reserved => "interrupt is reserved",
+             when VC_Ceiling_Priority_Protocol => "ceiling priority protocol",
+             when VC_Task_Termination => "task termination",
+             when VC_Initial_Condition => "initial condition",
+             when VC_Default_Initial_Condition => "default initial condition",
+             when VC_Precondition => "precondition",
+             when VC_Precondition_Main => "precondition of main",
+             when VC_Postcondition => "postcondition",
+             when VC_Refined_Post => "refined postcondition",
+             when VC_Contract_Case => "contract case",
+             when VC_Disjoint_Contract_Cases => "disjoint contract cases",
+             when VC_Complete_Contract_Cases => "complete contract cases",
+             when VC_Loop_Invariant => "loop invariant",
+             when VC_Loop_Invariant_Init =>
+               "loop invariant in first iteration",
+             when VC_Loop_Invariant_Preserv =>
+               "loop invariant after first iteration",
+             when VC_Loop_Variant => "loop variant",
+             when VC_Assert => "assertion",
+             when VC_Raise => "raised exception",
+             when VC_Inline_Check => "Inline_For_Proof annotation",
+             when VC_Weaker_Pre =>
+               "precondition weaker than class-wide precondition",
+             when VC_Trivial_Weaker_Pre =>
+               "precondition not True while class-wide precondition is True",
+             when VC_Stronger_Post =>
+               "postcondition stronger than class-wide postcondition",
+             when VC_Weaker_Classwide_Pre =>
+               "class-wide precondition weaker than overridden one",
+             when VC_Stronger_Classwide_Post =>
+               "class-wide postcondition stronger than overridden one",
+             when VC_Warning_Kind => "");
+   end Kind_Name;
+
+   function Kind_Name (Kind : Valid_Flow_Tag_Kind) return String is
+     (case Kind is
+         when Dead_Code                                   =>
+            "dead code",
+         when Default_Initialization_Mismatch             =>
+            "wrong Default_Initial_Condition aspect",
+         when Uninitialized                               =>
+            "use of an uninitialized variable",
+         when Unused                                      =>
+            "object is not used",
+         when Unused_Initial_Value                        =>
+            "initial value of an object is not used",
+         when Aliasing                                    =>
+            "aliasing between subprogram parameters",
+         when Depends_Null                                =>
+            "input item missing from the null dependency clause",
+         when Depends_Missing                             =>
+            "input item missing from the dependency clause",
+         when Depends_Missing_Clause                      =>
+            "output item missing from the dependency clause",
+         when Depends_Wrong                               =>
+            "extra input item in the dependency clause",
+         when Global_Missing                              =>
+            "incomplete Global or Initializes contract",
+         when Global_Wrong                                =>
+            "an extra item in the Global or Initializes contract",
+         when Export_Depends_On_Proof_In                  =>
+            "subprogram output depends on a Proof_In global",
+         when Hidden_Unexposed_State                      =>
+            "constants with variable inputs that is not a state constituent",
+         when Illegal_Update                              =>
+            "illegal write of a global input",
+         when Impossible_To_Initialize_State              =>
+            "a state abstraction that is impossible to initialize",
+         when Ineffective                                 =>
+            "a statement with no effect on subprogram's outputs",
+         when Initializes_Wrong                           =>
+            "an extra item in the Initializes contract",
+         when Inout_Only_Read                             =>
+            "an IN OUT parameter or an In_Out global that is not written",
+         when Missing_Return                              =>
+            "all execution paths raise exceptions or do not return",
+         when Not_Constant_After_Elaboration              =>
+            "illegal write of an object " &
+            "declared as constant after elaboration",
+         when Pragma_Elaborate_All_Needed                 =>
+            "use of an abstract state of a package " &
+            "that was not yet elaborated",
+         when Pragma_Elaborate_Body_Needed                =>
+            "a missing pragma Elaborate_Body",
+         when Refined_State_Wrong                         =>
+            "constant with no variable inputs " &
+            "as an abstract state's constituent",
+         when Side_Effects                                =>
+            "function with side effects",
+         when Stable                                      =>
+            "loop with stable statement",  --  ??? appears dead
+         when Non_Volatile_Function_With_Volatile_Effects =>
+            "volatile function wrongly declared as non-volatile",
+         when Volatile_Function_Without_Volatile_Effects  =>
+            "non-volatile function wrongly declared as volatile",
+         when Reference_To_Non_CAE_Variable               =>
+            "illegal reference to a global object " &
+            "in precondition of a protected operation");
+
+   ---------------
+   -- Rule_Name --
+   ---------------
+
+   function Rule_Name (Kind : VC_Kind) return String is
+   begin
+      return VC_Kind'Image (Kind);
+   end Rule_Name;
+
+   function Rule_Name (Kind : Valid_Flow_Tag_Kind) return String is
+   begin
+      return Valid_Flow_Tag_Kind'Image (Kind);
+   end Rule_Name;
+
    -------------
    -- To_JSON --
    -------------
@@ -613,5 +947,18 @@ package body VC_Kinds is
                  when PC_Codepeer => "CodePeer",
                  when PC_Flow     => "Flow analysis");
    end To_String;
+
+   --------------
+   -- Wrap_CWE --
+   --------------
+
+   function Wrap_CWE (S : String) return String is
+   begin
+      if S = "" then
+         return "";
+      else
+         return " [CWE " & S & "]";
+      end if;
+   end Wrap_CWE;
 
 end VC_Kinds;

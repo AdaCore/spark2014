@@ -19,6 +19,7 @@ gnatprove basic switches:
                        all cores of the machine)
  -k                    Do not stop analysis at the first error
      --level=n         Set the level of proof (0 = faster to 4 = more powerful)
+     --list-categories Output a list of all message categories and exit
  -m                    Minimal reanalysis
      --mode=m          Set the mode of GNATprove (m=check, check_all, flow,
                        prove, all*, stone, bronze, silver, gold)

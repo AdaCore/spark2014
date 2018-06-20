@@ -653,58 +653,8 @@ Analysis with |GNATprove| can be limited to a single condition with the
 
     gnatprove -P <project-file.gpr> --prover=<prover> --limit-line=<file>:<line>:<column>:<check-kind>
 
-Where ``check-kind`` can be deduced from the message associated to the
-failing condition reported by |GNATprove|:
-
-.. UPDATES TO THIS TABLE SHOULD ALSO BE REFLECTED IN THE TABLE UNDER SECTION
-.. "Description of Messages"
-
-.. csv-table::
-   :header: "Warning", "Check kind"
-   :widths: 2, 1
-
-   **run-time checks**
-   "divide by zero might fail",                            "VC_DIVISION_CHECK"
-   "array index check might fail",                         "VC_INDEX_CHECK"
-   "overflow check might fail",                            "VC_OVERFLOW_CHECK"
-   "float overflow check might fail",                      "VC_FP_OVERFLOW_CHECK"
-   "range check might fail",                               "VC_RANGE_CHECK"
-   "predicate check might fail",                           "VC_PREDICATE_CHECK"
-   "predicate check might fail on default value",          "VC_PREDICATE_CHECK_ON_DEFAULT_VALUE"
-   "invariant check might fail",                           "VC_INVARIANT_CHECK"
-   "invariant check might fail on default value",          "VC_INVARIANT_CHECK_ON_DEFAULT_VALUE"
-   "length check might fail",                              "VC_LENGTH_CHECK"
-   "discriminant check might fail",                        "VC_DISCRIMINANT_CHECK"
-   "tag check might fail",                                 "VC_TAG_CHECK"
-   "ceiling priority might not be in Interrupt_Priority",  "VC_CEILING_INTERRUPT"
-   "interrupt might be reserved",                          "VC_INTERRUPT_RESERRED"
-   "ceiling priority protocol might not be respected",     "VC_CEILING_PRIORITY_PROTOCOL"
-   "task might terminate",                                 "VC_TASK_TERMINATION"
-
-   **assertions**
-   "initial condition might fail",                      "VC_INITIAL_CONDITION"
-   "default initial condition might fail",              "VC_DEFAULT_INITIAL_CONDITION"
-   "call to nonreturning subprogram might be executed", "VC_PRECONDITION"
-   "precondition might fail",                           "VC_PRECONDITION"
-   "precondition of main program might fail",           "VC_PRECONDITION_MAIN"
-   "postcondition might fail",                          "VC_POSTCONDITION"
-   "refined postcondition might fail",                  "VC_REFINED_POST"
-   "contract case might fail",                          "VC_CONTRACT_CASE"
-   "contract cases might not be disjoint",              "VC_DISJOINT_CONTRACT_CASES"
-   "contract cases might not be complete",              "VC_COMPLETE_CONTRACT_CASES"
-   "loop invariant might fail in first iteration",      "VC_LOOP_INVARIANT_INIT"
-   "loop invariant might fail after first iteration",   "VC_LOOP_INVARIANT_PRESERV"
-   "loop variant might fail",                           "VC_LOOP_VARIANT"
-   "assertion might fail",                              "VC_ASSERT"
-   "exception might be raised",                         "VC_RAISE"
-
-   **Liskov Substitution Principle**
-   "precondition might be stronger than class-wide precondition",               "VC_WEAKER_PRE"
-   "precondition is stronger than the default class-wide precondition of True", "VC_TRIVIAL_WEAKER_PRE"
-   "postcondition might be weaker than class-wide postcondition",               "VC_STRONGER_POST"
-   "class-wide precondition might be stronger than overridden one",             "VC_WEAKER_CLASSWIDE_PRE"
-   "class-wide postcondition might be weaker than overridden one",              "VC_STRONGER_CLASSWIDE_POST"
-
+Please use the output of ``gnatprove --list-categories`` to determine the
+``check-kind`` to be provided in this command.
 
 Calling an Interactive Prover From GPS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

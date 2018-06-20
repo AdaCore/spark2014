@@ -87,6 +87,7 @@ package Configuration is
       Level                : aliased Integer;
       Limit_Line           : aliased GNAT.Strings.String_Access;
       Limit_Subp           : aliased GNAT.Strings.String_Access;
+      List_Categories      : aliased Boolean;
       M                    : aliased Boolean;
       Mode                 : aliased GNAT.Strings.String_Access;
       No_Axiom_Guard       : aliased Boolean;
