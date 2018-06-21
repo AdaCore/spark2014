@@ -494,8 +494,18 @@ package body Gnat2Why.Error_Messages is
                   Codepeer_Proved.Include (Msg);
                else
                   declare
+
+                     --  We remove the variable part of the Message (the
+                     --  iteration info) to be able to use it for table
+                     --  lookups
+
                      Lookup_Msg : constant Message_And_Location :=
                        Remove_Iteration (Msg);
+
+                     --  We initialize the map with the number of messages we
+                     --  still expect for this check. See the declaration of
+                     --  Iteration_Kind.
+
                      Start_Count : constant Integer :=
                        (if Iteration (Location (Msg)).Kind in
                           Initial | Subsequent then 1 else
