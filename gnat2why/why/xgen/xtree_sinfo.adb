@@ -478,6 +478,8 @@ package body Xtree_Sinfo is
                  "Value", "W_Prog", Id_One);
       New_Field (W_Assignment,
                  "Typ", "W_Type", Id_One);
+      New_Field (W_Assignment,
+                 "Labels", "Name_Id_Set");
 
       -------------------
       -- W_Binding_Ref --

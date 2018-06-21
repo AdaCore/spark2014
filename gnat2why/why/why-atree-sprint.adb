@@ -30,6 +30,7 @@ with Ada.Strings.Unbounded;
 with Atree;                 use Atree;
 with Errout;                use Errout;
 with Eval_Fat;
+with Common_Containers;     use Common_Containers;
 with GNAT.Regpat;
 with GNAT.OS_Lib;           use GNAT.OS_Lib;
 with Gnat2Why_Args;
@@ -229,8 +230,16 @@ package body Why.Atree.Sprint is
    ----------------------
 
    procedure Print_Assignment (Node : W_Assignment_Id) is
+      Labels : constant Name_Id_Set := Get_Labels (Node);
    begin
+      if not Labels.Is_Empty then
+         P (O, "(");
+         P (O, Labels, As_String => True);
+      end if;
       Print_Node (+Get_Name (Node));
+      if not Labels.Is_Empty then
+         P (O, ")");
+      end if;
       P (O, ".");
       pragma Assert (Get_Typ (Node) /= Why_Empty);
       Print_Node (+Get_Typ (Node));

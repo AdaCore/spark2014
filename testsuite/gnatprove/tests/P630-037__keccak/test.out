@@ -323,7 +323,7 @@ keccak-sponge.adb:122:51: info: overflow check proved (CVC4: 1 VC), in instantia
 keccak-sponge.adb:123:35: info: initialization of "Remaining_Bytes" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:123:51: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Ctx = (State => ?, Block => (others => 0), Bits_Absorbed => 8, Bytes_Squeezed => 0, Rate => 2, Curr_State => Absorbing) and Remaining_Bytes = 1)
 keccak-sponge.adb:124:35: info: initialization of "Remaining_Bits" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:124:51: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Initial_Bit_Rate = 16 and Remaining_Bits = 15)
+keccak-sponge.adb:124:51: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Initial_Bit_Rate = 32 and Remaining_Bits = 25)
 keccak-sponge.adb:124:53: info: initialization of "Initial_Bit_Rate" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:128:16: info: initialization of "Remaining_Bits" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:129:19: info: range check proved (CVC4: 4 VC), in instantiation at keccak-keccak_1600.ads:57

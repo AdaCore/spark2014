@@ -25,6 +25,7 @@
 
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
+with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 with Checks;                     use Checks;
@@ -2507,6 +2508,37 @@ package body Why.Gen.Expr is
         & Str_Loc (9 .. Str_Loc'Last) & ':' & VC_Kind'Image (Reason);
       return NID (Prefix & To_String (Buf));
    end New_Comment_Label;
+
+   -------------------------------
+   -- New_Counterexample_Assign --
+   -------------------------------
+
+   function New_Counterexample_Assign (If_Node   : Node_Id;
+                                       Condition : W_Expr_Id)
+                                       return W_Expr_Id
+   is
+      Node_Label : constant Name_Id_Sets.Set :=
+                        (Name_Id_Sets.To_Set
+                           (NID (Branch_Id_Label &
+                              Ada.Strings.Fixed.Trim
+                                   (Source => Node_Id'Image (If_Node),
+                                    Side   => Left))));
+
+   begin
+      return
+        +Sequence
+          (New_Assignment (Ada_Node => If_Node,
+                           Name     =>
+                             +M_Main.Spark_CE_Branch,
+                           Labels   => Node_Label,
+                           Value    => +Condition,
+                           Typ      => EW_Bool_Type),
+           New_Record_Access (Name  =>
+                                +M_Main.Spark_CE_Branch,
+                              Field =>
+                                +New_Identifier (Name => "bool__content"),
+                              Typ   => EW_Bool_Type));
+   end New_Counterexample_Assign;
 
    -----------------
    -- New_Or_Expr --

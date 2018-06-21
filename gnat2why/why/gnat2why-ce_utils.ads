@@ -46,4 +46,9 @@ package Gnat2Why.CE_Utils is
    --  True if Comp is a component of an ancestor of Rec which is visible in
    --  Rec.
 
+   function Get_Entity_Id (Is_Record : Boolean; S : String) return Entity_Id;
+   --  If Is_record then convert a string of the form ".4554" to the Entity_Id
+   --  4554. Otherwise, convert a string of the form "4554".
+   --  Return the empty entity if not of the given form.
+
 end Gnat2Why.CE_Utils;

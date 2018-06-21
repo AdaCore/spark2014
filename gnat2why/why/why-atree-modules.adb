@@ -1751,6 +1751,12 @@ package body Why.Atree.Modules is
                         Symbol => NID ("__null_ext__"),
                         Typ    => M_Main.Private_Type);
 
+      M_Main.Spark_CE_Branch :=
+        New_Identifier (Domain => EW_Term,
+                        Module => M,
+                        Symbol => NID ("spark__branch"),
+                        Typ    => EW_Bool_Type);
+
       EW_Private_Type := M_Main.Private_Type;
    end Init_Main_Module;
 

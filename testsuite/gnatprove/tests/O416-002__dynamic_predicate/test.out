@@ -37,7 +37,7 @@ dynamic_preds.adb:89:28: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:89:28: medium: overflow check might fail (e.g. when Above = 2147483647 and Result = (A => 0, B => 0))
 dynamic_preds.adb:92:19: info: initialization of "Result.A" proved
 dynamic_preds.adb:92:28: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:92:28: medium: overflow check might fail (e.g. when Result = (A => 2147483646, B => 2147483646))
+dynamic_preds.adb:92:28: medium: overflow check might fail (e.g. when Result = (A => 0, B => 0))
 dynamic_preds.adb:94:14: info: initialization of "Result.A" proved
 dynamic_preds.adb:94:14: info: initialization of "Result.B" proved
 dynamic_preds.adb:94:14: info: predicate check proved (CVC4: 1 VC)
@@ -145,7 +145,7 @@ dynamic_preds_array.adb:107:20: info: initialization of "Result" proved
 dynamic_preds_array.adb:107:30: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:107:30: medium: overflow check might fail (e.g. when Result = (2 => 0, others => 2147483644))
 dynamic_preds_array.adb:109:14: info: initialization of "Result" proved
-dynamic_preds_array.adb:109:14: medium: predicate check might fail (e.g. when Result = (1 => 0, others => 4))
+dynamic_preds_array.adb:109:14: medium: predicate check might fail (e.g. when Result = (2 => 4, others => 0))
 dynamic_preds_array.adb:115:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:116:10: medium: predicate check might fail (e.g. when Result = (others => 0))
 dynamic_preds_array.adb:116:20: medium: "Result" might not be initialized

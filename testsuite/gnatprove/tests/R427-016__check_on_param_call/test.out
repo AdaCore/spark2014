@@ -98,7 +98,7 @@ formals.adb:117:04: info: precondition proved (CVC4: 1 VC)
 formals.adb:117:07: info: initialization of "U" proved
 formals.adb:118:04: info: precondition proved (CVC4: 1 VC)
 formals.adb:118:18: info: initialization of "U" proved
-formals.adb:118:18: medium: predicate check might fail (e.g. when U = (others => 1))
+formals.adb:118:18: medium: predicate check might fail (e.g. when U = (others => 0))
 formals.adb:119:04: info: precondition proved (CVC4: 1 VC)
 formals.adb:119:07: info: initialization of "U" proved
 formals.adb:121:04: info: precondition proved (CVC4: 1 VC)
@@ -209,9 +209,9 @@ formals_rec_split.adb:32:18: low: "A.F" might not be set in "P3"
 formals_rec_split.adb:36:11: medium: discriminant check might fail, in call inlined at formals_rec_split.adb:55
 formals_rec_split.adb:43:04: info: precondition proved (CVC4: 1 VC)
 formals_rec_split.adb:47:10: info: precondition proved (CVC4: 1 VC)
-formals_rec_split.adb:47:13: medium: discriminant check might fail
+formals_rec_split.adb:47:13: medium: discriminant check might fail (e.g. when X = True)
 formals_rec_split.adb:53:10: info: precondition proved (CVC4: 1 VC)
-formals_rec_split.adb:53:13: medium: discriminant check might fail
+formals_rec_split.adb:53:13: medium: discriminant check might fail (e.g. when X = True)
 formals_rec_split_pred.adb:13:31: info: range check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:14:29: info: discriminant check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:16:34: info: range check proved (CVC4: 1 VC)

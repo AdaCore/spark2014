@@ -15,7 +15,7 @@ run.adb:15:20: info: discriminant check proved (CVC4: 1 VC)
 run.adb:20:10: info: discriminant check proved (CVC4: 2 VC)
 run.adb:21:20: info: initialization of "Y2.X1" proved
 run.adb:21:20: info: initialization of "Y2.X2" proved
-run.adb:22:13: medium: discriminant check might fail
+run.adb:22:13: medium: discriminant check might fail (e.g. when Z2 = (E => ?, X1 => 1, X2 => 1))
 run.adb:23:20: info: initialization of "Z2.X1" proved
 run.adb:23:20: info: initialization of "Z2.X2" proved
 run.adb:24:10: info: discriminant check proved (CVC4: 2 VC)

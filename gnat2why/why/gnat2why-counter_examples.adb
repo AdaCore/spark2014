@@ -30,6 +30,7 @@ with Ada.Containers.Ordered_Sets;
 with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Atree;                     use Atree;
+with Ce_Interval_Sets;
 with Einfo;                     use Einfo;
 with Flow_Refinement;           use Flow_Refinement;
 with Flow_Types;                use Flow_Types;
@@ -39,6 +40,7 @@ with Gnat2Why.CE_Utils;         use Gnat2Why.CE_Utils;
 with Gnat2Why.Tables;           use Gnat2Why.Tables;
 with Gnat2Why.Util;             use Gnat2Why.Util;
 with Namet;                     use Namet;
+with Nlists;                    use Nlists;
 with Sem_Aux;                   use Sem_Aux;
 with Sem_Eval;                  use Sem_Eval;
 with Sem_Util;                  use Sem_Util;
@@ -63,6 +65,11 @@ package body Gnat2Why.Counter_Examples is
    --  location of the check in the Ada file.
    --  In Cntexmp, this information is mapped to the field "vc_line" of the
    --  JSON object representing the file where the construct is located.
+
+   function Remove_Irrelevant_Branches
+     (Cntexmp : Cntexample_File_Maps.Map)
+      return Cntexample_File_Maps.Map;
+   --  Remove counterexample branches that are not taken
 
    function Is_Ada_File_Name (File : String) return Boolean;
    --  check if the filename is an Ada
@@ -277,26 +284,6 @@ package body Gnat2Why.Counter_Examples is
          return Unbounded_String
       is
 
-         function Get_Entity_Id (S : String) return Entity_Id;
-         --  Convert a string of the form ".4554" to the Entity_Id 4554.
-         --  Return the empty entity if not of the given form.
-
-         -------------------
-         -- Get_Entity_Id --
-         -------------------
-
-         function Get_Entity_Id (S : String) return Entity_Id is
-         begin
-            if S'First + 1 > S'Last then
-               return Empty;
-            else
-               return Entity_Id'Value (S (S'First + 1 .. S'Last));
-            end if;
-         exception
-            when Constraint_Error =>
-               return Empty;
-         end Get_Entity_Id;
-
          Why3_Type : constant Cntexmp_Type := Cnt_Value.all.T;
       begin
          case Why3_Type is
@@ -430,7 +417,7 @@ package body Gnat2Why.Counter_Examples is
                         Key_Field    : constant String :=
                                          Cntexmp_Value_Array.Key (Cursor);
                         Field_Entity : constant Entity_Id :=
-                                         Get_Entity_Id (Key_Field);
+                                         Get_Entity_Id (True, Key_Field);
                      begin
                         --  There are two cases:
                         --  - discriminant -> we always include the field
@@ -1050,41 +1037,50 @@ package body Gnat2Why.Counter_Examples is
 
             Attributes : Names_And_Values.List;
 
-            Var_Value : constant Unbounded_String :=
-              Get_CNT_Element_Value_And_Attributes
-                (Element (Variable),
-                 Var_Name,
-                 Attributes);
-
-            procedure Add_CNT (Name, Value : Unbounded_String);
-            --  Append a cnt variable and its value to the list
-
-            -------------
-            -- Add_CNT --
-            -------------
-
-            procedure Add_CNT (Name, Value : Unbounded_String) is
-            begin
-               --  If the value of the variable should not be displayed in the
-               --  counterexample, do not display the variable.
-
-               if Value /= Dont_Display then
-                  Pretty_Line_Cntexmp_Arr.Append
-                    (Cntexample_Elt'(Kind    => CEE_Variable,
-                                     Name    => Name,
-                                     Value   => Element (Variable).Value,
-                                     Val_Str => Value));
-               end if;
-            end Add_CNT;
-
          begin
-            Add_CNT (Var_Name, Var_Value);
+            if Has_Element (Variable) then
+               declare
 
-            for Att of Attributes loop
-               Add_CNT (Att.Name, Att.Value);
-            end loop;
+                  Var_Value : constant Unbounded_String :=
+                                Get_CNT_Element_Value_And_Attributes
+                                  (Element (Variable),
+                                   Var_Name,
+                                   Attributes);
 
-            Next (Variable);
+                  procedure Add_CNT (Name, Value : Unbounded_String);
+                  --  Append a cnt variable and its value to the list
+
+                  -------------
+                  -- Add_CNT --
+                  -------------
+
+                  procedure Add_CNT (Name, Value : Unbounded_String) is
+                  begin
+                     --  If the value of the variable should not be displayed
+                     --  in the counterexample, do not display the variable.
+
+                     if Value /= Dont_Display then
+                        Pretty_Line_Cntexmp_Arr.Append
+                          (Cntexample_Elt'(Kind    => CEE_Variable,
+                                           Name    => Name,
+                                           --  Labels not necessary at this
+                                           --  point
+                                           Labels  => S_String_List.Empty_List,
+                                           Value   => Element (Variable).Value,
+                                           Val_Str => Value));
+                     end if;
+                  end Add_CNT;
+
+               begin
+                  Add_CNT (Var_Name, Var_Value);
+
+                  for Att of Attributes loop
+                     Add_CNT (Att.Name, Att.Value);
+                  end loop;
+
+                  Next (Variable);
+               end;
+            end if;
          end;
       end loop;
    end Build_Pretty_Line;
@@ -1387,7 +1383,8 @@ package body Gnat2Why.Counter_Examples is
       Line : constant Logical_Line_Number :=
         Get_Logical_Line_Number (VC_Loc);
       Remapped_Cntexmp : constant Cntexample_File_Maps.Map :=
-        Remap_VC_Info (Cntexmp, File, Natural (Line));
+        Remove_Irrelevant_Branches
+          (Remap_VC_Info (Cntexmp, File, Natural (Line)));
       Pretty_Cntexmp : Cntexample_File_Maps.Map :=
         Cntexample_File_Maps.Empty_Map;
 
@@ -1579,6 +1576,333 @@ package body Gnat2Why.Counter_Examples is
       return To_String (R & " ]");
    end Print_CNT_Element_Debug;
 
+   --------------------------------
+   -- Remove_Irrelevant_Branches --
+   --------------------------------
+
+   --  This is the main function of a feature which records a boolean
+   --  counterexample value for any branching condition done in the code (if
+   --  and case). These counterexamples are tagged with a specific attribute
+   --  "branch_id:number" (with number being the node_id of the if/case).
+   --  In this context, this function first search for the node_id labels of
+   --  counterexamples and then removes the lines that do not corresponds to
+   --  the branch taken by the counterexample in the if/case (using the value
+   --  of the CE).
+
+   function Remove_Irrelevant_Branches
+     (Cntexmp : Cntexample_File_Maps.Map)
+      return Cntexample_File_Maps.Map
+   is
+
+      package Supp_Lines is new Ce_Interval_Sets (N => Physical_Line_Number);
+
+      function Get_Interval_Case (E : Entity_Id;
+                                  B : Boolean)
+                                  return Supp_Lines.Interval_Set
+        with Pre => Nkind (E) in N_Case_Statement_Alternative;
+      --  The case statement are translated to new ifs in Why3 so we can
+      --  eliminate case by case (the order of branches is kept):
+      --  * a branch is taken: we can remove all the subsequent "when"
+      --    statements (they are not taken). We *cannot* remove branches
+      --    * before * this one as, if an earlier branch was taken the model
+      --    is still correct if the current one is also taken (making it
+      --    inconsistent).
+      --  * a branch is not taken: we can remove it as we are sure it is not
+      --    taken
+
+      function Get_Interval_For_Branch (E : Entity_Id)
+                                        return Supp_Lines.Interval
+        with Pre => Nkind (E) in N_If_Statement | N_Elsif_Part;
+
+      function Get_Interval_For_Branch_Case (E : Entity_Id)
+                                             return Supp_Lines.Interval
+        with Pre => Nkind (E) in N_Case_Statement_Alternative;
+
+      function Get_Interval_If (E : Entity_Id;
+                                B : Boolean)
+                                return Supp_Lines.Interval_Set
+        with Pre => Nkind (E) in N_If_Statement | N_Elsif_Part;
+
+      function Get_P (E : Entity_Id) return Physical_Line_Number is
+        (Get_Physical_Line_Number (Sloc (E)));
+      --  Abbreviation for querying the first line of an entity
+
+      procedure Search_Labels (S : in out Supp_Lines.Interval_Set;
+                               L : S_String_List.List;
+                               V : Cntexmp_Value_Ptr);
+      --  This procedure fills S with new values corresponding to branches that
+      --  should not be taken for display of counterexamples.
+
+      -----------------------
+      -- Get_Interval_Case --
+      -----------------------
+
+      function Get_Interval_Case (E : Entity_Id;
+                                  B : Boolean)
+                                  return Supp_Lines.Interval_Set
+      is
+         S : Supp_Lines.Interval_Set := Supp_Lines.Create;
+      begin
+
+         if not B then
+            --  This branch is not taken, remove it
+
+            Supp_Lines.Insert (S, Get_Interval_For_Branch_Case (E));
+            return (S);
+
+         else
+            --  This branch is taken, removes all branches *after* it. If one
+            --  is taken before, the result is random because it is a part of
+            --  a logic expression that is never used -> nothing more can be
+            --  deduced.
+
+            if Present (Next (E)) then
+               Supp_Lines.Insert
+                 (S, (L_Bound => Get_P (Next (E)),
+                      R_Bound =>
+                        Get_Physical_Line_Number (
+                          End_Location (Parent (E)))));
+            end if;
+
+         end if;
+         return S;
+      end Get_Interval_Case;
+
+      -----------------------------
+      -- Get_Interval_For_Branch --
+      -----------------------------
+
+      function Get_Interval_For_Branch (E : Entity_Id)
+                                        return Supp_Lines.Interval
+      is
+      begin
+         if Nkind (E) = N_If_Statement then
+
+            return (L_Bound => Get_P (Nlists.First (Then_Statements (E))),
+                    R_Bound =>
+
+                      (if Present (Elsif_Parts (E)) then
+                          Physical_Line_Number'Max
+                            (1,
+                             Get_P (First (Elsif_Parts (E))) - 1)
+                       elsif Present (Else_Statements (E)) then
+                          Physical_Line_Number'Max
+                            (1,
+                             Get_P (First (Else_Statements (E))) - 1)
+                       else
+                          Get_Physical_Line_Number (End_Location (E))));
+
+         elsif Nkind (E) = N_Elsif_Part then
+
+            return (L_Bound => Get_P (First (Then_Statements (E))),
+                    R_Bound =>
+
+                      (if Present (Next (E)) then
+                          Physical_Line_Number'Max (1, Get_P (Next (E)) - 1)
+                       else
+
+                          --  There is an elsif statements so there is an else
+                          --  statement
+                          Get_P (First (Else_Statements (Parent (E))))));
+         else
+
+            --  Cannot be accessed (precondition)
+            raise Program_Error;
+         end if;
+      end Get_Interval_For_Branch;
+
+      ----------------------------------
+      -- Get_Interval_For_Branch_Case --
+      ----------------------------------
+
+      function Get_Interval_For_Branch_Case (E : Entity_Id)
+                                             return Supp_Lines.Interval
+      is
+      begin
+         if Present (Next (E)) then
+            return (L_Bound => Get_P (E),
+                    R_Bound =>
+                      Physical_Line_Number'Max (1, Get_P (Next (E)) - 1));
+         else
+            return (L_Bound => Get_P (E),
+                    R_Bound =>
+                      Physical_Line_Number (End_Location (Parent (E))));
+         end if;
+
+      end Get_Interval_For_Branch_Case;
+
+      ---------------------
+      -- Get_Interval_If --
+      ---------------------
+
+      --  The elsif statement are translated to new ifs in Why3 so we can
+      --  eliminate branch by branch (the order of branches is kept):
+      --  * a branch is taken: we can remove all the subsequent elsif/else
+      --    statements (they are not taken). We *cannot* remove branches
+      --    * before * this one as, if an earlier branch was taken the model
+      --    is still correct if the current one is also taken (making it
+      --    inconsistent).
+      --  * a branch is not taken: we can remove it as we are sure it is not
+      --    taken
+
+      function Get_Interval_If (E : Entity_Id;
+                                B : Boolean)
+                                return Supp_Lines.Interval_Set
+      is
+         S : Supp_Lines.Interval_Set := Supp_Lines.Create;
+      begin
+
+         if not B then
+            --  This branch is not taken: remove it.
+
+            Supp_Lines.Insert (S, Get_Interval_For_Branch (E));
+            return (S);
+
+         else
+            --  This branch is taken, removes all branches *after* it. If one
+            --  is taken before, the result is random because it is a part of
+            --  a logic expression that is never used -> nothing more can be
+            --  deduced.
+
+            if Nkind (E) = N_If_Statement then
+               if Present (Elsif_Parts (E)) then
+                  Supp_Lines.Insert
+                    (S, (L_Bound => Get_P (First (Elsif_Parts (E))),
+                         R_Bound =>
+                           Get_Physical_Line_Number (End_Location (E))));
+
+               elsif Present (Else_Statements (E)) then
+                  Supp_Lines.Insert
+                    (S, (L_Bound => Get_P (First (Else_Statements (E))),
+                         R_Bound =>
+                           Get_Physical_Line_Number (End_Location (E))));
+               else
+
+                  --  No elsif or else branch so we don't need to remove
+                  --  anything
+                  null;
+               end if;
+
+            elsif Nkind (E) = N_Elsif_Part then
+
+               if Present (Next (E)) then
+                  Supp_Lines.Insert
+                    (S, (L_Bound => Get_P (Next (E)),
+                         R_Bound =>
+                           Get_Physical_Line_Number (
+                             End_Location (Parent (E)))));
+
+               else
+                  pragma Assert (Present (Else_Statements (Parent (E))));
+                  Supp_Lines.Insert
+                    (S, (L_Bound =>
+                           Get_P (First (Else_Statements (Parent (E)))),
+                         R_Bound =>
+                           Get_Physical_Line_Number (
+                             End_Location (Parent (E)))));
+               end if;
+
+            else
+               raise Constraint_Error;
+            end if;
+
+            return S;
+         end if;
+      end Get_Interval_If;
+
+      -------------------
+      -- Search_Labels --
+      -------------------
+
+      procedure Search_Labels (S : in out Supp_Lines.Interval_Set;
+                               L : S_String_List.List;
+                               V : Cntexmp_Value_Ptr)
+      is
+      begin
+
+         for Elt of L loop
+            declare
+               Str : constant String := To_String (Elt);
+            begin
+
+               if Str'Length > 10 and then
+                 Str (Str'First .. Str'First + 9) = "branch_id:"
+               then
+
+                  declare
+                     N : constant Node_Id := Get_Entity_Id
+                       (False, Str (Str'First + 10 .. Str'Last));
+                  begin
+                     if Present (N) and V.T = Cnt_Boolean then
+
+                        if Nkind (N) in N_If_Statement | N_Elsif_Part
+                        then
+                           Supp_Lines.Insert_Union
+                             (S,
+                              Get_Interval_If (N, V.Bo));
+
+                        elsif Nkind (N) = N_Case_Statement_Alternative then
+                           Supp_Lines.Insert_Union
+                             (S,
+                              Get_Interval_Case (N, V.Bo));
+
+                        else
+                           null;
+                        end if;
+                     end if;
+                  end;
+               end if;
+            end;
+         end loop;
+
+      end Search_Labels;
+
+      --  Start of processing for Remove_Irrelevant_Branches
+
+      Remapped_Cntexmp : Cntexample_File_Maps.Map := Cntexmp;
+      --  Temporary variable containing the branch to remove in files
+      Suppressed_Lines : Supp_Lines.Interval_Set := Supp_Lines.Create;
+   begin
+      --  VC_Line is already empty at this point
+
+      for Files of Remapped_Cntexmp loop
+         Supp_Lines.Clear (Suppressed_Lines);
+
+         --  Collect node_ids that remove lines in Suppressed_Lines
+         for Lines of Files.Other_Lines loop
+            for Elt of Lines loop
+               Search_Labels (Suppressed_Lines, Elt.Labels, Elt.Value);
+            end loop;
+         end loop;
+
+         declare
+            Cnt_Line_Map : Cntexample_Line_Maps.Map :=
+                             Cntexample_Line_Maps.Empty_Map;
+         begin
+
+            --  remove lines according to suppressed_lines collected
+            for Cursor in Files.Other_Lines.Iterate loop
+               declare
+                  Line : constant Natural := Cntexample_Line_Maps.Key (Cursor);
+               begin
+
+                  if not Supp_Lines.Has_Containing_Interval
+                    (Suppressed_Lines,
+                     Physical_Line_Number (Line))
+                  then
+                     Cntexample_Line_Maps.Insert (Cnt_Line_Map, Line,
+                                                  Cntexample_Line_Maps.Element
+                                                    (Cursor));
+                  end if;
+               end;
+            end loop;
+            Files.Other_Lines := Cnt_Line_Map;
+         end;
+      end loop;
+
+      return Remapped_Cntexmp;
+   end Remove_Irrelevant_Branches;
+
    -------------------
    -- Remap_VC_Info --
    -------------------
@@ -1621,7 +1945,7 @@ package body Gnat2Why.Counter_Examples is
 
       Remapped_Cntexmp (C).Other_Lines.Include (VC_Line, VC);
 
-      return Remapped_Cntexmp;
+      return (Remapped_Cntexmp);
    end Remap_VC_Info;
 
 end Gnat2Why.Counter_Examples;

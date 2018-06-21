@@ -59,7 +59,7 @@ skein.adb:140:44: info: initialization of "Blocks_Done" proved
 skein.adb:141:44: info: initialization of "Local_Ctx.X" proved
 skein.adb:144:25: info: initialization of "X" proved
 skein.adb:146:25: info: initialization of "Blocks_Done" proved
-skein.adb:146:37: medium: range check might fail (e.g. when Blocks_Done = 36028797018963968)
+skein.adb:146:37: medium: range check might fail (e.g. when Blocks_Done = 0)
 skein.adb:147:20: info: initialization of "Blocks_Done" proved
 skein.adb:147:35: info: initialization of "Blocks_Required" proved
 skein.ads:132:31: info: initialization of "Hash" proved

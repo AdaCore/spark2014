@@ -148,9 +148,11 @@ frame_condition.adb:170:42: info: overflow check proved (CVC4: 1 VC), in call in
 frame_condition.adb:171:36: info: initialization of "K" proved, in call inlined at frame_condition.adb:224
 frame_condition.adb:171:36: info: initialization of "K" proved, in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
 frame_condition.adb:171:36: info: initialization of "K" proved, in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
+frame_condition.adb:171:42: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
 frame_condition.adb:171:42: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
 frame_condition.adb:178:30: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:233
 frame_condition.adb:178:30: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:234
+frame_condition.adb:179:30: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:233
 frame_condition.adb:179:30: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:234
 frame_condition.adb:190:31: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:190:31: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:234

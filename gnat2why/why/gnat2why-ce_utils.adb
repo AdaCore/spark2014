@@ -52,6 +52,10 @@ package body Gnat2Why.CE_Utils is
       return Count;
    end Count_Why_Visible_Regular_Fields;
 
+   ------------------------
+   -- Is_Visible_In_Type --
+   ------------------------
+
    --  Body intentionally hidden from spec file
    function Is_Visible_In_Type (Rec  : Entity_Id;
                                 Comp : Entity_Id)
@@ -59,5 +63,22 @@ package body Gnat2Why.CE_Utils is
    is
      (Component_Is_Visible_In_Type (Rec,
                                     Search_Component_In_Type (Rec, Comp)));
+
+   -------------------
+   -- Get_Entity_Id --
+   -------------------
+
+   function Get_Entity_Id (Is_Record : Boolean; S : String) return Entity_Id is
+      I : constant Integer := (if Is_Record then 1 else 0);
+   begin
+      if S'First + I > S'Last then
+         return Empty;
+      else
+         return Entity_Id'Value (S (S'First + I .. S'Last));
+      end if;
+   exception
+      when Constraint_Error =>
+         return Empty;
+   end Get_Entity_Id;
 
 end Gnat2Why.CE_Utils;

@@ -13,7 +13,7 @@ linted-controls.adb:45:20: info: initialization of "X" proved
 linted-controls.adb:45:20: info: initialization of "X" proved, in call inlined at linted-controls.adb:54
 linted-controls.adb:45:20: info: initialization of "X" proved, in call inlined at linted-controls.adb:55
 linted-controls.adb:45:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:54
-linted-controls.adb:45:20: info: range check proved (altergo: 1 VC), in call inlined at linted-controls.adb:55
+linted-controls.adb:45:20: info: range check proved (Z3: 1 VC), in call inlined at linted-controls.adb:55
 linted-controls.adb:47:21: info: range check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:54
 linted-controls.adb:47:21: info: range check proved (Z3: 1 VC), in call inlined at linted-controls.adb:55
 linted-controls.adb:47:25: info: initialization of "X" proved

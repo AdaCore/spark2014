@@ -36,11 +36,12 @@
 --    - GPS plug-in spark2014.py
 --    - 2 tables in the section of SPARK User's Guide on GNATprove
 
+with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNATCOLL.JSON;         use GNATCOLL.JSON;
-with Ada.Containers.Doubly_Linked_Lists;
 
 package VC_Kinds is
 
@@ -262,6 +263,7 @@ package VC_Kinds is
    Model_Proj_Label    : constant String := "model_projected";
    Model_VC_Label      : constant String := "model_vc";
    Model_VC_Post_Label : constant String := "model_vc_post";
+   Branch_Id_Label     : constant String := "branch_id:";
 
    Model_Proj_Meta : constant String := "model_projection";
    --  A meta that is used in Why3 to mark a function as projection.
@@ -374,9 +376,15 @@ package VC_Kinds is
    --  For example, floats are actually the concatenation of two numbers "d.n"
    --  This is present in why3 and can be mimicked in SPARK.
 
+   package S_String_List is new
+     Ada.Containers.Indefinite_Doubly_Linked_Lists
+       (Element_Type => Unbounded_String,
+        "="          => "=");
+
    type Cntexample_Elt is record
       Kind    : CEE_Kind;
       Name    : Unbounded_String;
+      Labels  : S_String_List.List;
       Value   : Cntexmp_Value_Ptr;
       Val_Str : Unbounded_String;
    end record;
@@ -415,6 +423,8 @@ package VC_Kinds is
    function From_JSON (V : JSON_Value) return Prover_Stat_Maps.Map;
    function From_JSON (V : JSON_Value) return Prover_Category;
    function From_JSON (V : JSON_Value) return Cntexample_File_Maps.Map;
+
+   function From_JSON_Labels (Ar : JSON_Array) return S_String_List.List;
 
    function To_JSON (M : Prover_Stat_Maps.Map) return JSON_Value;
    function To_JSON (P : Prover_Category) return JSON_Value;

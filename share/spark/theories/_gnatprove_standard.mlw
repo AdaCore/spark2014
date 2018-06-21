@@ -56,6 +56,12 @@ module Main
      writes { x }
   val __private__havoc (x : __private__ref) : unit
      writes { x }
+
+
+  (* Counterexample branching-if variable. The model_trace is intentionally not
+     a node_id. We use another label to recognize the node_id corresponding to
+     values but we still need to trigger counterexample on this.  *)
+  val spark__branch "model" "model_trace:0000": bool__ref
 end
 
 module Compatible_Tags
@@ -660,10 +666,10 @@ module Array__1__Concat
 
   (* An array containing the value v at index i. It is used for the result of
      the concatenation of an empty array with a component. *)
- 
+
    function singleton component_type Index.t : map
    meta "encoding : lskept" function singleton
- 
+
    axiom singleton_def :
     forall v : component_type.
     forall i : Index.t  [get (singleton v i) i].

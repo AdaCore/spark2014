@@ -796,6 +796,7 @@ package body Gnat2Why.Expr is
                      Res := New_Assignment
                        (Ada_Node => N,
                         Name     => Binder.Fields.Binder.B_Name,
+                        Labels   => Name_Id_Sets.Empty_Set,
                         Value    => +New_Fields_Access (Domain => EW_Prog,
                                                         Name   => +Tmp_Var,
                                                         Ty     => Binder.Typ),
@@ -809,6 +810,7 @@ package body Gnat2Why.Expr is
                            New_Assignment
                              (Ada_Node => N,
                               Name     => Binder.Discrs.Binder.B_Name,
+                              Labels   => Name_Id_Sets.Empty_Set,
                               Value    => +New_Discriminants_Access
                                 (Domain => EW_Prog,
                                  Name   => +Tmp_Var,
@@ -895,6 +897,7 @@ package body Gnat2Why.Expr is
                   Res     : W_Prog_Id := New_Assignment
                     (Ada_Node => N,
                      Name     => Binder.Content.B_Name,
+                     Labels   => Name_Id_Sets.Empty_Set,
                      Value    => +Array_Convert_To_Base (EW_Prog, +Tmp_Var),
                      Typ      => Get_Typ (Binder.Content.B_Name));
                begin
@@ -960,6 +963,7 @@ package body Gnat2Why.Expr is
                      return New_Assignment
                        (Ada_Node => N,
                         Name     => L_Id,
+                        Labels   => Name_Id_Sets.Empty_Set,
                         Value    =>
                           (if Has_Record_Type (Etype (Lvalue))
                            or else Full_View_Not_In_SPARK (Etype (Lvalue))
@@ -1647,33 +1651,54 @@ package body Gnat2Why.Expr is
       else
          Cur_Case := Next (First_Case);
          for Offset in 1 .. List_Length (Cases) - 2 loop
-            Elsif_Parts (Integer (Offset)) :=
-              New_Elsif
-                (Domain    => Domain,
-                 Condition =>
-                   Transform_Discrete_Choices
-                     (Choices      => Discrete_Choices (Cur_Case),
-                      Choice_Type  => Empty,
-                      Matched_Expr => Matched_Expr,
-                      Cond_Domain  => Cond_Domain,
-                      Params       => Params),
+            declare
+               Disc_Choices : constant W_Expr_Id :=
+                 Transform_Discrete_Choices
+                   (Choices      => Discrete_Choices (Cur_Case),
+                    Choice_Type  => Empty,
+                    Matched_Expr => Matched_Expr,
+                    Cond_Domain  => Cond_Domain,
+                    Params       => Params);
+            begin
+               Elsif_Parts (Integer (Offset)) :=
+                 New_Elsif
+                   (Domain    => Domain,
+                    Condition =>
+                      (if Nkind (N) in N_Case_Statement then
+                         New_Counterexample_Assign
+                           (If_Node   => Cur_Case,
+                            Condition => Disc_Choices)
+                       else
+                          Disc_Choices),
                  Then_Part => Branch_Expr (Cur_Case));
-            Next (Cur_Case);
+               Next (Cur_Case);
+            end;
          end loop;
 
-         return New_Conditional
-           (Domain      => Domain,
-            Condition   =>
+         declare
+            Disc_Choices : constant W_Expr_Id :=
               Transform_Discrete_Choices
                 (Choices      => Discrete_Choices (First_Case),
                  Choice_Type  => Empty,
                  Matched_Expr => Matched_Expr,
                  Cond_Domain  => Cond_Domain,
-                 Params       => Params),
-            Then_Part   => Then_Expr,
-            Elsif_Parts => Elsif_Parts,
-            Else_Part   => Branch_Expr (Last_Case),
-            Typ         => Get_Type (Then_Expr));
+                 Params       => Params);
+         begin
+            return New_Conditional
+              (Domain      => Domain,
+               Condition   =>
+                 (if Nkind (N) in N_Case_Statement then
+                    New_Counterexample_Assign
+                      (If_Node   => First_Case,
+                       Condition => Disc_Choices)
+                  else
+                     Disc_Choices),
+
+               Then_Part   => Then_Expr,
+               Elsif_Parts => Elsif_Parts,
+               Else_Part   => Branch_Expr (Last_Case),
+               Typ         => Get_Type (Then_Expr));
+         end;
       end if;
    end Case_Expr_Of_Ada_Node;
 
@@ -5585,6 +5610,7 @@ package body Gnat2Why.Expr is
               New_Assignment
                 (Ada_Node => Ada_Node,
                  Name     => Prot_Obj,
+                 Labels   => Name_Id_Sets.Empty_Set,
                  Value    =>
                    +One_Level_Update
                      (Left_Side,
@@ -5606,6 +5632,7 @@ package body Gnat2Why.Expr is
                  New_Assignment
                    (Ada_Node => Ada_Node,
                     Name     => Binder.Main.B_Name,
+                    Labels   => Name_Id_Sets.Empty_Set,
                     Value    => Right_Side,
                     Typ      => Get_Typ (Binder.Main.B_Name));
 
@@ -5614,6 +5641,7 @@ package body Gnat2Why.Expr is
                  New_Assignment
                    (Ada_Node => Ada_Node,
                     Name     => Binder.Content.B_Name,
+                    Labels   => Name_Id_Sets.Empty_Set,
                     Value    => Right_Side,
                     Typ      => Get_Typ (Binder.Content.B_Name));
 
@@ -5627,6 +5655,7 @@ package body Gnat2Why.Expr is
                      Result := New_Assignment
                        (Ada_Node => Ada_Node,
                         Name     => Binder.Fields.Binder.B_Name,
+                        Labels   => Name_Id_Sets.Empty_Set,
                         Value    => +New_Fields_Access
                           (Domain   => EW_Prog,
                            Name     => Tmp,
@@ -5640,6 +5669,7 @@ package body Gnat2Why.Expr is
                           (Result, New_Assignment
                              (Ada_Node => Ada_Node,
                               Name     => Binder.Discrs.Binder.B_Name,
+                              Labels   => Name_Id_Sets.Empty_Set,
                               Value    => +New_Discriminants_Access
                                 (Domain   => EW_Prog,
                                  Name     => Tmp,
@@ -15224,6 +15254,7 @@ package body Gnat2Why.Expr is
                        New_Assignment
                          (Ada_Node => Stmt_Or_Decl,
                           Name     => Result_Name,
+                          Labels   => Name_Id_Sets.Empty_Set,
                           Value    =>
                             +Transform_Expr (Expression (Stmt_Or_Decl),
                                              Return_Type,
@@ -15272,9 +15303,10 @@ package body Gnat2Why.Expr is
                  Sequence
                    (Expr,
                     New_Assignment
-                      (Name  => Result_Name,
-                       Value => Obj_Deref,
-                       Typ   => Ret_Type));
+                      (Name     => Result_Name,
+                       Value    => Obj_Deref,
+                       Labels   => Name_Id_Sets.Empty_Set,
+                       Typ      => Ret_Type));
                return Sequence (Expr, Raise_Stmt);
             end;
 
@@ -15415,12 +15447,13 @@ package body Gnat2Why.Expr is
                              Def    =>
                              +New_Simpl_Conditional
                                (Condition =>
+                                  New_Counterexample_Assign (Cur,
                                   Transform_Expr_With_Actions
                                     (Condition (Cur),
                                      Condition_Actions (Cur),
                                      EW_Bool_Type,
                                      EW_Prog,
-                                     Params => Body_Params),
+                                     Params => Body_Params)),
                                 Then_Part =>
                                   +Transform_Statements_And_Declarations
                                     (Then_Statements (Cur)),
@@ -15436,10 +15469,12 @@ package body Gnat2Why.Expr is
 
                return
                  +New_Simpl_Conditional
-                 (Condition => Transform_Expr (Condition (Stmt_Or_Decl),
+                 (Condition =>
+                    New_Counterexample_Assign (Stmt_Or_Decl,
+                    Transform_Expr (Condition (Stmt_Or_Decl),
                                                EW_Bool_Type,
                                                EW_Prog,
-                                               Params => Body_Params),
+                                               Params => Body_Params)),
                     Then_Part =>
                       +Transform_Statements_And_Declarations
                         (Then_Statements (Stmt_Or_Decl)),

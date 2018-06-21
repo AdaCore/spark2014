@@ -84,6 +84,16 @@ package Why.Gen.Expr is
       Left, Right : W_Expr_Id;
       Domain      : EW_Domain) return W_Expr_Id;
 
+   function New_Counterexample_Assign (If_Node   : Node_Id;
+                                       Condition : W_Expr_Id)
+                                       return W_Expr_Id;
+   --  This takes a condition of an if-statement (or case statement)
+   --  [Condition] and builds an assignment to a variable spark__branch with
+   --  label [If_Node] , which is then dereferenced to yield the value of the
+   --  condition.
+   --  [C] becomes
+   --  [("node_id:If_Node" spark__branch).bool__content < - C; spark__branch]
+
    function New_Ada_Equality
      (Typ         : Entity_Id;
       Domain      : EW_Domain;

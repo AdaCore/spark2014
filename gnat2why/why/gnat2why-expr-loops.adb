@@ -901,6 +901,7 @@ package body Gnat2Why.Expr.Loops is
                          New_Assignment
                            (Ada_Node => Stmt,
                             Name     => Loop_Index,
+                            Labels   => Name_Id_Sets.Empty_Set,
                             Value    => +Insert_Simple_Conversion
                               (Domain         => EW_Term,
                                Expr           => +Call_Elmt,
@@ -1003,9 +1004,10 @@ package body Gnat2Why.Expr.Loops is
                           (if Is_Reverse then +High_Id else +Low_Id);
                      begin
                         return New_Assignment
-                          (Name  => Loop_Index,
-                           Value => +Init_Index,
-                           Typ   => Loop_Index_Type);
+                          (Name   => Loop_Index,
+                           Value  => +Init_Index,
+                           Labels => Name_Id_Sets.Empty_Set,
+                           Typ    => Loop_Index_Type);
                      end;
                   else
                      if Need_Iter then
@@ -1019,9 +1021,10 @@ package body Gnat2Why.Expr.Loops is
                         --  Loop_Index := First (W_Container)
 
                         return New_Assignment
-                          (Name  => Nam_For_Iter,
-                           Value => Init_Iter,
-                           Typ   => Typ_For_Iter);
+                          (Name   => Nam_For_Iter,
+                           Value  => Init_Iter,
+                           Labels => Name_Id_Sets.Empty_Set,
+                           Typ    => Typ_For_Iter);
                      end if;
                   end if;
                end Construct_Init_Prog;
@@ -1118,6 +1121,7 @@ package body Gnat2Why.Expr.Loops is
                         return New_Assignment
                           (Ada_Node => Stmt,
                            Name     => Loop_Index,
+                           Labels   => Name_Id_Sets.Empty_Set,
                            Value    => +Update_Expr,
                            Typ      => Loop_Index_Type);
                      end;
@@ -1150,6 +1154,7 @@ package body Gnat2Why.Expr.Loops is
                           New_Assignment
                             (Ada_Node => Stmt,
                              Name     => Nam_For_Iter,
+                             Labels   => Name_Id_Sets.Empty_Set,
                              Value    => +Insert_Simple_Conversion
                                (Domain         => EW_Term,
                                 Expr           => +Call_Next,
@@ -1511,9 +1516,10 @@ package body Gnat2Why.Expr.Loops is
             Prog : constant W_Prog_Id :=
               New_Ignore (Prog => +Variant_Expr (Expr, EW_Prog));
             Assign : constant W_Assignment_Id :=
-              New_Assignment (Name  => Name,
-                              Value => +Variant_Expr (Expr, EW_Pterm),
-                              Typ   => Base_Why_Type_No_Bool (Expr));
+              New_Assignment (Name   => Name,
+                              Value  => +Variant_Expr (Expr, EW_Pterm),
+                              Labels => Name_Id_Sets.Empty_Set,
+                              Typ    => Base_Why_Type_No_Bool (Expr));
 
          begin
             Tmp_Vars.Append (+Name);
@@ -1604,9 +1610,10 @@ package body Gnat2Why.Expr.Loops is
                  New_Integer_Constant (Value => Cur_Val));
             Stmt_List (Cur_Idx) :=
               New_Assignment
-                (Name  => Loop_Index,
-                 Value => Cur_Cst,
-                 Typ   => Loop_Index_Type);
+                (Name   => Loop_Index,
+                 Value  => Cur_Cst,
+                 Labels => Name_Id_Sets.Empty_Set,
+                 Typ    => Loop_Index_Type);
             Cur_Idx := Cur_Idx + 1;
             Stmt_List (Cur_Idx) := Body_Prog;
             Cur_Idx := Cur_Idx + 1;

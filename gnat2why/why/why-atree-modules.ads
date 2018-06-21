@@ -125,6 +125,7 @@ package Why.Atree.Modules is
       Return_Exc        : W_Name_Id;
       String_Image_Type : W_Type_Id;
       Type_Of_Heap      : W_Type_Id;
+      Spark_CE_Branch   : W_Identifier_Id;
    end record;
 
    type M_Compat_Tags_Type is record

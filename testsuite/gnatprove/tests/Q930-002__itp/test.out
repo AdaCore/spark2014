@@ -158,7 +158,7 @@ bounded_dynamic_arrays.ads:162:28: info: range check proved (CVC4: 1 VC), in ins
 bounded_dynamic_arrays.ads:163:48: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:170:14: info: postcondition proved (CVC4: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:170:28: info: index check proved (CVC4: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:185:17: medium: postcondition might fail, cannot prove Location'Result = 0, in instantiation at bounded_dynamic_strings.ads:5 (e.g. when Fragment = (others => 'NUL') and Fragment'First = 0 and Fragment'Last = 0 and Location'Result = 0 and Within = (Current_Length => 0, Content => (others => 'NUL'), Capacity => 0) and Within.Content'First = 0 and Within.Content'Last = 0)
+bounded_dynamic_arrays.ads:185:17: medium: postcondition might fail, cannot prove Location'Result = 0, in instantiation at bounded_dynamic_strings.ads:5 (e.g. when Fragment = (1 => 'SOH', others => 'NUL') and Fragment'First = 1 and Fragment'Last = 1 and Location'Result = 2 and Within = (Current_Length => 2, Content => (1 => 'NUL', others => 'SOH'), Capacity => 2) and Within.Content'First = 1 and Within.Content'Last = 2)
 bounded_dynamic_arrays.ads:194:14: info: postcondition proved (CVC4: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:212:07: info: range check proved (CVC4: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:212:48: info: length check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5

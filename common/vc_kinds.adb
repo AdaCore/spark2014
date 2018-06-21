@@ -324,6 +324,50 @@ package body VC_Kinds is
       return Cnt_Invalid;
    end From_JSON;
 
+   function From_JSON (V : JSON_Value) return Cntexample_Elt is
+      Cnt_Value : constant Cntexmp_Value_Ptr :=
+        new Cntexmp_Value'(Get_Typed_Cntexmp_Value (Get (V, "value")));
+   begin
+      return
+        Cntexample_Elt'(Kind        => From_JSON (Get (V, "kind")),
+                        Name        => Get (Get (V, "name")),
+                        Labels      =>
+                          From_JSON_Labels (Get (Get (V, "labels"))),
+                        Value       => Cnt_Value,
+                        Val_Str     => Null_Unbounded_String);
+   end From_JSON;
+
+   function From_JSON (V : JSON_Value) return Cntexample_Elt_Lists.List is
+      Res : Cntexample_Elt_Lists.List := Cntexample_Elt_Lists.Empty_List;
+      Ar  : constant JSON_Array       := Get (V);
+   begin
+      for Var_Index in Positive range 1 .. Length (Ar) loop
+         declare
+            Elt : constant JSON_Value := Get (Ar, Var_Index);
+         begin
+            Res.Append (From_JSON (Elt));
+         end;
+      end loop;
+      return Res;
+   end From_JSON;
+
+   ----------------------
+   -- From_JSON_Labels --
+   ----------------------
+
+   function From_JSON_Labels (Ar : JSON_Array) return S_String_List.List is
+      Res : S_String_List.List  := S_String_List.Empty_List;
+   begin
+      for Var_Index in Positive range 1 .. Length (Ar) loop
+         declare
+            Elt : constant String := Get (Get (Ar, Var_Index));
+         begin
+            Res.Append (To_Unbounded_String (Elt));
+         end;
+      end loop;
+      return Res;
+   end From_JSON_Labels;
+
    -----------------------------
    -- Get_Typed_Cntexmp_Value --
    -----------------------------
@@ -455,31 +499,6 @@ package body VC_Kinds is
                     S => Null_Unbounded_String);
       end case;
    end Get_Typed_Cntexmp_Value;
-
-   function From_JSON (V : JSON_Value) return Cntexample_Elt is
-      Cnt_Value : constant Cntexmp_Value_Ptr :=
-        new Cntexmp_Value'(Get_Typed_Cntexmp_Value (Get (V, "value")));
-   begin
-      return
-        Cntexample_Elt'(Kind        => From_JSON (Get (V, "kind")),
-                        Name        => Get (Get (V, "name")),
-                        Value       => Cnt_Value,
-                        Val_Str     => Null_Unbounded_String);
-   end From_JSON;
-
-   function From_JSON (V : JSON_Value) return Cntexample_Elt_Lists.List is
-      Res : Cntexample_Elt_Lists.List := Cntexample_Elt_Lists.Empty_List;
-      Ar  : constant JSON_Array       := Get (V);
-   begin
-      for Var_Index in Positive range 1 .. Length (Ar) loop
-         declare
-            Elt : constant JSON_Value := Get (Ar, Var_Index);
-         begin
-            Res.Append (From_JSON (Elt));
-         end;
-      end loop;
-      return Res;
-   end From_JSON;
 
    -------------
    -- To_JSON --
