@@ -273,6 +273,13 @@ package body SPARK_Atree is
    function Enclosing_Comp_Unit_Node (N : Node_Id) return Node_Id renames
      Sem_Util.Enclosing_Comp_Unit_Node;
 
+   -------------------------
+   -- Enclosing_Statement --
+   -------------------------
+
+   function Enclosing_Statement (N : Node_Id) return Node_Id renames
+     Atree.Parent;
+
    ------------
    -- Entity --
    ------------

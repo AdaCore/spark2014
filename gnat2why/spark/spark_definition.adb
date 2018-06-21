@@ -37,7 +37,6 @@ with Exp_Util;                        use Exp_Util;
 with Flow_Refinement;                 use Flow_Refinement;
 with Flow_Types;                      use Flow_Types;
 with Gnat2Why_Args;
-with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
 with Gnat2Why.Util;
 with Lib;                             use Lib;
 with Namet;                           use Namet;
@@ -1012,7 +1011,8 @@ package body SPARK_Definition is
            and then Analysis_Requested (E, With_Inlined => True)
          then
             declare
-               V : constant JSON_Value := To_JSON (Entity_To_Subp (E));
+               V : constant JSON_Value :=
+                 To_JSON (Entity_To_Subp_Assumption (E));
 
                SPARK_Status : constant String :=
                  (if Entity_Body_In_SPARK (E)
@@ -1040,7 +1040,7 @@ package body SPARK_Definition is
 
             declare
                V            : constant JSON_Value :=
-                 To_JSON (Entity_To_Subp (E));
+                 To_JSON (Entity_To_Subp_Assumption (E));
                SPARK_Status : constant String :=
                  (if (Has_Record_Type (E) or else Has_Private_Type (E))
                        and then

@@ -23,11 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;             use Atree;
-with Einfo;             use Einfo;
-with SPARK_Util.Types;  use SPARK_Util.Types;
-with Gnat2Why.Util;     use Gnat2Why.Util;
-with Types;             use Types;
+with SPARK_Atree;          use SPARK_Atree;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Util.Types;     use SPARK_Util.Types;
+with Gnat2Why.Util;        use Gnat2Why.Util;
+with Types;                use Types;
 
 package Gnat2Why.CE_Utils is
 

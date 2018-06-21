@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Assumption_Types;  use Assumption_Types;
 with Atree;             use Atree;
 with Checked_Types;     use Checked_Types;
 with Common_Containers; use Common_Containers;
@@ -647,5 +648,13 @@ package SPARK_Util is
    --
    --  ??? this is only a temporary fix and should be removed once the
    --  underlying problem with First_Sloc is fixed.
+
+   function Entity_To_Subp_Assumption (E : Entity_Id) return Subp_Type
+   with Pre => (if Is_Internal (E)
+                then Is_Type (E) or else Is_Predicate_Function (E));
+   --  Transform an entity into a Assumption_Types.Subp_Type
+   --  ??? At the moment we are checking whether E is a predicate function but
+   --  this will have to be removed as soon as we will not create graphs for
+   --  type predicates.
 
 end SPARK_Util;

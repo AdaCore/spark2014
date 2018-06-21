@@ -91,6 +91,9 @@ package SPARK_Atree.Entities is
    function Is_Boolean_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Boolean_Type;
 
+   function Is_Character_Type (E : Entity_Id) return Boolean renames
+     Einfo.Is_Character_Type;
+
    function Is_Compilation_Unit (E : Entity_Id) return Boolean renames
      Einfo.Is_Compilation_Unit;
 
@@ -115,6 +118,9 @@ package SPARK_Atree.Entities is
 
    function Is_Entry (E : Entity_Id) return Boolean renames
      Einfo.Is_Entry;
+
+   function Is_Enumeration_Type (E : Entity_Id) return Boolean renames
+     Einfo.Is_Enumeration_Type;
 
    function Is_Fixed_Point_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Fixed_Point_Type;
@@ -284,6 +290,18 @@ package SPARK_Atree.Entities is
    --  subtypes and returns String_Literal_Low_Bound so that it can be called
    --  on the result of SPARK_Util.Nth_Index_Type which may return a string
    --  literal subtype.
+
+   ----------------------------
+   --  For Enumeration Types --
+   ----------------------------
+
+   function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Entity_Id
+   with
+     Pre  => Is_Enumeration_Type (Typ),
+     Post => Nkind (Get_Enum_Lit_From_Pos'Result) in N_Identifier
+                                                   | N_Character_Literal;
+   --  Same as Sum_Util.Get_Enum_Lit_From_Pos except that Loc parameter is
+   --  always No_Location.
 
    --------------------------------
    --  For Modular Integer Types --

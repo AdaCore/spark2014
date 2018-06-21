@@ -25,8 +25,8 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Atree;                      use Atree;
-with Sinput;                     use Sinput;
+with SPARK_Atree;                use SPARK_Atree;
+with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with Snames;                     use Snames;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
@@ -42,9 +42,6 @@ package body Gnat2Why.Assumptions is
 
    function Claim_To_Token (C : Claim) return Token;
    --  Build an assumption token from a gnat2why claim
-
-   function Loc_To_Assume_Sloc (Loc : Source_Ptr) return My_Sloc
-   with Pre => Loc /= No_Location;
 
    Claim_Assumptions : Claim_Maps.Map := Claim_Maps.Empty_Map;
    --  Assumptions of a claim, whether that claim has been established or not
@@ -97,18 +94,8 @@ package body Gnat2Why.Assumptions is
    function Claim_To_Token (C : Claim) return Token is
    begin
       return (Predicate => C.Kind,
-              Arg       => Entity_To_Subp (C.E));
+              Arg       => Entity_To_Subp_Assumption (C.E));
    end Claim_To_Token;
-
-   --------------------
-   -- Entity_To_Subp --
-   --------------------
-
-   function Entity_To_Subp (E : Entity_Id) return Subp_Type is
-   begin
-      return Mk_Subp (Name => Full_Source_Name (E),
-                      Sloc => Loc_To_Assume_Sloc (Sloc (E)));
-   end Entity_To_Subp;
 
    ---------------------
    -- Get_Assume_JSON --
@@ -135,29 +122,6 @@ package body Gnat2Why.Assumptions is
 
       return To_JSON (Rules);
    end Get_Assume_JSON;
-
-   ------------------------
-   -- Loc_To_Assume_Sloc --
-   ------------------------
-
-   function Loc_To_Assume_Sloc (Loc : Source_Ptr) return My_Sloc is
-      Sloc : My_Sloc := Sloc_Lists.Empty_List;
-      Slc  : Source_Ptr := Loc;
-   begin
-      loop
-         declare
-            File : constant String := File_Name (Slc);
-            Line : constant Positive :=
-              Positive (Get_Physical_Line_Number (Slc));
-         begin
-            Sloc.Append (Mk_Base_Sloc (File => File, Line => Line));
-         end;
-         Slc := Instantiation_Location (Slc);
-
-         exit when Slc = No_Location;
-      end loop;
-      return Sloc;
-   end Loc_To_Assume_Sloc;
 
    --------------------
    -- Register_Claim --

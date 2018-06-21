@@ -26,14 +26,12 @@
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Ada.Strings;                        use Ada.Strings;
-with Assumption_Types;                   use Assumption_Types;
 with Common_Iterators;                   use Common_Iterators;
 with Debug;
 with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
 with Gnat2Why_Args;
-with Gnat2Why.Assumptions;               use Gnat2Why.Assumptions;
 with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Rtsfind;                            use Rtsfind;
 with Sem_Ch12;                           use Sem_Ch12;
@@ -1214,7 +1212,7 @@ package body SPARK_Util.Subprograms is
    --  users inside a generic/inlined subprogram.
 
    function Subp_Location (E : Entity_Id) return String is
-      S : constant Subp_Type := Entity_To_Subp (E);
+      S : constant Subp_Type := Entity_To_Subp_Assumption (E);
       B : constant Base_Sloc := Subp_Sloc (S).First_Element;
    begin
       return GP_Subp_Marker & Base_Sloc_File (B) & ":" & Image (B.Line, 1);

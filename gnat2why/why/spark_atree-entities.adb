@@ -243,6 +243,13 @@ package body SPARK_Atree.Entities is
    function Get_Cursor_Type (Typ : Entity_Id) return Entity_Id renames
      Sem_Util.Get_Cursor_Type;
 
+   ---------------------------
+   -- Get_Enum_Lit_From_Pos --
+   ---------------------------
+
+   function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Entity_Id
+   is (Sem_Util.Get_Enum_Lit_From_Pos (Typ, P, No_Location));
+
    ------------------
    -- Get_Rep_Item --
    ------------------

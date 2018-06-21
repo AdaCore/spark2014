@@ -195,6 +195,9 @@ package SPARK_Atree is
      Post => No (Enclosing_Comp_Unit_Node'Result)
        or else Nkind (Enclosing_Comp_Unit_Node'Result) = N_Compilation_Unit;
 
+   function End_Location (N : Node_Id) return Source_Ptr renames
+     Sinfo.End_Location;
+
    function Is_Rewrite_Substitution (N : Node_Id) return Boolean renames
      Atree.Is_Rewrite_Substitution;
    --  ??? As for Original_Node.
@@ -353,6 +356,13 @@ package SPARK_Atree is
 
    function Elsif_Parts (N : Node_Id) return List_Id with
      Pre => Nkind (N) = N_If_Statement;
+
+   function Enclosing_Statement (N : Node_Id) return Node_Id with
+     Pre  => Nkind (N) in N_Elsif_Part | N_Case_Statement_Alternative,
+     Post => (if Nkind (N) = N_Elsif_Part then
+                  Nkind (Enclosing_Statement'Result) = N_If_Statement
+              else Nkind (Enclosing_Statement'Result) = N_Case_Statement);
+   --  Renaming of Parent for parts of conditional statements
 
    function Entity (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) in N_Has_Entity
@@ -637,6 +647,9 @@ package SPARK_Atree is
 
    function Compile_Time_Known_Value (N : Node_Id) return Boolean renames
      Sem_Eval.Compile_Time_Known_Value;
+
+   function Compile_Time_Known_Value_Or_Aggr (N : Node_Id) return Boolean
+     renames Sem_Eval.Compile_Time_Known_Value_Or_Aggr;
 
    function Expr_Value (N : Node_Id) return Uint with
      Pre => Compile_Time_Known_Value (N);

@@ -32,7 +32,6 @@ with Einfo;                     use Einfo;
 with Errout;                    use Errout;
 with Erroutc;                   use Erroutc;
 with Flow_Utility;              use Flow_Utility;
-with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
 with Gnat2Why.Counter_Examples; use Gnat2Why.Counter_Examples;
 with Gnat2Why_Args;             use Gnat2Why_Args;
 with GNATCOLL.Utils;            use GNATCOLL.Utils;
@@ -718,7 +717,7 @@ package body Flow_Error_Messages is
 
       Set_Field (Value, "rule", Tag);
       Set_Field (Value, "severity", Msg_Severity_To_String (Severity));
-      Set_Field (Value, "entity", To_JSON (Entity_To_Subp (E)));
+      Set_Field (Value, "entity", To_JSON (Entity_To_Subp_Assumption (E)));
       Set_Field (Value, "check_tree", Check_Tree);
 
       if VC_Loc /= No_Location then

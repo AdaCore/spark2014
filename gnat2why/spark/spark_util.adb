@@ -706,6 +706,41 @@ package body SPARK_Util is
       return Empty;
    end Enclosing_Unit;
 
+   -------------------------------
+   -- Entity_To_Subp_Assumption --
+   -------------------------------
+
+   function Entity_To_Subp_Assumption (E : Entity_Id) return Subp_Type is
+      function Loc_To_Assume_Sloc (Loc : Source_Ptr) return My_Sloc
+        with Pre => Loc /= No_Location;
+
+      ------------------------
+      -- Loc_To_Assume_Sloc --
+      ------------------------
+
+      function Loc_To_Assume_Sloc (Loc : Source_Ptr) return My_Sloc is
+         Sloc : My_Sloc := Sloc_Lists.Empty_List;
+         Slc  : Source_Ptr := Loc;
+      begin
+         loop
+            declare
+               File : constant String := File_Name (Slc);
+               Line : constant Positive :=
+                 Positive (Get_Physical_Line_Number (Slc));
+            begin
+               Sloc.Append (Mk_Base_Sloc (File => File, Line => Line));
+            end;
+            Slc := Instantiation_Location (Slc);
+
+            exit when Slc = No_Location;
+         end loop;
+         return Sloc;
+      end Loc_To_Assume_Sloc;
+   begin
+      return Mk_Subp (Name => Full_Source_Name (E),
+                      Sloc => Loc_To_Assume_Sloc (Sloc (E)));
+   end Entity_To_Subp_Assumption;
+
    ------------------------------
    -- File_Name_Without_Suffix --
    ------------------------------

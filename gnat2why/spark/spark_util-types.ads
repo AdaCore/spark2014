@@ -298,14 +298,6 @@ package SPARK_Util.Types is
    --  @param Discr a discriminant of Ty
    --  @return the constraint stored for Discr in Ty
 
-   function Has_Private_Ancestor_Or_Root (E : Entity_Id) return Boolean
-   with Pre => Is_Type (E);
-   --  @param E any type
-   --  @return True iff E is a tagged type whose translation into Why3 requires
-   --     the use of an ancestor field, to denote invisible fields from an
-   --     ancestor at the Why3 level (due either to a private ancestor or
-   --     a root type whose full view not in SPARK).
-
    function Has_Private_Fields (E : Entity_Id) return Boolean with
      Pre => Has_Private_Type (E) or else Has_Record_Type (E);
    --  @param E a private or record type

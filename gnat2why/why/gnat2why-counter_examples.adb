@@ -29,9 +29,7 @@ with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Ordered_Sets;
 with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
-with Atree;                     use Atree;
 with Ce_Interval_Sets;
-with Einfo;                     use Einfo;
 with Flow_Refinement;           use Flow_Refinement;
 with Flow_Types;                use Flow_Types;
 with GNAT;                      use GNAT;
@@ -41,11 +39,9 @@ with Gnat2Why.Tables;           use Gnat2Why.Tables;
 with Gnat2Why.Util;             use Gnat2Why.Util;
 with Namet;                     use Namet;
 with Nlists;                    use Nlists;
-with Sem_Aux;                   use Sem_Aux;
-with Sem_Eval;                  use Sem_Eval;
-with Sem_Util;                  use Sem_Util;
-with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
+with SPARK_Atree;               use SPARK_Atree;
+with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
 with SPARK_Util;                use SPARK_Util;
 with SPARK_Util.Types;          use SPARK_Util.Types;
 with String_Utils;              use String_Utils;
@@ -79,7 +75,8 @@ package body Gnat2Why.Counter_Examples is
      (Element_Decl : Entity_Id;
       Element_File : String;
       Element_Line : Natural)
-      return Boolean;
+      return Boolean
+   with Pre => Nkind (Element_Decl) in N_Entity;
    --  Return True if the counterexample element with given declaration at
    --  given position is uninitialized.
 
@@ -258,7 +255,7 @@ package body Gnat2Why.Counter_Examples is
       begin
          if Ekind (E) = E_Constant then
             declare
-               Decl : constant Node_Id := Parent (E);
+               Decl : constant Node_Id := Enclosing_Declaration (E);
                Expr : constant Node_Id := Expression (Decl);
             begin
                return Present (Expr)
@@ -302,10 +299,14 @@ package body Gnat2Why.Counter_Examples is
 
                      --  Call Get_Enum_Lit_From_Pos to get a corresponding
                      --  enumeration entity.
+
                      Enum  : Entity_Id;
+
                   begin
-                     Enum := Sem_Util.Get_Enum_Lit_From_Pos
-                       (AST_Type, Value, No_Location);
+                     --  Initialization of Enum can raise Constraint_Error if
+                     --  there is no literal value for the position.
+
+                     Enum := Get_Enum_Lit_From_Pos (AST_Type, Value);
 
                      --  Special case for characters, which are defined in the
                      --  standard unit Standard.ASCII, and as such do not have
@@ -1249,7 +1250,9 @@ package body Gnat2Why.Counter_Examples is
                      --  Do not display uninitialized counterexample elements
                      --  (elements corresponding to uninitialized variables or
                      --  function arguments).
-                     if Is_Uninitialized (Part_Entity, File, Line) then
+                     if Present (Part_Entity)
+                       and then Is_Uninitialized (Part_Entity, File, Line)
+                     then
                         goto Next_Model_Element;
                      end if;
 
@@ -1263,12 +1266,9 @@ package body Gnat2Why.Counter_Examples is
                      --  Possibly Append attributes 'Old or
                      --  'Result after its name
                      if (Elt.Kind = CEE_Old
-                           and then
-                         Nkind (Parent (Part_Entity)) in
-                           N_Formal_Object_Declaration |
-                           N_Parameter_Specification
-                           and then
-                         Out_Present (Parent (Part_Entity)))
+                         and then Nkind (Part_Entity) in N_Entity
+                         and then Ekind (Part_Entity) in
+                           E_In_Out_Parameter | E_Out_Parameter)
                        or else Elt.Kind = CEE_Result
                      then
                         Current_CNT_Element := Insert_CNT_Element
@@ -1519,34 +1519,22 @@ package body Gnat2Why.Counter_Examples is
           Natural
             (Get_Logical_Line_Number (Sloc (Element_Decl))) = Element_Line
       then
-         case Nkind (Parent (Element_Decl)) is
-            --  Uninitialized variable
-            when N_Object_Declaration =>
-               declare
-                  Init_Expr : constant Node_Id :=
-                    Expression (Parent (Element_Decl));
-                  No_Default_Init : constant Boolean :=
+
+         --  Uninitialized procedure parameter
+
+         return Ekind (Element_Decl) = E_Out_Parameter
+
+         --  Uninitialized variable
+
+           or else (Ekind (Element_Decl) = E_Variable
+                    and then Nkind (Enclosing_Declaration (Element_Decl)) =
+                      N_Object_Declaration
+                    and then
+                    No (Expression (Enclosing_Declaration (Element_Decl)))
+                    and then
                     Default_Initialization
                       (Etype (Element_Decl), Get_Flow_Scope (Element_Decl)) =
-                        No_Default_Initialization;
-               begin
-                  return No (Init_Expr)
-                    and then No_Default_Init;
-               end;
-
-            --  Uninitialized function argument
-            when N_Formal_Object_Declaration
-               | N_Parameter_Specification
-            =>
-               return
-                 Out_Present (Parent (Element_Decl))
-                 and then not In_Present (Parent (Element_Decl));
-               --  ??? Ekind (Element_Decl) = E_Out_Parameter ?
-
-            when others =>
-               return False;
-         end case;
-
+                        No_Default_Initialization);
       end if;
 
       return False;
@@ -1661,7 +1649,7 @@ package body Gnat2Why.Counter_Examples is
                  (S, (L_Bound => Get_P (Next (E)),
                       R_Bound =>
                         Get_Physical_Line_Number (
-                          End_Location (Parent (E)))));
+                          End_Location (Enclosing_Statement (E)))));
             end if;
 
          end if;
@@ -1703,11 +1691,15 @@ package body Gnat2Why.Counter_Examples is
 
                          --  There is an elsif statements so there is an else
                          --  statement
-                         (if Present (Else_Statements (Parent (E))) then
-                             Get_P (First (Else_Statements (Parent (E))))
+
+                         (if Present
+                              (Else_Statements (Enclosing_Statement (E)))
+                          then
+                             Get_P (First
+                            (Else_Statements (Enclosing_Statement (E))))
                           else
                              Get_Physical_Line_Number
-                               (End_Location (Parent (E))))));
+                               (End_Location (Enclosing_Statement (E))))));
          else
 
             --  Cannot be accessed (precondition)
@@ -1730,7 +1722,8 @@ package body Gnat2Why.Counter_Examples is
          else
             return (L_Bound => Get_P (E),
                     R_Bound =>
-                      Physical_Line_Number (End_Location (Parent (E))));
+                      Physical_Line_Number
+                        (End_Location (Enclosing_Statement (E))));
          end if;
 
       end Get_Interval_For_Branch_Case;
@@ -1794,21 +1787,22 @@ package body Gnat2Why.Counter_Examples is
                     (S, (L_Bound => Get_P (Next (E)),
                          R_Bound =>
                            Get_Physical_Line_Number (
-                             End_Location (Parent (E)))));
+                             End_Location (Enclosing_Statement (E)))));
 
                else
 
                   --  If there is no else statements and no following elsif we
                   --  do nothing.
-                  if Present (Else_Statements (Parent (E))) then
+
+                  if Present (Else_Statements (Enclosing_Statement (E))) then
                      Supp_Lines.Insert
                        (S, (L_Bound =>
-                                Get_P (First (Else_Statements (Parent (E)))),
+                                Get_P (First
+                                 (Else_Statements (Enclosing_Statement (E)))),
                             R_Bound =>
                               Get_Physical_Line_Number (
-                                End_Location (Parent (E)))));
+                                End_Location (Enclosing_Statement (E)))));
                   end if;
-
                end if;
 
             else
