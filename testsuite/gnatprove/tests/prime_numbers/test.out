@@ -99,7 +99,7 @@ prime_and_coprime_numbers.adb:213:42: medium: loop invariant might fail after fi
 prime_and_coprime_numbers.adb:213:45: info: initialization of "Set.Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:213:56: info: index check proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:215:13: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:215:13: medium: loop invariant might fail after first iteration, in instantiation at test_prime_and_coprime_numbers.adb:6 (e.g. when Div = 2 and Index_2 = 5 and Is_Prime = (99997 => False, others => True) and V = 99998)
+prime_and_coprime_numbers.adb:215:13: medium: loop invariant might fail after first iteration, in instantiation at test_prime_and_coprime_numbers.adb:6 (e.g. when Div = 2 and Index_2 = 5 and Is_Prime = (99998 => False, others => True) and V = 100000)
 prime_and_coprime_numbers.adb:216:18: info: initialization of "Set.Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:216:29: info: index check proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:217:55: info: division check proved (CVC4: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6

@@ -1701,9 +1701,13 @@ package body Gnat2Why.Counter_Examples is
                           Physical_Line_Number'Max (1, Get_P (Next (E)) - 1)
                        else
 
-                          --  There is an elsif statements so there is an else
-                          --  statement
-                          Get_P (First (Else_Statements (Parent (E))))));
+                         --  There is an elsif statements so there is an else
+                         --  statement
+                         (if Present (Else_Statements (Parent (E))) then
+                             Get_P (First (Else_Statements (Parent (E))))
+                          else
+                             Get_Physical_Line_Number
+                               (End_Location (Parent (E))))));
          else
 
             --  Cannot be accessed (precondition)
@@ -1793,13 +1797,18 @@ package body Gnat2Why.Counter_Examples is
                              End_Location (Parent (E)))));
 
                else
-                  pragma Assert (Present (Else_Statements (Parent (E))));
-                  Supp_Lines.Insert
-                    (S, (L_Bound =>
-                           Get_P (First (Else_Statements (Parent (E)))),
-                         R_Bound =>
-                           Get_Physical_Line_Number (
-                             End_Location (Parent (E)))));
+
+                  --  If there is no else statements and no following elsif we
+                  --  do nothing.
+                  if Present (Else_Statements (Parent (E))) then
+                     Supp_Lines.Insert
+                       (S, (L_Bound =>
+                                Get_P (First (Else_Statements (Parent (E)))),
+                            R_Bound =>
+                              Get_Physical_Line_Number (
+                                End_Location (Parent (E)))));
+                  end if;
+
                end if;
 
             else
