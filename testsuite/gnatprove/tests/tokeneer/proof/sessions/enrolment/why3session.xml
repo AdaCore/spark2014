@@ -2,10 +2,10 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
-<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
-<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="0"/>
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="40" steplimit="200" memlimit="0"/>
+<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="40" steplimit="610000" memlimit="0"/>
+<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="40" steplimit="22000" memlimit="0"/>
+<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="22000" memlimit="0"/>
 <file name="../../../gnatprove/enrolment.mlw">
 <theory name="Enrolment__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
@@ -32,21 +32,10 @@
   <proof prover="2"><result status="valid" steps="23"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="1"><result status="unknown" steps="611271"/></proof>
   <proof prover="2"><result status="unknown" steps="975"/></proof>
   <proof prover="3"><result status="unknown" steps="1473"/></proof>
-  <transf name="split_disj" >
-   <goal name="WP_parameter def.5.0" expl="precondition">
-   <proof prover="3"><result status="unknown" steps="862"/></proof>
-   </goal>
-   <goal name="WP_parameter def.5.1" expl="precondition">
-   </goal>
-   <goal name="WP_parameter def.5.2" expl="precondition">
-   </goal>
-   <goal name="WP_parameter def.5.3" expl="precondition">
-   </goal>
-  </transf>
   </goal>
   <goal name="WP_parameter def.6" expl="loop invariant preservation" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -58,10 +47,10 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="330"/></proof>
+  <proof prover="2"><result status="valid" steps="341"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="210"/></proof>
+  <proof prover="2"><result status="valid" steps="189"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="postcondition" proved="true">
   <proof prover="2"><result status="valid" steps="20"/></proof>
@@ -82,7 +71,7 @@
   <proof prover="2"><result status="valid" steps="451"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="565"/></proof>
+  <proof prover="2"><result status="valid" steps="580"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -100,13 +89,13 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="483"/></proof>
+  <proof prover="2"><result status="valid" steps="500"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="483"/></proof>
+  <proof prover="2"><result status="valid" steps="500"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -121,7 +110,7 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="256"/></proof>
+  <proof prover="2"><result status="valid" steps="271"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -136,13 +125,13 @@
   <proof prover="2"><result status="valid" steps="366"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="184"/></proof>
+  <proof prover="2"><result status="valid" steps="185"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="379"/></proof>
+  <proof prover="2"><result status="valid" steps="381"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="361"/></proof>
+  <proof prover="2"><result status="valid" steps="363"/></proof>
   </goal>
  </transf>
  </goal>
