@@ -64,6 +64,12 @@ package Flow_Error_Messages is
    --  Returns a name for a trace file. This name should be unique for the
    --  project.
 
+   function Error_Location (G : Flow_Graphs.Graph;
+                            M : Attribute_Maps.Map;
+                            V : Flow_Graphs.Vertex_Id)
+                            return Node_Or_Entity_Id;
+   --  Find a good place to raise an error for vertex V
+
    procedure Error_Msg_Flow
      (E            : Entity_Id;
       Msg          : String;
@@ -77,8 +83,9 @@ package Flow_Error_Messages is
       SRM_Ref      : String        := "";
       Tracefile    : String        := "";
       Continuation : Boolean       := False)
-   with Pre => (if Present (F2) then Present (F1)) and then
-               (if Present (F3) then Present (F2));
+   with Pre => (if Present (F2) then Present (F1))
+                and then (if Present (F3) then Present (F2))
+                and then (if Continuation then Tracefile = "");
    --  Output a message attached to the given node with a substitution
    --  using F1, F2 and F3. It also adds a JSON entry in the "unit.flow" file
    --  for the given entity E.
@@ -104,15 +111,21 @@ package Flow_Error_Messages is
       F3           : Flow_Id               := Null_Flow_Id;
       Tag          : Flow_Tag_Kind         := Empty_Tag;
       SRM_Ref      : String                := "";
-      Tracefile    : String                := "";
+      Path         : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
       Vertex       : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
       Continuation : Boolean               := False)
-   with Pre => (if Present (F2) then Present (F1)) and
-               (if Present (F3) then Present (F2));
-   --  As above, but:
+   with Pre => (if Present (F2) then Present (F1))
+                and then (if Present (F3) then Present (F2))
+                and then (if Continuation then Path.Is_Empty);
+   --  As above but it also writes the tracefile.
+   --
+   --  Also:
    --
    --  E is worked out from FA, and FA.No_Errors_Or_Warnings is
    --  appropriately modified.
+   --
+   --  Instead of the Tracefile parameter we have the Path which contains the
+   --  vertices we want to write to the tracefile.
    --
    --  Finally, for debug purposes, Vertex should be set to the vertex
    --  where the error was detected. This is printed in debug mode.

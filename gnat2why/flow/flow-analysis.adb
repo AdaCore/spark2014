@@ -21,13 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Indefinite_Hashed_Sets;
-with Ada.Strings.Hash;
-with Ada.Text_IO;
-
 with Elists;                      use Elists;
 with Lib;                         use Lib;
-with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Output;                      use Output;
 with Restrict;                    use Restrict;
@@ -35,7 +30,6 @@ with Rident;                      use Rident;
 with Sem_Aux;                     use Sem_Aux;
 with Sem_Type;                    use Sem_Type;
 with Sem_Util;                    use Sem_Util;
-with Sinput;                      use Sinput;
 with Snames;                      use Snames;
 
 with Common_Iterators;            use Common_Iterators;
@@ -70,19 +64,6 @@ package body Flow.Analysis is
    use type Ada.Containers.Count_Type;
    use type Flow_Graphs.Vertex_Id;
    use type Flow_Id_Sets.Set;
-
-   function Get_Line
-     (G   : Flow_Graphs.Graph;
-      M   : Attribute_Maps.Map;
-      V   : Flow_Graphs.Vertex_Id;
-      Sep : Character := ':') return String;
-   --  Obtain the location for the given vertex as in "foo.adb:12"
-
-   procedure Write_Vertex_Set
-     (FA       : Flow_Analysis_Graphs;
-      Set      : Vertex_Sets.Set;
-      Filename : String);
-   --  Write a trace file for GPS
 
    function Vertices_Between_From_And_To (FA   : Flow_Analysis_Graphs;
                                           From : Flow_Id;
@@ -163,91 +144,6 @@ package body Flow.Analysis is
         (for some V of FA.CFG.Get_Collection (FA.End_Vertex,
                                               Flow_Graphs.Out_Neighbours)
          => FA.Atr (V).Is_Export));
-
-   --------------------
-   -- Error_Location --
-   --------------------
-
-   function Error_Location
-     (G : Flow_Graphs.Graph;
-      M : Attribute_Maps.Map;
-      V : Flow_Graphs.Vertex_Id) return Node_Or_Entity_Id
-   is
-      Loc : constant Node_Or_Entity_Id := M (V).Error_Location;
-   begin
-      if Present (Loc) then
-         return Loc;
-      else
-         declare
-            K : Flow_Id renames G.Get_Key (V);
-         begin
-            case K.Kind is
-               when Direct_Mapping | Record_Field =>
-                  return Get_Direct_Mapping_Id (K);
-               when others =>
-                  raise Why.Unexpected_Node;
-            end case;
-         end;
-      end if;
-   end Error_Location;
-
-   --------------
-   -- Get_Line --
-   --------------
-
-   function Get_Line
-     (G   : Flow_Graphs.Graph;
-      M   : Attribute_Maps.Map;
-      V   : Flow_Graphs.Vertex_Id;
-      Sep : Character := ':') return String
-   is
-      N  : constant Node_Or_Entity_Id := Error_Location (G, M, V);
-      SI : constant Source_File_Index := Get_Source_File_Index (Sloc (N));
-   begin
-      return Get_Name_String (File_Name (SI)) & Sep &
-        Get_Logical_Line_Number_Img (Sloc (N));
-   end Get_Line;
-
-   ----------------------
-   -- Write_Vertex_Set --
-   ----------------------
-
-   package Trace_File_Sets is new Ada.Containers.Indefinite_Hashed_Sets
-     (Element_Type        => String,
-      Hash                => Ada.Strings.Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
-
-   Trace_Files : Trace_File_Sets.Set;
-   --  This container and the related package declaration are only used for
-   --  sanity checks in the following procedure; they are intentionally
-   --  declared next to its body.
-
-   procedure Write_Vertex_Set
-     (FA       : Flow_Analysis_Graphs;
-      Set      : Vertex_Sets.Set;
-      Filename : String)
-   is
-      FD : Ada.Text_IO.File_Type;
-   begin
-      pragma Debug (Trace_Files.Insert (Filename));
-      --  Detect repeated writing to the same tracefile
-
-      Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
-
-      for V of Set loop
-         declare
-            F : Flow_Id renames FA.PDG.Get_Key (V);
-
-         begin
-            if F.Kind = Direct_Mapping then
-               Ada.Text_IO.Put_Line (FD, Get_Line (FA.PDG, FA.Atr, V));
-            end if;
-         end;
-      end loop;
-
-      Ada.Text_IO.Close (FD);
-   end Write_Vertex_Set;
 
    ----------------------------------
    -- Vertices_Between_From_And_To --
@@ -2097,7 +1993,6 @@ package body Flow.Analysis is
             Atr       : V_Attributes renames FA.Atr (V);
             Mask      : Vertex_Sets.Set;
             Tag       : constant Flow_Tag_Kind := Ineffective;
-            Tracefile : constant String := Fresh_Trace_File;
 
          begin
             if Atr.Is_Program_Node
@@ -2180,38 +2075,39 @@ package body Flow.Analysis is
                                      (Skip_Any_Conversions
                                         (Get_Direct_Mapping_Id
                                            (Atr.Parameter_Actual)))
-                              else
-                                Atr.Parameter_Formal);
+                              else Atr.Parameter_Formal);
 
                            Printable_Target : constant Boolean :=
                              Is_Easily_Printable (Target);
 
                         begin
                            Error_Msg_Flow
-                             (FA        => FA,
-                              Tracefile => Tracefile,
-                              Msg       => (if Printable_Target
-                                            then "unused assignment to &"
-                                            else "unused assignment"),
-                              N         => Error_Location (FA.PDG, FA.Atr, V),
-                              F1        => (if Printable_Target
-                                            then Target
-                                            else Null_Flow_Id),
-                              Tag       => Tag,
-                              Severity  => Warning_Kind,
-                              Vertex    => V);
+                             (FA       => FA,
+                              Path     => Mask,
+                              Msg      => (if Printable_Target
+                                           then "unused assignment to &"
+                                           else "unused assignment"),
+                              N        => Error_Location (FA.PDG,
+                                                          FA.Atr,
+                                                          V),
+                              F1       => (if Printable_Target
+                                           then Target
+                                           else Null_Flow_Id),
+                              Tag      => Tag,
+                              Severity => Warning_Kind,
+                              Vertex   => V);
                         end;
                      end if;
 
                   elsif Nkind (N) = N_Assignment_Statement then
                      Error_Msg_Flow
-                       (FA        => FA,
-                        Tracefile => Tracefile,
-                        Msg       => "unused assignment",
-                        N         => Error_Location (FA.PDG, FA.Atr, V),
-                        Tag       => Tag,
-                        Severity  => Warning_Kind,
-                        Vertex    => V);
+                       (FA       => FA,
+                        Path     => Mask,
+                        Msg      => "unused assignment",
+                        N        => Error_Location (FA.PDG, FA.Atr, V),
+                        Tag      => Tag,
+                        Severity => Warning_Kind,
+                        Vertex   => V);
 
                   elsif Nkind (N) = N_Object_Declaration then
                      if not Constant_Present (N) then
@@ -2220,53 +2116,46 @@ package body Flow.Analysis is
 
                         if FA.Kind in Kind_Package | Kind_Package_Body
                           and then No (Find_In_Initializes
-                                         (Defining_Identifier (N)))
+                                       (Defining_Identifier (N)))
                         then
                            Error_Msg_Flow
-                             (FA        => FA,
-                              Tracefile => Tracefile,
-                              Msg       => "initialization of &" &
-                                           " is not mentioned in " &
-                                           "Initializes contract",
-                              N         => FA.Initializes_N,
-                              F1        =>
-                                Direct_Mapping_Id (Defining_Entity (N)),
-                              Tag       => Tag,
-                              Severity  => Warning_Kind,
-                              Vertex    => V);
+                             (FA       => FA,
+                              Path     => Mask,
+                              Msg      => "initialization of & is not " &
+                                          "mentioned in Initializes contract",
+                              N        => FA.Initializes_N,
+                              F1       => Direct_Mapping_Id
+                                            (Defining_Entity (N)),
+                              Tag      => Tag,
+                              Severity => Warning_Kind,
+                              Vertex   => V);
                         else
                            Error_Msg_Flow
-                             (FA        => FA,
-                              Tracefile => Tracefile,
-                              Msg       => "initialization of &" &
-                                           " has no effect",
-                              N         => Error_Location (FA.PDG, FA.Atr, V),
-                              F1        =>
-                                Direct_Mapping_Id (Defining_Entity (N)),
-                              Tag       => Tag,
-                              Severity  => Warning_Kind,
-                              Vertex    => V);
+                             (FA       => FA,
+                              Path     => Mask,
+                              Msg      => "initialization of & has no effect",
+                              N        => Error_Location (FA.PDG,
+                                                          FA.Atr,
+                                                          V),
+                              F1       => Direct_Mapping_Id
+                                            (Defining_Entity (N)),
+                              Tag      => Tag,
+                              Severity => Warning_Kind,
+                              Vertex   => V);
                         end if;
 
                      end if;
 
                   else
                      Error_Msg_Flow
-                       (FA        => FA,
-                        Tracefile => Tracefile,
-                        Msg       => "statement has no effect",
-                        Severity  => Warning_Kind,
-                        N         => Error_Location (FA.PDG, FA.Atr, V),
-                        Tag       => Tag,
-                        Vertex    => V);
-
-                  end if;
-
-                  if not Mask.Is_Empty then
-                     Write_Vertex_Set
                        (FA       => FA,
-                        Set      => Mask,
-                        Filename => Tracefile);
+                        Path     => Mask,
+                        Msg      => "statement has no effect",
+                        Severity => Warning_Kind,
+                        N        => Error_Location (FA.PDG, FA.Atr, V),
+                        Tag      => Tag,
+                        Vertex   => V);
+
                   end if;
                end if;
             end if;
@@ -2453,26 +2342,26 @@ package body Flow.Analysis is
                                                (Var, FA.B_Scope);
          Is_Function  : constant Boolean := Is_Function_Entity (Var);
 
-         Tracefile    : constant String := Fresh_Trace_File;
-
-         procedure Mark_Definition_Free_Path
+         function Mark_Definition_Free_Path
            (From      : Flow_Graphs.Vertex_Id;
             To        : Flow_Graphs.Vertex_Id;
             Var       : Flow_Id;
-            V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex);
-         --  Write a trace file that marks the path From -> To which does not
-         --  define Var. If V_Allowed is set, then the path that we return is
-         --  allowed to contain V_Allowed even if V_Allowed does set Var.
+            V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
+            return Vertex_Sets.Set;
+         --  Returns the path From -> To which does not define Var. If
+         --  V_Allowed is set, then the path that we return is allowed to
+         --  contain V_Allowed even if V_Allowed does set Var.
 
          -------------------------------
          -- Mark_Definition_Free_Path --
          -------------------------------
 
-         procedure Mark_Definition_Free_Path
+         function Mark_Definition_Free_Path
            (From      : Flow_Graphs.Vertex_Id;
             To        : Flow_Graphs.Vertex_Id;
             Var       : Flow_Id;
             V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
+            return Vertex_Sets.Set
          is
             Path_Found : Boolean := False;
             Path       : Vertex_Sets.Set;
@@ -2529,11 +2418,9 @@ package body Flow.Analysis is
             --  When dealing with an exceptional path it is possible for
             --  Path_Found to be false.
 
-            if Path_Found then
-               Write_Vertex_Set (FA       => FA,
-                                 Set      => Path,
-                                 Filename => Tracefile);
-            end if;
+            return (if Path_Found
+                    then Path
+                    else Vertex_Sets.Empty_Set);
          end Mark_Definition_Free_Path;
 
       --  Start of processing for Emit_Message
@@ -2634,56 +2521,54 @@ package body Flow.Analysis is
             return;
          end if;
 
-         Error_Msg_Flow
-           (FA        => FA,
-            Tracefile => Tracefile,
-            Msg       => To_String (Msg),
-            N         => N,
-            F1        => Var,
-            F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
-            Tag       => Uninitialized,
-            Severity  => (case Kind is
-                          when Init    => Info_Kind,
-                          when Unknown => (if Default_Init
-                                           then Low_Check_Kind
-                                           else Medium_Check_Kind),
-                          when Err     => (if Default_Init
-                                           then Medium_Check_Kind
-                                           else High_Check_Kind)),
-            Vertex    => Vertex);
+         declare
+            Path : constant Vertex_Sets.Set :=
+              Mark_Definition_Free_Path (From      => FA.Start_Vertex,
+                                         To        => V_Goal,
+                                         Var       => Var,
+                                         V_Allowed => V_Allowed);
 
-         if Is_Constituent (Var)
-           and then Kind in Unknown | Err
-           and then FA.Kind in Kind_Package | Kind_Package_Body
-           and then Present (FA.Initializes_N)
-         then
+         begin
             Error_Msg_Flow
-              (FA           => FA,
-               Tracefile    => Tracefile,
-               Msg          => "initialization of & is specified @",
-               N            => N,
-               F1           => Direct_Mapping_Id
-                                 (Encapsulating_State
-                                    (Get_Direct_Mapping_Id (Var))),
-               F2           => Direct_Mapping_Id (FA.Initializes_N),
-               Tag          => Uninitialized,
-               Severity     => (case Kind is
-                                when Init    => Info_Kind,
-                                when Unknown => Medium_Check_Kind,
-                                when Err     => High_Check_Kind),
-               Vertex       => Vertex,
-               Continuation => True);
-         end if;
+              (FA       => FA,
+               Path     => Path,
+               Msg      => To_String (Msg),
+               N        => N,
+               F1       => Var,
+               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag      => Uninitialized,
+               Severity => (case Kind is
+                            when Init    => Info_Kind,
+                            when Unknown => (if Default_Init
+                                             then Low_Check_Kind
+                                             else Medium_Check_Kind),
+                            when Err     => (if Default_Init
+                                             then Medium_Check_Kind
+                                             else High_Check_Kind)),
+               Vertex   => Vertex);
 
-         --  We write a trace file for the uninitialized variable
-
-         if Kind /= Init then
-            Mark_Definition_Free_Path
-              (From      => FA.Start_Vertex,
-               To        => V_Goal,
-               Var       => Var,
-               V_Allowed => V_Allowed);
-         end if;
+            if Is_Constituent (Var)
+              and then Kind in Unknown | Err
+              and then FA.Kind in Kind_Package | Kind_Package_Body
+              and then Present (FA.Initializes_N)
+            then
+               Error_Msg_Flow
+                 (FA           => FA,
+                  Msg          => "initialization of & is specified @",
+                  N            => N,
+                  F1           => Direct_Mapping_Id
+                                    (Encapsulating_State
+                                       (Get_Direct_Mapping_Id (Var))),
+                  F2           => Direct_Mapping_Id (FA.Initializes_N),
+                  Tag          => Uninitialized,
+                  Severity     => (case Kind is
+                                      when Init    => Info_Kind,
+                                      when Unknown => Medium_Check_Kind,
+                                      when Err     => High_Check_Kind),
+                  Vertex       => Vertex,
+                  Continuation => True);
+            end if;
+         end;
 
          --  In case of a subprogram with an output global which is actually
          --  used as an input in its body, we add more information to the error
@@ -3323,29 +3208,25 @@ package body Flow.Analysis is
                         declare
                            use Flow_Id_Sets;
 
-                           Tracefile : constant String := Fresh_Trace_File;
+                           Path : constant Vertex_Sets.Set :=
+                             Vertices_Between_From_And_To
+                               (FA   => FA,
+                                From => Input,
+                                To   => To_Set (Output));
 
                         begin
                            Error_Msg_Flow
-                             (FA        => FA,
-                              Tracefile => Tracefile,
-                              Msg       => "export & must not depend " &
-                                           "on Proof_In &",
-                              SRM_Ref   => "6.1.4(17)",
-                              N         => Find_Global (FA.Spec_Entity,
-                                                        Input),
-                              F1        => Output,
-                              F2        => Input,
-                              Severity  => Medium_Check_Kind,
-                              Tag       => Export_Depends_On_Proof_In);
-
-                           Write_Vertex_Set
                              (FA       => FA,
-                              Set      => Vertices_Between_From_And_To
-                                            (FA   => FA,
-                                             From => Input,
-                                             To   => To_Set (Output)),
-                              Filename => Tracefile);
+                              Path     => Path,
+                              Msg      => "export & must not depend " &
+                                          "on Proof_In &",
+                              SRM_Ref  => "6.1.4(17)",
+                              N        => Find_Global (FA.Spec_Entity,
+                                                       Input),
+                              F1       => Output,
+                              F2       => Input,
+                              Severity => Medium_Check_Kind,
+                              Tag      => Export_Depends_On_Proof_In);
                         end;
                      end if;
                   end;
@@ -4141,32 +4022,25 @@ package body Flow.Analysis is
             for Actual_In of All_Actual_Ins loop
                if not All_Contract_Ins.Contains (Actual_In) then
                   declare
-                     Tracefile : constant String := Fresh_Trace_File;
+                     Path : constant Vertex_Sets.Set :=
+                       Vertices_Between_From_And_To
+                         (FA   => FA,
+                          From => Actual_In,
+                          To   => All_Contract_Outs);
 
                   begin
                      Error_Msg_Flow
-                       (FA        => FA,
-                        Tracefile => Tracefile,
-                        Msg       =>
-                          "initialization of % must not depend on %",
-                        SRM_Ref   => "7.1.5(11)",
-                        N         => Search_Initializes_Contract
-                                       (FA.Spec_Entity,
-                                        Get_Direct_Mapping_Id (The_Out)),
-                        F1        => The_Out,
-                        F2        => Actual_In,
-                        Tag       => Initializes_Wrong,
-                        Severity  => Medium_Check_Kind);
-
-                     --  Generate and write the tracefile
-
-                     Write_Vertex_Set
                        (FA       => FA,
-                        Set      => Vertices_Between_From_And_To
-                                      (FA   => FA,
-                                       From => Actual_In,
-                                       To   => All_Contract_Outs),
-                        Filename => Tracefile);
+                        Path     => Path,
+                        Msg      => "initialization of % must not depend on %",
+                        SRM_Ref  => "7.1.5(11)",
+                        N        => Search_Initializes_Contract
+                                      (FA.Spec_Entity,
+                                       Get_Direct_Mapping_Id (The_Out)),
+                        F1       => The_Out,
+                        F2       => Actual_In,
+                        Tag      => Initializes_Wrong,
+                        Severity => Medium_Check_Kind);
                   end;
                end if;
             end loop;

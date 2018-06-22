@@ -22,9 +22,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Handling;   use Ada.Characters.Handling;
-with Ada.Strings;               use Ada.Strings;
-with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
+with Ada.Characters.Handling;               use Ada.Characters.Handling;
+with Ada.Strings.Unbounded;                 use Ada.Strings.Unbounded;
+with Ada.Text_IO;
+
 with Assumption_Types;          use Assumption_Types;
 with Atree;                     use Atree;
 with Common_Containers;         use Common_Containers;
@@ -128,6 +129,13 @@ package body Flow_Error_Messages is
       return Message_Id;
    --  Print a regular error, warning or info message using the frontend
    --  mechanism. Return an Id which can be used to identify this message.
+
+   function Vertex_Sloc_Location
+     (G   : Flow_Graphs.Graph;
+      M   : Attribute_Maps.Map;
+      V   : Flow_Graphs.Vertex_Id;
+      Sep : Character := ':') return String;
+   --  Obtain the location for the given vertex as in "foo.adb:12"
 
    Flow_Msgs : GNATCOLL.JSON.JSON_Array;
    --  This will hold all of the emitted flow messages in JSON format.
@@ -244,6 +252,51 @@ package body Flow_Error_Messages is
       return Slc;
    end Compute_Sloc;
 
+   --------------------------
+   -- Vertex_Sloc_Location --
+   --------------------------
+
+   function Vertex_Sloc_Location
+     (G   : Flow_Graphs.Graph;
+      M   : Attribute_Maps.Map;
+      V   : Flow_Graphs.Vertex_Id;
+      Sep : Character := ':') return String
+   is
+      N  : constant Node_Or_Entity_Id := Error_Location (G, M, V);
+      SI : constant Source_File_Index := Get_Source_File_Index (Sloc (N));
+   begin
+      return Get_Name_String (File_Name (SI)) & Sep &
+        Get_Logical_Line_Number_Img (Sloc (N));
+   end Vertex_Sloc_Location;
+
+   --------------------
+   -- Error_Location --
+   --------------------
+
+   function Error_Location
+     (G : Flow_Graphs.Graph;
+      M : Attribute_Maps.Map;
+      V : Flow_Graphs.Vertex_Id) return Node_Or_Entity_Id
+   is
+      Loc : constant Node_Or_Entity_Id := M (V).Error_Location;
+   begin
+      if Present (Loc) then
+         return Loc;
+      else
+         declare
+            K : Flow_Id renames G.Get_Key (V);
+
+         begin
+            case K.Kind is
+               when Direct_Mapping | Record_Field =>
+                  return Get_Direct_Mapping_Id (K);
+               when others =>
+                  raise Program_Error;
+            end case;
+         end;
+      end if;
+   end Error_Location;
+
    --------------------
    -- Error_Msg_Flow --
    --------------------
@@ -260,7 +313,7 @@ package body Flow_Error_Messages is
       Tag          : Flow_Tag_Kind := Empty_Tag;
       SRM_Ref      : String        := "";
       Tracefile    : String        := "";
-      Continuation : Boolean := False)
+      Continuation : Boolean       := False)
    is
       Msg2 : constant String :=
         Msg &
@@ -300,8 +353,8 @@ package body Flow_Error_Messages is
    --  Start of processing for Error_Msg_Flow
 
    begin
-      --  If the message we are about to emit has already been emitted
-      --  in the past then do nothing.
+      --  If the message we are about to emit has already been emitted in the
+      --  past then do nothing.
 
       Flow_Msgs_Set.Insert (New_Item => Msg_Str,
                             Position => Dummy,
@@ -390,6 +443,7 @@ package body Flow_Error_Messages is
                Check_Tree => Create_Object,
                Msg_Id     => Msg_Id);
          end if;
+
       else
          Suppressed := True;
       end if;
@@ -413,7 +467,7 @@ package body Flow_Error_Messages is
       F3           : Flow_Id               := Null_Flow_Id;
       Tag          : Flow_Tag_Kind         := Empty_Tag;
       SRM_Ref      : String                := "";
-      Tracefile    : String                := "";
+      Path         : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
       Vertex       : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
       Continuation : Boolean               := False)
    is
@@ -426,6 +480,44 @@ package body Flow_Error_Messages is
          else Msg);
 
       Suppressed : Boolean;
+
+      function Write_Tracefile (Set : Vertex_Sets.Set) return String;
+      --  Writes the tracefile from the given Set and returns the filename
+
+      ---------------------
+      -- Write_Tracefile --
+      ---------------------
+
+      function Write_Tracefile (Set : Vertex_Sets.Set) return String
+      is
+         FD        : Ada.Text_IO.File_Type;
+         Tracefile : constant String := Fresh_Trace_File;
+      begin
+         Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Tracefile);
+
+         for V of Set loop
+            declare
+               F : Flow_Id renames FA.PDG.Get_Key (V);
+
+            begin
+               if F.Kind = Direct_Mapping then
+                  Ada.Text_IO.Put_Line
+                    (FD, Vertex_Sloc_Location (FA.PDG, FA.Atr, V));
+               end if;
+            end;
+         end loop;
+
+         Ada.Text_IO.Close (FD);
+
+         return Tracefile;
+      end Write_Tracefile;
+
+      Tracefile : constant String :=
+        (if not Continuation
+         then Write_Tracefile (Path)
+         else "");
+
+   --  Start of processing for Error_Msg_Flow
 
    begin
       Error_Msg_Flow (E            => FA.Spec_Entity,
