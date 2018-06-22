@@ -9,6 +9,6 @@ files = [f + ".adb" if os.path.isfile(f + ".adb") else f + ".ads"
 for f in sorted(files):
     prove_all(prover=["cvc4", "altergo", "z3"],
               vc_timeout=0,
-              steps=1000,
+              steps=3000,
               counterexample=False,
               opt=["-u", f])

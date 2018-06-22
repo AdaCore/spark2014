@@ -76,14 +76,14 @@ algorithm.adb:231:75: medium: float overflow check might fail
 algorithm.adb:231:89: medium: float overflow check might fail
 algorithm.adb:231:95: medium: float overflow check might fail
 algorithm.adb:231:108: medium: float overflow check might fail
-algorithm.adb:231:121: medium: float overflow check might fail
+algorithm.adb:231:121: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:231:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
 algorithm.adb:231:138: info: initialization of "rayR.second" proved
 algorithm.adb:231:151: info: initialization of "rayL.second" proved
 algorithm.adb:235:13: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:235:37: info: initialization of "rayR.second" proved
-algorithm.adb:246:17: info: postcondition proved (Z3: 1 VC)
-algorithm.adb:250:17: info: postcondition proved (Z3: 1 VC)
+algorithm.adb:246:17: info: postcondition proved (CVC4: 1 VC)
+algorithm.adb:250:17: info: postcondition proved (CVC4: 1 VC)
 algorithm.adb:256:19: info: initialization of "iterL.Node" proved
 algorithm.adb:257:10: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:257:29: info: initialization of "iterL.Node" proved
@@ -125,7 +125,7 @@ algorithm.adb:300:15: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:300:62: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:304:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:304:58: info: initialization of "iterR.Node" proved
-algorithm.adb:309:16: info: precondition proved (altergo: 1 VC)
+algorithm.adb:309:16: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:309:37: info: initialization of "iterR.Node" proved
 algorithm.adb:319:20: info: initialization of "riterR.Node" proved
 algorithm.adb:320:10: info: precondition proved (CVC4: 1 VC)
@@ -163,7 +163,7 @@ algorithm.adb:352:64: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:58: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:81: info: initialization of "riterL.Node" proved
-algorithm.adb:361:27: medium: precondition might fail
+algorithm.adb:361:27: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:361:49: info: initialization of "riterL.Node" proved
 algorithm.adb:381:15: info: range check proved (CVC4: 2 VC)
 algorithm.adb:381:71: medium: range check might fail
@@ -249,7 +249,7 @@ algorithm.adb:542:42: info: range check proved (Interval)
 algorithm.adb:542:44: info: initialization of "deltaMag" proved
 algorithm.adb:542:53: info: float overflow check proved (Interval)
 algorithm.adb:544:35: info: initialization of "obstacleAvoidDelta" proved
-algorithm.adb:544:54: medium: float overflow check might fail
+algorithm.adb:544:54: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:544:56: info: initialization of "deltaMag" proved
 algorithm.adb:544:65: info: float overflow check proved (Interval)
 algorithm.adb:544:76: info: float overflow check proved (Interval)
@@ -313,7 +313,7 @@ algorithm.adb:671:25: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:673:72: medium: float overflow check might fail
 algorithm.adb:674:43: info: range check proved (CVC4: 1 VC)
 algorithm.adb:674:49: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:679:31: info: assertion proved (CVC4: 1 VC; Z3: 1 VC)
+algorithm.adb:679:31: info: assertion proved (CVC4: 2 VC)
 algorithm.adb:679:31: info: initialization of "distToGoal" proved
 algorithm.adb:679:68: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:680:22: medium: assertion might fail, cannot prove This.robot.robot_radius / 10.0 <= This.robot.obstacle_avoid_dist
@@ -360,7 +360,7 @@ algorithm.adb:766:46: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:766:88: info: initialization of "pBestValley.value.risingGap.iDir" proved
 algorithm.adb:766:99: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:766:115: info: range check proved (Interval)
-algorithm.adb:766:122: medium: float overflow check might fail
+algorithm.adb:766:122: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:768:16: info: initialization of "pBestValley.value.risingGap.iDir" proved
 algorithm.adb:768:27: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:769:42: info: initialization of "pBestValley.value.risingGap.bearing" proved
@@ -438,12 +438,12 @@ algorithm.adb:865:103: medium: float overflow check might fail
 algorithm.adb:867:16: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:867:23: info: initialization of "theta" proved
 algorithm.adb:870:21: info: initialization of "driveSpeed" proved
-algorithm.adb:870:32: medium: float overflow check might fail
+algorithm.adb:870:32: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:870:34: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:870:41: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:870:53: info: initialization of "distToGoal" proved
 algorithm.adb:871:21: info: initialization of "driveSpeed" proved
-algorithm.adb:871:32: medium: float overflow check might fail
+algorithm.adb:871:32: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:871:34: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:871:41: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:871:48: info: initialization of "distToClosestObstacle" proved
@@ -451,12 +451,12 @@ algorithm.adb:871:70: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:871:97: info: division check proved (CVC4: 1 VC)
 algorithm.adb:871:97: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:872:21: info: initialization of "driveSpeed" proved
-algorithm.adb:872:32: medium: float overflow check might fail
+algorithm.adb:872:32: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:872:34: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:872:53: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:872:60: info: initialization of "theta" proved
 algorithm.adb:872:68: info: division check proved (CVC4: 1 VC)
-algorithm.adb:872:68: medium: float overflow check might fail
+algorithm.adb:872:68: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:874:29: info: initialization of "driveSpeed" proved
 algorithm.adb:874:41: info: initialization of "driveTurnRate" proved
 algorithm.adb:878:28: info: initialization of "driveSpeed" proved

@@ -1,7 +1,7 @@
 from test_support import *
 
-prove_all(steps=20000,
-          prover=["cvc4", "z3", "alt-ergo"],
+prove_all(steps=None,
+          level=4,
           no_fail=True,
           opt=["--no-axiom-guard",
                "-u",
