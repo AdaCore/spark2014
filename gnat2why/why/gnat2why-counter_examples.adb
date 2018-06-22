@@ -130,7 +130,7 @@ package body Gnat2Why.Counter_Examples is
       Type_Ent : Entity_Id;
       Sloc     : Source_Ptr;
    end record;
-   --  A location information for a component contains the type in whic the
+   --  A location information for a component contains the type in which the
    --  component is declared first and the location of this first declaration.
 
    function Get_Loc_Info (Comp : Entity_Id) return Component_Loc_Info is
