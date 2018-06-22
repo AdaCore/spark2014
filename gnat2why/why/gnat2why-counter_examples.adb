@@ -722,7 +722,11 @@ package body Gnat2Why.Counter_Examples is
 
          Element_Type : constant Entity_Id :=
            (if Present (CNT_Element.Entity) then
-              Retysp (Etype (CNT_Element.Entity))
+              Retysp
+                (if Is_Class_Wide_Type (Etype (CNT_Element.Entity)) then
+                    Get_Specific_Type_From_Classwide
+                     (Etype (CNT_Element.Entity))
+                 else Etype (CNT_Element.Entity))
             else
               Empty);
 
@@ -819,7 +823,11 @@ package body Gnat2Why.Counter_Examples is
       is
          Element_Type : constant Entity_Id :=
            (if Present (CNT_Element.Entity) then
-              Retysp (Etype (CNT_Element.Entity))
+              Retysp
+                (if Is_Class_Wide_Type (Etype (CNT_Element.Entity)) then
+                    Get_Specific_Type_From_Classwide
+                     (Etype (CNT_Element.Entity))
+                 else Etype (CNT_Element.Entity))
             else
               Empty);
 
