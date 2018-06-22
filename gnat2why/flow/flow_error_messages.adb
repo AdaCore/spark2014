@@ -49,14 +49,14 @@ package body Flow_Error_Messages is
    --  Container with flow-related messages; used to prevent duplicate messages
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
-   --  Transform the msg kind into a string, for the JSON output.
+   --  Transform the msg kind into a string, for the JSON output
 
    type Message_Id is new Integer range -1 .. Integer'Last;
    --  type used to identify a message issued by gnat2why
 
    function Is_Specified_Line (Slc : Source_Ptr) return Boolean;
-   --  Returns True if command line argument "--limit-line" was not given,
-   --  or if the sloc in argument corresponds to the line specified by the
+   --  Returns True if command line argument "--limit-line" was not given, or
+   --  if the sloc in argument corresponds to the line specified by the
    --  "--limit-line" argument.
 
    function Compute_Message
@@ -138,26 +138,26 @@ package body Flow_Error_Messages is
    --  Obtain the location for the given vertex as in "foo.adb:12"
 
    Flow_Msgs : GNATCOLL.JSON.JSON_Array;
-   --  This will hold all of the emitted flow messages in JSON format.
+   --  This will hold all of the emitted flow messages in JSON format
 
    Proof_Msgs : GNATCOLL.JSON.JSON_Array;
 
    use type Flow_Graphs.Vertex_Id;
 
    function Escape (S : String) return String;
-   --  Escape any special characters used in the error message (for
-   --  example transforms "=>" into "='>" as > is a special insertion
-   --  character. We also escape capital letters.
+   --  Escape any special characters used in the error message (for example
+   --  transforms "=>" into "='>" as > is a special insertion character. We
+   --  also escape capital letters.
 
    function Substitute
      (S    : Unbounded_String;
       F    : Flow_Id;
       Flag : Source_Ptr)
       return Unbounded_String;
-   --  Find the first '&' or '%' and substitute with the given flow id,
-   --  with or without enclosing quotes respectively. Alternatively, '#'
-   --  works like '&', but is followed by a line reference. Use '@' to
-   --  substitute only with sloc of F.
+   --  Find the first '&' or '%' and substitute with the given flow id, with or
+   --  without enclosing quotes respectively. Alternatively, '#' works like
+   --  '&', but is followed by a line reference. Use '@' to substitute only
+   --  with sloc of F.
 
    File_Counter : Natural := 0;
    Message_Id_Counter : Message_Id := 0;
@@ -166,8 +166,8 @@ package body Flow_Error_Messages is
    Last_Suppressed : Boolean := False;
    Last_Suppr_Str  : String_Id := No_String;
    --  Used by Error_Msg_Flow to suppress continuation messages of suppressed
-   --  messages. We need to know if a message was suppressed the last time,
-   --  and the suppression reason, if any.
+   --  messages. We need to know if a message was suppressed the last time, and
+   --  the suppression reason, if any.
 
    ---------------------
    -- Compute_Message --
@@ -195,8 +195,8 @@ package body Flow_Error_Messages is
 
       if Instantiation_Location (Sloc (N)) /= No_Location then
 
-         --  If we are dealing with an instantiation of a generic we change
-         --  the message to point at the implementation of the generic and we
+         --  If we are dealing with an instantiation of a generic we change the
+         --  message to point at the implementation of the generic and we
          --  mention where the generic is instantiated.
 
          declare
@@ -209,8 +209,8 @@ package body Flow_Error_Messages is
                exit when Instantiation_Location (Loc) = No_Location;
 
                --  Any change to the strings below should be reflected in GPS
-               --  plugin spark2014.py, so that the unit for a given message
-               --  is correctly computed.
+               --  plugin spark2014.py, so that the unit for a given message is
+               --  correctly computed.
 
                Context :=
                  To_Unbounded_String
@@ -244,8 +244,8 @@ package body Flow_Error_Messages is
          else Sloc (N));
    begin
       if Instantiation_Location (Slc) /= No_Location then
-         --  If we are dealing with an instantiation of a generic we change
-         --  the message to point at the implementation of the generic and we
+         --  If we are dealing with an instantiation of a generic we change the
+         --  message to point at the implementation of the generic and we
          --  mention where the generic is instantiated.
          Slc := Original_Location (Slc);
       end if;
@@ -395,31 +395,31 @@ package body Flow_Error_Messages is
                   Suppressed := Suppr /= No_String;
 
                when Error_Kind =>
-               --  Set the error flag if we have an error message. Note
-               --  that warnings do not count as errors here, they should
-               --  not prevent us going to proof. The errout mechanism
-               --  already deals with the warnings-as-errors handling for
-               --  the whole unit.
+               --  Set the error flag if we have an error message. Note that
+               --  warnings do not count as errors here, they should not
+               --  prevent us going to proof. The errout mechanism already
+               --  deals with the warnings-as-errors handling for the whole
+               --  unit.
                   Suppressed       := False;
                   Found_Flow_Error := True;
             end case;
          end if;
 
          --  In the case of a continuation message, also take into account the
-         --  result of the last non-continuation message. Do not simply
-         --  take over the result, but merge it with the results of the
-         --  continuation message, so that one can also suppress only the
-         --  continuation message
+         --  result of the last non-continuation message. Do not simply take
+         --  over the result, but merge it with the results of the continuation
+         --  message, so that one can also suppress only the continuation
+         --  message.
 
          if Continuation then
             Suppressed := Suppressed or Last_Suppressed;
             Suppr := (if Suppr = No_String then Last_Suppr_Str else Suppr);
          end if;
 
-         --  Print the message except when it's suppressed.
-         --  Additionally, if command line argument "--limit-line" was
-         --  given, only issue the warning if it is to be emitted on
-         --  the specified line (errors are emitted anyway).
+         --  Print the message except when it's suppressed. Additionally, if
+         --  command line argument "--limit-line" was given, only issue the
+         --  warning if it is to be emitted on the specified line (errors are
+         --  emitted anyway).
 
          if not Suppressed and then Is_Specified_Line (Slc) then
             Msg_Id := Print_Regular_Msg (Msg3, Slc, Severity, Continuation);
@@ -448,8 +448,8 @@ package body Flow_Error_Messages is
          Suppressed := True;
       end if;
 
-      --  in case of a non-continuation message, store the suppressed/justified
-      --  info
+      --  In case of a non-continuation message, store the suppressed/justified
+      --  info.
 
       if not Continuation then
          Last_Suppressed := Suppressed;
@@ -533,9 +533,8 @@ package body Flow_Error_Messages is
                       Tracefile    => Tracefile,
                       Continuation => Continuation);
 
-      --  Set the No_Errors_Or_Warnings flag to False for this
-      --  entity if we are dealing with anything but a suppressed
-      --  warning.
+      --  Set the No_Errors_Or_Warnings flag to False for this entity if we are
+      --  with anything but a suppressed warning.
 
       if not Suppressed then
          FA.No_Errors_Or_Warnings := False;
@@ -1021,7 +1020,7 @@ package body Flow_Error_Messages is
                         declare
                            Index : Positive := F_Name_String'First;
                         begin
-                           --  Replace __ with . in the magic string.
+                           --  Replace __ with . in the magic string
                            while Index <= F_Name_String'Last loop
                               case F_Name_String (Index) is
                               when '_' =>
