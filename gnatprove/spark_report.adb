@@ -867,8 +867,9 @@ procedure SPARK_Report is
       function OS_String return String is
          (case Get_OS_Flavor is
              when X86_Windows | X86_64_Windows => "Windows",
-             when X86_Linux | X86_64_Linux => "Linux",
-             when X86_64_Darwin => "Darwin");
+             when X86_Linux   | X86_64_Linux   => "Linux",
+             when X86_64_Darwin                => "Darwin",
+             when CodePeer_OS                  => "CodePeer OS");
 
       Pointer_Size : constant :=
         System.Storage_Elements.Integer_Address'Size / System.Storage_Unit;

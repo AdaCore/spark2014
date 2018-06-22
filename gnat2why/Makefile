@@ -67,6 +67,12 @@ profile: CFLAGS = -pg
 profile: LDFLAGS += -pg
 profile: build
 
+codepeer-run: setup force
+	codepeer -P gnat2why.gpr
+
+codepeer:
+	@codepeer -P gnat2why.gpr -quiet -output-msg-only
+
 force:
 
 clean:

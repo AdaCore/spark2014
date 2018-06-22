@@ -57,4 +57,15 @@ project GNAT2Why is
       for VCS_Kind use "Auto";
    end IDE;
 
+   package CodePeer is
+      for Switches use ("-j0",
+                        "-level", "1",
+                        "-messages", "min",
+                        "-no-html-output",
+                        "-no-race-conditions",
+                        "-gnatws");
+
+      for Excluded_Source_Dirs use ("gnat_src");
+   end CodePeer;
+
 end GNAT2Why;

@@ -1,0 +1,72 @@
+assumptions.ads:43:9: high warning: subp always fails: assumptions.token'Initialize fails for all possible inputs
+assumptions.ads:43:4: high: access check fails here
+flow-analysis-sanity.adb:1187:4: medium: validity check: out parameter Sane might be uninitialized
+flow-analysis.adb:2826:7: high: validity check: out parameter V_Error might be uninitialized
+flow-analysis.adb:5010:22: low warning: test always false because (Has_Restriction_Max_Entry_Queue_Length and then Max_Entry_Queue_Len = Current_Max_Queue_Length) = false
+flow-analysis.adb:5011:53: medium warning: condition predetermined because (Max_Entry_Queue_Len = Current_Max_Queue_Length) is always false
+flow-analysis.adb:5013:24: medium warning: dead code because (Has_Restriction_Max_Entry_Queue_Length and then Max_Entry_Queue_Len = Current_Max_Queue_Length) = false
+flow-control_flow_graph.adb:1146:31: medium: array index check might fail: requires F.all.Variant in Initial_Value..Final_Value
+flow-data_dependence_graph.adb:83:39: high: validity check: (Atr_Def.Is_Parameter) is uninitialized here
+flow-data_dependence_graph.adb:83:39: high: validity check: Atr_Def.all.Is_Parameter is uninitialized here
+flow-data_dependence_graph.adb:84:47: high: validity check: (Atr_Def.Is_Global_Parameter) is uninitialized here
+flow-data_dependence_graph.adb:84:32: high: validity check: (Atr_Def.Is_Parameter or else Atr_Def.Is_Global_Parameter) is uninitialized here
+flow-data_dependence_graph.adb:84:47: high: validity check: Atr_Def.all.Is_Global_Parameter is uninitialized here
+flow-data_dependence_graph.adb:85:47: high: validity check: (Atr_Def.Is_Implicit_Parameter) is uninitialized here
+flow-data_dependence_graph.adb:85:32: high: validity check: (Atr_Def.Is_Parameter or else Atr_Def.Is_Global_Parameter or else Atr_Def.Is_Implicit_Parameter) is uninitialized here
+flow-data_dependence_graph.adb:85:47: high: validity check: Atr_Def.all.Is_Implicit_Parameter is uninitialized here
+graphs.adb:346:16: high: array index check fails here: requires (Succ (V)) >= 1 and (Succ (V)) <= (G.Vertices.Last_Index)
+graphs.adb:360:16: high: array index check fails here: requires (Succ (V)) <= (G.Vertices.Last_Index)
+graphs.adb:360:39: high: array index check fails here: requires (Succ (W)) <= (G.Vertices.Last_Index)
+spark_annotate.adb:796:4: high: validity check: out parameter Kind might be uninitialized
+spark_annotate.adb:796:4: high: validity check: out parameter Pattern might be uninitialized
+spark_annotate.adb:796:4: high: validity check: out parameter Reason might be uninitialized
+ce_interval_sets.adb:38:13: medium warning: test always true because not Inserted
+ce_interval_sets.adb:56:8: medium warning: dead code because not Inserted
+gnat2why-expr.adb:2085:10: high warning: subp always fails: gnat2why.expr.compute_call_args.B_25.compute_param fails for all possible inputs
+gnat2why-expr.adb:2092:18: high: array index check fails here: requires (Compute_Subprogram_Parameters (Subp, Domain))'First <= Bind_Cnt and Bind_Cnt <= (Compute_Subprogram_Parameters (Subp, Domain))'Last
+gnat2why-expr.adb:2113:47: high: array index check fails here: requires (Compute_Subprogram_Parameters (Subp, Domain))'First <= Bind_Cnt and Bind_Cnt <= (Compute_Subprogram_Parameters (Subp, Domain))'Last
+gnat2why-expr.adb:2124:46: high: array index check fails here: requires (Compute_Subprogram_Parameters (Subp, Domain))'First <= Bind_Cnt and Bind_Cnt <= (Compute_Subprogram_Parameters (Subp, Domain))'Last
+gnat2why-expr.adb:2155:39: high: array index check fails here: requires (Compute_Subprogram_Parameters (Subp, Domain))'First <= Bind_Cnt and Bind_Cnt <= (Compute_Subprogram_Parameters (Subp, Domain))'Last
+gnat2why-expr.adb:4546:7: high warning: subp always fails: gnat2why.expr.insert_ref_context.process_param fails for all possible inputs
+gnat2why-expr.adb:4553:15: high: array index check fails here: requires (Compute_Subprogram_Parameters (Subp, EW_Prog))'First <= Bind_Cnt and Bind_Cnt <= (Compute_Subprogram_Parameters (Subp, EW_Prog))'Last
+gnat2why-expr.adb:4608:38: high: array index check fails here: requires (Compute_Subprogram_Parameters (Subp, EW_Prog))'First <= Bind_Cnt and Bind_Cnt <= (Compute_Subprogram_Parameters (Subp, EW_Prog))'Last
+gnat2why-expr.adb:4610:46: high: array index check fails here: requires (Compute_Subprogram_Parameters (Subp, EW_Prog))'First <= Bind_Cnt and Bind_Cnt <= (Compute_Subprogram_Parameters (Subp, EW_Prog))'Last
+gnat2why-expr.adb:4616:33: high: array index check fails here: requires (Compute_Subprogram_Parameters (Subp, EW_Prog))'First <= Bind_Cnt and Bind_Cnt <= (Compute_Subprogram_Parameters (Subp, EW_Prog))'Last
+gnat2why-expr.adb:7711:45: medium: validity check: gnat2why.expr.transform_aggregate.transform_array_component_associations.T4941b'Result might be uninitialized
+gnat2why-expr.adb:15782:49: medium: validity check: Save_Theory might be uninitialized
+gnat2why-subprograms.adb:4859:50: medium: validity check: Refined_Post might be uninitialized
+gnat2why-subprograms.adb:4902:43: medium: validity check: Dispatch_Pre might be uninitialized
+gnat2why-subprograms.adb:4903:43: medium: validity check: Dispatch_Post might be uninitialized
+gnat2why-subprograms.adb:4921:43: medium: validity check: Refined_Post might be uninitialized
+gnat2why-subprograms.adb:5060:48: medium: validity check: Dispatch_Pre might be uninitialized
+gnat2why-subprograms.adb:5063:47: medium: validity check: Dispatch_Post might be uninitialized
+gnat2why-subprograms.adb:5113:44: medium: validity check: Refined_Post might be uninitialized
+why-atree-sprint.adb:663:7: high warning: subp never returns: why.atree.sprint.print_custom_declaration.get_regexp
+why-atree-sprint.adb:1302:4: high warning: subp never returns: why.atree.sprint.print_list
+why-atree-sprint.adb:1313:22: medium warning: loop does not complete normally
+why-atree-sprint.adb:2026:25: medium warning: loop does not complete normally
+why-gen-expr.adb:1486:41: medium: validity check: Hi might be uninitialized
+why-gen-expr.adb:1486:22: medium: validity check: Lo might be uninitialized
+why-gen-expr.adb:2472:7: high warning: subp always fails: why.gen.expr.new_comment_label.read_loc_label fails for all possible inputs
+why-gen-expr.adb:2476:61: high: range check fails here: requires (Get_Name_String (Loc))'First >= 1
+why-gen-scalars.adb:265:10: high: validity check: (if Has_Signed_Integer_Type (Typ_Right) then (Ureal_1) else [constraint_error]) is uninitialized here
+why-gen-scalars.adb:1206:10: high: validity check: (if Has_Signed_Integer_Type (Typ_Right) then (Ureal_1) else [constraint_error]) is uninitialized here
+assumptions.ads:43:9: high warning: subp always fails: assumptions.token'Initialize fails for all possible inputs
+assumptions.ads:43:4: high: access check fails here
+configuration.adb:408:4: high warning: subp always fails: configuration.prepare_prover_lib fails for all possible inputs
+configuration.adb:430:31: medium warning: dead code because Dir'First <= Dir'Last
+configuration.adb:430:13: medium warning: test always true because Dir'First <= Dir'Last
+configuration.adb:433:31: medium warning: dead code because Dir'First <= Dir'Last
+configuration.adb:433:13: medium warning: test always true because Dir'First <= Dir'Last
+configuration.adb:496:7: high: precondition failure on call to configuration.prepare_prover_lib.compile_lib: requires Dir'Last >= 1
+configuration.adb:496:7: high: precondition failure on call to configuration.prepare_prover_lib.compile_lib: requires Dir'Length >= 1
+configuration.adb:497:7: high: precondition failure on call to configuration.prepare_prover_lib.compile_lib: requires Dir'Last >= 1
+configuration.adb:497:7: high: precondition failure on call to configuration.prepare_prover_lib.compile_lib: requires Dir'Length >= 1
+configuration.adb:552:7: high: precondition failure on call to configuration.prepare_prover_lib.compile_lib: requires Dir'Last >= 1
+configuration.adb:552:7: high: precondition failure on call to configuration.prepare_prover_lib.compile_lib: requires Dir'Length >= 1
+configuration.adb:1009:42: medium warning: condition predetermined because (CL_Switches.Output_Msg_Only and CL_Switches.Replay) is always false
+configuration.adb:1010:49: medium warning: condition predetermined because (CL_Switches.Output_Msg_Only and CL_Switches.F) is always false
+configuration.adb:1011:35: medium warning: condition predetermined because (CL_Switches.F and CL_Switches.Output_Msg_Only) is always false
+configuration.adb:1309:15: medium warning: test always true because (if CL_Switches.Prover /= null then CL_Switches.Prover.all.all else ""'First) <= (if CL_Switches.Prover /= null then CL_Switches.Prover.all.all else ""'Last)
+spark_codepeer_wrapper.adb:45:1: high warning: subp always fails: spark_codepeer_wrapper always ends with an exception or a non-returning call
+spark_memcached_wrapper.adb:39:1: high warning: subp always fails: spark_memcached_wrapper always ends with an exception or a non-returning call
