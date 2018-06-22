@@ -71,15 +71,17 @@ package SPARK_Definition is
    --  marking in a stack fashion have been properly restored.
 
    procedure Mark_Compilation_Unit (N : Node_Id)
-     with Pre => Nkind (N) in N_Generic_Package_Declaration          |
-                              N_Generic_Subprogram_Declaration       |
-                              N_Generic_Package_Renaming_Declaration |
-                              N_Package_Body                         |
-                              N_Package_Declaration                  |
-                              N_Package_Renaming_Declaration         |
-                              N_Subprogram_Body                      |
-                              N_Subprogram_Declaration               |
-                              N_Subprogram_Renaming_Declaration
+     with Pre => Nkind (N) in N_Generic_Package_Declaration
+                            | N_Generic_Subprogram_Declaration
+                            | N_Generic_Package_Renaming_Declaration
+                            | N_Generic_Function_Renaming_Declaration
+                            | N_Generic_Procedure_Renaming_Declaration
+                            | N_Package_Body
+                            | N_Package_Declaration
+                            | N_Package_Renaming_Declaration
+                            | N_Subprogram_Body
+                            | N_Subprogram_Declaration
+                            | N_Subprogram_Renaming_Declaration
                   and then Is_Clean_Context,
           Post => Is_Clean_Context;
    --  Put marks on a compilation unit. This should be called after all
