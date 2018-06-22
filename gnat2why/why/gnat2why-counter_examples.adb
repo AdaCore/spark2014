@@ -607,7 +607,7 @@ package body Gnat2Why.Counter_Examples is
          if S = "" then
             return To_Unbounded_String ("?");
          else
-            return (S);
+            return S;
          end if;
       end Replace_Question_Mark;
 
@@ -1584,10 +1584,10 @@ package body Gnat2Why.Counter_Examples is
 
       package Supp_Lines is new Ce_Interval_Sets (N => Physical_Line_Number);
 
-      function Get_Interval_Case (E : Entity_Id;
+      function Get_Interval_Case (N : Node_Id;
                                   B : Boolean)
                                   return Supp_Lines.Interval_Set
-        with Pre => Nkind (E) in N_Case_Statement_Alternative;
+        with Pre => Nkind (N) = N_Case_Statement_Alternative;
       --  The case statement are translated to new ifs in Why3 so we can
       --  eliminate case by case (the order of branches is kept):
       --  * a branch is taken: we can remove all the subsequent "when"
@@ -1598,18 +1598,18 @@ package body Gnat2Why.Counter_Examples is
       --  * a branch is not taken: we can remove it as we are sure it is not
       --    taken
 
-      function Get_Interval_For_Branch (E : Entity_Id)
+      function Get_Interval_For_Branch (N : Node_Id)
                                         return Supp_Lines.Interval
-        with Pre => Nkind (E) in N_If_Statement | N_Elsif_Part;
+        with Pre => Nkind (N) in N_If_Statement | N_Elsif_Part;
 
-      function Get_Interval_For_Branch_Case (E : Entity_Id)
+      function Get_Interval_For_Branch_Case (N : Node_Id)
                                              return Supp_Lines.Interval
-        with Pre => Nkind (E) in N_Case_Statement_Alternative;
+        with Pre => Nkind (N) = N_Case_Statement_Alternative;
 
-      function Get_Interval_If (E : Entity_Id;
+      function Get_Interval_If (N : Node_Id;
                                 B : Boolean)
                                 return Supp_Lines.Interval_Set
-        with Pre => Nkind (E) in N_If_Statement | N_Elsif_Part;
+        with Pre => Nkind (N) in N_If_Statement | N_Elsif_Part;
 
       function Get_P (E : Entity_Id) return Physical_Line_Number is
         (Get_Physical_Line_Number (Sloc (E)));
@@ -1625,7 +1625,7 @@ package body Gnat2Why.Counter_Examples is
       -- Get_Interval_Case --
       -----------------------
 
-      function Get_Interval_Case (E : Entity_Id;
+      function Get_Interval_Case (N : Node_Id;
                                   B : Boolean)
                                   return Supp_Lines.Interval_Set
       is
@@ -1635,8 +1635,8 @@ package body Gnat2Why.Counter_Examples is
          if not B then
             --  This branch is not taken, remove it
 
-            Supp_Lines.Insert (S, Get_Interval_For_Branch_Case (E));
-            return (S);
+            Supp_Lines.Insert (S, Get_Interval_For_Branch_Case (N));
+            return S;
 
          else
             --  This branch is taken, removes all branches *after* it. If one
@@ -1644,12 +1644,12 @@ package body Gnat2Why.Counter_Examples is
             --  a logic expression that is never used -> nothing more can be
             --  deduced.
 
-            if Present (Next (E)) then
+            if Present (Next (N)) then
                Supp_Lines.Insert
-                 (S, (L_Bound => Get_P (Next (E)),
+                 (S, (L_Bound => Get_P (Next (N)),
                       R_Bound =>
                         Get_Physical_Line_Number (
-                          End_Location (Enclosing_Statement (E)))));
+                          End_Location (Enclosing_Statement (N)))));
             end if;
 
          end if;
@@ -1660,46 +1660,46 @@ package body Gnat2Why.Counter_Examples is
       -- Get_Interval_For_Branch --
       -----------------------------
 
-      function Get_Interval_For_Branch (E : Entity_Id)
+      function Get_Interval_For_Branch (N : Node_Id)
                                         return Supp_Lines.Interval
       is
       begin
-         if Nkind (E) = N_If_Statement then
+         if Nkind (N) = N_If_Statement then
 
-            return (L_Bound => Get_P (Nlists.First (Then_Statements (E))),
+            return (L_Bound => Get_P (Nlists.First (Then_Statements (N))),
                     R_Bound =>
 
-                      (if Present (Elsif_Parts (E)) then
+                      (if Present (Elsif_Parts (N)) then
                           Physical_Line_Number'Max
                             (1,
-                             Get_P (First (Elsif_Parts (E))) - 1)
-                       elsif Present (Else_Statements (E)) then
+                             Get_P (First (Elsif_Parts (N))) - 1)
+                       elsif Present (Else_Statements (N)) then
                           Physical_Line_Number'Max
                             (1,
-                             Get_P (First (Else_Statements (E))) - 1)
+                             Get_P (First (Else_Statements (N))) - 1)
                        else
-                          Get_Physical_Line_Number (End_Location (E))));
+                          Get_Physical_Line_Number (End_Location (N))));
 
-         elsif Nkind (E) = N_Elsif_Part then
+         elsif Nkind (N) = N_Elsif_Part then
 
-            return (L_Bound => Get_P (First (Then_Statements (E))),
+            return (L_Bound => Get_P (First (Then_Statements (N))),
                     R_Bound =>
 
-                      (if Present (Next (E)) then
-                          Physical_Line_Number'Max (1, Get_P (Next (E)) - 1)
+                      (if Present (Next (N)) then
+                          Physical_Line_Number'Max (1, Get_P (Next (N)) - 1)
                        else
 
                          --  There is an elsif statements so there is an else
                          --  statement
 
                          (if Present
-                              (Else_Statements (Enclosing_Statement (E)))
+                              (Else_Statements (Enclosing_Statement (N)))
                           then
                              Get_P (First
-                            (Else_Statements (Enclosing_Statement (E))))
+                            (Else_Statements (Enclosing_Statement (N))))
                           else
                              Get_Physical_Line_Number
-                               (End_Location (Enclosing_Statement (E))))));
+                               (End_Location (Enclosing_Statement (N))))));
          else
 
             --  Cannot be accessed (precondition)
@@ -1711,19 +1711,19 @@ package body Gnat2Why.Counter_Examples is
       -- Get_Interval_For_Branch_Case --
       ----------------------------------
 
-      function Get_Interval_For_Branch_Case (E : Entity_Id)
+      function Get_Interval_For_Branch_Case (N : Node_Id)
                                              return Supp_Lines.Interval
       is
       begin
-         if Present (Next (E)) then
-            return (L_Bound => Get_P (E),
+         if Present (Next (N)) then
+            return (L_Bound => Get_P (N),
                     R_Bound =>
-                      Physical_Line_Number'Max (1, Get_P (Next (E)) - 1));
+                      Physical_Line_Number'Max (1, Get_P (Next (N)) - 1));
          else
-            return (L_Bound => Get_P (E),
+            return (L_Bound => Get_P (N),
                     R_Bound =>
                       Physical_Line_Number
-                        (End_Location (Enclosing_Statement (E))));
+                        (End_Location (Enclosing_Statement (N))));
          end if;
 
       end Get_Interval_For_Branch_Case;
@@ -1742,7 +1742,7 @@ package body Gnat2Why.Counter_Examples is
       --  * a branch is not taken: we can remove it as we are sure it is not
       --    taken
 
-      function Get_Interval_If (E : Entity_Id;
+      function Get_Interval_If (N : Node_Id;
                                 B : Boolean)
                                 return Supp_Lines.Interval_Set
       is
@@ -1752,8 +1752,8 @@ package body Gnat2Why.Counter_Examples is
          if not B then
             --  This branch is not taken: remove it.
 
-            Supp_Lines.Insert (S, Get_Interval_For_Branch (E));
-            return (S);
+            Supp_Lines.Insert (S, Get_Interval_For_Branch (N));
+            return S;
 
          else
             --  This branch is taken, removes all branches *after* it. If one
@@ -1761,18 +1761,18 @@ package body Gnat2Why.Counter_Examples is
             --  a logic expression that is never used -> nothing more can be
             --  deduced.
 
-            if Nkind (E) = N_If_Statement then
-               if Present (Elsif_Parts (E)) then
+            if Nkind (N) = N_If_Statement then
+               if Present (Elsif_Parts (N)) then
                   Supp_Lines.Insert
-                    (S, (L_Bound => Get_P (First (Elsif_Parts (E))),
+                    (S, (L_Bound => Get_P (First (Elsif_Parts (N))),
                          R_Bound =>
-                           Get_Physical_Line_Number (End_Location (E))));
+                           Get_Physical_Line_Number (End_Location (N))));
 
-               elsif Present (Else_Statements (E)) then
+               elsif Present (Else_Statements (N)) then
                   Supp_Lines.Insert
-                    (S, (L_Bound => Get_P (First (Else_Statements (E))),
+                    (S, (L_Bound => Get_P (First (Else_Statements (N))),
                          R_Bound =>
-                           Get_Physical_Line_Number (End_Location (E))));
+                           Get_Physical_Line_Number (End_Location (N))));
                else
 
                   --  No elsif or else branch so we don't need to remove
@@ -1780,28 +1780,28 @@ package body Gnat2Why.Counter_Examples is
                   null;
                end if;
 
-            elsif Nkind (E) = N_Elsif_Part then
+            elsif Nkind (N) = N_Elsif_Part then
 
-               if Present (Next (E)) then
+               if Present (Next (N)) then
                   Supp_Lines.Insert
-                    (S, (L_Bound => Get_P (Next (E)),
+                    (S, (L_Bound => Get_P (Next (N)),
                          R_Bound =>
                            Get_Physical_Line_Number (
-                             End_Location (Enclosing_Statement (E)))));
+                             End_Location (Enclosing_Statement (N)))));
 
                else
 
                   --  If there is no else statements and no following elsif we
                   --  do nothing.
 
-                  if Present (Else_Statements (Enclosing_Statement (E))) then
+                  if Present (Else_Statements (Enclosing_Statement (N))) then
                      Supp_Lines.Insert
                        (S, (L_Bound =>
                                 Get_P (First
-                                 (Else_Statements (Enclosing_Statement (E)))),
+                                 (Else_Statements (Enclosing_Statement (N)))),
                             R_Bound =>
                               Get_Physical_Line_Number (
-                                End_Location (Enclosing_Statement (E)))));
+                                End_Location (Enclosing_Statement (N)))));
                   end if;
                end if;
 
