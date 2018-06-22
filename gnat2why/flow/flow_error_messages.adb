@@ -513,9 +513,9 @@ package body Flow_Error_Messages is
       end Write_Tracefile;
 
       Tracefile : constant String :=
-        (if not Continuation
-         then Write_Tracefile (Path)
-         else "");
+        (if Continuation or else Path.Is_Empty
+         then ""
+         else Write_Tracefile (Path));
 
    --  Start of processing for Error_Msg_Flow
 
