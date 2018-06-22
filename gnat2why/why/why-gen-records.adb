@@ -221,7 +221,8 @@ package body Why.Gen.Records is
 
          --  Only consider components and part of variables
 
-         if Ekind (Field) not in E_Discriminant | Type_Kind then
+         if not Is_Type (Field) then
+            pragma Assert (Ekind (Field) /= E_Discriminant);
 
             R_Acc := New_Ada_Record_Access
               (Empty, EW_Term, R_Expr, Field, Ty_Ext);
@@ -2531,7 +2532,7 @@ package body Why.Gen.Records is
             --  already present in the ancestor type.
 
             for Comp of Get_Component_Set (Ty) loop
-               if not Component_Is_Visible_In_Type (Ty, Comp)
+               if not Component_Is_Present_In_Type (Ty, Comp)
                  and then
                    (No (Anc_Ty)
                     or else No (Search_Component_In_Type (Anc_Ty, Comp)))

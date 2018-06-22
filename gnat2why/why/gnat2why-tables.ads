@@ -66,6 +66,14 @@ package Gnat2Why.Tables is
 
    type Component_Info_Map is private;
 
+   type Component_Visibility is (Regular, Removed, Hidden, Duplicated);
+
+   package Component_Visibility_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Component_Visibility,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+
    function Component_Is_Visible_In_Type (Rec, Comp : Entity_Id) return Boolean
    with
      Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind
@@ -75,6 +83,17 @@ package Gnat2Why.Tables is
    --  @return True if Comp is visible in Rec, that is, it has not been hidden
    --          by a pragma SPARK_Mode (Off), a private derivation, or a
    --          discriminant constraint.
+
+   function Component_Is_Present_In_Type (Rec, Comp : Entity_Id) return Boolean
+   with
+     Pre  => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind
+     and then Get_Component_Set (Rec).Contains (Comp),
+     Post => Component_Is_Present_In_Type'Result =
+       (Get_Component_Visibility_Map (Rec) (Comp) /= Removed);
+   --  @param Rec is a record type or a protected type
+   --  @param Comp component of the record type or of one of its ancestors
+   --  @return True if Comp is present in Rec, that is, it has not been removed
+   --          due to a discriminant constraint.
 
    function Get_Variant_Info (E : Entity_Id) return Component_Info_Map
    with
@@ -98,6 +117,18 @@ package Gnat2Why.Tables is
    --  are not in SPARK are modeled by the type entity of the first ancestor of
    --  E in which they exist. It also includes Part_Of constituents of
    --  protected objects. Components have the most precise possible type.
+
+   function Get_Component_Visibility_Map
+     (E : Entity_Id)
+      return Component_Visibility_Maps.Map
+   with
+     Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
+   --  @param E entity of a type translated as a record in why
+   --  @return E a map from E's components to their visibility. A component has
+   --      visibility Regular if it is visible, Hidden if it has been hidden by
+   --      a private definition, Duplicate if it is Hidden and some other
+   --      regular field has the same name, and Removed if it was removed by
+   --      a static constraint.
 
    function Get_Descendant_Set (E : Entity_Id) return Node_Sets.Set with
      Pre => Is_Tagged_Type (Retysp (E));

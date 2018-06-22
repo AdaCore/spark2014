@@ -418,7 +418,7 @@ distributed_file_system.ads:12:20: info: class-wide precondition is weaker than 
 distributed_file_system.ads:13:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 distributed_file_system.ads:16:20: info: class-wide precondition is weaker than overridden one (CVC4: 1 VC)
 distributed_file_system.ads:17:20: info: class-wide postcondition is stronger than overridden one (CVC4: 2 VC)
-distributed_file_system.ads:20:20: medium: class-wide precondition might be stronger than overridden one (e.g. when F = (In_Synch => False))
+distributed_file_system.ads:20:20: medium: class-wide precondition might be stronger than overridden one (e.g. when F = (Filename => (others => 'NUL'), Cursor => 0, Status => Closed, In_Synch => False))
 distributed_file_system.ads:21:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)
 ints.adb:29:10: info: precondition proved (CVC4: 1 VC)

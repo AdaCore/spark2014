@@ -15949,7 +15949,7 @@ package body Gnat2Why.Expr is
             if Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
 
                for Field of Get_Component_Set (Ty_Ext) loop
-                  if Component_Is_Visible_In_Type (Ty_Ext, Field) then
+                  if not Is_Type (Field) then
                      if Present (Expression (Enclosing_Declaration (Field)))
                      then
 
@@ -16135,7 +16135,7 @@ package body Gnat2Why.Expr is
       elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
 
          for Field of Get_Component_Set (Ty_Ext) loop
-            if Component_Is_Visible_In_Type (Ty_Ext, Field) then
+            if not Is_Type (Field) then
                Variables_In_Dynamic_Invariant (Etype (Field), Variables);
             end if;
          end loop;

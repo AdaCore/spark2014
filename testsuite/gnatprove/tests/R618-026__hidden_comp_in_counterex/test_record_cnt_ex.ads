@@ -80,12 +80,12 @@ package test_record_cnt_ex with SPARK_Mode is
       G : Integer;
    end record;
    type F_Present is new Nested_3.F_Present with record
-      G : Integer;
+      H : Integer;
    end record;
    X : constant No_F := (Nested_3.X with G => 8);
    Y : constant No_F := (Nested_3.Y with G => 8);
-   W : constant F_Present := (Nested_3.W with G => 8);
-   Z : constant F_Present := (Nested_3.Z with G => 8);
+   W : constant F_Present := (Nested_3.W with H => 8);
+   Z : constant F_Present := (Nested_3.Z with H => 8);
 
    pragma Assert (X = Y); --@ASSERT:FAIL
    --  the current value given for 'G' should be labelled Nested_3.G and visible
@@ -93,5 +93,5 @@ package test_record_cnt_ex with SPARK_Mode is
    --  expected (e.g. when X = (B => ?, Nested_3.G => 7, G => 8) and Y = (B => ?, Nested_3.G => 0, G => 8))
    pragma Assert (Z = W); --@ASSERT:FAIL
    --  As before except that Nested_3.F should be displayed too
-   --  expected (e.g. when W = (B => ?, Nested_3.G => 3, Nested_3.F => 6, G => 8) and Z = (B => ?, Nested_3.G => 3, Nested_3.F => 0, G => 8))
+   --  expected (e.g. when W = (B => ?, Nested_3.G => 3, Nested_3.F => 6, H => 8) and Z = (B => ?, Nested_3.G => 3, Nested_3.F => 0, H => 8))
 end test_record_cnt_ex;

@@ -44,7 +44,7 @@ package body Gnat2Why.CE_Utils is
 
       --  ??? Inefficient: the length could be computed once.
       for Component of Get_Component_Set (E) loop
-         if Component_Is_Visible_In_Type (E, Component) then
+         if Component_Is_Present_In_Type (E, Component) then
             Count := Count + 1;
          end if;
       end loop;
@@ -61,8 +61,10 @@ package body Gnat2Why.CE_Utils is
                                 Comp : Entity_Id)
                                 return Boolean
    is
-     (Component_Is_Visible_In_Type (Rec,
-                                    Search_Component_In_Type (Rec, Comp)));
+     (Ekind (Comp) = E_Discriminant
+      or else (not Is_Type (Comp)
+               and then Component_Is_Present_In_Type
+                 (Rec, Search_Component_In_Type (Rec, Comp))));
 
    -------------------
    -- Get_Entity_Id --

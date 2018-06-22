@@ -725,7 +725,9 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                   --  Only consider fields which are visible in Expr_Ty.
 
-                  if Component_Is_Visible_In_Type (Expr_Ty, Component) then
+                  if not Is_Type (Component)
+                    and then Component_Is_Present_In_Type (Expr_Ty, Component)
+                  then
                      Handle_Record_Component (Component);
                   end if;
                end loop;

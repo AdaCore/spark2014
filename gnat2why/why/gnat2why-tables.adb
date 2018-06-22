@@ -38,7 +38,10 @@ package body Gnat2Why.Tables is
    type Record_Info is record
       Components   : Node_Sets.Set;
       Variant_Info : Component_Info_Map;
-   end record;
+      Visibility   : Component_Visibility_Maps.Map;
+   end record
+     with Dynamic_Predicate =>
+       (for all E of Components => Visibility.Contains (E));
 
    package Component_Info_Map_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
@@ -75,12 +78,14 @@ package body Gnat2Why.Tables is
    --  For each subcomponent of E, create an entry in map Comp_Info
 
    procedure Init_Component_Info
-     (E    : Entity_Id;
-      Info : in out Record_Info);
+     (E          : Entity_Id;
+      Info       : in out Record_Info;
+      Visibility : Component_Visibility);
    --  Same as Init_Component_Info (E : Entity_Id) except that information
    --  about E's fields is stored in Info.
    --  @param E record type
    --  @param Info information that should be updated
+   --  @param Visibility which should be used for components of E
 
    procedure Init_Component_Info_For_Protected_Types (E : Entity_Id)
    with Pre => Is_Concurrent_Type (E);
@@ -95,10 +100,17 @@ package body Gnat2Why.Tables is
    --  For each subcomponent of E, create an entry in map Comp_Info
 
    function Search_Component_In_Info
-     (Info : Node_Sets.Set;
-      Comp : Entity_Id)
+     (Info         : Node_Sets.Set;
+      Comp         : Entity_Id;
+      Is_Duplicate : out Boolean)
       return Entity_Id
    with Pre => Ekind (Comp) in E_Component | Type_Kind;
+   --  @param Info component set
+   --  @param Comp record component, or discriminant, or part_of object
+   --  @param Is_Duplicate True if there is a component in Comp which has the
+   --    same name as Comp.
+   --  @result An entity with same name and same original component as Comp in
+   --      Info if any.
 
    procedure Store_In_Ancestors (E : Entity_Id) with
      Pre => Is_Tagged_Type (Root_Record_Type (E));
@@ -106,16 +118,32 @@ package body Gnat2Why.Tables is
    --  Store E in the descendant map of each of its ancestors
 
    ----------------------------------
+   -- Component_Is_Present_In_Type --
+   ----------------------------------
+
+   function Component_Is_Present_In_Type (Rec, Comp : Entity_Id) return Boolean
+   is
+      Ty : constant Entity_Id :=
+        Retysp (if Is_Class_Wide_Type (Rec)
+                then Get_Specific_Type_From_Classwide (Rec) else Rec);
+   begin
+      return Comp_Info (Ty).Visibility (Comp) /= Removed;
+   end Component_Is_Present_In_Type;
+
+   ----------------------------------
    -- Component_Is_Visible_In_Type --
    ----------------------------------
 
    function Component_Is_Visible_In_Type (Rec, Comp : Entity_Id) return Boolean
    is
-     (case Ekind (Comp) is
-          when E_Variable                   => Entity_In_SPARK (Comp),
-          when E_Discriminant | E_Component =>
-             Present (Search_Component_By_Name (Rec, Comp)),
-          when others => False);
+      Ty  : constant Entity_Id :=
+        Retysp (if Is_Class_Wide_Type (Rec)
+                then Get_Specific_Type_From_Classwide (Rec) else Rec);
+   begin
+      return Comp_Info (Ty).Visibility (Comp) = Regular
+        and then (Ekind (Comp) /= E_Component
+                  or else Present (Search_Component_By_Name (Rec, Comp)));
+   end Component_Is_Visible_In_Type;
 
    -------------------------------
    -- Find_Rec_Node_For_Variant --
@@ -188,6 +216,21 @@ package body Gnat2Why.Tables is
       return Comp_Info (Ty).Components;
    end Get_Component_Set;
 
+   ----------------------------------
+   -- Get_Component_Visibility_Map --
+   ----------------------------------
+
+   function Get_Component_Visibility_Map
+     (E : Entity_Id)
+      return Component_Visibility_Maps.Map
+   is
+      Ty : constant Entity_Id :=
+        Retysp (if Is_Class_Wide_Type (E)
+                then Get_Specific_Type_From_Classwide (E) else E);
+   begin
+      return Comp_Info (Ty).Visibility;
+   end Get_Component_Visibility_Map;
+
    ------------------------
    -- Get_Descendant_Set --
    ------------------------
@@ -247,8 +290,9 @@ package body Gnat2Why.Tables is
    -------------------------
 
    procedure Init_Component_Info
-     (E    : Entity_Id;
-      Info : in out Record_Info)
+     (E          : Entity_Id;
+      Info       : in out Record_Info;
+      Visibility : Component_Visibility)
    is
 
       procedure Mark_Component_List
@@ -356,16 +400,27 @@ package body Gnat2Why.Tables is
       end if;
 
       --  We only store in Components the first version of a field that we
-      --  encounter so that its type is as specialized as possible.
+      --  encounter so that its type is as specialized as possible. If we
+      --  are adding a component which has a duplicate in Info.Components,
+      --  change its visibility to Duplicated.
 
       declare
-         Comp : Node_Id := First_Component (E);
+         Comp         : Node_Id := First_Component (E);
+         Is_Duplicate : Boolean;
       begin
          while Present (Comp) loop
             if Component_Is_Visible_In_SPARK (Comp)
-              and then No (Search_Component_In_Info (Info.Components, Comp))
+              and then No
+                (Search_Component_In_Info
+                   (Info.Components, Comp, Is_Duplicate))
             then
                Info.Components.Insert (Comp);
+               pragma Assert (if Is_Duplicate then Visibility /= Regular);
+               Info.Visibility.Insert
+                 (Comp,
+                  (if Visibility = Hidden and then Is_Duplicate then
+                        Duplicated
+                   else Visibility));
             end if;
             Next_Component (Comp);
          end loop;
@@ -376,12 +431,20 @@ package body Gnat2Why.Tables is
 
       if Has_Private_Fields (E) then
          Info.Components.Insert (E);
+         Info.Visibility.Insert (E, Hidden);
       end if;
 
-      --  Add components of ancestor types.
+      --  Add components of ancestor types. Components of the ancestor which
+      --  are not in E are either Hidden by privacy or Removed by a
+      --  discriminant constraint. We assume that components are Removed if
+      --  E is constrained and not its ancestor.
 
       if Ancestor_Type /= E then
-         Init_Component_Info (Ancestor_Type, Info);
+         Init_Component_Info
+           (Ancestor_Type, Info, Visibility =>
+              (if Is_Constrained (E)
+                 and then not Is_Constrained (Ancestor_Type)
+               then Removed else Hidden));
       end if;
    end Init_Component_Info;
 
@@ -402,7 +465,7 @@ package body Gnat2Why.Tables is
       if Ekind (E) in SPARK_Util.Types.Subtype_Kind then
          Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
       else
-         Init_Component_Info (E, Comp_Info (Position));
+         Init_Component_Info (E, Comp_Info (Position), Visibility => Regular);
       end if;
 
       if Is_Tagged_Type (Root_Record_Type (E)) then
@@ -461,6 +524,7 @@ package body Gnat2Why.Tables is
                     (Field,
                      Component_Info'(others => Empty));
                   Comp_Info (Position).Components.Insert (Field);
+                  Comp_Info (Position).Visibility.Insert (Field, Regular);
                   Next_Component (Field);
                end loop;
             end if;
@@ -474,6 +538,7 @@ package body Gnat2Why.Tables is
                loop
                   if Entity_In_SPARK (Part) then
                      Comp_Info (Position).Components.Insert (Part);
+                     Comp_Info (Position).Visibility.Insert (Part, Regular);
                   else
                      Needs_Private_Part := True;
                   end if;
@@ -482,6 +547,7 @@ package body Gnat2Why.Tables is
 
             if Needs_Private_Part then
                Comp_Info (Position).Components.Insert (E);
+               Comp_Info (Position).Visibility.Insert (E, Hidden);
             end if;
          end;
       else
@@ -498,17 +564,31 @@ package body Gnat2Why.Tables is
       Info : in out Record_Info)
    is
    begin
-      for Field of Get_Component_Set (Etype (E)) loop
+      for C in Get_Component_Visibility_Map (Etype (E)).Iterate loop
+         declare
+            Field      : Entity_Id renames
+              Component_Visibility_Maps.Key (C);
+            Visibility : Component_Visibility renames
+              Component_Visibility_Maps.Element (C);
+            E_Field    : constant Entity_Id :=
+              (if Is_Type (Field) then Empty
+               else Search_Component_By_Name (E, Field));
+         begin
 
-         --  If field is hidden in Etype (E), copy it to E
+            --  If field is not in E, it must have been removed due to a
+            --  discriminant constraint. Copy it to E with visibility Removed.
 
-         if Is_Type (Field)
-           or else No (Search_Component_By_Name (E, Field))
-         then
-            Info.Components.Insert (Field);
-         else
-            Info.Components.Insert (Search_Component_By_Name (E, Field));
-         end if;
+            if Is_Type (Field) or else No (E_Field) then
+               Info.Components.Insert (Field);
+               Info.Visibility.Insert
+                 (Field,
+                  (if Visibility = Regular then Removed else Visibility));
+            else
+               Info.Components.Insert (E_Field);
+               pragma Assert (Visibility = Regular);
+               Info.Visibility.Insert (E_Field, Regular);
+            end if;
+         end;
       end loop;
    end Init_Component_Info_For_Subtypes;
 
@@ -528,13 +608,17 @@ package body Gnat2Why.Tables is
    ------------------------------
 
    function Search_Component_In_Info
-     (Info : Node_Sets.Set;
-      Comp : Entity_Id)
+     (Info         : Node_Sets.Set;
+      Comp         : Entity_Id;
+      Is_Duplicate : out Boolean)
       return Entity_Id
    is
    begin
+      Is_Duplicate := False;
+
       for Cur_Comp of Info loop
          if Chars (Cur_Comp) = Chars (Comp) then
+            Is_Duplicate := True;
 
             --  We have found a field with the same name. If the type is not
             --  tagged, we have found the correct component. Otherwise, either
@@ -563,6 +647,7 @@ package body Gnat2Why.Tables is
 
    function Search_Component_In_Type (Rec, Comp : Entity_Id) return Entity_Id
    is
+      Is_Duplicate : Boolean;
    begin
       if Ekind (Comp) = E_In_Parameter then
 
@@ -572,7 +657,8 @@ package body Gnat2Why.Tables is
       else
          pragma Assert (Ekind (Comp) in E_Component | Type_Kind);
 
-         return Search_Component_In_Info (Get_Component_Set (Rec), Comp);
+         return Search_Component_In_Info
+           (Get_Component_Set (Rec), Comp, Is_Duplicate);
       end if;
    end Search_Component_In_Type;
 
