@@ -3799,9 +3799,9 @@ package body Flow.Control_Flow_Graph is
          --  Vertex that represents elaboration of a nested package
 
       begin
-         --  Pretend that declaration of a nested package is a "call", so that
-         --  calls from the elaboration of that package will appear as calls
-         --  from the analyzed entity.
+         --  Pretend that declaration of an immediately nested package is a
+         --  "call", so that calls from the elaboration of that package will
+         --  appear as calls from the analyzed entity.
          --
          --  Don't do this for wrapper packages, because they are not
          --  flow-analyzed and we do not get direct calls for them; in effect,
@@ -3811,9 +3811,11 @@ package body Flow.Control_Flow_Graph is
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
                      Make_Basic_Attributes
-                       (Sub_Called => (if Is_Wrapper_Package (Spec_E)
-                                       then Node_Sets.Empty_Set
-                                       else Node_Sets.To_Set (Spec_E)),
+                       (Sub_Called =>
+                          (if Enclosing_Unit (Spec_E) = FA.Spec_Entity
+                             and then not Is_Wrapper_Package (Spec_E)
+                           then Node_Sets.To_Set (Spec_E)
+                           else Node_Sets.Empty_Set),
                         E_Loc      => N,
                         Print_Hint => Pretty_Print_Package),
                      V);
