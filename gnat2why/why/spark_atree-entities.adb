@@ -323,12 +323,11 @@ package body SPARK_Atree.Entities is
       declare
          Discr : Entity_Id := Sem_Aux.First_Discriminant (Typ);
       begin
-         loop
+         while Present (Discr) loop
             if SPARK_Util.Is_Not_Hidden_Discriminant (Discr) then
                return True;
             end if;
             Einfo.Next_Discriminant (Discr);
-            exit when No (Discr);
          end loop;
          return False;
       end;
