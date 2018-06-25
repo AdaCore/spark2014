@@ -260,7 +260,7 @@
   <proof prover="2"><result status="valid" steps="54096"/></proof>
   </goal>
   <goal name="WP_parameter def.37" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="1142"/></proof>
+  <proof prover="0"><result status="valid" steps="2594"/></proof>
   <proof prover="1"><result status="unknown" steps="190019"/></proof>
   <proof prover="2"><result status="unknown" steps="4450652"/></proof>
   </goal>
@@ -745,7 +745,7 @@
   <proof prover="1"><result status="valid" steps="77"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="160"/></proof>
+  <proof prover="0"><result status="valid" steps="321"/></proof>
   <proof prover="1"><result status="unknown" steps="190016"/></proof>
   <proof prover="2"><result status="unknown" steps="4450073"/></proof>
   </goal>
@@ -756,7 +756,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="685"/></proof>
+  <proof prover="0"><result status="valid" steps="1823"/></proof>
   <proof prover="1"><result status="unknown" steps="190014"/></proof>
   <proof prover="2"><result status="unknown" steps="4450087"/></proof>
   </goal>
@@ -1016,7 +1016,7 @@
   <proof prover="1"><result status="valid" steps="1607"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="262"/></proof>
+  <proof prover="0"><result status="valid" steps="441"/></proof>
   <proof prover="1"><result status="unknown" steps="10739"/></proof>
   <proof prover="2"><result status="unknown" steps="4450695"/></proof>
   </goal>
