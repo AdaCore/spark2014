@@ -63,9 +63,7 @@ package Flow.Slice is
       Definite_Calls        : out Node_Sets.Set;
       Conditional_Calls     : out Node_Sets.Set;
       Local_Definite_Writes : out Node_Sets.Set)
-   with Pre  => (FA.Generating_Globals and then
-                   FA.Is_Generative and then
-                   not FA.GG.Aborted),
+   with Pre  => FA.Generating_Globals and FA.Is_Generative,
         Post => Definite_Calls.Intersection (Conditional_Calls).Is_Empty
                 and then Proof_Calls.Intersection
                            (Definite_Calls or Conditional_Calls).Is_Empty

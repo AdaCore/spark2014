@@ -329,8 +329,8 @@ package body Flow is
                  when others => raise Program_Error)
        and then (if not X.Generating_Globals
                  then
-                   not X.GG.Aborted
-                   and then X.GG.Globals.Is_Empty
+                   X.GG.Globals.Is_Empty
+                   and then X.GG.Local_Variables.Is_Empty
                    and then X.Entries.Is_Empty
                    and then (for all Info of X.Tasking => Info.Is_Empty))
       );
@@ -1032,7 +1032,7 @@ package body Flow is
          then
             case FA.Kind is
             when Kind_Subprogram | Kind_Task =>
-               if FA.GG.Aborted then
+               if not FA.Is_Generative then
                   Debug ("skipped" & (if Present (FA.Global_N)
                          then "(global found)"
                          elsif Present (FA.Depends_N)
@@ -1045,7 +1045,7 @@ package body Flow is
 
             when Kind_Package | Kind_Package_Body =>
 
-               if FA.GG.Aborted then
+               if not FA.Is_Generative then
                   Debug ("skipped (package spec)");
                   if FA.Kind = Kind_Package_Body then
                      Debug ("skipped (package body)");
@@ -1217,10 +1217,6 @@ package body Flow is
          end if;
       end if;
 
-      --  If we already have all the needed contracts then we set Aborted flag
-      --  and do not produce graphs.
-      FA.GG.Aborted := Generating_Globals and then not FA.Is_Generative;
-
       Debug_GG_Source;
 
       --  Print generated globals or initializes if --flow-show-gg is set
@@ -1238,7 +1234,7 @@ package body Flow is
       --  Print this graph now in case the other algorithms barf
       Debug (Debug_Print_CFG, FA.CFG, "cfg");
 
-      if not FA.GG.Aborted then
+      if not FA.Generating_Globals or else FA.Is_Generative then
          Control_Dependence_Graph.Create (FA);
          Data_Dependence_Graph.Create (FA);
          Interprocedural.Create (FA);

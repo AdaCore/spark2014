@@ -109,10 +109,6 @@ package Flow is
    --  ??? This should be a variant record, but O325-005 and AI12-0047 make
    --      this difficult.
    type Flow_Global_Generation_Info is record
-      Aborted : Boolean;
-      --  Set if graph creation, processing or analysis raised some error;
-      --  or if the entity should not be analyzed in the first place.
-
       Globals : Node_Sets.Set;
       --  Non-local variables and parameters other than those of the analyzed
       --  entity.
