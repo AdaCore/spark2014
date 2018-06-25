@@ -11,13 +11,13 @@ package Helpers with SPARK_Mode is
    function ferror (stream : File_Descr) return int;
 
    procedure fgetc (stream : File_Descr; result : out int) with
-     Global => (Proof_In => The_File, In_Out => Cur_Position),
+     Global => (Proof_In => (The_File, EOF), In_Out => Cur_Position),
      Post => (if Result /= EOF then
                 Cur_Position = Cur_Position'Old + 1 and then
                 Result = Character'Pos (The_File (Cur_Position'Old)));
 
    procedure ungetc (c : int; stream : File_Descr; result : out int) with
-     Global => (In_Out => (The_File, Cur_Position)),
+     Global => (In_Out => (The_File, Cur_Position), Proof_In => EOF),
      Post => (if Result /= EOF then
                 Cur_Position = Cur_Position'Old - 1 and then
                 The_File = The_File'Old'Update (Cur_Position => Character'Val (C)));

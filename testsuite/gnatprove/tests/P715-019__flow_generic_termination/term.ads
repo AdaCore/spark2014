@@ -5,6 +5,10 @@ package Term is
    type T is new Integer;
 
    function Eq (X, Y : T) return Boolean;
+   --  This equality function is intentionally broken, because its (generated)
+   --  Global contract is (Input => S). This brakes the internal routines in
+   --  formal containers, which use this equality in their Pre/Post contract
+   --  yet are explicitly annotated with Global => null.
 
    function Hash (X : T) return Ada.Containers.Hash_Type;
 

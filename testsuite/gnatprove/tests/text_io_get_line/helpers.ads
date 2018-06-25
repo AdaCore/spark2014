@@ -68,7 +68,7 @@ package Helpers with SPARK_Mode is
       Stream  : File_Descr;
       Success : out Boolean)
    with
-     Global => (Proof_In => The_File, In_Out => Cur_Position),
+     Global => (Proof_In => (The_File, EOF), In_Out => Cur_Position, Input => EOF_Ch),
      Post => (if Success then
 
                 --  Success means no error and no empty file
@@ -149,7 +149,7 @@ package Helpers with SPARK_Mode is
    function ferror (stream : File_Descr) return int;
 
    procedure fgetc (stream : File_Descr; result : out int) with
-     Global => (Proof_In => The_File, In_Out => Cur_Position),
+     Global => (Proof_In => (The_File, EOF), In_Out => Cur_Position, Input => EOF_Ch),
      Post => (if The_File (Cur_Position'Old) = EOF_Ch then
                 Cur_Position = Cur_Position'Old and then
                 Result = EOF

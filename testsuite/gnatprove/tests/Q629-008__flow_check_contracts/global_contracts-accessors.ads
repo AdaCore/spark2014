@@ -6,7 +6,7 @@ package Global_Contracts.Accessors with SPARK_Mode is
    function Valid_G return Boolean is (Get_B1 and Get_B2);
 
    function Get_G return Integer with
-     Global => (Input => S2, Proof_In => S1),
+     Global => S2, -- incomplete; misses State.{B1,B2} constituents of S1
      Pre    => Valid_G;
 private
    function Get_B1 return Boolean is (State.B1);

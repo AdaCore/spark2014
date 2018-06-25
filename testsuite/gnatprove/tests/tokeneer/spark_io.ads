@@ -95,7 +95,7 @@ is
     with Global => null;
 
   function Mode (File : File_Type) return File_Mode
-    with Global => null;
+    with Global => State;
 
   procedure Name (File         : in     File_Type;
                   Name_Of_File :    out String;
@@ -158,36 +158,38 @@ is
 
   procedure Set_In_File_Col (File : in File_Type;
                              Posn : in Positive)
-    with Global  => (In_Out => Inputs),
+    with Global  => (In_Out => Inputs, Input => State),
          Depends => (Inputs => (Inputs,
                                 File,
-                                Posn)),
+                                Posn,
+                                State)),
          Pre     => Mode (File) = In_File;
 
   procedure Set_Out_File_Col (File : in File_Type;
                               Posn : in Positive)
-    with Global  => (In_Out => Outputs),
+    with Global  => (In_Out => Outputs, Input => State),
          Depends => (Outputs => (Outputs,
                                  File,
-                                 Posn)),
+                                 Posn,
+                                 State)),
          Pre     => Mode (File) = Out_File or else
                       Mode (File) = Append_File;
 
   function In_File_Col (File : File_Type) return Positive
-    with Global => Inputs,
+    with Global => (Inputs, State),
          Pre    => Mode (File) = In_File;
 
   function Out_File_Col (File : File_Type) return Positive
-    with Global => Outputs,
+    with Global => (Outputs, State),
          Pre    => Mode (File) = Out_File or else
                      Mode (File) = Append_File;
 
   function In_File_Line (File : File_Type) return Positive
-    with Global => Inputs,
+    with Global => (Inputs, State),
          Pre    => Mode (File) = In_File;
 
   function Out_File_Line (File : File_Type) return Positive
-    with Global => Outputs,
+    with Global => (Outputs, State),
          Pre    => Mode (File) = Out_File or else
                      Mode (File) = Append_File;
 

@@ -33,6 +33,7 @@ with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
+with Flow_Sanity;
 with Flow.Slice;                       use Flow.Slice;
 with Flow_Classwide;                   use Flow_Classwide;
 with Flow_Debug;                       use Flow_Debug;
@@ -1517,6 +1518,8 @@ package body Flow is
                        "Flow analysis complete for current CU" &
                        Character'Val (8#33#) & "[0m");
       end if;
+
+      Flow_Sanity.Check_Incomplete_Globals;
 
       --  If an error was found then print all errors/warnings and return
       --  with an error status.

@@ -20,7 +20,7 @@ is
   Standard_Output : constant File_Type;
   Null_File       : constant File_Type; --718
 
-  function Mode(File : File_Type) return File_Mode;
+  function Mode(File : File_Type) return File_Mode with Global => null;
 
   function In_File_Col(File : File_Type) return Positive
      with Global => Inputs,
