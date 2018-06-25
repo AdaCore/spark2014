@@ -39,8 +39,8 @@ package Flow_Generated_Globals.Partial is
    --  ??? most likely this should be moved once the new serialization is done
 
    function Is_Callee (E : Entity_Id) return Boolean;
-   --  Returns True iff E might be called or is a package nested in an entity
-   --  that might be called (and we treat its elaboration as a call).
+   --  Returns True iff E might be called or is a nested package (whose
+   --  elaboration is handled as a call).
 
    subtype Callee_Set is Node_Sets.Set
    with Dynamic_Predicate =>

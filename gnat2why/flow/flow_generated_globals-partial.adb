@@ -1784,16 +1784,9 @@ package body Flow_Generated_Globals.Partial is
 
    function Is_Callee (E : Entity_Id) return Boolean is
    begin
-      if Is_Callable (E) then
-         return True;
-      else
-         declare
-            S : constant Entity_Id := Enclosing_Subprogram (E);
-
-         begin
-            return Present (S) and then Is_Callable (S);
-         end;
-      end if;
+      return Is_Callable (E)
+        or else (Ekind (E) = E_Package
+                 and then not Is_Compilation_Unit (E));
    end Is_Callee;
 
    --------------

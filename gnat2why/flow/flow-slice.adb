@@ -23,6 +23,7 @@
 
 with Flow_Utility;           use Flow_Utility;
 with Sem_Util;               use Sem_Util;
+with Snames;                 use Snames;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
@@ -406,11 +407,16 @@ package body Flow.Slice is
                                          | E_Procedure
                                          | E_Package);
 
-               --  Ignore fake "calls" to the elaboration of a nested packages,
-               --  because their reads and writes are already inlined in the
-               --  CFG (as represented by the Initializes contract).
+               --  Nested packages with Initializes contract have their reads
+               --  and writes are already inlined in the CFG; those without the
+               --  that contract need to be processed by the GG just like
+               --  subprogram calls.
 
-               if Ekind (E) /= E_Package then
+               if Ekind (E) = E_Package then
+                  if No (Get_Pragma (E, Pragma_Initializes)) then
+                     Unresolved.Insert (E);
+                  end if;
+               else
                   if not Has_User_Supplied_Globals (E)
                     or else Rely_On_Generated_Global (E, FA.B_Scope)
                   then
