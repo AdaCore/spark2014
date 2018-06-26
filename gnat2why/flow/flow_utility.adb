@@ -4921,7 +4921,8 @@ package body Flow_Utility is
             end if;
 
             declare
-               Ptr     : Node_Id;
+               Component_Association : Node_Id;
+
                Input   : Node_Id;
                Target  : Node_Id;
                Missing : Component_Sets.Set := Component_Sets.Empty_Set;
@@ -4932,21 +4933,21 @@ package body Flow_Utility is
                   Missing.Insert (Original_Record_Component (Component));
                end loop;
 
-               Ptr := First (Component_Associations (N));
-               while Present (Ptr) loop
-                  if Box_Present (Ptr) then
+               Component_Association := First (Component_Associations (N));
+               while Present (Component_Association) loop
+                  if Box_Present (Component_Association) then
                      Input := Empty;
                   else
-                     Input := Expression (Ptr);
+                     Input := Expression (Component_Association);
                   end if;
-                  Target := First (Choices (Ptr));
+                  Target := First (Choices (Component_Association));
                   while Present (Target) loop
                      Merge (Entity (Target), Input);
                      Missing.Delete (Original_Record_Component
                                        (Entity (Target)));
                      Next (Target);
                   end loop;
-                  Next (Ptr);
+                  Next (Component_Association);
                end loop;
 
                --  If the aggregate is more constrained than the type would
