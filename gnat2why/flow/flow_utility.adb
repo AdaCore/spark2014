@@ -4972,19 +4972,23 @@ package body Flow_Utility is
                Tmp : constant Flow_Id_Maps.Map :=
                  Recurse_On (Prefix (N),
                              Direct_Mapping_Id (Etype (Prefix (N))));
-               Output : Flow_Id;
-               Inputs : Flow_Id_Sets.Set;
 
             begin
                for C in Tmp.Iterate loop
-                  Output := Flow_Id_Maps.Key (C);
-                  Inputs := Flow_Id_Maps.Element (C);
+                  declare
+                     Output : Flow_Id renames
+                       Flow_Id_Maps.Key (C);
 
-                  if Same_Component (Output.Component.First_Element,
-                                     Entity (Selector_Name (N)))
-                  then
-                     M.Insert (Join (Map_Root, Output, 1), Inputs);
-                  end if;
+                     Inputs : Flow_Id_Sets.Set renames
+                       Flow_Id_Maps.Element (C);
+
+                  begin
+                     if Same_Component (Output.Component.First_Element,
+                                        Entity (Selector_Name (N)))
+                     then
+                        M.Insert (Join (Map_Root, Output, 1), Inputs);
+                     end if;
+                  end;
                end loop;
             end;
 
