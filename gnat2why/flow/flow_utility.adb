@@ -4800,7 +4800,7 @@ package body Flow_Utility is
          F : Flow_Id := A;
          N : Natural := 0;
       begin
-         if B.Kind in Record_Field then
+         if B.Kind = Record_Field then
             for C of B.Component loop
                if N >= Offset then
                   F := Add_Component (F, C);
