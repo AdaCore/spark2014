@@ -61,7 +61,7 @@ help:
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 
 $(GENERATED_RST_FILES): table_generator/table_generator.adb
-	gprbuild -P table_generator/table_generator
+	gprbuild -p -P table_generator/table_generator
 	table_generator/obj/table_generator
 
 setup:	$(GENERATED_RST_FILES)
