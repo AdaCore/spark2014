@@ -4126,6 +4126,18 @@ package body SPARK_Definition is
             end if;
          end;
 
+         --  Need to mark any other interfaces the type may derive from
+
+         if Is_Record_Type (E)
+           and then Has_Interfaces (E)
+         then
+            for Iface of Iter (Interfaces (E)) loop
+               if not In_SPARK (Iface) then
+                     Mark_Violation (E, From => Iface);
+               end if;
+            end loop;
+         end if;
+
          --  Type declarations may refer to private types whose full view has
          --  not been declared yet. However, it is this full view which may
          --  define the type in Why3, if it happens to be in SPARK. Hence the
