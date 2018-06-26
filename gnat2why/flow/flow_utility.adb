@@ -5141,7 +5141,7 @@ package body Flow_Utility is
                   begin
                      if Valid_To_Fields.Contains (Output) then
                         M.Include (Output, Inputs or Discr_Constraints);
-                        Valid_To_Fields.Exclude (Output);
+                        Valid_To_Fields.Delete (Output);
                      end if;
                   end;
                end loop;
@@ -5150,14 +5150,14 @@ package body Flow_Utility is
                   if not M.Contains (The_Tg) then
                      M.Include (The_Tg, Flow_Id_Sets.Empty_Set);
                   end if;
-                  Valid_To_Fields.Exclude (The_Tg);
+                  Valid_To_Fields.Delete (The_Tg);
                end if;
 
                if Valid_To_Fields.Contains (The_Ext) then
                   if not M.Contains (The_Ext) then
                      M.Include (The_Ext, Flow_Id_Sets.Empty_Set);
                   end if;
-                  Valid_To_Fields.Exclude (The_Ext);
+                  Valid_To_Fields.Delete (The_Ext);
                   M (The_Ext).Union (Valid_To_Fields);
                end if;
             end;
