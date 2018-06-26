@@ -4841,11 +4841,15 @@ package body Flow_Utility is
 
             when others =>
                declare
-                  FS : constant Flow_Id_Sets.Set :=
+                  Targets : constant Flow_Id_Sets.Set :=
                     Flatten_Variable (F, Scope);
+
+                  Inputs  : constant Flow_Id_Sets.Set :=
+                    Get_Vars_Wrapper (Input);
+
                begin
-                  for Id of FS loop
-                     M.Include (Id, Get_Vars_Wrapper (Input));
+                  for Id of Targets loop
+                     M.Insert (Id, Inputs);
                   end loop;
                end;
          end case;
