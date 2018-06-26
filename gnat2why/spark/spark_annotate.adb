@@ -458,9 +458,8 @@ package body SPARK_Annotate is
            Find_Aspect (Etype (Entity), Aspect_Iterable);
       begin
          pragma Assert (Present (Iterable_Node));
-         pragma Assert (not Iterable_Annotations.Contains (Iterable_Node));
 
-         Iterable_Annotations.Include
+         Iterable_Annotations.Insert
            (Iterable_Node, Iterable_Annotation'(Kind, Entity));
          if Present (Model_Iterable_Aspect) then
             SPARK_Definition.Mark_Iterable_Aspect (Model_Iterable_Aspect);
