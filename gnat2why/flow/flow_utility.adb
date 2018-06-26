@@ -5256,21 +5256,14 @@ package body Flow_Utility is
             --  For these we just summarize the entire blob.
 
             declare
-               FS  : constant Flow_Id_Sets.Set := Get_Vars_Wrapper (N);
-               LHS : Flow_Id_Sets.Set;
+               RHS : constant Flow_Id_Sets.Set := Get_Vars_Wrapper (N);
+               LHS : constant Flow_Id_Sets.Set :=
+                 Flatten_Variable (Map_Root, Scope);
 
             begin
-               if M.Is_Empty then
-                  LHS := Flatten_Variable (Map_Root, Scope);
-
-                  for Comp of LHS loop
-                     M.Include (Comp, FS);
-                  end loop;
-               else
-                  for Output of M loop
-                     Output.Union (FS);
-                  end loop;
-               end if;
+               for Comp of LHS loop
+                  M.Insert (Comp, RHS);
+               end loop;
             end;
 
          when others =>
