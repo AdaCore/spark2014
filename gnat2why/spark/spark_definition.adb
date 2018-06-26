@@ -31,7 +31,6 @@ with Ada.Text_IO;
 with Aspects;                         use Aspects;
 with Assumption_Types;                use Assumption_Types;
 with Common_Iterators;                use Common_Iterators;
-with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
 with Flow_Refinement;                 use Flow_Refinement;
@@ -4724,23 +4723,14 @@ package body SPARK_Definition is
                            SRM_Reference => "SPARK RM 3.9.1(1)");
                      end if;
 
-                     if Present (Interfaces (E)) then
-                        declare
-                           Ty : Elmt_Id := First_Elmt (Interfaces (E));
-                        begin
-                           while Present (Node (Ty)) loop
-                              if Enclosing_Dynamic_Scope (Node (Ty)) /= Scop
-                              then
-                                 Mark_Violation
-                                   ("local derived type from non-local " &
-                                    "interface",
-                                    E,
-                                    SRM_Reference => "SPARK RM 3.9.1(1)");
-                              end if;
-                              Ty := Next_Elmt (Ty);
-                           end loop;
-                        end;
-                     end if;
+                     for Iface of Iter (Interfaces (E)) loop
+                        if Enclosing_Dynamic_Scope (Iface) /= Scop then
+                           Mark_Violation
+                             ("local derived type from non-local interface",
+                              E,
+                              SRM_Reference => "SPARK RM 3.9.1(1)");
+                        end if;
+                     end loop;
                   end if;
                end;
             end if;
