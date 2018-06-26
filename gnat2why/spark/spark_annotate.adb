@@ -41,10 +41,11 @@ with Sem_Util;                     use Sem_Util;
 with Sinfo;                        use Sinfo;
 with Sinput;                       use Sinput;
 with Snames;                       use Snames;
+--  ??? "use"ing SPARK_Definition would lead to a name resolution error
+with SPARK_Definition;
 with SPARK_Util.Subprograms;       use SPARK_Util.Subprograms;
 with SPARK_Util.Types;             use SPARK_Util.Types;
 with Stringt;                      use Stringt;
-with SPARK_Definition;
 
 package body SPARK_Annotate is
 
@@ -341,10 +342,11 @@ package body SPARK_Annotate is
       --  Checks that E is a valid Model function for a type with an
       --  Iterable aspect.
 
-      procedure Insert_Iterable_Annotation
+      procedure Process_Iterable_Annotation
         (Kind   : Iterable_Kind;
          Entity : Entity_Id);
-      --  Insert an iterable annotation into the Iterable_Annotations map
+      --  Insert an iterable annotation into the Iterable_Annotations map and
+      --  mark the iterable functions.
 
       ---------------------------
       -- Check_Contains_Entity --
@@ -441,23 +443,29 @@ package body SPARK_Annotate is
          end if;
       end Check_Model_Entity;
 
-      --------------------------------
-      -- Insert_Iterable_Annotation --
-      --------------------------------
+      ---------------------------------
+      -- Process_Iterable_Annotation --
+      ---------------------------------
 
-      procedure Insert_Iterable_Annotation
+      procedure Process_Iterable_Annotation
         (Kind   : Iterable_Kind;
          Entity : Entity_Id)
       is
          Container_Type : constant Entity_Id := Etype (First_Entity (Entity));
          Iterable_Node  : constant Node_Id :=
            Find_Value_Of_Aspect (Container_Type, Aspect_Iterable);
+         Model_Iterable_Aspect : constant Node_Id :=
+           Find_Aspect (Etype (Entity), Aspect_Iterable);
       begin
          pragma Assert (Present (Iterable_Node));
          pragma Assert (not Iterable_Annotations.Contains (Iterable_Node));
+
          Iterable_Annotations.Include
            (Iterable_Node, Iterable_Annotation'(Kind, Entity));
-      end Insert_Iterable_Annotation;
+         if Present (Model_Iterable_Aspect) then
+            SPARK_Definition.Mark_Iterable_Aspect (Model_Iterable_Aspect);
+         end if;
+      end Process_Iterable_Annotation;
 
       Args_Str : constant String_Id := Strval (Arg3_Exp);
       Kind     : Iterable_Kind;
@@ -495,7 +503,7 @@ package body SPARK_Annotate is
       end if;
 
       if Ok then
-         Insert_Iterable_Annotation (Kind, New_Prim);
+         Process_Iterable_Annotation (Kind, New_Prim);
       end if;
    end Check_Iterable_Annotation;
 

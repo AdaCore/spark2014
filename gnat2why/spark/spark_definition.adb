@@ -1542,29 +1542,7 @@ package body SPARK_Definition is
             begin
 
                if Present (Iterable_Aspect) then
-
-                  --  Mark components of the Iterable aggregate
-
-                  declare
-                     Iterable_Component_Assoc : constant List_Id :=
-                       Component_Associations (Expression
-                                                 (Iterable_Aspect));
-                     Iterable_Field : Node_Id :=
-                       First (Iterable_Component_Assoc);
-
-                  begin
-
-                     --  Nodes in Iterable fields are not rewritten.
-                     --  The ultimate alias should be considered.
-
-                     while Present (Iterable_Field) loop
-                        Mark_Entity (Ultimate_Alias
-                                     (Entity (Expression (Iterable_Field))));
-                        Next (Iterable_Field);
-                     end loop;
-
-                  end;
-
+                  Mark_Iterable_Aspect (Iterable_Aspect);
                   if Present (Subtype_Indication (N)) then
                      Mark (Subtype_Indication (N));
                   end if;
@@ -5319,6 +5297,26 @@ package body SPARK_Definition is
          Mark_Stmt_Or_Decl_List (Else_Statements (N));
       end if;
    end Mark_If_Statement;
+
+   --------------------------
+   -- Mark_Iterable_Aspect --
+   --------------------------
+
+   procedure Mark_Iterable_Aspect (Iterable_Aspect : Node_Id) is
+      Iterable_Component_Assoc : constant List_Id :=
+        Component_Associations (Expression (Iterable_Aspect));
+      Iterable_Field           : Node_Id := First (Iterable_Component_Assoc);
+   begin
+
+      --  Nodes in Iterable fields are not rewritten. The ultimate alias should
+      --  be considered.
+
+      while Present (Iterable_Field) loop
+         Mark_Entity (Ultimate_Alias
+                      (Entity (Expression (Iterable_Field))));
+         Next (Iterable_Field);
+      end loop;
+   end Mark_Iterable_Aspect;
 
    ---------------------------
    -- Mark_Iteration_Scheme --
