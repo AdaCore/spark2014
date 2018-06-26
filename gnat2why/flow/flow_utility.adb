@@ -4835,7 +4835,7 @@ package body Flow_Utility is
                      Output : Flow_Id          renames Flow_Id_Maps.Key (C);
                      Inputs : Flow_Id_Sets.Set renames Tmp (C);
                   begin
-                     M.Include (Output, Inputs);
+                     M.Insert (Output, Inputs);
                   end;
                end loop;
 
@@ -4924,8 +4924,8 @@ package body Flow_Utility is
                FS      : Flow_Id_Sets.Set;
 
             begin
-               for Ptr of Components (Map_Type) loop
-                  Missing.Include (Original_Record_Component (Ptr));
+               for Component of Components (Map_Type) loop
+                  Missing.Insert (Original_Record_Component (Component));
                end loop;
 
                Ptr := First (Component_Associations (N));
@@ -4978,7 +4978,7 @@ package body Flow_Utility is
                   if Same_Component (Output.Component.First_Element,
                                      Entity (Selector_Name (N)))
                   then
-                     M.Include (Join (Map_Root, Output, 1), Inputs);
+                     M.Insert (Join (Map_Root, Output, 1), Inputs);
                   end if;
                end loop;
             end;
@@ -5125,10 +5125,8 @@ package body Flow_Utility is
                   Print_Flow_Map (Tmp);
                end if;
 
-               Valid_To_Fields := Flow_Id_Sets.Empty_Set;
-
                for F of Flatten_Variable (T_To, Scope) loop
-                  Valid_To_Fields.Include (Join (Map_Root, F));
+                  Valid_To_Fields.Insert (Join (Map_Root, F));
                end loop;
 
                for C in Tmp.Iterate loop
