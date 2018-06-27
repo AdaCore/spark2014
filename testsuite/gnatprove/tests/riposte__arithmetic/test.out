@@ -134,7 +134,7 @@ counterexample expected for check at arithmetic.adb:76
   trace at arithmetic.adb:75 --> A = -2147483648 and B = -1
   trace at arithmetic.adb:76 --> A = -2147483648 and B = -1
   trace at arithmetic.adb:81 --> R = 0
-  trace at arithmetic.adb:82 --> I = 0 and R = 0
+  trace at arithmetic.adb:82 --> I = 0 and I = 0 and R = 0
   trace at arithmetic.adb:88 --> I = 0 and R = 0
   trace at arithmetic.adb:89 --> R = 0
   trace at arithmetic.adb:93 --> Plus'Result = 0
