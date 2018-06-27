@@ -107,7 +107,7 @@ private
      (Base_Addr   => Libxhcidbg_Component.Devices.Xhci_Xhci_Registers_Address,
       Element_T   => Word32,
       Index_T     => MMIO_Index,
-      Array_T     => MMIO_Array);
+      Array_T     => MMIO_Array) with Part_Of => DMA;
    pragma Warnings (On, "atomic synchronization set");
 
    type Cap_Registers is
@@ -117,7 +117,7 @@ private
    Cap_Reg_Descs : constant Cap_S_Regs.Array_T :=
      (Capability_Registers_Length      => (16#00#,  7,  0),
       XHCI_Extended_Caps               => (16#10#, 31, 16));
-   package Cap_Regs is new MMIO_Regs (MMIO, 0, Cap_S_Regs, Cap_Reg_Descs);
+   package Cap_Regs is new MMIO_Regs (MMIO, 0, Cap_S_Regs, Cap_Reg_Descs) with Part_Of => DMA;
 
    type Op_Registers is
      (Run_Stop,
@@ -130,7 +130,7 @@ private
       Host_Controller_Reset            => (16#00#,  1,  1),
       HC_Halted                        => (16#04#,  0,  0),
       Controller_Not_Ready             => (16#04#, 11, 11));
-   package Op_Regs is new MMIO_Regs (MMIO, 0, Op_S_Regs, Op_Reg_Descs);
+   package Op_Regs is new MMIO_Regs (MMIO, 0, Op_S_Regs, Op_Reg_Descs) with Part_Of => DMA;
 
    type xCap_Registers is
      (Capability_ID,
@@ -139,7 +139,7 @@ private
    xCap_Reg_Descs : constant xCap_S_Regs.Array_T :=
      (Capability_ID                    => (16#00#,  7,  0),
       Next_xCap                        => (16#00#, 15,  8));
-   package xCap_Regs is new MMIO_Regs (MMIO, 0, xCap_S_Regs, xCap_Reg_Descs);
+   package xCap_Regs is new MMIO_Regs (MMIO, 0, xCap_S_Regs, xCap_Reg_Descs) with Part_Of => DMA;
    procedure Find_Next_xCap (Cap_Id : in Word8; Success : out Boolean);
 
    type Legacy_Support_Registers is
@@ -150,7 +150,7 @@ private
      (HC_BIOS_Owned_Semaphore => (16#00#, 16, 16),
       HC_OS_Owned_Semaphore   => (16#00#, 24, 24));
    package Legacy_Support_Regs is new MMIO_Regs
-     (DbC.MMIO, 0, Legacy_Support_S_Regs, Legacy_Support_Reg_Descs);
+     (DbC.MMIO, 0, Legacy_Support_S_Regs, Legacy_Support_Reg_Descs) with Part_Of => DMA;
 
    type Registers is
      (Doorbell_Target,
@@ -225,7 +225,7 @@ private
       Vendor_ID                        => (16#38#, 31, 16),
       Product_ID                       => (16#3c#, 15,  0),
       Device_Revision                  => (16#3c#, 31, 16));
-   package Regs is new MMIO_Regs (MMIO, 0, S_Regs, Reg_Descs);
+   package Regs is new MMIO_Regs (MMIO, 0, S_Regs, Reg_Descs) with Part_Of => DMA;
 
    procedure Ring_Doorbell (EP : Endpoint_Range)
    with
