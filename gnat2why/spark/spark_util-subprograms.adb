@@ -1176,11 +1176,11 @@ package body SPARK_Util.Subprograms is
       --    Sem_Ch13.Analyze_Pragma.Check_In_Main_Program.
 
       --  Check if it is a library-level subprogram
-      if Scope (E) /= Standard_Standard then
+      if not Is_Compilation_Unit (E) then
          return False;
       end if;
 
-      Spec := Parent (E);
+      Spec := Subprogram_Specification (E);
 
       pragma Assert (Nkind (Spec) in N_Function_Specification |
                                      N_Procedure_Specification);
