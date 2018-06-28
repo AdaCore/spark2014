@@ -271,6 +271,27 @@ package body Flow_Visibility is
                  (Body_V,
                   Scope_Graph.Get_Vertex ((Ent  => Info.Template,
                                            Part => Body_Part)));
+
+               --  For generic subprograms instantiated in the wrapper packages
+               --  we need the visibility from the instantiated subprogram body
+               --  to the wrapper package body, as otherwise the
+               --  Subprogram_Refinement_Is_Visible says that the instantiated
+               --  generic subprogram body can't see its own refinement.
+               --
+               --  ??? wrapper packages were ignored in the design document,
+               --  probably this should be revisited.
+               --
+               --  ??? we need something similar for generic child subprograms
+               --  of generic parents (i.e. the Is_Instance_Child branch above)
+
+               if not Info.Is_Package
+                 and then Is_Wrapper_Package (Scope (E))
+               then
+                  Connect
+                    (Body_V,
+                     Scope_Graph.Get_Vertex ((Ent  => Scope (E),
+                                              Part => Body_Part)));
+               end if;
             end if;
          end if;
 
