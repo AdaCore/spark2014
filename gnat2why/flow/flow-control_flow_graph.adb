@@ -3001,10 +3001,11 @@ package body Flow.Control_Flow_Graph is
          raise Program_Error;
       end if;
 
-      --  If the loop is contained in a subprogram and we couldn't prove its
-      --  termination then we set the boolean flag
-      --  Has_Potentially_Nonterminating_Loops to True.
-      if Present (Enclosing_Subprogram (Loop_Id))
+      --  Check whether the non-terminating loop is immediately in the analysed
+      --  unit (and not in the package body statements of a nested package,
+      --  which will be handled as a subprogram call).
+
+      if Enclosing_Unit (Loop_Id) = FA.Spec_Entity
         and then not Ctx.Termination_Proved
       then
          FA.Has_Potentially_Nonterminating_Loops := True;

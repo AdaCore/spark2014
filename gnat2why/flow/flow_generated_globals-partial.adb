@@ -478,6 +478,10 @@ package body Flow_Generated_Globals.Partial is
       --  * subprograms which contain at least one loop that may not terminate
       --  * procedures annotated with No_Return
       --  * subprograms which call predefined procedures with No_Return.
+
+      --  ??? This flag is only meaningful for functions, procedures, entries
+      --  and non-library-level packages, but meaningless for tasks and
+      --  library-level packages, which cannot be called from the outside.
       Contr.Nonreturning :=
         FA.Kind in Kind_Subprogram | Kind_Package_Body
           and then
