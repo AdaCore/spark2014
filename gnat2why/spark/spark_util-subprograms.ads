@@ -374,11 +374,15 @@ package SPARK_Util.Subprograms is
    --  @return True iff E is volatile for internal calls, see SPARK RM 7.1.2
 
    function Might_Be_Main (E : Entity_Id) return Boolean
-   with Pre => Is_Subprogram (E);
-   --  @param E subprogram
-   --  @return True iff E is a library level subprogram, has no formal
-   --     parameters (E is allowed to have global parameters), and is either
-   --     a procedure or a function that returns an integer type
+   with Pre => Is_Subprogram (E) and then Is_In_Analyzed_Files (E);
+   --  @param E subprogram from the current compilation unit (because this
+   --     property should be only relevant for subprogram that are analysed
+   --     and irrelevant for subprograms that are merely referenced from the
+   --     current compilation unit)
+   --
+   --  @return True iff E is a compilation unit subprogram, has no formal
+   --     parameters (E is allowed to have global parameters), and is either a
+   --     procedure or a function that returns an integer type
    --
    --  Note: this check is equivalent to rules enforced by GNAT and is more
    --  restrictive than Ada RM (which allows pretty much every subprogram to

@@ -6315,11 +6315,14 @@ package body SPARK_Definition is
                end if;
 
                --  The System.Default_Priority expression may be needed for
-               --  checks related to the ceiling priority protocol.
+               --  checks related to the ceiling priority protocol. Those
+               --  checks are only applied to subprograms from the current
+               --  compilation unit, so we only for them we pull the expression
+               --  entity.
 
                if Ekind (E) in E_Function | E_Procedure
+                 and then Is_In_Analyzed_Files (E)
                  and then Might_Be_Main (E)
-                 and then E = Main_Unit_Entity
                then
                   --  The System unit must be already loaded; see call to
                   --  SPARK_Implicit_Load in GNAT_To_Why.

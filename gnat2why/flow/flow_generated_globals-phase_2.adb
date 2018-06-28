@@ -912,15 +912,16 @@ package body Flow_Generated_Globals.Phase_2 is
             --  First collect SPARK-compliant protected operations, task types
             --  and main-like subprograms in the current compilation unit.
             for E of Entities_To_Translate loop
-               if (case Ekind (E) is
-                      when E_Entry | E_Task_Type =>
-                         True,
-                      when E_Function | E_Procedure =>
-                         Ekind (Scope (E)) = E_Protected_Type
-                         or else Might_Be_Main (E),
-                      when others =>
-                         False)
+               if Ekind (E) in E_Entry
+                             | E_Task_Type
+                             | E_Function
+                             | E_Procedure
                  and then Analysis_Requested (E, With_Inlined => True)
+                 and then (Is_Entry (E)
+                           or else Is_Task_Type (E)
+                           or else Is_Protected_Operation (E)
+                           or else (Ekind (E) in E_Function | E_Procedure
+                                    and then Might_Be_Main (E)))
                  and then Entity_Body_In_SPARK (E)
                then
                   declare
