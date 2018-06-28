@@ -4408,9 +4408,7 @@ package body Flow.Analysis is
             Atr : V_Attributes renames FA.Atr (V);
 
          begin
-            if Atr.Is_Program_Node
-              and Atr.Is_Callsite
-            then
+            if Atr.Is_Callsite then
                Antialiasing.Check_Procedure_Call
                  (FA => FA,
                   N  => Get_Direct_Mapping_Id (FA.CFG.Get_Key (V)));
