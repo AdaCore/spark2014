@@ -292,7 +292,7 @@ package body Flow.Control_Flow_Graph is
    --  Do_* procedure.
    --
    --  Perhaps the most important aspect of the Context is the
-   --  Folded_Function_Checks map, which is used to keep track of functions
+   --  Folded_Function_Checks stack, which is used to keep track of functions
    --  with dependency relations. The only reason to put a dependency relation
    --  on a function is to note that not all parameters have been used.
    --  For example:
@@ -354,9 +354,9 @@ package body Flow.Control_Flow_Graph is
       Entry_References       : Node_Graphs.Map;
       --  A map from loops -> 'Loop_Entry references
 
-      Folded_Function_Checks : Node_Graphs.Map;
-      --  A set of nodes we need to separately check for uninitialized
-      --  variables due to function folding.
+      Folded_Function_Checks : Node_Lists.List;
+      --  Nodes we need to separately check for uninitialized variables due to
+      --  function folding.
    end record;
 
    No_Context : constant Context :=
@@ -364,7 +364,7 @@ package body Flow.Control_Flow_Graph is
               Active_Loop            => Empty,
               Termination_Proved     => False,
               Entry_References       => Node_Graphs.Empty_Map,
-              Folded_Function_Checks => Node_Graphs.Empty_Map);
+              Folded_Function_Checks => Node_Lists.Empty_List);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -859,7 +859,7 @@ package body Flow.Control_Flow_Graph is
    --  provided in a subprogram call. The vertices are created but not
    --  linked up; as above, they are appended to Ins and Outs.
 
-   use type Node_Graphs.Map;
+   use type Node_Lists.List;
 
    procedure Process_Statement
      (N   : Node_Id;
@@ -1602,9 +1602,9 @@ package body Flow.Control_Flow_Graph is
 
             --  Any proof variables we need to check separately. We also
             --  need to check the RHS for proof variables.
-            Ctx.Folded_Function_Checks (N).Insert (Expression (N));
+            Ctx.Folded_Function_Checks.Append (Expression (N));
             if not Vars_Proof.Is_Empty then
-               Ctx.Folded_Function_Checks (N).Insert (Name (N));
+               Ctx.Folded_Function_Checks.Append (Name (N));
             end if;
 
             --  Produce the vertex
@@ -1688,7 +1688,7 @@ package body Flow.Control_Flow_Graph is
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),
          V);
-      Ctx.Folded_Function_Checks (N).Insert (Expression (N));
+      Ctx.Folded_Function_Checks.Append (Expression (N));
       CM.Insert (Union_Id (N),
                  Graph_Connections'(Standard_Entry => V,
                                     Standard_Exits => Empty_Set));
@@ -1852,7 +1852,7 @@ package body Flow.Control_Flow_Graph is
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
             V);
-         Ctx.Folded_Function_Checks (N).Insert (Condition (N));
+         Ctx.Folded_Function_Checks.Append (Condition (N));
          CM.Insert (Union_Id (N),
                     Trivial_Connection (V));
       end if;
@@ -2014,7 +2014,7 @@ package body Flow.Control_Flow_Graph is
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),
          V);
-      Ctx.Folded_Function_Checks (N).Insert (Condition (N));
+      Ctx.Folded_Function_Checks.Append (Condition (N));
       CM.Insert (Union_Id (N),
                  Graph_Connections'(Standard_Entry => V,
                                     Standard_Exits => Empty_Set));
@@ -2080,8 +2080,7 @@ package body Flow.Control_Flow_Graph is
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => Elsif_Statement),
                   V);
-               Ctx.Folded_Function_Checks (N).Insert
-                 (Condition (Elsif_Statement));
+               Ctx.Folded_Function_Checks.Append (Condition (Elsif_Statement));
 
                --  Link V_Prev to V
                Linkup (FA, V_Prev, V);
@@ -2419,8 +2418,7 @@ package body Flow.Control_Flow_Graph is
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
             V);
-         Ctx.Folded_Function_Checks (N).Insert
-           (Condition (Iteration_Scheme (N)));
+         Ctx.Folded_Function_Checks.Append (Condition (Iteration_Scheme (N)));
 
          --  Flow for the while loops goes into the condition and then
          --  out again.
@@ -2518,7 +2516,7 @@ package body Flow.Control_Flow_Graph is
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => N),
                V);
-            Ctx.Folded_Function_Checks (N).Insert (DSD);
+            Ctx.Folded_Function_Checks.Append (DSD);
 
             --  Flow for the conditional for loop is like a while loop
             CM (Union_Id (N)).Standard_Entry := V;
@@ -2934,7 +2932,7 @@ package body Flow.Control_Flow_Graph is
                Loops      => Ctx.Current_Loops,
                E_Loc      => Cont),
             V);
-         Ctx.Folded_Function_Checks (N).Insert (Cont);
+         Ctx.Folded_Function_Checks.Append (Cont);
 
          --  Pretty normal flow (see while loops)
          CM (Union_Id (N)) := Trivial_Connection (V);
@@ -3051,7 +3049,7 @@ package body Flow.Control_Flow_Graph is
                      Use_Computed_Globals => not FA.Generating_Globals),
                   Is_Loop_Entry => True),
                V);
-            Ctx.Folded_Function_Checks (N).Insert (Prefix (Reference));
+            Ctx.Folded_Function_Checks.Append (Prefix (Reference));
 
             CM.Insert (Union_Id (Reference), Trivial_Connection (V));
 
@@ -3394,7 +3392,7 @@ package body Flow.Control_Flow_Graph is
          Inits.Append (V);
 
          --  Check for folded functions
-         Ctx.Folded_Function_Checks (N).Insert (Expr);
+         Ctx.Folded_Function_Checks.Append (Expr);
       end Add_Vertex_For_Type_Aspect;
 
    --  Start of processing for Do_Object_Declaration
@@ -3594,7 +3592,7 @@ package body Flow.Control_Flow_Graph is
 
             end if;
 
-            Ctx.Folded_Function_Checks (N).Insert (Expr);
+            Ctx.Folded_Function_Checks.Append (Expr);
 
             if Has_Predicates (Typ) then
                declare
@@ -4450,7 +4448,7 @@ package body Flow.Control_Flow_Graph is
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
             V);
-         Ctx.Folded_Function_Checks (N).Insert (Expr);
+         Ctx.Folded_Function_Checks.Append (Expr);
       end if;
 
       --  Control flows in, but we do not flow out again
@@ -4520,7 +4518,7 @@ package body Flow.Control_Flow_Graph is
                   E_Loc      => Cond,
                   Print_Hint => Pretty_Print_Entry_Barrier),
                V_C);
-            --  Ctx.Folded_Function_Checks (N).Insert (Cond);
+            --  Ctx.Folded_Function_Checks.Append (Cond);
             --  ??? O429-046 stitch actions?
 
             Add_Vertex
@@ -4723,7 +4721,7 @@ package body Flow.Control_Flow_Graph is
                Loops                        => Ctx.Current_Loops,
                E_Loc                        => Actual),
             V);
-         Ctx.Folded_Function_Checks (Callsite).Insert (Actual);
+         Ctx.Folded_Function_Checks.Append (Actual);
          Ins.Append (V);
 
          --  Build an out vertex
@@ -4842,11 +4840,13 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
       L : Vertex_Lists.List;
+
+      Folded_Functions_Marker : constant Ada.Containers.Count_Type :=
+        Ctx.Folded_Function_Checks.Length;
+      --  Record position of the folded functions stack
+
    begin
       Current_Error_Node := N;
-
-      --  Initialize the set of expressions we need to double check.
-      Ctx.Folded_Function_Checks.Insert (N, Node_Sets.Empty_Set);
 
       --  Deal with the statement.
       case Nkind (N) is
@@ -4945,8 +4945,10 @@ package body Flow.Control_Flow_Graph is
       --  for this statement, if necessary. First we create a vertex for
       --  each expression we need to check.
 
-      for Expr of Ctx.Folded_Function_Checks (N) loop
+      while Ctx.Folded_Function_Checks.Length > Folded_Functions_Marker loop
          declare
+            Expr : constant Node_Id := Ctx.Folded_Function_Checks.Last_Element;
+
             Unchecked : constant Flow_Id_Sets.Set :=
               Get_Variables
               (Expr,
@@ -4972,6 +4974,8 @@ package body Flow.Control_Flow_Graph is
                   V);
                L.Append (V);
             end if;
+
+            Ctx.Folded_Function_Checks.Delete_Last;
          end;
       end loop;
 
@@ -4994,13 +4998,6 @@ package body Flow.Control_Flow_Graph is
 
          CM (Union_Id (N)).Standard_Entry := L.First_Element;
       end if;
-
-      --  Finally, we remove the set, so we can do a final sanity check to
-      --  make sure all of these have been processed. This sanity check is
-      --  in the postcondition of Process_Statement and again at the end of
-      --  Create.
-
-      Ctx.Folded_Function_Checks.Delete (N);
    end Process_Statement;
 
    ----------------------
