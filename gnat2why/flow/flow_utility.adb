@@ -4923,16 +4923,12 @@ package body Flow_Utility is
             declare
                Component_Association : Node_Id;
 
-               Input   : Node_Id;
-               Target  : Node_Id;
-               Missing : Component_Sets.Set := Component_Sets.Empty_Set;
-               FS      : Flow_Id_Sets.Set;
+               Input  : Node_Id;
+               Target : Node_Id;
+               Done   : Component_Sets.Set;
+               FS     : Flow_Id_Sets.Set;
 
             begin
-               for Component of Components (Map_Type) loop
-                  Missing.Insert (Original_Record_Component (Component));
-               end loop;
-
                Component_Association := First (Component_Associations (N));
                while Present (Component_Association) loop
                   if Box_Present (Component_Association) then
@@ -4943,8 +4939,7 @@ package body Flow_Utility is
                   Target := First (Choices (Component_Association));
                   while Present (Target) loop
                      Merge (Entity (Target), Input);
-                     Missing.Delete (Original_Record_Component
-                                       (Entity (Target)));
+                     Done.Insert (Original_Record_Component (Entity (Target)));
                      Next (Target);
                   end loop;
                   Next (Component_Association);
@@ -4953,13 +4948,21 @@ package body Flow_Utility is
                --  If the aggregate is more constrained than the type would
                --  suggest, we fill in the "missing" fields with null, so
                --  that they appear initialized.
-               for Missing_Component of Missing loop
-                  FS := Flatten_Variable (Add_Component (Map_Root,
-                                                         Missing_Component),
-                                          Scope);
-                  for F of FS loop
-                     M.Insert (F, Flow_Id_Sets.Empty_Set);
-                  end loop;
+               for Component of Components (Map_Type) loop
+                  declare
+                     ORC : constant Entity_Id :=
+                       Original_Record_Component (Component);
+
+                  begin
+                     if not Done.Contains (ORC) then
+                        FS := Flatten_Variable (Add_Component (Map_Root, ORC),
+                                                Scope);
+
+                        for F of FS loop
+                           M.Insert (F, Flow_Id_Sets.Empty_Set);
+                        end loop;
+                     end if;
+                  end;
                end loop;
             end;
 
