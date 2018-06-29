@@ -622,27 +622,34 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
           Off
 #end if;
       is
+         function Sum_Cst (I : Index_1; J : Index_2) return Boolean is
+           (Fold_Sum.Acc.Fold (A, 0) (I, J) =
+                C * (Element_Out'Base (I - A'First (1)) * A'Length (2) +
+                      Element_Out'Base (J - A'First (2))) + C)
+          with Pre => I in A'Range (1) and then J in A'Range (2);
+         --  The property we want to show at position I, J
 
          procedure Prove_First_Col (I : Index_1) with
            Pre  => A'Length (2) > 0 and then I in A'Range (1) and then
-           (I = A'First (1) or else
-                Fold_Sum.Acc.Fold (A, 0) (I - 1, A'Last (2)) =
-                C * Element_Out'Base (I - A'First (1)) * A'Length (2)),
+           (I = A'First (1) or else Sum_Cst (I - 1, A'Last (2))),
            Post =>
              (if Value (A (I, A'First (2))) = C then
-                Fold_Sum.Acc.Fold (A, 0) (I, A'First (2)) =
-                C * (Element_Out'Base (I - A'First (1)) * A'Length (2) +
-                      Element_Out'Base (A'First (2) - A'First (2))) + C);
+                Sum_Cst (I, A'First (2)));
          --  Prove the first iteration of the inner loop
 
          procedure Prove_Last with
            Pre  => (if A'Length (1) > 0 and then A'Length (2) > 0 then
-                    Fold_Sum.Acc.Fold (A, 0) (A'Last (1), A'Last (2)) =
-                     C * (Element_Out'Base (A'Last (1) - A'First (1)) *
-                          A'Length (2) +
-                            Element_Out'Base (A'Last (2) - A'First (2))) + C),
+                    Sum_Cst (A'Last (1), A'Last (2))),
            Post => Sum (A) = C * A'Length (1) * A'Length (2);
          --  Prove the postcondition
+
+         procedure Prove_Next_Col (I : Index_1; J : Index_2) with
+           Pre  => I in A'Range (1) and then J in A'Range (2) and then
+           (J = A'First (2) or else Sum_Cst (I, J - 1)),
+           Post =>
+             (if J /= A'First (2) and then Value (A (I, J)) = C then
+                Sum_Cst (I, J));
+         --  Prove the next iteration of the inner loop
 
          ---------------------
          -- Prove_First_Col --
@@ -656,6 +663,12 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
 
          procedure Prove_Last is null;
 
+         --------------------
+         -- Prove_Next_Col --
+         --------------------
+
+         procedure Prove_Next_Col (I : Index_1; J : Index_2) is null;
+
       begin
          if A'Length (2) > 0 then
             for I in A'Range (1) loop
@@ -664,18 +677,14 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
                   (for all K in A'First (1) .. I - 1 =>
                        (for all L in A'Range (2) => Value (A (K, L)) = C)));
                pragma Loop_Invariant
-                 (I = A'First (1) or else
-                  Fold_Sum.Acc.Fold (A, 0) (I - 1, A'Last (2)) =
-                      C * Element_Out'Base (I - A'First (1)) * A'Length (2));
+                 (I = A'First (1) or else Sum_Cst (I - 1, A'Last (2)));
                Prove_First_Col (I);
                for J in A'Range (2) loop
                   if Value (A (I, J)) /= C then
                      return;
                   end if;
-                  pragma Loop_Invariant
-                    (Fold_Sum.Acc.Fold (A, 0) (I, J) =
-                     C * (Element_Out'Base (I - A'First (1)) * A'Length (2) +
-                            Element_Out'Base (J - A'First (2))) + C);
+                  Prove_Next_Col (I, J);
+                  pragma Loop_Invariant (Sum_Cst (I, J));
                   pragma Loop_Invariant
                     (for all L in A'First (2) .. J => Value (A (I, L)) = C);
                end loop;
