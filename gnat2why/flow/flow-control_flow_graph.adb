@@ -3394,7 +3394,7 @@ package body Flow.Control_Flow_Graph is
          Inits.Append (V);
 
          --  Check for folded functions
-         Ctx.Folded_Function_Checks (N).Include (Expr);
+         Ctx.Folded_Function_Checks (N).Insert (Expr);
       end Add_Vertex_For_Type_Aspect;
 
    --  Start of processing for Do_Object_Declaration
@@ -3594,7 +3594,7 @@ package body Flow.Control_Flow_Graph is
 
             end if;
 
-            Ctx.Folded_Function_Checks (N).Include (Expr);
+            Ctx.Folded_Function_Checks (N).Insert (Expr);
 
             if Has_Predicates (Typ) then
                declare
