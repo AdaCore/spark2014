@@ -3537,7 +3537,7 @@ package body Flow.Control_Flow_Graph is
                      Expand_Synthesized_Constants => False);
 
                   All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
-                  Missing      : Flow_Id_Sets.Set := Var_Def;
+                  Untangled    : Flow_Id_Sets.Set;
 
                begin
                   for C in M.Iterate loop
@@ -3559,7 +3559,7 @@ package body Flow.Control_Flow_Graph is
                               E_Loc      => N,
                               Print_Hint => Pretty_Print_Record_Field),
                            V);
-                        Missing.Delete (Output);
+                        Untangled.Insert (Output);
 
                         Inits.Append (V);
                         All_Vertices.Insert (V);
@@ -3570,7 +3570,7 @@ package body Flow.Control_Flow_Graph is
                   --  but not by URA we flag as initialized to the empty
                   --  set; since it is not possible in SPARK to partially
                   --  initialize a variable at declaration.
-                  for F of Missing loop
+                  for F of Var_Def.Difference (Untangled) loop
                      Add_Vertex
                        (FA,
                         Make_Basic_Attributes
