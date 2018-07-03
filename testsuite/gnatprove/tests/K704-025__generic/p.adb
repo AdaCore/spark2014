@@ -1,4 +1,3 @@
-
 with Gen;
 procedure P is
    package Q is new Gen(Integer);
