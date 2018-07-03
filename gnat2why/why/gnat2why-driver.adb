@@ -360,6 +360,35 @@ package body Gnat2Why.Driver is
         File_Name_Without_Suffix
           (Get_Name_String (Unit_File_Name (Main_Unit)));
 
+      generic
+         with procedure Action (N : Node_Id);
+      procedure Process_Current_Unit;
+      --  Call Action on the spec of the current compilation unit and its body
+      --  (if present).
+
+      --------------------------
+      -- Process_Current_Unit --
+      --------------------------
+
+      procedure Process_Current_Unit is
+         Lib_Unit : constant Node_Id := Library_Unit (GNAT_Root);
+      begin
+         --  If both spec and body of the current compilation unit are present
+         --  then process spec first.
+         if Present (Lib_Unit) and then Lib_Unit /= GNAT_Root then
+            Action (Unit (Lib_Unit));
+         end if;
+
+         --  Then process body (or spec if no body is present)
+         Action (Unit (GNAT_Root));
+      end Process_Current_Unit;
+
+      procedure Mark_Current_Unit is new Process_Current_Unit
+        (Action => Mark_Compilation_Unit);
+
+      procedure Build_Flow_Tree is new Process_Current_Unit
+        (Action => Flow_Generated_Globals.Traversal.Build_Tree);
+
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
       --  which avoids forward references has caused problems in the past with
       --  the combination of generics and inlining, as well as child units
@@ -377,6 +406,8 @@ package body Gnat2Why.Driver is
       --  This Boolean indicates whether proof have been attempted anywhere in
       --  the unit.
       Proof_Done : Boolean := False;
+
+   --  Start of processing for GNAT_To_Why
 
    begin
       Timing_Start (Timing);
@@ -435,18 +466,8 @@ package body Gnat2Why.Driver is
 
       --  Mark the current compilation unit as "in SPARK / not in SPARK".
 
-      declare
-         Lib_Unit : constant Node_Id := Library_Unit (GNAT_Root);
-      begin
-         --  If both spec and body of the current compilation unit are present
-         --  then traverse spec first.
-         if Present (Lib_Unit) and then Lib_Unit /= GNAT_Root then
-            Mark_Compilation_Unit (Unit (Lib_Unit));
-         end if;
+      Mark_Current_Unit;
 
-         --  Then traverse body (or spec if no body is present)
-         Mark_Compilation_Unit (Unit (GNAT_Root));
-      end;
       Timing_Phase_Completed (Timing, "marking");
 
       --  Finalize has to be called before we call Compilation_Errors.
@@ -463,18 +484,8 @@ package body Gnat2Why.Driver is
 
       --  Build hierarchical representation of scopes in the current
       --  compilation unit. This may require two traversals: for spec and body.
-      declare
-         Lib_Unit : constant Node_Id := Library_Unit (GNAT_Root);
-      begin
-         --  If both spec and body of the current compilation unit are present
-         --  then traverse spec first.
-         if Present (Lib_Unit) and then Lib_Unit /= GNAT_Root then
-            Flow_Generated_Globals.Traversal.Build_Tree (Lib_Unit);
-         end if;
 
-         --  Then traverse body (or spec if no body is present)
-         Flow_Generated_Globals.Traversal.Build_Tree (GNAT_Root);
-      end;
+      Build_Flow_Tree;
 
       if Gnat2Why_Args.Global_Gen_Mode then
 
