@@ -3,5 +3,4 @@ with HW.GFX.GMA.DP_Aux_Ch;
 
 private package HW.GFX.GMA.DP_Info
    is new HW.GFX.DP_Info
-     (T      => Integer,
-      Aux_Ch => DP_Aux_Ch);
+     (Aux_Ch => DP_Aux_Ch);
