@@ -1,0 +1,1 @@
+ALL XFAIL instance of a generic child in generic parent's body (QC08-004)
