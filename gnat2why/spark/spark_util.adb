@@ -648,6 +648,31 @@ package body SPARK_Util is
         and then Nkind (Related_Expression (N)) in N_Entity
         and then Is_Formal (Related_Expression (N)));
 
+   --------------------------------------------
+   -- Directly_Enclosing_Subprogram_Or_Entry --
+   --------------------------------------------
+
+   function Directly_Enclosing_Subprogram_Or_Entry
+     (E : Entity_Id) return Entity_Id
+   is
+      S : Entity_Id := Scope (E);
+   begin
+      loop
+         if No (S) then
+            return Empty;
+         elsif Ekind (S) in Entry_Kind
+                          | E_Function
+                          | E_Procedure
+         then
+            return S;
+         elsif Ekind (S) in E_Package then
+            S := Scope (S);
+         else
+            return Empty;
+         end if;
+      end loop;
+   end Directly_Enclosing_Subprogram_Or_Entry;
+
    -------------------------------
    -- Enclosing_Concurrent_Type --
    -------------------------------

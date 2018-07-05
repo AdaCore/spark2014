@@ -1358,9 +1358,16 @@ package body Gnat2Why.Expr is
       for N of Include loop
          if Present (N)
            and then Nkind (N) in N_Entity
-           and then Ekind (N) = E_Constant
-           and then not Has_Variable_Input (N)
-           and then not Is_Declared_In_Unit (N, Scope)
+           and then
+             ((Ekind (N) = E_Constant
+               and then not Has_Variable_Input (N)
+               and then not Is_Declared_In_Unit (N, Scope))
+
+              --  We only consider here parameters of enclosing subprograms.
+              --  Parameters of Scope are handled specifically.
+
+              or else (Ekind (N) = E_In_Parameter
+                       and then Enclosing_Unit (N) /= Scope))
          then
             Assume_Declaration_Of_Entity
               (E             => N,

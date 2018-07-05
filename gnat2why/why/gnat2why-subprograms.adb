@@ -2610,6 +2610,54 @@ package body Gnat2Why.Subprograms is
            (Assume_Initial_Condition_Of_Withed_Units (E, Params), Why_Body);
       end if;
 
+      --  Assume precondition of the enclosing subprogram for nested packages
+      --  which are declared directly inside the declarative part of the
+      --  subprogram.
+      --  ??? We could also assume it for other nested packages, but this would
+      --  require havoking variables.
+
+      declare
+         Enclosing_Subp : constant Entity_Id :=
+           Directly_Enclosing_Subprogram_Or_Entry (E);
+      begin
+         if Present (Enclosing_Subp) then
+            declare
+               Pre : W_Pred_Id :=
+                 Get_Static_Call_Contract
+                   (Params, Enclosing_Subp, Pragma_Precondition);
+            begin
+
+               --  For entries, also assume that the guard holds
+
+               if Is_Entry (Enclosing_Subp)
+                 and then Entity_Body_In_SPARK (Enclosing_Subp)
+               then
+                  declare
+                     Params  : constant Transformation_Params :=
+                       (File        => File,
+                        Phase       => Generate_Contract_For_Body,
+                        Gen_Marker  => False,
+                        Ref_Allowed => True,
+                        Old_Allowed => True);
+                     Barrier : constant Node_Id :=
+                       Entry_Body_Barrier (Get_Body (Enclosing_Subp));
+                  begin
+                     Pre :=
+                       +New_And_Then_Expr
+                       (Domain => EW_Pred,
+                        Left   => +Pre,
+                        Right  =>
+                          Transform_Expr
+                            (Barrier, EW_Bool_Type, EW_Pred, Params));
+                  end;
+               end if;
+
+               Why_Body := Sequence
+                 (New_Assume_Statement (Pred => Pre), Why_Body);
+            end;
+         end if;
+      end;
+
       --  We assume that objects used in the program are in range, if
       --  they are of a dynamic type.
 
