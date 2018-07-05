@@ -162,6 +162,7 @@ package body Flow_Refinement is
 
             when N_Package_Body_Stub
                | N_Protected_Body_Stub
+               | N_Subprogram_Body_Stub
                | N_Task_Body_Stub
             =>
                --  Ada RM 10.1.3(13): A body_stub shall appear immediately
@@ -170,11 +171,13 @@ package body Flow_Refinement is
                --  unit. (but this should be transparently eliminated when
                --  frontend instantiates a generic body].
 
-               pragma Assert
-                 (Is_Compilation_Unit (Scope (Defining_Entity (Context))));
-
-               return (Ent  => Scope (Defining_Entity (Context)),
-                       Part => Body_Part);
+               if Present (Prev_Context) then
+                  return (Ent  => Unique_Defining_Entity (Context),
+                          Part => Body_Part);
+               else
+                  Prev_Context := Context;
+                  Context      := Parent (Context);
+               end if;
 
             when N_Entry_Body
                | N_Package_Body
