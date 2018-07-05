@@ -826,6 +826,7 @@ package body Flow_Visibility is
                              | N_Subprogram_Declaration
                              | N_Subprogram_Body_Stub
                              | N_Task_Type_Declaration
+                             | N_Abstract_Subprogram_Declaration
                   or else (Nkind (N) = N_Subprogram_Body
                            and then Acts_As_Spec (N))
                   or else (Nkind (N) = N_Private_Type_Declaration
@@ -928,7 +929,9 @@ package body Flow_Visibility is
             when N_Entry_Declaration
                | N_Generic_Subprogram_Declaration
                | N_Subprogram_Declaration
+               | N_Abstract_Subprogram_Declaration
             =>
+               --  ??? abstract subprograms have no bodies
                Process (N);
 
             when N_Subprogram_Body =>

@@ -299,6 +299,7 @@ package body Flow_Refinement is
 
             when N_Entry_Declaration
                | N_Subprogram_Declaration
+               | N_Abstract_Subprogram_Declaration
             =>
                if Present (Prev_Context) then
                   return (Ent  => Defining_Entity (Context),
