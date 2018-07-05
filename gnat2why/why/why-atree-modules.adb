@@ -24,15 +24,13 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;             use Ada.Containers;
-with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
-with Einfo;                      use Einfo;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Gnat2Why.Util;              use Gnat2Why.Util;
-with Sem_Util;                   use Sem_Util;
-with Sinfo;                      use Sinfo;
 with Snames;                     use Snames;
+with SPARK_Atree;                use SPARK_Atree;
+with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
@@ -1823,7 +1821,7 @@ package body Why.Atree.Modules is
       procedure Insert_Object_Symbols (E : Entity_Id) is
          Rec  : constant Entity_Id :=
            (if Ekind (E) in E_Component | E_Discriminant
-            then Scope (E)
+            then Enclosing_Type (E)
             else E);
          M    : constant W_Module_Id := E_Module (Rec);
          Name : constant String :=
@@ -1902,10 +1900,7 @@ package body Why.Atree.Modules is
                      Typ       => EW_Unit_Type));
             end if;
 
-            if Is_Dispatching_Operation (E)
-              and then
-                Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
-            then
+            if Is_Visible_Dispatching_Operation (E) then
                Insert_Symbol
                  (E, WNE_Dispatch_Func_Guard,
                   New_Identifier
@@ -1915,9 +1910,7 @@ package body Why.Atree.Modules is
                      Domain    => EW_Pred,
                      Typ       => EW_Unit_Type));
             end if;
-         elsif Is_Dispatching_Operation (E)
-           and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
-         then
+         elsif Is_Visible_Dispatching_Operation (E) then
             Insert_Symbol
               (E, WNE_Specific_Post,
                New_Identifier

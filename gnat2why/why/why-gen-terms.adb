@@ -23,15 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;               use Atree;
-with Einfo;               use Einfo;
-with Sinfo;               use Sinfo;
-with Types;               use Types;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Atree.Traversal; use Why.Atree.Traversal;
-with Why.Conversions;     use Why.Conversions;
-with Why.Gen.Expr;        use Why.Gen.Expr;
+with SPARK_Atree;           use SPARK_Atree;
+with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
+with Types;                 use Types;
+with Why.Atree.Accessors;   use Why.Atree.Accessors;
+with Why.Atree.Modules;     use Why.Atree.Modules;
+with Why.Atree.Traversal;   use Why.Atree.Traversal;
+with Why.Conversions;       use Why.Conversions;
+with Why.Gen.Expr;          use Why.Gen.Expr;
 
 package body Why.Gen.Terms is
 
@@ -152,7 +151,7 @@ package body Why.Gen.Terms is
          N : constant Node_Id := Get_Ada_Node (+Node);
       begin
          if Nkind (N) in N_Entity
-           and then Ekind (N) in E_Protected_Type | E_Protected_Subtype
+           and then Is_Protected_Type (N)
          then
             State.Found   := True;
             State.Control := Terminate_Immediately;

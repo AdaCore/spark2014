@@ -27,8 +27,6 @@ with Flow_Refinement;        use Flow_Refinement;
 with Flow_Types;             use Flow_Types;
 with Flow_Utility;           use Flow_Utility;
 with Gnat2Why.Util;          use Gnat2Why.Util;
-with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
 with Snames;                 use Snames;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
@@ -503,9 +501,7 @@ package body Why.Gen.Binders is
       Use_Ty : constant Entity_Id :=
         (if not In_Fun_Decl
          --  test when it is safe to call Actual_Subtype
-         and then (Ekind (E) in E_Constant                 |
-                                E_Variable                 |
-                                E_Generic_In_Out_Parameter
+         and then (Ekind (E) in E_Constant | E_Variable
            or else Is_Formal (E))
          and then Present (Actual_Subtype (E))
          and then Entity_In_SPARK (Actual_Subtype (E))
@@ -515,7 +511,7 @@ package body Why.Gen.Binders is
       --  for the parameter if one is provided.
 
       Spec_Ty : constant Entity_Id :=
-        (if Is_Class_Wide_Type (Use_Ty)
+        (if Is_Type (Use_Ty) and then Is_Class_Wide_Type (Use_Ty)
          then Get_Specific_Type_From_Classwide (Use_Ty)
          else Use_Ty);
 

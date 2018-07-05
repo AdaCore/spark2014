@@ -23,14 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                      use Atree;
 with Flow_Utility;
 with Flow_Types;                 use Flow_Types;
 with Namet;                      use Namet;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
-with Sem_Util;                   use Sem_Util;
-with Sinfo;                      use Sinfo;
 with Snames;                     use Snames;
+with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
@@ -922,9 +920,9 @@ package body Why.Inter is
                return EW_Real_Type;
             elsif Is_Modular_Integer_Type (Ty) then
                declare
-                  Size : U;
+                  Size : Uintp.Uint;
                begin
-                  Size := Esize (Ty);
+                  Size := Modular_Size (Ty);
 
                   if Uintp.UI_Le (Size, 8) then
                      return EW_BitVector_8_Type;

@@ -25,6 +25,7 @@
 
 with Aspects;
 with Einfo;
+with Exp_Util;
 with SPARK_Util;
 with SPARK_Util.Subprograms;
 
@@ -42,7 +43,10 @@ package SPARK_Atree.Entities is
    subtype Discrete_Kind    is Einfo.Discrete_Kind;
    subtype Entry_Kind       is Einfo.Entry_Kind;
    subtype Fixed_Point_Kind is Einfo.Fixed_Point_Kind;
+   subtype Float_Kind       is Einfo.Float_Kind;
    subtype Integer_Kind     is Einfo.Integer_Kind;
+   subtype Named_Kind       is Einfo.Named_Kind;
+   subtype Object_Kind      is Einfo.Object_Kind;
    subtype Private_Kind     is Einfo.Private_Kind;
    subtype Protected_Kind   is Einfo.Protected_Kind;
    subtype Real_Kind        is Einfo.Real_Kind;
@@ -64,6 +68,9 @@ package SPARK_Atree.Entities is
    E_In_Parameter                : Entity_Kind renames Einfo.E_In_Parameter;
    E_In_Out_Parameter            : Entity_Kind renames
      Einfo.E_In_Out_Parameter;
+   E_Loop_Parameter              : Entity_Kind renames Einfo.E_Loop_Parameter;
+   E_Loop                        : Entity_Kind renames Einfo.E_Loop;
+   E_Operator                    : Entity_Kind renames Einfo.E_Operator;
    E_Out_Parameter               : Entity_Kind renames Einfo.E_Out_Parameter;
    E_Package                     : Entity_Kind renames Einfo.E_Package;
    E_Private_Subtype             : Entity_Kind renames Einfo.E_Private_Subtype;
@@ -75,10 +82,15 @@ package SPARK_Atree.Entities is
    E_Record_Type                 : Entity_Kind renames Einfo.E_Record_Type;
    E_String_Literal_Subtype      : Entity_Kind renames
      Einfo.E_String_Literal_Subtype;
+   E_Subprogram_Body             : Entity_Kind renames Einfo.E_Subprogram_Body;
    E_Task_Type                   : Entity_Kind renames Einfo.E_Task_Type;
    E_Variable                    : Entity_Kind renames Einfo.E_Variable;
+   E_Void                        : Entity_Kind renames Einfo.E_Void;
 
    function "=" (L, R : Entity_Kind) return Boolean renames Einfo."=";
+
+   function Containing_Package_With_Ext_Axioms (E : Entity_Id) return Entity_Id
+    renames Exp_Util.Containing_Package_With_Ext_Axioms;
 
    function Ekind (E : Entity_Id) return Entity_Kind renames Atree.Ekind;
 
@@ -109,6 +121,10 @@ package SPARK_Atree.Entities is
    function Is_Discrete_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Discrete_Type;
 
+   function Is_Double_Precision_Floating_Point_Type
+     (E : Entity_Id) return Boolean
+     renames Sem_Util.Is_Double_Precision_Floating_Point_Type;
+
    function Is_Elementary_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Elementary_Type;
 
@@ -127,6 +143,8 @@ package SPARK_Atree.Entities is
 
    function Is_Floating_Point_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Floating_Point_Type;
+
+   function Is_Formal (E : Entity_Id) return Boolean renames Einfo.Is_Formal;
 
    function Is_Generic_Unit (E : Entity_Id) return Boolean renames
      Einfo.Is_Generic_Unit;
@@ -162,6 +180,10 @@ package SPARK_Atree.Entities is
 
    function Is_String_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_String_Type;
+
+   function Is_Single_Precision_Floating_Point_Type
+     (E : Entity_Id) return Boolean
+     renames Sem_Util.Is_Single_Precision_Floating_Point_Type;
 
    function Is_Subprogram_Or_Entry (E : Entity_Id) return Boolean renames
      Einfo.Is_Subprogram_Or_Entry;
@@ -215,12 +237,15 @@ package SPARK_Atree.Entities is
      Pre => Is_Type (Typ);
    --  Same as Einfo.Get_User_Defined_Eq except that it goes through renamings
 
-   function Has_DIC (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
-
    function Has_Default_Aspect (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
    --  Same as Einfo.Has_Default_Aspect except that it goes to the Base_Retysp
+
+   function Has_DIC (Typ : Entity_Id) return Boolean with
+     Pre => Is_Type (Typ);
+
+   function Has_Own_DIC (Typ : Entity_Id) return Boolean with
+     Pre => Is_Type (Typ);
 
    function Has_Predicates (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
@@ -408,6 +433,12 @@ package SPARK_Atree.Entities is
    ------------------
    --  For Objects --
    ------------------
+
+   function Actual_Subtype (Obj : Entity_Id) return Entity_Id with
+     Pre  => Ekind (Obj) in E_Constant | E_Variable or else Is_Formal (Obj),
+     Post =>
+       (if Present (Actual_Subtype'Result) then
+              Is_Type (Actual_Subtype'Result));
 
    function Component_Clause (Obj : Entity_Id) return Node_Id with
      Pre => Ekind (Obj) in E_Discriminant | E_Component;

@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                      use Atree;
-with Einfo;                      use Einfo;
+with SPARK_Atree;                use SPARK_Atree;
+with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with Types;                      use Types;
 

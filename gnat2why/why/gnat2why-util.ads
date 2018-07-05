@@ -26,12 +26,11 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Atree;                 use Atree;
 with Common_Containers;     use Common_Containers;
-with Einfo;                 use Einfo;
 with Gnat2Why.Tables;       use Gnat2Why.Tables;
-with Sinfo;                 use Sinfo;
 with Snames;                use Snames;
+with SPARK_Atree;           use SPARK_Atree;
+with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
 with SPARK_Util;            use SPARK_Util;
 with SPARK_Util.Types;      use SPARK_Util.Types;
 with Types;                 use Types;
@@ -411,9 +410,6 @@ package Gnat2Why.Util is
    --  @param Obj the entity of an object global to Scope which is variable in
    --         why.
    --  @param Scope the entity of a package, entry, task, or subprogram.
-
-   function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean;
-   --  Returns True if node N is defined locally to a loop
 
    function Is_Mutable_In_Why (E : Entity_Id) return Boolean with
      Pre => Nkind (E) in N_Defining_Identifier | N_Defining_Operator_Symbol;

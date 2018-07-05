@@ -24,9 +24,9 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
-with Atree;               use Atree;
 with GNATCOLL.Utils;      use GNATCOLL.Utils;
 with Gnat2Why.Util;       use Gnat2Why.Util;
+with SPARK_Atree;         use SPARK_Atree;
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util.Types;    use SPARK_Util.Types;
 with Why.Atree.Accessors; use Why.Atree.Accessors;

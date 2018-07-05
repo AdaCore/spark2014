@@ -23,13 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;             use Atree;
-with Why.Atree.Modules; use Why.Atree.Modules;
-with Einfo;             use Einfo;
-with Gnat2Why.Util;     use Gnat2Why.Util;
-with Namet;             use Namet;
-with Sinfo;             use Sinfo;
-with Types;             use Types;
+with Why.Atree.Modules;    use Why.Atree.Modules;
+with Gnat2Why.Util;        use Gnat2Why.Util;
+with Namet;                use Namet;
+with SPARK_Atree;          use SPARK_Atree;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with Types;                use Types;
 
 package Why.Gen.Scalars is
    --  This package implements the generation of Why modules for scalar types

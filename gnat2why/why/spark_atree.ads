@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Atree;
+with Exp_Util;
 with Namet;       use Namet;
 with Sem_Eval;
 with Sem_Util;
@@ -95,6 +96,8 @@ package SPARK_Atree is
      Sinfo.N_Component_Association;
    N_Defining_Identifier            : Node_Kind renames
      Sinfo.N_Defining_Identifier;
+   N_Defining_Operator_Symbol       : Node_Kind renames
+     Sinfo.N_Defining_Operator_Symbol;
    N_Derived_Type_Definition        : Node_Kind renames
      Sinfo.N_Derived_Type_Definition;
    N_Elsif_Part                     : Node_Kind renames Sinfo.N_Elsif_Part;
@@ -153,6 +156,8 @@ package SPARK_Atree is
      Sinfo.N_Package_Declaration;
    N_Private_Extension_Declaration  : Node_Kind renames
      Sinfo.N_Private_Extension_Declaration;
+   N_Private_Type_Declaration  : Node_Kind renames
+     Sinfo.N_Private_Type_Declaration;
    N_Procedure_Call_Statement       : Node_Kind renames
      Sinfo.N_Procedure_Call_Statement;
    N_Pragma                         : Node_Kind renames Sinfo.N_Pragma;
@@ -380,6 +385,11 @@ package SPARK_Atree is
      Post => No (Expression'Result)
      or else Nkind (Expression'Result) in Sinfo.N_Subexpr;
 
+   function Expression_Contains_Primitives_Calls_Of
+     (Expr : Node_Id;
+      Typ  : Entity_Id) return Boolean
+      renames Exp_Util.Expression_Contains_Primitives_Calls_Of;
+
    function Expressions (N : Node_Id) return List_Id with
      Pre => Nkind (N) in N_Aggregate
                        | N_Attribute_Reference
@@ -395,6 +405,10 @@ package SPARK_Atree is
 
    function From_Aspect_Specification (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Pragma;
+
+   function From_Real_Range_Specification (N : Node_Id) return Boolean with
+     Pre => Nkind (N) in Sinfo.N_Subexpr;
+   --  Return True if N is the bound of a Real_Range_Specification
 
    function Get_Address_Rep_Item (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Subprogram_Declaration | N_Object_Declaration;
@@ -481,6 +495,9 @@ package SPARK_Atree is
 
    function Is_Iterator_Over_Array (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Iterator_Specification;
+
+   function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean;
+   --  Returns True if node N is defined locally to a loop
 
    function Is_Tag_Indeterminate (N : Node_Id) return Boolean with
      Pre => Nkind (N) in Sinfo.N_Subexpr;
