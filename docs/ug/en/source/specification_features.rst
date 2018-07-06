@@ -776,6 +776,8 @@ properties. For example, the ghost functions defined in the :ref:`Formal
 Containers Library` in |GNAT Pro| typically copy the entire content of the
 argument container, which would not be acceptable for non-ghost functions.
 
+.. _Ghost Variables:
+
 Ghost Variables
 ^^^^^^^^^^^^^^^
 
