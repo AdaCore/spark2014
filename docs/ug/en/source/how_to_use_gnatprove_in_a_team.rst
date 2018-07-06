@@ -134,11 +134,12 @@ as such.
 See the |GNAT Pro| Reference Manual for more details.
 
 Additionally, |GNATprove| can issue warnings as part of proof, on preconditions
-that are always false and dead code after loops. These warnings are not enabled
-by default, as they require calling a prover for each potential warning, which
-incurs a small cost (1 sec for each property thus checked). They can be enabled
-with switch ``--proof-warnings``, and their effect is controlled by switch
-``--warnings`` and pragma ``Warnings`` as described previously.
+or postconditions that are always false and dead code after loops. These
+warnings are not enabled by default, as they require calling a prover for each
+potential warning, which incurs a small cost (1 sec for each property thus
+checked). They can be enabled with switch ``--proof-warnings``, and their
+effect is controlled by switch ``--warnings`` and pragma ``Warnings`` as
+described previously.
 
 .. _Suppressing Information Messages:
 

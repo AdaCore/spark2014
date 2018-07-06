@@ -185,6 +185,13 @@ package body Gnat2Why.Subprograms is
    --  Compute the effects of the generated Why function. If Global_Params is
    --  True, then the global version of the parameters is used.
 
+   function Compute_Call_Effects
+     (Params : Transformation_Params;
+      E      : Entity_Id)
+      return W_Prog_Id;
+   --  Generate a Why3 program simulating the effects of a call of the
+   --  subprogram.
+
    function Compute_Binders (E : Entity_Id; Domain : EW_Domain)
                              return Item_Array;
    --  Return Why binders for the parameters of subprogram E.
@@ -761,6 +768,30 @@ package body Gnat2Why.Subprograms is
          return Binders;
       end if;
    end Compute_Binders;
+
+   --------------------------
+   -- Compute_Call_Effects --
+   --------------------------
+
+   function Compute_Call_Effects
+     (Params : Transformation_Params;
+      E      : Entity_Id)
+      return W_Prog_Id
+   is
+      Call_Effects : W_Prog_Id;
+   begin
+      Call_Effects := New_Havoc_Statement
+        (Ada_Node => E,
+         Effects  => +Compute_Effects (E, Global_Params => True));
+
+      Call_Effects := Sequence
+        (Call_Effects,
+         New_Assume_Statement
+           (Ada_Node => E,
+            Pred     => Compute_Dynamic_Property_For_Effects (E, Params)));
+
+      return Call_Effects;
+   end Compute_Call_Effects;
 
    -----------------------------------------
    -- Compute_Dynamic_Property_For_Inputs --
@@ -2238,15 +2269,7 @@ package body Gnat2Why.Subprograms is
 
       --  Compute the effect of a call of the subprogram
 
-      Call_Effects := New_Havoc_Statement
-        (Ada_Node => E,
-         Effects  => +Compute_Effects (E, Global_Params => True));
-
-      Call_Effects := Sequence
-        (Call_Effects,
-         New_Assume_Statement
-           (Ada_Node => E,
-            Pred     => Compute_Dynamic_Property_For_Effects (E, Params)));
+      Call_Effects := Compute_Call_Effects (Params, E);
 
       --  If E has a class-wide precondition, check that it cannot raise a
       --  run-time error in an empty context.
@@ -3040,6 +3063,9 @@ package body Gnat2Why.Subprograms is
       function Warn_On_Inconsistent_Pre return W_Prog_Id;
       --  Generate a VC to warn on inconsistent preconditions
 
+      function Warn_On_Inconsistent_Post return W_Prog_Id;
+      --  Generate a VC to warn on inconsistent postconditions
+
       function Wrap_Decls_For_CC_Guards (P : W_Prog_Id) return W_Prog_Id;
 
       ----------------------
@@ -3452,6 +3478,51 @@ package body Gnat2Why.Subprograms is
                     Def  => +Void)));
       end Try_Block;
 
+      -------------------------------
+      -- Warn_On_Inconsistent_Post --
+      -------------------------------
+
+      function Warn_On_Inconsistent_Post return W_Prog_Id is
+         Params : constant Transformation_Params :=
+           (File        => File,
+            Phase       => Generate_VCs_For_Contract,
+            Gen_Marker  => False,
+            Ref_Allowed => True,
+            Old_Allowed => True);
+         Post : W_Pred_Id :=
+           Get_Static_Call_Contract (Params, E, Pragma_Postcondition);
+         Stmt : W_Prog_Id;
+         Post_Node : constant Node_Id :=
+           Get_Location_For_Aspect (E, Pragma_Postcondition);
+      begin
+         if No (Post_Node) then
+            return +Void;
+         end if;
+
+         --  Negate the condition to check for an inconsistency
+         Post := New_Not (Right => +Post);
+
+         Stmt := Sequence
+           (Compute_Call_Effects (Params, E),
+            New_Located_Assert
+              (Ada_Node => Post_Node,
+               Pred     => Post,
+               Reason   => VC_Inconsistent_Post,
+               Kind     => EW_Assert));
+
+         --  Add declarations for 'Old variables
+
+         Stmt := Declare_Old_Variables (Stmt);
+
+         return
+           Sequence
+             (New_Comment
+                (Comment => NID ("Check inconsistency of Post of subprogram"
+                 & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+                   else ""))),
+              New_Ignore (Prog => Stmt));
+      end Warn_On_Inconsistent_Post;
+
       ------------------------------
       -- Warn_On_Inconsistent_Pre --
       ------------------------------
@@ -3506,7 +3577,7 @@ package body Gnat2Why.Subprograms is
          return
            Sequence
              (New_Comment
-                (Comment => NID ("Check inconsistency of Pre of the subprogram"
+                (Comment => NID ("Check inconsistency of Pre of subprogram"
                  & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
                    else ""))),
               New_Ignore (Prog => Stmt));
@@ -3546,7 +3617,8 @@ package body Gnat2Why.Subprograms is
           (Ada_Node => Body_N,
            Name     => M_Main.Return_Exc);
 
-      Precondition_Is_Statically_False : Boolean := False;
+      Precondition_Is_Statically_False  : Boolean := False;
+      Postcondition_Is_Statically_False : Boolean := False;
 
    --  Start of processing for Generate_VCs_For_Subprogram
 
@@ -3621,6 +3693,14 @@ package body Gnat2Why.Subprograms is
             Precondition_Is_Statically_False := True;
             Error_Msg_N (Msg  => "?precondition is statically False",
                          N    => Expr);
+         end if;
+      end loop;
+
+      for Expr of Get_Postcondition_Expressions (E, Refined => False) loop
+         if Nkind (Expr) = N_Identifier
+           and then Entity (Expr) = Standard_False
+         then
+            Postcondition_Is_Statically_False := True;
          end if;
       end loop;
 
@@ -3712,7 +3792,7 @@ package body Gnat2Why.Subprograms is
              4 => Check_Inline_For_Proof,
              5 => Result_Var));
 
-         --  add declarations for 'Old variables
+         --  Add declarations for 'Old variables
 
          Why_Body := Declare_Old_Variables (Why_Body);
 
@@ -3732,12 +3812,26 @@ package body Gnat2Why.Subprograms is
               or else Opt.Warning_Mode = Opt.Suppress
             then +Void
             else Warn_On_Inconsistent_Pre);
+
+         Warn_Post : constant W_Prog_Id :=
+           --  Do not issue a check for inconsistent postcondition if switch
+           --  --proof-warnings is not set
+           (if not Gnat2Why_Args.Proof_Warnings
+              --  or if a conjunct in the postcondition is statically False
+              or else Postcondition_Is_Statically_False
+              --  or if the body is in SPARK
+              or else Entity_Body_In_SPARK (E)
+              --  or if warnings are suppressed.
+              or else Opt.Warning_Mode = Opt.Suppress
+            then +Void
+            else Warn_On_Inconsistent_Post);
       begin
          Prog := Sequence
            ((Assume_For_Input,
              Comp_Decl_At_Subp_Start,
              RTE_Of_Pre,
              Warn_Pre,
+             Warn_Post,
              Assume_Or_Assert_Of_Pre,
              Prog));
       end;
