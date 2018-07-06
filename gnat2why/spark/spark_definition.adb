@@ -241,13 +241,15 @@ package body SPARK_Definition is
    --  Mark T's underlying type as seen and store T as its partial view
 
    function Decl_Starts_Pragma_Annotate_Range (N : Node_Id) return Boolean is
-     (Comes_From_Source (N) or else
-      Nkind (Original_Node (N)) = N_Expression_Function);
+     (Comes_From_Source (N)
+      or else Nkind (Original_Node (N)) = N_Expression_Function
+      or else Is_Pragma (Original_Node (N), Pragma_Assert));
    --  When scanning a list of statements or declarations to decide the range
    --  of application of a pragma Annotate, some statements starts a new range
    --  for pragma to apply. If the declaration does not come from source, we
    --  consider it to be part of the preceding one as far as pragma Annotate
-   --  is concerned. The exception to this rule are expression functions.
+   --  is concerned. The exception to this rule are expression functions, and
+   --  assertions which are rewritten by the front-end into pragma Check.
 
    procedure Queue_For_Marking (E : Entity_Id);
    --  Register E for marking at a later stage
@@ -5023,13 +5025,9 @@ package body SPARK_Definition is
             then
                Cur := Next (Decl_Node);
                while Present (Cur) loop
-                  if Nkind (Cur) = N_Pragma then
-                     if Is_Pragma_Annotate_GNATprove (Cur) then
-                        Mark_Pragma_Annotate (Cur, Decl_Node,
-                                              Consider_Next => True);
-                     else
-                        Mark_Pragma (Cur);
-                     end if;
+                  if Is_Pragma_Annotate_GNATprove (Cur) then
+                     Mark_Pragma_Annotate (Cur, Decl_Node,
+                                           Consider_Next => True);
                   elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
                      exit;
                   end if;
