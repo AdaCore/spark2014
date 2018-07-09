@@ -242,8 +242,8 @@ package body SPARK_Definition is
 
    function Decl_Starts_Pragma_Annotate_Range (N : Node_Id) return Boolean is
      (Comes_From_Source (N)
-      or else Nkind (Original_Node (N)) = N_Expression_Function
-      or else Is_Pragma (Original_Node (N), Pragma_Assert));
+      or else (Is_Rewrite_Substitution (N)
+               and then Comes_From_Source (Original_Node (N))));
    --  When scanning a list of statements or declarations to decide the range
    --  of application of a pragma Annotate, some statements starts a new range
    --  for pragma to apply. If the declaration does not come from source, we
