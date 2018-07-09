@@ -15,7 +15,7 @@ procedure main with SPARK_Mode => On is
 
    function Combine (Count : Count_T) return Array_A_T
    is
-      (Array_A_T'(Unconstrained_array_T (A (Index_T'First + Count ..  Index_T'Last)) & --@RANGE_CHECK:FAIL
+      (Array_A_T'(Unconstrained_array_T (A (Index_T'First + Count ..  Index_T'Last)) & --@INDEX_CHECK:FAIL
                   Unconstrained_array_T (B (Index_T'First .. Count))));
 
    Combined : Array_A_T;

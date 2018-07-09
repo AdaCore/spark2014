@@ -339,12 +339,13 @@ package body Why.Gen.Expr is
    -----------------------------
 
    function Insert_Array_Conversion
-     (Domain     : EW_Domain;
-      Ada_Node   : Node_Id := Empty;
-      Expr       : W_Expr_Id;
-      To         : W_Type_Id;
-      Need_Check : Boolean := False;
-      Force_No_Slide : Boolean := False)
+     (Domain         : EW_Domain;
+      Ada_Node       : Node_Id := Empty;
+      Expr           : W_Expr_Id;
+      To             : W_Type_Id;
+      Need_Check     : Boolean := False;
+      Force_No_Slide : Boolean := False;
+      Is_Qualif      : Boolean := False)
       return W_Expr_Id
    is
       From      : constant W_Type_Id := Get_Type (Expr);
@@ -354,6 +355,10 @@ package body Why.Gen.Expr is
 
       function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean;
       --  Check whether a conversion between those types requires sliding.
+
+      function Insert_Array_Index_Check
+        (Expr   : W_Expr_Id;
+         To_Ent : Entity_Id) return W_Prog_Id;
 
       function Insert_Length_Check
         (Expr   : W_Expr_Id;
@@ -372,14 +377,11 @@ package body Why.Gen.Expr is
          To_Ent : Entity_Id) return W_Prog_Id
       is
          Check : W_Pred_Id;
+
       begin
-
-         --  ??? This seems to be true in the current code, see the call site
-         --  below
-
          pragma Assert (not Is_Static_Array_Type (To_Ent));
 
-         --  For dynamic types, use dynamic_property instead of range_check
+         --  For dynamic types, use dynamic_property
 
          Check := +New_Dynamic_Property
            (Domain => EW_Prog,
@@ -391,6 +393,55 @@ package body Why.Gen.Expr is
                                     VC_Range_Check,
                                     EW_Assert);
       end Insert_Array_Range_Check;
+
+      ------------------------------
+      -- Insert_Array_Index_Check --
+      ------------------------------
+
+      function Insert_Array_Index_Check
+        (Expr   : W_Expr_Id;
+         To_Ent : Entity_Id) return W_Prog_Id
+      is
+         Check : W_Pred_Id;
+         Dim   : constant Positive :=
+           Positive (Number_Dimensions (To_Ent));
+         Eqs   : W_Expr_Array (1 .. 2 * Dim);
+      begin
+         for I in 1 .. Dim loop
+            Eqs (2 * I - 1) := New_Comparison
+              (Symbol => Why_Eq,
+               Left   => Get_Array_Attr
+                 (Domain => EW_Term,
+                  Expr   => Expr,
+                  Attr   => Attribute_First,
+                  Dim    => I),
+               Right  => Get_Array_Attr
+                 (Domain => EW_Term,
+                  Attr   => Attribute_First,
+                  Dim    => I,
+                  Ty     => To_Ent),
+               Domain => EW_Pred);
+            Eqs (2 * I) := New_Comparison
+              (Symbol => Why_Eq,
+               Left   => Get_Array_Attr
+                 (Domain => EW_Term,
+                  Expr   => Expr,
+                  Attr   => Attribute_Last,
+                  Dim    => I),
+               Right  => Get_Array_Attr
+                 (Domain => EW_Term,
+                  Attr   => Attribute_Last,
+                  Dim    => I,
+                  Ty     => To_Ent),
+               Domain => EW_Pred);
+         end loop;
+         Check := +New_And_Expr (Eqs, EW_Pred);
+
+         return New_Located_Assert (Ada_Node,
+                                    Check,
+                                    VC_Index_Check,
+                                    EW_Assert);
+      end Insert_Array_Index_Check;
 
       -------------------------
       -- Insert_Length_Check --
@@ -490,8 +541,9 @@ package body Why.Gen.Expr is
          return False;
       end Needs_Slide;
 
+      Need_Slide : constant Boolean := Needs_Slide (From_Ent, To_Ent);
       Sliding    : constant Boolean :=
-        not Force_No_Slide and then Needs_Slide (From_Ent, To_Ent);
+        not Force_No_Slide and then Need_Slide and then not Is_Qualif;
       Arr_Expr   : W_Expr_Id;
       T          : W_Expr_Id;
       Pred_Check : constant Boolean :=
@@ -661,13 +713,17 @@ package body Why.Gen.Expr is
                  Typ    => To);
          end if;
 
-         --  4. Insert length, range, and predicate check when necessary
+         --  4. Insert length, range, index, and predicate check when necessary
 
          if Domain = EW_Prog and then Need_Check then
             declare
                Check_Type : constant Entity_Id := Get_Ada_Node (+To);
             begin
-               if Is_Constrained (Check_Type) then
+               if Is_Qualif and then Need_Slide then
+                  T := +Sequence
+                    (Insert_Array_Index_Check (Arr_Expr, Check_Type),
+                     +T);
+               elsif Is_Constrained (Check_Type) then
                   T := +Sequence
                     (Insert_Length_Check (Arr_Expr, Check_Type),
                      +T);

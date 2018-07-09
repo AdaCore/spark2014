@@ -19,7 +19,7 @@ ar.adb:52:21: info: initialization of "A" proved
 ar.adb:55:45: medium: range check might fail (e.g. when E = 0)
 ar.adb:56:13: info: initialization of "A" proved
 ar.adb:64:04: warning: analyzing unreferenced procedure "Test6"
-ar.adb:68:21: medium: length check might fail
+ar.adb:68:20: medium: array index check might fail
 ar.adb:68:24: info: range check proved (CVC4: 1 VC)
 ar.adb:68:33: info: range check proved (CVC4: 1 VC)
 ar.adb:76:04: warning: analyzing unreferenced procedure "Test7"

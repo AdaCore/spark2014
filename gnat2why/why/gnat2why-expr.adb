@@ -12106,10 +12106,41 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
-               T := Transform_Expr (Expression (Expr),
-                                    Type_Of_Node (Expr),
-                                    Domain,
-                                    Local_Params);
+               --  For qualification over arrays, we need to check that the
+               --  bounds are correct, and not slide the array to match the
+               --  bound. Add the conversion manually so that the proper
+               --  parameter can be used to get the proper checks.
+
+               if Nkind (Expr) = N_Qualified_Expression
+                 and then Has_Array_Type (Etype (Expr))
+                 and then Is_Constrained (Etype (Expr))
+                 and then Domain = EW_Prog
+               then
+                  T := Transform_Expr (Expression (Expr),
+                                       Type_Of_Node (Expression (Expr)),
+                                       Domain,
+                                       Local_Params);
+
+                  --  Insert the conversion with In_Qualif set to True so that
+                  --  we do not generate length checks but index checks.
+
+                  T := Insert_Array_Conversion
+                    (Domain     => EW_Prog,
+                     Ada_Node   => Expr,
+                     Expr       => T,
+                     To         => Type_Of_Node (Expr),
+                     Need_Check =>
+                       Check_Needed_On_Conversion
+                         (From => Etype (Expression (Expr)),
+                          To   => Etype (Expr)),
+                     Is_Qualif  => True);
+
+               else
+                  T := Transform_Expr (Expression (Expr),
+                                       Type_Of_Node (Expr),
+                                       Domain,
+                                       Local_Params);
+               end if;
             end if;
 
             --  Invariant checks are introduced explicitly as they need only be
