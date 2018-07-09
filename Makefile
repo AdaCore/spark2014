@@ -138,12 +138,12 @@ coverage:
 	$(MAKE) -C gnat2why coverage
 
 codepeer-run:
-	$(MAKE) -C gnat2why codepeer-run
-	$(MAKE) -C gnatprove codepeer-run
+	$(MAKE) --no-print-directory -C gnat2why codepeer-run
+	$(MAKE) --no-print-directory -C gnatprove codepeer-run
 
 codepeer: codepeer-run
-	@$(MAKE) -C gnat2why codepeer > testsuite/codepeer_analysis_results.txt
-	@$(MAKE) -C gnatprove codepeer >> testsuite/codepeer_analysis_results.txt
+	@$(MAKE) --no-print-directory -C gnat2why codepeer > testsuite/codepeer_analysis_results.txt
+	@$(MAKE) --no-print-directory -C gnatprove codepeer >> testsuite/codepeer_analysis_results.txt
 
 gnatprove:
 	$(MAKE) -C gnatprove build

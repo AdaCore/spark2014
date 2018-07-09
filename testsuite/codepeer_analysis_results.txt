@@ -1,4 +1,3 @@
-make[1]: Entering directory '/home/kanig/dev/testsuite_spark2014/gnat2why'
 assumptions.ads:43:9: high warning: subp always fails: assumptions.token'Initialize fails for all possible inputs
 assumptions.ads:43:4: high: access check fails here
 flow-analysis-sanity.adb:1187:4: medium: validity check: out parameter Sane might be uninitialized
@@ -59,13 +58,13 @@ gnat2why-expr.adb:4617:46: high: array index check fails here: requires (Compute
 gnat2why-expr.adb:4623:33: high: array index check fails here: requires (Compute_Subprogram_Parameters (Subp, EW_Prog))'First <= Bind_Cnt and Bind_Cnt <= (Compute_Subprogram_Parameters (Subp, EW_Prog))'Last
 gnat2why-expr.adb:7718:45: medium: validity check: gnat2why.expr.transform_aggregate.transform_array_component_associations.T4943b'Result might be uninitialized
 gnat2why-expr.adb:15789:49: medium: validity check: Save_Theory might be uninitialized
-gnat2why-subprograms.adb:4907:50: medium: validity check: Refined_Post might be uninitialized
-gnat2why-subprograms.adb:4950:43: medium: validity check: Dispatch_Pre might be uninitialized
-gnat2why-subprograms.adb:4951:43: medium: validity check: Dispatch_Post might be uninitialized
-gnat2why-subprograms.adb:4969:43: medium: validity check: Refined_Post might be uninitialized
-gnat2why-subprograms.adb:5108:48: medium: validity check: Dispatch_Pre might be uninitialized
-gnat2why-subprograms.adb:5111:47: medium: validity check: Dispatch_Post might be uninitialized
-gnat2why-subprograms.adb:5161:44: medium: validity check: Refined_Post might be uninitialized
+gnat2why-subprograms.adb:5001:50: medium: validity check: Refined_Post might be uninitialized
+gnat2why-subprograms.adb:5044:43: medium: validity check: Dispatch_Pre might be uninitialized
+gnat2why-subprograms.adb:5045:43: medium: validity check: Dispatch_Post might be uninitialized
+gnat2why-subprograms.adb:5063:43: medium: validity check: Refined_Post might be uninitialized
+gnat2why-subprograms.adb:5202:48: medium: validity check: Dispatch_Pre might be uninitialized
+gnat2why-subprograms.adb:5205:47: medium: validity check: Dispatch_Post might be uninitialized
+gnat2why-subprograms.adb:5255:44: medium: validity check: Refined_Post might be uninitialized
 why-atree-sprint.adb:663:7: high warning: subp never returns: why.atree.sprint.print_custom_declaration.get_regexp
 why-atree-sprint.adb:1302:4: high warning: subp never returns: why.atree.sprint.print_list
 why-atree-sprint.adb:1313:22: medium warning: loop does not complete normally
@@ -76,8 +75,6 @@ why-gen-expr.adb:2472:7: high warning: subp always fails: why.gen.expr.new_comme
 why-gen-expr.adb:2476:61: high: range check fails here: requires (Get_Name_String (Loc))'First >= 1
 why-gen-scalars.adb:264:10: high: validity check: (if Has_Signed_Integer_Type (Typ_Right) then (Ureal_1) else [constraint_error]) is uninitialized here
 why-gen-scalars.adb:1205:10: high: validity check: (if Has_Signed_Integer_Type (Typ_Right) then (Ureal_1) else [constraint_error]) is uninitialized here
-make[1]: Leaving directory '/home/kanig/dev/testsuite_spark2014/gnat2why'
-make[1]: Entering directory '/home/kanig/dev/testsuite_spark2014/gnatprove'
 assumptions.ads:43:9: high warning: subp always fails: assumptions.token'Initialize fails for all possible inputs
 assumptions.ads:43:4: high: access check fails here
 configuration.adb:408:4: high warning: subp always fails: configuration.prepare_prover_lib fails for all possible inputs
@@ -97,4 +94,3 @@ configuration.adb:1011:35: medium warning: condition predetermined because (CL_S
 configuration.adb:1309:15: medium warning: test always true because (if CL_Switches.Prover /= null then CL_Switches.Prover.all.all else ""'First) <= (if CL_Switches.Prover /= null then CL_Switches.Prover.all.all else ""'Last)
 spark_codepeer_wrapper.adb:45:1: high warning: subp always fails: spark_codepeer_wrapper always ends with an exception or a non-returning call
 spark_memcached_wrapper.adb:39:1: high warning: subp always fails: spark_memcached_wrapper always ends with an exception or a non-returning call
-make[1]: Leaving directory '/home/kanig/dev/testsuite_spark2014/gnatprove'
