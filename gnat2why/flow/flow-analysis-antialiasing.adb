@@ -65,10 +65,8 @@ package body Flow.Analysis.Antialiasing is
                and then (No (Formal_B) or else Is_Formal (Formal_B));
    --  Returns if A and B alias
 
-   function Cannot_Alias (F : Node_Id) return Boolean
-   with Pre => Present (F)
-               and then Nkind (F) in N_Entity
-               and then Is_Formal (F);
+   function Cannot_Alias (F : Entity_Id) return Boolean
+   with Pre => Is_Formal (F);
    --  Check if the given formal parameter cannot possibly alias with others:
    --  it is a scalar in parameter.
 
@@ -564,7 +562,7 @@ package body Flow.Analysis.Antialiasing is
    -- Cannot_Alias --
    ------------------
 
-   function Cannot_Alias (F : Node_Id) return Boolean is
+   function Cannot_Alias (F : Entity_Id) return Boolean is
    begin
       case Ekind (F) is
          when E_In_Parameter =>
