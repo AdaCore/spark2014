@@ -2,14 +2,14 @@ PROCEDURE C41107A IS
 
      C : STRING (1..7) := "ABCDEFG";
 
-     V3 : INTEGER := 3;
+     V : INTEGER := 3;
 
-     PROCEDURE P2 (Y : IN OUT CHARACTER;
-                   Z : OUT CHARACTER) IS
+     PROCEDURE P (X : IN OUT CHARACTER;
+                  Y :    OUT CHARACTER) IS
      BEGIN
         null;
-     END P2;
+     END P;
 
 BEGIN
-     P2 (C(3..6)(V3*2), C(3..6)(3));
+     P (C(3..6)(V), C(3..6)(3));
 END C41107A;
