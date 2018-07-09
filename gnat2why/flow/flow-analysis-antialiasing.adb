@@ -474,7 +474,7 @@ package body Flow.Analysis.Antialiasing is
                            when EQ =>
                               null;
 
-                           when others =>
+                           when LE | GE | Unknown =>
                               Definitive_Result := False;
                         end case;
 
