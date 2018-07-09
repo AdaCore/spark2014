@@ -3,7 +3,7 @@
 MY_DIR=`dirname "$0"`
 cd "$MY_DIR"
 
-prefix=`type gps 2>/dev/null | cut -d' ' -f3 | sed 's%/bin.*$%%'`
+prefix=`type gnatmake 2>/dev/null | cut -d' ' -f3 | sed 's%/bin.*$%%'`
 if [ "$prefix" = "" -o "$prefix" = "found" ]; then
   prefix="/opt/spark2014"
 fi
@@ -29,11 +29,13 @@ if [ "$pref" != "" ]; then
 fi
 
 printf "    The install directory will be: $prefix
-    Do you want to proceed with the installation now? [y|n]: "
+    Do you want to proceed with the installation now? [Y|n]: "
 
 read confirm
 case $confirm in
-  [yY])
+  [nN])
+    echo "installation aborted."; exit 1 ;;
+  *)
     echo "
     installing package..."
     mkdir -p $prefix
@@ -46,6 +48,4 @@ case $confirm in
        setenv PATH $prefix/bin:\$PATH  # C shell
     Thank you for installing SPARK 2014!
 "
-    ;;
-  *) echo "installation aborted."; exit 1
 esac
