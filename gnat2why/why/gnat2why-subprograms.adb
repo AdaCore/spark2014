@@ -3733,24 +3733,26 @@ package body Gnat2Why.Subprograms is
                  Type_Of_Node (Containing_Protected_Type (E))));
       end if;
 
+      --  Declare a global variable to hold the result of a function. This is
+      --  useful both for verifying the body of E when it is in SPARK, and for
+      --  the warning on inconsistent postcondition when it is issued.
+
+      if Ekind (E) = E_Function then
+         Emit
+           (File,
+            New_Global_Ref_Declaration
+              (Ada_Node => E,
+               Name     => Result_Name,
+               Labels   => Get_Counterexample_Labels (E),
+               Location => No_Location,
+               Ref_Type => Type_Of_Node (Etype (E))));
+      end if;
+
       if Entity_Body_In_SPARK (E) then
 
          Get_Pre_Post_Pragmas
            (Get_Flat_Statement_And_Declaration_List
               (Declarations (Body_N)));
-
-         --  Declare a global variable to hold the result of a function
-
-         if Ekind (E) = E_Function then
-            Emit
-              (File,
-               New_Global_Ref_Declaration
-                 (Ada_Node => E,
-                  Name     => Result_Name,
-                  Labels   => Get_Counterexample_Labels (E),
-                  Location => No_Location,
-                  Ref_Type => Type_Of_Node (Etype (E))));
-         end if;
 
          Why_Body :=
            Sequence
