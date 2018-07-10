@@ -102,8 +102,8 @@ package Why.Gen.Expr is
    --  generate a boolean term which expresses the translation of "Left =
    --  Right" in Ada semantics, where the equality is the one of type Typ.
    --  If the type has a user-provided primitive equality and if its most
-   --  underlying type is a record type, use the user-provided equality. Else,
-   --  use the predefined equality.
+   --  underlying type is a record type or is limited, use the user-provided
+   --  equality. Else, use the predefined equality.
 
    function New_Or_Expr
      (Left, Right : W_Expr_Id;

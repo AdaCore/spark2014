@@ -12905,7 +12905,9 @@ package body Gnat2Why.Expr is
          Base_Type : W_Type_Id)
          return W_Expr_Id
       is
-         Result : W_Expr_Id;
+         Result    : W_Expr_Id;
+         Subdomain : constant EW_Domain :=
+           (if Domain = EW_Pred then EW_Term else Domain);
       begin
          if (Is_Entity_Name (Alt) and then Is_Type (Entity (Alt)))
            or else Nkind (Alt) = N_Range
@@ -12913,12 +12915,12 @@ package body Gnat2Why.Expr is
             Result :=
               Transform_Simple_Membership_Expression (Var, Alt);
          else
-            Result := New_Comparison
-              (Symbol => Why_Eq,
+            Result := New_Ada_Equality
+              (Typ    => Etype (Left_Opnd (Expr)),
                Left   => Var,
                Right  => Transform_Expr (Expr          => Alt,
                                          Expected_Type => Base_Type,
-                                         Domain        => EW_Term,
+                                         Domain        => Subdomain,
                                          Params        => Params),
                Domain => Domain);
          end if;

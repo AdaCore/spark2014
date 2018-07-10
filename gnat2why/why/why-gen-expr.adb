@@ -1833,7 +1833,8 @@ package body Why.Gen.Expr is
    is
       Why_Type : constant W_Type_Id := Type_Of_Node (Typ);
       Use_Predef : constant Boolean :=
-        not Is_Record_Type (Get_Full_Type_Without_Checking (Typ))
+        not (Is_Record_Type (Get_Full_Type_Without_Checking (Typ))
+             or else Is_Limited_View (Typ))
         or else No (Get_User_Defined_Eq (Base_Type (Typ)));
       Eq_Str   : constant String :=
         (if Use_Predef then "bool_eq" else "user_eq");
