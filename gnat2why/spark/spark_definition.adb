@@ -1603,10 +1603,6 @@ package body SPARK_Definition is
             Mark_Stmt_Or_Decl_List (Statements (N));
 
          when N_Membership_Test =>
-            if Is_Array_Type (Etype (Left_Opnd (N))) then
-               Mark_Unsupported ("membership test on array values", N);
-            end if;
-
             Mark (Left_Opnd (N));
             if Present (Alternatives (N)) then
                Mark_List (Alternatives (N));
