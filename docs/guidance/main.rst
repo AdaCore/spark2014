@@ -290,23 +290,22 @@ the total number of lines of code) by the metrics computation tool GNATmetric.
 
 The stricter SPARK rules are enforced on a (hopefully) large part of the
 program, which leads to higher quality and maintainability, as error-prone
-features such as side-effects in functions and aliasing between
-parameters are avoided, and others, such as use of pointers, are isolated
-to non-SPARK parts of the program. Individual and peer review processes can
-be reduced on the SPARK parts of the program, since analysis
-automatically eliminates some categories of defects. The parts of the program
-that don't respect the SPARK rules are carefully isolated so they can be
-more thoroughly reviewed and tested.
+features such as side-effects in functions are avoided, and others, such as use
+of pointers, are isolated to non-SPARK parts of the program. Individual and
+peer review processes can be reduced on the SPARK parts of the program, since
+analysis automatically eliminates some categories of defects. The parts of the
+program that don't respect the SPARK rules are carefully isolated so they can
+be more thoroughly reviewed and tested.
 
 .. rubric:: Impact on Process
 
 After the initial pass of applying the SPARK rules to the program, ongoing
-maintenance of SPARK code is similar to ongoing maintenance of Ada code,
-with a few additional rules, such as the need to avoid side effects in
-functions and aliasing between parameters. These additional rules are
-checked automatically by running GNATprove on the modified program, which
-can be done either by the developer before committing changes or by an
-automatic system (continuous builder, regression testsuite, etc.)
+maintenance of SPARK code is similar to ongoing maintenance of Ada code, with a
+few additional rules, such as the need to avoid side effects in
+functions. These additional rules are checked automatically by running
+GNATprove on the modified program, which can be done either by the developer
+before committing changes or by an automatic system (continuous builder,
+regression testsuite, etc.)
 
 .. rubric:: Costs and Limitations
 
