@@ -786,15 +786,37 @@ package body Gnat2Why.Driver is
 
       procedure Register_Symbol (E : Entity_Id) is
       begin
-         if Ekind (E) in E_Entry | E_Function | E_Procedure
-           and then Is_Translated_Subprogram (E)
-         then
-            if Ekind (E) in E_Function | E_Procedure then
-               Ada_Ent_To_Why.Insert (Symbol_Table, E, Mk_Item_Of_Entity (E));
-            else
-               Insert_Entity (E, To_Why_Id (E, Typ => Why_Empty));
-            end if;
-         end if;
+         case Ekind (E) is
+            when E_Entry
+               | E_Function
+               | E_Procedure =>
+               if Is_Translated_Subprogram (E) then
+                  if Ekind (E) in E_Function | E_Procedure then
+                     Ada_Ent_To_Why.Insert
+                       (Symbol_Table, E, Mk_Item_Of_Entity (E));
+                  else
+                     Insert_Entity (E, To_Why_Id (E, Typ => Why_Empty));
+                  end if;
+               end if;
+            when Object_Kind =>
+
+               if Is_Discriminal (E)
+                 or else Is_Protected_Component_Or_Discr_Or_Part_Of (E)
+               then
+                  return;
+               end if;
+
+               if not Is_Mutable_In_Why (E) then
+                  Insert_Entity (E,
+                                 To_Why_Id (E, No_Comp => True,
+                                            Typ => Type_Of_Node (Etype (E))));
+               else
+                  Insert_Item (E, Mk_Item_Of_Entity (E));
+               end if;
+
+            when others =>
+               null;
+         end case;
       end Register_Symbol;
 
    --  Start of processing for Translate_CUnit
