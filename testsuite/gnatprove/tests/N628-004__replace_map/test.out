@@ -1,3 +1,9 @@
+a-cforma.ads:743:39: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:8
+a-cforma.ads:752:17: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:8
+a-cforma.ads:787:42: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:8
+a-cforma.ads:795:21: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:8
+a-cforma.ads:822:42: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:8
+a-cforma.ads:830:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:8
 a-cforma.ads:900:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:8
 a-cforma.ads:915:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:8
 a-cforma.ads:930:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:8

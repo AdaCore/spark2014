@@ -3510,10 +3510,6 @@ package body Gnat2Why.Subprograms is
                Reason   => VC_Inconsistent_Post,
                Kind     => EW_Assert));
 
-         --  Add declarations for 'Old variables
-
-         Stmt := Declare_Old_Variables (Stmt);
-
          return
            Sequence
              (New_Comment
@@ -3607,6 +3603,7 @@ package body Gnat2Why.Subprograms is
 
       Name      : constant String := Full_Name (E);
 
+      CC_Check  : W_Prog_Id;
       Prog      : W_Prog_Id;
       Why_Body  : W_Prog_Id;
 
@@ -3717,7 +3714,7 @@ package body Gnat2Why.Subprograms is
          Others_Guard_Ident => Others_Guard_Ident,
          Others_Guard_Expr  => Others_Guard_Expr);
 
-      Prog := Compute_Contract_Cases_Entry_Checks (E, Guard_Map);
+      CC_Check := Compute_Contract_Cases_Entry_Checks (E, Guard_Map);
 
       --  Declare global variable to hold the state of a protected object
 
@@ -3794,14 +3791,21 @@ package body Gnat2Why.Subprograms is
              4 => Check_Inline_For_Proof,
              5 => Result_Var));
 
-         --  Add declarations for 'Old variables
+      --  Body is not in SPARK
 
-         Why_Body := Declare_Old_Variables (Why_Body);
+      else
+         declare
+            Dummy_CC_And_RTE_Post : W_Prog_Id;
+         begin
+            --  Translate the contract cases and postcondition in order to fill
+            --  the mapping for uses of 'Old to later check absence of run-time
+            --  errors in these expressions, and drop the generated program.
 
-         Prog := Sequence (Prog, Why_Body);
+            Dummy_CC_And_RTE_Post := CC_And_RTE_Post;
+
+            Why_Body := +Void;
+         end;
       end if;
-
-      Prog := Wrap_Decls_For_CC_Guards (Prog);
 
       declare
          Warn_Pre : constant W_Prog_Id :=
@@ -3827,13 +3831,19 @@ package body Gnat2Why.Subprograms is
               or else Opt.Warning_Mode = Opt.Suppress
             then +Void
             else Warn_On_Inconsistent_Post);
+
       begin
+         --  Add declarations for 'Old variables
+
+         Prog := Sequence ((CC_Check, Warn_Post, Why_Body));
+         Prog := Declare_Old_Variables (Prog);
+         Prog := Wrap_Decls_For_CC_Guards (Prog);
+
          Prog := Sequence
            ((Assume_For_Input,
              Comp_Decl_At_Subp_Start,
              RTE_Of_Pre,
              Warn_Pre,
-             Warn_Post,
              Assume_Or_Assert_Of_Pre,
              Prog));
       end;
