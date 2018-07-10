@@ -210,8 +210,8 @@ translated as operations on mathematical integers so that GNATprove
 can benefit from this support.
 
 The closed form of a static signed integer represents exactly the
-range of the Ada type. It is encoded using an abstract type with
-of_rep and to_rep functions to convert to and from mathematical
+range of the Ada type. It is encoded using a Why3 range type with
+an of_rep function to convert from mathematical
 integers as well as a range axiom.
 
 As an example, let us look at the following type:
@@ -230,7 +230,7 @@ declarations in Why:
     module P__signed_int
      use import "int".Int
 
-     type signed_int
+     type signed_int = < range 1 10 >
 
      function first : int = 1
 
@@ -245,7 +245,7 @@ declarations in Why:
      use import "int".Int
      use import Types__stat_ty
 
-     function to_rep signed_int : int
+     function to_rep (x : signed_int) : int = signed_int'int x
      function of_rep int : signed_int
 
      axiom inversion_axiom :
@@ -421,6 +421,118 @@ to_rep and of_rep functions are separated in a different module:
 
 Fixed Point Types
 """""""""""""""""
+
+A value of fixed point types is translated as an integer, the represented value
+being the product of the small of the fixed point type with this value. To avoid
+confusion, we use an alias of int names __fixed. Except from that, static fixed
+point types are translated as static integer types, with a range, conversion
+functions and coerce and range axioms. For example, let us consider the
+following type:
+
+.. code-block:: ada
+		
+   type My_Fixed is delta 3.0 / 1000.0 range 0.0 .. 3.0;
+
+Here are the axioms and declarations generated in Why for it. Like for
+integer types, we only give here the relevant declarations:
+   
+.. code-block:: whyml
+
+ type my_fixed 
+ 
+ function num_small 
+   : Main.__fixed =
+  1
+ 
+ function den_small 
+   : Main.__fixed =
+  512
+ 
+ function first 
+   : Main.__fixed =
+  0
+ 
+ function last 
+   : Main.__fixed =
+  1536
+ 
+ predicate in_range 
+   (x : Main.__fixed)  =
+  ( (first <= x) /\ (x <= last) )
+
+  function to_fixed t : __fixed
+
+  function of_fixed __fixed : t
+
+  axiom range_axiom :
+    forall x : t. in_range (to_fixed x)
+
+  axiom coerce_axiom :
+    forall x : __fixed [to_fixed (of_fixed x)].
+      in_range x -> to_fixed (of_fixed x) = x
+
+Operations on values of a
+fixed point type depend on the value of the small of the type. For every
+possible small, a new module is introduced which defines operations for this
+small. As an example, here is the module introduced for fixed point types of
+small 1 / 512 like My_Fixed above:
+
+.. code-block:: whyml
+		
+ module Fixed_Point__1_512
+
+   function num_small : int = 1
+ 
+   function den_small : int = 512
+
+   (* multiplication between a fixed-point value and an integer *)
+
+   function fxp_mult_int (x : __fixed) (y : int) : __fixed = x * y
+
+   (* division between a fixed-point value and an integer
+      case 1:
+         If the divident is zero, then the result is zero.
+      case 2:
+         If both arguments are of the same sign, then the mathematical
+         result is either exact, or between exact and exact+1, which are the
+         possible results.
+
+         for example:
+              x =  5, y =  3, exact = 1, math = 1.666.., result in { 1, 2 }
+              x = -5, y = -3, exact = 1, math = 1.666.., result in { 1, 2 }
+      case 3:
+         If arguments are of opposite signs, then the mathematical
+         result is either exact, or between exact-1 and exact, which are the
+         possible results.
+
+         for example:
+              x = -5, y =  3, exact = -1, math = -1.666.., result in { -2, -1 }
+              x =  5, y = -3, exact = -1, math = -1.666.., result in { -2, -1 }
+    *)
+
+    function fxp_div_int (x : __fixed) (y : int) : __fixed
+
+    axiom fxp_div_int_def :
+      forall x : __fixed. forall y : int [fxp_div_int x y].
+        if x = 0 then
+          fxp_div_int x y = 0
+        else if x > 0 /\ y > 0 then
+          pos_div_relation (fxp_div_int x y) x y
+        else if x < 0 /\ y < 0 then
+          pos_div_relation (fxp_div_int x y) (-x) (-y)
+        else if x < 0 /\ y > 0 then
+          pos_div_relation (- (fxp_div_int x y)) (-x) y
+        else if x > 0 /\ y < 0 then
+          pos_div_relation (- (fxp_div_int x y)) x (-y)
+        else (* y = 0 *)
+          true
+
+  ...
+
+  end
+  
+Note that, in the Why generated code, the type system is not used to ensure that
+we always use the correct operation for fixed point types.
 
 Dynamic scalar types
 """"""""""""""""""""
