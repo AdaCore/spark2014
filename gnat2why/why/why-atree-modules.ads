@@ -525,7 +525,6 @@ package Why.Atree.Modules is
 
    --  Labels
 
-   Model             : Name_Id;
    Model_Trace       : Name_Id;
    Model_Projected   : Name_Id;
    Model_VC          : Name_Id;

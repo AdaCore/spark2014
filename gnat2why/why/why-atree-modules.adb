@@ -1695,7 +1695,6 @@ package body Why.Atree.Modules is
 
    procedure Init_Labels is
    begin
-      Model             := NID (Model_Label);
       Model_Trace       := NID (Model_Trace_Label);
       Model_Projected   := NID (Model_Proj_Label);
       Model_VC          := NID (Model_VC_Label);

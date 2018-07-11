@@ -340,13 +340,9 @@ package body Gnat2Why.Util is
                --  If the type used in Why3 for the entity is not abstract or
                --  the entity is not mutable, the type is builtin Why3 type.
 
-               if Get_Type_Kind (Type_Of_Node (Etype (E))) /= EW_Abstract
-                 and then not Is_Mutable_In_Why (E)
+               if Get_Type_Kind (Type_Of_Node (Etype (E))) = EW_Abstract
+                 or else Is_Mutable_In_Why (E)
                then
-                  --  Request directly the value of E in the counterexample.
-
-                  Labels.Include (Model);
-               else
                   --  Ask the value of E projected to Why3 builtin type in the
                   --  counterexample.
                   --
