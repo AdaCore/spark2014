@@ -211,6 +211,10 @@ package body SPARK_Definition is
    --  Set of entities defined in actions which require a special translation.
    --  See gnat2why.ads for details.
 
+   Annot_Pkg_Seen : Hashed_Node_Sets.Set;
+   --  Set of package entities that have already been processed to look for
+   --  pragma Annotate.
+
    Marking_Queue : Node_Lists.List;
    --  This queue is used to store entities for marking, in the case where
    --  calling Mark_Entity directly would not be appropriate, e.g. for
@@ -946,6 +950,11 @@ package body SPARK_Definition is
 
    procedure Mark_List (L : List_Id);
    --  Call Mark on all nodes in list L
+
+   procedure Mark_Pragma_Annot_In_Pkg (E : Entity_Id)
+     with Pre => Ekind (E) = E_Package;
+   --  Mark pragma Annotate that could appear at the beginning of a declaration
+   --  list of a package.
 
    procedure Mark_Most_Underlying_Type_In_SPARK (Id : Entity_Id; N : Node_Id);
    --  The most underlying type for type Id should be in SPARK, otherwise mark
@@ -3225,6 +3234,7 @@ package body SPARK_Definition is
             and then Current_SPARK_Pragma = SPARK_Pragma (E)
             and then
               Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = On;
+
       procedure Mark_Subprogram_Entity (E : Entity_Id);
       procedure Mark_Type_Entity       (E : Entity_Id);
 
@@ -5029,6 +5039,19 @@ package body SPARK_Definition is
                   end if;
                   Next (Cur);
                end loop;
+
+               --  If we are in a package, we also need to scan the beginning
+               --  of the declaration list, in case there is a pragma Annotate
+               --  that governs our declaration.
+
+               declare
+                  Spec : constant Node_Id :=
+                    Parent (List_Containing (Decl_Node));
+               begin
+                  if Nkind (Spec) = N_Package_Specification then
+                     Mark_Pragma_Annot_In_Pkg (Defining_Entity (Spec));
+                  end if;
+               end;
             end if;
          end;
       end if;
@@ -5936,6 +5959,35 @@ package body SPARK_Definition is
             Mark_Violation ("unknown pragma %", N);
       end case;
    end Mark_Pragma;
+
+   ------------------------------
+   -- Mark_Pragma_Annot_In_Pkg --
+   ------------------------------
+
+   procedure Mark_Pragma_Annot_In_Pkg (E : Entity_Id) is
+      Inserted : Boolean;
+      Position : Hashed_Node_Sets.Cursor;
+   begin
+      Annot_Pkg_Seen.Insert (E, Position, Inserted);
+
+      if Inserted then
+         declare
+            Spec : constant Node_Id := Package_Specification (E);
+            Cur  : Node_Id := First (Visible_Declarations (Spec));
+         begin
+            while Present (Cur) loop
+               if Is_Pragma_Annotate_GNATprove (Cur) then
+                  Mark_Pragma_Annotate (Cur,
+                                        Spec,
+                                        Consider_Next => False);
+               elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+                  exit;
+               end if;
+               Next (Cur);
+            end loop;
+         end;
+      end if;
+   end Mark_Pragma_Annot_In_Pkg;
 
    -------------------------
    -- Mark_Protected_Body --
