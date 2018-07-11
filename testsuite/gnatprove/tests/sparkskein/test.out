@@ -183,7 +183,7 @@ skein.adb:821:51: info: initialization of "Tmp_Byte_Count_Add" proved
 skein.adb:825:22: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
 skein.adb:825:52: info: division check proved (CVC4: 1 VC)
 skein.adb:825:52: info: range check proved (CVC4: 1 VC)
-skein.adb:830:44: info: predicate check proved (CVC4: 1 VC)
+skein.adb:830:43: info: predicate check proved (CVC4: 1 VC)
 skein.adb:831:12: info: initialization of "Local_Ctx.X" proved
 skein.adb:833:27: info: initialization of "Byte_Count" proved
 skein.adb:833:44: info: division check proved (CVC4: 1 VC)
@@ -270,4 +270,4 @@ skein.ads:190:19: info: postcondition proved (CVC4: 3 VC)
 skein.ads:195:31: info: initialization of "Hash" proved
 skein.ads:201:46: info: division check proved (CVC4: 1 VC)
 skein.ads:226:28: info: range check proved (altergo: 1 VC)
-skein.ads:371:52: info: predicate check proved (CVC4: 1 VC)
+skein.ads:371:51: info: predicate check proved (CVC4: 1 VC)
