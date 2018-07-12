@@ -3347,7 +3347,17 @@ package body Flow_Utility is
             when N_Op =>
                pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
 
-            when N_Later_Decl_Item =>
+            when N_Abstract_Subprogram_Declaration
+               | N_Call_Marker
+               | N_Entry_Body
+               | N_Entry_Declaration
+               | N_Freeze_Entity
+               | N_Freeze_Generic_Entity
+               | N_Later_Decl_Item
+               | N_Renaming_Declaration
+               | N_Representation_Clause
+               | N_Variable_Reference_Marker
+            =>
                pragma Assert (not Ctx.Assume_In_Expression);
 
                --  These should allow us to go through package specs and bodies
