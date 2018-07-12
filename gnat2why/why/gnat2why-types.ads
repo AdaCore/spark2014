@@ -70,26 +70,30 @@
 --    Why.Gen.Arrays
 --  are useful.
 
-with Gnat2Why.Util; use Gnat2Why.Util;
-with Types;         use Types;
-with Why.Ids;       use Why.Ids;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with Gnat2Why.Util;        use Gnat2Why.Util;
+with Types;                use Types;
+with Why.Ids;              use Why.Ids;
 
 package Gnat2Why.Types is
 
    procedure Translate_Type
      (File : W_Section_Id;
-      E    : Entity_Id);
+      E    : Entity_Id)
+   with Pre => Is_Type (E);
    --  Generate the Why3 declaration module for the type entity in argument.
    --  This function basically dispatches to the corresponding specific package
    --  in Why.Gen.* (Scalars, Records, or Arrays).
 
-   function Ident_Of_Ada_Type (E : Entity_Id) return W_Name_Id;
+   function Ident_Of_Ada_Type (E : Entity_Id) return W_Name_Id
+   with Pre => Is_Type (E);
    --  Transform the type entity in argument to an identifier. This function
    --  works with Boolean, but not with things like Universal_Integer.
 
    procedure Generate_Type_Completion
      (File : W_Section_Id;
-      E    : Entity_Id);
+      E    : Entity_Id)
+   with Pre => Is_Type (E);
    --  Generate the Why3 completion module for the type entity in argument.
    --  This is useful for user-defined equalities, type predicates, type
    --  invariants, as well as to define the type dynamic invariant representing
@@ -99,7 +103,8 @@ package Gnat2Why.Types is
 
    procedure Generate_VCs_For_Type
      (File : W_Section_Id;
-      E    : Entity_Id);
+      E    : Entity_Id)
+   with Pre => Is_Type (E);
    --  Generate a module for the VCs associated to a type declaration. We
    --  isolate in this separate module those checks that should be done
    --  independently from the value of variables at the point of declaration.

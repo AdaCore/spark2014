@@ -33,7 +33,6 @@ with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Namet;                   use Namet;
 with Sinput;                  use Sinput;
 with SPARK_Atree;             use SPARK_Atree;
-with SPARK_Atree.Entities;    use SPARK_Atree.Entities;
 with SPARK_Definition;        use SPARK_Definition;
 with SPARK_Util;              use SPARK_Util;
 with SPARK_Util.Types;        use SPARK_Util.Types;
