@@ -807,6 +807,10 @@ package body SPARK_Annotate is
       Pattern  : out String_Id;
       Reason   : out String_Id)
    is
+      pragma Annotate (CodePeer, Intentional,
+                       "validity check",
+                       "other out parameters only set when Ok is True");
+
       Arg1, Arg2, Arg3, Arg4 : Node_Id;
       Arg2_Exp, Arg3_Exp, Arg4_Exp : Node_Id;
 

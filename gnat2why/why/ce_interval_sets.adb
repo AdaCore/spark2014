@@ -35,7 +35,7 @@ package body Ce_Interval_Sets is
       X        : Interval := Y;
    begin
       --  This terminates because L'length decreases
-      while not Inserted loop
+      loop
          L.Insert (X, Position, Inserted);
 
          if Inserted then

@@ -36,7 +36,9 @@ with GNATCOLL.JSON; use GNATCOLL.JSON;
 with GNATCOLL.Mmap;
 with Memcache_Client;
 
-procedure SPARK_Memcached_Wrapper is
+procedure SPARK_Memcached_Wrapper
+  with No_Return
+is
 
    --  This is a wrapper program, which caches identical invocations of
    --  gnatwhy3 and provers by hashing the input to the tool (commandline and

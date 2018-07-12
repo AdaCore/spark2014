@@ -1474,8 +1474,8 @@ package body Why.Gen.Expr is
             Thi : constant Node_Id := Type_High_Bound (Range_Type);
             Lov : Ureal;
             Hiv : Ureal;
-            Lo  : Ureal;
-            Hi  : Ureal;
+            Lo  : Ureal := No_Ureal;
+            Hi  : Ureal := No_Ureal;
             OK  : Boolean;
 
          begin
@@ -2510,6 +2510,7 @@ package body Why.Gen.Expr is
    is
       Prefix  : constant String := "comment:";
       Str_Loc : constant String := Get_Name_String (Loc);
+      pragma Assert (Str_Loc'First = 1);  --  assertion to help CodePeer
 
       Pointer  : Source_Ptr := Original_Location (Sloc (Node));
       Src_Buff : constant Source_Buffer_Ptr :=

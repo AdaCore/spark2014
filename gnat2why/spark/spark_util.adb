@@ -216,6 +216,11 @@ package body SPARK_Util is
       Low_Val   : out Uint;
       High_Val  : out Uint)
    is
+      pragma Annotate
+        (CodePeer, Intentional,
+         "validity check",
+         "other out parameters only set when Result is not No_Unrolling");
+
       -----------------------
       -- Local Subprograms --
       -----------------------

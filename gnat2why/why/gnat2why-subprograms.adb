@@ -4769,9 +4769,9 @@ package body Gnat2Why.Subprograms is
       Effects          : W_Effects_Id;
       Pre              : W_Pred_Id;
       Post             : W_Pred_Id;
-      Dispatch_Pre     : W_Pred_Id;
-      Dispatch_Post    : W_Pred_Id;
-      Refined_Post     : W_Pred_Id;
+      Dispatch_Pre     : W_Pred_Id := Why_Empty;
+      Dispatch_Post    : W_Pred_Id := Why_Empty;
+      Refined_Post     : W_Pred_Id := Why_Empty;
       Prog_Id          : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Prog, Local => True);
       Why_Type         : W_Type_Id := Why_Empty;

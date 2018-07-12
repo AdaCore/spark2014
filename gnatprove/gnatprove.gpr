@@ -57,6 +57,13 @@ project GNATprove is
    end Compiler;
 
    package CodePeer is
+
+      --  Exclude source files leading to false positives
+      for Excluded_Source_Files use
+        ("assumptions.ads",
+         "assumptions.adb",
+         "configuration.adb");
+
       for Switches use ("-j0",
                         "-level", "1",
                         "-messages", "min",
