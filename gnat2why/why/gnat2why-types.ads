@@ -77,13 +77,11 @@ with Why.Ids;       use Why.Ids;
 package Gnat2Why.Types is
 
    procedure Translate_Type
-     (File       : W_Section_Id;
-      E          : Entity_Id;
-      New_Theory : out Boolean);
+     (File : W_Section_Id;
+      E    : Entity_Id);
    --  Generate the Why3 declaration module for the type entity in argument.
    --  This function basically dispatches to the corresponding specific package
-   --  in Why.Gen.* (Scalars, Records, or Arrays). New_Theory is set to True if
-   --  a new theory was created for E.
+   --  in Why.Gen.* (Scalars, Records, or Arrays).
 
    function Ident_Of_Ada_Type (E : Entity_Id) return W_Name_Id;
    --  Transform the type entity in argument to an identifier. This function

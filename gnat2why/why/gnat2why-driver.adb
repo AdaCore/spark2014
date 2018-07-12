@@ -881,7 +881,6 @@ package body Gnat2Why.Driver is
 
       File       : constant W_Section_Id := Dispatch_Entity (E);
       Compl_File : constant W_Section_Id := Dispatch_Entity_Completion (E);
-      New_Theory : Boolean;
 
    --  Start of processing for Translate_Entity
 
@@ -899,7 +898,7 @@ package body Gnat2Why.Driver is
                --  otherwise we end up with two definitions for the same
                --  private type.
 
-               Translate_Type (File, E, New_Theory);
+               Translate_Type (File, E);
             end if;
 
             --  Concurrent types may appear as globals in subprograms nested in

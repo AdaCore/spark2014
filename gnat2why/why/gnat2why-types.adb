@@ -643,9 +643,8 @@ package body Gnat2Why.Types is
    --------------------
 
    procedure Translate_Type
-     (File       : W_Section_Id;
-      E          : Entity_Id;
-      New_Theory : out Boolean)
+     (File : W_Section_Id;
+      E    : Entity_Id)
    is
       procedure Translate_Underlying_Type
         (File : W_Section_Id;
@@ -692,7 +691,6 @@ package body Gnat2Why.Types is
 
    begin
       if Is_Standard_Boolean_Type (E) or else E = Universal_Fixed then
-         New_Theory := False;
          return;
 
       else
@@ -703,8 +701,6 @@ package body Gnat2Why.Types is
          then
             Create_Rep_Record_Theory_If_Needed (File, Retysp (E));
          end if;
-
-         New_Theory := True;
 
          Open_Theory
            (File, E_Module (E),
