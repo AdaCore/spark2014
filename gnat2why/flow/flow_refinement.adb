@@ -53,6 +53,17 @@ package body Flow_Refinement is
                         return Boolean
    is
    begin
+      --  As far as flow analysis is concerned, there are no generics, only
+      --  instances, so we should not ask about visibility of generic units.
+      --  (The locations of generics and their instances impact visibility,
+      --  but this already captured in the visibility graph.)
+
+      pragma Assert (if Present (Target_Scope)
+                     then not Is_Generic_Unit (Target_Scope.Ent));
+
+      pragma Assert (if Present (Looking_From)
+                     then not Is_Generic_Unit (Looking_From.Ent));
+
       return Flow_Visibility.Is_Visible
         (Looking_From => Looking_From,
          Looking_At   => Target_Scope);
