@@ -561,7 +561,10 @@ package body Flow_Visibility is
                                    | Generic_Subprogram_Kind);
 
          Is_Package := False;
-         Is_Private := False;
+         Is_Private :=
+           Is_Compilation_Unit (E)
+             and then
+           Private_Present (Enclosing_Comp_Unit_Node (E));
 
          if Is_Compilation_Unit (E) then
             if Ekind (E) in E_Function | E_Procedure
@@ -634,9 +637,6 @@ package body Flow_Visibility is
       --  function, because with pragmas if one of the conditions fails, it
       --  is easier to know which one.
       -------------------------------------------------------------------------
-
-      pragma Assert (if not Is_Package then not Is_Private);
-      --  ??? how about private functions and procedures?
 
       pragma Assert (if Is_Private then not Is_Nested);
 
