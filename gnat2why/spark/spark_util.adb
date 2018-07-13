@@ -216,10 +216,6 @@ package body SPARK_Util is
       Low_Val   : out Uint;
       High_Val  : out Uint)
    is
-      pragma Annotate
-        (CodePeer, Intentional,
-         "validity check",
-         "other out parameters only set when Result is not No_Unrolling");
 
       -----------------------
       -- Local Subprograms --
@@ -307,7 +303,9 @@ package body SPARK_Util is
    --  Start of processing for Candidate_For_Unrolling
 
    begin
-      Result := No_Unrolling;
+      Low_Val  := No_Uint;
+      High_Val := No_Uint;
+      Result   := No_Unrolling;
 
       --  Only simple FOR loops can be unrolled. Simple loops are
       --  defined as having no (in)variant...

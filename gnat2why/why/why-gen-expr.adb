@@ -2510,7 +2510,6 @@ package body Why.Gen.Expr is
    is
       Prefix  : constant String := "comment:";
       Str_Loc : constant String := Get_Name_String (Loc);
-      pragma Assert (Str_Loc'First = 1);  --  assertion to help CodePeer
 
       Pointer  : Source_Ptr := Original_Location (Sloc (Node));
       Src_Buff : constant Source_Buffer_Ptr :=
