@@ -129,8 +129,8 @@ package body Flow_Visibility is
       with procedure Process (N : Node_Id);
    procedure Traverse_Compilation_Unit (Unit_Node : Node_Id);
    --  Call Process on all declarations within compilation unit CU. Unlike the
-   --  standard frontend traversal, this one traverses into stubs; unlike the
-   --  generated globals traversal, this one traverses into generic units.
+   --  standard frontend traversal, this one traverses into stubs; ??? it is
+   --  now similar to the generated globals traversal.
 
    ----------------------------------------------------------------------------
    --  Subprogram bodies
@@ -917,14 +917,17 @@ package body Flow_Visibility is
          --  Call Process on all interesting declarations and traverse
 
          case Nkind (N) is
-            when N_Package_Declaration
-               | N_Generic_Package_Declaration
-            =>
+            when N_Package_Declaration =>
                Process (N);
                Traverse_Visible_And_Private_Parts (Specification (N));
 
+            when N_Generic_Package_Declaration =>
+               Process (N);
+
             when N_Package_Body =>
-               Traverse_Package_Body (N);
+               if Ekind (Unique_Defining_Entity (N)) /= E_Generic_Package then
+                  Traverse_Package_Body (N);
+               end if;
 
             when N_Package_Body_Stub =>
                Traverse_Package_Body (Get_Body_From_Stub (N));
@@ -940,7 +943,9 @@ package body Flow_Visibility is
                   Process (N);
                end if;
 
-               Traverse_Subprogram_Body (N);
+               if not Is_Generic_Subprogram (Unique_Defining_Entity (N)) then
+                  Traverse_Subprogram_Body (N);
+               end if;
 
             when N_Entry_Body =>
                Traverse_Subprogram_Body (N);
