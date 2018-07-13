@@ -349,6 +349,10 @@ package body Why.Atree.Modules is
         New_Module
           (File     => Ada_Model_File,
            Name     => NID ("Rep_Proj_Float64"));
+      Rep_Proj_Fixed :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_Fixed"));
       Rep_Proj_Int :=
         New_Module
           (File     => Ada_Model_File,
@@ -2081,8 +2085,7 @@ package body Why.Atree.Modules is
 
                declare
                   RM : constant W_Module_Id :=
-                    (if not Is_Fixed_Point_Type (E)
-                     and then Is_Scalar_Type (E)
+                    (if Is_Scalar_Type (E)
                      and then not Type_Is_Modeled_As_Base (E)
                      then E_Rep_Module (E)
                      else M);
@@ -2209,20 +2212,6 @@ package body Why.Atree.Modules is
                         Module => M,
                         Domain => EW_Term,
                         Typ    => Base));
-                  Insert_Symbol
-                    (E, WNE_To_Fixed,
-                     New_Identifier
-                       (Symbol => NID ("to_fixed"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => Base));
-                  Insert_Symbol
-                    (E, WNE_Of_Fixed,
-                     New_Identifier
-                       (Symbol => NID ("of_fixed"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => Ty));
                end if;
             end;
 

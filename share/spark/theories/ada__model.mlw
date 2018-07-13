@@ -636,16 +636,6 @@ module Fixed_Point_Base
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
-  (* A fixed-point type is represented internally as an integer. *)
-
-  function to_fixed t : __fixed
-
-  function of_fixed __fixed : t
-
-  val of_fixed (x : __fixed) : t
-    requires { true }
-    ensures { to_fixed (result) = x }
-
   function user_eq (x : t) (y : t) : bool
 end
 
@@ -792,10 +782,6 @@ module Static_Fixed_Point
 
   clone export Fixed_Point_Base
 
-  axiom inversion_axiom :
-    forall x : t [to_fixed x].
-    of_fixed (to_fixed (x)) = x
-
   function first : __fixed
 
   function last  : __fixed
@@ -813,13 +799,21 @@ module Static_Fixed_Point
   val range_check_ (n : __fixed) : __fixed
     requires { in_range n }
     ensures { result = n }
+    
+  predicate dynamic_property "inline" (f l x : __fixed) = in_range x
+end
 
-  axiom range_axiom :
-    forall x : t. in_range (to_fixed x)
+module Rep_Proj_Fixed
+  (* Specification of to_rep when rep_type = __fixed; add coercion axiom. *)
+  use import "_gnatprove_standard".Main
+  use import int.Int
+
+  clone export Rep_Proj_Base with
+    type rep_type = __fixed
 
   axiom coerce_axiom :
-    forall x : __fixed [to_fixed (of_fixed x)].
-      in_range x -> to_fixed (of_fixed x) = x
+    forall x : __fixed [to_rep (of_rep x)].
+      in_range x -> to_rep (of_rep x) = x
 end
 
 module Dynamic_Fixed_Point
@@ -842,7 +836,7 @@ module Dynamic_Fixed_Point
   function of_fixed "inline" (x : __fixed) : t = base_of_rep x
 
   clone export Fixed_Point_Base
-      with type t = t, function of_fixed = of_fixed, function to_fixed = to_fixed
+      with type t = t
 
   predicate dynamic_property (first last n : __fixed)
 

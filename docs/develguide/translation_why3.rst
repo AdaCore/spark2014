@@ -434,7 +434,8 @@ following type:
    type My_Fixed is delta 3.0 / 1000.0 range 0.0 .. 3.0;
 
 Here are the axioms and declarations generated in Why for it. Like for
-integer types, we only give here the relevant declarations:
+integer types, we only give here the relevant declarations and
+to_rep and of_rep functions are separated in a different module:
    
 .. code-block:: whyml
 
@@ -460,16 +461,20 @@ integer types, we only give here the relevant declarations:
    (x : Main.__fixed)  =
   ( (first <= x) /\ (x <= last) )
 
-  function to_fixed t : __fixed
+  function to_rep t : __fixed
 
-  function of_fixed __fixed : t
+  function of_rep __fixed : t
 
   axiom range_axiom :
-    forall x : t. in_range (to_fixed x)
+    forall x : t. in_range (to_rep x)
+
+  axiom inversion_axiom :
+    forall x : t [to_rep x].
+      of_rep (to_rep x) = x
 
   axiom coerce_axiom :
-    forall x : __fixed [to_fixed (of_fixed x)].
-      in_range x -> to_fixed (of_fixed x) = x
+    forall x : __fixed [to_rep (of_rep x)].
+      in_range x -> to_rep (of_rep x) = x
 
 Operations on values of a
 fixed point type depend on the value of the small of the type. For every
@@ -2328,13 +2333,20 @@ verification conditions. They are not meant to execute as the Ada
 program but rather to encode all the runtime checks and assertions of
 the Ada program.
 
-All start with “assumptions”: Initial_Condition, value of constants, bounds of inputs.
+All start with “assumptions”: Initial_Condition, value of constants, bounds of
+inputs.
 
-For types
+For Types
+---------
 
-For subprograms
-For packages
-For protected objects/tasks
+For Subprograms
+---------------
+
+For Packages
+------------
+
+For Concurrent Types
+--------------------
 
 Translation of Statements and Expressions
 =========================================
@@ -2348,19 +2360,39 @@ domain to generate the checks and one in the term or predicate domain
 to have the actual translation.
 
 Statements and Declarations
+---------------------------
+
 Declarations
+^^^^^^^^^^^^
+
 Why entities are not declared here (see Modules for Entities) but checks are generated for them and assumptions are added.
+
 Assignments
+^^^^^^^^^^^
+
 Loops
+^^^^^
+
 Loop invariants behave differently in Ada and Why. To preserve the Ada semantics, loops are cut in parts and reassembled to follow the Ada semantics. Some parts of the loop are duplicated, leading to duplication of checks.
+
 Procedure Calls
+^^^^^^^^^^^^^^^
+
 Context, checks on parameters
+
 Expressions
+-----------
+
 Aggregates
+^^^^^^^^^^
 Operators
+^^^^^^^^^
 Quantifiers
+^^^^^^^^^^^
 Function Calls
+^^^^^^^^^^^^^^
 Conversions
+^^^^^^^^^^^
 
 ***********************
 GNAT2why Implementation
@@ -2406,7 +2438,7 @@ Names for Entity Symbols (E_Symb, filled during declaration phase)
 ------------------------------------------------------------------
 
 Mutable Global Structures
--------------------------
+=========================
 
 Symbol Map for Variables (Symbol_Table)
 ---------------------------------------
@@ -2433,7 +2465,7 @@ Interface with Why3
 -------------------
 
 VC labels
----------
+^^^^^^^^^
 
 Labels (now called attributes in Why3) are strings added to identifiers, terms,
 formulas, program expressions etc. They are kept by WP generation and can be
@@ -2494,4 +2526,4 @@ AST. Counterexample label
 ``model_vc_post``: Counterexample label
 
 identifying subparts of formulas to be reported to user (“cannot prove ‘bla’”)
-------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

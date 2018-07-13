@@ -18,6 +18,7 @@ module Main
   (* Mutable records holding references over builtin types *)
   type int__ref  = { mutable int__content "model_trace:"  : int  }
   type bool__ref = { mutable bool__content "model_trace:" : bool }
+  type __fixed__ref = { mutable __fixed__content "model_trace:" : __fixed }
   type real__ref = { mutable real__content "model_trace:" : real }
   type __private__ref = { mutable __private__content "model_trace:" : __private }
 
@@ -27,6 +28,12 @@ module Main
     a.int__content
   meta "model_projection" function int__ref___projection
   meta "inline : no" function int__ref___projection
+  
+  function __fixed__ref___projection
+    (a : __fixed__ref)  : __fixed =
+    a.__fixed__content
+  meta "model_projection" function __fixed__ref___projection
+  meta "inline : no" function __fixed__ref___projection
 
   function bool__ref___projection
     (a : bool__ref)  : bool =
@@ -56,7 +63,8 @@ module Main
      writes { x }
   val __private__havoc (x : __private__ref) : unit
      writes { x }
-
+  val __fixed__havoc (x : __fixed__ref) : unit
+     writes { x }
 
   (* Counterexample branching-if variable. The model_trace is intentionally not
      a node_id. We use another label to recognize the node_id corresponding to

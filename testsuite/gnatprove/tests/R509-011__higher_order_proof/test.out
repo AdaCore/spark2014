@@ -1368,7 +1368,7 @@ spark-higher_order-fold.ads:260:67: info: index check proved (CVC4: 2 VC), in in
 spark-higher_order-fold.ads:263:17: info: subprogram "Sum_Cst" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:264:18: info: postcondition proved (CVC4: 1 VC; altergo: 1 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:264:56: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:106
-spark-higher_order-fold.ads:265:34: info: overflow check proved (altergo: 1 VC), in instantiation at test_higher_order.ads:106
+spark-higher_order-fold.ads:265:34: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:265:37: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:106
 spark-higher_order-fold.ads:279:16: info: subprogram "In_Range" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:117
 spark-higher_order-fold.ads:281:27: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:117
@@ -1694,17 +1694,17 @@ spark-higher_order-fold.ads:521:53: info: index check proved (CVC4: 2 VC), in in
 spark-higher_order-fold.ads:521:62: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:521:65: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:522:17: info: postcondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:125
-spark-higher_order-fold.ads:522:26: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:125
+spark-higher_order-fold.ads:522:26: info: overflow check proved (altergo: 1 VC), in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:522:39: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:522:42: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:125
-spark-higher_order-fold.ads:522:57: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:125
+spark-higher_order-fold.ads:522:57: info: overflow check proved (altergo: 1 VC), in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:522:70: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:522:73: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:525:17: info: subprogram "Sum_Cst" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:526:18: info: postcondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:527:59: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:527:62: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:125
-spark-higher_order-fold.ads:528:34: info: overflow check proved (Z3: 1 VC), in instantiation at test_higher_order.ads:125
+spark-higher_order-fold.ads:528:34: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:528:37: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:528:49: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:125
 spark-higher_order-fold.ads:528:52: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:125
@@ -1745,13 +1745,13 @@ spark-higher_order-fold.ads:589:27: info: index check proved (CVC4: 2 VC), in in
 spark-higher_order-fold.ads:589:51: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:133
 spark-higher_order-fold.ads:589:54: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:133
 spark-higher_order-fold.ads:590:12: info: contract case proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:133
-spark-higher_order-fold.ads:591:38: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:133
+spark-higher_order-fold.ads:591:38: info: overflow check proved (altergo: 1 VC), in instantiation at test_higher_order.ads:133
 spark-higher_order-fold.ads:592:28: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:133
 spark-higher_order-fold.ads:592:31: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:133
 spark-higher_order-fold.ads:592:51: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:133
 spark-higher_order-fold.ads:592:54: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:133
 spark-higher_order-fold.ads:593:12: info: contract case proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:133
-spark-higher_order-fold.ads:594:25: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:133
+spark-higher_order-fold.ads:594:25: info: overflow check proved (altergo: 1 VC), in instantiation at test_higher_order.ads:133
 spark-higher_order-fold.ads:597:17: info: subprogram "Count_Zero" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:133
 spark-higher_order-fold.ads:598:18: info: postcondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:133
 spark-higher_order-fold.ads:600:58: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:133

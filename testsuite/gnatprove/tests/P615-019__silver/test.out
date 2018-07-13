@@ -38,8 +38,8 @@ division_by_zero.adb:29:14: medium: divide by zero might fail
 division_by_zero.adb:29:14: medium: float overflow check might fail
 division_by_zero.adb:32:04: warning: analyzing unreferenced procedure "Div_Fixed"
 division_by_zero.adb:32:39: info: initialization of "U" proved
-division_by_zero.adb:34:14: medium: divide by zero might fail
-division_by_zero.adb:34:14: medium: overflow check might fail
+division_by_zero.adb:34:14: medium: divide by zero might fail (e.g. when Y = 0)
+division_by_zero.adb:34:14: medium: overflow check might fail (e.g. when X = 1/128 and Y = 0)
 division_by_zero.adb:37:04: warning: analyzing unreferenced procedure "Exp_Float"
 division_by_zero.adb:37:49: info: initialization of "U" proved
 division_by_zero.adb:39:14: medium: divide by zero might fail (e.g. when Y = -1)
@@ -70,13 +70,13 @@ overflow_check.adb:31:32: medium: float overflow check might fail
 overflow_check.adb:35:04: warning: analyzing unreferenced procedure "Oper_Fixed"
 overflow_check.adb:35:51: warning: unused variable "E"
 overflow_check.adb:35:64: medium: "U" might not be initialized in "Oper_Fixed"
-overflow_check.adb:38:30: medium: overflow check might fail
-overflow_check.adb:39:30: medium: overflow check might fail
-overflow_check.adb:40:32: medium: overflow check might fail
-overflow_check.adb:41:32: medium: overflow check might fail
-overflow_check.adb:42:32: medium: overflow check might fail
-overflow_check.adb:43:32: medium: divide by zero might fail
-overflow_check.adb:43:32: medium: overflow check might fail
+overflow_check.adb:38:30: medium: overflow check might fail (e.g. when X = -128/128)
+overflow_check.adb:39:30: medium: overflow check might fail (e.g. when X = -128/128)
+overflow_check.adb:40:32: medium: overflow check might fail (e.g. when X = -128/128 and Y = -1/128)
+overflow_check.adb:41:32: medium: overflow check might fail (e.g. when X = -128/128 and Y = 1/128)
+overflow_check.adb:42:32: medium: overflow check might fail (e.g. when X = -128/128 and Y = -128/128)
+overflow_check.adb:43:32: medium: divide by zero might fail (e.g. when Y = 0)
+overflow_check.adb:43:32: medium: overflow check might fail (e.g. when X = 1/128 and Y = 0)
 range_check.adb:16:04: warning: analyzing unreferenced procedure "Convert_Enum"
 range_check.adb:16:38: info: initialization of "U" proved
 range_check.adb:18:12: medium: range check might fail (e.g. when X = A)
@@ -91,4 +91,4 @@ range_check.adb:31:40: info: initialization of "U" proved
 range_check.adb:33:12: medium: range check might fail
 range_check.adb:36:04: warning: analyzing unreferenced procedure "Convert_Fixed"
 range_check.adb:36:40: info: initialization of "U" proved
-range_check.adb:38:12: medium: range check might fail
+range_check.adb:38:12: medium: range check might fail (e.g. when X = -1/128)

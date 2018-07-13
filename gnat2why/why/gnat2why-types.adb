@@ -778,7 +778,6 @@ package body Gnat2Why.Types is
          --  to try and minimalize quantified axioms in the VCs' context.
 
          if Is_Scalar_Type (E)
-           and then not Is_Fixed_Point_Type (E)
            and then not Type_Is_Modeled_As_Base (E)
          then
             Open_Theory

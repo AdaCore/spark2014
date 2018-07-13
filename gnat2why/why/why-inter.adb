@@ -1088,6 +1088,17 @@ package body Why.Inter is
                  Symbol   => NID ("map"),
                  Module   => New_Module (File => No_Name,
                                          Name => Get_Array_Theory_Name (E))));
+      elsif Kind = EW_Split and then Has_Fixed_Point_Type (E) then
+
+         --  The base type of a fixed point type is __fixed. Do not call
+         --  Base_Why_Type which may fail if the theory for the small value of
+         --  E has not been constructed yet.
+
+         return New_Type
+           (Ada_Node   => E,
+            Is_Mutable => False,
+            Type_Kind  => Kind,
+            Name       => Get_Name (M_Main.Fixed_Type));
       elsif Kind = EW_Split then
 
          --  Discrete types split forms are their base why type

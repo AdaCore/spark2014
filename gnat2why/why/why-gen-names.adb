@@ -252,9 +252,10 @@ package body Why.Gen.Names is
                      A : constant Node_Id := Get_Ada_Node (+To);
                   begin
                      if Base_Why_Type (To) = From and then
-                       (From = EW_Int_Type or else
-                        Why_Type_Is_BitVector (From)
-                        or else Why_Type_Is_Float (From))
+                       (From = EW_Int_Type
+                        or else Why_Type_Is_BitVector (From)
+                        or else Why_Type_Is_Float (From)
+                        or else Why_Type_Is_Fixed (From))
                      then
                         --  if we're converting from the representation type
                         --  of a scalar kind
@@ -274,9 +275,10 @@ package body Why.Gen.Names is
                      A : constant Node_Id := Get_Ada_Node (+From);
                   begin
                      if Base_Why_Type (From) = To and then
-                       (To = EW_Int_Type or else
-                        Why_Type_Is_BitVector (To) or else
-                        Why_Type_Is_Float (To))
+                       (To = EW_Int_Type
+                        or else Why_Type_Is_BitVector (To)
+                        or else Why_Type_Is_Float (To)
+                        or else Why_Type_Is_Fixed (To))
                      then
                         --  if we're converting to the representation type
                         --  of a discrete/float kind
