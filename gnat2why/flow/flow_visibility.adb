@@ -261,6 +261,24 @@ package body Flow_Visibility is
                   Scope_Graph.Get_Vertex ((Ent  => Info.Template,
                                            Part => Visible_Part)));
 
+               --  Generic units acquire visibility from where they are
+               --  instantiated, so they can "see" subprograms used to
+               --  instantiate them (when instantiated, a formal subprogram
+               --  becomes a renaming). Same for formal packages.
+               --
+               --  ??? do something similar when Is_Instance_Child is True
+
+               Connect
+                 (Spec_V,
+                  Scope_Graph.Get_Vertex ((if Info.Is_Nested
+                                           then Info.Container
+                                           elsif Is_Child (Info)
+                                           then (Ent  => Info.Parent,
+                                                 Part => (if Info.Is_Private
+                                                          then Private_Part
+                                                          else Visible_Part))
+                                           else Standard_Scope)));
+
                if Info.Is_Package then
                   Connect
                     (Priv_V,
@@ -594,8 +612,8 @@ package body Flow_Visibility is
 
             begin
                pragma Assert (Nkind (Inst_Node) = N_Package_Instantiation);
-               --  The original frontend routine expects formal packages
-               --  too, but in the backed we only get package instantiations,
+               --  The original frontend routine expects formal packages too,
+               --  but in the backend we only get package instantiations,
                --  because formal packages have been expanded to renamings of
                --  instances.
 

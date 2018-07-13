@@ -1,1 +1,1 @@
-hw-gfx-dp_training.adb:7:07: high: "Train_Set" must be listed in the Global aspect of "Train_DP" (SPARK RM 6.1.4(13)), in instantiation at hw-gfx-gma-pch-dp.adb:9
+hw-gfx-dp_training.ads:10:14: warning: subprogram "Train_DP" has no effect, in instantiation at hw-gfx-gma-pch-dp.adb:9
