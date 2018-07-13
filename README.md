@@ -88,7 +88,7 @@ branch of this repository which follows the latest changes pushed at FSF, as
 follows:
 
 ```
-git checkout FSF
+git checkout fsf
 ```
 
 To retrieve the most recent version of the submodules for Why3, Alt-Ergo, CVC4
