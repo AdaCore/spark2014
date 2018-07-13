@@ -33,6 +33,7 @@ with Graphs;
 with Lib;                        use Lib;
 with Nlists;                     use Nlists;
 with Rtsfind;                    use Rtsfind;
+with Sem_Aux;                    use Sem_Aux;
 with Sem_Ch12;                   use Sem_Ch12;
 with Sem_Util;                   use Sem_Util;
 with SPARK_Util;                 use SPARK_Util;
@@ -671,6 +672,14 @@ package body Flow_Visibility is
    is
       use Scope_Graphs;
 
+      Show_Empty_Subprogram_Bodies : constant Boolean := False;
+      --  A debug flag fow showing/hiding subprograms with bo bodies (e.g. when
+      --  the body is in another compilation unit, especially in a predefined
+      --  one, like System; or when the subprogram is abstract). Those bodies
+      --  make the graph harder to read.
+      --  ??? perhaps we should not create vertices for those bodies in the
+      --  first place.
+
       function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info;
       --  Pretty-printing for vertices in the dot output
 
@@ -698,8 +707,20 @@ package body Flow_Visibility is
              when Body_Part    => " (Body)",
              when Null_Part    => raise Program_Error);
 
+         Show : Boolean;
+
       begin
-         return (Show        => True,
+         if S.Part = Body_Part
+           and then Ekind (S.Ent) in E_Function | E_Procedure
+           and then No (Subprogram_Body_Entity (S.Ent))
+         then
+            pragma Assert (G.In_Neighbour_Count (V) = 0);
+            Show := Show_Empty_Subprogram_Bodies;
+         else
+            Show := True;
+         end if;
+
+         return (Show        => Show,
                  Shape       => Shape_None,
                  Colour      =>
                    To_Unbounded_String
@@ -721,11 +742,25 @@ package body Flow_Visibility is
          Marked : Boolean;
          Colour : Edge_Kind) return Edge_Display_Info
       is
-         pragma Unreferenced (G, A, B, Marked, Colour);
+         pragma Unreferenced (B, Marked, Colour);
+
+         S : constant Flow_Scope := G.Get_Key (A);
+
+         Show : Boolean;
 
       begin
+         if Ekind (S.Ent) in E_Function | E_Procedure
+           and then S.Part = Body_Part
+           and then No (Subprogram_Body_Entity (S.Ent))
+         then
+            pragma Assert (G.In_Neighbour_Count (A) = 0);
+            Show := Show_Empty_Subprogram_Bodies;
+         else
+            Show := True;
+         end if;
+
          return
-           (Show   => True,
+           (Show   => Show,
             Shape  => Edge_Normal,
             Colour => Null_Unbounded_String,
             Label  => Null_Unbounded_String);
