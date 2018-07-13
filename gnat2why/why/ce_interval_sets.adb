@@ -31,7 +31,7 @@ package body Ce_Interval_Sets is
 
    procedure Insert (L : in out Interval_Set; Y : Interval) is
       Position : Intervals.Cursor;
-      Inserted : Boolean := False;
+      Inserted : Boolean;
       X        : Interval := Y;
    begin
       --  This terminates because L'length decreases
