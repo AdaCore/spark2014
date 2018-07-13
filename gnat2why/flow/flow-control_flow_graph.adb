@@ -4221,6 +4221,21 @@ package body Flow.Control_Flow_Graph is
    is
       Called_Thing : constant Entity_Id := Get_Called_Entity (N);
 
+      --  Sanity check: the called subprogram is located in its own scope
+      --  and the caller can see it.
+
+      Called_Loc  : constant Flow_Scope := Get_Flow_Scope (Called_Thing)
+        with Ghost;
+      pragma Assert (Called_Loc.Ent = Called_Thing);
+      --  We only check the Ent component of Called_Loc because the Part
+      --  component is either Visible_Part (for subprograms with explicit spec)
+      --  or Body_Part (for subprograms whose bodies act as specs).
+
+      Called_Scop : constant Flow_Scope :=
+        (Called_Loc.Ent, Visible_Part) with Ghost;
+
+      pragma Assert (Is_Visible (Called_Scop, FA.B_Scope));
+
       Ins  : Vertex_Lists.List;
       Outs : Vertex_Lists.List;
 
