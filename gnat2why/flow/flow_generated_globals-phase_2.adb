@@ -1361,7 +1361,10 @@ package body Flow_Generated_Globals.Phase_2 is
                                           Position => Caller_Pos,
                                           Inserted => Inserted);
 
-                     pragma Assert (Inserted);
+                     --  ??? this should be asserted and should never crash
+                     if not Inserted then
+                        raise Program_Error with "name clash";
+                     end if;
 
                      Serialize (Direct_Calls (Caller_Pos));
                   end;
