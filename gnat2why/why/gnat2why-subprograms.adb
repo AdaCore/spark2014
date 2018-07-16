@@ -4061,7 +4061,18 @@ package body Gnat2Why.Subprograms is
       Why_Type           : W_Type_Id := Why_Empty;
 
    begin
-      --  Do not generate an axiom for:
+      Params :=
+        (File        => File,
+         Phase       => Generate_Logic,
+         Gen_Marker  => False,
+         Ref_Allowed => False,
+         Old_Allowed => False);
+
+      if Ekind (E) = E_Function then
+         Why_Type := Type_Of_Node (Etype (E));
+      end if;
+
+      --  Do not generate an axiom for the postcondition of:
       --    * recursive functions, as the axiom could be used to prove the
       --      function itself,
       --    * potentially non returning functions as the axiom could be
@@ -4070,27 +4081,82 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) in E_Procedure | Entry_Kind
         or else No_Return (E)
-        or else Is_Recursive (E)
-        or else Is_Potentially_Nonreturning (E)
         or else Has_Pragma_Volatile_Function (E)
+        or else ((Is_Recursive (E)
+                  or else Is_Potentially_Nonreturning (E))
+                 and then (not Is_Scalar_Type (Etype (E))
+                           or else not Use_Split_Form_For_Type (Etype (E))))
       then
          return;
-      end if;
 
-      Why_Type := Type_Of_Node (Etype (E));
+      --  We generate an axiom for the return type of a recursive or
+      --  non-terminating function if it is a (non empty) static scalar type as
+      --  their range property is always sound. For dynamic scalar types, we
+      --  assume the bounds of their first static ancestor.
+
+      elsif Is_Recursive (E)
+        or else Is_Potentially_Nonreturning (E)
+      then
+
+         --  Expression functions will have their own definition axiom which
+         --  may contradict the range axiom. Do not emit range axiom for them.
+
+         if Present (Get_Expression_Function (E))
+           and then Entity_Body_Compatible_With_SPARK (E)
+         then
+            return;
+         end if;
+
+         pragma Assert (Is_Scalar_Type (Etype (E))
+                        and then Use_Split_Form_For_Type (Etype (E)));
+         declare
+            Logic_Why_Binders   : constant Binder_Array :=
+              To_Binder_Array (Logic_Func_Binders);
+            Logic_Id            : constant W_Identifier_Id :=
+              To_Why_Id (E, Domain => EW_Term, Local => False);
+            Dynamic_Prop_Result : constant W_Pred_Id :=
+              +New_Dynamic_Property
+              (Domain => EW_Pred,
+               Ty     => (if Type_Is_Modeled_As_Base (Etype (E)) then
+                               Get_Base_Of_Type (Etype (E))
+                          else Retysp (Etype (E))),
+               Expr   => +New_Result_Ident (Why_Type),
+               Params => Params);
+         begin
+            Emit
+              (File,
+               New_Guarded_Axiom
+                 (Ada_Node => Empty,
+                  Name     => NID (Short_Name (E) & "__" & Post_Axiom),
+                  Binders  => Logic_Why_Binders,
+                  Triggers =>
+                    New_Triggers
+                      (Triggers =>
+                           (1 => New_Trigger
+                              (Terms =>
+                                 (1 => New_Call
+                                      (Domain  => EW_Term,
+                                       Name    => Logic_Id,
+                                       Binders => Logic_Why_Binders))))),
+                  Def      =>
+                    +New_Typed_Binding
+                    (Ada_Node => Empty,
+                     Domain   => EW_Pred,
+                     Name     => +New_Result_Ident (Why_Type),
+                     Def      => New_Call
+                       (Domain  => EW_Term,
+                        Name    => Logic_Id,
+                        Binders => Logic_Why_Binders),
+                     Context  => +Dynamic_Prop_Result)));
+         end;
+         return;
+      end if;
 
       --  If the function has a postcondition, is not mutually recursive
       --  and is not annotated with No_Return, then generate an axiom:
       --  axiom def_axiom:
       --     forall args [f (args)]. pre (args) ->
       --           let result = f (args) in post (args)
-
-      Params :=
-        (File        => File,
-         Phase       => Generate_Logic,
-         Gen_Marker  => False,
-         Ref_Allowed => False,
-         Old_Allowed => False);
 
       --  We fill the map of parameters, so that in the Pre and Post, we use
       --  local names of the parameters, instead of the global names.

@@ -50,7 +50,7 @@ use_lists.adb:18:21: side effects of function "Get_Element_Model" are not modele
 use_lists.adb:18:45: info: function contract not available for proof ("Length" might not return)
 use_lists.adb:18:53: info: initialization of "L2" proved
 use_lists.adb:18:53: info: initialization of private part of "L2" proved
-use_lists.adb:18:57: medium: range check might fail
+use_lists.adb:18:57: info: range check proved (CVC4: 1 VC)
 use_lists.adb:19:18: medium: precondition might fail
 use_lists.adb:19:18: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:19:31: info: initialization of "Cu" proved
@@ -62,7 +62,7 @@ use_lists.adb:22:30: side effects of function "Get_Element_Model" are not modele
 use_lists.adb:22:54: info: function contract not available for proof ("Length" might not return)
 use_lists.adb:22:62: info: initialization of "L2" proved
 use_lists.adb:22:62: info: initialization of private part of "L2" proved
-use_lists.adb:22:66: medium: range check might fail
+use_lists.adb:22:66: info: range check proved (CVC4: 1 VC)
 use_lists.adb:23:10: medium: precondition might fail
 use_lists.adb:23:20: info: initialization of "Cu" proved
 use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)

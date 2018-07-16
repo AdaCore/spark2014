@@ -293,6 +293,24 @@ package body Gnat2Why.Util is
 
    end Ada_Ent_To_Why;
 
+   ----------------------
+   -- Get_Base_Of_Type --
+   ----------------------
+
+   function Get_Base_Of_Type (T : Entity_Id) return Entity_Id is
+      Ty : Entity_Id := Retysp (T);
+   begin
+      loop
+         exit when not Type_Is_Modeled_As_Base (Ty);
+         if Full_View_Not_In_SPARK (Ty) then
+            Ty := Get_First_Ancestor_In_SPARK (Ty);
+         else
+            Ty := Retysp (Etype (Ty));
+         end if;
+      end loop;
+      return Ty;
+   end Get_Base_Of_Type;
+
    -------------------------------
    -- Get_Counterexample_Labels --
    -------------------------------
