@@ -459,7 +459,6 @@ package body Flow_Visibility is
    function Is_Child (Info : Hierarchy_Info_T) return Boolean is
    begin
       return not Info.Is_Nested
-        and then Present (Info.Parent)
         and then Info.Parent /= Standard_Standard;
    end Is_Child;
 
