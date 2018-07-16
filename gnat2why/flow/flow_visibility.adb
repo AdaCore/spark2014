@@ -657,16 +657,14 @@ package body Flow_Visibility is
       --  is easier to know which one.
       -------------------------------------------------------------------------
 
-      pragma Assert (if Is_Private then not Is_Nested);
+      pragma Assert (Is_Nested or else Present (Parent));
+      --  Everything is nested or else has a parent
 
-      pragma Assert
-       (if Is_Nested then
-          not Is_Private
-          and then No (Parent)
-          and then Container /= Null_Flow_Scope
-        else
-          Present (Parent)
-          and then Container = Null_Flow_Scope);
+      pragma Assert (not (Is_Private and Is_Nested));
+      --  Being "private" can only apply to non-nested packages
+
+      pragma Assert (Is_Nested = Present (Container));
+      --  Nesting is equivalent to a non-empty container
 
       -------------------------------------------------------------------------
 
