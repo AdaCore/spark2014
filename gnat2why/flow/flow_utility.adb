@@ -1051,16 +1051,15 @@ package body Flow_Utility is
                Output : Flow_Id          renames Dependency_Maps.Key (C);
                Input  : Flow_Id_Sets.Set renames Contract_Relation (C);
 
-               Refined_Output : constant Flow_Id_Sets.Set :=
-                 (if Present (Output)
-                  then Down_Project (Output, Scope)
-                  else Flow_Id_Sets.To_Set (Null_Flow_Id));
-
                Refined_Input  : constant Flow_Id_Sets.Set :=
                  Down_Project (Input, Scope);
 
                Trimmed_Output : constant Flow_Id_Sets.Set :=
-                 Refined_Output.Intersection (Globals.Outputs);
+                 (if Present (Output)
+                  then Down_Project (Output, Scope) and Globals.Outputs
+                  else Flow_Id_Sets.To_Set (Null_Flow_Id));
+               --  If the LHS of a dependency relation is null, then keep it;
+               --  otherwise, down-project and trim it.
 
             begin
                for O of Trimmed_Output loop
