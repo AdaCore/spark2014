@@ -278,6 +278,8 @@ package body Flow_Visibility is
                                                           then Private_Part
                                                           else Visible_Part))
                                            else Standard_Scope)));
+               --  ??? The code for the target scope is repeated in rules
+               --  Rule_Up_Spec and Rule_Down_Spec; this should be refactored.
 
                if Info.Is_Package then
                   Connect
@@ -320,28 +322,20 @@ package body Flow_Visibility is
 
          --  This rule deals with upwards visibility, i.e. adding a link to
          --  the nearest "enclosing" scope. Generics are dealt with separately,
-         --  except for generic child instantiations (they have visibility of
-         --  their parent's instantiation).
+         --  ??? except for generic child instantiations (they have visibility
+         --  of their parent's instantiation).
 
          if not Info.Is_Instance then
-            if Info.Is_Nested then
-               Connect
-                 (Spec_V,
-                  Scope_Graph.Get_Vertex (Info.Container));
-
-            elsif Info.Is_Private then
-               Connect
-                 (Spec_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                           Part => Private_Part)));
-
-            else
-               --  ??? should this apply to instances too?
-               Connect
-                 (Spec_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                           Part => Visible_Part)));
-            end if;
+            Connect
+              (Spec_V,
+               Scope_Graph.Get_Vertex ((if Info.Is_Nested
+                                        then Info.Container
+                                        elsif Is_Child (Info)
+                                        then (Ent  => Info.Parent,
+                                              Part => (if Info.Is_Private
+                                                       then Private_Part
+                                                       else Visible_Part))
+                                        else Standard_Scope)));
          end if;
 
          ----------------------------------------------------------------------
@@ -356,26 +350,21 @@ package body Flow_Visibility is
          Rule := Rule_Down_Spec;
 
          --  This rule deals with downwards visibility, i.e. contributing to
-         --  the set of things the parent can see. It is exactly the inverse
-         --  of Rule_Own, except there is no special treatment for instances
+         --  the set of things the parent can see. It is exactly the inverse of
+         --  Rule_Up_Spec, except there is no special treatment for instances
          --  (since a scope does have visibility of the spec of something
          --  instantiated inside it).
 
-         if Info.Is_Nested then
-            Connect
-              (Scope_Graph.Get_Vertex (Info.Container),
-               Spec_V);
-         elsif Info.Is_Private then
-            Connect
-              (Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                        Part => Private_Part)),
-               Spec_V);
-         else
-            Connect
-              (Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                        Part => Visible_Part)),
-               Spec_V);
-         end if;
+         Connect
+           (Scope_Graph.Get_Vertex ((if Info.Is_Nested
+                                     then Info.Container
+                                     elsif Is_Child (Info)
+                                     then (Ent  => Info.Parent,
+                                           Part => (if Info.Is_Private
+                                                    then Private_Part
+                                                    else Visible_Part))
+                                     else Standard_Scope)),
+            Spec_V);
 
          ----------------------------------------------------------------------
 
