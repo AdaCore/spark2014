@@ -270,14 +270,13 @@ package body Flow_Visibility is
 
                Connect
                  (Spec_V,
-                  Scope_Graph.Get_Vertex ((if Info.Is_Nested
-                                           then Info.Container
-                                           elsif Is_Child (Info)
-                                           then (Ent  => Info.Parent,
-                                                 Part => (if Info.Is_Private
-                                                          then Private_Part
-                                                          else Visible_Part))
-                                           else Standard_Scope)));
+                  Scope_Graph.Get_Vertex
+                    ((if Info.Is_Nested
+                     then Info.Container
+                     else (Ent  => Info.Parent,
+                           Part => (if Info.Is_Private
+                                    then Private_Part
+                                    else Visible_Part)))));
                --  ??? The code for the target scope is repeated in rules
                --  Rule_Up_Spec and Rule_Down_Spec; this should be refactored.
 
@@ -328,14 +327,13 @@ package body Flow_Visibility is
          if not Info.Is_Instance then
             Connect
               (Spec_V,
-               Scope_Graph.Get_Vertex ((if Info.Is_Nested
-                                        then Info.Container
-                                        elsif Is_Child (Info)
-                                        then (Ent  => Info.Parent,
-                                              Part => (if Info.Is_Private
-                                                       then Private_Part
-                                                       else Visible_Part))
-                                        else Standard_Scope)));
+               Scope_Graph.Get_Vertex
+                 ((if Info.Is_Nested
+                  then Info.Container
+                  else (Ent  => Info.Parent,
+                        Part => (if Info.Is_Private
+                                 then Private_Part
+                                 else Visible_Part)))));
          end if;
 
          ----------------------------------------------------------------------
@@ -358,12 +356,10 @@ package body Flow_Visibility is
          Connect
            (Scope_Graph.Get_Vertex ((if Info.Is_Nested
                                      then Info.Container
-                                     elsif Is_Child (Info)
-                                     then (Ent  => Info.Parent,
+                                     else (Ent  => Info.Parent,
                                            Part => (if Info.Is_Private
                                                     then Private_Part
-                                                    else Visible_Part))
-                                     else Standard_Scope)),
+                                                    else Visible_Part)))),
             Spec_V);
 
          ----------------------------------------------------------------------
@@ -446,10 +442,7 @@ package body Flow_Visibility is
    --------------
 
    function Is_Child (Info : Hierarchy_Info_T) return Boolean is
-   begin
-      return not Info.Is_Nested
-        and then Info.Parent /= Standard_Standard;
-   end Is_Child;
+     (not Info.Is_Nested);
 
    ----------------
    -- Is_Visible --
@@ -916,7 +909,26 @@ package body Flow_Visibility is
 
    begin
       if Unit_Node = Standard_Package_Node then
-         Scope_Graph.Add_Vertex (Standard_Scope);
+
+         --  The Standard package is special: create vertices for its
+         --  visible and private parts and connect them. This package declares
+         --  no subprograms or abstract states, so we don't need a vertex for
+         --  its body part.
+         --
+         --  This is based on the Ada RM 10.1.1(1): "Each library unit (except
+         --  Standard) has a parent unit, which is a library package or generic
+         --  library package."
+
+         Scope_Graph.Add_Vertex
+           ((Ent => Standard_Standard, Part => Visible_Part));
+
+         Scope_Graph.Add_Vertex
+           ((Ent => Standard_Standard, Part => Private_Part));
+
+         Scope_Graph.Add_Edge
+           ((Ent => Standard_Standard, Part => Private_Part),
+            (Ent => Standard_Standard, Part => Visible_Part),
+            Rule_Own);
       else
          Traverse (Unit_Node);
       end if;
