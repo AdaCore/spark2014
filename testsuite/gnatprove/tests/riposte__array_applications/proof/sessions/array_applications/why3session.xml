@@ -77,15 +77,6 @@
   <proof prover="1"><result status="unknown" steps="610136"/></proof>
   <proof prover="2"><result status="unknown" steps="3834"/></proof>
   <proof prover="3"><result status="unknown" steps="3836"/></proof>
-  <transf name="split_disj" >
-   <goal name="WP_parameter def.17.0" expl="postcondition">
-   <proof prover="3"><result status="unknown" steps="3235"/></proof>
-   </goal>
-   <goal name="WP_parameter def.17.1" expl="postcondition">
-   </goal>
-   <goal name="WP_parameter def.17.2" expl="postcondition">
-   </goal>
-  </transf>
   </goal>
  </transf>
  </goal>
@@ -254,15 +245,6 @@
   <proof prover="1"><result status="unknown" steps="610140"/></proof>
   <proof prover="2"><result status="unknown" steps="22013"/></proof>
   <proof prover="3"><result status="unknown" steps="22013"/></proof>
-  <transf name="split_disj" >
-   <goal name="WP_parameter def.28.0" expl="postcondition">
-   <proof prover="3"><result status="unknown" steps="22013"/></proof>
-   </goal>
-   <goal name="WP_parameter def.28.1" expl="postcondition">
-   </goal>
-   <goal name="WP_parameter def.28.2" expl="postcondition">
-   </goal>
-  </transf>
   </goal>
  </transf>
  </goal>
@@ -366,15 +348,6 @@
   <proof prover="1"><result status="unknown" steps="610140"/></proof>
   <proof prover="2"><result status="unknown" steps="22002"/></proof>
   <proof prover="3"><result status="unknown" steps="22002"/></proof>
-  <transf name="split_disj" >
-   <goal name="WP_parameter def.28.0" expl="postcondition">
-   <proof prover="3"><result status="unknown" steps="22002"/></proof>
-   </goal>
-   <goal name="WP_parameter def.28.1" expl="postcondition">
-   </goal>
-   <goal name="WP_parameter def.28.2" expl="postcondition">
-   </goal>
-  </transf>
   </goal>
  </transf>
  </goal>
