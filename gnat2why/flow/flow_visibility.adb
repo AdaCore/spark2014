@@ -47,23 +47,15 @@ package body Flow_Visibility is
    ----------------------------------------------------------------------------
 
    type Hierarchy_Info_T is record
-      Is_Package        : Boolean;
+      Is_Package      : Boolean;
+      Is_Private      : Boolean;
 
---    Is_Child          : Boolean;
---    ??? in the design document this is a dedicated property, but it is easier
---    to debug if implemented as a function; let's keep it like this until this
---    code is stabilized; same for other occurrences below.
-      Is_Private        : Boolean;
-      Is_Nested         : Boolean;
-
-      Is_Instance       : Boolean;
-      Is_Instance_Child : Boolean;
-
-      Parent            : Entity_Id;
-      Instance_Parent   : Entity_Id;
-      Template          : Entity_Id;
-      Container         : Flow_Scope;
+      Parent          : Entity_Id;
+      Instance_Parent : Entity_Id;
+      Template        : Entity_Id;
+      Container       : Flow_Scope;
    end record;
+   --  A minimal description of an entity location within the code hierarchy
 
    package Hierarchy_Info_Maps is new
      Ada.Containers.Hashed_Maps (Key_Type        => Entity_Id,
@@ -117,7 +109,11 @@ package body Flow_Visibility is
 
    function Make_Info (N : Node_Id) return Hierarchy_Info_T;
 
-   function Is_Child (Info : Hierarchy_Info_T) return Boolean;
+   function Is_Child          (Info : Hierarchy_Info_T) return Boolean;
+   function Is_Nested         (Info : Hierarchy_Info_T) return Boolean;
+   function Is_Instance       (Info : Hierarchy_Info_T) return Boolean;
+   function Is_Instance_Child (Info : Hierarchy_Info_T) return Boolean;
+   --  Utility routines for the hierarchy data
 
    procedure Print (G : Scope_Graphs.Graph);
    --  Pretty-print visibility graph
@@ -237,8 +233,8 @@ package body Flow_Visibility is
          --  corresponding parts, since the template's position in the graph
          --  determines our visibility, not the location of instantiation.
 
-         if Info.Is_Instance then
-            if Info.Is_Instance_Child then
+         if Is_Instance (Info) then
+            if Is_Instance_Child (Info) then
                Connect
                  (Spec_V,
                   Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
@@ -271,7 +267,7 @@ package body Flow_Visibility is
                Connect
                  (Spec_V,
                   Scope_Graph.Get_Vertex
-                    ((if Info.Is_Nested
+                    ((if Is_Nested (Info)
                      then Info.Container
                      else (Ent  => Info.Parent,
                            Part => (if Info.Is_Private
@@ -324,11 +320,11 @@ package body Flow_Visibility is
          --  ??? except for generic child instantiations (they have visibility
          --  of their parent's instantiation).
 
-         if not Info.Is_Instance then
+         if not Is_Instance (Info) then
             Connect
               (Spec_V,
                Scope_Graph.Get_Vertex
-                 ((if Info.Is_Nested
+                 ((if Is_Nested (Info)
                   then Info.Container
                   else (Ent  => Info.Parent,
                         Part => (if Info.Is_Private
@@ -354,7 +350,7 @@ package body Flow_Visibility is
          --  instantiated inside it).
 
          Connect
-           (Scope_Graph.Get_Vertex ((if Info.Is_Nested
+           (Scope_Graph.Get_Vertex ((if Is_Nested (Info)
                                      then Info.Container
                                      else (Ent  => Info.Parent,
                                            Part => (if Info.Is_Private
@@ -370,7 +366,7 @@ package body Flow_Visibility is
          --  package. It is of course excepted by the "generic" rule.
 
          if Info.Is_Package then
-            if Info.Is_Instance then
+            if Is_Instance (Info) then
                Connect
                  (Priv_V,
                   Scope_Graph.Get_Vertex ((Ent  => Info.Template,
@@ -393,12 +389,12 @@ package body Flow_Visibility is
          --  body anywhere else. Again, there is an exception for the "generic"
          --  rule.
 
-         if Info.Is_Instance then
+         if Is_Instance (Info) then
             Connect
               (Body_V,
                Scope_Graph.Get_Vertex ((Ent  => Info.Template,
                                         Part => Body_Part)));
-         elsif Info.Is_Nested then
+         elsif Is_Nested (Info) then
             Connect
               (Body_V,
                Scope_Graph.Get_Vertex ((Ent  => Info.Container.Ent,
@@ -442,7 +438,28 @@ package body Flow_Visibility is
    --------------
 
    function Is_Child (Info : Hierarchy_Info_T) return Boolean is
-     (not Info.Is_Nested);
+     (Present (Info.Parent));
+
+   -----------------
+   -- Is_Instance --
+   -----------------
+
+   function Is_Instance (Info : Hierarchy_Info_T) return Boolean is
+     (Present (Info.Template));
+
+   -----------------------
+   -- Is_Instance_Child --
+   -----------------------
+
+   function Is_Instance_Child (Info : Hierarchy_Info_T) return Boolean is
+     (Present (Info.Instance_Parent));
+
+   ---------------
+   -- Is_Nested --
+   ---------------
+
+   function Is_Nested (Info : Hierarchy_Info_T) return Boolean is
+     (Present (Info.Container));
 
    ----------------
    -- Is_Visible --
@@ -477,13 +494,10 @@ package body Flow_Visibility is
          else Def_E);
 
       Is_Package      : Boolean;
-      --  Is_Child          : Boolean;
       Is_Private      : Boolean;
       Parent          : Entity_Id;
       Instance_Parent : Entity_Id;
       Template        : Entity_Id;
-
-      Is_Nested       : Boolean;
       Container       : Flow_Scope;
 
       function Is_Text_IO_Special_Package (E : Entity_Id) return Boolean;
@@ -623,10 +637,8 @@ package body Flow_Visibility is
         and then Is_Text_IO_Special_Package (E)
       then
          Container := (Ent => Scope (E), Part => Visible_Part);
-         Is_Nested := True;
       else
          Container := Get_Flow_Scope (N);
-         Is_Nested := Container /= Null_Flow_Scope;
       end if;
 
       -------------------------------------------------------------------------
@@ -637,27 +649,20 @@ package body Flow_Visibility is
       --  is easier to know which one.
       -------------------------------------------------------------------------
 
-      pragma Assert (Is_Nested or else Present (Parent));
+      pragma Assert (Present (Container) or else Present (Parent));
       --  Everything is nested or else has a parent
 
-      pragma Assert (not (Is_Private and Is_Nested));
+      pragma Assert (not (Is_Private and Present (Container)));
       --  Being "private" can only apply to non-nested packages
-
-      pragma Assert (Is_Nested = Present (Container));
-      --  Nesting is equivalent to a non-empty container
 
       -------------------------------------------------------------------------
 
-      return (Is_Package        => Is_Package,
---              Is_Child          => Is_Child,
-              Is_Private        => Is_Private,
-              Is_Nested         => Is_Nested,
-              Is_Instance       => Present (Template),
-              Is_Instance_Child => Present (Instance_Parent),
-              Parent            => Parent,
-              Instance_Parent   => Instance_Parent,
-              Template          => Template,
-              Container         => Container);
+      return (Is_Package      => Is_Package,
+              Is_Private      => Is_Private,
+              Parent          => Parent,
+              Instance_Parent => Instance_Parent,
+              Template        => Template,
+              Container       => Container);
    end Make_Info;
 
    -----------
