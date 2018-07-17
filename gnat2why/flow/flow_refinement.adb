@@ -248,9 +248,6 @@ package body Flow_Refinement is
                   Part : Declarative_Part;
                   --  Components of the result
 
-                  pragma Assert (Ekind (Ent) in E_Package
-                                              | E_Generic_Package);
-
                begin
                   --  We have to decide if we come from visible or private part
                   pragma Assert (Present (Prev_Context)

@@ -98,7 +98,9 @@ package Flow_Refinement is
    --  Returns True iff Target_Scope is visible from Looking_From
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
-   with Pre => Nkind (N) /= N_Subunit;
+   with Pre  => Nkind (N) /= N_Subunit,
+        Post => (if Present (Get_Flow_Scope'Result)
+                 then not Is_Generic_Unit (Get_Flow_Scope'Result.Ent));
    --  Given (almost) any node in the AST, work out which flow scope we are in.
    --
    --  When called on the boundary node, e.g. N_Subprogram_Declaration,
