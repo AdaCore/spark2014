@@ -136,6 +136,7 @@ No_Elaboration_Code_All       Yes
 No_Heap_Finalization          Yes
 Overflow_Mode                 Yes
 Predicate_Failure             Yes
+Provide_Shift_Operators       Yes
 Pure_Function      	      Yes
 Restriction_Warnings  	      Yes
 Secondary_Stack_Size          Yes

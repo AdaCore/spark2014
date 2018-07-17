@@ -5747,6 +5747,7 @@ package body SPARK_Definition is
               Pragma_No_Heap_Finalization         |
               Pragma_No_Tagged_Streams            |
               Pragma_Predicate_Failure            |
+              Pragma_Provide_Shift_Operators      |
               Pragma_Pure_Function                |
               Pragma_Restriction_Warnings         |
               Pragma_Secondary_Stack_Size         |
@@ -5867,7 +5868,6 @@ package body SPARK_Definition is
            Pragma_Priority_Specific_Dispatching  |
            Pragma_Profile_Warnings               |
            Pragma_Propagate_Exceptions           |
-           Pragma_Provide_Shift_Operators        |
            Pragma_Psect_Object                   |
            Pragma_Rational                       |
            Pragma_Ravenscar                      |
