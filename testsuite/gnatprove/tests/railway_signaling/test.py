@@ -4,4 +4,4 @@ from test_support import *
 # with 10.000 steps and 120s timeout, with --prover=cvc4,altergo,z3 and
 # --proof=per_path. This is likely related to the changes in how arrays are
 # handled in provers now, to be investigated.
-prove_all(steps=200000, level=4, counterexample=False, procs=4)
+prove_all(steps=100000, prover=["cvc4","z3"], counterexample=False)
