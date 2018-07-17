@@ -210,7 +210,7 @@
   <proof prover="2"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="1347"/></proof>
+  <proof prover="2"><result status="valid" steps="1644"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -313,7 +313,7 @@
   <proof prover="2"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="1347"/></proof>
+  <proof prover="2"><result status="valid" steps="1644"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
