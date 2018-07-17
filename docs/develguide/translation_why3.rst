@@ -874,11 +874,135 @@ symbols in the M_Arrays map. Instead, they are stored in a specific
 map named M_Arrays_1 which is only populated for one dimensional
 arrays.
 
-Comparison (1 dim scalar)
-"""""""""""""""""""""""""
+Comparison Operators
+""""""""""""""""""""
+Comparison operators (<, >, <=, and >=) are defined for one-dimensional arrays
+with a scalar component type. These operators are translated in Why through the
+means of a ``compare`` logic function. This function is left uninterpreted, but
+its sign is uniquely defined by 3 axioms:
 
-Logical (1 dim boolean subtypes)
-""""""""""""""""""""""""""""""""
+ * ``compare_def_eq`` states that ``compare`` returns 0 if and only if both
+   arrays are equal (using Ada equality),
+ * ``compare_def_lt`` states that ``compare`` returns a negative number if and
+   only if the first array is less than the second (using lexicographic
+   ordering), and
+ * ``compare_def_gt`` states that ``compare`` returns a positive number if and
+   only if the first array is greater than the second.
+
+As an example, here are the axioms used for arrays ranging over a signed integer
+type and containing signed integers:
+
+.. code-block:: whyml
+
+  function compare map int int map int int : int
+
+  axiom compare_def_eq :
+    forall a b : map.
+    forall a_first a_last b_first b_last : int.
+      (compare a a_first a_last b b_first b_last = 0 <->
+          bool_eq a a_first a_last b b_first b_last = True)
+
+  axiom compare_def_lt :
+    forall a b : map.
+    forall a_first a_last b_first b_last : int.
+      (compare a a_first a_last b b_first b_last < 0 <->
+         exists i j : int. i <= a_last /\ j < b_last /\
+             (bool_eq a a_first i b b_first j = True /\
+             (i = a_last \/
+              i < a_last /\ to_rep (get a (i + 1)) < to_rep (get b (j + 1)))))
+
+  axiom compare_def_gt :
+    forall a b : map.
+    forall a_first a_last b_first b_last : int.
+      (compare a a_first a_last b b_first b_last > 0 <->
+         exists i j : int. i <= b_last /\ j < a_last /\
+             (bool_eq a a_first j b b_first i = True /\
+             (i = b_last \/
+	      i < b_last /\ to_rep (get a (j + 1)) > to_rep (get b (i + 1)))))
+
+To avoid polluting the context with unnecessary axioms when ``compare`` is not
+used, these declarations are grouped in a separate module. For example, here is
+the module which would be declared for ``My_Array``:
+
+.. code-block:: whyml
+
+  module Array__Int__Standard__natural_Comp
+
+    function compare map int int map int int : int
+
+    ...
+  end Array__Int__Standard__natural_Comp
+
+Logical Operators
+"""""""""""""""""
+
+Ada also defines logical operators (and, or, xor, not) for one-dimensional
+arrays whose component type is a boolean subtype. These operators are all
+translated as uninterpreted logic functions. Definitions applying the underlying
+operator on each element of the arrays are given through axioms. As an example,
+consider the array type ``Bool_Array`` defined as follows:
+
+.. code-block:: ada
+		
+   type Bool_Array is array (Positive range <>) of Boolean;
+
+Here is the axiom generated for the operator xor on ``Bool_Array``:
+
+.. code-block:: whyml
+
+  module Array__Int__Bool__Bool_Op
+    use bool.Bool
+
+    function xorb map int int map int int : map
+
+    axiom xorb_def:
+     forall a b : map.
+     forall a_first a_last b_first b_last : int.
+     forall i : int.
+       a_first <= i <= a_last ->
+       get (xorb a a_first a_last b b_first b_last) i =
+            Bool.xorb (get a i) (get b (i - a_first + b_first))
+
+    ...
+
+As explained in section Enumerations, subtypes of Boolean types are
+generally translated as boolean in Why. However, it is not the case for subtypes
+of Boolean which define their own ranges (see ``Is_Standard_Boolean_Type``).
+Those are translated as mathematical integers, just like other enumeration
+types. The defining axioms for logical operations on such type therefore need
+to introduce conversions. For example, for the following type:
+
+.. code-block:: ada
+		
+   subtype Only_True is Boolean range True .. True;
+
+we generate:
+
+.. code-block:: whyml
+		
+   module Array__Int__P__only_true__Bool_Op
+    use bool.Bool
+    use "_gnatprove_standard".Boolean
+
+    function xorb map int int map int int : map
+
+    axiom xorb_def:
+     forall a b : map.
+     forall a_first a_last b_first b_last : int.
+     forall i : int.
+       a_first <= i <= a_last ->
+       get (xorb a a_first a_last b b_first b_last) i =
+            of_rep (Boolean.to_int
+	      (Bool.xorb (Boolean.of_int (to_rep (get a i)))
+	            (Boolean.of_int (to_rep (get b (i - a_first + b_first))))))
+
+    ...
+
+Note that the equality test is done on the closed form of ``Only_True``, and not
+on its representative type or on ``bool``.
+Indeed, we do not want to assume an incorrect axiom when the result
+of the boolean operation is out of range (here for example, applications of
+xor are always out of range of ``Only_True``).
 
 Constrained Arrays with Static Bounds
 """""""""""""""""""""""""""""""""""""
