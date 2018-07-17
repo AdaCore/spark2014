@@ -655,6 +655,9 @@ package body Flow_Visibility is
       pragma Assert (not (Is_Private and Present (Container)));
       --  Being "private" can only apply to non-nested packages
 
+      pragma Assert (if Present (Template) then Is_Generic_Unit (Template));
+      --  Template, if present, is a generic unit
+
       -------------------------------------------------------------------------
 
       return (Is_Package      => Is_Package,
