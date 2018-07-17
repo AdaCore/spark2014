@@ -1,0 +1,5 @@
+q.ads:9:54: "T" is not allowed in SPARK
+q.ads:9:54: violation of pragma SPARK_Mode at line 5
+q.ads:9:58: "T" is not allowed in SPARK
+q.ads:9:58: violation of pragma SPARK_Mode at line 5
+gnatprove: error during flow analysis and proof
