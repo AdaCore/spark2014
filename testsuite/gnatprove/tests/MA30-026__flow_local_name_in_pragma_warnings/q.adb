@@ -22,7 +22,7 @@ is
           Depends => (Glob => Glob)
    is
       pragma Annotate (Gnatprove, Intentional, "dependency", "");
-      pragma Warnings(Off, Glob);
+      pragma Warnings (Off, Glob);
    begin
       Glob := 2;
    end Increase_Glob;

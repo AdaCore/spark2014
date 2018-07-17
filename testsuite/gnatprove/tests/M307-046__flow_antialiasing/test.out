@@ -33,6 +33,7 @@ test.adb:186:15: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2
 test.adb:189:04: warning: analyzing unreferenced procedure "Test_13"
 test.adb:193:15: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:196:04: warning: analyzing unreferenced procedure "Test_14"
+test.adb:199:21: info: non-aliasing of formal parameters "X" and "Y" proved
 test.adb:206:04: warning: analyzing unreferenced procedure "Slice_01"
 test.adb:209:23: info: non-aliasing of formal parameters "X" and "Y" proved
 test.adb:212:04: warning: analyzing unreferenced procedure "Slice_02"

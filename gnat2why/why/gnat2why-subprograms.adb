@@ -185,6 +185,13 @@ package body Gnat2Why.Subprograms is
    --  Compute the effects of the generated Why function. If Global_Params is
    --  True, then the global version of the parameters is used.
 
+   function Compute_Call_Effects
+     (Params : Transformation_Params;
+      E      : Entity_Id)
+      return W_Prog_Id;
+   --  Generate a Why3 program simulating the effects of a call of the
+   --  subprogram.
+
    function Compute_Binders (E : Entity_Id; Domain : EW_Domain)
                              return Item_Array;
    --  Return Why binders for the parameters of subprogram E.
@@ -761,6 +768,30 @@ package body Gnat2Why.Subprograms is
          return Binders;
       end if;
    end Compute_Binders;
+
+   --------------------------
+   -- Compute_Call_Effects --
+   --------------------------
+
+   function Compute_Call_Effects
+     (Params : Transformation_Params;
+      E      : Entity_Id)
+      return W_Prog_Id
+   is
+      Call_Effects : W_Prog_Id;
+   begin
+      Call_Effects := New_Havoc_Statement
+        (Ada_Node => E,
+         Effects  => +Compute_Effects (E, Global_Params => True));
+
+      Call_Effects := Sequence
+        (Call_Effects,
+         New_Assume_Statement
+           (Ada_Node => E,
+            Pred     => Compute_Dynamic_Property_For_Effects (E, Params)));
+
+      return Call_Effects;
+   end Compute_Call_Effects;
 
    -----------------------------------------
    -- Compute_Dynamic_Property_For_Inputs --
@@ -2238,15 +2269,7 @@ package body Gnat2Why.Subprograms is
 
       --  Compute the effect of a call of the subprogram
 
-      Call_Effects := New_Havoc_Statement
-        (Ada_Node => E,
-         Effects  => +Compute_Effects (E, Global_Params => True));
-
-      Call_Effects := Sequence
-        (Call_Effects,
-         New_Assume_Statement
-           (Ada_Node => E,
-            Pred     => Compute_Dynamic_Property_For_Effects (E, Params)));
+      Call_Effects := Compute_Call_Effects (Params, E);
 
       --  If E has a class-wide precondition, check that it cannot raise a
       --  run-time error in an empty context.
@@ -2609,6 +2632,54 @@ package body Gnat2Why.Subprograms is
          Why_Body := Sequence
            (Assume_Initial_Condition_Of_Withed_Units (E, Params), Why_Body);
       end if;
+
+      --  Assume precondition of the enclosing subprogram for nested packages
+      --  which are declared directly inside the declarative part of the
+      --  subprogram.
+      --  ??? We could also assume it for other nested packages, but this would
+      --  require havoking variables.
+
+      declare
+         Enclosing_Subp : constant Entity_Id :=
+           Directly_Enclosing_Subprogram_Or_Entry (E);
+      begin
+         if Present (Enclosing_Subp) then
+            declare
+               Pre : W_Pred_Id :=
+                 Get_Static_Call_Contract
+                   (Params, Enclosing_Subp, Pragma_Precondition);
+            begin
+
+               --  For entries, also assume that the guard holds
+
+               if Is_Entry (Enclosing_Subp)
+                 and then Entity_Body_In_SPARK (Enclosing_Subp)
+               then
+                  declare
+                     Params  : constant Transformation_Params :=
+                       (File        => File,
+                        Phase       => Generate_Contract_For_Body,
+                        Gen_Marker  => False,
+                        Ref_Allowed => True,
+                        Old_Allowed => True);
+                     Barrier : constant Node_Id :=
+                       Entry_Body_Barrier (Get_Body (Enclosing_Subp));
+                  begin
+                     Pre :=
+                       +New_And_Then_Expr
+                       (Domain => EW_Pred,
+                        Left   => +Pre,
+                        Right  =>
+                          Transform_Expr
+                            (Barrier, EW_Bool_Type, EW_Pred, Params));
+                  end;
+               end if;
+
+               Why_Body := Sequence
+                 (New_Assume_Statement (Pred => Pre), Why_Body);
+            end;
+         end if;
+      end;
 
       --  We assume that objects used in the program are in range, if
       --  they are of a dynamic type.
@@ -2991,6 +3062,9 @@ package body Gnat2Why.Subprograms is
 
       function Warn_On_Inconsistent_Pre return W_Prog_Id;
       --  Generate a VC to warn on inconsistent preconditions
+
+      function Warn_On_Inconsistent_Post return W_Prog_Id;
+      --  Generate a VC to warn on inconsistent postconditions
 
       function Wrap_Decls_For_CC_Guards (P : W_Prog_Id) return W_Prog_Id;
 
@@ -3404,6 +3478,47 @@ package body Gnat2Why.Subprograms is
                     Def  => +Void)));
       end Try_Block;
 
+      -------------------------------
+      -- Warn_On_Inconsistent_Post --
+      -------------------------------
+
+      function Warn_On_Inconsistent_Post return W_Prog_Id is
+         Params : constant Transformation_Params :=
+           (File        => File,
+            Phase       => Generate_VCs_For_Contract,
+            Gen_Marker  => False,
+            Ref_Allowed => True,
+            Old_Allowed => True);
+         Post : W_Pred_Id :=
+           Get_Static_Call_Contract (Params, E, Pragma_Postcondition);
+         Stmt : W_Prog_Id;
+         Post_Node : constant Node_Id :=
+           Get_Location_For_Aspect (E, Pragma_Postcondition);
+      begin
+         if No (Post_Node) then
+            return +Void;
+         end if;
+
+         --  Negate the condition to check for an inconsistency
+         Post := New_Not (Right => +Post);
+
+         Stmt := Sequence
+           (Compute_Call_Effects (Params, E),
+            New_Located_Assert
+              (Ada_Node => Post_Node,
+               Pred     => Post,
+               Reason   => VC_Inconsistent_Post,
+               Kind     => EW_Assert));
+
+         return
+           Sequence
+             (New_Comment
+                (Comment => NID ("Check inconsistency of Post of subprogram"
+                 & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+                   else ""))),
+              New_Ignore (Prog => Stmt));
+      end Warn_On_Inconsistent_Post;
+
       ------------------------------
       -- Warn_On_Inconsistent_Pre --
       ------------------------------
@@ -3458,7 +3573,7 @@ package body Gnat2Why.Subprograms is
          return
            Sequence
              (New_Comment
-                (Comment => NID ("Check inconsistency of Pre of the subprogram"
+                (Comment => NID ("Check inconsistency of Pre of subprogram"
                  & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
                    else ""))),
               New_Ignore (Prog => Stmt));
@@ -3488,6 +3603,7 @@ package body Gnat2Why.Subprograms is
 
       Name      : constant String := Full_Name (E);
 
+      CC_Check  : W_Prog_Id;
       Prog      : W_Prog_Id;
       Why_Body  : W_Prog_Id;
 
@@ -3498,7 +3614,8 @@ package body Gnat2Why.Subprograms is
           (Ada_Node => Body_N,
            Name     => M_Main.Return_Exc);
 
-      Precondition_Is_Statically_False : Boolean := False;
+      Precondition_Is_Statically_False  : Boolean := False;
+      Postcondition_Is_Statically_False : Boolean := False;
 
    --  Start of processing for Generate_VCs_For_Subprogram
 
@@ -3576,6 +3693,14 @@ package body Gnat2Why.Subprograms is
          end if;
       end loop;
 
+      for Expr of Get_Postcondition_Expressions (E, Refined => False) loop
+         if Nkind (Expr) = N_Identifier
+           and then Entity (Expr) = Standard_False
+         then
+            Postcondition_Is_Statically_False := True;
+         end if;
+      end loop;
+
       --  If contract cases are present, generate checks for absence of
       --  run-time errors in guards, and check that contract cases are disjoint
       --  and complete. The completeness is checked in a context where the
@@ -3589,7 +3714,7 @@ package body Gnat2Why.Subprograms is
          Others_Guard_Ident => Others_Guard_Ident,
          Others_Guard_Expr  => Others_Guard_Expr);
 
-      Prog := Compute_Contract_Cases_Entry_Checks (E, Guard_Map);
+      CC_Check := Compute_Contract_Cases_Entry_Checks (E, Guard_Map);
 
       --  Declare global variable to hold the state of a protected object
 
@@ -3605,24 +3730,26 @@ package body Gnat2Why.Subprograms is
                  Type_Of_Node (Containing_Protected_Type (E))));
       end if;
 
+      --  Declare a global variable to hold the result of a function. This is
+      --  useful both for verifying the body of E when it is in SPARK, and for
+      --  the warning on inconsistent postcondition when it is issued.
+
+      if Ekind (E) = E_Function then
+         Emit
+           (File,
+            New_Global_Ref_Declaration
+              (Ada_Node => E,
+               Name     => Result_Name,
+               Labels   => Get_Counterexample_Labels (E),
+               Location => No_Location,
+               Ref_Type => Type_Of_Node (Etype (E))));
+      end if;
+
       if Entity_Body_In_SPARK (E) then
 
          Get_Pre_Post_Pragmas
            (Get_Flat_Statement_And_Declaration_List
               (Declarations (Body_N)));
-
-         --  Declare a global variable to hold the result of a function
-
-         if Ekind (E) = E_Function then
-            Emit
-              (File,
-               New_Global_Ref_Declaration
-                 (Ada_Node => E,
-                  Name     => Result_Name,
-                  Labels   => Get_Counterexample_Labels (E),
-                  Location => No_Location,
-                  Ref_Type => Type_Of_Node (Etype (E))));
-         end if;
 
          Why_Body :=
            Sequence
@@ -3664,14 +3791,21 @@ package body Gnat2Why.Subprograms is
              4 => Check_Inline_For_Proof,
              5 => Result_Var));
 
-         --  add declarations for 'Old variables
+      --  Body is not in SPARK
 
-         Why_Body := Declare_Old_Variables (Why_Body);
+      else
+         declare
+            Dummy_CC_And_RTE_Post : W_Prog_Id;
+         begin
+            --  Translate the contract cases and postcondition in order to fill
+            --  the mapping for uses of 'Old to later check absence of run-time
+            --  errors in these expressions, and drop the generated program.
 
-         Prog := Sequence (Prog, Why_Body);
+            Dummy_CC_And_RTE_Post := CC_And_RTE_Post;
+
+            Why_Body := +Void;
+         end;
       end if;
-
-      Prog := Wrap_Decls_For_CC_Guards (Prog);
 
       declare
          Warn_Pre : constant W_Prog_Id :=
@@ -3684,7 +3818,27 @@ package body Gnat2Why.Subprograms is
               or else Opt.Warning_Mode = Opt.Suppress
             then +Void
             else Warn_On_Inconsistent_Pre);
+
+         Warn_Post : constant W_Prog_Id :=
+           --  Do not issue a check for inconsistent postcondition if switch
+           --  --proof-warnings is not set
+           (if not Gnat2Why_Args.Proof_Warnings
+              --  or if a conjunct in the postcondition is statically False
+              or else Postcondition_Is_Statically_False
+              --  or if the body is in SPARK
+              or else Entity_Body_In_SPARK (E)
+              --  or if warnings are suppressed.
+              or else Opt.Warning_Mode = Opt.Suppress
+            then +Void
+            else Warn_On_Inconsistent_Post);
+
       begin
+         --  Add declarations for 'Old variables
+
+         Prog := Sequence ((CC_Check, Warn_Post, Why_Body));
+         Prog := Declare_Old_Variables (Prog);
+         Prog := Wrap_Decls_For_CC_Guards (Prog);
+
          Prog := Sequence
            ((Assume_For_Input,
              Comp_Decl_At_Subp_Start,

@@ -1,3 +1,10 @@
+a-cforse.ads:511:18: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:10
+a-cforse.ads:869:39: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:10
+a-cforse.ads:878:17: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:10
+a-cforse.ads:913:42: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:10
+a-cforse.ads:921:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:10
+a-cforse.ads:948:42: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:10
+a-cforse.ads:956:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:10
 a-cforse.ads:973:24: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:10
 a-cforse.ads:974:26: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:10
 a-cforse.ads:1022:49: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:10

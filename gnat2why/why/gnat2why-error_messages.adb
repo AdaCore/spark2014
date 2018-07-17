@@ -37,7 +37,6 @@ with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Common_Containers;         use Common_Containers;
 with Comperr;                   use Comperr;
-with Einfo;                     use Einfo;
 with Errout;                    use Errout;
 with Flow_Error_Messages;       use Flow_Error_Messages;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
@@ -45,10 +44,8 @@ with Gnat2Why_Args;             use Gnat2Why_Args;
 with Lib.Xref;
 with Osint;                     use Osint;
 with SA_Messages;               use SA_Messages;
-with Sem_Aux;                   use Sem_Aux;
-with Sem_Util;                  use Sem_Util;
-with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
+with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
 with SPARK_Util;                use SPARK_Util;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 
@@ -999,6 +996,8 @@ package body Gnat2Why.Error_Messages is
 
          when VC_Inconsistent_Pre          =>
             return "precondition is always False";
+         when VC_Inconsistent_Post         =>
+            return "postcondition is always False";
          when VC_Dead_Code                 =>
             return "unreachable code";
       end case;

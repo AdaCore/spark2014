@@ -1,3 +1,9 @@
+a-cforma.ads:743:39: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:752:17: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:787:42: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:795:21: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:822:42: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:830:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
 a-cforma.ads:900:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
 a-cforma.ads:915:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
 a-cforma.ads:930:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
@@ -21,4 +27,4 @@ p.adb:21:10: info: precondition proved (Z3: 2 VC)
 p.ads:14:14: info: postcondition proved (Z3: 2 VC)
 p.ads:14:34: info: precondition proved (Z3: 1 VC)
 p.ads:18:14: info: postcondition proved (CVC4: 1 VC; Z3: 2 VC)
-p.ads:23:14: info: postcondition proved (Z3: 3 VC)
+p.ads:23:14: info: postcondition proved (CVC4: 1 VC; Z3: 2 VC)

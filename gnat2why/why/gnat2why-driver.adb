@@ -63,7 +63,6 @@ with Nlists;                          use Nlists;
 with Osint.C;                         use Osint.C;
 with Osint;                           use Osint;
 with Outputs;                         use Outputs;
-with Rtsfind;                         use Rtsfind;
 with Sem;
 with Sem_Aux;                         use Sem_Aux;
 with Sem_Util;                        use Sem_Util;
@@ -360,6 +359,35 @@ package body Gnat2Why.Driver is
         File_Name_Without_Suffix
           (Get_Name_String (Unit_File_Name (Main_Unit)));
 
+      generic
+         with procedure Action (N : Node_Id);
+      procedure Process_Current_Unit;
+      --  Call Action on the spec of the current compilation unit and its body
+      --  (if present).
+
+      --------------------------
+      -- Process_Current_Unit --
+      --------------------------
+
+      procedure Process_Current_Unit is
+         Lib_Unit : constant Node_Id := Library_Unit (GNAT_Root);
+      begin
+         --  If both spec and body of the current compilation unit are present
+         --  then process spec first.
+         if Present (Lib_Unit) and then Lib_Unit /= GNAT_Root then
+            Action (Unit (Lib_Unit));
+         end if;
+
+         --  Then process body (or spec if no body is present)
+         Action (Unit (GNAT_Root));
+      end Process_Current_Unit;
+
+      procedure Mark_Current_Unit is new Process_Current_Unit
+        (Action => Mark_Compilation_Unit);
+
+      procedure Build_Flow_Tree is new Process_Current_Unit
+        (Action => Flow_Generated_Globals.Traversal.Build_Tree);
+
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
       --  which avoids forward references has caused problems in the past with
       --  the combination of generics and inlining, as well as child units
@@ -377,6 +405,8 @@ package body Gnat2Why.Driver is
       --  This Boolean indicates whether proof have been attempted anywhere in
       --  the unit.
       Proof_Done : Boolean := False;
+
+   --  Start of processing for GNAT_To_Why
 
    begin
       Timing_Start (Timing);
@@ -406,18 +436,6 @@ package body Gnat2Why.Driver is
       Sem.Scope_Stack.Locked := False;
       Lib.Unlock;
 
-      --  In phase 2, when the --mode=proof switch is used, load the System
-      --  unit, because we might need the System.Default_Priority expression
-      --  for checks related to the ceiling priority protocol. We do this here
-      --  both because loading from within the Sem.Walk_Library_Items is risky
-      --  and because we must register the "flow scopes" for the System unit.
-
-      if Ekind (E) in E_Function | E_Procedure
-        and then Might_Be_Main (E)
-      then
-         SPARK_Implicit_Load (RE_Default_Priority);
-      end if;
-
       --  Before any analysis takes place, perform some rewritings of the tree
       --  that facilitates analysis.
 
@@ -435,18 +453,8 @@ package body Gnat2Why.Driver is
 
       --  Mark the current compilation unit as "in SPARK / not in SPARK".
 
-      declare
-         Lib_Unit : constant Node_Id := Library_Unit (GNAT_Root);
-      begin
-         --  If both spec and body of the current compilation unit are present
-         --  then traverse spec first.
-         if Present (Lib_Unit) and then Lib_Unit /= GNAT_Root then
-            Mark_Compilation_Unit (Unit (Lib_Unit));
-         end if;
+      Mark_Current_Unit;
 
-         --  Then traverse body (or spec if no body is present)
-         Mark_Compilation_Unit (Unit (GNAT_Root));
-      end;
       Timing_Phase_Completed (Timing, "marking");
 
       --  Finalize has to be called before we call Compilation_Errors.
@@ -463,18 +471,8 @@ package body Gnat2Why.Driver is
 
       --  Build hierarchical representation of scopes in the current
       --  compilation unit. This may require two traversals: for spec and body.
-      declare
-         Lib_Unit : constant Node_Id := Library_Unit (GNAT_Root);
-      begin
-         --  If both spec and body of the current compilation unit are present
-         --  then traverse spec first.
-         if Present (Lib_Unit) and then Lib_Unit /= GNAT_Root then
-            Flow_Generated_Globals.Traversal.Build_Tree (Lib_Unit);
-         end if;
 
-         --  Then traverse body (or spec if no body is present)
-         Flow_Generated_Globals.Traversal.Build_Tree (GNAT_Root);
-      end;
+      Build_Flow_Tree;
 
       if Gnat2Why_Args.Global_Gen_Mode then
 
@@ -775,15 +773,37 @@ package body Gnat2Why.Driver is
 
       procedure Register_Symbol (E : Entity_Id) is
       begin
-         if Ekind (E) in E_Entry | E_Function | E_Procedure
-           and then Is_Translated_Subprogram (E)
-         then
-            if Ekind (E) in E_Function | E_Procedure then
-               Ada_Ent_To_Why.Insert (Symbol_Table, E, Mk_Item_Of_Entity (E));
-            else
-               Insert_Entity (E, To_Why_Id (E, Typ => Why_Empty));
-            end if;
-         end if;
+         case Ekind (E) is
+            when E_Entry
+               | E_Function
+               | E_Procedure =>
+               if Is_Translated_Subprogram (E) then
+                  if Ekind (E) in E_Function | E_Procedure then
+                     Ada_Ent_To_Why.Insert
+                       (Symbol_Table, E, Mk_Item_Of_Entity (E));
+                  else
+                     Insert_Entity (E, To_Why_Id (E, Typ => Why_Empty));
+                  end if;
+               end if;
+            when Object_Kind =>
+
+               if Is_Discriminal (E)
+                 or else Is_Protected_Component_Or_Discr_Or_Part_Of (E)
+               then
+                  return;
+               end if;
+
+               if not Is_Mutable_In_Why (E) then
+                  Insert_Entity (E,
+                                 To_Why_Id (E, No_Comp => True,
+                                            Typ => Type_Of_Node (Etype (E))));
+               else
+                  Insert_Item (E, Mk_Item_Of_Entity (E));
+               end if;
+
+            when others =>
+               null;
+         end case;
       end Register_Symbol;
 
    --  Start of processing for Translate_CUnit

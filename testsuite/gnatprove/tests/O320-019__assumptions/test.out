@@ -17,9 +17,13 @@ my_pack.ads:16:36: info: overflow check proved (CVC4: 1 VC)
  My_Pack.Bump at my_pack.ads:9 skipped
  My_Pack.Id at my_pack.ads:7 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
  My_Pack.Use_Bump at my_pack.ads:13 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (3 checks)
+ absence of run-time errors of My_Pack.Bump
+ absence of run-time errors of My_Pack.Bump
  effects on parameters and Global variables of My_Pack.Bump
  effects on parameters and Global variables of My_Pack.Bump
  effects on parameters and Global variables of My_Pack.Bump
+ the postcondition of My_Pack.Bump
+ the postcondition of My_Pack.Bump
 -
 -
 -

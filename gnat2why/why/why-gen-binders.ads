@@ -23,10 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                  use Atree;
 with Common_Containers;      use Common_Containers;
-with Einfo;                  use Einfo;
 with Namet;                  use Namet;
+with SPARK_Atree;            use SPARK_Atree;
+with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
 with SPARK_Definition;       use SPARK_Definition;
 with Types;                  use Types;
 with Why.Atree.Builders;     use Why.Atree.Builders;

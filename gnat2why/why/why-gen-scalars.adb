@@ -25,7 +25,6 @@
 
 with Common_Containers;   use Common_Containers;
 with GNAT.Source_Info;
-with Sem_Eval;            use Sem_Eval;
 with SPARK_Util;          use SPARK_Util;
 with SPARK_Util.Types;    use SPARK_Util.Types;
 with Sinput;              use Sinput;
@@ -488,7 +487,7 @@ package body Why.Gen.Scalars is
          Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Static
               and then Has_Modular_Integer_Type (E)
-              and then Modulus (Base_Retysp (E)) /= UI_Expon (2, Esize (E))
+              and then Modulus (E) /= UI_Expon (2, Modular_Size (E))
             then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Function,
@@ -567,22 +566,22 @@ package body Why.Gen.Scalars is
            and then Has_Modular_Integer_Type (E)
            and then
              ((Ty = EW_BitVector_8_Type
-               and then Modulus (Base_Retysp (E)) = UI_Expon (Uint_2, Uint_8))
+               and then Modulus (E) = UI_Expon (Uint_2, Uint_8))
               or else
                 (Ty = EW_BitVector_16_Type
-                 and then Modulus (Base_Retysp (E))
+                 and then Modulus (E)
                         = UI_Expon (Uint_2, Uint_16))
               or else
                 (Ty = EW_BitVector_32_Type
-                 and then Modulus (Base_Retysp (E))
+                 and then Modulus (E)
                         = UI_Expon (Uint_2, Uint_32))
               or else
                 (Ty = EW_BitVector_64_Type
-                 and then Modulus (Base_Retysp (E))
+                 and then Modulus (E)
                         = UI_Expon (Uint_2, Uint_64)))
-           and then Intval (Low_Bound (Scalar_Range (E))) = Uint_0
-           and then Intval (High_Bound (Scalar_Range (E)))
-                  = UI_Sub (Modulus (Base_Retysp (E)), Uint_1)
+           and then Intval (Type_Low_Bound (E)) = Uint_0
+           and then Intval (Type_High_Bound (E))
+                  = UI_Sub (Modulus (E), Uint_1)
          then
 
             --  In which case we know that all values are necessary in range,
@@ -624,16 +623,16 @@ package body Why.Gen.Scalars is
             --  predicate to "is_finite".
 
             if Is_Static
-              and then UR_Eq (Expr_Value_R (Low_Bound (Scalar_Range (E))),
-                              Expr_Value_R (Low_Bound (Scalar_Range
+              and then UR_Eq (Expr_Value_R (Type_Low_Bound (E)),
+                              Expr_Value_R (Type_Low_Bound
                                 (if Ty = EW_Float_32_Type
                                      then Standard_Float
-                                     else Standard_Long_Float))))
-              and then UR_Eq (Expr_Value_R (High_Bound (Scalar_Range (E))),
-                              Expr_Value_R (High_Bound (Scalar_Range
+                                     else Standard_Long_Float)))
+              and then UR_Eq (Expr_Value_R (Type_High_Bound (E)),
+                              Expr_Value_R (Type_High_Bound
                                 (if Ty = EW_Float_32_Type
                                      then Standard_Float
-                                     else Standard_Long_Float))))
+                                     else Standard_Long_Float)))
             then
 
                --  In which case we know that all values are necessary in range
@@ -724,7 +723,7 @@ package body Why.Gen.Scalars is
          if Is_Static then
             if Has_Modular_Integer_Type (E) then
                declare
-                  Modulus_Val : constant Uint := Modulus (Base_Retysp (E));
+                  Modulus_Val : constant Uint := Modulus (E);
                begin
                   return (if Typ = EW_BitVector_8_Type then
                             (if UI_Lt (Modulus_Val, UI_Expon (2, 8)) then
@@ -894,7 +893,7 @@ package body Why.Gen.Scalars is
 
       if Has_Modular_Integer_Type (E) then
          declare
-            Modulus_Val : constant Uint := Modulus (Base_Retysp (E));
+            Modulus_Val : constant Uint := Modulus (E);
             Typ         : constant W_Type_Id := Base_Why_Type (E);
             Modul       : W_Term_OId;
          begin
@@ -1031,7 +1030,7 @@ package body Why.Gen.Scalars is
             return Rep_Proj_Int;
          elsif Why_Type_Is_BitVector (Rep_Type) then
             declare
-               Modulus_Val : constant Uint := Modulus (Base_Retysp (E));
+               Modulus_Val : constant Uint := Modulus (E);
             begin
                return (if Rep_Type = EW_BitVector_8_Type then
                          (if UI_Lt (Modulus_Val, UI_Expon (2, 8)) then
@@ -1085,7 +1084,7 @@ package body Why.Gen.Scalars is
 
       Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
         (if Has_Modular_Integer_Type (E)
-         and then Modulus (Base_Retysp (E)) /= UI_Expon (2, Esize (E))
+         and then Modulus (E) /= UI_Expon (2, Modular_Size (E))
          then
            (1 => New_Clone_Substitution
                 (Kind      => EW_Function,
@@ -1259,8 +1258,8 @@ package body Why.Gen.Scalars is
          return New_Fixed_Constant
            (Value => Expr_Value (N), Typ => Base_Why_Type (Ty));
       elsif Is_Floating_Point_Type (Ty) then
-         if Is_Fixed_Point_Type (Etype (N)) and then
-           Nkind (Parent (N)) = N_Real_Range_Specification
+         if Is_Fixed_Point_Type (Etype (N))
+           and then From_Real_Range_Specification (N)
          then
             --  Allow Real ranges to use fixed point values; see acats c35704a
             return +Insert_Simple_Conversion

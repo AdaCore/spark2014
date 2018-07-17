@@ -24,15 +24,15 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Ordered_Sets;
-with Common_Containers; use Common_Containers;
-with Einfo;             use Einfo;
-with Gnat2Why.Util;     use Gnat2Why.Util;
-with SPARK_Util.Types;  use SPARK_Util.Types;
-with Stand;             use Stand;
-with Types;             use Types;
-with Why.Atree.Tables;  use Why.Atree.Tables;
-with Why.Ids;           use Why.Ids;
-with Why.Types;         use Why.Types;
+with Common_Containers;    use Common_Containers;
+with Gnat2Why.Util;        use Gnat2Why.Util;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Util.Types;     use SPARK_Util.Types;
+with Stand;                use Stand;
+with Types;                use Types;
+with Why.Atree.Tables;     use Why.Atree.Tables;
+with Why.Ids;              use Why.Ids;
+with Why.Types;            use Why.Types;
 
 pragma Warnings (Off);
 --  ??? Why.Sinfo" is directly visible as "Sinfo", as it has "Why" as a

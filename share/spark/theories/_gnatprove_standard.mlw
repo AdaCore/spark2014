@@ -61,7 +61,7 @@ module Main
   (* Counterexample branching-if variable. The model_trace is intentionally not
      a node_id. We use another label to recognize the node_id corresponding to
      values but we still need to trigger counterexample on this.  *)
-  val spark__branch "model" "model_trace:0000": bool__ref
+  val spark__branch "model_trace:0000": bool__ref
 end
 
 module Compatible_Tags

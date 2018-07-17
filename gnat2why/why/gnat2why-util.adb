@@ -25,16 +25,12 @@
 
 with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
-with Exp_Util;                   use Exp_Util;
 with Flow_Types;
 with Flow_Utility;
 with Gnat2Why_Args;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Lib;
 with Namet;                      use Namet;
-with Sem_Aux;                    use Sem_Aux;
-with Sem_Prag;                   use Sem_Prag;
-with Sem_Util;                   use Sem_Util;
 with SPARK_Annotate;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
@@ -344,13 +340,9 @@ package body Gnat2Why.Util is
                --  If the type used in Why3 for the entity is not abstract or
                --  the entity is not mutable, the type is builtin Why3 type.
 
-               if Get_Type_Kind (Type_Of_Node (Etype (E))) /= EW_Abstract
-                 and then not Is_Mutable_In_Why (E)
+               if Get_Type_Kind (Type_Of_Node (Etype (E))) = EW_Abstract
+                 or else Is_Mutable_In_Why (E)
                then
-                  --  Request directly the value of E in the counterexample.
-
-                  Labels.Include (Model);
-               else
                   --  Ask the value of E projected to Why3 builtin type in the
                   --  counterexample.
                   --
@@ -495,9 +487,7 @@ package body Gnat2Why.Util is
 
    function Count_Discriminants (E : Entity_Id) return Natural is
    begin
-      if not Has_Discriminants (E)
-        and then not Has_Unknown_Discriminants (E)
-      then
+      if not Has_Discriminants (E) then
          return 0;
       end if;
 
@@ -506,9 +496,7 @@ package body Gnat2Why.Util is
          Count : Natural := 0;
       begin
          while Present (Discr) loop
-            if Is_Not_Hidden_Discriminant (Discr) then
-               Count := Count + 1;
-            end if;
+            Count := Count + 1;
             Next_Discriminant (Discr);
          end loop;
          return Count;
@@ -857,27 +845,6 @@ package body Gnat2Why.Util is
          raise Program_Error;
       end case;
    end Is_Initialized;
-
-   --------------------------------
-   -- Is_Locally_Defined_In_Loop --
-   --------------------------------
-
-   function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean is
-      Stmt : Node_Id := Parent (N);
-   begin
-      while Present (Stmt) loop
-         if Nkind (Stmt) = N_Loop_Statement then
-            return True;
-
-         elsif Is_Body_Or_Package_Declaration (Stmt) then
-            return False;
-         end if;
-
-         Stmt := Parent (Stmt);
-      end loop;
-
-      return False;
-   end Is_Locally_Defined_In_Loop;
 
    -----------------------
    -- Is_Mutable_In_Why --
@@ -1251,8 +1218,7 @@ package body Gnat2Why.Util is
 
         --  No axioms are generated for volatile functions
 
-        and then not
-          Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
+        and then not Has_Pragma_Volatile_Function (E)
 
         --  No axioms are generated for inlined functions
 

@@ -187,6 +187,13 @@ package SPARK_Util is
    --  Returns the entity of the package, subprogram, entry, protected object,
    --  or task enclosing E, if any. Returns Empty otherwise.
 
+   function Directly_Enclosing_Subprogram_Or_Entry
+     (E : Entity_Id) return Entity_Id;
+   --  Returns the entity of the first subprogram or entry enclosing E. Returns
+   --  Empty if there is no such subprogram or if something else than a package
+   --  (a concurrent type or a block statement) is encountered while going up
+   --  the scope of E
+
    function Entity_Comes_From_Source (E : Entity_Id) return Boolean is
       (Comes_From_Source (E)
         or else Comes_From_Source (Atree.Parent (E)))

@@ -24,13 +24,9 @@
 ------------------------------------------------------------------------------
 
 with Common_Containers;                  use Common_Containers;
-with Exp_Util;                           use Exp_Util;
 with Gnat2Why.Util;                      use Gnat2Why.Util;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
-with Sem_Aux;                            use Sem_Aux;
-with Sem_Util;                           use Sem_Util;
-with Sinfo;                              use Sinfo;
 with SPARK_Util;                         use SPARK_Util;
 with Why.Atree.Builders;                 use Why.Atree.Builders;
 with Why.Atree.Modules;                  use Why.Atree.Modules;
@@ -85,10 +81,15 @@ package body Gnat2Why.External_Axioms is
                 | N_Private_Type_Declaration
                 | N_Subtype_Declaration
                 | N_Object_Declaration
-                | N_Subprogram_Declaration
+            then
+               Process (Defining_Identifier (N));
+
+            elsif Comes_From_Source (Original_Node (N))
+              and then Nkind (N) in
+                  N_Subprogram_Declaration
                 | N_Subprogram_Instantiation
             then
-               Process (Defining_Entity (N));
+               Process (Unique_Defining_Entity (N));
             end if;
 
             --  Call Process_Decls recursively on Package_Declaration and
@@ -96,14 +97,10 @@ package body Gnat2Why.External_Axioms is
 
             if Comes_From_Source (Original_Node (N)) then
                case Nkind (N) is
-                  when N_Package_Instantiation =>
-                     Process_Decls
-                       (Decls  => Visible_Declarations
-                          (Specification (Instance_Spec (N))));
                   when N_Package_Declaration =>
                      Process_Decls
-                       (Decls  => Visible_Declarations
-                          (Package_Specification (N)));
+                       (Decls  => Visible_Declarations_Of_Package
+                          (Unique_Defining_Entity (N)));
                   when others =>
                      null;
                end case;
@@ -119,8 +116,7 @@ package body Gnat2Why.External_Axioms is
       --  Process declarations
 
       Process_Decls
-        (Decls  => Visible_Declarations
-           (Package_Specification (Package_Entity)));
+        (Decls  => Visible_Declarations_Of_Package (Package_Entity));
    end Process_External_Entities;
 
    --------------------------------

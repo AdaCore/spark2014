@@ -1,2 +1,3 @@
 !large SKIP part of large testsuite
 ALL TIMING
+ALL SKIP wait for R705-011

@@ -43,24 +43,7 @@ You can find the definition of the SPARK language in the
 and instructions on how to use the tool, together with a tutorial, in the
 [SPARK User's Guide](http://docs.adacore.com/spark2014-docs/html/ug/).
 
-# 6. Building SPARK with a GNAT GPL compiler
-
-To build SPARK with a GNAT GPL compiler, you need to use the corresponding
-branch of this repository. For example, to build with GNAT GPL 2016, use the
-branch gpl-2016, as follows:
-```
-git checkout gpl-2016
-```
-
-SPARK repository uses submodules to keep in synch with corresponding versions
-of Why3, Alt-Ergo, CVC4 and Z3, which generally track the main repositories for
-these tools, with minor modifications for the integration with SPARK. To
-retrieve these submodules, do:
-```
-git checkout gpl-2016
-git submodule init
-git submodule update
-```
+# 6. Building SPARK
 
 In order to build SPARK, you need to install first the following dependencies
 (and we recommend using the OPAM package manager for these):
@@ -71,5 +54,49 @@ In order to build SPARK, you need to install first the following dependencies
 * zarith library
 * camlzip library
 * ocplib-simplex library
+
+SPARK sources are tied to the sources of GNAT compiler frontend. For this
+reason, you should use a compiler built from sources with a date matching the
+sources of SPARK. There are two options.
+
+## 6.1 Building SPARK with GNAT Community
+
+To build SPARK with GNAT Community compiler, you need to use the corresponding
+branch of this repository. For example, to build with GNAT Community 2018, use
+the branch gpl-2018, as follows:
+
+```
+git checkout gpl-2018
+```
+
+SPARK repository uses submodules to keep in synch with corresponding versions
+of Why3, Alt-Ergo, CVC4 and Z3, which generally track the main repositories for
+these tools, with minor modifications for the integration with SPARK. To
+retrieve the corresponding branch of these submodules, do:
+
+```
+git submodule init
+git submodule update
+```
+
+Then follow the instructions in the Makefile.
+
+## 6.2 Building SPARK with GNAT FSF
+
+To build SPARK with GNAT version from FSF, you need to use the corresponding
+branch of this repository which follows the latest changes pushed at FSF, as
+follows:
+
+```
+git checkout FSF
+```
+
+To retrieve the most recent version of the submodules for Why3, Alt-Ergo, CVC4
+and Z3, which matches the latest changes for SPARK pushed at FSF, do:
+
+```
+git submodule init
+git submodule update
+```
 
 Then follow the instructions in the Makefile.

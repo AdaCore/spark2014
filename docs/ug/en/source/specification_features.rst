@@ -761,12 +761,22 @@ functions, when |GNATprove| can analyze a subprogram in the context of its
 callers, as described in :ref:`Contextual Analysis of Subprograms Without
 Contracts`.)
 
-In the usual context where ghost code is not kept in the final executable, the
-user is given more freedom to use in ghost code constructs that are less
+All functions which are only used in specification can be marked as ghost, but
+most don't need to. However, there are cases where marking a specification-only
+function as ghost really brings something. First, as ghost entities are not
+allowed to interfere with normal code, marking a function as ghost avoids having
+to break state abstraction for the purpose of specification. For example,
+marking ``Get_Total`` as ghost will prevent users of the package ``Account``
+from accessing the value of ``Total`` from non-ghost code.
+
+Then, in the usual context where ghost code is not kept in the final executable,
+the user is given more freedom to use in ghost code constructs that are less
 efficient than in normal code, which may be useful to express rich
 properties. For example, the ghost functions defined in the :ref:`Formal
 Containers Library` in |GNAT Pro| typically copy the entire content of the
 argument container, which would not be acceptable for non-ghost functions.
+
+.. _Ghost Variables:
 
 Ghost Variables
 ^^^^^^^^^^^^^^^
@@ -842,6 +852,60 @@ The postcondition of ``Add_To_Total`` above expresses that ``Log_Size`` is
 incremented by one at each call, and that the current value of parameter
 ``Incr`` is appended to ``Log`` at each call (using :ref:`Attribute Old` and
 :ref:`Attribute Update`).
+
+Case 4: Expressing Existentially Quantified Properties
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In |SPARK|, universal quantification is only allowed in restricted cases
+(over integer ranges and over the content of a container). To express the
+existence of a particular object, it is sometimes easier to simply provide it.
+This can be done using a global ghost variable. This can be used in particular
+to split the specification of a complex procedure into smaller parts:
+
+.. code-block:: ada
+        
+   X_Interm : T with Ghost;
+
+   procedure Do_Two_Thing (X : in out T) with
+     Post => First_Thing_Done (X'Old, X_Interm) and then
+             Second_Thing_Done (X_Interm, X)
+   is
+     X_Init : constant T := X with Ghost;
+   begin
+     Do_Something (X);
+     pragma Assert (First_Thing_Done (X_Init, X));
+     X_Interm := X;
+ 
+     Do_Something_Else (X);
+     pragma Assert (Second_Thing_Done (X_Interm, X));
+   end Do_Two_Things;
+
+More complicated uses can also be envisioned, up to constructing ghost data
+structures reflecting complex properties. For example, we can express that two
+arrays are a permutation of each other by constructing a permutation from one
+to the other:
+
+.. code-block:: ada
+
+  Perm : Permutation with Ghost;
+ 
+  procedure Permutation_Sort (A : Nat_Array) with
+    Post => A = Apply_Perm (Perm, A'Old)
+  is
+  begin
+    --  Initalize Perm with the identity
+    Perm := Identity_Perm;
+    
+    for Current in A'First .. A'Last - 1 loop
+      Smallest := Index_Of_Minimum_Value (A, Current, A'Last);
+      if Smallest /= Current then
+        Swap (A, Current, Smallest);
+    
+        --  Update Perm each time we permute two elements in A
+        Permute (Perm, Current, Smallest);
+      end if;
+     end loop;
+   end Permutation_Sort;
 
 .. _Ghost Types:
 
@@ -979,6 +1043,179 @@ above should not be enabled during compilation, otherwise a compilation error
 is issued. Note also that |GNATprove| will not attempt proving the contract of
 a ghost imported subprogram, as it does not have its body.
 
+.. _Ghost Models:
+
+Ghost Models
+^^^^^^^^^^^^
+When specifying a program, it is common to use a model, that is, an alternative,
+simpler view of a part of the program. As they are only used in annotations,
+models can be computed using ghost code.
+
+Models of Control Flow
+~~~~~~~~~~~~~~~~~~~~~~
+
+Global variables can be used to enforce properties over call cahains in the
+program. For example, we may want to express that ``Total`` cannot be
+incremented twice in a row without registering the transaction in between. This
+can be done by introducing a ghost global variable
+``Last_Transaction_Registered``, used to encode whether ``Register_Transaction``
+was called since the last call to ``Add_To_Total``:
+
+.. code-block:: ada
+
+  Last_Transaction_Registered : Boolean := True with Ghost;
+
+  procedure Add_To_Total (Incr : Integer) with
+    Pre  => Last_Transaction_Registered,
+    Post => not Last_Transaction_Registered;
+
+  procedure Register_Transaction with
+    Post => Last_Transaction_Registered;
+
+The value of Last_Transaction_Registered should also be updated in the body of
+``Add_To_Total`` and ``Register_Transaction`` to reflect their contracts:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) is
+   begin
+      Total := Total + Incr;
+      Last_Transaction_Registered := False;
+   end Add_To_Total;
+
+More generally, the expected control flow of a program can be modeled using an
+automaton. We can take as an example a mailbox containing only one message.
+The expected way ``Receive`` and ``Send`` should be interleaved can be expressed
+as a two state automaton. The mailbox can either be full, in which case
+``Receive`` can be called but not ``Send``, or it can be empty, in which case it
+is ``Send`` that can be called and not ``Receive``. To express this property, we
+can define a ghost global variable of a ghost enumeration type to hold the
+state of the automaton:
+    
+.. code-block:: ada
+
+   type Mailbox_Status_Kind is (Empty, Full) with Ghost;
+   Mailbox_Status : Mailbox_Status_Kind := Empty with Ghost;
+
+   procedure Receive (X : out Message) with
+     Pre  => Mailbox_Status = Full,
+     Post => Mailbox_Status = Empty;
+     
+   procedure Send (X : Message) with
+     Pre  => Mailbox_Status = Empty,
+     Post => Mailbox_Status = Full;
+
+Like before, ``Receive`` and ``Send`` should update ``Mailbox_Status`` in their
+bodies.
+Note that all the transitions of the automaton need not be specified, only the
+part which are relevant to the properties we want to express.
+
+If the program also has some regular state, an invariant can be used to link
+the value of this state to the value of the ghost state of the automaton. For
+example, in our mailbox, we may have a regular variable ``Message_Content``
+holding the content of the current message, which is only known to be valid
+after a call to ``Send``. We can introduce a ghost function linking the value
+of ``Message_Content`` to the value of ``Mailbox_Status``, so that we can
+ensure that ``Message_Content`` is always valid when accessed from ``Receive``:
+
+.. code-block:: ada
+
+  function Invariant return Boolean is
+    (if Mailbox_Status = Full then Valid (Message_Content))
+  with Ghost;
+
+  procedure Receive (X : out Message) with
+    Pre  => Invariant and then Mailbox_Status = Full,
+    Post => Invariant and then Mailbox_Status = Empty
+        and then Valid (X)
+  is
+    X := Message_Content;
+  end Receive;
+
+Models of Data Structures
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For specifying programs that use complex data structures (doubly-linked lists,
+maps...), it can be useful to supply a model for the data structure. A model
+is an alternative, simpler view of the data-structure which allows to write
+properties more easily. For example, a ring buffer, or a doubly-linked list, can
+be modeled using an array containing the elements from the buffer or the list in
+the right order. Typically, though simpler to reason with, the model is less
+efficient than the regular data structure. For example, inserting an element at
+the beginning of a doubly-linked list or at the beginning of a ring buffer can
+be done in constant time whereas inserting an element at the beginning of an
+array requires to slide all the elements to the right. As a result, models of
+data structures are usually supplied using ghost code. As an example, the
+package ``Ring_Buffer`` offers an implementation of a single instance ring
+buffer. A ghost variable ``Buffer_Model`` is used to write the specification of
+the ``Enqueue`` procedure:
+
+.. code-block:: ada
+		
+  package Ring_Buffer is
+    function Get_Model return Nat_Array with Ghost;
+    
+    procedure Enqueue (E : Natural) with
+      Post => Get_Model = E & Get_Model'Old (1 .. Max – 1);
+  private
+    Buffer_Content : Nat_Array;
+    Buffer_Top     : Natural;
+    Buffer_Model   : Nat_Array with Ghost;
+    
+    function Get_Model return Nat_Array is (Buffer_Model);
+  end Ring_Buffer;
+
+Then, just like for models of control flow, an invariant should be supplied to
+link the regular data structure to its model:
+
+.. code-block:: ada
+		
+  package Ring_Buffer is
+    function Get_Model return Nat_Array with Ghost;
+    function Invariant return Boolean with Ghost;
+    
+    procedure Enqueue (E : Natural) with
+      Pre  => Invariant,
+      Post => Invariant and then Get_Model = E & Get_Model'Old (1 .. Max – 1);
+  private
+    Buffer_Content : Nat_Array;
+    Buffer_Top     : Natural;
+    Buffer_Model   : Nat_Array with Ghost;
+    
+    function Get_Model return Nat_Array is (Buffer_Model);
+    function Invariant return Boolean is
+      (Buffer_Model = Buffer_Content (Buffer_Top .. Max)
+                    & Buffer_Content (1 .. Buffer_Top - 1));
+  end Ring_Buffer;
+
+If a data structure type is defined, a ghost function can be provided to
+compute a model for objects of the data structure type, and the invariant can
+be stated as a postcondition of this function:
+
+.. code-block:: ada
+		
+  package Ring_Buffer is
+    type Buffer_Type is private;
+    subtype Model_Type is Nat_Array with Ghost;
+    
+    function Invariant (X : Buffer_Type; M : Model_Type) return Boolean with
+      Ghost;
+    function Get_Model (X : Buffer_Type) return Model_Type with
+      Ghost,
+      Post => Invariant (X, Get_Model'Result);
+    
+    procedure Enqueue (X : in out Buffer_Type; E : Natural) with
+      Post => Get_Model (X) = E & Get_Model (X)'Old (1 .. Max – 1);
+  private
+    type Buffer_Type is record
+      Content : Nat_Array;
+      Top     : Natural;
+    end record;
+  end Ring_Buffer;
+
+More complex examples of models of data structure can be found in the
+:ref:`Formal Containers Library`.
+  
 .. _Removal of Ghost Code:
 
 Removal of Ghost Code

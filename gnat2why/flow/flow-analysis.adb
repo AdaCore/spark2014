@@ -4402,16 +4402,50 @@ package body Flow.Analysis is
    --------------------
 
    procedure Check_Aliasing (FA : in out Flow_Analysis_Graphs) is
+
+      function Is_Inlined_Subprogram_Call (F : Flow_Id) return Boolean;
+      --  Return True iff F represents a subprogram call that was inlined for
+      --  proof.
+
+      --------------------------------
+      -- Is_Inlined_Subprogram_Call --
+      --------------------------------
+
+      function Is_Inlined_Subprogram_Call (F : Flow_Id) return Boolean is
+      begin
+         if F.Kind = Direct_Mapping then
+            declare
+               N : constant Node_Id := Get_Direct_Mapping_Id (F);
+            begin
+               --  Subprogram calls that were inlined by the frontend are
+               --  represented as null statements with the original call
+               --  statement kept in the Original_Node.
+
+               return Nkind (N) = N_Null_Statement
+                 and then Nkind (Original_Node (N)) in N_Subprogram_Call;
+            end;
+         else
+            return False;
+         end if;
+      end Is_Inlined_Subprogram_Call;
+
+   --  Start of processing for Check_Aliasing
+
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             Atr : V_Attributes renames FA.Atr (V);
+            Key : Flow_Id      renames FA.CFG.Get_Key (V);
 
          begin
             if Atr.Is_Callsite then
                Antialiasing.Check_Procedure_Call
                  (FA => FA,
-                  N  => Get_Direct_Mapping_Id (FA.CFG.Get_Key (V)));
+                  N  => Get_Direct_Mapping_Id (Key));
+            elsif Is_Inlined_Subprogram_Call (Key) then
+               Antialiasing.Check_Procedure_Call
+                 (FA => FA,
+                  N  => Original_Node (Get_Direct_Mapping_Id (Key)));
             end if;
          end;
       end loop;

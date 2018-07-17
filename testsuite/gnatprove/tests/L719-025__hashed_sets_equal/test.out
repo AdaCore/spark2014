@@ -1,3 +1,6 @@
+a-cfhase.ads:460:18: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:728:39: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:737:17: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
 a-cfhase.ads:754:24: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
 a-cfhase.ads:755:26: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
 a-cfhase.ads:801:49: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12

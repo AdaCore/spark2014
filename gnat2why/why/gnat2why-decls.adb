@@ -77,8 +77,6 @@ package body Gnat2Why.Decls is
 
       pragma Assert (not Is_Protected_Component_Or_Discr_Or_Part_Of (E));
 
-      Insert_Entity (E, To_Why_Id (E, No_Comp => True, Typ => Typ));
-
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
@@ -336,8 +334,6 @@ package body Gnat2Why.Decls is
                             " defined at " & Build_Location_String (Sloc (E))
                           else "")
                    & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Insert_Item (E, Var);
 
       --  If E is not in SPARK, only declare an object of type __private for
       --  use in effects of program functions in Why3.

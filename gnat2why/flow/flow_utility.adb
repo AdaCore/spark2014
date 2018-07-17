@@ -1049,17 +1049,10 @@ package body Flow_Utility is
                Refined_Input  : constant Flow_Id_Sets.Set :=
                  Down_Project (Input, Scope);
 
-               Trimmed_Output : Flow_Id_Sets.Set :=
+               Trimmed_Output : constant Flow_Id_Sets.Set :=
                  Refined_Output.Intersection (Globals.Outputs);
 
             begin
-               --  If the outputs in the depends are not in the globals written
-               --  we still want to keep them in the Refined_Depends. Most
-               --  likely there will be an error in the Depends contract.
-               if Trimmed_Output.Is_Empty then
-                  Trimmed_Output := Refined_Output;
-               end if;
-
                for O of Trimmed_Output loop
                   declare
                      Trimmed_Input : constant Flow_Id_Sets.Set :=
@@ -1068,9 +1061,7 @@ package body Flow_Utility is
                                                    else Globals.Inputs);
 
                   begin
-                     if Trimmed_Input.Is_Empty then
-                        Depends.Insert (O, Refined_Input);
-                     else
+                     if not Trimmed_Input.Is_Empty then
                         Depends.Insert (O, Trimmed_Input);
                      end if;
                   end;

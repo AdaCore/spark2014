@@ -102,8 +102,8 @@ package Why.Gen.Expr is
    --  generate a boolean term which expresses the translation of "Left =
    --  Right" in Ada semantics, where the equality is the one of type Typ.
    --  If the type has a user-provided primitive equality and if its most
-   --  underlying type is a record type, use the user-provided equality. Else,
-   --  use the predefined equality.
+   --  underlying type is a record type or is limited, use the user-provided
+   --  equality. Else, use the predefined equality.
 
    function New_Or_Expr
      (Left, Right : W_Expr_Id;
@@ -281,12 +281,25 @@ package Why.Gen.Expr is
       Expr           : W_Expr_Id;
       To             : W_Type_Id;
       Need_Check     : Boolean := False;
-      Force_No_Slide : Boolean := False)
+      Force_No_Slide : Boolean := False;
+      Is_Qualif      : Boolean := False)
       return W_Expr_Id;
    --  Generate a conversion between two Ada array types. If Range check
    --  is set, add a length or range check to the expression. Which
    --  kind of check, and against which type, is determined by calling
    --  [Gnat2why.Nodes.Get_Range_Check_Info] on the Range_Check node.
+   --  @param Ada_Node node which causes the check to be inserted.
+   --  @param Domain domain of the conversion
+   --  @param Expr expression to be converted
+   --  @param To type to convert to
+   --  @param Need_Check True if checks should be inserted
+   --  @param Force_No_Slide True if we want to force no sliding to be
+   --     introduced even for types with non-static bounds. Should be used
+   --     with care
+   --  @param In_Qualif True if the conversion is in fact a qualification. In
+   --     qualifications, arrays are never slided, and index checks are
+   --     introduced to ensure that the bounds match.
+   --  @result converted expression of Expr to type To
 
    function Insert_Checked_Conversion
      (Ada_Node : Node_Id;
@@ -315,6 +328,14 @@ package Why.Gen.Expr is
       Force_No_Slide : Boolean := False) return W_Expr_Id;
    --  Returns the expression of type To that converts Expr of type From. No
    --  check is inserted in the conversion.
+   --  @param Ada_Node node which causes the check to be inserted.
+   --  @param Domain domain of the conversion
+   --  @param Expr expression to be converted
+   --  @param To type to convert to
+   --  @param Force_No_Slide True if we want to force no sliding to be
+   --     introduced even for types with non-static bounds. Should be used
+   --     with care.
+   --  @result converted expression of Expr to type To, no check
 
    function Insert_Scalar_Conversion
      (Domain   : EW_Domain;

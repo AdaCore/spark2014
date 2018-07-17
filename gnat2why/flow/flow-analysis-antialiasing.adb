@@ -65,10 +65,8 @@ package body Flow.Analysis.Antialiasing is
                and then (No (Formal_B) or else Is_Formal (Formal_B));
    --  Returns if A and B alias
 
-   function Cannot_Alias (F : Node_Id) return Boolean
-   with Pre => Present (F)
-               and then Nkind (F) in N_Entity
-               and then Is_Formal (F);
+   function Cannot_Alias (F : Entity_Id) return Boolean
+   with Pre => Is_Formal (F);
    --  Check if the given formal parameter cannot possibly alias with others:
    --  it is a scalar in parameter.
 
@@ -216,14 +214,18 @@ package body Flow.Analysis.Antialiasing is
       --     * A (12)      ->  A
       --     * Wibble (X)  ->  X
 
-      function Find_Root (N : Node_Id) return Node_Id
+      procedure Find_Root (N : in out Node_Id; Depth : out Natural)
       with Pre  => Is_Interesting (Nkind (N)),
-           Post => Is_Root (Nkind (Find_Root'Result))
-                   or else not Is_Interesting (Nkind (Find_Root'Result));
+           Post => Is_Root (Nkind (N))
+                   or else not Is_Interesting (Nkind (N));
       --  Calls Down_One_Level until we find an identifier. For example:
       --    * R.X.Y       ->  R
       --    * A (12)      ->  A
       --    * Wibble (X)  ->  X
+      --
+      --  The Depth is how many times the Down_One_Level was called; see the
+      --  Up_Ignoring_Conversions (which is the opposite of this routine) for
+      --  why this parameter is needed.
 
       function Get_Root_Entity (N : Node_Id) return Entity_Id
       is (case Nkind (N) is
@@ -239,13 +241,24 @@ package body Flow.Analysis.Antialiasing is
       with Pre => Is_Root (Nkind (A)) and Is_Root (Nkind (B));
       --  Checks if A and B refer to the same entity.
 
-      function Up_Ignoring_Conversions (N   : Node_Id;
-                                        Top : Node_Id)
-                                       return Node_Id
-      with Pre  => Is_Interesting (Nkind (N)),
-           Post => Is_Interesting (Nkind (Up_Ignoring_Conversions'Result));
-      --  Goes up the parse tree (calling Parent), but no higher than Top. If
-      --  we find an type conversion of some kind we keep going.
+      procedure Up_Ignoring_Conversions
+        (N     : in out Node_Id;
+         Depth : in out Natural)
+      with Pre  => Is_Interesting (Nkind (N)) and then Depth > 0,
+           Post => Is_Interesting (Nkind (N)) and then Depth < Depth'Old;
+      --  Goes up the parse tree (calling Parent), but not higher than Depth.
+      --  If we find a type conversion of some kind we keep going.
+      --
+      --  The Depth parameter is needed, because if we are analysing a
+      --  procedure call that has been inlined for proof, then the actual might
+      --  have been relocated under an object renaming declaration. In this
+      --  case, a sequence of calls to Parent will miss the top node of the
+      --  actual parameter (luckily, all but the final call to Parent appear
+      --  reliable). See comments for Original_Node and Relocate_Node.
+      --
+      --  ??? Perhaps it would be more reliable to not call Parent at all and
+      --  detect aliasing similar to how (a simpler version) is implemented in
+      --  the frontend; see Refer_Same_Object for that.
 
       --------------------
       -- Down_One_Level --
@@ -275,33 +288,34 @@ package body Flow.Analysis.Antialiasing is
       -- Find_Root --
       ---------------
 
-      function Find_Root (N : Node_Id) return Node_Id
-      is
-         R : Node_Id := N;
+      procedure Find_Root (N : in out Node_Id; Depth : out Natural) is
       begin
-         while Is_Interesting (Nkind (R)) and then not Is_Root (Nkind (R)) loop
-            R := Down_One_Level (R);
+         Depth := 0;
+         while Is_Interesting (Nkind (N)) and then not Is_Root (Nkind (N)) loop
+            N     := Down_One_Level (N);
+            Depth := Depth + 1;
          end loop;
-         return R;
       end Find_Root;
 
       -----------------------------
       -- Up_Ignoring_Conversions --
       -----------------------------
 
-      function Up_Ignoring_Conversions (N   : Node_Id;
-                                        Top : Node_Id)
-                                        return Node_Id
+      procedure Up_Ignoring_Conversions
+        (N     : in out Node_Id;
+         Depth : in out Natural)
       is
-         P : Node_Id := Parent (N);
       begin
-         while P /= Top and then Is_Conversion (Nkind (P)) loop
-            P := Parent (P);
+         loop
+            N := Parent (N);
+            Depth := Depth - 1;
+            exit when not Is_Conversion (Nkind (N));
          end loop;
-         return P;
       end Up_Ignoring_Conversions;
 
       Ptr_A, Ptr_B      : Node_Id;
+      Depth_A, Depth_B  : Natural;
+
       Definitive_Result : Boolean := True;
 
    --  Start of processing for Aliasing
@@ -345,8 +359,11 @@ package body Flow.Analysis.Antialiasing is
       --  Ok, so both nodes might potentially alias. We now need to work out
       --  the root nodes of each expression.
 
-      Ptr_A := Find_Root (A);
-      Ptr_B := Find_Root (B);
+      Ptr_A := A;
+      Find_Root (Ptr_A, Depth_A);
+
+      Ptr_B := B;
+      Find_Root (Ptr_B, Depth_B);
 
       if Trace_Antialiasing then
          Write_Str ("   -> root of A: ");
@@ -398,7 +415,7 @@ package body Flow.Analysis.Antialiasing is
          Write_Line ("   -> same root entity");
       end if;
 
-      while Ptr_A /= A and then Ptr_B /= B loop
+      while Depth_A > 0 and then Depth_B > 0 loop
 
          --  Go up the tree one level. If we hit an unchecked conversion or
          --  type conversion we 'ignore' it. For example:
@@ -406,8 +423,8 @@ package body Flow.Analysis.Antialiasing is
          --     * R    ->  Wibble (R).X
          --     * R    ->  Wibble (R)    (if Wibble (R) is the top)
 
-         Ptr_A := Up_Ignoring_Conversions (Ptr_A, A);
-         Ptr_B := Up_Ignoring_Conversions (Ptr_B, B);
+         Up_Ignoring_Conversions (Ptr_A, Depth_A);
+         Up_Ignoring_Conversions (Ptr_B, Depth_B);
 
          pragma Assert (not Is_Root (Nkind (Ptr_A)));
          pragma Assert (not Is_Root (Nkind (Ptr_B)));
@@ -476,7 +493,7 @@ package body Flow.Analysis.Antialiasing is
                            when EQ =>
                               null;
 
-                           when others =>
+                           when LE | GE | Unknown =>
                               Definitive_Result := False;
                         end case;
 
@@ -564,7 +581,7 @@ package body Flow.Analysis.Antialiasing is
    -- Cannot_Alias --
    ------------------
 
-   function Cannot_Alias (F : Node_Id) return Boolean is
+   function Cannot_Alias (F : Entity_Id) return Boolean is
    begin
       case Ekind (F) is
          when E_In_Parameter =>

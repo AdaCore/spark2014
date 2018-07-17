@@ -166,15 +166,112 @@ Manual Proof Using Ghost Code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Guiding automatic solvers by adding intermediate assertions is a commonly used
-technique. More generally, whole pieces of ghost code, that is, code that do not
-affect the program's output, can be added to enhance automated reasoning. This section presents an example on which complex proofs involving in particular inductive reasoning can be verified automatically using ghost code.
+technique. More generally, whole pieces of :ref:`Ghost Code` can be added to
+enhance automated reasoning.
 
-This example focuses on proving the correctness of a sorting procedure on arrays
-implementing a selection sort, and, more precisely, that it always returns a
-permutation of the original array.
+Proving Existential Quantification
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Existentially quantified properties are difficult to verify for
+automatic solvers. Indeed, it requires coming up with a concrete value for
+which the property holds and solvers are not good at guessing. As an example,
+consider the following program:
+
+.. code-block:: ada
+		
+  pragma Assume (A (A'First) = 0 and then A (A'Last) > 0);
+
+  pragma Assert
+    (for some I in A'Range =>
+       I < A'Last and then A (I) = 0 and then A (I + 1) > 0);
+
+Here we assume that the first element of an array ``A`` is 0, whereas is last
+element is positive. In such a case, we are sure that there is an index ``I`` in
+the array such ``A (I)`` is 0 but not ``A (I + 1)``. Indeed, we know that ``A``
+starts with a non-empty sequence of zeros. The last element of this sequence has
+the expected property. However, automatic solvers are unable to prove such a
+property automatically because they cannot guess which index they should
+consider.
+To help them, we can define a ghost function returning a value for which the
+property holds, and call it from an assertion:
+
+.. code-block:: ada
+
+  function Find_Pos (A : Nat_Array) return Positive with Ghost,
+    Pre  => A (A'First) = 0 and then A (A'Last) > 0,
+    Post => Find_Pos’Result in A'First .. A'Last - 1 and then
+       A (Find_Pos'Result) = 0 and then A (Find_Pos'Result + 1) > 0;
+
+  pragma Assume (A (A'First) = 0 and then A (A'Last) > 0);
+  pragma Assert (Find_Pos (A) in A'Range);
+  pragma Assert
+    (for some I in A'Range =>
+       I < A'Last and then A (I) = 0 and then A (I + 1) > 0);
+
+Automatic solvers are now able to discharge the proof.
+
+Performing Induction
+~~~~~~~~~~~~~~~~~~~~
+
+Another difficult point for automated solvers is proof by induction. Though
+some automatic solvers do have heuristics allowing them to perform the most
+simple inductive proofs, they generally are lost when the induction is less
+straightforward. For example, in the example below, we state that the array
+``A`` is sorted in two different ways, first by saying that each element is
+bigger than the one just before, and then by saying that each element is
+bigger than all the ones before:
+
+.. code-block:: ada
+
+  pragma Assume
+    (for all I in A'Range =>
+      (if I > A'First then A (I) > A (I - 1)));
+  pragma Assert
+    (for all I in A'Range =>
+      (for all J in A'Range => (if I > J then A (I) > A (J))));
+
+The second assertion is provable from the first one by induction over the
+number of elements separating ``I`` and ``J``, but automatic solvers are unable
+to verify this code. To help them, we can use a ghost loop. In the loop
+invariant, we say that the property holds for all indexes ``I`` and ``J``
+separated by less than ``K`` elements:
+
+.. code-block:: ada
+
+  procedure Prove_Sorted (A : Nat_Array) with Ghost is
+  begin
+    for K in 0 .. A'Length loop
+      pragma Loop_Invariant
+        (for all I in A'Range => (for all J in A'Range =>
+            (if I > J and then I - J <= K then A (I) > A (J))));
+    end loop;
+  end Prove_Sorted;
+
+|GNATprove| will verify that the invariant holds in two steps, first it will
+show that the property holds at the first iteration, and then that, if it holds
+at a given iteration, then it also holds at the next
+(see :ref:`Loop Invariants`). Both proofs are straightforward using the
+assumption.
+
+Note that we have introduced a ghost subprogram above to contain the loop.
+This will allow the compiler to recognize that this loop is ghost, so that it
+can be entirely removed when assertions are disabled.
+
+If ``Prove_Sorted`` is declared locally to the subprogram that we want to
+verify, it is not necessary to supply a contract for it, as local subprograms
+with no contracts are inlined (see :ref:`Contextual Analysis of Subprograms
+Without Contracts`). We can still choose to provide such a contract to turn
+``Prove_Sorted`` into a lemma (see :ref:`Manual Proof Using User Lemmas`).
+
+A Concrete Example: a Sort Algorithm
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We show how to prove the correctness of a sorting procedure on arrays using
+ghost code. In particular, we want to show that the sorted array is a permuation
+of the input array.
 A common way to define permutations is to use the number of occurrences of
-elements in the array, defined inductively over the size of its array parameter:
+elements in the array, defined inductively over the size of its array parameter
+(but it is not the only one, see :ref:`Ghost Variables`):
 
 .. literalinclude:: examples/sort_types.ads
    :language: ada

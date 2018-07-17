@@ -533,7 +533,7 @@ package body Flow_Generated_Globals.Traversal is
    --  Start of processing for Traverse_Compilation_Unit
 
    begin
-      Traverse_Declaration_Or_Statement (Unit (CU));
+      Traverse_Declaration_Or_Statement (CU);
    end Traverse_Compilation_Unit;
 
 end Flow_Generated_Globals.Traversal;

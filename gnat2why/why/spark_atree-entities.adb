@@ -33,6 +33,13 @@ with Ttypes;
 
 package body SPARK_Atree.Entities is
 
+   --------------------
+   -- Actual_Subtype --
+   --------------------
+
+   function Actual_Subtype (Obj : Entity_Id) return Entity_Id renames
+     Einfo.Actual_Subtype;
+
    ---------------
    -- Alignment --
    ---------------
@@ -339,6 +346,13 @@ package body SPARK_Atree.Entities is
 
    function Has_Interrupt_Handler (Typ : Entity_Id) return Boolean renames
      Einfo.Has_Interrupt_Handler;
+
+   -----------------
+   -- Has_Own_DIC --
+   -----------------
+
+   function Has_Own_DIC (Typ : Entity_Id) return Boolean renames
+     Einfo.Has_Own_DIC;
 
    ----------------------------------
    -- Has_Pragma_Volatile_Function --

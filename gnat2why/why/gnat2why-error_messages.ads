@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;        use Atree;
 with Debug.Timing; use Debug.Timing;
 with GNATCOLL.JSON;
+with SPARK_Atree;  use SPARK_Atree;
 with Types;        use Types;
 with VC_Kinds;     use VC_Kinds;
 

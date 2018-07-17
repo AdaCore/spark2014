@@ -337,6 +337,13 @@ package body SPARK_Atree is
    function From_Aspect_Specification (N : Node_Id) return Boolean renames
      Sinfo.From_Aspect_Specification;
 
+   -----------------------------------
+   -- From_Real_Range_Specification --
+   -----------------------------------
+
+   function From_Real_Range_Specification (N : Node_Id) return Boolean is
+     (Nkind (Atree.Parent (N)) = Sinfo.N_Real_Range_Specification);
+
    --------------------------
    -- Get_Address_Rep_Item --
    --------------------------
@@ -851,6 +858,27 @@ package body SPARK_Atree is
 
    function Is_Iterator_Over_Array (N : Node_Id) return Boolean renames
      Sem_Util.Is_Iterator_Over_Array;
+
+   --------------------------------
+   -- Is_Locally_Defined_In_Loop --
+   --------------------------------
+
+   function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean is
+      Stmt : Node_Id := Atree.Parent (N);
+   begin
+      while Present (Stmt) loop
+         if Nkind (Stmt) = N_Loop_Statement then
+            return True;
+
+         elsif Sem_Util.Is_Body_Or_Package_Declaration (Stmt) then
+            return False;
+         end if;
+
+         Stmt := Atree.Parent (Stmt);
+      end loop;
+
+      return False;
+   end Is_Locally_Defined_In_Loop;
 
    -----------------------------
    -- Is_OK_Static_Expression --

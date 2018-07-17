@@ -1358,9 +1358,16 @@ package body Gnat2Why.Expr is
       for N of Include loop
          if Present (N)
            and then Nkind (N) in N_Entity
-           and then Ekind (N) = E_Constant
-           and then not Has_Variable_Input (N)
-           and then not Is_Declared_In_Unit (N, Scope)
+           and then
+             ((Ekind (N) = E_Constant
+               and then not Has_Variable_Input (N)
+               and then not Is_Declared_In_Unit (N, Scope))
+
+              --  We only consider here parameters of enclosing subprograms.
+              --  Parameters of Scope are handled specifically.
+
+              or else (Ekind (N) = E_In_Parameter
+                       and then Enclosing_Unit (N) /= Scope))
          then
             Assume_Declaration_Of_Entity
               (E             => N,
@@ -12099,10 +12106,41 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
-               T := Transform_Expr (Expression (Expr),
-                                    Type_Of_Node (Expr),
-                                    Domain,
-                                    Local_Params);
+               --  For qualification over arrays, we need to check that the
+               --  bounds are correct, and not slide the array to match the
+               --  bound. Add the conversion manually so that the proper
+               --  parameter can be used to get the proper checks.
+
+               if Nkind (Expr) = N_Qualified_Expression
+                 and then Has_Array_Type (Etype (Expr))
+                 and then Is_Constrained (Etype (Expr))
+                 and then Domain = EW_Prog
+               then
+                  T := Transform_Expr (Expression (Expr),
+                                       Type_Of_Node (Expression (Expr)),
+                                       Domain,
+                                       Local_Params);
+
+                  --  Insert the conversion with In_Qualif set to True so that
+                  --  we do not generate length checks but index checks.
+
+                  T := Insert_Array_Conversion
+                    (Domain     => EW_Prog,
+                     Ada_Node   => Expr,
+                     Expr       => T,
+                     To         => Type_Of_Node (Expr),
+                     Need_Check =>
+                       Check_Needed_On_Conversion
+                         (From => Etype (Expression (Expr)),
+                          To   => Etype (Expr)),
+                     Is_Qualif  => True);
+
+               else
+                  T := Transform_Expr (Expression (Expr),
+                                       Type_Of_Node (Expr),
+                                       Domain,
+                                       Local_Params);
+               end if;
             end if;
 
             --  Invariant checks are introduced explicitly as they need only be
@@ -12898,7 +12936,9 @@ package body Gnat2Why.Expr is
          Base_Type : W_Type_Id)
          return W_Expr_Id
       is
-         Result : W_Expr_Id;
+         Result    : W_Expr_Id;
+         Subdomain : constant EW_Domain :=
+           (if Domain = EW_Pred then EW_Term else Domain);
       begin
          if (Is_Entity_Name (Alt) and then Is_Type (Entity (Alt)))
            or else Nkind (Alt) = N_Range
@@ -12906,12 +12946,12 @@ package body Gnat2Why.Expr is
             Result :=
               Transform_Simple_Membership_Expression (Var, Alt);
          else
-            Result := New_Comparison
-              (Symbol => Why_Eq,
+            Result := New_Ada_Equality
+              (Typ    => Etype (Left_Opnd (Expr)),
                Left   => Var,
                Right  => Transform_Expr (Expr          => Alt,
                                          Expected_Type => Base_Type,
-                                         Domain        => EW_Term,
+                                         Domain        => Subdomain,
                                          Params        => Params),
                Domain => Domain);
          end if;
@@ -13047,6 +13087,111 @@ package body Gnat2Why.Expr is
                         end if;
                      end;
                   end;
+
+               elsif Is_Array_Type (Ty) then
+
+                  --  There are no constraints to check if the type is
+                  --  unconstrained.
+
+                  if Is_Constrained (Ty) then
+                     declare
+                        Var_Type   : constant Entity_Id :=
+                          Get_Ada_Node (+Get_Type (Var));
+                        False_Expr : constant W_Expr_Id :=
+                          (if Domain = EW_Pred then +False_Pred
+                           else +False_Term);
+
+                     begin
+                        --  For static arrays, we do the check statically
+
+                        if Is_Static_Array_Type (Ty)
+                          and then Is_Static_Array_Type (Var_Type)
+                        then
+                           declare
+                              Ty_Index  : Node_Id := First_Index (Ty);
+                              Var_Index : Node_Id := First_Index (Var_Type);
+                           begin
+                              if Ekind (Var_Type) = E_String_Literal_Subtype
+                              then
+                                 if Expr_Value
+                                     (String_Literal_Low_Bound (Var_Type))
+                                   /= Expr_Value
+                                       (Low_Bound (Get_Range (Ty_Index)))
+                                   or else Static_Array_Length (Var_Type, 1)
+                                   /= Static_Array_Length (Ty, 1)
+                                 then
+                                    Result := False_Expr;
+                                 else
+                                    Result := True_Expr;
+                                 end if;
+                              else
+                                 Result := True_Expr;
+
+                                 while Present (Ty_Index) loop
+                                    if Expr_Value
+                                        (High_Bound (Get_Range (Ty_Index)))
+                                      /= Expr_Value
+                                        (High_Bound (Get_Range (Var_Index)))
+                                      or else
+                                        Expr_Value
+                                          (Low_Bound (Get_Range (Ty_Index)))
+                                      /= Expr_Value
+                                        (Low_Bound (Get_Range (Var_Index)))
+                                    then
+                                       Result := False_Expr;
+                                       exit;
+                                    end if;
+                                    Ty_Index := Next_Index (Ty_Index);
+                                    Var_Index := Next_Index (Var_Index);
+                                 end loop;
+                              end if;
+                           end;
+
+                        --  Otherwise, we translate the check as the
+                        --  conjunction of the equality between each pair of
+                        --  bounds.
+
+                        else
+                           declare
+                              Dim : constant Positive :=
+                                Positive (Number_Dimensions (Ty));
+                              Eqs : W_Expr_Array (1 .. 2 * Dim);
+                           begin
+                              for I in 1 .. Dim loop
+                                 Eqs (I * 2 - 1) := New_Comparison
+                                   (Symbol => Why_Eq,
+                                    Left   => Get_Array_Attr
+                                      (Domain => EW_Term,
+                                       Expr   => Var,
+                                       Attr   => Attribute_First,
+                                       Dim    => I),
+                                    Right  => Get_Array_Attr
+                                      (Domain => EW_Term,
+                                       Attr   => Attribute_First,
+                                       Dim    => I,
+                                       Ty     => Ty),
+                                    Domain => Domain);
+                                 Eqs (I * 2) := New_Comparison
+                                   (Symbol => Why_Eq,
+                                    Left   => Get_Array_Attr
+                                      (Domain => EW_Term,
+                                       Expr   => Var,
+                                       Attr   => Attribute_Last,
+                                       Dim    => I),
+                                    Right  => Get_Array_Attr
+                                      (Domain => EW_Term,
+                                       Attr   => Attribute_Last,
+                                       Dim    => I,
+                                       Ty     => Ty),
+                                    Domain => Domain);
+                              end loop;
+                              Result := New_And_Expr (Eqs, Domain);
+                           end;
+                        end if;
+                     end;
+                  else
+                     Result := True_Expr;
+                  end if;
                else
                   pragma Assert (Is_Scalar_Type (Ty));
                   if Type_Is_Modeled_As_Base (Ty) then
