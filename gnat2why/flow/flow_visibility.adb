@@ -590,27 +590,20 @@ package body Flow_Visibility is
 
             begin
                pragma Assert (Nkind (Inst_Node) = N_Package_Instantiation);
-               --  The original frontend routine expects formal packages too,
-               --  but apparently here we only get package instantiations.
+               --  The original frontend routine expects formal packages
+               --  too, but in the backed we only get package instantiations,
+               --  because formal packages have been expanded to renamings of
+               --  instances.
 
-               case Nkind (Name (Inst_Node)) is
-                  when N_Identifier =>
-                     raise Program_Error
-                       with "generic parent with generic child";
-                     --  ??? This happens when instantiating the generic child
-                     --  within the parent's instance body; see acats ca11021.
-                     --  The original frontend routine doesn't deal with this
-                     --  case; currently just crash.
+               pragma Assert (Nkind (Name (Inst_Node)) = N_Expanded_Name);
+               --  When analysing the generic parent body, frontend expects the
+               --  child to be named either as "P.C" (N_Expanded_Name) or "C"
+               --  (N_Identifier); when analysing its instance in the backend
+               --  we only see N_Expanded_Name.
 
-                  when N_Expanded_Name =>
-                     Instance_Parent := Entity (Prefix (Name (Inst_Node)));
+               Instance_Parent := Entity (Prefix (Name (Inst_Node)));
 
-                     pragma Assert
-                       (Ekind (Instance_Parent) = E_Package);
-
-                  when others =>
-                     raise Program_Error;
-               end case;
+               pragma Assert (Ekind (Instance_Parent) = E_Package);
 
                if Present (Renamed_Entity (Instance_Parent)) then
                   Instance_Parent := Renamed_Entity (Instance_Parent);
