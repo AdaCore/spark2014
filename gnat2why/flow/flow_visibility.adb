@@ -201,6 +201,7 @@ package body Flow_Visibility is
 
          procedure Connect (Source, Target : Scope_Graphs.Vertex_Id) is
          begin
+            pragma Assert (not Scope_Graph.Edge_Exists (Source, Target));
             Scope_Graph.Add_Edge (Source, Target, Rule);
          end Connect;
 
@@ -276,13 +277,6 @@ package body Flow_Visibility is
                --  ??? The code for the target scope is repeated in rules
                --  Rule_Up_Spec and Rule_Down_Spec; this should be refactored.
 
-               if Info.Is_Package then
-                  Connect
-                    (Priv_V,
-                     Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                              Part => Private_Part)));
-               end if;
-
                Connect
                  (Body_V,
                   Scope_Graph.Get_Vertex ((Ent  => Info.Template,
@@ -344,10 +338,10 @@ package body Flow_Visibility is
          Rule := Rule_Down_Spec;
 
          --  This rule deals with downwards visibility, i.e. contributing to
-         --  the set of things the parent can see. It is exactly the inverse of
-         --  Rule_Up_Spec, except there is no special treatment for instances
-         --  (since a scope does have visibility of the spec of something
-         --  instantiated inside it).
+         --  the visibility of the surrounding context. It is exactly the
+         --  inverse of Rule_Up_Spec, except there is no special treatment for
+         --  instances (since a scope does have visibility of the spec of
+         --  something instantiated inside it).
 
          Connect
            (Scope_Graph.Get_Vertex ((if Is_Nested (Info)
@@ -363,20 +357,16 @@ package body Flow_Visibility is
          Rule := Rule_Up_Priv;
 
          --  This rule deals with upwards visibility for the private part of a
-         --  package. It is of course excepted by the "generic" rule.
+         --  child package. It doesn't apply to instances.
 
-         if Info.Is_Package then
-            if Is_Instance (Info) then
-               Connect
-                 (Priv_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                           Part => Private_Part)));
-            elsif Is_Child (Info) then
-               Connect
-                 (Priv_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                           Part => Private_Part)));
-            end if;
+         if Info.Is_Package
+           and then Is_Child (Info)
+           and then not Is_Instance (Info)
+         then
+            Connect
+              (Priv_V,
+               Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
+                                        Part => Private_Part)));
          end if;
 
          ----------------------------------------------------------------------
@@ -386,15 +376,11 @@ package body Flow_Visibility is
          --  Finally, this rule deals with the upwards visibility for the body
          --  of a nested package. A nested scope will have visibility of its
          --  enclosing scope's body, since it is impossible to complete the
-         --  body anywhere else. Again, there is an exception for the "generic"
-         --  rule.
+         --  body anywhere else. Again, it doesn't apply to instances.
 
-         if Is_Instance (Info) then
-            Connect
-              (Body_V,
-               Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                        Part => Body_Part)));
-         elsif Is_Nested (Info) then
+         if Is_Nested (Info)
+           and then not Is_Instance (Info)
+         then
             Connect
               (Body_V,
                Scope_Graph.Get_Vertex ((Ent  => Info.Container.Ent,
