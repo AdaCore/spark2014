@@ -4835,13 +4835,16 @@ package body SPARK_Definition is
          end if;
       end Mark_Type_Entity;
 
-      --  Save whether a violation was previously detected, to restore after
-      --  marking this entity.
+      --  In Mark_Entity, we likely leave the previous scope of marking. We
+      --  save the current state of various variables to be able to restore
+      --  them later.
 
       Save_Violation_Detected : constant Boolean := Violation_Detected;
       Save_Last_Violation_Root_Cause_Node : constant Node_Id :=
         Last_Violation_Root_Cause_Node;
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+      Save_Current_Delayed_Aspect_Type : constant Node_Id :=
+        Current_Delayed_Aspect_Type;
 
    --  Start of processing for Mark_Entity
 
@@ -4895,6 +4898,7 @@ package body SPARK_Definition is
       end if;
 
       Current_SPARK_Pragma := SPARK_Pragma_Of_Entity (E);
+      Current_Delayed_Aspect_Type := Empty;
 
       --  Fill in the map between classwide types and their corresponding
       --  specific type, in the case of the implicitly declared classwide type
@@ -5132,14 +5136,12 @@ package body SPARK_Definition is
          end loop;
       end if;
 
-      --  Update the information that a violation was detected
+      --  Restore prestate
 
       Violation_Detected := Save_Violation_Detected;
       Last_Violation_Root_Cause_Node := Save_Last_Violation_Root_Cause_Node;
-
-      --  Restore SPARK_Mode pragma
-
       Current_SPARK_Pragma := Save_SPARK_Pragma;
+      Current_Delayed_Aspect_Type := Save_Current_Delayed_Aspect_Type;
    end Mark_Entity;
 
    ------------------------------------
