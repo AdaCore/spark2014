@@ -404,6 +404,23 @@ package body Flow_Visibility is
       Hierarchy_Info.Clear;
 
       Close_Visibility_Graph;
+
+      --  Sanity check: all vertices should be now connected to Standard
+
+      declare
+         Standard : constant Scope_Graphs.Vertex_Id :=
+           Scope_Graph.Get_Vertex ((Ent  => Standard_Standard,
+                                    Part => Visible_Part))
+           with Ghost;
+
+         use Scope_Graphs;
+
+      begin
+         pragma Assert
+           (for all V of Scope_Graph.Get_Collection (All_Vertices) =>
+               (if V /= Standard then Scope_Graph.Edge_Exists (V, Standard)));
+      end;
+
    end Connect_Flow_Scopes;
 
    ----------
