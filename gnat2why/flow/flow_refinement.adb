@@ -138,7 +138,7 @@ package body Flow_Refinement is
       return
         (if Is_Child_Unit (S.Ent)
          then (Ent  => Scope (S.Ent),
-               Part => (if Is_Private_Descendant (S.Ent)
+               Part => (if Private_Present (Enclosing_Comp_Unit_Node (S.Ent))
                         then Private_Part
                         else S.Part))
          else Get_Flow_Scope (Unit_Declaration_Node (S.Ent)));
