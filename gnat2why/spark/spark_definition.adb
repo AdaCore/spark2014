@@ -2946,8 +2946,9 @@ package body SPARK_Definition is
         and then SPARK_Pragma_Is (Opt.On)
         and then not Has_User_Supplied_Globals (E)
         and then ((Is_Imported (E) and then
-                     Convention (E) not in Convention_Ada)
-                  or else In_Internal_Unit (E))
+                     Convention (E) not in Convention_Ada
+                                         | Convention_Intrinsic)
+                   or else In_Internal_Unit (E))
       then
          Error_Msg_NE
            ("?no Global contract available for &", N, E);
