@@ -1,1 +1,1 @@
-p.ads:1:16: warning: initialization of "X" is not mentioned in Initializes contract
+p.adb:4:07: warning: initialization of "X" has no effect

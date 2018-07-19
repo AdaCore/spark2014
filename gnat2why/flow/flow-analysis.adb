@@ -2115,8 +2115,10 @@ package body Flow.Analysis is
                         --  This warning is ignored for local constants
 
                         if FA.Kind in Kind_Package | Kind_Package_Body
-                          and then No (Find_In_Initializes
-                                       (Defining_Identifier (N)))
+                          and then
+                            Scope (Defining_Identifier (N)) = FA.Spec_Entity
+                          and then
+                            No (Find_In_Initializes (Defining_Identifier (N)))
                         then
                            Error_Msg_Flow
                              (FA       => FA,
