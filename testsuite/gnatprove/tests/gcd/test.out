@@ -33,13 +33,13 @@ math_euclid.adb:71:13: info: loop invariant preservation proved (Z3: 4 VC)
 math_euclid.adb:74:28: info: initialization of "An" proved
 math_euclid.adb:74:37: info: initialization of "Bn" proved
 math_euclid.adb:74:64: info: range check proved (Z3: 1 VC)
-math_euclid.adb:77:22: medium: assertion might fail, cannot prove Divides (An, An)
+math_euclid.adb:77:22: info: assertion proved (Z3: 1 VC)
 math_euclid.adb:77:35: info: initialization of "An" proved
 math_euclid.adb:78:22: info: assertion proved (Z3: 1 VC)
 math_euclid.adb:78:31: info: initialization of "An" proved
 math_euclid.adb:79:22: info: assertion proved (Z3: 1 VC)
 math_euclid.adb:79:31: info: initialization of "An" proved
-math_euclid.adb:81:22: info: assertion proved (Z3: 1 VC)
+math_euclid.adb:81:22: info: assertion proved (CVC4: 1 VC)
 math_euclid.adb:81:35: info: initialization of "An" proved
 math_euclid.adb:82:38: info: range check proved (Z3: 1 VC)
 math_euclid.adb:82:57: info: range check proved (Z3: 1 VC)
