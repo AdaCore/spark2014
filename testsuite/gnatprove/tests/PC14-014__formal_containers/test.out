@@ -1420,7 +1420,7 @@ my_sets.adb:51:28: info: precondition proved (Z3: 1 VC)
 my_sets.adb:51:37: info: initialization of private part of "K" proved
 my_sets.adb:51:39: info: precondition proved (Z3: 1 VC)
 my_sets.adb:51:42: info: initialization of private part of "L" proved
-my_sets.adb:52:25: info: assertion proved (Z3: 1 VC)
+my_sets.adb:52:25: info: assertion proved (CVC4: 1 VC)
 my_sets.adb:52:42: info: initialization of private part of "M" proved
 my_sets.adb:52:51: info: initialization of private part of "K" proved
 my_sets.adb:52:57: info: initialization of private part of "L" proved
