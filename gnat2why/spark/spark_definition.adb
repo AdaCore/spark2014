@@ -4827,7 +4827,7 @@ package body SPARK_Definition is
 
          elsif Is_Incomplete_Type (E) then
             Mark_Unsupported
-              ("incomplete type &", E,
+              ("incomplete type", E,
                Cont_Msg =>
                  "consider restructuring code to avoid `LIMITED WITH`");
 
