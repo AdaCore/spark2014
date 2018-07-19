@@ -3544,7 +3544,7 @@ package body Gnat2Why.Expr is
             Params           => Params,
             Use_Pred         => Use_Pred);
 
-         --  If elements of a cmposite type have default discriminants and are
+         --  If elements of a composite type have default discriminants and are
          --  not constrained then 'Constrained returns false on them.
 
          if Has_Defaulted_Discriminants (Retysp (C_Ty))

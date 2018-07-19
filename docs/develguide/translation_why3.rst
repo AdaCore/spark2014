@@ -134,21 +134,20 @@ every time they are read.
 Predefined / primitive equality
 """""""""""""""""""""""""""""""
 
-For every Ada type, we also introduce two equality functions, one for
-the predefined equality, named bool_eq, and one for the user-defined
-primitive equality. A notable exception, predefined equality is not
+For every Ada type, we also introduce an equality function for the predefined
+equality named ``bool_eq``. A notable exception, predefined equality is not
 used on scalar types. Instead, equality on such types is directly
 translated as the Why built-in equality on the types representative
 types (see section about scalar types).
 
-As for primitive equality, it is only used for types which ultimately
-are record types and on which such a primitive equality is redefined
-(see Why.Gen.Expr.New_Ada_Equality).
+For types which ultimately are record types, we also define a function named
+``user_eq`` for the primitive equality. It is only used when primitive equality
+is redefined for the type (see ``Why.Gen.Expr.New_Ada_Equality``).
 
-When it is declared, the boolean equality bool_eq is given a
+When it is declared, the boolean equality ``bool_eq`` is given a
 definition depending on the kind of the type. Here is for example the
-equality which would be generated for a record type with a single F
-component of type Integer:
+equality which would be generated for a record type with a single ``F``
+component of type ``Integer``:
 
 .. code-block:: whyml
 
@@ -156,7 +155,7 @@ component of type Integer:
     Standard__integer__rep.to_rep a.__split_fields.rec__t__f =
     Standard__integer__rep.to_rep b.__split_fields.rec__t__f
 
-It simply states that two records are equal when their F components
+It simply states that two records are equal when their ``F`` components
 are equal.
 
 As for the user-defined primitive equality, it is declared with no
@@ -1779,17 +1778,314 @@ type, a renaming is introduced for the record type.
 Type Completion
 ^^^^^^^^^^^^^^^
 
+In addition to their main and possibly their representation module, types also
+have a completion module. This module contains declarations and axioms which
+may reference entities (types, functions...) defined after the type declaration.
+For example, completion modules for scalar types with dynamic bounds contain
+axioms which give the values of the bounds that do not have a static value, see
+``Gnat2why.Types.Generate_Type_Completion.Create_Axioms_For_Scalar_Bounds``.
+
+Completion modules are located after modules for declarations but before modules
+for checks in the generated mlw file. They have the same name as the main module
+they complete but with an additional __axiom suffix. Completion modules
+for types are created in ``Gnat2Why.Types.Generate_Type_Completion``.
+
 Predicates / Invariants
 """""""""""""""""""""""
+If a type has a subtype predicate or a type invariant, a Why3 predicate is
+generated for its expression. For example, let's consider a subtype for sorted
+arrays:
+
+.. code-block:: ada
+
+   subtype Sorted_Nat_Array is Nat_Array with
+     Predicate => Is_Sorted (Sorted_Nat_Array);
+
+Here is the Why3 predicate generated for it (for readability, names are
+simplified and axiom guards are removed):
+
+.. code-block:: whyml
+
+  predicate dynamic_predicate (x : sorted_nat_array) = is_sorted x
+
+In SPARK, subtype predicates and type invariants are not allowed to depend on
+variables (see SPARK RM 4.4 (2)). However, as scalar constants are sometimes
+translated as variables in Why, it is possible for the Why3 expression
+associated to such an aspect specification to reference a Why3 variable. In such
+a case, the Why3 predicate generated for the invariant or predicate will take
+the variable as an additional parameter. Here is an example:
+
+.. code-block:: ada
+
+   for I in 1 .. 10 loop
+      declare
+         subtype Dynamic_Bounds is Integer with
+           Predicate => Dynamic_Bounds in 1 .. I;
+      begin
+         ...
+
+Because loops are sometimes (partially) unrolled, scalar constants declared in
+loops, and in particular loop indexes, are
+translated as variables in Why. As a result, the predicate of type
+``Dynamic_Bounds`` will have as an additional parameter the value of the loop
+index at the current iteration:
+
+.. code-block:: whyml
+ 
+ predicate dynamic_predicate (x : int) (L_1__i : int) = 1 <= x <= L_1__i
 
 Default initialization
 """"""""""""""""""""""
 
+For types which can be default initialized (ie. definite subtypes, see
+``Can_Be_Default_Initialized``), a Why3 predicate named
+``default_initial_assumption`` is defined for the type. It can be used to
+express that a value of this type has been obtained by default initialization.
+Note that even types which do not define full default initialization have a
+``default_initial_assumption`` predicate. Parts of types which do not have
+default values are simply left unspecified by the predicate. For example,
+Ada does not define a default value for the standard type ``Integer``. A
+predicate for the default initial assumption of values of type ``Integer`` is
+still generated as variables of this type can be left uninitialized, but it does
+not give any information on the value of its parameter:
+
+.. code-block:: whyml
+ 
+ predicate default_initial_assumption (x : int) (skip_top_level : bool) =
+  true
+
+As can be seen on the example above, the ``default_initial_assumption``
+predicate takes a boolean ``skip_top_level`` argument in addition to the value
+``x`` for which we want to assume default initialization. This argument can be
+used to short circuit the top-level default initial condition of the type if
+any. For example, consider the following ``Holder`` type which is empty when
+default initialized:
+
+.. code-block:: ada
+
+   package P is
+      type Holder is private with
+        Default_Initial_Condition => Is_Empty (Holder);
+
+      function Is_Empty (X : Holder) return Boolean;
+   private
+      type Holder is record
+         Present : Boolean := False;
+         Content : Natural := 0;
+      end record;
+      function Is_Empty (X : Holder) return Boolean is (not X.present);
+   end P;
+
+We can see that its default initial condition is ignored if ``skip_top_level``
+is set to true:
+
+.. code-block:: whyml
+
+ predicate default_initial_assumption (x : holder) (skip_top_level : bool) =
+  holder.__split_fields.rec__present = false /\
+  to_rep (holder.__split_fields.rec__content) = 0 /\
+  (if skip_top_level then true else is_empty holder)
+
+This short-circuit is used in particular in code that checks the
+``Default_Initial_Condition`` aspect itself, see
+``Gnat2Why.Expr.Check_Type_With_DIC``. It is also used to ignore default
+initial conditions when checking that type invariants and subtype predicates
+hold on default values, since the default initial condition itself is checked
+assuming all applicable invariants and predicates (at least when the default
+initial condition is checked at declaration, see ``Needs_DIC_Check_At_Decl``
+and ``Needs_DIC_Check_At_Use``).
+
 Dynamic invariants
 """"""""""""""""""
+Not all information provided by Ada types is encoded into the corresponding
+Why3 types. Here are some examples of information missing from Why3 types (see
+``Gnat2Why.Expr.Compute_Dynamic_Invariant`` for the exhaustive list):
+
+ * Type predicates and invariants,
+ * Bounds of empty or dynamically constrained scalar types,
+ * Bounds of dynamically constrained array types,
+ * Discriminants of constrained record types...
+
+This additional information is supplied by the mean of assumptions all over Why3
+programs. It is assumed for inputs on subprogram entry (see
+``Compute_Dynamic_Property_For_Inputs``), added to the postcondition of
+subprograms for subprogram outputs, assumed inside loops as implicit invariants
+etc. To make these assumptions easier and to improve readability in the Why3
+files, a Why3 predicate named ``dynamic_invariant`` is defined
+in the completion of every type entity (except for Itypes as they may depend on
+locally defined constants such as 'Old; dynamic invariants of Itypes are
+recomputed when needed, see ``Compute_Dynamic_Invariant``).
+
+To see how this all works together, let's consider some examples. First,
+here is a simple integer type with dynamic bounds:
+
+.. code-block:: ada
+
+   type Dyn_Int is new Integer range - Max .. Max;
+
+Constants have already been introduced for its bounds, but ``Dyn_Int`` itself is
+translated as a renaming of ``Integer``. The dynamic invariant of ``Dyn_Int``
+simply states that its parameter is in the expected bounds:
+
+.. code-block:: whyml
+
+ predicate dynamic_invariant (expr : int) (is_init : bool)
+    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool)  =
+  (if is_init \/ dyn_int.first  <= dyn_int.last then
+      dyn_int.first <= expr <= dyn_int.last
+   else true)
+
+We see that, in addition to its main ``expr`` parameter, ``dynamic_invariant``
+takes 4 boolean arguments:
+
+ * ``is_init`` is used to avoid assuming unsound properties if ``expr`` is
+   not known to be initialized. We see it in use here, where it prevents
+   assuming that ``expr`` is in an empty range unless it is known to be
+   initialized (in which case an error will have been raised at the
+   initialization of ``expr``).
+ * ``skip_constant`` allows to skip the dynamic invariant which applies to
+   constant parts of ``expr`` (array bounds, discriminants...). This is used to
+   avoid polluting the context with already known facts.
+ * ``do_toplevel`` allows to skip the toplevel type predicate applied to
+   ``expr`` if any. This is used to check the predicate itself for absence of
+   runtime errors.
+ * ``do_typ_inv`` allows to skip all invariants that may apply to ``expr`` or
+   to one of its components. This is used to avoid introducing soundness issues
+   when translating private subprograms from boundary packages, as they are
+   allowed to break the invariant.
+
+Let's now consider a more complex example. We can declare an option type
+with a mutable discriminant containing a value of type ``Dyn_Int``, but only
+when the discriminant is True:
+
+.. code-block:: ada
+
+   type Result_Type (Found : Boolean := False) is record
+      case Found is
+      when True  =>
+        Result : Dyn_Int;
+      when False =>
+         null;
+      end case;
+   end record;
+
+Here is its dynamic invariant:
+
+.. code-block:: whyml
+
+ predicate dynamic_invariant (expr : result_type) (is_init : bool)
+    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool) =
+  (if p__result_type__result__pred expr then
+    (if is_init \/ dyn_int.first  <= dyn_int.last then
+      dyn_int.first <= dyn_int.to_rep expr.__split_fields.result <= dyn_int.last
+     else false)
+  else false)
+
+We see that dynamic invariants of composite types repeat the dynamic invariants
+of their components. As ``Result_Type`` has discriminant, the dynamic property
+of the ``Result`` component is only assumed if the component is present. Note
+that the ``dynamic_invariant`` predicate of components is not reused here. This
+sometimes allows simplifications.
+
+Let us now consider an unconstrained array of ``Result_Type``:
+
+.. code-block:: ada
+
+   type Result_Array is array (Positive range <>) of Result_Type;
+
+Like for records, its dynamic invariant contains the invariant of its
+components, but it also contains information about its bounds, which are only
+assumed if ``skip_constant`` is false:
+
+.. code-block:: whyml
+
+ predicate dynamic_invariant (expr : result_array) (is_init : bool)
+    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool) =
+  (if skip_constant then true
+   else dynamic_property Standard__positive.first Standard__positive.last
+           (first expr) (last expr))
+  /\ (forall i : int.
+        (if (first expr) <= i <= (last expr) then
+            ... (* dynamic invariant of get (to_array expr) i *)
+            /\ (get (to_array expr) i).attr_constrained = False
+         else true))
+
+Note that, in addition to the dynamic invariant of ``Result_Type`` which is not
+repeated here, the dynamic invariant also assumes that elements of ``expr`` are
+unconstrained. Indeed, if it is not true in general that records with defaulted
+discriminants are unconstrained, but it always holds when such elements are
+nested in a composite type.
+
+As a last example, lets use this array type to define a type of stacks. This
+type contains a dynamically constrained subtype of ``Result_Array`` and features
+a subtype predicate:
+
+.. code-block:: ada
+
+   type Result_Stack (Max : Natural) is record
+      Content : Result_Array (1 .. Max);
+      Length  : Natural;
+   end record
+     with Predicate => Length in 0 .. Max;
+
+The frontend introduces an entity for the type of the content component. As
+this entity is an Itype, it does not have its own dynamic invariant. However,
+we will see it inlined in the invariant of ``Result_Stack``:
+
+.. code-block:: whyml
+
+ predicate dynamic_invariant (expr : result_stack) (is_init : bool)
+    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool) =
+  (if do_toplevel then
+   (if is_init then
+     0 <= to_rep expr.__split_fields.length <= to_rep expr.__split_discrs.max
+    else true)
+   else true) /\
+   (if p__result_stack__content__pred expr then
+       first expr.__split_fields.content = 1
+    /\ last expr.__split_fields.content = to_rep expr.__split_discrs.max
+    /\ (forall i : int. ...
+
+The first conjunct of the dynamic invariant of ``Result_Stack`` concerns the
+subtype predicate. We see that it only holds if ``do_toplevel`` and ``is_init``
+are true (that is, if ``expr`` is initialized and if we do not intentionally
+skip this predicate). The second conjunct is the invariant of the ``Content``
+component (the ``Length`` component has no dynamic invariant, it is of  a static
+scalar type, all necessary information is contained in its Why3 type). The
+first part of the invariant of ``Content`` assumes the value of its bounds.
+Note that this assumption is done even when ``skip_constants`` is true.
+Indeed, constant parts of objects are only split in different object at the
+top level. As a consequence, Why3 does not know that the bounds are constant
+for nested arrays, and we need to assume it.
 
 User equality
 """""""""""""
+If primitive equality over a type which ultimately is a record is redefined by
+the user, an axiom is provided to supply a definition for the primitive
+equality function ``user_eq`` in the completion of the type entity. For example,
+consider a type with two components, a ``Main`` component, which is the one we
+care about, and another ``Ignored`` component which is only used for some
+secondary usage, like logging. We define equality on this record type as
+equality of the ``Main`` component only:
+
+.. code-block:: ada
+
+   type T_Rec is record
+      Main    : Integer;
+      Ignored : Integer;
+   end record;
+
+   function "=" (X, Y : T_Rec) return Boolean is (X.Main = Y.Main);
+
+The "=" function above is translated as a normal function, producing a Why3
+logic function named ``P__Oeq.oeq``. Using this function, we can define the
+value of the generic primitive equality function ``user_eq`` introduced for
+``T`` (see the section about Record Equality for usage of ``user_eq``):
+
+.. code-block:: whyml
+		
+ axiom user_eq__def_axiom :
+  (forall a b : t_rec__. P__t_rec.user_eq a b = P__Oeq.oeq a b)
 
 Objects
 -------
