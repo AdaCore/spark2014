@@ -3722,16 +3722,12 @@ package body Flow.Control_Flow_Graph is
 
                Final_V_Id : constant Flow_Graphs.Vertex_Id :=
                  FA.CFG.Get_Vertex (Final_F_Id);
-            begin
-               if Final_V_Id /= Flow_Graphs.Null_Vertex then
-                  declare
-                     Final_Atr : V_Attributes renames FA.Atr (Final_V_Id);
 
-                  begin
-                     Final_Atr.Is_Export := Final_Atr.Is_Export
-                       or else Is_Initialized_At_Elaboration (E, FA.B_Scope);
-                  end;
-               end if;
+               Final_Atr : V_Attributes renames FA.Atr (Final_V_Id);
+
+            begin
+               Final_Atr.Is_Export := Final_Atr.Is_Export
+                 or else Is_Initialized_At_Elaboration (E, FA.B_Scope);
             end;
          end loop;
       end if;
