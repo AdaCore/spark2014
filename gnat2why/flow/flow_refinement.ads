@@ -263,7 +263,8 @@ package Flow_Refinement is
 
    function Find_In_Initializes (E : Checked_Entity_Id)
                                  return Entity_Id
-   with Post => (if Present (Find_In_Initializes'Result)
+   with Pre  => Ekind (E) in E_Abstract_State | E_Constant | E_Variable,
+        Post => (if Present (Find_In_Initializes'Result)
                  then Find_In_Initializes'Result in E
                                                   | Encapsulating_State (E));
    --  Returns the node representing E (or its immediately encapsulating state)

@@ -1304,51 +1304,59 @@ package body Flow_Refinement is
    -------------------------
 
    function Find_In_Initializes (E : Checked_Entity_Id) return Entity_Id is
-      State : constant Entity_Id := Encapsulating_State (E);
-
-      Target_Ent : constant Entity_Id :=
-        (if Present (State) and then Scope (E) = Scope (State)
-         then State
-         else Unique_Entity (E)); --  ??? why unique entity?
-      --  What we are searching for. Either the entity itself, or, if this
-      --  entity is a constituent of an abstract state of its immediately
-      --  enclosing package, that abstract state.
-
-      P : Entity_Id := E;
+      Scop : constant Entity_Id := Scope (E);
 
    begin
-      while not Is_Package_Or_Generic_Package (P) loop
-         pragma Assert (Ekind (P) /= E_Package_Body);
-         P := Scope (P);
-      end loop;
+      --  For E to occur in the Initializes contract, it must be declared
+      --  immediately within its enclosing package (or its body).
 
-      --  ??? a simple traversal like in Find_Global better fits here
+      if Ekind (Scop) = E_Package then
+         declare
+            M : constant Dependency_Maps.Map := Parse_Initializes (Scop);
 
-      declare
-         M : constant Dependency_Maps.Map := Parse_Initializes (P);
+            State : constant Entity_Id := Encapsulating_State (E);
 
-      begin
-         for Initialized_Var in M.Iterate loop
-            declare
-               F : Flow_Id renames Dependency_Maps.Key (Initialized_Var);
-            begin
-               --  The package whose state variable E is known by an Entity_Id
-               --  must itself be known by an Entity_Id, but the left-hand
-               --  sides of its Initializes aspect might include objects from
-               --  the package body that are promoted to implicit abstract
-               --  states.
-               pragma Assert (F.Kind in Direct_Mapping | Magic_String);
+            Target_Ent : constant Entity_Id :=
+              (if Present (State) and then Scope (E) = Scope (State)
+               then State
+               else Unique_Entity (E)); --  ??? why unique entity?
 
-               if F.Kind = Direct_Mapping
-                 and then Get_Direct_Mapping_Id (F) = Target_Ent
-               then
-                  return Target_Ent;
-               end if;
-            end;
-         end loop;
-      end;
+            --  What we are searching for. Either the entity itself, or,
+            --  if this entity is a constituent of an abstract state of
+            --  its immediately enclosing package, that abstract state.
 
-      return Empty;
+         begin
+            for Initialized_Var in M.Iterate loop
+               declare
+                  F : Flow_Id renames Dependency_Maps.Key (Initialized_Var);
+
+               begin
+                  --  The package whose state variable E is known by an
+                  --  Entity_Id must itself be known by an Entity_Id, but the
+                  --  left-hand sides of its Initializes aspect might include
+                  --  objects from the package body that are promoted to
+                  --  implicit abstract states.
+                  pragma Assert (F.Kind in Direct_Mapping | Magic_String);
+
+                  if F.Kind = Direct_Mapping
+                    and then Get_Direct_Mapping_Id (F) = Target_Ent
+                  then
+                     return Target_Ent;
+                  end if;
+               end;
+            end loop;
+         end;
+
+         return Empty;
+
+      --  Otherwise, it comes from a declaration block in the package body
+      --  statements.
+
+      else
+         pragma Assert (Ekind (Scop) = E_Block);
+
+         return Empty;
+      end if;
    end Find_In_Initializes;
 
    -----------------------------------
