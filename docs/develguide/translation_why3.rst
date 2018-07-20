@@ -2089,16 +2089,334 @@ value of the generic primitive equality function ``user_eq`` introduced for
 
 Objects
 -------
+Mutable and Constant Objects
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Objects are translated differently depending on their type, but also depending
+on whether they are mutable or not. Let's first consider constants. Are
+translated as constants in Why3 all Ada objects with are constants in Ada
+except:
 
-See Why.Gen.Binders.Mk_Item_Of_Entity
+ * Loop parameters, as they need to be updated during the generated Why3 loop;
+ * Scalar constants with variable inputs declared in unrolled loop, or before
+   the loop invariant in normal loops, because they can appear twice with
+   different values due to loop handling (see
+   ``SPARK_Definition.Check_Loop_Invariant_Placement`` and
+   ``SPARK_Definition.Check_Unrolled_Loop``);
+ * Volatile in parameters with asynchronous writers.
 
-Constants / variables (defined in loops before invariant)
+See ``Is_Mutable_In_Why`` for more details.
 
-value of constants
+Ada objects which are constant in Why3 are translated as functions without
+parameters. Here are is an example:
 
-abstract vs split form
+.. code-block:: ada
 
-Dynamic invariants
+   B : constant Boolean := True;
+
+This declaration is translated into a single uninterpreted logic function
+without parameters:
+
+.. code-block:: whyml
+
+ module P__b
+   function b2 : bool
+ end
+
+If the definition of the constant does not depend on variables, it is supplied
+as an axiom in a completion module for the object:
+
+.. code-block:: whyml
+
+ module P__b___axiom
+   use        P__b
+
+   axiom b__def_axiom :
+    P__b.b = True
+ end
+
+Variables on the other hand, are translated using an uninterpreted program
+declaration returning an object of a reference type. If we remove the
+``constant`` keyword form the declaration of ``B``, the translation will become:
+
+.. code-block:: whyml
+
+ module P__b
+  val b : bool__ref 
+ end
+
+No axiom is generated for the value of a variable. The value will be provided
+as an assignment at the location of the object declaration:
+
+.. code-block:: whyml
+
+ P__b.b.bool__content <- True;
+
+Scalar Objects
+^^^^^^^^^^^^^^
+For some Ada types, expressions, and in particular objects, can be either in a
+open, or split, form or in a closed, or abstract, form. This is the case for
+most scalar types, arrays, and records. ``Why.Inter.EW_Abstract`` and
+``Why.Inter.EW_Split`` are used to create the split and abstract form of
+a type. Note that, whereas all types have an abstract form (it is always OK to
+call ``EW_Abstract`` on an Ada type), only scalar types and array types have
+a split form (even if record objects do have a split form, see corresponding
+section).
+
+Scalar types which are not standard boolean use their representative type as a
+split form: When an expression of a scalar type which is not standard boolean is
+in split form, if it is translated as a value of the underlying representative
+type (mathematical integer, bitvector, floating point type...). Objects of
+scalar types are always in split form (see ``Use_Split_Form_For_Type``). For
+example, let's consider the following objects:
+
+.. code-block:: ada
+
+   X : constant Integer := 15;
+   Y : Integer := 15;
+
+As ``Integer`` is a signed integer type, its representative type is ``int``:
+
+.. code-block:: whyml
+
+ function x : int
+
+ axiom x__def_axiom :
+   P__x.x = 15
+
+ val y : int__ref
+
+Using this split form for scalar types avoids having to introduce conversions
+between the closed form and the
+representative type for computations. Missing information about the
+bounds of the objects are supplied as assumptions
+through dynamic invariant (see the corresponding section in Type Completion).
+
+Array Objects
+^^^^^^^^^^^^^
+For arrays that are mutable in Why, separating the content of the array from its
+bounds makes proof easier. Indeed, it allows to translate the bounds as
+constants, so that their preservation comes for free, while keeping a
+reference for the content. To achieve this,
+unconstrained and dynamically constrained array types use the underlying map
+type as a split form. Since the separation is only used for preservation of
+information, only mutable arrays are in split form. Let us look at some
+examples.
+
+As array constants are in closed form, constants of constrained array types with
+static bounds will be translated as functions returning the underlying Why3 map
+and constants of unconstrained array types, or of dynamically constrained array
+types, as functions returning the corresponding abstract type:
+
+.. code-block:: ada
+
+   type Nat_Array is array (Positive range <>) of Natural;
+
+   A1 : constant Nat_Array (1 .. 10) := (1 .. 10 => 15);
+   A2 : constant Nat_Array := (1 .. 10 => 15);
+
+The type of ``A1`` is statically constrained. It will be translated as a Why3
+map, the bounds being declared directly inside the module for the Ada type of
+``A1``:
+   
+.. code-block:: whyml
+
+ function a1 : Array__Int__Standard__natural.map
+
+The type of ``A2`` is unconstrained. It will be translated using the abstract
+type introduced for ``Nat_Array`` from which both the bounds and the
+underlying map can be queried:
+   
+.. code-block:: whyml
+
+ function a2 : P__nat_array.nat_array
+
+Let us now consider mutable arrays:
+
+.. code-block:: ada
+
+   A1 : Nat_Array (1 .. 10) := (1 .. 10 => 15);
+   A2 : Nat_Array := (1 .. 10 => 15);
+
+Since the bounds of statically constrained array types are translated
+separately, we simply need a global reference for the content of ``A1``:
+   
+.. code-block:: whyml
+
+ val a1 : Array__Int__Standard__natural.map__ref
+
+For unconstrained or dynamically constrained array types, mutable objects are
+split into different parts, the bounds, which are constant, and the mutable
+content. For one-dimensional arrays, this results in the declaration of three
+Why3 objects:
+   
+.. code-block:: whyml
+
+ val a2 : Array__Int__Standard__natural.map__ref 
+ 
+ function a2__first : Standard__integer.integer
+ 
+ function a2__last : Standard__integer.integer
+
+A draw back of this approach is that array variables need to be
+reconstructed using the ``of_array`` conversion function when they are involved
+in computations. Indeed, as the bounds are associated to Ada objects, they
+cannot easily be retrieved from more complex expressions, therefore requiring
+the switch to closed form.
+
+Record Objects
+^^^^^^^^^^^^^^
+Like arrays, records can have both constant and variable parts. The regular
+components of a mutable record object are always mutable, whereas discriminants
+are constant most of the time, and tag of tagged record objects can never
+change. As a result, it is interesting to split record objects so that
+preservation of constant parts can come for free. However, unlike array objects,
+record objects do not have a single main mutable part. As a result, there is not
+a single type for the split form of a record and record expressions which are
+not objects are never in split form (see assertions in ``New_Kind_Base_Type``
+enforcing that it is never called with kind ``EW_Split`` on record types).
+
+Record constants are in closed form. They are translated as a single
+uninterpreted logic function of the corresponding abstract record type with
+no parameters.
+
+On the other hand, a mutable record object may produce up to four declarations:
+
+ * A mutable Why3 record for the regular components of the Ada record type,
+ * A Why3 record for the discriminants of the Ada record type (mutable only
+   if the Ada type has defaulted discriminants),
+ * A mathematical integer constant for the tag attribute of tagged types, and
+ * A boolean constant for the constrained attribute of records with defaulted
+   discriminants.
+
+As an example, let us consider the following tagged Ada record:
+
+.. code-block:: ada
+
+   type Tagged_Rec is tagged record
+      F : Integer;
+   end record;
+
+   T : Tagged_Rec := (F => 15);
+
+As it has no discriminants, two declarations are emitted for it, a reference for
+the regular components and a constant for the tag attribute:
+
+.. code-block:: whyml
+
+ val t2__split_fields : P__tagged_rec.__split_fields__ref 
+ 
+ function t2__attr__tag : int
+
+Let us now consider a record type with mutable discriminants:
+
+.. code-block:: ada
+
+   type Option (Present : Boolean := False) is record
+      case Present is
+      when True  =>
+        Content : Integer;
+      when False =>
+         null;
+      end case;
+   end record;
+
+   O1 : Option := (Present => True, Content => 15);
+
+As ``Option`` has defaulted discriminants, both its regular and its discriminant
+parts are mutable. However, its constrained attribute is not:
+
+.. code-block:: whyml
+
+ val o1__split_fields : P__option.__split_fields__ref 
+ 
+ val o1__split_discrs : P__option.__split_discrs__ref 
+ 
+ function o1__attr__constrained : bool
+
+If the discriminant of ``Option`` is fixed in its Ada type, the discriminant
+part will be declared as a constant:
+
+.. code-block:: ada
+
+   O2 : Option (True) := (Present => True, Content => 15);
+
+.. code-block:: whyml
+
+ val o2__split_field : P__To2S.__split_fields__ref 
+ 
+ function o2__split_discrs : P__option.__split_discrs
+ 
+ function o2__attr__constrained : bool
+
+Effect-Only Objects
+^^^^^^^^^^^^^^^^^^^
+Global annotations may refer to state whose exact definition is hidden from the
+analysis. The most common occurrence of this case is for state abstraction. When
+analyzing a unit, abstract states defined in other units are opaque for SPARK.
+To encode this unknown state, abstract states are translated in Why as a global
+variable of the predefined ``__private`` type. Here is an example:
+
+.. code-block:: ada
+
+   package Withed_Unit with
+     Abstract_State => State
+   is
+      ...
+   end Withed_Unit;
+
+   with Withed_Unit;
+   procedure P with Global => (In_Out => Withed_Unit.State);
+
+A global reference is introduced in Why for the abstract state of
+``Withed_Unit``, so that it can be used in the translation of ``P``:
+
+.. code-block:: whyml
+
+ module Withed_unit__state
+   use import "_gnatprove_standard".Main
+
+   val state  : __private__ref 
+ end
+
+ val p (__void_param : unit) : unit
+  reads  {Withed_unit__state.state}
+  writes {Withed_unit__state.state}
+
+Global annotations can also refer to entities which are not in SPARK.
+In the following example, ``P`` can state that it modifies ``V``
+even if ``V`` is declared in a package with ``SPARK_Mode => Off``.
+
+.. code-block:: ada
+
+   package Nested with
+     SPARK_Mode => Off
+   is
+      V : access Integer;
+   end Nested;
+
+   procedure P with Global => (In_Out => Nested.V);
+
+``V`` should be translated to express the data dependency, but we should
+not try to translate its type, which may not be in SPARK (here for example it is
+an access type, but the translation mechanism would be the same if it was an
+integer). To this aim, we emit a dummy variable declaration for ``V`` using the
+predefined ``__private`` type:
+
+.. code-block:: whyml
+
+ module P__nested__v
+   use import "_gnatprove_standard".Main
+
+   val v  : __private__ref 
+ end
+
+ val p (__void_param : unit) : unit
+  reads  {P__nested__v.v}
+  writes {P__nested__v.v}
+
+Remark that dummy variables for effects of subprograms will also be defined for
+generated Global contracts (when no user provided global contract is supplied
+for a subprogram).
 
 Subprograms
 -----------
