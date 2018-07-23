@@ -2546,10 +2546,27 @@ package body Flow.Control_Flow_Graph is
          is
          begin
             case Nkind (N) is
-               when N_Simple_Return_Statement   |
-                    N_Extended_Return_Statement |
-                    N_Exit_Statement            =>
+
+               --  Those might cause the loop to exit early
+
+               when N_Simple_Return_Statement
+                  | N_Extended_Return_Statement
+                  | N_Exit_Statement
+               =>
                   return Abandon;
+
+               --  In those the EXIT/RETURN statement, if present, will
+               --  certainly refer to subprogram's own loop (EXIT) or to
+               --  the suprogram itself (RETURN).
+
+               when N_Subprogram_Body
+                  | N_Subprogram_Declaration
+                  | N_Package_Declaration
+                  | N_Package_Body
+                  | N_Generic_Declaration
+               =>
+                  return Skip;
+
                when others =>
                   return OK;
             end case;
@@ -2860,6 +2877,18 @@ package body Flow.Control_Flow_Graph is
 
                   --  all out parameters (globals not relevant here)
                   null;
+
+               --  Don't traverse into subprograms (because we don't check if
+               --  they are executed) and into packages (because they can only
+               --  modify their own objects anyway).
+
+               when N_Subprogram_Body
+                  | N_Subprogram_Declaration
+                  | N_Package_Declaration
+                  | N_Package_Body
+                  | N_Generic_Declaration
+               =>
+                  return Skip;
 
                when others =>
                   null;
