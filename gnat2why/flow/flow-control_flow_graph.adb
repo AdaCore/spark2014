@@ -2757,7 +2757,7 @@ package body Flow.Control_Flow_Graph is
                F : Flow_Id      renames FA.CFG.Get_Key (V);
                A : V_Attributes renames FA.Atr (V);
             begin
-               Touched.Include (V);
+               Touched.Insert (V);
 
                if A.Variables_Explicitly_Used.Contains (T.Var) then
                   Fully_Defined := False;
