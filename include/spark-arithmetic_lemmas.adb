@@ -47,6 +47,18 @@ is
       Denom2 : Pos)
    is null;
 
+   procedure Lemma_Exp_Is_Monotonic
+     (Val1 : Nat;
+      Val2 : Nat;
+      Exp  : Natural)
+   is null;
+
+   procedure Lemma_Exp_Is_Monotonic_2
+     (Val  : Pos;
+      Exp1 : Natural;
+      Exp2 : Natural)
+   is null;
+
    procedure Lemma_Mod_Range
      (Arg1 : Int;
       Arg2 : Pos)
