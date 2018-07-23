@@ -1331,12 +1331,12 @@ red_black_trees.adb:252:24: info: precondition proved (CVC4: 1 VC), in call inli
 red_black_trees.adb:252:24: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:252:24: medium: loop invariant might fail after first iteration, cannot prove Nb_Blacks (T) (I).Status, in call inlined at red_black_trees.adb:416
 red_black_trees.adb:252:24: medium: loop invariant might fail after first iteration, cannot prove Nb_Blacks (T) (I).Status, in call inlined at red_black_trees.adb:471
-red_black_trees.adb:252:24: medium: loop invariant might fail in first iteration, cannot prove Nb_Blacks (T) (I).Status, in call inlined at red_black_trees.adb:471
+red_black_trees.adb:252:24: medium: loop invariant might fail in first iteration, cannot prove Nb_Blacks (T) (I).Status, in call inlined at red_black_trees.adb:416
 red_black_trees.adb:253:23: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:253:23: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:254:23: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:254:23: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
-red_black_trees.adb:255:24: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:416
+red_black_trees.adb:255:24: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:255:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:255:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:255:47: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
