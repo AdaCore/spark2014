@@ -137,4 +137,17 @@ package Test_Higher_Order with SPARK_Mode is
       Array_Type  => Small_Matrix,
       Choose      => Choose);
 
+   function F (X : Integer; K : My_Index; I : Integer) return Integer;
+   --  F is always called on A (I), I, X when Ind_Prop (A, X, I) is True.
+   --  It is called in the same conditions in Prove_Ind and Prove_Last.
+
+   package My_Fold_Left_I is new SPARK.Higher_Order.Fold.Fold_Left_I
+     (Index_Type  => My_Index,
+      Element_In  => Integer,
+      Array_Type  => My_Array,
+      Element_Out => Integer,
+      Ind_Prop    => Ind_Prop,
+      Final_Prop  => Final_Prop,
+      F           => F);
+
 end Test_Higher_Order;
