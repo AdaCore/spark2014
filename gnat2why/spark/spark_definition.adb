@@ -6357,11 +6357,11 @@ package body SPARK_Definition is
                   end;
                end if;
 
-               --  The System.Default_Priority expression may be needed for
-               --  checks related to the ceiling priority protocol. Those
-               --  checks are only applied to subprograms from the current
-               --  compilation unit, so we only for them we pull the expression
-               --  entity.
+               --  For checks related to the ceiling priority protocol we need
+               --  both the priority of the main subprogram of the partition
+               --  (whose body we might be marking here) and for the protected
+               --  objects referenced by this subprogram (which we will get
+               --  from the GG machinery).
 
                if Ekind (E) in E_Function | E_Procedure
                  and then Is_In_Analyzed_Files (E)
@@ -6372,7 +6372,23 @@ package body SPARK_Definition is
 
                   pragma Assert (RTU_Loaded (System));
 
-                  Mark (Expression (Parent (RTE (RE_Default_Priority))));
+                  Mark_Entity (RTE (RE_Default_Priority));
+                  --  ??? we only need this if there is no explicit priority
+                  --  attached to the main subprogram; note: this should also
+                  --  pull System.Priority (which is explicitly pulled below).
+
+                  --  For the protected objects we might need:
+                  --  * System.Any_Priority'First
+                  --  * System.Priority'Last
+                  --  * System.Priority'First
+                  --  * System.Interrupt_Priority'First
+                  --  * System.Interrupt_Priority'Last
+                  --
+                  --  The Any_Priority is a base type of the latter to, so it
+                  --  is enough to load them and Any_Priority will be pulled.
+
+                  Mark_Entity (RTE (RE_Priority));
+                  Mark_Entity (RTE (RE_Interrupt_Priority));
                end if;
 
                --  Detect violations in the body itself
