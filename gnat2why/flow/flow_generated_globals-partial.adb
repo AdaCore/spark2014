@@ -1698,9 +1698,7 @@ package body Flow_Generated_Globals.Partial is
          Result : Node_Sets.Set;
       begin
          for N of Nodes loop
-            if Present (N)
-              and then Ekind (N) = E_Constant
-            then
+            if Ekind (N) = E_Constant then
                if Has_Variable_Input (N) then
                   Result.Insert (N);
                end if;
