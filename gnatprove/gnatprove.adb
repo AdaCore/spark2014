@@ -399,11 +399,6 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("gnatwhy3");
       end if;
 
-      --  If not set explicitly, the code above always sets a suitable value
-      --  for the prover list, the proof strategy and the steps limit. No
-      --  value of timeout may be set though, which is expected in general
-      --  for deterministic behavior.
-
       Args.Append ("--timeout");
       Args.Append (Image (Timeout, 1));
 
