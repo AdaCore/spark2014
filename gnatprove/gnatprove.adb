@@ -405,6 +405,9 @@ procedure Gnatprove with SPARK_Mode is
       Args.Append ("--steps");
       Args.Append (Image (Steps, 1));
 
+      Args.Append ("--memlimit");
+      Args.Append (Image (Memlimit, 1));
+
       if not Provers.Is_Empty then
          Args.Append ("--prover");
          Args.Append (Prover_List);

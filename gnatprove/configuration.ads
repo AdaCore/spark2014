@@ -89,6 +89,7 @@ package Configuration is
       Limit_Subp           : aliased GNAT.Strings.String_Access;
       List_Categories      : aliased Boolean;
       M                    : aliased Boolean;
+      Memlimit             : aliased Integer;
       Mode                 : aliased GNAT.Strings.String_Access;
       No_Axiom_Guard       : aliased Boolean;
       No_Counterexample    : aliased Boolean;
@@ -189,6 +190,7 @@ package Configuration is
    Provers              : String_Lists.List;
    Timeout              : Integer;
    Steps                : Integer;
+   Memlimit            : Integer;
    Why3_Config_File     : GNAT.Strings.String_Access;
    CE_Timeout           : Integer;
 

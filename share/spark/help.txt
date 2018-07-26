@@ -66,6 +66,8 @@ gnatprove advanced switches:
  --memcached-server=host:portnumber
                       Specify a memcached instance that will be used for
                       caching of proof results.
+ --memlimit=nnn       Set the prover memory limit in MB. Use value 0 for
+                      no limit (default).
  --no-axiom-guard     Do not generate guards for axioms defining contracts of
                       functions
  --no-counterexample  Do not generate a counterexample for unproved formulas
@@ -86,8 +88,8 @@ gnatprove advanced switches:
  --RTS=dir            Specify the Ada runtime name/location
  --steps=nnn          Set the maximum number of proof steps (prover-specific)
                       Use value 0 for no steps limit.
- --timeout=nnn        Set the prover timeout in seconds
-                      Use value 0 for no timeout.
+ --timeout=nnn        Set the prover timeout in seconds. Use value 0 for
+                      no timeout (default)
  --why3-conf=f        Specify a configuration file for why3
 
  * Proof mode values for generation

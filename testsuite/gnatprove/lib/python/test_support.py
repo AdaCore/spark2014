@@ -669,7 +669,8 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
 
 
 def prove_all(opt=None, steps=None, procs=parallel_procs,
-              vc_timeout=None, mode="all", counterexample=True,
+              vc_timeout=None, memlimit=None,
+              mode="all", counterexample=True,
               prover=default_provers,
               cache_allowed=True,
               report="provers",
@@ -711,6 +712,8 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
 
     if steps is not None:
         fullopt += ["--steps=%d" % steps]
+    if memlimit is not None:
+        fullopt += ["--memlimit=%d" % memlimit]
     if vc_timeout is not None:
         fullopt += ["--timeout=%d" % vc_timeout]
 
