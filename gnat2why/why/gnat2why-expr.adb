@@ -4301,7 +4301,7 @@ package body Gnat2Why.Expr is
             declare
                Ent : constant Entity_Id := Entity (N);
             begin
-               if Is_Protected_Component_Or_Discr (Ent) then
+               if Is_Protected_Component_Or_Discr_Or_Part_Of (Ent) then
                   return Type_Of_Node (Etype (Ent));
                else
                   return Retysp (Get_Ada_Type_From_Item
@@ -4352,7 +4352,7 @@ package body Gnat2Why.Expr is
             declare
                Ent : constant Entity_Id := Entity (N);
             begin
-               if Is_Protected_Component_Or_Discr (Ent) then
+               if Is_Protected_Component_Or_Discr_Or_Part_Of (Ent) then
                   return Type_Of_Node (Etype (Ent));
                else
                   return Get_Why_Type_From_Item
