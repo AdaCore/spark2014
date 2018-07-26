@@ -2,7 +2,7 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="40" steplimit="22000" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/admin.mlw" proved="true">
 <theory name="Admin__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">

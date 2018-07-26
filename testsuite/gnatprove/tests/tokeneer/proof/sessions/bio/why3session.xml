@@ -2,10 +2,10 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="40" steplimit="200" memlimit="0"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="40" steplimit="610000" memlimit="0"/>
-<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="40" steplimit="22000" memlimit="0"/>
-<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="22000" memlimit="0"/>
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/bio.mlw">
 <theory name="Bio__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
@@ -26,10 +26,10 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="76"/></proof>
+  <proof prover="2"><result status="valid" steps="54"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="78"/></proof>
+  <proof prover="2"><result status="valid" steps="57"/></proof>
   </goal>
  </transf>
  </goal>
@@ -45,13 +45,13 @@
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="610486"/></proof>
+  <proof prover="1"><result status="unknown" steps="11264"/></proof>
   <proof prover="2"><result status="unknown" steps="107"/></proof>
   <proof prover="3"><result status="unknown" steps="104"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="610527"/></proof>
+  <proof prover="1"><result status="unknown" steps="12346"/></proof>
   <proof prover="2"><result status="unknown" steps="134"/></proof>
   <proof prover="3"><result status="unknown" steps="134"/></proof>
   </goal>
@@ -116,16 +116,16 @@
   <proof prover="2"><result status="valid" steps="448"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="644"/></proof>
+  <proof prover="2"><result status="valid" steps="633"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="920"/></proof>
+  <proof prover="2"><result status="valid" steps="932"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="1092"/></proof>
+  <proof prover="2"><result status="valid" steps="1099"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="1548"/></proof>
+  <proof prover="2"><result status="valid" steps="1562"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -143,13 +143,13 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="1314"/></proof>
+  <proof prover="2"><result status="valid" steps="1326"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="1314"/></proof>
+  <proof prover="2"><result status="valid" steps="1326"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>

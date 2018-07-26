@@ -2,10 +2,10 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="40" steplimit="200" memlimit="0"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="40" steplimit="610000" memlimit="0"/>
-<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="40" steplimit="22000" memlimit="0"/>
-<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="22000" memlimit="0"/>
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/doorapi.mlw">
 <theory name="Doorapi__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
@@ -23,22 +23,22 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
-  <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="610642"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="63258"/></proof>
   <proof prover="2"><result status="unknown" steps="658"/></proof>
   <proof prover="3"><result status="unknown" steps="658"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="610887"/></proof>
-  <proof prover="2"><result status="unknown" steps="22014"/></proof>
-  <proof prover="3"><result status="unknown" steps="22002"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="132163"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="3"><result status="unknown" steps="184487"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="610940"/></proof>
-  <proof prover="2"><result status="unknown" steps="22002"/></proof>
-  <proof prover="3"><result status="unknown" steps="22002"/></proof>
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="169862"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="3"><result status="unknown" steps="195574"/></proof>
   </goal>
  </transf>
  </goal>
