@@ -1951,9 +1951,10 @@ package body Why.Gen.Records is
                         exit when No (Discr);
                      end loop;
 
-                     Emit_Record_Declaration (Section => P,
-                                              Name    => Discr_Name,
-                                              Binders => Binders_D);
+                     Emit_Record_Declaration (Section      => P,
+                                              Name         => Discr_Name,
+                                              Binders      => Binders_D,
+                                              SPARK_Record => True);
 
                      --  Generate a mutable record to hold elements of type
                      --  __split_discrs, as well as an havoc function for it.

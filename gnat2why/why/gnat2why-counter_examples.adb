@@ -391,9 +391,10 @@ package body Gnat2Why.Counter_Examples is
                      end if;
                   end;
 
-               --  ??? only integer types are expected in that last case
+               --  Only integer types are expected in that last case
 
                else
+                  pragma Assert (Is_Discrete_Type (AST_Type));
                   return Cnt_Value.I;
                end if;
 
@@ -417,12 +418,8 @@ package body Gnat2Why.Counter_Examples is
 
             when Cnt_Float =>
 
-               if Is_Floating_Point_Type (AST_Type) then
-                  return Print_Float (Cnt_Value.all);
-               else
-                  --  ??? only float types are expected here
-                  return Print_Float (Cnt_Value.all);
-               end if;
+               pragma Assert (Is_Floating_Point_Type (AST_Type));
+               return Print_Float (Cnt_Value.all);
 
             when Cnt_Unparsed =>
                return Cnt_Value.U;
@@ -513,24 +510,18 @@ package body Gnat2Why.Counter_Examples is
                return Cnt_Value.S;
 
             when Cnt_Array =>
-               if Is_Array_Type (AST_Type) then
-                  declare
-                     Indice_Type  : constant Entity_Id :=
-                                      Retysp (Etype (First_Index (AST_Type)));
-                     Element_Type : constant Entity_Id :=
-                                      Retysp (Component_Type (AST_Type));
-                  begin
-                     return Refine_Array (Cnt_Value.Array_Indices,
-                                          Cnt_Value.Array_Others,
-                                          Indice_Type,
-                                          Element_Type);
-                  end;
-
-               --  This case should not happen
-
-               else
-                  return Null_Unbounded_String;
-               end if;
+               pragma Assert (Is_Array_Type (AST_Type));
+               declare
+                  Indice_Type  : constant Entity_Id :=
+                    Retysp (Etype (First_Index (AST_Type)));
+                  Element_Type : constant Entity_Id :=
+                    Retysp (Component_Type (AST_Type));
+               begin
+                  return Refine_Array (Cnt_Value.Array_Indices,
+                                       Cnt_Value.Array_Others,
+                                       Indice_Type,
+                                       Element_Type);
+               end;
          end case;
       end Refine_Aux;
 
