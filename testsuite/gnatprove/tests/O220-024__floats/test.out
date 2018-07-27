@@ -1,6 +1,6 @@
-test_pack.adb:7:32: medium: float overflow check might fail
+test_pack.adb:7:32: medium: float overflow check might fail (e.g. when Measured = 8.3107173E+34 and Pid = (Desired => -3.4019925E+38, Error => ?))
 test_pack.ads:12:43: info: float overflow check proved (CVC4: 1 VC)
 test_pack.ads:14:42: info: float overflow check proved (CVC4: 1 VC)
-wibble.adb:11:03: medium: precondition might fail
+wibble.adb:11:03: medium: precondition might fail (e.g. when X = (Desired => -1.1883392E+0, Error => ?))
 wibble.adb:11:15: info: initialization of "X.Desired" proved
 wibble.adb:11:15: info: initialization of "X.Error" proved

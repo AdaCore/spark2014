@@ -9,7 +9,7 @@ test.adb:41:14: info: initialization of "B" proved
 test.adb:47:17: medium: postcondition might fail, cannot prove Test_5'Result = 5 (e.g. when Test_5'Result = 1)
 test.adb:51:12: info: initialization of "B" proved
 test.adb:52:14: info: initialization of "B" proved
-test.adb:56:17: medium: postcondition might fail, cannot prove Test_6'Result = 0.1
+test.adb:56:17: medium: postcondition might fail, cannot prove Test_6'Result = 0.1 (e.g. when Test_6'Result = 2.1230469E+0)
 test.adb:60:12: info: initialization of "B" proved
 test.adb:60:14: info: float overflow check proved (CVC4: 1 VC)
 test.adb:61:14: info: initialization of "B" proved

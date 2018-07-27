@@ -30,6 +30,7 @@ with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ce_Interval_Sets;
+with Ce_Pretty_Printing;        use Ce_Pretty_Printing;
 with Common_Containers;         use Common_Containers;
 with Flow_Refinement;           use Flow_Refinement;
 with Flow_Types;                use Flow_Types;
@@ -595,30 +596,27 @@ package body Gnat2Why.Counter_Examples is
          F : Float_Value renames Cnt_Value.F.all;
       begin
          case F.F_Type is
-         when Float_Plus_Infinity  =>
-            return To_Unbounded_String ("+oo");
+         when Float_Plus_Infinity | Float_Minus_Infinity | Float_NaN =>
 
-         when Float_Minus_Infinity =>
-            return To_Unbounded_String ("-oo");
+            --  Decision: we don't print infinities or Nan
+            return Null_Unbounded_String;
 
-         when Float_Plus_Zero      =>
-            return To_Unbounded_String ("+zero");
+         when Float_Plus_Zero | Float_Minus_Zero =>
 
-         when Float_Minus_Zero     =>
-            return To_Unbounded_String ("-zero");
-
-         when Float_NaN            =>
-            return To_Unbounded_String ("NaN");
+            --  Decision: we print zero+ and zero- as 0 (0.0 for type)
+            return To_Unbounded_String ("0.0");
 
          when Float_Val =>
             declare
+               F_S   : constant String := To_String (F.F_Sign);
+               F_Si  : constant String := To_String (F.F_Significand);
+               F_Exp : constant String := To_String (F.F_Exponent);
             begin
-               return "(fp " & F.F_Sign & ", " & F.F_Exponent & ", "
-                 & F.F_Significand & ")";
+               return
+                 To_Unbounded_String
+                   (Ce_Pretty_Printing.StringBits_To_Approx
+                      (F_S, F_Si, F_Exp));
             end;
-         when Float_Hexa =>
-            return F.F_Hexa;
-
          end case;
       end Print_Float;
 
