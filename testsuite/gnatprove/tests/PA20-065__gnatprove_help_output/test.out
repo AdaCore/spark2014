@@ -68,7 +68,7 @@ gnatprove advanced switches:
                       Specify a memcached instance that will be used for
                       caching of proof results.
  --memlimit=nnn       Set the prover memory limit in MB. Use value 0 for
-                      no limit (default).
+                      no limit (default when no level set)
  --no-axiom-guard     Do not generate guards for axioms defining contracts of
                       functions
  --no-counterexample  Do not generate a counterexample for unproved formulas
@@ -90,11 +90,11 @@ gnatprove advanced switches:
  --steps=nnn          Set the maximum number of proof steps (prover-specific)
                       Use value 0 for no steps limit.
  --timeout=nnn        Set the prover timeout in seconds. Use value 0 for
-                      no timeout (default)
+                      no timeout (default when no level set)
  --why3-conf=f        Specify a configuration file for why3
 
  * Proof mode values for generation
-   . per_check     - Generate one formula per check (default)
+   . per_check     - Generate one formula per check (default when no level set)
    . per_path      - Generate one formula per path for each check
    . progressive   - Start with one formula per check, then split into
                      paths when needed
@@ -112,4 +112,3 @@ gnatprove advanced switches:
    . cvc4          - [steps] Use CVC4
    . z3            - [steps] Use Z3
    . ...           - Any other prover configured in your .why3.conf file
-
