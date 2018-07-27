@@ -33,7 +33,6 @@ with Einfo;                        use Einfo;
 with Errout;                       use Errout;
 with Gnat2Why_Args;
 with GNAT.Regpat;                  use GNAT.Regpat;
-with Lib.Xref;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
 with Sem_Aux;                      use Sem_Aux;
@@ -553,29 +552,14 @@ package body SPARK_Annotate is
          return;
       end if;
 
-      --  We do not issue any warnings on nodes which stem from inlining or
-      --  instantiation, or in subprograms or library packages whose analysis
-      --  has not been requested, such as subprograms that are always inlined
-      --  in proof.
+      --  Check whether we may issue a warning on the pragma before doing it
 
       for Prag of Pragma_Set loop
-         if Instantiation_Location (Sloc (Prag)) = No_Location then
-            declare
-               Subp : constant Entity_Id :=
-                 Unique_Entity
-                   (Lib.Xref.SPARK_Specific.
-                      Enclosing_Subprogram_Or_Library_Package (Prag));
-            begin
-               if Present (Subp)
-                 and then Analysis_Requested (Subp,
-                                              With_Inlined => False)
-               then
-                  Error_Msg_N
-                    ("?no check message justified by this pragma", Prag);
-               end if;
-            end;
+         if May_Issue_Warning_On_Node (Prag) then
+            Error_Msg_N ("?no check message justified by this pragma", Prag);
          end if;
       end loop;
+
       for Prag of Proved_Pragma loop
          if Instantiation_Location (Sloc (Prag)) = No_Location then
             Error_Msg_N

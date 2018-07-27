@@ -109,6 +109,7 @@ package VC_Kinds is
 
       VC_Inconsistent_Pre,
       VC_Inconsistent_Post,
+      VC_Unreachable_Branch,
       VC_Dead_Code);
 
    subtype VC_RTE_Kind is VC_Kind range

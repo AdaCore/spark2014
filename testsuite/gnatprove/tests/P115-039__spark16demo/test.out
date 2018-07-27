@@ -63,10 +63,13 @@ ghost_example.adb:31:10: info: initialization of "Successful" proved
 ghost_example.ads:3:20: info: initialization of "Done" proved
 ghost_example.ads:5:14: info: postcondition proved (CVC4: 1 VC)
 ghost_example.ads:5:30: info: initialization of "Done" proved
+ghost_example.ads:5:55: warning: unreachable branch (CVC4: 1 VC)
 ghost_example.ads:7:31: info: initialization of "Done" proved
 ghost_example.ads:9:14: info: postcondition proved (CVC4: 1 VC)
 ghost_example.ads:9:30: info: initialization of "Done" proved
+ghost_example.ads:9:40: warning: unreachable branch (CVC4: 1 VC)
 ghost_example.ads:11:32: info: initialization of "Done" proved
 ghost_example.ads:13:14: info: postcondition proved (CVC4: 1 VC)
 ghost_example.ads:13:30: info: initialization of "Done" proved
+ghost_example.ads:13:40: warning: unreachable branch (CVC4: 1 VC)
 ghost_example.ads:16:14: info: postcondition proved (CVC4: 1 VC)

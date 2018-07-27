@@ -185,6 +185,9 @@ package SPARK_Atree.Entities is
      (E : Entity_Id) return Boolean
      renames Sem_Util.Is_Single_Precision_Floating_Point_Type;
 
+   function Is_Subprogram (E : Entity_Id) return Boolean renames
+     Einfo.Is_Subprogram;
+
    function Is_Subprogram_Or_Entry (E : Entity_Id) return Boolean renames
      Einfo.Is_Subprogram_Or_Entry;
 

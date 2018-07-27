@@ -998,6 +998,8 @@ package body Gnat2Why.Error_Messages is
             return "precondition is always False";
          when VC_Inconsistent_Post         =>
             return "postcondition is always False";
+         when VC_Unreachable_Branch        =>
+            return "unreachable branch";
          when VC_Dead_Code                 =>
             return "unreachable code";
       end case;

@@ -1961,7 +1961,16 @@ package body Gnat2Why.Subprograms is
               Args   => (+Enabled,
                          New_Literal (Domain => EW_Term,
                                       Value  => EW_True)));
+
+         WP_Consequence : W_Expr_Id :=
+           Transform_Expr (Consequence, EW_Prog, Params);
+
       begin
+         --  Possibly warn on an unreachable case
+
+         WP_Consequence :=
+           Warn_On_Dead_Branch (Consequence, WP_Consequence, Params.Phase);
+
          return Sequence
            (New_Ignore
               (Prog =>
@@ -1969,8 +1978,7 @@ package body Gnat2Why.Subprograms is
                    (Ada_Node    => Contract_Case,
                     Domain      => EW_Prog,
                     Condition   => Enabled,
-                    Then_Part   =>
-                      +Transform_Expr (Consequence, EW_Prog, Params),
+                    Then_Part   => WP_Consequence,
                     Else_Part   =>
                       New_Literal (Domain => EW_Prog,
                                    Value  => EW_True)))),

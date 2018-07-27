@@ -150,6 +150,7 @@ tokens.adb:80:36: info: discriminant check proved (CVC4: 1 VC)
 tokens.ads:19:20: info: initialization of "V.Instr" proved
 tokens.ads:19:20: info: initialization of "V.Op" proved
 tokens.ads:19:20: info: initialization of "V.Val.E" proved
+tokens.ads:25:36: warning: unreachable branch (CVC4: 1 VC)
 values-operations.adb:28:10: medium: exception might be raised
 values-operations.adb:43:12: info: precondition proved (CVC4: 1 VC)
 values-operations.adb:44:12: info: precondition proved (CVC4: 1 VC)

@@ -2,8 +2,8 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
-<file name="../../../gnatprove/keystore.mlw" proved="true">
+<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
+<file name="../../../gnatprove/keystore.mlw">
 <theory name="Keystore__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
@@ -163,9 +163,9 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__digest__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+<theory name="Keystore__digest__subprogram_def">
+ <goal name="WP_parameter def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
@@ -244,56 +244,59 @@
   <goal name="WP_parameter def.25" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.26" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <goal name="WP_parameter def.26" expl="unreachable point">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="322"/></proof>
   </goal>
   <goal name="WP_parameter def.27" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.28" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="264"/></proof>
   </goal>
-  <goal name="WP_parameter def.28" expl="precondition" proved="true">
+  <goal name="WP_parameter def.29" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="259"/></proof>
   </goal>
-  <goal name="WP_parameter def.29" expl="assertion" proved="true">
+  <goal name="WP_parameter def.30" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.30" expl="assertion" proved="true">
+  <goal name="WP_parameter def.31" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="329"/></proof>
   </goal>
-  <goal name="WP_parameter def.31" expl="precondition" proved="true">
+  <goal name="WP_parameter def.32" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="322"/></proof>
   </goal>
-  <goal name="WP_parameter def.32" expl="assertion" proved="true">
+  <goal name="WP_parameter def.33" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.33" expl="assertion" proved="true">
+  <goal name="WP_parameter def.34" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="413"/></proof>
   </goal>
-  <goal name="WP_parameter def.34" expl="precondition" proved="true">
+  <goal name="WP_parameter def.35" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="403"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__digest__getblock__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+<theory name="Keystore__digest__getblock__subprogram_def">
+ <goal name="WP_parameter def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="WP_parameter def.0" expl="unreachable point">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <goal name="WP_parameter def.1" expl="unreachable point">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="8"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <goal name="WP_parameter def.5" expl="assertion">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="loop invariant init" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -301,32 +304,44 @@
   <goal name="WP_parameter def.7" expl="loop invariant init" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.8" expl="precondition" proved="true">
+  <goal name="WP_parameter def.8" expl="loop invariant init" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.9" expl="precondition" proved="true">
+  <goal name="WP_parameter def.9" expl="loop invariant init" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="loop invariant init" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.11" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="8"/></proof>
   </goal>
-  <goal name="WP_parameter def.10" expl="assertion" proved="true">
+  <goal name="WP_parameter def.13" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="13"/></proof>
   </goal>
-  <goal name="WP_parameter def.11" expl="assertion" proved="true">
+  <goal name="WP_parameter def.14" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="13"/></proof>
-  </goal>
-  <goal name="WP_parameter def.12" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.13" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.14" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="loop invariant preservation" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.17" expl="loop invariant preservation" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.18" expl="loop invariant preservation" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.19" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.20" expl="unreachable point">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="47"/></proof>
   </goal>
  </transf>
  </goal>
