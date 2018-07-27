@@ -28,6 +28,7 @@ with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util.Types;     use SPARK_Util.Types;
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with Types;                use Types;
+with Uintp;                use Uintp;
 
 package Gnat2Why.CE_Utils is
 
@@ -50,5 +51,19 @@ package Gnat2Why.CE_Utils is
    --  If Is_record then convert a string of the form ".4554" to the Entity_Id
    --  4554. Otherwise, convert a string of the form "4554".
    --  Return the empty entity if not of the given form.
+
+   procedure Find_First_Static_Range
+     (N   : Node_Id;
+      Fst : out Uint;
+      Lst : out Uint);
+   --  @param N any node which has a discrete range
+   --  @param Fst low bound of N if it is compile time known, or of the first
+   --    type in its etype chain which is compile time known.
+   --  @param Lst high bound of N if it is compile time known, or of the first
+   --    type in its etype chain which is compile time known.
+
+   function UI_From_String (Val : String) return Uint;
+   --  Naive computation of a Uint form a string which is the representation of
+   --  an integer in base 10.
 
 end Gnat2Why.CE_Utils;

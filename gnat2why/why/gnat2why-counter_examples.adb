@@ -245,10 +245,10 @@ package body Gnat2Why.Counter_Examples is
       function Refine_Array
         (Arr_Indices  : Cntexmp_Value_Array.Map;
          Arr_Others   : Cntexmp_Value_Ptr;
-         Indice_Type  : Entity_Id;
+         Arr_Indice   : Entity_Id;
          Element_Type : Entity_Id)
          return Unbounded_String
-      with Pre => Is_Discrete_Type (Indice_Type)
+      with Pre => Is_Discrete_Type (Retysp (Etype (Arr_Indice)))
                     and then
                   Is_Type (Element_Type);
 
@@ -313,8 +313,8 @@ package body Gnat2Why.Counter_Examples is
 
                elsif Is_Enumeration_Type (AST_Type) then
                   declare
-                     Value : constant Uint := UI_From_Int
-                       (Int'Value (To_String (Cnt_Value.I)));
+                     Value : constant Uint := UI_From_String
+                         (To_String (Cnt_Value.I));
 
                      --  Call Get_Enum_Lit_From_Pos to get a corresponding
                      --  enumeration entity.
@@ -513,14 +513,12 @@ package body Gnat2Why.Counter_Examples is
             when Cnt_Array =>
                pragma Assert (Is_Array_Type (AST_Type));
                declare
-                  Indice_Type  : constant Entity_Id :=
-                    Retysp (Etype (First_Index (AST_Type)));
                   Element_Type : constant Entity_Id :=
                     Retysp (Component_Type (AST_Type));
                begin
                   return Refine_Array (Cnt_Value.Array_Indices,
                                        Cnt_Value.Array_Others,
-                                       Indice_Type,
+                                       First_Index (AST_Type),
                                        Element_Type);
                end;
          end case;
@@ -533,12 +531,17 @@ package body Gnat2Why.Counter_Examples is
       function Refine_Array
         (Arr_Indices  : Cntexmp_Value_Array.Map;
          Arr_Others   : Cntexmp_Value_Ptr;
-         Indice_Type  : Entity_Id;
+         Arr_Indice   : Entity_Id;
          Element_Type : Entity_Id)
          return Unbounded_String
       is
-         S : Unbounded_String;
+         Indice_Type  : constant Entity_Id := Retysp (Etype (Arr_Indice));
+
+         S   : Unbounded_String;
+         Fst : Uint;
+         Lst : Uint;
       begin
+         Find_First_Static_Range (Arr_Indice, Fst, Lst);
          Append (S, "(");
          for C in Arr_Indices.Iterate loop
             declare
@@ -546,19 +549,23 @@ package body Gnat2Why.Counter_Examples is
                Elem         : Cntexmp_Value_Ptr renames Arr_Indices (C);
 
                Ind_Val      : constant Cntexmp_Value_Ptr :=
-                                new Cntexmp_Value'(T => Cnt_Integer,
-                                                   I => To_Unbounded_String
-                                                     (Indice));
+                 new Cntexmp_Value'(T => Cnt_Integer,
+                                    I => To_Unbounded_String (Indice));
                Ind_Printed  : constant Unbounded_String :=
-                                Refine_Value (Ind_Val, Indice_Type, True);
+                 Refine_Value (Ind_Val, Indice_Type, True);
                Elem_Printed : constant Unbounded_String :=
-                                Refine_Value (Elem, Element_Type);
+                 Refine_Value (Elem, Element_Type);
+               Ind_Value    : constant Uint := UI_From_String (Indice);
             begin
 
                --  The other case happen when the index has an enumeration type
                --  and the value for this index given by cvc4 is outside of the
                --  range of the enumeration type.
-               if Ind_Printed /= Null_Unbounded_String then
+
+               if Ind_Printed /= Null_Unbounded_String
+                 and then UI_Le (Fst, Ind_Value)
+                 and then UI_Le (Ind_Value, Lst)
+               then
                   Append (S, Ind_Printed & " => " & Elem_Printed & ", ");
                end if;
             end;

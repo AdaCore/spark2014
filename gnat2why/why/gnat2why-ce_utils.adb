@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Gnat2Why.Tables; use Gnat2Why.Tables;
+with SPARK_Util;      use SPARK_Util;
 
 package body Gnat2Why.CE_Utils is
 
@@ -51,6 +52,39 @@ package body Gnat2Why.CE_Utils is
 
       return Count;
    end Count_Why_Visible_Regular_Fields;
+
+   -----------------------------
+   -- Find_First_Static_Range --
+   -----------------------------
+
+   procedure Find_First_Static_Range
+     (N   : Node_Id;
+      Fst : out Uint;
+      Lst : out Uint)
+   is
+      Fst_Found, Lst_Found : Boolean := False;
+      Current              : Node_Id := N;
+   begin
+      loop
+         declare
+            Rng  : constant Node_Id := Get_Range (Current);
+            Low  : constant Node_Id := Low_Bound (Rng);
+            High : constant Node_Id := High_Bound (Rng);
+         begin
+            if not Fst_Found and then Compile_Time_Known_Value (Low) then
+               Fst := Expr_Value (Low);
+               Fst_Found := True;
+            end if;
+            if not Lst_Found and then Compile_Time_Known_Value (High) then
+               Lst := Expr_Value (High);
+               Lst_Found := True;
+            end if;
+         end;
+         exit when Fst_Found and Lst_Found;
+
+         Current := Retysp (Etype (Current));
+      end loop;
+   end Find_First_Static_Range;
 
    ------------------------
    -- Is_Visible_In_Type --
@@ -82,5 +116,40 @@ package body Gnat2Why.CE_Utils is
       when Constraint_Error =>
          return Empty;
    end Get_Entity_Id;
+
+   --------------------
+   -- UI_From_String --
+   --------------------
+
+   function UI_From_String (Val : String) return Uint
+   is
+   begin
+
+      --  Try to cast Val to Int if it fits
+
+      return UI_From_Int (Int'Value (Val));
+   exception
+
+      --  If it doesn't fit, cut Val in two substrings and retry
+
+      when Constraint_Error =>
+
+         --  Avoid looping in case of an illformed string
+
+         if Val'Length < 2 then
+            raise;
+         end if;
+
+         declare
+            Cut   : constant Positive := Val'First + Val'Length / 2;
+            Left  : String renames Val (Val'First .. Cut);
+            Right : String renames Val (Cut + 1 .. Val'Last);
+         begin
+            return UI_Add (UI_Mul
+                           (UI_From_String (Left),
+                              UI_Expon (Uint_10, Int (Right'Length))),
+                           UI_From_String (Right));
+         end;
+   end UI_From_String;
 
 end Gnat2Why.CE_Utils;

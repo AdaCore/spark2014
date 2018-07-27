@@ -81,7 +81,7 @@ screen_output.adb:82:07: warning: no Global contract available for "Put"
 screen_output.adb:83:07: warning: assuming "Put" has no effect on global items
 screen_output.adb:83:07: warning: no Global contract available for "Put"
 screen_output.adb:83:46: low: range check might fail
-screen_output.adb:83:53: low: range check might fail (e.g. when S = (-2 => ' ', 2 => ' ', 3 => ' ', 4 => ' ', others => ':') and S'First = 1 and S'Last = 2147483647)
+screen_output.adb:83:53: low: range check might fail (e.g. when S = (2 => ' ', 3 => ' ', 4 => ' ', others => ':') and S'First = 1 and S'Last = 2147483647)
 screen_output.adb:84:07: warning: assuming "New_Line" has no effect on global items
 screen_output.adb:84:07: warning: no Global contract available for "New_Line"
 screen_output.adb:93:07: warning: assuming "Put" has no effect on global items
