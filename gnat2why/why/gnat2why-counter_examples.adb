@@ -48,7 +48,6 @@ with SPARK_Util;                use SPARK_Util;
 with SPARK_Util.Types;          use SPARK_Util.Types;
 with String_Utils;              use String_Utils;
 with Uintp;                     use Uintp;
-with Urealp;                    use Urealp;
 
 package body Gnat2Why.Counter_Examples is
 
@@ -287,7 +286,6 @@ package body Gnat2Why.Counter_Examples is
 
       function Print_Float (Cnt_Value : Cntexmp_Value)
                             return Unbounded_String;
-      --  ??? Used to print float counterex. This version is temporary.
 
       ----------------
       -- Refine_Aux --
@@ -376,21 +374,9 @@ package body Gnat2Why.Counter_Examples is
                   return Null_Unbounded_String;
 
                elsif Is_Fixed_Point_Type (AST_Type) then
-                  declare
-                     Small     : constant Ureal := Small_Value (AST_Type);
-                     Num_Small : constant String :=
-                       UI_Image (Norm_Num (Small));
-                     Den_Small : constant String :=
-                       UI_Image (Norm_Den (Small));
-                  begin
-                     if To_String (Cnt_Value.I) = "0" then
-                        return Cnt_Value.I;
-                     else
-                        return Cnt_Value.I
-                          & (if Num_Small /= "1" then "*" & Num_Small else "")
-                          & (if Den_Small /= "1" then "/" & Den_Small else "");
-                     end if;
-                  end;
+                  return To_Unbounded_String
+                    (Print_Fixed (Small_Value (AST_Type),
+                     To_String (Cnt_Value.I)));
 
                --  Only integer types are expected in that last case
 

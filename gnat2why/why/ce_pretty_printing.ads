@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Urealp; use Urealp;
+
 package Ce_Pretty_Printing is
 
    function StringBits_To_Approx (Sign, Significand, Exp : String)
@@ -31,5 +33,10 @@ package Ce_Pretty_Printing is
    --  bits representation output by prover and uses standard Ada float_io to
    --  output a decimal representation with 10 significant digits for 64bit
    --  float and 7 significant digits for 32 bits float.
+
+   function Print_Fixed (Small : Ureal; Nb : String) return String;
+   --  If the computation of Small * Nb is an integer we print it as an
+   --  integer. If not, we print Nb * Num (Small) / Den (Small) with Small
+   --  normalized Ureal.
 
 end Ce_Pretty_Printing;

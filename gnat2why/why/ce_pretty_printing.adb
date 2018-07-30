@@ -26,7 +26,9 @@
 with Ada.Strings.Fixed;        use Ada.Strings.Fixed;
 with Ada.Text_IO;
 with Ada.Unchecked_Conversion;
+with Gnat2Why.CE_Utils;        use Gnat2Why.CE_Utils;
 with Interfaces;               use Interfaces;
+with Uintp;                    use Uintp;
 
 package body Ce_Pretty_Printing is
 
@@ -171,5 +173,35 @@ package body Ce_Pretty_Printing is
 
       end if;
    end StringBits_To_Approx;
+
+   -----------------
+   -- Print_Fixed --
+   -----------------
+
+   function Print_Fixed (Small : Ureal; Nb : String) return String
+   is
+   begin
+      declare
+         Nb_Int : constant Uint := UI_From_String (Nb);
+         Nb_Real : constant Ureal := UR_From_Uint (Nb_Int) * Small;
+      begin
+         if Nb_Real = UR_From_Uint (UR_Trunc (Nb_Real)) then
+            return UI_Image (UR_To_Uint (Nb_Real), Decimal);
+         else
+            declare
+               Num_Small : constant String :=
+                 UI_Image (Norm_Num (Small), Decimal);
+               Den_Small : constant String :=
+                 UI_Image (Norm_Den (Small), Decimal);
+            begin
+               return Nb
+                 & (if Num_Small /= "1" then "*" & Num_Small else "")
+                 & (if Den_Small /= "1" then "/" & Den_Small else "");
+            end;
+         end if;
+      end;
+   exception when others =>
+         return "";
+   end Print_Fixed;
 
 end Ce_Pretty_Printing;

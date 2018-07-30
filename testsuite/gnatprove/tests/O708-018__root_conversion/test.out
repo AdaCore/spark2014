@@ -5,7 +5,7 @@ fxp_false_check_1b.adb:7:19: medium: assertion might fail, cannot prove Duration
 fxp_false_check_1b.adb:7:29: info: initialization of "MD" proved
 fxp_false_check_1b.adb:7:52: info: initialization of "MS" proved
 fxp_false_check_2.adb:8:25: info: initialization of "MD" proved
-fxp_false_check_2.adb:8:25: medium: range check might fail (e.g. when MD = 20000000000/1000000000)
+fxp_false_check_2.adb:8:25: medium: range check might fail (e.g. when MD = 20)
 fxp_false_check_3.adb:6:19: info: assertion proved (CVC4: 1 VC)
 fxp_false_check_3.adb:6:35: medium: range check might fail (e.g. when M = 9223372036854775807/1000000000)
 fxp_false_check_3.adb:6:48: info: initialization of "M" proved
