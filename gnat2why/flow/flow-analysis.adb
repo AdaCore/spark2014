@@ -65,22 +65,22 @@ package body Flow.Analysis is
    use type Flow_Graphs.Vertex_Id;
    use type Flow_Id_Sets.Set;
 
-   function Vertices_Between_From_And_To (FA   : Flow_Analysis_Graphs;
-                                          From : Flow_Id;
-                                          To   : Flow_Id_Sets.Set)
-                                          return Vertex_Sets.Set
-   with Pre => Present (From)
-               and then not To.Is_Empty,
-        Post => not Vertex_Sets.Contains (Vertices_Between_From_And_To'Result,
+   function Dependency_Path (FA      : Flow_Analysis_Graphs;
+                             Input   : Flow_Id;
+                             Outputs : Flow_Id_Sets.Set)
+                             return Vertex_Sets.Set
+   with Pre => not Outputs.Is_Empty,
+        Post => not Vertex_Sets.Contains (Dependency_Path'Result,
                                           Flow_Graphs.Get_Vertex (FA.PDG,
-                                                                  From))
+                                                                  Input))
                 and then
-                  (for all V of To
+                  (for all O of Outputs
                    => not Vertex_Sets.Contains
-                            (Vertices_Between_From_And_To'Result,
-                             Flow_Graphs.Get_Vertex (FA.PDG, V)));
-   --  Finds the shortest path in the PDG graph connecting vertex From and To
-   --  and returns the vertices in this path (From and To excluded).
+                            (Dependency_Path'Result,
+                             Flow_Graphs.Get_Vertex (FA.PDG, O)));
+   --  Finds the shortest path in the PDG graph connecting vertex Input and
+   --  Outputs or a vertex that defines one of the variables in Output. Returns
+   --  the vertices in this path (Input and Outputs excluded).
 
    function Find_Global
      (S : Entity_Id;
@@ -145,14 +145,14 @@ package body Flow.Analysis is
                                               Flow_Graphs.Out_Neighbours)
          => FA.Atr (V).Is_Export));
 
-   ----------------------------------
-   -- Vertices_Between_From_And_To --
-   ----------------------------------
+   ---------------------
+   -- Dependency_Path --
+   ---------------------
 
-   function Vertices_Between_From_And_To (FA   : Flow_Analysis_Graphs;
-                                          From : Flow_Id;
-                                          To   : Flow_Id_Sets.Set)
-                                          return Vertex_Sets.Set
+   function Dependency_Path (FA      : Flow_Analysis_Graphs;
+                             Input   : Flow_Id;
+                             Outputs : Flow_Id_Sets.Set)
+                             return Vertex_Sets.Set
    is
       Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
@@ -169,11 +169,12 @@ package body Flow.Analysis is
       -------------
 
       procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
-         F : Flow_Id renames FA.PDG.Get_Key (V);
+         F   : Flow_Id renames FA.PDG.Get_Key (V);
+         Atr : V_Attributes renames FA.Atr (V);
       begin
-         if F /= From
-           and then not To.Contains (F)
-           and then FA.Atr (V).Is_Program_Node
+         if F /= Input
+           and then not Outputs.Contains (F)
+           and then Atr.Is_Program_Node
          then
             Vertices.Insert (V);
          end if;
@@ -187,25 +188,30 @@ package body Flow.Analysis is
         (V           : Flow_Graphs.Vertex_Id;
          Instruction : out Flow_Graphs.Traversal_Instruction)
       is
-         F : Flow_Id renames FA.PDG.Get_Key (V);
+         F   : Flow_Id renames FA.PDG.Get_Key (V);
+         Atr : V_Attributes renames FA.Atr (V);
       begin
-         if To.Contains (F) then
+         if Outputs.Contains (F)
+           or else (for some Var of Atr.Variables_Defined
+                    => Outputs.Contains (Var))
+         then
             Instruction := Flow_Graphs.Found_Destination;
          else
             Instruction := Flow_Graphs.Continue;
          end if;
       end Are_We_There_Yet;
 
-   --  Start of processing for Vertices_Between_From_And_To
+   --  Start of processing for Dependency_Path
 
    begin
-      FA.PDG.Shortest_Path (Start         => Get_Initial_Vertex (FA.PDG, From),
+      FA.PDG.Shortest_Path (Start         => Get_Initial_Vertex (FA.PDG,
+                                                                 Input),
                             Allow_Trivial => False,
                             Search        => Are_We_There_Yet'Access,
                             Step          => Add_Loc'Access);
 
       return Vertices;
-   end Vertices_Between_From_And_To;
+   end Dependency_Path;
 
    -----------------
    -- Find_Global --
@@ -922,8 +928,10 @@ package body Flow.Analysis is
                   declare
                      F_Initial : Flow_Id renames
                        FA.PDG.Get_Key (FA.PDG.Parent (V));
+
                      A_Initial : V_Attributes renames
                        FA.Atr (FA.PDG.Parent (V));
+
                   begin
                      if F_Initial.Variant = Initial_Value
                        and then A_Initial.Is_Import
@@ -1821,6 +1829,7 @@ package body Flow.Analysis is
                   Intersection : constant Flow_Id_Sets.Set :=
                     Vars_Defined and
                     (FA.Atr (V).Variables_Defined - FA.Atr (V).Variables_Used);
+
                begin
                   if Intersection.Is_Empty then
                      TV := Flow_Graphs.Continue;
@@ -3073,6 +3082,7 @@ package body Flow.Analysis is
                         declare
                            Def_Key : Flow_Id renames FA.DDG.Get_Key (V_Def);
                            Def_Atr : V_Attributes renames FA.Atr (V_Def);
+
                         begin
                            if Def_Key.Variant = Initial_Value
                              and then
@@ -3211,10 +3221,9 @@ package body Flow.Analysis is
                            use Flow_Id_Sets;
 
                            Path : constant Vertex_Sets.Set :=
-                             Vertices_Between_From_And_To
-                               (FA   => FA,
-                                From => Input,
-                                To   => To_Set (Output));
+                             Dependency_Path (FA      => FA,
+                                              Input   => Input,
+                                              Outputs => To_Set (Output));
 
                         begin
                            Error_Msg_Flow
@@ -3607,10 +3616,9 @@ package body Flow.Analysis is
       --  Implicit formal parameter (for task types and protected operations)
 
       Depends_Scope : constant Flow_Scope :=
-        (if Present (FA.Refined_Depends_N) then
-            FA.B_Scope
-         else
-            FA.S_Scope);
+        (if Present (FA.Refined_Depends_N)
+         then FA.B_Scope
+         else FA.S_Scope);
       --  This is body scope if we are checking a Refined_Depends contract or
       --  spec scope if we are checking a Depends contract.
 
@@ -3643,6 +3651,7 @@ package body Flow.Analysis is
       for C in Projected_User_Deps.Iterate loop
          declare
             F_Out : Flow_Id renames Dependency_Maps.Key (C);
+
          begin
             if not Actual_Deps.Contains (F_Out) then
                --  ??? check quotation in errout.ads
@@ -3678,8 +3687,8 @@ package body Flow.Analysis is
                U_Deps := Projected_User_Deps (Projected_User_Out);
 
             --  The null dependency is special: it may not be present in the
-            --  user dependency because null => null would be super tedious
-            --  to write.
+            --  user dependency because null => null would be super tedious to
+            --  write.
 
             elsif F_Out = Null_Flow_Id then
                null;
@@ -3720,30 +3729,44 @@ package body Flow.Analysis is
                         Tag      => Depends_Null,
                         Severity => Medium_Check_Kind);
 
-                  elsif F_Out = Direct_Mapping_Id (FA.Analyzed_Entity) then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "missing dependency ""%'Result => %""",
-                        N        => Search_Depends_Contract
-                                      (FA.Analyzed_Entity,
-                                       FA.Analyzed_Entity),
-                        F1       => F_Out,
-                        F2       => Missing_Var,
-                        Tag      => Depends_Missing,
-                        Severity => Medium_Check_Kind);
-
                   else
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "missing dependency ""% => %""",
-                        N        => Search_Depends_Contract
-                                      (FA.Analyzed_Entity,
-                                       Get_Direct_Mapping_Id (F_Out)),
-                        F1       => F_Out,
-                        F2       => Missing_Var,
-                        Tag      => Depends_Missing,
-                        Severity => Medium_Check_Kind);
-                     --  ??? show path
+                     declare
+                        use Flow_Id_Sets;
+
+                        Path : constant Vertex_Sets.Set :=
+                          Dependency_Path (FA      => FA,
+                                           Input   => Missing_Var,
+                                           Outputs => To_Set (F_Out));
+
+                     begin
+                        if F_Out = Direct_Mapping_Id (FA.Analyzed_Entity) then
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Path     => Path,
+                              Msg      => "missing dependency ""%'Result => " &
+                                          "%""",
+                              N        => Search_Depends_Contract
+                                            (FA.Analyzed_Entity,
+                                             FA.Analyzed_Entity),
+                              F1       => F_Out,
+                              F2       => Missing_Var,
+                              Tag      => Depends_Missing,
+                              Severity => Medium_Check_Kind);
+
+                        else
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Path     => Path,
+                              Msg      => "missing dependency ""% => %""",
+                              N        => Search_Depends_Contract
+                                            (FA.Analyzed_Entity,
+                                             Get_Direct_Mapping_Id (F_Out)),
+                              F1       => F_Out,
+                              F2       => Missing_Var,
+                              Tag      => Depends_Missing,
+                              Severity => Medium_Check_Kind);
+                        end if;
+                     end;
                   end if;
                end if;
             end loop;
@@ -3778,6 +3801,7 @@ package body Flow.Analysis is
                      F1       => Wrong_Var,
                      Tag      => Depends_Wrong,
                      Severity => Medium_Check_Kind);
+
                elsif F_Out = Null_Flow_Id then
                   Error_Msg_Flow
                     (FA       => FA,
@@ -3789,7 +3813,7 @@ package body Flow.Analysis is
                      F1       => Wrong_Var,
                      Tag      => Depends_Wrong,
                      Severity => Medium_Check_Kind);
-                  --  ??? show a path?
+
                elsif F_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
                  and then Ekind (FA.Analyzed_Entity) = E_Function
                then
@@ -3804,6 +3828,7 @@ package body Flow.Analysis is
                      F2       => Wrong_Var,
                      Tag      => Depends_Wrong,
                      Severity => Medium_Check_Kind);
+
                else
                   Error_Msg_Flow
                     (FA       => FA,
@@ -3915,6 +3940,7 @@ package body Flow.Analysis is
                declare
                   The_Out : Flow_Id          renames Dependency_Maps.Key (C);
                   The_Ins : Flow_Id_Sets.Set renames DM (C);
+
                begin
                   for G of The_Ins loop
                      if not Is_Initialized_At_Elaboration (G, FA.B_Scope) then
@@ -4025,10 +4051,9 @@ package body Flow.Analysis is
                if not All_Contract_Ins.Contains (Actual_In) then
                   declare
                      Path : constant Vertex_Sets.Set :=
-                       Vertices_Between_From_And_To
-                         (FA   => FA,
-                          From => Actual_In,
-                          To   => All_Contract_Outs);
+                       Dependency_Path (FA      => FA,
+                                        Input   => Actual_In,
+                                        Outputs => All_Contract_Outs);
 
                   begin
                      Error_Msg_Flow

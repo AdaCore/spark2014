@@ -1,0 +1,12 @@
+p.adb:4:20: warning: unused initial value of "X"
+p.adb:5:20: warning: unused initial value of "Y"
+p.adb:6:11: medium: missing dependency "null => X"
+p.adb:6:11: medium: missing dependency "null => Y"
+p.adb:6:33: medium: incorrect dependency "Y => X"
+p.adb:7:23: medium: missing dependency "X => A"
+p.adb:7:28: medium: incorrect dependency "X => Y"
+p.adb:12:22: medium: assertion might fail, cannot prove X = 0
+Trace files' contents:
+p.adb:10
+p.adb:11
+
