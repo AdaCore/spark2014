@@ -1,0 +1,13 @@
+Generated contracts for test
+   Global =>
+      Input =>
+         X
+   Refined_Global =>
+      Input =>
+         X
+Generated contracts for main
+   Global =>
+   Refined_Global =>
+main.adb:5:14: warning: subprogram "Test" has no effect
+main.adb:8:25: medium: assertion might fail, cannot prove J >= X'loop_entry
+main.adb:12:04: info: initialization of "X" proved
