@@ -3076,6 +3076,7 @@ package body Flow.Control_Flow_Graph is
                      Local_Constants      => FA.Local_Constants,
                      Fold_Functions       => False,
                      Use_Computed_Globals => not FA.Generating_Globals),
+                  Is_Assertion  => True,
                   Is_Loop_Entry => True),
                V);
             Ctx.Folded_Function_Checks.Append (Prefix (Reference));
