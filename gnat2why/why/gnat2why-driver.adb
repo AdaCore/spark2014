@@ -480,6 +480,34 @@ package body Gnat2Why.Driver is
          Timing_Phase_Completed (Timing, "globals (partial)");
 
       else
+         --  Issue warning if analyzing specific units with -u switch, but the
+         --  main entity in the compilation unit is not marked in SPARK. It may
+         --  still be that an enclosed package/subprogram is marked in SPARK.
+         --  Reflect that in the warning message.
+
+         --  If both the spec and body units are available, then GNAT_Root is
+         --  the entity for the body. We want to issue a warning if this entity
+         --  is neither marked in SPARK nor out of SPARK.
+
+         --  If only the spec unit is available, then GNAT_Root is the entity
+         --  for the spec. We want to issue a warning if this entity is neither
+         --  marked in SPARK nor out of SPARK.
+
+         declare
+            Root : constant Entity_Id := Defining_Entity (Unit (GNAT_Root));
+         begin
+            if Gnat2Why_Args.Limit_Units
+              and then No (SPARK_Pragma (Root))
+            then
+               Error_Msg_N
+                 ("?SPARK_Mode not applied to this compilation unit",
+                  GNAT_Root);
+               Error_Msg_N
+                 ("\?only enclosed declarations with SPARK_Mode"
+                  & " will be analyzed",
+                  GNAT_Root);
+            end if;
+         end;
 
          --  ??? we don't really need frontend globals in phase 2, but
          --  Compute_Global_Effects populates a table with ALI files and that
