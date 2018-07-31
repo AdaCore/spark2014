@@ -93,9 +93,7 @@ binary_fixed.adb:90:26: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:92:17: info: initialization of "Y1" proved
 binary_fixed.adb:92:17: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:93:17: info: initialization of "Y2" proved
-binary_fixed.adb:93:17: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:94:17: info: initialization of "Y3" proved
-binary_fixed.adb:94:17: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:101:25: info: assertion proved (altergo: 1 VC)
 binary_fixed.adb:102:25: info: assertion proved (altergo: 1 VC)
 binary_fixed.adb:102:27: info: overflow check proved (altergo: 1 VC)
@@ -208,9 +206,7 @@ decimal_fixed.adb:90:26: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:92:17: info: initialization of "Y1" proved
 decimal_fixed.adb:92:17: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:93:17: info: initialization of "Y2" proved
-decimal_fixed.adb:93:17: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:94:17: info: initialization of "Y3" proved
-decimal_fixed.adb:94:17: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:101:25: info: assertion proved (altergo: 1 VC)
 decimal_fixed.adb:102:25: info: assertion proved (altergo: 1 VC)
 decimal_fixed.adb:102:27: info: overflow check proved (altergo: 1 VC)
@@ -323,9 +319,7 @@ ordinary_fixed.adb:90:26: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:92:17: info: initialization of "Y1" proved
 ordinary_fixed.adb:92:17: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:93:17: info: initialization of "Y2" proved
-ordinary_fixed.adb:93:17: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:94:17: info: initialization of "Y3" proved
-ordinary_fixed.adb:94:17: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:101:25: info: assertion proved (altergo: 1 VC)
 ordinary_fixed.adb:102:25: info: assertion proved (altergo: 1 VC)
 ordinary_fixed.adb:102:27: info: overflow check proved (altergo: 1 VC)
@@ -344,7 +338,6 @@ ordinary_fixed.ads:18:14: warning: subprogram "Test_Divide" has no effect
 ordinary_fixed.ads:21:14: warning: subprogram "Test_Type_Conversion" has no effect
 ordinary_fixed.ads:24:14: warning: subprogram "Test_Compare" has no effect
 dynamic_fixed.adb:6:18: info: range check proved (CVC4: 20 VC)
-dynamic_fixed.adb:6:40: info: range check proved (CVC4: 10 VC)
 dynamic_fixed.adb:7:19: info: range check proved (CVC4: 10 VC)
 dynamic_fixed.adb:9:25: medium: assertion might fail, cannot prove Integer (T'Last) = I (e.g. when I = 1)
 dynamic_fixed.adb:10:25: info: assertion proved

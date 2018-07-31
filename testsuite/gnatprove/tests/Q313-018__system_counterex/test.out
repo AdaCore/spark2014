@@ -2,9 +2,7 @@ incr.adb:3:11: medium: postcondition might fail, cannot prove X = X'Old + 1 (e.g
 incr.adb:3:21: medium: overflow check might fail (e.g. when X = 2147483647)
 incr.adb:6:11: medium: overflow check might fail (e.g. when X = -2147483648)
 counterexample expected for check at incr.adb:3
-  trace at incr.adb:1 --> X = 0
   trace at incr.adb:3 --> X = -1 and X'Old = 0
   trace at incr.adb:6 --> X = -1
 counterexample expected for check at incr.adb:6
-  trace at incr.adb:1 --> X = -2147483648
   trace at incr.adb:6 --> X = -2147483648

@@ -469,7 +469,7 @@ my_lists.adb:49:22: info: initialization of "C.Node" proved
 my_lists.adb:50:07: info: precondition proved (Z3: 2 VC)
 my_lists.adb:50:15: info: initialization of private part of "L" proved
 my_lists.adb:50:18: info: initialization of "C.Node" proved
-my_lists.adb:51:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+my_lists.adb:51:07: info: precondition proved (Z3: 2 VC)
 my_lists.adb:51:15: info: initialization of private part of "L" proved
 my_lists.adb:51:18: info: initialization of "C.Node" proved
 my_lists.adb:53:12: info: discriminant check proved (Z3: 1 VC)
@@ -1145,7 +1145,7 @@ my_ordered_sets.adb:61:28: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:61:37: info: initialization of private part of "K" proved
 my_ordered_sets.adb:61:39: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:61:42: info: initialization of private part of "L" proved
-my_ordered_sets.adb:62:25: medium: assertion might fail, cannot prove Equivalent_Sets (M and L, K and L)
+my_ordered_sets.adb:62:25: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:62:42: info: initialization of private part of "M" proved
 my_ordered_sets.adb:62:51: info: initialization of private part of "K" proved
 my_ordered_sets.adb:62:57: info: initialization of private part of "L" proved
@@ -1233,7 +1233,7 @@ my_ordered_sets.adb:118:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:118:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:119:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:119:16: info: initialization of private part of "L" proved
-my_ordered_sets.adb:120:22: medium: assertion might fail, cannot prove not Contains (L, (F => 4, G => 4))
+my_ordered_sets.adb:120:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:120:36: info: initialization of private part of "L" proved
 my_ordered_sets.adb:121:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:121:16: info: initialization of private part of "L" proved

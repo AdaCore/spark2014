@@ -126,4 +126,22 @@ is
      Global => null,
      Post => (Arg1 * Arg2) mod Arg2 = 0;
 
+   procedure Lemma_Exp_Is_Monotonic
+     (Val1 : Nat;
+      Val2 : Nat;
+      Exp  : Natural)
+   with
+     Global => null,
+     Pre  => Val1 <= Val2,
+     Post => Val1 ** Exp <= Val2 ** Exp; --  MANUAL PROOF
+
+   procedure Lemma_Exp_Is_Monotonic_2
+     (Val  : Pos;
+      Exp1 : Natural;
+      Exp2 : Natural)
+   with
+     Global => null,
+     Pre  => Exp1 <= Exp2,
+     Post => Val ** Exp1 <= Val ** Exp2; --  MANUAL PROOF
+
 end SPARK.Arithmetic_Lemmas;

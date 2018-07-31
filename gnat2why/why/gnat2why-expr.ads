@@ -487,6 +487,14 @@ package Gnat2Why.Expr is
    --  @param Ty a type with a visible type invariant
    --  @param Variables used in the expression for Ty's invariant
 
+   function Warn_On_Dead_Branch
+     (N     : Node_Id;
+      W     : W_Expr_Id;
+      Phase : Transformation_Phase) return W_Expr_Id;
+   --  In cases where we want to detect unreachable branches, wrap program
+   --  expression W with a warning by proof on branch reachability. Otherwise
+   --  simply return W (which may or not be a program in that case).
+
    ----------------------------------------
    -- Attributes Old, Loop_Entry, Result --
    ----------------------------------------

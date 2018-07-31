@@ -25,7 +25,7 @@
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="1005"/></proof>
+  <proof prover="3"><result status="valid" steps="1066"/></proof>
   </goal>
  </transf>
  </goal>
@@ -42,7 +42,7 @@
   <goal name="WP_parameter def.2" expl="postcondition" proved="true">
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="1005"/></proof>
+  <proof prover="3"><result status="valid" steps="1065"/></proof>
   </goal>
  </transf>
  </goal>

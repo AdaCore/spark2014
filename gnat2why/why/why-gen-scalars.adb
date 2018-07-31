@@ -1028,6 +1028,8 @@ package body Why.Gen.Scalars is
             return Rep_Proj_Float64;
          elsif Rep_Type = EW_Int_Type then
             return Rep_Proj_Int;
+         elsif Why_Type_Is_Fixed (Rep_Type) then
+            return Rep_Proj_Fixed;
          elsif Why_Type_Is_BitVector (Rep_Type) then
             declare
                Modulus_Val : constant Uint := Modulus (E);

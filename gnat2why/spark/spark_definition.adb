@@ -211,6 +211,10 @@ package body SPARK_Definition is
    --  Set of entities defined in actions which require a special translation.
    --  See gnat2why.ads for details.
 
+   Annot_Pkg_Seen : Hashed_Node_Sets.Set;
+   --  Set of package entities that have already been processed to look for
+   --  pragma Annotate.
+
    Marking_Queue : Node_Lists.List;
    --  This queue is used to store entities for marking, in the case where
    --  calling Mark_Entity directly would not be appropriate, e.g. for
@@ -946,6 +950,11 @@ package body SPARK_Definition is
 
    procedure Mark_List (L : List_Id);
    --  Call Mark on all nodes in list L
+
+   procedure Mark_Pragma_Annot_In_Pkg (E : Entity_Id)
+     with Pre => Ekind (E) = E_Package;
+   --  Mark pragma Annotate that could appear at the beginning of a declaration
+   --  list of a package.
 
    procedure Mark_Most_Underlying_Type_In_SPARK (Id : Entity_Id; N : Node_Id);
    --  The most underlying type for type Id should be in SPARK, otherwise mark
@@ -2937,8 +2946,9 @@ package body SPARK_Definition is
         and then SPARK_Pragma_Is (Opt.On)
         and then not Has_User_Supplied_Globals (E)
         and then ((Is_Imported (E) and then
-                     Convention (E) not in Convention_Ada)
-                  or else In_Internal_Unit (E))
+                     Convention (E) not in Convention_Ada
+                                         | Convention_Intrinsic)
+                   or else In_Internal_Unit (E))
       then
          Error_Msg_NE
            ("?no Global contract available for &", N, E);
@@ -3225,6 +3235,7 @@ package body SPARK_Definition is
             and then Current_SPARK_Pragma = SPARK_Pragma (E)
             and then
               Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = On;
+
       procedure Mark_Subprogram_Entity (E : Entity_Id);
       procedure Mark_Type_Entity       (E : Entity_Id);
 
@@ -4816,7 +4827,7 @@ package body SPARK_Definition is
 
          elsif Is_Incomplete_Type (E) then
             Mark_Unsupported
-              ("incomplete type &", E,
+              ("incomplete type", E,
                Cont_Msg =>
                  "consider restructuring code to avoid `LIMITED WITH`");
 
@@ -4825,13 +4836,16 @@ package body SPARK_Definition is
          end if;
       end Mark_Type_Entity;
 
-      --  Save whether a violation was previously detected, to restore after
-      --  marking this entity.
+      --  In Mark_Entity, we likely leave the previous scope of marking. We
+      --  save the current state of various variables to be able to restore
+      --  them later.
 
       Save_Violation_Detected : constant Boolean := Violation_Detected;
       Save_Last_Violation_Root_Cause_Node : constant Node_Id :=
         Last_Violation_Root_Cause_Node;
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+      Save_Current_Delayed_Aspect_Type : constant Node_Id :=
+        Current_Delayed_Aspect_Type;
 
    --  Start of processing for Mark_Entity
 
@@ -4885,6 +4899,7 @@ package body SPARK_Definition is
       end if;
 
       Current_SPARK_Pragma := SPARK_Pragma_Of_Entity (E);
+      Current_Delayed_Aspect_Type := Empty;
 
       --  Fill in the map between classwide types and their corresponding
       --  specific type, in the case of the implicitly declared classwide type
@@ -5029,6 +5044,19 @@ package body SPARK_Definition is
                   end if;
                   Next (Cur);
                end loop;
+
+               --  If we are in a package, we also need to scan the beginning
+               --  of the declaration list, in case there is a pragma Annotate
+               --  that governs our declaration.
+
+               declare
+                  Spec : constant Node_Id :=
+                    Parent (List_Containing (Decl_Node));
+               begin
+                  if Nkind (Spec) = N_Package_Specification then
+                     Mark_Pragma_Annot_In_Pkg (Defining_Entity (Spec));
+                  end if;
+               end;
             end if;
          end;
       end if;
@@ -5109,14 +5137,12 @@ package body SPARK_Definition is
          end loop;
       end if;
 
-      --  Update the information that a violation was detected
+      --  Restore prestate
 
       Violation_Detected := Save_Violation_Detected;
       Last_Violation_Root_Cause_Node := Save_Last_Violation_Root_Cause_Node;
-
-      --  Restore SPARK_Mode pragma
-
       Current_SPARK_Pragma := Save_SPARK_Pragma;
+      Current_Delayed_Aspect_Type := Save_Current_Delayed_Aspect_Type;
    end Mark_Entity;
 
    ------------------------------------
@@ -5747,6 +5773,7 @@ package body SPARK_Definition is
               Pragma_No_Heap_Finalization         |
               Pragma_No_Tagged_Streams            |
               Pragma_Predicate_Failure            |
+              Pragma_Provide_Shift_Operators      |
               Pragma_Pure_Function                |
               Pragma_Restriction_Warnings         |
               Pragma_Secondary_Stack_Size         |
@@ -5867,7 +5894,6 @@ package body SPARK_Definition is
            Pragma_Priority_Specific_Dispatching  |
            Pragma_Profile_Warnings               |
            Pragma_Propagate_Exceptions           |
-           Pragma_Provide_Shift_Operators        |
            Pragma_Psect_Object                   |
            Pragma_Rational                       |
            Pragma_Ravenscar                      |
@@ -5936,6 +5962,35 @@ package body SPARK_Definition is
             Mark_Violation ("unknown pragma %", N);
       end case;
    end Mark_Pragma;
+
+   ------------------------------
+   -- Mark_Pragma_Annot_In_Pkg --
+   ------------------------------
+
+   procedure Mark_Pragma_Annot_In_Pkg (E : Entity_Id) is
+      Inserted : Boolean;
+      Position : Hashed_Node_Sets.Cursor;
+   begin
+      Annot_Pkg_Seen.Insert (E, Position, Inserted);
+
+      if Inserted then
+         declare
+            Spec : constant Node_Id := Package_Specification (E);
+            Cur  : Node_Id := First (Visible_Declarations (Spec));
+         begin
+            while Present (Cur) loop
+               if Is_Pragma_Annotate_GNATprove (Cur) then
+                  Mark_Pragma_Annotate (Cur,
+                                        Spec,
+                                        Consider_Next => False);
+               elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+                  exit;
+               end if;
+               Next (Cur);
+            end loop;
+         end;
+      end if;
+   end Mark_Pragma_Annot_In_Pkg;
 
    -------------------------
    -- Mark_Protected_Body --
@@ -6302,11 +6357,11 @@ package body SPARK_Definition is
                   end;
                end if;
 
-               --  The System.Default_Priority expression may be needed for
-               --  checks related to the ceiling priority protocol. Those
-               --  checks are only applied to subprograms from the current
-               --  compilation unit, so we only for them we pull the expression
-               --  entity.
+               --  For checks related to the ceiling priority protocol we need
+               --  both the priority of the main subprogram of the partition
+               --  (whose body we might be marking here) and for the protected
+               --  objects referenced by this subprogram (which we will get
+               --  from the GG machinery).
 
                if Ekind (E) in E_Function | E_Procedure
                  and then Is_In_Analyzed_Files (E)
@@ -6317,7 +6372,23 @@ package body SPARK_Definition is
 
                   pragma Assert (RTU_Loaded (System));
 
-                  Mark (Expression (Parent (RTE (RE_Default_Priority))));
+                  Mark_Entity (RTE (RE_Default_Priority));
+                  --  ??? we only need this if there is no explicit priority
+                  --  attached to the main subprogram; note: this should also
+                  --  pull System.Priority (which is explicitly pulled below).
+
+                  --  For the protected objects we might need:
+                  --  * System.Any_Priority'First
+                  --  * System.Priority'Last
+                  --  * System.Priority'First
+                  --  * System.Interrupt_Priority'First
+                  --  * System.Interrupt_Priority'Last
+                  --
+                  --  The Any_Priority is a base type of the latter to, so it
+                  --  is enough to load them and Any_Priority will be pulled.
+
+                  Mark_Entity (RTE (RE_Priority));
+                  Mark_Entity (RTE (RE_Interrupt_Priority));
                end if;
 
                --  Detect violations in the body itself

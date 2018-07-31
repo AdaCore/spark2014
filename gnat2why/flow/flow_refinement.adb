@@ -53,6 +53,17 @@ package body Flow_Refinement is
                         return Boolean
    is
    begin
+      --  As far as flow analysis is concerned, there are no generics, only
+      --  instances, so we should not ask about visibility of generic units.
+      --  (The locations of generics and their instances impact visibility,
+      --  but this already captured in the visibility graph.)
+
+      pragma Assert (if Present (Target_Scope)
+                     then not Is_Generic_Unit (Target_Scope.Ent));
+
+      pragma Assert (if Present (Looking_From)
+                     then not Is_Generic_Unit (Looking_From.Ent));
+
       return Flow_Visibility.Is_Visible
         (Looking_From => Looking_From,
          Looking_At   => Target_Scope);
@@ -127,7 +138,7 @@ package body Flow_Refinement is
       return
         (if Is_Child_Unit (S.Ent)
          then (Ent  => Scope (S.Ent),
-               Part => (if Is_Private_Descendant (S.Ent)
+               Part => (if Private_Present (Enclosing_Comp_Unit_Node (S.Ent))
                         then Private_Part
                         else S.Part))
          else Get_Flow_Scope (Unit_Declaration_Node (S.Ent)));
@@ -162,6 +173,7 @@ package body Flow_Refinement is
 
             when N_Package_Body_Stub
                | N_Protected_Body_Stub
+               | N_Subprogram_Body_Stub
                | N_Task_Body_Stub
             =>
                --  Ada RM 10.1.3(13): A body_stub shall appear immediately
@@ -170,11 +182,13 @@ package body Flow_Refinement is
                --  unit. (but this should be transparently eliminated when
                --  frontend instantiates a generic body].
 
-               pragma Assert
-                 (Is_Compilation_Unit (Scope (Defining_Entity (Context))));
-
-               return (Ent  => Scope (Defining_Entity (Context)),
-                       Part => Body_Part);
+               if Present (Prev_Context) then
+                  return (Ent  => Unique_Defining_Entity (Context),
+                          Part => Body_Part);
+               else
+                  Prev_Context := Context;
+                  Context      := Parent (Context);
+               end if;
 
             when N_Entry_Body
                | N_Package_Body
@@ -233,9 +247,6 @@ package body Flow_Refinement is
                   Ent  : constant Entity_Id := Defining_Entity (Context);
                   Part : Declarative_Part;
                   --  Components of the result
-
-                  pragma Assert (Ekind (Ent) in E_Package
-                                              | E_Generic_Package);
 
                begin
                   --  We have to decide if we come from visible or private part
@@ -299,6 +310,7 @@ package body Flow_Refinement is
 
             when N_Entry_Declaration
                | N_Subprogram_Declaration
+               | N_Abstract_Subprogram_Declaration
             =>
                if Present (Prev_Context) then
                   return (Ent  => Defining_Entity (Context),
@@ -1292,51 +1304,59 @@ package body Flow_Refinement is
    -------------------------
 
    function Find_In_Initializes (E : Checked_Entity_Id) return Entity_Id is
-      State : constant Entity_Id := Encapsulating_State (E);
-
-      Target_Ent : constant Entity_Id :=
-        (if Present (State) and then Scope (E) = Scope (State)
-         then State
-         else Unique_Entity (E)); --  ??? why unique entity?
-      --  What we are searching for. Either the entity itself, or, if this
-      --  entity is a constituent of an abstract state of its immediately
-      --  enclosing package, that abstract state.
-
-      P : Entity_Id := E;
+      Scop : constant Entity_Id := Scope (E);
 
    begin
-      while not Is_Package_Or_Generic_Package (P) loop
-         pragma Assert (Ekind (P) /= E_Package_Body);
-         P := Scope (P);
-      end loop;
+      --  For E to occur in the Initializes contract, it must be declared
+      --  immediately within its enclosing package (or its body).
 
-      --  ??? a simple traversal like in Find_Global better fits here
+      if Ekind (Scop) = E_Package then
+         declare
+            M : constant Dependency_Maps.Map := Parse_Initializes (Scop);
 
-      declare
-         M : constant Dependency_Maps.Map := Parse_Initializes (P);
+            State : constant Entity_Id := Encapsulating_State (E);
 
-      begin
-         for Initialized_Var in M.Iterate loop
-            declare
-               F : Flow_Id renames Dependency_Maps.Key (Initialized_Var);
-            begin
-               --  The package whose state variable E is known by an Entity_Id
-               --  must itself be known by an Entity_Id, but the left-hand
-               --  sides of its Initializes aspect might include objects from
-               --  the package body that are promoted to implicit abstract
-               --  states.
-               pragma Assert (F.Kind in Direct_Mapping | Magic_String);
+            Target_Ent : constant Entity_Id :=
+              (if Present (State) and then Scope (E) = Scope (State)
+               then State
+               else Unique_Entity (E)); --  ??? why unique entity?
 
-               if F.Kind = Direct_Mapping
-                 and then Get_Direct_Mapping_Id (F) = Target_Ent
-               then
-                  return Target_Ent;
-               end if;
-            end;
-         end loop;
-      end;
+            --  What we are searching for. Either the entity itself, or,
+            --  if this entity is a constituent of an abstract state of
+            --  its immediately enclosing package, that abstract state.
 
-      return Empty;
+         begin
+            for Initialized_Var in M.Iterate loop
+               declare
+                  F : Flow_Id renames Dependency_Maps.Key (Initialized_Var);
+
+               begin
+                  --  The package whose state variable E is known by an
+                  --  Entity_Id must itself be known by an Entity_Id, but the
+                  --  left-hand sides of its Initializes aspect might include
+                  --  objects from the package body that are promoted to
+                  --  implicit abstract states.
+                  pragma Assert (F.Kind in Direct_Mapping | Magic_String);
+
+                  if F.Kind = Direct_Mapping
+                    and then Get_Direct_Mapping_Id (F) = Target_Ent
+                  then
+                     return Target_Ent;
+                  end if;
+               end;
+            end loop;
+         end;
+
+         return Empty;
+
+      --  Otherwise, it comes from a declaration block in the package body
+      --  statements.
+
+      else
+         pragma Assert (Ekind (Scop) = E_Block);
+
+         return Empty;
+      end if;
    end Find_In_Initializes;
 
    -----------------------------------

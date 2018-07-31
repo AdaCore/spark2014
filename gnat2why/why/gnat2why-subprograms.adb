@@ -1961,7 +1961,16 @@ package body Gnat2Why.Subprograms is
               Args   => (+Enabled,
                          New_Literal (Domain => EW_Term,
                                       Value  => EW_True)));
+
+         WP_Consequence : W_Expr_Id :=
+           Transform_Expr (Consequence, EW_Prog, Params);
+
       begin
+         --  Possibly warn on an unreachable case
+
+         WP_Consequence :=
+           Warn_On_Dead_Branch (Consequence, WP_Consequence, Params.Phase);
+
          return Sequence
            (New_Ignore
               (Prog =>
@@ -1969,8 +1978,7 @@ package body Gnat2Why.Subprograms is
                    (Ada_Node    => Contract_Case,
                     Domain      => EW_Prog,
                     Condition   => Enabled,
-                    Then_Part   =>
-                      +Transform_Expr (Consequence, EW_Prog, Params),
+                    Then_Part   => WP_Consequence,
                     Else_Part   =>
                       New_Literal (Domain => EW_Prog,
                                    Value  => EW_True)))),
@@ -4061,7 +4069,18 @@ package body Gnat2Why.Subprograms is
       Why_Type           : W_Type_Id := Why_Empty;
 
    begin
-      --  Do not generate an axiom for:
+      Params :=
+        (File        => File,
+         Phase       => Generate_Logic,
+         Gen_Marker  => False,
+         Ref_Allowed => False,
+         Old_Allowed => False);
+
+      if Ekind (E) = E_Function then
+         Why_Type := Type_Of_Node (Etype (E));
+      end if;
+
+      --  Do not generate an axiom for the postcondition of:
       --    * recursive functions, as the axiom could be used to prove the
       --      function itself,
       --    * potentially non returning functions as the axiom could be
@@ -4070,27 +4089,82 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) in E_Procedure | Entry_Kind
         or else No_Return (E)
-        or else Is_Recursive (E)
-        or else Is_Potentially_Nonreturning (E)
         or else Has_Pragma_Volatile_Function (E)
+        or else ((Is_Recursive (E)
+                  or else Is_Potentially_Nonreturning (E))
+                 and then (not Is_Scalar_Type (Etype (E))
+                           or else not Use_Split_Form_For_Type (Etype (E))))
       then
          return;
-      end if;
 
-      Why_Type := Type_Of_Node (Etype (E));
+      --  We generate an axiom for the return type of a recursive or
+      --  non-terminating function if it is a (non empty) static scalar type as
+      --  their range property is always sound. For dynamic scalar types, we
+      --  assume the bounds of their first static ancestor.
+
+      elsif Is_Recursive (E)
+        or else Is_Potentially_Nonreturning (E)
+      then
+
+         --  Expression functions will have their own definition axiom which
+         --  may contradict the range axiom. Do not emit range axiom for them.
+
+         if Present (Get_Expression_Function (E))
+           and then Entity_Body_Compatible_With_SPARK (E)
+         then
+            return;
+         end if;
+
+         pragma Assert (Is_Scalar_Type (Etype (E))
+                        and then Use_Split_Form_For_Type (Etype (E)));
+         declare
+            Logic_Why_Binders   : constant Binder_Array :=
+              To_Binder_Array (Logic_Func_Binders);
+            Logic_Id            : constant W_Identifier_Id :=
+              To_Why_Id (E, Domain => EW_Term, Local => False);
+            Dynamic_Prop_Result : constant W_Pred_Id :=
+              +New_Dynamic_Property
+              (Domain => EW_Pred,
+               Ty     => (if Type_Is_Modeled_As_Base (Etype (E)) then
+                               Get_Base_Of_Type (Etype (E))
+                          else Retysp (Etype (E))),
+               Expr   => +New_Result_Ident (Why_Type),
+               Params => Params);
+         begin
+            Emit
+              (File,
+               New_Guarded_Axiom
+                 (Ada_Node => Empty,
+                  Name     => NID (Short_Name (E) & "__" & Post_Axiom),
+                  Binders  => Logic_Why_Binders,
+                  Triggers =>
+                    New_Triggers
+                      (Triggers =>
+                           (1 => New_Trigger
+                              (Terms =>
+                                 (1 => New_Call
+                                      (Domain  => EW_Term,
+                                       Name    => Logic_Id,
+                                       Binders => Logic_Why_Binders))))),
+                  Def      =>
+                    +New_Typed_Binding
+                    (Ada_Node => Empty,
+                     Domain   => EW_Pred,
+                     Name     => +New_Result_Ident (Why_Type),
+                     Def      => New_Call
+                       (Domain  => EW_Term,
+                        Name    => Logic_Id,
+                        Binders => Logic_Why_Binders),
+                     Context  => +Dynamic_Prop_Result)));
+         end;
+         return;
+      end if;
 
       --  If the function has a postcondition, is not mutually recursive
       --  and is not annotated with No_Return, then generate an axiom:
       --  axiom def_axiom:
       --     forall args [f (args)]. pre (args) ->
       --           let result = f (args) in post (args)
-
-      Params :=
-        (File        => File,
-         Phase       => Generate_Logic,
-         Gen_Marker  => False,
-         Ref_Allowed => False,
-         Old_Allowed => False);
 
       --  We fill the map of parameters, so that in the Pre and Post, we use
       --  local names of the parameters, instead of the global names.
@@ -4769,9 +4843,9 @@ package body Gnat2Why.Subprograms is
       Effects          : W_Effects_Id;
       Pre              : W_Pred_Id;
       Post             : W_Pred_Id;
-      Dispatch_Pre     : W_Pred_Id;
-      Dispatch_Post    : W_Pred_Id;
-      Refined_Post     : W_Pred_Id;
+      Dispatch_Pre     : W_Pred_Id := Why_Empty;
+      Dispatch_Post    : W_Pred_Id := Why_Empty;
+      Refined_Post     : W_Pred_Id := Why_Empty;
       Prog_Id          : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Prog, Local => True);
       Why_Type         : W_Type_Id := Why_Empty;
@@ -5469,110 +5543,33 @@ package body Gnat2Why.Subprograms is
                                             Params)));
 
       else
-         --  For scalar types which are not modeled as their representation
-         --  type in Why, using instead this representation type
-         --  facilitate the job of automatic provers. As it is potentially
-         --  incorrect if there can be a runtime error in the expression
-         --  function body, it should not be done if the function may be
-         --  recursive.
-         --  For example for:
+         pragma Assert (not Has_Scalar_Type (Etype (E))
+                        or else Use_Split_Form_For_Type (Etype (E)));
 
-         --    function F return Natural is (Largest_Int + 1);
-
-         --  we should *not* generate the incorrect axiom:
-
-         --    axiom f__def:
-         --      forall x:natural. to_int(f x) = to_int(largest_int) + 1
-
-         --  but the correct one:
-
-         --    axiom f__def:
-         --      forall x:natural. f x = of_int (to_int(largest_int) + 1)
-
-         if Is_Recursive (E)
-           or else Is_Potentially_Nonreturning (E)
-           or else not Has_Scalar_Type (Etype (E))
-           or else Use_Split_Form_For_Type (Etype (E))
-         then
-            declare
-               Ty_Ent  : constant Entity_Id := Etype (E);
-               Equ_Ty  : constant W_Type_Id := Type_Of_Node (Ty_Ent);
-               Guard   : constant W_Pred_Id :=
-                 +New_And_Then_Expr
-                   (Left   => +Compute_Guard_Formula
-                      (Logic_Func_Binders, Params),
-                    Right  => +Func_Guard,
-                    Domain => EW_Pred);
-            begin
-               Emit
-                 (File,
-                  New_Defining_Axiom
-                    (Ada_Node    => E,
-                     Name        => Logic_Id,
-                     Binders     => Flat_Binders,
-                     Pre         => Guard,
-                     Def         =>
-                       +Transform_Expr
-                         (Expression (Expr_Fun_N),
-                          Expected_Type => Equ_Ty,
-                          Domain        => EW_Term,
-                          Params        => Params)));
-            end;
-         else
-            declare
-               --  Here we should use the precondition as the axiom could only
-               --  be sound in its context.
-
-               Ty_Ent  : constant Entity_Id := Etype (E);
-               Equ_Ty  : constant W_Type_Id := Base_Why_Type (Ty_Ent);
-               Guard   : constant W_Pred_Id :=
-                 +Compute_Guard_Formula (Logic_Func_Binders, Params);
-               Pre     : constant W_Pred_Id :=
-                 +Compute_Spec (Params, E, Pragma_Precondition, EW_Pred);
-            begin
-               Emit
-                 (File,
-                  New_Guarded_Axiom
-                    (Ada_Node => Empty,
-                     Name     => NID (Short_Name (E) & "__" & Def_Axiom),
-                     Binders  => Flat_Binders,
-                     Triggers =>
-                       New_Triggers
-                         (Triggers =>
-                            (1 => New_Trigger
-                               (Terms =>
-                                  (1 => New_Call
-                                     (Domain  => EW_Term,
-                                      Name    => Logic_Id,
-                                      Binders => Flat_Binders))))),
-                     Pre      =>
-                       +New_And_Expr (Left   => +Guard,
-                                      Right  => +Pre,
-                                      Domain => EW_Pred),
-                     Def      =>
-                       New_Conditional
-                         (Condition => +Func_Guard,
-                          Then_Part =>
-                            New_Call
-                              (Name   => Why_Eq,
-                               Args   =>
-                                 (Insert_Simple_Conversion
-                                    (Domain         => EW_Term,
-                                     Expr           => +New_Call
-                                       (Name    => Logic_Id,
-                                        Domain  => EW_Term,
-                                        Binders => Flat_Binders,
-                                        Typ     => Type_Of_Node (Ty_Ent)),
-                                     To             => Equ_Ty),
-                                  +Transform_Expr
-                                    (Expression (Expr_Fun_N),
-                                     Expected_Type => Equ_Ty,
-                                     Domain        => EW_Term,
-                                     Params        => Params)),
-                               Domain => EW_Pred,
-                               Typ    => EW_Bool_Type))));
-            end;
-         end if;
+         declare
+            Ty_Ent  : constant Entity_Id := Etype (E);
+            Equ_Ty  : constant W_Type_Id := Type_Of_Node (Ty_Ent);
+            Guard   : constant W_Pred_Id :=
+              +New_And_Then_Expr
+              (Left   => +Compute_Guard_Formula
+                 (Logic_Func_Binders, Params),
+               Right  => +Func_Guard,
+               Domain => EW_Pred);
+         begin
+            Emit
+              (File,
+               New_Defining_Axiom
+                 (Ada_Node    => E,
+                  Name        => Logic_Id,
+                  Binders     => Flat_Binders,
+                  Pre         => Guard,
+                  Def         =>
+                    +Transform_Expr
+                    (Expression (Expr_Fun_N),
+                     Expected_Type => Equ_Ty,
+                     Domain        => EW_Term,
+                     Params        => Params)));
+         end;
       end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);

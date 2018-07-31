@@ -385,6 +385,11 @@ package SPARK_Atree is
      Post => No (Expression'Result)
      or else Nkind (Expression'Result) in Sinfo.N_Subexpr;
 
+   function Expression_Contains_Old_Or_Loop_Entry
+     (Expr : Node_Id) return Boolean
+   with Pre => Nkind (Expr) in Sinfo.N_Subexpr;
+   --  Traverse expression to find references to Old and Loop_Entry attributes
+
    function Expression_Contains_Primitives_Calls_Of
      (Expr : Node_Id;
       Typ  : Entity_Id) return Boolean

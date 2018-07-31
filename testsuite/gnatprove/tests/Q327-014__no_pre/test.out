@@ -23,3 +23,4 @@ dispatch.ads:35:10: info: postcondition is stronger than class-wide postconditio
 dispatch.ads:35:30: info: contract case proved (CVC4: 2 VC)
 dispatch.ads:35:54: info: overflow check proved (CVC4: 1 VC)
 dispatch.ads:36:30: info: contract case proved (CVC4: 2 VC)
+dispatch.ads:36:33: warning: unreachable branch (CVC4: 1 VC)

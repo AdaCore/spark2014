@@ -238,7 +238,7 @@ very_longs.adb:511:53: info: initialization of "Carry" proved
 very_longs.adb:511:62: info: initialization of "Current_Borrow" proved
 very_longs.adb:511:78: info: range check proved (CVC4: 2 VC)
 very_longs.adb:512:28: info: initialization of "Future_Borrow" proved
-very_longs.adb:524:31: medium: array index check might fail (e.g. when J = 2 and Quotient = (Long_Digits => (others => 0), others => ?) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 1)
+very_longs.adb:524:31: medium: array index check might fail (e.g. when J = 2 and Quotient = (Long_Digits => (others => 0), others => ?) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 2)
 very_longs.adb:524:43: medium: range check might fail (e.g. when Q_Hat = 256)
 very_longs.adb:528:34: info: index check proved (CVC4: 2 VC)
 very_longs.adb:528:61: info: index check proved (CVC4: 2 VC)

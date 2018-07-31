@@ -1024,27 +1024,28 @@ package body Configuration is
 
       procedure Set_Level_Timeout_Steps_Provers_Proof_Mode is
       begin
-           --  If level switch was not provided, set other switches to their
-           --  default values.
 
          case CL_Switches.Level is
+
+            --  If level switch was not provided, set other switches to their
+            --  default values.
+
             when Invalid_Level =>
+
                Provers.Append ("cvc4");
                Proof := Per_Check;
                Steps := Default_Steps;
                Timeout := 0;
+               Memlimit := 0;
 
-            --  Level 0 is equivalent to
-            --    --prover=cvc4 --proof=per_check --steps=0 --timeout=1
+            --  See the UG for the meaning of the level switches
 
             when 0 =>
                Provers.Append ("cvc4");
                Proof := Per_Check;
                Steps := 0;
                Timeout := 1;
-
-               --  Level 1 is equivalent to --prover=cvc4,z3,altergo
-               --   --proof=per_check --steps=0 --timeout=1
+               Memlimit := 1000;
 
             when 1 =>
                Provers.Append ("cvc4");
@@ -1053,9 +1054,7 @@ package body Configuration is
                Proof := Per_Check;
                Steps := 0;
                Timeout := 1;
-
-               --  Level 2 is equivalent to --prover=cvc4,z3,altergo
-               --    --proof=per_check --steps=0 --timeout=5
+               Memlimit := 1000;
 
             when 2 =>
                Provers.Append ("cvc4");
@@ -1064,9 +1063,7 @@ package body Configuration is
                Proof := Per_Check;
                Steps := 0;
                Timeout := 5;
-
-               --  Level 3 is equivalent to --prover=cvc4,z3,altergo
-               --    --proof=progressive --steps=0 --timeout=5
+               Memlimit := 1000;
 
             when 3 =>
                Provers.Append ("cvc4");
@@ -1075,9 +1072,7 @@ package body Configuration is
                Proof := Progressive;
                Steps := 0;
                Timeout := 5;
-
-               --  Level 4 is equivalent to --prover=cvc4,z3,altergo
-               --    --proof=progressive --steps=0 --timeout=10
+               Memlimit := 2000;
 
             when 4 =>
                Provers.Append ("cvc4");
@@ -1086,6 +1081,7 @@ package body Configuration is
                Proof := Progressive;
                Steps := 0;
                Timeout := 10;
+               Memlimit := 2000;
 
             when others =>
                Abort_Msg (Config,
@@ -1114,6 +1110,12 @@ package body Configuration is
                                "must be auto or a non-negative integer",
                              With_Help => False);
             end;
+         end if;
+
+         if CL_Switches.Memlimit = 0 then
+            null;
+         else
+            Memlimit := CL_Switches.Memlimit;
          end if;
 
          if CL_Switches.Steps = Invalid_Steps then
@@ -1639,6 +1641,11 @@ package body Configuration is
          (Config,
           CL_Switches.Timeout'Access,
           Long_Switch => "--timeout=");
+
+      Define_Switch
+        (Config,
+         CL_Switches.Memlimit'Access,
+         Long_Switch => "--memlimit=");
 
       Define_Switch
          (Config,

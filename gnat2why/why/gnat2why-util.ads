@@ -456,6 +456,13 @@ package Gnat2Why.Util is
    --  be treated as having constants bounds, because translation of the loop
    --  in Why may lead to having two coexisting versions of the type.
 
+   function Get_Base_Of_Type (T : Entity_Id) return Entity_Id with
+     Pre  => Is_Type (T),
+     Post => Is_Type (Get_Base_Of_Type'Result)
+       and then not Type_Is_Modeled_As_Base (Get_Base_Of_Type'Result);
+   --  Returns the first type in the ancestors of T which is not modeled as
+   --  base. It is the type which we be used to model a type modeled as base.
+
    function Is_Range_Type_In_Why (T : Entity_Id) return Boolean with
      Pre => Is_Type (T);
    --  Returns True if T is a scalar type that should be translated into Why

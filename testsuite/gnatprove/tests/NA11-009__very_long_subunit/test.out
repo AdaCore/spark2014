@@ -84,7 +84,7 @@ very_longs-divide.adb:181:54: info: initialization of "Carry" proved
 very_longs-divide.adb:181:63: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:181:79: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:182:25: info: initialization of "Future_Borrow" proved
-very_longs-divide.adb:194:28: medium: array index check might fail (e.g. when J = 2 and Quotient = (Long_Digits => (others => 0), others => ?) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 1)
+very_longs-divide.adb:194:28: medium: array index check might fail (e.g. when J = 2 and Quotient = (Long_Digits => (others => 0), others => ?) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 2)
 very_longs-divide.adb:194:40: medium: range check might fail (e.g. when Q_Hat = 256)
 very_longs-divide.adb:198:31: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:198:58: info: index check proved (CVC4: 2 VC)

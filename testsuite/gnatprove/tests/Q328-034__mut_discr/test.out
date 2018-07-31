@@ -81,7 +81,7 @@ screen_output.adb:82:07: warning: no Global contract available for "Put"
 screen_output.adb:83:07: warning: assuming "Put" has no effect on global items
 screen_output.adb:83:07: warning: no Global contract available for "Put"
 screen_output.adb:83:46: low: range check might fail
-screen_output.adb:83:53: low: range check might fail (e.g. when S = (-2 => ' ', 2 => ' ', 3 => ' ', 4 => ' ', others => ':') and S'First = 1 and S'Last = 2147483647)
+screen_output.adb:83:53: low: range check might fail (e.g. when S = (2 => ' ', 3 => ' ', 4 => ' ', others => ':') and S'First = 1 and S'Last = 2147483647)
 screen_output.adb:84:07: warning: assuming "New_Line" has no effect on global items
 screen_output.adb:84:07: warning: no Global contract available for "New_Line"
 screen_output.adb:93:07: warning: assuming "Put" has no effect on global items
@@ -150,6 +150,7 @@ tokens.adb:80:36: info: discriminant check proved (CVC4: 1 VC)
 tokens.ads:19:20: info: initialization of "V.Instr" proved
 tokens.ads:19:20: info: initialization of "V.Op" proved
 tokens.ads:19:20: info: initialization of "V.Val.E" proved
+tokens.ads:25:36: warning: unreachable branch (CVC4: 1 VC)
 values-operations.adb:28:10: medium: exception might be raised
 values-operations.adb:43:12: info: precondition proved (CVC4: 1 VC)
 values-operations.adb:44:12: info: precondition proved (CVC4: 1 VC)

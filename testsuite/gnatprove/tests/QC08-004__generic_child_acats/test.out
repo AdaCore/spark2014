@@ -1,0 +1,19 @@
+main.adb:28:23: info: initialization of "Complex_One" proved
+main.adb:30:18: info: initialization of "Complex_Two" proved
+main.adb:33:18: medium: precondition might fail
+main.adb:38:19: info: initialization of "My_Literal" proved
+main.adb:38:32: info: initialization of "Complex_One" proved
+main.adb:40:18: info: initialization of "Complex_Two" proved
+main.adb:43:18: medium: precondition might fail
+parent-child.adb:7:27: medium: overflow check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11
+parent-child.adb:7:27: medium: range check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11
+parent-child.adb:7:51: medium: overflow check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11
+parent-child.adb:7:51: medium: range check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11
+parent.adb:20:21: info: overflow check proved (CVC4: 1 VC), in instantiation at main.adb:11
+parent.adb:21:20: info: initialization of "Result.Imag" proved, in instantiation at main.adb:11
+parent.adb:21:20: info: initialization of "Result.Real" proved, in instantiation at main.adb:11
+parent.adb:25:22: info: initialization of "Result.Imag" proved, in instantiation at main.adb:11
+parent.adb:25:22: info: initialization of "Result.Real" proved, in instantiation at main.adb:11
+parent.adb:28:14: info: initialization of "Result.Imag" proved, in instantiation at main.adb:11
+parent.adb:28:14: info: initialization of "Result.Real" proved, in instantiation at main.adb:11
+report.ads:71:21: warning: precondition is statically False

@@ -471,6 +471,12 @@ package SPARK_Util is
    --      Empty otherwise. This is used to get a stable name for aggregates
    --      used as definition of objects.
 
+   function May_Issue_Warning_On_Node (N : Node_Id) return Boolean;
+   --  We do not issue any warnings on nodes which stem from inlining or
+   --  instantiation, or in subprograms or library packages whose analysis
+   --  has not been requested, such as subprograms that are always inlined
+   --  in proof.
+
    function Shape_Of_Node (Node : Node_Id) return String;
    --  Return a string representing the shape of the Ada code surrounding the
    --  input node. This is used to name the VC file for manual proof.

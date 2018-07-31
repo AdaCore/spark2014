@@ -414,6 +414,98 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
 
    end Fold_Left_Acc;
 
+   -----------------
+   -- Fold_Left_I --
+   -----------------
+
+   package body Fold_Left_I is
+
+      ----------
+      -- Fold --
+      ----------
+
+      function Fold (A : Array_Type; Init : Element_Out) return Element_Out
+        with SPARK_Mode =>
+#if SPARK_BODY_MODE="On"
+          On
+#else
+          Off
+#end if;
+      is
+      begin
+         return R : Element_Out := Init do
+            for I in A'Range loop
+               pragma Loop_Invariant
+                 (Ind_Prop (A, R, I)
+                  and then F (A (I), I, R) = Acc.Fold (A, Init) (I));
+               if I /= A'Last then
+                  Acc.Prove_Ind (A, R, I);
+               end if;
+               R := F (A (I), I, R);
+            end loop;
+         end return;
+      end Fold;
+   end Fold_Left_I;
+
+   ---------------------
+   -- Fold_Left_I_Acc --
+   ---------------------
+
+   package body Fold_Left_I_Acc is
+
+      ----------
+      -- Fold --
+      ----------
+
+      function Fold (A : Array_Type; Init : Element_Out) return Acc_Array
+        with SPARK_Mode =>
+#if SPARK_BODY_MODE="On"
+          On
+#else
+          Off
+#end if;
+      is
+         Acc : Element_Out := Init;
+      begin
+         return R : Acc_Array (A'First .. A'Last) := (others => Init) do
+            for I in A'Range loop
+               pragma Assert (Ind_Prop (A, Acc, I));
+               R (I) := F (A (I), I, Acc);
+               pragma Loop_Invariant
+                 (Ind_Prop (A, Init, A'First)
+                  and then R (A'First) = F (A (A'First), A'First, Init));
+               pragma Loop_Invariant
+                 (for all K in A'First .. I =>
+                    (if K > A'First then
+                         Ind_Prop (A, R (K - 1), K)
+                     and then R (K) = F (A (K), K, R (K - 1))));
+               pragma Loop_Invariant
+                    (if I = A'First then Acc = Init else Acc = R (I - 1));
+               if I /= A'Last then
+                  Prove_Ind (A, Acc, I);
+               else
+                  Prove_Last (A, Acc);
+               end if;
+               Acc := R (I);
+            end loop;
+         end return;
+      end Fold;
+
+      ---------------
+      -- Prove_Ind --
+      ---------------
+
+      procedure Prove_Ind  (A : Array_Type; X : Element_Out; I : Index_Type) is
+      null;
+
+      ----------------
+      -- Prove_Last --
+      ----------------
+
+      procedure Prove_Last  (A : Array_Type; X : Element_Out) is null;
+
+   end Fold_Left_I_Acc;
+
    ----------------
    -- Fold_Right --
    ----------------

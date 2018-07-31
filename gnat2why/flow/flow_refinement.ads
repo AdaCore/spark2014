@@ -98,7 +98,9 @@ package Flow_Refinement is
    --  Returns True iff Target_Scope is visible from Looking_From
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
-   with Pre => Nkind (N) /= N_Subunit;
+   with Pre  => Nkind (N) /= N_Subunit,
+        Post => (if Present (Get_Flow_Scope'Result)
+                 then not Is_Generic_Unit (Get_Flow_Scope'Result.Ent));
    --  Given (almost) any node in the AST, work out which flow scope we are in.
    --
    --  When called on the boundary node, e.g. N_Subprogram_Declaration,
@@ -261,7 +263,8 @@ package Flow_Refinement is
 
    function Find_In_Initializes (E : Checked_Entity_Id)
                                  return Entity_Id
-   with Post => (if Present (Find_In_Initializes'Result)
+   with Pre  => Ekind (E) in E_Abstract_State | E_Constant | E_Variable,
+        Post => (if Present (Find_In_Initializes'Result)
                  then Find_In_Initializes'Result in E
                                                   | Encapsulating_State (E));
    --  Returns the node representing E (or its immediately encapsulating state)

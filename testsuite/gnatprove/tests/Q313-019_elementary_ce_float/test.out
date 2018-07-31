@@ -1,19 +1,19 @@
-float_example.adb:8:19: medium: postcondition might fail, cannot prove Minus_I'Result = A + B (e.g. when A = -0x0.175eb88900840p-1023 and B = -0x0.1d039aa088040p-1023 and Minus_I'Result = 0x0.05a4e21787800p-1023)
-float_example.adb:8:38: medium: float overflow check might fail (e.g. when A = 0x1.0800000000001p1023 and B = 0x1.32feeaf200000p1023)
-float_example.adb:12:16: medium: float overflow check might fail (e.g. when A = 0x1.c000000000000p1023 and B = -0x1.0000000000000p1022)
-float_example.adb:17:14: medium: postcondition might fail, cannot prove Bounded_Add'Result < 7.0 (e.g. when Bounded_Add'Result = 0x1.c006378ce0002p2)
-float_example.adb:21:16: medium: float overflow check might fail (e.g. when A = -0x1.0000000000000p1023 and B = -0x1.8000007ffff20p1023)
+float_example.adb:8:19: medium: postcondition might fail, cannot prove Minus_I'Result = A + B (e.g. when A = -2.0312493507E-309 and B = -2.5218151121E-309 and Minus_I'Result = 4.9056576135E-310)
+float_example.adb:8:38: medium: float overflow check might fail (e.g. when A = 9.2693552266E+307 and B = 1.0778988137E+308)
+float_example.adb:12:16: medium: float overflow check might fail (e.g. when A = 1.5729814930E+308 and B = -4.4942328372E+307)
+float_example.adb:17:14: medium: postcondition might fail, cannot prove Bounded_Add'Result < 7.0 (e.g. when Bounded_Add'Result = 7.0000000075E+0)
+float_example.adb:21:16: medium: float overflow check might fail (e.g. when A = -9.0060212713E+307 and B = -8.9884656743E+307)
 counterexample expected for check at float_example.adb:8
-  trace at float_example.adb:7 --> A = -0x0.175eb88900840p-1023 and B = -0x0.1d039aa088040p-1023
-  trace at float_example.adb:8 --> A = -0x0.175eb88900840p-1023 and B = -0x0.1d039aa088040p-1023 and Minus_I'Result = 0x0.05a4e21787800p-1023
-  trace at float_example.adb:12 --> Minus_I'Result = 0x0.05a4e21787800p-1023
+  trace at float_example.adb:7 --> A = -2.0312493507E-309 and B = -2.5218151121E-309
+  trace at float_example.adb:8 --> A = -2.0312493507E-309 and B = -2.5218151121E-309 and Minus_I'Result = 4.9056576135E-310
+  trace at float_example.adb:12 --> Minus_I'Result = 4.9056576135E-310
 counterexample expected for check at float_example.adb:12
-  trace at float_example.adb:7 --> A = 0x1.c000000000000p1023 and B = -0x1.0000000000000p1022
-  trace at float_example.adb:12 --> A = 0x1.c000000000000p1023 and B = -0x1.0000000000000p1022
+  trace at float_example.adb:7 --> A = 1.5729814930E+308 and B = -4.4942328372E+307
+  trace at float_example.adb:12 --> A = 1.5729814930E+308 and B = -4.4942328372E+307
 counterexample expected for check at float_example.adb:17
-  trace at float_example.adb:15 --> A = 0x1.c0000009c0000p1 and B = 0x1.c00c6f1000003p1
-  trace at float_example.adb:17 --> Bounded_Add'Result = 0x1.c006378ce0002p2
-  trace at float_example.adb:21 --> Bounded_Add'Result = 0x1.c006378ce0002p2
+  trace at float_example.adb:15 --> A = 3.9804687563E+0 and B = 3.0195312512E+0
+  trace at float_example.adb:17 --> Bounded_Add'Result = 7.0000000075E+0
+  trace at float_example.adb:21 --> Bounded_Add'Result = 7.0000000075E+0
 counterexample expected for check at float_example.adb:21
-  trace at float_example.adb:15 --> A = -0x1.0000000000000p1023 and B = -0x1.8000007ffff20p1023
-  trace at float_example.adb:21 --> A = -0x1.0000000000000p1023 and B = -0x1.8000007ffff20p1023
+  trace at float_example.adb:15 --> A = -9.0060212713E+307 and B = -8.9884656743E+307
+  trace at float_example.adb:21 --> A = -9.0060212713E+307 and B = -8.9884656743E+307

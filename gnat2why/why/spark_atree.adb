@@ -318,6 +318,48 @@ package body SPARK_Atree is
 
    function Expression (N : Node_Id) return Node_Id renames Sinfo.Expression;
 
+   -------------------------------------------
+   -- Expression_Contains_Old_Or_Loop_Entry --
+   -------------------------------------------
+
+   function Expression_Contains_Old_Or_Loop_Entry
+     (Expr : Node_Id) return Boolean
+   is
+      use type Atree.Traverse_Result;
+
+      function Search_Old_Or_Loop_Entry
+        (N : Node_Id) return Atree.Traverse_Result;
+      --  Search for attribute old or loop_entry
+
+      ------------------------------
+      -- Search_Old_Or_Loop_Entry --
+      ------------------------------
+
+      function Search_Old_Or_Loop_Entry
+        (N : Node_Id) return Atree.Traverse_Result is
+      begin
+         if Nkind (N) = N_Attribute_Reference
+           and then Get_Attribute_Id (Attribute_Name (N))
+             in Attribute_Old | Attribute_Loop_Entry
+         then
+            --  There is no need to continue the traversal, as one such
+            --  attribute suffices.
+
+            return Atree.Abandon;
+         end if;
+
+         return Atree.OK;
+      end Search_Old_Or_Loop_Entry;
+
+      function Search_Attrs is new
+        Atree.Traverse_Func (Search_Old_Or_Loop_Entry);
+
+   --  Start of processing for Expression_Contains_Old_Or_Loop_Entry
+
+   begin
+      return Search_Attrs (Expr) = Atree.Abandon;
+   end Expression_Contains_Old_Or_Loop_Entry;
+
    -----------------
    -- Expressions --
    -----------------

@@ -36,8 +36,8 @@
 package Formal.Numerics.Elementary_Functions with
   SPARK_Mode
 is
-   pragma Pure;
    pragma Annotate (GNATprove, Terminating, Elementary_Functions);
+   pragma Pure;
 
    function Sqrt (X : Float) return Float with
      Pre => X >= 0.0,

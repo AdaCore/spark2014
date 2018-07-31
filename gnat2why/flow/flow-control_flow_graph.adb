@@ -2546,10 +2546,27 @@ package body Flow.Control_Flow_Graph is
          is
          begin
             case Nkind (N) is
-               when N_Simple_Return_Statement   |
-                    N_Extended_Return_Statement |
-                    N_Exit_Statement            =>
+
+               --  Those might cause the loop to exit early
+
+               when N_Simple_Return_Statement
+                  | N_Extended_Return_Statement
+                  | N_Exit_Statement
+               =>
                   return Abandon;
+
+               --  In those the EXIT/RETURN statement, if present, will
+               --  certainly refer to subprogram's own loop (EXIT) or to
+               --  the suprogram itself (RETURN).
+
+               when N_Subprogram_Body
+                  | N_Subprogram_Declaration
+                  | N_Package_Declaration
+                  | N_Package_Body
+                  | N_Generic_Declaration
+               =>
+                  return Skip;
+
                when others =>
                   return OK;
             end case;
@@ -2757,7 +2774,7 @@ package body Flow.Control_Flow_Graph is
                F : Flow_Id      renames FA.CFG.Get_Key (V);
                A : V_Attributes renames FA.Atr (V);
             begin
-               Touched.Include (V);
+               Touched.Insert (V);
 
                if A.Variables_Explicitly_Used.Contains (T.Var) then
                   Fully_Defined := False;
@@ -2860,6 +2877,18 @@ package body Flow.Control_Flow_Graph is
 
                   --  all out parameters (globals not relevant here)
                   null;
+
+               --  Don't traverse into subprograms (because we don't check if
+               --  they are executed) and into packages (because they can only
+               --  modify their own objects anyway).
+
+               when N_Subprogram_Body
+                  | N_Subprogram_Declaration
+                  | N_Package_Declaration
+                  | N_Package_Body
+                  | N_Generic_Declaration
+               =>
+                  return Skip;
 
                when others =>
                   null;
@@ -3508,7 +3537,7 @@ package body Flow.Control_Flow_Graph is
                      Expand_Synthesized_Constants => False);
 
                   All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
-                  Missing      : Flow_Id_Sets.Set := Var_Def;
+                  Untangled    : Flow_Id_Sets.Set;
 
                begin
                   for C in M.Iterate loop
@@ -3530,7 +3559,7 @@ package body Flow.Control_Flow_Graph is
                               E_Loc      => N,
                               Print_Hint => Pretty_Print_Record_Field),
                            V);
-                        Missing.Delete (Output);
+                        Untangled.Insert (Output);
 
                         Inits.Append (V);
                         All_Vertices.Insert (V);
@@ -3541,7 +3570,7 @@ package body Flow.Control_Flow_Graph is
                   --  but not by URA we flag as initialized to the empty
                   --  set; since it is not possible in SPARK to partially
                   --  initialize a variable at declaration.
-                  for F of Missing loop
+                  for F of Var_Def.Difference (Untangled) loop
                      Add_Vertex
                        (FA,
                         Make_Basic_Attributes
@@ -3693,16 +3722,12 @@ package body Flow.Control_Flow_Graph is
 
                Final_V_Id : constant Flow_Graphs.Vertex_Id :=
                  FA.CFG.Get_Vertex (Final_F_Id);
-            begin
-               if Final_V_Id /= Flow_Graphs.Null_Vertex then
-                  declare
-                     Final_Atr : V_Attributes renames FA.Atr (Final_V_Id);
 
-                  begin
-                     Final_Atr.Is_Export := Final_Atr.Is_Export
-                       or else Is_Initialized_At_Elaboration (E, FA.B_Scope);
-                  end;
-               end if;
+               Final_Atr : V_Attributes renames FA.Atr (Final_V_Id);
+
+            begin
+               Final_Atr.Is_Export := Final_Atr.Is_Export
+                 or else Is_Initialized_At_Elaboration (E, FA.B_Scope);
             end;
          end loop;
       end if;
@@ -4191,6 +4216,21 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
       Called_Thing : constant Entity_Id := Get_Called_Entity (N);
+
+      --  Sanity check: the called subprogram is located in its own scope
+      --  and the caller can see it.
+
+      Called_Loc  : constant Flow_Scope := Get_Flow_Scope (Called_Thing)
+        with Ghost;
+      pragma Assert (Called_Loc.Ent = Called_Thing);
+      --  We only check the Ent component of Called_Loc because the Part
+      --  component is either Visible_Part (for subprograms with explicit spec)
+      --  or Body_Part (for subprograms whose bodies act as specs).
+
+      Called_Scop : constant Flow_Scope :=
+        (Called_Loc.Ent, Visible_Part) with Ghost;
+
+      pragma Assert (Is_Visible (Called_Scop, FA.B_Scope));
 
       Ins  : Vertex_Lists.List;
       Outs : Vertex_Lists.List;

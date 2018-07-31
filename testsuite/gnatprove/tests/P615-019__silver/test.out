@@ -18,7 +18,7 @@ contracts.adb:34:14: info: overflow check proved (CVC4: 1 VC)
 contracts.adb:34:14: info: range check proved (CVC4: 1 VC)
 contracts.adb:34:16: info: initialization of "Z" proved
 discriminant_check.adb:12:04: warning: analyzing unreferenced function "Get_X"
-discriminant_check.adb:14:15: medium: discriminant check might fail (e.g. when R = (B => False, X => 0, Y => ?))
+discriminant_check.adb:14:15: medium: discriminant check might fail (e.g. when R = (B => False, X => 0, Y => 0.0000000E+0))
 discriminant_check.adb:17:04: warning: analyzing unreferenced procedure "Set_X"
 discriminant_check.adb:19:08: medium: discriminant check might fail
 division_by_zero.adb:9:04: warning: analyzing unreferenced procedure "Oper_Integer"
@@ -34,15 +34,15 @@ division_by_zero.adb:22:27: medium: divide by zero might fail (e.g. when Y = 0)
 division_by_zero.adb:23:27: medium: divide by zero might fail (e.g. when Y = 0)
 division_by_zero.adb:27:04: warning: analyzing unreferenced procedure "Div_Float"
 division_by_zero.adb:27:39: info: initialization of "U" proved
-division_by_zero.adb:29:14: medium: divide by zero might fail
-division_by_zero.adb:29:14: medium: float overflow check might fail
+division_by_zero.adb:29:14: medium: divide by zero might fail (e.g. when Y = 0.0000000E+0)
+division_by_zero.adb:29:14: medium: float overflow check might fail (e.g. when X = 1.0625033E+0 and Y = 3.1224167E-39)
 division_by_zero.adb:32:04: warning: analyzing unreferenced procedure "Div_Fixed"
 division_by_zero.adb:32:39: info: initialization of "U" proved
-division_by_zero.adb:34:14: medium: divide by zero might fail
-division_by_zero.adb:34:14: medium: overflow check might fail
+division_by_zero.adb:34:14: medium: divide by zero might fail (e.g. when Y = 0)
+division_by_zero.adb:34:14: medium: overflow check might fail (e.g. when X = 1/128 and Y = 0)
 division_by_zero.adb:37:04: warning: analyzing unreferenced procedure "Exp_Float"
 division_by_zero.adb:37:49: info: initialization of "U" proved
-division_by_zero.adb:39:14: medium: divide by zero might fail (e.g. when Y = -1)
+division_by_zero.adb:39:14: medium: divide by zero might fail (e.g. when X = 0.0000000E+0 and Y = -1)
 division_by_zero.adb:39:14: medium: float overflow check might fail
 index_check.adb:3:04: warning: analyzing unreferenced function "Get"
 index_check.adb:5:16: medium: array index check might fail (e.g. when J = 1 and S = (others => 'NUL') and S'First = 2 and S'Last = 0)
@@ -60,23 +60,23 @@ overflow_check.adb:17:32: medium: overflow check might fail (e.g. when X = -1 an
 overflow_check.adb:18:32: medium: overflow check might fail (e.g. when E = 0 and X = 0)
 overflow_check.adb:22:04: warning: analyzing unreferenced procedure "Oper_Float"
 overflow_check.adb:22:64: info: initialization of "U" proved
-overflow_check.adb:27:32: medium: float overflow check might fail
-overflow_check.adb:28:32: medium: float overflow check might fail
-overflow_check.adb:29:32: medium: float overflow check might fail
-overflow_check.adb:30:32: medium: divide by zero might fail
-overflow_check.adb:30:32: medium: float overflow check might fail
+overflow_check.adb:27:32: medium: float overflow check might fail (e.g. when X = 5.1896826E+33 and Y = 3.4028233E+38)
+overflow_check.adb:28:32: medium: float overflow check might fail (e.g. when X = 2.0282400E+31 and Y = -3.4028235E+38)
+overflow_check.adb:29:32: medium: float overflow check might fail (e.g. when X = 1.7313964E+0 and Y = 2.8840915E+38)
+overflow_check.adb:30:32: medium: divide by zero might fail (e.g. when Y = 0.0000000E+0)
+overflow_check.adb:30:32: medium: float overflow check might fail (e.g. when X = 1.0625033E+0 and Y = 3.1224167E-39)
 overflow_check.adb:31:32: info: division check proved (CVC4: 2 VC)
 overflow_check.adb:31:32: medium: float overflow check might fail
 overflow_check.adb:35:04: warning: analyzing unreferenced procedure "Oper_Fixed"
 overflow_check.adb:35:51: warning: unused variable "E"
 overflow_check.adb:35:64: medium: "U" might not be initialized in "Oper_Fixed"
-overflow_check.adb:38:30: medium: overflow check might fail
-overflow_check.adb:39:30: medium: overflow check might fail
-overflow_check.adb:40:32: medium: overflow check might fail
-overflow_check.adb:41:32: medium: overflow check might fail
-overflow_check.adb:42:32: medium: overflow check might fail
-overflow_check.adb:43:32: medium: divide by zero might fail
-overflow_check.adb:43:32: medium: overflow check might fail
+overflow_check.adb:38:30: medium: overflow check might fail (e.g. when X = -1)
+overflow_check.adb:39:30: medium: overflow check might fail (e.g. when X = -1)
+overflow_check.adb:40:32: medium: overflow check might fail (e.g. when X = -1 and Y = -1/128)
+overflow_check.adb:41:32: medium: overflow check might fail (e.g. when X = -1 and Y = 1/128)
+overflow_check.adb:42:32: medium: overflow check might fail (e.g. when X = -1 and Y = -1)
+overflow_check.adb:43:32: medium: divide by zero might fail (e.g. when Y = 0)
+overflow_check.adb:43:32: medium: overflow check might fail (e.g. when X = 1/128 and Y = 0)
 range_check.adb:16:04: warning: analyzing unreferenced procedure "Convert_Enum"
 range_check.adb:16:38: info: initialization of "U" proved
 range_check.adb:18:12: medium: range check might fail (e.g. when X = A)
@@ -88,7 +88,7 @@ range_check.adb:26:46: info: initialization of "U" proved
 range_check.adb:28:12: medium: range check might fail (e.g. when X = 11)
 range_check.adb:31:04: warning: analyzing unreferenced procedure "Convert_Float"
 range_check.adb:31:40: info: initialization of "U" proved
-range_check.adb:33:12: medium: range check might fail
+range_check.adb:33:12: medium: range check might fail (e.g. when X = -1.0624697E+0)
 range_check.adb:36:04: warning: analyzing unreferenced procedure "Convert_Fixed"
 range_check.adb:36:40: info: initialization of "U" proved
-range_check.adb:38:12: medium: range check might fail
+range_check.adb:38:12: medium: range check might fail (e.g. when X = -1/128)

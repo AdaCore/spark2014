@@ -33,7 +33,6 @@ with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Namet;                   use Namet;
 with Sinput;                  use Sinput;
 with SPARK_Atree;             use SPARK_Atree;
-with SPARK_Atree.Entities;    use SPARK_Atree.Entities;
 with SPARK_Definition;        use SPARK_Definition;
 with SPARK_Util;              use SPARK_Util;
 with SPARK_Util.Types;        use SPARK_Util.Types;
@@ -643,9 +642,8 @@ package body Gnat2Why.Types is
    --------------------
 
    procedure Translate_Type
-     (File       : W_Section_Id;
-      E          : Entity_Id;
-      New_Theory : out Boolean)
+     (File : W_Section_Id;
+      E    : Entity_Id)
    is
       procedure Translate_Underlying_Type
         (File : W_Section_Id;
@@ -692,7 +690,6 @@ package body Gnat2Why.Types is
 
    begin
       if Is_Standard_Boolean_Type (E) or else E = Universal_Fixed then
-         New_Theory := False;
          return;
 
       else
@@ -703,8 +700,6 @@ package body Gnat2Why.Types is
          then
             Create_Rep_Record_Theory_If_Needed (File, Retysp (E));
          end if;
-
-         New_Theory := True;
 
          Open_Theory
            (File, E_Module (E),
@@ -783,7 +778,6 @@ package body Gnat2Why.Types is
          --  to try and minimalize quantified axioms in the VCs' context.
 
          if Is_Scalar_Type (E)
-           and then not Is_Fixed_Point_Type (E)
            and then not Type_Is_Modeled_As_Base (E)
          then
             Open_Theory

@@ -863,8 +863,6 @@ network-helpers.ads:6:23: info: initialization of "LSB" proved
 network-helpers0.adb:14:27: info: range check proved (CVC4: 2 VC)
 network-helpers0.adb:15:21: info: no contextual analysis of "Shift_Right" (body not seen yet)
 network-helpers0.adb:15:21: info: range check proved (CVC4: 2 VC)
-network-helpers0.adb:15:21: warning: assuming "Shift_Right" has no effect on global items
-network-helpers0.adb:15:21: warning: no Global contract available for "Shift_Right"
 network-helpers0.ads:5:23: info: initialization of "MSB" proved
 network-helpers0.ads:6:23: info: initialization of "LSB" proved
 no_overflow.adb:7:14: info: overflow check proved (CVC4: 1 VC)

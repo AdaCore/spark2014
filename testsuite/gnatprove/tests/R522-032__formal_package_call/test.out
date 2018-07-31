@@ -1,0 +1,2 @@
+hw-gfx-dp_aux_ch.ads:4:14: warning: subprogram "Dummy" has no effect, in instantiation at hw-gfx-gma-dp_aux_ch.ads:4
+hw-gfx-dp_training.ads:10:14: warning: subprogram "Train_DP" has no effect, in instantiation at hw-gfx-gma-pch-dp.adb:9

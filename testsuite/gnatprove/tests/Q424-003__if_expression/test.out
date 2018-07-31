@@ -57,9 +57,9 @@ string_utilities.adb:68:25: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:70:22: info: initialization of "X2" proved
 string_utilities.adb:70:25: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:70:25: medium: range check might fail
-string_utilities.ads:3:55: medium: array index check might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 0)
+string_utilities.ads:3:55: medium: array index check might fail (e.g. when S = (others => 'NUL') and S'First = 2 and S'Last = 1)
 string_utilities.ads:4:48: info: range check proved (CVC4: 4 VC)
-string_utilities.ads:4:59: medium: overflow check might fail (e.g. when S = (others => 'NUL') and S'First = 2147483647 and S'Last = 0)
+string_utilities.ads:4:59: medium: overflow check might fail (e.g. when S = (others => 'NUL') and S'First = 2147483647 and S'Last = 1)
 string_utilities.ads:10:11: info: expression function body not available for proof ("Is_Subsequence" might not return)
 string_utilities.ads:11:11: info: expression function body not available for proof ("Is_Subsequence" might not return)
 string_utilities.ads:17:15: medium: overflow check might fail

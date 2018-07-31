@@ -33,6 +33,7 @@ with Graphs;
 with Lib;                        use Lib;
 with Nlists;                     use Nlists;
 with Rtsfind;                    use Rtsfind;
+with Sem_Aux;                    use Sem_Aux;
 with Sem_Ch12;                   use Sem_Ch12;
 with Sem_Util;                   use Sem_Util;
 with SPARK_Util;                 use SPARK_Util;
@@ -46,23 +47,15 @@ package body Flow_Visibility is
    ----------------------------------------------------------------------------
 
    type Hierarchy_Info_T is record
-      Is_Package        : Boolean;
+      Is_Package      : Boolean;
+      Is_Private      : Boolean;
 
---    Is_Child          : Boolean;
---    ??? in the design document this is a dedicated property, but it is easier
---    to debug if implemented as a function; let's keep it like this until this
---    code is stabilized; same for other occurrences below.
-      Is_Private        : Boolean;
-      Is_Nested         : Boolean;
-
-      Is_Instance       : Boolean;
-      Is_Instance_Child : Boolean;
-
-      Parent            : Entity_Id;
-      Instance_Parent   : Entity_Id;
-      Template          : Entity_Id;
-      Container         : Flow_Scope;
+      Parent          : Entity_Id;
+      Instance_Parent : Entity_Id;
+      Template        : Entity_Id;
+      Container       : Flow_Scope;
    end record;
+   --  A minimal description of an entity location within the code hierarchy
 
    package Hierarchy_Info_Maps is new
      Ada.Containers.Hashed_Maps (Key_Type        => Entity_Id,
@@ -116,7 +109,11 @@ package body Flow_Visibility is
 
    function Make_Info (N : Node_Id) return Hierarchy_Info_T;
 
-   function Is_Child (Info : Hierarchy_Info_T) return Boolean;
+   function Is_Child          (Info : Hierarchy_Info_T) return Boolean;
+   function Is_Nested         (Info : Hierarchy_Info_T) return Boolean;
+   function Is_Instance       (Info : Hierarchy_Info_T) return Boolean;
+   function Is_Instance_Child (Info : Hierarchy_Info_T) return Boolean;
+   --  Utility routines for the hierarchy data
 
    procedure Print (G : Scope_Graphs.Graph);
    --  Pretty-print visibility graph
@@ -129,8 +126,8 @@ package body Flow_Visibility is
       with procedure Process (N : Node_Id);
    procedure Traverse_Compilation_Unit (Unit_Node : Node_Id);
    --  Call Process on all declarations within compilation unit CU. Unlike the
-   --  standard frontend traversal, this one traverses into stubs; unlike the
-   --  generated globals traversal, this one traverses into generic units.
+   --  standard frontend traversal, this one traverses into stubs; ??? it is
+   --  now similar to the generated globals traversal.
 
    ----------------------------------------------------------------------------
    --  Subprogram bodies
@@ -204,6 +201,7 @@ package body Flow_Visibility is
 
          procedure Connect (Source, Target : Scope_Graphs.Vertex_Id) is
          begin
+            pragma Assert (not Scope_Graph.Edge_Exists (Source, Target));
             Scope_Graph.Add_Edge (Source, Target, Rule);
          end Connect;
 
@@ -236,8 +234,8 @@ package body Flow_Visibility is
          --  corresponding parts, since the template's position in the graph
          --  determines our visibility, not the location of instantiation.
 
-         if Info.Is_Instance then
-            if Info.Is_Instance_Child then
+         if Is_Instance (Info) then
+            if Is_Instance_Child (Info) then
                Connect
                  (Spec_V,
                   Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
@@ -260,12 +258,24 @@ package body Flow_Visibility is
                   Scope_Graph.Get_Vertex ((Ent  => Info.Template,
                                            Part => Visible_Part)));
 
-               if Info.Is_Package then
-                  Connect
-                    (Priv_V,
-                     Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                              Part => Private_Part)));
-               end if;
+               --  Generic units acquire visibility from where they are
+               --  instantiated, so they can "see" subprograms used to
+               --  instantiate them (when instantiated, a formal subprogram
+               --  becomes a renaming). Same for formal packages.
+               --
+               --  ??? do something similar when Is_Instance_Child is True
+
+               Connect
+                 (Spec_V,
+                  Scope_Graph.Get_Vertex
+                    ((if Is_Nested (Info)
+                     then Info.Container
+                     else (Ent  => Info.Parent,
+                           Part => (if Info.Is_Private
+                                    then Private_Part
+                                    else Visible_Part)))));
+               --  ??? The code for the target scope is repeated in rules
+               --  Rule_Up_Spec and Rule_Down_Spec; this should be refactored.
 
                Connect
                  (Body_V,
@@ -301,28 +311,19 @@ package body Flow_Visibility is
 
          --  This rule deals with upwards visibility, i.e. adding a link to
          --  the nearest "enclosing" scope. Generics are dealt with separately,
-         --  except for generic child instantiations (they have visibility of
-         --  their parent's instantiation).
+         --  ??? except for generic child instantiations (they have visibility
+         --  of their parent's instantiation).
 
-         if not Info.Is_Instance then
-            if Info.Is_Nested then
-               Connect
-                 (Spec_V,
-                  Scope_Graph.Get_Vertex (Info.Container));
-
-            elsif Info.Is_Private then
-               Connect
-                 (Spec_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                           Part => Private_Part)));
-
-            else
-               --  ??? should this apply to instances too?
-               Connect
-                 (Spec_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                           Part => Visible_Part)));
-            end if;
+         if not Is_Instance (Info) then
+            Connect
+              (Spec_V,
+               Scope_Graph.Get_Vertex
+                 ((if Is_Nested (Info)
+                  then Info.Container
+                  else (Ent  => Info.Parent,
+                        Part => (if Info.Is_Private
+                                 then Private_Part
+                                 else Visible_Part)))));
          end if;
 
          ----------------------------------------------------------------------
@@ -337,46 +338,35 @@ package body Flow_Visibility is
          Rule := Rule_Down_Spec;
 
          --  This rule deals with downwards visibility, i.e. contributing to
-         --  the set of things the parent can see. It is exactly the inverse
-         --  of Rule_Own, except there is no special treatment for instances
-         --  (since a scope does have visibility of the spec of something
-         --  instantiated inside it).
+         --  the visibility of the surrounding context. It is exactly the
+         --  inverse of Rule_Up_Spec, except there is no special treatment for
+         --  instances (since a scope does have visibility of the spec of
+         --  something instantiated inside it).
 
-         if Info.Is_Nested then
-            Connect
-              (Scope_Graph.Get_Vertex (Info.Container),
-               Spec_V);
-         elsif Info.Is_Private then
-            Connect
-              (Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                        Part => Private_Part)),
-               Spec_V);
-         else
-            Connect
-              (Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                        Part => Visible_Part)),
-               Spec_V);
-         end if;
+         Connect
+           (Scope_Graph.Get_Vertex ((if Is_Nested (Info)
+                                     then Info.Container
+                                     else (Ent  => Info.Parent,
+                                           Part => (if Info.Is_Private
+                                                    then Private_Part
+                                                    else Visible_Part)))),
+            Spec_V);
 
          ----------------------------------------------------------------------
 
          Rule := Rule_Up_Priv;
 
          --  This rule deals with upwards visibility for the private part of a
-         --  package. It is of course excepted by the "generic" rule.
+         --  child package. It doesn't apply to instances.
 
-         if Info.Is_Package then
-            if Info.Is_Instance then
-               Connect
-                 (Priv_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                           Part => Private_Part)));
-            elsif Is_Child (Info) then
-               Connect
-                 (Priv_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                           Part => Private_Part)));
-            end if;
+         if Info.Is_Package
+           and then Is_Child (Info)
+           and then not Is_Instance (Info)
+         then
+            Connect
+              (Priv_V,
+               Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
+                                        Part => Private_Part)));
          end if;
 
          ----------------------------------------------------------------------
@@ -386,15 +376,11 @@ package body Flow_Visibility is
          --  Finally, this rule deals with the upwards visibility for the body
          --  of a nested package. A nested scope will have visibility of its
          --  enclosing scope's body, since it is impossible to complete the
-         --  body anywhere else. Again, there is an exception for the "generic"
-         --  rule.
+         --  body anywhere else. Again, it doesn't apply to instances.
 
-         if Info.Is_Instance then
-            Connect
-              (Body_V,
-               Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                        Part => Body_Part)));
-         elsif Info.Is_Nested then
+         if Is_Nested (Info)
+           and then not Is_Instance (Info)
+         then
             Connect
               (Body_V,
                Scope_Graph.Get_Vertex ((Ent  => Info.Container.Ent,
@@ -418,6 +404,23 @@ package body Flow_Visibility is
       Hierarchy_Info.Clear;
 
       Close_Visibility_Graph;
+
+      --  Sanity check: all vertices should be now connected to Standard
+
+      declare
+         Standard : constant Scope_Graphs.Vertex_Id :=
+           Scope_Graph.Get_Vertex ((Ent  => Standard_Standard,
+                                    Part => Visible_Part))
+           with Ghost;
+
+         use Scope_Graphs;
+
+      begin
+         pragma Assert
+           (for all V of Scope_Graph.Get_Collection (All_Vertices) =>
+               (if V /= Standard then Scope_Graph.Edge_Exists (V, Standard)));
+      end;
+
    end Connect_Flow_Scopes;
 
    ----------
@@ -438,12 +441,28 @@ package body Flow_Visibility is
    --------------
 
    function Is_Child (Info : Hierarchy_Info_T) return Boolean is
-   begin
-      return not Info.Is_Private
-        and then not Info.Is_Nested
-        and then Present (Info.Parent)
-        and then Info.Parent /= Standard_Standard;
-   end Is_Child;
+     (Present (Info.Parent));
+
+   -----------------
+   -- Is_Instance --
+   -----------------
+
+   function Is_Instance (Info : Hierarchy_Info_T) return Boolean is
+     (Present (Info.Template));
+
+   -----------------------
+   -- Is_Instance_Child --
+   -----------------------
+
+   function Is_Instance_Child (Info : Hierarchy_Info_T) return Boolean is
+     (Present (Info.Instance_Parent));
+
+   ---------------
+   -- Is_Nested --
+   ---------------
+
+   function Is_Nested (Info : Hierarchy_Info_T) return Boolean is
+     (Present (Info.Container));
 
    ----------------
    -- Is_Visible --
@@ -478,13 +497,10 @@ package body Flow_Visibility is
          else Def_E);
 
       Is_Package      : Boolean;
-      --  Is_Child          : Boolean;
       Is_Private      : Boolean;
       Parent          : Entity_Id;
       Instance_Parent : Entity_Id;
       Template        : Entity_Id;
-
-      Is_Nested       : Boolean;
       Container       : Flow_Scope;
 
       function Is_Text_IO_Special_Package (E : Entity_Id) return Boolean;
@@ -561,7 +577,10 @@ package body Flow_Visibility is
                                    | Generic_Subprogram_Kind);
 
          Is_Package := False;
-         Is_Private := False;
+         Is_Private :=
+           Is_Compilation_Unit (E)
+             and then
+           Private_Present (Enclosing_Comp_Unit_Node (E));
 
          if Is_Compilation_Unit (E) then
             if Ekind (E) in E_Function | E_Procedure
@@ -591,26 +610,19 @@ package body Flow_Visibility is
             begin
                pragma Assert (Nkind (Inst_Node) = N_Package_Instantiation);
                --  The original frontend routine expects formal packages too,
-               --  but apparently here we only get package instantiations.
+               --  but in the backend we only get package instantiations,
+               --  because formal packages have been expanded to renamings of
+               --  instances.
 
-               case Nkind (Name (Inst_Node)) is
-                  when N_Identifier =>
-                     raise Program_Error
-                       with "generic parent with generic child";
-                     --  ??? This happens when instantiating the generic child
-                     --  within the parent's instance body; see acats ca11021.
-                     --  The original frontend routine doesn't deal with this
-                     --  case; currently just crash.
+               pragma Assert (Nkind (Name (Inst_Node)) = N_Expanded_Name);
+               --  When analysing the generic parent body, frontend expects the
+               --  child to be named either as "P.C" (N_Expanded_Name) or "C"
+               --  (N_Identifier); when analysing its instance in the backend
+               --  we only see N_Expanded_Name.
 
-                  when N_Expanded_Name =>
-                     Instance_Parent := Entity (Prefix (Name (Inst_Node)));
+               Instance_Parent := Entity (Prefix (Name (Inst_Node)));
 
-                     pragma Assert
-                       (Ekind (Instance_Parent) = E_Package);
-
-                  when others =>
-                     raise Program_Error;
-               end case;
+               pragma Assert (Ekind (Instance_Parent) = E_Package);
 
                if Present (Renamed_Entity (Instance_Parent)) then
                   Instance_Parent := Renamed_Entity (Instance_Parent);
@@ -628,10 +640,8 @@ package body Flow_Visibility is
         and then Is_Text_IO_Special_Package (E)
       then
          Container := (Ent => Scope (E), Part => Visible_Part);
-         Is_Nested := True;
       else
          Container := Get_Flow_Scope (N);
-         Is_Nested := Container /= Null_Flow_Scope;
       end if;
 
       -------------------------------------------------------------------------
@@ -642,32 +652,23 @@ package body Flow_Visibility is
       --  is easier to know which one.
       -------------------------------------------------------------------------
 
-      pragma Assert (if not Is_Package then not Is_Private);
-      --  ??? how about private functions and procedures?
+      pragma Assert (Present (Container) or else Present (Parent));
+      --  Everything is nested or else has a parent
 
-      pragma Assert (if Is_Private then not Is_Nested);
+      pragma Assert (not (Is_Private and Present (Container)));
+      --  Being "private" can only apply to non-nested packages
 
-      pragma Assert
-       (if Is_Nested then
-          not Is_Private
-          and then No (Parent)
-          and then Container /= Null_Flow_Scope
-        else
-          Present (Parent)
-          and then Container = Null_Flow_Scope);
+      pragma Assert (if Present (Template) then Is_Generic_Unit (Template));
+      --  Template, if present, is a generic unit
 
       -------------------------------------------------------------------------
 
-      return (Is_Package        => Is_Package,
---              Is_Child          => Is_Child,
-              Is_Private        => Is_Private,
-              Is_Nested         => Is_Nested,
-              Is_Instance       => Present (Template),
-              Is_Instance_Child => Present (Instance_Parent),
-              Parent            => Parent,
-              Instance_Parent   => Instance_Parent,
-              Template          => Template,
-              Container         => Container);
+      return (Is_Package      => Is_Package,
+              Is_Private      => Is_Private,
+              Parent          => Parent,
+              Instance_Parent => Instance_Parent,
+              Template        => Template,
+              Container       => Container);
    end Make_Info;
 
    -----------
@@ -677,6 +678,14 @@ package body Flow_Visibility is
    procedure Print (G : Scope_Graphs.Graph)
    is
       use Scope_Graphs;
+
+      Show_Empty_Subprogram_Bodies : constant Boolean := False;
+      --  A debug flag fow showing/hiding subprograms with bo bodies (e.g. when
+      --  the body is in another compilation unit, especially in a predefined
+      --  one, like System; or when the subprogram is abstract). Those bodies
+      --  make the graph harder to read.
+      --  ??? perhaps we should not create vertices for those bodies in the
+      --  first place.
 
       function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info;
       --  Pretty-printing for vertices in the dot output
@@ -705,8 +714,20 @@ package body Flow_Visibility is
              when Body_Part    => " (Body)",
              when Null_Part    => raise Program_Error);
 
+         Show : Boolean;
+
       begin
-         return (Show        => True,
+         if S.Part = Body_Part
+           and then Ekind (S.Ent) in E_Function | E_Procedure
+           and then No (Subprogram_Body_Entity (S.Ent))
+         then
+            pragma Assert (G.In_Neighbour_Count (V) = 0);
+            Show := Show_Empty_Subprogram_Bodies;
+         else
+            Show := True;
+         end if;
+
+         return (Show        => Show,
                  Shape       => Shape_None,
                  Colour      =>
                    To_Unbounded_String
@@ -728,11 +749,25 @@ package body Flow_Visibility is
          Marked : Boolean;
          Colour : Edge_Kind) return Edge_Display_Info
       is
-         pragma Unreferenced (G, A, B, Marked, Colour);
+         pragma Unreferenced (B, Marked, Colour);
+
+         S : constant Flow_Scope := G.Get_Key (A);
+
+         Show : Boolean;
 
       begin
+         if Ekind (S.Ent) in E_Function | E_Procedure
+           and then S.Part = Body_Part
+           and then No (Subprogram_Body_Entity (S.Ent))
+         then
+            pragma Assert (G.In_Neighbour_Count (A) = 0);
+            Show := Show_Empty_Subprogram_Bodies;
+         else
+            Show := True;
+         end if;
+
          return
-           (Show   => True,
+           (Show   => Show,
             Shape  => Edge_Normal,
             Colour => Null_Unbounded_String,
             Label  => Null_Unbounded_String);
@@ -833,6 +868,7 @@ package body Flow_Visibility is
                              | N_Subprogram_Declaration
                              | N_Subprogram_Body_Stub
                              | N_Task_Type_Declaration
+                             | N_Abstract_Subprogram_Declaration
                   or else (Nkind (N) = N_Subprogram_Body
                            and then Acts_As_Spec (N))
                   or else (Nkind (N) = N_Private_Type_Declaration
@@ -884,7 +920,26 @@ package body Flow_Visibility is
 
    begin
       if Unit_Node = Standard_Package_Node then
-         Scope_Graph.Add_Vertex (Standard_Scope);
+
+         --  The Standard package is special: create vertices for its
+         --  visible and private parts and connect them. This package declares
+         --  no subprograms or abstract states, so we don't need a vertex for
+         --  its body part.
+         --
+         --  This is based on the Ada RM 10.1.1(1): "Each library unit (except
+         --  Standard) has a parent unit, which is a library package or generic
+         --  library package."
+
+         Scope_Graph.Add_Vertex
+           ((Ent => Standard_Standard, Part => Visible_Part));
+
+         Scope_Graph.Add_Vertex
+           ((Ent => Standard_Standard, Part => Private_Part));
+
+         Scope_Graph.Add_Edge
+           ((Ent => Standard_Standard, Part => Private_Part),
+            (Ent => Standard_Standard, Part => Visible_Part),
+            Rule_Own);
       else
          Traverse (Unit_Node);
       end if;
@@ -917,14 +972,17 @@ package body Flow_Visibility is
          --  Call Process on all interesting declarations and traverse
 
          case Nkind (N) is
-            when N_Package_Declaration
-               | N_Generic_Package_Declaration
-            =>
+            when N_Package_Declaration =>
                Process (N);
                Traverse_Visible_And_Private_Parts (Specification (N));
 
+            when N_Generic_Package_Declaration =>
+               Process (N);
+
             when N_Package_Body =>
-               Traverse_Package_Body (N);
+               if Ekind (Unique_Defining_Entity (N)) /= E_Generic_Package then
+                  Traverse_Package_Body (N);
+               end if;
 
             when N_Package_Body_Stub =>
                Traverse_Package_Body (Get_Body_From_Stub (N));
@@ -932,7 +990,9 @@ package body Flow_Visibility is
             when N_Entry_Declaration
                | N_Generic_Subprogram_Declaration
                | N_Subprogram_Declaration
+               | N_Abstract_Subprogram_Declaration
             =>
+               --  ??? abstract subprograms have no bodies
                Process (N);
 
             when N_Subprogram_Body =>
@@ -940,7 +1000,9 @@ package body Flow_Visibility is
                   Process (N);
                end if;
 
-               Traverse_Subprogram_Body (N);
+               if not Is_Generic_Subprogram (Unique_Defining_Entity (N)) then
+                  Traverse_Subprogram_Body (N);
+               end if;
 
             when N_Entry_Body =>
                Traverse_Subprogram_Body (N);

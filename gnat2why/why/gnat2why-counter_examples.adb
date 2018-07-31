@@ -30,6 +30,7 @@ with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ce_Interval_Sets;
+with Ce_Pretty_Printing;        use Ce_Pretty_Printing;
 with Common_Containers;         use Common_Containers;
 with Flow_Refinement;           use Flow_Refinement;
 with Flow_Types;                use Flow_Types;
@@ -243,10 +244,10 @@ package body Gnat2Why.Counter_Examples is
       function Refine_Array
         (Arr_Indices  : Cntexmp_Value_Array.Map;
          Arr_Others   : Cntexmp_Value_Ptr;
-         Indice_Type  : Entity_Id;
+         Arr_Indice   : Entity_Id;
          Element_Type : Entity_Id)
          return Unbounded_String
-      with Pre => Is_Discrete_Type (Indice_Type)
+      with Pre => Is_Discrete_Type (Retysp (Etype (Arr_Indice)))
                     and then
                   Is_Type (Element_Type);
 
@@ -285,7 +286,6 @@ package body Gnat2Why.Counter_Examples is
 
       function Print_Float (Cnt_Value : Cntexmp_Value)
                             return Unbounded_String;
-      --  ??? Used to print float counterex. This version is temporary.
 
       ----------------
       -- Refine_Aux --
@@ -311,8 +311,8 @@ package body Gnat2Why.Counter_Examples is
 
                elsif Is_Enumeration_Type (AST_Type) then
                   declare
-                     Value : constant Uint := UI_From_Int
-                       (Int'Value (To_String (Cnt_Value.I)));
+                     Value : constant Uint := UI_From_String
+                         (To_String (Cnt_Value.I));
 
                      --  Call Get_Enum_Lit_From_Pos to get a corresponding
                      --  enumeration entity.
@@ -373,9 +373,15 @@ package body Gnat2Why.Counter_Examples is
                elsif Is_Floating_Point_Type (AST_Type) then
                   return Null_Unbounded_String;
 
-               --  ??? only integer types are expected in that last case
+               elsif Is_Fixed_Point_Type (AST_Type) then
+                  return To_Unbounded_String
+                    (Print_Fixed (Small_Value (AST_Type),
+                     To_String (Cnt_Value.I)));
+
+               --  Only integer types are expected in that last case
 
                else
+                  pragma Assert (Is_Discrete_Type (AST_Type));
                   return Cnt_Value.I;
                end if;
 
@@ -399,12 +405,8 @@ package body Gnat2Why.Counter_Examples is
 
             when Cnt_Float =>
 
-               if Is_Floating_Point_Type (AST_Type) then
-                  return Print_Float (Cnt_Value.all);
-               else
-                  --  ??? only float types are expected here
-                  return Print_Float (Cnt_Value.all);
-               end if;
+               pragma Assert (Is_Floating_Point_Type (AST_Type));
+               return Print_Float (Cnt_Value.all);
 
             when Cnt_Unparsed =>
                return Cnt_Value.U;
@@ -495,24 +497,16 @@ package body Gnat2Why.Counter_Examples is
                return Cnt_Value.S;
 
             when Cnt_Array =>
-               if Is_Array_Type (AST_Type) then
-                  declare
-                     Indice_Type  : constant Entity_Id :=
-                                      Retysp (Etype (First_Index (AST_Type)));
-                     Element_Type : constant Entity_Id :=
-                                      Retysp (Component_Type (AST_Type));
-                  begin
-                     return Refine_Array (Cnt_Value.Array_Indices,
-                                          Cnt_Value.Array_Others,
-                                          Indice_Type,
-                                          Element_Type);
-                  end;
-
-               --  This case should not happen
-
-               else
-                  return Null_Unbounded_String;
-               end if;
+               pragma Assert (Is_Array_Type (AST_Type));
+               declare
+                  Element_Type : constant Entity_Id :=
+                    Retysp (Component_Type (AST_Type));
+               begin
+                  return Refine_Array (Cnt_Value.Array_Indices,
+                                       Cnt_Value.Array_Others,
+                                       First_Index (AST_Type),
+                                       Element_Type);
+               end;
          end case;
       end Refine_Aux;
 
@@ -523,12 +517,17 @@ package body Gnat2Why.Counter_Examples is
       function Refine_Array
         (Arr_Indices  : Cntexmp_Value_Array.Map;
          Arr_Others   : Cntexmp_Value_Ptr;
-         Indice_Type  : Entity_Id;
+         Arr_Indice   : Entity_Id;
          Element_Type : Entity_Id)
          return Unbounded_String
       is
-         S : Unbounded_String;
+         Indice_Type  : constant Entity_Id := Retysp (Etype (Arr_Indice));
+
+         S   : Unbounded_String;
+         Fst : Uint;
+         Lst : Uint;
       begin
+         Find_First_Static_Range (Arr_Indice, Fst, Lst);
          Append (S, "(");
          for C in Arr_Indices.Iterate loop
             declare
@@ -536,19 +535,23 @@ package body Gnat2Why.Counter_Examples is
                Elem         : Cntexmp_Value_Ptr renames Arr_Indices (C);
 
                Ind_Val      : constant Cntexmp_Value_Ptr :=
-                                new Cntexmp_Value'(T => Cnt_Integer,
-                                                   I => To_Unbounded_String
-                                                     (Indice));
+                 new Cntexmp_Value'(T => Cnt_Integer,
+                                    I => To_Unbounded_String (Indice));
                Ind_Printed  : constant Unbounded_String :=
-                                Refine_Value (Ind_Val, Indice_Type, True);
+                 Refine_Value (Ind_Val, Indice_Type, True);
                Elem_Printed : constant Unbounded_String :=
-                                Refine_Value (Elem, Element_Type);
+                 Refine_Value (Elem, Element_Type);
+               Ind_Value    : constant Uint := UI_From_String (Indice);
             begin
 
                --  The other case happen when the index has an enumeration type
                --  and the value for this index given by cvc4 is outside of the
                --  range of the enumeration type.
-               if Ind_Printed /= Null_Unbounded_String then
+
+               if Ind_Printed /= Null_Unbounded_String
+                 and then UI_Le (Fst, Ind_Value)
+                 and then UI_Le (Ind_Value, Lst)
+               then
                   Append (S, Ind_Printed & " => " & Elem_Printed & ", ");
                end if;
             end;
@@ -586,30 +589,27 @@ package body Gnat2Why.Counter_Examples is
          F : Float_Value renames Cnt_Value.F.all;
       begin
          case F.F_Type is
-         when Float_Plus_Infinity  =>
-            return To_Unbounded_String ("+oo");
+         when Float_Plus_Infinity | Float_Minus_Infinity | Float_NaN =>
 
-         when Float_Minus_Infinity =>
-            return To_Unbounded_String ("-oo");
+            --  Decision: we don't print infinities or Nan
+            return Null_Unbounded_String;
 
-         when Float_Plus_Zero      =>
-            return To_Unbounded_String ("+zero");
+         when Float_Plus_Zero | Float_Minus_Zero =>
 
-         when Float_Minus_Zero     =>
-            return To_Unbounded_String ("-zero");
-
-         when Float_NaN            =>
-            return To_Unbounded_String ("NaN");
+            --  Decision: we print zero+ and zero- as 0 (0.0 for type)
+            return To_Unbounded_String ("0.0");
 
          when Float_Val =>
             declare
+               F_S   : constant String := To_String (F.F_Sign);
+               F_Si  : constant String := To_String (F.F_Significand);
+               F_Exp : constant String := To_String (F.F_Exponent);
             begin
-               return "(fp " & F.F_Sign & ", " & F.F_Exponent & ", "
-                 & F.F_Significand & ")";
+               return
+                 To_Unbounded_String
+                   (Ce_Pretty_Printing.StringBits_To_Approx
+                      (F_S, F_Si, F_Exp));
             end;
-         when Float_Hexa =>
-            return F.F_Hexa;
-
          end case;
       end Print_Float;
 

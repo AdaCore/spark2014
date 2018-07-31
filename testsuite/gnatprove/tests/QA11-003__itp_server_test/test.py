@@ -54,8 +54,8 @@ def launch_server(limit_line, input_file):
     task_monitor = 0
     next_unproven = 0
     node_change = 0
-    children_95 = 0
     children_96 = 0
+    children_97 = 0
     children = 0
     for i in l:
         try:
@@ -66,10 +66,10 @@ def launch_server(limit_line, input_file):
                 node_change = node_change + 1
             elif notif_type == NEW_NODE:
                 children = children + 1
-                if j[PARENT_ID] == 95:
-                    children_95 = children_95 + 1
-                elif j[PARENT_ID] == 96:
+                if j[PARENT_ID] == 96:
                     children_96 = children_96 + 1
+                elif j[PARENT_ID] == 97:
+                    children_97 = children_97 + 1
             elif notif_type == NEXT_UNPROVEN:
                 # TODO this is ok but we print nothing
                 next_unproven = next_unproven + 1
@@ -96,10 +96,10 @@ def launch_server(limit_line, input_file):
             elif i != "\n" and i != " ":
                 nb_unparsed = nb_unparsed + 1
                 print ("UNPARSED NOTIFICATION " + i)
-    if children_95 == 1:
-        print ("Children 95 OK")
-    if children_96 == 3:
+    if children_96 == 1:
         print ("Children 96 OK")
+    if children_97 == 3:
+        print ("Children 97 OK")
     if children == 5:
         print ("Children OK")
     print ("Unparsed JSON = " + str(nb_unparsed))

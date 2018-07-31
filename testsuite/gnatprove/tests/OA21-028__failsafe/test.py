@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(counterexample=False, steps=10000, prover=["cvc4","z3"])
+prove_all(counterexample=False, steps=10000, opt=["--proof-warnings"])

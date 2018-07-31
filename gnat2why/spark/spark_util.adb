@@ -29,6 +29,7 @@ with Csets;                              use Csets;
 with Errout;                             use Errout;
 with Flow_Utility;                       use Flow_Utility;
 with Gnat2Why_Args;
+with Lib.Xref;
 with Output;
 with Pprint;                             use Pprint;
 with Sem_Ch12;                           use Sem_Ch12;
@@ -37,7 +38,7 @@ with Sem_Prag;                           use Sem_Prag;
 with Sem_Type;                           use Sem_Type;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
-with SPARK_Util.Subprograms;
+with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
 with Stringt;                            use Stringt;
@@ -216,6 +217,7 @@ package body SPARK_Util is
       Low_Val   : out Uint;
       High_Val  : out Uint)
    is
+
       -----------------------
       -- Local Subprograms --
       -----------------------
@@ -302,7 +304,9 @@ package body SPARK_Util is
    --  Start of processing for Candidate_For_Unrolling
 
    begin
-      Result := No_Unrolling;
+      Low_Val  := No_Uint;
+      High_Val := No_Uint;
+      Result   := No_Unrolling;
 
       --  Only simple FOR loops can be unrolled. Simple loops are
       --  defined as having no (in)variant...
@@ -1392,8 +1396,7 @@ package body SPARK_Util is
             end if;
 
          when N_Procedure_Call_Statement =>
-            return SPARK_Util.Subprograms.Is_Error_Signaling_Procedure
-              (Get_Called_Entity (N));
+            return Is_Error_Signaling_Procedure (Get_Called_Entity (N));
 
          when others =>
             return False;
@@ -1646,6 +1649,27 @@ package body SPARK_Util is
 
           when others =>
              Unit_In_Standard_Library (Unit (Get_Source_File_Index (Loc))));
+
+   -------------------------------
+   -- May_Issue_Warning_On_Node --
+   -------------------------------
+
+   function May_Issue_Warning_On_Node (N : Node_Id) return Boolean is
+   begin
+      if Instantiation_Location (Sloc (N)) = No_Location then
+         declare
+            Subp : constant Entity_Id :=
+              Unique_Entity
+                (Lib.Xref.SPARK_Specific.
+                   Enclosing_Subprogram_Or_Library_Package (N));
+         begin
+            return Present (Subp)
+              and then Analysis_Requested (Subp, With_Inlined => False);
+         end;
+      else
+         return False;
+      end if;
+   end May_Issue_Warning_On_Node;
 
    ------------------------------------
    -- Number_Of_Assocs_In_Expression --

@@ -66,6 +66,24 @@ project GNAT2Why is
                         "-gnatws");
 
       for Excluded_Source_Dirs use ("gnat_src");
+
+      --  Exclude source files leading to false positives
+      for Excluded_Source_Files use
+        ("assumptions.ads",
+         "assumptions.adb",
+         "flow.ads",
+         "flow-analysis.adb",
+         "flow-analysis-sanity.adb",
+         "flow-control_flow_graph.adb",
+         "flow-data_dependence_graph.adb",
+         "flow_generated_globals-partial.adb",
+         "flow_generated_globals-phase_2.adb",
+         "flow_utility.adb",
+         "flow_visibility.adb",
+         "gnat2why-expr.adb",
+         "graphs.adb",
+         "why-atree-sprint.adb");
+
    end CodePeer;
 
 end GNAT2Why;

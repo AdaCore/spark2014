@@ -588,16 +588,41 @@ package body VC_Kinds is
                Val        : constant JSON_Value := Get (V, "val");
                Float_Type : constant String := Get (Val, "cons");
             begin
-               if Float_Type = "Float_hexa" then
+               if Float_Type = "Plus_infinity" then
                   return (T => Cnt_Float,
                           F =>
-                            --  ??? We do not parse the value because it is a
-                            --  float that can be recognized as an integer by
-                            --  Gnatcoll.json. Some possible values: 0, 1.5, 2
-                             new Float_Value'(F_Type => Float_Hexa,
-                                              F_Hexa =>
-                                                Get (Val, "str_hexa")));
-                  --  ??? Q313-019 Printing should be done for other values
+                             new Float_Value'(F_Type => Float_Plus_Infinity));
+
+               elsif Float_Type = "Minus_infinity" then
+                  return (T => Cnt_Float,
+                          F =>
+                             new Float_Value'(F_Type => Float_Minus_Infinity));
+
+               elsif Float_Type = "Plus_zero" then
+                  return (T => Cnt_Float,
+                          F =>
+                             new Float_Value'(F_Type => Float_Plus_Zero));
+
+               elsif Float_Type = "Minus_zero" then
+                  return (T => Cnt_Float,
+                          F =>
+                             new Float_Value'(F_Type => Float_Minus_Zero));
+
+               elsif Float_Type = "Not_a_number" then
+                  return (T => Cnt_Float,
+                          F =>
+                             new Float_Value'(F_Type => Float_NaN));
+
+               elsif Float_Type = "Float_value" then
+                  return (T => Cnt_Float,
+                          F =>
+                             new Float_Value'(F_Type        => Float_Val,
+                                              F_Sign        =>
+                                                Get (Val, "sign"),
+                                              F_Exponent    =>
+                                                Get (Val, "exponent"),
+                                              F_Significand =>
+                                                Get (Val, "significand")));
                else
                   return (T => Cnt_Invalid,
                           S => Null_Unbounded_String);

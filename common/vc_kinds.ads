@@ -109,6 +109,7 @@ package VC_Kinds is
 
       VC_Inconsistent_Pre,
       VC_Inconsistent_Post,
+      VC_Unreachable_Branch,
       VC_Dead_Code);
 
    subtype VC_RTE_Kind is VC_Kind range
@@ -346,8 +347,7 @@ package VC_Kinds is
       Float_Plus_Zero,
       Float_Minus_Zero,
       Float_NaN,
-      Float_Val,
-      Float_Hexa);
+      Float_Val);
 
    --  Record for float types
    type Float_Value (F_Type : Float_Type) is record
@@ -361,8 +361,6 @@ package VC_Kinds is
             F_Sign        : Unbounded_String;
             F_Exponent    : Unbounded_String;
             F_Significand : Unbounded_String;
-         when Float_Hexa =>
-            F_Hexa        : Unbounded_String;
       end case;
    end record;
 

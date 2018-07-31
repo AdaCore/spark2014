@@ -867,7 +867,9 @@ package body Flow_Utility is
         with Static_Predicate => Interesting_Nodes not in
           N_Identifier | N_Expanded_Name;
 
-      Root_Node : Node_Id := N;
+      Root_Node   : Node_Id := N;
+      Root_Entity : Entity_Id;
+      --  To avoid repeated calls to Entity on the Root_Node
 
    begin
       --  First we turn the tree into a more useful sequence. We also determine
@@ -879,40 +881,48 @@ package body Flow_Utility is
          Seq.Prepend (Root_Node);
 
          Root_Node :=
-           (case Nkind (Root_Node) is
-               when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+           (case Interesting_Nodes (Nkind (Root_Node)) is
+               when N_Type_Conversion
+                  | N_Unchecked_Type_Conversion
+               =>
                   Expression (Root_Node),
 
-               when others =>
+               when N_Indexed_Component
+                  | N_Selected_Component
+                  | N_Slice
+               =>
                   Prefix (Root_Node));
 
       end loop;
+
       pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
 
-      Partial_Definition := False;
-      View_Conversion    := False;
+      Root_Entity := Entity (Root_Node);
 
-      if Is_Protected_Component (Entity (Root_Node)) then
+      if Is_Protected_Component (Root_Entity) then
          Map_Root :=
            Add_Component
-             (Direct_Mapping_Id (Scope (Entity (Root_Node))),
-              Entity (Root_Node));
+             (Direct_Mapping_Id (Scope (Root_Entity)),
+              Root_Entity);
 
-      elsif Is_Part_Of_Concurrent_Object (Entity (Root_Node)) then
+      elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
          Map_Root :=
            Add_Component
              (Direct_Mapping_Id
-                (Etype (Encapsulating_State (Entity (Root_Node)))),
-              Entity (Root_Node));
+                (Etype (Encapsulating_State (Root_Entity))),
+              Root_Entity);
 
       else
-         Map_Root := Direct_Mapping_Id (Entity (Root_Node));
+         Map_Root := Direct_Mapping_Id (Root_Entity);
       end if;
 
       --  We now work out which variable (or group of variables) is actually
       --  defined, by following the selected components. If we find an array
       --  slice or index we stop and note that we are dealing with a partial
       --  assignment (the defined variable is implicitly used).
+
+      Partial_Definition := False;
+      View_Conversion    := False;
 
       for N of Seq loop
          case Interesting_Nodes (Nkind (N)) is
@@ -1041,16 +1051,15 @@ package body Flow_Utility is
                Output : Flow_Id          renames Dependency_Maps.Key (C);
                Input  : Flow_Id_Sets.Set renames Contract_Relation (C);
 
-               Refined_Output : constant Flow_Id_Sets.Set :=
-                 (if Present (Output)
-                  then Down_Project (Output, Scope)
-                  else Flow_Id_Sets.To_Set (Null_Flow_Id));
-
                Refined_Input  : constant Flow_Id_Sets.Set :=
                  Down_Project (Input, Scope);
 
                Trimmed_Output : constant Flow_Id_Sets.Set :=
-                 Refined_Output.Intersection (Globals.Outputs);
+                 (if Present (Output)
+                  then Down_Project (Output, Scope) and Globals.Outputs
+                  else Flow_Id_Sets.To_Set (Null_Flow_Id));
+               --  If the LHS of a dependency relation is null, then keep it;
+               --  otherwise, down-project and trim it.
 
             begin
                for O of Trimmed_Output loop
@@ -3337,7 +3346,17 @@ package body Flow_Utility is
             when N_Op =>
                pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
 
-            when N_Later_Decl_Item =>
+            when N_Abstract_Subprogram_Declaration
+               | N_Call_Marker
+               | N_Entry_Body
+               | N_Entry_Declaration
+               | N_Freeze_Entity
+               | N_Freeze_Generic_Entity
+               | N_Later_Decl_Item
+               | N_Renaming_Declaration
+               | N_Representation_Clause
+               | N_Variable_Reference_Marker
+            =>
                pragma Assert (not Ctx.Assume_In_Expression);
 
                --  These should allow us to go through package specs and bodies

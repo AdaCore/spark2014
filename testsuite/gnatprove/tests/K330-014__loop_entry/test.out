@@ -1,23 +1,29 @@
 for_loops.adb:9:04: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:9:04: warning: no Global contract available for "Put_Line"
+for_loops.adb:14:24: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:16:33: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:16:33: info: loop invariant preservation proved (CVC4: 1 VC)
 for_loops.adb:16:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test1) > 0 (e.g. when Counter = 1)
 for_loops.adb:16:41: info: initialization of "Counter" proved
 for_loops.adb:18:10: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:18:10: warning: no Global contract available for "Put_Line"
+for_loops.adb:25:29: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:29:33: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:29:33: info: loop invariant preservation proved (CVC4: 1 VC)
 for_loops.adb:29:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test2) < 0 (e.g. when Counter = 1)
 for_loops.adb:29:41: info: initialization of "Counter" proved
 for_loops.adb:32:10: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:32:10: warning: no Global contract available for "Put_Line"
+for_loops.adb:40:30: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:40:38: info: initialization of "Counter" proved
+for_loops.adb:42:28: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:44:36: info: initialization of "Counter" proved
 for_loops.adb:44:36: info: loop invariant proved (CodePeer)
 for_loops.adb:46:13: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:46:13: warning: no Global contract available for "Put_Line"
+for_loops.adb:55:30: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:55:38: info: initialization of "Counter" proved
+for_loops.adb:57:28: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:59:13: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:59:13: warning: no Global contract available for "Put_Line"
 for_loops.adb:61:36: info: initialization of "Counter" proved

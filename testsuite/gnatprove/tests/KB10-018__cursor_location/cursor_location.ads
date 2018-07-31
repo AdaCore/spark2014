@@ -1,4 +1,4 @@
-package Cursor_Location is
+package Cursor_Location with SPARK_Mode is
 
    type Extended_Location is (Nil, Left, Right);
    subtype Location is Extended_Location range Left .. Right;

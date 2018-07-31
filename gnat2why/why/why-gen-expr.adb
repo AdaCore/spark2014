@@ -1474,8 +1474,8 @@ package body Why.Gen.Expr is
             Thi : constant Node_Id := Type_High_Bound (Range_Type);
             Lov : Ureal;
             Hiv : Ureal;
-            Lo  : Ureal;
-            Hi  : Ureal;
+            Lo  : Ureal := No_Ureal;
+            Hi  : Ureal := No_Ureal;
             OK  : Boolean;
 
          begin

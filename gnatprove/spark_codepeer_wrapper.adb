@@ -42,7 +42,9 @@ with String_Utils;               use String_Utils;
 
 --  Wrapper around the codepeer_be executable for SPARK integration
 
-procedure SPARK_CodePeer_Wrapper is
+procedure SPARK_CodePeer_Wrapper
+  with No_Return
+is
 
    subtype String_Access is GNAT.OS_Lib.String_Access;
 

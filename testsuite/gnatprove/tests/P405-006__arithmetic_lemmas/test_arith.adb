@@ -170,6 +170,33 @@ is
       end if;
    end Mult_For_Mod;
 
+   --  Exponentiation
+
+   subtype Very_Small_Natural is Integer range 0 .. 50;
+   subtype Very_Small_Positive is Integer range 1 .. 50;
+
+   subtype Very_Very_Small_Natural is Integer range 0 .. 5;
+
+   procedure Exp_Is_Monotonic (X1, X2 : Very_Small_Natural; E : Very_Very_Small_Natural; R1, R2 : out Integer) with
+     Pre => X1 < X2,
+     Post => R1 <= R2
+   is
+   begin
+      R1 := X1 ** E;
+      R2 := X2 ** E;
+      Lemma_Exp_Is_Monotonic (X1, X2, E);
+   end Exp_Is_Monotonic;
+
+   procedure Exp_Is_Monotonic_2 (X : Very_Small_Positive; E1, E2 : Very_Very_Small_Natural; R1, R2 : out Integer) with
+     Pre => E1 < E2,
+     Post => R1 <= R2
+   is
+   begin
+      R1 := X ** E1;
+      R2 := X ** E2;
+      Lemma_Exp_Is_Monotonic_2 (X, E1, E2);
+   end Exp_Is_Monotonic_2;
+
    X, Y, Z, R, S : Integer;
 
 
@@ -250,5 +277,15 @@ begin
    X := -2356;
    Y := -45;
    Mult_For_Mod (X, Y, R);
+
+   X := 38;
+   Y := 40;
+   Z := 3;
+   Exp_Is_Monotonic (X, Y, Z, R, S);
+
+   X := 38;
+   Y := 1;
+   Z := 5;
+   Exp_Is_Monotonic_2 (X, Y, Z, R, S);
 
 end Test_Arith;
