@@ -31,7 +31,6 @@ with GNATCOLL.Utils;        use GNATCOLL.Utils;
 with Sinput;                use Sinput;
 with SPARK_Atree;           use SPARK_Atree;
 with SPARK_Util;            use SPARK_Util;
-with SPARK_Util.Types;      use SPARK_Util.Types;
 with Stand;                 use Stand;
 with String_Utils;          use String_Utils;
 with Uintp;                 use Uintp;
@@ -1975,7 +1974,7 @@ package body Why.Gen.Arrays is
    function Get_Array_Theory_Name (E : Entity_Id) return Name_Id is
       Name      : Unbounded_String :=
         To_Unbounded_String (To_String (WNE_Array_Prefix));
-      Ty        : constant Entity_Id := Retysp (Etype (E));
+      Ty        : constant Entity_Id := Retysp (E);
       Type_Name : Unbounded_String;
       Index     : Node_Id := First_Index (Ty);
       Dim       : constant Positive :=

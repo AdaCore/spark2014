@@ -8392,7 +8392,8 @@ package body Gnat2Why.Expr is
         New_Call
           (Ada_Node => Ada_Node,
            Domain   => Subdomain,
-           Name     => Get_Array_Theory_1_Comp (Get_Ada_Node (+Left)).Compare,
+           Name     => Get_Array_Theory_1_Comp
+             (Get_Ada_Node (+Get_Type (Left))).Compare,
            Args     => Args,
            Typ      => EW_Int_Type);
       T := Binding_For_Temp (Domain  => Domain,
@@ -8439,7 +8440,7 @@ package body Gnat2Why.Expr is
           (Ada_Node => Ada_Node,
            Domain   => Subdomain,
            Name     =>
-             Get_Array_Theory (Left_Opnd (Ada_Node)).Bool_Eq,
+             Get_Array_Theory (Etype (Left_Opnd (Ada_Node))).Bool_Eq,
            Args     => Args,
            Typ      => EW_Bool_Type);
       T := Binding_For_Temp (Domain  => Domain,
@@ -8486,7 +8487,7 @@ package body Gnat2Why.Expr is
       Left_Expr : constant W_Expr_Id := New_Temp_For_Expr (Left);
       Right_Expr : constant W_Expr_Id := New_Temp_For_Expr (Right);
       Array_Theory : constant M_Array_1_Bool_Op_Type :=
-        Get_Array_Theory_1_Bool_Op (Left_Opnd (Ada_Node));
+        Get_Array_Theory_1_Bool_Op (Etype (Left_Opnd (Ada_Node)));
       W_Op      : constant W_Identifier_Id :=
         (case Op is
             when N_Op_And => Array_Theory.Andb,
@@ -8669,7 +8670,7 @@ package body Gnat2Why.Expr is
         New_Call
           (Ada_Node => Ada_Node,
            Domain   => Subdomain,
-           Name     => Get_Array_Theory_1_Bool_Op (Ada_Node).Notb,
+           Name     => Get_Array_Theory_1_Bool_Op (Etype (Ada_Node)).Notb,
            Args     => Args,
            Typ      => Type_Of_Node (Right_Type));
 

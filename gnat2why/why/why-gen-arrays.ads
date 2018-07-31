@@ -27,6 +27,7 @@ with Gnat2Why.Util;          use Gnat2Why.Util;
 with Namet;                  use Namet;
 with Snames;                 use Snames;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
+with SPARK_Util.Types;       use SPARK_Util.Types;
 with Types;                  use Types;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Modules;      use Why.Atree.Modules;
@@ -366,8 +367,9 @@ package Why.Gen.Arrays is
       Pos    : W_Expr_Id) return W_Expr_Id;
    --  Return a call to the singleton function in Why array theory
 
-   function Get_Array_Theory_Name (E : Entity_Id) return Name_Id;
-   --  @param E the entity of type array
+   function Get_Array_Theory_Name (E : Entity_Id) return Name_Id with
+     Pre => Is_Type (E) and then Has_Array_Type (E);
+   --  @param E the entity of an array type
    --  @return A name of the form "Array_(_(Int|BV8|BV16|BV32|BV64))*__t"
    --          of the theory associated to the array type E.
    --          The name is the key to this theory in M_Array(_1) hash maps.
