@@ -1066,7 +1066,7 @@ package body Flow.Analysis is
       --  parameters have the following meanings:
       --  * Suppressed will contain entire variables appearing in a
       --    "null => Blah" dependency relation; for these we suppress the
-      --    ineffective import warning.
+      --    ineffective import and unused object warnings.
       --  * Considered_Imports and Considered_Objects will contain entire
       --    variables considered for each of the two analysis.
       --  * Used will contain entire variables used at least once (even if this
@@ -1152,8 +1152,8 @@ package body Flow.Analysis is
          then
 
             --  We look at the null depends (if one exists). For any variables
-            --  mentioned there, we suppress the ineffective import warning by
-            --  putting them to Suppressed.
+            --  mentioned there, we suppress the ineffective import and unused
+            --  object warnings by putting them to Suppressed.
 
             declare
                Dependency_Map : Dependency_Maps.Map;
@@ -1531,6 +1531,9 @@ package body Flow.Analysis is
                   end if;
                end loop;
 
+               Suppressed := Suppressed -
+                 To_Flow_Id_Set (Unused_Global_Objects);
+
                Ineffective_Global_Imports :=
                  Raw_Globals.Proof_Ins
                  or Raw_Globals.Inputs
@@ -1556,8 +1559,9 @@ package body Flow.Analysis is
                end loop;
             end if;
 
-            --  We warn on unused objects
-            Unused := Considered_Objects - Used;
+            --  We warn on unused objects. From all the imports we exclude
+            --  items which are suppressed by a null dependency,
+            Unused := Considered_Objects - (Used or Suppressed);
 
             Warn_On_Unused_Objects (Unused, Unused_Global_Objects);
 
@@ -1566,7 +1570,7 @@ package body Flow.Analysis is
 
             if Has_Effects (FA) then
                --  We warn on ineffective imports. From all the imports we
-               --  exclude items which are suppressed by a null derives,
+               --  exclude items which are suppressed by a null dependency,
                --  which have been flagged as unused and which are effective
                --  imports.
 
