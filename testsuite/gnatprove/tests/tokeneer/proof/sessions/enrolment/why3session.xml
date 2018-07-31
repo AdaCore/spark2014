@@ -134,10 +134,10 @@
   <proof prover="2"><result status="valid" steps="258"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="unreachable point">
-  <proof prover="2" timelimit="1"><result status="timeout" steps="6231"/></proof>
+  <proof prover="2" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="unreachable point">
-  <proof prover="2" timelimit="1"><result status="timeout" steps="8060"/></proof>
+  <proof prover="2" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="postcondition" proved="true">
   <proof prover="2"><result status="valid" steps="166"/></proof>

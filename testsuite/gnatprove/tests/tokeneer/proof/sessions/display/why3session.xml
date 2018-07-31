@@ -38,7 +38,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="unreachable point">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="2361"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="146"/></proof>
@@ -101,7 +101,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.29" expl="unreachable point">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="2001"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.30" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="332"/></proof>
@@ -146,7 +146,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="unreachable point">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="2063"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="164"/></proof>
@@ -209,7 +209,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.29" expl="unreachable point">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="1587"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="WP_parameter def.30" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="431"/></proof>
