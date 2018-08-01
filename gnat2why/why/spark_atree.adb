@@ -522,9 +522,6 @@ package body SPARK_Atree is
                end case;
             end Attribute;
 
-         when N_Object_Declaration =>
-            Check_Type := Etype (Defining_Identifier (Par));
-
          when N_Op_Expon =>
 
             --  A range check on exponentiation is only possible on the right
@@ -719,9 +716,10 @@ package body SPARK_Atree is
                raise Program_Error;
             end case;
 
-         when N_Component_Declaration
+         when N_Object_Declaration
+            | N_Component_Declaration
             | N_Discriminant_Specification
-            =>
+         =>
             --  We expect range checks on defaults of record fields and
             --  discriminants.
 

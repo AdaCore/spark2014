@@ -60,6 +60,7 @@ project GNAT2Why is
    package CodePeer is
       for Switches use ("-j0",
                         "-level", "1",
+                        "--no-lal-checkers",
                         "-messages", "min",
                         "-no-html-output",
                         "-no-race-conditions",

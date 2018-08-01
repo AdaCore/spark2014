@@ -760,19 +760,10 @@ package body Gnat2Why.Counter_Examples is
             begin
                --  Currently attributes are always printed as integers
 
-               if CNT_Attributes.Key (Att) = "First" then
+               if CNT_Attributes.Key (Att) in "First" | "Last" then
                   Refined_Value :=
                     Refine_Attribute (Attribute_Element.Value);
-               elsif CNT_Attributes.Key (Att) = "Last" then
-                  Refined_Value :=
-                    Refine_Attribute (Attribute_Element.Value);
-               elsif CNT_Attributes.Key (Att) = "Result" then
-                  Refined_Value :=
-                    Get_CNT_Element_Value_And_Attributes
-                      (Attribute_Element,
-                       Prefix,
-                       Attributes);
-               elsif CNT_Attributes.Key (Att) = "Old" then
+               elsif CNT_Attributes.Key (Att) in "Result" | "Old" then
                   Refined_Value :=
                     Get_CNT_Element_Value_And_Attributes
                       (Attribute_Element,

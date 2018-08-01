@@ -1,4 +1,0 @@
-why-gen-expr.adb:2529:7: high warning: subp always fails: why.gen.expr.new_comment_label.read_loc_label fails for all possible inputs
-why-gen-expr.adb:2533:61: high: range check fails here: requires (Get_Name_String (Loc))'First >= 1
-why-gen-scalars.adb:264:10: high: validity check: (if Has_Signed_Integer_Type (Typ_Right) then (Ureal_1) else [constraint_error]) is uninitialized here
-why-gen-scalars.adb:1207:10: high: validity check: (if Has_Signed_Integer_Type (Typ_Right) then (Ureal_1) else [constraint_error]) is uninitialized here
