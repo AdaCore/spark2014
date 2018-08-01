@@ -1065,8 +1065,9 @@ package body Flow.Analysis is
       --  Collect objects and imports that we need for the analysis. The
       --  parameters have the following meanings:
       --  * Suppressed will contain entire variables appearing in a
-      --    "null => Blah" dependency relation; for these we suppress the
-      --    ineffective import and unused object warnings.
+      --    "null => Blah" dependency relation and variables that are read in a
+      --    type declaration; for these we suppress the ineffective import and
+      --    unused object warnings.
       --  * Considered_Imports and Considered_Objects will contain entire
       --    variables considered for each of the two analysis.
       --  * Used will contain entire variables used at least once (even if this
@@ -1188,6 +1189,8 @@ package body Flow.Analysis is
                Atr : V_Attributes renames FA.Atr (V);
 
             begin
+               Suppressed.Union (To_Entire_Variables (Atr.Variables_Read));
+
                if Var.Variant = Initial_Value
                  and then Var.Kind /= Synthetic_Null_Export
                then

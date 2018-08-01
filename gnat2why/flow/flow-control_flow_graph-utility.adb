@@ -143,14 +143,20 @@ package body Flow.Control_Flow_Graph.Utility is
       Is_Assertion  : Boolean           := False;
       Is_Loop_Entry : Boolean           := False;
       Is_Fold_Check : Boolean           := False;
+      Is_Type_Decl  : Boolean           := False;
       E_Loc         : Node_Or_Entity_Id := Empty;
       Execution     : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Variables_Used            := Var_Use;
-      A.Variables_Explicitly_Used := Var_Use;
+      if Is_Type_Decl then
+         A.Variables_Read            := Var_Use;
+      else
+         A.Variables_Used            := Var_Use;
+         A.Variables_Explicitly_Used := Var_Use;
+      end if;
+
       A.Subprograms_Called        := Sub_Called;
       A.Is_Assertion              := Is_Assertion;
       A.Is_Loop_Entry             := Is_Loop_Entry;

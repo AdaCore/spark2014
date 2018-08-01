@@ -3792,6 +3792,7 @@ package body Flow.Control_Flow_Graph is
 
                Final_V_Id : Flow_Graphs.Vertex_Id :=
                  FA.CFG.Get_Vertex (Final_F_Id);
+
             begin
                Create_Initial_And_Final_Vertices (State, FA);
 
@@ -3800,6 +3801,7 @@ package body Flow.Control_Flow_Graph is
 
                   declare
                      Final_Atr : V_Attributes renames FA.Atr (Final_V_Id);
+
                   begin
                      Final_Atr.Is_Export := Final_Atr.Is_Export
                        or else
@@ -4592,8 +4594,31 @@ package body Flow.Control_Flow_Graph is
    is
       pragma Unreferenced (Ctx);
       Typ : constant Entity_Id := Defining_Identifier (N);
+      V   : Flow_Graphs.Vertex_Id;
    begin
-      Add_Dummy_Vertex (N, FA, CM);
+      if Is_Scalar_Type (Typ)
+        and then Is_Constrained (Typ)
+      then
+         declare
+            Vars_Read : constant Flow_Id_Sets.Set :=
+              Get_Variables
+                (N                    => Typ,
+                 Scope                => FA.B_Scope,
+                 Local_Constants      => FA.Local_Constants,
+                 Fold_Functions       => False,
+                 Use_Computed_Globals => not FA.Generating_Globals);
+
+         begin
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (N),
+               Make_Sink_Vertex_Attributes (Vars_Read, Is_Type_Decl => True),
+               V);
+            CM.Insert (Union_Id (N), Trivial_Connection (V));
+         end;
+      else
+         Add_Dummy_Vertex (N, FA, CM);
+      end if;
 
       --  If the type has a Default_Initial_Condition then we:
       --    * check if the full type is as the aspect suggested
