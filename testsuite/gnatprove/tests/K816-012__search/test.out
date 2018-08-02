@@ -1,5 +1,5 @@
 search.adb:19:10: info: range check proved (CVC4: 2 VC)
-search.adb:20:24: medium: assertion might fail, cannot prove Found = 0 and not Found1 and not Found2) or else (Found = 1 and (Found1 or Found2)) or else (Found = 2 and Found1 and Found2 (e.g. when Found = 3 and Found1 = False and Found2 = False)
+search.adb:20:24: medium: assertion might fail, cannot prove (Found = 0 and not Found1 and not Found2) or else (Found = 1 and (Found1 or Found2)) or else (Found = 2 and Found1 and Found2) (e.g. when Found = 3 and Found1 = False and Found2 = False)
 search.adb:20:25: info: initialization of "Found" proved
 search.adb:20:43: info: initialization of "Found1" proved
 search.adb:20:58: info: initialization of "Found2" proved
