@@ -190,6 +190,12 @@ Effectiveness Program (`http://cwe.mitre.org/ <http://cwe.mitre.org/>`_).
    proof_checks_table
    flow_checks_table
 
+Messages of a specific category or related to a specific CWE can be filtered
+inside GPS by typing the desired substring in the search bar of the
+``Locations`` panel. For example, search for "CWE" to get all messages with a
+corresponding CWE, or "CWE 369" to get all messages related to division by zero
+vulnerability.
+
 .. _Understanding Counterexamples:
 
 Understanding Counterexamples
