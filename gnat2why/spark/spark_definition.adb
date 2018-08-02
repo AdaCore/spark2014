@@ -2600,6 +2600,9 @@ package body SPARK_Definition is
          Mark_Violation (N, From => E);
       end if;
 
+      Mark (Left_Opnd (N));
+      Mark (Right_Opnd (N));
+
       --  Only support multiplication and division operations on fixed-point
       --  types if either:
       --  - one of the arguments is an integer type, or
@@ -2736,9 +2739,6 @@ package body SPARK_Definition is
                null;
          end case;
       end if;
-
-      Mark (Left_Opnd (N));
-      Mark (Right_Opnd (N));
    end Mark_Binary_Op;
 
    ---------------
