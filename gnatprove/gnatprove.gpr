@@ -66,9 +66,6 @@ project GNATprove is
 
       for Switches use ("-j0",
                         "-level", "1",
-                        "-messages", "min",
-                        "-no-html-output",
-                        "-no-race-conditions",
                         "-gnatws");
    end CodePeer;
 
