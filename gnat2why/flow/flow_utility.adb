@@ -5289,9 +5289,7 @@ package body Flow_Utility is
                S : constant String := Nkind (N)'Img;
 
             begin
-               Error_Msg_Strlen := S'Length;
-               Error_Msg_String (1 .. Error_Msg_Strlen) := S;
-               Error_Msg_N ("cannot untangle node ~", N);
+               Error_Msg_N ("cannot untangle node " & S, N);
                raise Why.Unexpected_Node;
             end;
       end case;

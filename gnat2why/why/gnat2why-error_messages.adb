@@ -37,7 +37,6 @@ with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Common_Containers;         use Common_Containers;
 with Comperr;                   use Comperr;
-with Errout;                    use Errout;
 with Flow_Error_Messages;       use Flow_Error_Messages;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
 with Gnat2Why_Args;             use Gnat2Why_Args;
@@ -774,7 +773,7 @@ package body Gnat2Why.Error_Messages is
             then String_Of_Node (Original_Node (Rec.Extra_Info))
             else "");
          Extra_Msg  : constant String :=
-           (if Extra_Text /= "" then ", cannot prove ~" else "");
+           (if Extra_Text /= "" then ", cannot prove " & Extra_Text else "");
          Node   : constant Node_Id :=
            (if Present (Rec.Extra_Info) then Rec.Extra_Info else VC.Node);
          --  Extra_info contains the locations of the first failing part of the
@@ -782,8 +781,6 @@ package body Gnat2Why.Error_Messages is
          --  of the check (required in messages for manual provers).
          VC_Sloc    : constant Node_Id := VC.Node;
       begin
-         Errout.Error_Msg_String (1 .. Extra_Text'Length) := Extra_Text;
-         Errout.Error_Msg_Strlen := Extra_Text'Length;
          Emit_Proof_Result
            (Node        => Node,
             Id          => Rec.Id,
