@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;            use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Ordered_Maps;
 with Ada.Containers.Ordered_Sets;
@@ -42,6 +43,8 @@ with Gnat2Why.Util;             use Gnat2Why.Util;
 with Namet;                     use Namet;
 with Nlists;                    use Nlists;
 with Sinput;                    use Sinput;
+with Snames;                    use Snames;
+with SPARK_Annotate;            use SPARK_Annotate;
 with SPARK_Atree;               use SPARK_Atree;
 with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
 with SPARK_Util;                use SPARK_Util;
@@ -218,6 +221,11 @@ package body Gnat2Why.Counter_Examples is
    function Refine_Attribute (Cnt_Value : Cntexmp_Value_Ptr)
                               return Unbounded_String;
    --  Refine CNT_Value assuming it is an integer
+
+   function Refine_Iterator_Value
+     (Cnt_Value : Cntexmp_Value_Ptr;
+      Quant_Var : Entity_Id) return Unbounded_String;
+   --  Refine CNT_Value for "for of" quantification iterators
 
    ------------
    -- Refine --
@@ -638,6 +646,121 @@ package body Gnat2Why.Counter_Examples is
       end if;
    end Refine;
 
+   ---------------------------
+   -- Refine_Iterator_Value --
+   ---------------------------
+
+   function Refine_Iterator_Value
+     (Cnt_Value : Cntexmp_Value_Ptr;
+      Quant_Var : Entity_Id) return Unbounded_String
+   is
+      function Refine_Container_Iterator_Value
+        (Cnt_Value      : Cntexmp_Value_Ptr;
+         Cont_Typ       : Entity_Id;
+         Container_Name : String) return Unbounded_String;
+      --  Refine value for iterator over types with the Iterable aspect. For
+      --  example, for a type:
+      --
+      --     type T is private
+      --       Iterable => (First       => My_First,
+      --                    Has_Element => My_Has_Element,
+      --                    Next        => My_Next,
+      --                    Element     => My_Element);
+      --
+      --  It will refine Cnt_Value to T's cursor type giving a value <value>
+      --  and will return My_Element (Container_Name, <value>).
+      --  If the type has an Iterable_For_Prrof of a model kind, it will be
+      --  taken into account, for example, if we add:
+      --
+      --     type T2 is private
+      --       Iterable => (First       => My_First_2,
+      --                    Has_Element => My_Has_Element_2,
+      --                    Next        => My_Next_2,
+      --                    Element     => My_Element_2);
+      --
+      --     function Model (X : T) return T2;
+      --     pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
+      --
+      --  then for of iterators on T will refined against T2's cursor type and
+      --  then printed as My_Element_2 (Model (Container_Name), <value>).
+
+      -------------------------------------
+      -- Refine_Container_Iterator_Value --
+      -------------------------------------
+
+      function Refine_Container_Iterator_Value
+        (Cnt_Value      : Cntexmp_Value_Ptr;
+         Cont_Typ       : Entity_Id;
+         Container_Name : String) return Unbounded_String
+      is
+         Found         : Boolean;
+         Iterable_Info : Iterable_Annotation;
+
+      begin
+         --  Iteration is done on the cursor type of the ultimate model for
+         --  proof. Go through Iterable_For_Proof annotations to find this
+         --  type. Along the way, construct the expression to be used for the
+         --  container name.
+
+         Retrieve_Iterable_Annotation (Cont_Typ, Found, Iterable_Info);
+
+         if Found then
+
+            --  Iterable annotation should be a Model annotation. Indeed, if a
+            --  Contains iterable annotation is provided, no temporary
+            --  should be introduced for "for of" quantification.
+
+            pragma Assert (Iterable_Info.Kind = SPARK_Annotate.Model);
+
+            --  Prepend the name of the Model function to the container name
+            --  and refine value on model type.
+
+            return Refine_Container_Iterator_Value
+              (Cnt_Value,
+               Etype (Iterable_Info.Entity),
+               Source_Name (Iterable_Info.Entity)
+               & " (" & Container_Name & ")");
+         else
+
+            --  We have found the ultimate model type. Quantification is done
+            --  on its cursor type.
+
+            return Source_Name
+              (Get_Iterable_Type_Primitive (Cont_Typ, Name_Element))
+              & " (" & Container_Name & ", "
+              & Refine (Cnt_Value,
+                        Get_Cursor_Type (Cont_Typ))
+              & ")";
+         end if;
+      end Refine_Container_Iterator_Value;
+
+      function Is_Quantified_Expr (N : Node_Id) return Boolean is
+        (Nkind (N) = N_Quantified_Expression);
+      function Enclosing_Quantified_Expr is new
+        First_Parent_With_Property (Is_Quantified_Expr);
+
+      Container : constant Entity_Id :=
+        Get_Container_In_Iterator_Specification
+          (Iterator_Specification
+             (Enclosing_Quantified_Expr (Quant_Var)));
+
+      pragma Assert (Present (Container));
+
+      Container_Name : constant String := Source_Name (Container);
+      Typ            : constant Entity_Id := Retysp (Etype (Container));
+   begin
+      --  For arrays, quantification is done on the index type
+
+      if Is_Array_Type (Typ) then
+         return Container_Name & " ("
+           & Refine (Cnt_Value, Etype (First_Index (Typ)))
+           & ")";
+      else
+         return Refine_Container_Iterator_Value
+           (Cnt_Value, Typ, Container_Name);
+      end if;
+   end Refine_Iterator_Value;
+
    ----------------------
    -- Refine_Attribute --
    ----------------------
@@ -749,43 +872,64 @@ package body Gnat2Why.Counter_Examples is
       begin
 
          for Att in CNT_Element.Attributes.Iterate loop
-            declare
-               New_Prefix : constant Unbounded_String :=
-                 Prefix & "'" & CNT_Attributes.Key (Att);
 
-               Attribute_Element : constant CNT_Element_Ptr :=
-                 CNT_Attributes.Element (Att);
-               Refined_Value     : Unbounded_String;
+            --  Index is not a true Ada attribute, but a placeholder to
+            --  represent the reference to the index (or cursor) associated to
+            --  the quantified element type in a for of quantified expression.
+            --  We print it E = A (<value>) or E = Element (C, <value>).
 
-            begin
-               --  Currently attributes are always printed as integers
+            if CNT_Attributes.Key (Att) = "Index" then
+               declare
+                  Refined_Value : constant Unbounded_String :=
+                    Refine_Iterator_Value
+                      (CNT_Attributes.Element (Att).Value,
+                       CNT_Element.Entity);
 
-               if CNT_Attributes.Key (Att) in "First" | "Last" then
-                  Refined_Value :=
-                    Refine_Attribute (Attribute_Element.Value);
-               elsif CNT_Attributes.Key (Att) in "Result" | "Old" then
-                  Refined_Value :=
-                    Get_CNT_Element_Value_And_Attributes
-                      (Attribute_Element,
-                       Prefix,
-                       Attributes);
-               else
-                  Refined_Value :=
-                    Refine_Attribute (Attribute_Element.Value);
-               end if;
-
-               --  Detecting the absence of value
-               if Refined_Value /= ""
-                 and then Refined_Value /= "!"
-                 and then Refined_Value /= "( )"
-                 and then Refined_Value /= "()"
-               then
+               begin
                   Attributes.Append
                     (New_Item =>
-                       (Name  => New_Prefix,
+                       (Name  => Prefix,
                         Value => Refined_Value));
-               end if;
-            end;
+               end;
+            else
+               declare
+                  New_Prefix : constant Unbounded_String :=
+                    Prefix & "'" & CNT_Attributes.Key (Att);
+
+                  Attribute_Element : constant CNT_Element_Ptr :=
+                    CNT_Attributes.Element (Att);
+                  Refined_Value     : Unbounded_String;
+
+               begin
+                  --  Currently attributes are always printed as integers
+
+                  if CNT_Attributes.Key (Att) in "First" | "Last" then
+                     Refined_Value :=
+                       Refine_Attribute (Attribute_Element.Value);
+                  elsif CNT_Attributes.Key (Att) in "Result" | "Old" then
+                     Refined_Value :=
+                       Get_CNT_Element_Value_And_Attributes
+                         (Attribute_Element,
+                          Prefix,
+                          Attributes);
+                  else
+                     Refined_Value :=
+                       Refine_Attribute (Attribute_Element.Value);
+                  end if;
+
+                  --  Detecting the absence of value
+                  if Refined_Value /= ""
+                    and then Refined_Value /= "!"
+                    and then Refined_Value /= "( )"
+                    and then Refined_Value /= "()"
+                  then
+                     Attributes.Append
+                       (New_Item =>
+                          (Name  => New_Prefix,
+                           Value => Refined_Value));
+                  end if;
+               end;
+            end if;
          end loop;
 
          --  Following types should be ignored when exploring fields of

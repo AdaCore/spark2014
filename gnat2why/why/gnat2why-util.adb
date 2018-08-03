@@ -311,6 +311,18 @@ package body Gnat2Why.Util is
       return Ty;
    end Get_Base_Of_Type;
 
+   ---------------------------------------------
+   -- Get_Container_In_Iterator_Specification --
+   ---------------------------------------------
+
+   function Get_Container_In_Iterator_Specification
+     (N : Node_Id) return Node_Id
+   is
+      Iter : constant Node_Id := SPARK_Atree.Name (N);
+   begin
+      return (Iter);
+   end Get_Container_In_Iterator_Specification;
+
    -------------------------------
    -- Get_Counterexample_Labels --
    -------------------------------

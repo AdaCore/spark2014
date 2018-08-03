@@ -259,9 +259,6 @@ package Gnat2Why.Expr is
    --  @result Why3 predicate expressing the type invariant of type [Ty] and
    --          of all its parts and ancestors over [Expr].
 
-   function Get_Container_In_Iterator_Specification
-     (N : Node_Id) return Node_Id;
-
    function Get_Pure_Logic_Term_If_Possible
      (File          : W_Section_Id;
       Expr          : Node_Id;

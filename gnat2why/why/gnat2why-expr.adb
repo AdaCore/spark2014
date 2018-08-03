@@ -4377,18 +4377,6 @@ package body Gnat2Why.Expr is
       end case;
    end Expected_Type_Of_Prefix;
 
-   ---------------------------------------------
-   -- Get_Container_In_Iterator_Specification --
-   ---------------------------------------------
-
-   function Get_Container_In_Iterator_Specification
-     (N : Node_Id) return Node_Id
-   is
-      Iter : constant Node_Id := SPARK_Atree.Name (N);
-   begin
-      return (Iter);
-   end Get_Container_In_Iterator_Specification;
-
    -------------------------------------
    -- Get_Pure_Logic_Term_If_Possible --
    -------------------------------------
@@ -14892,7 +14880,16 @@ package body Gnat2Why.Expr is
                   New_Universal_Quantif
                      (Ada_Node  => Expr,
                       Variables => (1 => W_Index_Var),
-                      Labels    => Get_Counterexample_Labels (Quant_Var),
+                      Labels    =>
+                        Get_Counterexample_Labels
+                          (Quant_Var,
+
+                           --  When quantification is done on a temporary
+                           --  variable, append a fake 'Index attribute that
+                           --  will be recognized in counterexample handling.
+
+                           Append_To_Name =>
+                             (if Need_Temp_Var then "'Index" else "")),
                       Var_Type  => W_Index_Type,
                       Pred      => Quant_Body);
             else

@@ -86,20 +86,6 @@ package body Gnat2Why.CE_Utils is
       end loop;
    end Find_First_Static_Range;
 
-   ------------------------
-   -- Is_Visible_In_Type --
-   ------------------------
-
-   --  Body intentionally hidden from spec file
-   function Is_Visible_In_Type (Rec  : Entity_Id;
-                                Comp : Entity_Id)
-                                return Boolean
-   is
-     (Ekind (Comp) = E_Discriminant
-      or else (not Is_Type (Comp)
-               and then Component_Is_Present_In_Type
-                 (Rec, Search_Component_In_Type (Rec, Comp))));
-
    -------------------
    -- Get_Entity_Id --
    -------------------
@@ -116,6 +102,20 @@ package body Gnat2Why.CE_Utils is
       when Constraint_Error =>
          return Empty;
    end Get_Entity_Id;
+
+   ------------------------
+   -- Is_Visible_In_Type --
+   ------------------------
+
+   --  Body intentionally hidden from spec file
+   function Is_Visible_In_Type (Rec  : Entity_Id;
+                                Comp : Entity_Id)
+                                return Boolean
+   is
+     (Ekind (Comp) = E_Discriminant
+      or else (not Is_Type (Comp)
+               and then Component_Is_Present_In_Type
+                 (Rec, Search_Component_In_Type (Rec, Comp))));
 
    --------------------
    -- UI_From_String --
