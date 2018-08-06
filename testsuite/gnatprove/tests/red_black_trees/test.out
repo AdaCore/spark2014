@@ -54,7 +54,7 @@ binary_trees.adb:147:18: info: initialization of "ToDo" proved
 binary_trees.adb:147:32: info: initialization of "R" proved
 binary_trees.adb:152:13: info: loop invariant initialization proved (CVC4: 1 VC)
 binary_trees.adb:153:18: info: initialization of "ToDo" proved
-binary_trees.adb:155:36: medium: loop invariant might fail after first iteration, cannot prove not (R (J).A < R (K).A
+binary_trees.adb:155:36: medium: loop invariant might fail after first iteration, cannot prove not (R (J).A < R (K).A)
 binary_trees.adb:155:51: info: initialization of "R" proved
 binary_trees.adb:158:33: info: initialization of "R" proved
 binary_trees.adb:158:33: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -90,7 +90,7 @@ binary_trees.adb:207:13: info: loop invariant preservation proved (CVC4: 1 VC)
 binary_trees.adb:208:23: info: initialization of "R" proved
 binary_trees.adb:208:49: info: initialization of "Unseen" proved
 binary_trees.adb:213:13: info: loop invariant initialization proved (CVC4: 2 VC)
-binary_trees.adb:214:15: medium: loop invariant might fail after first iteration, cannot prove Contains (Unseen, J) = (not R (J).K or ToDo (J)
+binary_trees.adb:214:15: medium: loop invariant might fail after first iteration, cannot prove Contains (Unseen, J) = (not R (J).K or ToDo (J))
 binary_trees.adb:214:26: info: initialization of "Unseen" proved
 binary_trees.adb:214:44: info: initialization of "R" proved
 binary_trees.adb:214:55: info: initialization of "ToDo" proved
@@ -1200,7 +1200,7 @@ binary_trees.ads:409:42: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:409:42: info: precondition proved (CVC4: 1 VC)
 binary_trees.ads:418:09: info: invariant check proved on default value (CVC4: 1 VC)
 red_black_trees.adb:35:20: info: precondition proved (CVC4: 1 VC)
-red_black_trees.adb:36:22: medium: postcondition might fail, cannot prove Nb_Blacks'Result (I).Status = (Nb_Blacks'Result (Peek (T.Struct, I, Left)).Count = Nb_Blacks'Result (Peek (T.Struct, I, Right)).Count
+red_black_trees.adb:36:22: medium: postcondition might fail, cannot prove Nb_Blacks'Result (I).Status = (Nb_Blacks'Result (Peek (T.Struct, I, Left)).Count = Nb_Blacks'Result (Peek (T.Struct, I, Right)).Count)
 red_black_trees.adb:37:37: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:38:40: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:41:53: info: overflow check proved (CVC4: 1 VC)
@@ -1256,11 +1256,11 @@ red_black_trees.adb:131:16: info: loop invariant initialization proved (CVC4: 1 
 red_black_trees.adb:132:25: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:132:34: info: initialization of "Res" proved
 red_black_trees.adb:132:39: info: index check proved (CVC4: 2 VC)
-red_black_trees.adb:133:24: medium: loop invariant might fail after first iteration, cannot prove Length (M (J).A) < Max - (N + 1
+red_black_trees.adb:133:24: medium: loop invariant might fail after first iteration, cannot prove Length (M (J).A) < Max - (N + 1)
 red_black_trees.adb:133:35: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:138:16: info: loop invariant initialization proved (CVC4: 4 VC)
 red_black_trees.adb:142:23: info: initialization of "Res" proved
-red_black_trees.adb:142:23: medium: loop invariant might fail after first iteration, cannot prove Res (J).Status = (Res (Peek (T.Struct, J, Left)).Count = Res (Peek (T.Struct, J, Right)).Count
+red_black_trees.adb:142:23: medium: loop invariant might fail after first iteration, cannot prove Res (J).Status = (Res (Peek (T.Struct, J, Left)).Count = Res (Peek (T.Struct, J, Right)).Count)
 red_black_trees.adb:143:29: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:144:29: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:145:41: info: overflow check proved (CVC4: 1 VC)
@@ -2765,7 +2765,7 @@ search_trees.adb:1305:89: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1305:103: info: overflow check proved (CVC4: 2 VC)
 search_trees.adb:1310:24: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1310:42: info: range check proved (CVC4: 2 VC)
-search_trees.adb:1311:23: medium: assertion might fail, cannot prove not (Model (T.Struct, T.Root) (I).A < Model (T.Struct, T.Root) (J).A
+search_trees.adb:1311:23: medium: assertion might fail, cannot prove not (Model (T.Struct, T.Root) (I).A < Model (T.Struct, T.Root) (J).A)
 search_trees.adb:1311:28: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1311:46: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1311:54: info: index check proved (CVC4: 4 VC)

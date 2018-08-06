@@ -248,7 +248,7 @@ basicmath_small.ads:80:52: low: unused global "FS"
 basicmath_small.ads:80:60: low: unused global "GS"
 basicmath_small.ads:80:68: low: unused global "SS"
 basicmath_small.ads:80:76: low: unused global "DS"
-basicmath_small.ads:81:18: medium: postcondition might fail, cannot prove X86.RSP = (X86.RSP'Old + 8
+basicmath_small.ads:81:18: medium: postcondition might fail, cannot prove X86.RSP = (X86.RSP'Old + 8)
 basicmath_small.ads:98:30: low: unused global "StackAddressSize"
 basicmath_small.ads:98:64: low: unused global "FS"
 basicmath_small.ads:98:72: low: unused global "GS"
