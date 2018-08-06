@@ -160,7 +160,8 @@ is
    ---------------
 
    function To_String (N : Name_Id) return String
-   with Refined_Global => (Char_Table, Entry_Table, Hash_Table)
+   with Refined_Global => (Input    => (Char_Table, Entry_Table),
+                           Proof_In => Hash_Table)
    is
       --  The only names are the ones produced by lookup.
       pragma Assume (N <= Last_Index (Entry_Table));

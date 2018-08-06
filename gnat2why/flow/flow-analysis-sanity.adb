@@ -1014,6 +1014,7 @@ package body Flow.Analysis.Sanity is
             F                    : Flow_Id;
             Corresp_Final_Vertex : Flow_Graphs.Vertex_Id;
             Final_Atr            : V_Attributes;
+
          begin
             for Var of Written_Vars loop
                F := Change_Variant (Var, Normal_Use);

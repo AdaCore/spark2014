@@ -3255,6 +3255,90 @@ package body Flow.Analysis is
       end loop;
    end Find_Exports_Derived_From_Proof_Ins;
 
+   ----------------------------------------
+   -- Find_Input_Only_Used_In_Assertions --
+   ----------------------------------------
+
+   procedure Find_Input_Only_Used_In_Assertions
+     (FA : in out Flow_Analysis_Graphs)
+   is
+      Globals            : Global_Flow_Ids;
+      Only_Global_Inputs : Flow_Id_Sets.Set;
+
+      function Only_Used_In_Assertions (Global_Inputs : Flow_Id_Sets.Set)
+                                        return Flow_Id_Sets.Set
+      with Post => Flow_Id_Sets.Is_Subset
+          (Subset => Only_Used_In_Assertions'Result,
+           Of_Set => Global_Inputs);
+      --  Returns the global inputs that are only used in assertions
+
+      -----------------------------
+      -- Only_Used_In_Assertions --
+      -----------------------------
+
+      function Only_Used_In_Assertions (Global_Inputs : Flow_Id_Sets.Set)
+                                        return Flow_Id_Sets.Set
+      is
+         use Flow_Graphs;
+
+         Used_In_Assertions : Flow_Id_Sets.Set := Global_Inputs;
+         Unused             : Flow_Id_Sets.Set := Global_Inputs;
+         --  After traversing the graph, those will remain with Global inputs
+         --  used in assertions and those not used at all, respectively.
+
+      begin
+         for V of FA.CFG.Get_Collection (All_Vertices) loop
+            if Get_Key (FA.CFG, V).Variant /= Final_Value then
+               declare
+                  A : V_Attributes renames FA.Atr (V);
+
+                  Used_Vars : constant Flow_Id_Sets.Set :=
+                    To_Entire_Variables (A.Variables_Used);
+
+               begin
+                  if not A.Is_Assertion then
+                     Used_In_Assertions.Difference (Used_Vars);
+                  end if;
+
+                  Unused.Difference (Used_Vars);
+               end;
+            end if;
+         end loop;
+
+         --  In Used_In_Assertions there could be some global inputs that are
+         --  not used in any vertex so we need to return the difference.
+
+         return Used_In_Assertions - Unused;
+      end Only_Used_In_Assertions;
+
+   --  Start of processing for Find_Input_Only_Used_In_Assertions
+
+   begin
+      if FA.Kind in Kind_Subprogram | Kind_Task
+        and then Has_User_Supplied_Globals (FA.Analyzed_Entity)
+      then
+         Get_Globals (Subprogram => FA.Analyzed_Entity,
+                      Scope      => FA.B_Scope,
+                      Classwide  => False,
+                      Globals    => Globals);
+
+         Only_Global_Inputs :=
+           Change_Variant (Globals.Inputs,  Normal_Use) -
+           Change_Variant (Globals.Outputs, Normal_Use);
+
+         for Input of Only_Used_In_Assertions (Only_Global_Inputs) loop
+            Error_Msg_Flow
+              (FA       => FA,
+               Msg      => "& must be a Proof_In as it is only " &
+                           "used in assertions",
+               SRM_Ref  => "6.1.4(17)",
+               N        => Find_Global (FA.Spec_Entity, Input),
+               F1       => Input,
+               Severity => Medium_Check_Kind);
+         end loop;
+      end if;
+   end Find_Input_Only_Used_In_Assertions;
+
    ---------------------------------
    -- Find_Hidden_Unexposed_State --
    ---------------------------------

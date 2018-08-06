@@ -1431,6 +1431,7 @@ package body Flow is
                      Analysis.Check_Ghost_Procedure_Outputs (FA);
                   end if;
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
+                  Analysis.Find_Input_Only_Used_In_Assertions (FA);
                   if FA.Is_Main then
                      Analysis.Analyse_Main (FA);
                   end if;

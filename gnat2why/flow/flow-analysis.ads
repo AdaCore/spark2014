@@ -21,8 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package looks at the produced graphs and emits error
---  messages.
+--  This package looks at the produced graphs and emits error messages
 
 with Sinfo; use Sinfo;
 
@@ -37,22 +36,22 @@ package Flow.Analysis is
                            Sane :    out Boolean);
    --  Check the following basic properties:
    --     - is aliasing present (using the flag FA.Aliasing_Present)?
-   --     - absence of variables in default initializations of
-   --       record components and discriminants (SPARK LRM 4.4(2))
+   --     - absence of variables in default initializations of record
+   --       components and discriminants (SPARK LRM 4.4(2))
    --     - are all global variables used declared as such?
-   --     - are we updating a variable we shouldn't (in parameter / global
-   --       or package external state in an elaboration)
+   --     - are we updating a variable we shouldn't (in parameter / global or
+   --       package external state in an elaboration)
    --
    --  Complexity is O(N)
 
    procedure Sanity_Check_Postcondition (FA   : in out Flow_Analysis_Graphs;
                                          Sane : in out Boolean)
    with Pre => Sane and then
-               FA.Kind in Kind_Subprogram   |
-                          Kind_Package_Body |
-                          Kind_Package;
-   --  Check post, refined_post and initializes for use of variables
-   --  we have not introduced through a global or parameter.
+               FA.Kind in Kind_Subprogram
+                        | Kind_Package_Body
+                        | Kind_Package;
+   --  Check post, refined_post and initializes for use of variables we have
+   --  not introduced through a global or parameter.
    --
    --  Complexity is O(N)
 
@@ -71,8 +70,8 @@ package Flow.Analysis is
    procedure Find_Non_Elaborated_State_Abstractions
      (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
-   --  Find uses of state abstractions that belong to other
-   --  non-elaborated packages.
+   --  Find uses of state abstractions that belong to other non-elaborated
+   --  packages.
    --
    --  Complexity is O(N)
 
@@ -88,11 +87,16 @@ package Flow.Analysis is
 
    procedure Find_Use_Of_Uninitialized_Variables
      (FA : in out Flow_Analysis_Graphs);
-   --  Check all variables read (explicit and implicit) and issue
-   --  either info messages or low/med/high checks depending on
-   --  whether the variable is initialized/default initialized.
+   --  Check all variables read (explicit and implicit) and issue either info
+   --  messages or low/med/high checks depending on whether the variable is
+   --  initialized/default initialized.
    --
    --  Complexity is O(N^2)
+
+   procedure Find_Input_Only_Used_In_Assertions
+     (FA : in out Flow_Analysis_Graphs);
+   --  Detect global inputs that are only used in assertions (and therefore
+   --  should be Proof_In).
 
    procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs);
    --  Find stable loop statements.
@@ -120,8 +124,7 @@ package Flow.Analysis is
    --     are not constituents of any state abstraction.
    --
    --  3. It emits an error if there is any missing Part_Of indicator for
-   --     constants with variable input (SPARK RM 7.2.6(2-3)) that
-   --     are:
+   --     constants with variable input (SPARK RM 7.2.6(2-3)) that are:
    --     * declared immidiately within the private part of a given package;
    --     * part of the visible state of a package that is declared immediately
    --       within the private part of a given package;
@@ -135,10 +138,10 @@ package Flow.Analysis is
    procedure Find_Impossible_To_Initialize_State
      (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
-   --  Finds state abstractions that are not mentioned in an
-   --  initializes aspect and are not pure global outputs of any of
-   --  the package's subprograms. This makes it impossible for users
-   --  of these package's to initialize those state abstractions.
+   --  Finds state abstractions that are not mentioned in an Initializes aspect
+   --  and are not pure global outputs of any of the package's subprograms.
+   --  This makes it impossible for users of these package's to initialize
+   --  those state abstractions.
    --
    --  Complexity is O(N)
 
@@ -171,8 +174,8 @@ package Flow.Analysis is
    --  For a call on a subprogram whose body contains a potentially blocking
    --  operation the idea is that once AI12-0064, i.e. the Nonblocking aspect,
    --  is implemented, the users should annotate subprograms called directly
-   --  in the statements flagged by this routine as Nonblocking. This way
-   --  they will progressively arrive at the one with a potentially blocking
+   --  in the statements flagged by this routine as Nonblocking. This way they
+   --  will progressively arrive at the one with a potentially blocking
    --  statement.
    --
    --  ??? An external call on a protected subprogram with the same target
@@ -180,8 +183,8 @@ package Flow.Analysis is
 
    procedure Check_Prefixes_Of_Attribute_Old (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind in Kind_Subprogram | Kind_Task;
-   --  We issue a high check whenever a variable that serves as a
-   --  prefix of a 'Old attribute is NOT an import.
+   --  We issue a high check whenever a variable that serves as a prefix of a
+   --  'Old attribute is NOT an import.
    --
    --  Complexity is O(N)
 
@@ -269,16 +272,15 @@ private
                                 Precise  : Boolean;
                                 Targeted : Boolean := False)
                                 return Node_Id;
-   --  Given a node N, traverse the tree to find the most deeply
-   --  nested node which still uses Var. If Precise is True look only
-   --  for Var (for example R.Y), otherwise also look for the
-   --  entire variable represented by Var (in our example we'd also
-   --  look for R).
+   --  Given a node N, traverse the tree to find the most deeply nested node
+   --  which still uses Var. If Precise is True look only for Var (for example
+   --  R.Y), otherwise also look for the entire variable represented by Var (in
+   --  our example we'd also look for R).
    --
    --  When Targeted is set, we only search under specific nodes of the AST:
    --
-   --    * For assignment statement, we only look at the right
-   --      hand side of the assignment.
+   --    * For assignment statement, we only look at the right hand side of the
+   --      assignment.
    --
    --    * For if statements we only check under the condition.
    --
@@ -289,12 +291,12 @@ private
                                 Kind    : Var_Use_Kind;
                                 Precise : Boolean)
                                 return Node_Id;
-   --  Find a suitable node in the tree which uses the given
-   --  variable. If Precise is True look only for Var (for example
-   --  R.Y), otherwise we also look for the entire variable
-   --  represented by Var (in our example we'd also look for R).
+   --  Find a suitable node in the tree which uses the given variable. If
+   --  Precise is True look only for Var (for example R.Y), otherwise we also
+   --  look for the entire variable represented by Var (in our example we'd
+   --  also look for R).
    --
-   --  If no suitable node can be found we return FA.Analyzed_Entity
-   --  as a fallback.
+   --  If no suitable node can be found we return FA.Analyzed_Entity as a
+   --  fallback.
 
 end Flow.Analysis;
