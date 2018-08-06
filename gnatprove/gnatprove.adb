@@ -202,6 +202,14 @@ procedure Gnatprove with SPARK_Mode is
          Args.Prepend ("-gnatdm");
       end if;
 
+      --  When switch --info is passed to gnatprove, it is relayed as debug
+      --  switch -gnatd_f to instruct gnat2why to issue info messages related
+      --  to GNATprove usage.
+
+      if CL_Switches.Info then
+         Args.Prepend ("-gnatd_f");
+      end if;
+
       if All_Projects then
          Args.Prepend ("-U");
       end if;

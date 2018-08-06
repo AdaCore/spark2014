@@ -27,6 +27,7 @@ with Ada.Containers;                 use Ada.Containers;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                         use Checks;
+with Debug;
 with Elists;                         use Elists;
 with Errout;                         use Errout;
 with Flow.Analysis.Antialiasing;     use Flow.Analysis.Antialiasing;
@@ -12864,11 +12865,12 @@ package body Gnat2Why.Expr is
                             +T);
          end if;
 
-      --  If for some reason we have not generated a contract for Subp and
-      --  Subp is called in the logic domain, notify the user that the contract
-      --  will not be available.
+      --  If -gnatd_f is used, and if for some reason we have not generated a
+      --  contract for Subp and Subp is called in the logic domain, notify the
+      --  user that the contract will not be available.
 
-      elsif Domain in EW_Pred | EW_Term
+      elsif Debug.Debug_Flag_Underscore_F
+        and then Domain in EW_Pred | EW_Term
         and then not No_Return (Subp)
         and then not Entity_In_Ext_Axioms (Subp)
       then
@@ -12912,7 +12914,7 @@ package body Gnat2Why.Expr is
               and then Is_Expression_Function
             then
                Error_Msg_NE
-                 ("info: expression function body not available for "
+                 ("info: ?expression function body not available for "
                   & "proof (& might not return)", Expr, Subp);
             end if;
          end;

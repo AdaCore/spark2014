@@ -1,7 +1,7 @@
 package body Count_Locations
   with SPARK_Mode
 is
-   pragma Warnings (GNATprove, Off, "info: function contract not available for proof",
+   pragma Warnings (GNATprove, Off, "function contract not available for proof",
                     Reason => "ignore info messages related to recursive ghost functions");
 
    function Check_Selected_Locations

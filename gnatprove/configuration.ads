@@ -82,6 +82,7 @@ package Configuration is
       GPR_Project_Path     : String_Lists.List;
       --  extra paths to look for project files, passed to gnatprove via -aP
       IDE_Progress_Bar     : aliased Boolean;
+      Info                 : aliased Boolean;
       J                    : aliased Integer;
       K                    : aliased Boolean;
       Level                : aliased Integer;

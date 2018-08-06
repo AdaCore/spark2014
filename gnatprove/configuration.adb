@@ -1749,6 +1749,11 @@ package body Configuration is
          (Config, CL_Switches.Memcached_Server'Access,
           Long_Switch => "--memcached-server=");
 
+      Define_Switch
+         (Config,
+          CL_Switches.Info'Access,
+          Long_Switch => "--info");
+
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
 

@@ -92,6 +92,16 @@ help distinguish between the two cases:
   in the code only those assertions that help getting automatic proof, and to
   remove other assertions that were inserted during interaction.
 
+When using switch ``--info``, |GNATprove| issues information messages regarding
+internal decisions that could influence provability:
+
+* whether candidate loops for :ref:`Automatic Unrolling of Simple For-Loops`
+  are effectively unrolled or not;
+* whether candidate subprograms for :ref:`Contextual Analysis of Subprograms
+  Without Contracts` are effectively inlined for proof or not;
+* whether possible subprogram nontermination impacts the proof of calls to that
+  subprogram (see the note in the section on :ref:`Subprogram Termination`)
+
 .. _Investigating Prover Shortcomings:
 
 Investigating Prover Shortcomings
