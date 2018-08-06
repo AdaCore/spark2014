@@ -2,9 +2,9 @@
  *                                                                          *
  *                          GNAT COMPILER COMPONENTS                        *
  *                                                                          *
- *                              j m i s s i n g                             *
+ *                              s m i s s i n g                             *
  *                                                                          *
- *                      Copyright (C) 1998-2014, AdaCore                    *
+ *                      Copyright (C) 1998-2018, AdaCore                    *
  *                                                                          *
  * GNAT is free software;  you can  redistribute it  and/or modify it under *
  * terms of the  GNU General Public License as published  by the Free Soft- *
@@ -47,6 +47,12 @@ void *callgraph_info_file = (void *)0;
 /* Originally defined in misc.c.  */
 unsigned int save_argc = 0;
 const char **save_argv = (const char **)0;
+
+/* Originally defined in misc.c, used in FSF version of lib-writ.adb */
+int flag_compare_debug = 0;
+
+/* Originally defined in version.c, used in FSF version of gnatvsn.adb */
+const char *const version_string = "GNAT for GNATprove";
 
 /* Originally defined in GCC's prefix.c. We need a dummy
    update_path and set_std_prefix for osint.adb. */
