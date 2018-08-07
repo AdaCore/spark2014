@@ -1339,14 +1339,6 @@ package body Flow.Control_Flow_Graph is
    --  Start of processing for Create_Initial_And_Final_Vertices
 
    begin
-      if not In_Generic_Actual (E)
-        and then (Ekind (E) = E_Constant
-                    and then not FA.Local_Constants.Contains (E))
-      then
-         --  We ignore non-local constants (for now)
-         return;
-      end if;
-
       declare
          FS : constant Flow_Id_Sets.Set := Flatten_Variable (E, FA.B_Scope);
       begin
