@@ -1,2 +1,2 @@
-proc.adb:5:12: info: range check proved (CVC4: 2 VC)
-proc.adb:8:19: medium: range check might fail
+proc.adb:4:12: info: range check proved (CVC4: 2 VC)
+proc.adb:7:19: medium: range check might fail
