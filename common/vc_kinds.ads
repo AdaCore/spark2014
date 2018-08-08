@@ -310,7 +310,7 @@ package VC_Kinds is
 
    type Prover_Stat is record
       Count     : Natural;
-      Max_Steps : Positive;
+      Max_Steps : Natural;
       Max_Time  : Float;
    end record;
 
