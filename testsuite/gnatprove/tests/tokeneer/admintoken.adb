@@ -72,10 +72,10 @@ is
    --    None.
    ------------------------------------------------------------------
    procedure Poll
-     with Refined_Global  => (Input    => (AuthCert,
-                                           Clock.Now,
+     with Refined_Global  => (Proof_In => (AuthCert,
+                                           IDCert),
+                              Input    => (Clock.Now,
                                            ConfigData.State,
-                                           IDCert,
                                            Interfac.Input),
                               Output   => TokenPresence,
                               In_Out   => (AuditLog.FileState,
@@ -93,9 +93,7 @@ is
                                TokenPresence)      => (Interfac.Input,
                                                        Interfac.State,
                                                        Interfac.Status),
-                              Interfac.Status      =>+ null,
-                              null                 => (AuthCert,
-                                                       IDCert))
+                              Interfac.Status      =>+ null)
    is
    begin
       Interfac.Poll;

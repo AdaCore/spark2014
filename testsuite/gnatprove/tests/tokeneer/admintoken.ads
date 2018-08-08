@@ -277,7 +277,7 @@ private
    ------------------------------------------------------------------
    function GetRole return PrivTypes.AdminPrivilegeT is
      (Cert.Attr.Auth.TheRole (Contents => AuthCert.Contents))
-     with Refined_Global  => (AuthCert,
-                              IDCert);
+     with Refined_Global  => (Input    => AuthCert,
+                              Proof_In => IDCert);
 
 end AdminToken;
