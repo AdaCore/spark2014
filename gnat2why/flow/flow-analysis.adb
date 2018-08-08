@@ -4477,19 +4477,19 @@ package body Flow.Analysis is
                begin
                   if not FA.Atr (Initial_V).Is_Import then
                      Error_Msg_Flow
-                       (FA         => FA,
-                        Msg        => "& is not initialized at " &
-                                      "subprogram entry",
-                        Severity   => High_Check_Kind,
-                        N          => First_Variable_Use
-                                        (N        => N,
-                                         FA       => FA,
-                                         Scope    => FA.B_Scope,
-                                         Var      => Var,
-                                         Precise  => False,
-                                         Targeted => False),
-                        F1         => Var,
-                        Tag        => Uninitialized);
+                       (FA       => FA,
+                        Msg      => "& is not initialized at " &
+                                    "subprogram entry",
+                        Severity => High_Check_Kind,
+                        N        => First_Variable_Use
+                                      (N        => N,
+                                       FA       => FA,
+                                       Scope    => FA.B_Scope,
+                                       Var      => Var,
+                                       Precise  => False,
+                                       Targeted => False),
+                        F1       => Var,
+                        Tag      => Uninitialized);
                   end if;
                end;
             end loop;
