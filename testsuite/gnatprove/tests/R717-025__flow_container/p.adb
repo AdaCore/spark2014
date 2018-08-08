@@ -3,7 +3,7 @@ with Ada.Containers.Formal_Ordered_Sets;
 package body P with Refined_State => (S => Set), SPARK_Mode => On
 is
 
-   function Less_Than (Left, Right : T) return Boolean  is (Left < Right)
+   function Less_Than (Left, Right : T) return Boolean is (Left < Right)
    with Global => null;
 
    package Sets is new Ada.Containers.Formal_Ordered_Sets
@@ -12,7 +12,7 @@ is
 
    Set : Sets.Set (Capacity => 200);
 
-   procedure Add (X : T) with  Refined_Global => (In_Out => Set)
+   procedure Add (X : T) with Refined_Global => (In_Out => Set)
    is
    begin
       Sets.Include (Set, X);
