@@ -1,5 +1,5 @@
 main.adb:1:17: warning: unused variable "X"
-main.adb:12:59: warning: unused initial value of "X"
+main.adb:12:59: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
 main.adb:13:22: medium: precondition might fail
 main.adb:15:14: info: initialization of "Y" proved
 main.adb:18:22: medium: precondition might fail

@@ -27,9 +27,9 @@ is
    procedure Test_01_Ok (A : in Integer;
                          B : in Integer;
                          R : out Boolean)
-   with Global => (Input => (G1, G2)),
+   with Global => (Input => G1, Proof_In => G2),
         Depends => (R => (A, G1),
-                    null => (B, G2))
+                    null => B)
    is
    begin
       if Wibble (X => A, Y => B) then
@@ -42,10 +42,10 @@ is
    procedure Test_02_E (A : in Integer;
                         B : out Integer;
                         R : out Boolean)
-   with Global => (Input => (G1, G2)),
-        Depends => (R    => (A, G1),
-                    B    => null,
-                    null => G2)
+   with Global => (Input => G1, Proof_In => G2),
+        Depends => (R => (A, G1),
+                    B => null)
+
    is
    begin
       if Wibble (A, Y => B) then  --  flow error here
@@ -106,9 +106,9 @@ is
    procedure Test_06_Ok (A : in Integer;
                          B : in Integer;
                          R : out Boolean)
-   with Global => (Input => (G1, G2)),
+   with Global => (Input => G1, Proof_In => G2),
         Depends => (R => (A, G1),
-                    null => (B, G2))
+                    null => B)
    is
    begin
       R := Wibble (X => (if Wobble (A, B)

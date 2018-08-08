@@ -5028,6 +5028,7 @@ package body Flow.Control_Flow_Graph is
                  (FA,
                   Make_Sink_Vertex_Attributes (Var_Use       => Unchecked,
                                                Is_Fold_Check => True,
+                                               Is_Assertion  => True,
                                                E_Loc         => Expr),
                   V);
                L.Append (V);
