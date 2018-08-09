@@ -10974,14 +10974,17 @@ package body Gnat2Why.Expr is
    function Transform_Declarations_Block (L : List_Id; Core : W_Prog_Id)
       return W_Prog_Id
    is
-      Cur_Decl : Node_Id := Last (L);
-      R        : W_Prog_Id := Core;
+      Cur_Decl : Node_Id := First (L);
+      Seq      : W_Prog_Array (1 .. Natural (List_Length (L)) + 1);
+      J        : Positive := 1;
    begin
       while Present (Cur_Decl) loop
-         R := Sequence (Transform_Declaration (Cur_Decl), R);
-         Prev (Cur_Decl);
+         Seq (J) := Transform_Declaration (Cur_Decl);
+         Next (Cur_Decl);
+         J := J + 1;
       end loop;
-      return R;
+      Seq (J) := Core;
+      return New_Statement_Sequence (Ada_Node => Empty, Statements => Seq);
    end Transform_Declarations_Block;
 
    -------------------------------------
