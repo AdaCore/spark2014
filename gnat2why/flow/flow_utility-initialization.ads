@@ -26,7 +26,10 @@
 
 package Flow_Utility.Initialization is
 
-   function Get_Default_Initialization (F : Flow_Id) return Node_Id;
+   function Get_Default_Initialization (F : Flow_Id) return Node_Id
+   with Pre  => F.Kind in Direct_Mapping | Record_Field,
+        Post => (if Present (Get_Default_Initialization'Result)
+                 then Nkind (Get_Default_Initialization'Result) in N_Subexpr);
    --  Get the default initialization expression for the given Flow_Id (this
    --  only really works for record fields and direct mappings; magic strings
    --  are assumed to not be default initialized).

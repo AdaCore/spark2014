@@ -678,7 +678,7 @@ package Flow_Types is
 
       Default_Init_Var             : Flow_Id;
       Default_Init_Val             : Node_Id;
-      --  For default initializations (Is_Default_init) this pair records which
+      --  For default initializations (Is_Default_Init) this pair records which
       --  variable has a default value (Var) and what it is (Val).
 
       Variables_Defined            : Flow_Id_Sets.Set;
