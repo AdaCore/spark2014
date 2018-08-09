@@ -1229,7 +1229,8 @@ package body Search_Trees with SPARK_Mode is
 
       procedure Prove_Ordered_Leafs (T : Search_Tree; L : Index_Type; D : Direction) with
         Ghost,
-        Global => (Input => (T_Old, V, I)),
+        Global => (Input    => (T_Old, I),
+                   Proof_In => V),
         Pre  =>
           --  The tree is not empty
           Size (T_Old.Struct) > 0
