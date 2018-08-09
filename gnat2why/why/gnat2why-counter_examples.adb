@@ -1982,41 +1982,45 @@ package body Gnat2Why.Counter_Examples is
       is
       begin
          if Nkind (N) = N_If_Statement then
+            declare
+               Lbound : constant Physical_Line_Number :=
+                 Get_P (Nlists.First (Then_Statements (N)));
+               Rbound : constant Physical_Line_Number :=
+                 (if Present (Elsif_Parts (N)) then
+                    Get_P (First (Elsif_Parts (N))) - 1
 
-            return (L_Bound => Get_P (Nlists.First (Then_Statements (N))),
-                    R_Bound =>
+                  elsif Present (Else_Statements (N)) then
+                    Get_P (First (Else_Statements (N))) - 1
 
-                      (if Present (Elsif_Parts (N)) then
-                          Physical_Line_Number'Max
-                            (1,
-                             Get_P (First (Elsif_Parts (N))) - 1)
-                       elsif Present (Else_Statements (N)) then
-                          Physical_Line_Number'Max
-                            (1,
-                             Get_P (First (Else_Statements (N))) - 1)
-                       else
-                          Get_Physical_Line_Number (End_Location (N))));
+                  else
+                    Get_Physical_Line_Number (End_Location (N)));
+
+            begin
+               return (L_Bound => Lbound,
+                       R_Bound => Physical_Line_Number'Max (Lbound, Rbound));
+            end;
 
          elsif Nkind (N) = N_Elsif_Part then
+            declare
+               Lbound : constant Physical_Line_Number :=
+                 Get_P (First (Then_Statements (N)));
+               Rbound : constant Physical_Line_Number :=
+                 (if Present (Next (N)) then
+                    Get_P (Next (N)) - 1
+                  else
+                    (if Present (Else_Statements (Enclosing_Statement (N)))
+                     then
+                        Get_P (First
+                          (Else_Statements (Enclosing_Statement (N))))
+                     else
+                        Get_Physical_Line_Number
+                          (End_Location (Enclosing_Statement (N)))));
 
-            return (L_Bound => Get_P (First (Then_Statements (N))),
-                    R_Bound =>
+            begin
+               return (L_Bound => Get_P (First (Then_Statements (N))),
+                       R_Bound => Physical_Line_Number'Max (Lbound, Rbound));
+            end;
 
-                      (if Present (Next (N)) then
-                          Physical_Line_Number'Max (1, Get_P (Next (N)) - 1)
-                       else
-
-                         --  There is an elsif statements so there is an else
-                         --  statement
-
-                         (if Present
-                              (Else_Statements (Enclosing_Statement (N)))
-                          then
-                             Get_P (First
-                            (Else_Statements (Enclosing_Statement (N))))
-                          else
-                             Get_Physical_Line_Number
-                               (End_Location (Enclosing_Statement (N))))));
          else
 
             --  Cannot be accessed (precondition)
