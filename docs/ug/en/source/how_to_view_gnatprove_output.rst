@@ -182,7 +182,9 @@ output a message such as::
 Note that CWE ids are only included in check messages and warnings, never in
 information messages about proved checks. For more information on CWE, see the
 MITRE Corporation's Common Weakness Enumeration (CWE) Compatibility and
-Effectiveness Program (`http://cwe.mitre.org/ <http://cwe.mitre.org/>`_).
+Effectiveness Program (`http://cwe.mitre.org/ <http://cwe.mitre.org/>`_). The
+current version of |GNATprove| is based on CWE version 3.1 released on March
+29, 2018.
 
 .. toctree::
    :maxdepth: 2
