@@ -3762,12 +3762,12 @@ package body Gnat2Why.Subprograms is
 
          Why_Body :=
            Sequence
-             ((Check_Ceiling_Protocol (Body_Params, E),
-              Transform_Declarations_For_Body (Declarations (Body_N)),
-              Transform_Statements_And_Declarations
-                (Statements
+             ((1 => Check_Ceiling_Protocol (Body_Params, E),
+               2 => Transform_Declarations_For_Body (Declarations (Body_N)),
+               3 => Transform_Statements_And_Declarations
+                 (Statements
                    (Handled_Statement_Sequence (Body_N))),
-              Raise_Stmt));
+               4 => Raise_Stmt));
 
          --  Enclose the subprogram body in a try-block, so that return
          --  statements can be translated as raising exceptions.
@@ -3778,14 +3778,11 @@ package body Gnat2Why.Subprograms is
          --  subprogram as plain assertions.
 
          Why_Body := Sequence
-           ((1 =>
-                 Transform_All_Pragmas
-               (Pre_Prags,
-                "checking of pragma precondition"),
+           ((1 => Transform_All_Pragmas
+                    (Pre_Prags, "checking of pragma precondition"),
              2 => Why_Body,
              3 => Transform_All_Pragmas
-               (Post_Prags,
-                "checking of pragma postcondition")));
+                    (Post_Prags, "checking of pragma postcondition")));
 
          Why_Body := Checking_Of_Refined_Post (Why_Body);
 
