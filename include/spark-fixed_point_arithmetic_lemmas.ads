@@ -33,6 +33,8 @@ package SPARK.Fixed_Point_Arithmetic_Lemmas
   with Pure,
        Ghost
 is
+   pragma Annotate (GNATprove, Terminating, Fixed_Point_Arithmetic_Lemmas);
+
    pragma Warnings
      (Off, "postcondition does not check the outcome of calling");
 
