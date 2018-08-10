@@ -767,24 +767,25 @@ return 0. As can be seen below, |GNATprove| will fail to verify that ``F_Rec``,
    :linenos:
 
 Let us look at each function to understand what happens. The function ``F_Rec``
-is recursive, and the function ``F_While`` contains a while loop. Both cases can
-theoretically lead to an infinite path in the subprogram, which is why GNATprove
-cannot verify them. |GNATprove| does not complain about not being able to verify
-the termination of ``F_Not_SPARK``. Clearly, it is not because it could verify
-it, as it contains exactly the same loop as ``F_While``. It is because, as the
-body of ``F_Not_SPARK`` has been excluded from analysis using
-``SPARK_Mode => Off``, |GNATprove| does not attempt to prove that it terminates.
-When looking at the body of ``F_Call``, we can see that it calls a procedure
-``Not_SPARK``. Clearly, this procedure is terminating, as it does not do
-anything. But, as the body of ``No_SPARK`` has been hidden from analysis using
-``SPARK_Mode => Off``, |GNATprove| cannot deduce that it terminates. As a
-result, it stays in the safe side, and assumes that ``Not_SPARK`` could loop,
-which causes the verification of ``F_Call`` to fail. Finally, |GNATprove| is
-able to verify that ``F_Term`` terminates, though it contains a while loop.
-Indeed, the number of possible iterations of the loop has been bounded using a
-``Loop_Variant``. Also note that, though it was not able to prove termination of
-``F_Rec``, ``F_While``, and ``F_Call``, GNATprove will still trust the
-annotation and consider them as terminating when verifying ``F_Term``.
+is recursive, and the function ``F_While`` contains a while loop. Both cases
+can theoretically lead to an infinite path in the subprogram, which is why
+GNATprove cannot verify that they terminate. |GNATprove| does not complain
+about not being able to verify the termination of ``F_Not_SPARK``. Clearly, it
+is not because it could verify it, as it contains exactly the same loop as
+``F_While``. It is because, as the body of ``F_Not_SPARK`` has been excluded
+from analysis using ``SPARK_Mode => Off``, |GNATprove| does not attempt to
+prove that it terminates.  When looking at the body of ``F_Call``, we can see
+that it calls a procedure ``Not_SPARK``. Clearly, this procedure is
+terminating, as it does not do anything. But, as the body of ``No_SPARK`` has
+been hidden from analysis using ``SPARK_Mode => Off``, |GNATprove| cannot
+deduce that it terminates. As a result, it stays in the safe side, and assumes
+that ``Not_SPARK`` could loop, which causes the verification of ``F_Call`` to
+fail. Finally, |GNATprove| is able to verify that ``F_Term`` terminates, though
+it contains a while loop.  Indeed, the number of possible iterations of the
+loop has been bounded using a ``Loop_Variant``. Also note that, though it was
+not able to prove termination of ``F_Rec``, ``F_While``, and ``F_Call``,
+GNATprove will still trust the annotation and consider them as terminating when
+verifying ``F_Term``.
 
 .. note::
 
