@@ -3314,12 +3314,12 @@ package body Gnat2Why.Subprograms is
          if Entity_Body_In_SPARK (E) then
             return
            Sequence
-             ((New_Comment
+             (New_Comment
               (Comment => NID ("Declarations introduced by the compiler at the"
                & " beginning of the subprogram"
                & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
                  else ""))),
-              Transform_Declarations_For_Params (Declarations (Body_N))));
+              Transform_Declarations_For_Params (Declarations (Body_N)));
          else
             return +Void;
          end if;
