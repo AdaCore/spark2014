@@ -352,11 +352,24 @@ package body SPARK_Util is
               and then Low_Val >= UI_From_Int (Int'First)
               and then High_Val <= UI_From_Int (Int'Last)
             then
-               --  and no non-scalar object declarations
+               --  and either the loop is from 1 to 1, or more generally from
+               --  a value to the same value (a trick to emulate forward gotos,
+               --  by exiting from the loop instead) so that there are no
+               --  issues with the type of an object declared in the loop
+               --  having contradictory constraints across loop iterations
 
-               if Find_Non_Scalar_Object_Declaration (Loop_Stmt)
-                 /= Abandon
+               if Low_Val = High_Val
+
+               --  or there are no non-scalar object declarations, precisely to
+               --  avoid that their types have contradictory constraints across
+               --  loop iterations.
+
+                 or else Find_Non_Scalar_Object_Declaration (Loop_Stmt)
+                   /= Abandon
                then
+                  --  Loop can be unrolled. Decide the type of unrolling based
+                  --  on whether the range is static or dynamic.
+
                   Result := (if Dynamic_Range then Unrolling_With_Condition
                              else Simple_Unrolling);
                end if;
