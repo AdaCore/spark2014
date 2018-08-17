@@ -26,6 +26,9 @@ Contents:
    flow_analysis
    translation_why3
    generation_vcs
+   gnatwhy3
+   manual_proof
+   counterexamples
    gui_ce_json
 
 
