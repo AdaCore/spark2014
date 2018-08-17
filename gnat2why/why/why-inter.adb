@@ -1003,19 +1003,7 @@ package body Why.Inter is
 
    function Need_Conversion (Expr : W_Expr_Id) return Boolean is
    begin
-      if Get_Kind (+Expr) = W_Call then
-         declare
-            Expr2 : constant W_Call_Id := W_Call_Id (Expr);
-            Base  : constant W_Identifier_Id := Get_Name (Expr2);
-            Name  : constant W_Name_Id := Get_Name (Base);
-
-         begin
-            return Get_Name_String (Get_Symbol (Name))
-            not in To_String (WNE_Init_Allocator)
-                 | To_String (WNE_Uninit_Allocator);
-         end;
-
-      elsif Get_Kind (+Expr) = W_Identifier then
+      if Get_Kind (+Expr) = W_Identifier then
          declare
             Expr2 : constant W_Identifier_Id := W_Identifier_Id (Expr);
             Name  : constant W_Name_Id := Get_Name (Expr2);

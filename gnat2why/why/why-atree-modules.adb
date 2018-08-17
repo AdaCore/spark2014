@@ -2595,17 +2595,17 @@ package body Why.Atree.Modules is
                  (E, WNE_Init_Allocator,
                   New_Identifier
                     (Symbol => NID (To_String (WNE_Init_Allocator)),
-                     Module => M,
+                     Module => AM,
                      Domain => EW_Term,
-                     Typ    => Des_Ty));
+                     Typ    => Ty));
 
                Insert_Symbol
                  (E, WNE_Uninit_Allocator,
                   New_Identifier
                     (Symbol => NID (To_String (WNE_Uninit_Allocator)),
-                     Module => M,
+                     Module => AM,
                      Domain => EW_Term,
-                     Typ    => Des_Ty));
+                     Typ    => Ty));
 
                Insert_Symbol
                  (E, WNE_Range_Check_Fun,

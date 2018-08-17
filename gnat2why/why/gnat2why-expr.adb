@@ -272,9 +272,10 @@ package body Gnat2Why.Expr is
    --  not a quantifier or conjunction is a terminal node.
 
    function Needs_Temporary_Ref
-     (Actual     : Node_Id;
-      Formal     : Entity_Id;
-      Typ_Formal : W_Type_Id) return Boolean;
+     (Actual           : Node_Id;
+      Formal           : Entity_Id;
+      Typ_Formal       : W_Type_Id;
+      In_Function_Call : Boolean := True) return Boolean;
    --  True if the parameter passing needs a temporary ref to be performed
 
    function New_Assignment
@@ -2144,7 +2145,8 @@ package body Gnat2Why.Expr is
                     or else
                       Needs_Temporary_Ref (Actual, Formal,
                                            Get_Typ
-                                             (Binders (Bind_Cnt).Main.B_Name))
+                                             (Binders (Bind_Cnt).Main.B_Name),
+                                           Nkind (Call) = N_Function_Call)
                   then
                      --  We should never use the Formal for the Ada_Node,
                      --  because there is no real dependency here; We only
@@ -2159,12 +2161,17 @@ package body Gnat2Why.Expr is
                      Nb_Of_Refs := Nb_Of_Refs + 1;
 
                   else
+                     --  We allow an in parameter or a constant of an owning
+                     --  access type to provide read/write access to its
+                     --  designated object in a procedure call (considered
+                     --  as borrowing). These in parameters are refs.
+
                      if (Ekind (Formal) = E_In_Parameter
-                       and then Is_Access_Type (Etype (Formal)))
+                         and then Is_Access_Type (Etype (Formal))
+                         and then Nkind (Call) /= N_Function_Call)
                        or else Ekind (Formal) in E_In_Out_Parameter
                                                | E_Out_Parameter
                      then
-
                         pragma Assert (not Aliasing);
 
                         --  Parameters that are "out" are refs;
@@ -5432,9 +5439,10 @@ package body Gnat2Why.Expr is
    -------------------------
 
    function Needs_Temporary_Ref
-     (Actual     : Node_Id;
-      Formal     : Entity_Id;
-      Typ_Formal : W_Type_Id) return Boolean
+     (Actual           : Node_Id;
+      Formal           : Entity_Id;
+      Typ_Formal       : W_Type_Id;
+      In_Function_Call : Boolean := True) return Boolean
    is
       Simple_Actual : constant Boolean :=
         Nkind (Actual) in N_Identifier | N_Expanded_Name
@@ -5450,8 +5458,19 @@ package body Gnat2Why.Expr is
             return not Eq_Base (Type_Of_Node (Etype (Actual)), Typ_Formal)
               or else not Simple_Actual;
 
+            --  We allow an in parameter or a constant of an owning access
+            --  type to provide read/write access to its designated object
+            --  in a procedure call (considered as borrowing).
+
          when E_In_Parameter =>
-            return Has_Async_Writers (Direct_Mapping_Id (Formal));
+            if Is_Access_Type (Etype (Formal))
+              and then not In_Function_Call
+            then
+               return not Eq_Base (Type_Of_Node (Etype (Actual)), Typ_Formal)
+                 or else not Simple_Actual;
+            else
+               return Has_Async_Writers (Direct_Mapping_Id (Formal));
+            end if;
 
          when others =>
             raise Program_Error;
@@ -12390,28 +12409,22 @@ package body Gnat2Why.Expr is
             --  see ARM 4.8 $6/3
 
             declare
-               Module : constant W_Module_Id :=
-                 New_Module (File => No_Name,
-                             Name => NID (Full_Name (Etype (Expr))
-                               & To_String (WNE_Axiom_Suffix)));
-
                Func_New_Uninitialized_Name : W_Identifier_Id;
                Func_New_Initialized_Name   : W_Identifier_Id;
-               Call                        : W_Expr_Id;
-               Des_Ty                      : constant W_Type_Id :=
+
+               Call     : W_Expr_Id;
+               New_Expr : constant Node_Id := Expression (Expr);
+               Des_Ty   : constant W_Type_Id :=
                  Type_Of_Node (Directly_Designated_Type (Etype (Expr)));
 
             begin
                --  Uninitialized allocator
 
-               if Nkind (Expression (Expr)) in
+               if Nkind (New_Expr) in
                  N_Subtype_Indication | N_Identifier
                then
-
-                  Func_New_Uninitialized_Name := New_Identifier
-                    (Ada_Node => Etype (Expr),
-                     Name     => To_String (WNE_Uninit_Allocator),
-                     Module   => Module);
+                  Func_New_Uninitialized_Name :=
+                    E_Symb (Etype (Expr), WNE_Uninit_Allocator);
 
                   --  Subtype_indication Shall not specify a Null_Exclusion
 
@@ -12422,30 +12435,32 @@ package body Gnat2Why.Expr is
                        (Func_New_Uninitialized_Name),
                      Progs    => (1 => +Void),
                      Reason   => VC_Null_Exclusion,
-                     Typ      => EW_Abstract (Etype (Expr)));
+                     Typ      => Get_Typ (Func_New_Uninitialized_Name));
 
                --  Initialized allocator
 
                --  ??? 6/3 If the designated type of the type of the allocator
 
                else
-                  pragma Assert
-                    (Nkind (Expression (Expr)) in N_Qualified_Expression);
+                  pragma Assert (Nkind (New_Expr) in N_Qualified_Expression);
 
-                  Func_New_Initialized_Name := New_Identifier
-                    (Ada_Node => Etype (Expr),
-                     Name     => To_String (WNE_Init_Allocator),
-                     Module   => Module);
+                  Func_New_Initialized_Name :=
+                    E_Symb (Etype (Expr), WNE_Init_Allocator);
 
                   Call := New_Call
                     (Name     => +Func_New_Initialized_Name,
                      Domain   => Domain,
-                     Args => (1 => +Transform_Expr
-                          (Expr          => Expression (Expression (Expr)),
-                           Expected_Type => Des_Ty,
-                           Domain        => Domain,
-                           Params        => Local_Params)));
+                     Args     => (1 => +Transform_Expr
+                                  (Expr          => Expression (New_Expr),
+                                   Expected_Type => Des_Ty,
+                                   Domain        => Domain,
+                                   Params        => Local_Params)),
+                     Typ      => Get_Typ (Func_New_Initialized_Name));
                end if;
+
+               pragma Assert (not Has_Predicates (Etype (Expr)));
+
+               --  do Predicate check against Etype (Expr) if necessary
 
                T := +Call;
             end;

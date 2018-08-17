@@ -416,6 +416,8 @@ package body Why.Gen.Pointers is
          Axiom_Name : constant String :=
            To_String (WNE_Null_Pointer) & "__" & Def_Axiom;
 
+         True_Term  : constant W_Term_Id := New_Literal (Value => EW_True);
+
       begin
          Emit (P,
                New_Function_Decl
@@ -450,11 +452,9 @@ package body Why.Gen.Pointers is
                                           Value  => Null_Exclusion_Value)
                  ));
 
-         Condition := +New_Comparison
-           (Symbol => Why_Eq,
-            Domain => EW_Term,
-            Left   => Top_Field,
-            Right  => New_Literal (Domain => EW_Term, Value => EW_True));
+         Condition := New_Call (Name => Why_Eq,
+                                Args => (1 => +Top_Field, 2 => +True_Term),
+                                Typ  => EW_Bool_Type);
 
          Emit (P,
                New_Axiom (Ada_Node => E,
@@ -808,7 +808,7 @@ package body Why.Gen.Pointers is
          return
            +New_VC_Call
            (Ada_Node => Ada_Node,
-            Name     => Field,
+            Name     => To_Program_Space (Field),
             Progs    => (1 => +Name),
             Domain   => EW_Prog,
             Reason   => VC_Null_Pointer_Dereference,
@@ -828,6 +828,7 @@ package body Why.Gen.Pointers is
    function Root_Pointer_Type (E : Entity_Id) return Entity_Id is
       use Pointer_Typ_To_Roots;
 
+      --  ??? What about private access types
       C : constant Pointer_Typ_To_Roots.Cursor :=
         Pointer_Typ_To_Root.Find (Directly_Designated_Type (Etype (E)));
 

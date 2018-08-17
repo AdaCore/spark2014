@@ -1019,6 +1019,7 @@ package body Why.Gen.Expr is
 
    begin
       --  When no check needs to be inserted, do nothing
+      --  ??? should test on From = To before and then Need_Check
 
       if not Need_Check then
          return Expr;

@@ -931,11 +931,31 @@ package body Gnat2Why.Util is
       then
          return True;
 
-         --  We allow an in parameter or a constant of an owning access type to
-         --  provide read/write access to its designated object.
+      --  We allow an In parameter of an owning access type to
+      --  provide read/write access to its designated object as a parameter
+      --  in a procedure call.
+      --
+      --  We allow a constant of an owning access type to provide read/write
+      --  access to its designated object
+      --
+      --  ??? What about private access types
 
-      elsif Is_Constant_Object (E) and then not Is_Access_Type (Etype (E)) then
-         return False;
+      elsif Is_Constant_Object (E) then
+         if Ekind (E) = E_In_Parameter then
+            if Is_Access_Type (Etype (E))
+              and then Ekind (Enclosing_Unit (E)) /= E_Function
+            then
+               return True;
+            else
+               return False;
+            end if;
+
+         elsif Is_Access_Type (Etype (E)) then
+            return True;
+
+         else
+            return False;
+         end if;
 
       else
          return True;
