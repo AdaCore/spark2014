@@ -692,13 +692,13 @@ package body Gnat2Why.Expr.Loops.Inv is
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
             declare
-               Discrs  : constant Natural := Count_Discriminants (Expr_Ty);
-               Discr   : Node_Id :=
+               Discrs : constant Natural := Count_Discriminants (Expr_Ty);
+               Discr  : Node_Id :=
                  (if Discrs > 0 then First_Discriminant (Expr_Ty)
                   else Empty);
-               Tmps    : W_Identifier_Array (1 .. Discrs);
-               Binds   : W_Expr_Array (1 .. Discrs);
-               I       : Positive := 1;
+               Tmps   : W_Identifier_Array (1 .. Discrs);
+               Binds  : W_Expr_Array (1 .. Discrs);
+               I      : Positive := 1;
             begin
 
                while Present (Discr) loop
