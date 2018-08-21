@@ -34,6 +34,7 @@ with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with SPARK_Xrefs;                use SPARK_Xrefs;
+with Stand;                      use Stand;
 with String_Utils;               use String_Utils;
 with Uintp;
 with Why.Atree.Accessors;        use Why.Atree.Accessors;
@@ -83,7 +84,8 @@ package body Why.Inter is
    function EW_Abstract_Shared
      (N    : Node_Id;
       Kind : EW_Type) return W_Type_Id
-     with Pre => Kind in EW_Abstract | EW_Split;
+     with Pre => Is_Type (N)
+                 and then Kind in EW_Abstract | EW_Split;
    --  Build a type node from an Ada type node, either of kind Split or
    --  Abstract.
 
@@ -806,7 +808,7 @@ package body Why.Inter is
      (N    : Node_Id;
       Kind : EW_Type) return W_Type_Id is
    begin
-      if Nkind (N) in N_Entity and then Is_Standard_Boolean_Type (N) then
+      if Is_Standard_Boolean_Type (N) then
          return EW_Bool_Type;
 
       elsif N = Universal_Fixed then
@@ -818,15 +820,11 @@ package body Why.Inter is
       elsif Is_Class_Wide_Type (N) then
          return EW_Abstract_Shared (Specific_Tagged (N), Kind);
 
-      elsif Is_Type (N) and then Retysp (N) /= N then
+      elsif Retysp (N) /= N then
          return EW_Abstract_Shared (Retysp (N), Kind);
-      elsif Entity_In_SPARK (N) then
-         return New_Kind_Base_Type (N, Kind);
       else
-
-         --  This can happen for globals
-
-         return EW_Private_Type;
+         pragma Assert (Entity_In_SPARK (N));
+         return New_Kind_Base_Type (N, Kind);
       end if;
    end EW_Abstract_Shared;
 
