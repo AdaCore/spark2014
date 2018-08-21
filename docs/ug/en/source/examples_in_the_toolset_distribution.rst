@@ -256,7 +256,7 @@ This program implements the solution to the N queens problem, to place N queens
 on an N x N chess board so that no queen can capture another one with a legal
 move. The API is annotated with full functional contracts. |GNATprove| proves
 all checks on this program. This program was proposed as a formal verification
-challenge during VSTTE Verification Competition in 2019 (see
+challenge during VSTTE Verification Competition in 2010 (see
 https://sites.google.com/a/vscomp.org/main/).
 
 .. rubric:: ``patience``
