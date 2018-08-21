@@ -534,9 +534,6 @@ package Flow_Types is
    --  Convert a flow id to an entity name. Any record fields are changed into
    --  entire variables.
 
-   function To_Name_Set (S : Flow_Id_Sets.Set) return Name_Sets.Set;
-   --  Convert set of flow ids to set of entity names
-
    function To_Node_Set (S : Flow_Id_Sets.Set) return Node_Sets.Set
    with Pre => (for all F of S => F.Kind = Direct_Mapping);
    --  Convert a simple Flow_Id set to a node set

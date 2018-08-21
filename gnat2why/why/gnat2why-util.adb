@@ -33,7 +33,6 @@ with Lib;
 with Namet;                      use Namet;
 with SPARK_Annotate;
 with SPARK_Definition;           use SPARK_Definition;
-with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with String_Utils;               use String_Utils;
@@ -126,17 +125,8 @@ package body Gnat2Why.Util is
             return Cursor'(CK_Str, Ent_To_Why.No_Element,
                            C);
          else
-            declare
-               Ent      : constant Entity_Id := Find_Entity (E);
-               Uniq_Ent : constant Entity_Id := Normalize_Entity (Ent);
-            begin
-               if Present (Uniq_Ent) then
-                  return Find (M, Uniq_Ent);
-               else
-                  return Cursor'(CK_Ent, Ent_To_Why.No_Element,
-                                 Name_To_Why_Map.No_Element);
-               end if;
-            end;
+            return Cursor'(CK_Ent, Ent_To_Why.No_Element,
+                           Name_To_Why_Map.No_Element);
          end if;
       end Find;
 
@@ -865,10 +855,7 @@ package body Gnat2Why.Util is
                                                Writes         => Write_Ids,
                                                Keep_Constants => True);
 
-               --  Elements of Read_Ids have their Variant set to In_View, so
-               --  the membership test must also use this variant.
-
-               return Read_Ids.Contains (Direct_Mapping_Id (Obj, In_View));
+               return Read_Ids.Contains (Direct_Mapping_Id (Obj));
             end;
          end if;
 

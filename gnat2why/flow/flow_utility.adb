@@ -449,7 +449,7 @@ package body Flow_Utility is
                            for C of Iter (Refinement_Constituents (E)) loop
                               Result.Union
                                 (Expand_Abstract_State
-                                   (Direct_Mapping_Id (C, F.Variant),
+                                   (Direct_Mapping_Id (C),
                                     Erase_Constants));
                            end loop;
 
@@ -466,7 +466,7 @@ package body Flow_Utility is
                            if Entity_In_SPARK (C) then
                               Result.Union
                                 (Expand_Abstract_State
-                                   (Direct_Mapping_Id (C, F.Variant),
+                                   (Direct_Mapping_Id (C),
                                     Erase_Constants));
                            end if;
                         end loop;
@@ -475,7 +475,8 @@ package body Flow_Utility is
                      --  but we can't see them. The state itself will represent
                      --  them.
 
-                        Result.Insert (F);
+                        Result.Insert
+                          (Magic_String_Id (To_Entity_Name (E)));
 
                         return Result;
                      end if;
@@ -499,13 +500,13 @@ package body Flow_Utility is
 
                   return Flow_Id_Sets.To_Set
                     (if Entity_In_SPARK (E)
-                     then F
-                     else Magic_String_Id (To_Entity_Name (E), F.Variant));
+                     then Change_Variant (F, Normal_Use)
+                     else Magic_String_Id (To_Entity_Name (E)));
                end if;
             end;
 
          when Magic_String =>
-            return Flow_Id_Sets.To_Set (F);
+            return Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
 
          when Record_Field | Null_Value | Synthetic_Null_Export =>
             raise Program_Error;
@@ -3627,8 +3628,37 @@ package body Flow_Utility is
          Expand_Synthesized_Constants    => False,
          Consider_Extensions             => False,
          Quantified_Variables_Introduced => Node_Sets.Empty_Set);
+
+      Converted : Flow_Id_Sets.Set;
+      --  Flow represents globals known by Entity_Id but not in SPARK as
+      --  Direct_Mapping; for proof they are represented as Magic_String.
+
    begin
-      return Get_Variables_Internal (Expr_N, Ctx);
+      for Var of Get_Variables_Internal (Expr_N, Ctx) loop
+         case Var.Kind is
+            when Direct_Mapping =>
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (Var);
+
+               begin
+                  if Ekind (E) = E_Abstract_State
+                    or else not Entity_In_SPARK (E)
+                  then
+                     Converted.Insert (Magic_String_Id (To_Entity_Name (E)));
+                  else
+                     Converted.Insert (Var);
+                  end if;
+               end;
+
+            when Magic_String =>
+               Converted.Insert (Var);
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end loop;
+
+      return Converted;
    end Get_Variables_For_Proof;
 
    -----------------
@@ -5720,5 +5750,21 @@ package body Flow_Utility is
       return Globals;
 
    end Parse_Depends_Contract;
+
+   -------------------------
+   -- Is_Opaque_For_Proof --
+   -------------------------
+
+   function Is_Opaque_For_Proof (F : Flow_Id) return Boolean is
+      E : constant Entity_Id := Find_Entity (F.Name);
+
+   begin
+      if Present (E) then
+         return Ekind (E) = E_Abstract_State
+           or else not Entity_In_SPARK (E);
+      else
+         return True;
+      end if;
+   end Is_Opaque_For_Proof;
 
 end Flow_Utility;

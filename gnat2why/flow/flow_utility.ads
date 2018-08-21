@@ -225,9 +225,9 @@ is
                                       E_Procedure |
                                       E_Task_Type,
         Post => (for all G of Reads =>
-                   Is_Entire_Variable (G) and then G.Variant = In_View)
+                   Is_Entire_Variable (G) and then G.Variant = Normal_Use)
        and then (for all G of Writes =>
-                   Is_Entire_Variable (G) and then G.Variant = Out_View);
+                   Is_Entire_Variable (G) and then G.Variant = Normal_Use);
    --  Same as above but Reads consists of both the Reads and Proof_Ins,
    --  discriminants receive no special handling and globals are proof globals,
    --  and we always return the most refined view possible. If Keep_Constants
@@ -235,6 +235,10 @@ is
    --  Globals even if they are constants in Why. For subprograms nested in
    --  protected types, which may have an effect on the components of the
    --  protected type, the protected type itself is returned as a global.
+
+   function Is_Opaque_For_Proof (F : Flow_Id) return Boolean
+   with Pre => F.Kind = Magic_String, Ghost;
+   --  Returns True iff the internal structure of F is not visible to proof
 
    function Has_Proof_Globals (Subprogram : Entity_Id) return Boolean
    with Pre => Ekind (Subprogram) = E_Function;
@@ -369,7 +373,9 @@ is
    function Expand_Abstract_State
      (F               : Flow_Id;
       Erase_Constants : Boolean)
-      return Flow_Id_Sets.Set;
+      return Flow_Id_Sets.Set
+   with Post => (for all E of Expand_Abstract_State'Result =>
+                    Is_Entire_Variable (E) and then E.Variant = Normal_Use);
    --  If F represents abstract state, return the set of all its components.
    --  Otherwise return F. Additionally, remove formal in parameters from the
    --  set if Erase_Constants is true.

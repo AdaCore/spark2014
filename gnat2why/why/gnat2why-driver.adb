@@ -1040,9 +1040,7 @@ package body Gnat2Why.Driver is
                                             Reads      => Reads,
                                             Writes     => Writes);
 
-            --  Union reads with writes (essentially just ignore the
-            --  variant).
-            Reads.Union (Change_Variant (Writes, In_View));
+            Reads.Union (Writes);
 
             for G of Reads loop
                case G.Kind is

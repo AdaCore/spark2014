@@ -50,7 +50,6 @@ with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Annotate;                 use SPARK_Annotate;
 with SPARK_Definition;               use SPARK_Definition;
-with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 with SPARK_Util.External_Axioms;     use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with Stand;                          use Stand;
@@ -1296,7 +1295,6 @@ package body Gnat2Why.Expr is
 
             elsif not (Nkind (Obj) in N_Entity)
               or else not (Is_Object (Obj) or else Is_Named_Number (Obj))
-              or else not Entity_In_SPARK (Obj)
               or else not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
               or else (Present (Scope)
                        and then Is_Declared_In_Unit (Obj, Scope))
@@ -1336,8 +1334,17 @@ package body Gnat2Why.Expr is
          --  Add the variable inputs of dynamic predicates to Includes so
          --  that their dynamic invariant can be assumed.
 
-         for Name of To_Name_Set (Variables) loop
-            Node_Sets.Include (Includes, Find_Entity (Name));
+         for Var of Variables loop
+            case Var.Kind is
+               when Direct_Mapping =>
+                  Node_Sets.Include (Includes, Get_Direct_Mapping_Id (Var));
+
+               when Magic_String =>
+                  pragma Assert (Is_Opaque_For_Proof (Var));
+
+               when others =>
+                  raise Program_Error;
+            end case;
          end loop;
 
          Node_Sets.Difference (Includes, Already_Included);
@@ -3310,8 +3317,8 @@ package body Gnat2Why.Expr is
 
          declare
             Vars  : constant W_Expr_Array :=
-              Get_Args_From_Variables
-                (To_Name_Set (Variables), Params.Ref_Allowed);
+              Get_Args_From_Variables (Variables, Params.Ref_Allowed);
+
             Num_B : constant Positive := 2 + Vars'Length;
             Args  : W_Expr_Array (1 .. Num_B);
          begin
@@ -3625,8 +3632,7 @@ package body Gnat2Why.Expr is
 
          declare
             Vars  : constant W_Expr_Array :=
-              Get_Args_From_Variables
-                (To_Name_Set (Variables), Params.Ref_Allowed);
+              Get_Args_From_Variables (Variables, Params.Ref_Allowed);
             Num_B : constant Positive := 5 + Vars'Length;
             Args  : W_Expr_Array (1 .. Num_B);
 
@@ -6182,8 +6188,7 @@ package body Gnat2Why.Expr is
 
       declare
          Vars  : constant W_Expr_Array :=
-           Get_Args_From_Variables
-             (To_Name_Set (Variables), Params.Ref_Allowed);
+           Get_Args_From_Variables (Variables, Params.Ref_Allowed);
          Num_B : constant Positive := 1 + Vars'Length;
          Args  : W_Expr_Array (1 .. Num_B);
 
@@ -6239,8 +6244,7 @@ package body Gnat2Why.Expr is
 
       declare
          Vars  : constant W_Expr_Array :=
-           Get_Args_From_Variables
-             (To_Name_Set (Variables), Params.Ref_Allowed);
+           Get_Args_From_Variables (Variables, Params.Ref_Allowed);
          Num_B : constant Positive := 1 + Vars'Length;
          Args  : W_Expr_Array (1 .. Num_B);
 

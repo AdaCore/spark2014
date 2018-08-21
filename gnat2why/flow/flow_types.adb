@@ -988,19 +988,6 @@ package body Flow_Types is
             raise Program_Error);
 
    -----------------
-   -- To_Name_Set --
-   -----------------
-
-   function To_Name_Set (S : Flow_Id_Sets.Set) return Name_Sets.Set is
-      N : Name_Sets.Set := Name_Sets.Empty_Set;
-   begin
-      for X of S loop
-         N.Include (To_Name (X));
-      end loop;
-      return N;
-   end To_Name_Set;
-
-   -----------------
    -- To_Node_Set --
    -----------------
 
