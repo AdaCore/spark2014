@@ -2534,6 +2534,7 @@ package body Gnat2Why.Subprograms is
                             " defined at " & Build_Location_String (Sloc (E))
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
       Current_Subp := E;
 
       Register_VC_Entity (E);
@@ -3314,12 +3315,12 @@ package body Gnat2Why.Subprograms is
          if Entity_Body_In_SPARK (E) then
             return
            Sequence
-             ((New_Comment
+             (New_Comment
               (Comment => NID ("Declarations introduced by the compiler at the"
                & " beginning of the subprogram"
                & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
                  else ""))),
-              Transform_Declarations_For_Params (Declarations (Body_N))));
+              Transform_Declarations_For_Params (Declarations (Body_N)));
          else
             return +Void;
          end if;
@@ -3639,7 +3640,7 @@ package body Gnat2Why.Subprograms is
                        & (if Sloc (E) > 0 then
                             " defined at " & Build_Location_String (Sloc (E))
                           else "")
-                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Current_Subp := E;
 
@@ -5611,7 +5612,7 @@ package body Gnat2Why.Subprograms is
                        & (if Sloc (E) > 0 then
                             " defined at " & Build_Location_String (Sloc (E))
                           else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  No logic function is created for volatile functions. The function's
       --  effects are modelled by an effect on the program function.

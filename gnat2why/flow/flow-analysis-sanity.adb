@@ -728,25 +728,28 @@ package body Flow.Analysis.Sanity is
                --  Check that the subtype constraint for the component, if
                --  present, does not depend on variable inputs.
 
-               if Nkind (N) = N_Component_Declaration then
+               if Nkind (N) = N_Component_Declaration and then
+                 Present (Subtype_Indication (Component_Definition (N)))
+               then
                   declare
-                     S_Indication : constant Node_Id :=
+                     S_Indication_Mark : constant Node_Id :=
                        Subtype_Indication (Component_Definition (N));
 
                   begin
-                     case Nkind (S_Indication) is
+                     case Nkind (S_Indication_Mark) is
                         --  Subtype either points to a constraint, for example
                         --  "String (1 .. 10)".
 
                         when N_Subtype_Indication =>
                            Check_Subtype_Constraints
-                             (Constraint (S_Indication));
+                             (Constraint (S_Indication_Mark));
 
                         --  or to a type, for example "Integer", or
                         --  "Standard.Integer".
 
                         when N_Identifier | N_Expanded_Name =>
-                           pragma Assert (Is_Type (Entity (S_Indication)));
+                           pragma Assert (Is_Type
+                                          (Entity (S_Indication_Mark)));
 
                         when others =>
                            raise Program_Error;
@@ -1014,6 +1017,7 @@ package body Flow.Analysis.Sanity is
             F                    : Flow_Id;
             Corresp_Final_Vertex : Flow_Graphs.Vertex_Id;
             Final_Atr            : V_Attributes;
+
          begin
             for Var of Written_Vars loop
                F := Change_Variant (Var, Normal_Use);

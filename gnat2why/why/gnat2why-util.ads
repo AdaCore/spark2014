@@ -479,6 +479,9 @@ package Gnat2Why.Util is
    --  type.
    --  This function should be used on entities denoting a type
 
+   function Get_Container_In_Iterator_Specification
+     (N : Node_Id) return Node_Id;
+
    ------------------------------
    -- Symbol table subprograms --
    ------------------------------

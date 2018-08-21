@@ -1,7 +1,7 @@
 arrays.adb:51:18: info: postcondition proved (CVC4: 2 VC)
 arrays.adb:62:22: medium: postcondition might fail, cannot prove Contains_B'Result = S (C) (e.g. when C = 'NUL' and Contains_B'Result = True and S = ('NUL' => False, 'a' => True, others => False))
 arrays.adb:71:19: info: postcondition proved (CVC4: 2 VC)
-arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C (e.g. when C = 'NUL' and Is_Id_2'Result = True and M = ('NUL' => 'a', others => 'a'))
+arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C) (e.g. when C = 'b' and Is_Id_2'Result = True and M = ('b' => 'a', others => 'a'))
 arrays.adb:94:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:104:22: medium: assertion might fail, cannot prove C = 'a' (e.g. when C = 'NUL')
 arrays.adb:112:22: medium: assertion might fail, cannot prove M ('a') = 'a' (e.g. when M = ('a' => 'A', others => 'A'))
@@ -30,7 +30,7 @@ arrays.adb:191:41: info: range check proved (CVC4: 2 VC)
 arrays.adb:192:57: info: initialization of "R" proved
 arrays.adb:192:57: medium: "R" might not be initialized
 arrays.adb:194:14: info: initialization of "R" proved
-arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C (e.g. when C = 'SOH' and I = 'SOH' and Single_Char_Set_Broken'Result = ('SOH' => True, others => False))
+arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C) (e.g. when C = 'SOH' and I = 'SOH' and Single_Char_Set_Broken'Result = ('SOH' => True, others => False))
 arrays.adb:206:33: info: loop invariant initialization proved (CVC4: 2 VC)
 arrays.adb:206:33: info: loop invariant preservation proved (CVC4: 2 VC)
 arrays.adb:206:41: info: range check proved (CVC4: 2 VC)
@@ -53,9 +53,9 @@ counterexample expected for check at arrays.adb:62
   trace at arrays.adb:62 --> C = 'NUL' and Contains_B'Result = True and S = ('NUL' => False, 'a' => True, others => False)
   trace at arrays.adb:65 --> Contains_B'Result = True
 counterexample expected for check at arrays.adb:80
-  trace at arrays.adb:77 --> M = ('NUL' => 'a', others => 'a')
-  trace at arrays.adb:78 --> C = 'NUL'
-  trace at arrays.adb:80 --> C = 'NUL' and Is_Id_2'Result = True and M = ('NUL' => 'a', others => 'a')
+  trace at arrays.adb:77 --> M = ('b' => 'a', others => 'a')
+  trace at arrays.adb:78 --> C = 'b'
+  trace at arrays.adb:80 --> C = 'b' and Is_Id_2'Result = True and M = ('b' => 'a', others => 'a')
   trace at arrays.adb:83 --> Is_Id_2'Result = True
 counterexample expected for check at arrays.adb:104
   trace at arrays.adb:97 --> M = ('NUL' => 'NUL', others => 'NUL')

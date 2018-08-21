@@ -825,6 +825,23 @@ package body Flow is
             Write_Str ("}");
          end if;
 
+         if not A.Variables_Read.Is_Empty then
+            Write_Str ("\nVR: {");
+            declare
+               First : Boolean := True;
+            begin
+               for F of A.Variables_Read loop
+                  if First then
+                     First := False;
+                  else
+                     Write_Str (", ");
+                  end if;
+                  Sprint_Flow_Id (F);
+               end loop;
+            end;
+            Write_Str ("}");
+         end if;
+
          if not A.Subprograms_Called.Is_Empty then
             Write_Str ("\nSC: {");
             declare
@@ -1414,6 +1431,7 @@ package body Flow is
                      Analysis.Check_Ghost_Procedure_Outputs (FA);
                   end if;
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
+                  Analysis.Find_Input_Only_Used_In_Assertions (FA);
                   if FA.Is_Main then
                      Analysis.Analyse_Main (FA);
                   end if;

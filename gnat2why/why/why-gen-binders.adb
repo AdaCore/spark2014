@@ -324,6 +324,7 @@ package body Why.Gen.Binders is
 
          when Func =>
             return Get_Typ (B.For_Logic.B_Name);
+
       end case;
    end Get_Why_Type_From_Item;
 
@@ -1223,7 +1224,8 @@ package body Why.Gen.Binders is
       Needs_Deref : Boolean := False;
    begin
       case E.Kind is
-         when Func => raise Program_Error;
+         when Func =>
+            raise Program_Error;
 
          when Regular
             | Concurrent_Self
@@ -1237,6 +1239,7 @@ package body Why.Gen.Binders is
 
          when DRecord =>
             T := Record_From_Split_Form (E, Ref_Allowed);
+
       end case;
 
       if Ref_Allowed and then Needs_Deref then

@@ -6,15 +6,15 @@ flight_manager.adb:19:21: medium: float overflow check might fail (e.g. when Dis
 flight_manager.adb:19:43: info: division check proved (CVC4: 1 VC)
 flight_manager.adb:19:43: info: float overflow check proved (Interval)
 flight_manager.adb:36:21: medium: "Result.X_Speed" might not be initialized
-flight_manager.adb:36:53: medium: float overflow check might fail (e.g. when Position_X = 1.0633804E+37 and Result = (X_Speed => -1.0000000E+2, Y_Speed => -1.0000000E+2) and Target_X = -3.4028235E+38)
+flight_manager.adb:36:53: medium: float overflow check might fail (e.g. when Position_X = 1.0633804E+37 and Result = (X_Speed => -100.0, Y_Speed => -100.0) and Target_X = -3.4028235E+38)
 flight_manager.adb:37:21: medium: "Result.Y_Speed" might not be initialized
-flight_manager.adb:37:53: medium: float overflow check might fail (e.g. when Position_Y = 0.0000000E+0 and Result = (X_Speed => 0.0000000E+0, Y_Speed => 0.0000000E+0) and Target_Y = 0.0000000E+0)
+flight_manager.adb:37:53: medium: float overflow check might fail (e.g. when Position_Y = 0.0 and Result = (X_Speed => 0.0, Y_Speed => 0.0) and Target_Y = 0.0)
 flight_manager.adb:39:14: info: initialization of "Result.X_Speed" proved
 flight_manager.adb:39:14: info: initialization of "Result.Y_Speed" proved
-flight_manager.ads:10:17: medium: postcondition might fail, cannot prove Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed (e.g. when Position_X = 0.0000000E+0 and Set_Engine_Speed'Result = (X_Speed => 0.0000000E+0, Y_Speed => 0.0000000E+0) and Target_X = 0.0000000E+0)
+flight_manager.ads:10:17: medium: postcondition might fail, cannot prove ((Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed) (e.g. when Position_X = 0.0 and Set_Engine_Speed'Result = (X_Speed => 0.0, Y_Speed => 0.0) and Target_X = 0.0)
 flight_manager.ads:10:30: info: float overflow check proved (CVC4: 1 VC)
 flight_manager.ads:10:65: medium: float overflow check might fail
-flight_manager.ads:11:18: medium: float overflow check might fail (e.g. when Position_X = 0.0000000E+0 and Set_Engine_Speed'Result = (X_Speed => 0.0000000E+0, Y_Speed => 0.0000000E+0))
+flight_manager.ads:11:18: medium: float overflow check might fail (e.g. when Position_X = 0.0 and Set_Engine_Speed'Result = (X_Speed => 0.0, Y_Speed => 0.0))
 flight_manager.ads:12:23: info: float overflow check proved (CVC4: 1 VC)
 flight_manager.ads:12:58: medium: float overflow check might fail
-flight_manager.ads:13:18: medium: float overflow check might fail (e.g. when Position_Y = 0.0000000E+0 and Set_Engine_Speed'Result = (X_Speed => 0.0000000E+0, Y_Speed => 0.0000000E+0))
+flight_manager.ads:13:18: medium: float overflow check might fail (e.g. when Position_Y = 0.0 and Set_Engine_Speed'Result = (X_Speed => 0.0, Y_Speed => 0.0))

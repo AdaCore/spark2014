@@ -154,6 +154,42 @@ source code, like for warnings.
 Justifying Check Messages
 -------------------------
 
+|GNATprove|'s analysis relies on the fact that, at any given point in the
+program, previous checks on any execution reaching that program point have been
+successful. Thus, given two successive assertions of the same property:
+
+.. code-block:: ada
+
+   pragma Assert (Prop);  --  possibly not proved
+   pragma Assert (Prop);  --  proved
+
+The second assertion will be reported as proved by |GNATprove|, even if the
+first assertion is reported as not proved. This is because any execution that
+fails the first assertion is not analyzed further by |GNATprove|.
+
+Similarly, consider two successive calls to the same procedure with a
+precondition:
+
+.. code-block:: ada
+
+   Proc (Args);  --  precondition possibly not proved
+   Proc (Args);  --  precondition proved
+
+The precondition of the second call will be reported as proved by |GNATprove|,
+even if the precondition of the first call is reported as not proved. This is
+because any execution that fails the first precondition is not analyzed further
+by |GNATprove|.
+
+This applies to all proof checks, and to a lesser extent to flow analysis
+checks. For example, outputs of a subprogram are considered fully initialtized
+in a caller, as explained in :ref:`Data Initialization Policy`. In particular,
+such outputs are considered to have values that respect the constraints of
+their type, which is used during proof.
+
+Thus, the user should be careful when justifying check messages, as the
+incorrect justification of a check message that could fail could also hide
+other possible failures later for the same execution of the analyzed program.
+
 .. _Direct Justification with Pragma Annotate:
 
 Direct Justification with Pragma Annotate

@@ -1,7 +1,7 @@
-spark-arithmetic_lemmas.adb:86:25: info: assertion proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.adb:86:25: info: assertion proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.adb:88:25: info: assertion proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.adb:88:25: info: assertion proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.adb:98:25: info: assertion proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.adb:98:25: info: assertion proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.adb:100:25: info: assertion proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.adb:100:25: info: assertion proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:49:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:49:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:49:19: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
@@ -44,6 +44,10 @@ spark-arithmetic_lemmas.ads:127:15: info: postcondition proved (CVC4: 1 VC), in 
 spark-arithmetic_lemmas.ads:127:15: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:127:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:127:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:136:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:136:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:145:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:145:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-floating_point_arithmetic_lemmas.ads:52:16: info: postcondition proved (altergo: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:52:16: info: postcondition proved (altergo: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:52:21: info: float overflow check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
@@ -132,16 +136,16 @@ spark-mod_arithmetic_lemmas.ads:115:15: info: postcondition proved (Coq: 1 VC), 
 spark-mod_arithmetic_lemmas.ads:115:15: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:115:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:115:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
-spark-test_array_lemmas.adb:59:16: info: precondition proved (CVC4: 1 VC)
-spark-test_array_lemmas.adb:60:10: info: range check proved (CVC4: 1 VC)
-spark-test_array_lemmas.adb:60:33: info: range check proved (CVC4: 1 VC)
-spark-test_array_lemmas.adb:65:18: info: precondition proved (CVC4: 1 VC)
-spark-test_array_lemmas.adb:66:10: info: range check proved (CVC4: 1 VC)
-spark-test_array_lemmas.adb:66:35: info: range check proved (CVC4: 1 VC)
-spark-test_array_lemmas.adb:71:16: info: precondition proved (CVC4: 1 VC)
-spark-test_array_lemmas.adb:71:41: info: range check proved (CVC4: 1 VC)
-spark-test_array_lemmas.adb:77:18: info: precondition proved (CVC4: 1 VC)
-spark-test_array_lemmas.adb:77:43: info: range check proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:60:18: info: precondition proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:61:10: info: range check proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:61:35: info: range check proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:67:18: info: precondition proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:67:43: info: range check proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:72:16: info: precondition proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:73:10: info: range check proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:73:33: info: range check proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:78:16: info: precondition proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:78:41: info: range check proved (CVC4: 1 VC)
 spark-test_array_lemmas.ads:44:14: info: postcondition proved (CVC4: 1 VC)
 spark-test_array_lemmas.ads:53:14: info: postcondition proved (CVC4: 1 VC)
 spark-test_array_lemmas.ads:64:19: info: index check proved (CVC4: 2 VC)

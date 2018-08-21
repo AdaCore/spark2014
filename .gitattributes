@@ -27,6 +27,7 @@ testsuite/gnatprove/tests/*/* no-precommit-check
 testsuite/gnatprove/tests/*/*/* no-precommit-check
 testsuite/gnatprove/tests/*/*/*/* no-precommit-check
 testsuite/gnatprove/tests/*/*/*/*/* no-precommit-check
+testsuite/gnatprove/diff-update-expected-outputs no-precommit-check
 testsuite/alt-ergo/tests/*/* no-precommit-check
 testsuite/gnatmerge/tests/*/* no-precommit-check
 testsuite/gnatmerge/tests/*/*/* no-precommit-check

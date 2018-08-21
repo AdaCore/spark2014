@@ -683,6 +683,7 @@ package Flow_Types is
 
       Variables_Defined            : Flow_Id_Sets.Set;
       Variables_Used               : Flow_Id_Sets.Set;
+      Variables_Read               : Flow_Id_Sets.Set;
       --  For producing the DDG
 
       Variables_Explicitly_Used    : Flow_Id_Sets.Set;
@@ -749,6 +750,7 @@ package Flow_Types is
                    Default_Init_Val                => Empty,
                    Variables_Defined               => Flow_Id_Sets.Empty_Set,
                    Variables_Used                  => Flow_Id_Sets.Empty_Set,
+                   Variables_Read                  => Flow_Id_Sets.Empty_Set,
                    Variables_Explicitly_Used       => Flow_Id_Sets.Empty_Set,
                    Volatiles_Read                  => Flow_Id_Sets.Empty_Set,
                    Volatiles_Written               => Flow_Id_Sets.Empty_Set,

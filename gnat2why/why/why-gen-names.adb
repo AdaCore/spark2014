@@ -777,8 +777,15 @@ package body Why.Gen.Names is
 
          --  these are used both by E_Symb function and by To_String
 
-         when WNE_Rec_Split_Discrs           => "__split_discrs",
-         when WNE_Rec_Split_Fields           => "__split_fields",
+         when WNE_Rec_Split_Discrs   => "__split_discrs",
+         when WNE_Rec_Split_Fields   => "__split_fields",
+         when WNE_Null_Exclusion_Val => "__null_exclusion_val",
+         when WNE_Null_Pointer       => "__null_pointer",
+         when WNE_Is_Null_Pointer    => "__is_null_pointer",
+         when WNE_Pointer_Address    => "__pointer_address",
+         when WNE_Pointer_Value      => "__pointer_value",
+         when WNE_Init_Allocator     => "__new_initialized_allocator",
+         when WNE_Uninit_Allocator   => "__new_uninitialized_allocator",
 
          --  please use these only in conjunction with E_Symb function
 

@@ -58,6 +58,7 @@ package body Gnat2Why_Args is
    Proof_Generate_Guards_Name   : constant String :=
      "proof_generate_axiom_guards";
    Proof_Warnings_Name          : constant String := "proof_warnings";
+   Limit_Units_Name             : constant String := "limit_units";
    Limit_Subp_Name              : constant String := "limit_subp";
    Limit_Line_Name              : constant String := "limit_line";
    Pedantic_Name                : constant String := "pedantic";
@@ -122,6 +123,7 @@ package body Gnat2Why_Args is
       No_Loop_Unrolling       := Get_Opt_Bool (V, No_Loop_Unrolling_Name);
       Ide_Mode                := Get_Opt_Bool (V, Ide_Mode_Name);
       CWE                     := Get_Opt_Bool (V, CWE_Name);
+      Limit_Units             := Get_Opt_Bool (V, Limit_Units_Name);
 
       if Has_Field (V, Report_Mode_Name) then
          Report_Mode :=
@@ -217,6 +219,7 @@ package body Gnat2Why_Args is
       Set_Field (Obj, No_Loop_Unrolling_Name, No_Loop_Unrolling);
       Set_Field (Obj, Ide_Mode_Name, Ide_Mode);
       Set_Field (Obj, Report_Mode_Name, Report_Mode_Type'Image (Report_Mode));
+      Set_Field (Obj, Limit_Units_Name, Limit_Units);
       Set_Field (Obj, Limit_Subp_Name, Limit_Subp);
       Set_Field (Obj, Limit_Line_Name, Limit_Line);
       Set_Field (Obj, Why3_Dir_Name, Why3_Dir);

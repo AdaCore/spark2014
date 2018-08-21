@@ -67,6 +67,7 @@ package Flow.Control_Flow_Graph.Utility is
       Is_Assertion  : Boolean           := False;
       Is_Loop_Entry : Boolean           := False;
       Is_Fold_Check : Boolean           := False;
+      Is_Type_Decl  : Boolean           := False;
       E_Loc         : Node_Or_Entity_Id := Empty;
       Execution     : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
@@ -78,6 +79,9 @@ package Flow.Control_Flow_Graph.Utility is
    --
    --     * pragmas
    --     * aux checks for expressions containing folded functions
+   --
+   --  If Is_Type_Decl is True then instead of populating the variables used
+   --  we populate the variables read.
 
    function Make_Aux_Vertex_Attributes
      (E_Loc     : Node_Or_Entity_Id := Empty;

@@ -76,7 +76,7 @@ fib.adb:82:18: medium: overflow check might fail
 fib.adb:82:20: info: initialization of "p2" proved
 fib.adb:93:14: info: initialization of "k1" proved
 fib.adb:94:33: info: loop invariant initialization proved (CVC4: 2 VC)
-fib.adb:94:33: medium: loop invariant might fail after first iteration, cannot prove a1 ** n1 = p1 * (b1 ** k1
+fib.adb:94:33: medium: loop invariant might fail after first iteration, cannot prove a1 ** n1 = p1 * (b1 ** k1)
 fib.adb:94:44: info: initialization of "p1" proved
 fib.adb:94:50: info: initialization of "b1" proved
 fib.adb:94:56: info: initialization of "k1" proved
@@ -104,7 +104,7 @@ fib.adb:103:19: info: initialization of "b1" proved
 fib.adb:103:22: medium: overflow check might fail
 fib.adb:103:24: info: initialization of "p1" proved
 fib.adb:109:14: info: initialization of "k2" proved
-fib.adb:110:33: medium: loop invariant might fail after first iteration, cannot prove a2 ** n2 = p2 * (b2 ** k2
+fib.adb:110:33: medium: loop invariant might fail after first iteration, cannot prove a2 ** n2 = p2 * (b2 ** k2)
 fib.adb:110:44: info: initialization of "p2" proved
 fib.adb:110:50: info: initialization of "b2" proved
 fib.adb:110:56: info: initialization of "k2" proved

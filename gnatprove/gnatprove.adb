@@ -781,6 +781,7 @@ procedure Gnatprove with SPARK_Mode is
          Gnat2Why_Args.Ide_Mode := IDE_Mode;
          Gnat2Why_Args.Pedantic := CL_Switches.Pedantic;
          Gnat2Why_Args.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
+         Gnat2Why_Args.Limit_Units := CL_Switches.U;
          Gnat2Why_Args.Limit_Subp :=
            Ada.Strings.Unbounded.To_Unbounded_String (Limit_Subp.all);
          Gnat2Why_Args.Limit_Line :=

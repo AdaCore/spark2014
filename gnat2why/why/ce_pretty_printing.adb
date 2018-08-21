@@ -130,12 +130,29 @@ package body Ce_Pretty_Printing is
 
             --  Unchecked conversion
             Result := Convert (U);
-            F_IO.Put (To   => Result_String,
-                      Item => Result,
-                      --  In the case of long_float, we print 10 decimals
-                      --  and we print 7 in case of short float.
-                      Aft  => (if Bound = 64 then 10 else 7),
-                      Exp  => 1);
+
+            --  To get nicer results we print small, exactly represented
+            --  integers as 123.0 and not in the scientific notation. The
+            --  choice of what is "small" is arbitrary; it could be anything
+            --  within +/- 2**24 and +/- 2**54 (bounds excluded) for single and
+            --  double precision floating point numbers, respectively.
+
+            if abs (Result) < 1000.0
+              and then Result = T_Float'Truncation (Result)
+            then
+               F_IO.Put (To   => Result_String,
+                         Item => Result,
+                         Aft  => 0,
+                         Exp  => 0);
+            else
+               F_IO.Put (To   => Result_String,
+                         Item => Result,
+                         --  In the case of long_float, we print 10 decimals
+                         --  and we print 7 in case of short float.
+                         Aft  => (if Bound = 64 then 10 else 7),
+                         Exp  => 1);
+            end if;
+
             return Trim (Source => Result_String,
                          Side   => Ada.Strings.Both);
          else

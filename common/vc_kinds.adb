@@ -83,7 +83,11 @@ package body VC_Kinds is
 
          when VC_Loop_Variant              => "835",
 
-         --  We did not find a relevant CWE for the following yet
+         --  CWE-476: NULL Pointer Dereference
+
+         when VC_Null_Pointer_Dereference  => "476",
+
+            --  We did not find a relevant CWE for the following yet
 
          when VC_Invariant_Check
             | VC_Invariant_Check_On_Default_Value
@@ -112,7 +116,9 @@ package body VC_Kinds is
             | VC_Stronger_Post
             | VC_Weaker_Classwide_Pre
             | VC_Stronger_Classwide_Post
-            | VC_Warning_Kind              => "");
+            | VC_Warning_Kind
+            | VC_Null_Exclusion
+         => "");
    end CWE_ID;
 
    function CWE_ID (Kind : Valid_Flow_Tag_Kind) return String is
@@ -197,6 +203,12 @@ package body VC_Kinds is
          when VC_Predicate_Check_On_Default_Value =>
             return "Check that the default value for the type respects the " &
               "applicable type predicate.";
+         when VC_Null_Pointer_Dereference         =>
+            return "Check that the given pointer is not null so that it can " &
+              "be dereferenced.";
+         when VC_Null_Exclusion                   =>
+            return "Check that the the subtype_indication of the allocator " &
+              "does not specify a null_exclusion";
          when VC_Invariant_Check                  =>
             return "Check that the given value respects the applicable type " &
               "invariant.";
@@ -737,7 +749,9 @@ package body VC_Kinds is
              when VC_Range_Check => "range check",
              when VC_Predicate_Check => "predicate check",
              when VC_Predicate_Check_On_Default_Value =>
-               "predicate check on default value",
+                "predicate check on default value",
+             when VC_Null_Pointer_Dereference => "null pointer dereference",
+             when VC_Null_Exclusion => "null exclusion",
              when VC_Invariant_Check => "invariant check",
              when VC_Invariant_Check_On_Default_Value =>
                "invariant check on default value",

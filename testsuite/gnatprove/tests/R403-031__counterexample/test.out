@@ -3,7 +3,7 @@ p.adb:29:22: info: initialization of "Num" proved
 p.adb:37:14: info: initialization of "Bits" proved
 p.adb:38:15: info: initialization of "M" proved
 p.adb:39:25: info: initialization of "Res" proved
-p.adb:39:25: medium: assertion might fail, cannot prove Res = Res_G * (pow2 (M + 1) (e.g. when M = 65535 and Res = 0 and Res_G = 0)
+p.adb:39:25: medium: assertion might fail, cannot prove Res = Res_G * (pow2 (M + 1)) (e.g. when M = 65535 and Res = 0 and Res_G = 0)
 p.adb:39:31: info: initialization of "Res_G" proved
 p.adb:39:46: info: initialization of "M" proved
 p.adb:40:25: info: initialization of "Bits_G" proved

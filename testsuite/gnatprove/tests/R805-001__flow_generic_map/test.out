@@ -1,0 +1,2 @@
+p.ads:3:28: info: initialization of "V" proved
+p.ads:14:38: high: constant with variable input "A" must be listed in the Global aspect of "G" (SPARK RM 6.1.4(13))

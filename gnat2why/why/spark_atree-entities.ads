@@ -37,8 +37,10 @@ package SPARK_Atree.Entities is
 
    subtype Entity_Kind is Einfo.Entity_Kind;
 
+   subtype Access_Kind      is Einfo.Access_Kind;
    subtype Array_Kind       is Einfo.Array_Kind;
    subtype Class_Wide_Kind  is Einfo.Class_Wide_Kind;
+   subtype Composite_Kind   is Einfo.Composite_Kind;
    subtype Concurrent_Kind  is Einfo.Concurrent_Kind;
    subtype Discrete_Kind    is Einfo.Discrete_Kind;
    subtype Entry_Kind       is Einfo.Entry_Kind;
@@ -57,17 +59,28 @@ package SPARK_Atree.Entities is
    subtype Type_Kind        is Einfo.Type_Kind;
 
    E_Abstract_State              : Entity_Kind renames Einfo.E_Abstract_State;
+   E_Access_Subtype              : Entity_Kind renames Einfo.E_Access_Subtype;
+   E_Access_Type                 : Entity_Kind renames Einfo.E_Access_Type;
+   E_Array_Subtype               : Entity_Kind renames Einfo.E_Array_Subtype;
+   E_Array_Type                  : Entity_Kind renames Einfo.E_Array_Type;
+   E_Class_Wide_Subtype          : Entity_Kind renames
+     Einfo.E_Class_Wide_Subtype;
+   E_Class_Wide_Type             : Entity_Kind renames Einfo.E_Class_Wide_Type;
    E_Component                   : Entity_Kind renames Einfo.E_Component;
    E_Constant                    : Entity_Kind renames Einfo.E_Constant;
    E_Discriminant                : Entity_Kind renames Einfo.E_Discriminant;
    E_Entry                       : Entity_Kind renames Einfo.E_Entry;
    E_Enumeration_Literal         : Entity_Kind renames
      Einfo.E_Enumeration_Literal;
+   E_Exception_Type              : Entity_Kind renames Einfo.E_Exception_Type;
    E_Function                    : Entity_Kind renames
      Einfo.E_Function;
    E_In_Parameter                : Entity_Kind renames Einfo.E_In_Parameter;
    E_In_Out_Parameter            : Entity_Kind renames
      Einfo.E_In_Out_Parameter;
+   E_Incomplete_Subtype          : Entity_Kind renames
+     Einfo.E_Incomplete_Subtype;
+   E_Incomplete_Type             : Entity_Kind renames Einfo.E_Incomplete_Type;
    E_Loop_Parameter              : Entity_Kind renames Einfo.E_Loop_Parameter;
    E_Loop                        : Entity_Kind renames Einfo.E_Loop;
    E_Operator                    : Entity_Kind renames Einfo.E_Operator;
@@ -76,6 +89,9 @@ package SPARK_Atree.Entities is
    E_Private_Subtype             : Entity_Kind renames Einfo.E_Private_Subtype;
    E_Procedure                   : Entity_Kind renames Einfo.E_Procedure;
    E_Protected_Type              : Entity_Kind renames Einfo.E_Protected_Type;
+   E_Protected_Subtype           : Entity_Kind renames
+     Einfo.E_Protected_Subtype;
+   E_Task_Subtype                : Entity_Kind renames Einfo.E_Task_Subtype;
    E_Record_Subtype              : Entity_Kind renames Einfo.E_Record_Subtype;
    E_Record_Subtype_With_Private : Entity_Kind renames
      Einfo.E_Record_Subtype_With_Private;
@@ -207,6 +223,12 @@ package SPARK_Atree.Entities is
 
    function Within_Protected_Type (E : Entity_Id) return Boolean renames
      Sem_Util.Within_Protected_Type;
+
+   function Is_Access_Type (E : Entity_Id) return Boolean renames
+     Einfo.Is_Access_Type;
+
+   function Associated_Node_For_Itype (E : Entity_Id) return Node_Id renames
+     Einfo.Associated_Node_For_Itype;
 
    ----------------
    --  For Types --
@@ -570,6 +592,16 @@ package SPARK_Atree.Entities is
      Pre => Ekind (Pack) = E_Package;
    --  @param E a package entity
    --  @return the list of visible declarations of the package
+
+   -----------------------
+   --  For Access Types --
+   -----------------------
+
+   function Directly_Designated_Type (N : Node_Id) return Node_Id renames
+     Einfo.Directly_Designated_Type;
+
+   function Can_Never_Be_Null (N : Node_Id) return Boolean renames
+     Einfo.Can_Never_Be_Null;
 
    -------------------------
    --  For other entities --

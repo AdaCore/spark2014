@@ -51,6 +51,7 @@ with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Arrays;             use Why.Gen.Arrays;
 with Why.Gen.Binders;            use Why.Gen.Binders;
 with Why.Gen.Names;              use Why.Gen.Names;
+with Why.Gen.Pointers;           use Why.Gen.Pointers;
 with Why.Gen.Preds;              use Why.Gen.Preds;
 with Why.Gen.Progs;              use Why.Gen.Progs;
 with Why.Gen.Records;            use Why.Gen.Records;
@@ -794,25 +795,32 @@ package body Why.Gen.Expr is
       To       : W_Type_Id;
       Lvalue   : Boolean := False) return W_Expr_Id
    is
+
       --  When converting between Ada types, detect cases where a check is not
       --  needed.
 
-      From : constant W_Type_Id := Get_Type (Expr);
-      Check_Needed : constant Boolean :=
+      From          : constant W_Type_Id := Get_Type (Expr);
+      Check_Needed  : Boolean;
+      T : W_Expr_Id := Expr;
+
+   begin
+
+      if not Need_Conversion (Expr) then
+         return Expr;
+      end if;
+
+      Check_Needed :=
         (if Get_Type_Kind (From) in EW_Abstract | EW_Split
-              and then
-            Get_Type_Kind (To) in EW_Abstract | EW_Split
+         and then
+         Get_Type_Kind (To) in EW_Abstract | EW_Split
          then
             Check_Needed_On_Conversion (From => Get_Ada_Node (+From),
                                         To   => Get_Ada_Node (+To))
-            or else
+         or else
             Is_Choice_Of_Unconstrained_Array_Update (Ada_Node)
          else
             True);
 
-      T : W_Expr_Id := Expr;
-
-   begin
       if Is_Private_Conversion (From, To)
         or else Is_Record_Conversion (From, To)
       then
@@ -840,6 +848,19 @@ package body Why.Gen.Expr is
                                        Expr       => T,
                                        To         => To,
                                        Need_Check => Check_Needed);
+
+      elsif Is_Pointer_Conversion (From, To) then
+         --  ??? [R525-018]
+         --     type L_Ptr is access L;
+         --     L1 : L_Ptr := new L(14);
+         --     L2 : L_Ptr := new L(26);
+         --     L1 := L2
+
+         T := Insert_Pointer_Conversion (Domain     => Domain,
+                                         Ada_Node   => Ada_Node,
+                                         Expr       => T,
+                                         To         => To,
+                                         Need_Check => Check_Needed);
 
       --  Conversion between scalar types
 
@@ -967,6 +988,59 @@ package body Why.Gen.Expr is
 
       return Result;
    end Insert_Record_Conversion;
+
+   -------------------------------
+   -- Insert_Pointer_Conversion --
+   -------------------------------
+
+   function Insert_Pointer_Conversion
+     (Ada_Node   : Node_Id;
+      Domain     : EW_Domain;
+      Expr       : W_Expr_Id;
+      To         : W_Type_Id;
+      Need_Check : Boolean := False) return W_Expr_Id
+   is
+      From   : constant W_Type_Id := Get_Type (Expr);
+      --  Current result expression
+      Result : W_Expr_Id := Expr;
+
+      L : constant Node_Id := Get_Ada_Node (+From);
+      R : constant Node_Id := Get_Ada_Node (+To);
+
+      pragma Assert (Root_Pointer_Type (L) = Root_Pointer_Type (R));
+
+      Des_Typ : constant Node_Id := Directly_Designated_Type (R);
+
+      Need_Discr_Check : constant Boolean :=
+        Need_Check and then Count_Discriminants (Des_Typ) > 0
+        and then Is_Constrained (Des_Typ);
+
+      Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
+
+   begin
+      --  When no check needs to be inserted, do nothing
+
+      if not Need_Check then
+         return Expr;
+      end if;
+
+      if Domain = EW_Prog then
+
+         --  Possibly perform a discriminant check
+
+         if Need_Discr_Check then
+            Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
+                                                          Check_Entity,
+                                                          +Result);
+         end if;
+
+         Result := +Insert_Predicate_Check (Ada_Node,
+                                            Check_Entity,
+                                            +Result);
+      end if;
+
+      return Result;
+   end Insert_Pointer_Conversion;
 
    --------------------------
    -- Insert_Cnt_Loc_Label --
@@ -1747,10 +1821,14 @@ package body Why.Gen.Expr is
       Force_No_Slide : Boolean := False) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
-   begin
-      --  Nothing to do if From = To
 
-      if Eq_Base (To, From) then
+   begin
+
+      --  Nothing to do if assigning an allocator or null or else From = To
+
+      if not Need_Conversion (Expr)
+        or else Eq_Base (To, From)
+      then
          return Expr;
       end if;
 
@@ -1768,6 +1846,12 @@ package body Why.Gen.Expr is
                                          Expr           => Expr,
                                          To             => To,
                                          Force_No_Slide => Force_No_Slide);
+
+      elsif Is_Pointer_Conversion (To, From) then
+         return Insert_Pointer_Conversion (Domain   => Domain,
+                                           Ada_Node => Ada_Node,
+                                           Expr     => Expr,
+                                           To       => To);
 
       else
          return Insert_Scalar_Conversion (Domain   => Domain,

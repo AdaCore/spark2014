@@ -1126,7 +1126,7 @@ my_ordered_sets.adb:52:47: info: initialization of private part of "K" proved
 my_ordered_sets.adb:53:10: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:53:18: info: initialization of private part of "M" proved
 my_ordered_sets.adb:53:21: info: initialization of private part of "K" proved
-my_ordered_sets.adb:54:25: medium: assertion might fail, cannot prove M and L) = (K and L
+my_ordered_sets.adb:54:25: medium: assertion might fail, cannot prove (M and L) = (K and L)
 my_ordered_sets.adb:54:26: info: initialization of private part of "M" proved
 my_ordered_sets.adb:54:38: info: initialization of private part of "K" proved
 my_ordered_sets.adb:54:44: info: initialization of private part of "L" proved
@@ -1139,7 +1139,7 @@ my_ordered_sets.adb:58:26: info: initialization of private part of "L" proved
 my_ordered_sets.adb:60:10: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:60:18: info: initialization of private part of "M" proved
 my_ordered_sets.adb:60:21: info: initialization of private part of "K" proved
-my_ordered_sets.adb:61:25: medium: assertion might fail, cannot prove M or L) = (K or L
+my_ordered_sets.adb:61:25: medium: assertion might fail, cannot prove (M or L) = (K or L)
 my_ordered_sets.adb:61:26: info: initialization of private part of "M" proved
 my_ordered_sets.adb:61:28: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:61:37: info: initialization of private part of "K" proved
@@ -1159,7 +1159,7 @@ my_ordered_sets.adb:68:47: info: initialization of private part of "K" proved
 my_ordered_sets.adb:69:10: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:69:18: info: initialization of private part of "M" proved
 my_ordered_sets.adb:69:21: info: initialization of private part of "K" proved
-my_ordered_sets.adb:70:25: medium: assertion might fail, cannot prove M - L) = (K - L
+my_ordered_sets.adb:70:25: medium: assertion might fail, cannot prove (M - L) = (K - L)
 my_ordered_sets.adb:70:26: info: initialization of private part of "M" proved
 my_ordered_sets.adb:70:36: info: initialization of private part of "K" proved
 my_ordered_sets.adb:70:40: info: initialization of private part of "L" proved
@@ -1172,7 +1172,7 @@ my_ordered_sets.adb:74:27: info: initialization of private part of "L" proved
 my_ordered_sets.adb:76:10: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:76:18: info: initialization of private part of "M" proved
 my_ordered_sets.adb:76:21: info: initialization of private part of "K" proved
-my_ordered_sets.adb:77:25: medium: assertion might fail, cannot prove M xor L) = (K xor L
+my_ordered_sets.adb:77:25: medium: assertion might fail, cannot prove (M xor L) = (K xor L)
 my_ordered_sets.adb:77:26: info: initialization of private part of "M" proved
 my_ordered_sets.adb:77:28: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:77:38: info: initialization of private part of "K" proved
@@ -1414,7 +1414,7 @@ my_sets.adb:48:26: info: initialization of private part of "L" proved
 my_sets.adb:50:10: info: precondition proved (Z3: 1 VC)
 my_sets.adb:50:18: info: initialization of private part of "M" proved
 my_sets.adb:50:21: info: initialization of private part of "K" proved
-my_sets.adb:51:25: medium: assertion might fail, cannot prove M or L) = (K or L
+my_sets.adb:51:25: medium: assertion might fail, cannot prove (M or L) = (K or L)
 my_sets.adb:51:26: info: initialization of private part of "M" proved
 my_sets.adb:51:28: info: precondition proved (Z3: 1 VC)
 my_sets.adb:51:37: info: initialization of private part of "K" proved
@@ -1447,7 +1447,7 @@ my_sets.adb:64:27: info: initialization of private part of "L" proved
 my_sets.adb:66:10: info: precondition proved (Z3: 1 VC)
 my_sets.adb:66:18: info: initialization of private part of "M" proved
 my_sets.adb:66:21: info: initialization of private part of "K" proved
-my_sets.adb:67:25: medium: assertion might fail, cannot prove M xor L) = (K xor L
+my_sets.adb:67:25: medium: assertion might fail, cannot prove (M xor L) = (K xor L)
 my_sets.adb:67:26: info: initialization of private part of "M" proved
 my_sets.adb:67:28: info: precondition proved (Z3: 1 VC)
 my_sets.adb:67:38: info: initialization of private part of "K" proved

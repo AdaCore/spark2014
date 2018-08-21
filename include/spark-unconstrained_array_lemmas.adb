@@ -35,7 +35,7 @@ package body SPARK.Unconstrained_Array_Lemmas
 #end if;
 is
 
-   procedure Lemma_Transitive_Order (Arr : in A) is
+   procedure Lemma_Transitive_Order (Arr : A) is
    begin
       null;
    end Lemma_Transitive_Order;

@@ -391,8 +391,8 @@ is
    --
    ------------------------------------------------------------------
    function SerialNumber return CertTypes.SerialNumberT
-     with Refined_Global => (NextSerialNumber,
-                             Overflow)
+     with Refined_Global => (Input    => NextSerialNumber,
+                             Proof_In => Overflow)
    is
    begin
       return NextSerialNumber;

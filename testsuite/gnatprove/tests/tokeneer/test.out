@@ -36,83 +36,83 @@ admintoken.adb:51:42: info: initialization of "TokenID" constituent of "State" p
 admintoken.adb:52:42: info: initialization of "TokenPresence" constituent of "State" proved
 admintoken.adb:53:42: info: initialization of "TokenTry" constituent of "State" proved
 admintoken.adb:80:43: info: initialization of "TokenPresence" constituent of "State" proved
-admintoken.adb:121:41: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.adb:121:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.adb:122:41: info: initialization of "IDCert.Contents" constituent of "State" proved
-admintoken.adb:122:41: info: initialization of "IDCert.Valid" constituent of "State" proved
-admintoken.adb:123:41: info: initialization of "TokenTry" constituent of "State" proved
-admintoken.adb:152:30: info: initialization of "TokenOK" proved
-admintoken.adb:152:30: info: refined post proved (CVC4: 4 VC)
-admintoken.adb:152:41: info: initialization of "IDCert.Valid" constituent of "State" proved
-admintoken.adb:153:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.adb:155:44: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.adb:178:13: info: range check proved (CVC4: 4 VC)
-admintoken.adb:178:37: info: initialization of "Result" proved
-admintoken.adb:178:37: info: length check proved (CVC4: 1 VC)
-admintoken.adb:178:40: info: length check proved (CVC4: 1 VC)
-admintoken.adb:184:23: info: range check proved (CVC4: 4 VC)
-admintoken.adb:188:17: info: initialization of "Result" proved
-admintoken.adb:207:37: info: initialization of "Description" proved
-admintoken.adb:208:37: info: initialization of "IDValid" proved
-admintoken.adb:244:13: info: initialization of "CertFound" proved
-admintoken.adb:247:28: info: initialization of "RawCert" proved
-admintoken.adb:251:16: info: initialization of "ExtractOK" proved
-admintoken.adb:259:30: info: initialization of "RawCert" proved
-admintoken.adb:267:21: info: initialization of "CertFound" proved
-admintoken.adb:267:35: info: initialization of "ExtractOK" proved
-admintoken.adb:268:16: info: initialization of "TokenIDMatches" proved
-admintoken.adb:268:35: info: initialization of "Verified" proved
-admintoken.adb:270:17: info: initialization of "CertFound" proved
-admintoken.adb:270:34: info: initialization of "ExtractOK" proved
-admintoken.adb:270:51: info: initialization of "TokenIDMatches" proved
-admintoken.adb:271:28: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:272:20: info: initialization of "Verified" proved
-admintoken.adb:274:15: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:299:36: info: initialization of "AuthValid" proved
-admintoken.adb:343:13: info: initialization of "CertFound" proved
-admintoken.adb:345:28: info: initialization of "RawCert" proved
-admintoken.adb:349:16: info: initialization of "ExtractOK" proved
-admintoken.adb:359:33: info: initialization of "RawCert" proved
-admintoken.adb:371:23: info: initialization of "CertFound" proved
-admintoken.adb:372:29: info: initialization of "ExtractOK" proved
-admintoken.adb:373:29: info: initialization of "BaseIDMatches" proved
-admintoken.adb:374:29: info: initialization of "Verified" proved
-admintoken.adb:375:29: info: initialization of "Current" proved
-admintoken.adb:378:20: info: initialization of "CertFound" proved
-admintoken.adb:379:22: info: initialization of "ExtractOK" proved
-admintoken.adb:380:22: info: initialization of "BaseIDMatches" proved
-admintoken.adb:382:31: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:383:23: info: initialization of "Verified" proved
-admintoken.adb:385:19: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:386:23: info: initialization of "Current" proved
-admintoken.adb:388:19: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:404:10: info: initialization of "TokenTry" constituent of "State" proved
+admintoken.adb:119:41: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.adb:119:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:120:41: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.adb:120:41: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:121:41: info: initialization of "TokenTry" constituent of "State" proved
+admintoken.adb:150:30: info: initialization of "TokenOK" proved
+admintoken.adb:150:30: info: refined post proved (CVC4: 4 VC)
+admintoken.adb:150:41: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:151:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:153:44: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.adb:176:13: info: range check proved (CVC4: 4 VC)
+admintoken.adb:176:37: info: initialization of "Result" proved
+admintoken.adb:176:37: info: length check proved (CVC4: 1 VC)
+admintoken.adb:176:40: info: length check proved (CVC4: 1 VC)
+admintoken.adb:182:23: info: range check proved (CVC4: 4 VC)
+admintoken.adb:186:17: info: initialization of "Result" proved
+admintoken.adb:205:37: info: initialization of "Description" proved
+admintoken.adb:206:37: info: initialization of "IDValid" proved
+admintoken.adb:242:13: info: initialization of "CertFound" proved
+admintoken.adb:245:28: info: initialization of "RawCert" proved
+admintoken.adb:249:16: info: initialization of "ExtractOK" proved
+admintoken.adb:257:30: info: initialization of "RawCert" proved
+admintoken.adb:265:21: info: initialization of "CertFound" proved
+admintoken.adb:265:35: info: initialization of "ExtractOK" proved
+admintoken.adb:266:16: info: initialization of "TokenIDMatches" proved
+admintoken.adb:266:35: info: initialization of "Verified" proved
+admintoken.adb:268:17: info: initialization of "CertFound" proved
+admintoken.adb:268:34: info: initialization of "ExtractOK" proved
+admintoken.adb:268:51: info: initialization of "TokenIDMatches" proved
+admintoken.adb:269:28: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:270:20: info: initialization of "Verified" proved
+admintoken.adb:272:15: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:297:36: info: initialization of "AuthValid" proved
+admintoken.adb:341:13: info: initialization of "CertFound" proved
+admintoken.adb:343:28: info: initialization of "RawCert" proved
+admintoken.adb:347:16: info: initialization of "ExtractOK" proved
+admintoken.adb:357:33: info: initialization of "RawCert" proved
+admintoken.adb:369:23: info: initialization of "CertFound" proved
+admintoken.adb:370:29: info: initialization of "ExtractOK" proved
+admintoken.adb:371:29: info: initialization of "BaseIDMatches" proved
+admintoken.adb:372:29: info: initialization of "Verified" proved
+admintoken.adb:373:29: info: initialization of "Current" proved
+admintoken.adb:376:20: info: initialization of "CertFound" proved
+admintoken.adb:377:22: info: initialization of "ExtractOK" proved
+admintoken.adb:378:22: info: initialization of "BaseIDMatches" proved
+admintoken.adb:380:31: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:381:23: info: initialization of "Verified" proved
+admintoken.adb:383:19: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:384:23: info: initialization of "Current" proved
+admintoken.adb:386:19: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:402:10: info: initialization of "TokenTry" constituent of "State" proved
+admintoken.adb:405:10: info: initialization of "IDCertContents" proved
+admintoken.adb:407:10: info: initialization of "AuthCertContents" proved
+admintoken.adb:407:10: info: initialization of "Description" proved
 admintoken.adb:407:10: info: initialization of "IDCertContents" proved
-admintoken.adb:409:10: info: initialization of "AuthCertContents" proved
-admintoken.adb:409:10: info: initialization of "Description" proved
-admintoken.adb:409:10: info: initialization of "IDCertContents" proved
-admintoken.adb:412:13: info: initialization of "IDValid" proved
-admintoken.adb:412:25: info: initialization of "AuthValid" proved
-admintoken.adb:413:51: info: initialization of "AuthCertContents" proved
-admintoken.adb:417:31: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:429:25: info: precondition proved (CVC4: 1 VC)
-admintoken.adb:433:18: info: initialization of "AuthValid" proved
-admintoken.adb:433:32: info: initialization of "IDValid" proved
-admintoken.adb:433:44: info: initialization of "RoleOK" proved
-admintoken.adb:435:43: info: initialization of "IDValid" proved
-admintoken.adb:436:44: info: initialization of "IDCertContents" proved
-admintoken.adb:439:22: info: initialization of "AuthValid" proved
-admintoken.adb:440:22: info: initialization of "AuthCertContents" proved
-admintoken.adb:491:14: info: initialization of "Result" proved
-admintoken.adb:501:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.adb:501:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.adb:502:42: info: initialization of "IDCert.Contents" constituent of "State" proved
-admintoken.adb:502:42: info: initialization of "IDCert.Valid" constituent of "State" proved
-admintoken.adb:503:42: info: initialization of "TokenID" constituent of "State" proved
-admintoken.adb:504:42: info: initialization of "TokenPresence" constituent of "State" proved
-admintoken.adb:505:42: info: initialization of "TokenTry" constituent of "State" proved
-admintoken.adb:521:47: info: initialization of "AuthCertContents" proved
-admintoken.adb:525:43: info: initialization of "IDCertContents" proved
+admintoken.adb:410:13: info: initialization of "IDValid" proved
+admintoken.adb:410:25: info: initialization of "AuthValid" proved
+admintoken.adb:411:51: info: initialization of "AuthCertContents" proved
+admintoken.adb:415:31: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:427:25: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:431:18: info: initialization of "AuthValid" proved
+admintoken.adb:431:32: info: initialization of "IDValid" proved
+admintoken.adb:431:44: info: initialization of "RoleOK" proved
+admintoken.adb:433:43: info: initialization of "IDValid" proved
+admintoken.adb:434:44: info: initialization of "IDCertContents" proved
+admintoken.adb:437:22: info: initialization of "AuthValid" proved
+admintoken.adb:438:22: info: initialization of "AuthCertContents" proved
+admintoken.adb:489:14: info: initialization of "Result" proved
+admintoken.adb:499:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.adb:499:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:500:42: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.adb:500:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:501:42: info: initialization of "TokenID" constituent of "State" proved
+admintoken.adb:502:42: info: initialization of "TokenPresence" constituent of "State" proved
+admintoken.adb:503:42: info: initialization of "TokenTry" constituent of "State" proved
+admintoken.adb:519:47: info: initialization of "AuthCertContents" proved
+admintoken.adb:523:43: info: initialization of "IDCertContents" proved
 admintoken.ads:76:22: info: postcondition proved (CVC4: 3 VC)
 admintoken.ads:76:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:76:26: info: initialization of "IDCert.Valid" constituent of "State" proved
@@ -1511,7 +1511,7 @@ configuration.adb:109:72: info: range check proved (CVC4: 1 VC)
 configuration.adb:110:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:110:63: info: division check proved (CVC4: 1 VC)
 configuration.adb:110:71: info: range check proved (CVC4: 1 VC)
-configuration.adb:111:12: info: range check proved (Z3: 1 VC)
+configuration.adb:111:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:116:26: info: initialization of "Str" proved
 configuration.adb:116:26: info: range check proved (CVC4: 4 VC)
 configuration.adb:118:13: info: range check proved (CVC4: 4 VC)

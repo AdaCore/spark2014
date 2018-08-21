@@ -1641,14 +1641,14 @@ package body Gnat2Why.Expr.Loops is
           (Params => Body_Params,
            Map    => Map_For_Loop_Entry (Loop_Id),
            Expr   => Sequence
-             ((1 => New_Comment
+             (New_Comment
                (Comment =>
                   NID ("Unrolling of the loop statements"
                     & (if Sloc (Loop_Id) > 0 then
                          " of loop " & Build_Location_String
                         (Sloc (Loop_Id))
                       else ""))),
-               2 => Repeat_Loop)));
+               Repeat_Loop));
 
       Loop_Try : constant W_Prog_Id :=
         New_Try_Block

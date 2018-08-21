@@ -1,5 +1,6 @@
 nested_pkg.adb:19:07: info: initialization of "Foo" constituent of "State" proved
 nested_pkg.adb:20:07: info: initialization of "Bar" constituent of "State" proved
+nested_pkg.adb:29:25: medium: "Z.State" constituent of "Nested_Pkg.Foobar" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
 nested_pkg.adb:47:25: info: assertion proved (CVC4: 1 VC)
 nested_pkg.adb:49:25: info: assertion proved (CVC4: 1 VC)
 nested_pkg.adb:51:10: medium: precondition might fail

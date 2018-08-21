@@ -1,0 +1,8 @@
+with "spark_lemmas";
+
+project Test is
+   for Main use ("test_lemmas.adb");
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnata");
+   end Compiler;
+end Test;

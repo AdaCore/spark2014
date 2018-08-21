@@ -168,6 +168,10 @@ package Gnat2Why_Args is
 
    Report_Mode : Report_Mode_Type := GPR_Fail;
 
+   --  Limit analysis to the given units
+
+   Limit_Units : Boolean := False;
+
    --  Limit analysis to this subprogram
 
    Limit_Subp : Unbounded_String := Null_Unbounded_String;

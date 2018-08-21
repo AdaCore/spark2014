@@ -1,6 +1,6 @@
 foo.adb:4:04: warning: analyzing unreferenced procedure "Floats_And_Double"
 foo.adb:4:14: warning: subprogram "Floats_And_Double" has no effect
-foo.adb:7:22: medium: assertion might fail, cannot prove Float (Y) = X) = (Long_Float (X) = Y
+foo.adb:7:22: medium: assertion might fail, cannot prove (Float (Y) = X) = (Long_Float (X) = Y)
 foo.adb:7:30: medium: range check might fail
 generic_float_tests.adb:14:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:14:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:15
@@ -90,16 +90,16 @@ generic_float_tests.adb:138:25: info: float overflow check proved (CVC4: 1 VC), 
 generic_float_tests.adb:138:25: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:141:14: warning: subprogram "Substract_Identity_2" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:141:14: warning: subprogram "Substract_Identity_2" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:145:23: medium: assertion might fail, cannot prove X - Y) + Y = X, in instantiation at foo.ads:10
-generic_float_tests.adb:145:23: medium: assertion might fail, cannot prove X - Y) + Y = X, in instantiation at foo.ads:15
+generic_float_tests.adb:145:23: medium: assertion might fail, cannot prove (X - Y) + Y = X, in instantiation at foo.ads:10
+generic_float_tests.adb:145:23: medium: assertion might fail, cannot prove (X - Y) + Y = X, in instantiation at foo.ads:15
 generic_float_tests.adb:145:25: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:145:25: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:145:30: medium: float overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:145:30: medium: float overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:148:14: warning: subprogram "Substract_Identity_3" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:148:14: warning: subprogram "Substract_Identity_3" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:152:23: medium: assertion might fail, cannot prove X + Y) - Y = X, in instantiation at foo.ads:10
-generic_float_tests.adb:152:23: medium: assertion might fail, cannot prove X + Y) - Y = X, in instantiation at foo.ads:15
+generic_float_tests.adb:152:23: medium: assertion might fail, cannot prove (X + Y) - Y = X, in instantiation at foo.ads:10
+generic_float_tests.adb:152:23: medium: assertion might fail, cannot prove (X + Y) - Y = X, in instantiation at foo.ads:15
 generic_float_tests.adb:152:25: medium: float overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:152:25: medium: float overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:152:30: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
@@ -114,8 +114,8 @@ generic_float_tests.adb:159:26: medium: float overflow check might fail, in inst
 generic_float_tests.adb:159:26: medium: float overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:162:14: warning: subprogram "Not_So_Associative" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:162:14: warning: subprogram "Not_So_Associative" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:165:23: medium: assertion might fail, cannot prove A + B) + C = A + (B + C, in instantiation at foo.ads:10
-generic_float_tests.adb:165:23: medium: assertion might fail, cannot prove A + B) + C = A + (B + C, in instantiation at foo.ads:15
+generic_float_tests.adb:165:23: medium: assertion might fail, cannot prove (A + B) + C = A + (B + C), in instantiation at foo.ads:10
+generic_float_tests.adb:165:23: medium: assertion might fail, cannot prove (A + B) + C = A + (B + C), in instantiation at foo.ads:15
 generic_float_tests.adb:165:25: medium: float overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:165:25: medium: float overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:165:30: medium: float overflow check might fail, in instantiation at foo.ads:10
@@ -134,8 +134,8 @@ generic_float_tests.adb:171:35: medium: float overflow check might fail, in inst
 generic_float_tests.adb:171:35: medium: float overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:174:14: warning: subprogram "Distributed_Fun" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:174:14: warning: subprogram "Distributed_Fun" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:177:22: medium: assertion might fail, cannot prove A * (B + C) = (A * B) + (A * C, in instantiation at foo.ads:10
-generic_float_tests.adb:177:22: medium: assertion might fail, cannot prove A * (B + C) = (A * B) + (A * C, in instantiation at foo.ads:15
+generic_float_tests.adb:177:22: medium: assertion might fail, cannot prove A * (B + C) = (A * B) + (A * C), in instantiation at foo.ads:10
+generic_float_tests.adb:177:22: medium: assertion might fail, cannot prove A * (B + C) = (A * B) + (A * C), in instantiation at foo.ads:15
 generic_float_tests.adb:177:24: medium: float overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:177:24: medium: float overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:177:29: medium: float overflow check might fail, in instantiation at foo.ads:10

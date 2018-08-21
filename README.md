@@ -16,25 +16,25 @@ directly visible to the public (although patches are regularly transfered to
 the FSF repository at ``svn://gcc.gnu.org/svn/gcc/trunk/gcc/ada``), and it will
 probably be impossible to build the master branch of the software with any
 other compiler. However, buildable branches are provided corresponding to
-public compiler releases, see the section on *Building SPARK with a GNAT GPL
-compiler* below.
+public compiler releases or the head of the FSF repository, see the section on
+*Building SPARK* below.
 
 # 2. Commercial support
 
 SPARK is commercially supported by AdaCore and Altran, you can visit the
 [AdaCore website](http://www.adacore.com/sparkpro/) for more information.
 
-# 3. GPL version
+# 3. Community version
 
-There is a GPL version of the tools, readily packaged, and suitable for
+There is a Community version of the tools, readily packaged, and suitable for
 research and hobbyist use. You can download it from
-[libre.adacore.com](http://libre.adacore.com/download/).
+[AdaCore's website](https://www.adacore.com/download).
 
 # 4. Community
 
-News about SPARK project are shared primarily on [a dedicated
-blog](http://www.spark-2014.org/). Discussions about SPARK occur on [a public
-mailing-list](https://lists.forge.open-do.org/mailman/listinfo/spark2014-discuss).
+News about SPARK project are shared primarily on [AdaCore's
+blog](https://blog.adacore.com/). Discussions about SPARK occur on [a public
+mailing-list](https://lists.adacore.com/mailman/listinfo/spark2014-discuss).
 
 # 5. Documentation
 

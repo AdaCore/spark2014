@@ -41,6 +41,7 @@ with Why.Atree.Accessors;        use Why.Atree.Accessors;
 with Why.Atree.Builders;         use Why.Atree.Builders;
 with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Arrays;             use Why.Gen.Arrays;
+with Why.Gen.Pointers;           use Why.Gen.Pointers;
 with Why.Inter;                  use Why.Inter;
 
 package body Why.Atree.Modules is
@@ -2512,6 +2513,115 @@ package body Why.Atree.Modules is
                            Typ    => EW_Bool_Type));
                   end;
                end loop;
+            end;
+
+         --  Symbols for access types
+
+         elsif Is_Access_Type (E) then
+            declare
+               Root           : constant Entity_Id := Root_Pointer_Type (E);
+               Root_Ty        : constant W_Type_Id :=
+                 New_Named_Type (To_Why_Type (Root));
+               Full_Name_Node : constant String :=
+                 (if Root = E then Full_Name (E) else Full_Name (Root));
+               Des_Ty         : constant W_Type_Id :=
+                 EW_Abstract (Directly_Designated_Type (E));
+
+            begin
+               Insert_Symbol
+                 (E, WNE_Rec_Rep,
+                  New_Identifier
+                    (Symbol => NID (To_String (WNE_Rec_Rep)),
+                     Module => M,
+                     Domain => EW_Term));
+
+               Insert_Symbol
+                 (E, WNE_Rec_Split_Fields,
+                  New_Identifier
+                    (Symbol => NID (To_String (WNE_Rec_Split_Fields)),
+                     Module => M,
+                     Domain => EW_Term));
+
+               Insert_Symbol
+                 (E, WNE_To_Base,
+                  New_Identifier
+                    (Symbol => NID ("to_base"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Root_Ty));
+               Insert_Symbol
+                 (E, WNE_Of_Base,
+                  New_Identifier
+                    (Symbol => NID ("of_base"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Ty));
+
+               Insert_Symbol
+                 (E, WNE_Null_Pointer,
+                  New_Identifier
+                    (Symbol => NID ("__null_pointer"),
+                     Module => M,
+                     Domain => EW_Term));
+
+               Insert_Symbol
+                 (E, WNE_Is_Null_Pointer,
+                  New_Identifier
+                    (Symbol => NID (To_String (WNE_Rec_Comp_Prefix) &
+                             Full_Name_Node & "__is_null_pointer"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type));
+
+               Insert_Symbol
+                 (E, WNE_Pointer_Address,
+                  New_Identifier
+                    (Symbol => NID (To_String (WNE_Rec_Comp_Prefix) &
+                       Full_Name_Node & "__pointer_address"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
+
+               Insert_Symbol
+                 (E, WNE_Pointer_Value,
+                  New_Identifier
+                    (Symbol => NID (To_String (WNE_Rec_Comp_Prefix) &
+                       Full_Name_Node & "__pointer_value"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Des_Ty));
+
+               Insert_Symbol
+                 (E, WNE_Init_Allocator,
+                  New_Identifier
+                    (Symbol => NID (To_String (WNE_Init_Allocator)),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Des_Ty));
+
+               Insert_Symbol
+                 (E, WNE_Uninit_Allocator,
+                  New_Identifier
+                    (Symbol => NID (To_String (WNE_Uninit_Allocator)),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Des_Ty));
+
+               Insert_Symbol
+                 (E, WNE_Range_Check_Fun,
+                  New_Identifier
+                    (Symbol => NID ("range_check_"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Root_Ty));
+
+               Insert_Symbol
+                 (E, WNE_Range_Pred,
+                  New_Identifier
+                    (Module => M,
+                     Domain => EW_Term,
+                     Symbol => NID ("in_range"),
+                     Typ    => EW_Bool_Type));
             end;
          end if;
       end Insert_Type_Symbols;

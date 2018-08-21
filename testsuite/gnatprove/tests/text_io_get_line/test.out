@@ -120,6 +120,8 @@ textio-get_line.adb:234:22: info: initialization of "Last" proved
 textio-get_line.adb:234:40: info: initialization of "ch" proved
 textio-get_line.adb:234:40: info: range check proved (CVC4: 1 VC)
 textio.adb:10:38: info: initialization of "Ch" proved
+textio.adb:11:32: medium: constant with variable input "EOF_Ch" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
+textio.adb:11:40: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
 textio.adb:12:14: info: postcondition proved (CVC4: 6 VC)
 textio.adb:20:17: info: initialization of "Ch" proved
 textio.adb:34:10: info: initialization of "Ch" proved

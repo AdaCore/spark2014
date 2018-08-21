@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                   Copyright (C) 2016-2018, AdaCore                       --
+--                    Copyright (C) 2016-2018, AdaCore                      --
 --                                                                          --
 -- SPARK is free software;  you can  redistribute it and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -33,6 +33,8 @@ package SPARK.Arithmetic_Lemmas
        Pure,
        Ghost
 is
+   pragma Annotate (GNATprove, Terminating, Arithmetic_Lemmas);
+
    pragma Warnings
      (Off, "postcondition does not check the outcome of calling");
 

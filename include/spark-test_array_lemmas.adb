@@ -54,27 +54,28 @@ is
 
    --  For now, constrained array need a type conversion. In the future,
    --  there will be a constrained array library.
-   procedure Test_Transitive_Order_Int (Arr : Arr_Int_Constrained) is
-   begin
-      Test_UInt.Lemma_Transitive_Order
-        (Arr_Int_Unconstrained (Arr));
-   end Test_Transitive_Order_Int;
 
    procedure Test_Transitive_Order_Float (Arr : Arr_Float_Constrained) is
    begin
-      Test_UFloat.Lemma_Transitive_Order
+      Test_Ufloat.Lemma_Transitive_Order
         (Arr_Float_Unconstrained (Arr));
    end Test_Transitive_Order_Float;
-
-   procedure Test_Transitive_Order_Int (Arr : Arr_Int_Unconstrained) is
-   begin
-      Test_Uint.Lemma_Transitive_Order (Arr);
-   end Test_Transitive_Order_Int;
 
    procedure Test_Transitive_Order_Float
      (Arr : Arr_Float_Unconstrained) is
    begin
       Test_Ufloat.Lemma_Transitive_Order (Arr);
    end Test_Transitive_Order_Float;
+
+   procedure Test_Transitive_Order_Int (Arr : Arr_Int_Constrained) is
+   begin
+      Test_Uint.Lemma_Transitive_Order
+        (Arr_Int_Unconstrained (Arr));
+   end Test_Transitive_Order_Int;
+
+   procedure Test_Transitive_Order_Int (Arr : Arr_Int_Unconstrained) is
+   begin
+      Test_Uint.Lemma_Transitive_Order (Arr);
+   end Test_Transitive_Order_Int;
 
 end SPARK.Test_Array_Lemmas;

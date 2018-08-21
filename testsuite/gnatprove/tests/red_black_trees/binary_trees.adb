@@ -1086,7 +1086,8 @@ package body Binary_Trees with SPARK_Mode is
 
       procedure Prove_Post with
         Ghost,
-        Global => (Input => (F, Root, F_Old)),
+        Global => (Input    => (F, F_Old),
+                   Proof_In => Root),
         Pre  =>
           --  Root was previously not allocated, and it is allocated now
           Root in F_Old.S + 1 .. F.S

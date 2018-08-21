@@ -49,9 +49,7 @@ depends_illegal_3.adb:23:24: high: "Par2" is not initialized in "P2"
 depends_illegal_3.adb:29:33: info: initialization of "X" proved
 depends_illegal_3.adb:33:15: high: "Par2" is not initialized
 depends_illegal_3.adb:34:15: high: "Par2" is not initialized
-depends_illegal_3.adb:38:18: warning: unused variable "Par1"
 depends_illegal_3.adb:38:35: warning: "Par2" is not modified, could be IN
-depends_illegal_3.adb:38:35: warning: unused variable "Par2"
 depends_illegal_3.adb:42:33: low: unused global "X"
 depends_illegal_3.adb:43:33: low: unused global "Y"
 depends_illegal_3.adb:43:33: warning: "Y" is not modified, could be INPUT

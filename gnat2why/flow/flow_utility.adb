@@ -882,17 +882,11 @@ package body Flow_Utility is
 
          Root_Node :=
            (case Interesting_Nodes (Nkind (Root_Node)) is
-               when N_Type_Conversion
-                  | N_Unchecked_Type_Conversion
-               =>
+               when N_Type_Conversion | N_Unchecked_Type_Conversion =>
                   Expression (Root_Node),
 
-               when N_Indexed_Component
-                  | N_Selected_Component
-                  | N_Slice
-               =>
+               when others =>
                   Prefix (Root_Node));
-
       end loop;
 
       pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
@@ -934,8 +928,11 @@ package body Flow_Utility is
             when N_Type_Conversion =>
                View_Conversion := True;
 
-            when N_Unchecked_Type_Conversion =>
+            when N_Unchecked_Type_Conversion
+               | N_Explicit_Dereference
+            =>
                null;
+               --  ??? should not be null for derefrence?
 
             when N_Indexed_Component | N_Slice =>
                Partial_Definition := True;
@@ -2622,13 +2619,19 @@ package body Flow_Utility is
                   return Vars;
                end;
 
-            when Scalar_Kind =>
+           --  Types mostly get dealt with by membership tests here, but
+           --  sometimes they just appear (for example in a for loop over
+           --  a type).
 
-               --  Types mostly get dealt with by membership tests here, but
-               --  sometimes they just appear (for example in a for loop over a
-               --  type).
+            when Type_Kind =>
 
-               if Is_Constrained (E) then
+               --  These kinds of types are not allowed in SPARK (yet)
+               pragma Assert (Ekind (E) not in E_Exception_Type
+                                             | E_Subprogram_Type);
+
+               if Is_Scalar_Type (E)
+                 and then Is_Constrained (E)
+               then
                   declare
                      SR : constant Node_Id := Scalar_Range (E);
                      LB : constant Node_Id := Low_Bound (SR);
@@ -2639,54 +2642,9 @@ package body Flow_Utility is
                   end;
                end if;
 
-            ---------------------------------------------------------
-            -- Entities with no flow consequence (or not in SPARK) --
-            ---------------------------------------------------------
-
-            when E_Generic_In_Out_Parameter
-               | E_Generic_In_Parameter
-               | E_Generic_Function
-               | E_Generic_Procedure
-               | E_Generic_Package
-            =>
-               --  These are not in SPARK itself (we analyze instantiations
-               --  instead of generics). So if we get one here, we are trying
-               --  do something very wrong.
-               raise Program_Error;
-
-            when E_Void =>
-               --  We should never feed a null node into this function
-               raise Program_Error;
-
-            when Access_Kind
-               | E_Entry_Family
-               | E_Entry_Index_Parameter
-            =>
-               --  Not in SPARK (at least for now)
-               raise Why.Unexpected_Node;
-
-            when E_Abstract_State =>
-               --  Abstract state cannot directly appear in expressions, so if
-               --  we have called this function on something that involves
-               --  state then we've messed up somewhere.
-               --
-               --  Otherwise, we'll expand out into all the state we can see.
-               pragma Assert (not Ctx.Assume_In_Expression);
-
-               return Variables : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set
-               do
-                  for Constituent of Down_Project (E, Ctx.Scope) loop
-                     if Ekind (Constituent) = E_Abstract_State then
-                        Variables.Include (Direct_Mapping_Id (E));
-                     else
-                        Variables.Union (Do_Entity (Constituent));
-                     end if;
-                  end loop;
-               end return;
-
-            when Composite_Kind =>
-               --  Dealt with using membership tests, if applicable
-               null;
+            ---------------------------------------
+            -- Entities with no flow consequence --
+            ---------------------------------------
 
             when Named_Kind
                | E_Enumeration_Literal
@@ -2694,30 +2652,61 @@ package body Flow_Utility is
                --  All of these are simply constants, with no flow concern
                null;
 
-            when E_Function
-               | E_Operator
+            when E_Entry
+               | E_Function
                | E_Procedure
-               | E_Entry
-               | E_Subprogram_Type
             =>
                --  Dealt with when dealing with N_Subprogram_Call nodes
                null;
 
             when E_Block
                | E_Exception
-               | E_Exception_Type
                | E_Label
                | E_Loop
                | E_Package
-               | E_Package_Body
+               =>
+               --  Nothing to do for these directly; we get them while
+               --  traversing a list of statements or an identifier.
+               null;
+
+            -------------------------------------------
+            -- Entities not expected or not in SPARK --
+            -------------------------------------------
+
+            --  Entities related to generic units are not in SPARK itself (we
+            --  analyze instantiations instead of generics).
+
+            when Formal_Object_Kind
+               | Generic_Unit_Kind
+            =>
+               raise Program_Error;
+
+            --  Frontend rewrites calls to operators into function calls
+
+            when E_Operator =>
+               raise Program_Error;
+
+            --  Entry families are not in SPARK yet
+
+            when E_Entry_Family
+               | E_Entry_Index_Parameter
+            =>
+               raise Program_Error;
+
+            --  Abstract state cannot directly appear in expressions
+
+            when E_Abstract_State =>
+               raise Program_Error;
+
+            when E_Package_Body
                | E_Protected_Object
                | E_Protected_Body
-               | E_Task_Body
-               | E_Subprogram_Body
                | E_Return_Statement
-            =>
-               --  Nothing to do for these directly
-               null;
+               | E_Subprogram_Body
+               | E_Task_Body
+               | E_Void
+               =>
+               raise Program_Error;
 
          end case;
 
@@ -4069,7 +4058,8 @@ package body Flow_Utility is
    begin
       while Nkind (Ptr) in Valid_Assignment_Kinds loop
          case Valid_Assignment_Kinds (Nkind (Ptr)) is
-            when N_Identifier | N_Expanded_Name =>
+            --  ??? Check the return for dereference
+            when N_Identifier | N_Expanded_Name | N_Explicit_Dereference =>
                return True;
             when N_Type_Conversion | N_Unchecked_Type_Conversion =>
                Ptr := Expression (Ptr);
@@ -5289,9 +5279,7 @@ package body Flow_Utility is
                S : constant String := Nkind (N)'Img;
 
             begin
-               Error_Msg_Strlen := S'Length;
-               Error_Msg_String (1 .. Error_Msg_Strlen) := S;
-               Error_Msg_N ("cannot untangle node ~", N);
+               Error_Msg_N ("cannot untangle node " & S, N);
                raise Why.Unexpected_Node;
             end;
       end case;
@@ -5474,10 +5462,13 @@ package body Flow_Utility is
                end;
                Process_Type_Conversions := False;
 
-            when N_Selected_Component =>
+            when N_Selected_Component
+            =>
                Idx := Idx + 1;
 
-            when N_Unchecked_Type_Conversion =>
+            when N_Unchecked_Type_Conversion
+               | N_Explicit_Dereference
+            =>
                null;
 
             when others =>
