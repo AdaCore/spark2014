@@ -493,7 +493,14 @@ package body Flow_Utility is
                --  Otherwise the effect is significant for proof, keep it
 
                else
-                  return Flow_Id_Sets.To_Set (F);
+                  --  Entities in SPARK are represented by Entity_Id; those not
+                  --  in SPARK are represented by Entity_Name, because they
+                  --  behave as "blobs".
+
+                  return Flow_Id_Sets.To_Set
+                    (if Entity_In_SPARK (E)
+                     then F
+                     else Magic_String_Id (To_Entity_Name (E), F.Variant));
                end if;
             end;
 

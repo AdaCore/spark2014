@@ -3576,43 +3576,8 @@ package body SPARK_Definition is
          -----------------------------------
 
          procedure Mark_Subprogram_Specification (N : Node_Id) is
-
-            procedure Mark_Global_Items (Subp_Items : Elist_Id);
-            --  Mark global inputs or outputs of the subprogram
-
-            -----------------------
-            -- Mark_Global_Items --
-            -----------------------
-
-            procedure Mark_Global_Items (Subp_Items : Elist_Id) is
-            begin
-               for Item of Iter (Subp_Items) loop
-                  declare
-                     Item_Id : constant Entity_Id :=
-                       (if Nkind (Item) = N_Defining_Identifier
-                        then Item
-                        else Entity_Of (Item));
-                  begin
-                     if Present (Item_Id) then
-                        Mark_Entity (if From_Limited_With (Item_Id)
-                                     then Non_Limited_View (Item_Id)
-                                     else Item_Id);
-                     end if;
-                  end;
-               end loop;
-            end Mark_Global_Items;
-
-            Id : constant Entity_Id := Defining_Entity (N);
-
+            Id     : constant Entity_Id := Defining_Entity (N);
             Formal : Entity_Id := First_Formal (Id);
-
-            --  Variables for collecting the subprogram's inputs and outputs
-            Subp_Inputs  : Elist_Id := No_Elist;
-            Subp_Outputs : Elist_Id := No_Elist;
-            Global_Seen  : Boolean;
-            pragma Unreferenced (Global_Seen);
-
-         --  Start of processing for Mark_Subprogram_Specification
 
          begin
             case Ekind (Id) is
@@ -3633,14 +3598,6 @@ package body SPARK_Definition is
                Next_Formal (Formal);
             end loop;
 
-            --  Mark global items that appear in Global and Depends contracts,
-            --  so that they get translated to Why3, even if this is the only
-            --  occurrence of these variables/states.
-
-            Collect_Subprogram_Inputs_Outputs
-              (Id, False, Subp_Inputs, Subp_Outputs, Global_Seen);
-            Mark_Global_Items (Subp_Inputs);
-            Mark_Global_Items (Subp_Outputs);
          end Mark_Subprogram_Specification;
 
          ----------------------------------

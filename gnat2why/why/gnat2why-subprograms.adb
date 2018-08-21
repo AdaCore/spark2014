@@ -836,7 +836,9 @@ package body Gnat2Why.Subprograms is
                      --  cannot be represented by an Entity_Id.
 
                      when Magic_String =>
-                        pragma Assert (No (Find_Entity (F.Name)));
+                        pragma Assert
+                          (if Present (Find_Entity (F.Name))
+                           then not Entity_In_SPARK (Find_Entity (F.Name)));
 
                      when others =>
                         raise Program_Error;
@@ -917,7 +919,10 @@ package body Gnat2Why.Subprograms is
                                  Includes.Include (Get_Direct_Mapping_Id (X));
 
                               when Magic_String =>
-                                 pragma Assert (No (Find_Entity (X.Name)));
+                                 pragma Assert
+                                   (if Present (Find_Entity (X.Name))
+                                    then not
+                                      Entity_In_SPARK (Find_Entity (X.Name)));
 
                               when Null_Value
                                  | Record_Field
@@ -1334,53 +1339,65 @@ package body Gnat2Why.Subprograms is
                   --  From the expansion of the LHS of an Initializes contract
                   --  we only get constants, variables and abstract states
                   --  (when the expansion stops at a SPARK_Mode => Off); these
-                  --  are known by an Entity_Id and wrapped in a Direct_Mapping
-                  --  kind of Flow_Id.
+                  --  are known by an Entity_Id but are wrapped in a
+                  --  Direct_Mapping or Magic_String kinds of Flow_Id,
+                  --  depending whether they are in SPARK.
 
                begin
                   for F of FS loop
-                     declare
-                        E : Entity_Id := Get_Direct_Mapping_Id (F);
-
-                        pragma Assert (Ekind (E) in E_Abstract_State
-                                                  | E_Constant
-                                                  | E_Variable);
-
-                     begin
-                        --  Only partial views of constants are stored in the
-                        --  symbol map.
-
-                        if Ekind (E) = E_Constant and then Is_Full_View (E)
-                        then
-                           E := Partial_View (E);
-                        end if;
-
-                        --  Only consider objects that are in SPARK. Other
-                        --  objects (and abstract states) are translated to
-                        --  a private type in Why.
-
-                        if Is_Object (E)
-                          and then Entity_In_SPARK (E)
-                          and then not Is_Part_Of_Concurrent_Object (E)
-                        then
+                     case F.Kind is
+                        when Direct_Mapping =>
                            declare
-                              Binder : constant Item_Type :=
-                                Ada_Ent_To_Why.Element (Symbol_Table, E);
-                              Expr   : constant W_Expr_Id :=
-                                Reconstruct_Item
-                                  (Binder, Ref_Allowed => Params.Ref_Allowed);
+                              E : Entity_Id := Get_Direct_Mapping_Id (F);
+
+                              pragma Assert (Ekind (E) in E_Abstract_State
+                                                        | E_Constant
+                                                        | E_Variable);
+
                            begin
-                              Inv_Pred := +New_And_Then_Expr
-                                (Left   => +Inv_Pred,
-                                 Right  => +Compute_Type_Invariant
-                                   (Expr        => +Expr,
-                                    Ty          => Etype (E),
-                                    Params      => Params,
-                                    On_Internal => True),
-                                 Domain => EW_Pred);
+                              --  Only partial views of constants are stored in
+                              --  the symbol map.
+
+                              if Ekind (E) = E_Constant
+                                and then Is_Full_View (E)
+                              then
+                                 E := Partial_View (E);
+                              end if;
+
+                              --  Only consider objects that are in SPARK.
+                              --  Other objects (and abstract states) are
+                              --  translated to a private type in Why.
+
+                              if Is_Object (E)
+                                and then not Is_Part_Of_Concurrent_Object (E)
+                              then
+                                 declare
+                                    Binder : constant Item_Type :=
+                                      Ada_Ent_To_Why.Element (Symbol_Table, E);
+                                    Expr   : constant W_Expr_Id :=
+                                      Reconstruct_Item
+                                        (Binder,
+                                         Ref_Allowed => Params.Ref_Allowed);
+                                 begin
+                                    Inv_Pred := +New_And_Then_Expr
+                                      (Left   => +Inv_Pred,
+                                       Right  => +Compute_Type_Invariant
+                                         (Expr        => +Expr,
+                                          Ty          => Etype (E),
+                                          Params      => Params,
+                                          On_Internal => True),
+                                       Domain => EW_Pred);
+                                 end;
+                              end if;
                            end;
-                        end if;
-                     end;
+
+                        when Magic_String =>
+                           pragma Assert
+                             (not Entity_In_SPARK (Find_Entity (F.Name)));
+
+                        when others =>
+                           raise Program_Error;
+                     end case;
                   end loop;
                end;
             end loop;
@@ -1448,7 +1465,7 @@ package body Gnat2Why.Subprograms is
                   --  states and private variables are not considered here,
                   --  as they cannot have visible type invariants.
 
-                  if Is_Object (E) and then Entity_In_SPARK (E) then
+                  if Is_Object (E) then
                      Inv_Pred := +New_And_Then_Expr
                        (Left   => +Inv_Pred,
                         Right  => +Compute_Type_Invariant_For_Entity (E),
@@ -1456,8 +1473,7 @@ package body Gnat2Why.Subprograms is
 
                   --  Self reference of protected subprograms
 
-                  elsif Is_Type (E) then
-                     pragma Assert (Is_Concurrent_Type (E));
+                  elsif Is_Concurrent_Type (E) then
                      Inv_Pred := +New_And_Then_Expr
                        (Left   => +Inv_Pred,
                         Right  => +Compute_Type_Invariant
@@ -1467,6 +1483,8 @@ package body Gnat2Why.Subprograms is
                            Params      => Params,
                            On_Internal => True),
                         Domain => EW_Pred);
+                  else
+                     pragma Assert (Ekind (E) = E_Abstract_State);
                   end if;
                end;
             end if;
