@@ -1227,9 +1227,7 @@ package body Gnat2Why.Util is
       --  special private type in all other cases, represented in the AST by
       --  its type.
 
-      return (case Ekind (T) is
-                 when Type_Kind => Retysp (T),
-                 when others => T);
+      return Retysp (T);
    end Type_Of_Node;
 
    ----------------------------

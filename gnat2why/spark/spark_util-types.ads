@@ -73,7 +73,8 @@ package SPARK_Util.Types is
    --  For non-private types, Retysp is the identity.
 
    function Retysp (T : Entity_Id) return Entity_Id
-   with Pre => Is_Type (T);
+   with Pre  => Is_Type (T),
+        Post => Is_Type (Retysp'Result);
    --  @param T any type
    --  @return the "Representative Type in SPARK" of type T
    --  It should only be called on marked type entities (except for Itypes).

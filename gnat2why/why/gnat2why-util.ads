@@ -548,7 +548,8 @@ package Gnat2Why.Util is
    --  @return The rep type of the index entity which corresponds
    --    to the selected dimension or ew_int_id if it is bool
 
-   function Type_Of_Node (N : Node_Id) return Entity_Id;
+   function Type_Of_Node (N : Node_Id) return Entity_Id
+   with Post => Is_Type (Type_Of_Node'Result);
    --  @param N any node
    --  @return the type of the node; if N is already a type, return that,
    --    otherwise return the Etype. Also, if the most underlying full view of
