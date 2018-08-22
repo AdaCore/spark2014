@@ -203,7 +203,8 @@ package Why.Inter is
 
    function To_Why_Type
      (E     : Entity_Id;
-      Local : Boolean := False) return W_Name_Id;
+      Local : Boolean := False) return W_Name_Id
+   with Pre => Is_Type (E);
 
    function EW_Abstract (N : Node_Id) return W_Type_Id with
      Pre => Is_Type (N);
