@@ -174,7 +174,12 @@ package Why.Inter is
       Selector : Selection_Kind := Standard;
       No_Comp  : Boolean := False;
       Rec      : Entity_Id := Empty;
-      Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id;
+      Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id
+   with Pre => Ekind (E) in Subprogram_Kind
+                          | Entry_Kind
+                          | Named_Kind
+                          | Type_Kind
+                          | Object_Kind;
    --  The one and only way to transform an Ada Entity to a Why identifier.
    --  However, sometimes the exact way differs between program and logic
    --  worlds. There is also a local and a global name of each identifier. The

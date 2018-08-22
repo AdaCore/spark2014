@@ -1229,17 +1229,8 @@ package body Why.Inter is
       Rec      : Entity_Id := Empty;
       Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id
    is
-      Suffix : constant String :=
-        (if Ekind (E) in Subprogram_Kind
-                       | E_Subprogram_Body
-                       | Entry_Kind
-                       | Named_Kind
-                       | Type_Kind
-                       | Object_Kind
-                       | E_Abstract_State
-         then
-            Short_Name (E)
-         else "");
+      Suffix : constant String := Short_Name (E);
+
    begin
       --  Components names are prefixed by a constant string, and are always
       --  expressed wrt to their record.
@@ -1276,11 +1267,6 @@ package body Why.Inter is
 
       elsif Local then
          return New_Identifier (Ada_Node => E, Name => Suffix, Typ => Typ);
-
-      elsif Suffix = "" then
-         return New_Identifier (Ada_Node => E,
-                                Name     => Full_Name (E),
-                                Typ      => Typ);
 
       else
          declare
