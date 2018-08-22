@@ -463,12 +463,10 @@ package body Flow_Utility is
 
                      else
                         for C of Iter (Part_Of_Constituents (E)) loop
-                           if Entity_In_SPARK (C) then
-                              Result.Union
-                                (Expand_Abstract_State
-                                   (Direct_Mapping_Id (C),
-                                    Erase_Constants));
-                           end if;
+                           Result.Union
+                             (Expand_Abstract_State
+                                (Direct_Mapping_Id (C),
+                                 Erase_Constants));
                         end loop;
 
                      --  There might be more constituents in the package body,

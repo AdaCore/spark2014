@@ -4269,8 +4269,8 @@ package body Flow.Analysis is
                   --  and those packages can have SPARK_Mode => Off. We detect
                   --  this by checking whether the constituent is in SPARK.
 
-                  if Entity_In_SPARK (Constituent)
-                    and then Ekind (Constituent) = E_Constant
+                  if Ekind (Constituent) = E_Constant
+                    and then Entity_In_SPARK (Constituent)
                     and then not Has_Variable_Input (Constituent)
                   then
                      Error_Msg (Declaration_Node (Constituent),
