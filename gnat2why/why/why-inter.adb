@@ -1367,15 +1367,6 @@ package body Why.Inter is
 
    end To_Why_Type;
 
-   function To_Why_Type (T : String) return W_Type_Id is
-   begin
-      if T = SPARK_Xrefs.Name_Of_Heap_Variable then
-         return M_Main.Type_Of_Heap;
-      else
-         return EW_Private_Type;
-      end if;
-   end To_Why_Type;
-
    ------------------
    -- Type_Of_Node --
    ------------------

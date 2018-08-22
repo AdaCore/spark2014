@@ -205,8 +205,6 @@ package Why.Inter is
      (E     : Entity_Id;
       Local : Boolean := False) return W_Name_Id;
 
-   function To_Why_Type (T : String) return W_Type_Id;
-
    function EW_Abstract (N : Node_Id) return W_Type_Id with
      Pre => Is_Type (N);
    --  Convert an Ada type entity into a Why type. This function respects the
