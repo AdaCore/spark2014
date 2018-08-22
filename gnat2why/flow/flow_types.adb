@@ -978,7 +978,7 @@ package body Flow_Types is
 
    function To_Name (F : Flow_Id) return Entity_Name is
      (case F.Kind is
-         when Direct_Mapping | Record_Field =>
+         when Direct_Mapping =>
             To_Entity_Name (F.Node),
 
          when Magic_String =>
