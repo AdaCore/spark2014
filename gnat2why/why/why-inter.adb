@@ -76,7 +76,7 @@ package body Why.Inter is
 
    function LCA (Left, Right : W_Type_Id) return W_Type_Id;
    --  Return the lowest common ancestor in base type hierarchy,
-   --  i.e. the smallest base type B such that Left <= B and right <= B.
+   --  i.e. the smallest base type B such that Left <= B and Right <= B.
    --  If Force = True, we also force B to be different from Left or Right,
    --  even in the case Left = Right.
 
