@@ -875,6 +875,10 @@ package body Why.Inter is
       end if;
    end Extract_Object_Name;
 
+   -----------------
+   -- Get_EW_Type --
+   -----------------
+
    function Get_EW_Type (T : Node_Id) return EW_Type is
       E : constant W_Type_Id := Get_EW_Term_Type (T);
    begin
