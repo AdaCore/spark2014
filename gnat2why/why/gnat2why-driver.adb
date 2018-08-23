@@ -1043,18 +1043,7 @@ package body Gnat2Why.Driver is
             Reads.Union (Writes);
 
             for G of Reads loop
-               case G.Kind is
-                  when Magic_String =>
-                     Translated_Object_Names.Insert
-                       (New_Item => G.Name,
-                        Position => Unused_Name,
-                        Inserted => Inserted);
-
-                     if Inserted then
-                        Translate_External_Object (G.Name);
-                     end if;
-
-                  when Direct_Mapping =>
+               if G.Kind = Direct_Mapping then
                      declare
                         Obj : constant Entity_Id := Get_Direct_Mapping_Id (G);
 
@@ -1068,10 +1057,17 @@ package body Gnat2Why.Driver is
                            Translate_External_Object (Obj);
                         end if;
                      end;
+               else pragma Assert (Is_Opaque_For_Proof (G));
 
-                  when others =>
-                     raise Program_Error;
-               end case;
+                  Translated_Object_Names.Insert
+                    (New_Item => G.Name,
+                     Position => Unused_Name,
+                     Inserted => Inserted);
+
+                  if Inserted then
+                     Translate_External_Object (G.Name);
+                  end if;
+               end if;
             end loop;
          end;
       end if;

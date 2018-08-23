@@ -51,10 +51,7 @@ package Gnat2Why.Decls is
    --  the type and the variable declaration.
 
    procedure Translate_External_Object (E : Entity_Id)
-   with Pre => (case Ekind (E) is
-                   when E_Variable       => not Entity_In_SPARK (E),
-                   when E_Abstract_State => True,
-                   when others           => False);
+   with Pre => Entity_In_SPARK (E);
    --  Generate Why declarations for an entity E that is only known to proof
    --  as a generated Global of some subprogram. The declaration looks same as
    --  for external objects represented by Entity_Name, just with more precise

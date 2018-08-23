@@ -214,23 +214,21 @@ package body Why.Gen.Binders is
       for F of Variables loop
          declare
             V       : constant Entity_Name := To_Name (F);
+            Use_Ent : constant Boolean := F.Kind = Direct_Mapping;
             Entity  : constant Entity_Id :=
-              (if F.Kind = Direct_Mapping
+              (if Use_Ent
                then Get_Direct_Mapping_Id (F)
                else Empty);
 
-            Use_Ent : constant Boolean := Present (Entity)
-              and then Ekind (Entity) /= E_Abstract_State;
-
             C : constant Ada_Ent_To_Why.Cursor :=
-              (if F.Kind = Direct_Mapping
+              (if Use_Ent
                then Ada_Ent_To_Why.Find (Symbol_Table, Entity)
                else Ada_Ent_To_Why.Find (Symbol_Table, F.Name));
 
          begin
             --  For components of protected types, include a reference to self
 
-            if Present (Entity)
+            if Use_Ent
               and then (Is_Protected_Component_Or_Discr_Or_Part_Of (Entity)
                         or else Is_Type (Entity))
               and then not Ignore_Self
@@ -250,7 +248,7 @@ package body Why.Gen.Binders is
             --  Do nothing if the entity is not mutable or if it is a reference
             --  to a concurrent type and they are ignored.
 
-            elsif Present (Entity)
+            elsif Use_Ent
               and then (not Is_Mutable_In_Why (Entity)
                         or else Is_Type (Entity))
             then
@@ -277,7 +275,7 @@ package body Why.Gen.Binders is
                Binders (I) := Mk_Item_Of_Entity (Entity);
                I := I + 1;
             else
-               pragma Assert (F.Kind = Magic_String);
+               pragma Assert (Is_Opaque_For_Proof (F));
 
                Binders (I) :=
                  (Regular,
@@ -677,19 +675,8 @@ package body Why.Gen.Binders is
 
       else
          declare
-            Use_Ent : constant Boolean :=
-              Ekind (E) /= E_Abstract_State
-              and then Entity_In_SPARK (E);
-            --  For state abstractions pretend there is no Entity
-
-            Typ    : constant W_Type_Id :=
-              (if Ekind (E) = E_Abstract_State then
-                 EW_Private_Type
-
-               --  For loop parameters, use mathematical integers instead of
-               --  booleans.
-
-               elsif Ekind (E) = E_Loop_Parameter
+            Typ : constant W_Type_Id :=
+              (if Ekind (E) = E_Loop_Parameter
                and then Is_Standard_Boolean_Type (Ty) then
                     EW_Int_Type
 
@@ -700,11 +687,9 @@ package body Why.Gen.Binders is
             Name   : constant W_Identifier_Id :=
               To_Why_Id (E => E, Typ => Typ, Local => Local);
             Binder : constant Binder_Type :=
-              Binder_Type'(Ada_Node => (if Use_Ent then E else Empty),
+              Binder_Type'(Ada_Node => E,
                            B_Name   => Name,
-                           B_Ent    =>
-                             (if Use_Ent then Null_Entity_Name
-                              else To_Entity_Name (E)),
+                           B_Ent    => Null_Entity_Name,
                            Mutable  => Is_Mutable_In_Why (E));
          begin
             return (Regular, Local, Binder);

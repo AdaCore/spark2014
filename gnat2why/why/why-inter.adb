@@ -690,9 +690,6 @@ package body Why.Inter is
          when E_Loop =>
             return WF_Context;
 
-         when E_Abstract_State =>
-            return WF_Variables;
-
          when others =>
             raise Program_Error;
       end case;

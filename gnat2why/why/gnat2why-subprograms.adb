@@ -1457,7 +1457,8 @@ package body Gnat2Why.Subprograms is
 
                   --  Self reference of protected subprograms
 
-                  elsif Is_Concurrent_Type (E) then
+                  else pragma Assert (Is_Concurrent_Type (E));
+
                      Inv_Pred := +New_And_Then_Expr
                        (Left   => +Inv_Pred,
                         Right  => +Compute_Type_Invariant
@@ -1467,8 +1468,6 @@ package body Gnat2Why.Subprograms is
                            Params      => Params,
                            On_Internal => True),
                         Domain => EW_Pred);
-                  else
-                     pragma Assert (Ekind (E) = E_Abstract_State);
                   end if;
                end;
             end if;
