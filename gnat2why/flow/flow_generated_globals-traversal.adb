@@ -146,7 +146,14 @@ package body Flow_Generated_Globals.Traversal is
 
             when N_Subprogram_Body_Stub =>
                if No (Corresponding_Spec_Of_Stub (N)) then
-                  Insert (Unique_Defining_Entity (N));
+                  declare
+                     E : constant Entity_Id := Unique_Defining_Entity (N);
+
+                  begin
+                     if not Is_Generic_Subprogram (E) then
+                        Insert (E);
+                     end if;
+                  end;
                end if;
 
             when N_Object_Declaration =>

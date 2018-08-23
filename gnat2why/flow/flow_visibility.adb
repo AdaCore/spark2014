@@ -985,7 +985,9 @@ package body Flow_Visibility is
                end if;
 
             when N_Package_Body_Stub =>
-               Traverse_Package_Body (Get_Body_From_Stub (N));
+               if Ekind (Unique_Defining_Entity (N)) /= E_Generic_Package then
+                  Traverse_Package_Body (Get_Body_From_Stub (N));
+               end if;
 
             when N_Entry_Declaration
                | N_Generic_Subprogram_Declaration
@@ -1012,7 +1014,9 @@ package body Flow_Visibility is
                   Process (N);
                end if;
 
-               Traverse_Subprogram_Body (Get_Body_From_Stub (N));
+               if not Is_Generic_Subprogram (Unique_Defining_Entity (N)) then
+                  Traverse_Subprogram_Body (Get_Body_From_Stub (N));
+               end if;
 
             when N_Protected_Body =>
                Traverse_Protected_Body (N);
