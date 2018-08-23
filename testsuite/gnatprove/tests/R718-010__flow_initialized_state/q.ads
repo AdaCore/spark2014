@@ -1,4 +1,3 @@
-generic
 package Q with SPARK_Mode
 is
    type T (D : Integer) is private with Default_Initial_Condition;
