@@ -1,8 +1,12 @@
  
-.. _Additional_Uses_of_Pragma_Annotate_GNATprove:
+.. _Uses_of_Pragma_Annotate_GNATprove:
 
-Additional Uses of Pragma Annotate GNATprove
-============================================
+Uses of Pragma Annotate GNATprove
+=================================
+
+This appendix lists all the uses of pragma ``Annotate`` for |GNATprove|.
+Pragma ``Annotate`` can also be used to control other AdaCore tools. The uses
+of this pragma are explained in the User's guide of each tool.
 
 The main usage of pragmas ``Annotate`` for |GNATprove| is for justifying check
 messages using :ref:`Direct Justification with Pragma Annotate`. Specific
@@ -11,7 +15,34 @@ obligations. Some of these uses can be seen in :ref:`SPARK Libraries` for
 example. These forms of pragma ``Annotate`` should be used with care as they
 can introduce additional assumptions which are not verified by the |GNATprove|
 tool.
+
+Using Pragma Annotate to Justify Check Messages
+-----------------------------------------------
+
+You can use annotations of the form
+
+.. code-block:: ada
       
+    pragma Annotate (GNATprove, False_Positive,
+                     "message to be justified", "reason");
+
+to justify an unproved check message that cannot be proved by other means. See
+the section :ref:`Direct Justification with Pragma Annotate` for more details
+about this use of pragma ``Annotate``.
+
+Using pragma Annotate to force Proof of Termination
+---------------------------------------------------
+
+SPARK doesn't usually prove termination of subprograms. You can instruct it do
+so so using annotations of this form:
+
+.. code-block:: ada
+      
+   pragma Annotate (GNATprove, Terminating, Subp_Or_Package_Entity);
+
+See the section :ref:`Subprogram Termination` about details of this use of
+pragma ``Annotate``.
+
 Customize Quantification over Types with the Iterable Aspect
 ------------------------------------------------------------
 
