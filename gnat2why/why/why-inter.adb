@@ -650,7 +650,6 @@ package body Why.Inter is
 
          when Entry_Kind
             | E_Procedure
-            | E_Subprogram_Body
          =>
             return WF_Context;
 

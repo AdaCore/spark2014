@@ -990,9 +990,6 @@ package body Gnat2Why.Driver is
                Translate_Subprogram_Spec (File, E);
             end if;
 
-         when E_Subprogram_Body =>
-            null;
-
          --  Given to the handler for packages with an associated theory ???
 
          --  Ordinary packages are never referenced by other entities, so they
