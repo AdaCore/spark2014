@@ -1701,6 +1701,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      else
                         declare
                            E : constant Entity_Id := Find_Entity (Var);
+
                         begin
                            Ada.Text_IO.Put
                              (if Present (E)
@@ -1899,6 +1900,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   declare
                      G : constant Global_Names :=
                        Callee_Globals (Callee => Callee, Caller => Folded);
+
                   begin
                      Result_Proof_Ins.Union (G.Proof_Ins);
                      Result_Inputs.Union (G.Inputs);
@@ -1910,6 +1912,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   declare
                      G : constant Global_Names :=
                        Callee_Globals (Callee => Callee, Caller => Folded);
+
                   begin
                      Result_Proof_Ins.Union (G.Proof_Ins);
                      Result_Proof_Ins.Union (G.Inputs);

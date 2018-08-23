@@ -433,6 +433,7 @@ package body Flow_Generated_Globals.Partial is
                   declare
                      LHS : constant Entity_Id :=
                        Get_Direct_Mapping_Id (Dependency_Maps.Key (Clause));
+
                   begin
                      --  Ignore constants without variable inputs, because they
                      --  would violate a type predicate on generated contract
@@ -1121,6 +1122,7 @@ package body Flow_Generated_Globals.Partial is
       then
          declare
             Patches : Global_Patch_Lists.List;
+
          begin
             Fold (Analyzed     => Analyzed,
                   Folded       => Analyzed,
@@ -1298,6 +1300,7 @@ package body Flow_Generated_Globals.Partial is
                declare
                   Var : Entity_Id renames Vars (C);
                   use type Node_Sets.Cursor;
+
                begin
                   Ada.Text_IO.Put (" ");
 
@@ -1421,6 +1424,7 @@ package body Flow_Generated_Globals.Partial is
          if Scope_Truly_Within_Or_Same (Callee, Analyzed) then
             declare
                Callee_Globals : Flow_Nodes renames Contracts (Callee).Globals;
+
             begin
                if Callee = Analyzed
                  or else Parent_Scope (Callee) = Analyzed
@@ -1485,6 +1489,7 @@ package body Flow_Generated_Globals.Partial is
             declare
                G : constant Global_Nodes :=
                  Callee_Globals (Callee, Caller => E);
+
             begin
                Result_Proof_Ins.Union (G.Proof_Ins);
                Result_Inputs.Union (G.Inputs);
@@ -1496,6 +1501,7 @@ package body Flow_Generated_Globals.Partial is
             declare
                G : constant Global_Nodes :=
                  Callee_Globals (Callee, Caller => E);
+
             begin
                Result_Proof_Ins.Union (G.Proof_Ins);
                Result_Proof_Ins.Union (G.Inputs);
@@ -1525,6 +1531,7 @@ package body Flow_Generated_Globals.Partial is
             declare
                G : constant Global_Nodes :=
                  Callee_Globals (Callee, Caller => E);
+
             begin
                Result_Proof_Ins.Union (G.Proof_Ins);
                Result_Inputs.Union (G.Inputs);
@@ -1540,6 +1547,7 @@ package body Flow_Generated_Globals.Partial is
          declare
             Proof_Ins_Outs : constant Node_Sets.Set :=
               Result_Proof_Ins and Result_Outputs;
+
          begin
             Result_Proof_Ins.Difference (Proof_Ins_Outs);
             Result_Inputs.Union (Proof_Ins_Outs);
@@ -1611,6 +1619,7 @@ package body Flow_Generated_Globals.Partial is
          else
             declare
                Projected, Partial : Node_Sets.Set;
+
             begin
                Update.Initializes.Refined :=
                  Original.Initializes.Refined or
@@ -1631,6 +1640,7 @@ package body Flow_Generated_Globals.Partial is
                --  Add states that are trivially initialized because they
                --  have null refinements (their initialization is missed
                --  while looking at the initialization of the constituents).
+
                if Has_Non_Null_Abstract_State (Folded)
                  and then Entity_Body_In_SPARK (Folded)
                then
@@ -2319,6 +2329,7 @@ package body Flow_Generated_Globals.Partial is
             declare
                Input : constant Entity_Id :=
                  Constant_Graph.Get_Key (V);
+
             begin
                if Ekind (Input) in E_Function | E_Procedure
                  and then not Is_In_Analyzed_Files (Input)
@@ -2407,6 +2418,7 @@ package body Flow_Generated_Globals.Partial is
             declare
                Inputs : constant Node_Lists.List :=
                  Resolved_Inputs (E, Constant_Graph);
+
             begin
                --  If we know that constant has variable input, then don't even
                --  register it in the ALI file, so it will be treated as an
@@ -2440,8 +2452,8 @@ package body Flow_Generated_Globals.Partial is
       Contr : Contract renames Contracts (E);
 
       Visible_Pkg_State : Global_Set;
-      --  Objects that may appear on the LHS of an Initializes contract;
-      --  only used when E represents a package.
+      --  Objects that may appear on the LHS of an Initializes contract; only
+      --  used when E represents a package.
       --  ??? this is just to keep the current code in phase-2 working;
       --  generation of Initializes needs to be revisited
 
@@ -2484,6 +2496,7 @@ package body Flow_Generated_Globals.Partial is
                if Nkind (N) = N_Object_Declaration then
                   declare
                      Obj : constant Entity_Id := Defining_Entity (N);
+
                   begin
                      if Ekind (Obj) = E_Variable then
                         Register_Object (Obj);
@@ -2551,6 +2564,7 @@ package body Flow_Generated_Globals.Partial is
             Traverse_Declarations (Private_Declarations (Pkg_Spec));
             declare
                Pkg_Body : constant Node_Id := Package_Body (E);
+
             begin
                if Present (Pkg_Body) then
                   Traverse_Declarations (Declarations (Pkg_Body));
