@@ -6717,7 +6717,7 @@ package body SPARK_Definition is
              (Enclosing_Declaration
                 (Parent
                    (Enclosing_Declaration
-                        (E))));
+                      (E))));
       end Lexical_Scope;
 
       subtype SPARK_Pragma_Scope_With_Type_Decl is Entity_Kind
@@ -6742,7 +6742,7 @@ package body SPARK_Definition is
             E_Package            |
             E_Package_Body;
 
-      --  Start of processing for SPARK_Pragma_Of_Entity
+   --  Start of processing for SPARK_Pragma_Of_Entity
 
    begin
 
