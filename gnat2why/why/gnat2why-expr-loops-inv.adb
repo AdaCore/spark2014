@@ -94,7 +94,6 @@ package body Gnat2Why.Expr.Loops.Inv is
       Low_Id    : W_Expr_Id;
       High_Id   : W_Expr_Id;
       Is_Rev    : Boolean;
-      Var_Known : Boolean;
       Loop_Vars : Flow_Id_Sets.Set;
       Expr      : W_Expr_Id;
       At_Entry  : W_Expr_Id;
@@ -109,8 +108,6 @@ package body Gnat2Why.Expr.Loops.Inv is
    --  @param Low_Id identifier for the lower bound of the loop if any
    --  @param High_Id identifier for the higher bound of the loop if any
    --  @param Is_Rev True if the loop is reversed
-   --  @param Var_Known True if flow analysis was run and Loop_Vars is
-   --         populated.
    --  @param Loop_Vars set of Flow_Ids modified by the loop statement
    --  @param Expr Why expression at the current loop index
    --  @param At_Entry Why expression at the loop's entry
@@ -307,7 +304,6 @@ package body Gnat2Why.Expr.Loops.Inv is
       Low_Id    : W_Expr_Id;
       High_Id   : W_Expr_Id;
       Is_Rev    : Boolean;
-      Var_Known : Boolean;
       Loop_Vars : Flow_Id_Sets.Set;
       Expr      : W_Expr_Id;
       At_Entry  : W_Expr_Id;
@@ -334,8 +330,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          return W_Pred_Id
       is
          function Is_Constant (Expr : Node_Id) return Boolean is
-           (Var_Known
-            and then Get_Variables_For_Proof (Expr, Expr).Intersection
+           (Get_Variables_For_Proof (Expr, Expr).Intersection
             (Loop_Vars).Is_Empty);
          --  Check whether an expression is constant in the loop statement. If
          --  the variables modified in the loop are not known, assume nothing
@@ -651,7 +646,6 @@ package body Gnat2Why.Expr.Loops.Inv is
                   Low_Id    => Low_Id,
                   High_Id   => High_Id,
                   Is_Rev    => Is_Rev,
-                  Var_Known => Var_Known,
                   Loop_Vars => Loop_Vars,
                   Expr      => F_Expr,
                   At_Entry  => F_At_Entry,
@@ -810,7 +804,6 @@ package body Gnat2Why.Expr.Loops.Inv is
                         High_Id   => High_Id,
                         Is_Rev    => Is_Rev,
                         Loop_Vars => Loop_Vars,
-                        Var_Known => Var_Known,
                         Expr      => E_Expr,
                         At_Entry  => E_At_Entry,
                         Expr_Ty   => E_Expr_Ty,
@@ -880,9 +873,7 @@ package body Gnat2Why.Expr.Loops.Inv is
         and then Reverse_Present (Param_Spec);
       Scope         : constant Entity_Id := Enclosing_Unit (Loop_Id);
       Modified      : constant Flow_Id_Sets.Set :=
-        (if Loop_Writes_Known (Loop_Id)
-         then To_Entire_Variables (Flow_Utility.Get_Loop_Writes (Loop_Id))
-         else Flow_Id_Sets.Empty_Set);
+        Flow_Utility.Get_Loop_Writes (Loop_Id);
       N             : Node_Id;
       Dyn_Types_Inv : W_Pred_Id := True_Pred;
       Loop_Writes   : Map;
@@ -895,45 +886,43 @@ package body Gnat2Why.Expr.Loops.Inv is
       --  Sanity checking:
       --  Check that we have at least every variable modified in the loop.
 
-      if Loop_Writes_Known (Loop_Id) then
-         for F of Modified loop
+      for F of Modified loop
 
-            --  We do not care about Magic_Strings which are translated as
-            --  private in Why.
+         --  We do not care about Magic_Strings which are translated as
+         --  private in Why.
 
-            if F.Kind = Direct_Mapping then
+         if F.Kind = Direct_Mapping then
 
-               --  We don't care about constant objects and objects
-               --  with asynchronous readers as we don't want to assume
-               --  anything on them. We also don't consider abstract
-               --  states.
-               --  For loops inside a single task, flow analysis returns the
-               --  task object as written. We don't care as single
-               --  tasks can't have (mutable) discriminants and thus cannot
-               --  be modified from a proof point of view. We still want to
-               --  issue an error if flow analysis returns a task with
-               --  mutable discriminants that we did not find.
+            --  We don't care about constant objects and objects
+            --  with asynchronous readers as we don't want to assume
+            --  anything on them. We also don't consider abstract
+            --  states.
+            --  For loops inside a single task, flow analysis returns the
+            --  task object as written. We don't care as single
+            --  tasks can't have (mutable) discriminants and thus cannot
+            --  be modified from a proof point of view. We still want to
+            --  issue an error if flow analysis returns a task with
+            --  mutable discriminants that we did not find.
 
-               declare
-                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-               begin
-                  if not Loop_Writes.Contains (E)
-                    and then Is_Object (E)
-                    and then Is_Mutable_In_Why (E)
-                    and then not Has_Async_Writers (F)
-                    and then
-                      (not Is_Task_Type (Etype (E))
-                       or else Count_Discriminants (Etype (E)) > 0)
-                  then
-                     Ada.Text_IO.Put_Line
-                       ("error in computation of loop frame condition for "
-                        & Full_Name (Get_Direct_Mapping_Id (F)));
-                     raise Program_Error;
-                  end if;
-               end;
-            end if;
-         end loop;
-      end if;
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               if not Loop_Writes.Contains (E)
+                 and then Is_Object (E)
+                 and then Is_Mutable_In_Why (E)
+                 and then not Has_Async_Writers (F)
+                 and then
+                   (not Is_Task_Type (Etype (E))
+                    or else Count_Discriminants (Etype (E)) > 0)
+               then
+                  Ada.Text_IO.Put_Line
+                    ("error in computation of loop frame condition for "
+                     & Full_Name (Get_Direct_Mapping_Id (F)));
+                  raise Program_Error;
+               end if;
+            end;
+         end if;
+      end loop;
 
       --  Assume the dynamic invariant and frame condition of every variable in
       --  Loop_Writes if it was not discarded.
@@ -985,7 +974,6 @@ package body Gnat2Why.Expr.Loops.Inv is
                            Low_Id    => Low_Id,
                            High_Id   => High_Id,
                            Is_Rev    => Is_Reverse,
-                           Var_Known => Loop_Writes_Known (Loop_Id),
                            Loop_Vars => Modified,
                            Expr      => Expr,
                            At_Entry  => +Name_For_Loop_Entry

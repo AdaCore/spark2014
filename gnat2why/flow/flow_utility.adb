@@ -110,7 +110,7 @@ package body Flow_Utility is
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
 
-   Loop_Info_Frozen : Boolean       := False;
+   Loop_Info_Frozen : Boolean       := False with Ghost;
    Loop_Info        : Loop_Maps.Map := Loop_Maps.Empty_Map;
 
    ----------------------------------------------------------------------
@@ -158,16 +158,6 @@ package body Flow_Utility is
                         | Pragma_Postcondition;
    --  Return the list of the classwide pre- or post-conditions for entity E
 
-   --------------
-   -- Add_Loop --
-   --------------
-
-   procedure Add_Loop (E : Entity_Id) is
-   begin
-      pragma Assert (not Loop_Info_Frozen);
-      Loop_Info.Insert (E, Flow_Id_Sets.Empty_Set);
-   end Add_Loop;
-
    ---------------------
    -- Add_Loop_Writes --
    ---------------------
@@ -177,7 +167,7 @@ package body Flow_Utility is
    is
    begin
       pragma Assert (not Loop_Info_Frozen);
-      Loop_Info (Loop_E).Union (Writes);
+      Loop_Info.Insert (Loop_E, Writes);
    end Add_Loop_Writes;
 
    ------------------------
@@ -1706,10 +1696,8 @@ package body Flow_Utility is
    -- Get_Loop_Writes --
    ---------------------
 
-   function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set is
-   begin
-      return Loop_Info (E);
-   end Get_Loop_Writes;
+   function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
+     renames Loop_Info.Element;
 
    -----------------------------------
    -- Get_Postcondition_Expressions --
@@ -3608,6 +3596,46 @@ package body Flow_Utility is
       end return;
    end Get_Variables_Internal;
 
+   -------------------
+   -- To_Proof_View --
+   -------------------
+
+   function To_Proof_View
+     (Objects : Flow_Id_Sets.Set)
+      return Flow_Id_Sets.Set
+   is
+      Converted : Flow_Id_Sets.Set;
+      --  Flow represents globals known by Entity_Id but not in SPARK as
+      --  Direct_Mapping; for proof they are represented as Magic_String.
+
+   begin
+      for Object of Objects loop
+         case Object.Kind is
+            when Direct_Mapping =>
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (Object);
+
+               begin
+                  if Ekind (E) = E_Abstract_State
+                    or else not Entity_In_SPARK (E)
+                  then
+                     Converted.Insert (Magic_String_Id (To_Entity_Name (E)));
+                  else
+                     Converted.Insert (Object);
+                  end if;
+               end;
+
+            when Magic_String =>
+               Converted.Insert (Object);
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end loop;
+
+      return Converted;
+   end To_Proof_View;
+
    -----------------------------
    -- Get_Variables_For_Proof --
    -----------------------------
@@ -3627,36 +3655,8 @@ package body Flow_Utility is
          Consider_Extensions             => False,
          Quantified_Variables_Introduced => Node_Sets.Empty_Set);
 
-      Converted : Flow_Id_Sets.Set;
-      --  Flow represents globals known by Entity_Id but not in SPARK as
-      --  Direct_Mapping; for proof they are represented as Magic_String.
-
    begin
-      for Var of Get_Variables_Internal (Expr_N, Ctx) loop
-         case Var.Kind is
-            when Direct_Mapping =>
-               declare
-                  E : constant Entity_Id := Get_Direct_Mapping_Id (Var);
-
-               begin
-                  if Ekind (E) = E_Abstract_State
-                    or else not Entity_In_SPARK (E)
-                  then
-                     Converted.Insert (Magic_String_Id (To_Entity_Name (E)));
-                  else
-                     Converted.Insert (Var);
-                  end if;
-               end;
-
-            when Magic_String =>
-               Converted.Insert (Var);
-
-            when others =>
-               raise Program_Error;
-         end case;
-      end loop;
-
-      return Converted;
+      return To_Proof_View (Get_Variables_Internal (Expr_N, Ctx));
    end Get_Variables_For_Proof;
 
    -----------------
@@ -4158,15 +4158,6 @@ package body Flow_Utility is
    is
      (Nkind (N) in N_Entity
       and then Ekind (N) = E_Abstract_State);
-
-   -----------------------
-   -- Loop_Writes_Known --
-   -----------------------
-
-   function Loop_Writes_Known (E : Entity_Id) return Boolean is
-   begin
-      return Loop_Info_Frozen and then Loop_Info.Contains (E);
-   end Loop_Writes_Known;
 
    --------------------------
    -- Quantified_Variables --

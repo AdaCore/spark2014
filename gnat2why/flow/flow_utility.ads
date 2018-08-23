@@ -536,30 +536,39 @@ is
    --  the initialization occurs in the specification of the enclosing
    --  package of F.
 
-   procedure Add_Loop (E : Entity_Id)
-   with Pre => Ekind (E) = E_Loop;
-   --  Indicates that the loop E has been analyzed by flow analysis.
-
    procedure Add_Loop_Writes (Loop_E : Entity_Id;
                               Writes : Flow_Id_Sets.Set)
    with Pre => Ekind (Loop_E) = E_Loop;
    --  Adds Writes to the set of variables written by the loop entity Loop_E
 
-   procedure Freeze_Loop_Info;
+   procedure Freeze_Loop_Info with Ghost;
    --  Must be called at the end of flow analysis - this makes it an error to
    --  use Add_Loop and Add_Loop_Write, and enables the use of Get_Loop_Writes.
 
-   function Loop_Writes_Known (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) = E_Loop;
-   --  Checks if the variables written by loop E are known.
-
    function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
-   with Pre => Ekind (E) = E_Loop and then
-               Loop_Writes_Known (E);
+   with Pre => Ekind (E) = E_Loop;
    --  Returns variables a given loop *may* write to, including variables
    --  declared locally in the loop. Note that if a function returns inside a
    --  loop, the name of the function will be "written to" and will be returned
    --  here.
+
+   function To_Proof_View
+     (Objects : Flow_Id_Sets.Set)
+      return Flow_Id_Sets.Set
+   with Pre  => (for all Object of Objects =>
+                    Is_Entire_Variable (Object)
+                      and then
+                    Object.Variant = Normal_Use),
+        Post => To_Proof_View'Result.Length = Objects.Length
+                   and then
+                (for all Object of To_Proof_View'Result =>
+                    Object.Kind = Direct_Mapping
+                      or else
+                    Is_Opaque_For_Proof (Object));
+   --  Convert abstract states and entities not in SPARK; for flow they might
+   --  be represented with Entity_Id (which helps to deal with visibility),
+   --  but for proof they are opaque and thus are represented with Magic_String
+   --  (just like hidden globals).
 
    function Get_Type
      (F     : Flow_Id;

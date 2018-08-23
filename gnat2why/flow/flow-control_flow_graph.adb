@@ -3094,19 +3094,35 @@ package body Flow.Control_Flow_Graph is
       Ctx.Current_Loops.Delete (Loop_Id);
       Ctx.Termination_Proved := Outer_Termination;
 
-      --  Finally, we can update the loop information in Flow_Utility
+      --  Finally, we can update the loop information in Flow_Utility for proof
 
-      Add_Loop (Loop_Id);
-      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+      if not FA.Generating_Globals then
          declare
-            Atr : V_Attributes renames FA.Atr (V);
+            Loop_Writes : Flow_Id_Sets.Set;
+
          begin
-            if Atr.Loops.Contains (Loop_Id) then
-               Add_Loop_Writes (Loop_Id,
-                                Atr.Variables_Defined or Atr.Volatiles_Read);
-            end if;
+            for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+               declare
+                  Atr : V_Attributes renames FA.Atr (V);
+
+               begin
+                  if Atr.Loops.Contains (Loop_Id) then
+                     for Var of
+                       Atr.Variables_Defined.Union (Atr.Volatiles_Read)
+                     loop
+                        if not Synthetic (Var) then
+                           Loop_Writes.Include
+                             (Change_Variant (Entire_Variable (Var),
+                                              Normal_Use));
+                        end if;
+                     end loop;
+                  end if;
+               end;
+            end loop;
+
+            Add_Loop_Writes (Loop_Id, To_Proof_View (Loop_Writes));
          end;
-      end loop;
+      end if;
 
    end Do_Loop_Statement;
 
