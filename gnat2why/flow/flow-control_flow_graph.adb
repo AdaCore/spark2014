@@ -1144,6 +1144,7 @@ package body Flow.Control_Flow_Graph is
             P : constant Flow_Id :=
               Change_Variant (Entire_Variable (F),
                               Corresponding_Grouping (F.Variant));
+
          begin
             Create_Record_Tree (P, Leaf_Atr, FA);
          end;
@@ -1158,8 +1159,10 @@ package body Flow.Control_Flow_Graph is
             case F.Kind is
                when Null_Value =>
                   raise Program_Error;
+
                when Magic_String | Synthetic_Null_Export =>
                   null;
+
                when Direct_Mapping | Record_Field =>
                   if F.Kind = Record_Field
                     or else F.Facet in Private_Part | Extension_Part
@@ -1169,6 +1172,7 @@ package body Flow.Control_Flow_Graph is
                         P : constant Flow_Id :=
                           Change_Variant (Parent_Record (F),
                                           Corresponding_Grouping (F.Variant));
+
                      begin
                         Create_Record_Tree (P, Leaf_Atr, FA);
                         case F.Variant is
@@ -1193,8 +1197,10 @@ package body Flow.Control_Flow_Graph is
             case F.Kind is
                when Null_Value =>
                   raise Program_Error;
+
                when Magic_String | Synthetic_Null_Export =>
                   null;
+
                when Direct_Mapping | Record_Field =>
                   --  Only proceed if we don't have this vertex yet
                   if FA.CFG.Get_Vertex (F) = Flow_Graphs.Null_Vertex then

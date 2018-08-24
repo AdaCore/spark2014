@@ -352,6 +352,7 @@ package body Flow.Slice is
             --  Abstract states with null refinements are trivially initialized
             --  but are not detected by the condition in the else branch. (???
             --  why?)
+
             if Ekind (LV) = E_Abstract_State
               and then Has_Null_Refinement (LV)
             then
