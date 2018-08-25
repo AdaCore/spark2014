@@ -37,11 +37,9 @@ package body Flow_Dependency_Maps is
    use Dependency_Maps;
 
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
-   with Pre => Get_Pragma_Id (N) in
-                 Pragma_Depends         |
-                 Pragma_Refined_Depends |
-                 Pragma_Refined_State   |
-                 Pragma_Initializes;
+   with Pre => Get_Pragma_Id (N) in Pragma_Depends
+                                  | Pragma_Refined_Depends
+                                  | Pragma_Initializes;
    --  Helper function to parse something that looks like a dependency map; in
    --  particular we can parse either a depends or an initializes aspect.
    --
@@ -276,14 +274,5 @@ package body Flow_Dependency_Maps is
 
       return M;
    end Parse_Initializes;
-
-   -------------------------
-   -- Parse_Refined_State --
-   -------------------------
-
-   function Parse_Refined_State
-     (N : Node_Id)
-      return Dependency_Maps.Map renames
-     Parse_Raw_Dependency_Map;
 
 end Flow_Dependency_Maps;

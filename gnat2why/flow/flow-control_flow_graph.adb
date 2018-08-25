@@ -6101,40 +6101,28 @@ package body Flow.Control_Flow_Graph is
                end loop;
             end;
 
-            --  If a Refined_State aspect exists then gather all constituents
-            --  declared in other (private child) units and create initial and
-            --  final vertices for them.
+            --  If a Refined_State aspect exists then create initial and final
+            --  vertices for constituents declared in other (private child)
+            --  units.
 
-            if FA.Kind = Kind_Package_Body then
-               declare
-                  Refined_State_N : constant Node_Id :=
-                    Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_State);
+            if Entity_Body_In_SPARK (FA.Spec_Entity)
+              and then Has_Non_Null_Abstract_State (FA.Spec_Entity)
+            then
+               for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+                  if not Has_Null_Refinement (State) then
+                     for Constituent of Iter (Refinement_Constituents (State))
+                     loop
+                        if not Entity_Is_In_Main_Unit (Constituent) then
+                           --  ??? we should also set Is_Export flag, just like
+                           --  when processing constituents from the same unit.
 
-                  DM : constant Dependency_Maps.Map :=
-                    (if Present (Refined_State_N)
-                     then Parse_Refined_State (Refined_State_N)
-                     else Dependency_Maps.Empty_Map);
-
-               begin
-                  for Constituents of DM loop
-                     for Constituent of Constituents loop
-                        declare
-                           Constit_Ent : constant Entity_Id :=
-                              Get_Direct_Mapping_Id (Constituent);
-                        begin
-                           if not Entity_Is_In_Main_Unit (Constit_Ent) then
-                              --  ??? we should also set Is_Export flag, just
-                              --  like when processing constituents from the
-                              --  same unit.
-
-                              Create_Initial_And_Final_Vertices
-                                (E  => Constit_Ent,
-                                 FA => FA);
-                           end if;
-                        end;
+                           Create_Initial_And_Final_Vertices
+                             (E  => Constituent,
+                              FA => FA);
+                        end if;
                      end loop;
-                  end loop;
-               end;
+                  end if;
+               end loop;
             end if;
          end case;
       end if;

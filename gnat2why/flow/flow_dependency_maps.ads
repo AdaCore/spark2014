@@ -70,9 +70,4 @@ package Flow_Dependency_Maps is
    --  @param S is the Flow_Scope at which we need to up project the results
    --  @returns the dependency map representing the initializes aspect
 
-   function Parse_Refined_State (N : Node_Id) return Dependency_Maps.Map
-   with Pre => Get_Pragma_Id (N) = Pragma_Refined_State;
-
-   --  Parses the Refined_State aspect
-
 end Flow_Dependency_Maps;
