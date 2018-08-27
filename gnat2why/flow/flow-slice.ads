@@ -56,7 +56,7 @@ package Flow.Slice is
 
    procedure Compute_Globals
      (FA                    : Flow_Analysis_Graphs;
-      Inputs_Proof          : out Node_Sets.Set;
+      Proof_Ins             : out Node_Sets.Set;
       Inputs                : out Node_Sets.Set;
       Outputs               : out Node_Sets.Set;
       Proof_Calls           : out Node_Sets.Set;
@@ -67,7 +67,7 @@ package Flow.Slice is
         Post => Definite_Calls.Intersection (Conditional_Calls).Is_Empty
                 and then Proof_Calls.Intersection
                            (Definite_Calls or Conditional_Calls).Is_Empty
-                and then Inputs_Proof.Intersection
+                and then Proof_Ins.Intersection
                            (Inputs or Outputs).Is_Empty
                 and then Local_Definite_Writes.Is_Subset
                            (Of_Set => FA.GG.Local_Variables);

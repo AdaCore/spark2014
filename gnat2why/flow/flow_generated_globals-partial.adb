@@ -401,7 +401,7 @@ package body Flow_Generated_Globals.Partial is
       if FA.Is_Generative then
          Compute_Globals
            (FA,
-            Inputs_Proof          => Contr.Globals.Refined.Proof_Ins,
+            Proof_Ins             => Contr.Globals.Refined.Proof_Ins,
             Inputs                => Contr.Globals.Refined.Inputs,
             Outputs               => Contr.Globals.Refined.Outputs,
             Proof_Calls           => Contr.Globals.Calls.Proof_Calls,

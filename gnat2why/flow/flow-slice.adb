@@ -282,7 +282,7 @@ package body Flow.Slice is
 
    procedure Compute_Globals
      (FA                    : Flow_Analysis_Graphs;
-      Inputs_Proof          : out Node_Sets.Set;
+      Proof_Ins             : out Node_Sets.Set;
       Inputs                : out Node_Sets.Set;
       Outputs               : out Node_Sets.Set;
       Proof_Calls           : out Node_Sets.Set;
@@ -468,7 +468,7 @@ package body Flow.Slice is
 
       --  Classify globals into outs, ins and in_outs; also, insert "out" and
       --  "in_out" globals into Outputs, and "in" into Inputs.
-      Inputs_Proof.Clear;
+      Proof_Ins.Clear;
       Inputs.Clear;
       Outputs.Clear;
 
@@ -528,7 +528,7 @@ package body Flow.Slice is
                   if Ordinary_Ins.Contains (G) then
                      Inputs.Insert (G);
                   else
-                     Inputs_Proof.Insert (G);
+                     Proof_Ins.Insert (G);
                   end if;
                else
                   --  If not written and not used, then should not be a global
