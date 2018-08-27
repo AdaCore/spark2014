@@ -282,9 +282,7 @@ package body Flow.Slice is
 
    procedure Compute_Globals
      (FA                    : Flow_Analysis_Graphs;
-      Proof_Ins             : out Node_Sets.Set;
-      Inputs                : out Node_Sets.Set;
-      Outputs               : out Node_Sets.Set;
+      Globals               : out Global_Nodes;
       Proof_Calls           : out Node_Sets.Set;
       Definite_Calls        : out Node_Sets.Set;
       Conditional_Calls     : out Node_Sets.Set;
@@ -402,6 +400,13 @@ package body Flow.Slice is
 
       Ordinary_Ins : Node_Sets.Set;
 
+      Proof_Ins : Global_Set;
+      Inputs    : Global_Set;
+      Outputs   : Global_Set;
+      --  Placeholders for the results; they are separate containers because
+      --  while we populate them we don't want to care about the predicate on
+      --  the result type.
+
    --  Start of processing for Compute_Globals
 
    begin
@@ -468,9 +473,6 @@ package body Flow.Slice is
 
       --  Classify globals into outs, ins and in_outs; also, insert "out" and
       --  "in_out" globals into Outputs, and "in" into Inputs.
-      Proof_Ins.Clear;
-      Inputs.Clear;
-      Outputs.Clear;
 
       for G of FA.GG.Globals loop
          declare
@@ -537,6 +539,10 @@ package body Flow.Slice is
             end if;
          end;
       end loop;
+
+      Globals := (Proof_Ins => Proof_Ins,
+                  Inputs    => Inputs,
+                  Outputs   => Outputs);
 
       --  Only needed for packages
       if FA.Kind in Kind_Package | Kind_Package_Body then
