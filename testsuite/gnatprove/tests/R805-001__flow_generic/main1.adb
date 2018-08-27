@@ -1,4 +1,4 @@
-procedure Main (Arg : Float) with Global => null is
+procedure Main1 (Arg : Float) with Global => null is
 
    generic
       X : Float;
