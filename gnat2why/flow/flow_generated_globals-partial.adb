@@ -1138,39 +1138,32 @@ package body Flow_Generated_Globals.Partial is
 
       --  ??? this is probably wrong place to filter locals
       --  ### Nah, I think this is the right place.
-      if Ekind (Analyzed) in Entry_Kind
-                           | E_Function
-                           | E_Procedure
-                           | E_Task_Type
-      then
-         declare
-            C : Contract renames Contracts (Analyzed);
+      declare
+         C : Contract renames Contracts (Analyzed);
+         S : constant Entity_Id := Scope (Analyzed);
 
-            S : constant Entity_Id := Scope (Analyzed);
+      begin
+         Filter_Local (Analyzed, C.Globals.Proper);
+         Filter_Local (Analyzed, C.Globals.Refined);
 
-         begin
-            Filter_Local (Analyzed, C.Globals.Proper);
-            Filter_Local (Analyzed, C.Globals.Refined);
+         --  Protected type appear as an implicit parameter to protected
+         --  subprograms and protected entries, and as a global to things
+         --  nested in them. After resolving calls from protected
+         --  subprograms and protected entries to their nested things the
+         --  type will also appear as a global of the protected
+         --  subprogram/entry. Here we strip it. ??? Conceptually this
+         --  belongs to Filter_Local where Scope_Same_Or_Within does not
+         --  capture this.
 
-            --  Protected type appear as an implicit parameter to protected
-            --  subprograms and protected entries, and as a global to things
-            --  nested in them. After resolving calls from protected
-            --  subprograms and protected entries to their nested things the
-            --  type will also appear as a global of the protected
-            --  subprogram/entry. Here we strip it. ??? Conceptually this
-            --  belongs to Filter_Local where Scope_Same_Or_Within does not
-            --  capture this.
-
-            if Ekind (S) = E_Protected_Type then
-               C.Globals.Proper.Inputs.Exclude (S);
-               C.Globals.Proper.Outputs.Exclude (S);
-               C.Globals.Proper.Proof_Ins.Exclude (S);
-               C.Globals.Refined.Inputs.Exclude (S);
-               C.Globals.Refined.Outputs.Exclude (S);
-               C.Globals.Refined.Proof_Ins.Exclude (S);
-            end if;
-         end;
-      end if;
+         if Ekind (S) = E_Protected_Type then
+            C.Globals.Proper.Inputs.Exclude (S);
+            C.Globals.Proper.Outputs.Exclude (S);
+            C.Globals.Proper.Proof_Ins.Exclude (S);
+            C.Globals.Refined.Inputs.Exclude (S);
+            C.Globals.Refined.Outputs.Exclude (S);
+            C.Globals.Refined.Proof_Ins.Exclude (S);
+         end if;
+      end;
 
       if XXX then
          Debug_Traversal (Analyzed);
