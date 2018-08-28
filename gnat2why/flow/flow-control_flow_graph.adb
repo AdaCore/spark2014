@@ -6122,6 +6122,21 @@ package body Flow.Control_Flow_Graph is
                      Mode => Mode_Proof,
                      FA   => FA);
                end loop;
+
+               --  Similarly, the Initializes can't capture objects used for
+               --  the IN mode actual parameters of generic instances or in the
+               --  declaration blocks in the package body statements. We only
+               --  pick them when the (generated) Initializes contract is null,
+               --  as otherwise they would appear in the (generated) RHSs.
+
+               if DM.Is_Empty then
+                  for Input of Globals.Inputs loop
+                     Create_Initial_And_Final_Vertices
+                       (F    => Change_Variant (Input, Normal_Use),
+                        Mode => Mode_In,
+                        FA   => FA);
+                  end loop;
+               end if;
             end;
 
             --  If a Refined_State aspect exists then create initial and final
