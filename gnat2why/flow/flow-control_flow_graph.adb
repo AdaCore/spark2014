@@ -2653,8 +2653,7 @@ package body Flow.Control_Flow_Graph is
             --  Construct the variable we're possibly fully defining
             case Nkind (Prefix (N)) is
                when N_Identifier | N_Expanded_Name =>
-                  F := Direct_Mapping_Id
-                    (Unique_Entity (Entity (Prefix (N))));
+                  F := Direct_Mapping_Id (Entity (Prefix (N)));
                   T := Get_Type (Entity (Prefix (N)), FA.B_Scope);
 
                when N_Selected_Component =>
@@ -2665,8 +2664,7 @@ package body Flow.Control_Flow_Graph is
                   raise Program_Error;
             end case;
 
-            --  Extract indices (and make sure they are simple and
-            --  distinct).
+            --  Extract indices (and make sure they are simple and distinct)
             L := Entity_Vectors.Empty_Vector;
             declare
                Ptr         : Node_Id := First (Expressions (N));
