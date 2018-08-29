@@ -2133,10 +2133,6 @@ package body Flow.Control_Flow_Graph is
       with Pre => Is_For_Loop (N);
       --  Obtain the entity of a for loops loop parameter
 
-      function Get_Loop_Name (N : Node_Id) return Entity_Id
-      is (Entity (Identifier (N)));
-      --  Obtain the entity of loop's label
-
       function Get_Loop_Range (N : Node_Id) return Node_Id
       with Pre => Is_For_Loop (N);
       --  Return the range given for loop
@@ -2902,6 +2898,11 @@ package body Flow.Control_Flow_Graph is
 
          procedure Rec (N : Node_Id) renames Rec_Inner;
 
+         --  Local variables:
+
+         Loop_Name : constant Entity_Id := Entity (Identifier (N));
+         --  The loop entity
+
       --  Start of processing for Variables_Initialized_By_Loop
 
       begin
@@ -2910,7 +2911,7 @@ package body Flow.Control_Flow_Graph is
          end if;
 
          for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-            if FA.Atr (V).Loops.Contains (Get_Loop_Name (N)) then
+            if FA.Atr (V).Loops.Contains (Loop_Name) then
                All_Loop_Vertices.Insert (V);
             end if;
          end loop;
