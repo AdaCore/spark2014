@@ -2836,24 +2836,27 @@ package body Flow.Control_Flow_Graph is
          begin
             case Nkind (N) is
                when N_Loop_Statement =>
-                  declare
-                     Old_Loop : constant Node_Id := Current_Loop;
-                  begin
-                     if N = Current_Loop then
-                        return OK;
+                  if N = Current_Loop then
+                     return OK;
 
-                     elsif Is_For_Loop (N) then
+                  elsif Is_For_Loop (N) then
+                     declare
+                        Old_Loop      : constant Node_Id := Current_Loop;
+                        Loop_Variable : constant Entity_Id :=
+                          Get_Loop_Variable (N);
+
+                     begin
                         Current_Loop := N;
-                        Active_Loops.Insert (Get_Loop_Variable (N));
+                        Active_Loops.Insert (Loop_Variable);
 
                         Rec (N);
 
                         Current_Loop := Old_Loop;
-                        Active_Loops.Delete (Get_Loop_Variable (N));
+                        Active_Loops.Delete (Loop_Variable);
+                     end;
 
-                        return Skip;
-                     end if;
-                  end;
+                     return Skip;
+                  end if;
 
                when N_Assignment_Statement =>
                   declare
