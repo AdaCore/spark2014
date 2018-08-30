@@ -37,7 +37,6 @@ with Exp_Util;                        use Exp_Util;
 with Flow_Refinement;                 use Flow_Refinement;
 with Flow_Types;                      use Flow_Types;
 with Gnat2Why_Args;
-with Gnat2Why.Util;
 with Lib;                             use Lib;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
@@ -4189,7 +4188,7 @@ package body SPARK_Definition is
          --  If the type has a Default_Initial_Condition aspect, store the
          --  corresponding procedure in the Delayed_Type_Aspects map.
 
-         if Gnat2Why.Util.May_Need_DIC_Checking (E) then
+         if May_Need_DIC_Checking (E) then
             declare
                Delayed_Mapping : constant Node_Id :=
                  (if Present (Current_SPARK_Pragma)

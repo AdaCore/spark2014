@@ -25,6 +25,7 @@
 
 with Aspects;                    use Aspects;
 with Elists;                     use Elists;
+with Exp_Util;                   use Exp_Util;
 with Sem_Eval;                   use Sem_Eval;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
@@ -342,16 +343,17 @@ package body SPARK_Util.Types is
 
    begin
       --  If E has no DIC procedure, or if its DIC procedure has an associated
-      --  body, return it.
+      --  body which has been marked, return it.
 
       if No (DIC_Procedure (E))
-        or else Present (Get_Body (DIC_Procedure (E)))
+        or else (Present (Get_Body (DIC_Procedure (E)))
+                 and then May_Need_DIC_Checking (E))
       then
          return DIC_Procedure (E);
       end if;
 
       --  An inherited DIC procedure may have no body. Go to the ancestor to
-      --  find the body.
+      --  find an adequate body.
 
       loop
          pragma Assert (Has_Inherited_DIC (Ty));
@@ -364,10 +366,14 @@ package body SPARK_Util.Types is
 
          pragma Assert (Present (DIC_Procedure (Ty)));
 
-         exit when Anc = Ty or else Present (Get_Body (DIC_Procedure (Ty)));
+         exit when Anc = Ty
+           or else (Present (Get_Body (DIC_Procedure (Ty)))
+                    and then May_Need_DIC_Checking (Ty));
       end loop;
 
-      if Present (Get_Body (DIC_Procedure (Ty))) then
+      if Present (Get_Body (DIC_Procedure (Ty)))
+        and then May_Need_DIC_Checking (Ty)
+      then
          return DIC_Procedure (Ty);
 
       --  The DIC has been inherited in a part not in SPARK. Ignore it.
@@ -607,6 +613,25 @@ package body SPARK_Util.Types is
      (Is_Array_Type (E)
         and then Is_Constrained (E)
         and then Has_Static_Array_Bounds (E));
+
+   ---------------------------
+   -- May_Need_DIC_Checking --
+   ---------------------------
+
+   function May_Need_DIC_Checking (E : Entity_Id) return Boolean is
+      DIC_Needs_To_Be_Checked : constant Boolean :=
+        Has_Own_DIC (E)
+        and then Present (DIC_Procedure (E));
+
+      DIC_Needs_To_Be_Rechecked : constant Boolean :=
+        Is_Tagged_Type (E)
+        and then Is_Full_View (E)
+        and then Present (DIC_Procedure (E))
+        and then Expression_Contains_Primitives_Calls_Of
+          (Get_Expr_From_Check_Only_Proc (DIC_Procedure (E)), E);
+   begin
+      return DIC_Needs_To_Be_Checked or DIC_Needs_To_Be_Rechecked;
+   end May_Need_DIC_Checking;
 
    ----------------------------------
    -- Needs_Default_Checks_At_Decl --

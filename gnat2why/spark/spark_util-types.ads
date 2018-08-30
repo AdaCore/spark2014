@@ -187,8 +187,8 @@ package SPARK_Util.Types is
      Pre => Is_Type (E) and then Has_DIC (E);
    --  @param E a type with a DIC
    --  @return the DIC procedure defined on the ancestor of E which has a body
-   --     if any. This is necessary as inherited DIC procedures don't have a
-   --     body.
+   --     which has been marked if any. This is necessary as inherited DIC
+   --     procedures may not have a body, or may not be marked.
 
    function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
    with Pre => Present (N);
@@ -242,6 +242,13 @@ package SPARK_Util.Types is
    --  @return True if there is an invariant that needs to be checked for type
    --          Ty. It can come from Ty itself, from one of its ancestors, or
    --          from one of its components.
+
+   function May_Need_DIC_Checking (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
+   --  @param E type entity
+   --  @return True iff E is the entity for a declaration that may require
+   --     checking the DIC, either because it has its own DIC, or because it
+   --     is a tagged type which inherits a DIC which requires rechecking.
 
    function Is_Nouveau_Type (T : Entity_Id) return Boolean is
      (Etype (T) = T)
