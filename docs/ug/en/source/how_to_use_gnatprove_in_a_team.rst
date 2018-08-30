@@ -38,7 +38,7 @@ Multiple workflows allow to use |GNATprove| in a team:
 4. |GNATprove| is run on a server or locally, and the |GNATprove| session files
    are shared in Configuration Management.
 
-In all workflows (but critically for the first workflow), messages can
+In all workflows (but critically for the first workflow), messages can be
 suppressed or justified. Indeed, like every sound and complete verification
 tool, |GNATprove| may issue false alarms. A first step is to identify the type
 of message:
