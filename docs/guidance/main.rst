@@ -585,7 +585,7 @@ with a ``SPARK_Mode`` aspect with value ``On`` as follows:
       package body Pack_To_Analyze with SPARK_Mode => On is ...
    end Pack_To_Exclude;
 
-When the violation occurs in the package spec, there are three possibities:
+When the violation occurs in the package spec, there are three possibilities:
 First, the violation can occur inside the declaration of a subprogram or
 package in the package spec. In that case, you can exclude just that subprogram
 or package from analysis by excluding both its spec and the corresponding body
@@ -1619,7 +1619,7 @@ justification message:
               & " have been initialized."));
 
 On existing, thoroughly tested code, unconditional reads of uninitialized
-data are rather unlikely. Neverthless, there may be a path through the
+data are rather unlikely. Nevertheless, there may be a path through the
 program where an uninitialized variable can be read. Before justifying an
 unproved initialization check, it's important to understand why it's not
 proved and what are the assumptions conveyed to the tool when justifying
@@ -2013,7 +2013,7 @@ versions of Ada is required:
    pragma Global (null);
 
 This annotation is the most common one as most subprograms don't use global
-state. In its more complete form, the ``Global`` contract allows specifing
+state. In its more complete form, the ``Global`` contract allows specifying
 precisely the set of variables that are read, updated, and initialized by
 the subprogram:
 
@@ -3450,7 +3450,7 @@ For each unproved property in this subprogram, you should follow the following s
    information consists mostly of the types of parameters and global variables,
    the precondition of the subprogram, and the postconditions of the subprograms
    it calls. If the information is not locally available, you should change
-   types and/or add contracts to make it locally available tothe analysis.
+   types and/or add contracts to make it locally available to the analysis.
 
    .. index:: Loop invariant
 
