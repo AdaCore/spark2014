@@ -1394,6 +1394,29 @@ result in an unproved initialization check:
    A (1) := 1;  --<<--  medium: "A" might not be initialized
    A (2) := 2;  --<<--  info: initialization of "A" proved
 
+However, GNATprove detects the common pattern of initializing an array in a
+loop that iterates over the entire range of the array index values, for
+example:
+
+.. code-block:: ada
+
+   type Index_T is range 1 .. 10;
+   type Array_T is array (Index_T) of Integer;
+
+   procedure Example (A : out Array_T) is
+   begin
+      for I in Index_T loop
+         if I < 5 then
+            A (I) := 0;
+         else
+            A (I) := 1;
+         end if;
+      end loop;
+   end Example;
+
+Here flow analysis will detect that the entire array ``A`` is initialized
+and not issue spurious checks for the assignment statements.
+
 Value Dependency
 ^^^^^^^^^^^^^^^^
 
