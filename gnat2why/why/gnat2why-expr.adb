@@ -153,12 +153,7 @@ package body Gnat2Why.Expr is
 
    function Boolean_Expr_Of_Pred
      (W      : W_Pred_Id;
-      Domain : EW_Domain) return W_Expr_Id
-   is
-     (case Domain is
-        when EW_Prog | EW_Pterm => +Boolean_Prog_Of_Pred (W),
-        when EW_Term => +Boolean_Term_Of_Pred (W),
-        when EW_Pred => +W);
+      Domain : EW_Domain) return W_Expr_Id;
    --  @param W a Why3 pred expression
    --  @param Domain translation domain
    --  @return the equivalent Why3 expression, depending on the [Domain]
@@ -1558,6 +1553,22 @@ package body Gnat2Why.Expr is
 
       return Result;
    end Bind_From_Mapping_In_Expr;
+
+   --------------------------
+   -- Boolean_Expr_Of_Pred --
+   --------------------------
+
+   function Boolean_Expr_Of_Pred
+     (W      : W_Pred_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   is
+   begin
+      case Domain is
+         when EW_Prog | EW_Pterm => return +Boolean_Prog_Of_Pred (W);
+         when EW_Term            => return +Boolean_Term_Of_Pred (W);
+         when EW_Pred            => return +W;
+      end case;
+   end Boolean_Expr_Of_Pred;
 
    ---------------------------
    -- Case_Expr_Of_Ada_Node --
