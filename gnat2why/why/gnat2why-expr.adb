@@ -12891,10 +12891,12 @@ package body Gnat2Why.Expr is
       Domain   : EW_Domain;
       Selector : Selection_Kind := Why.Inter.Standard) return W_Expr_Id
    is
-      C        : constant Ada_Ent_To_Why.Cursor :=
+      C          : constant Ada_Ent_To_Why.Cursor :=
         Ada_Ent_To_Why.Find (Symbol_Table, Ent);
-      T        : W_Expr_Id;
-      Is_Deref : Boolean := False;
+      T          : W_Expr_Id;
+      Need_Deref : Boolean := False;
+      --  Whether dereference need to be applied
+
    begin
       --  The special cases of this function are:
       --  * parameters, whose names are stored in Params.Name_Map (these can
@@ -12924,13 +12926,14 @@ package body Gnat2Why.Expr is
                   | Concurrent_Self
                =>
                   T := +E.Main.B_Name;
+                  Need_Deref := E.Main.Mutable;
 
                when UCArray =>
                   T := +E.Content.B_Name;
+                  Need_Deref := E.Content.Mutable;
 
                when DRecord =>
                   T := Record_From_Split_Form (E, Params.Ref_Allowed);
-                  Is_Deref := True;
 
                   --  Havoc the references of Ent for volatiles with
                   --  Async_Writers.
@@ -13056,12 +13059,10 @@ package body Gnat2Why.Expr is
 
       if Has_Async_Writers (Direct_Mapping_Id (Ent))
         and then Domain = EW_Prog
-        and then not Is_Deref
-        and then not Is_Part_Of_Protected_Object (Ent)
+        and then Need_Deref
         and then Params.Ref_Allowed
       then
          pragma Assert (Is_Mutable_In_Why (Ent));
-
          declare
             Deref    : constant W_Expr_Id :=
               New_Deref (Ada_Node => Get_Ada_Node (+T),
@@ -13086,10 +13087,8 @@ package body Gnat2Why.Expr is
                             Right    => +Deref);
          end;
 
-      elsif Is_Mutable_In_Why (Ent)
-        and then Params.Ref_Allowed
-        and then not Is_Deref
-      then
+      elsif Params.Ref_Allowed and then Need_Deref then
+         pragma Assert (Is_Mutable_In_Why (Ent));
          T := New_Deref (Ada_Node => Get_Ada_Node (+T),
                          Right    => +T,
                          Typ      => Get_Type (T));

@@ -308,7 +308,7 @@ package Why.Gen.Binders is
    --  @return the type of the ada node associated to B.
 
    function Item_Is_Mutable (B : Item_Type) return Boolean;
-   --  Chcek if an Item is Mutable.
+   --  Check if an Item is Mutable.
    --  @param B item we query.
    --  @return True if B is mutable
 
