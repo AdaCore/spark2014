@@ -34,7 +34,7 @@ Using pragma Annotate to force Proof of Termination
 ---------------------------------------------------
 
 SPARK doesn't usually prove termination of subprograms. You can instruct it do
-so so using annotations of this form:
+so using annotations of this form:
 
 .. code-block:: ada
       
