@@ -2667,15 +2667,15 @@ package body Flow.Control_Flow_Graph is
             --  Extract indices (and make sure they are simple and distinct)
             L := Entity_Vectors.Empty_Vector;
             declare
-               Ptr         : Node_Id := First (Expressions (N));
-               Index_Ptr   : Node_Id := First_Index (T);
+               Param_Expr  : Node_Id := First (Expressions (N));
+               Index_Expr  : Node_Id := First_Index (T);
                Param_Range : Node_Id;
                Index_Range : Node_Id;
             begin
-               while Present (Ptr) loop
-                  case Nkind (Ptr) is
+               while Present (Param_Expr) loop
+                  case Nkind (Param_Expr) is
                      when N_Identifier | N_Expanded_Name =>
-                        if L.Contains (Entity (Ptr)) then
+                        if L.Contains (Entity (Param_Expr)) then
                            --  Non-distinct entry, just abort. For
                            --  example:
                            --
@@ -2685,7 +2685,7 @@ package body Flow.Control_Flow_Graph is
                            return Null_Target;
                         end if;
 
-                        if not Active_Loops.Contains (Entity (Ptr)) then
+                        if not Active_Loops.Contains (Entity (Param_Expr)) then
                            --  Not a loop variable we care about, again
                            --  we just abort. For example:
                            --
@@ -2695,8 +2695,8 @@ package body Flow.Control_Flow_Graph is
                            return Null_Target;
                         end if;
 
-                        Param_Range := Get_Range (Entity (Ptr));
-                        Index_Range := Get_Range (Index_Ptr);
+                        Param_Range := Get_Range (Entity (Param_Expr));
+                        Index_Range := Get_Range (Index_Expr);
 
                         --  ??? Do we need to do something here for
                         --      static_predicate?
@@ -2714,7 +2714,7 @@ package body Flow.Control_Flow_Graph is
                            return Null_Target;
                         end if;
 
-                        L.Append (Entity (Ptr));
+                        L.Append (Entity (Param_Expr));
 
                      when others =>
                         --  This is not a simple entity, so just abort.
@@ -2726,8 +2726,8 @@ package body Flow.Control_Flow_Graph is
                         return Null_Target;
                   end case;
 
-                  Next (Ptr);
-                  Next_Index (Index_Ptr);
+                  Next (Param_Expr);
+                  Next_Index (Index_Expr);
                end loop;
             end;
 
