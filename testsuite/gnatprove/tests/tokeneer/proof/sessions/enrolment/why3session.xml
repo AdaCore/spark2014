@@ -36,7 +36,7 @@
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="34039"/></proof>
+  <proof prover="1"><result status="unknown" steps="35322"/></proof>
   <proof prover="2"><result status="unknown" steps="338"/></proof>
   <proof prover="3"><result status="unknown" steps="612"/></proof>
   </goal>
@@ -56,7 +56,7 @@
   <proof prover="2"><result status="valid" steps="209"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="181"/></proof>
+  <proof prover="2"><result status="valid" steps="179"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="postcondition" proved="true">
   <proof prover="2"><result status="valid" steps="20"/></proof>
