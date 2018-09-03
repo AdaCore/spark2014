@@ -3,8 +3,8 @@ foo.adb:16:26: info: initialization of "R.A" proved
 foo.adb:16:26: info: initialization of "R.B" proved
 foo.adb:20:18: info: initialization of "R.A" proved
 foo.adb:25:04: warning: analyzing unreferenced procedure "Test_02_Ok_Hard"
-foo.adb:25:31: medium: "A" might not be initialized in "Test_02_Ok_Hard"
-foo.adb:29:16: medium: "A" might not be initialized
+foo.adb:25:31: info: initialization of "A" proved
+foo.adb:29:16: info: initialization of "A" proved
 foo.adb:33:04: warning: analyzing unreferenced procedure "Test_03_E"
 foo.adb:33:25: info: initialization of "A" proved
 foo.adb:37:19: high: "A" is not initialized

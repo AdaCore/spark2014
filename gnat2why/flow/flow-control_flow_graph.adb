@@ -2520,7 +2520,7 @@ package body Flow.Control_Flow_Graph is
             Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
             Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
 
-            Fully_Initialized := Flow_Id_Sets.Empty_Set;
+            Fully_Initialized := Variables_Initialized_By_Loop (N);
          end if;
       end Do_For_Loop;
 
@@ -2602,7 +2602,10 @@ package body Flow.Control_Flow_Graph is
          Active_Loops      : Node_Sets.Set   := Node_Sets.Empty_Set;
          All_Loop_Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
-         Lc : constant Graph_Connections := CM (Union_Id (N));
+         Lc : constant Graph_Connections := CM (Union_Id (Statements (N)));
+         --  A slice (represented by Standard_Entry and Standard_Exits) of the
+         --  CFG for checking whether a variable is defined on all paths in
+         --  the current loop.
 
          function Get_Array_Index (N : Node_Id) return Target;
          --  Convert the target of an assignment to an array into a flow id
@@ -2610,7 +2613,7 @@ package body Flow.Control_Flow_Graph is
 
          function Fully_Defined_In_Original_Loop (T : Target) return Boolean
          with Pre => T.Valid;
-         --  Performs a mini-flow analysis on the current loop fragment to
+         --  Performs a mini-flow analysis on the current loop statements to
          --  see if T is defined on all paths (but not explicitly used).
 
          function Proc_Search (N : Node_Id) return Traverse_Result;
@@ -2667,10 +2670,68 @@ package body Flow.Control_Flow_Graph is
             --  Extract indices (and make sure they are simple and distinct)
             L := Entity_Vectors.Empty_Vector;
             declare
-               Param_Expr  : Node_Id := First (Expressions (N));
-               Index_Expr  : Node_Id := First_Index (T);
+               Param_Expr  : Node_Id := First (Expressions (N)); --  LHS
+               Index_Expr  : Node_Id := First_Index (T);         --  array
                Param_Range : Node_Id;
                Index_Range : Node_Id;
+
+               Multi_Dim   : constant Boolean :=
+                 List_Length (Expressions (N)) > 1;
+               Current_Dim : Pos := 1;
+
+               function Matches_Object_Range
+                 (Param_Range : Node_Id)
+                  return Boolean;
+               --  Returns True iff the range of the loop parameter matches the
+               --  range of the assigned array, e.g.:
+               --
+               --  for J in S'Range loop
+               --     S (J) := ...;
+               --  end loop;
+               --
+               --  Note: the 'Range in code like this will be expanded into
+               --  'First and 'Last and this is what we actually detect.
+
+               --------------------------
+               -- Matches_Object_Range --
+               --------------------------
+
+               function Matches_Object_Range
+                 (Param_Range : Node_Id)
+                  return Boolean
+               is
+                  Low  : constant Node_Id := Low_Bound (Param_Range);
+                  High : constant Node_Id := High_Bound (Param_Range);
+
+                  Object : constant Entity_Id :=
+                    (if F.Kind = Direct_Mapping
+                     then Get_Direct_Mapping_Id (F)
+                     else F.Component.Last_Element);
+                  --  The object being assigned
+
+                  pragma Assert
+                    (if F.Kind = Direct_Mapping
+                     then Is_Assignable (Object)
+                     else Ekind (Object) = E_Component);
+
+               begin
+                  return Nkind (Low) = N_Attribute_Reference
+                    and then Get_Attribute_Id (Attribute_Name (Low)) =
+                             Attribute_First
+                    and then Entity (Prefix (Low)) = Object
+
+                    and then Nkind (High) = N_Attribute_Reference
+                    and then Get_Attribute_Id (Attribute_Name (High)) =
+                             Attribute_Last
+                    and then Entity (Prefix (High)) = Object
+
+                    and then
+                      (if Multi_Dim
+                       then Intval (First (Expressions (Low))) = Current_Dim
+                              and then
+                            Intval (First (Expressions (High))) = Current_Dim);
+               end Matches_Object_Range;
+
             begin
                while Present (Param_Expr) loop
                   case Nkind (Param_Expr) is
@@ -2698,17 +2759,22 @@ package body Flow.Control_Flow_Graph is
                         Param_Range := Get_Range (Entity (Param_Expr));
                         Index_Range := Get_Range (Index_Expr);
 
-                        if not
-                          (Compile_Time_Compare (Low_Bound (Param_Range),
-                                                 Low_Bound (Index_Range),
-                                                 True) = EQ
-                             and then
-                           Compile_Time_Compare (High_Bound (Param_Range),
-                                                 High_Bound (Index_Range),
-                                                 True) = EQ)
+                        if (Compile_Time_Compare (Low_Bound (Param_Range),
+                                                  Low_Bound (Index_Range),
+                                                  True) = EQ
+                              and then
+                            Compile_Time_Compare (High_Bound (Param_Range),
+                                                  High_Bound (Index_Range),
+                                                  True) = EQ)
+                          or else
+                            Matches_Object_Range (Param_Range)
                         then
-                           --  The loop parameter type does not fully
-                           --  cover this index type.
+                           null;
+
+                        --  The loop parameter type does not fully cover this
+                        --  index type.
+
+                        else
                            return Null_Target;
                         end if;
 
@@ -2726,6 +2792,7 @@ package body Flow.Control_Flow_Graph is
 
                   Next (Param_Expr);
                   Next_Index (Index_Expr);
+                  Current_Dim := Current_Dim + 1;
                end loop;
             end;
 

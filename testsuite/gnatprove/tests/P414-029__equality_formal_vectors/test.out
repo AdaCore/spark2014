@@ -71,9 +71,10 @@ names.adb:99:75: info: initialization of "N" proved
 names.adb:101:28: info: initialization of "N" proved
 names.adb:118:37: medium: precondition might fail
 names.adb:118:59: info: range check proved (CVC4: 1 VC)
-names.adb:121:10: medium: "S" might not be initialized
+names.adb:121:10: info: initialization of "S" proved
 names.adb:121:17: info: range check proved (CVC4: 2 VC)
 names.adb:122:17: info: range check proved (CVC4: 2 VC)
+names.adb:123:22: info: initialization of "S" proved
 names.adb:123:25: medium: precondition might fail
 names.adb:124:48: medium: overflow check might fail (e.g. when E = (Table_Index => 2147483646, Length => 3, Next_Hash => 0) and I = 3)
 names.adb:124:48: medium: range check might fail

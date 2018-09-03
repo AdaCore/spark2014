@@ -1,7 +1,7 @@
 dynamic_1d.adb:1:11: warning: subprogram "Dynamic_1D" has no effect
-dynamic_1d.adb:4:21: medium: "S" might not be initialized in "Flush"
+dynamic_1d.adb:4:21: info: initialization of "S" proved
+dynamic_1d.adb:7:16: info: initialization of "S" proved
 dynamic_1d.adb:7:16: info: initialization of "X" proved, in call inlined at dynamic_1d.adb:14
-dynamic_1d.adb:7:16: medium: "S" might not be initialized
 dynamic_1d.adb:11:26: info: length check proved (CVC4: 1 VC)
 dynamic_2d.adb:1:11: warning: subprogram "Dynamic_2D" has no effect
 dynamic_2d.adb:4:21: medium: "S" might not be initialized in "Flush"
