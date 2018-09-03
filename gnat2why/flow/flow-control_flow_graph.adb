@@ -2698,8 +2698,6 @@ package body Flow.Control_Flow_Graph is
                         Param_Range := Get_Range (Entity (Param_Expr));
                         Index_Range := Get_Range (Index_Expr);
 
-                        --  ??? Do we need to do something here for
-                        --      static_predicate?
                         if not
                           (Compile_Time_Compare (Low_Bound (Param_Range),
                                                  Low_Bound (Index_Range),
