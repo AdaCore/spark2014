@@ -1737,6 +1737,19 @@ package body Gnat2Why.Expr.Loops.Inv is
                end if;
             end if;
 
+         when N_Explicit_Dereference =>
+
+            --  Access types are considered as entire objects here. Should be
+            --  refined later.
+
+            Update_Status (New_Write      => Prefix (New_Write),
+                           Loop_Writes    => Loop_Writes,
+                           Inv_Seen       => Inv_Seen,
+                           Ignore_Slices  => False,
+                           Expected_Kind  => Entire_Object,
+                           Expected_Type  => Expected_Type,
+                           Updated_Status => Updated_Status);
+
          when others =>
             Ada.Text_IO.Put_Line ("[Update_Status] kind ="
                                   & Node_Kind'Image (Nkind (New_Write)));
