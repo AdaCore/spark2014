@@ -10735,9 +10735,9 @@ package body Gnat2Why.Expr is
 
                   when Array_Kind =>
                      declare
-                        Index       : Node_Id;
-                        Index_Base  : Entity_Id;
-                        Typ         : constant Node_Id :=
+                        Index      : Node_Id;
+                        Index_Base : Entity_Id;
+                        Typ        : constant Node_Id :=
                           Component_Subtype_Indication (Decl);
 
                      begin
