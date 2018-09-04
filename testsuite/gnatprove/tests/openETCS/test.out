@@ -206,9 +206,9 @@ step_function.adb:107:16: info: initialization of "im" proved
 step_function.adb:107:28: info: initialization of "Merge.Step" proved
 step_function.adb:107:28: medium: "Merge.Step" might not be initialized
 step_function.adb:109:13: info: loop invariant initialization proved (CVC4: 2 VC)
-step_function.adb:109:13: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
 step_function.adb:109:32: info: initialization of "scan_sfun1" proved
 step_function.adb:110:16: info: initialization of "Merge.Step" proved
+step_function.adb:110:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
 step_function.adb:110:27: info: initialization of "im" proved
 step_function.adb:110:29: info: index check proved (CVC4: 2 VC)
 step_function.adb:110:56: info: initialization of "i1" proved

@@ -1,6 +1,6 @@
 from test_support import *
 
-prove_all(steps=10000,
+prove_all(steps=30000,
           no_fail=True,
           counterexample=False,
           opt=["--no-axiom-guard",
