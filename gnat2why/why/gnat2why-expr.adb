@@ -9945,10 +9945,6 @@ package body Gnat2Why.Expr is
             when N_Op_Ge => return MF_BVs (Ty).Uge;
             when N_Op_Le => return MF_BVs (Ty).Ule;
          end case;
-      elsif Op = N_Op_Eq then
-         return Why_Eq;
-      elsif Op = N_Op_Ne then
-         return Why_Neq;
       else
          raise Program_Error;
       end if;
@@ -10134,6 +10130,7 @@ package body Gnat2Why.Expr is
                               Typ    => EW_Bool_Type);
                end if;
             else
+               pragma Assert (Has_Scalar_Type (Left_Type));
                T := New_Comparison
                  (Symbol  => Transform_Compare_Op (Op, BT, Domain),
                   Left    => Left_Expr,
