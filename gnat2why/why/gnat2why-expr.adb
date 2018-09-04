@@ -10129,6 +10129,35 @@ package body Gnat2Why.Expr is
                               Args   => (1 => T),
                               Typ    => EW_Bool_Type);
                end if;
+
+            elsif Is_Access_Type (Left_Type) then
+               T :=
+                 New_Call
+                   (Ada_Node => Expr,
+                    Domain   => Subdomain,
+                    Name     =>
+                      E_Symb (Get_Ada_Node (+BT), WNE_Bool_Eq),
+                    Args     => (1 => Left_Expr,
+                                 2 => Right_Expr),
+                    Typ      => EW_Bool_Type);
+
+               if Domain = EW_Pred then
+                  T := New_Comparison
+                    (Symbol =>
+                       Transform_Compare_Op (Op, EW_Bool_Type, Domain),
+                     Left   => T,
+                     Right  => New_Literal (Domain => Subdomain,
+                                            Value  => EW_True),
+                     Domain => Domain);
+
+               elsif Op = N_Op_Ne then
+                  T :=
+                    New_Call (Domain => Domain,
+                              Name   => M_Boolean.Notb,
+                              Args   => (1 => T),
+                              Typ    => EW_Bool_Type);
+               end if;
+
             else
                pragma Assert (Has_Scalar_Type (Left_Type));
                T := New_Comparison
