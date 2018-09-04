@@ -32,6 +32,7 @@ with Aspects;                         use Aspects;
 with Assumption_Types;                use Assumption_Types;
 with Common_Iterators;                use Common_Iterators;
 with Debug;                           use Debug;
+with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
 with Flow_Refinement;                 use Flow_Refinement;
@@ -4096,6 +4097,72 @@ package body SPARK_Definition is
             end loop;
          end if;
 
+         --  If the type has a Default_Initial_Condition aspect, store the
+         --  corresponding procedure in the Delayed_Type_Aspects map.
+
+         if May_Need_DIC_Checking (E) then
+            declare
+               Delayed_Mapping : constant Node_Id :=
+                 (if Present (Current_SPARK_Pragma)
+                  then Current_SPARK_Pragma
+                  else E);
+            begin
+               Delayed_Type_Aspects.Include
+                 (DIC_Procedure (E), Delayed_Mapping);
+            end;
+         end if;
+
+         --  A derived type cannot have explicit discriminants
+
+         if Nkind (Parent (E)) in N_Private_Extension_Declaration
+           | N_Full_Type_Declaration
+           and then not Is_Class_Wide_Type (E)
+           and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
+           and then Present (Discriminant_Specifications (Parent (E)))
+           and then Entity_Comes_From_Source (E)
+         then
+            Mark_Violation
+              ("discriminant on derived type",
+               Parent (E),
+               SRM_Reference => "SPARK RM 3.7(2)");
+         end if;
+
+         --  Mark discriminants if any
+
+         declare
+            Disc : Entity_Id :=
+              (if Has_Discriminants (E)
+               or else Has_Unknown_Discriminants (E)
+               then First_Discriminant (E)
+               else Empty);
+            Elmt : Elmt_Id :=
+              (if Present (Disc) and then Is_Constrained (E) then
+                    First_Elmt (Discriminant_Constraint (E))
+               else No_Elmt);
+         begin
+            while Present (Disc) loop
+
+               --  Check that the type of the discriminant is in SPARK
+
+               if not In_SPARK (Etype (Disc)) then
+                  Mark_Violation (Disc, From => Etype (Disc));
+               end if;
+
+               --  Check that the default expression is in SPARK
+
+               Mark_Default_Expression (Disc);
+
+               --  Check that the discriminant constraint is in SPARK
+
+               if Elmt /= No_Elmt then
+                  Mark (Node (Elmt));
+                  Next_Elmt (Elmt);
+               end if;
+
+               Next_Discriminant (Disc);
+            end loop;
+         end;
+
          --  Type declarations may refer to private types whose full view has
          --  not been declared yet. However, it is this full view which may
          --  define the type in Why3, if it happens to be in SPARK. Hence the
@@ -4183,52 +4250,16 @@ package body SPARK_Definition is
                   end if;
                end;
             end if;
-         end if;
 
-         --  If the type has a Default_Initial_Condition aspect, store the
-         --  corresponding procedure in the Delayed_Type_Aspects map.
+         --  To know whether the fullview of a protected type with no
+         --  SPARK_Mode is in SPARK, we need to mark its components.
 
-         if May_Need_DIC_Checking (E) then
-            declare
-               Delayed_Mapping : constant Node_Id :=
-                 (if Present (Current_SPARK_Pragma)
-                  then Current_SPARK_Pragma
-                  else E);
-            begin
-               Delayed_Type_Aspects.Include
-                 (DIC_Procedure (E), Delayed_Mapping);
-            end;
-         end if;
-
-         --  Now mark the type itself
-
-         if Ekind (E) in E_Protected_Type | E_Task_Type then
+         elsif Ekind (E) in E_Protected_Type | E_Task_Type then
             declare
                Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
                Fullview_In_SPARK : Boolean;
 
             begin
-               --  Mark discriminants of the protected type
-
-               if Has_Discriminants (E) then
-                  declare
-                     Discr : Entity_Id :=  First_Discriminant (E);
-                  begin
-                     while Present (Discr) loop
-
-                        --  Mark type and default value of discriminant
-
-                        if In_SPARK (Etype (Discr)) then
-                           Mark_Default_Expression (Discr);
-                        else
-                           Mark_Violation (Discr, From => Etype (Discr));
-                        end if;
-
-                        Next_Discriminant (Discr);
-                     end loop;
-                  end;
-               end if;
-
                --  Components of protected objects may be subjected to a
                --  different SPARK_Mode.
 
@@ -4259,6 +4290,18 @@ package body SPARK_Definition is
 
                         Next_Component (Comp);
                      end loop;
+
+                     --  Mark Part_Of variables of single protected objects
+
+                     if Ekind (E) = E_Protected_Type
+                       and then Is_Single_Concurrent_Type (E)
+                     then
+                        for Part of
+                          Iter (Part_Of_Constituents (Anonymous_Object (E)))
+                        loop
+                           Mark_Entity (Part);
+                        end loop;
+                     end if;
 
                      --  Protected types need full default initialization. No
                      --  check needed if the private view of the type is not in
@@ -4309,14 +4352,14 @@ package body SPARK_Definition is
                          else Retysp (Etype (E))));
                end if;
             end;
-         end if;
 
-         --  Record position of where to insert concurrent type on the
-         --  Entity_List.
+            --  Record position of where to insert concurrent type on the
+            --  Entity_List.
 
-         if Ekind (E) in E_Protected_Type | E_Task_Type then
             Current_Concurrent_Insert_Pos := Entity_List.Last;
          end if;
+
+         --  Now mark the type itself
 
          if Has_Own_Invariants (E) then
 
@@ -4580,37 +4623,6 @@ package body SPARK_Definition is
 
          elsif Is_Private_Type (E) then
 
-            --  Private types may export discriminants. Discriminants with
-            --  non-SPARK type should be disallowed here.
-
-            declare
-               Disc : Entity_Id :=
-                 (if Has_Discriminants (E)
-                    or else Has_Unknown_Discriminants (E)
-                  then First_Discriminant (E)
-                  else Empty);
-            begin
-               while Present (Disc) loop
-                  if not In_SPARK (Etype (Disc)) then
-                     Mark_Violation (E, From => Etype (Disc));
-                  end if;
-                  Next_Discriminant (Disc);
-               end loop;
-            end;
-
-            --  A derived type cannot have explicit discriminants
-
-            if Nkind (Parent (E)) = N_Private_Extension_Declaration
-              and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
-              and then Present (Discriminant_Specifications (Parent (E)))
-              and then Entity_Comes_From_Source (E)
-            then
-               Mark_Violation
-                 ("discriminant on derived type",
-                  Parent (E),
-                  SRM_Reference => "SPARK RM 3.7(2)");
-            end if;
-
             --  Disallow a private type whose full view is not in SPARK and
             --  which has predicates.
 
@@ -4628,13 +4640,11 @@ package body SPARK_Definition is
             end if;
 
             --  Components of a record type should be in SPARK for the record
-            --  type to be in SPARK. For a private type, we're only interested
-            --  here in its publicly visible components. The same applies to
-            --  concurrent types.
+            --  type to be in SPARK.
 
             if not Is_Interface (E) then
                declare
-                  Comp      : Entity_Id := First_Component_Or_Discriminant (E);
+                  Comp      : Entity_Id := First_Component (E);
                   Comp_Type : Entity_Id;
 
                begin
@@ -4655,22 +4665,9 @@ package body SPARK_Definition is
                         Mark_Default_Expression (Comp);
                      end if;
 
-                     Next_Component_Or_Discriminant (Comp);
+                     Next_Component (Comp);
                   end loop;
                end;
-            end if;
-
-            --  A derived type cannot have explicit discriminants
-
-            if Nkind (Parent (E)) = N_Full_Type_Declaration
-              and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
-              and then Present (Discriminant_Specifications (Parent (E)))
-              and then Entity_Comes_From_Source (E)
-            then
-               Mark_Violation
-                 ("discriminant on derived type",
-                  Parent (E),
-                  SRM_Reference => "SPARK RM 3.7(2)");
             end if;
 
             --  A local derived type cannot have ancestors not defined in
@@ -4772,18 +4769,6 @@ package body SPARK_Definition is
                      end if;
 
                   end;
-
-                  --  Mark Part_Of variables of single protected objects
-
-                  if Ekind (E) = E_Protected_Type
-                    and then Is_Single_Concurrent_Type (E)
-                  then
-                     for Part of
-                       Iter (Part_Of_Constituents (Anonymous_Object (E)))
-                     loop
-                        Mark_Entity (Part);
-                     end loop;
-                  end if;
 
                --  We have a concurrent subtype or derived type. It is in SPARK
                --  if its Etype is in SPARK.
