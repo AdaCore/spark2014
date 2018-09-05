@@ -3041,11 +3041,6 @@ package body Flow.Analysis is
                        not Expanded_Initializes.Contains
                               (Get_Direct_Mapping_Id (Var_Used)))
 
-                    --  Skip obvious messages about initialization of constants
-
-                    or else
-                      Is_Constant (Var_Used)
-
                     --  Skip messages about initialization of internal objects,
                     --  assuming that they are created by the frontend inlining
                     --  and if they would cause access to an uninitialized

@@ -531,8 +531,7 @@ package body Flow.Control_Flow_Graph.Utility is
          when Initial_Value =>
 
             A.Is_Initialized := A.Mode in Mode_In | Mode_In_Out
-              or else Ekind (Entire_Var) = E_Loop_Parameter
-              or else In_Generic_Actual (Entire_Var)
+              or else Ekind (Entire_Var) in E_Loop_Parameter | E_Constant
               or else (not Is_In_Analyzed_Files (Entire_Var)
                          and then
                        Is_Initialized_At_Elaboration (Entire_Var, S));
