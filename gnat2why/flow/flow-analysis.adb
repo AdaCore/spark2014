@@ -2540,7 +2540,7 @@ package body Flow.Analysis is
          --  for the "variable" that represents the function's result.
 
          if Kind = Init
-           and then Is_Function_Entity (Var)
+           and then Is_Function
          then
             pragma Assert (Get_Direct_Mapping_Id (Var) = FA.Analyzed_Entity);
             return;
