@@ -917,6 +917,7 @@ package body Flow.Analysis is
          begin
             if F_Final.Variant = Final_Value
               and then A_Final.Is_Export
+              and then F_Final.Kind /= Synthetic_Null_Export
             then
 
                --  We have a final use vertex which is an export that has
