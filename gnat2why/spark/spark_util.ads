@@ -147,7 +147,8 @@ package SPARK_Util is
                                 | E_Procedure
                                 | E_Protected_Type
                                 | E_Task_Type
-                                | Record_Kind;
+                                | Record_Kind
+                                | Private_Kind;
    --  Subsidiary to the parsing of flow contracts, i.e. [Refined_]Depends,
    --  [Refined_] Global and Initializes, and default expressions.
    --
