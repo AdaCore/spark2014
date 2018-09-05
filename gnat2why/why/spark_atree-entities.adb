@@ -475,6 +475,15 @@ package body SPARK_Atree.Entities is
    function Known_Object_Size (Typ : Entity_Id) return Boolean renames
      Einfo.Known_Esize;
 
+   --------------------------
+   -- Max_Size_Of_Img_Attr --
+   --------------------------
+
+   function Max_Size_Of_Img_Attr (Typ : Entity_Id) return Uint is
+     (UI_From_Int (255 * 8));
+   --  ??? For now simply use a probably big enough value. To be refined when
+   --  a consensus is reached.
+
    ------------------
    -- Modular_Size --
    ------------------

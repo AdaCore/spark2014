@@ -9418,10 +9418,18 @@ package body Gnat2Why.Expr is
                                                       Base_Why_Type (Var),
                                                       Domain,
                                                       Params)));
+
+               --  To_string takes as a second argument the maximum size of the
+               --  image of the corresponding type.
+
                T := New_Call (Ada_Node => Expr,
                               Domain   => Domain,
                               Name     => To_String_Id,
-                              Args     => (1 => T),
+                              Args     =>
+                                (1 => T,
+                                 2 => New_Integer_Constant
+                                   (Value => Max_Size_Of_Img_Attr
+                                        (Etype (Var)))),
                               Typ      => EW_Abstract (Standard_String));
             end;
 

@@ -817,6 +817,21 @@ package body Gnat2Why.Types is
 
             Close_Theory (File, Kind => Standalone_Theory);
          end if;
+
+         --  Declare to_string and of_string functions used for 'Image and
+         --  'Value attributes.
+
+         if E = Standard_String then
+            Open_Theory
+              (File, String_Image_Module,
+               Comment =>
+                 "Module defining to_string/of_string functions"
+               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+            Declare_Additional_Symbols_For_String (File);
+
+            Close_Theory (File, Kind => Standalone_Theory);
+         end if;
       end if;
    end Translate_Type;
 

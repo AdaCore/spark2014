@@ -540,18 +540,24 @@ package body Why.Atree.Modules is
                         Typ    => M_Main.Fixed_Type,
                         Infix  => True);
 
-      --  To_String function
+      --  String image module
+
+      String_Image_Module :=
+        New_Module
+          (Ada_Node => Empty,
+           File     => No_Name,
+           Name     => NID ("Standard_String__Img"));
 
       To_String_Id :=
         New_Identifier (Ada_Node => Standard_String,
                         Domain   => EW_Term,
-                        Module   => E_Module (Standard_String),
+                        Module   => String_Image_Module,
                         Symbol   => NID ("to_string"));
 
       Of_String_Id :=
         New_Identifier (Ada_Node => Standard_String,
                         Domain   => EW_Term,
-                        Module   => E_Module (Standard_String),
+                        Module   => String_Image_Module,
                         Symbol   => NID ("from_string"));
 
       --  Other identifiers
