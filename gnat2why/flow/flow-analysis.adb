@@ -2316,9 +2316,15 @@ package body Flow.Analysis is
          V_Key : Flow_Id      renames FA.PDG.Get_Key (V);
          V_Atr : V_Attributes renames FA.Atr (V);
       begin
-         --  Ignore synthetic null output and ???
+         --  Ignore synthetic null output
+         if V_Key.Kind = Synthetic_Null_Export then
+            return False;
+         end if;
+
+         --  Ignore final values that do not correspond to OUT mode parameters,
+         --  Output globals, etc.
          if V_Key.Variant = Final_Value
-           and then (not V_Atr.Is_Export or else Synthetic (V_Key))
+           and then not V_Atr.Is_Export
          then
             return False;
          end if;
