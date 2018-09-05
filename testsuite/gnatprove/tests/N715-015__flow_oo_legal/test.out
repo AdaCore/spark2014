@@ -44,8 +44,8 @@ main.adb:66:14: info: initialization of "Dr_House" proved, in call inlined at ma
 people.adb:4:04: info: initialization of "Today" constituent of "Date" proved
 people.adb:7:40: info: initialization of "Today" constituent of "Date" proved
 professionals.adb:37:40: low: range check might fail
-professionals.adb:45:32: low: range check might fail
-professionals.adb:48:34: low: range check might fail
+professionals.adb:45:32: info: range check proved (CVC4: 1 VC)
+professionals.adb:48:34: info: range check proved (CVC4: 4 VC)
 professionals.adb:68:14: info: initialization of "Tmp.Number_Of_People_Killed" proved
 professionals.adb:68:14: info: initialization of "Tmp.Profession" proved
 professionals.adb:68:14: info: initialization of "Tmp.Skilled_In" proved
