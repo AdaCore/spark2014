@@ -11,7 +11,9 @@ skein.adb:226:44: info: division check proved (CVC4: 1 VC), in call inlined at s
 skein.adb:226:44: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:862
 skein.adb:227:35: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:862
 skein.adb:227:49: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:862
+skein.adb:233:32: info: initialization of "Dst" proved
 skein.adb:253:52: info: range check proved (CVC4: 8 VC), in call inlined at skein.adb:575
+skein.adb:255:29: info: initialization of "Dst" proved
 skein.adb:255:29: info: initialization of "W" proved, in call inlined at skein.adb:575
 skein.adb:256:25: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:575
 skein.adb:257:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:575
