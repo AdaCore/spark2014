@@ -140,7 +140,8 @@ package body Gnat2Why.Error_Messages is
    function CodePeer_Has_Proved (Slc : Source_Ptr; Kind : VC_Kind)
                                  return Boolean is
 
-      function Make_CodePeer_Loc (Sloc : Source_Ptr) return Source_Location;
+      function Make_CodePeer_Loc (Sloc : Source_Ptr)
+                                  return Source_Location_Or_Null;
       --  @param Sloc a source location as defined by the GNAT front-end
       --  @return the equivalent a source location in the type defined by the
       --    SA_Messages unit
@@ -165,7 +166,8 @@ package body Gnat2Why.Error_Messages is
       -- Make_CodePeer_Loc --
       -----------------------
 
-      function Make_CodePeer_Loc (Sloc : Source_Ptr) return Source_Location is
+      function Make_CodePeer_Loc (Sloc : Source_Ptr)
+                                  return Source_Location_Or_Null is
       begin
          if Sloc = No_Location then
             return Null_Location;
