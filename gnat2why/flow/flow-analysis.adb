@@ -927,17 +927,17 @@ package body Flow.Analysis is
                Written := True;
                if FA.PDG.In_Neighbour_Count (V) = 1 then
                   declare
-                     F_Initial : Flow_Id renames
+                     F_Parent : Flow_Id renames
                        FA.PDG.Get_Key (FA.PDG.Parent (V));
 
-                     A_Initial : V_Attributes renames
+                     A_Parent : V_Attributes renames
                        FA.Atr (FA.PDG.Parent (V));
 
                   begin
-                     if F_Initial.Variant = Initial_Value
-                       and then A_Initial.Is_Import
+                     if F_Parent.Variant = Initial_Value
+                       and then A_Parent.Is_Import
                        and then
-                         Change_Variant (F_Initial, Final_Value) = F_Final
+                         Change_Variant (F_Parent, Final_Value) = F_Final
                      then
                         Written := False;
                      end if;
