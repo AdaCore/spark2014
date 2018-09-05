@@ -38,7 +38,6 @@ with SPARK_Annotate;              use SPARK_Annotate;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
-with SPARK_Util.Types;            use SPARK_Util.Types;
 with SPARK_Util;                  use SPARK_Util;
 with VC_Kinds;                    use VC_Kinds;
 
@@ -2743,17 +2742,10 @@ package body Flow.Analysis is
            Change_Variant (FA.PDG.Get_Key (V_Initial), Normal_Use);
 
          The_Var_Is_Array : constant Boolean :=
-           (The_Var.Kind = Direct_Mapping
-              and then Is_Type (Etype (Get_Direct_Mapping_Id (The_Var)))
-              and then Has_Array_Type
-                         (Etype (Get_Direct_Mapping_Id (The_Var))))
-           or else
-           (The_Var.Kind = Record_Field
-              and then The_Var.Facet = Normal_Part
-              and then Is_Type (Etype (The_Var.Component.Last_Element))
-              --  ??? how Etype might return a non-type?
-              and then Has_Array_Type
-                         (Etype (The_Var.Component.Last_Element)));
+           (if Is_Abstract_State (The_Var)
+              or else The_Var.Facet /= Normal_Part
+            then False
+            else Is_Array_Type (Get_Type (The_Var, FA.B_Scope)));
          --  True if The_Var refers to an array
 
          Use_Vertex_Points_To_Itself : constant Boolean :=
