@@ -3091,11 +3091,9 @@ package body Flow.Analysis is
                                Change_Variant (Def_Key, Normal_Use) = Var_Used
                            then
                               --  We're using the initial value
-                              if Def_Atr.Is_Initialized then
-                                 Is_Initialized   := True;
-                              else
-                                 Is_Uninitialized := True;
-                              end if;
+                              pragma Assert (not Def_Atr.Is_Initialized);
+                              Is_Uninitialized := True;
+
                            elsif Def_Atr.Variables_Defined.Contains (Var_Used)
                              or else Def_Atr.Volatiles_Read.Contains (Var_Used)
                            then
