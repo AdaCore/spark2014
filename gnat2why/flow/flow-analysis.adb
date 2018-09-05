@@ -3082,14 +3082,10 @@ package body Flow.Analysis is
                        FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                      loop
                         declare
-                           Def_Key : Flow_Id renames FA.DDG.Get_Key (V_Def);
                            Def_Atr : V_Attributes renames FA.Atr (V_Def);
 
                         begin
-                           if Def_Key.Variant = Initial_Value
-                             and then
-                               Change_Variant (Def_Key, Normal_Use) = Var_Used
-                           then
+                           if V_Def = Initial_Value_Of_Var_Used then
                               --  We're using the initial value
                               pragma Assert (not Def_Atr.Is_Initialized);
                               Is_Uninitialized := True;
