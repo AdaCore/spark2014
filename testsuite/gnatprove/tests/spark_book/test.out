@@ -128,7 +128,7 @@ bounded_queue_example.adb:21:07: warning: no Global contract available for "New_
 bounded_queue_example.adb:23:11: info: initialization of private part of "My_Queue" proved
 bounded_queue_example.adb:24:04: warning: assuming "Put_Line" has no effect on global items
 bounded_queue_example.adb:24:04: warning: no Global contract available for "Put_Line"
-bounded_queue_example.adb:24:42: low: range check might fail
+bounded_queue_example.adb:24:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_example.adb:24:65: info: initialization of private part of "My_Queue" proved
 bounded_queue_example_v1.adb:6:56: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized
@@ -158,7 +158,7 @@ bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Items" pro
 bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Rear" proved
 bounded_queue_example_v1.adb:20:04: warning: assuming "Put_Line" has no effect on global items
 bounded_queue_example_v1.adb:20:04: warning: no Global contract available for "Put_Line"
-bounded_queue_example_v1.adb:20:42: low: range check might fail
+bounded_queue_example_v1.adb:20:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v1.adb:20:59: info: initialization of "Value" proved
 bounded_queue_example_v2.adb:6:56: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v2.adb:10:11: info: initialization of private part of "My_Queue" proved
@@ -173,7 +173,7 @@ bounded_queue_example_v2.adb:18:11: info: initialization of private part of "My_
 bounded_queue_example_v2.adb:19:19: info: initialization of private part of "My_Queue" proved
 bounded_queue_example_v2.adb:20:04: warning: assuming "Put_Line" has no effect on global items
 bounded_queue_example_v2.adb:20:04: warning: no Global contract available for "Put_Line"
-bounded_queue_example_v2.adb:20:42: low: range check might fail
+bounded_queue_example_v2.adb:20:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v2.adb:20:59: info: initialization of "Value" proved
 bounded_queue_v1.adb:20:32: medium: array index check might fail
 bounded_queue_v1.adb:25:32: medium: array index check might fail
@@ -1014,7 +1014,7 @@ search_demo.adb:23:18: warning: assuming "Put_Line" has no effect on global item
 search_demo.adb:23:18: warning: no Global contract available for "Put_Line"
 search_demo.adb:25:18: warning: assuming "Put_Line" has no effect on global items
 search_demo.adb:25:18: warning: no Global contract available for "Put_Line"
-search_demo.adb:25:63: low: range check might fail
+search_demo.adb:25:63: info: range check proved (CVC4: 1 VC)
 search_demo.adb:25:79: info: initialization of "Result_Index" proved
 searchers.adb:18:30: info: initialization of "Low_Index" proved
 searchers.adb:18:50: info: initialization of "High_Index" proved

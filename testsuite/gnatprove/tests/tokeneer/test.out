@@ -448,32 +448,35 @@ auditlog.ads:277:51: info: overflow check proved (CVC4: 1 VC)
 auditlog.ads:277:71: info: overflow check proved (CVC4: 1 VC)
 auditlog.ads:281:09: info: invariant check proved on default value (CVC4: 1 VC)
 auditlog.ads:302:04: info: initialization of "LogFiles" constituent of "FileState" proved
-bio.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at bio.adb:193
-bio.adb:129:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at bio.adb:193
-bio.adb:131:33: info: initialization of "Result" proved
-bio.adb:131:33: info: initialization of "Result" proved, in call inlined at bio.adb:193
-bio.adb:137:14: info: initialization of "Result" proved
-bio.adb:137:14: info: initialization of "Result" proved, in call inlined at bio.adb:193
-bio.adb:175:17: info: postcondition proved (CVC4: 1 VC)
-bio.adb:177:38: info: range check proved (CVC4: 1 VC)
-bio.adb:178:12: info: range check proved (CVC4: 1 VC)
-bio.adb:178:41: info: range check proved (CVC4: 1 VC)
-bio.adb:179:12: info: range check proved (CVC4: 1 VC)
-bio.adb:179:57: info: range check proved (CVC4: 1 VC)
-bio.adb:185:13: info: range check proved (CVC4: 4 VC)
-bio.adb:185:42: info: length check proved (CVC4: 1 VC)
-bio.adb:185:45: info: initialization of "FullString" proved
-bio.adb:185:45: info: length check proved (CVC4: 1 VC)
-bio.adb:187:23: info: initialization of "FullString" proved
-bio.adb:187:23: info: range check proved (CVC4: 4 VC)
-bio.adb:195:07: info: initialization of "Result" proved
-bio.adb:195:07: info: initialization of "TheCodeName" proved
-bio.adb:197:14: info: initialization of "Result" proved
-bio.adb:266:10: info: initialization of "NumericReturn" proved
-bio.adb:269:18: info: precondition proved (CVC4: 1 VC)
-bio.adb:274:35: info: predicate check proved (CVC4: 1 VC)
-bio.adb:274:35: info: range check proved (CVC4: 1 VC)
-bio.adb:275:35: info: initialization of "NumericReturn" proved
+audittypes.ads:78:16: info: range check proved (CVC4: 1 VC)
+audittypes.ads:151:17: info: range check proved (CVC4: 1 VC)
+bio.adb:84:15: info: range check proved (CVC4: 1 VC)
+bio.adb:126:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at bio.adb:190
+bio.adb:126:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at bio.adb:190
+bio.adb:128:33: info: initialization of "Result" proved
+bio.adb:128:33: info: initialization of "Result" proved, in call inlined at bio.adb:190
+bio.adb:134:14: info: initialization of "Result" proved
+bio.adb:134:14: info: initialization of "Result" proved, in call inlined at bio.adb:190
+bio.adb:172:17: info: postcondition proved (CVC4: 1 VC)
+bio.adb:174:38: info: range check proved (CVC4: 1 VC)
+bio.adb:175:12: info: range check proved (CVC4: 1 VC)
+bio.adb:175:41: info: range check proved (CVC4: 1 VC)
+bio.adb:176:12: info: range check proved (CVC4: 1 VC)
+bio.adb:176:57: info: range check proved (CVC4: 1 VC)
+bio.adb:182:13: info: range check proved (CVC4: 4 VC)
+bio.adb:182:42: info: length check proved (CVC4: 1 VC)
+bio.adb:182:45: info: initialization of "FullString" proved
+bio.adb:182:45: info: length check proved (CVC4: 1 VC)
+bio.adb:184:23: info: initialization of "FullString" proved
+bio.adb:184:23: info: range check proved (CVC4: 4 VC)
+bio.adb:192:07: info: initialization of "Result" proved
+bio.adb:192:07: info: initialization of "TheCodeName" proved
+bio.adb:194:14: info: initialization of "Result" proved
+bio.adb:263:10: info: initialization of "NumericReturn" proved
+bio.adb:266:18: info: precondition proved (CVC4: 1 VC)
+bio.adb:271:35: info: predicate check proved (CVC4: 1 VC)
+bio.adb:271:35: info: range check proved (CVC4: 1 VC)
+bio.adb:272:35: info: initialization of "NumericReturn" proved
 bio.ads:40:20: info: initialization of "FingerPresent" proved
 bio.ads:56:22: info: initialization of "MatchResult" proved
 bio.ads:57:22: info: initialization of "AchievedFAR" proved
@@ -1083,6 +1086,7 @@ certprocessing.ads:203:20: info: initialization of "SignatureData.SigLength" pro
 certprocessing.ads:204:20: info: initialization of "ObtainSuccess" proved
 certprocessing.ads:223:07: info: initialization of "UnsignedRawAuthCert" proved
 certprocessing.ads:240:07: info: initialization of "SignedRawAuthCert" proved
+certtypes.ads:63:21: info: range check proved (CVC4: 1 VC)
 clock.adb:59:11: info: range check proved (CVC4: 2 VC)
 clock.adb:60:12: info: index check proved (CVC4: 2 VC)
 clock.adb:60:54: info: initialization of "V" proved
@@ -1148,22 +1152,25 @@ clock.adb:296:24: info: initialization of "LocalText" proved
 clock.adb:297:50: info: division check proved (CVC4: 1 VC)
 clock.adb:298:32: info: division check proved (CVC4: 1 VC)
 clock.adb:302:14: info: initialization of "LocalText" proved
-clock.ads:195:07: info: initialization of "TheTime.Day" proved
-clock.ads:195:07: info: initialization of "TheTime.MilliSec" proved
-clock.ads:195:07: info: initialization of "TheTime.Month" proved
-clock.ads:195:07: info: initialization of "TheTime.Year" proved
-clock.ads:196:07: info: initialization of "Success" proved
-clock.ads:215:07: info: initialization of "Year" proved
-clock.ads:216:07: info: initialization of "Month" proved
-clock.ads:217:07: info: initialization of "Day" proved
-clock.ads:218:07: info: initialization of "Hour" proved
-clock.ads:219:07: info: initialization of "Min" proved
+clock.ads:55:17: info: range check proved (CVC4: 1 VC)
+clock.ads:192:07: info: initialization of "TheTime.Day" proved
+clock.ads:192:07: info: initialization of "TheTime.MilliSec" proved
+clock.ads:192:07: info: initialization of "TheTime.Month" proved
+clock.ads:192:07: info: initialization of "TheTime.Year" proved
+clock.ads:193:07: info: initialization of "Success" proved
+clock.ads:212:07: info: initialization of "Year" proved
+clock.ads:213:07: info: initialization of "Month" proved
+clock.ads:214:07: info: initialization of "Day" proved
+clock.ads:215:07: info: initialization of "Hour" proved
+clock.ads:216:07: info: initialization of "Min" proved
 commontypes.ads:61:12: info: range check proved (CVC4: 1 VC)
 commontypes.ads:63:12: info: range check proved (CVC4: 1 VC)
 commontypes.ads:65:12: info: range check proved (CVC4: 1 VC)
 commontypes.ads:67:12: info: range check proved (CVC4: 1 VC)
 commontypes.ads:69:12: info: range check proved (CVC4: 1 VC)
 commontypes.ads:71:12: info: range check proved (CVC4: 1 VC)
+commontypes.ads:75:19: info: range check proved (CVC4: 1 VC)
+commontypes.ads:81:15: info: range check proved (CVC4: 1 VC)
 configdata.adb:165:04: info: initialization of "ConfigFile" constituent of "FileState" proved
 configdata.adb:207:30: info: initialization of "Value" proved
 configdata.adb:209:36: info: initialization of "Success" proved
@@ -1443,42 +1450,44 @@ configdata.adb:1581:37: info: initialization of "DayStart.Year" proved
 configdata.adb:1595:14: info: initialization of "Result" proved
 configdata.adb:1685:13: info: division check proved (CVC4: 1 VC)
 configdata.adb:1685:13: info: range check proved (CVC4: 1 VC)
-configdata.ads:128:07: info: initialization of "Success" proved
-configdata.ads:170:07: info: initialization of "TheLatchUnlockDuration" proved
-configdata.ads:171:07: info: initialization of "TheAlarmSilentDuration" proved
-configdata.ads:172:07: info: initialization of "TheFingerWaitDuration" proved
-configdata.ads:173:07: info: initialization of "TheTokenRemovalDuration" proved
-configdata.ads:174:07: info: initialization of "TheEnclaveClearance" proved
-configdata.ads:175:07: info: initialization of "TheWorkingHoursStart" proved
-configdata.ads:176:07: info: initialization of "TheWorkingHoursEnd" proved
-configdata.ads:177:07: info: initialization of "TheMaxAuthDuration" proved
-configdata.ads:178:07: info: initialization of "TheAccessPolicy" proved
-configdata.ads:179:07: info: initialization of "TheMinEntryClass" proved
-configdata.ads:180:07: info: initialization of "TheMinPreservedLogSize" proved
-configdata.ads:181:07: info: initialization of "TheAlarmThresholdSize" proved
-configdata.ads:182:07: info: initialization of "TheSystemMaxFar" proved
-configdata.ads:211:07: info: initialization of "Success" proved
-configdata.ads:212:07: info: initialization of "TheLatchUnlockDuration" proved
-configdata.ads:213:07: info: initialization of "TheAlarmSilentDuration" proved
-configdata.ads:214:07: info: initialization of "TheFingerWaitDuration" proved
-configdata.ads:215:07: info: initialization of "TheTokenRemovalDuration" proved
-configdata.ads:216:07: info: initialization of "TheEnclaveClearance" proved
-configdata.ads:217:07: info: initialization of "TheWorkingHoursStart" proved
-configdata.ads:218:07: info: initialization of "TheWorkingHoursEnd" proved
-configdata.ads:219:07: info: initialization of "TheMaxAuthDuration" proved
-configdata.ads:220:07: info: initialization of "TheAccessPolicy" proved
-configdata.ads:221:07: info: initialization of "TheMinEntryClass" proved
-configdata.ads:222:07: info: initialization of "TheMinPreservedLogSize" proved
-configdata.ads:223:07: info: initialization of "TheAlarmThresholdSize" proved
-configdata.ads:224:07: info: initialization of "TheSystemMaxFar" proved
-configdata.ads:266:08: info: initialization of "NotBefore.Day" proved
-configdata.ads:266:08: info: initialization of "NotBefore.MilliSec" proved
-configdata.ads:266:08: info: initialization of "NotBefore.Month" proved
-configdata.ads:266:08: info: initialization of "NotBefore.Year" proved
-configdata.ads:267:08: info: initialization of "NotAfter.Day" proved
-configdata.ads:267:08: info: initialization of "NotAfter.MilliSec" proved
-configdata.ads:267:08: info: initialization of "NotAfter.Month" proved
-configdata.ads:267:08: info: initialization of "NotAfter.Year" proved
+configdata.ads:40:17: info: range check proved (CVC4: 1 VC)
+configdata.ads:49:21: info: range check proved (CVC4: 1 VC)
+configdata.ads:122:07: info: initialization of "Success" proved
+configdata.ads:164:07: info: initialization of "TheLatchUnlockDuration" proved
+configdata.ads:165:07: info: initialization of "TheAlarmSilentDuration" proved
+configdata.ads:166:07: info: initialization of "TheFingerWaitDuration" proved
+configdata.ads:167:07: info: initialization of "TheTokenRemovalDuration" proved
+configdata.ads:168:07: info: initialization of "TheEnclaveClearance" proved
+configdata.ads:169:07: info: initialization of "TheWorkingHoursStart" proved
+configdata.ads:170:07: info: initialization of "TheWorkingHoursEnd" proved
+configdata.ads:171:07: info: initialization of "TheMaxAuthDuration" proved
+configdata.ads:172:07: info: initialization of "TheAccessPolicy" proved
+configdata.ads:173:07: info: initialization of "TheMinEntryClass" proved
+configdata.ads:174:07: info: initialization of "TheMinPreservedLogSize" proved
+configdata.ads:175:07: info: initialization of "TheAlarmThresholdSize" proved
+configdata.ads:176:07: info: initialization of "TheSystemMaxFar" proved
+configdata.ads:205:07: info: initialization of "Success" proved
+configdata.ads:206:07: info: initialization of "TheLatchUnlockDuration" proved
+configdata.ads:207:07: info: initialization of "TheAlarmSilentDuration" proved
+configdata.ads:208:07: info: initialization of "TheFingerWaitDuration" proved
+configdata.ads:209:07: info: initialization of "TheTokenRemovalDuration" proved
+configdata.ads:210:07: info: initialization of "TheEnclaveClearance" proved
+configdata.ads:211:07: info: initialization of "TheWorkingHoursStart" proved
+configdata.ads:212:07: info: initialization of "TheWorkingHoursEnd" proved
+configdata.ads:213:07: info: initialization of "TheMaxAuthDuration" proved
+configdata.ads:214:07: info: initialization of "TheAccessPolicy" proved
+configdata.ads:215:07: info: initialization of "TheMinEntryClass" proved
+configdata.ads:216:07: info: initialization of "TheMinPreservedLogSize" proved
+configdata.ads:217:07: info: initialization of "TheAlarmThresholdSize" proved
+configdata.ads:218:07: info: initialization of "TheSystemMaxFar" proved
+configdata.ads:260:08: info: initialization of "NotBefore.Day" proved
+configdata.ads:260:08: info: initialization of "NotBefore.MilliSec" proved
+configdata.ads:260:08: info: initialization of "NotBefore.Month" proved
+configdata.ads:260:08: info: initialization of "NotBefore.Year" proved
+configdata.ads:261:08: info: initialization of "NotAfter.Day" proved
+configdata.ads:261:08: info: initialization of "NotAfter.MilliSec" proved
+configdata.ads:261:08: info: initialization of "NotAfter.Month" proved
+configdata.ads:261:08: info: initialization of "NotAfter.Year" proved
 configuration.adb:99:57: info: division check proved (CVC4: 1 VC)
 configuration.adb:99:63: info: range check proved (CVC4: 1 VC)
 configuration.adb:100:12: info: range check proved (CVC4: 1 VC)
@@ -1507,18 +1516,18 @@ configuration.adb:108:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:108:55: info: range check proved (CVC4: 1 VC)
 configuration.adb:109:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:109:64: info: division check proved (CVC4: 1 VC)
-configuration.adb:109:72: info: range check proved (CVC4: 1 VC)
-configuration.adb:110:12: info: range check proved (CVC4: 1 VC)
+configuration.adb:109:72: info: range check proved (Z3: 1 VC)
+configuration.adb:110:12: info: range check proved (Z3: 1 VC)
 configuration.adb:110:63: info: division check proved (CVC4: 1 VC)
-configuration.adb:110:71: info: range check proved (CVC4: 1 VC)
-configuration.adb:111:12: info: range check proved (CVC4: 1 VC)
+configuration.adb:110:71: info: range check proved (Z3: 1 VC)
+configuration.adb:111:12: info: range check proved (Z3: 1 VC)
 configuration.adb:116:26: info: initialization of "Str" proved
-configuration.adb:116:26: info: range check proved (CVC4: 4 VC)
+configuration.adb:116:26: info: range check proved (CVC4: 2 VC; Z3: 2 VC)
 configuration.adb:118:13: info: range check proved (CVC4: 4 VC)
 configuration.adb:118:38: info: initialization of "LocalText" proved
 configuration.adb:118:38: info: length check proved (CVC4: 1 VC)
 configuration.adb:118:41: info: initialization of "Str" proved
-configuration.adb:118:41: info: length check proved (CVC4: 1 VC)
+configuration.adb:118:41: info: length check proved (Z3: 1 VC)
 configuration.adb:121:17: info: initialization of "LocalText" proved
 configuration.adb:144:10: info: initialization of "DataValid" proved
 configuration.adb:147:40: info: initialization of "TheLatchUnlockDuration" proved
@@ -1566,6 +1575,7 @@ configuration.adb:185:21: info: precondition proved (CVC4: 1 VC)
 configuration.adb:193:18: info: precondition proved (CVC4: 1 VC)
 configuration.ads:46:43: info: initialization of "ConfigData.State" proved
 configuration.ads:67:07: info: initialization of "DataValid" proved
+cryptotypes.ads:33:17: info: range check proved (CVC4: 1 VC)
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:191
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:287
 display.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:191
@@ -1993,11 +2003,13 @@ enrolment.ads:55:24: info: initialization of "DataOK" proved
 enrolment.ads:56:24: info: initialization of "Description" proved
 enrolment.ads:78:22: info: initialization of "DataOK" proved
 enrolment.ads:78:22: info: postcondition proved (CVC4: 2 VC)
+iandatypes.ads:36:12: info: range check proved (CVC4: 1 VC)
 keyboard.adb:75:32: info: initialization of "LocalLength" proved
 keyboard.adb:76:32: info: initialization of "LocalData" proved
 keyboard.ads:76:20: info: initialization of "DataPresence" proved
 keyboard.ads:77:20: info: initialization of "Data.Length" proved
 keyboard.ads:77:20: info: initialization of "Data.Text" proved
+keystore-interfac.ads:96:20: info: range check proved (CVC4: 1 VC)
 keystore.adb:97:35: info: range check proved (CVC4: 1 VC)
 keystore.adb:97:39: info: range check proved (CVC4: 1 VC)
 keystore.adb:98:09: info: range check proved (CVC4: 1 VC)
@@ -2239,6 +2251,7 @@ poll.ads:49:24: info: initialization of "SystemFault" proved
 poll.ads:57:38: info: initialization of "Clock.CurrentTime" proved
 poll.ads:113:13: info: postcondition proved (CVC4: 13 VC)
 poll.ads:115:45: info: initialization of "Clock.CurrentTime" proved
+privtypes.ads:44:14: info: range check proved (CVC4: 1 VC)
 screen.adb:156:28: info: initialization of "OK" proved
 screen.adb:192:07: info: initialization of "OK" proved
 screen.adb:223:16: info: initialization of "ConsoleOK" proved
@@ -2505,14 +2518,15 @@ stats.adb:49:57: info: overflow check proved (CVC4: 1 VC)
 stats.adb:64:51: info: overflow check proved (CVC4: 1 VC)
 stats.adb:79:53: info: overflow check proved (CVC4: 1 VC)
 stats.adb:94:47: info: overflow check proved (CVC4: 1 VC)
-stats.ads:47:20: info: initialization of "TheStats.FailBio" proved
-stats.ads:47:20: info: initialization of "TheStats.FailEntry" proved
-stats.ads:47:20: info: initialization of "TheStats.SuccessBio" proved
-stats.ads:47:20: info: initialization of "TheStats.SuccessEntry" proved
-stats.ads:108:28: info: initialization of "SuccessEntry" proved
-stats.ads:109:28: info: initialization of "FailEntry" proved
-stats.ads:110:28: info: initialization of "SuccessBio" proved
-stats.ads:111:28: info: initialization of "FailBio" proved
+stats.ads:30:18: info: range check proved (CVC4: 1 VC)
+stats.ads:44:20: info: initialization of "TheStats.FailBio" proved
+stats.ads:44:20: info: initialization of "TheStats.FailEntry" proved
+stats.ads:44:20: info: initialization of "TheStats.SuccessBio" proved
+stats.ads:44:20: info: initialization of "TheStats.SuccessEntry" proved
+stats.ads:105:28: info: initialization of "SuccessEntry" proved
+stats.ads:106:28: info: initialization of "FailEntry" proved
+stats.ads:107:28: info: initialization of "SuccessBio" proved
+stats.ads:108:28: info: initialization of "FailBio" proved
 tismain.adb:60:41: info: initialization of "AdminToken.State" proved
 tismain.adb:61:39: info: initialization of "AuditLog.State" proved
 tismain.adb:62:47: info: initialization of "CertificateStore.State" proved
@@ -2680,6 +2694,7 @@ tismain.adb:1580:25: info: initialization of "AdminToken.State" proved
 tismain.adb:1585:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1591:23: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1598:22: info: precondition proved (CVC4: 1 VC)
+tokenreader-interfac.ads:84:21: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:97:40: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:116:39: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:135:37: info: range check proved (CVC4: 1 VC)

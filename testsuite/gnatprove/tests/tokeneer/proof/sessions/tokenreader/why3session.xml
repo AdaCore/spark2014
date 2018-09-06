@@ -173,19 +173,19 @@
   <proof prover="0"><result status="valid" steps="15"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="448"/></proof>
+  <proof prover="0"><result status="valid" steps="570"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="633"/></proof>
+  <proof prover="0"><result status="valid" steps="874"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="921"/></proof>
+  <proof prover="0"><result status="valid" steps="1252"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1096"/></proof>
+  <proof prover="0"><result status="valid" steps="2573"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="1536"/></proof>
+  <proof prover="0"><result status="valid" steps="3859"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -203,13 +203,13 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="1244"/></proof>
+  <proof prover="0"><result status="valid" steps="3591"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="1274"/></proof>
+  <proof prover="0"><result status="valid" steps="3541"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>

@@ -36,7 +36,7 @@
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="35322"/></proof>
+  <proof prover="1"><result status="unknown" steps="36597"/></proof>
   <proof prover="2"><result status="unknown" steps="338"/></proof>
   <proof prover="3"><result status="unknown" steps="612"/></proof>
   </goal>
@@ -71,13 +71,13 @@
   <proof prover="2"><result status="valid" steps="29"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="331"/></proof>
+  <proof prover="2"><result status="valid" steps="432"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="451"/></proof>
+  <proof prover="2"><result status="valid" steps="583"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="580"/></proof>
+  <proof prover="2"><result status="valid" steps="770"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -95,13 +95,13 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="500"/></proof>
+  <proof prover="2"><result status="valid" steps="638"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="500"/></proof>
+  <proof prover="2"><result status="valid" steps="638"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>

@@ -16,17 +16,14 @@
 <theory name="Certtypes__serialnumbert_image__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="WP_parameter def.0" expl="assertion">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="11688"/></proof>
-  <proof prover="2"><result status="unknown" steps="107"/></proof>
-  <proof prover="3"><result status="unknown" steps="104"/></proof>
+  <goal name="WP_parameter def.0" expl="assertion" proved="true">
+  <proof prover="2"><result status="valid" steps="94"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="11903"/></proof>
-  <proof prover="2"><result status="unknown" steps="150"/></proof>
-  <proof prover="3"><result status="unknown" steps="150"/></proof>
+  <proof prover="1"><result status="unknown" steps="14216"/></proof>
+  <proof prover="2"><result status="unknown" steps="169"/></proof>
+  <proof prover="3"><result status="unknown" steps="169"/></proof>
   </goal>
  </transf>
  </goal>

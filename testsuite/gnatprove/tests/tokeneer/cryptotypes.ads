@@ -32,9 +32,6 @@ package CryptoTypes is
    function IssuerIDT_Image (X : IssuerIDT) return CommonTypes.StringF1L1000 is
       (IssuerIDT'Image (X));
    pragma Annotate (GNATprove, False_Positive,
-                    "range check might fail",
-                    "Image of integers of type IssuerIDT are short strings starting at index 1");
-   pragma Annotate (GNATprove, False_Positive,
                     "predicate check might fail",
                     "Image of integers of type IssuerIDT are short strings starting at index 1");
 

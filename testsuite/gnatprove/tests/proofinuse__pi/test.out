@@ -159,13 +159,13 @@ pi_compute.adb:114:22: info: initialization of "Res" proved
 pi_compute.adb:115:14: info: initialization of "Res" proved
 pi_compute.adb:119:04: warning: assuming "Put_Line" has no effect on global items
 pi_compute.adb:119:04: warning: no Global contract available for "Put_Line"
-pi_compute.adb:119:46: low: range check might fail
+pi_compute.adb:119:46: info: range check proved (CVC4: 1 VC)
 pi_compute.adb:120:04: warning: assuming "Put_Line" has no effect on global items
 pi_compute.adb:120:04: warning: no Global contract available for "Put_Line"
-pi_compute.adb:120:47: low: range check might fail
+pi_compute.adb:120:47: info: range check proved (CVC4: 1 VC)
 pi_compute.adb:121:04: warning: assuming "Put_Line" has no effect on global items
 pi_compute.adb:121:04: warning: no Global contract available for "Put_Line"
-pi_compute.adb:121:45: low: range check might fail
+pi_compute.adb:121:45: info: range check proved (CVC4: 1 VC)
 pi_compute.adb:122:04: warning: assuming "Put_Line" has no effect on global items
 pi_compute.adb:122:04: warning: no Global contract available for "Put_Line"
-pi_compute.adb:122:45: low: range check might fail
+pi_compute.adb:122:45: info: range check proved (CVC4: 1 VC)
