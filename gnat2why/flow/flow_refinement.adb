@@ -1118,17 +1118,14 @@ package body Flow_Refinement is
       --  depending on their components (if any).
 
       elsif Is_Record_Type (Typ) or else Is_Protected_Type (Typ) then
-         Comp := First_Entity (Typ);
+         Comp := First_Component (Typ);
 
          --  Inspect all components
 
          if Present (Comp) then
             while Present (Comp) loop
-               if Ekind (Comp) = E_Component then
-                  Process_Component (Comp);
-               end if;
-
-               Next_Entity (Comp);
+               Process_Component (Comp);
+               Next_Component (Comp);
             end loop;
 
             --  Detect a mixed case of initialization
