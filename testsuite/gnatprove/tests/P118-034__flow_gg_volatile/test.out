@@ -21,6 +21,7 @@ Generated contracts for test_02
          Actuator
 Generated contracts for a
    Initializes =>
+      A.Ext_State
       A.State
 a.ads:8:14: info: initialization of "Actuator" constituent of "Ext_State" proved
 Generated contracts for p_read_state
@@ -38,6 +39,8 @@ Generated contracts for p_read_atomic_state
       In_Out =>
          Flag_4
 Generated contracts for priv
+   Initializes =>
+      Priv.Atomic_State
 b-priv.ads:2:24: warning: no procedure exists that can initialize abstract state "Priv.State" constituent of "B.State"
 b-priv.ads:6:28: info: initialization of "X" proved
 b-priv.ads:7:35: info: initialization of "X" proved
