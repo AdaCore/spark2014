@@ -41,7 +41,7 @@ of a project. The main difference in that case is that one would not want
 to start at the lowest level but already take into account the final
 targeted level starting with the initial design phase.
 
-This version of the document is based on the SPARK Pro 17 and GPS 17
+This version of the document is based on the SPARK Pro 18 and GPS 18
 versions. Further references are given at the end of this document.
 
 .. _Levels of Software Assurance:
@@ -3827,8 +3827,8 @@ on this unit.
 References
 ==========
 
-The e-learning website AdaCore U. contains a freely available course on
-SPARK in five lessons at http://university.adacore.com/courses/spark-2014/
+The e-learning website https://learn.adacore.com/ contains a freely available
+interactive course on SPARK.
 
 The SPARK User's Guide is available at
 http://docs.adacore.com/spark2014-docs/html/ug/
@@ -3849,14 +3849,19 @@ The website https://www.adacore.com/sparkpro is a portal for up-to-date
 information and resources on SPARK. AdaCore blog at https://blog.adacore.com/
 frequently hosts posts on the latest evolutions of SPARK.
 
+The document "AdaCore Technologies for Cyber Security" presents the usage of
+AdaCore's technology to prevent or mitigate the most common security
+vulnerabilities in software. See:
+https://www.adacore.com/books/adacore-tech-for-cyber-security
+
 The document "AdaCore Technologies for CENELEC EN 50128:2011" presents the
 usage of AdaCore's technology in conjunction with the CENELEC EN 50128:2011
 standard. It describes in particular where the SPARK technology fits best and
 how it can best be used to meet various requirements of the standard. See:
-http://www.adacore.com/knowledge/technical-papers/adacore-technologies-for-cenelec-en-501282011/
+https://www.adacore.com/books/cenelec-en-50128-2011
 
 The document "AdaCore Technologies for DO-178C/ED-12C" similarly presents the
 usage of AdaCore's technology in conjunction with the DO-178C/ED-12C standard,
 and describes in particular the use of SPARK in relation with the Formal
 Methods supplement DO-333/ED-216. See:
-http://www.adacore.com/knowledge/technical-papers/tech-do-178c
+https://www.adacore.com/books/do-178c-tech
