@@ -3082,7 +3082,7 @@ package body Flow.Analysis is
                      --  ... we check the in-neighbours in the DDG and see if
                      --  they define it. We record initialized / uninitialized
                      --  reads accordingly.
-                     --
+
                      for V_Def of
                        FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                      loop

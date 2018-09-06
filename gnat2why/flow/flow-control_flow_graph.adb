@@ -5046,10 +5046,13 @@ package body Flow.Control_Flow_Graph is
 
          when N_Package_Body      |
               N_Package_Body_Stub =>
+
             --  Skip bodies of generic packages and bodies of wrappers with
             --  instances of generic subprograms.
+
             declare
                E : constant Entity_Id := Unique_Defining_Entity (N);
+
             begin
                case Ekind (E) is
                   when E_Generic_Package =>
