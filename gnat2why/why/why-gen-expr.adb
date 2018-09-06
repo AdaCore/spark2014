@@ -93,7 +93,7 @@ package body Why.Gen.Expr is
 
    function Is_Essentially_Void_List (L : Why_Node_List) return Boolean;
    --  @param a list of Why nodes
-   --  @return True if all elemements of the list are essentially void
+   --  @return True if all elements of the list are essentially void
 
    function Compute_VC_Sloc (N         : Node_Id;
                              Left_Most : Boolean := False) return Source_Ptr;
@@ -1942,13 +1942,13 @@ package body Why.Gen.Expr is
 
    function Is_Essentially_Void (W : W_Prog_Id) return Boolean is
    begin
-      return (W = +Void
-              or else Get_Kind (+W) = W_Label
-              or else
-                (Get_Kind (+W) = W_Statement_Sequence
-                 and then
-                 Is_Essentially_Void_List
-                   (Statement_Sequence_Get_Statements (+W))));
+      return W = +Void
+             or else Get_Kind (+W) = W_Label
+             or else
+               (Get_Kind (+W) = W_Statement_Sequence
+                and then
+                Is_Essentially_Void_List
+                  (Statement_Sequence_Get_Statements (+W)));
    end Is_Essentially_Void;
 
    ------------------------------
