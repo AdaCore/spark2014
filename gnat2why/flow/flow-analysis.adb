@@ -2339,7 +2339,7 @@ package body Flow.Analysis is
                                                (Var, FA.B_Scope);
          Is_Function  : constant Boolean := Is_Function_Entity (Var);
 
-         function Mark_Definition_Free_Path
+         function Definition_Free_Path
            (From      : Flow_Graphs.Vertex_Id;
             To        : Flow_Graphs.Vertex_Id;
             Var       : Flow_Id;
@@ -2349,11 +2349,11 @@ package body Flow.Analysis is
          --  V_Allowed is set, then the path that we return is allowed to
          --  contain V_Allowed even if V_Allowed does set Var.
 
-         -------------------------------
-         -- Mark_Definition_Free_Path --
-         -------------------------------
+         --------------------------
+         -- Definition_Free_Path --
+         --------------------------
 
-         function Mark_Definition_Free_Path
+         function Definition_Free_Path
            (From      : Flow_Graphs.Vertex_Id;
             To        : Flow_Graphs.Vertex_Id;
             Var       : Flow_Id;
@@ -2418,7 +2418,7 @@ package body Flow.Analysis is
             return (if Path_Found
                     then Path
                     else Vertex_Sets.Empty_Set);
-         end Mark_Definition_Free_Path;
+         end Definition_Free_Path;
 
       --  Start of processing for Emit_Message
 
@@ -2519,10 +2519,10 @@ package body Flow.Analysis is
 
          declare
             Path : constant Vertex_Sets.Set :=
-              Mark_Definition_Free_Path (From      => FA.Start_Vertex,
-                                         To        => V_Goal,
-                                         Var       => Var,
-                                         V_Allowed => V_Allowed);
+              Definition_Free_Path (From      => FA.Start_Vertex,
+                                    To        => V_Goal,
+                                    Var       => Var,
+                                    V_Allowed => V_Allowed);
 
          begin
             Error_Msg_Flow
