@@ -2788,7 +2788,8 @@ package body Flow.Analysis is
 
             procedure Found_V_Exp_Use
               (V  : Flow_Graphs.Vertex_Id;
-               TV : out Flow_Graphs.Simple_Traversal_Instruction);
+               TV : out Flow_Graphs.Simple_Traversal_Instruction)
+            with Pre => V /= Flow_Graphs.Null_Vertex;
             --  Stops the DFS search when we reach a vertex that contains
             --  The_Var in its Variables_Explicitly_Used set.
 
@@ -2803,12 +2804,9 @@ package body Flow.Analysis is
             begin
                if V = V_Use then
                   TV := Flow_Graphs.Skip_Children;
-               elsif V /= Flow_Graphs.Null_Vertex
-                 and then FA.Atr (V).Variables_Defined.Contains (The_Var)
-               then
+               elsif FA.Atr (V).Variables_Defined.Contains (The_Var) then
                   TV := Flow_Graphs.Skip_Children;
-               elsif V /= Flow_Graphs.Null_Vertex
-                 and then FA.CFG.Get_Key (V).Variant /= Final_Value
+               elsif FA.CFG.Get_Key (V).Variant /= Final_Value
                  and then
                    FA.Atr (V).Variables_Explicitly_Used.Contains (The_Var)
                then
