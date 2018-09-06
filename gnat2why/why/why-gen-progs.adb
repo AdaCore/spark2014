@@ -27,6 +27,7 @@ with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why.Util;           use Gnat2Why.Util;
 with Why.Atree.Modules;       use Why.Atree.Modules;
+with Why.Atree.Mutators;      use Why.Atree.Mutators;
 with Why.Conversions;         use Why.Conversions;
 with Why.Gen.Expr;            use Why.Gen.Expr;
 with Why.Gen.Names;           use Why.Gen.Names;
@@ -226,12 +227,19 @@ package body Why.Gen.Progs is
    end Sequence;
 
    function Sequence (Progs : W_Prog_Array) return W_Prog_Id is
-      Result : W_Prog_Id := Progs (Progs'First);
    begin
-      for J in Progs'First + 1 .. Progs'Last loop
-         Result := Sequence (Result, Progs (J));
-      end loop;
-      return Result;
+      return New_Statement_Sequence (Statements => Progs);
    end Sequence;
+
+   ---------------------
+   -- Sequence_Append --
+   ---------------------
+
+   procedure Sequence_Append (Seq : in out W_Statement_Sequence_Id;
+                              Elt : W_Prog_Id) is
+      pragma Unmodified (Seq);
+   begin
+      Statement_Sequence_Append_To_Statements (Seq, Elt);
+   end Sequence_Append;
 
 end Why.Gen.Progs;

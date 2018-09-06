@@ -109,6 +109,9 @@ package Why.Gen.Progs is
    function Sequence (Progs : W_Prog_Array) return W_Prog_Id
    with Pre => Progs'Length /= 0;
 
+   procedure Sequence_Append (Seq : in out W_Statement_Sequence_Id;
+                              Elt : W_Prog_Id);
+
    function New_Result
      (T : W_Type_Id)
      return W_Binder_Id;

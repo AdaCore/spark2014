@@ -15976,11 +15976,10 @@ package body Gnat2Why.Expr is
    -- Transform_Statement_Or_Declaration_In_List --
    ------------------------------------------------
 
-   function Transform_Statement_Or_Declaration_In_List
+   procedure Transform_Statement_Or_Declaration_In_List
      (Stmt_Or_Decl : Node_Id;
-      Prev_Prog    : W_Prog_Id) return W_Prog_Id
+      Seq          : in out W_Statement_Sequence_Id)
    is
-      Result        : W_Prog_Id;
       Cut_Assertion_Expr : Node_Id;
       Cut_Assertion : W_Pred_Id;
       Prog               : constant W_Prog_Id :=
@@ -15991,19 +15990,19 @@ package body Gnat2Why.Expr is
             Assert_And_Cut_Expr => Cut_Assertion_Expr,
             Assert_And_Cut      => Cut_Assertion));
    begin
-      Result :=
-        Sequence
-          (Prev_Prog,
-           New_Label (Labels => Name_Id_Sets.To_Set
-                        (New_Located_Label (Stmt_Or_Decl)),
-                      Def    => +Prog));
+      Sequence_Append (Seq,
+                       New_Label (Labels => Name_Id_Sets.To_Set
+                                  (New_Located_Label (Stmt_Or_Decl)),
+                                  Def    => +Prog));
       if Cut_Assertion /= Why_Empty then
-         Result :=
-           New_Located_Abstract
-             (Ada_Node => Cut_Assertion_Expr,
-              Expr     => +Result,
-              Post     => Cut_Assertion,
-              Reason   => VC_Assert);
+         Seq :=
+           New_Statement_Sequence
+             (Statements =>
+                (1 => New_Located_Abstract
+                   (Ada_Node => Cut_Assertion_Expr,
+                    Expr     => +Seq,
+                    Post     => Cut_Assertion,
+                    Reason   => VC_Assert)));
 
          --  Assume the dynamic property of variables referenced in
          --  Cut_Assertion.
@@ -16021,24 +16020,22 @@ package body Gnat2Why.Expr is
                  and then Ada_Ent_To_Why.Has_Element (Symbol_Table, V)
                  and then Is_Mutable_In_Why (V)
                then
-                  Result := Sequence
-                    (Result,
-                     Assume_Dynamic_Invariant
-                       (Expr          => +Transform_Identifier
-                                           (Params   => Body_Params,
-                                            Expr     => V,
-                                            Ent      => V,
-                                            Domain   => EW_Term),
-                        Ty            => Etype (V),
-                        Initialized   => False,
-                        Only_Var      => True,
-                        Top_Predicate => True));
+                  Sequence_Append (Seq,
+                                   Assume_Dynamic_Invariant
+                                     (Expr          => +Transform_Identifier
+                                        (Params   => Body_Params,
+                                         Expr     => V,
+                                         Ent      => V,
+                                         Domain   => EW_Term),
+                                      Ty            => Etype (V),
+                                      Initialized   => False,
+                                      Only_Var      => True,
+                                      Top_Predicate => True));
                end if;
             end loop;
          end;
       end if;
 
-      return Result;
    end Transform_Statement_Or_Declaration_In_List;
 
    -------------------------------------------
@@ -16049,19 +16046,19 @@ package body Gnat2Why.Expr is
      (Stmts_And_Decls : List_Id) return W_Prog_Id
    is
       Cur_Stmt_Or_Decl : Node_Id   := Nlists.First (Stmts_And_Decls);
-      Result           : W_Prog_Id := +Void;
+      Result           : W_Statement_Sequence_Id :=
+        New_Statement_Sequence (Statements => (1 .. 1 => +Void));
 
    begin
       while Present (Cur_Stmt_Or_Decl) loop
-         Result :=
-           Transform_Statement_Or_Declaration_In_List
-             (Stmt_Or_Decl => Cur_Stmt_Or_Decl,
-              Prev_Prog    => Result);
+         Transform_Statement_Or_Declaration_In_List
+           (Stmt_Or_Decl => Cur_Stmt_Or_Decl,
+            Seq          => Result);
 
          Nlists.Next (Cur_Stmt_Or_Decl);
       end loop;
 
-      return Result;
+      return +Result;
    end Transform_Statements_And_Declarations;
 
    ------------------------------
