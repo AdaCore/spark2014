@@ -20,7 +20,7 @@ regexp = re.compile("a/testsuite/gnatprove/.*\.out")
 
 def do_git_diff(tmp):
     with open(tmp, 'w') as outfile:
-        subprocess.call(["git", "diff", "--ignore-submodules"],
+        subprocess.call(["git", "diff", "--ignore-submodules", "."],
                         stdout=outfile)
 
 
