@@ -66,9 +66,9 @@ def launch_server(limit_line, input_file):
                 node_change = node_change + 1
             elif notif_type == NEW_NODE:
                 children = children + 1
-                if j[PARENT_ID] == 96:
+                if j[PARENT_ID] == 97:
                     children_96 = children_96 + 1
-                elif j[PARENT_ID] == 97:
+                elif j[PARENT_ID] == 98:
                     children_97 = children_97 + 1
             elif notif_type == NEXT_UNPROVEN:
                 # TODO this is ok but we print nothing

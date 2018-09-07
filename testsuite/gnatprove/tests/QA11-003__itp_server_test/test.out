@@ -1,9 +1,9 @@
 test.adb:11:16: medium: postcondition might fail
-{"ide_request": "Command_req", "node_ID":97, "command" : "introduce_premises" }
+{"ide_request": "Command_req", "node_ID":98, "command" : "introduce_premises" }
 
-{"ide_request": "Command_req", "node_ID":97, "command" : "z3" }
+{"ide_request": "Command_req", "node_ID":98, "command" : "z3" }
 
-{"ide_request": "Get_task", "node_ID":97, "loc": false, "full_context": false}
+{"ide_request": "Get_task", "node_ID":98, "loc": false, "full_context": false}
 
 Message
 Task
