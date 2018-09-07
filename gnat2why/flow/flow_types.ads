@@ -188,35 +188,6 @@ package Flow_Types is
       end case;
    end record;
 
-   --  The following type lists all possible kinds of default initialization
-   --  that may apply to a type.
-
-   type Default_Initialization_Kind is
-     (No_Possible_Initialization,
-      --  A type cannot possibly be initialized because it has no content, for
-      --  example - a null record.
-
-      Full_Default_Initialization,
-      --  A type that combines the following types and content:
-      --    * Access type
-      --    * Array-of-scalars with specified Default_Component_Value
-      --    * Array type with fully default initialized component type
-      --    * Record or protected type with components that either have a
-      --      default expression or their related types are fully default
-      --      initialized.
-      --    * Scalar type with specified Default_Value
-      --    * Task type
-      --    * Type extension of a type with full default initialization where
-      --      the extension components are also fully default initialized.
-
-      Mixed_Initialization,
-      --  A type where some of its internals are fully default initialized and
-      --  some are not.
-
-      No_Default_Initialization
-      --  A type where none of its content is fully default initialized
-     );
-
    ----------------
    -- Flow_Scope --
    ----------------

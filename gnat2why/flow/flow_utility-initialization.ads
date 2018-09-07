@@ -47,4 +47,48 @@ package Flow_Utility.Initialization is
    --  @param Ignore_DIC If True then ignore attribute Has_DIC for this type
    --  @return True iff F is fully default initialized
 
+   --  The following type lists all possible kinds of default initialization
+   --  that may apply to a type.
+
+   type Default_Initialization_Kind is
+     (No_Possible_Initialization,
+      --  A type cannot possibly be initialized because it has no content, for
+      --  example - a null record.
+
+      Full_Default_Initialization,
+      --  A type that combines the following types and content:
+      --    * Access type
+      --    * Array-of-scalars with specified Default_Component_Value
+      --    * Array type with fully default initialized component type
+      --    * Record or protected type with components that either have a
+      --      default expression or their related types are fully default
+      --      initialized.
+      --    * Scalar type with specified Default_Value
+      --    * Task type
+      --    * Type extension of a type with full default initialization where
+      --      the extension components are also fully default initialized.
+
+      Mixed_Initialization,
+      --  A type where some of its internals are fully default initialized and
+      --  some are not.
+
+      No_Default_Initialization
+      --  A type where none of its content is fully default initialized
+     );
+
+   function Default_Initialization (Typ        : Entity_Id;
+                                    Scope      : Flow_Scope;
+                                    Ignore_DIC : Boolean := False)
+                                    return Default_Initialization_Kind;
+   --  Determine default initialization kind that applies to a particular type.
+   --  Types defined in units with external axiomatization (such as formal
+   --  containers) and private types are treated specially, so that they are
+   --  either considered as having full default initialization, or no default
+   --  initialization.
+   --  @param Typ any type
+   --  @param Scope is the Flow_Scope from where we are looking
+   --  @param Ignore_DIC If True then do not consider attribute Has_DIC for
+   --     this type.
+   --  @return the Default_Initialization_Kind of Typ
+
 end Flow_Utility.Initialization;

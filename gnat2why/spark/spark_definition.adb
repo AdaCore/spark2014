@@ -37,6 +37,7 @@ with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
 with Flow_Refinement;                 use Flow_Refinement;
 with Flow_Types;                      use Flow_Types;
+with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
 with Gnat2Why_Args;
 with Lib;                             use Lib;
 with Namet;                           use Namet;

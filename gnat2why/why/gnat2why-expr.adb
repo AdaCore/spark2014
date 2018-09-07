@@ -34,6 +34,7 @@ with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
+with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 with GNAT.Source_Info;
 with Gnat2Why_Args;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
