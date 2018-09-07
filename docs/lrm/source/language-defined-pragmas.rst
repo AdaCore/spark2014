@@ -22,7 +22,7 @@ Atomic_Components  	      Yes
 Attach_Handler     	      Yes
 Convention         	      Yes
 CPU             	      Yes
-Default_Storage_Pool   	      No		     No access types
+Default_Storage_Pool   	      No		     Restricted access types
 Detect_Blocking	  	      Yes
 Discard_Names 	  	      No
 Dispatching_Domain 	      No		     Ravenscar

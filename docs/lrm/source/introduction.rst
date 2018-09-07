@@ -547,7 +547,8 @@ To facilitate formal analyses and verification, |SPARK| enforces a number of
 global restrictions to Ada 2012. While these are covered in more detail
 in the remaining chapters of this document, the most notable restrictions are:
 
-- The use of access types and allocators is not permitted.
+- Restrictions on the use of access types and values, similar in some
+  ways to the ownership model of the programming language Rust.
 
 - All expressions (including function calls) are free of side-effects.
 
