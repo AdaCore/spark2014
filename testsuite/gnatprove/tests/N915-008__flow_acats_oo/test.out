@@ -26,11 +26,11 @@ c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:59:33: warning: no Global contract available for "Time_Of"
-c3900063.adb:113:38: high: "Medium_Alarm.Action_Officer" is not initialized
 c3900063.adb:113:38: high: private part of "Medium_Alarm" is not initialized
+c3900063.adb:113:38: info: initialization of "Medium_Alarm.Action_Officer" proved
 c3900063.adb:114:19: medium: precondition might fail
-c3900063.adb:117:18: high: "Medium_Alarm.Action_Officer" is not initialized
 c3900063.adb:117:18: high: private part of "Medium_Alarm" is not initialized
+c3900063.adb:117:18: info: initialization of "Medium_Alarm.Action_Officer" proved
 c3900063.adb:119:31: info: initialization of "Medium_Alarm.Action_Officer" proved
 c3900063.adb:119:31: info: initialization of private part of "Medium_Alarm" proved
 c3900063.adb:120:19: medium: precondition might fail

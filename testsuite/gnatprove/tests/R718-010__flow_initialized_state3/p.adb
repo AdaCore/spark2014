@@ -11,5 +11,4 @@ is
    procedure Foo is null;
 begin
    X.Y := 0;
---     X.Z := 0;
 end P;

@@ -683,7 +683,8 @@ package body Flow_Utility.Initialization is
 
                return
                  (for some Comp of reverse F.Component =>
-                    Has_Full_Default_Initialization (Comp, Scope))
+                    (Has_Full_Default_Initialization (Comp, Scope)
+                     or else Present (Expression (Parent (Comp)))))
                    or else
                  Has_Full_Default_Initialization
                    (Get_Direct_Mapping_Id (F), Scope);
