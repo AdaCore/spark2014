@@ -229,8 +229,16 @@ package body Flow_Utility.Initialization is
                return True;
 
             else
-               return Has_Full_Default_Initialization
-                        (Get_Direct_Mapping_Id (F), Scope);
+               --  For nested records with mixed default-initialization we
+               --  first look at the most nested component and then at its
+               --  parents until the very top-level object.
+
+               return
+                 (for some Comp of reverse F.Component =>
+                    Has_Full_Default_Initialization (Comp, Scope))
+                   or else
+                 Has_Full_Default_Initialization
+                   (Get_Direct_Mapping_Id (F), Scope);
             end if;
 
          when Magic_String | Synthetic_Null_Export =>
