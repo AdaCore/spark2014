@@ -3292,11 +3292,14 @@ package body Gnat2Why.Expr is
                  (Domain => EW_Term,
                   Expr   => +F_Expr,
                   To     => Type_Of_Node (F_Ty)),
-               Right  => Transform_Expr
-                 (Expr          => Expression (Enclosing_Declaration (E)),
-                  Expected_Type => Type_Of_Node (F_Ty),
-                  Domain        => EW_Term,
-                  Params        => Params),
+               Right  => New_Record_Attributes_Update
+                 (Domain    => EW_Term,
+                  Name      => Transform_Expr
+                    (Expr          => Expression (Enclosing_Declaration (E)),
+                     Expected_Type => Type_Of_Node (F_Ty),
+                     Domain        => EW_Term,
+                     Params        => Params),
+                  Ty        => F_Ty),
                Domain => EW_Pred);
 
             --  otherwise, use its Field's Etype default value.
