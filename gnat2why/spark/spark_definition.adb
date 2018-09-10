@@ -2494,8 +2494,6 @@ package body SPARK_Definition is
            Attribute_First_Valid       |
            Attribute_Floor             |
            Attribute_Fore              |
-           Attribute_Image             |
-           Attribute_Img               |
            Attribute_Last              |
            Attribute_Last_Valid        |
            Attribute_Length            |
@@ -2537,14 +2535,30 @@ package body SPARK_Definition is
            Attribute_Val               |
            Attribute_Value             |
            Attribute_Version           |
-           Attribute_Wide_Image        |
            Attribute_Wide_Value        |
            Attribute_Wide_Width        |
-           Attribute_Wide_Wide_Image   |
            Attribute_Wide_Wide_Value   |
            Attribute_Wide_Wide_Width   |
            Attribute_Width             =>
             null;
+
+         --  We assume a maximal length for the image of any type. This length
+         --  may be inaccurate for identifiers.
+         when Attribute_Wide_Image   |
+           Attribute_Wide_Wide_Image |
+           Attribute_Image           |
+           Attribute_Img             =>
+
+            if Emit_Warning_Info_Messages
+              and then SPARK_Pragma_Is (Opt.On)
+              and then Gnat2Why_Args.Pedantic
+              and then Is_Enumeration_Type (Etype (P))
+            then
+               Error_Msg_Name_1 := Aname;
+               Error_Msg_N
+                 ("?attribute % has an implementation-defined length",
+                  N);
+            end if;
 
          --  These attributes are supported, but generate a warning in
          --  "pedantic" mode, owing to their implemention-defined status.

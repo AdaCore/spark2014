@@ -30,6 +30,7 @@ with Sem_Util;
 with Sem_Prag;
 with SPARK_Util.Types;
 with Ttypes;
+with Interfaces;
 
 package body SPARK_Atree.Entities is
 
@@ -480,9 +481,21 @@ package body SPARK_Atree.Entities is
    --------------------------
 
    function Max_Size_Of_Img_Attr (Typ : Entity_Id) return Uint is
-     (UI_From_Int (255 * 8));
-   --  ??? For now simply use a probably big enough value. To be refined when
-   --  a consensus is reached.
+      function Max_Size_Of_Integer (Size : Int) return Int is
+        (Interfaces.Unsigned_64'Image (2 ** Natural (Size))'Length + 1);
+      --  Maximal size of integer values (positive values are prefixed by a
+      --  space).
+
+   begin
+      return
+        (if Atree.Ekind (Typ) in Einfo.Integer_Kind then
+            UI_From_Int (Max_Size_Of_Integer (UI_To_Int (Einfo.Esize (Typ))))
+
+         --  Maximal size of an identifier:
+         --    maximum_line_length (255) * length_of_a_wide_character (8)
+
+         else UI_From_Int (255 * 8));
+   end Max_Size_Of_Img_Attr;
 
    ------------------
    -- Modular_Size --

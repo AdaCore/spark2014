@@ -387,22 +387,6 @@ processor configured as big-endian::
   double        15  I  64  64
   long double   15  I  64  64
 
-.. _Parenthesized Arithmetic Operations:
-
-Parenthesized Arithmetic Operations
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-In Ada, non-parenthesized arithmetic operations could be re-ordered by the
-compiler, which may result in a failing computation (due to overflow checking)
-becoming a successful one, and vice-versa. By default, |GNATprove| evaluates
-all expressions left-to-right, like GNAT. When the switch ``--pedantic`` is
-used, a warning is emitted for every operation that could be re-ordered:
-
-* any operand of a binary adding operation (+,-) that is itself a binary adding
-  operation;
-* any operand of a binary multiplying operation (\*,/,mod,rem) that is itself a
-  binary multiplying operation.
-
 .. _Using CodePeer Static Analysis:
 
 Using CodePeer Static Analysis
