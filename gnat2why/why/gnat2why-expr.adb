@@ -16027,7 +16027,6 @@ package body Gnat2Why.Expr is
             for V of Vars loop
                if Nkind (V) in N_Entity
                  and then Is_Object (V)
-                 and then Entity_In_SPARK (V)
                  and then Ada_Ent_To_Why.Has_Element (Symbol_Table, V)
                  and then Is_Mutable_In_Why (V)
                then
