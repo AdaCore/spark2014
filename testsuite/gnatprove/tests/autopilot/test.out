@@ -17,7 +17,9 @@ ap-altitude-pitch-rate.adb:29:47: info: initialization of "Gap" proved
 ap-altitude-pitch-rate.adb:29:47: info: initialization of "Gap" proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:30:14: info: initialization of "Average" proved
 ap-altitude-pitch-rate.adb:30:14: info: initialization of "Average" proved, in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:38:30: info: unrolling loop
 ap-altitude-pitch-rate.adb:40:24: info: index check proved (CVC4: 20 VC)
+ap-altitude-pitch-rate.adb:58:18: info: analyzing call to "History_Average" in context
 ap-altitude-pitch-rate.adb:60:11: info: initialization of "Early_Pitch" proved
 ap-altitude-pitch-rate.adb:60:26: info: initialization of "Average" proved
 ap-altitude-pitch-rate.adb:63:30: info: initialization of "Early_Pitch" proved
@@ -44,6 +46,7 @@ ap-altitude-pitch.adb:34:14: info: initialization of "Result" proved
 ap-altitude-pitch.adb:34:14: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45
 ap-altitude-pitch.adb:34:14: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:34:14: info: range check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:45:28: info: analyzing call to "Target_ROC" in context
 ap-altitude-pitch.adb:51:30: info: range check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:53:30: info: assertion proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:53:30: info: initialization of "Floor_Climb_Rate" proved
@@ -67,6 +70,8 @@ ap-altitude-pitch.adb:74:53: info: division check proved (CVC4: 1 VC), in call i
 ap-altitude-pitch.adb:77:14: info: initialization of "Target_Angle" proved
 ap-altitude-pitch.adb:77:14: info: initialization of "Target_Angle" proved, in call inlined at ap-altitude-pitch.adb:104
 ap-altitude-pitch.adb:86:49: info: initialization of "Surfaces.Elevators" proved
+ap-altitude-pitch.adb:101:27: info: analyzing call to "Target_Rate" in context
+ap-altitude-pitch.adb:104:28: info: analyzing call to "Calc_Elevator_Move" in context
 ap-altitude-pitch.adb:104:28: info: initialization of "Present_Pitchrate" proved
 ap-altitude-pitch.adb:104:28: info: initialization of "Target_Pitchrate" proved
 ap-altitude-pitch.adb:106:31: info: initialization of "Elevator_Movement" proved
@@ -89,6 +94,7 @@ ap-heading-roll.adb:35:56: info: initialization of "Offset" proved, in call inli
 ap-heading-roll.adb:37:14: info: initialization of "Result" proved
 ap-heading-roll.adb:37:14: info: initialization of "Result" proved, in call inlined at ap-heading-roll.adb:48
 ap-heading-roll.adb:37:14: info: initialization of "Result" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:48:22: info: analyzing call to "Target_ROR" in context
 ap-heading-roll.adb:49:33: info: initialization of "Target_Bank" proved
 ap-heading-roll.adb:49:33: info: initialization of "Target_Bank" proved, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:49:53: info: division check proved (CVC4: 1 VC), in call inlined at ap-heading-roll.adb:94
@@ -104,6 +110,8 @@ ap-heading-roll.adb:69:48: info: division check proved (CVC4: 1 VC), in call inl
 ap-heading-roll.adb:72:14: info: initialization of "Target_Angle" proved
 ap-heading-roll.adb:72:14: info: initialization of "Target_Angle" proved, in call inlined at ap-heading-roll.adb:97
 ap-heading-roll.adb:80:49: info: initialization of "Surfaces.Ailerons" proved
+ap-heading-roll.adb:94:26: info: analyzing call to "Target_Rate" in context
+ap-heading-roll.adb:97:27: info: analyzing call to "Calc_Aileron_Move" in context
 ap-heading-roll.adb:97:27: info: initialization of "Present_Rollrate" proved
 ap-heading-roll.adb:97:27: info: initialization of "Target_Rollrate" proved
 ap-heading-roll.adb:100:30: info: initialization of "Aileron_Movement" proved
@@ -112,6 +120,7 @@ ap-heading-yaw.adb:27:53: info: division check proved (CVC4: 1 VC), in call inli
 ap-heading-yaw.adb:31:14: info: initialization of "Target_Angle" proved
 ap-heading-yaw.adb:31:14: info: initialization of "Target_Angle" proved, in call inlined at ap-heading-yaw.adb:47
 ap-heading-yaw.adb:36:49: info: initialization of "Surfaces.Rudder" proved
+ap-heading-yaw.adb:47:26: info: analyzing call to "Calc_Rudder_Move" in context
 ap-heading-yaw.adb:47:26: info: initialization of "Present_Sliprate" proved
 ap-heading-yaw.adb:48:28: info: initialization of "Rudder_Movement" proved
 ap.adb:72:12: info: initialization of "Master_Switch" proved

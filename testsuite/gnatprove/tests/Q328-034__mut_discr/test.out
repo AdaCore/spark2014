@@ -20,6 +20,7 @@ input.adb:258:24: info: index check proved (CVC4: 4 VC)
 input.adb:260:35: info: range check proved (CVC4: 1 VC)
 input.adb:266:24: info: range check proved (CVC4: 4 VC)
 input.adb:266:30: info: initialization of "Start" proved
+input.adb:269:27: info: cannot unroll loop (too many loop iterations)
 input.adb:270:16: info: index check proved (CVC4: 2 VC)
 input.adb:270:56: info: initialization of "S" proved
 input.adb:270:59: info: index check proved (CVC4: 2 VC)
@@ -36,6 +37,7 @@ input.ads:9:41: info: initialization of "Size" proved
 input.ads:11:14: info: initialization of "Size" proved
 input.ads:11:14: info: postcondition proved (CVC4: 1 VC)
 input.ads:28:14: info: initialization of "First_Char" proved
+instructions.adb:19:28: info: unrolling loop
 instructions.adb:31:07: medium: exception might be raised
 instructions.adb:50:58: info: precondition proved (CVC4: 1 VC)
 instructions.adb:54:13: medium: exception might be raised
@@ -72,6 +74,7 @@ screen_output.adb:74:07: warning: no Global contract available for "Put_Line"
 screen_output.adb:76:07: warning: assuming "Put" has no effect on global items
 screen_output.adb:76:07: warning: no Global contract available for "Put"
 screen_output.adb:77:21: info: initialization of "Pos" proved
+screen_output.adb:77:29: info: cannot unroll loop (too many loop iterations)
 screen_output.adb:78:10: warning: assuming "Put" has no effect on global items
 screen_output.adb:78:10: warning: no Global contract available for "Put"
 screen_output.adb:81:07: warning: assuming "Put_Line" has no effect on global items
@@ -119,6 +122,7 @@ stack.adb:53:46: low: range check might fail
 stack.adb:53:66: info: initialization of "V.E" proved
 stack.adb:63:10: info: raise statement proved unreachable (CVC4: 1 VC)
 stack.adb:66:19: info: index check proved (CVC4: 2 VC)
+stack.adb:75:34: info: cannot unroll loop (too many loop iterations)
 stack.ads:20:14: info: postcondition proved (CVC4: 1 VC)
 stack.ads:20:30: info: overflow check proved (CVC4: 1 VC)
 stack.ads:24:19: info: initialization of "V.E" proved

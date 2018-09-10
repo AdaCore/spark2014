@@ -1,4 +1,5 @@
 main.ads:4:09: high: Ctxt must be initialized at elaboration
+total.adb:9:24: info: unrolling loop
 total.adb:9:24: warning: statement has no effect
 total.adb:10:10: warning: statement has no effect
 total.adb:14:14: info: initialization of "My_Tot" proved

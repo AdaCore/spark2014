@@ -16,6 +16,7 @@ for_loops.adb:32:10: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:32:10: warning: no Global contract available for "Put_Line"
 for_loops.adb:40:30: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:40:38: info: initialization of "Counter" proved
+for_loops.adb:40:47: info: cannot unroll loop (too many loop iterations)
 for_loops.adb:42:28: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:44:36: info: initialization of "Counter" proved
 for_loops.adb:44:36: info: loop invariant proved (CodePeer)
@@ -23,6 +24,7 @@ for_loops.adb:46:13: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:46:13: warning: no Global contract available for "Put_Line"
 for_loops.adb:55:30: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:55:38: info: initialization of "Counter" proved
+for_loops.adb:55:47: info: cannot unroll loop (too many loop iterations)
 for_loops.adb:57:28: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:59:13: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:59:13: warning: no Global contract available for "Put_Line"
@@ -35,6 +37,7 @@ optional.adb:17:33: info: loop invariant proved (CodePeer)
 optional.adb:19:21: info: initialization of "TA" proved
 optional.adb:27:11: medium: array index check might fail
 optional.adb:27:26: info: initialization of "TA" proved
+optional.adb:29:48: info: unrolling loop
 optional.adb:31:36: info: initialization of "TA" proved
 optional.adb:31:36: info: loop invariant initialization proved (CVC4: 3 VC)
 optional.adb:31:36: medium: loop invariant might fail after first iteration, cannot prove TA'Loop_Entry (Outer, Inner) = 0 (e.g. when Inner = 2 and Outer = 1)

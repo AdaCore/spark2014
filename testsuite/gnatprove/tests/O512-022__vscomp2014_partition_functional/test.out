@@ -142,6 +142,7 @@ partition_refinement.adb:120:33: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:120:33: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:120:33: info: initialization of "P_Elem.Last" proved
 partition_refinement.adb:122:22: info: assertion proved (CVC4: 1 VC)
+partition_refinement.adb:143:59: info: cannot unroll loop (too many loop iterations)
 partition_refinement.adb:149:20: medium: precondition might fail
 partition_refinement.adb:150:13: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:150:34: info: initialization of "P_Elem.Last" proved

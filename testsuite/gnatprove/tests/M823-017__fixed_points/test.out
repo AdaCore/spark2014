@@ -343,6 +343,7 @@ ordinary_fixed.ads:15:14: warning: subprogram "Test_Multiply" has no effect
 ordinary_fixed.ads:18:14: warning: subprogram "Test_Divide" has no effect
 ordinary_fixed.ads:21:14: warning: subprogram "Test_Type_Conversion" has no effect
 ordinary_fixed.ads:24:14: warning: subprogram "Test_Compare" has no effect
+dynamic_fixed.adb:4:21: info: unrolling loop
 dynamic_fixed.adb:6:18: info: range check proved (CVC4: 20 VC)
 dynamic_fixed.adb:6:40: info: range check proved (CVC4: 10 VC)
 dynamic_fixed.adb:7:19: info: range check proved (CVC4: 10 VC)

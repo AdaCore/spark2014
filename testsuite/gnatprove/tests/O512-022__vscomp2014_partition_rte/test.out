@@ -152,6 +152,7 @@ partition_refinement.adb:147:24: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:147:24: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:149:22: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:149:39: info: initialization of "P_Prime.Last" proved
+partition_refinement.adb:149:52: info: unrolling loop
 partition_refinement.adb:150:24: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:174:29: info: initialization of "C.Node" proved
 partition_refinement.adb:179:38: info: precondition proved (CVC4: 2 VC)

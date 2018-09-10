@@ -46,21 +46,31 @@ c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.a
 c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:50
 c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:54
 c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:57
+c392004.adb:26:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:26:18: info: initialization of "My_Car.Convertible" proved
+c392004.adb:29:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:29:14: info: initialization of "Your_Car.Convertible" proved
+c392004.adb:33:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:33:14: info: initialization of "My_Car.Convertible" proved
+c392004.adb:36:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:36:18: info: initialization of "My_Car.Convertible" proved
+c392004.adb:40:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:40:18: info: initialization of "My_Car.Convertible" proved
 c392004.adb:42:10: info: initialization of "My_Car.Convertible" proved
 c392004.adb:42:10: info: initialization of private part of "My_Car" proved
+c392004.adb:43:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:43:18: info: initialization of "My_Car.Convertible" proved
+c392004.adb:47:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:47:18: info: initialization of "Your_Car.Convertible" proved
 c392004.adb:49:10: info: initialization of "Your_Car.Convertible" proved
 c392004.adb:49:10: info: initialization of private part of "Your_Car" proved
+c392004.adb:50:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:50:18: info: initialization of "Your_Car.Convertible" proved
+c392004.adb:54:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:54:14: info: initialization of "My_Car.Convertible" proved
 c392004.adb:56:10: info: initialization of "My_Car.Convertible" proved
 c392004.adb:56:10: info: initialization of private part of "My_Car" proved
+c392004.adb:57:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:57:14: info: initialization of "My_Car.Convertible" proved
 c392004_1.adb:8:16: medium: precondition might fail
 c392004_1.ads:56:22: info: initialization of "The_Vehicle.Engine_On" proved
@@ -142,9 +152,33 @@ cc1311a.adb:346:14: info: initialization of "RESULTS" proved, in instantiation a
 cc1311a.adb:347:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:447
 cc1311a.adb:357:20: info: initialization of "OUTVAR" proved
 cc1311a.adb:380:25: info: initialization of "OUTPUT" proved
+cc1311a.adb:387:06: info: analyzing call to "TD_FUNC" in context
+cc1311a.adb:387:06: info: in instantiation at line 98
 cc1311a.adb:387:16: warning: subprogram "NEW_PROC_WITH_3D_FUNC" has no effect
+cc1311a.adb:396:06: info: analyzing call to "TD_FUNC" in context
+cc1311a.adb:396:06: info: in instantiation at line 134
+cc1311a.adb:405:07: info: analyzing call to "TD_FUNC" in context
+cc1311a.adb:405:07: info: in instantiation at line 164
+cc1311a.adb:414:06: info: analyzing call to "TD_PROC" in context
+cc1311a.adb:414:06: info: in instantiation at line 194
 cc1311a.adb:414:16: warning: subprogram "NEW_PROC_WITH_3D_PROC" has no effect
+cc1311a.adb:423:06: info: analyzing call to "TD_PROC" in context
+cc1311a.adb:423:06: info: in instantiation at line 230
+cc1311a.adb:432:06: info: analyzing call to "TD_PROC" in context
+cc1311a.adb:432:06: info: in instantiation at line 265
+cc1311a.adb:441:06: info: analyzing call to "F1" in context
+cc1311a.adb:441:06: info: in instantiation at line 279
+cc1311a.adb:442:06: info: analyzing call to "F1" in context
+cc1311a.adb:442:06: info: in instantiation at line 290
+cc1311a.adb:443:06: info: analyzing call to "F1" in context
+cc1311a.adb:443:06: info: in instantiation at line 302
 cc1311a.adb:443:16: warning: subprogram "NPROC1" has no effect
+cc1311a.adb:445:06: info: analyzing call to "P2" in context
+cc1311a.adb:445:06: info: in instantiation at line 317
+cc1311a.adb:446:06: info: analyzing call to "P2" in context
+cc1311a.adb:446:06: info: in instantiation at line 330
+cc1311a.adb:447:06: info: analyzing call to "P2" in context
+cc1311a.adb:447:06: info: in instantiation at line 345
 cc1311a.adb:447:16: warning: subprogram "NPROC2" has no effect
 cc1311a.adb:452:17: medium: precondition might fail
 cc1311a.adb:457:17: medium: precondition might fail

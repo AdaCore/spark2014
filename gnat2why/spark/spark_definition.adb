@@ -1275,10 +1275,11 @@ package body SPARK_Definition is
       --  Start of processing for Check_Unrolled_Loop
 
       begin
-         Candidate_For_Loop_Unrolling (Loop_Stmt => Loop_Stmt,
-                                       Result    => Unroll,
-                                       Low_Val   => Low_Val,
-                                       High_Val  => High_Val);
+         Candidate_For_Loop_Unrolling (Loop_Stmt   => Loop_Stmt,
+                                       Output_Info => False,
+                                       Result      => Unroll,
+                                       Low_Val     => Low_Val,
+                                       High_Val    => High_Val);
 
          if not Gnat2Why_Args.No_Loop_Unrolling
            and then Unroll /= No_Unrolling

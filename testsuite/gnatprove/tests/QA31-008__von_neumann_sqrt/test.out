@@ -88,5 +88,6 @@ p.ads:10:44: medium: overflow check might fail
 p.ads:14:19: medium: postcondition might fail, cannot prove (Sqrt_Von_Neumann'Result * Sqrt_Von_Neumann'Result) <= X
 p.ads:14:44: info: overflow check proved (altergo: 1 VC)
 p.ads:16:49: medium: overflow check might fail
+test_sqrt.adb:7:25: info: cannot unroll loop (too many loop iterations)
 test_sqrt.adb:10:15: warning: assuming "Put_Line" has no effect on global items
 test_sqrt.adb:10:15: warning: no Global contract available for "Put_Line"

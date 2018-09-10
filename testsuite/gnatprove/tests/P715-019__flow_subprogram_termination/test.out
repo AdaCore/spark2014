@@ -245,6 +245,7 @@ nested_loops.adb:38:14: warning: subprogram "Proc3" might not terminate
 nested_loops.adb:41:13: info: initialization of "J" proved
 nested_loops.adb:42:15: info: initialization of "J" proved
 nested_loops.adb:42:17: info: overflow check proved (CVC4: 1 VC)
+nested_loops.adb:43:26: info: unrolling loop
 nested_packages.adb:7:20: info: subprogram "Null_Pck" will terminate
 nested_packages.adb:7:20: warning: subprogram "Null_Pck" has no effect
 nested_packages.adb:10:23: info: subprogram "Null_Pck2" will terminate
@@ -280,6 +281,7 @@ preconditions.ads:2:14: info: subprogram "Returning_Precondition" will terminate
 preconditions.ads:6:13: warning: subprogram "Nonreturning_Precondition" might not terminate
 r.adb:7:13: warning: subprogram "E" might not terminate
 r.adb:8:17: warning: subprogram "P" might not terminate
+r.adb:17:36: info: unrolling loop
 r.adb:18:13: high: potentially blocking entry call in protected operation "E"
 r.adb:25:21: warning: statement has no effect
 r.adb:31:14: warning: subprogram "Proc1" has no effect

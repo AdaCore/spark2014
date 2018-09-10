@@ -1,3 +1,4 @@
+pupils.adb:23:36: info: unrolling loop
 pupils.adb:25:49: info: index check proved (CVC4: 20 VC)
 pupils.adb:26:15: info: initialization of "Subject_Scores" proved
 pupils.adb:27:23: info: initialization of "Success" proved

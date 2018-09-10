@@ -36,6 +36,7 @@ stacks.adb:12:16: medium: array index check might fail (e.g. when S = (Max => ?,
 stacks.adb:21:22: info: range check proved (CVC4: 1 VC)
 stacks.adb:26:07: warning: assuming "Put" has no effect on global items
 stacks.adb:26:07: warning: no Global contract available for "Put"
+stacks.adb:27:35: info: cannot unroll loop (too many loop iterations)
 stacks.adb:28:10: warning: assuming "Put" has no effect on global items
 stacks.adb:28:10: warning: no Global contract available for "Put"
 stacks.adb:28:38: medium: array index check might fail (e.g. when J = 2 and S = (Max => 1, Top => 2, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)

@@ -40,8 +40,10 @@ stacks.ads:100:49: info: range check proved (CVC4: 4 VC)
 stacks.ads:101:20: info: range check proved (CVC4: 1 VC)
 stacks.ads:101:20: info: range check proved (CVC4: 4 VC)
 stacks.ads:103:61: info: index check proved (CVC4: 2 VC)
+test_stack.adb:6:34: info: unrolling loop
 test_stack.adb:7:08: info: precondition proved (CVC4: 5 VC)
 test_stack.adb:9:19: info: assertion proved (Z3: 1 VC)
+test_stack.adb:10:42: info: unrolling loop
 test_stack.adb:11:08: info: precondition proved (CVC4: 5 VC)
 test_stack.adb:12:22: info: assertion proved (Z3: 5 VC)
 test_stack.adb:12:22: info: initialization of "E" proved

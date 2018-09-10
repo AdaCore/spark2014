@@ -1,1 +1,3 @@
+p.adb:6:23: info: cannot unroll loop (too many loop iterations)
+p.adb:10:29: info: cannot unroll loop (too many loop iterations)
 p.ads:3:14: warning: subprogram "S" has no effect

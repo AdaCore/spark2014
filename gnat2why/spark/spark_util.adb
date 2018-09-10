@@ -212,11 +212,14 @@ package body SPARK_Util is
    ----------------------------------
 
    procedure Candidate_For_Loop_Unrolling
-     (Loop_Stmt : Node_Id;
-      Result    : out Unrolling_Type;
-      Low_Val   : out Uint;
-      High_Val  : out Uint)
+     (Loop_Stmt   : Node_Id;
+      Output_Info : Boolean;
+      Result      : out Unrolling_Type;
+      Low_Val     : out Uint;
+      High_Val    : out Uint)
    is
+      Reason : Unbounded_String;
+      --  Reason to output for not unrolling the loop
 
       -----------------------
       -- Local Subprograms --
@@ -229,8 +232,8 @@ package body SPARK_Util is
 
       function Is_Non_Scalar_Object_Declaration
         (N : Node_Id) return Traverse_Result;
-      --  Returns Abandon when an object declaration of a
-      --  non-scalar type is encountered and OK otherwise.
+      --  Returns Abandon when an object declaration of a non-scalar type is
+      --  encountered and OK otherwise. Update [Reason] accordingly.
 
       ---------------------------------------------
       -- Is_Applicable_Loop_Variant_Or_Invariant --
@@ -271,6 +274,9 @@ package body SPARK_Util is
          case Nkind (N) is
             when N_Object_Declaration =>
                if not Is_Scalar_Type (Etype (Defining_Identifier (N))) then
+                  Error_Msg_Sloc := Sloc (N);
+                  Reason :=
+                    To_Unbounded_String ("local non-scalar declaration #");
                   return Abandon;
                end if;
 
@@ -373,6 +379,30 @@ package body SPARK_Util is
                   Result := (if Dynamic_Range then Unrolling_With_Condition
                              else Simple_Unrolling);
                end if;
+
+            else
+               if High_Val >= Low_Val + Gnat2Why_Args.Max_Loop_Unrolling then
+                  Reason := To_Unbounded_String ("too many loop iterations");
+               else
+                  Reason := To_Unbounded_String ("value of loop bounds");
+               end if;
+            end if;
+
+         else
+            Reason := To_Unbounded_String ("dynamic loop bounds");
+         end if;
+
+         if Output_Info then
+            if Result /= No_Unrolling then
+               Error_Msg_N ("info: ?unrolling loop", Loop_Stmt);
+
+            elsif Reason /= "" then
+               Error_Msg_N
+                 ("info: ?cannot unroll loop (" & To_String (Reason) & ")",
+                  Loop_Stmt);
+
+            else
+               Error_Msg_N ("info: ?cannot unroll loop", Loop_Stmt);
             end if;
          end if;
       end if;

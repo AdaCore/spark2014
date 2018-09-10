@@ -524,6 +524,7 @@ sensfusion6_pack.adb:243:23: info: initialization of "Q3_Tmp" proved, in call in
 sensfusion6_pack.adb:243:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:243:32: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:243:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:258:25: info: analyzing call to "Mahony_Update_Q" in context
 sensfusion6_pack.adb:284:21: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:284:27: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:284:32: info: float overflow check proved (Interval)

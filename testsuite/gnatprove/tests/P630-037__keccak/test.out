@@ -58,6 +58,18 @@ keccak-duplex.ads:160:30: medium: range check might fail, in instantiation at ke
 keccak-duplex.ads:160:61: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:160:66: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:161:15: info: postcondition proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
+keccak-keccak_1600.ads:45:04: info: in instantiation at keccak-keccakf.adb:216
+keccak-keccak_1600.ads:45:04: info: in instantiation at keccak-keccakf.adb:44
+keccak-keccak_1600.ads:45:04: info: unrolling loop
+keccak-keccak_1600.ads:45:04: info: unrolling loop
+keccak-keccak_1600.ads:53:04: info: cannot unroll loop (too many loop iterations)
+keccak-keccak_1600.ads:53:04: info: in instantiation at keccak-keccakf-permutation.adb:35
+keccak-keccak_1600.ads:55:04: info: cannot unroll loop (too many loop iterations)
+keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:116
+keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:55
+keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:79
+keccak-keccak_1600.ads:55:04: info: unrolling loop
+keccak-keccak_1600.ads:55:04: info: unrolling loop
 keccak-keccakf-byte_lanes.adb:42:46: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:42:51: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:42:51: info: range check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55

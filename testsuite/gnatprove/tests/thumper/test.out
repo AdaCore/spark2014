@@ -110,6 +110,7 @@ hermes-der-decode.adb:322:32: medium: overflow check might fail
 hermes-der-decode.adb:326:34: medium: array index check might fail
 hermes-der-decode.adb:326:34: medium: overflow check might fail
 hermes-der-decode.adb:327:17: info: range check proved (CVC4: 2 VC)
+hermes-der-decode.adb:327:48: info: cannot unroll loop (too many loop iterations)
 hermes-der-decode.adb:328:29: medium: overflow check might fail
 hermes-der-decode.adb:328:30: info: initialization of "Result" proved
 hermes-der-decode.adb:328:37: info: overflow check proved (CVC4: 1 VC)
@@ -117,6 +118,7 @@ hermes-der-decode.adb:328:67: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:328:67: medium: array index check might fail
 hermes-der-decode.adb:330:22: info: initialization of "Result" proved
 hermes-der-decode.adb:333:17: info: range check proved (CVC4: 2 VC)
+hermes-der-decode.adb:333:48: info: cannot unroll loop (too many loop iterations
 hermes-der-decode.adb:334:29: medium: overflow check might fail
 hermes-der-decode.adb:334:30: info: initialization of "Result" proved
 hermes-der-decode.adb:334:37: info: overflow check proved (CVC4: 1 VC)
@@ -271,6 +273,7 @@ hermes-oid.adb:46:72: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:46:72: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:47:17: info: range check proved (CVC4: 2 VC)
 hermes-oid.adb:47:65: info: overflow check proved (CVC4: 1 VC)
+hermes-oid.adb:47:87: info: cannot unroll loop (too many loop iterations)
 hermes-oid.adb:48:42: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:48:48: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:48:67: info: overflow check proved (CVC4: 1 VC)
@@ -355,6 +358,7 @@ hermes-oid.adb:160:43: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:164:17: info: range check proved (CVC4: 2 VC)
 hermes-oid.adb:164:40: info: initialization of "Start_Index" proved
 hermes-oid.adb:164:55: info: initialization of "Result_Index" proved
+hermes-oid.adb:164:72: info: cannot unroll loop (too many loop iterations)
 hermes-oid.adb:165:23: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:165:33: info: initialization of "Result" proved
 hermes-oid.adb:165:40: info: index check proved (CVC4: 2 VC)
@@ -386,6 +390,7 @@ messages.adb:44:14: info: initialization of "Low_Level.Size" proved
 messages.ads:40:19: info: postcondition proved (CVC4: 3 VC)
 messages.ads:47:19: info: postcondition proved (CVC4: 3 VC)
 network-addresses.adb:42:11: info: range check proved (CVC4: 2 VC)
+network-addresses.adb:42:55: info: cannot unroll loop (too many loop iterations)
 network-addresses.adb:43:31: info: initialization of "Seen_Value" proved
 network-addresses.adb:45:34: info: initialization of "Result" proved
 network-addresses.adb:45:34: info: initialization of "Result_Index" proved
@@ -525,11 +530,13 @@ server_timestamp_maker.adb:80:55: info: range check proved (CVC4: 1 VC), in call
 server_timestamp_maker.adb:80:55: warning: unused assignment to "Version_Stop"
 server_timestamp_maker.adb:81:16: info: initialization of "Decode_Status" proved
 server_timestamp_maker.adb:84:19: info: initialization of "Version" proved
+server_timestamp_maker.adb:89:16: info: analyzing call to "Get_Message_Imprint" in context
 server_timestamp_maker.adb:91:38: info: initialization of "Version_Stop" proved
 server_timestamp_maker.adb:91:51: medium: range check might fail, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:96:19: high: "Imprint_Status" is not initialized
 server_timestamp_maker.adb:100:19: medium: exception might be raised, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:106:14: info: initialization of "Result" proved
+server_timestamp_maker.adb:115:14: info: analyzing call to "Valid_Request" in context
 server_timestamp_maker.adb:116:10: medium: exception might be raised
 server_timestamp_maker.adb:119:10: info: raise statement proved unreachable (CVC4: 1 VC)
 server_timestamp_maker.ads:18:14: high: all paths in "Create_Timestamp" raise exceptions or do not terminate normally

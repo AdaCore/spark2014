@@ -19,6 +19,7 @@ fixed_stream.adb:61:16: info: initialization of "Value" proved
 fixed_stream.adb:71:39: info: range check proved (CVC4: 1 VC)
 fixed_stream.adb:71:54: info: range check proved (CVC4: 1 VC)
 fixed_stream.adb:76:29: info: initialization of "Len" proved
+fixed_stream.adb:76:36: info: cannot unroll loop (too many loop iterations)
 fixed_stream.adb:77:41: info: index check proved (CVC4: 2 VC)
 fixed_stream.adb:77:41: info: overflow check proved (CVC4: 1 VC)
 fixed_stream.adb:77:69: info: initialization of "Out_Stream" proved

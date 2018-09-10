@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
+with Debug;
 with Gnat2Why_Args;
 with Gnat2Why.Expr.Loops.Inv; use Gnat2Why.Expr.Loops.Inv;
 with Gnat2Why.Util;           use Gnat2Why.Util;
@@ -1208,10 +1209,14 @@ package body Gnat2Why.Expr.Loops is
                --  static range, which can be unrolled for every value of the
                --  loop index.
 
-               Candidate_For_Loop_Unrolling (Loop_Stmt => Stmt,
-                                             Result    => Unroll,
-                                             Low_Val   => Low_Val,
-                                             High_Val  => High_Val);
+               Candidate_For_Loop_Unrolling
+                 (Loop_Stmt   => Stmt,
+                  Output_Info =>
+                    Debug.Debug_Flag_Underscore_F
+                      and not Gnat2Why_Args.No_Loop_Unrolling,
+                  Result      => Unroll,
+                  Low_Val     => Low_Val,
+                  High_Val    => High_Val);
 
                if not Gnat2Why_Args.No_Loop_Unrolling
                  and then Unroll /= No_Unrolling

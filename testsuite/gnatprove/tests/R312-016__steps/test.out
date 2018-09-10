@@ -1,4 +1,10 @@
 correct variant
+ethernet_dissector.adb:5:05: info: in instantiation at types.adb:28
+ethernet_dissector.adb:5:05: info: unrolling loop
+ethernet_dissector.adb:6:05: info: in instantiation at types.adb:28
+ethernet_dissector.adb:6:05: info: unrolling loop
+ethernet_dissector.adb:7:05: info: in instantiation at types.adb:28
+ethernet_dissector.adb:7:05: info: unrolling loop
 ethernet_dissector.adb:20:23: info: assertion proved (CVC4: 1 VC)
 ethernet_dissector.adb:21:20: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:21:57: info: overflow check proved (CVC4: 1 VC)
@@ -97,6 +103,12 @@ types.adb:31:16: info: initialization of "Value" proved, in instantiation at eth
 types.adb:31:16: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:6
 types.adb:31:16: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:7
 incorrect variant
+ethernet_dissector.adb:5:05: info: in instantiation at types.adb:28
+ethernet_dissector.adb:5:05: info: unrolling loop
+ethernet_dissector.adb:6:05: info: in instantiation at types.adb:28
+ethernet_dissector.adb:6:05: info: unrolling loop
+ethernet_dissector.adb:7:05: info: in instantiation at types.adb:28
+ethernet_dissector.adb:7:05: info: unrolling loop
 ethernet_dissector.adb:20:23: info: assertion proved (CVC4: 1 VC)
 ethernet_dissector.adb:21:20: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:21:57: info: overflow check proved (CVC4: 1 VC)

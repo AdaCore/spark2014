@@ -60,6 +60,7 @@ polyorb_hi-messages.ads:144:13: info: range check proved (CVC4: 4 VC)
 polyorb_hi-messages.ads:147:16: info: precondition proved (CVC4: 2 VC)
 polyorb_hi-output.adb:61:39: info: range check proved (CVC4: 2 VC)
 polyorb_hi-output.adb:110:07: high: "Epoch.Elaborated_Variables" must be a global output of "Build_Timestamp" (SPARK RM 6.1.4(16))
+polyorb_hi-output.adb:181:29: info: cannot unroll loop (too many loop iterations)
 polyorb_hi-output.adb:182:13: info: initialization of "Index" proved
 polyorb_hi-output.adb:183:13: info: range check proved (CVC4: 4 VC)
 polyorb_hi-output.adb:183:21: info: initialization of "Index" proved
@@ -96,6 +97,7 @@ polyorb_hi-output.adb:205:38: info: range check proved (CVC4: 4 VC)
 polyorb_hi-output.adb:207:14: info: initialization of "S" proved
 polyorb_hi-utils.adb:42:33: info: initialization of "R" proved
 polyorb_hi-utils.adb:46:25: info: range check proved (CVC4: 1 VC)
+polyorb_hi-utils.adb:46:33: info: cannot unroll loop (too many loop iterations)
 polyorb_hi-utils.adb:47:16: info: index check proved (CVC4: 2 VC)
 polyorb_hi-utils.adb:47:19: info: initialization of "R" proved
 polyorb_hi-utils.adb:47:33: info: index check proved (CVC4: 2 VC)
@@ -109,6 +111,7 @@ polyorb_hi-utils.adb:59:59: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:60:33: info: initialization of "R" proved
 polyorb_hi-utils.adb:89:20: info: division check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:89:32: info: division check proved (CVC4: 1 VC)
+polyorb_hi-utils.adb:124:32: info: cannot unroll loop (too many loop iterations)
 polyorb_hi-utils.adb:125:16: info: index check proved (CVC4: 2 VC)
 polyorb_hi-utils.adb:126:23: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:131:14: info: initialization of "Last" proved

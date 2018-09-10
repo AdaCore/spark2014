@@ -38,6 +38,7 @@ evoting.adb:80:10: warning: assuming "Put" has no effect on global items
 evoting.adb:80:10: warning: no Global contract available for "Put"
 evoting.adb:81:10: warning: assuming "Put" has no effect on global items
 evoting.adb:81:10: warning: no Global contract available for "Put"
+evoting.adb:89:34: info: cannot unroll loop (too many loop iterations)
 evoting.adb:90:10: warning: assuming "Put" has no effect on global items
 evoting.adb:90:10: warning: no Global contract available for "Put"
 evoting.adb:92:10: warning: assuming "Put_Line" has no effect on global items
@@ -134,6 +135,7 @@ evoting.adb:290:19: info: initialization of "total" proved
 evoting.adb:290:25: info: range check proved (CVC4: 1 VC)
 evoting.adb:293:22: info: initialization of "total" proved
 evoting.adb:293:28: info: range check proved (CVC4: 1 VC)
+evoting.adb:295:34: info: cannot unroll loop (too many loop iterations)
 evoting.adb:296:10: warning: assuming "Put" has no effect on global items
 evoting.adb:296:10: warning: no Global contract available for "Put"
 evoting.adb:297:10: warning: assuming "Put" has no effect on global items
@@ -157,6 +159,7 @@ evoting.adb:308:07: warning: no Global contract available for "Put_Line"
 evoting.adb:310:07: info: precondition proved (CVC4: 1 VC)
 evoting.adb:312:07: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:312:07: warning: no Global contract available for "Put_Line"
+evoting.adb:313:41: info: cannot unroll loop (too many loop iterations)
 evoting.adb:314:13: info: initialization of "winners" proved
 evoting.adb:316:13: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:316:13: warning: no Global contract available for "Put_Line"
