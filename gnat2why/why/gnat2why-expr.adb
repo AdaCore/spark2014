@@ -12450,6 +12450,7 @@ package body Gnat2Why.Expr is
 
                Call     : W_Expr_Id;
                New_Expr : constant Node_Id := Expression (Expr);
+               Exp_Ty   : constant Node_Id := Retysp (Etype (Expr));
                Des_Ty   : constant W_Type_Id :=
                  Type_Of_Node (Directly_Designated_Type (Etype (Expr)));
 
@@ -12492,11 +12493,19 @@ package body Gnat2Why.Expr is
                                    Domain        => Domain,
                                    Params        => Local_Params)),
                      Typ      => Get_Typ (Func_New_Initialized_Name));
+
                end if;
 
-               pragma Assert (not Has_Predicates (Etype (Expr)));
+               --  If the allocator type has a direct or inherited
+               --  predicate, generate a corresponding check.
 
-               --  do Predicate check against Etype (Expr) if necessary
+               if Domain = EW_Prog
+                 and then Has_Predicates (Exp_Ty)
+               then
+                  Call := +Insert_Predicate_Check (Ada_Node => Expr,
+                                                   Check_Ty => Exp_Ty,
+                                                   W_Expr   => +Call);
+               end if;
 
                T := +Call;
             end;
