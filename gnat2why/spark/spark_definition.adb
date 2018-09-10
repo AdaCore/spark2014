@@ -4628,7 +4628,7 @@ package body SPARK_Definition is
             --  which has predicates.
 
             if Full_View_Not_In_SPARK (E) and then Has_Predicates (E) then
-               Mark_Violation
+               Mark_Unsupported
                  ("predicate on private type outside SPARK_Mode", E);
             end if;
 
