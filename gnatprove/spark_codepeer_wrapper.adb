@@ -55,6 +55,9 @@ is
    Num_Procs : String_Access;
    --  Number of processors to use, null if unspecified
 
+   Steps : String_Access;
+   --  Number of allowed steps, null if unspecified
+
    Project_File : Virtual_File := No_File;
    --  project file, provided with -P switch
 
@@ -497,6 +500,7 @@ is
          declare
             S : String renames Argument (Index);
          begin
+            pragma Assert (S'First = 1);
             if S = "-verbose" then
                Verbose := True;
 
@@ -536,10 +540,13 @@ is
             elsif Starts_With (S, "--subdirs=") then
 
                Subdirs :=
-                 Filesystem_String (S (S'First + 10 .. S'Last)) / Subdirs;
+                 Filesystem_String (S (11 .. S'Last)) / Subdirs;
 
             elsif Starts_With (S, "-j") then
                Num_Procs := new String'(S (3 .. S'Last));
+
+            elsif Starts_With (S, "-steps=") then
+               Steps := new String'(S (8 .. S'Last));
 
             elsif S = "-file" then
                Index := Index + 1;
@@ -625,7 +632,13 @@ is
    begin
       Error
         ("usage: codepeer_spark_wrapper -P <project-file>" &
-           " [-j<num-of-procs>]");
+           " [-j<num-of-procs>]" &
+           " [-steps=<num-of-steps>]" &
+           " [--RTS=<runtime>]" &
+           " [--target=<target>]" &
+           " [--subdirs=<subdir>]" &
+           " [-U]" &
+           " [-X]");
    end Display_Help;
 
    Status : Integer;
@@ -676,6 +689,11 @@ begin
    if Num_Procs /= null then
       Append_Arg ("-jobs");
       Append_Arg (Num_Procs.all);
+   end if;
+
+   if Steps /= null then
+      Append_Arg ("-steps");
+      Append_Arg (Steps.all);
    end if;
 
    --  Append low level switches corresponding to the analysis requested

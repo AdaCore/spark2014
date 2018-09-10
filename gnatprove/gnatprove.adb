@@ -861,6 +861,10 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("-U");
       end if;
 
+      if Steps /= 0 then
+         Args.Append ("-steps=" & Image (Steps / 10, Min_Width => 1));
+      end if;
+
       if not Null_Or_Empty_String (CL_Switches.RTS) then
          Args.Prepend ("--RTS=" & CL_Switches.RTS.all);
       end if;
