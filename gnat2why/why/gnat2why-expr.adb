@@ -11068,7 +11068,9 @@ package body Gnat2Why.Expr is
      (L : List_Id) return W_Prog_Id
    is
       Cur_Decl : Node_Id := First (L);
-      Result   : W_Prog_Id := +Void;
+      Result   : W_Statement_Sequence_Id :=
+        New_Statement_Sequence (Ada_Node => Empty,
+                                Statements => (1 .. 1 => +Void));
    begin
       while Present (Cur_Decl)
         and then Declaration_Is_Associated_To_Parameter (Cur_Decl)
@@ -11076,10 +11078,10 @@ package body Gnat2Why.Expr is
          Next (Cur_Decl);
       end loop;
       while Present (Cur_Decl) loop
-         Result := Sequence (Result, Transform_Declaration (Cur_Decl));
+         Sequence_Append (Result, Transform_Declaration (Cur_Decl));
          Next (Cur_Decl);
       end loop;
-      return Result;
+      return +Result;
    end Transform_Declarations_For_Body;
 
    ---------------------------------------
