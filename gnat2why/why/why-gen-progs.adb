@@ -218,7 +218,9 @@ package body Why.Gen.Progs is
                               Elt : W_Prog_Id) is
       pragma Unmodified (Seq);
    begin
-      Statement_Sequence_Append_To_Statements (Seq, Elt);
+      if Elt /= +Void then
+         Statement_Sequence_Append_To_Statements (Seq, Elt);
+      end if;
    end Sequence_Append;
 
 end Why.Gen.Progs;
