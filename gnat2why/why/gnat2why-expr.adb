@@ -6360,9 +6360,7 @@ package body Gnat2Why.Expr is
 
          when N_Explicit_Dereference =>
             declare
-               Ty     : constant Entity_Id := Etype (Prefix (N));
-
-               Rec_Ty : constant Entity_Id := Retysp (Ty);
+               Rec_Ty : constant Entity_Id := Retysp (Etype (Prefix (N)));
                R_Expr : constant W_Expr_Id :=
                  Insert_Simple_Conversion (Ada_Node => N,
                                            Domain   => EW_Term,
@@ -6371,7 +6369,7 @@ package body Gnat2Why.Expr is
             begin
                return
                  +New_Pointer_Value_Access (Ada_Node => N,
-                                            E        => Ty,
+                                            E        => Rec_Ty,
                                             Name     => R_Expr,
                                             Domain   => Domain);
             end;
@@ -10143,7 +10141,7 @@ package body Gnat2Why.Expr is
                               Typ    => EW_Bool_Type);
                end if;
 
-            elsif Is_Access_Type (Left_Type) then
+            elsif Is_Access_Type (Retysp (Left_Type)) then
                T :=
                  New_Call
                    (Ada_Node => Expr,
@@ -12462,7 +12460,7 @@ package body Gnat2Why.Expr is
                New_Expr : constant Node_Id := Expression (Expr);
                Exp_Ty   : constant Node_Id := Retysp (Etype (Expr));
                Des_Ty   : constant W_Type_Id :=
-                 Type_Of_Node (Directly_Designated_Type (Etype (Expr)));
+                 Type_Of_Node (Directly_Designated_Type (Exp_Ty));
 
             begin
                --  Uninitialized allocator

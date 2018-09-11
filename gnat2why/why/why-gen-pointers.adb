@@ -582,13 +582,13 @@ package body Why.Gen.Pointers is
          --  addresses are equal.
 
          Sec_Condition := New_Conditional
-           (Domain    => EW_Term,
-            Condition => New_Not (Domain => EW_Term,
+           (Domain    => EW_Pred,
+            Condition => New_Not (Domain => EW_Pred,
                                   Right  => +New_Pointer_Is_Null_Access
                                     (E, +A_Ident, Local => True)),
             Then_Part => +New_And_Expr (Left   => +Comparison_Address,
                                         Right  => +Comparison_Value,
-                                        Domain => EW_Term));
+                                        Domain => EW_Pred));
 
          Emit
            (P,
@@ -828,9 +828,8 @@ package body Why.Gen.Pointers is
    function Root_Pointer_Type (E : Entity_Id) return Entity_Id is
       use Pointer_Typ_To_Roots;
 
-      --  ??? What about private access types
       C : constant Pointer_Typ_To_Roots.Cursor :=
-        Pointer_Typ_To_Root.Find (Directly_Designated_Type (Etype (E)));
+        Pointer_Typ_To_Root.Find (Directly_Designated_Type (E));
 
    begin
       if Has_Element (C) then

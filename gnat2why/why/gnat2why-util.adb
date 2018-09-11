@@ -937,25 +937,29 @@ package body Gnat2Why.Util is
       --
       --  We allow a constant of an owning access type to provide read/write
       --  access to its designated object
-      --
-      --  ??? What about private access types
 
       elsif Is_Constant_Object (E) then
-         if Ekind (E) = E_In_Parameter then
-            if Is_Access_Type (Etype (E))
-              and then Ekind (Enclosing_Unit (E)) /= E_Function
-            then
+         declare
+            E_Typ    : constant Entity_Id := Etype (E);
+            View_Typ : constant Entity_Id := Retysp (E_Typ);
+
+         begin
+            if Ekind (E) = E_In_Parameter then
+               if Is_Access_Type (View_Typ)
+                 and then Ekind (Enclosing_Unit (E)) /= E_Function
+               then
+                  return True;
+               else
+                  return False;
+               end if;
+
+            elsif Is_Access_Type (View_Typ) then
                return True;
+
             else
                return False;
             end if;
-
-         elsif Is_Access_Type (Etype (E)) then
-            return True;
-
-         else
-            return False;
-         end if;
+         end;
 
       else
          return True;
