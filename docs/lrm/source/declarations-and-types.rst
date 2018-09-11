@@ -424,7 +424,7 @@ prevent unsafe concurrent access to non-allocated variables also
 provide the same safeguards for allocated objects.
 
 The rules which accomplish all of this are described below.
-		
+
 .. centered:: **Static Semantics**
 
 The following aspect may be specified for a
@@ -459,7 +459,7 @@ Ownership
        type and any progenitor types. If this disjunction is True, then
        any explicit Ownership aspect specification for any view of the type
        shall specify the value True.
-  
+
      - For a function, the aspect value is True if the function is a
        dispatching operation and the aspect is True for the corresponding
        primitive subprogram of some ancestor; otherwise the aspect value
@@ -476,7 +476,7 @@ Ownership
   aspect for the full type would be True if not explicitly specified, the
   Ownership aspect of the partial view shall be True, either by inheritance
   from an ancestor type or by an explicit specification.
-  [TBD: interactions with generic formal types].	      
+  [TBD: interactions with generic formal types].
 
 An access-to-variable type with Ownership aspect True is said to be
 an *owning* access type. Similarly, an object of an owning access type
@@ -499,6 +499,7 @@ parameter is called the *traversed* parameter.
 
 The Ownership aspect is also defined (although not directly specifiable)
 for anonymous access-to-object types as follows:
+
   - for the type of a standalone object, the aspect value is that of
     the object;
 
@@ -534,7 +535,7 @@ a *dynamic name*, or neither. The following are static names:
  result of a non-traversal function call (or part thereof), is a dynamic
  name. [TBD: rename of agg/call; agg/call operands for type conversions,
  qualified expressions, parenthesized expressions].
- 
+
  A static or dynamic name has a *root object* defined as follows:
   - if the name is a component_selection, an indexed_component, a slice,
     or a dereference (implicit or explicit)
@@ -542,7 +543,7 @@ a *dynamic name*, or neither. The following are static names:
 
   - if the name denotes a call on a traversal function,
     then it is the root object of the name denoting the actual
-    traversed parameter; 
+    traversed parameter;
 
   - if the name denotes an object renaming, the root object is the
     root object of the renamed name.
@@ -605,6 +606,7 @@ a static name that denotes a managed object is its default ownership state.
 
 The ownership state of a dynamic name that denotes a managed object
 is determined as follows:
+
   At any point in the program text, if a name (static or dynamic) that
   denotes a managed object has a prefix that is in the Observed or Borrowed
   state then that name is also in the Observed or Borrowed state
@@ -638,10 +640,11 @@ managed object is that of its prefix.
 
 The following operations *observe* a name that denotes a managed object
 and identify a corresponding *observer*:
+
   - An assignment operation that is used to initialize an object of an
     anonymous access-to-constant type, where this target object (the observer)
     is a stand-alone object, or a formal parameter or generic formal object
-    of mode in. In this case, the source expression of the assignment 
+    of mode in. In this case, the source expression of the assignment
     shall be either a name denoting an object with Ownership True or
     a call on a traversal function that returns an object of an
     anonymous access-to-constant type. In the former case, the name
@@ -730,7 +733,7 @@ The following operations are said to be *move* operations:
 
   - An assignment operation where the target is part of an aggregate, and is
     of a named type with Ownership aspect True.
-  
+
 [Redundant: Passing a parameter by reference is not a move operation.]
 
 A move operation results in a transfer of ownership. The state of
@@ -741,19 +744,24 @@ What rules prevent, for example, leaving a global variable in a Moved state?]
 [Roughly speaking, any access-valued parts of an object in the Moved state
 can be thought of as being "poisoned"; such a poisoned object is treated
 analogously to an uninitialized scalar object in the sense that various rules
-statically prevent the reading of such a value. Thus, an assignment like
+statically prevent the reading of such a value. Thus, an assignment like::
+
    Pointer_1 : Some_Access_Type := new Designated_Type'(...);
    Pointer_2 : Some_Access_Type := Pointer_1;
+
 does not violate the "single owner" rule because the move operation
 poisons Pointer_1, leaving Pointer_2 as the unique owner of the
-allocated object.] 
+allocated object.]
 [TBD: Does poisoning occur if the RHS is known to be null? Presumably yes.
-For example, given
+For example, given::
+
    X : Linked_List_Node := (Data => 123, Link => null);
    Y : Linked_List_Node := X;
+
 is X.Link poisoned by the assignment to Y?]
 
 Two names are said to be *potential aliases* when:
+
   - both names statically denote the same entity [Redundant: , which
     might be an object renaming declaration]; or
 
@@ -815,11 +823,11 @@ said to *occur strictly before* a second such operation if:
     dependent_expression of the same conditional_expression; or
 
    - The first operation occurs strictly before some other operation,
-     that in turn occurs strictly before the second. 
+     that in turn occurs strictly before the second.
 
 The following attribute is defined for an object X of a named non-limited type
 T:
-	
+
 X’Copy
 
    [Expository: X'Copy yields a "deep" copy of X, allocating copies of
@@ -829,8 +837,10 @@ X’Copy
    by assignment from X in the same way as X'Old (see Ada RM 6.1.1) except
    that for any part of X that is of an owning access type T and whose value
    is not null, the corresponding part of X'Copy is initialized as follows:
+
      - If the designated type of T has an immutably limited part, then
        Program_Error is raised.
+
      - Otherwise, the initial value is the result of evaluating an
        an initialized allocator of the given access type whose
        initial value is a Copy attribute_reference whose prefix is
@@ -841,12 +851,13 @@ X’Copy
 
    For the purposes of other language rules (e.g., for the accessibility
    level of X'Copy), X’Copy is equivalent to a call on a function that
-   observes its formal parameter with X as the actual parameter.  
+   observes its formal parameter with X as the actual parameter.
 
    [TBD: We say "has an immutably limited part" because we want to ignore
    limitedness in the case of a type which has a limited view but isn't
    "really" limited. Is this the best way to express this?
-   Would some other wording better clarify the status of something like
+   Would some other wording better clarify the status of something like::
+
       package Pkg is
         type T is limited private;
       private
@@ -856,6 +867,7 @@ X’Copy
       type Vec is array (1 .. 10) of T_Ref;
       X : Vec := ...;
       Y : Vec := X'Copy; -- succeeds; P_E is not raised
+
    ?]
    [TBD: Do we want to replace the runtime check with a post-compilation
    check? It can't be a compile-time check (even if we are enforcing
@@ -865,10 +877,14 @@ X’Copy
    the runtime check in cases involving variant parts and zero-length arrays,
    but that seems like a good thing. The definition of the post-compilation
    check might involve a definition something like
+
      A type T2 is said to be *reachable* from a type T1 if
-       - T1 has a part of type T2; or 
+
+       - T1 has a part of type T2; or
+
        - T1 has a part of an owning access type and T2 is reachable from
          the designated type of that access type.
+
    and then a rule that X'Copy is illegal if an immutably limited type is
    reachable from the type of X. Or something like that - strictly speaking
    the use of "immutably limited" rule might not be quite right because
@@ -916,7 +932,7 @@ which is reachable from the traversed parameter.]
 
 If the prefix of a name is of a type with Ownership aspect True, then the
 prefix shall denote neither a non-traversal function call, an aggregate,
-an allocator, nor a qualified expression or type conversion whose 
+an allocator, nor a qualified expression or type conversion whose
 operand is would be forbidden as a prefix by this rule.
 [TBD: bite the bullet and introduce a new term here?]
 
@@ -1005,13 +1021,14 @@ of the callee  shall not be in the borrowed state.
 This seems like a wrong way to express this idea. Perhaps we could talk
 about the state of declarations in addition to that of names. Then we could
 say something here like
+
     At the point of a call, the declaration of every global output of the
     call shall not be in the borrowed state.]
 
 .. _tu-access_types-14:
 
 The name of a parameter in a call shall not potentially overlap a global
-output of the callee. 
+output of the callee.
 The name of a parameter in a call shall not potentially overlap a global
 input of the callee if the corresponding formal parameter is an output
 of the callee.
