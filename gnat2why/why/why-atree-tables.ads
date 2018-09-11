@@ -82,12 +82,6 @@ package Why.Atree.Tables is
 
    function Is_Checked (Node_Id : Why_Node_Id) return Boolean;
 
-   function Option
-     (Node  : Why_Node_Id;
-      Value : Why_Node_Kind)
-      return Boolean;
-   --  Return True if Node is Empty or has kind Value
-
    package Why_Node_Lists is
      new Ada.Containers.Doubly_Linked_Lists (Element_Type => Why_Node_Id);
 
@@ -148,12 +142,6 @@ private
 
    function Get_Link (List_Id : Why_Node_List) return Why_Node_Set is
      (List_Table (List_Id).Link);
-
-   function Option
-     (Node  : Why_Node_Id;
-      Value : Why_Node_Kind)
-      return Boolean is
-     (Node = Why_Empty or else Get_Kind (Node) = Value);
 
    function Get_List (List_Id : Why_Node_List) return Why_Node_Lists.List is
      (List_Table (List_Id).Content);
