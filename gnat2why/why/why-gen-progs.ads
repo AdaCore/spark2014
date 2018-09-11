@@ -79,12 +79,6 @@ package Why.Gen.Progs is
        Reason   : VC_Kind;
        Kind     : EW_Assert_Kind) return W_Prog_Id;
 
-   function New_Located_Assert
-      (Ada_Node : Node_Id;
-       Pred     : W_Pred_Id;
-       Kind     : EW_Assert_Kind) return W_Prog_Id;
-   --  Build a named assert (in programs) of a predicate
-
    function New_Located_Abstract
      (Ada_Node : Node_Id;
       Expr     : W_Prog_Id;
@@ -111,9 +105,5 @@ package Why.Gen.Progs is
 
    procedure Sequence_Append (Seq : in out W_Statement_Sequence_Id;
                               Elt : W_Prog_Id);
-
-   function New_Result
-     (T : W_Type_Id)
-     return W_Binder_Id;
 
 end Why.Gen.Progs;

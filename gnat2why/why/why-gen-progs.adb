@@ -165,27 +165,6 @@ package body Why.Gen.Progs is
                                              Domain   => EW_Pred),
                    Assert_Kind => Kind));
 
-   function New_Located_Assert
-      (Ada_Node : Node_Id;
-       Pred     : W_Pred_Id;
-       Kind     : EW_Assert_Kind) return W_Prog_Id
-   is
-      (New_Located_Assert (Ada_Node, Pred, VC_Assert, Kind));
-
-   ----------------
-   -- New_Result --
-   ----------------
-
-   function New_Result
-     (T : W_Type_Id)
-     return W_Binder_Id is
-   begin
-      return New_Binder
-        (Domain   => EW_Term,
-         Name     => New_Result_Ident (T),
-         Arg_Type => T);
-   end New_Result;
-
    ------------------------
    -- New_Simpl_Any_Prog --
    ------------------------
