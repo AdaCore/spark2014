@@ -288,6 +288,14 @@ GNAT compiler. For details, see "GNAT User's Guide Supplement for Cross
 Platforms", Section 3. If you specify a target, note that |GNATprove| requires
 additional configuration, see the section :ref:`implementation_defined`.
 
+If you're using GNAT Common Code Generator to generate C code from SPARK, you
+can specify the target and runtime as follows:
+
+.. code-block:: gpr
+
+   for Target use "c";
+   for Runtime ("Ada") use "ccg";
+
 .. _implementation_defined:
 
 Specifying the Target Architecture and Implementation-Defined Behavior
