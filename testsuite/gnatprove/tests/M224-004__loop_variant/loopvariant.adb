@@ -23,7 +23,7 @@ begin
          J := 3;
          I := I - 1;
       end if;
-      pragma Loop_Variant (Increases => I, Decreases => J);
+      pragma Loop_Variant (Increases => I, Decreases => J); --@LOOP_VARIANT:FAIL
       exit when I not in 0 .. 3;
    end loop;
 end LoopVariant;
