@@ -7,7 +7,7 @@ gnatprove(opt=["-P", "test.gpr", "-q", "--report=all", "--level=4", "--no-counte
 
 # Equivalent switches
 sys.stdout = open('result2', 'w')
-gnatprove(opt=["-P", "test.gpr", "-q", "--report=all", "--prover=cvc4,z3,altergo", "--timeout=10", "--steps=0", "--proof=progressive", "--no-counterexample"])
+gnatprove(opt=["-P", "test.gpr", "-q", "--report=all", "--prover=cvc4,z3,altergo", "--timeout=60", "--steps=0", "--no-counterexample"])
 
 # Diff between the two
 sys.stdout = sys.__stdout__
