@@ -274,8 +274,18 @@ test_patience.adb:41:07: warning: assuming "Put_Line" has no effect on global it
 test_patience.adb:41:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:50:04: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:50:04: warning: no Global contract available for "Put_Line"
+test_patience.adb:51:04: info: analyzing call to "PrintCardStack" in context
+test_patience.adb:51:04: info: cannot unroll loop (too many loop iterations)
+test_patience.adb:51:04: info: in inlined body at line 11
 test_patience.adb:52:09: info: precondition proved (CVC4: 1 VC)
 test_patience.adb:52:18: info: initialization of "Input" proved
+test_patience.adb:53:04: info: analyzing call to "PrintState" in context
+test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations)
+test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations)
+test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations)
+test_patience.adb:53:04: info: in inlined body at line 23
+test_patience.adb:53:04: info: in inlined body at line 28
+test_patience.adb:53:04: info: in inlined body at line 34
 test_patience.adb:53:04: info: initialization of "S.NumElts" proved
 test_patience.adb:53:04: info: initialization of "S.NumStacks" proved
 test_patience.adb:53:04: info: initialization of "S.PosHeight" proved
