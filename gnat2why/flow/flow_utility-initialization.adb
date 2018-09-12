@@ -130,7 +130,7 @@ package body Flow_Utility.Initialization is
         and then Has_Own_DIC (Typ)
       then
          declare
-            Prag : constant Node_Id   :=
+            Prag : constant Node_Id :=
               Get_Pragma (Typ, Pragma_Default_Initial_Condition);
 
          begin
@@ -154,8 +154,8 @@ package body Flow_Utility.Initialization is
                   end if;
                end;
 
-            --  Otherwise the pragma appears without an argument, indicating
-            --  a value of the type if fully default initialized.
+            --  Otherwise the pragma appears without an argument, indicating a
+            --  value of the type if fully default initialized.
 
             else
                Result := Full_Default_Initialization;
@@ -208,6 +208,8 @@ package body Flow_Utility.Initialization is
                Type_Def : Node_Id := Empty;
                Rec_Part : Node_Id := Empty;
 
+               Parent_Typ : constant Node_Id := Parent (Typ);
+
             begin
                --  If Typ is an Itype, it may not have an Parent field pointing
                --  to a corresponding declaration. In that case, there is no
@@ -216,10 +218,11 @@ package body Flow_Utility.Initialization is
                --  type declaration for a derived type definition, there is no
                --  extension part to check.
 
-               if Present (Parent (Typ))
-                 and then Nkind (Parent (Typ)) = N_Full_Type_Declaration
+               if Present (Parent_Typ)
+                 and then Nkind (Parent_Typ) = N_Full_Type_Declaration
                then
-                  Type_Def := Type_Definition (Parent (Typ));
+                  Type_Def := Type_Definition (Parent_Typ);
+
                   if Nkind (Type_Def) = N_Derived_Type_Definition then
                      Rec_Part := Record_Extension_Part (Type_Def);
                   end if;
@@ -254,6 +257,7 @@ package body Flow_Utility.Initialization is
                         declare
                            Base_Initialized : Default_Initialization_Kind;
                            Ext_Initialized  : Default_Initialization_Kind;
+
                         begin
                            pragma Assert (Entity_In_SPARK (Etype (Typ)));
                            Base_Initialized :=
@@ -339,6 +343,7 @@ package body Flow_Utility.Initialization is
 
                --  If there is no extension then we analyse initialization for
                --  the Etype.
+
                else
                   pragma Assert (Entity_In_SPARK (Etype (Typ)));
                   Result := Default_Initialization (Etype (Typ),
@@ -355,11 +360,14 @@ package body Flow_Utility.Initialization is
             Full_V : constant Entity_Id := Full_View (Typ);
 
          begin
-            --  If continue analysing the full view of the private type only if
-            --  it is visible from the Scope and its full view is in SPARK.
+            pragma Assert (Is_Visible (Typ, Scope));
 
-            if Present (Full_V)
-              and then Is_Visible (Full_V, Scope)
+            --  Continue analysing the full view of the private type only if it
+            --  is visible from the Scope and its full view is in SPARK.
+
+            pragma Assert (Present (Full_V));
+
+            if Is_Visible (Full_V, Scope)
               and then not Full_View_Not_In_SPARK (Typ)
             then
                pragma Assert (Entity_In_SPARK (Full_V));
@@ -367,8 +375,16 @@ package body Flow_Utility.Initialization is
                Result := Default_Initialization (Full_V,
                                                  Scope,
                                                  Ignore_DIC);
+
+            --  If the full view is not visible from the Scope then we can
+            --  consider the type to be fully initialized if it has a DIC.
+
             else
-               Result := No_Default_Initialization;
+               if Has_Own_DIC (Typ) then
+                  Result := Full_Default_Initialization;
+               else
+                  Result := No_Default_Initialization;
+               end if;
             end if;
          end;
 
@@ -656,6 +672,7 @@ package body Flow_Utility.Initialization is
          when Direct_Mapping =>
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
             begin
                return Is_Imported (E)
                  or else In_Generic_Actual (E)

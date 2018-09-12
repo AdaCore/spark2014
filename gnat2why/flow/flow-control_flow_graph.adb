@@ -4702,8 +4702,9 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  If the type has a Default_Initial_Condition then we:
-      --    * check if the full type is as the aspect suggested
-      --      and issue a warning if not
+      --    * check if the full type is as the aspect suggested and issue a
+      --      warning if not.
+
       if Has_Own_DIC (Typ)
         or else (Is_Tagged_Type (Typ)
                  and then Has_Inherited_DIC (Typ))
@@ -4713,9 +4714,8 @@ package body Flow.Control_Flow_Graph is
          --
          --  We do not issue this warning:
          --    * during the global generation phase,
-         --    * when dealing with an internal type (this is fine since we
-         --      will get a warning on the type that comes from source
-         --      anyway).
+         --    * when dealing with an internal type (this is fine since we will
+         --      get a warning on the type that comes from source anyway).
 
          if not FA.Generating_Globals
            and then Comes_From_Source (Typ)
