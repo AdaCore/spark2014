@@ -855,6 +855,7 @@ package body Configuration is
          All_Projects      := CL_Switches.UU;
          IDE_Mode          := CL_Switches.IDE_Progress_Bar;
          Limit_Line        := CL_Switches.Limit_Line;
+         Limit_Region      := CL_Switches.Limit_Region;
          Limit_Subp        := CL_Switches.Limit_Subp;
          Memcached_Server  := CL_Switches.Memcached_Server;
          Why3_Config_File  := CL_Switches.Why3_Conf;
@@ -930,9 +931,9 @@ package body Configuration is
 
       procedure Process_Limit_Switches is
       begin
-         --  Unless -U is specified, use of --limit-line or --limit-subp leads
+         --  Unless -U is specified, use of --limit-[line,region,subp] leads
          --  to only the file with the given line or subprogram to be analyzed.
-         --  Specifying -U with --limit-line or --limit-subp is useful to
+         --  Specifying -U with --limit-[line,region,subp] is useful to
          --  force analysis of all files, when the line or subprogram is
          --  inside a generic or itself a generic, so that all instances of
          --  the line/subprogram are analyzed.
@@ -942,13 +943,17 @@ package body Configuration is
                Limit_String : GNAT.Strings.String_Access := null;
 
             begin
-               --  Limit_Line and Limit_Subp both imply -u for the
-               --  corresponding file. We take care of that using the
+               --  Limit_Line, Limit_Region, and Limit_Subp all imply -u for
+               --  the corresponding file. We take care of that using the
                --  Limit_String variable, note that "Limit_Line" is
                --  stronger naturally.
 
                if not Null_Or_Empty_String (Limit_Subp) then
                   Limit_String := Limit_Subp;
+               end if;
+
+               if not Null_Or_Empty_String (Limit_Region) then
+                  Limit_String := Limit_Region;
                end if;
 
                if not Null_Or_Empty_String (Limit_Line) then
@@ -1660,6 +1665,11 @@ package body Configuration is
         (Config,
          CL_Switches.Assumptions'Access,
          Long_Switch => "--assumptions");
+
+      Define_Switch
+        (Config,
+         CL_Switches.Limit_Region'Access,
+         Long_Switch => "--limit-region=");
 
       Define_Switch
         (Config,

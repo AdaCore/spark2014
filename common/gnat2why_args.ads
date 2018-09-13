@@ -176,6 +176,10 @@ package Gnat2Why_Args is
 
    Limit_Subp : Unbounded_String := Null_Unbounded_String;
 
+   --  Limit analysis to a selected region
+
+   Limit_Region : Unbounded_String := Null_Unbounded_String;
+
    --  Limit analysis to this line
 
    Limit_Line : Unbounded_String := Null_Unbounded_String;
