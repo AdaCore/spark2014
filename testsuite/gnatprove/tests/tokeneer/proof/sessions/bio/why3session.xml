@@ -119,7 +119,7 @@
   <proof prover="2"><result status="valid" steps="874"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="1288"/></proof>
+  <proof prover="2"><result status="valid" steps="1299"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="2585"/></proof>

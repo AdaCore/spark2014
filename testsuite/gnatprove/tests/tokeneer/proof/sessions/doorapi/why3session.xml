@@ -32,13 +32,13 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="174598"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="unknown" steps="103367"/></proof>
+  <proof prover="3"><result status="unknown" steps="87887"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="222421"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="unknown" steps="121027"/></proof>
+  <proof prover="3"><result status="unknown" steps="97964"/></proof>
   </goal>
  </transf>
  </goal>

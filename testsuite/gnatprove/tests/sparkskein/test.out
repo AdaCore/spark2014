@@ -46,13 +46,39 @@ skein.adb:360:58: info: division check proved (CVC4: 9 VC), in call inlined at s
 skein.adb:360:58: info: division check proved (CVC4: 9 VC), in call inlined at skein.adb:539
 skein.adb:361:64: info: division check proved (CVC4: 9 VC), in call inlined at skein.adb:530
 skein.adb:361:64: info: division check proved (CVC4: 9 VC), in call inlined at skein.adb:539
+skein.adb:521:63: info: unrolling loop
+skein.adb:522:13: info: analyzing call to "Round_1" in context
+skein.adb:524:13: info: analyzing call to "Round_2" in context
+skein.adb:526:13: info: analyzing call to "Round_3" in context
+skein.adb:528:13: info: analyzing call to "Round_4" in context
+skein.adb:530:13: info: analyzing call to "Inject_Key" in context
+skein.adb:530:13: info: in inlined body at line 356
+skein.adb:530:13: info: unrolling loop
+skein.adb:531:13: info: analyzing call to "Round_5" in context
+skein.adb:533:13: info: analyzing call to "Round_6" in context
+skein.adb:535:13: info: analyzing call to "Round_7" in context
+skein.adb:537:13: info: analyzing call to "Round_8" in context
+skein.adb:539:13: info: analyzing call to "Inject_Key" in context
+skein.adb:539:13: info: in inlined body at line 356
+skein.adb:539:13: info: unrolling loop
 skein.adb:552:47: info: initialization of "X" proved, in call inlined at skein.adb:594
 skein.adb:552:57: info: initialization of "W" proved, in call inlined at skein.adb:594
 skein.adb:556:11: info: range check proved (CVC4: 2 VC)
+skein.adb:556:66: info: cannot unroll loop (too many loop iterations)
 skein.adb:559:31: info: range check proved (CVC4: 1 VC)
+skein.adb:566:13: info: analyzing call to "Initialize_Key_Schedule" in context
+skein.adb:566:13: info: in inlined body at line 317
+skein.adb:566:13: info: unrolling loop
+skein.adb:568:13: info: analyzing call to "Initialize_TS" in context
+skein.adb:570:13: info: analyzing call to "Get_64_LSB_First" in context
+skein.adb:570:13: info: in inlined body at line 246
+skein.adb:570:13: info: unrolling loop
+skein.adb:584:13: info: analyzing call to "Do_First_Key_Injection" in context
 skein.adb:591:13: info: initialization of "KS" proved
 skein.adb:591:13: info: initialization of "TS" proved
 skein.adb:591:13: info: initialization of "X" proved
+skein.adb:594:13: info: analyzing call to "Update_Context" in context
+skein.adb:622:07: info: analyzing call to "Skein_Start_New_Type" in context
 skein.adb:637:07: info: precondition proved (CVC4: 6 VC)
 skein.adb:638:29: info: initialization of "Ctx.B" proved
 skein.adb:638:29: info: initialization of "Ctx.H.Byte_Count" proved
@@ -67,6 +93,7 @@ skein.adb:638:29: info: initialization of "Ctx.H.Tweak_Words.Reserved" proved
 skein.adb:638:29: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
 skein.adb:638:29: info: initialization of "Ctx.X" proved
 skein.adb:639:61: info: initialization of "Cfg" proved
+skein.adb:645:07: info: analyzing call to "Skein_Start_New_Type" in context
 skein.adb:683:25: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:716
 skein.adb:683:25: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:756
 skein.adb:685:26: info: initialization of "Dst" proved
@@ -113,6 +140,7 @@ skein.adb:699:23: info: initialization of "Src" proved, in call inlined at skein
 skein.adb:699:23: info: initialization of "Src" proved, in call inlined at skein.adb:756
 skein.adb:710:11: info: initialization of "Msg_Byte_Count" proved
 skein.adb:714:42: info: range check proved (CVC4: 1 VC)
+skein.adb:716:13: info: analyzing call to "Copy_Msg_To_B" in context
 skein.adb:716:13: info: initialization of "Current_Msg_Offset" proved
 skein.adb:716:48: info: initialization of "N" proved
 skein.adb:717:35: info: initialization of "Msg_Byte_Count" proved
@@ -133,6 +161,7 @@ skein.adb:746:35: info: initialization of "Msg_Byte_Count" proved
 skein.adb:746:56: info: initialization of "Bytes_Hashed" proved
 skein.adb:748:35: info: initialization of "Current_Msg_Offset" proved
 skein.adb:748:56: info: initialization of "Bytes_Hashed" proved
+skein.adb:756:07: info: analyzing call to "Copy_Msg_To_B" in context
 skein.adb:756:07: info: initialization of "Current_Msg_Offset" proved
 skein.adb:756:07: info: initialization of "Msg_Byte_Count" proved
 skein.adb:780:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:806
@@ -165,6 +194,9 @@ skein.adb:797:26: info: initialization of "Local_Ctx.B" proved, in call inlined 
 skein.adb:797:61: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:834
 skein.adb:802:12: info: length check proved (CVC4: 1 VC)
 skein.adb:805:11: info: initialization of "Local_Ctx.H.Byte_Count" proved
+skein.adb:806:10: info: analyzing call to "Zero_Pad" in context
+skein.adb:806:10: info: cannot unroll loop (too many loop iterations)
+skein.adb:806:10: info: in inlined body at line 782
 skein.adb:809:16: info: initialization of "Local_Ctx.B" proved
 skein.adb:810:29: info: initialization of "Local_Ctx.H.Byte_Count" proved
 skein.adb:812:07: info: precondition proved (CVC4: 6 VC)
@@ -194,6 +226,8 @@ skein.adb:832:13: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
 skein.adb:832:13: info: loop invariant initialization proved (CVC4: 1 VC)
 skein.adb:832:13: info: loop invariant preservation proved (CVC4: 1 VC)
 skein.adb:832:40: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
+skein.adb:834:10: info: analyzing call to "Set_Counter" in context
+skein.adb:836:10: info: analyzing call to "Skein_Start_New_Type" in context
 skein.adb:843:19: info: initialization of "Local_Ctx.B" proved
 skein.adb:844:10: info: precondition proved (CVC4: 6 VC)
 skein.adb:844:54: info: initialization of "Local_Ctx.B" proved
@@ -211,6 +245,9 @@ skein.adb:844:54: info: initialization of "Local_Ctx.X" proved
 skein.adb:845:54: info: initialization of "Tmp_B" proved
 skein.adb:851:15: info: initialization of "Byte_Count" proved
 skein.adb:852:14: info: initialization of "N" proved
+skein.adb:857:10: info: analyzing call to "Put_64_LSB_First" in context
+skein.adb:857:10: info: cannot unroll loop (too many loop iterations)
+skein.adb:857:10: info: in inlined body at line 223
 skein.adb:857:10: info: initialization of "N" proved
 skein.adb:860:29: info: initialization of "Local_Ctx.X" proved
 skein.adb:871:25: info: initialization of "X" proved

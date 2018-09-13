@@ -21,7 +21,7 @@
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="14652"/></proof>
+  <proof prover="1"><result status="unknown" steps="14027"/></proof>
   <proof prover="2"><result status="unknown" steps="146"/></proof>
   <proof prover="3"><result status="unknown" steps="146"/></proof>
   </goal>
@@ -36,7 +36,7 @@
   </goal>
   <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="14395"/></proof>
+  <proof prover="1"><result status="unknown" steps="13768"/></proof>
   <proof prover="2"><result status="unknown" steps="146"/></proof>
   <proof prover="3"><result status="unknown" steps="146"/></proof>
   </goal>
