@@ -10,7 +10,7 @@ contracts.adb:20:12: info: range check proved (CVC4: 1 VC)
 contracts.adb:23:04: warning: analyzing unreferenced procedure "Call_Convert_Integer"
 contracts.adb:26:07: info: precondition proved (CVC4: 1 VC)
 contracts.adb:27:14: info: overflow check proved (CVC4: 1 VC)
-contracts.adb:27:14: medium: range check might fail
+contracts.adb:27:14: medium: range check might fail [possible explanation: call at line 26 should mention U (for argument Z) in a postcondition]
 contracts.adb:27:16: info: initialization of "Z" proved
 contracts.adb:30:04: warning: analyzing unreferenced procedure "Call_Convert_Integer1"
 contracts.adb:33:07: info: precondition proved (CVC4: 1 VC)

@@ -495,6 +495,10 @@ package SPARK_Util is
       --  is necessary when the loop has a dynamic range
      );
 
+   function Is_Selected_For_Loop_Unrolling
+     (Loop_Stmt : Node_Id) return Boolean;
+   --  Return whether [Loop_Stmt] is unrolled or not
+
    procedure Candidate_For_Loop_Unrolling
      (Loop_Stmt   : Node_Id;
       Output_Info : Boolean;

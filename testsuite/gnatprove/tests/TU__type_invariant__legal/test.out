@@ -50,7 +50,7 @@ type_invariant_legal_2.adb:64:11: warning: unused assignment
 type_invariant_legal_2.adb:64:14: info: precondition proved (CVC4: 1 VC)
 type_invariant_legal_2.adb:65:07: info: precondition proved (CVC4: 1 VC)
 type_invariant_legal_2.adb:66:11: warning: unused assignment
-type_invariant_legal_2.adb:66:14: medium: invariant check might fail (e.g. when Tmp = 0 and X = 0)
+type_invariant_legal_2.adb:66:14: medium: invariant check might fail (e.g. when Tmp = 0 and X = 0) [possible explanation: call at line 65 should mention X (for argument X) in a postcondition]
 type_invariant_legal_2.adb:67:11: warning: unused assignment
 type_invariant_legal_2.adb:74:09: warning: unused assignment
 type_invariant_legal_2.adb:74:14: medium: range check might fail (e.g. when X = 0)

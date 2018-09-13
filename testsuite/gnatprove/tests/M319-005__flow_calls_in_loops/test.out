@@ -1,5 +1,5 @@
 broken.adb:7:14: medium: overflow check might fail, in call inlined at broken.adb:14
-broken.adb:7:14: medium: overflow check might fail, in call inlined at broken.adb:22
+broken.adb:7:14: medium: overflow check might fail, in call inlined at broken.adb:22 [possible explanation: loop at line 21 should mention I in a loop invariant]
 broken.adb:10:04: warning: analyzing unreferenced procedure "Test_01"
 broken.adb:13:24: info: unrolling loop
 broken.adb:18:04: warning: analyzing unreferenced procedure "Test_02"

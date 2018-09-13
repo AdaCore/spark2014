@@ -10,7 +10,7 @@ foo.adb:80:26: info: initialization of "R" proved
 foo.adb:87:12: info: initialization of "Tmp" proved
 foo.adb:92:26: info: initialization of "R" proved
 foo.adb:100:17: info: initialization of "Tmp" proved
-foo.adb:100:21: medium: overflow check might fail
+foo.adb:100:21: medium: overflow check might fail [possible explanation: loop at line 99 should mention Tmp in a loop invariant]
 foo.adb:101:28: info: initialization of "Tmp" proved
 foo.adb:103:12: info: initialization of "Tmp" proved
 foo.adb:108:26: info: initialization of "R" proved

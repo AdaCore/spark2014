@@ -42,10 +42,10 @@ string_utilities.adb:64:22: info: initialization of "Rx" proved
 string_utilities.adb:64:25: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:65:22: info: initialization of "X1" proved
 string_utilities.adb:65:25: info: overflow check proved (CVC4: 1 VC)
-string_utilities.adb:65:25: medium: range check might fail (e.g. when X1 = 0)
+string_utilities.adb:65:25: medium: range check might fail (e.g. when X1 = 0) [possible explanation: loop at line 58 should mention X1 in a loop invariant]
 string_utilities.adb:66:22: info: initialization of "X2" proved
 string_utilities.adb:66:25: info: overflow check proved (CVC4: 1 VC)
-string_utilities.adb:66:25: medium: range check might fail
+string_utilities.adb:66:25: medium: range check might fail [possible explanation: loop at line 58 should mention X2 in a loop invariant]
 string_utilities.adb:67:19: medium: "Lengths" might not be initialized
 string_utilities.adb:67:35: info: initialization of "X2" proved
 string_utilities.adb:67:38: info: overflow check proved (CVC4: 1 VC)
@@ -58,7 +58,7 @@ string_utilities.adb:68:25: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:68:25: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:70:22: info: initialization of "X2" proved
 string_utilities.adb:70:25: info: overflow check proved (CVC4: 1 VC)
-string_utilities.adb:70:25: medium: range check might fail
+string_utilities.adb:70:25: medium: range check might fail [possible explanation: loop at line 58 should mention X2 in a loop invariant]
 string_utilities.ads:3:55: medium: array index check might fail (e.g. when S = (others => 'NUL') and S'First = 2 and S'Last = 1)
 string_utilities.ads:4:48: info: range check proved (CVC4: 4 VC)
 string_utilities.ads:4:59: medium: overflow check might fail (e.g. when S = (others => 'NUL') and S'First = 2147483647 and S'Last = 1)

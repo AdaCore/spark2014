@@ -13,7 +13,7 @@ p.adb:23:37: medium: overflow check might fail (e.g. when Tmp_S = 0 and V = 0 an
 p.adb:23:41: info: cannot unroll loop (too many loop iterations)
 p.adb:24:19: info: initialization of "Tmp_S" proved
 p.adb:24:25: info: overflow check proved (CodePeer)
-p.adb:24:25: medium: range check might fail
+p.adb:24:25: medium: range check might fail [possible explanation: loop at line 23 should mention Tmp_S in a loop invariant]
 p.adb:28:04: warning: analyzing unreferenced procedure "Proc_Loop"
 p.adb:28:14: warning: subprogram "Proc_Loop" has no effect
 p.adb:33:11: medium: range check might fail (e.g. when Tmp_S = 0 and V = 0 and X = -2147483648 and Y = 0)

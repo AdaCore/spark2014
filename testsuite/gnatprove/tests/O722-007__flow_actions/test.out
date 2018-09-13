@@ -13,7 +13,7 @@ foo.adb:35:11: info: range check proved (CVC4: 2 VC)
 foo.adb:35:35: info: initialization of "Pos" proved
 foo.adb:35:39: info: cannot unroll loop (too many loop iterations)
 foo.adb:36:17: info: initialization of "Pos" proved
-foo.adb:36:21: medium: overflow check might fail
+foo.adb:36:21: medium: overflow check might fail [possible explanation: loop at line 35 should mention Pos in a loop invariant]
 foo.adb:38:12: info: initialization of "Pos" proved
 foo.adb:41:23: info: initialization of "B" proved
 foo.adb:49:10: info: initialization of "B" proved

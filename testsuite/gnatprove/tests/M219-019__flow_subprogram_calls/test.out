@@ -6,7 +6,7 @@ test.adb:19:26: warning: "B" is not modified, could be IN
 test.adb:22:15: info: initialization of "I" proved, in call inlined at test.adb:29, in call inlined at test.adb:37, in call inlined at test.adb:45
 test.adb:22:15: info: initialization of "Sum" proved, in call inlined at test.adb:36, in call inlined at test.adb:45
 test.adb:22:17: info: overflow check proved (CVC4: 1 VC), in call inlined at test.adb:29, in call inlined at test.adb:37, in call inlined at test.adb:45
-test.adb:22:17: medium: overflow check might fail, in call inlined at test.adb:36, in call inlined at test.adb:45
+test.adb:22:17: medium: overflow check might fail, in call inlined at test.adb:36, in call inlined at test.adb:45 [possible explanation: loop at line 44 should mention Sum in a loop invariant]
 test.adb:22:19: info: initialization of "I" proved, in call inlined at test.adb:36, in call inlined at test.adb:45
 test.adb:22:19: info: initialization of "Tmp" proved, in call inlined at test.adb:29
 test.adb:22:19: info: initialization of "Tmp" proved, in call inlined at test.adb:29, in call inlined at test.adb:37

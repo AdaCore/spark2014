@@ -111,7 +111,7 @@ hermes-der-decode.adb:326:34: medium: array index check might fail
 hermes-der-decode.adb:326:34: medium: overflow check might fail
 hermes-der-decode.adb:327:17: info: range check proved (CVC4: 2 VC)
 hermes-der-decode.adb:327:48: info: cannot unroll loop (too many loop iterations)
-hermes-der-decode.adb:328:29: medium: overflow check might fail
+hermes-der-decode.adb:328:29: medium: overflow check might fail [possible explanation: loop at line 327 should mention Result in a loop invariant]
 hermes-der-decode.adb:328:30: info: initialization of "Result" proved
 hermes-der-decode.adb:328:37: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:328:67: info: overflow check proved (CVC4: 1 VC)
@@ -119,7 +119,7 @@ hermes-der-decode.adb:328:67: medium: array index check might fail
 hermes-der-decode.adb:330:22: info: initialization of "Result" proved
 hermes-der-decode.adb:333:17: info: range check proved (CVC4: 2 VC)
 hermes-der-decode.adb:333:48: info: cannot unroll loop (too many loop iterations)
-hermes-der-decode.adb:334:29: medium: overflow check might fail
+hermes-der-decode.adb:334:29: medium: overflow check might fail [possible explanation: loop at line 333 should mention Result in a loop invariant]
 hermes-der-decode.adb:334:30: info: initialization of "Result" proved
 hermes-der-decode.adb:334:37: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:334:67: info: overflow check proved (CVC4: 1 VC)
@@ -328,8 +328,8 @@ hermes-oid.adb:134:20: info: initialization of "Out_Of_Space" proved
 hermes-oid.adb:143:31: info: initialization of "Result_Index" proved
 hermes-oid.adb:143:44: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:143:46: info: initialization of "Start_Index" proved
-hermes-oid.adb:143:58: medium: overflow check might fail
-hermes-oid.adb:143:58: medium: range check might fail
+hermes-oid.adb:143:58: medium: overflow check might fail [possible explanation: loop invariant at line 112 should mention Start_Index]
+hermes-oid.adb:143:58: medium: range check might fail [possible explanation: loop invariant at line 112 should mention Start_Index]
 hermes-oid.adb:150:41: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:150:41: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:151:28: info: initialization of "Result_Index" proved

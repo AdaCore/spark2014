@@ -83,7 +83,7 @@ untangle_tests.adb:56:23: info: overflow check proved (CVC4: 1 VC)
 untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform"
 untangle_tests.adb:67:51: info: cannot unroll loop (too many loop iterations)
 untangle_tests.adb:68:26: info: unrolling loop
-untangle_tests.adb:69:60: medium: float overflow check might fail
-untangle_tests.adb:70:60: medium: float overflow check might fail
-untangle_tests.adb:71:60: medium: float overflow check might fail
+untangle_tests.adb:69:60: medium: float overflow check might fail [possible explanation: loop at line 67 should mention TL and V in a loop invariant]
+untangle_tests.adb:70:60: medium: float overflow check might fail [possible explanation: loop at line 67 should mention TL and V in a loop invariant]
+untangle_tests.adb:71:60: medium: float overflow check might fail [possible explanation: loop at line 67 should mention TL and V in a loop invariant]
 untangle_tests.adb:77:04: warning: analyzing unreferenced procedure "Set_Normal"

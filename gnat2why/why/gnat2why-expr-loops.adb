@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Debug;
 with Gnat2Why_Args;
 with Gnat2Why.Expr.Loops.Inv; use Gnat2Why.Expr.Loops.Inv;
@@ -148,9 +147,9 @@ package body Gnat2Why.Expr.Loops is
    --  Loop_End corresponds to all statements in the loop. Loop_Restart is the
    --  translation of Loop_Start adapted for being within the Why loop.
    --
-   --  Enter_Condition and Loop_Condition are respectively the conditions
-   --  for entering the loop the first time, and staying in the loop at
-   --  each execution of the loop.
+   --  Enter_Condition and Exit_Condition are respectively the conditions for
+   --  entering the loop the first time, and exiting the loop at each execution
+   --  of the loop.
    --
    --  Implicit_Invariant is the condition that can be assumed to hold at the
    --  start of the Why loop. User_Invariant is the invariant to use for the
@@ -283,6 +282,24 @@ package body Gnat2Why.Expr.Loops is
       if Cur_State = Before_Selected_Block then
          Final_Stmts.Move (Source => Initial_Stmts);
       end if;
+   end Get_Loop_Invariant;
+
+   function Get_Loop_Invariant (Loop_Stmt : Node_Id) return Node_Lists.List is
+      Loop_Body       : constant List_Id := Statements (Loop_Stmt);
+      Loop_Stmts      : Node_Lists.List;
+      Initial_Stmts   : Node_Lists.List;
+      Final_Stmts     : Node_Lists.List;
+      Loop_Invariants : Node_Lists.List;
+      Loop_Variants   : Node_Lists.List;
+   begin
+      Loop_Stmts := Get_Flat_Statement_And_Declaration_List (Loop_Body);
+      Get_Loop_Invariant
+        (Loop_Stmts      => Loop_Stmts,
+         Initial_Stmts   => Initial_Stmts,
+         Loop_Invariants => Loop_Invariants,
+         Loop_Variants   => Loop_Variants,
+         Final_Stmts     => Final_Stmts);
+      return Loop_Invariants;
    end Get_Loop_Invariant;
 
    -----------------------------------
@@ -569,9 +586,7 @@ package body Gnat2Why.Expr.Loops is
 
          --  Case of a WHILE loop
 
-         elsif No (Iterator_Specification (Scheme))
-           and then No (Loop_Parameter_Specification (Scheme))
-         then
+         elsif Present (Condition (Scheme)) then
             While_Loop : declare
                Cond_Prog : constant W_Prog_Id :=
                  +Transform_Expr_With_Actions (Condition (Scheme),
@@ -627,7 +642,7 @@ package body Gnat2Why.Expr.Loops is
          --  once at the beginning of the loop, to get potential checks
          --  in that expression only once.
 
-         elsif No (Condition (Scheme)) then
+         else
             pragma Assert (Present (Loop_Index));
 
             For_Loop : declare
@@ -1335,12 +1350,6 @@ package body Gnat2Why.Expr.Loops is
 
                return Entire_Loop;
             end For_Loop;
-
-         --  Some other kind of loop
-
-         else
-            Ada.Text_IO.Put_Line ("[Transform_Loop_Statement] other loop");
-            raise Not_Implemented;
          end if;
       end;
    end Transform_Loop_Statement;

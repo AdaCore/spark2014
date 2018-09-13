@@ -4,15 +4,15 @@ fruit-priv_child.adb:21:42: info: overflow check proved (CVC4: 1 VC)
 fruit-priv_child.adb:22:45: info: overflow check proved (CVC4: 1 VC)
 fruit-priv_child.adb:34:18: info: initialization of "Fruit_Salads" proved
 fruit-priv_child.adb:34:31: info: range check proved (CVC4: 1 VC)
-fruit-priv_child.adb:34:31: medium: overflow check might fail
+fruit-priv_child.adb:34:31: medium: overflow check might fail [possible explanation: call at line 33 should mention Apples and Fruit_Salads_Made (for argument Fruit_Salads) and Oranges and Price_Of_Apple and fruit__fruits and Extra_Cost and Price_Of_Orange in a postcondition]
 fruit-priv_child.adb:36:18: info: initialization of "Money" proved
 fruit-priv_child.adb:36:24: info: range check proved (CVC4: 1 VC)
-fruit-priv_child.adb:36:24: medium: overflow check might fail
-fruit-priv_child.adb:36:33: medium: overflow check might fail
+fruit-priv_child.adb:36:24: medium: overflow check might fail [possible explanation: call at line 33 should mention Apples and Price_Of_Apple in a postcondition]
+fruit-priv_child.adb:36:33: medium: overflow check might fail [possible explanation: call at line 33 should mention Apples and Price_Of_Apple in a postcondition]
 fruit-priv_child.adb:37:18: info: initialization of "Money" proved
 fruit-priv_child.adb:37:24: info: range check proved (CVC4: 1 VC)
-fruit-priv_child.adb:37:24: medium: overflow check might fail
-fruit-priv_child.adb:37:34: medium: overflow check might fail
+fruit-priv_child.adb:37:24: medium: overflow check might fail [possible explanation: call at line 33 should mention Oranges and Price_Of_Orange in a postcondition]
+fruit-priv_child.adb:37:34: medium: overflow check might fail [possible explanation: call at line 33 should mention Oranges and Price_Of_Orange in a postcondition]
 fruit-priv_child.adb:41:18: info: initialization of "Money" proved
 fruit-priv_child.ads:21:46: info: initialization of "Profit" proved
 fruit-priv_child.ads:25:04: info: initialization of "Extra_Cost" constituent of "Price_Related_Stuff" proved
@@ -81,7 +81,7 @@ levels.adb:130:18: medium: overflow check might fail
 levels.adb:130:23: medium: overflow check might fail
 levels.adb:139:24: info: initialization of "Tmp" proved
 levels.adb:140:15: info: initialization of "X" proved
-levels.adb:140:17: medium: overflow check might fail
+levels.adb:140:17: medium: overflow check might fail [possible explanation: call at line 139 should mention X (for argument X) and Y (for argument Tmp) in a postcondition]
 levels.adb:140:19: info: initialization of "Tmp" proved
 levels.adb:147:25: info: initialization of "A" proved
 levels.adb:147:25: medium: refined postcondition might fail

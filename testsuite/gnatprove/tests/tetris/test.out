@@ -15,9 +15,9 @@ tetris_flow.adb:91:10: info: initialization of "Has_Complete_Lines" proved
 tetris_flow.adb:92:52: info: initialization of "To_Line" proved
 tetris_flow.adb:94:36: info: initialization of "To_Line" proved
 tetris_flow.adb:96:27: info: initialization of "To_Line" proved
-tetris_flow.adb:96:35: medium: range check might fail
+tetris_flow.adb:96:35: medium: range check might fail [possible explanation: loop at line 92 should mention To_Line in a loop invariant]
 tetris_flow.adb:97:31: info: initialization of "Num_Deleted" proved
-tetris_flow.adb:97:43: medium: overflow check might fail
+tetris_flow.adb:97:43: medium: overflow check might fail [possible explanation: loop at line 92 should mention Num_Deleted in a loop invariant]
 tetris_flow.adb:112:33: info: initialization of "Candidate.D" proved
 tetris_flow.adb:112:33: info: initialization of "Candidate.S" proved
 tetris_flow.adb:112:33: info: initialization of "Candidate.X" proved
@@ -115,9 +115,9 @@ tetris_initial.adb:91:10: info: initialization of "Has_Complete_Lines" proved
 tetris_initial.adb:92:52: info: initialization of "To_Line" proved
 tetris_initial.adb:94:36: info: initialization of "To_Line" proved
 tetris_initial.adb:96:27: info: initialization of "To_Line" proved
-tetris_initial.adb:96:35: medium: range check might fail
+tetris_initial.adb:96:35: medium: range check might fail [possible explanation: loop at line 92 should mention To_Line in a loop invariant]
 tetris_initial.adb:97:31: info: initialization of "Num_Deleted" proved
-tetris_initial.adb:97:43: medium: overflow check might fail
+tetris_initial.adb:97:43: medium: overflow check might fail [possible explanation: loop at line 92 should mention Num_Deleted in a loop invariant]
 tetris_initial.adb:112:33: info: initialization of "Candidate.D" proved
 tetris_initial.adb:112:33: info: initialization of "Candidate.S" proved
 tetris_initial.adb:112:33: info: initialization of "Candidate.X" proved

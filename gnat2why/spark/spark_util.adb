@@ -1447,6 +1447,21 @@ package body SPARK_Util is
    end Is_Error_Signaling_Statement;
 
    ----------------------
+   -- Is_External_Call --
+   ----------------------
+
+   function Is_External_Call (N : Node_Id) return Boolean is
+      Nam : constant Node_Id := Name (N);
+   begin
+      --  External calls are those with the selected_component syntax and whose
+      --  prefix is anything except a (protected) type.
+      return Nkind (Nam) = N_Selected_Component
+        and then
+          not (Nkind (Prefix (Nam)) in N_Has_Entity
+               and then Ekind (Entity (Prefix (Nam))) = E_Protected_Type);
+   end Is_External_Call;
+
+   ----------------------
    -- Is_Global_Entity --
    ----------------------
 
@@ -1587,21 +1602,6 @@ package body SPARK_Util is
       Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N))))
       = Name);
 
-   ----------------------
-   -- Is_External_Call --
-   ----------------------
-
-   function Is_External_Call (N : Node_Id) return Boolean is
-      Nam : constant Node_Id := Name (N);
-   begin
-      --  External calls are those with the selected_component syntax and whose
-      --  prefix is anything except a (protected) type.
-      return Nkind (Nam) = N_Selected_Component
-        and then
-          not (Nkind (Prefix (Nam)) in N_Has_Entity
-               and then Ekind (Entity (Prefix (Nam))) = E_Protected_Type);
-   end Is_External_Call;
-
    --------------------------------
    -- Is_Predicate_Function_Call --
    --------------------------------
@@ -1662,6 +1662,28 @@ package body SPARK_Util is
      (Present (Scope (E))
         and then Present (Parent (Scope (E)))
         and then Nkind (Parent (Scope (E))) = N_Quantified_Expression);
+
+   ------------------------------------
+   -- Is_Selected_For_Loop_Unrolling --
+   ------------------------------------
+
+   function Is_Selected_For_Loop_Unrolling
+     (Loop_Stmt : Node_Id) return Boolean
+   is
+      --  Variables used in loop unrolling
+      Low_Val  : Uint;
+      High_Val : Uint;
+      Unroll   : Unrolling_Type;
+   begin
+      Candidate_For_Loop_Unrolling (Loop_Stmt   => Loop_Stmt,
+                                    Output_Info => False,
+                                    Result      => Unroll,
+                                    Low_Val     => Low_Val,
+                                    High_Val    => High_Val);
+
+      return not Gnat2Why_Args.No_Loop_Unrolling
+        and then Unroll /= No_Unrolling;
+   end Is_Selected_For_Loop_Unrolling;
 
    ---------------------
    -- Is_Synchronized --
