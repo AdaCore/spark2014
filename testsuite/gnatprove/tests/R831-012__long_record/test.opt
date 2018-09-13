@@ -1,2 +1,1 @@
-ALL XFAIL crash on record with many components (R831-012)
 !large SKIP part of large testsuite

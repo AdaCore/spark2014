@@ -2975,50 +2975,58 @@ package body Gnat2Why.Expr is
             --  checked at the place where they are hidden.
 
             if Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
-               for Field of Get_Component_Set (Ty_Ext) loop
-                  if Component_Is_Visible_In_Type (Ty, Field)
-                    and then (not New_Components
-                              or else Original_Declaration (Field) = Ty_Ext)
-                  then
-                     if Present (Expression (Enclosing_Declaration (Field)))
+               declare
+                  Checks_Seq : W_Statement_Sequence_Id :=
+                    New_Statement_Sequence (Ada_Node   => Empty,
+                                            Statements => (1 .. 1 => +Void));
+               begin
+                  for Field of Get_Component_Set (Ty_Ext) loop
+                     if Component_Is_Visible_In_Type (Ty, Field)
+                       and then (not New_Components
+                                 or else Original_Declaration (Field) = Ty_Ext)
                      then
+                        if Present (Expression (Enclosing_Declaration (Field)))
+                        then
 
-                        --  If Field has a default expression, use it
+                           --  If Field has a default expression, use it
 
-                        T_Comp := Transform_Expr
-                          (Expr          =>
-                             Expression (Enclosing_Declaration (Field)),
-                           Expected_Type => Type_Of_Node (Etype (Field)),
-                           Domain        => EW_Prog,
-                           Params        => Params);
-                     else
+                           T_Comp := Transform_Expr
+                             (Expr          =>
+                                Expression (Enclosing_Declaration (Field)),
+                              Expected_Type => Type_Of_Node (Etype (Field)),
+                              Domain        => EW_Prog,
+                              Params        => Params);
+                        else
 
-                        --  Otherwise, use its Field's Etype default value
+                           --  Otherwise, use its Field's Etype default value
 
-                        T_Comp :=
-                          +Compute_Default_Check (Etype (Field), Params);
+                           T_Comp :=
+                             +Compute_Default_Check (Etype (Field), Params);
+                        end if;
+
+                        if T_Comp /= +Void then
+
+                           --  Check values of record fields only if they are
+                           --  in the proper variant part.
+
+                           T_Comp  := New_Conditional
+                             (Domain    => EW_Prog,
+                              Condition => New_Ada_Record_Check_For_Field
+                                (Empty, EW_Prog, +Tmp_Exp, Field, Ty_Ext),
+                              Then_Part =>
+                                +New_Ignore
+                                (Ada_Node => Etype (Field),
+                                 Prog     => +T_Comp));
+                           Sequence_Append (Checks_Seq, +T_Comp);
+
+                        end if;
                      end if;
+                  end loop;
 
-                     if T_Comp /= +Void then
-
-                        --  Check values of record fields only if they are in
-                        --  the proper variant part.
-
-                        T_Comp  := New_Conditional
-                          (Domain      => EW_Prog,
-                           Condition   => New_Ada_Record_Check_For_Field
-                             (Empty, EW_Prog, +Tmp_Exp, Field, Ty_Ext),
-                           Then_Part   =>
-                             +New_Ignore
-                             (Ada_Node => Etype (Field),
-                              Prog     => +T_Comp));
-
-                        Checks := Sequence
-                          (Left  => Checks,
-                           Right => +T_Comp);
-                     end if;
-                  end if;
-               end loop;
+                  Checks := Sequence
+                    (Left  => Checks,
+                     Right => +Checks_Seq);
+               end;
             end if;
 
             --  Create bindings for Tmp_Exp

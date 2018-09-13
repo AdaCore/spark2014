@@ -129,6 +129,7 @@ very_longs.adb:264:46: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:264:64: info: initialization of "Temp" proved
 very_longs.adb:265:39: info: initialization of "Temp" proved
 very_longs.adb:269:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:274:42: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:274:42: info: range check proved (CVC4: 1 VC)
 very_longs.adb:274:42: medium: overflow check might fail
 very_longs.adb:282:26: info: length check proved (CVC4: 1 VC)
