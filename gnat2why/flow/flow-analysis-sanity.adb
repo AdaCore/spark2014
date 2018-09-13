@@ -1225,6 +1225,14 @@ package body Flow.Analysis.Sanity is
          end case;
       end In_Abstract_Contract;
 
+      Msg : constant String :=
+          (case FA.Kind is
+             when Kind_Subprogram | Kind_Task =>
+                "must be listed in the " & Aspect_To_Fix & " aspect of",
+             when Kind_Package | Kind_Package_Body =>
+                "must be mentioned as an input of the " & Aspect_To_Fix &
+                " aspect of");
+
    --  Start of processing for Check_All_Variables_Known
 
    begin
@@ -1268,8 +1276,7 @@ package body Flow.Analysis.Sanity is
                         begin
                            Error_Msg_Flow
                              (FA       => FA,
-                              Msg      => "& must be listed in the " &
-                                           Aspect_To_Fix & " aspect of &",
+                              Msg      => "& " & Msg & " &",
                               SRM_Ref  => SRM_Ref,
                               N        => First_Var_Use,
                               F1       => (if Gnat2Why_Args.Flow_Advanced_Debug
