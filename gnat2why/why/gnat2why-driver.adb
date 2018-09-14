@@ -569,7 +569,9 @@ package body Gnat2Why.Driver is
                Run_Gnatwhy3;
             end if;
 
-            if Gnat2Why_Args.Limit_Line = Null_Unbounded_String then
+            if Gnat2Why_Args.Limit_Line = Null_Unbounded_String
+              and then Gnat2Why_Args.Limit_Region = Null_Unbounded_String
+            then
                Generate_Useless_Pragma_Annotate_Warnings;
             end if;
 
