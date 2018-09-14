@@ -3518,12 +3518,21 @@ package body Flow.Control_Flow_Graph is
 
       --  Ignore generic actuals of the currently analysed instance (they
       --  act as globals and only appear in the AST as locals because that is
-      --  how frontend expands them) and Part_Ofs single concurrent objects
-      --  (??? this is wrong, because Part_Ofs single concurrent object might
-      --  appear in the Initializes clause).
+      --  how frontend expands them).
 
-      if (In_Generic_Actual (E) and then Scope (E) = FA.Spec_Entity)
-        or else Is_Part_Of_Concurrent_Object (E)
+      if In_Generic_Actual (E)
+        and then Scope (E) = FA.Spec_Entity
+      then
+         Add_Dummy_Vertex (N, FA, CM);
+         return;
+      end if;
+
+      --  For Part_Of concurrent objects we only want them in the CFG if they
+      --  are declared immediately within the analysed package; otherwise they
+      --  cannot be referenced.
+
+      if Is_Part_Of_Concurrent_Object (E)
+        and then Scope (E) /= FA.Spec_Entity
       then
          Add_Dummy_Vertex (N, FA, CM);
          return;
