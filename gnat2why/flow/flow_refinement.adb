@@ -279,19 +279,6 @@ package body Flow_Refinement is
                           Part => Part);
                end;
 
-            --  We only see N_Aspect_Specification here when Get_Flow_Scope is
-            --  called on an abstract state. We want to return the Visible_Part
-            --  of the package that introduces the abstract state.
-
-            when N_Aspect_Specification =>
-               pragma Assert (Ekind (N) = E_Abstract_State);
-
-               pragma Assert
-                 (Nkind (Parent (Context)) = N_Package_Declaration);
-
-               return (Ent  => Defining_Entity (Parent (Context)),
-                       Part => Visible_Part);
-
             --  Front end rewrites aspects into pragmas with empty parents. In
             --  such cases we jump to the entity of the aspect.
 
@@ -355,7 +342,14 @@ package body Flow_Refinement is
                                          S : Flow_Scope)
                                          return Boolean
    is
-     (Is_Visible (Body_Scope (Get_Flow_Scope (E)), S));
+   begin
+      --  State refinement is visible iff the body of its enclosing package is
+      --  visible.
+
+      return
+        Is_Visible (Target_Scope => (Ent => Scope (E), Part => Body_Part),
+                    Looking_From => S);
+   end State_Refinement_Is_Visible;
 
    function State_Refinement_Is_Visible (EN : Entity_Name;
                                          S  : Flow_Scope)
