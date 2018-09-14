@@ -155,7 +155,10 @@ Using the option ``--limit-line=`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only line 12 of
 file ``example.adb``, you can add the option ``--limit-line=example.adb:12`` to
 the call to |GNATprove|. Using the option ``--limit-subp=`` one can limit proofs
-to a subprogram declared in a particular file at a particular line.
+to a subprogram declared in a particular file at a particular line. Using
+``--limit-region=`` one can limit proofs to a range of lines in a particular
+file. For example, ``--limit-region=example.adb:12:14`` will limit analysis to
+lines 12 to 14 in ``example.adb``.
 
 A number of options exist to influence the behavior for proof. Internally, the
 prover(s) specified with option ``--prover`` is/are called repeatedly for each
@@ -496,12 +499,13 @@ When editing an Ada file, |GNATprove| can also be run from a
    :header: "Submenu", "Action"
    :widths: 1, 4
 
-   "Examine File",       "This runs |GNATprove| in flow analysis mode on the current unit, its body and any subunits."
-   "Examine Subprogram", "This runs |GNATprove| in flow analysis mode on the current subprogram."
-   "Prove File",         "This runs |GNATprove| on the current unit, its body and any subunits."
-   "Prove Subprogram",   "This runs |GNATprove| on the current subprogram."
-   "Prove Line",         "This runs |GNATprove| on the current line."
-   "Prove Check",        "This runs |GNATprove| on the current failing condition. |GNATprove| must have been run at least once for this option to be available in order to know which conditions are failing."
+   "Examine File",           "This runs |GNATprove| in flow analysis mode on the current unit, its body and any subunits."
+   "Examine Subprogram",     "This runs |GNATprove| in flow analysis mode on the current subprogram."
+   "Prove File",             "This runs |GNATprove| on the current unit, its body and any subunits."
+   "Prove Subprogram",       "This runs |GNATprove| on the current subprogram."
+   "Prove Line",             "This runs |GNATprove| on the current line."
+   "Prove Selected Region",  "This runs |GNATprove| on the currently selected region."
+   "Prove Check",            "This runs |GNATprove| on the current failing condition. |GNATprove| must have been run at least once for this option to be available in order to know which conditions are failing."
 
 Except from :menuselection:`Examine File` and :menuselection:`Prove File`, all
 other submenus are also applicable to code inside generic units, in which case
