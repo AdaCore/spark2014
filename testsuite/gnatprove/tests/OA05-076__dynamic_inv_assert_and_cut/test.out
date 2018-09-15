@@ -347,7 +347,7 @@ lsc-bignum.adb:697:43: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:698:43: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:699:24: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:700:43: info: overflow check proved (Z3: 1 VC)
-lsc-bignum.adb:701:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - Math_Int.From_Integer (S) + Math_Int.From_Word32 (1))) * Base ** (...)
+lsc-bignum.adb:701:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - Math_Int.From_Integer (S) + Math_Int.From_Word32 (1))) * Base ** (...) [possible explanation: loop invariant at line 527 should mention S]
 lsc-bignum.adb:701:29: info: initialization of "Aux3" proved
 lsc-bignum.adb:701:49: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:702:43: info: overflow check proved (Z3: 1 VC)

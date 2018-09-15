@@ -35,7 +35,7 @@ average.adb:13:15: warning: assuming "New_Line" has no effect on global items
 average.adb:13:15: warning: no Global contract available for "New_Line"
 average.adb:15:16: info: initialization of "A" proved
 average.adb:15:18: info: range check proved (Interval)
-average.adb:15:18: medium: overflow check might fail
+average.adb:15:18: medium: overflow check might fail [possible explanation: call at line 12 should mention Item (for argument B) in a postcondition]
 average.adb:15:20: info: initialization of "B" proved
 average.adb:15:23: info: division check proved (CVC4: 1 VC)
 average.adb:15:23: info: float overflow check proved (Interval)
@@ -57,7 +57,7 @@ average_with_use.adb:13:04: warning: assuming "New_Line" has no effect on global
 average_with_use.adb:13:04: warning: no Global contract available for "New_Line"
 average_with_use.adb:15:16: info: initialization of "A" proved
 average_with_use.adb:15:18: info: range check proved (Interval)
-average_with_use.adb:15:18: medium: overflow check might fail
+average_with_use.adb:15:18: medium: overflow check might fail [possible explanation: call at line 12 should mention Item (for argument B) in a postcondition]
 average_with_use.adb:15:20: info: initialization of "B" proved
 average_with_use.adb:15:23: info: division check proved (CVC4: 1 VC)
 average_with_use.adb:15:23: info: float overflow check proved (Interval)
@@ -73,8 +73,8 @@ bad_types.adb:7:21: warning: no Global contract available for "Get"
 bad_types.adb:8:21: warning: assuming "Get" has no effect on global items
 bad_types.adb:8:21: warning: no Global contract available for "Get"
 bad_types.adb:9:13: info: initialization of "Room_Length" proved
-bad_types.adb:9:25: medium: float overflow check might fail
-bad_types.adb:9:31: medium: float overflow check might fail
+bad_types.adb:9:25: medium: float overflow check might fail [possible explanation: call at line 8 should mention Item (for argument Wall_Thickness) in a postcondition]
+bad_types.adb:9:31: medium: float overflow check might fail [possible explanation: call at line 8 should mention Item (for argument Wall_Thickness) in a postcondition]
 bad_types.adb:9:33: info: initialization of "Wall_Thickness" proved
 bad_types.adb:10:21: warning: assuming "Put" has no effect on global items
 bad_types.adb:10:21: warning: no Global contract available for "Put"
@@ -411,7 +411,7 @@ control_structures.adb:152:26: warning: assuming "Get" has no effect on global i
 control_structures.adb:152:26: warning: no Global contract available for "Get"
 control_structures.adb:153:17: info: initialization of "Value" proved
 control_structures.adb:154:14: info: initialization of "Sum" proved
-control_structures.adb:154:18: medium: overflow check might fail
+control_structures.adb:154:18: medium: overflow check might fail [possible explanation: call at line 152 should mention Item (for argument Value) in a postcondition]
 control_structures.adb:154:20: info: initialization of "Value" proved
 control_structures.adb:158:14: info: initialization of "X" proved
 control_structures.adb:158:16: info: division check proved (CVC4: 1 VC)
@@ -697,12 +697,12 @@ external_test.adb:16:12: warning: unused assignment
 external_test.ads:6:20: info: initialization of "Item" proved
 generic_examples.adb:10:33: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:12:23: info: initialization of "Result" proved
-generic_examples.adb:12:30: medium: overflow check might fail
+generic_examples.adb:12:30: medium: overflow check might fail [possible explanation: loop at line 10 should mention Result in a loop invariant]
 generic_examples.adb:15:14: info: initialization of "Result" proved
 generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
 generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
-generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:39
-generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:46
+generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:39 [possible explanation: loop at line 31 should mention Result in a loop invariant]
+generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:46 [possible explanation: loop at line 31 should mention Result in a loop invariant]
 generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
 generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
 generic_examples.adb:39:04: info: cannot unroll loop (too many loop iterations)
@@ -711,7 +711,7 @@ generic_examples.adb:46:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:46:04: info: in instantiation at line 31
 generic_examples.adb:59:21: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
 generic_examples.adb:70:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
-generic_examples.adb:70:30: medium: overflow check might fail, in instantiation at generic_examples.adb:77
+generic_examples.adb:70:30: medium: overflow check might fail, in instantiation at generic_examples.adb:77 [possible explanation: loop at line 68 should mention Result in a loop invariant]
 generic_examples.adb:77:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:77:04: info: in instantiation at line 68
 generic_examples.adb:91:23: warning: assuming "Put" has no effect on global items
@@ -824,7 +824,7 @@ good_types.adb:21:11: warning: assuming "Get" has no effect on global items
 good_types.adb:21:11: warning: no Global contract available for "Get"
 good_types.adb:22:13: info: initialization of "Room_Length" proved
 good_types.adb:22:25: info: float overflow check proved (Interval)
-good_types.adb:22:25: medium: range check might fail
+good_types.adb:22:25: medium: range check might fail [possible explanation: call at line 20 should mention Item (for argument Room_Length) in a postcondition]
 good_types.adb:22:31: info: float overflow check proved (Interval)
 good_types.adb:22:33: info: analyzing call to "To_Feet" in context
 good_types.adb:22:33: info: initialization of "Wall_Thickness" proved
@@ -981,7 +981,7 @@ palindrome.adb:26:14: warning: no Global contract available for "Put_Line"
 palindrome.adb:29:15: warning: assuming "Get_Line" has no effect on global items
 palindrome.adb:29:15: warning: no Global contract available for "Get_Line"
 palindrome.adb:32:07: info: analyzing call to "Is_Palindrome" in context
-palindrome.adb:32:07: medium: range check might fail
+palindrome.adb:32:07: medium: range check might fail [possible explanation: call at line 29 should mention Item (for argument Line) in a postcondition]
 palindrome.adb:32:22: info: initialization of "Line" proved
 palindrome.adb:32:33: info: initialization of "Count" proved
 palindrome.adb:33:18: warning: assuming "Put_Line" has no effect on global items
@@ -1281,8 +1281,8 @@ silly.adb:6:21: medium: overflow check might fail
 silly.adb:6:26: info: division check proved (CVC4: 1 VC)
 silly.adb:12:22: info: division check proved (CVC4: 1 VC)
 simple_math.adb:10:10: info: initialization of "Q" proved
-simple_math.adb:12:19: medium: divide by zero might fail
-simple_math.adb:12:19: medium: range check might fail
+simple_math.adb:12:19: medium: divide by zero might fail [possible explanation: loop at line 11 should mention Q in a loop invariant]
+simple_math.adb:12:19: medium: range check might fail [possible explanation: loop at line 11 should mention Q in a loop invariant]
 simple_math.adb:12:20: info: initialization of "Q" proved
 simple_math.adb:13:23: info: initialization of "Q" proved
 simple_math.adb:13:28: info: initialization of "R" proved
@@ -1401,7 +1401,7 @@ strings.adb:44:43: info: initialization of "Equals_Position" proved
 strings.adb:45:32: medium: precondition might fail
 strings.adb:45:40: medium: range check might fail
 strings.adb:45:46: info: initialization of "Equals_Position" proved
-strings.adb:45:62: medium: overflow check might fail
+strings.adb:45:62: medium: overflow check might fail [possible explanation: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.ads:8:22: info: initialization of "Found" proved
 strings.ads:9:22: info: initialization of "Position" proved
 students.adb:15:21: info: initialization of "Tuition" proved

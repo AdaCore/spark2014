@@ -31,12 +31,12 @@ deceleration_curve.adb:50:48: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:50:50: info: initialization of "speed" proved
 deceleration_curve.adb:51:12: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:55:47: info: initialization of "delta_speed" proved
-deceleration_curve.adb:57:15: medium: assertion might fail, cannot prove delta_speed < 0.0
+deceleration_curve.adb:57:15: medium: assertion might fail, cannot prove delta_speed < 0.0 [possible explanation: loop invariant at line 39 should mention delta_speed]
 deceleration_curve.adb:59:19: info: initialization of "speed" proved
 deceleration_curve.adb:59:25: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:59:27: info: initialization of "delta_speed" proved
 deceleration_curve.adb:61:22: info: initialization of "distance" proved
-deceleration_curve.adb:61:31: medium: overflow check might fail
+deceleration_curve.adb:61:31: medium: overflow check might fail [possible explanation: loop invariant at line 39 should mention distance]
 deceleration_curve.adb:64:14: info: initialization of "distance" proved
 deceleration_curve.adb:70:36: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:70:36: info: range check proved (CVC4: 1 VC)
@@ -49,11 +49,11 @@ deceleration_curve.adb:86:67: info: cannot unroll loop (too many loop iterations
 deceleration_curve.adb:88:13: info: initialization of "speed" proved
 deceleration_curve.adb:88:19: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:88:21: info: precondition proved (CVC4: 1 VC)
-deceleration_curve.adb:88:32: medium: float overflow check might fail
-deceleration_curve.adb:89:13: medium: float overflow check might fail
-deceleration_curve.adb:89:29: medium: float overflow check might fail
+deceleration_curve.adb:88:32: medium: float overflow check might fail [possible explanation: loop at line 86 should mention speed in a loop invariant]
+deceleration_curve.adb:89:13: medium: float overflow check might fail [possible explanation: loop at line 86 should mention location and speed in a loop invariant]
+deceleration_curve.adb:89:29: medium: float overflow check might fail [possible explanation: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:89:53: info: initialization of "location" proved
-deceleration_curve.adb:90:13: medium: float overflow check might fail
+deceleration_curve.adb:90:13: medium: float overflow check might fail [possible explanation: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:90:46: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:90:46: info: float overflow check proved (Interval)
 deceleration_curve.adb:91:13: info: initialization of "speed" proved
