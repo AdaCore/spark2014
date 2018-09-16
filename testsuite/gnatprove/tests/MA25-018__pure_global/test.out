@@ -1,9 +1,9 @@
-p.adb:15:62: medium: overflow check might fail (e.g. when L = 0 and X = Integer'First and Y = -1)
-p.adb:15:62: medium: range check might fail (e.g. when L = 0)
+p.adb:15:62: medium: overflow check might fail (e.g. when L = 0 and X = Integer'First and Y = -1) [possible explanation: subprogram at line 12 should mention X and Y in a precondition]
+p.adb:15:62: medium: range check might fail (e.g. when L = 0) [possible explanation: subprogram at line 12 should mention X and Y in a precondition]
 p.adb:16:30: info: initialization of "L" proved
 p.adb:16:30: info: range check proved (CVC4: 1 VC)
-p.adb:22:38: medium: overflow check might fail (e.g. when L = 0 and X = Integer'First and Y = -1)
-p.adb:22:38: medium: range check might fail (e.g. when L = 0)
+p.adb:22:38: medium: overflow check might fail (e.g. when L = 0 and X = Integer'First and Y = -1) [possible explanation: subprogram at line 19 should mention X and Y in a precondition]
+p.adb:22:38: medium: range check might fail (e.g. when L = 0) [possible explanation: subprogram at line 19 should mention X and Y in a precondition]
 p.adb:23:30: info: initialization of "L" proved
 p.adb:23:30: info: range check proved (CVC4: 1 VC)
 p.ads:4:38: info: initialization of "Z" proved

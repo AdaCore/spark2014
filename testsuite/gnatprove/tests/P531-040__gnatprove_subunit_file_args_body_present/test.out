@@ -1,4 +1,4 @@
-parent-child-grandchild-proc.adb:6:31: medium: range check might fail (e.g. when I = Idx_T'Last)
+parent-child-grandchild-proc.adb:6:31: medium: range check might fail (e.g. when I = Idx_T'Last) [possible explanation: subprogram at line 3 should mention I in a precondition]
 parent-child-grandchild.adb:10:51: info: initialization of "Nf.Flag" proved
 parent-child-grandchild.adb:10:51: info: initialization of "Nf.Idx" proved
 parent-child-grandchild.adb:10:51: info: initialization of "Nf.The_P.X" proved

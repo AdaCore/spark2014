@@ -1,6 +1,6 @@
 contracts.adb:3:04: warning: analyzing unreferenced procedure "Convert_Integer0"
 contracts.adb:3:45: info: initialization of "U" proved
-contracts.adb:5:12: medium: range check might fail
+contracts.adb:5:12: medium: range check might fail [possible explanation: subprogram at line 3 should mention X in a precondition]
 contracts.adb:8:44: info: initialization of "U" proved
 contracts.adb:12:12: info: range check proved (CVC4: 1 VC)
 contracts.adb:15:45: info: initialization of "U" proved
@@ -18,9 +18,9 @@ contracts.adb:34:14: info: overflow check proved (CVC4: 1 VC)
 contracts.adb:34:14: info: range check proved (CVC4: 1 VC)
 contracts.adb:34:16: info: initialization of "Z" proved
 discriminant_check.adb:12:04: warning: analyzing unreferenced function "Get_X"
-discriminant_check.adb:14:15: medium: discriminant check might fail
+discriminant_check.adb:14:15: medium: discriminant check might fail [possible explanation: subprogram at line 12 should mention R in a precondition]
 discriminant_check.adb:17:04: warning: analyzing unreferenced procedure "Set_X"
-discriminant_check.adb:19:08: medium: discriminant check might fail
+discriminant_check.adb:19:08: medium: discriminant check might fail [possible explanation: subprogram at line 17 should mention R in a precondition]
 division_by_zero.adb:9:04: warning: analyzing unreferenced procedure "Oper_Integer"
 division_by_zero.adb:9:55: info: initialization of "U" proved
 division_by_zero.adb:12:27: medium: divide by zero might fail
@@ -34,20 +34,20 @@ division_by_zero.adb:22:27: medium: divide by zero might fail
 division_by_zero.adb:23:27: medium: divide by zero might fail
 division_by_zero.adb:27:04: warning: analyzing unreferenced procedure "Div_Float"
 division_by_zero.adb:27:39: info: initialization of "U" proved
-division_by_zero.adb:29:14: medium: divide by zero might fail
-division_by_zero.adb:29:14: medium: float overflow check might fail
+division_by_zero.adb:29:14: medium: divide by zero might fail [possible explanation: subprogram at line 27 should mention X and Y in a precondition]
+division_by_zero.adb:29:14: medium: float overflow check might fail [possible explanation: subprogram at line 27 should mention X and Y in a precondition]
 division_by_zero.adb:32:04: warning: analyzing unreferenced procedure "Div_Fixed"
 division_by_zero.adb:32:39: info: initialization of "U" proved
-division_by_zero.adb:34:14: medium: divide by zero might fail
-division_by_zero.adb:34:14: medium: overflow check might fail
+division_by_zero.adb:34:14: medium: divide by zero might fail [possible explanation: subprogram at line 32 should mention X and Y in a precondition]
+division_by_zero.adb:34:14: medium: overflow check might fail [possible explanation: subprogram at line 32 should mention X and Y in a precondition]
 division_by_zero.adb:37:04: warning: analyzing unreferenced procedure "Exp_Float"
 division_by_zero.adb:37:49: info: initialization of "U" proved
-division_by_zero.adb:39:14: medium: divide by zero might fail
-division_by_zero.adb:39:14: medium: float overflow check might fail
+division_by_zero.adb:39:14: medium: divide by zero might fail [possible explanation: subprogram at line 37 should mention X and Y in a precondition]
+division_by_zero.adb:39:14: medium: float overflow check might fail [possible explanation: subprogram at line 37 should mention X and Y in a precondition]
 index_check.adb:3:04: warning: analyzing unreferenced function "Get"
-index_check.adb:5:16: medium: array index check might fail
+index_check.adb:5:16: medium: array index check might fail [possible explanation: subprogram at line 3 should mention J in a precondition]
 index_check.adb:8:04: warning: analyzing unreferenced procedure "Set"
-index_check.adb:10:09: medium: array index check might fail
+index_check.adb:10:09: medium: array index check might fail [possible explanation: subprogram at line 8 should mention J in a precondition]
 overflow_check.adb:9:04: warning: analyzing unreferenced procedure "Oper_Integer"
 overflow_check.adb:9:68: info: initialization of "U" proved
 overflow_check.adb:12:30: medium: overflow check might fail
@@ -79,16 +79,16 @@ overflow_check.adb:43:32: medium: divide by zero might fail
 overflow_check.adb:43:32: medium: overflow check might fail
 range_check.adb:16:04: warning: analyzing unreferenced procedure "Convert_Enum"
 range_check.adb:16:38: info: initialization of "U" proved
-range_check.adb:18:12: medium: range check might fail
+range_check.adb:18:12: medium: range check might fail [possible explanation: subprogram at line 16 should mention X in a precondition]
 range_check.adb:21:04: warning: analyzing unreferenced procedure "Convert_Integer"
 range_check.adb:21:44: info: initialization of "U" proved
-range_check.adb:23:12: medium: range check might fail
+range_check.adb:23:12: medium: range check might fail [possible explanation: subprogram at line 21 should mention X in a precondition]
 range_check.adb:26:04: warning: analyzing unreferenced procedure "Convert_Unsigned"
 range_check.adb:26:46: info: initialization of "U" proved
-range_check.adb:28:12: medium: range check might fail
+range_check.adb:28:12: medium: range check might fail [possible explanation: subprogram at line 26 should mention X in a precondition]
 range_check.adb:31:04: warning: analyzing unreferenced procedure "Convert_Float"
 range_check.adb:31:40: info: initialization of "U" proved
-range_check.adb:33:12: medium: range check might fail
+range_check.adb:33:12: medium: range check might fail [possible explanation: subprogram at line 31 should mention X in a precondition]
 range_check.adb:36:04: warning: analyzing unreferenced procedure "Convert_Fixed"
 range_check.adb:36:40: info: initialization of "U" proved
-range_check.adb:38:12: medium: range check might fail
+range_check.adb:38:12: medium: range check might fail [possible explanation: subprogram at line 36 should mention X in a precondition]

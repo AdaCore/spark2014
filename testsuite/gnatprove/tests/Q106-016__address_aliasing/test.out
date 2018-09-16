@@ -1,6 +1,6 @@
 main1.adb:3:11: medium: "Y" might not be initialized after elaboration of main program "Main1"
 main1.adb:3:11: medium: "Z" might not be initialized after elaboration of main program "Main1"
-main1.adb:5:19: medium: assertion might fail, cannot prove X = 0 (e.g. when X = -1)
+main1.adb:5:19: medium: assertion might fail, cannot prove X = 0 (e.g. when X = -1) [possible explanation: subprogram at line 3 should mention X in a precondition]
 main2.adb:3:11: info: initialization of "X" proved
 main2.adb:3:11: info: initialization of "Y" proved
 main2.adb:3:11: info: initialization of "Z" proved

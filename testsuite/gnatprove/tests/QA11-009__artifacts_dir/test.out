@@ -1,1 +1,1 @@
-incr.adb:3:11: medium: overflow check might fail (e.g. when X = Integer'Last)
+incr.adb:3:11: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 1 should mention X in a precondition]

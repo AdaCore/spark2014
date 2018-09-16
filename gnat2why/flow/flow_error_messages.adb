@@ -751,7 +751,8 @@ package body Flow_Error_Messages is
         (Nkind (N) in N_Procedure_Call_Statement
                     | N_Pragma
                     | N_Statement_Other_Than_Procedure_Call
-                    | N_Declaration);
+                    | N_Declaration
+                    | N_Handled_Sequence_Of_Statements);
 
       function Enclosing_Stmt_Or_Prag_Or_Decl is new
         First_Parent_With_Property (Is_Stmt_Or_Prag_Or_Decl);
@@ -761,7 +762,8 @@ package body Flow_Error_Messages is
           Explain_Node_Kind in N_Empty
                              | N_Assignment_Statement
                              | N_Procedure_Call_Statement
-                             | N_Loop_Statement;
+                             | N_Loop_Statement
+                             | N_Subprogram_Body;
 
       function Explain_Variables
         (Vars : Flow_Id_Sets.Set;
@@ -795,23 +797,23 @@ package body Flow_Error_Messages is
       --    - a loop statement, as it may modify the value of a variable
       --      without stating how this variable was modified in its
       --      loop invariant.
+      --    - a subprogram body, as it may take a variable in input without
+      --      stating how this variable should be constrained in
+      --      a precondition.
 
-      procedure Remove_Variables_From_Expr
-        (Vars    : in out Flow_Id_Sets.Set;
-         Expr    :        Node_Id;
-         Context :        Node_Id;
-         Map     :        Flow_Id_Surjection.Map :=
-                            Flow_Id_Surjection.Empty_Map)
+      function Get_Variables_From_Expr
+        (Expr    : Node_Id;
+         Context : Node_Id;
+         Map     : Flow_Id_Surjection.Map := Flow_Id_Surjection.Empty_Map)
+         return Flow_Id_Sets.Set
       with
-        Pre  => Nkind (Expr) in N_Subexpr,
-        Post => Flow_Id_Sets.Is_Subset (Subset => Vars, Of_Set => Vars'Old);
-      --  @param Vars set of entire variables
+        Pre => Nkind (Expr) in N_Subexpr;
       --  @param Expr expression
       --  @param Context relevant context for interpreting flow ids
       --  @param Map map of flow ids to apply on expression to find additional
-      --         variables to remove
-      --  Remove from [Vars] all the entire variables corresponding to flow ids
-      --  in the expression [Expr].
+      --         variables to retrieve
+      --  Extract all the entire variables corresponding to flow ids in the
+      --  expression [Expr].
 
       -----------------------
       -- Explain_Variables --
@@ -910,28 +912,31 @@ package body Flow_Error_Messages is
          end if;
       end Get_Previous_Explain_Node;
 
-      --------------------------------
-      -- Remove_Variables_From_Expr --
-      --------------------------------
+      -----------------------------
+      -- Get_Variables_From_Expr --
+      -----------------------------
 
-      procedure Remove_Variables_From_Expr
-        (Vars    : in out Flow_Id_Sets.Set;
-         Expr    :        Node_Id;
-         Context :        Node_Id;
-         Map     :        Flow_Id_Surjection.Map :=
-                            Flow_Id_Surjection.Empty_Map)
+      function Get_Variables_From_Expr
+        (Expr    : Node_Id;
+         Context : Node_Id;
+         Map     : Flow_Id_Surjection.Map := Flow_Id_Surjection.Empty_Map)
+         return Flow_Id_Sets.Set
       is
          Expr_Vars : constant Flow_Id_Sets.Set :=
            To_Entire_Variables (Get_Variables_For_Proof (Expr, Context));
-      begin
-         Vars.Difference (Expr_Vars);
+         Mapped_Vars : Flow_Id_Sets.Set;
 
+         use type Flow_Id_Sets.Set;
+
+      begin
          for V of Expr_Vars loop
             if Map.Contains (V) then
-               Vars.Delete (Map (V));
+               Mapped_Vars.Include (Map (V));
             end if;
          end loop;
-      end Remove_Variables_From_Expr;
+
+         return Expr_Vars or Mapped_Vars;
+      end Get_Variables_From_Expr;
 
    --  Start of processing for Get_Explanation
 
@@ -958,7 +963,9 @@ package body Flow_Error_Messages is
             Stmt        : Node_Id;
             Vars        : Flow_Id_Sets.Set;
             Ignore_Vars : Flow_Id_Sets.Set;
+            Read_Vars   : Flow_Id_Sets.Set;
             Write_Vars  : Flow_Id_Sets.Set;
+            Info_Vars   : Flow_Id_Sets.Set;
             Pragmas     : Node_Lists.List;
             Expl        : Unbounded_String;
 
@@ -1097,19 +1104,20 @@ package body Flow_Error_Messages is
 
                      Iterate_Call (Stmt);
 
-                     --  Remove those variables mentioned in a postcondition
+                     --  Retrieve those variables mentioned in a postcondition
 
+                     Info_Vars.Clear;
                      Pragmas := Find_Contracts (Proc, Pragma_Postcondition);
                      for Expr of Pragmas loop
-                        Remove_Variables_From_Expr
-                          (Write_Vars, Expr, N, Formal_To_Actual);
+                        Info_Vars.Union (Get_Variables_From_Expr
+                                          (Expr, N, Formal_To_Actual));
                      end loop;
 
                      --  Compute variables that are both relevant for
                      --  proving the property and written in the call with
                      --  no information on the updated value.
 
-                     Vars := Check_Vars and Write_Vars;
+                     Vars := Check_Vars and (Write_Vars - Info_Vars);
 
                      --  These variables are a possible explanation for the
                      --  proof failure.
@@ -1131,6 +1139,12 @@ package body Flow_Error_Messages is
                         end if;
 
                         return To_String (Expl);
+
+                     --  Otherwise, continue the search only for the variables
+                     --  that are not modified in the call.
+
+                     else
+                        Check_Vars.Difference (Write_Vars);
                      end if;
                   end;
 
@@ -1146,10 +1160,12 @@ package body Flow_Error_Messages is
                      Pragmas :=
                        Gnat2Why.Expr.Loops.Get_Loop_Invariant (Stmt);
 
-                     --  Remove those variables mentioned in the loop test.
+                     --  Compute those variables mentioned in the loop test.
                      --  Even if the loop test is not added as loop invariant,
                      --  this information may be available to prove the
                      --  property.
+
+                     Info_Vars.Clear;
 
                      declare
                         Cond_Or_Var : constant Node_Or_Entity_Id :=
@@ -1171,15 +1187,15 @@ package body Flow_Error_Messages is
 
                            --  The condition in a WHILE loop is simply
                            --  providing information on these variables
-                           --  for this loop. Remove them from Write_Vars.
+                           --  for this loop. Add them from Info_Vars.
 
                            when others =>
-                              Remove_Variables_From_Expr
-                                (Write_Vars, Cond_Or_Var, N);
+                              Info_Vars :=
+                                Get_Variables_From_Expr (Cond_Or_Var, N);
                         end case;
                      end;
 
-                     --  Remove those variables mentioned in a loop invariant
+                     --  Retrieve those variables mentioned in a loop invariant
 
                      for Prag of Pragmas loop
                         declare
@@ -1187,7 +1203,7 @@ package body Flow_Error_Messages is
                              Expression (Next (First
                                (Pragma_Argument_Associations (Prag))));
                         begin
-                           Remove_Variables_From_Expr (Write_Vars, Expr, N);
+                           Info_Vars.Union (Get_Variables_From_Expr (Expr, N));
                         end;
                      end loop;
 
@@ -1195,7 +1211,7 @@ package body Flow_Error_Messages is
                      --  proving the property and written in the loop with
                      --  no information on the updated value.
 
-                     Vars := Check_Vars and Write_Vars;
+                     Vars := Check_Vars and (Write_Vars - Info_Vars);
 
                      --  These variables are a possible explanation for the
                      --  proof failure.
@@ -1216,8 +1232,99 @@ package body Flow_Error_Messages is
                         end if;
 
                         return To_String (Expl);
+
+                     --  Otherwise, continue the search only for the variables
+                     --  that are not modified in the loop.
+
+                     else
+                        Check_Vars.Difference (Write_Vars);
                      end if;
                   end if;
+
+               when N_Subprogram_Body =>
+                  declare
+                     Proc : constant Entity_Id :=
+                       SPARK_Atree.Unique_Defining_Entity (Stmt);
+
+                  begin
+                     --  Get the variables read in the subprogram, both global
+                     --  variables and parameters.
+
+                     Get_Proof_Globals (Subprogram => Proc,
+                                        Classwide  => True,
+                                        Reads      => Read_Vars,
+                                        Writes     => Ignore_Vars);
+
+                     declare
+                        Formal : Entity_Id := First_Formal (Proc);
+                        Id     : Flow_Id;
+                     begin
+                        while Present (Formal) loop
+                           if Ekind (Formal) in E_In_Parameter
+                                              | E_In_Out_Parameter
+                           then
+                              Id := Direct_Mapping_Id (Formal);
+
+                              --  Include the formal in the variables read in
+                              --  the subprogram.
+
+                              Read_Vars.Include (Id);
+                           end if;
+
+                           Next_Formal (Formal);
+                        end loop;
+                     end;
+
+                     --  Retrieve those variables mentioned in a precondition
+
+                     Info_Vars.Clear;
+                     Pragmas := Find_Contracts (Proc, Pragma_Precondition);
+                     for Expr of Pragmas loop
+                        Info_Vars := Get_Variables_From_Expr (Expr, N);
+                     end loop;
+
+                     --  Compute variables that are both relevant for proving
+                     --  the property and read in the subprogram with no
+                     --  information on the input value.
+
+                     Vars := Check_Vars and (Read_Vars - Info_Vars);
+
+                     --  These variables are a possible explanation for the
+                     --  proof failure.
+
+                     if not Vars.Is_Empty then
+                        Expl := Explain_Variables (Vars);
+
+                        if Is_Predicate_Function (Proc) then
+                           Expl := "predicate at line"
+                             & Get_Physical_Line_Number
+                             (Sloc (Stmt))'Img
+                             & " should mention " & Expl
+                             & " in a guard G as in (if G then Condition)";
+
+                        elsif Pragmas.Is_Empty then
+                           Expl := "subprogram at line"
+                             & Get_Physical_Line_Number
+                             (Sloc (Stmt))'Img
+                             & " should mention " & Expl
+                             & " in a precondition";
+                        else
+                           Expl := "precondition of subprogram at line"
+                             & Get_Physical_Line_Number
+                             (Sloc (Stmt))'Img
+                             & " should mention " & Expl;
+                        end if;
+
+                        return To_String (Expl);
+
+                     --  Stop the search for an explanation at the first
+                     --  subprogram body, as proof is done modularly on
+                     --  subprograms.
+
+                     else
+                        return "";
+                     end if;
+                  end;
                end case;
 
                Stmt := Get_Previous_Explain_Node (Stmt);

@@ -21,7 +21,7 @@ single_compilation_unit.adb:54:18: info: initialization of "Fact" proved
 single_compilation_unit.adb:54:23: info: range check proved (CVC4: 1 VC)
 single_compilation_unit.adb:54:23: medium: overflow check might fail [possible explanation: call at line 53 should mention Fact (for argument Fact) in a postcondition]
 single_compilation_unit.adb:69:30: info: overflow check proved (CVC4: 1 VC)
-single_compilation_unit.adb:69:35: medium: overflow check might fail
+single_compilation_unit.adb:69:35: medium: overflow check might fail [possible explanation: subprogram at line 64 should mention N in a precondition]
 single_compilation_unit.adb:69:50: info: overflow check proved (CVC4: 1 VC)
-single_compilation_unit.adb:94:17: medium: overflow check might fail
-single_compilation_unit.adb:108:17: medium: overflow check might fail
+single_compilation_unit.adb:94:17: medium: overflow check might fail [possible explanation: subprogram at line 90 should mention X in a precondition]
+single_compilation_unit.adb:108:17: medium: overflow check might fail [possible explanation: subprogram at line 104 should mention Y in a precondition]

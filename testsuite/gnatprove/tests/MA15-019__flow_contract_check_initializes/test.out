@@ -2,11 +2,11 @@ init.adb:5:04: info: initialization of "C" constituent of "State" proved
 init.adb:5:19: info: initialization of "A" proved
 init.adb:6:04: info: initialization of "D" constituent of "State" proved
 init.adb:6:19: info: initialization of "B" constituent of "State" proved
-init.adb:8:44: medium: overflow check might fail
-init.adb:8:48: medium: overflow check might fail
-init.adb:11:42: medium: overflow check might fail
-init.adb:11:46: medium: overflow check might fail
-init.adb:11:50: medium: overflow check might fail
+init.adb:8:44: medium: overflow check might fail [possible explanation: subprogram at line 8 should mention C and B in a precondition]
+init.adb:8:48: medium: overflow check might fail [possible explanation: subprogram at line 8 should mention C and D and B in a precondition]
+init.adb:11:42: medium: overflow check might fail [possible explanation: subprogram at line 11 should mention A and B in a precondition]
+init.adb:11:46: medium: overflow check might fail [possible explanation: subprogram at line 11 should mention A and C and B in a precondition]
+init.adb:11:50: medium: overflow check might fail [possible explanation: subprogram at line 11 should mention A and C and D and B in a precondition]
 init.ads:5:08: info: initial condition proved (CVC4: 1 VC)
 init.ads:5:29: info: initialization of "A" proved
 init.ads:5:29: info: initialization of "B" constituent of "State" proved
@@ -24,7 +24,7 @@ initializes_legal.adb:6:04: info: initialization of "Z" constituent of "AS" prov
 initializes_legal.adb:7:04: info: initialization of "Y" constituent of "AS" proved
 initializes_legal.adb:8:04: info: initialization of "L" constituent of "AS2" proved
 initializes_legal.adb:9:04: info: initialization of "M" constituent of "AS2" proved
-initializes_legal.adb:11:55: medium: overflow check might fail
+initializes_legal.adb:11:55: medium: overflow check might fail [possible explanation: subprogram at line 11 should mention X and Y in a precondition]
 initializes_legal.adb:15:14: info: initialization of "Y" constituent of "AS" proved
 initializes_legal.adb:15:17: info: initialization of "L" constituent of "AS2" proved
 initializes_legal.ads:7:27: medium: initialization of V must not depend on A (SPARK RM 7.1.5(11))

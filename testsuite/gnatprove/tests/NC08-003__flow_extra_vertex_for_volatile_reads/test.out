@@ -1,6 +1,6 @@
 foo.adb:19:18: medium: missing dependency "Log_In => Log"
 foo.adb:19:18: medium: missing dependency "Log_In => Log_Size"
-foo.adb:22:28: medium: overflow check might fail
-foo.adb:23:12: medium: array index check might fail
-foo.adb:34:28: medium: overflow check might fail
-foo.adb:35:12: medium: array index check might fail
+foo.adb:22:28: medium: overflow check might fail [possible explanation: subprogram at line 15 should mention Log_Size in a precondition]
+foo.adb:23:12: medium: array index check might fail [possible explanation: subprogram at line 15 should mention Log_Size in a precondition]
+foo.adb:34:28: medium: overflow check might fail [possible explanation: subprogram at line 26 should mention Log_Size in a precondition]
+foo.adb:35:12: medium: array index check might fail [possible explanation: subprogram at line 26 should mention Log_Size in a precondition]

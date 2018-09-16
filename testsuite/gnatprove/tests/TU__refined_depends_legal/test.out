@@ -4,6 +4,6 @@ refined_depends_legal.adb:11:10: info: initialization of "C" constituent of "S2"
 refined_depends_legal.adb:11:13: info: initialization of "D" constituent of "S2" proved
 refined_depends_legal.adb:17:42: info: initialization of "C" constituent of "S2" proved
 refined_depends_legal.adb:17:45: info: initialization of "D" constituent of "S2" proved
-refined_depends_legal.adb:24:20: medium: overflow check might fail (e.g. when A = Integer'First and Par1 = -1 and Par2 = 0)
-refined_depends_legal.adb:25:20: medium: overflow check might fail (e.g. when Par3 = Integer'Last)
+refined_depends_legal.adb:24:20: medium: overflow check might fail (e.g. when A = Integer'First and Par1 = -1 and Par2 = 0) [possible explanation: subprogram at line 13 should mention A and Par1 in a precondition]
+refined_depends_legal.adb:25:20: medium: overflow check might fail (e.g. when Par3 = Integer'Last) [possible explanation: subprogram at line 13 should mention Par3 in a precondition]
 refined_depends_legal.ads:7:18: info: initialization of "Par2" proved

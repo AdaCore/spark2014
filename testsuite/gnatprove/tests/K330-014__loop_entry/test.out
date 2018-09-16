@@ -44,7 +44,7 @@ optional.adb:31:36: medium: loop invariant might fail after first iteration, can
 optional.adb:35:07: warning: assuming "Put_Line" has no effect on global items
 optional.adb:35:07: warning: no Global contract available for "Put_Line"
 utils.adb:10:29: info: range check proved (CodePeer)
-utils.adb:10:34: medium: overflow check might fail
+utils.adb:10:34: medium: overflow check might fail [possible explanation: subprogram at line 7 should mention Val in a precondition]
 while_loops.adb:9:04: warning: assuming "Put_Line" has no effect on global items
 while_loops.adb:9:04: warning: no Global contract available for "Put_Line"
 while_loops.adb:14:21: info: implicit function contract not available for proof ("Sum_Of" is recursive)

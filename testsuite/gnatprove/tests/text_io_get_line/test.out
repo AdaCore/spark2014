@@ -147,7 +147,7 @@ textio.adb:181:40: info: initialization of "Buffer" proved
 textio.adb:181:40: info: range check proved (CVC4: 4 VC)
 textio.adb:181:53: info: initialization of "Last" proved
 textio.adb:183:28: medium: assertion might fail, cannot prove R'First = S'first
-textio.adb:184:28: medium: assertion might fail, cannot prove R'Last = S'Last + Last
+textio.adb:184:28: medium: assertion might fail, cannot prove R'Last = S'Last + Last [possible explanation: call at line 178 should mention Last (for argument Last) in a postcondition]
 textio.adb:184:46: info: initialization of "Last" proved
 textio.adb:186:27: info: overflow check proved (CVC4: 1 VC)
 textio.adb:186:37: info: overflow check proved (CVC4: 1 VC)

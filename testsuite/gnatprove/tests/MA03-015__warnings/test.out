@@ -1,4 +1,4 @@
-warn_suppr.adb:8:14: medium: overflow check might fail (e.g. when K = 0 and X = -2 and Y = 2)
+warn_suppr.adb:8:14: medium: overflow check might fail (e.g. when K = 0 and X = -2 and Y = 2) [possible explanation: subprogram at line 3 should mention X and Y in a precondition]
 warn_suppr.adb:9:12: info: initialization of "Z" proved
 warn_suppr.adb:9:14: medium: overflow check might fail (e.g. when K = Integer'First and Z = -1073741822)
 warn_suppr.adb:9:16: info: initialization of "K" proved

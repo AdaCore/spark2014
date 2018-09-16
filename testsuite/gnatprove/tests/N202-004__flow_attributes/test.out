@@ -1,7 +1,7 @@
 foo.adb:14:26: info: initialization of "B" proved
 foo.adb:18:13: info: range check proved (CVC4: 1 VC)
 foo.adb:22:26: info: initialization of "B" proved
-foo.adb:25:25: low: range check might fail
+foo.adb:25:25: low: range check might fail [possible explanation: subprogram at line 21 should mention A in a precondition]
 foo.adb:27:20: info: initialization of "X" proved
 foo.adb:32:18: info: range check proved (CVC4: 1 VC)
 foo.adb:36:07: info: initialization of "Tmp" proved

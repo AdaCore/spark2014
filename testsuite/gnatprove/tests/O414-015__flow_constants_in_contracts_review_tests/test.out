@@ -20,7 +20,7 @@ info_flow_tests.adb:55:34: info: initialization of "A" proved
 info_flow_tests.adb:55:37: info: initialization of "B" proved
 info_flow_tests.adb:60:26: info: range check proved (CVC4: 1 VC)
 info_flow_tests.adb:61:26: info: range check proved (CVC4: 1 VC)
-info_flow_tests.adb:72:54: medium: overflow check might fail
+info_flow_tests.adb:72:54: medium: overflow check might fail [possible explanation: subprogram at line 72 should mention X and A in a precondition]
 info_flow_tests.adb:79:22: info: postcondition proved (CVC4: 1 VC)
 info_flow_tests.adb:84:32: info: precondition proved (CVC4: 1 VC)
 info_flow_tests.adb:86:32: info: precondition proved (CVC4: 1 VC)
@@ -36,7 +36,7 @@ info_flow_tests.adb:93:28: medium: overflow check might fail
 info_flow_tests.adb:93:33: medium: overflow check might fail
 info_flow_tests.adb:93:38: medium: overflow check might fail
 info_flow_tests.adb:93:43: medium: overflow check might fail
-info_flow_tests.adb:103:54: medium: overflow check might fail
+info_flow_tests.adb:103:54: medium: overflow check might fail [possible explanation: subprogram at line 103 should mention X and A in a precondition]
 info_flow_tests.adb:110:22: info: postcondition proved (CVC4: 1 VC)
 info_flow_tests.adb:115:32: info: precondition proved (CVC4: 1 VC)
 info_flow_tests.adb:117:32: info: precondition proved (CVC4: 1 VC)
@@ -77,5 +77,5 @@ info_flow_tests.adb:236:23: info: initialization of "C" proved
 info_flow_tests.adb:249:12: medium: constant without variable input "C3" cannot appear in Refined_State (SPARK RM 7.2.2(16))
 info_flow_tests.adb:257:28: medium: constant without variable input "C5" cannot appear in Initializes
 info_flow_tests.adb:257:34: medium: constant without variable input "C1" cannot appear in Initializes
-info_flow_tests.adb:265:14: medium: overflow check might fail
+info_flow_tests.adb:265:14: medium: overflow check might fail [possible explanation: subprogram at line 234 should mention A in a precondition]
 info_flow_tests.adb:266:17: medium: overflow check might fail

@@ -20,7 +20,7 @@ do_loops.adb:48:22: info: initialization of "D.F4" proved
 do_loops.adb:49:15: info: initialization of "D_outer.F3" proved
 do_loops.adb:49:15: info: initialization of "D_outer.F4" proved
 do_loops.adb:50:25: info: initialization of "D.F3" proved
-do_loops.adb:50:25: medium: assertion might fail, cannot prove D.F3 (I).F1 = D.F3'Loop_Entry (I).F1
+do_loops.adb:50:25: medium: assertion might fail, cannot prove D.F3 (I).F1 = D.F3'Loop_Entry (I).F1 [possible explanation: loop at line 43 should mention D in a loop invariant]
 do_loops.adb:50:39: info: initialization of "D.F3" proved
 do_loops.adb:51:25: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:51:25: info: initialization of "D.F3" proved
@@ -35,7 +35,7 @@ do_loops.adb:64:25: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:64:25: info: initialization of "D.F3" proved
 do_loops.adb:64:39: info: initialization of "D.F3" proved
 do_loops.adb:65:25: info: initialization of "D.F3" proved
-do_loops.adb:65:25: medium: assertion might fail, cannot prove D.F3 (I).F2 = D.F3'Loop_Entry (I).F2
+do_loops.adb:65:25: medium: assertion might fail, cannot prove D.F3 (I).F2 = D.F3'Loop_Entry (I).F2 [possible explanation: loop at line 55 should mention D in a loop invariant]
 do_loops.adb:65:39: info: initialization of "D.F3" proved
 do_loops.adb:72:25: info: initialization of "D.F3" proved
 do_loops.adb:75:22: info: assertion proved (CVC4: 1 VC)

@@ -1,11 +1,11 @@
 enums.adb:10:19: info: postcondition proved (CVC4: 2 VC)
-enums.adb:19:22: medium: postcondition might fail, cannot prove Enum_Equals_Broken_A'Result = (A = B) (e.g. when A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True)
+enums.adb:19:22: medium: postcondition might fail, cannot prove Enum_Equals_Broken_A'Result = (A = B) (e.g. when A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True) [possible explanation: subprogram at line 16 should mention A and B in a precondition]
 enums.adb:23:14: info: initialization of "Tmp" proved
-enums.adb:27:19: medium: postcondition might fail, cannot prove Enum_Equals_Broken_B'Result = (A = B) (e.g. when A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_B'Result = True)
+enums.adb:27:19: medium: postcondition might fail, cannot prove Enum_Equals_Broken_B'Result = (A = B) (e.g. when A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_B'Result = True) [possible explanation: subprogram at line 26 should mention B and A in a precondition]
 enums.adb:36:19: info: postcondition proved (CVC4: 2 VC)
 enums.adb:43:19: info: postcondition proved (CVC4: 2 VC)
 enums.adb:63:14: info: initialization of "R" proved
-enums.adb:67:19: medium: postcondition might fail, cannot prove Enum_LT_5_Broken_A'Result = (A < Elem_5) (e.g. when A = Elem_7 and Enum_LT_5_Broken_A'Result = True)
+enums.adb:67:19: medium: postcondition might fail, cannot prove Enum_LT_5_Broken_A'Result = (A < Elem_5) (e.g. when A = Elem_7 and Enum_LT_5_Broken_A'Result = True) [possible explanation: subprogram at line 66 should mention A in a precondition]
 enums.adb:85:14: info: initialization of "R" proved
 enums.adb:89:19: info: postcondition proved (CVC4: 2 VC)
 enums.adb:102:14: info: initialization of "R" proved
@@ -29,7 +29,7 @@ enums.adb:176:71: info: range check proved (CVC4: 1 VC)
 enums.adb:187:14: info: initialization of "R" proved
 enums.adb:191:19: info: postcondition proved (CVC4: 1 VC)
 enums.adb:191:50: info: range check proved (CVC4: 1 VC)
-enums.adb:194:29: medium: range check might fail (e.g. when A = Elem_8 and Succ_A'Result = Elem_0)
+enums.adb:194:29: medium: range check might fail (e.g. when A = Elem_8 and Succ_A'Result = Elem_0) [possible explanation: subprogram at line 190 should mention A in a precondition]
 enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken"
 enums.adb:206:14: info: initialization of "Tmp.F" proved
 counterexample expected for check at enums.adb:19

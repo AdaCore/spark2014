@@ -49,12 +49,17 @@ missing:
 In particular, |GNATprove| does not look into subprogram bodies, so all the
 necessary information for calls should be explicit in the subprogram
 contracts. |GNATprove| may emit a tentative explanation for the unprovable
-property when it suspects a missing postcondition or loop invariant to be the
-cause of the unprovability. This is the part in square brackets in the messages
-that follow::
+property when it suspects a missing precondition, postcondition or loop
+invariant to be the cause of the unprovability. The explanation part follows
+the usual message of the form::
 
-   file:line:col: severity: check might fail [possible explanation: loop at line xxx should mention Var in a loop invariant]
-   file:line:col: severity: check might fail [possible explanation: call at line xxx should mention Var in a postcondition]
+   file:line:col: severity: check might fail
+
+with a part in square brackets such as::
+
+   [possible explanation: subprogram at line xxx should mention Var in a precondition]
+   [possible explanation: loop at line xxx should mention Var in a loop invariant]
+   [possible explanation: call at line xxx should mention Var in a postcondition]
 
 A focused manual review of the code and assertions can
 efficiently diagnose many cases of missing annotations. Even when an
