@@ -156,13 +156,17 @@ package body Flow_Refinement is
    begin
       loop
          case Nkind (Context) is
-            --  For subunits go to their proper body
+            --  We only come to subunits from their proper bodies when queried
+            --  on where the body is located, which is really a query of where
+            --  the corresponding stub is located. To give this answer we
+            --  restart the query at where the stub is.
 
             when N_Subunit =>
                pragma Assert
-                 (Nkind (Proper_Body (Context)) in N_Proper_Body);
+                 (Prev_Context = Proper_Body (Context));
 
-               Context := Corresponding_Stub (Context);
+               Prev_Context := Empty;
+               Context      := Corresponding_Stub (Context);
 
                pragma Assert (Nkind (Context) in N_Body_Stub);
 

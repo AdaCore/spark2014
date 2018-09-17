@@ -987,6 +987,11 @@ package body Flow_Utility is
       if Trimming_Required then
          --  Use the Refined_Global to trim the down-projected Depends
 
+         pragma Assert
+           (Present (Find_Contract (Subprogram, Pragma_Depends))
+              and then
+            No (Find_Contract (Subprogram, Pragma_Refined_Depends)));
+
          --  Collect all global Proof_Ins, Outputs and Inputs
          Get_Globals (Subprogram          => Subprogram,
                       Scope               => Scope,
