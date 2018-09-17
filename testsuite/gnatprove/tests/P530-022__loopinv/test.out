@@ -66,7 +66,7 @@ x86.adb:693:36: info: loop invariant initialization proved (CVC4: 1 VC)
 x86.adb:695:41: medium: loop invariant might fail after first iteration, cannot prove HasMem64(Memory, RDI_Start+(J*8), RAX)
 x86.adb:703:17: info: postcondition proved (CVC4: 1 VC)
 x86.adb:716:31: medium: assertion might fail, cannot prove ReadMem64(RDI'Loop_Entry+(I*8)) = RAX
-x86.adb:724:30: medium: assertion might fail, cannot prove HasMem64(Mem, RDI_Start+(I*8), RAX)
+x86.adb:724:30: medium: assertion might fail, cannot prove HasMem64(Mem, RDI_Start+(I*8), RAX) [possible explanation: loop invariant at line 728 should mention Mem]
 x86.adb:724:39: info: initialization of "Mem" proved
 x86.adb:725:10: info: initialization of "Mem" proved
 x86.adb:725:10: info: precondition proved (CVC4: 11 VC; altergo: 1 VC)
