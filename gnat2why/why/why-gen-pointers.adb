@@ -184,7 +184,7 @@ package body Why.Gen.Pointers is
       PostDefault : constant W_Pred_Id := Compute_Default_Init
         (Expr             => +Result_Value,
          Ty               => Des_Ty,
-         Include_Subtypes => True);
+         Include_Subtypes => False);
 
       Uninitialized_Post : constant W_Pred_Id :=
         (if Can_Be_Default_Initialized (Des_Ty)
