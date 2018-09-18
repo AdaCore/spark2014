@@ -416,6 +416,7 @@ package body Flow_Utility is
          when Direct_Mapping =>
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
             begin
                --  Expand abstract states as much as possible while respecting
                --  the SPARK_Mode barrier.

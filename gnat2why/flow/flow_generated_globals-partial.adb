@@ -424,7 +424,7 @@ package body Flow_Generated_Globals.Partial is
 
                --  We want to store objects from the LHSs of explicit
                --  Initializes contracts in the ALI file to know that are
-               --  claimed to be initializes even if they are only known by
+               --  claimed to be initialized even if they are only known by
                --  Entity_Name.
 
                for Clause in Parse_Initializes (E).Iterate loop

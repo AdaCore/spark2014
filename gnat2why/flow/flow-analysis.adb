@@ -43,6 +43,7 @@ with VC_Kinds;                    use VC_Kinds;
 
 with Flow.Analysis.Antialiasing;
 with Flow.Analysis.Sanity;
+with Flow.Slice;                     use Flow.Slice;
 with Flow_Debug;                     use Flow_Debug;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Error_Messages;            use Flow_Error_Messages;
@@ -1861,9 +1862,8 @@ package body Flow.Analysis is
       -- Is_Any_Final_Use --
       ----------------------
 
-      function Is_Any_Final_Use
-        (V : Flow_Graphs.Vertex_Id)
-         return Boolean
+      function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id)
+                                 return Boolean
       is
       begin
          return FA.PDG.Get_Key (V).Variant = Final_Value;
@@ -2002,25 +2002,18 @@ package body Flow.Analysis is
 
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            use Attribute_Maps;
-
-            N         : Node_Id;
-            Key       : Flow_Id renames FA.PDG.Get_Key (V);
-            Atr       : V_Attributes renames FA.Atr (V);
-            Mask      : Vertex_Sets.Set;
-            Tag       : constant Flow_Tag_Kind := Ineffective;
+            Key : Flow_Id renames FA.PDG.Get_Key (V);
+            Atr : V_Attributes renames FA.Atr (V);
 
          begin
             if Atr.Is_Program_Node
               or Atr.Is_Parameter
               or Atr.Is_Global_Parameter
             then
+
                --  A vertex is ineffective if there is no path in the PDG to
                --  *any* final use vertex that is also an export.
-               --
-               --  If we analyse a package, we suppress this message if we
-               --  don't have an initializes clause *and* the given vertex has
-               --  an effect on any final use (export or otherwise).
+
                if
                  --  Basic check here
                  not FA.PDG.Non_Trivial_Path_Exists
@@ -2032,7 +2025,9 @@ package body Flow.Analysis is
                  --  Suppression for package initializations
                  not Atr.Is_Package_Initialization and then
 
-                 --  Suppression for packages without initializes
+                 --  If we analyse a package, we suppress this message if we
+                 --  don't have an initializes clause *and* the given vertex
+                 --  has an effect on any final use (export or otherwise).
                  (if FA.Kind in Kind_Package | Kind_Package_Body
                     and then No (FA.Initializes_N)
                   then
@@ -2062,119 +2057,118 @@ package body Flow.Analysis is
 
                  --  Suppression for ghost entities
                  not Is_Ghost_Entity (FA.Spec_Entity)
+
                then
-                  Mask := Find_Masking_Code (V);
-                  N    := Error_Location (FA.PDG, FA.Atr, V);
+                  declare
+                     Mask : constant Vertex_Sets.Set := Find_Masking_Code (V);
+                     N    : constant Node_Id := Error_Location (FA.PDG,
+                                                                FA.Atr,
+                                                                V);
 
-                  if Atr.Is_Parameter or Atr.Is_Global_Parameter then
-                     --  Suppress error messages for:
-                     --  * IN parameters
-                     --  * IN views of globals
-                     --  * discriminants and bounds of parameters
-                     if (Atr.Is_Parameter
-                         and then Key.Variant = In_View)
-                       or else
-                        (Atr.Is_Global_Parameter
-                         and then Atr.Parameter_Formal.Variant = In_View)
-                       or else
-                         Atr.Is_Discr_Or_Bounds_Parameter
-                       or else
-                         Is_Bound (Key)
-                     then
-                        null;
+                  begin
+                     if Atr.Is_Parameter or Atr.Is_Global_Parameter then
 
-                     else
-                        declare
-                           Target : constant Flow_Id :=
-                             (if Atr.Is_Parameter
-                              then Direct_Mapping_Id
-                                     (Skip_Any_Conversions
-                                        (Get_Direct_Mapping_Id
-                                           (Atr.Parameter_Actual)))
-                              else Atr.Parameter_Formal);
+                        --  Suppress error messages for:
+                        --  * IN parameters
+                        --  * IN views of globals
+                        --  * discriminants and bounds of parameters
 
-                           Printable_Target : constant Boolean :=
-                             Is_Easily_Printable (Target);
-
-                        begin
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Path     => Mask,
-                              Msg      => (if Printable_Target
-                                           then "unused assignment to &"
-                                           else "unused assignment"),
-                              N        => Error_Location (FA.PDG,
-                                                          FA.Atr,
-                                                          V),
-                              F1       => (if Printable_Target
-                                           then Target
-                                           else Null_Flow_Id),
-                              Tag      => Tag,
-                              Severity => Warning_Kind,
-                              Vertex   => V);
-                        end;
-                     end if;
-
-                  elsif Nkind (N) = N_Assignment_Statement then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Path     => Mask,
-                        Msg      => "unused assignment",
-                        N        => Error_Location (FA.PDG, FA.Atr, V),
-                        Tag      => Tag,
-                        Severity => Warning_Kind,
-                        Vertex   => V);
-
-                  elsif Nkind (N) = N_Object_Declaration then
-                     if not Constant_Present (N) then
-
-                        --  This warning is ignored for local constants
-
-                        if FA.Kind in Kind_Package | Kind_Package_Body
-                          and then
-                            Scope (Defining_Identifier (N)) = FA.Spec_Entity
-                          and then
-                            No (Find_In_Initializes (Defining_Identifier (N)))
+                        if (Atr.Is_Parameter
+                            and then Key.Variant = In_View)
+                          or else
+                            (Atr.Is_Global_Parameter
+                             and then Atr.Parameter_Formal.Variant = In_View)
+                          or else
+                            Atr.Is_Discr_Or_Bounds_Parameter
+                          or else
+                            Is_Bound (Key)
                         then
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Path     => Mask,
-                              Msg      => "initialization of & is not " &
-                                          "mentioned in Initializes contract",
-                              N        => FA.Initializes_N,
-                              F1       => Direct_Mapping_Id
-                                            (Defining_Entity (N)),
-                              Tag      => Tag,
-                              Severity => Warning_Kind,
-                              Vertex   => V);
+                           null;
+
                         else
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Path     => Mask,
-                              Msg      => "initialization of & has no effect",
-                              N        => Error_Location (FA.PDG,
-                                                          FA.Atr,
-                                                          V),
-                              F1       => Direct_Mapping_Id
-                                            (Defining_Entity (N)),
-                              Tag      => Tag,
-                              Severity => Warning_Kind,
-                              Vertex   => V);
+                           declare
+                              Target : constant Flow_Id :=
+                                (if Atr.Is_Parameter
+                                 then Direct_Mapping_Id
+                                   (Skip_Any_Conversions
+                                        (Get_Direct_Mapping_Id
+                                             (Atr.Parameter_Actual)))
+                                 else Atr.Parameter_Formal);
+
+                              Printable_Target : constant Boolean :=
+                                Is_Easily_Printable (Target);
+
+                           begin
+                              Error_Msg_Flow
+                                (FA       => FA,
+                                 Path     => Mask,
+                                 Msg      => (if Printable_Target
+                                              then "unused assignment to &"
+                                              else "unused assignment"),
+                                 N        => N,
+                                 F1       => (if Printable_Target
+                                              then Target
+                                              else Null_Flow_Id),
+                                 Tag      => Ineffective,
+                                 Severity => Warning_Kind,
+                                 Vertex   => V);
+                           end;
                         end if;
 
+                     elsif Nkind (N) = N_Assignment_Statement then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Path     => Mask,
+                           Msg      => "unused assignment",
+                           N        => N,
+                           Tag      => Ineffective,
+                           Severity => Warning_Kind,
+                           Vertex   => V);
+
+                     elsif Nkind (N) = N_Object_Declaration then
+                        if not Constant_Present (N) then
+
+                           --  This warning is ignored for local constants
+
+                           if FA.Kind in Kind_Package | Kind_Package_Body
+                             and then
+                               Scope (Defining_Identifier (N)) = FA.Spec_Entity
+                             and then
+                                 No (Find_In_Initializes
+                                       (Defining_Identifier (N)))
+                           then
+
+                              --  This is checked by Check_Initializes_Contract
+
+                              null;
+
+                           else
+                              Error_Msg_Flow
+                                (FA       => FA,
+                                 Path     => Mask,
+                                 Msg      => "initialization of & has no " &
+                                             "effect",
+                                 N        => N,
+                                 F1       => Direct_Mapping_Id
+                                               (Defining_Entity (N)),
+                                 Tag      => Ineffective,
+                                 Severity => Warning_Kind,
+                                 Vertex   => V);
+                           end if;
+
+                        end if;
+
+                     else
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Path     => Mask,
+                           Msg      => "statement has no effect",
+                           Severity => Warning_Kind,
+                           N        => N,
+                           Tag      => Ineffective,
+                           Vertex   => V);
                      end if;
-
-                  else
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Path     => Mask,
-                        Msg      => "statement has no effect",
-                        Severity => Warning_Kind,
-                        N        => Error_Location (FA.PDG, FA.Atr, V),
-                        Tag      => Tag,
-                        Vertex   => V);
-
-                  end if;
+                  end;
                end if;
             end if;
          end;
@@ -3999,19 +3993,83 @@ package body Flow.Analysis is
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
       DM : constant Dependency_Maps.Map := Parse_Initializes (FA.Spec_Entity);
+
+      function Is_Written (Comp : Flow_Id) return Boolean;
+      --  Returns True iff Comp is definitely written, according to the PDG
+
+      function Find_RHS (LHS : Flow_Id) return Flow_Id_Sets.Set;
+      --  Returns what the LHS depends on
+
+      ----------------
+      -- Is_Written --
+      ----------------
+
+      function Is_Written (Comp : Flow_Id) return Boolean is
+      begin
+         --  If we get an abstract state here, we are either in a nested
+         --  package or in a private child without a body yet. We consider the
+         --  abstract state to be written only if it is mentioned in the
+         --  (generated) Initializes contract of the enclosing package.
+         --
+         --  ??? We shouldn't need this code and the initialization status for
+         --  such abstract state should be directly looked in the PDG. This
+         --  means that we should set the Is_Export flag for those abstract
+         --  states that are initialized.
+
+         if Is_Abstract_State (Comp) then
+            declare
+               AS : constant Entity_Id := Get_Direct_Mapping_Id (Comp);
+               Enclosing_Pkg : constant Entity_Id := Scope (AS);
+
+            begin
+               return Enclosing_Pkg /= FA.Spec_Entity
+                 and then Parse_Initializes (Enclosing_Pkg).Contains (Comp);
+            end;
+         end if;
+
+         declare
+            Comp_Initial : constant Flow_Graphs.Vertex_Id :=
+              FA.PDG.Get_Vertex (Change_Variant (Comp, Initial_Value));
+
+            Comp_Final   : constant Flow_Graphs.Vertex_Id :=
+              FA.PDG.Get_Vertex (Change_Variant (Comp, Final_Value));
+            --  'Initial and 'Final vertices for Comp, respectively
+
+         begin
+            --  It either can be initialized by default
+
+            if FA.Atr (Comp_Initial).Is_Initialized then
+               return True;
+
+            --  otherwise, its final value can't depend on its initial value
+
+            else
+               return not FA.PDG.Edge_Exists (Comp_Initial, Comp_Final);
+            end if;
+         end;
+      end Is_Written;
+
+      --------------
+      -- Find_RHS --
+      --------------
+
+      function Find_RHS (LHS : Flow_Id) return Flow_Id_Sets.Set is
+         LHS_Final : constant Flow_Graphs.Vertex_Id :=
+           FA.PDG.Get_Vertex (Change_Variant (LHS, Final_Value));
+      begin
+         return Dependency (FA, LHS_Final);
+      end Find_RHS;
+
+   --  Start of processing for Check_Initializes_Contract
+
    begin
-      --  We have nothing to do if DM is empty
-
-      if DM.Is_Empty then
-         return;
-      end if;
-
       --  For library-level packages check if everything in the RHS of an
       --  initialization_item is indeed initialized.
 
       if Is_Library_Level_Entity (FA.Analyzed_Entity) then
          declare
             Found_Uninitialized : Boolean := False;
+
          begin
             for C in DM.Iterate loop
                declare
@@ -4042,6 +4100,7 @@ package body Flow.Analysis is
             --  If a variable or state abstraction that has not been mentioned
             --  in an Initializes aspect was found in the RHS of an
             --  initialization_item then we don't do any further analysis.
+
             if Found_Uninitialized then
                return;
             end if;
@@ -4168,7 +4227,9 @@ package body Flow.Analysis is
                         Severity => Medium_Check_Kind);
 
                   else
+
                      --  The input is a constant without variable input
+
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      => "& cannot appear in Initializes",
@@ -4182,6 +4243,95 @@ package body Flow.Analysis is
                   end if;
                end if;
             end loop;
+         end;
+      end loop;
+
+      --  Detect objects missing from the LHS of the Initializes
+
+      --  ??? Maybe we could avoid calling GG_Get_Local_Variables and retrieve
+      --  this information from the AST.
+
+      for Var of GG_Get_Local_Variables (FA.Spec_Entity) loop
+         declare
+            LHS            : constant Flow_Id := Direct_Mapping_Id (Var);
+            RHS            : Flow_Id_Sets.Set;
+            LHS_Components : Flow_Id_Sets.Set;
+
+         begin
+            if not DM.Contains (LHS) then
+               for Constituent of Down_Project (Var, FA.B_Scope) loop
+
+                  --  ??? It would be better if we wouldn't get things that are
+                  --  not in SPARK here but at the moment Doen_Project does
+                  --  returns them. This need to be fixed in Down_Project.
+
+                  if Is_Abstract_State (Constituent)
+                    or else Entity_In_SPARK (Constituent)
+                  then
+                     for C of Flatten_Variable (Constituent, FA.B_Scope) loop
+                        LHS_Components.Insert (C);
+                     end loop;
+                  end if;
+
+               end loop;
+
+               if (for all Comp of LHS_Components => Is_Written (Comp)) then
+
+                  --  Check if the LHS depends on some inputs that will have to
+                  --  be mentioned in the RHS of the clause.
+
+                  for LHS of LHS_Components loop
+                     RHS.Union (Find_RHS (LHS));
+                  end loop;
+
+                  --  LHS does not depend on any input
+
+                  if RHS.Is_Empty then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "initialization of & must be mentioned " &
+                                    "in the Initializes contract of &",
+                        N        => Var,
+                        F1       => LHS,
+                        F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                        SRM_Ref  => "7.1.5(9)",
+                        Tag      => Initializes_Wrong,
+                        Severity => Low_Check_Kind);
+
+                  --  LHS does depends on some inputs and we need to list them
+                  --  in the contract.
+
+                  else
+                     for Input of RHS loop
+                        declare
+                           use Flow_Id_Sets;
+
+                           Outputs : constant Flow_Id_Sets.Set := To_Set (LHS);
+
+                           Path : constant Vertex_Sets.Set :=
+                             Dependency_Path
+                               (FA      => FA,
+                                Input   => Change_Variant (Input, Normal_Use),
+                                Outputs => Outputs);
+
+                        begin
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Path     => Path,
+                              Msg      => "initialization of & through & " &
+                                          "must be listed in the " &
+                                          "Initializes contract",
+                              N        => Var,
+                              F1       => LHS,
+                              F2       => Input,
+                              SRM_Ref  => "7.1.5(9)",
+                              Tag      => Initializes_Wrong,
+                              Severity => Low_Check_Kind);
+                        end;
+                     end loop;
+                  end if;
+               end if;
+            end if;
          end;
       end loop;
    end Check_Initializes_Contract;

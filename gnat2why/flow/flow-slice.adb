@@ -213,19 +213,25 @@ package body Flow.Slice is
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             F_Initial : Flow_Id renames FA.PDG.Get_Key (V_Initial);
-            Attr : V_Attributes renames FA.Atr (V_Initial);
+            Atr       : V_Attributes renames FA.Atr (V_Initial);
 
          begin
             if F_Initial.Variant = Initial_Value
-              and then Attr.Is_Import
+              and then Atr.Is_Import
               and then Is_Variable (F_Initial)
               and then not Synthetic (F_Initial)
             then
                In_Vertices.Insert (V_Initial);
                Unused_Inputs.Include (Flow_Equivalent (F_Initial));
 
+               --  ??? Maybe we don't need to special case discriminants and
+               --  bounds and subtracts those separately from the other unused
+               --  inputs. This could be refactored. Look at
+               --  Internal_Dependency as well as that could deal with those
+               --  cases.
+
                if (Is_Discriminant (F_Initial) or else Is_Bound (F_Initial))
-                 and then Attr.Mode = Mode_Out
+                 and then Atr.Mode = Mode_Out
                then
                   --  See above about suppressing "null => foo" dependency
                   --  error messages for out parameters and globals.
