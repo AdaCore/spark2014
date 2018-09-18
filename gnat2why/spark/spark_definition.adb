@@ -2038,6 +2038,11 @@ package body SPARK_Definition is
                  and then not Is_Full_View (Full_View (E)) -- ??? why needed
                then
                   Set_Partial_View (Full_View (E), E);
+                  if Ekind (Full_View (E)) in E_Access_Type
+                                            | E_Access_Subtype
+                  then
+                     Mark_Violation ("private access type", N);
+                  end if;
                end if;
 
                if In_SPARK (E) and then
