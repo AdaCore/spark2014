@@ -26,16 +26,10 @@
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util.Types;     use SPARK_Util.Types;
-with Gnat2Why.Util;        use Gnat2Why.Util;
 with Types;                use Types;
 with Uintp;                use Uintp;
 
 package Gnat2Why.CE_Utils is
-
-   function Count_Why_Visible_Regular_Fields (E : Entity_Id) return Natural
-     with Pre => Is_Record_Type_In_Why (E);
-   --  Same as Count_Why_Regular_Fields but only counts fields that are
-   --  visible according to Component_Is_Visible_In_Type.
 
    function Is_Visible_In_Type (Rec  : Entity_Id;
                                 Comp : Entity_Id)

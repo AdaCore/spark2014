@@ -228,6 +228,22 @@ package body Gnat2Why.Counter_Examples is
       Quant_Var : Entity_Id) return Unbounded_String;
    --  Refine CNT_Value for "for of" quantification iterators
 
+   function Refine_Record_Components
+     (Ada_Type           : Entity_Id;
+      Process_Components : access
+        procedure (Process : access
+                       procedure (Comp     : Entity_Id;
+                                  Comp_Val : Unbounded_String)))
+      return Unbounded_String;
+   --  Counterexample for records can be either supplied directly or field by
+   --  field. This function can be used in both cases to refine the record
+   --  value.
+   --  @param Ada_Type type of the Ada record
+   --  @param procedure which traverse the counterexample value for the record.
+   --      It can be instanciated to traverse a field map or a record
+   --      counterexample value.
+   --  @result the corresponding record value.
+
    ------------
    -- Refine --
    ------------
@@ -434,78 +450,51 @@ package body Gnat2Why.Counter_Examples is
 
                --  AST_Type is of record type
                declare
-                  Mfields       : constant Cntexmp_Value_Array.Map :=
+                  Mfields      : constant Cntexmp_Value_Array.Map :=
                     Cnt_Value.Fi;
-                  S             : Unbounded_String :=
-                    To_Unbounded_String ("(");
-
-                  AST_Basetype  : constant Entity_Id :=
+                  AST_Basetype : constant Entity_Id :=
                     Retysp (AST_Type);
-                  Check_Count   : Integer := 0;
-                  Fields        : constant Integer :=
-                    Count_Why_Visible_Regular_Fields (AST_Basetype) +
-                    Count_Discriminants (AST_Basetype);
 
+                  procedure Process_Mfields
+                    (Process : access
+                       procedure (Comp     : Entity_Id;
+                                  Comp_Val : Unbounded_String));
+                  --  Go through all elements of Mfields
+
+                  ---------------------
+                  -- Process_Mfields --
+                  ---------------------
+
+                  procedure Process_Mfields
+                    (Process : access
+                       procedure (Comp     : Entity_Id;
+                                  Comp_Val : Unbounded_String))
+                  is
+                  begin
+                     for Cursor in Mfields.Iterate loop
+                        declare
+                           Mfield       : constant Cntexmp_Value_Ptr :=
+                             Cntexmp_Value_Array.Element (Cursor);
+                           Key_Field    : constant String :=
+                             Cntexmp_Value_Array.Key (Cursor);
+                           Field_Entity : constant Entity_Id :=
+                             Get_Entity_Id (True, Key_Field);
+                        begin
+                           if Present (Field_Entity) then
+                              Process
+                                (Comp      => Field_Entity,
+                                 Comp_Val  => Replace_Question_Mark
+                                   (Refine_Aux
+                                        (Mfield,
+                                         Retysp (Etype (Field_Entity)))));
+                           end if;
+                        end;
+                     end loop;
+                  end Process_Mfields;
                begin
-
-                  Fields_Loop :
-                  for Cursor in Mfields.Iterate loop
-                     declare
-                        Mfield       : constant Cntexmp_Value_Ptr :=
-                          Cntexmp_Value_Array.Element (Cursor);
-                        Key_Field    : constant String :=
-                          Cntexmp_Value_Array.Key (Cursor);
-                        Field_Entity : constant Entity_Id :=
-                          Get_Entity_Id (True, Key_Field);
-                     begin
-                        --  There are two cases:
-                        --  - discriminant -> we always include the field
-                        --    corresponding to discriminants because they are
-                        --    inherited by subtyping.
-                        --    The current design enforce that the discriminant
-                        --    is part of the AST_Basetype.
-                        --  - components -> some components can be hidden by
-                        --    subtyping. But, in Why3, any ancestor type
-                        --    with the same field can be used. So,
-                        --    counterexamples can have more components than
-                        --    are actually defined in the AST_basetype.
-
-                        if Present (Field_Entity) and then
-                          (Ekind (Field_Entity) = E_Discriminant
-                           or else
-                           Is_Visible_In_Type (AST_Basetype,
-                                               Field_Entity))
-                        then
-                           declare
-                              Field_Type : constant Entity_Id :=
-                                Retysp (Etype (Field_Entity));
-                              Field_Name : constant String :=
-                                Source_Name (Field_Entity);
-                           begin
-                              if Check_Count > 0 then
-                                 Append (S, ", ");
-                              end if;
-
-                              Check_Count := Check_Count + 1;
-
-                              Append (S, Field_Name & " => " &
-                                        Replace_Question_Mark
-                                        (Refine_Aux (Mfield, Field_Type)));
-                           end;
-                        end if;
-                     end;
-
-                  end loop Fields_Loop;
-
-                  Append (S,
-                          (if Check_Count /= Fields then
-                             (if Check_Count > 0 then
-                                 ", others => ?)"
-                              else
-                                 "others => ?)")
-                           else ")"));
-
-                  return S;
+                  return Refine_Record_Components
+                    (Ada_Type           => AST_Basetype,
+                     Process_Components => Process_Mfields'Access);
                end;
 
             --  This case only happens when the why3 counterexamples are
@@ -797,6 +786,214 @@ package body Gnat2Why.Counter_Examples is
 
    end Refine_Attribute;
 
+   ------------------------------
+   -- Refine_Record_Components --
+   ------------------------------
+
+   function Refine_Record_Components
+     (Ada_Type           : Entity_Id;
+      Process_Components : access
+        procedure (Process : access
+                       procedure (Comp     : Entity_Id;
+                                  Comp_Val : Unbounded_String)))
+      return Unbounded_String
+   is
+      Visibility_Map           : Component_Visibility_Maps.Map :=
+        Get_Component_Visibility_Map (Ada_Type);
+
+      Fields_Discrs_With_Value : Natural := 0;
+      --  Not using the base_type here seems ok since
+      --  counterexamples should be projected in this part of
+      --  the code
+
+      Ordered_Values           : Ordered_Sloc_Map.Map;
+      --  Ordered map containing the values for the components of
+      --  the record. They are ordered in as in the source file,
+      --  inherited components coming first.
+
+      procedure Get_Value_Of_Component
+        (Comp       : Node_Id;
+         Val        : Unbounded_String;
+         Visibility : Component_Visibility);
+      --  Insert value of record component or dicriminant in
+      --  Ordered_Values.
+
+      procedure Process_Component (Comp     : Entity_Id;
+                                   Comp_Val : Unbounded_String);
+      --  Go over counterexample values for record fields to fill
+      --  the Ordered_Values map. Along the way, remove seen
+      --  components from the Visibility_Map so that we can later
+      --  check for unseen components.
+
+      ----------------------------
+      -- Get_Value_Of_Component --
+      ----------------------------
+
+      procedure Get_Value_Of_Component
+        (Comp       : Node_Id;
+         Val        : Unbounded_String;
+         Visibility : Component_Visibility)
+      is
+         Comp_Name : constant String :=
+           Source_Name (Comp);
+         Orig_Comp : constant Entity_Id :=
+           Search_Component_In_Type
+             (Original_Declaration (Comp), Comp);
+         Expl      : constant String :=
+           (if Ekind (Comp) /= E_Discriminant
+            and then Visibility = Duplicated
+            then
+               " <hidden" &
+            (if Sloc (Orig_Comp) > 0 then
+                  ", defined at "
+               & Build_Location_String
+                 (Sloc (Orig_Comp))
+               else "") & ">"
+            else "");
+         --  Explanation. It is empty except for duplicated
+         --  components where it points to the declaration of the
+         --  component.
+
+      begin
+         Ordered_Values.Insert
+           (Get_Loc_Info (Comp),
+            Comp_Name & " => " & Val & Expl);
+         Fields_Discrs_With_Value :=
+           Fields_Discrs_With_Value + 1;
+      end Get_Value_Of_Component;
+
+      -----------------------
+      -- Process_Component --
+      -----------------------
+
+      procedure Process_Component (Comp     : Entity_Id;
+                                   Comp_Val : Unbounded_String) is
+         Visibility : Component_Visibility;
+      begin
+         if Comp_Val /= Dont_Display then
+            if not Is_Type (Comp) then
+               declare
+                  Orig_Comp : constant Entity_Id :=
+                    Search_Component_In_Type
+                      (Ada_Type, Comp);
+               begin
+                  Visibility := Visibility_Map (Orig_Comp);
+                  Visibility_Map.Exclude (Orig_Comp);
+               end;
+
+               --  Type component are not displayed as they stand
+               --  for invisible components.
+
+            else
+               Visibility := Removed;
+            end if;
+
+            if Visibility /= Removed then
+               pragma Assert (Comp_Val /= "?");
+               Get_Value_Of_Component
+                 (Comp, Comp_Val, Visibility);
+            end if;
+         end if;
+      end Process_Component;
+
+   begin
+      --  Add discriminants to Visibility_Map. Discriminants are
+      --  considered to be always visible.
+
+      if Has_Discriminants (Ada_Type) then
+         declare
+            Discr : Entity_Id :=
+              First_Discriminant (Ada_Type);
+         begin
+            while Present (Discr) loop
+               Visibility_Map.Insert
+                 (Root_Record_Component (Discr), Regular);
+               Next_Discriminant (Discr);
+            end loop;
+         end;
+      end if;
+
+      Process_Components (Process_Component'Access);
+
+      --  If there are no fields and discriminants of the processed
+      --  value with values that can be displayed, do not display
+      --  the value (this can happen if there were collected
+      --  fields or discrinants, but their values should not
+      --  be displayed).
+
+      if Fields_Discrs_With_Value = 0 then
+         return Dont_Display;
+      end if;
+
+      --  Go over the visibility map to see if they are missing
+      --  components.
+
+      declare
+         Is_Before    : Boolean := False;
+         Need_Others  : Boolean := False;
+         --  True if there are more than one missing value or if
+         --  the record contains invisble fields (component of type
+         --  kind).
+
+         First_Unseen : Entity_Id := Empty;
+         --  First component for which we are missing a value
+
+         Value        : Unbounded_String :=
+           To_Unbounded_String ("(");
+      begin
+         for C in Visibility_Map.Iterate loop
+            declare
+               Visibility : Component_Visibility renames
+                 Component_Visibility_Maps.Element (C);
+               Comp       : Entity_Id renames
+                 Component_Visibility_Maps.Key (C);
+            begin
+               if Visibility /= Removed then
+                  if Is_Type (Comp) or else Present (First_Unseen)
+                  then
+                     Need_Others := True;
+                     exit;
+                  else
+                     First_Unseen := Comp;
+                  end if;
+               end if;
+            end;
+         end loop;
+
+         --  If there is only one component which does not have a
+         --  value, we output directly a ? for its value instead
+         --  of introducing a others case.
+
+         if not Need_Others and then Present (First_Unseen) then
+            Get_Value_Of_Component
+              (First_Unseen, To_Unbounded_String ("?"),
+               Visibility_Map.Element (First_Unseen));
+         end if;
+
+         --  Construct the counterexample value by appending the
+         --  components in the right order.
+
+         for V of Ordered_Values loop
+            Append (Value,
+                    (if Is_Before then ", " else "") & V);
+            Is_Before := True;
+         end loop;
+
+         --  If there are more than one fields that are not
+         --  mentioned in the counterexample, summarize them using
+         --  the field others.
+
+         if Need_Others then
+            Append (Value,
+                    (if Is_Before then ", " else "") &
+                      "others => ?");
+         end if;
+         Append (Value, ")");
+
+         return Value;
+      end;
+   end Refine_Record_Components;
+
    -----------------------
    -- Build_Pretty_Line --
    -----------------------
@@ -1030,7 +1227,6 @@ package body Gnat2Why.Counter_Examples is
               and then Refined_Value /= "()"
             then
                CNT_Element.Val_Str := Refined_Value;
-               return CNT_Element.Val_Str;
             else
                --  No value were found for the variable so we need to recover
                --  the record field by field. We will go through all fields of
@@ -1038,203 +1234,43 @@ package body Gnat2Why.Counter_Examples is
                --  get them in the right order.
 
                declare
-                  Visibility_Map           : Component_Visibility_Maps.Map :=
-                    Get_Component_Visibility_Map (Element_Type);
-
-                  Fields_Discrs_With_Value : Natural := 0;
-                  --  Not using the base_type here seems ok since
-                  --  counterexamples should be projected in this part of
-                  --  the code
-
-                  Ordered_Values : Ordered_Sloc_Map.Map;
-                  --  Ordered map containing the values for the components of
-                  --  the record. They are ordered in as in the source file,
-                  --  inherited components coming first.
-
-                  procedure Get_Value_Of_Component
-                    (Comp       : Node_Id;
-                     Val        : Unbounded_String;
-                     Visibility : Component_Visibility);
-                  --  Insert value of record component or dicriminant in
-                  --  Ordered_Values.
+                  procedure Process_Element_Fields
+                    (Process : access
+                       procedure (Comp     : Entity_Id;
+                                  Comp_Val : Unbounded_String));
+                  --  Go through all fields of CNT_Element
 
                   ----------------------------
-                  -- Get_Value_Of_Component --
+                  -- Process_Element_Fields --
                   ----------------------------
 
-                  procedure Get_Value_Of_Component
-                    (Comp       : Node_Id;
-                     Val        : Unbounded_String;
-                     Visibility : Component_Visibility)
+                  procedure Process_Element_Fields
+                    (Process : access
+                       procedure (Comp     : Entity_Id;
+                                  Comp_Val : Unbounded_String))
                   is
-                     Comp_Name : constant String :=
-                       Source_Name (Comp);
-                     Orig_Comp : constant Entity_Id :=
-                       Search_Component_In_Type
-                         (Original_Declaration (Comp), Comp);
-                     Expl      : constant String :=
-                       (if Ekind (Comp) /= E_Discriminant
-                        and then Visibility = Duplicated
-                        then
-                           " <hidden" &
-                        (if Sloc (Orig_Comp) > 0 then
-                              ", defined at "
-                           & Build_Location_String
-                             (Sloc (Orig_Comp))
-                           else "") & ">"
-                        else "");
-                     --  Explanation. It is empty except for duplicated
-                     --  components where it points to the declaration of the
-                     --  component.
-
                   begin
-                     Ordered_Values.Insert
-                       (Get_Loc_Info (Comp),
-                        Comp_Name & " => " & Val & Expl);
-                     Fields_Discrs_With_Value :=
-                       Fields_Discrs_With_Value + 1;
-                  end Get_Value_Of_Component;
-
-               begin
-                  --  Add discriminants to Visibility_Map. Discriminants are
-                  --  considered to be always visible.
-
-                  if Has_Discriminants (Element_Type) then
-                     declare
-                        Discr : Entity_Id :=
-                          First_Discriminant (Element_Type);
-                     begin
-                        while Present (Discr) loop
-                           Visibility_Map.Insert
-                             (Root_Record_Component (Discr), Regular);
-                           Next_Discriminant (Discr);
-                        end loop;
-                     end;
-                  end if;
-
-                  --  Go over counterexample values for record fields to fill
-                  --  the Ordered_Values map. Along the way, remove seen
-                  --  components from the Visibility_Map so that we can later
-                  --  check for unseen components.
-
-                  for C in CNT_Element.Fields.Iterate loop
-                     declare
-                        Comp       : Entity_Id renames Key (C);
-                        Comp_Name  : constant String :=
-                          Source_Name (Comp);
-                        Comp_Val   : constant Unbounded_String :=
-                          Get_CNT_Element_Value
-                            (Element (C),
-                             Prefix & "." & Comp_Name);
-                        Visibility : Component_Visibility;
-
-                     begin
-                        if Comp_Val /= Dont_Display then
-                           if not Is_Type (Comp) then
-                              declare
-                                 Orig_Comp : constant Entity_Id :=
-                                   Search_Component_In_Type
-                                     (Element_Type, Comp);
-                              begin
-                                 Visibility := Visibility_Map (Orig_Comp);
-                                 Visibility_Map.Exclude (Orig_Comp);
-                              end;
-
-                           --  Type component are not displayed as they stand
-                           --  for invisible components.
-
-                           else
-                              Visibility := Removed;
-                           end if;
-
-                           if Visibility /= Removed then
-                              pragma Assert (Comp_Val /= "?");
-                              Get_Value_Of_Component
-                                (Comp, Comp_Val, Visibility);
-                           end if;
-                        end if;
-                     end;
-                  end loop;
-
-                  --  If there are no fields and discriminants of the processed
-                  --  value with values that can be displayed, do not display
-                  --  the value (this can happen if there were collected
-                  --  fields or discrinants, but their values should not
-                  --  be displayed).
-
-                  if Fields_Discrs_With_Value = 0 then
-                     return Dont_Display;
-                  end if;
-
-                  --  Go over the visibility map to see if they are missing
-                  --  components.
-
-                  declare
-                     Is_Before    : Boolean := False;
-                     Need_Others  : Boolean := False;
-                     --  True if there are more than one missing value or if
-                     --  the record contains invisble fields (component of type
-                     --  kind).
-
-                     First_Unseen : Entity_Id := Empty;
-                     --  First component for which we are missing a value
-
-                     Value        : Unbounded_String :=
-                       To_Unbounded_String ("(");
-                  begin
-                     for C in Visibility_Map.Iterate loop
+                     for C in CNT_Element.Fields.Iterate loop
                         declare
-                           Visibility : Component_Visibility renames
-                             Component_Visibility_Maps.Element (C);
-                           Comp       : Entity_Id renames
-                             Component_Visibility_Maps.Key (C);
+                           Comp       : Entity_Id renames Key (C);
+                           Comp_Name  : constant String :=
+                             Source_Name (Comp);
                         begin
-                           if Visibility /= Removed then
-                              if Is_Type (Comp) or else Present (First_Unseen)
-                              then
-                                 Need_Others := True;
-                                 exit;
-                              else
-                                 First_Unseen := Comp;
-                              end if;
-                           end if;
+                           Process
+                             (Comp      => Comp,
+                              Comp_Val  => Get_CNT_Element_Value
+                                (Element (C),
+                                 Prefix & "." & Comp_Name));
                         end;
                      end loop;
-
-                     --  If there is only one component which does not have a
-                     --  value, we output directly a ? for its value instead
-                     --  of introducing a others case.
-
-                     if not Need_Others and then Present (First_Unseen) then
-                        Get_Value_Of_Component
-                          (First_Unseen, To_Unbounded_String ("?"),
-                           Visibility_Map.Element (First_Unseen));
-                     end if;
-
-                     --  Construct the counterexample value by appending the
-                     --  components in the right order.
-
-                     for V of Ordered_Values loop
-                        Append (Value,
-                                (if Is_Before then ", " else "") & V);
-                        Is_Before := True;
-                     end loop;
-
-                     --  If there are more than one fields that are not
-                     --  mentioned in the counterexample, summarize them using
-                     --  the field others.
-
-                     if Need_Others then
-                        Append (Value,
-                                (if Is_Before then ", " else "") &
-                                  "others => ?");
-                     end if;
-                     Append (Value, ")");
-
-                     return Value;
-                  end;
+                  end Process_Element_Fields;
+               begin
+                  CNT_Element.Val_Str := Refine_Record_Components
+                    (Ada_Type           => Element_Type,
+                     Process_Components => Process_Element_Fields'Access);
                end;
             end if;
+            return CNT_Element.Val_Str;
          end;
       end Get_CNT_Element_Value;
 

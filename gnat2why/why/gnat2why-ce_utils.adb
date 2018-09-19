@@ -28,31 +28,6 @@ with SPARK_Util;      use SPARK_Util;
 
 package body Gnat2Why.CE_Utils is
 
-   --------------------------------------
-   -- Count_Why_Visible_Regular_Fields --
-   --------------------------------------
-
-   function Count_Why_Visible_Regular_Fields (E : Entity_Id) return Natural is
-      Count : Natural := 0;
-   begin
-      --  Add one field for tagged types to represent the unknown extension
-      --  components. The field for the tag itself is stored directly in the
-      --  Why3 record.
-
-      if Is_Tagged_Type (E) then
-         Count := Count + 1;
-      end if;
-
-      --  ??? Inefficient: the length could be computed once.
-      for Component of Get_Component_Set (E) loop
-         if Component_Is_Present_In_Type (E, Component) then
-            Count := Count + 1;
-         end if;
-      end loop;
-
-      return Count;
-   end Count_Why_Visible_Regular_Fields;
-
    -----------------------------
    -- Find_First_Static_Range --
    -----------------------------
