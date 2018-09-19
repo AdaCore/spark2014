@@ -5071,6 +5071,9 @@ package body Flow_Utility is
                To_Ext : Flow_Id_Sets.Set;
                F      : Flow_Id;
 
+               LHS_Pos : Flow_Id_Maps.Cursor;
+               Unused  : Boolean;
+
             begin
                if Extensions_Visible (E, Scope)
                  and then
@@ -5081,16 +5084,16 @@ package body Flow_Utility is
                   --  This is an implicit conversion to class wide, or we
                   --  for some other reason care specifically about the
                   --  extensions.
-                  RHS.Include (Direct_Mapping_Id (E,
-                                                  Facet => Extension_Part));
-                  --  RHS.Include (Direct_Mapping_Id (E,
-                  --                                  Facet => The_Tag));
+                  RHS.Insert (Direct_Mapping_Id (E,
+                                                 Facet => Extension_Part));
+                  --  RHS.Insert (Direct_Mapping_Id (E,
+                  --                                 Facet => The_Tag));
                end if;
 
                if Simplify then
 
                   for Input of RHS loop
-                     M.Include (Join (Map_Root, Input), Get_Vars_Wrapper (N));
+                     M.Insert (Join (Map_Root, Input), Get_Vars_Wrapper (N));
                   end loop;
 
                else
@@ -5099,21 +5102,21 @@ package body Flow_Utility is
                   for Input of RHS loop
                      F := Join (Map_Root, Input);
                      if LHS.Contains (F) then
-                        M.Include (F, Flow_Id_Sets.To_Set (Input));
+                        M.Insert (F, Flow_Id_Sets.To_Set (Input));
                      else
-                        To_Ext.Include (Input);
+                        To_Ext.Insert (Input);
                      end if;
                   end loop;
 
                   if not To_Ext.Is_Empty
                     and then Is_Tagged_Type (Map_Type)
                   then
-                     if not M.Contains (LHS_Ext) then
-                        M.Include (LHS_Ext, Flow_Id_Sets.Empty_Set);
-                     end if;
+                     --  Attempt to insert an empty set
+                     M.Insert (Key      => LHS_Ext,
+                               Position => LHS_Pos,
+                               Inserted => Unused);
 
-                     M (LHS_Ext).Union (To_Ext);
-
+                     M (LHS_Pos).Union (To_Ext);
                   end if;
                end if;
             end;
