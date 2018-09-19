@@ -1871,7 +1871,7 @@ package body Flow.Control_Flow_Graph is
       V            : Flow_Graphs.Vertex_Id;
       Ret_Object_L : constant List_Id := Return_Object_Declarations (N);
       Ret_Entity   : constant Node_Id := Return_Statement_Entity (N);
-      Ret_Object   : Node_Id;
+      Ret_Object   : constant Entity_Id := Get_Return_Object (N);
       Funcs        : Node_Sets.Set;
    begin
       --  We create a null vertex for the extended return statement
@@ -1884,16 +1884,6 @@ package body Flow.Control_Flow_Graph is
       CM.Insert (Union_Id (N),
                  Graph_Connections'(Standard_Entry => V,
                                     Standard_Exits => Empty_Set));
-
-      --  Go through Ret_Object_L list and locate Ret_Object
-      Ret_Object := First (Ret_Object_L);
-      while Nkind (Ret_Object) /= N_Object_Declaration
-        or else not Is_Return_Object (Defining_Identifier (Ret_Object))
-      loop
-         Next (Ret_Object);
-         pragma Assert (Present (Ret_Object));
-      end loop;
-      Ret_Object := Defining_Identifier (Ret_Object);
 
       --  Process the statements of Ret_Object_L
       Process_Statement_List (Ret_Object_L, FA, CM, Ctx);
