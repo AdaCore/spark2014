@@ -5051,28 +5051,28 @@ package body Flow_Utility is
                  Map_Root'Update (Facet => Extension_Part);
 
                RHS : Flow_Id_Sets.Set :=
-                 (if Is_Concurrent_Component_Or_Discr (Entity (N)) then
+                 (if Is_Concurrent_Component_Or_Discr (E) then
                     Flatten_Variable
                       (Add_Component
-                         (Direct_Mapping_Id (Sinfo.Scope (Entity (N))),
-                          Entity (N)),
+                         (Direct_Mapping_Id (Sinfo.Scope (E)),
+                          E),
                        Scope)
 
-                  elsif Is_Part_Of_Concurrent_Object (Entity (N)) then
+                  elsif Is_Part_Of_Concurrent_Object (E) then
                     Flatten_Variable
                       (Add_Component
                          (Direct_Mapping_Id
-                            (Etype (Encapsulating_State (Entity (N)))),
-                          Entity (N)),
+                            (Etype (Encapsulating_State (E))),
+                          E),
                        Scope)
 
-                  else Flatten_Variable (Entity (N), Scope));
+                  else Flatten_Variable (E, Scope));
 
                To_Ext : Flow_Id_Sets.Set;
                F      : Flow_Id;
 
             begin
-               if Extensions_Visible (Entity (N), Scope)
+               if Extensions_Visible (E, Scope)
                  and then
                    ((Is_Class_Wide_Type (Map_Type)
                      and then not Is_Class_Wide_Type (Etype (N)))
@@ -5081,9 +5081,9 @@ package body Flow_Utility is
                   --  This is an implicit conversion to class wide, or we
                   --  for some other reason care specifically about the
                   --  extensions.
-                  RHS.Include (Direct_Mapping_Id (Entity (N),
+                  RHS.Include (Direct_Mapping_Id (E,
                                                   Facet => Extension_Part));
-                  --  RHS.Include (Direct_Mapping_Id (Entity (N),
+                  --  RHS.Include (Direct_Mapping_Id (E,
                   --                                  Facet => The_Tag));
                end if;
 
