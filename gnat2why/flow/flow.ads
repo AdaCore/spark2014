@@ -109,7 +109,7 @@ package Flow is
    --  ??? This should be a variant record, but O325-005 and AI12-0047 make
    --      this difficult.
    type Flow_Global_Generation_Info is record
-      Globals : Node_Sets.Set;
+      Globals : Global_Set;
       --  Non-local variables and parameters other than those of the analyzed
       --  entity.
 
