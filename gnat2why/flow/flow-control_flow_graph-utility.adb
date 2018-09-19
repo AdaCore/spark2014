@@ -112,7 +112,6 @@ package body Flow.Control_Flow_Graph.Utility is
      (Var_Def         : Flow_Id_Sets.Set;
       Var_Use         : Flow_Id_Sets.Set;
       Object_Returned : Entity_Id;
-      Sub_Called      : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops           : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc           : Node_Or_Entity_Id := Empty)
      return V_Attributes
@@ -123,7 +122,6 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Defined         := Var_Def;
       A.Variables_Used            := Var_Use;
       A.Variables_Explicitly_Used := Var_Use;
-      A.Subprograms_Called        := Sub_Called;
       A.Loops                     := Loops;
       A.Error_Location            := E_Loc;
       A.Aux_Node                  := Object_Returned;

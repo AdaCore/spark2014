@@ -1872,7 +1872,7 @@ package body Flow.Control_Flow_Graph is
       Ret_Object_L : constant List_Id := Return_Object_Declarations (N);
       Ret_Entity   : constant Node_Id := Return_Statement_Entity (N);
       Ret_Object   : constant Entity_Id := Get_Return_Object (N);
-      Funcs        : Node_Sets.Set;
+
    begin
       --  We create a null vertex for the extended return statement
       Add_Vertex
@@ -1892,13 +1892,6 @@ package body Flow.Control_Flow_Graph is
       --  standard entry of its return_object_declarations.
       Linkup (FA, V, CM (Union_Id (Ret_Object_L)).Standard_Entry);
 
-      --  Create a vertex for the Return_Statement_Entity
-      Collect_Functions_And_Read_Locked_POs
-        (Ret_Object,
-         Functions_Called   => Funcs,
-         Tasking            => FA.Tasking,
-         Generating_Globals => FA.Generating_Globals);
-
       Add_Vertex
         (FA,
          Direct_Mapping_Id (Ret_Entity),
@@ -1908,8 +1901,6 @@ package body Flow.Control_Flow_Graph is
             Var_Use         => Flatten_Variable (Ret_Object,
                                                  FA.B_Scope),
             Object_Returned => Ret_Object,
-            Sub_Called      => Funcs,
-            --  ??? really? I don't think we can call a function here...
             Loops           => Ctx.Current_Loops,
             E_Loc           => Ret_Entity),
          V);
