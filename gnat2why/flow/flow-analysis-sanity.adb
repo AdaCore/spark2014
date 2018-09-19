@@ -1192,7 +1192,7 @@ package body Flow.Analysis.Sanity is
             when Magic_String =>
                return False;
 
-            when Direct_Mapping =>
+            when Direct_Mapping | Record_Field =>
                declare
                   --  If the subprogram is annotated with both Global and
                   --  Depends contract, it is enough to check one of the two
