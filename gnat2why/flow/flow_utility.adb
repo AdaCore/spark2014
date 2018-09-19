@@ -5036,13 +5036,24 @@ package body Flow_Utility is
             declare
                E : constant Entity_Id := Entity (N);
 
-               Simplify : constant Boolean :=
+               Is_Pure_Constant : constant Boolean :=
+                 Ekind (E) = E_Constant
+                 and then not Has_Variable_Input (E);
+               --  If we are assigning a pure constant, we don't really want to
+               --  see it (just like if we assign integer/string/... literals
+               --  then we don't want to see them in flow). However, we can't
+               --  just pretend that the RHS is an empty map; it is a map
+               --  (i.e. a certain structure) with empty elements, e.g. the
+               --  private extension part.
+
+               Simplify : Boolean :=
                  Ekind (E) = E_Constant
                  and then not Local_Constants.Contains (E);
                --  We're assigning a local constant; and currently we just
                --  use Get_Variables to "look through" it. We simply assign all
                --  fields of the LHS to the RHS. Not as precise as it could be,
                --  but it works for now...
+               --  ??? this is effectively disabled, will be deconstructed soon
 
                LHS : constant Flow_Id_Sets.Set :=
                  Flatten_Variable (Map_Root, Scope);
@@ -5090,6 +5101,8 @@ package body Flow_Utility is
                   --                                 Facet => The_Tag));
                end if;
 
+               Simplify := False;
+
                if Simplify then
 
                   for Input of RHS loop
@@ -5102,7 +5115,9 @@ package body Flow_Utility is
                   for Input of RHS loop
                      F := Join (Map_Root, Input);
                      if LHS.Contains (F) then
-                        M.Insert (F, Flow_Id_Sets.To_Set (Input));
+                        M.Insert (F, (if Is_Pure_Constant
+                                      then Flow_Id_Sets.Empty_Set
+                                      else Flow_Id_Sets.To_Set (Input)));
                      else
                         To_Ext.Insert (Input);
                      end if;
@@ -5116,7 +5131,9 @@ package body Flow_Utility is
                                Position => LHS_Pos,
                                Inserted => Unused);
 
-                     M (LHS_Pos).Union (To_Ext);
+                     if not Is_Pure_Constant then
+                        M (LHS_Pos).Union (To_Ext);
+                     end if;
                   end if;
                end if;
             end;
