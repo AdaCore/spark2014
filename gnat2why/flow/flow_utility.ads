@@ -257,7 +257,7 @@ is
      (N                  : Node_Id;
       Include_Predicates : Boolean)
       return Node_Sets.Set with
-     Pre => Present (N);
+     Pre => Nkind (N) in N_Subexpr;
    --  Collect functions called in an expression N. If Include_Predicates is
    --  True, then also include implicit calls to predicate functions.
 
