@@ -2527,9 +2527,8 @@ package body Flow_Utility is
                      return Recurse (Expr);
                   end;
 
-               elsif Has_Variable_Input (E) then
+               else
 
-                  --  If this constant has variable input then add it.
                   --  Note that for constants of a constrained record or
                   --  concurrent type we want to detect their discriminant
                   --  constraints so we add them as well.
