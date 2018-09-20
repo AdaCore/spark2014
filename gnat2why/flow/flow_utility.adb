@@ -2534,14 +2534,9 @@ package body Flow_Utility is
                      return Recurse (Expr);
                   end;
 
-               elsif Ctx.Local_Constants.Contains (E)
-                 or else Has_Variable_Input (E)
-               then
+               elsif Has_Variable_Input (E) then
 
-                  --  If this constant:
-                  --    * comes from source and is in Local_Constants
-                  --    * or has variable input
-                  --  then add it.
+                  --  If this constant has variable input then add it.
                   --  Note that for constants of a constrained record or
                   --  concurrent type we want to detect their discriminant
                   --  constraints so we add them as well.
