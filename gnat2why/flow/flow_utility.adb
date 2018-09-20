@@ -4222,6 +4222,7 @@ package body Flow_Utility is
      (Objects : in out Flow_Id_Sets.Set;
       Skip    :        Node_Sets.Set := Node_Sets.Empty_Set)
    is
+      pragma Unreferenced (Skip);
       Constants : Flow_Id_Sets.Set;
       --  ??? list would be more efficient here, since we only Insert and
       --  Iterate, but sets are more intuitive; for now let's leave it.
@@ -4235,7 +4236,6 @@ package body Flow_Utility is
 
                begin
                   if Ekind (E) = E_Constant
-                    and then not Skip.Contains (E)
                     and then not Has_Variable_Input (E)
                   then
                      Constants.Insert (F);
