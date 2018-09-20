@@ -639,6 +639,13 @@ package SPARK_Util is
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element
 
+   function Is_Standard_Entity (E : Entity_Id) return Boolean is
+     (Location_In_Standard_Library (Sloc (E)));
+   --  This function is used to detect that an entity was defined in
+   --  the standard library. They should correspond to node created by
+   --  Create_Standard in cstand.ads. This is checked by looking at
+   --  locations of entities.
+
    function File_Name_Without_Suffix (File_Name : String) return String;
 
    function Real_Image (U : Ureal; Max_Length : Integer) return String;

@@ -1,5 +1,5 @@
-client1.ads:8:39: medium: overflow check might fail (e.g. when C = 0 and V = 2147483647)
-client2.ads:9:39: medium: overflow check might fail (e.g. when C = 0 and V = 2147483647)
-client3.ads:10:39: medium: overflow check might fail (e.g. when C = 0 and V = 2147483647)
-client4.ads:9:39: medium: overflow check might fail (e.g. when C = 0 and V = 2147483647)
+client1.ads:8:39: medium: overflow check might fail (e.g. when C = 0 and V = Integer'Last)
+client2.ads:9:39: medium: overflow check might fail (e.g. when C = 0 and V = Integer'Last)
+client3.ads:10:39: medium: overflow check might fail (e.g. when C = 0 and V = Integer'Last)
+client4.ads:9:39: medium: overflow check might fail (e.g. when C = 0 and V = Integer'Last)
 trouble.ads:10:04: info: initialization of "V" proved

@@ -1,2 +1,2 @@
-ex.adb:6:17: medium: overflow check might fail (e.g. when I = 2147483647)
-ex.adb:11:14: medium: overflow check might fail (e.g. when X = -2147483648)
+ex.adb:6:17: medium: overflow check might fail (e.g. when I = Integer'Last)
+ex.adb:11:14: medium: overflow check might fail (e.g. when X = Integer'First)

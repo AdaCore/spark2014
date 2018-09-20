@@ -166,7 +166,7 @@ values-operations.adb:63:28: info: overflow check proved (CVC4: 1 VC)
 values-operations.adb:63:30: info: initialization of "V2.E" proved
 values-operations.adb:66:23: info: initialization of "V1.E" proved
 values-operations.adb:66:28: info: division check proved (CVC4: 1 VC)
-values-operations.adb:66:28: medium: overflow check might fail (e.g. when Result = 0 and V1 = (E => -2147483648) and V2 = (E => -1))
+values-operations.adb:66:28: medium: overflow check might fail (e.g. when Result = 0 and V1 = (E => Integer'First) and V2 = (E => -1))
 values-operations.adb:66:30: info: initialization of "V2.E" proved
 values-operations.adb:69:23: info: initialization of "V1.E" proved
 values-operations.adb:69:28: medium: overflow check might fail (e.g. when Result = 0 and V1 = (E => 3) and V2 = (E => -3))

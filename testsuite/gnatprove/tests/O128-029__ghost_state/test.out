@@ -1,5 +1,5 @@
 account.adb:11:35: info: initialization of "Last_Incr" constituent of "Prev_State" proved
-account.adb:14:22: medium: overflow check might fail (e.g. when Incr = -1 and Total = -2147483648)
+account.adb:14:22: medium: overflow check might fail (e.g. when Incr = -1 and Total = Integer'First)
 account.ads:3:27: warning: no procedure exists that can initialize abstract state "Account.State"
 bad_account.ads:3:27: warning: no procedure exists that can initialize abstract state "Bad_Account.State"
 bad_account.ads:3:35: warning: no procedure exists that can initialize abstract state "Bad_Account.Prev_State"

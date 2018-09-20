@@ -56,7 +56,7 @@ while_loops.adb:18:33: info: loop invariant initialization proved (CVC4: 1 VC)
 while_loops.adb:18:33: info: loop invariant preservation proved (CVC4: 1 VC)
 while_loops.adb:18:41: info: initialization of "Counter" proved
 while_loops.adb:20:21: info: initialization of "Counter" proved
-while_loops.adb:20:29: medium: overflow check might fail (e.g. when Counter = 2147483647)
+while_loops.adb:20:29: medium: overflow check might fail (e.g. when Counter = Natural'Last)
 while_loops.adb:27:21: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 while_loops.adb:27:29: info: initialization of "Counter" proved
 while_loops.adb:32:33: info: implicit function contract not available for proof ("Sum_Of" is recursive)
@@ -76,7 +76,7 @@ while_loops.adb:48:36: info: loop invariant preservation proved (CVC4: 1 VC)
 while_loops.adb:50:13: warning: assuming "Put_Line" has no effect on global items
 while_loops.adb:50:13: warning: no Global contract available for "Put_Line"
 while_loops.adb:53:21: info: initialization of "Counter" proved
-while_loops.adb:53:29: medium: overflow check might fail (e.g. when Counter = 2147483647)
+while_loops.adb:53:29: medium: overflow check might fail (e.g. when Counter = Natural'Last)
 while_loops.adb:61:22: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 while_loops.adb:61:30: info: initialization of "Counter" proved
 while_loops.adb:63:25: info: implicit function contract not available for proof ("Sum_Of" is recursive)

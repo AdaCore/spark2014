@@ -1,4 +1,4 @@
-pack-proc.adb:6:31: medium: range check might fail (e.g. when I = 100)
+pack-proc.adb:6:31: medium: range check might fail (e.g. when I = Idx_T'Last)
 pack.adb:10:51: info: initialization of "Nf.Flag" proved
 pack.adb:10:51: info: initialization of "Nf.Idx" proved
 pack.adb:10:51: info: initialization of "Nf.The_P.X" proved

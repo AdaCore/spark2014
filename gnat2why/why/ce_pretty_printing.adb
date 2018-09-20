@@ -26,19 +26,23 @@
 with Ada.Strings.Fixed;        use Ada.Strings.Fixed;
 with Ada.Text_IO;
 with Ada.Unchecked_Conversion;
+with Csets;                    use Csets;
 with Gnat2Why.CE_Utils;        use Gnat2Why.CE_Utils;
 with Interfaces;               use Interfaces;
+with Namet;                    use Namet;
+with SPARK_Atree;              use SPARK_Atree;
+with SPARK_Util;               use SPARK_Util;
 with Uintp;                    use Uintp;
 
 package body Ce_Pretty_Printing is
 
-   --  Size returns the associate binary size of a #b or #x number (to help
-   --  when building an unsigned integer).
    function Size (S : String) return Integer is
      (if S (S'First + 1) = 'x' then
            4 * (S'Length - 2)
       else
         (S'Length - 2));
+   --  Size returns the associate binary size of a #b or #x number (to help
+   --  when building an unsigned integer).
 
    --  This package is generic so that part of the work done can be shared
    --  between 32bit and 64 bits float numbers.
@@ -65,6 +69,137 @@ package body Ce_Pretty_Printing is
            StringBits_To_Floatrepr (Sign, Significand, Exp)));
 
    end Print_Conversion;
+
+   package body Gen_Print is
+
+      function Beautiful_Source_Name (Ty : Entity_Id) return String
+        with Pre => Is_Discrete_Type (Ty);
+      --  Does the same as Source_Name except for types defined in Standard
+      --  which we print with Upper case letter after each '_'.
+
+      ---------------------------
+      -- Beautiful_Source_Name --
+      ---------------------------
+
+      function Beautiful_Source_Name (Ty : Entity_Id) return String is
+      begin
+         if Is_Standard_Entity (Ty) then
+            Get_Unqualified_Name_String (Chars (Ty));
+            declare
+               --  This name is all lower case
+               Name     : String := Name_Buffer (1 .. Name_Len);
+               --  Decides when the next element should be switch to upper case
+               To_Upper : Boolean := True;
+
+            begin
+               for I in Name'Range loop
+                  if To_Upper then
+                     Name (I) := Fold_Upper (Name (I));
+                  end if;
+
+                  if Name (I) = '_' then
+                     To_Upper := True;
+                  else
+                     To_Upper := False;
+                  end if;
+               end loop;
+               return Name;
+            end;
+
+         else
+            return Source_Name (Ty);
+         end if;
+
+      end Beautiful_Source_Name;
+
+      --------------------
+      -- Print_Discrete --
+      --------------------
+
+      function Print_Discrete (Nb : String; Nb_Type : Entity_Id) return String
+      is
+         Nb_Value : Uint;
+      begin
+         --  Handle exception from UI_From_String
+         begin
+            Nb_Value := UI_From_String (Nb);
+         exception
+            when others => return Nb;
+         end;
+
+         --  If one of the bound is not known, we cannot evaluate the type
+         --  range so we cannot decide if we alter printing.
+         if not Compile_Time_Known_Value (Type_Low_Bound (Nb_Type)) or else
+            not Compile_Time_Known_Value (Type_High_Bound (Nb_Type))
+         then
+            return Nb;
+         end if;
+
+         --  Beginning of safe computations.
+         declare
+            --  Type informations
+            Low_Bound  : constant Uint   :=
+              Expr_Value (Type_Low_Bound (Nb_Type));
+            High_Bound : constant Uint   :=
+              Expr_Value (Type_High_Bound (Nb_Type));
+            Type_Range : constant Uint   := High_Bound - Low_Bound;
+            Type_Name  : constant String := Beautiful_Source_Name (Nb_Type);
+
+            --  Difference calculations
+            Diff_To_High : constant Uint := abs (Nb_Value - High_Bound);
+            Diff_To_Low  : constant Uint := abs (Nb_Value - Low_Bound);
+            Side         : String (1 .. 1);
+         begin
+
+            --  If the range of type is too small, we do nothing. If the type
+            --  we are given is internal then we don't want to print it as it
+            --  would confuse the user.
+            --  Example: type Data_T is array (1 .. 1000) of Integer;
+            --  There is an internal type Tdata_tD1 for range (1..1000) for
+            --  indices: we don't want to print Tdata_tD1'First.
+            if Type_Range <= UI_From_Int (Bound_Type) or else
+              (not Comes_From_Source (Nb_Type) and then
+               not Is_Standard_Entity (Nb_Type))
+            then
+               return Nb;
+            end if;
+
+            --  Nb is closer to the highest bound
+            if Diff_To_High <= Diff_To_Low then
+
+               if Diff_To_High = 0 then
+                  return Type_Name & "'Last";
+
+               elsif Diff_To_High < Bound_Value then
+                  Side := (if Nb_Value < High_Bound then "-" else "+");
+                  return Type_Name & "'Last" & Side & UI_Image (Diff_To_High);
+
+               else
+                  return Nb;
+               end if;
+
+            --  We don't want to print Natural'First + 5 as counterexample. So,
+            --  there is a special case when Low_Bound of the type is in
+            --  0 .. 1.
+            elsif Low_Bound = 0 or else Low_Bound = 1 then
+               return Nb;
+
+            else
+               if Diff_To_Low = 0 then
+                  return Type_Name & "'First";
+
+               elsif Diff_To_Low < Bound_Value then
+                  Side := (if Nb_Value < Low_Bound then "-" else "+");
+                  return Type_Name & "'First" & Side & UI_Image (Diff_To_Low);
+
+               else
+                  return Nb;
+               end if;
+            end if;
+         end;
+      end Print_Discrete;
+
+   end Gen_Print;
 
    --  Start of package body for Print_Conversion
    package body Print_Conversion is

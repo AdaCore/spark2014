@@ -391,7 +391,17 @@ package body Gnat2Why.Counter_Examples is
 
                else
                   pragma Assert (Is_Discrete_Type (AST_Type));
-                  return Cnt_Value.I;
+                  declare
+                     --  Decision: generic values for Bound_Type and
+                     --  Bound_Value are random for now. They can be
+                     --  adjusted in the future.
+
+                     package Pr is new Gen_Print (Bound_Type => 10,
+                                                  Bound_Value => 5);
+                  begin
+                     return To_Unbounded_String (
+                       Pr.Print_Discrete (To_String (Cnt_Value.I), AST_Type));
+                  end;
                end if;
 
             when Cnt_Boolean =>

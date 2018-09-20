@@ -1,1 +1,1 @@
-pack.adb:6:14: medium: overflow check might fail, in call inlined at pack.adb:12 (e.g. when X = 2147483647)
+pack.adb:6:14: medium: overflow check might fail, in call inlined at pack.adb:12 (e.g. when X = Integer'Last)

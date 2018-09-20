@@ -1,1 +1,1 @@
-pack.adb:11:14: medium: overflow check might fail (e.g. when A = 2147483647)
+pack.adb:11:14: medium: overflow check might fail (e.g. when A = Integer'Last)

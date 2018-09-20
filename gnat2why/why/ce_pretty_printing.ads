@@ -23,7 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Urealp; use Urealp;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with Types;                use Types;
+with Urealp;               use Urealp;
 
 package Ce_Pretty_Printing is
 
@@ -38,5 +40,23 @@ package Ce_Pretty_Printing is
    --  If the computation of Small * Nb is an integer we print it as an
    --  integer. If not, we print Nb * Num (Small) / Den (Small) with Small
    --  normalized Ureal.
+
+   generic
+      --  This package is used to alter printing for values of Discrete_Type.
+      --  When a value is close enough to the bounds of its type (Bound_Value
+      --  close) and the type is not too small (Range greater than Bound_Type)
+      --  then we print the value as a function of the bound of the type.
+      --  Example:
+      --  type Byte is range -128..127;
+      --  V = - 127 is printed V = Byte'First + 1
+
+      Bound_Type  : Int;
+      Bound_Value : Int;
+   package Gen_Print is
+
+      function Print_Discrete (Nb : String; Nb_Type : Entity_Id) return String
+        with Pre => Is_Discrete_Type (Nb_Type);
+
+   end Gen_Print;
 
 end Ce_Pretty_Printing;
