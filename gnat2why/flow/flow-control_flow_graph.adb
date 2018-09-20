@@ -1498,7 +1498,6 @@ package body Flow.Control_Flow_Graph is
                Map_Root                     => Map_Root,
                Map_Type                     => Get_Type (Name (N), FA.B_Scope),
                Scope                        => FA.B_Scope,
-               Local_Constants              => FA.Local_Constants,
                Fold_Functions               => True,
                Use_Computed_Globals         => not FA.Generating_Globals,
                Expand_Synthesized_Constants => False);
@@ -1580,7 +1579,6 @@ package body Flow.Control_Flow_Graph is
             Untangle_Assignment_Target
               (N                    => Name (N),
                Scope                => FA.B_Scope,
-               Local_Constants      => FA.Local_Constants,
                Use_Computed_Globals => not FA.Generating_Globals,
                Vars_Defined         => Vars_Defined,
                Vars_Used            => Vars_Used,
@@ -1593,7 +1591,6 @@ package body Flow.Control_Flow_Graph is
               (Get_Variables
                  (Expression (N),
                   Scope                => FA.B_Scope,
-                  Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
                   Use_Computed_Globals => not FA.Generating_Globals,
                   Consider_Extensions  => To_Cw));
@@ -1679,7 +1676,6 @@ package body Flow.Control_Flow_Graph is
            (Var_Ex_Use => Get_Variables
               (Expression (N),
                Scope                => FA.B_Scope,
-               Local_Constants      => FA.Local_Constants,
                Fold_Functions       => True,
                Use_Computed_Globals => not FA.Generating_Globals),
             Sub_Called => Funcs,
@@ -1747,7 +1743,6 @@ package body Flow.Control_Flow_Graph is
       Vars_Used := Get_Variables
                      (Expression (N),
                       Scope                => FA.B_Scope,
-                      Local_Constants      => FA.Local_Constants,
                       Fold_Functions       => True,
                       Use_Computed_Globals => not FA.Generating_Globals);
 
@@ -1843,7 +1838,6 @@ package body Flow.Control_Flow_Graph is
               (Var_Ex_Use => Get_Variables
                  (Condition (N),
                   Scope                => FA.B_Scope,
-                  Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called => Funcs,
@@ -1986,7 +1980,6 @@ package body Flow.Control_Flow_Graph is
            (Var_Ex_Use => Get_Variables
               (Condition (N),
                Scope                => FA.B_Scope,
-               Local_Constants      => FA.Local_Constants,
                Fold_Functions       => True,
                Use_Computed_Globals => not FA.Generating_Globals),
             Sub_Called => Funcs,
@@ -2052,7 +2045,6 @@ package body Flow.Control_Flow_Graph is
                     (Var_Ex_Use => Get_Variables
                        (Condition (Elsif_Statement),
                         Scope                => FA.B_Scope,
-                        Local_Constants      => FA.Local_Constants,
                         Fold_Functions       => True,
                         Use_Computed_Globals => not FA.Generating_Globals),
                      Sub_Called => Funcs,
@@ -2386,7 +2378,6 @@ package body Flow.Control_Flow_Graph is
               (Var_Ex_Use => Get_Variables
                  (Condition (Iteration_Scheme (N)),
                   Scope                => FA.B_Scope,
-                  Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called => Funcs,
@@ -2484,7 +2475,6 @@ package body Flow.Control_Flow_Graph is
                   Var_Ex_Use => Get_Variables
                     (DSD,
                      Scope                => FA.B_Scope,
-                     Local_Constants      => FA.Local_Constants,
                      Fold_Functions       => True,
                      Use_Computed_Globals => not FA.Generating_Globals),
                   Sub_Called => Funcs,
@@ -3000,7 +2990,6 @@ package body Flow.Control_Flow_Graph is
                Var_Ex_Use => Get_Variables
                  (Cont,
                   Scope                => FA.B_Scope,
-                  Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called => Funcs,
@@ -3119,7 +3108,6 @@ package body Flow.Control_Flow_Graph is
                  (Var_Use       => Get_Variables
                     (Prefix (Reference),
                      Scope                => FA.B_Scope,
-                     Local_Constants      => FA.Local_Constants,
                      Fold_Functions       => False,
                      Use_Computed_Globals => not FA.Generating_Globals),
                   Is_Assertion  => True,
@@ -3437,7 +3425,6 @@ package body Flow.Control_Flow_Graph is
          Variables_Used := Get_Variables
            (Expr,
             Scope                => FA.B_Scope,
-            Local_Constants      => FA.Local_Constants,
             Fold_Functions       => True,
             Use_Computed_Globals => not FA.Generating_Globals);
 
@@ -3531,7 +3518,6 @@ package body Flow.Control_Flow_Graph is
 
                else
                   Register_Own_Variable (FA, E);
-                  FA.Local_Constants.Insert (E);
                   Create_Initial_And_Final_Vertices (E, FA);
                end if;
 
@@ -3540,7 +3526,6 @@ package body Flow.Control_Flow_Graph is
 
                if Present (Full_View (E)) then
                   Register_Own_Variable (FA, Full_View (E));
-                  FA.Local_Constants.Insert (Full_View (E));
                   Create_Initial_And_Final_Vertices (Full_View (E), FA);
 
                   Add_Dummy_Vertex (N, FA, CM);
@@ -3551,7 +3536,6 @@ package body Flow.Control_Flow_Graph is
                else
                   pragma Assert (Is_Imported (E));
                   Register_Own_Variable (FA, E);
-                  FA.Local_Constants.Insert (E);
                   Create_Initial_And_Final_Vertices (E, FA);
 
                end if;
@@ -3603,7 +3587,6 @@ package body Flow.Control_Flow_Graph is
                      Map_Root                     => Direct_Mapping_Id (E),
                      Map_Type                     => Get_Type (E, FA.B_Scope),
                      Scope                        => FA.B_Scope,
-                     Local_Constants              => FA.Local_Constants,
                      Fold_Functions               => True,
                      Use_Computed_Globals         => not FA.Generating_Globals,
                      Expand_Synthesized_Constants => False);
@@ -3681,7 +3664,6 @@ package body Flow.Control_Flow_Graph is
                      Var_Ex_Use => Get_Variables
                        (Expr,
                         Scope                => FA.B_Scope,
-                        Local_Constants      => FA.Local_Constants,
                         Fold_Functions       => True,
                         Use_Computed_Globals => not FA.Generating_Globals,
                         Consider_Extensions  => To_CW),
@@ -4237,7 +4219,6 @@ package body Flow.Control_Flow_Graph is
                     (Var_Use      => Get_Variables
                        (Pragma_Argument_Associations (N),
                         Scope                => FA.B_Scope,
-                        Local_Constants      => FA.Local_Constants,
                         Fold_Functions       => False,
                         Use_Computed_Globals => not FA.Generating_Globals),
                      Sub_Called   => Funcs,
@@ -4505,7 +4486,6 @@ package body Flow.Control_Flow_Graph is
            (Var_Use         => Get_Variables
               (N,
                Scope                => FA.B_Scope,
-               Local_Constants      => FA.Local_Constants,
                Fold_Functions       => False,
                Use_Computed_Globals => not FA.Generating_Globals),
             Sub_Called      => Funcs,
@@ -4555,7 +4535,6 @@ package body Flow.Control_Flow_Graph is
                Var_Ex_Use => Get_Variables
                  (Expr,
                   Scope                => FA.B_Scope,
-                  Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called => Funcs,
@@ -4624,7 +4603,6 @@ package body Flow.Control_Flow_Graph is
                  (Var_Ex_Use => Get_Variables
                     (Cond,
                      Scope                => FA.B_Scope,
-                     Local_Constants      => FA.Local_Constants,
                      Fold_Functions       => False,
                      Use_Computed_Globals => not FA.Generating_Globals),
                   Sub_Called => Funcs,
@@ -4675,7 +4653,6 @@ package body Flow.Control_Flow_Graph is
               Get_Variables
                 (N                    => Typ,
                  Scope                => FA.B_Scope,
-                 Local_Constants      => FA.Local_Constants,
                  Fold_Functions       => False,
                  Use_Computed_Globals => not FA.Generating_Globals);
 
@@ -4756,8 +4733,8 @@ package body Flow.Control_Flow_Graph is
       --  variable input and we will complain about this when analyzying such
       --  contracts. Here we filter such constants to not propagate the user's
       --  mistake.
-      Remove_Constants (Globals.Proof_Ins, Skip => FA.Local_Constants);
-      Remove_Constants (Globals.Inputs,    Skip => FA.Local_Constants);
+      Remove_Constants (Globals.Proof_Ins);
+      Remove_Constants (Globals.Inputs);
 
       for R of Globals.Proof_Ins loop
          Add_Vertex (FA,
@@ -5093,14 +5070,12 @@ package body Flow.Control_Flow_Graph is
               Get_Variables
               (Expr,
                Scope                => FA.B_Scope,
-               Local_Constants      => FA.Local_Constants,
                Fold_Functions       => False,
                Use_Computed_Globals => not FA.Generating_Globals) -
 
               Get_Variables
               (Expr,
                Scope                => FA.B_Scope,
-               Local_Constants      => FA.Local_Constants,
                Fold_Functions       => True,
                Use_Computed_Globals => not FA.Generating_Globals);
             V : Flow_Graphs.Vertex_Id;

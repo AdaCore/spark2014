@@ -266,7 +266,6 @@ private
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);
 
    function First_Variable_Use (N        : Node_Id;
-                                FA       : Flow_Analysis_Graphs;
                                 Scope    : Flow_Scope;
                                 Var      : Flow_Id;
                                 Precise  : Boolean;

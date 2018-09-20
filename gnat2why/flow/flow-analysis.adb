@@ -338,7 +338,6 @@ package body Flow.Analysis is
 
    function First_Variable_Use
      (N        : Node_Id;
-      FA       : Flow_Analysis_Graphs;
       Scope    : Flow_Scope;
       Var      : Flow_Id;
       Precise  : Boolean;
@@ -374,7 +373,6 @@ package body Flow.Analysis is
             return OK;
          elsif Get_Variables (N,
                               Scope                => Scope,
-                              Local_Constants      => FA.Local_Constants,
                               Reduced              => not Precise,
                               Assume_In_Expression => False,
                               Fold_Functions       => False,
@@ -525,7 +523,6 @@ package body Flow.Analysis is
          end case;
 
          First_Use := First_Variable_Use (N       => First_Use,
-                                          FA      => FA,
                                           Scope   => FA.B_Scope,
                                           Var     => Var,
                                           Precise => Precise);
@@ -756,7 +753,6 @@ package body Flow.Analysis is
                    (Get_Variables
                       (Expr,
                        Scope                => Get_Flow_Scope (Expr),
-                       Local_Constants      => FA.Local_Constants,
                        Fold_Functions       => False,
                        Reduced              => True,
                        Use_Computed_Globals => True))
@@ -770,7 +766,6 @@ package body Flow.Analysis is
                                       Aspect_To_Fix & " aspect of &",
                         SRM_Ref  => SRM_Ref,
                         N        => First_Variable_Use (N       => Expr,
-                                                        FA      => FA,
                                                         Scope   => FA.B_Scope,
                                                         Var     => Var,
                                                         Precise => False),
@@ -793,7 +788,6 @@ package body Flow.Analysis is
                        (FA       => FA,
                         Msg      => "& must be initialized at elaboration",
                         N        => First_Variable_Use (N       => Expr,
-                                                        FA      => FA,
                                                         Scope   => FA.B_Scope,
                                                         Var     => Var,
                                                         Precise => False),
@@ -2514,7 +2508,6 @@ package body Flow.Analysis is
             if not (Kind = Init and Gnat2Why_Args.Report_Mode = GPR_Fail) then
                N := First_Variable_Use
                  (N        => N,
-                  FA       => FA,
                   Scope    => FA.B_Scope,
                   Var      => Var,
                   Precise  => True,
@@ -4601,7 +4594,6 @@ package body Flow.Analysis is
             Vars := Get_Variables
               (N,
                Scope                => FA.B_Scope,
-               Local_Constants      => FA.Local_Constants,
                Fold_Functions       => False,
                Use_Computed_Globals => True);
 
@@ -4619,7 +4611,6 @@ package body Flow.Analysis is
                         Severity => High_Check_Kind,
                         N        => First_Variable_Use
                                       (N        => N,
-                                       FA       => FA,
                                        Scope    => FA.B_Scope,
                                        Var      => Var,
                                        Precise  => False,
@@ -5359,7 +5350,6 @@ package body Flow.Analysis is
             VU : constant Flow_Id_Sets.Set :=
               Get_Variables (Precondition,
                              Scope                => FA.S_Scope,
-                             Local_Constants      => FA.Local_Constants,
                              Fold_Functions       => False,
                              Use_Computed_Globals => True);
             --  The above set contains all variables used in the precondition.

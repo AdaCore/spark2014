@@ -2038,7 +2038,6 @@ package body Flow_Utility is
 
    type Get_Variables_Context is record
       Scope                           : Flow_Scope;
-      Local_Constants                 : Node_Sets.Set;
       Fold_Functions                  : Boolean;
       Use_Computed_Globals            : Boolean;
       Reduced                         : Boolean;
@@ -2067,7 +2066,6 @@ package body Flow_Utility is
    function Get_Variables
      (N                            : Node_Id;
       Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
@@ -2078,7 +2076,6 @@ package body Flow_Utility is
    is
       Ctx : constant Get_Variables_Context :=
         (Scope                           => Scope,
-         Local_Constants                 => Local_Constants,
          Fold_Functions                  => Fold_Functions,
          Use_Computed_Globals            => Use_Computed_Globals,
          Reduced                         => Reduced,
@@ -2094,7 +2091,6 @@ package body Flow_Utility is
    function Get_Variables
      (L                            : List_Id;
       Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
@@ -2104,7 +2100,6 @@ package body Flow_Utility is
    is
       Ctx : constant Get_Variables_Context :=
         (Scope                           => Scope,
-         Local_Constants                 => Local_Constants,
          Fold_Functions                  => Fold_Functions,
          Use_Computed_Globals            => Use_Computed_Globals,
          Reduced                         => Reduced,
@@ -2172,7 +2167,6 @@ package body Flow_Utility is
       function Untangle_Record_Fields
         (N                            : Node_Id;
          Scope                        : Flow_Scope;
-         Local_Constants              : Node_Sets.Set;
          Fold_Functions               : Boolean;
          Use_Computed_Globals         : Boolean;
          Expand_Synthesized_Constants : Boolean)
@@ -2204,7 +2198,6 @@ package body Flow_Utility is
       is (Filter (Untangle_Record_Fields
            (N,
             Scope                        => Ctx.Scope,
-            Local_Constants              => Ctx.Local_Constants,
             Fold_Functions               => Ctx.Fold_Functions,
             Use_Computed_Globals         => Ctx.Use_Computed_Globals,
             Expand_Synthesized_Constants =>
@@ -2877,7 +2870,6 @@ package body Flow_Utility is
       function Untangle_Record_Fields
         (N                            : Node_Id;
          Scope                        : Flow_Scope;
-         Local_Constants              : Node_Sets.Set;
          Fold_Functions               : Boolean;
          Use_Computed_Globals         : Boolean;
          Expand_Synthesized_Constants : Boolean)
@@ -2893,7 +2885,6 @@ package body Flow_Utility is
          is (Get_Variables
              (N,
               Scope                        => Scope,
-              Local_Constants              => Local_Constants,
               Fold_Functions               => Fold_Functions,
               Use_Computed_Globals         => Use_Computed_Globals,
               Reduced                      => False,
@@ -3393,7 +3384,6 @@ package body Flow_Utility is
                           Map_Type                     =>
                             Get_Type (N, Ctx.Scope),
                           Scope                        => Ctx.Scope,
-                          Local_Constants              => Ctx.Local_Constants,
                           Fold_Functions               => Ctx.Fold_Functions,
                           Use_Computed_Globals         =>
                             Ctx.Use_Computed_Globals,
@@ -3576,7 +3566,7 @@ package body Flow_Utility is
          end loop;
 
          --  And finally, we remove all local constants
-         Remove_Constants (S, Skip => Ctx.Local_Constants);
+         Remove_Constants (S);
       end return;
    end Get_Variables_Internal;
 
@@ -3647,7 +3637,6 @@ package body Flow_Utility is
    is
       Ctx : constant Get_Variables_Context :=
         (Scope                           => Get_Flow_Scope (Scope_N),
-         Local_Constants                 => Node_Sets.Empty_Set,
          Fold_Functions                  => False,
          Use_Computed_Globals            => True,
          Reduced                         => True,
@@ -3723,7 +3712,6 @@ package body Flow_Utility is
       FS := Get_Variables
         (Expr,
          Scope                => Get_Flow_Scope (E),
-         Local_Constants      => Node_Sets.Empty_Set,
          Fold_Functions       => True,
          Use_Computed_Globals => GG_Has_Been_Generated);
       --  Note that Get_Variables calls Has_Variable_Input when it finds a
@@ -4219,10 +4207,8 @@ package body Flow_Utility is
    ----------------------
 
    procedure Remove_Constants
-     (Objects : in out Flow_Id_Sets.Set;
-      Skip    :        Node_Sets.Set := Node_Sets.Empty_Set)
+     (Objects : in out Flow_Id_Sets.Set)
    is
-      pragma Unreferenced (Skip);
       Constants : Flow_Id_Sets.Set;
       --  ??? list would be more efficient here, since we only Insert and
       --  Iterate, but sets are more intuitive; for now let's leave it.
@@ -4735,7 +4721,6 @@ package body Flow_Utility is
       Map_Root                     : Flow_Id;
       Map_Type                     : Entity_Id;
       Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Expand_Synthesized_Constants : Boolean;
@@ -4749,7 +4734,6 @@ package body Flow_Utility is
       is (Get_Variables
             (N,
              Scope                        => Scope,
-             Local_Constants              => Local_Constants,
              Fold_Functions               => Fold_Functions,
              Use_Computed_Globals         => Use_Computed_Globals,
              Reduced                      => False,
@@ -4769,7 +4753,6 @@ package body Flow_Utility is
                                               then Map_Type
                                               else Get_Type (N, Scope)),
              Scope                        => Scope,
-             Local_Constants              => Local_Constants,
              Fold_Functions               => Fold_Functions,
              Use_Computed_Globals         => Use_Computed_Globals,
              Expand_Synthesized_Constants => Expand_Synthesized_Constants,
@@ -5327,7 +5310,6 @@ package body Flow_Utility is
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;
       Scope                : Flow_Scope;
-      Local_Constants      : Node_Sets.Set;
       Use_Computed_Globals : Boolean;
       Vars_Defined         : out Flow_Id_Sets.Set;
       Vars_Used            : out Flow_Id_Sets.Set;
@@ -5345,7 +5327,6 @@ package body Flow_Utility is
       is (Get_Variables
             (N,
              Scope                => Scope,
-             Local_Constants      => Local_Constants,
              Fold_Functions       => Fold,
              Use_Computed_Globals => Use_Computed_Globals,
              Reduced              => False));

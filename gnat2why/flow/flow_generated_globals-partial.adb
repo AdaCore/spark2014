@@ -2093,7 +2093,6 @@ package body Flow_Generated_Globals.Partial is
               Get_Variables
                 (Expr,
                  Scope                => Get_Flow_Scope (Full),
-                 Local_Constants      => Node_Sets.Empty_Set,
                  Fold_Functions       => True,
                  Use_Computed_Globals => False);
 

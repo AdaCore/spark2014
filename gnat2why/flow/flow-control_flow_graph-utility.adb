@@ -297,7 +297,6 @@ package body Flow.Control_Flow_Graph.Utility is
               Get_Variables
                 (Actual,
                  Scope                => Scope,
-                 Local_Constants      => FA.Local_Constants,
                  Fold_Functions       => True,
                  Use_Computed_Globals => not FA.Generating_Globals,
                  Consider_Extensions  => Ext_Relevant_To_Formal);
@@ -337,7 +336,6 @@ package body Flow.Control_Flow_Graph.Utility is
             Untangle_Assignment_Target
               (N                    => Actual,
                Scope                => Scope,
-               Local_Constants      => FA.Local_Constants,
                Use_Computed_Globals => not FA.Generating_Globals,
                Vars_Defined         => A.Variables_Defined,
                Vars_Used            => A.Variables_Explicitly_Used,
@@ -674,7 +672,6 @@ package body Flow.Control_Flow_Graph.Utility is
          A.Variables_Used := Get_Variables
            (A.Default_Init_Val,
             Scope                => Scope,
-            Local_Constants      => FA.Local_Constants,
             Fold_Functions       => False,
             Use_Computed_Globals => not FA.Generating_Globals);
          A.Variables_Explicitly_Used := A.Variables_Used;
