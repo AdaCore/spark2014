@@ -3132,11 +3132,12 @@ package body Gnat2Why.Subprograms is
 
          if not Is_Entry (E) and then Might_Be_Main (E) then
             Stmt :=
-              New_Located_Assert
-                (Ada_Node => Get_Location_For_Aspect (E, Pragma_Precondition),
-                 Pred     => Pre,
-                 Reason   => VC_Precondition_Main,
-                 Kind     => EW_Assert);
+            New_Located_Abstract
+              (Ada_Node => Get_Location_For_Aspect (E, Pragma_Precondition),
+               Expr     =>
+                 Assume_Initial_Condition_Of_Withed_Units (E, Params),
+               Reason   => VC_Precondition_Main,
+               Post     => Pre);
          else
             if Is_Entry (E)
               and then Entity_Body_In_SPARK (E)
