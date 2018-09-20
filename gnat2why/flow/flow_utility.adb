@@ -5046,15 +5046,6 @@ package body Flow_Utility is
                --  (i.e. a certain structure) with empty elements, e.g. the
                --  private extension part.
 
-               Simplify : Boolean :=
-                 Ekind (E) = E_Constant
-                 and then not Local_Constants.Contains (E);
-               --  We're assigning a local constant; and currently we just
-               --  use Get_Variables to "look through" it. We simply assign all
-               --  fields of the LHS to the RHS. Not as precise as it could be,
-               --  but it works for now...
-               --  ??? this is effectively disabled, will be deconstructed soon
-
                LHS : constant Flow_Id_Sets.Set :=
                  Flatten_Variable (Map_Root, Scope);
 
@@ -5101,39 +5092,27 @@ package body Flow_Utility is
                   --                                 Facet => The_Tag));
                end if;
 
-               Simplify := False;
+               for Input of RHS loop
+                  F := Join (Map_Root, Input);
+                  if LHS.Contains (F) then
+                     M.Insert (F, (if Is_Pure_Constant
+                               then Flow_Id_Sets.Empty_Set
+                               else Flow_Id_Sets.To_Set (Input)));
+                  else
+                     To_Ext.Insert (Input);
+                  end if;
+               end loop;
 
-               if Simplify then
+               if not To_Ext.Is_Empty
+                 and then Is_Tagged_Type (Map_Type)
+               then
+                  --  Attempt to insert an empty set
+                  M.Insert (Key      => LHS_Ext,
+                            Position => LHS_Pos,
+                            Inserted => Unused);
 
-                  for Input of RHS loop
-                     M.Insert (Join (Map_Root, Input), Get_Vars_Wrapper (N));
-                  end loop;
-
-               else
-                  To_Ext := Flow_Id_Sets.Empty_Set;
-
-                  for Input of RHS loop
-                     F := Join (Map_Root, Input);
-                     if LHS.Contains (F) then
-                        M.Insert (F, (if Is_Pure_Constant
-                                      then Flow_Id_Sets.Empty_Set
-                                      else Flow_Id_Sets.To_Set (Input)));
-                     else
-                        To_Ext.Insert (Input);
-                     end if;
-                  end loop;
-
-                  if not To_Ext.Is_Empty
-                    and then Is_Tagged_Type (Map_Type)
-                  then
-                     --  Attempt to insert an empty set
-                     M.Insert (Key      => LHS_Ext,
-                               Position => LHS_Pos,
-                               Inserted => Unused);
-
-                     if not Is_Pure_Constant then
-                        M (LHS_Pos).Union (To_Ext);
-                     end if;
+                  if not Is_Pure_Constant then
+                     M (LHS_Pos).Union (To_Ext);
                   end if;
                end if;
             end;
