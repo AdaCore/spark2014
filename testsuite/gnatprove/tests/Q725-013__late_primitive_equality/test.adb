@@ -9,9 +9,9 @@ procedure Test with SPARK_Mode is
 
    X : RR := (C => (A => 1, B => 1));
    Y : RR := (C => (A => 1, B => 2));
-   pragma Assert (X /= Y); --@ASSERT:PASS
+   pragma Assert (X /= Y);
 
    function "=" (X, Y : R) return Boolean is (X.A = Y.A);
 begin
-   pragma Assert (X /= Y); --@ASSERT:FAIL
+   pragma Assert (X /= Y);
 end Test;
