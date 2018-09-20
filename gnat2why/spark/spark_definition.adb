@@ -2038,11 +2038,6 @@ package body SPARK_Definition is
                  and then not Is_Full_View (Full_View (E)) -- ??? why needed
                then
                   Set_Partial_View (Full_View (E), E);
-                  if Ekind (Full_View (E)) in E_Access_Type
-                                            | E_Access_Subtype
-                  then
-                     Mark_Violation ("private access type", N);
-                  end if;
                end if;
 
                if In_SPARK (E) and then
@@ -4730,6 +4725,18 @@ package body SPARK_Definition is
               or else not Retysp_In_SPARK (Directly_Designated_Type (E))
             then
                Mark_Violation ("access type", E);
+
+               --  Private access types are not allowed for now. We mark the
+               --  violation in the context of marking the type entity to be
+               --  able to check the SPARK Mode (type accepted if the full view
+               --  is under SPARK_Mode => Off) and to be sure that the full
+               --  view is set.
+
+            elsif Debug_Flag_FF
+              and SPARK_Pragma_Is (Opt.On)
+              and Is_Full_View (E)
+            then
+               Mark_Violation ("private access type", Partial_View (E));
             end if;
 
          elsif Is_Concurrent_Type (E) then
