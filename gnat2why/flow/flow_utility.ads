@@ -804,6 +804,12 @@ is
    --  might be represented in the contract either directly or via its abstract
    --  state.
 
+   procedure Map_Generic_In_Formals
+     (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set);
+   --  Map generic IN formal parameters, which are visible inside of generic
+   --  instances (e.g. might appear in Global and Initializes contracts) into
+   --  objects used in their corresponding generic actual parameter expression.
+
 private
    Init_Done : Boolean := False with Ghost;
 

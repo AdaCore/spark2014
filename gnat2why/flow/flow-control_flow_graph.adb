@@ -3531,13 +3531,17 @@ package body Flow.Control_Flow_Graph is
       pragma Assert (if FA.Generating_Globals and then Has_Task (Etype (E))
                      then Is_Library_Level_Entity (E));
 
-      --  Ignore generic actuals of the currently analysed instance (they
-      --  act as globals and only appear in the AST as locals because that is
-      --  how frontend expands them).
+      --  Ignore generic actuals of the currently analysed instance.
+      --
+      --  Inside of generic instance they act as globals, i.e. they shall
+      --  appear in the [generated] Global and Initializes. We introduce them
+      --  when processing those contracts, not when processing the declarations
+      --  in the generic instance.
+      --
+      --  Outside of generic instance they are simply not visible, so we also
+      --  do not introduce vertices for them.
 
-      if In_Generic_Actual (E)
-        and then Scope (E) = FA.Spec_Entity
-      then
+      if In_Generic_Actual (E) then
          Add_Dummy_Vertex (N, FA, CM);
          return;
       end if;
@@ -4017,7 +4021,7 @@ package body Flow.Control_Flow_Graph is
 
       Pkg_Body_Declarations : constant List_Id := Declarations (Pkg_Body);
 
-      DM : constant Dependency_Maps.Map := Parse_Initializes (Package_Spec);
+      DM : Dependency_Maps.Map := Parse_Initializes (Package_Spec);
       --  ??? This needs to take into account initializes from gg
 
       V : Flow_Graphs.Vertex_Id;
@@ -4064,6 +4068,14 @@ package body Flow.Control_Flow_Graph is
 
                   begin
                      Verts.Append (Union_Id (Init_Item));
+
+                     --  If the package is inside a generic instance, then its
+                     --  Initializes contract might have generic parameters of
+                     --  mode IN on the RHSs, but they are not visible in the
+                     --  current scope. Map them to objects in the generic
+                     --  actual parameter expressions, which are visible.
+
+                     Map_Generic_In_Formals (FA.B_Scope, The_Ins);
 
                      Add_Vertex
                        (FA,

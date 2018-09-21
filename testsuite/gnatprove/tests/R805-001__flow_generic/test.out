@@ -1,1 +1,3 @@
-main1.adb:9:27: high: "Arg" must be mentioned as an input of the Initializes aspect of "Outer" (SPARK RM 7.1.5(11))
+main1.adb:1:18: warning: unused variable "Arg"
+main2.adb:1:18: warning: unused variable "Arg"
+main3.adb:1:18: warning: unused variable "Arg"

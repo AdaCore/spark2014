@@ -1211,6 +1211,10 @@ package body Flow_Utility is
          end;
       end if;
 
+      for RHS of Depends loop
+         Map_Generic_In_Formals (Scope, RHS);
+      end loop;
+
    end Get_Depends;
 
    -----------------
@@ -1410,6 +1414,70 @@ package body Flow_Utility is
 
    end Parse_Global_Contract;
 
+   ----------------------------
+   -- Map_Generic_In_Formals --
+   ----------------------------
+
+   procedure Map_Generic_In_Formals
+     (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set)
+   is
+      Mapped : Flow_Id_Sets.Set;
+
+   begin
+      --  Iterate over Objects and either map them into anything referenced
+      --  in their generic actual parameter expression or keep as they are.
+
+      for Object of Objects loop
+         case Object.Kind is
+            when Direct_Mapping | Record_Field =>
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (Object);
+
+               begin
+                  if Ekind (E) = E_Constant
+                    and then In_Generic_Actual (E)
+                  then
+                     if Scope_Within_Or_Same (Inner => Scop.Ent,
+                                              Outer => Scope (E))
+                     then
+                        Mapped.Include (Object);
+                     else
+                        declare
+                           Inputs : constant Flow_Id_Sets.Set :=
+                             Get_Variables
+                               (Expression (Declaration_Node (E)),
+                                Scope                => Scop,
+                                Fold_Functions       => True,
+                                Use_Computed_Globals => False);
+
+                        begin
+                           --  Retain the variant of the original Object, which
+                           --  is either In_View for those coming from
+                           --  Get_Global or Normal_Use for those coming from
+                           --  other contexts.
+
+                           Mapped.Union
+                             (Change_Variant (To_Entire_Variables (Inputs),
+                                              Object.Variant));
+                        end;
+                     end if;
+                  else
+                     Mapped.Include (Object);
+                  end if;
+               end;
+
+            when Magic_String =>
+               Mapped.Include (Object);
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end loop;
+
+      Flow_Id_Sets.Move (Target => Objects,
+                         Source => Mapped);
+   end Map_Generic_In_Formals;
+
    -----------------
    -- Get_Globals --
    -----------------
@@ -1495,26 +1563,46 @@ package body Flow_Utility is
               Parse_Global_Contract (Subprogram  => Subprogram,
                                      Global_Node => Global_Node);
 
-            G_Proof : Node_Sets.Set;
-            G_In    : Node_Sets.Set;
-            G_Out   : Node_Sets.Set;
-
          begin
             ---------------------------------------------------------------
-            --  Step 2: Expand any abstract state that might be too refined
-            --  for our given scope.
+            --  Step 2: Expand any abstract state that might be too refined for
+            --  our given scope; also, convert to Flow_Ids in preparation for
+            --  the next step, where objects only known by Magic_String might
+            --  appear.
             ---------------------------------------------------------------
 
-            G_Proof := Down_Project (Raw_Globals.Proof_Ins, Scope);
-            G_In    := Down_Project (Raw_Globals.Inputs,    Scope);
-            G_Out   := Down_Project (Raw_Globals.Outputs,   Scope);
+            Globals :=
+              (Proof_Ins =>
+                 To_Flow_Id_Set (Down_Project (Raw_Globals.Proof_Ins, Scope),
+                                 In_View),
+               Inputs =>
+                 To_Flow_Id_Set (Down_Project (Raw_Globals.Inputs, Scope),
+                                 In_View),
+               Outputs =>
+                 To_Flow_Id_Set (Down_Project (Raw_Globals.Outputs, Scope),
+                                 Out_View));
 
             ---------------------------------------------------------------
-            --  Step 3: Trim constituents based on the Refined_Depends.
+            --  Step 3: If this query refers to Global of a subprogram that is
+            --  inside of a generic instance, then substitute generic actuals
+            --  of mode IN in that contract with objects referenced in their
+            --  corresponding generic actual parameter expressions.
+            ---------------------------------------------------------------
+
+            Map_Generic_In_Formals (Scope, Globals.Proof_Ins);
+            Map_Generic_In_Formals (Scope, Globals.Inputs);
+
+            ---------------------------------------------------------------
+            --  Step 4: Trim constituents based on the Refined_Depends.
             --  Only the Inputs are trimmed. Proof_Ins cannot be trimmed
             --  since they do not appear in Refined_Depends and Outputs
             --  cannot be trimmed since all constituents have to be
             --  present in the Refined_Depends.
+            --
+            --  ??? quite likely trimming should happen before mapping the
+            --  generic IN formal parameters; but the mapping happens in
+            --  Get_Depends too, so at least now we operate on the same view,
+            --  i.e. only on objects visible from the outside of generic.
             ---------------------------------------------------------------
 
             --  Check if the projected Global constituents need to be
@@ -1527,8 +1615,8 @@ package body Flow_Utility is
                          (Global_Node, Scope)
             then
                declare
-                  D_Map       : Dependency_Maps.Map;
-                  Input_Nodes : Node_Sets.Set;
+                  D_Map          : Dependency_Maps.Map;
+                  Refined_Inputs : Flow_Id_Sets.Set;
 
                begin
                   --  Read the Refined_Depends aspect
@@ -1539,23 +1627,16 @@ package body Flow_Utility is
                                Use_Computed_Globals => Use_Deduced_Globals);
 
                   --  Gather all inputs
-                  for Inputs of D_Map loop
-                     Input_Nodes.Union (To_Node_Set (Inputs));
+                  for RHS of D_Map loop
+                     Refined_Inputs.Union (RHS);
                   end loop;
 
                   --  Do the trimming
-                  G_In.Intersection (Input_Nodes);
+                  Globals.Inputs.Intersection
+                    (Change_Variant (Refined_Inputs, In_View));
                end;
             end if;
 
-            ---------------------------------------------------------------
-            --  Step 4: Convert to Flow_Id sets
-            ---------------------------------------------------------------
-
-            Globals :=
-              (Proof_Ins => To_Flow_Id_Set (G_Proof, In_View),
-               Inputs    => To_Flow_Id_Set (G_In,    In_View),
-               Outputs   => To_Flow_Id_Set (G_Out,   Out_View));
          end;
 
          Debug ("proof ins", Globals.Proof_Ins);
@@ -3554,6 +3635,8 @@ package body Flow_Utility is
 
          --  And finally, we remove all local constants
          Remove_Constants (S);
+
+         Map_Generic_In_Formals (Ctx.Scope, S);
       end return;
    end Get_Variables_Internal;
 
