@@ -167,13 +167,28 @@ package body Flow_Dependency_Maps is
             when N_Aggregate =>
                RHS := First (Expressions (RHS));
                while Present (RHS) loop
-                  Inputs.Include (Canonical_Entity (Entity (RHS), Context));
+                  declare
+                     E : constant Entity_Id :=
+                       Canonical_Entity (Entity (RHS), Context);
+
+                  begin
+                     if not Is_Generic_Actual_Without_Variable_Input (E) then
+                        Inputs.Include (E);
+                     end if;
+                  end;
 
                   Next (RHS);
                end loop;
 
             when N_Identifier | N_Expanded_Name =>
-               Inputs.Include (Canonical_Entity (Entity (RHS), Context));
+               declare
+                  E : constant Entity_Id :=
+                    Canonical_Entity (Entity (RHS), Context);
+               begin
+                  if not Is_Generic_Actual_Without_Variable_Input (E) then
+                     Inputs.Include (E);
+                  end if;
+               end;
 
             when N_Null =>
                null;
@@ -183,9 +198,6 @@ package body Flow_Dependency_Maps is
                raise Why.Unexpected_Node;
 
          end case;
-
-         --  Filter out generic formals without variable output
-         Remove_Generic_In_Formals_Without_Variable_Input (Inputs);
 
          --  Assemble map
 

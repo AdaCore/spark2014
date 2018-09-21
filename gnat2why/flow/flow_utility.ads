@@ -78,10 +78,14 @@ is
    --  Remove from Objects all constants without variable input
    --  @param Objects are the initial flow ids
 
-   procedure Remove_Generic_In_Formals_Without_Variable_Input
-     (Objects : in out Node_Sets.Set);
-   --  Remove generic IN formals without variable input from Objects; for SPARK
-   --  RM 6.1.4(18):
+   function Is_Generic_Actual_Without_Variable_Input
+     (E : Entity_Id)
+      return Boolean;
+   --  Returns True iff E is a constant that represent a generic actual
+   --  parameter and has no variable input. Such constants are filtered from
+   --  the Global/Depends/Initializes contract rights right when we parse the
+   --  AST, because they are ignored both from the inside and from the outside
+   --  of the generic instance; see SPARK RM 6.1.4(18):
    --
    --    "If a global_item denotes a generic formal object of mode in, then the
    --     corresponding global_item in an instance of the generic unit may

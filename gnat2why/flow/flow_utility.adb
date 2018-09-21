@@ -1289,7 +1289,9 @@ package body Flow_Utility is
       begin
          case The_Mode is
             when Name_Input =>
-               Globals.Inputs.Insert (E);
+               if not Is_Generic_Actual_Without_Variable_Input (E) then
+                  Globals.Inputs.Insert (E);
+               end if;
 
             when Name_In_Out =>
                Globals.Inputs.Insert (E);
@@ -1299,7 +1301,9 @@ package body Flow_Utility is
                Globals.Outputs.Insert (E);
 
             when Name_Proof_In =>
-               Globals.Proof_Ins.Insert (E);
+               if not Is_Generic_Actual_Without_Variable_Input (E) then
+                  Globals.Proof_Ins.Insert (E);
+               end if;
          end case;
       end Process;
 
@@ -1508,21 +1512,14 @@ package body Flow_Utility is
             G_Out   := Down_Project (Raw_Globals.Outputs,   Scope);
 
             ---------------------------------------------------------------
-            --  Step 3: Remove generic formals without variable input
-            ---------------------------------------------------------------
-
-            Remove_Generic_In_Formals_Without_Variable_Input (G_Proof);
-            Remove_Generic_In_Formals_Without_Variable_Input (G_In);
-
-            ---------------------------------------------------------------
-            --  Step 4: Sanity check that none of the proof ins are
+            --  Step 3: Sanity check that none of the proof ins are
             --  mentioned as ins.
             ---------------------------------------------------------------
 
             --  pragma Assert ((G_Proof and G_In) = Node_Sets.Empty_Set);
 
             ---------------------------------------------------------------
-            --  Step 5: Trim constituents based on the Refined_Depends.
+            --  Step 4: Trim constituents based on the Refined_Depends.
             --  Only the Inputs are trimmed. Proof_Ins cannot be trimmed
             --  since they do not appear in Refined_Depends and Outputs
             --  cannot be trimmed since all constituents have to be
@@ -1561,7 +1558,7 @@ package body Flow_Utility is
             end if;
 
             ---------------------------------------------------------------
-            --  Step 6: Convert to Flow_Id sets
+            --  Step 5: Convert to Flow_Id sets
             ---------------------------------------------------------------
 
             Globals :=
@@ -4241,26 +4238,17 @@ package body Flow_Utility is
       Objects.Difference (Constants);
    end Remove_Constants;
 
-   ------------------------------------------------------
-   -- Remove_Generic_In_Formals_Without_Variable_Input --
-   ------------------------------------------------------
+   ----------------------------------------------
+   -- Is_Generic_Actual_Without_Variable_Input --
+   ----------------------------------------------
 
-   procedure Remove_Generic_In_Formals_Without_Variable_Input
-     (Objects : in out Node_Sets.Set)
+   function Is_Generic_Actual_Without_Variable_Input
+     (E : Entity_Id)
+      return Boolean
    is
-      To_Be_Removed : Node_Sets.Set;
-   begin
-      for Obj of Objects loop
-         if Ekind (Obj) = E_Constant
-           and then In_Generic_Actual (Obj)
-           and then not Has_Variable_Input (Obj)
-         then
-            To_Be_Removed.Insert (Obj);
-         end if;
-      end loop;
-
-      Objects.Difference (To_Be_Removed);
-   end Remove_Generic_In_Formals_Without_Variable_Input;
+     (Ekind (E) = E_Constant
+      and then In_Generic_Actual (E)
+      and then not Has_Variable_Input (E));
 
    --------------------
    -- Same_Component --
