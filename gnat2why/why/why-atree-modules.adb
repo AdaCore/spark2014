@@ -2628,6 +2628,14 @@ package body Why.Atree.Modules is
                      Domain => EW_Term,
                      Symbol => NID ("in_range"),
                      Typ    => EW_Bool_Type));
+
+               Insert_Symbol
+                 (E, WNE_Assign_Null_Check,
+                  New_Identifier
+                    (Symbol => NID ("assign_null_check"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Root_Ty));
             end;
          end if;
       end Insert_Type_Symbols;

@@ -1018,6 +1018,8 @@ package body Why.Gen.Expr is
         Need_Check and then Count_Discriminants (Des_Typ) > 0
         and then Is_Constrained (Des_Typ);
 
+      Need_Not_Null_Check : constant Boolean := Can_Never_Be_Null (R);
+
       Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
 
    begin
@@ -1041,6 +1043,19 @@ package body Why.Gen.Expr is
          Result := +Insert_Predicate_Check (Ada_Node,
                                             Check_Entity,
                                             +Result);
+
+         if Need_Not_Null_Check then
+            Result :=
+              +New_VC_Call
+              (Ada_Node => Ada_Node,
+               Name     => To_Program_Space
+                 (E_Symb (R, WNE_Assign_Null_Check)),
+               Progs    => (1 => +Result),
+               Domain   => EW_Prog,
+               Reason   => VC_Null_Exclusion,
+               Typ      => Get_Type (+Expr));
+         end if;
+
       end if;
 
       return Result;

@@ -12480,15 +12480,11 @@ package body Gnat2Why.Expr is
                   Func_New_Uninitialized_Name :=
                     E_Symb (Etype (Expr), WNE_Uninit_Allocator);
 
-                  --  Subtype_indication Shall not specify a Null_Exclusion
-
-                  Call :=  +New_VC_Call
+                  Call := New_Call
                     (Ada_Node => Expr,
                      Domain   => Domain,
-                     Name     => To_Program_Space
-                       (Func_New_Uninitialized_Name),
-                     Progs    => (1 => +Void),
-                     Reason   => VC_Null_Exclusion,
+                     Name     => Func_New_Uninitialized_Name,
+                     Args     => (1 => +Void),
                      Typ      => Get_Typ (Func_New_Uninitialized_Name));
 
                --  Initialized allocator

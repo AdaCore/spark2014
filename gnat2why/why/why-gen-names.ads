@@ -347,7 +347,8 @@ package Why.Gen.Names is
       WNE_Pointer_Address,        --  "__pointer_address"
       WNE_Pointer_Value,          --  "__pointer_value"
       WNE_Init_Allocator,         --  "__new_initialized_allocator"
-      WNE_Uninit_Allocator        --  "__new_uninitialized_allocator"
+      WNE_Uninit_Allocator,       --  "__new_uninitialized_allocator"
+      WNE_Assign_Null_Check       --  "__assign_null_check"
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;
