@@ -1512,14 +1512,7 @@ package body Flow_Utility is
             G_Out   := Down_Project (Raw_Globals.Outputs,   Scope);
 
             ---------------------------------------------------------------
-            --  Step 3: Sanity check that none of the proof ins are
-            --  mentioned as ins.
-            ---------------------------------------------------------------
-
-            --  pragma Assert ((G_Proof and G_In) = Node_Sets.Empty_Set);
-
-            ---------------------------------------------------------------
-            --  Step 4: Trim constituents based on the Refined_Depends.
+            --  Step 3: Trim constituents based on the Refined_Depends.
             --  Only the Inputs are trimmed. Proof_Ins cannot be trimmed
             --  since they do not appear in Refined_Depends and Outputs
             --  cannot be trimmed since all constituents have to be
@@ -1558,7 +1551,7 @@ package body Flow_Utility is
             end if;
 
             ---------------------------------------------------------------
-            --  Step 5: Convert to Flow_Id sets
+            --  Step 4: Convert to Flow_Id sets
             ---------------------------------------------------------------
 
             Globals :=
