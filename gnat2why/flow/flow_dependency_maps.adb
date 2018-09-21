@@ -129,7 +129,7 @@ package body Flow_Dependency_Maps is
                --  (Foo, Bar, Baz) => ...
                LHS := First (Expressions (LHS));
                while Present (LHS) loop
-                  Outputs.Include
+                  Outputs.Insert
                     (Direct_Mapping_Id
                        (Canonical_Entity (Entity (LHS), Context)));
                   Next (LHS);
@@ -142,12 +142,12 @@ package body Flow_Dependency_Maps is
                pragma Assert (Get_Attribute_Id (Attribute_Name (LHS)) =
                                 Attribute_Result);
 
-               Outputs.Include
+               Outputs.Insert
                  (Direct_Mapping_Id (Entity (Prefix (LHS))));
 
             when N_Identifier | N_Expanded_Name =>
                --  Foo => ...
-               Outputs.Include
+               Outputs.Insert
                  (Direct_Mapping_Id
                     (Canonical_Entity (Entity (LHS), Context)));
 
@@ -173,7 +173,7 @@ package body Flow_Dependency_Maps is
 
                   begin
                      if not Is_Generic_Actual_Without_Variable_Input (E) then
-                        Inputs.Include (E);
+                        Inputs.Insert (E);
                      end if;
                   end;
 
@@ -187,7 +187,7 @@ package body Flow_Dependency_Maps is
 
                begin
                   if not Is_Generic_Actual_Without_Variable_Input (E) then
-                     Inputs.Include (E);
+                     Inputs.Insert (E);
                   end if;
                end;
 
