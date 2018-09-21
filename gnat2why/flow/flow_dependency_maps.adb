@@ -32,8 +32,6 @@ with SPARK_Util;                     use SPARK_Util;
 
 package body Flow_Dependency_Maps is
 
-   use Dependency_Maps;
-
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
    with Pre => Get_Pragma_Id (N) in Pragma_Depends
                                   | Pragma_Refined_Depends
