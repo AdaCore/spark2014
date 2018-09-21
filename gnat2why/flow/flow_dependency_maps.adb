@@ -29,8 +29,6 @@ with Nlists;                         use Nlists;
 with Sem_Prag;                       use Sem_Prag;
 with Sinfo;                          use Sinfo;
 with SPARK_Util;                     use SPARK_Util;
-with Treepr;                         use Treepr;
-with Why;
 
 package body Flow_Dependency_Maps is
 
@@ -156,8 +154,7 @@ package body Flow_Dependency_Maps is
                null;
 
             when others =>
-               Print_Node_Subtree (LHS);
-               raise Why.Unexpected_Node;
+               raise Program_Error;
          end case;
 
          --  Process RHS (inputs)
@@ -195,8 +192,7 @@ package body Flow_Dependency_Maps is
                null;
 
             when others =>
-               Print_Node_Subtree (RHS);
-               raise Why.Unexpected_Node;
+               raise Program_Error;
 
          end case;
 
