@@ -609,8 +609,15 @@ package body SPARK_Util is
       Ty : constant Entity_Id := Scope (E);
 
    begin
+      --  Hidden discriminants are only in SPARK if Ty's full view is in SPARK
+
       if Ekind (E) = E_Discriminant then
-         return True;
+         if Has_Discriminants (Ty) then
+            return True;
+         else
+            pragma Assert (Has_Discriminants (Full_View (Ty)));
+            return Entity_In_SPARK (Full_View (Ty));
+         end if;
 
       --  Components of a concurrent type are visible except if the type full
       --  view is not in SPARK.
@@ -634,7 +641,6 @@ package body SPARK_Util is
       --  present and see if it is in SPARK.
 
       else
-
          declare
             Orig_Comp : constant Entity_Id := Original_Record_Component (E);
             Orig_Rec  : constant Entity_Id := Scope (Orig_Comp);

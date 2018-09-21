@@ -1735,21 +1735,11 @@ package body SPARK_Definition is
                Mark_Violation (N, From  => Etype (Prefix (N)));
             end if;
 
-            --  Check if the component is visible in SPARK. If it is not,
-            --  report the error on the prefix type to avoid polluting the
-            --  output when the type is in a part with SPARK_Mode (On).
-
-            if not Violation_Detected
-              --  ??? why excluding access types here?
-              and then not Is_Access_Type (Etype (Prefix (N)))
-              and then not
-                Component_Is_Visible_In_SPARK (Entity (Selector_Name (N)))
-            then
-               Mark_Violation (N, From => Etype (Prefix (N)));
+            if not Violation_Detected then
+               Mark (Selector_Name (N));
             end if;
 
             Mark (Prefix (N));
-            Mark (Selector_Name (N));
 
          when N_Slice =>
             Mark_Most_Underlying_Type_In_SPARK (Etype (Prefix (N)), N);
@@ -5183,13 +5173,10 @@ package body SPARK_Definition is
 
             elsif Ekind (E) in E_Discriminant | E_Component then
                declare
-                  Ty : constant Entity_Id := Retysp (Scope (E));
+                  Ty : constant Entity_Id := Scope (E);
                begin
-                  if In_SPARK (Ty)
-                    and then (No (Search_Component_By_Name (Ty, E))
-                              or else (Is_Protected_Type (Ty)
-                                       and then Ekind (E) = E_Component
-                                       and then Full_View_Not_In_SPARK (Ty)))
+                  if not Retysp_In_SPARK (Ty)
+                    or else not Component_Is_Visible_In_SPARK (E)
                   then
                      Mark_Violation (N, From => Ty);
                   end if;
