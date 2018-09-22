@@ -490,22 +490,22 @@ my_lists.adb:58:18: info: initialization of "D.Node" proved
 my_lists.adb:59:12: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:59:18: info: initialization of private part of "L" proved
 my_lists.adb:59:21: info: initialization of "C.Node" proved
-my_lists.adb:61:10: medium: assertion might fail, cannot prove M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 < Length (L) [possible explanation: call at line 30 should mention Container (for argument L) in a postcondition]
-my_lists.adb:61:26: medium: precondition might fail [possible explanation: call at line 30 should mention Container (for argument L) in a postcondition]
+my_lists.adb:61:10: medium: assertion might fail, cannot prove M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 < Length (L)
+my_lists.adb:61:26: medium: precondition might fail
 my_lists.adb:61:58: info: initialization of private part of "L" proved
 my_lists.adb:61:62: info: initialization of "D.Node" proved
-my_lists.adb:61:65: medium: overflow check might fail [possible explanation: call at line 30 should mention Container (for argument L) in a postcondition]
+my_lists.adb:61:65: medium: overflow check might fail
 my_lists.adb:62:07: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:62:15: info: initialization of private part of "L" proved
 my_lists.adb:62:18: info: initialization of "D.Node" proved
 my_lists.adb:63:12: medium: precondition might fail [possible explanation: call at line 46 should mention Position (for argument C) in a postcondition]
 my_lists.adb:63:18: info: initialization of private part of "L" proved
 my_lists.adb:63:21: info: initialization of "C.Node" proved
-my_lists.adb:65:10: medium: assertion might fail, cannot prove M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 >= Length (L) [possible explanation: call at line 30 should mention Container (for argument L) in a postcondition]
-my_lists.adb:65:26: medium: precondition might fail [possible explanation: call at line 30 should mention Container (for argument L) in a postcondition]
+my_lists.adb:65:10: medium: assertion might fail, cannot prove M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 >= Length (L)
+my_lists.adb:65:26: medium: precondition might fail
 my_lists.adb:65:58: info: initialization of private part of "L" proved
 my_lists.adb:65:62: info: initialization of "D.Node" proved
-my_lists.adb:65:65: medium: overflow check might fail [possible explanation: call at line 30 should mention Container (for argument L) in a postcondition]
+my_lists.adb:65:65: medium: overflow check might fail
 my_lists.adb:66:07: medium: precondition might fail
 my_lists.adb:66:15: info: initialization of private part of "L" proved
 my_lists.adb:66:18: info: initialization of "D.Node" proved
@@ -1191,7 +1191,7 @@ my_ordered_sets.adb:86:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:86:36: info: initialization of private part of "L" proved
 my_ordered_sets.adb:87:18: info: initialization of private part of "L" proved
 my_ordered_sets.adb:88:16: info: initialization of private part of "L" proved
-my_ordered_sets.adb:89:22: medium: assertion might fail, cannot prove Contains (L, 4) [possible explanation: call at line 82 should mention Container (for argument L) in a postcondition]
+my_ordered_sets.adb:89:22: medium: assertion might fail, cannot prove Contains (L, 4)
 my_ordered_sets.adb:89:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:90:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:91:22: info: assertion proved (Z3: 1 VC)
@@ -1335,7 +1335,7 @@ my_ordered_sets.adb:191:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:192:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:193:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.ads:15:12: info: postcondition proved (Z3: 2 VC)
-my_ordered_sets.ads:22:53: medium: range check might fail
+my_ordered_sets.ads:22:53: medium: range check might fail [possible explanation: subprogram at line 22 should mention X in a precondition]
 my_ordered_sets.ads:23:17: info: postcondition proved (Z3: 1 VC)
 my_ordered_sets.ads:31:14: warning: subprogram "Test_Ordered_Set" has no effect
 my_sets.adb:4:14: warning: subprogram "Test_Set_Pos" has no effect

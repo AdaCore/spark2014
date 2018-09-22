@@ -32,7 +32,7 @@ memcpy.adb:151:32: info: initialization of "SaveStackPtr" proved
 memcpy.adb:152:21: medium: assertion might fail, cannot prove X86.Memory(SaveStackPtr) = SaveMem(SaveStackPtr)
 memcpy.adb:152:33: info: initialization of "SaveStackPtr" proved
 memcpy.adb:152:49: info: initialization of "SaveMem" proved
-memcpy.adb:160:21: medium: assertion might fail, cannot prove X86.RBP = saved_rbp
+memcpy.adb:160:21: medium: assertion might fail, cannot prove X86.RBP = saved_rbp [possible explanation: precondition of subprogram at line 15 should mention RBP]
 memcpy.adb:160:31: info: initialization of "saved_rbp" proved
 memcpy.adb:162:35: info: initialization of "saved_rdi" proved
 memcpy.adb:162:46: info: initialization of "saved_rdx" proved
