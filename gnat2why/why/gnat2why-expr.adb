@@ -10206,18 +10206,20 @@ package body Gnat2Why.Expr is
       Domain             : EW_Domain;
       Ada_Node           : Node_Id) return W_Expr_Id
    is
-      Left_Expr  : W_Expr_Id := Left;
-      Right_Expr : W_Expr_Id := Right;
-      Args_Len   : constant Positive :=
+      Left_Expr           : W_Expr_Id := Left;
+      Right_Expr          : W_Expr_Id := Right;
+      Args_Len            : constant Positive :=
         (if Is_Component_Left then 2 else 3)
         + (if Is_Component_Right then 1 else 3);
-      Args       : W_Expr_Array (1 .. Args_Len);
-      Arg_Ind    : Positive := 1;
-      T          : W_Expr_Id;
-      First_Expr : W_Expr_Id;
-      Low_Type   : Entity_Id;
-      Comp_Type  : constant W_Type_Id :=
+      Args                : W_Expr_Array (1 .. Args_Len);
+      Arg_Ind             : Positive := 1;
+      T                   : W_Expr_Id;
+      First_Expr          : W_Expr_Id;
+      Low_Type            : Entity_Id;
+      Comp_Type           : constant W_Type_Id :=
         EW_Abstract (Component_Type (Return_Type));
+      Need_Reconstruction : Boolean := True;
+      --  If we need to reconstruct the array after the concatenation
 
       function Build_Last_Expr return W_Expr_Id;
       --  build the expression that yields the value of the 'Last attribute
@@ -10296,189 +10298,188 @@ package body Gnat2Why.Expr is
          First_Expr := Get_Array_Attr (Domain, Left_Expr, Attribute_First, 1);
       end if;
 
-      --  Step 3: do to the actual concatenation
-      --  We prepare the arguments to the concat call. If one of the sides is
-      --  a component, need to possibly convert it to the right type (think of
-      --  integer literals, need to convert to Standard__Integer)
-
-      if Is_Component_Left then
-         Args (1) := Insert_Simple_Conversion
-           (Ada_Node => Ada_Node,
-            Domain   => Domain,
-            Expr     => Left_Expr,
-            To       => Comp_Type);
-         Args (2) := First_Expr;
-         Arg_Ind := 3;
-      else
-         Add_Array_Arg (Domain, Args, Left_Expr, Arg_Ind);
-      end if;
-
-      if Is_Component_Right then
-         Args (Arg_Ind) := Insert_Simple_Conversion (Domain => Domain,
-                                                     Expr   => Right_Expr,
-                                                     To     => Comp_Type);
-
-         Arg_Ind := Arg_Ind + 1;
-      else
-         Add_Array_Arg (Domain, Args, Right_Expr, Arg_Ind);
-      end if;
-
-      --  We build the call to concat
-
-      T := New_Concat_Call (Domain, Args, Type_Of_Node (Return_Type),
-                            Is_Component_Left  => Is_Component_Left,
-                            Is_Component_Right => Is_Component_Right);
-
-      --  Depending on the lower bound of the concat, the object may not be
-      --  slided correctly, because the concat operator in Why assumes that
-      --  the new low bound is the one of the left opnd. Correct that.
+      --  Step 3: build the actual concatenation expression.
+      --  Step 3.1: if Left is empty then concatenate returns Right. If the
+      --  length of Left is known statically, return Right.
 
       if not Is_Component_Left
-        and then Is_Constrained (Low_Type)
+        and then Is_Static_Array_Type (Left_Type)
+        and then Static_Array_Length (Left_Type, 1) = Uint_0
       then
-         T :=
-           New_Call
-             (Domain => Domain,
-              Name   => Get_Array_Theory (Return_Type).Slide,
-              Args   =>
-                (1 => T,
-                 2 => Get_Array_Attr (Domain, Left_Expr, Attribute_First, 1),
-                 3 => First_Expr),
-              Typ    => Type_Of_Node (Return_Type));
+         declare
+            Right_First : constant W_Expr_Id :=
+              (if Is_Component_Right then
+                  New_Attribute_Expr
+                 (Nth_Index_Type (Return_Type, 1),
+                  Domain,
+                  Attribute_First,
+                  Body_Params)
+               else Get_Array_Attr
+                 (Domain, Right_Expr, Attribute_First, 1));
+         begin
+            if Is_Component_Right then
+               T := New_Singleton_Call
+                 (Return_Type,
+                  Domain,
+                  Insert_Simple_Conversion (Domain => Domain,
+                                            Expr   => Right_Expr,
+                                            To     => Comp_Type),
+                  Right_First);
+            else
+               Need_Reconstruction := False;
+               T := Right_Expr;
+            end if;
+         end;
+
+      --  Step 3.2: Left is not statically empty, do the actual concatenation
+
+      else
+         --  We prepare the arguments to the concat call. If one of the sides
+         --  is a component, need to possibly convert it to the right type
+         --  (think of integer literals, need to convert to Standard__Integer).
+
+         if Is_Component_Left then
+            Args (1) := Insert_Simple_Conversion
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Expr     => Left_Expr,
+               To       => Comp_Type);
+            Args (2) := First_Expr;
+            Arg_Ind := 3;
+         else
+            Add_Array_Arg (Domain, Args, Left_Expr, Arg_Ind);
+         end if;
+
+         if Is_Component_Right then
+            Args (Arg_Ind) := Insert_Simple_Conversion (Domain => Domain,
+                                                        Expr   => Right_Expr,
+                                                        To     => Comp_Type);
+
+            Arg_Ind := Arg_Ind + 1;
+         else
+            Add_Array_Arg (Domain, Args, Right_Expr, Arg_Ind);
+         end if;
+
+         --  We build the call to concat
+
+         T := New_Concat_Call (Domain, Args, Type_Of_Node (Return_Type),
+                               Is_Component_Left  => Is_Component_Left,
+                               Is_Component_Right => Is_Component_Right);
+
+         --  Depending on the lower bound of the concat, the object may not be
+         --  slided correctly, because the concat operator in Why assumes that
+         --  the new low bound is the one of the left opnd. Correct that.
+
+         if not Is_Component_Left
+           and then Is_Constrained (Low_Type)
+         then
+            T :=
+              New_Call
+                (Domain => Domain,
+                 Name   => Get_Array_Theory (Return_Type).Slide,
+                 Args   =>
+                   (1 => T,
+                    2 =>
+                      Get_Array_Attr (Domain, Left_Expr, Attribute_First, 1),
+                    3 => First_Expr),
+                 Typ    => Type_Of_Node (Return_Type));
+         end if;
       end if;
 
-      --  Now the expression T is of the Why array type. We need to convert it
-      --  to the type of the concatenation expression. This type is always
+      --  Step 4: the expression T is of the Why array type. We need to convert
+      --  it to the type of the concatenation expression. This type is always
       --  unconstrained. Therefore, we need to convert to the unconstrained
       --  representation. This situation also requires a range check.
 
       pragma Assert (not Is_Constrained (Return_Type));
 
-      declare
-         Target    : constant Entity_Id := Nth_Index_Type (Return_Type, 1);
-         Last_Expr : W_Expr_Id := Build_Last_Expr;
-      begin
-         Last_Expr :=
-           Insert_Simple_Conversion
-             (Domain         => EW_Prog,
-              Expr           =>
-                (if Domain = EW_Prog then
-                        +Do_Range_Check (Ada_Node   => Ada_Node,
-                                         Ty         => Target,
-                                         W_Expr     => Last_Expr,
-                                         Check_Kind => RCK_Range)
-                 else Last_Expr),
-              To             => Get_Type (First_Expr));
+      if Need_Reconstruction then
+         declare
+            Target    : constant Entity_Id := Nth_Index_Type (Return_Type, 1);
+            Last_Expr : W_Expr_Id := Build_Last_Expr;
+         begin
+            Last_Expr :=
+              Insert_Simple_Conversion
+                (Domain         => EW_Prog,
+                 Expr           =>
+                   (if Domain = EW_Prog then
+                           +Do_Range_Check (Ada_Node   => Ada_Node,
+                                            Ty         => Target,
+                                            W_Expr     => Last_Expr,
+                                            Check_Kind => RCK_Range)
+                    else Last_Expr),
+                 To             => Get_Type (First_Expr));
 
-         T := Array_Convert_From_Base
-           (Domain => Domain,
-            Target => Return_Type,
-            Ar     => T,
-            First  => First_Expr,
-            Last   => Last_Expr);
-      end;
-
-      --  If the Left operand is a null array then concatenate returns Right
-      --  We handle this case statically, if we can.
-
-      if not Is_Component_Left then
-
-         --  If the left type is not static, handle things in Why
-
-         if not Is_Static_Array_Type (Left_Type) then
-            declare
-               Right_First : constant W_Expr_Id :=
-                 (if Is_Component_Right then
-                     New_Attribute_Expr
-                    (Nth_Index_Type (Return_Type, 1),
-                     Domain,
-                     Attribute_First,
-                     Body_Params)
-                  else
-                     Get_Array_Attr (Domain, Right_Expr, Attribute_First, 1));
-               Right_Last : constant W_Expr_Id :=
-                 (if Is_Component_Right then Right_First
-                  else Get_Array_Attr (Domain, Right_Expr, Attribute_Last, 1));
-               Right_Op    : W_Expr_Id :=
-                 (if Is_Component_Right then
-                     New_Singleton_Call
-                    (Return_Type,
-                     Domain,
-                     Insert_Simple_Conversion (Domain => Domain,
-                                               Expr   => Right_Expr,
-                                               To     => Comp_Type),
-                     Right_First)
-                  elsif Is_Static_Array_Type (Right_Type)
-                    or else (Get_Type_Kind (Get_Type (Right_Expr)) = EW_Split)
-                  then Right_Expr
-                  else Array_Convert_To_Base (Domain => Domain,
-                                              Ar     => Right_Expr));
-               Condition   : constant W_Expr_Id :=
-                 New_Call
-                   (Domain   => EW_Pred,
-                    Typ      => EW_Bool_Type,
-                    Name     => Why_Eq,
-                    Args     =>
-                      (1 =>
-                       Get_Array_Attr (Domain, Left_Expr, Attribute_Length, 1),
-                       2 => New_Integer_Constant (Value => Uint_0)));
-            begin
-               if not Is_Static_Array_Type (Return_Type) then
-                  Right_Op := Array_Convert_From_Base (Domain => Domain,
-                                                       Target => Return_Type,
-                                                       Ar     => Right_Op,
-                                                       First  => Right_First,
-                                                       Last   => Right_Last);
-               end if;
-
-               T := New_Conditional
-                 (Domain      => Domain,
-                  Condition   => Condition,
-                  Then_Part   => Right_Op,
-                  Else_Part   => T,
-                  Typ         => Get_Type (T));
-            end;
-
-         --  Here we know that the type is static, check if length is 0
-         --  ??? here we don't use T that we built earlier, move this code
-         --  before actually doing the concatenation
-
-         elsif Static_Array_Length (Left_Type, 1) = Uint_0 then
-            declare
-               Right_First : constant W_Expr_Id :=
-                 (if Is_Component_Right then
-                       New_Attribute_Expr
-                    (Nth_Index_Type (Return_Type, 1),
-                     Domain,
-                     Attribute_First,
-                     Body_Params)
-                  else Get_Array_Attr
-                    (Domain, Right_Expr, Attribute_First, 1));
-            begin
-               T :=
-                 (if Is_Component_Right then
-                     New_Singleton_Call
-                    (Return_Type,
-                     Domain,
-                     Insert_Simple_Conversion (Domain => Domain,
-                                               Expr   => Right_Expr,
-                                               To     => Comp_Type),
-                     Right_First)
-                  elsif Is_Static_Array_Type (Right_Type) then
-                       Right_Expr
-                  else Array_Convert_To_Base (Domain => Domain,
-                                              Ar     => Right_Expr));
-            end;
-
-         --  Here we know that the lhs is not null, so T remains unchanged
-
-         else
-            null;
-         end if;
-
+            T := Array_Convert_From_Base
+              (Domain => Domain,
+               Target => Return_Type,
+               Ar     => T,
+               First  => First_Expr,
+               Last   => Last_Expr);
+         end;
       end if;
 
-      --  Step 3: bind the introduced names if any, and return
+      --  Step 5: if the Left operand is not static, it may still be a null
+      --  array. Generate a conditional for this case.
+
+      if not Is_Component_Left
+        and then not Is_Static_Array_Type (Left_Type)
+      then
+         declare
+            Right_First : constant W_Expr_Id :=
+              (if Is_Component_Right then
+                  New_Attribute_Expr
+                 (Nth_Index_Type (Return_Type, 1),
+                  Domain,
+                  Attribute_First,
+                  Body_Params)
+               else
+                  Get_Array_Attr (Domain, Right_Expr, Attribute_First, 1));
+            Right_Last  : constant W_Expr_Id :=
+              (if Is_Component_Right then Right_First
+               else Get_Array_Attr (Domain, Right_Expr, Attribute_Last, 1));
+            Right_Op    : W_Expr_Id :=
+              (if Is_Component_Right then
+                  New_Singleton_Call
+                 (Return_Type,
+                  Domain,
+                  Insert_Simple_Conversion (Domain => Domain,
+                                            Expr   => Right_Expr,
+                                            To     => Comp_Type),
+                  Right_First)
+               elsif Is_Static_Array_Type (Right_Type)
+               or else (Get_Type_Kind (Get_Type (Right_Expr)) = EW_Split)
+               then Right_Expr
+               else Array_Convert_To_Base (Domain => Domain,
+                                           Ar     => Right_Expr));
+            Condition   : constant W_Expr_Id :=
+              New_Call
+                (Domain   => EW_Pred,
+                 Typ      => EW_Bool_Type,
+                 Name     => Why_Eq,
+                 Args     =>
+                   (1 =>
+                       Get_Array_Attr (Domain, Left_Expr, Attribute_Length, 1),
+                    2 => New_Integer_Constant (Value => Uint_0)));
+         begin
+            if not Is_Static_Array_Type (Return_Type) then
+               Right_Op := Array_Convert_From_Base (Domain => Domain,
+                                                    Target => Return_Type,
+                                                    Ar     => Right_Op,
+                                                    First  => Right_First,
+                                                    Last   => Right_Last);
+            end if;
+
+            T := New_Conditional
+              (Domain      => Domain,
+               Condition   => Condition,
+               Then_Part   => Right_Op,
+               Else_Part   => T,
+               Typ         => Get_Type (T));
+         end;
+      end if;
+
+      --  Step 6: bind the introduced names if any, and return
 
       T := Binding_For_Temp (Domain  => Domain,
                              Tmp     => Left_Expr,
