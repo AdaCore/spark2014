@@ -1,0 +1,3 @@
+mystr.adb:1:18: info: initialization of "S" proved
+mystr.adb:3:15: medium: missing dependency "S => S"
+mystr.adb:6:06: info: length check proved (CVC4: 1 VC)
