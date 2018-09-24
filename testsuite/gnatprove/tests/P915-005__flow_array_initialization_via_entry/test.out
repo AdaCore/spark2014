@@ -1,0 +1,5 @@
+p.adb:12:35: info: cannot unroll loop (too many loop iterations)
+p.adb:14:30: info: initialization of "My_Array" proved
+p.adb:16:30: info: initialization of "My_Array" proved
+p.ads:6:27: info: initialization of "A" proved
+p.ads:9:26: info: initialization of "My_Array" proved

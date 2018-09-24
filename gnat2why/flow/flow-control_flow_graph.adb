@@ -2227,14 +2227,13 @@ package body Flow.Control_Flow_Graph is
       --   |   |       |
       --   \---/       v
       --
-      --  This means the loop body may not be executed, so any
-      --  initializations in the loop which subsequent code depends on
-      --  will be flagged up.
+      --  This means the loop body may not be executed, so any initializations
+      --  in the loop which subsequent code depends on will be flagged up.
 
       function Variables_Initialized_By_Loop (N : Node_Id)
                                               return Flow_Id_Sets.Set;
-      --  A conservative heuristic to determine the set of possible
-      --  variables fully initialized by the given statement list.
+      --  A conservative heuristic to determine the set of possible variables
+      --  fully initialized by the given statement list.
 
       --------------------
       -- Get_Loop_Range --
@@ -2569,16 +2568,16 @@ package body Flow.Control_Flow_Graph is
 
          Null_Target : constant Target := (Valid => False);
 
-         Current_Loop      : Node_Id         := Empty;
-         Active_Loops      : Node_Sets.Set   := Node_Sets.Empty_Set;
-         All_Loop_Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+         Current_Loop : Node_Id       := Empty;
+         Active_Loops : Node_Sets.Set := Node_Sets.Empty_Set;
 
          Lc : constant Graph_Connections := CM (Union_Id (Statements (N)));
          --  A slice (represented by Standard_Entry and Standard_Exits) of the
          --  CFG for checking whether a variable is defined on all paths in
          --  the current loop.
 
-         function Get_Array_Index (N : Node_Id) return Target;
+         function Get_Array_Index (N : Node_Id) return Target
+         with Pre => Nkind (N) = N_Indexed_Component;
          --  Convert the target of an assignment to an array into a flow id
          --  and a list of indices.
 
@@ -2603,14 +2602,11 @@ package body Flow.Control_Flow_Graph is
             T : Entity_Id;
             L : Entity_Vectors.Vector;
          begin
-            --  First, is this really an array access?
-            if Nkind (N) /= N_Indexed_Component then
-               return Null_Target;
-            end if;
-
             --  Does the Prefix chain only contain record fields?
+
             declare
                Ptr : Node_Id := Prefix (N);
+
             begin
                loop
                   case Nkind (Ptr) is
@@ -2625,6 +2621,7 @@ package body Flow.Control_Flow_Graph is
             end;
 
             --  Construct the variable we're possibly fully defining
+
             case Nkind (Prefix (N)) is
                when N_Identifier | N_Expanded_Name =>
                   F := Direct_Mapping_Id (Entity (Prefix (N)));
@@ -2639,7 +2636,9 @@ package body Flow.Control_Flow_Graph is
             end case;
 
             --  Extract indices (and make sure they are simple and distinct)
+
             L := Entity_Vectors.Empty_Vector;
+
             declare
                Param_Expr  : Node_Id := First (Expressions (N)); --  LHS
                Index_Expr  : Node_Id := First_Index (T);         --  array
@@ -2810,19 +2809,38 @@ package body Flow.Control_Flow_Graph is
 
                elsif A.Variables_Defined.Contains (T.Var)
                  and then F.Kind = Direct_Mapping
-                 and then Nkind (Get_Direct_Mapping_Id (F)) =
-                            N_Assignment_Statement
-                 and then Get_Array_Index (Name (Get_Direct_Mapping_Id (F))) =
-                            T
                then
-                  FA.CFG.DFS (Start         => V,
-                              Include_Start => False,
-                              Visitor       => Check_Unused'Access);
-                  if Fully_Defined then
-                     Tv := Flow_Graphs.Skip_Children;
-                  else
-                     Tv := Flow_Graphs.Abort_Traversal;
-                  end if;
+                  declare
+                     Var : constant Node_Id := Get_Direct_Mapping_Id (F);
+                     Var_Defined : Target;
+
+                  begin
+                     case Nkind (Var) is
+                        when N_Assignment_Statement =>
+                           Var_Defined := Get_Array_Index (Name (Var));
+
+                        when N_Indexed_Component =>
+                           Var_Defined := Get_Array_Index (Var);
+
+                        when others =>
+                           raise Program_Error;
+
+                     end case;
+
+                     if Var_Defined = T then
+                        FA.CFG.DFS (Start         => V,
+                                    Include_Start => False,
+                                    Visitor       => Check_Unused'Access);
+
+                        if Fully_Defined then
+                           Tv := Flow_Graphs.Skip_Children;
+                        else
+                           Tv := Flow_Graphs.Abort_Traversal;
+                        end if;
+                     else
+                        Tv := Flow_Graphs.Continue;
+                     end if;
+                  end;
 
                elsif Lc.Standard_Exits.Contains (V) then
                   Fully_Defined := False;
@@ -2893,21 +2911,59 @@ package body Flow.Control_Flow_Graph is
                   end if;
 
                when N_Assignment_Statement =>
+                  if Nkind (Name (N)) = N_Indexed_Component then
+                     declare
+                        T : constant Target := Get_Array_Index (Name (N));
+
+                     begin
+                        if T.Valid
+                          and then Fully_Defined_In_Original_Loop (T)
+                        then
+                           Fully_Initialized.Include (T.Var);
+                        end if;
+                     end;
+                  end if;
+
+               when N_Procedure_Call_Statement
+                  | N_Entry_Call_Statement
+               =>
                   declare
-                     T : constant Target := Get_Array_Index (Name (N));
+                     procedure Handle_Parameter (Formal : Entity_Id;
+                                                 Actual : Node_Id);
+
+                     ----------------------
+                     -- Handle_Parameter --
+                     ----------------------
+
+                     procedure Handle_Parameter (Formal : Entity_Id;
+                                                 Actual : Node_Id)
+                     is
+                     begin
+                        if Nkind (Actual) = N_Indexed_Component then
+
+                           declare
+                              T : constant Target :=
+                                (if Ekind (Formal) = E_Out_Parameter
+                                 then Get_Array_Index (Actual)
+                                 else Null_Target);
+
+                           begin
+                              if T.Valid
+                                and then Fully_Defined_In_Original_Loop (T)
+                              then
+                                 Fully_Initialized.Include (T.Var);
+                              end if;
+                           end;
+                        end if;
+                     end Handle_Parameter;
+
+                     procedure Handle_Parameters is new
+                       Iterate_Call_Parameters
+                         (Handle_Parameter => Handle_Parameter);
+
                   begin
-                     if T.Valid
-                       and then Fully_Defined_In_Original_Loop (T)
-                     then
-                        Fully_Initialized.Include (T.Var);
-                     end if;
+                     Handle_Parameters (N);
                   end;
-
-               when N_Procedure_Call_Statement =>
-                  --  ??? not done yet, we can implement this on demand
-
-                  --  all out parameters (globals not relevant here)
-                  null;
 
                --  Don't traverse into subprograms (because we don't check if
                --  they are executed) and into packages (because they can only
@@ -2935,11 +2991,6 @@ package body Flow.Control_Flow_Graph is
 
          procedure Rec (N : Node_Id) renames Rec_Inner;
 
-         --  Local variables:
-
-         Loop_Name : constant Entity_Id := Entity (Identifier (N));
-         --  The loop entity
-
       --  Start of processing for Variables_Initialized_By_Loop
 
       begin
@@ -2947,13 +2998,8 @@ package body Flow.Control_Flow_Graph is
             return Flow_Id_Sets.Empty_Set;
          end if;
 
-         for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-            if FA.Atr (V).Loops.Contains (Loop_Name) then
-               All_Loop_Vertices.Insert (V);
-            end if;
-         end loop;
-
          Rec (N);
+
          return Fully_Initialized;
       end Variables_Initialized_By_Loop;
 
