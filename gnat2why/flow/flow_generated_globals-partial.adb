@@ -108,11 +108,11 @@ package body Flow_Generated_Globals.Partial is
    --  Returns True iff E might be called
 
    function Scope_Truly_Within_Or_Same
-     (E, Analyzed : Entity_Id) return Boolean
+     (Inner, Outer : Entity_Id) return Boolean
    is
-     (Is_In_Analyzed_Files (E)
-      and then Scope_Within_Or_Same (E, Analyzed))
-   with Pre => Is_In_Analyzed_Files (Analyzed);
+     (Is_In_Analyzed_Files (Inner)
+      and then Scope_Within_Or_Same (Inner, Outer))
+   with Pre => Is_In_Analyzed_Files (Outer);
    --  Determines if entity E is the same as Analyzed or is "truly" within,
    --  i.e. in the same compilation unit as Analyzed and inside Analyzed. (It
    --  differs from Scope_Within_Or_Same for entities in child units). This
