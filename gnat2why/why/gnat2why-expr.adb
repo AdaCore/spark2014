@@ -1041,7 +1041,7 @@ package body Gnat2Why.Expr is
 
             Default_Checks  : W_Prog_Id :=
               Compute_Default_Check (Constrained_Ty, Body_Params);
-            --  Checks for runtime errors in default values
+              --  Checks for runtime errors in default values
 
             Init_Assumption : constant W_Pred_Id :=
               Compute_Default_Init
@@ -12486,6 +12486,17 @@ package body Gnat2Why.Expr is
                      Name     => Func_New_Uninitialized_Name,
                      Args     => (1 => +Void),
                      Typ      => Get_Typ (Func_New_Uninitialized_Name));
+
+                  --  Compute the default check on the pointed type when the
+                  --  allocator is uninitialized. This check is not needed when
+                  --  the allocator is initialized because the initialization
+                  --  value should be check within Transform_Expr.
+
+                  Call := +Sequence
+                    (Left     => Compute_Default_Check
+                       (Ty     => Directly_Designated_Type (Exp_Ty),
+                        Params => Body_Params),
+                     Right    => +Call);
 
                --  Initialized allocator
 

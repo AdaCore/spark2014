@@ -118,7 +118,7 @@ package body Why.Gen.Pointers is
         To_Local (E_Symb (E, WNE_Uninit_Allocator));
 
       New_Initialized_Name : constant W_Identifier_Id :=
-         To_Local (E_Symb (E, WNE_Init_Allocator));
+        To_Local (E_Symb (E, WNE_Init_Allocator));
 
       No_Init_Ident : constant W_Identifier_Id :=
         New_Identifier (Name => "__void_param", Typ => EW_Unit_Type);

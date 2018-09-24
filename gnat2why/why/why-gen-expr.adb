@@ -1020,6 +1020,13 @@ package body Why.Gen.Expr is
 
       Need_Not_Null_Check : constant Boolean := Can_Never_Be_Null (R);
 
+      --  Do not generate a predicate check for an internal call to a parent
+      --  predicate function inside the definition of a predicate function.
+
+      Need_Pred_Check : constant Boolean :=
+        Has_Predicates (R)
+        and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
+
       Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
 
    begin
@@ -1040,9 +1047,11 @@ package body Why.Gen.Expr is
                                                           +Result);
          end if;
 
-         Result := +Insert_Predicate_Check (Ada_Node,
-                                            Check_Entity,
-                                            +Result);
+         if Need_Pred_Check then
+            Result := +Insert_Predicate_Check (Ada_Node,
+                                               Check_Entity,
+                                               +Result);
+         end if;
 
          if Need_Not_Null_Check then
             Result :=

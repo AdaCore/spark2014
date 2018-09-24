@@ -162,9 +162,7 @@ package body Flow_Utility.Initialization is
             end if;
          end;
 
-      --  We assume access types to be not initialized as they are not in SPARK
-      --  ??? In theory we shouldn't arrive here because we shouldn't analyse
-      --  types that are not in SPARK.
+      --   We assume access types to be initialized to null
 
       elsif Is_Access_Type (Typ) then
          Result := Full_Default_Initialization;
