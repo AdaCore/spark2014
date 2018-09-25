@@ -81,11 +81,11 @@ is
    function Is_Generic_Actual_Without_Variable_Input
      (E : Entity_Id)
       return Boolean;
-   --  Returns True iff E is a constant that represent a generic actual
+   --  Returns True iff E is a constant that represents a generic actual
    --  parameter and has no variable input. Such constants are filtered from
-   --  the Global/Depends/Initializes contract rights right when we parse the
-   --  AST, because they are ignored both from the inside and from the outside
-   --  of the generic instance; see SPARK RM 6.1.4(18):
+   --  the Global/Depends/Initializes contract right when we parse the AST,
+   --  because they are ignored both from the inside and from the outside of
+   --  the generic instance; see SPARK RM 6.1.4(18):
    --
    --    "If a global_item denotes a generic formal object of mode in, then the
    --     corresponding global_item in an instance of the generic unit may

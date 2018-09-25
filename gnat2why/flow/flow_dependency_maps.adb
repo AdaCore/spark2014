@@ -184,6 +184,7 @@ package body Flow_Dependency_Maps is
                declare
                   E : constant Entity_Id :=
                     Canonical_Entity (Entity (RHS), Context);
+
                begin
                   if not Is_Generic_Actual_Without_Variable_Input (E) then
                      Inputs.Include (E);
