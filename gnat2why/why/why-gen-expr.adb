@@ -38,7 +38,6 @@ with Gnat2Why.Subprograms;       use Gnat2Why.Subprograms;
 with Gnat2Why_Args;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
 with Sinput;                     use Sinput;
-with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with SPARK_Util.Types;           use SPARK_Util.Types;
@@ -3057,19 +3056,21 @@ package body Why.Gen.Expr is
        Domain   : EW_Domain;
        Typ      : W_Type_Id) return W_Expr_Id
    is
+      Call : constant W_Expr_Id :=
+        New_Call (Ada_Node => Ada_Node,
+                  Name     => Name,
+                  Args     => Progs,
+                  Domain   => Domain,
+                  Typ      => Typ);
    begin
-      return
-        +New_VC_Expr
-          (Ada_Node => Ada_Node,
-           Reason   => Reason,
-           Expr     =>
-             New_Call
-               (Ada_Node => Ada_Node,
-                Name     => Name,
-                Args     => Progs,
-                Domain   => Domain,
-                Typ      => Typ),
-           Domain  => Domain);
+      if Domain /= EW_Term then
+         return +New_VC_Expr (Ada_Node => Ada_Node,
+                              Reason   => Reason,
+                              Expr     => Call,
+                              Domain   => Domain);
+      else
+         return Call;
+      end if;
    end New_VC_Call;
 
    -----------------
@@ -3083,20 +3084,16 @@ package body Why.Gen.Expr is
        Domain   : EW_Domain) return W_Expr_Id
    is
    begin
-      if Domain /= EW_Term and then Present (Ada_Node) then
-         return
-           Insert_Cnt_Loc_Label
-             (Ada_Node => Ada_Node,
-              E        =>
-                New_Label
-                  (Ada_Node => Ada_Node,
-                   Labels   => New_VC_Labels (Ada_Node, Reason),
-                   Def      => Expr,
-                   Domain   => Domain,
-                   Typ      => Get_Type (Expr)));
-      else
-         return Expr;
-      end if;
+      return
+        Insert_Cnt_Loc_Label
+          (Ada_Node => Ada_Node,
+           E        =>
+             New_Label
+               (Ada_Node => Ada_Node,
+                Labels   => New_VC_Labels (Ada_Node, Reason),
+                Def      => Expr,
+                Domain   => Domain,
+                Typ      => Get_Type (Expr)));
    end New_VC_Expr;
 
    -------------------
