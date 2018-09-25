@@ -1596,11 +1596,22 @@ package body Flow_Error_Messages is
                   elsif Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
                     and then Ekind (Get_Direct_Mapping_Id (F)) = E_Constant
                   then
-                     Append (R, "constant with");
-                     if not Has_Variable_Input (Get_Direct_Mapping_Id (F)) then
-                        Append (R, "out");
-                     end if;
-                     Append (R, " variable input ");
+                     declare
+                        Var : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
+                     begin
+                        if Nkind (Original_Node (Parent (Var))) =
+                          N_Object_Renaming_Declaration
+                        then
+                           Append (R, "renaming of a function call ");
+                        else
+                           Append (R, "constant with");
+                           if not Has_Variable_Input (Var) then
+                              Append (R, "out");
+                           end if;
+                           Append (R, " variable input ");
+                        end if;
+                     end;
                      Append_Quote;
                      Append (R, Flow_Id_To_String (F));
                   elsif Is_Constituent (F) then
