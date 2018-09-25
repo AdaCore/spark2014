@@ -1,0 +1,5 @@
+pack.adb:5:18: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention X in a precondition]
+pack.adb:8:30: info: initialization of "X" proved
+pack.adb:16:17: high: constant with variable input "Int_Ren" must be listed in the Global aspect of "Proc1" (SPARK RM 6.1.4(13))
+pack.adb:21:17: high: "X" must be listed in the Global aspect of "Proc2" (SPARK RM 6.1.4(13))
+pack.adb:26:17: high: "X" must be listed in the Global aspect of "Proc3" (SPARK RM 6.1.4(13))
