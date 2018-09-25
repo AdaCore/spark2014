@@ -1671,6 +1671,7 @@ package body Flow_Error_Messages is
                   Append_Quote;
                   declare
                      F_Name_String : constant String := To_String (F.Name);
+
                   begin
                      if F_Name_String = "__HEAP" then
                         Append (R, "memory accessed through objects of " &
@@ -1678,6 +1679,7 @@ package body Flow_Error_Messages is
                      else
                         declare
                            Index : Positive := F_Name_String'First;
+
                         begin
                            --  Replace __ with . in the magic string
                            while Index <= F_Name_String'Last loop
@@ -1710,6 +1712,7 @@ package body Flow_Error_Messages is
                   when Direct_Mapping | Record_Field =>
                      declare
                         N : constant Node_Id := Get_Direct_Mapping_Id (F);
+
                      begin
                         Msglen := 0;
                         Set_Msg_Insertion_Line_Number (Sloc (N), Flag);
@@ -1728,6 +1731,7 @@ package body Flow_Error_Messages is
             when '@' =>
                declare
                   N : constant Node_Id := Get_Direct_Mapping_Id (F);
+
                begin
                   Msglen := 0;
                   Set_Msg_Insertion_Line_Number (Sloc (N), Flag);
