@@ -11,7 +11,7 @@ Type Contracts
   between variants of the same record.
 * A *predicate* introduced by aspect ``Static_Predicate``,
   ``Dynamic_Predicate`` or ``Predicate`` may be specified on a type or subtype
-  to express a property verified by objects of the type.
+  to express a property verified by objects of the (sub)type.
 * A *type invariant* introduced by aspect ``Type_Invariant`` or ``Invariant``
   may be specified on the completion of a private type to express a property
   that is only guaranteed outside of the type scope.
@@ -78,7 +78,7 @@ Record Discriminants
 
 Record types can use discriminants to:
 
-* define multiple variants and associate each component to a specific variant
+* define multiple variants and associate each component with a specific variant
 * bound the size of array components
 
 For example, the log introduced in :ref:`State Abstraction` could be
@@ -115,20 +115,20 @@ Predicates
 
 [Ada 2012]
 
-Predicates can be used on any type to express a property verified by objects of
-the type at all times. Aspects ``Static_Predicate`` and ``Dynamic_Predicate``
-are defined in Ada 2012 to associate a predicate to a type. Aspect
+Predicates can be used on any subtype to express a property verified by objects of
+the subtype at all times. Aspects ``Static_Predicate`` and ``Dynamic_Predicate``
+are defined in Ada 2012 to associate a predicate with a subtype. Aspect
 ``Dynamic_Predicate`` allows to express more general predicates than aspect
 ``Static_Predicate``, at the cost of restricting the use of variables of the
-type. The following table summarizes the main similarities and differences
+subtype. The following table summarizes the main similarities and differences
 between both aspects:
 
 .. csv-table::
    :header: "Feature", "``Static_Predicate``", "``Dynamic_Predicate``"
    :widths: 3, 1, 1
 
-   "Applicable to scalar type", "Yes", "Yes"
-   "Applicable to array/record type", "No", "Yes"
+   "Applicable to scalar subtype", "Yes", "Yes"
+   "Applicable to array/record subtype", "No", "Yes"
    "Allows simple comparisons with static values", "Yes", "Yes"
    "Allows conjunctions/disjunctions", "Yes", "Yes"
    "Allows function calls", "No", "Yes"
@@ -137,22 +137,22 @@ between both aspects:
    "Can be used as range in for-loop", "Yes", "No"
    "Can be used as choice in case-statement", "Yes", "No"
    "Can be used as prefix with attributes First, Last or Range", "No", "No"
-   "Can be used as index type in array", "No", "No"
+   "Can be used as index subtype in array", "No", "No"
 
 Aspect ``Predicate`` is specific to |GNAT Pro| and can be used instead of
 ``Static_Predicate`` or ``Dynamic_Predicate``. |GNAT Pro| treats it as a
 ``Static_Predicate`` whenever possible and as a ``Dynamic_Predicate`` in the
-remaining cases, thus not restricting uses of variables of the type more than
+remaining cases, thus not restricting uses of variables of the subtype more than
 necessary.
 
 Predicates are inherited by subtypes and derived types. If a subtype or a
 derived type inherits a predicate and defines its own predicate, both
-predicates are checked on values of the new type. Predicates are restricted in
+predicates are checked on values of the new (sub)type. Predicates are restricted in
 |SPARK| so that they cannot depend on variable input. In particular, a
 predicate cannot mention a global variable in |SPARK|, although it can mention
 a global constant.
 
-|GNATprove| checks that all values assigned to a type with a predicate are
+|GNATprove| checks that all values assigned to a subtype with a predicate are
 allowed by its predicate (for all three forms of predicate: ``Predicate``,
 ``Static_Predicate`` and ``Dynamic_Predicate``). |GNATprove| generates a
 predicate check even in cases where there is no corresponding run-time check,
@@ -167,7 +167,7 @@ Static Predicates
 ^^^^^^^^^^^^^^^^^
 
 A static predicate allows specifying which values are allowed or forbidden in a
-scalar type, when this specification cannot be expressed with :ref:`Scalar
+scalar subtype, when this specification cannot be expressed with :ref:`Scalar
 Ranges` (because it has *holes*). For example, we can express that the global
 counter ``Total`` cannot be equal to ``10`` or ``100`` with the following
 static predicate:
@@ -187,7 +187,7 @@ or equivalently:
    Total : Count;
 
 Uses of the name of the subtype ``Count`` in the predicate refer to variables
-of this type. Scalar ranges and static predicates can also be combined, and
+of this subtype. Scalar ranges and static predicates can also be combined, and
 static predicates can be specified on subtypes, derived types and new signed
 integer types. For example, we may define ``Count`` as follows:
 
@@ -200,7 +200,7 @@ Any attempt to assign a forbidden value to variable ``Total`` results in
 raising an exception at run time. During analysis, |GNATprove| checks that all
 values assigned to ``Total`` are allowed.
 
-Similarly, we can express that values of type ``Normal_Float`` are the *normal*
+Similarly, we can express that values of subtype ``Normal_Float`` are the *normal*
 32-bits floating-point values (thus excluding *subnormal* values), assuming
 here that ``Float`` is the 32-bits floating-point type on the target:
 
@@ -209,15 +209,15 @@ here that ``Float`` is the 32-bits floating-point type on the target:
    subtype Normal_Float is Float with
      Static_Predicate => Normal_Float <= -2.0**(-126) or Normal_Float = 0.0 or Normal_Float >= 2.0**(-126);
 
-Any attempt to assign a subnormal value to a variable of type ``Normal_Value``
+Any attempt to assign a subnormal value to a variable of subtype ``Normal_Float``
 results in raising an exception at run time. During analysis, |GNATprove|
 checks that only normal values are assigned to such variables.
 
 Dynamic Predicates
 ^^^^^^^^^^^^^^^^^^
 
-A dynamic predicate allows specifying properties of scalar types that cannot be
-expressed as static predicates. For example, we can express that values of type
+A dynamic predicate allows specifying properties of scalar subtypes that cannot be
+expressed as static predicates. For example, we can express that values of subtype
 ``Odd`` and ``Even`` are distributed according to their name as follows:
 
 .. code-block:: ada
@@ -289,14 +289,14 @@ or that a special end marker is always present in the array as follows:
 Dynamic predicates are checked only at specific places at run time, as mandated
 by the Ada Reference Manual:
 
-* when converting a value to the type with the predicate
+* when converting a value to the subtype with the predicate
 * when returning from a call, for each in-out and out parameter passed by reference
 * when declaring an object, except when there is no initialization expression
   and no subcomponent has a default expression
 
 Thus, not all violations of the dynamic predicate are caught at run time. On
 the contrary, during analysis, |GNATprove| checks that initialized variables
-whose type has a predicate always contain a value allowed by the predicate.
+whose subtype has a predicate always contain a value allowed by the predicate.
 
 .. _Type Invariants:
 
@@ -306,10 +306,10 @@ Type Invariants
 [Ada 2012]
 
 In |SPARK|, type invariants can only be specified on completions of private
-types (and not directly on private types declarations). They express a property
-that is only quaranteed outside of the immediate scope of the type bearing the
+types (and not directly on private type declarations). They express a property
+that is only guaranteed outside of the immediate scope of the type bearing the
 invariant. Aspect ``Type_Invariant`` is defined in Ada 2012 to associate an
-invariant to a type. Aspect ``Invariant`` is specific to |GNAT Pro| and can be
+invariant with a type. Aspect ``Invariant`` is specific to |GNAT Pro| and can be
 used instead of ``Type_Invariant``.
 
 |GNATprove| checks that, outside of the immediate scope of a type with an
@@ -360,8 +360,8 @@ a type invariant, which can be specified using a ``Type_Invariant`` aspect:
 
    end P;
 
-Like for type predicates, the name of the type can be used inside the invariant
-expression to refer to the current instance of the type. Here the type predicate
+Like for subtype predicates, the name of the type can be used inside the invariant
+expression to refer to the current instance of the type. Here the subtype predicate
 of ``Stack`` expresses that the ``Max`` field of a valid stack is the maximum of
 the elements stored in the stack.
 

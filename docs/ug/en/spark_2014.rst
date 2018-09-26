@@ -19,7 +19,7 @@ aspects/pragmas/attributes, the latest version SPARK 2014 being a much larger
 subset than previous versions of |SPARK|. It includes in particular:
 
 * richer types (subtypes with bounds not known statically, discriminant
-  records, type predicates)
+  records, subtype predicates)
 * more flexible features to structure programs (function and operator
   overloading, early returns and exits, raise statements)
 * code sharing features (generics, expression functions)

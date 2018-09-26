@@ -462,7 +462,7 @@ This program implements two small simulators of traffic lights:
 * Unit ``Traffic_Lights`` defines a concurrent program for operating traffic
   lights at a pedestian crossing, using two tasks that communicate over a
   protected object, where the invariant maintained by the protected data is
-  expressed using a type predicate.
+  expressed using a subtype predicate.
 
 |GNATprove| proves all checks on this program, including the safe usage of
 concurrency (absence of data races, absence of deadlocks).

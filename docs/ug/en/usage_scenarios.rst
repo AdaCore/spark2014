@@ -400,7 +400,7 @@ variable or constant directly. Because |GNATprove| performs an analysis based
 on contracts, all that is known at analysis time about the value returned by a
 getter function is what is available from its signature and
 contract. Typically, one may want to use :ref:`Scalar Ranges` or
-:ref:`Predicates` to constrain the return type of such getter functions, to
+:ref:`Predicates` to constrain the return subtype of such getter functions, to
 reflect the operational constraints respected by all parameterizations.
 
 This technique ensures that the results of applying |GNATprove| are valid not
@@ -1154,7 +1154,7 @@ process. Various options can be considered for the conversion process:
    * :ref:`Contract Cases` can be used to replace complex postconditions with
      implications.
 
-   * :ref:`Predicates` can be used to state invariant properties of types, so
+   * :ref:`Predicates` can be used to state invariant properties of subtypes, so
      that they need not be repeated in preconditions, postconditions, loop
      invariants, etc.
 
