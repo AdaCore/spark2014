@@ -84,7 +84,7 @@ screen_output.adb:82:07: warning: no Global contract available for "Put"
 screen_output.adb:83:07: warning: assuming "Put" has no effect on global items
 screen_output.adb:83:07: warning: no Global contract available for "Put"
 screen_output.adb:83:46: info: range check proved (CVC4: 1 VC)
-screen_output.adb:83:53: low: range check might fail (e.g. when S = (1 => ':', others => ' ') and S'First = 1 and S'Last = 2147483645) [possible explanation: subprogram at line 65 should mention input__line_num and S in a precondition]
+screen_output.adb:83:53: low: range check might fail (e.g. when S = (1 => ':', others => ' ') and S'First = 1 and S'Last = 2147483645) [possible explanation: subprogram at line 65 should mention Input.Line_Num and S in a precondition]
 screen_output.adb:84:07: warning: assuming "New_Line" has no effect on global items
 screen_output.adb:84:07: warning: no Global contract available for "New_Line"
 screen_output.adb:93:07: warning: assuming "Put" has no effect on global items

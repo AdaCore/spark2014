@@ -835,10 +835,13 @@ package body Flow_Error_Messages is
             end if;
 
             if Map.Contains (V) then
+               --  Only pretty-print actuals; formals will be pretty anyway
                Append (Expl, Flow_Id_To_String (Map (V))
-                       & " (for argument " & Flow_Id_To_String (V) & ")");
+                       & " (for argument "
+                       & Flow_Id_To_String (V, Pretty => True)
+                       & ")");
             else
-               Append (Expl, Flow_Id_To_String (V));
+               Append (Expl, Flow_Id_To_String (V, Pretty => True));
             end if;
          end loop;
          return Expl;

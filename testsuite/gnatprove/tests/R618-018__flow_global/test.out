@@ -1,5 +1,5 @@
 p1-p2.adb:2:04: info: initialization of "X2" constituent of "S2" proved
 p1.adb:6:04: info: initialization of "X1" constituent of "S1" proved
-p1.adb:10:17: medium: overflow check might fail [possible explanation: subprogram at line 8 should mention X1 and p1__p2__s2 in a precondition]
+p1.adb:10:17: medium: overflow check might fail [possible explanation: subprogram at line 8 should mention X1 and P1.P2.S2 in a precondition]
 p1.ads:6:36: medium: "P1.S1" must be a global Input of "F1"
 p1.ads:6:36: medium: "P2.S2" constituent of "P1.S1" must be a global Input of "F1"

@@ -23,7 +23,7 @@ stack_asm.ads:24:20: info: initialization of "The_Ptr" constituent of "State" pr
 stack_asm.ads:24:20: medium: postcondition might fail, cannot prove (Is_Empty)
 test.adb:7:41: info: initialization of "Stack_ASM.State" proved
 test.adb:13:23: info: initialization of "I" proved
-test.adb:17:21: medium: precondition might fail [possible explanation: subprogram at line 13 should mention stack_asm__state in a precondition]
+test.adb:17:21: medium: precondition might fail [possible explanation: subprogram at line 13 should mention Stack_Asm.State in a precondition]
 test.adb:20:23: info: initialization of "I" proved
 test.adb:21:41: high: "Stack_ASM.State" is not an input in the Global contract of subprogram "Test_03" at line 20
 test.adb:21:41: high: "Stack_ASM.State" is not initialized
