@@ -1,0 +1,1 @@
+tank1.ads:4:23: warning: no procedure exists that can initialize abstract state "Tank1.Tank_State"

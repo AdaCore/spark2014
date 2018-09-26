@@ -1069,9 +1069,7 @@ package body Flow_Utility is
                                                    else Globals.Inputs);
 
                   begin
-                     if not Trimmed_Input.Is_Empty then
-                        Depends.Insert (O, Trimmed_Input);
-                     end if;
+                     Depends.Insert (O, Trimmed_Input);
                   end;
                end loop;
             end;
