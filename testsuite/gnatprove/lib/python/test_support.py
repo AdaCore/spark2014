@@ -620,6 +620,8 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
     cmd = ["gnatprove"]
     # Continue on errors, to get the maximum number of messages for tests
     cmd += ["-k"]
+    # Issue all information messages for tests
+    cmd += ["--info"]
     if benchmark_mode():
         cmd += ["--benchmark"]
     if debug_mode():

@@ -242,11 +242,6 @@ is
 --                   Add_In_Range (Src_Offset, Dst'Last * 8 + 7) and
 --                   Src_Offset + Dst'Last * 8 + 7 <= Src'Last
    is
-      pragma Annotate
-        (GNATprove, False_Positive, """Dst"" might not be initialized",
-         "array Dst is initialized from Dst'First = 0 to Dst'Last");
-      -- so even if the loop is not entered, all elements of Dst are
-      -- initialized (zero elements in that case)
    begin
       for Dst_Index in Dst'Range loop
          declare

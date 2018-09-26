@@ -95,9 +95,6 @@ is
    function ReturnValueT_Image (X : ReturnValueT) return CommonTypes.StringF1L1000 is
       (ReturnValueT'Image (X));
    pragma Annotate (GNATprove, False_Positive,
-                    "range check might fail",
-                    "Image of enums of type ReturnValueT are short strings starting at index 1");
-   pragma Annotate (GNATprove, False_Positive,
                     "predicate check might fail",
                     "Image of enums of type ReturnValueT are short strings starting at index 1");
 

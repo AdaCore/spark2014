@@ -180,9 +180,9 @@ is
                pragma Loop_Invariant (Invariant);
             end loop;
          end return;
-         pragma Annotate (GNATprove, False_Positive,
-                          """S"" might not be initialized",
-                          "it obviously is");
+
+
+
       end;
    end To_String;
 

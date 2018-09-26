@@ -39,9 +39,6 @@ is
    function DurationT_Image (X : DurationT) return CommonTypes.StringF1L3to1000 is
       (DurationT'Image (X));
    pragma Annotate (GNATprove, False_Positive,
-                    "range check might fail",
-                    "Image of integers of type Unsigned32T are non-empty short strings starting at index 1");
-   pragma Annotate (GNATprove, False_Positive,
                     "predicate check might fail",
                     "Image of integers of type Unsigned32T are non-empty short strings starting at index 1");
 
@@ -50,9 +47,6 @@ is
 
    function AccessPolicyT_Image (X : AccessPolicyT) return CommonTypes.StringF1L12 is
       (AccessPolicyT'Image (X));
-   pragma Annotate (GNATprove, False_Positive,
-                    "range check might fail",
-                    "Image of enums of type AccessPolicyT are short strings starting at index 1");
    pragma Annotate (GNATprove, False_Positive,
                     "predicate check might fail",
                     "Image of enums of type AccessPolicyT are short strings starting at index 1");

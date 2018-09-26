@@ -1,7 +1,7 @@
 package body P_Max_Array with SPARK_Mode is
 
    function Max_Array_1 (A, B : Nat_Array) return Nat_Array is
-      R : Nat_Array (A'Range) := (others => 0);
+      R : Nat_Array (A'Range);
       J : Integer := B'First;
    begin
       for I in A'Range loop

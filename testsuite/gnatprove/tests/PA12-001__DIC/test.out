@@ -10,5 +10,4 @@ use_dic_pred.ads:6:04: info: initialization of private part of "V" proved
 use_dic_pred.ads:6:30: info: range check proved (CVC4: 1 VC)
 use_dic_pred.ads:10:43: info: range check proved (CVC4: 1 VC)
 use_dic_pred.ads:12:49: info: range check proved (CVC4: 1 VC)
-use_dic_pred.ads:18:04: medium: type "Container2" is not fully initialized
 use_dic_pred.ads:18:49: info: range check proved (CVC4: 1 VC)

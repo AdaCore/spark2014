@@ -423,13 +423,6 @@ package Gnat2Why.Util is
    --    operators are not translated as operators in Why but as function calls
    --    whenever GNATprove does not see the fullview of its operands.
 
-   function May_Need_DIC_Checking (E : Entity_Id) return Boolean with
-     Pre => Is_Type (E);
-   --  @param E type entity
-   --  @return True iff E is the entity for a declaration that may require
-   --     checking the DIC, either because it has its own DIC, or because it
-   --     is a tagged type which inherits a DIC which requires rechecking.
-
    function Needs_DIC_Check_At_Decl (Ty : Entity_Id) return Boolean with
      Pre => Has_DIC (Ty);
    --  @param Ty type entity with a DIC
@@ -548,7 +541,8 @@ package Gnat2Why.Util is
    --  @return The rep type of the index entity which corresponds
    --    to the selected dimension or ew_int_id if it is bool
 
-   function Type_Of_Node (N : Node_Id) return Entity_Id;
+   function Type_Of_Node (N : Node_Id) return Entity_Id
+   with Post => Is_Type (Type_Of_Node'Result);
    --  @param N any node
    --  @return the type of the node; if N is already a type, return that,
    --    otherwise return the Etype. Also, if the most underlying full view of

@@ -225,9 +225,9 @@ is
                                       E_Procedure |
                                       E_Task_Type,
         Post => (for all G of Reads =>
-                   Is_Entire_Variable (G) and then G.Variant = In_View)
+                   Is_Entire_Variable (G) and then G.Variant = Normal_Use)
        and then (for all G of Writes =>
-                   Is_Entire_Variable (G) and then G.Variant = Out_View);
+                   Is_Entire_Variable (G) and then G.Variant = Normal_Use);
    --  Same as above but Reads consists of both the Reads and Proof_Ins,
    --  discriminants receive no special handling and globals are proof globals,
    --  and we always return the most refined view possible. If Keep_Constants
@@ -235,6 +235,10 @@ is
    --  Globals even if they are constants in Why. For subprograms nested in
    --  protected types, which may have an effect on the components of the
    --  protected type, the protected type itself is returned as a global.
+
+   function Is_Opaque_For_Proof (F : Flow_Id) return Boolean
+   with Pre => F.Kind = Magic_String, Ghost;
+   --  Returns True iff the internal structure of F is not visible to proof
 
    function Has_Proof_Globals (Subprogram : Entity_Id) return Boolean
    with Pre => Ekind (Subprogram) = E_Function;
@@ -369,7 +373,9 @@ is
    function Expand_Abstract_State
      (F               : Flow_Id;
       Erase_Constants : Boolean)
-      return Flow_Id_Sets.Set;
+      return Flow_Id_Sets.Set
+   with Post => (for all E of Expand_Abstract_State'Result =>
+                    Is_Entire_Variable (E) and then E.Variant = Normal_Use);
    --  If F represents abstract state, return the set of all its components.
    --  Otherwise return F. Additionally, remove formal in parameters from the
    --  set if Erase_Constants is true.
@@ -530,30 +536,39 @@ is
    --  the initialization occurs in the specification of the enclosing
    --  package of F.
 
-   procedure Add_Loop (E : Entity_Id)
-   with Pre => Ekind (E) = E_Loop;
-   --  Indicates that the loop E has been analyzed by flow analysis.
-
    procedure Add_Loop_Writes (Loop_E : Entity_Id;
                               Writes : Flow_Id_Sets.Set)
    with Pre => Ekind (Loop_E) = E_Loop;
    --  Adds Writes to the set of variables written by the loop entity Loop_E
 
-   procedure Freeze_Loop_Info;
+   procedure Freeze_Loop_Info with Ghost;
    --  Must be called at the end of flow analysis - this makes it an error to
    --  use Add_Loop and Add_Loop_Write, and enables the use of Get_Loop_Writes.
 
-   function Loop_Writes_Known (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) = E_Loop;
-   --  Checks if the variables written by loop E are known.
-
    function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
-   with Pre => Ekind (E) = E_Loop and then
-               Loop_Writes_Known (E);
+   with Pre => Ekind (E) = E_Loop;
    --  Returns variables a given loop *may* write to, including variables
    --  declared locally in the loop. Note that if a function returns inside a
    --  loop, the name of the function will be "written to" and will be returned
    --  here.
+
+   function To_Proof_View
+     (Objects : Flow_Id_Sets.Set)
+      return Flow_Id_Sets.Set
+   with Pre  => (for all Object of Objects =>
+                    Is_Entire_Variable (Object)
+                      and then
+                    Object.Variant = Normal_Use),
+        Post => To_Proof_View'Result.Length = Objects.Length
+                   and then
+                (for all Object of To_Proof_View'Result =>
+                    Object.Kind = Direct_Mapping
+                      or else
+                    Is_Opaque_For_Proof (Object));
+   --  Convert abstract states and entities not in SPARK; for flow they might
+   --  be represented with Entity_Id (which helps to deal with visibility),
+   --  but for proof they are opaque and thus are represented with Magic_String
+   --  (just like hidden globals).
 
    function Get_Type
      (F     : Flow_Id;

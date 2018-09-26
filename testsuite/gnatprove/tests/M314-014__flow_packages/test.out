@@ -6,12 +6,12 @@ ic.adb:32:32: info: initialization of "Test_03.X" constituent of "IC.State_A" pr
 ic.adb:34:07: high: "Test_01.X" constituent of "IC.State_A" is not initialized
 ic.adb:34:07: high: initialization of "IC.State_A" is specified at ic.ads:3
 ic.adb:34:07: info: initialization of "Test_03.X" constituent of "IC.State_A" proved
-ic.adb:40:43: high: "Test_01.Y" constituent of "IC.State_B" must be listed in the Initializes aspect of "Test_04" (SPARK RM 7.1.5(11))
+ic.adb:40:43: high: "Test_01.Y" constituent of "IC.State_B" must be mentioned as an input of the Initializes aspect of "Test_04" (SPARK RM 7.1.5(11))
 ic.adb:42:07: high: "Test_01.X" constituent of "IC.State_A" is not initialized
 ic.adb:42:07: high: initialization of "IC.State_A" is specified at ic.ads:3
 ic.adb:42:07: info: initialization of "Test_04.X" constituent of "IC.State_A" proved
-ic.adb:49:34: high: "Test_01.X" constituent of "IC.State_A" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(11))
-ic.adb:49:34: high: "Test_01.Y" constituent of "IC.State_B" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(11))
+ic.adb:49:34: high: "Test_01.X" constituent of "IC.State_A" must be mentioned as an input of the Initializes aspect of "Test_05" (SPARK RM 7.1.5(11))
+ic.adb:49:34: high: "Test_01.Y" constituent of "IC.State_B" must be mentioned as an input of the Initializes aspect of "Test_05" (SPARK RM 7.1.5(11))
 ic.adb:54:24: warning: no procedure exists that can initialize abstract state "Test_06.S" constituent of "IC.State_B"
 ic.adb:91:31: high: "Y" constituent of "S" must be listed in the Refined_Global aspect of "Sanity_Check_5" (SPARK RM 6.1.4(13))
 ic.adb:109:35: high: "Test_02.Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(13))
@@ -36,7 +36,7 @@ pkg_a.ads:8:04: high: "X" is not initialized in "Pkg_A"
 pkg_a.ads:10:04: info: initialization of "Z" proved
 pkg_a.ads:10:04: warning: initialization of "Z" has no effect
 pkg_a.ads:13:04: info: initialization of "Q" proved
-pkg_b.adb:10:14: high: "Y" must be listed in the Initializes aspect of "Pkg_B" (SPARK RM 7.1.5(11))
+pkg_b.adb:10:14: high: "Y" must be mentioned as an input of the Initializes aspect of "Pkg_B" (SPARK RM 7.1.5(11))
 pkg_c.adb:15:12: high: cannot write "X" during elaboration of "Pkg_C" (SPARK RM 7.7.1(6))
 pkg_d.ads:4:27: high: X must be initialized at elaboration
 pkg_d.ads:10:04: info: initialization of "X" proved

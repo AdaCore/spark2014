@@ -29,6 +29,10 @@ a slice or the result object of a function call) or a formal parameter of
 a subprogram. In particular, a component of a protected unit is not
 an *entire object*.
 
+One object is *reachable* from a second object if the two are the
+same object or if the first is designated by an access-valued part
+of an object that is reachable from the second object.
+
 .. centered:: **Static Semantics**
 
 1. The *exit* value of a global item or parameter of a subprogram is its
@@ -37,7 +41,8 @@ an *entire object*.
 2. The *entry* value of a global item or parameter of a subprogram is its
    value at the call of the subprogram.
 
-3. An *output* of a subprogram is a global item or parameter whose final value
+3. An *output* of a subprogram is a global item or parameter whose final value,
+   or the final value of any object that is reachable from it,
    may be updated by a successful call to the subprogram.  The result of a
    function is also an output.  A global item or parameter which is an external
    state with the property Async_Readers => True, and for which intermediate
@@ -84,7 +89,13 @@ an *entire object*.
 6. A function declaration shall not have a ``parameter_specification``
    with a mode of **out** or **in out**. This rule also applies to
    a ``subprogram_body`` for a function for which no explicit declaration
-   is given.
+   is given. A function shall have no outputs other than its result.
+
+.. _tu-fe-subprogram_declarations-07:
+
+7. A subprogram parameter of mode **in** shall not be an output of its
+   subprogram unless the type of the parameter is an access type and
+   the subprogram is not a function.
 
 .. _etu-subprogram_declarations:
 
@@ -872,6 +883,9 @@ where
    ``global_items`` of the Global aspect of the subprogram with a
    ``mode_selector`` of In_Out and Output and (for a function) the
    ``function_result``.
+
+   [TBD: include in-mode parameters that are outputs. Do we want to
+   define a term for such parameters?]
 
 .. _tu-fe-depends_aspects-07:
 

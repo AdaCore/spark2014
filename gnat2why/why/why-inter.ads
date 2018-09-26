@@ -28,7 +28,6 @@ with Common_Containers;    use Common_Containers;
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util.Types;     use SPARK_Util.Types;
-with Stand;                use Stand;
 with Types;                use Types;
 with Why.Atree.Tables;     use Why.Atree.Tables;
 with Why.Ids;              use Why.Ids;
@@ -175,7 +174,12 @@ package Why.Inter is
       Selector : Selection_Kind := Standard;
       No_Comp  : Boolean := False;
       Rec      : Entity_Id := Empty;
-      Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id;
+      Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id
+   with Pre => Ekind (E) in Subprogram_Kind
+                          | Entry_Kind
+                          | Named_Kind
+                          | Type_Kind
+                          | Object_Kind;
    --  The one and only way to transform an Ada Entity to a Why identifier.
    --  However, sometimes the exact way differs between program and logic
    --  worlds. There is also a local and a global name of each identifier. The
@@ -204,16 +208,14 @@ package Why.Inter is
 
    function To_Why_Type
      (E     : Entity_Id;
-      Local : Boolean := False) return W_Name_Id;
-
-   function To_Why_Type (T : String) return W_Type_Id;
+      Local : Boolean := False) return W_Name_Id
+   with Pre => Is_Type (E);
 
    function EW_Abstract (N : Node_Id) return W_Type_Id with
-     Pre => Is_Type (N) or else N = Standard_Void_Type;
+     Pre => Is_Type (N);
    --  Convert an Ada type entity into a Why type. This function respects the
    --  gnat2why encoding. For example, for N = Boolean the function returns
-   --  EW_Bool_Type, for non-SPARK types and abstract states, EW_Private_Type
-   --  is returned. For all the details, see the implementation.
+   --  EW_Bool_Type. For all the details, see the implementation.
 
    function EW_Fixed_Type (E : Entity_Id) return W_Type_Id with
      Pre => Has_Fixed_Point_Type (E);
@@ -222,7 +224,7 @@ package Why.Inter is
    --  which may be used to retrieve the appropriate conversion functions.
 
    function EW_Split (N : Node_Id) return W_Type_Id with
-     Pre => Is_Type (N) or else N = Standard_Void_Type;
+     Pre => Is_Type (N);
    --  This function does the exact same thing as EW_Abstract, but changes the
    --  kind of the node to EW_Split.
 

@@ -144,3 +144,50 @@ are only needed in --mode=proof; but a subset of both is also needed
 in --mode=check_all, for detecting variable input in illegal contexts.
 
 ..  the remaining text is about everything except global generation
+
+Visibility
+**********
+
+Flow analysis heavily relies on a routine with an almost self-explanatory
+signature:
+
+  function Is_Visible (From, To: Node_Id) return Boolean;
+
+We use it to decide access to components of a private type, constituents of an
+abstract state, and the Refined_Global/Refined_Depends contracts. This routine
+seems innocent, but as soon as generics, (private) child packages and their
+combinations come into picture things becomes dreadful.
+
+Proof either doesn't need the visibility info (e.g. the for Refined_Global) or
+intentionally ignores it (e.g. for the private types).
+
+Frontend needs this information and it maintains it in a stack-like fashion by
+setting & clearing flags on selected entities, e.g. for abstract state it uses
+such flags in Has_Partial_Visible_Refinement. Piotr much prefers this approach,
+but it can only work with a disciplined top-down analysis of the AST, i.e. like
+it is implemented in the frontend. Beware: frontend analyses generic templates
+and the stack-like flags seem sufficient there; gnat2why analyses generic
+instances, and he has no idea whether stack-like flags would work for us.
+
+Anyway, in gnat2why we are quite far from such a top-down analysis. For
+marking, the visibility would mostly matter because of private types (which
+marking processes in its own complicated way) and default-initialization (which
+it delegates to flow). For flow, historically, Florian & Pavlos were not aware
+of the subtlety of this problem and so didn't care about the top-down
+discipline; we started to care when rewriting the "generated Global" facility,
+but Florian never liked this discipline and argued that top-down processing
+would restrict our ability to parallel analysis in the future.
+
+With Florian we decided that given the trouble of converting marking and flow
+to top-down style, it will be better to first preprocess the closure of the
+compilation unit, including all the generics, their bodies and instances.
+
+The preprocessing gives us a graph with vertices representing 'visibility
+regions' and directed edges representing the 'can see' relation. (Tuck rightly
+pointed that our vertices are closer to what Ada RM calls 'declarative
+regions'.)
+
+This design was drafted by Florian in LaTeX; however, it became depracated by
+its implementation, because it missed few corner cases (e.g. generic parents
+with generic child units, which btw. are described in a dedicated section of
+the archival GNAT Book) and generic formal packages.

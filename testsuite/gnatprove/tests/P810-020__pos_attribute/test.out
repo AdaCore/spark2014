@@ -6,10 +6,10 @@ main.adb:16:19: medium: assertion might fail, cannot prove off_c1 < 10000 (e.g. 
 main.adb:17:19: medium: assertion might fail, cannot prove off_c2 = 0 (e.g. when off_c2 = 1)
 main.adb:18:04: warning: assuming "Put_Line" has no effect on global items
 main.adb:18:04: warning: no Global contract available for "Put_Line"
-main.adb:18:24: low: range check might fail (e.g. when off_c1 = 0)
+main.adb:18:24: info: range check proved (CVC4: 1 VC)
 main.adb:19:04: warning: assuming "Put_Line" has no effect on global items
 main.adb:19:04: warning: no Global contract available for "Put_Line"
-main.adb:19:24: low: range check might fail (e.g. when off_c2 = 0)
+main.adb:19:24: info: range check proved (CVC4: 1 VC)
 main2.adb:18:33: info: initialization of "foo.c1" proved
 main2.adb:18:39: info: range check proved (CVC4: 1 VC)
 main2.adb:19:33: info: initialization of "foo.c2" proved

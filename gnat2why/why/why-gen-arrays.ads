@@ -160,6 +160,10 @@ package Why.Gen.Arrays is
    --  E is the entity which contains the relevant type information (the
    --  underlying type).
 
+   procedure Declare_Additional_Symbols_For_String (Section : W_Section_Id);
+   --  Declare to_string and of_string functions used for 'Image and 'Value
+   --  attributes.
+
    function New_Array_Access
      (Ada_Node  : Node_Id;
       Ar        : W_Expr_Id;

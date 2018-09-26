@@ -23,34 +23,35 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;            use Ada.Containers;
+with Ada.Containers;              use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Ordered_Maps;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Indefinite_Ordered_Maps;
-with Ada.Strings;               use Ada.Strings;
-with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
+with Ada.Strings;                 use Ada.Strings;
+with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with Ce_Interval_Sets;
-with Ce_Pretty_Printing;        use Ce_Pretty_Printing;
-with Common_Containers;         use Common_Containers;
-with Flow_Refinement;           use Flow_Refinement;
-with Flow_Types;                use Flow_Types;
-with GNAT;                      use GNAT;
-with GNAT.String_Split;         use GNAT.String_Split;
-with Gnat2Why.CE_Utils;         use Gnat2Why.CE_Utils;
-with Gnat2Why.Tables;           use Gnat2Why.Tables;
-with Gnat2Why.Util;             use Gnat2Why.Util;
-with Namet;                     use Namet;
-with Nlists;                    use Nlists;
-with Sinput;                    use Sinput;
-with Snames;                    use Snames;
-with SPARK_Annotate;            use SPARK_Annotate;
-with SPARK_Atree;               use SPARK_Atree;
-with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
-with SPARK_Util;                use SPARK_Util;
-with SPARK_Util.Types;          use SPARK_Util.Types;
-with String_Utils;              use String_Utils;
-with Uintp;                     use Uintp;
+with Ce_Pretty_Printing;          use Ce_Pretty_Printing;
+with Common_Containers;           use Common_Containers;
+with Flow_Refinement;             use Flow_Refinement;
+with Flow_Types;                  use Flow_Types;
+with Flow_Utility.Initialization; use Flow_Utility.Initialization;
+with GNAT;                        use GNAT;
+with GNAT.String_Split;           use GNAT.String_Split;
+with Gnat2Why.CE_Utils;           use Gnat2Why.CE_Utils;
+with Gnat2Why.Tables;             use Gnat2Why.Tables;
+with Gnat2Why.Util;               use Gnat2Why.Util;
+with Namet;                       use Namet;
+with Nlists;                      use Nlists;
+with Sinput;                      use Sinput;
+with Snames;                      use Snames;
+with SPARK_Annotate;              use SPARK_Annotate;
+with SPARK_Atree;                 use SPARK_Atree;
+with SPARK_Atree.Entities;        use SPARK_Atree.Entities;
+with SPARK_Util;                  use SPARK_Util;
+with SPARK_Util.Types;            use SPARK_Util.Types;
+with String_Utils;                use String_Utils;
+with Uintp;                       use Uintp;
 
 package body Gnat2Why.Counter_Examples is
 

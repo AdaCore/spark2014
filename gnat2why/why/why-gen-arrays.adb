@@ -949,6 +949,123 @@ package body Why.Gen.Arrays is
       end if;
    end Declare_Ada_Array;
 
+   -------------------------------------------
+   -- Declare_Additional_Symbols_For_String --
+   -------------------------------------------
+
+   procedure Declare_Additional_Symbols_For_String (Section : W_Section_Id) is
+      Dummy_Ident       : constant W_Identifier_Id :=
+        New_Identifier (Name => "x", Typ => M_Main.String_Image_Type);
+      Size_Ident        : constant W_Identifier_Id :=
+        New_Identifier (Name => "s", Typ => EW_Int_Type);
+      To_String_Binders : constant Binder_Array :=
+        (1 => Binder_Type'(Ada_Node => Empty,
+                           Mutable  => False,
+                           B_Ent    => Null_Entity_Name,
+                           B_Name   => Dummy_Ident),
+         2 => Binder_Type'(Ada_Node => Empty,
+                           Mutable  => False,
+                           B_Ent    => Null_Entity_Name,
+                           B_Name   => Size_Ident));
+      Str_Typ           : constant W_Type_Id := EW_Abstract (Standard_String);
+      Dummy_Ident2      : constant W_Identifier_Id :=
+        New_Identifier (Name => "x", Typ => Str_Typ);
+
+   begin
+      Add_With_Clause (Section, Int_Module, EW_Clone_Default);
+      Add_With_Clause (Section, E_Module (Standard_String), EW_Clone_Default);
+
+      --  Declare To_String and Of_String to convert between _image and string
+
+      Emit (Section,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (To_String_Id),
+               Location    => No_Location,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Binders     => To_String_Binders,
+               Return_Type => Str_Typ));
+      Emit (Section,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (Of_String_Id),
+               Location    => No_Location,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Binders     =>
+                 (1 =>
+                      Binder_Type'(
+                    Ada_Node => Empty,
+                    Mutable  => False,
+                    B_Ent    => Null_Entity_Name,
+                    B_Name   => Dummy_Ident2)),
+               Return_Type => M_Main.String_Image_Type));
+
+      --  Add axioms for:
+      --    to_string (x, s)'first = 1
+      --    to_string (x, s)'length <= s
+      --
+      --   axiom to_string__first :
+      --    (forall x   : Main.__image.
+      --    (forall s   : int [to_string x s].
+      --       Standard__string.first (to_string x s) = 1))
+      --
+      --   axiom to_string__length :
+      --    (forall x   : Main.__image.
+      --    (forall s   : int [to_string x s].
+      --      s >= 0 -> Standard__string.length (to_string x s) <= s))
+
+      declare
+         Call_Expr   : constant W_Expr_Id :=
+           New_Call (Domain => EW_Term,
+                     Name   => To_Local (To_String_Id),
+                     Args   => (1 => +Dummy_Ident,
+                                2 => +Size_Ident),
+                     Typ    => Str_Typ);
+         Guard       : constant W_Pred_Id :=
+           +New_Comparison
+             (Symbol => Int_Infix_Ge,
+              Left   => +Size_Ident,
+              Right  => New_Integer_Constant (Value => Uint_0),
+              Domain => EW_Pred);
+      begin
+         Emit (Section,
+               New_Guarded_Axiom
+                 (Name     => NID ("to_string__first"),
+                  Binders  => To_String_Binders,
+                  Triggers => New_Triggers
+                    (Triggers =>
+                         (1 => New_Trigger (Terms => (1 => Call_Expr)))),
+                  Def      => +New_Comparison
+                    (Symbol => Why_Eq,
+                     Left   =>
+                       Get_Array_Attr (Domain => EW_Term,
+                                       Expr   => Call_Expr,
+                                       Attr   => Attribute_First,
+                                       Dim    => 1),
+                     Right  =>
+                       New_Discrete_Constant (Value => Uint_1,
+                                              Typ   => EW_Int_Type),
+                     Domain => EW_Pred)));
+         Emit (Section,
+               New_Guarded_Axiom
+                 (Name     => NID ("to_string__length"),
+                  Binders  => To_String_Binders,
+                  Triggers => New_Triggers
+                    (Triggers =>
+                         (1 => New_Trigger (Terms => (1 => Call_Expr)))),
+                  Pre      => Guard,
+                  Def      => +New_Comparison
+                    (Symbol => Int_Infix_Le,
+                     Left   =>
+                       Get_Array_Attr (Domain => EW_Term,
+                                       Expr   => Call_Expr,
+                                       Attr   => Attribute_Length,
+                                       Dim    => 1),
+                     Right  => +Size_Ident,
+                     Domain => EW_Pred)));
+      end;
+   end Declare_Additional_Symbols_For_String;
+
    --------------------------------
    -- Declare_Comparison_Symbols --
    --------------------------------
@@ -1763,46 +1880,6 @@ package body Why.Gen.Arrays is
          Emit_Projection_Metas (Section, "first_" & Image (I, 1));
          Emit_Projection_Metas (Section, "last_"  & Image (I, 1));
       end loop;
-
-      if Und_Ent = Standard_String then
-         declare
-            Dummy_Ident : constant W_Identifier_Id :=
-              New_Identifier (Name => "x", Typ => M_Main.String_Image_Type);
-            Str_Typ     : constant W_Type_Id :=
-              New_Named_Type (Name => Why3_Type_Name);
-            Dummy_Ident2 : constant W_Identifier_Id :=
-              New_Identifier (Name => "x", Typ => Str_Typ);
-         begin
-            Emit (Section,
-                  Why.Gen.Binders.New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => To_Local (To_String_Id),
-                     Location    => No_Location,
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Binders     =>
-                       (1 =>
-                          Binder_Type'(
-                          Ada_Node => Empty,
-                          Mutable  => False,
-                          B_Ent    => Null_Entity_Name,
-                          B_Name   => Dummy_Ident)),
-                     Return_Type => Str_Typ));
-            Emit (Section,
-                  Why.Gen.Binders.New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => To_Local (Of_String_Id),
-                     Location    => No_Location,
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Binders     =>
-                       (1 =>
-                          Binder_Type'(
-                          Ada_Node => Empty,
-                          Mutable  => False,
-                          B_Ent    => Null_Entity_Name,
-                          B_Name   => Dummy_Ident2)),
-                     Return_Type => M_Main.String_Image_Type));
-         end;
-      end if;
    end Declare_Unconstrained;
 
    --------------------

@@ -22,3 +22,4 @@ nest_in_task.ads:10:14: warning: "A" is not modified, could be INPUT
 recursion.adb:1:11: warning: subprogram "Recursion" might not terminate
 recursion.adb:3:17: warning: subprogram "P" has no effect
 recursion.adb:3:17: warning: subprogram "P" might not terminate
+recursion.adb:10:26: info: unrolling loop

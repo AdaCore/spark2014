@@ -77,9 +77,6 @@ package AuditTypes is
    function ElementT_Image (X : ElementT) return CommonTypes.StringF1L20 is
       (ElementT'Image (X));
    pragma Annotate (GNATprove, False_Positive,
-                    "range check might fail",
-                    "Image of enums of type ElementT are short strings starting at index 1");
-   pragma Annotate (GNATprove, False_Positive,
                     "predicate check might fail",
                     "Image of enums of type ElementT are short strings starting at index 1");
 
@@ -152,9 +149,6 @@ package AuditTypes is
 
    function FileSizeT_Image (X : FileSizeT) return CommonTypes.StringF1L1000 is
       (FileSizeT'Image (X));
-   pragma Annotate (GNATprove, False_Positive,
-                    "range check might fail",
-                    "Image of integers of type FileSizeT are short strings starting at index 1");
    pragma Annotate (GNATprove, False_Positive,
                     "predicate check might fail",
                     "Image of integers of type FileSizeT are short strings starting at index 1");

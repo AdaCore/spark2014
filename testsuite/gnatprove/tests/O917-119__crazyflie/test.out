@@ -70,7 +70,6 @@ crtp_pack.ads:167:63: high: "Bla.Port" is not initialized
 crtp_pack.ads:167:63: high: "Bla.Raw" is not initialized
 crtp_pack.ads:167:63: high: "Bla.Reserved" is not initialized
 crtp_pack.ads:167:63: high: "Bla.Size" is not initialized
-crtp_pack.ads:194:14: medium: "Tx_Queue" might not be initialized before start of tasks of type "CRTP_Tx_Task"
 generic_queue_pack.ads:23:07: medium: "Item.Channel" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:23:07: medium: "Item.Data_1" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:23:07: medium: "Item.Data_2" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167

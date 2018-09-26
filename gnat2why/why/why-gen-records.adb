@@ -176,7 +176,6 @@ package body Why.Gen.Records is
                             else Empty);
       T_Comp  : W_Pred_Id;
       T_Guard : W_Pred_Id;
-      F_Expr  : W_Expr_Id;
       R_Acc   : W_Expr_Id;
       Tmps    : W_Identifier_Array (1 .. Discrs);
       Binds   : W_Expr_Array (1 .. Discrs);
@@ -217,38 +216,48 @@ package body Why.Gen.Records is
          I := I + 1;
       end loop;
 
-      for Field of Get_Component_Set (Ty_Ext) loop
+      declare
+         Fields    : Node_Sets.Set renames Get_Component_Set (Ty_Ext);
+         Conjuncts : W_Expr_Array (1 .. Natural (Fields.Length));
+         Count     : Natural := 0;
+      begin
+         for Field of Get_Component_Set (Ty_Ext) loop
 
-         --  Only consider components and part of variables
+            --  Only consider components and part of variables
 
-         if not Is_Type (Field) then
-            pragma Assert (Ekind (Field) /= E_Discriminant);
+            if not Is_Type (Field) then
+               pragma Assert (Ekind (Field) /= E_Discriminant);
 
-            R_Acc := New_Ada_Record_Access
-              (Empty, EW_Term, R_Expr, Field, Ty_Ext);
+               R_Acc := New_Ada_Record_Access
+                 (Empty, EW_Term, R_Expr, Field, Ty_Ext);
 
-            --  Call Build_Predicate_For_Field on fields
+               --  Call Build_Predicate_For_Field on fields
 
-            T_Comp :=
-              Build_Predicate_For_Field
-                (F_Expr => +R_Acc,
-                 F_Ty   => Etype (Field),
-                 E      => Field);
+               T_Comp :=
+                 Build_Predicate_For_Field
+                   (F_Expr => +R_Acc,
+                    F_Ty   => Etype (Field),
+                    E      => Field);
 
-            if T_Comp /= True_Pred then
-               T_Guard := +New_Ada_Record_Check_For_Field
-                 (Empty, EW_Pred, R_Expr, Field, Ty_Ext);
+               if T_Comp /= True_Pred then
+                  T_Guard := +New_Ada_Record_Check_For_Field
+                    (Empty, EW_Pred, R_Expr, Field, Ty_Ext);
 
-               F_Expr  := New_Conditional (Domain    => EW_Pred,
-                                           Condition => +T_Guard,
-                                           Then_Part => +T_Comp);
-
-               T := +New_And_Then_Expr (Left   => +T,
-                                        Right  => +F_Expr,
-                                        Domain => EW_Pred);
+                  Count := Count + 1;
+                  Conjuncts (Count) := New_Conditional (Domain    => EW_Pred,
+                                                        Condition => +T_Guard,
+                                                        Then_Part => +T_Comp);
+               end if;
             end if;
+         end loop;
+
+         if Count > 0 then
+            T := +New_And_Then_Expr
+              (+T,
+               New_And_Expr (Conjuncts (1 .. Count), EW_Pred),
+               EW_Pred);
          end if;
-      end loop;
+      end;
 
       if T /= True_Pred then
          for I in 1 .. Discrs loop

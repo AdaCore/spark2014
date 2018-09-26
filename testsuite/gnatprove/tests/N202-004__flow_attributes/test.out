@@ -40,6 +40,7 @@ foo.adb:136:24: info: initialization of "Octet_Count" proved
 foo.adb:137:29: info: range check proved (CVC4: 1 VC)
 foo.adb:140:11: info: range check proved (CVC4: 2 VC)
 foo.adb:140:35: info: initialization of "Octet_Count" proved
+foo.adb:140:47: info: cannot unroll loop (too many loop iterations)
 foo.adb:141:26: medium: overflow check might fail
 foo.adb:141:30: info: index check proved (CVC4: 2 VC)
 foo.adb:141:30: info: overflow check proved (CVC4: 1 VC)

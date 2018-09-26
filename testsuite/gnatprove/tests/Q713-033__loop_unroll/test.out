@@ -1,5 +1,6 @@
 binary_search.adb:20:13: info: initialization of "Left" proved
 binary_search.adb:20:34: info: initialization of "Right" proved
+binary_search.adb:25:24: info: unrolling loop
 binary_search.adb:32:17: info: initialization of "Left" proved
 binary_search.adb:32:22: info: range check proved (CVC4: 10 VC)
 binary_search.adb:32:25: info: initialization of "Right" proved
@@ -15,9 +16,11 @@ binary_search.ads:23:14: info: postcondition proved (CVC4: 2 VC)
 binary_search.ads:23:57: info: index check proved (CVC4: 2 VC)
 langley.adb:7:14: info: postcondition proved (CVC4: 1 VC)
 langley.adb:7:63: info: overflow check proved (CVC4: 1 VC)
+langley.adb:12:27: info: unrolling loop
 langley.adb:13:17: info: initialization of "Sum" proved
 langley.adb:13:25: info: overflow check proved (CVC4: 10 VC)
 langley.adb:15:14: info: initialization of "Sum" proved
+lcp.adb:17:19: info: unrolling loop
 lcp.adb:18:24: info: overflow check proved (CVC4: 10 VC)
 lcp.adb:18:26: info: initialization of "L" proved
 lcp.adb:19:33: info: overflow check proved (CVC4: 10 VC)
@@ -49,14 +52,18 @@ lcp.ads:20:22: info: contract case proved (CVC4: 2 VC)
 lcp.ads:20:45: info: overflow check proved (CVC4: 1 VC)
 lcp.ads:20:49: info: overflow check proved (CVC4: 1 VC)
 lcp.ads:21:22: info: contract case proved (CVC4: 2 VC)
+loopstat.adb:8:21: info: unrolling loop
 loopstat.adb:9:12: info: initialization of "K" proved
 loopstat.adb:9:14: info: overflow check proved (CVC4: 10 VC)
 loopstat.adb:11:19: info: assertion proved (CVC4: 1 VC)
 loopstat.adb:11:19: info: initialization of "K" proved
+loopstat.adb:14:21: info: unrolling loop
+loopstat.adb:15:24: info: unrolling loop
 loopstat.adb:16:15: info: initialization of "K" proved
 loopstat.adb:16:17: info: overflow check proved (CVC4: 100 VC)
 loopstat.adb:19:19: info: assertion proved (CVC4: 1 VC)
 loopstat.adb:19:19: info: initialization of "K" proved
+loopstat.adb:21:21: info: unrolling loop
 loopstat.adb:22:12: info: initialization of "A" proved
 loopstat.adb:24:19: info: assertion proved (CVC4: 1 VC)
 loopstat.adb:24:43: info: initialization of "A" proved

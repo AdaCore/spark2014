@@ -54,9 +54,6 @@ is
    function DurationT_Image (X : DurationT) return CommonTypes.StringF1L1000 is
       (DurationT'Image (X));
    pragma Annotate (GNATprove, False_Positive,
-                    "range check might fail",
-                    "Image of integers of type DurationT are short strings starting at index 1");
-   pragma Annotate (GNATprove, False_Positive,
                     "predicate check might fail",
                     "Image of integers of type DurationT are short strings starting at index 1");
 

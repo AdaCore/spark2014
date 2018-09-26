@@ -1122,11 +1122,118 @@ package body Flow.Analysis.Sanity is
       --  Get_Global routine. If no contract is present, then ask the user to
       --  add the Global contract, because usually it is the simplest one.
 
+      Next_Aspect_To_Fix : constant String :=
+        (case FA.Kind is
+            when Kind_Subprogram | Kind_Task =>
+               (if Present (FA.Global_N) and then Present (FA.Depends_N)
+                then "Global and Depends"
+                elsif Present (FA.Global_N)
+                then "Global"
+                elsif Present (FA.Depends_N)
+                then "Depends"
+                else ""),
+
+            when Kind_Package | Kind_Package_Body => "");
+      --  A string representation of the next aspect that needs to be
+      --  corrected, i.e. this is the Global/Depends aspect if a global has
+      --  been detected to be missing from a Refined_Global/Refined_Depends
+      --  contract but it is not mentioned in the corresponding Global/Depends.
+      --  It is both Global and Depends if the global has been detected as
+      --  missing either in the Refined_Global or Refined_Depends and the
+      --  subprogram is annotated with both Global and Depends contracts.
+
       SRM_Ref : constant String :=
         (case FA.Kind is
             when Kind_Subprogram | Kind_Task      => "6.1.4(13)",
             when Kind_Package | Kind_Package_Body => "7.1.5(11)");
       --  String representation of the violated SPARK RM rule
+
+      function Find_In (User : Node_Sets.Set; G : Entity_Id) return Node_Id
+      with Post => (if Present (Find_In'Result)
+                    then User.Contains (Find_In'Result));
+      --  If a global G is represented by User ones, either directly or via an
+      --  abstract state, then return the representative user global; otherwise
+      --  return the Empty node.
+      --  ??? This routine is copy pasted in several places. Should be
+      --  refactored.
+
+      function In_Abstract_Contract (FA : Flow_Analysis_Graphs; G : Flow_Id)
+                                    return Boolean
+      with Pre => FA.Kind in Kind_Subprogram | Kind_Task
+                  and then (Present (FA.Refined_Global_N)
+                            or else Present (FA.Refined_Depends_N));
+      --  Returns True if G can be found in the Global or Depends contract
+
+      -------------
+      -- Find_In --
+      -------------
+
+      function Find_In (User : Node_Sets.Set; G : Entity_Id) return Node_Id
+      is
+      begin
+         if User.Contains (G) then
+            return G;
+         elsif Is_Constituent (G) then
+            return Find_In (User, Encapsulating_State (G));
+         else
+            return Empty;
+         end if;
+      end Find_In;
+
+      --------------------------
+      -- In_Abstract_Contract --
+      --------------------------
+
+      function In_Abstract_Contract (FA : Flow_Analysis_Graphs; G : Flow_Id)
+                                     return Boolean
+      is
+      begin
+         case G.Kind is
+            when Magic_String =>
+               return False;
+
+            when Direct_Mapping =>
+               declare
+                  --  If the subprogram is annotated with both Global and
+                  --  Depends contract, it is enough to check one of the two
+                  --  cases where the global is missing from a refined contract
+                  --  because if it was mentioned in one of the Global and
+                  --  Depends the front-end would have already complained about
+                  --  it.
+
+                  Raw_Globals : constant Raw_Global_Nodes :=
+                    (if Present (FA.Refined_Global_N)
+                     then Parse_Global_Contract (FA.Analyzed_Entity,
+                                                 FA.Global_N)
+                     else Parse_Depends_Contract (FA.Analyzed_Entity,
+                                                  FA.Depends_N));
+
+                  use type Node_Sets.Set;
+
+                  All_Globals : constant Node_Sets.Set :=
+                    Raw_Globals.Inputs or
+                    Raw_Globals.Outputs or
+                    Raw_Globals.Proof_Ins;
+
+               begin
+                  return Present (Find_In (All_Globals,
+                                           Get_Direct_Mapping_Id (G)));
+               end;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end In_Abstract_Contract;
+
+      Msg : constant String :=
+          (case FA.Kind is
+             when Kind_Subprogram | Kind_Task =>
+                "must be listed in the " & Aspect_To_Fix & " aspect of",
+             when Kind_Package | Kind_Package_Body =>
+                "must be mentioned as an input of the " & Aspect_To_Fix &
+                " aspect of");
+
+   --  Start of processing for Check_All_Variables_Known
 
    begin
       Sane := True;
@@ -1156,23 +1263,65 @@ package body Flow.Analysis.Sanity is
                      if not FA.All_Vars.Contains
                        (Change_Variant (Var, Normal_Use))
                      then
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "& must be listed in the " &
-                                       Aspect_To_Fix & " aspect of &",
-                           SRM_Ref  => SRM_Ref,
-                           N        => First_Variable_Use (FA      => FA,
-                                                           Var     => Var,
-                                                           Kind    => Use_Any,
-                                                           Precise => False),
-                           F1       => (if Gnat2Why_Args.Flow_Advanced_Debug
-                                        then Var
-                                        else Entire_Variable (Var)),
-                           Severity => High_Check_Kind,
-                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                           Vertex   => V);
+                        declare
+                           First_Var_Use : constant Node_Id :=
+                             First_Variable_Use (FA      => FA,
+                                                 Var     => Var,
+                                                 Kind    => Use_Any,
+                                                 Precise => False);
 
-                        Sane := False;
+                           Subprogram : constant Flow_Id :=
+                             Direct_Mapping_Id (FA.Analyzed_Entity);
+
+                        begin
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      => "& " & Msg & " &",
+                              SRM_Ref  => SRM_Ref,
+                              N        => First_Var_Use,
+                              F1       => (if Gnat2Why_Args.Flow_Advanced_Debug
+                                           then Var
+                                           else Entire_Variable (Var)),
+                              Severity => High_Check_Kind,
+                              F2       => Subprogram,
+                              Vertex   => V);
+
+                           Sane := False;
+
+                           --  If the global is missing both from the refined
+                           --  contract and the abstract contract, issue a
+                           --  continuation message explaining that the global
+                           --  needs to be listed in the abstract contract as
+                           --  well.
+
+                           if FA.Kind in Kind_Subprogram | Kind_Task
+                             and then (Present (FA.Refined_Global_N)
+                                       or else Present (FA.Refined_Depends_N))
+                             and then not In_Abstract_Contract (FA, Var)
+                           then
+                              declare
+                                 Missing : constant Flow_Id :=
+                                   (if Is_Constituent (Var)
+                                    and then not Is_Visible (Var, FA.S_Scope)
+                                    then Encapsulating_State (Var)
+                                    else Entire_Variable (Var));
+
+                              begin
+                                 Error_Msg_Flow
+                                   (FA           => FA,
+                                    Msg          => "as a result & must be " &
+                                                    "listed in the " &
+                                                    Next_Aspect_To_Fix &
+                                                    " of &",
+                                    Severity     => High_Check_Kind,
+                                    N            => First_Var_Use,
+                                    F1           => Missing,
+                                    F2           => Subprogram,
+                                    SRM_Ref      => SRM_Ref,
+                                    Continuation => True);
+                              end;
+                           end if;
+                        end;
                      end if;
 
                   when Null_Value =>

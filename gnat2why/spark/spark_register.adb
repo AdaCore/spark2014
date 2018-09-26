@@ -73,8 +73,21 @@ package body SPARK_Register is
             --  Recursively call the tree rewriting procedure on subunits
 
             when N_Body_Stub =>
-               Process_Tree (Unit (Library_Unit (N)));
+               if not Is_Generic_Unit (Unique_Defining_Entity (N)) then
+                  Process_Tree (Unit (Library_Unit (N)));
+               end if;
+
                return OK;
+
+            when N_Generic_Declaration =>
+               return Skip;
+
+            when N_Package_Body
+               | N_Subprogram_Body
+            =>
+               if Is_Generic_Unit (Unique_Defining_Entity (N)) then
+                  return Skip;
+               end if;
 
             --  Ignore freeze entities, because front end might not care to set
             --  all of their fields (such as Scope or Ekind).

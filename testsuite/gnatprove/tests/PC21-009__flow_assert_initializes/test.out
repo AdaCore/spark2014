@@ -1,2 +1,2 @@
 p.ads:7:19: medium: assertion might fail, cannot prove Q.qq
-p.ads:7:20: high: "QQ" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(11))
+p.ads:7:20: high: "QQ" must be mentioned as an input of the Initializes aspect of "P" (SPARK RM 7.1.5(11))

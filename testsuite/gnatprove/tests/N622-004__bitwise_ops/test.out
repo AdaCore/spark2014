@@ -5,6 +5,7 @@ aco-math-very_longs.adb:39:76: info: initialization of "Carry" proved
 aco-math-very_longs.adb:43:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1)
 aco-math-very_longs.adb:49:26: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:49:29: info: length check proved (CVC4: 1 VC)
+aco-math-very_longs.adb:51:36: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:52:52: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:53:52: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:54:21: info: initialization of "L_Digit" proved
@@ -19,6 +20,7 @@ aco-math-very_longs.adb:62:82: info: initialization of "Borrow" proved
 aco-math-very_longs.adb:66:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1)
 aco-math-very_longs.adb:72:26: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:72:29: info: length check proved (CVC4: 1 VC)
+aco-math-very_longs.adb:74:36: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:75:55: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:76:55: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:77:25: info: initialization of "L_Digit" proved
@@ -31,6 +33,7 @@ aco-math-very_longs.adb:83:50: info: initialization of "Difference" proved
 aco-math-very_longs.adb:97:26: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:100:26: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:100:29: info: length check proved (CVC4: 1 VC)
+aco-math-very_longs.adb:102:45: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:103:29: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:103:36: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:103:49: info: initialization of "Temp" proved
@@ -68,6 +71,7 @@ aco-math-very_longs.adb:135:26: info: initialization of "Index" proved
 aco-math-very_longs.adb:135:32: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:136:26: info: initialization of "String_Index" proved
 aco-math-very_longs.adb:136:39: info: overflow check proved (CVC4: 1 VC)
+aco-math-very_longs.adb:148:44: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:149:27: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:149:46: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:153:27: info: index check proved (CVC4: 2 VC)
@@ -79,6 +83,7 @@ aco-math-very_longs.adb:177:21: info: precondition proved (CVC4: 1 VC)
 aco-math-very_longs.adb:195:28: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:201:26: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:201:29: info: length check proved (CVC4: 1 VC)
+aco-math-very_longs.adb:203:36: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:204:52: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:205:52: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:206:21: info: initialization of "L_Digit" proved
@@ -92,6 +97,7 @@ aco-math-very_longs.adb:210:14: info: initialization of "Result.Long_Digits" pro
 aco-math-very_longs.adb:215:31: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:221:26: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:221:29: info: length check proved (CVC4: 1 VC)
+aco-math-very_longs.adb:223:36: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:224:55: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:225:55: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:226:25: info: initialization of "L_Digit" proved
@@ -105,6 +111,8 @@ aco-math-very_longs.adb:234:14: info: initialization of "Result.Long_Digits" pro
 aco-math-very_longs.adb:242:27: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:250:26: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:250:29: info: length check proved (CVC4: 1 VC)
+aco-math-very_longs.adb:253:36: info: cannot unroll loop (too many loop iterations)
+aco-math-very_longs.adb:255:39: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:256:55: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:257:55: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:258:18: medium: overflow check might fail (e.g. when I = 2147483647 and J = 1)
@@ -121,10 +129,13 @@ aco-math-very_longs.adb:261:46: info: initialization of "Result.Long_Digits" pro
 aco-math-very_longs.adb:261:64: info: initialization of "Temp" proved
 aco-math-very_longs.adb:262:63: info: initialization of "Temp" proved
 aco-math-very_longs.adb:266:14: info: initialization of "Result.Long_Digits" proved
+aco-math-very_longs.adb:271:42: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:271:42: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:271:42: medium: overflow check might fail (e.g. when L = (Octet_Length => 2147483647, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 2147483647 and R = (Octet_Length => 1, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 1)
 aco-math-very_longs.adb:279:26: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:279:29: info: length check proved (CVC4: 1 VC)
+aco-math-very_longs.adb:282:36: info: cannot unroll loop (too many loop iterations)
+aco-math-very_longs.adb:284:39: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:285:56: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:286:56: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:287:42: info: initialization of "Result.Long_Digits" proved
@@ -169,11 +180,13 @@ aco-math-very_longs.adb:337:73: info: initialization of "Digit_Index" proved
 aco-math-very_longs.adb:337:85: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:337:116: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:339:17: info: initialization of "Digit_Index" proved
+aco-math-very_longs.adb:350:30: info: unrolling loop
 aco-math-very_longs.adb:355:17: info: initialization of "Distance" proved
 aco-math-very_longs.adb:359:56: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:362:60: medium: overflow check might fail (e.g. when Number = (Octet_Length => 2147483647, Long_Digits => (others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 2147483647)
 aco-math-very_longs.adb:368:29: info: length check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:368:32: info: length check proved (CVC4: 1 VC)
+aco-math-very_longs.adb:370:44: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:371:77: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:371:84: info: initialization of "Overflow_Mask" proved
 aco-math-very_longs.adb:372:32: info: index check proved (CVC4: 2 VC)
@@ -187,6 +200,7 @@ aco-math-very_longs.adb:374:29: info: initialization of "New_Overflow" proved
 aco-math-very_longs.adb:376:47: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:376:54: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:376:57: info: initialization of "Old_Overflow" proved
+aco-math-very_longs.adb:389:44: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:390:77: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:390:84: info: initialization of "Overflow_Mask" proved
 aco-math-very_longs.adb:391:32: info: index check proved (CVC4: 2 VC)
@@ -195,6 +209,7 @@ aco-math-very_longs.adb:392:32: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:392:57: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:392:63: info: initialization of "Old_Overflow" proved
 aco-math-very_longs.adb:393:29: info: initialization of "New_Overflow" proved
+aco-math-very_longs.adb:407:52: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:408:48: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:408:55: info: initialization of "Overflow_Mask" proved
 aco-math-very_longs.adb:409:32: info: index check proved (CVC4: 2 VC)
@@ -231,6 +246,7 @@ aco-math-very_longs.adb:437:133: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:438:25: info: initialization of "Q_Hat" proved
 aco-math-very_longs.adb:446:59: info: initialization of "Current_Borrow" proved
 aco-math-very_longs.adb:456:14: info: range check proved (CVC4: 2 VC)
+aco-math-very_longs.adb:456:61: info: cannot unroll loop (dynamic loop bounds)
 aco-math-very_longs.adb:457:63: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:457:81: info: initialization of "Carry" proved
 aco-math-very_longs.adb:458:58: info: initialization of "Product" proved
@@ -264,6 +280,7 @@ aco-math-very_longs.adb:489:47: medium: range check might fail (e.g. when Q_Hat 
 aco-math-very_longs.adb:493:34: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:493:61: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:495:17: info: range check proved (CVC4: 2 VC)
+aco-math-very_longs.adb:495:64: info: cannot unroll loop (dynamic loop bounds)
 aco-math-very_longs.adb:496:56: medium: overflow check might fail (e.g. when Divisor_Index = 1 and J = 2147483647 and Sum = 0)
 aco-math-very_longs.adb:496:72: medium: array index check might fail (e.g. when Sum = 0 and U = (Long_Digits => (others => 128), others => ?) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 3)
 aco-math-very_longs.adb:496:111: info: index check proved (CVC4: 2 VC)
@@ -316,6 +333,7 @@ aco-math-very_longs.adb:533:15: info: initialization of "J" proved
 aco-math-very_longs.adb:533:17: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:537:11: info: range check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:537:56: info: initialization of "N" proved
+aco-math-very_longs.adb:537:58: info: cannot unroll loop (dynamic loop bounds)
 aco-math-very_longs.adb:538:32: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:538:47: info: initialization of "Remainder.Long_Digits" proved
 aco-math-very_longs.adb:538:50: info: initialization of "U.Long_Digits" proved

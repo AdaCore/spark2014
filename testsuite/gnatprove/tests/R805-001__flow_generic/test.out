@@ -1,1 +1,1 @@
-main.adb:9:27: high: "Arg" must be listed in the Initializes aspect of "Outer" (SPARK RM 7.1.5(11))
+main.adb:9:27: high: "Arg" must be mentioned as an input of the Initializes aspect of "Outer" (SPARK RM 7.1.5(11))

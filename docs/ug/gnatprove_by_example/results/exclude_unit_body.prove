@@ -1,1 +1,1 @@
-exclude_unit_body.ads:10:14: info: implicit function contract not available for proof ("Get_Value" might not return)
+no output

@@ -68,6 +68,7 @@ use_stacks.adb:29:38: info: initialization of "My_Stack" proved
 use_stacks.adb:39:44: info: initialization of "My_Stack" proved
 use_stacks.adb:41:32: info: initialization of "My_Stack" proved
 use_stacks.adb:41:42: info: initialization of "V" proved
+use_stacks.adb:49:25: info: cannot unroll loop (too many loop iterations)
 use_stacks.adb:50:19: info: initialization of "Index" proved
 use_stacks.adb:50:19: medium: "Stack_Vector" might not be initialized
 use_stacks.ads:3:14: info: initialization of "Random_Numbers.State" proved

@@ -38,7 +38,6 @@ with SPARK_Annotate;              use SPARK_Annotate;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
-with SPARK_Util.Types;            use SPARK_Util.Types;
 with SPARK_Util;                  use SPARK_Util;
 with VC_Kinds;                    use VC_Kinds;
 
@@ -917,6 +916,7 @@ package body Flow.Analysis is
          begin
             if F_Final.Variant = Final_Value
               and then A_Final.Is_Export
+              and then F_Final.Kind /= Synthetic_Null_Export
             then
 
                --  We have a final use vertex which is an export that has
@@ -926,17 +926,17 @@ package body Flow.Analysis is
                Written := True;
                if FA.PDG.In_Neighbour_Count (V) = 1 then
                   declare
-                     F_Initial : Flow_Id renames
+                     F_Parent : Flow_Id renames
                        FA.PDG.Get_Key (FA.PDG.Parent (V));
 
-                     A_Initial : V_Attributes renames
+                     A_Parent : V_Attributes renames
                        FA.Atr (FA.PDG.Parent (V));
 
                   begin
-                     if F_Initial.Variant = Initial_Value
-                       and then A_Initial.Is_Import
+                     if F_Parent.Variant = Initial_Value
+                       and then A_Parent.Is_Import
                        and then
-                         Change_Variant (F_Initial, Final_Value) = F_Final
+                         Change_Variant (F_Parent, Final_Value) = F_Final
                      then
                         Written := False;
                      end if;
@@ -2315,9 +2315,15 @@ package body Flow.Analysis is
          V_Key : Flow_Id      renames FA.PDG.Get_Key (V);
          V_Atr : V_Attributes renames FA.Atr (V);
       begin
-         --  Ignore synthetic null output and ???
+         --  Ignore synthetic null output
+         if V_Key.Kind = Synthetic_Null_Export then
+            return False;
+         end if;
+
+         --  Ignore final values that do not correspond to OUT mode parameters,
+         --  Output globals, etc.
          if V_Key.Variant = Final_Value
-           and then (not V_Atr.Is_Export or else Synthetic (V_Key))
+           and then not V_Atr.Is_Export
          then
             return False;
          end if;
@@ -2533,7 +2539,7 @@ package body Flow.Analysis is
          --  for the "variable" that represents the function's result.
 
          if Kind = Init
-           and then Is_Function_Entity (Var)
+           and then Is_Function
          then
             pragma Assert (Get_Direct_Mapping_Id (Var) = FA.Analyzed_Entity);
             return;
@@ -2736,17 +2742,10 @@ package body Flow.Analysis is
            Change_Variant (FA.PDG.Get_Key (V_Initial), Normal_Use);
 
          The_Var_Is_Array : constant Boolean :=
-           (The_Var.Kind = Direct_Mapping
-              and then Is_Type (Etype (Get_Direct_Mapping_Id (The_Var)))
-              and then Has_Array_Type
-                         (Etype (Get_Direct_Mapping_Id (The_Var))))
-           or else
-           (The_Var.Kind = Record_Field
-              and then The_Var.Facet = Normal_Part
-              and then Is_Type (Etype (The_Var.Component.Last_Element))
-              --  ??? how Etype might return a non-type?
-              and then Has_Array_Type
-                         (Etype (The_Var.Component.Last_Element)));
+           (if Is_Abstract_State (The_Var)
+              or else The_Var.Facet /= Normal_Part
+            then False
+            else Is_Array_Type (Get_Type (The_Var, FA.B_Scope)));
          --  True if The_Var refers to an array
 
          Use_Vertex_Points_To_Itself : constant Boolean :=
@@ -2789,7 +2788,8 @@ package body Flow.Analysis is
 
             procedure Found_V_Exp_Use
               (V  : Flow_Graphs.Vertex_Id;
-               TV : out Flow_Graphs.Simple_Traversal_Instruction);
+               TV : out Flow_Graphs.Simple_Traversal_Instruction)
+            with Pre => V /= Flow_Graphs.Null_Vertex;
             --  Stops the DFS search when we reach a vertex that contains
             --  The_Var in its Variables_Explicitly_Used set.
 
@@ -2804,12 +2804,9 @@ package body Flow.Analysis is
             begin
                if V = V_Use then
                   TV := Flow_Graphs.Skip_Children;
-               elsif V /= Flow_Graphs.Null_Vertex
-                 and then FA.Atr (V).Variables_Defined.Contains (The_Var)
-               then
+               elsif FA.Atr (V).Variables_Defined.Contains (The_Var) then
                   TV := Flow_Graphs.Skip_Children;
-               elsif V /= Flow_Graphs.Null_Vertex
-                 and then FA.CFG.Get_Key (V).Variant /= Final_Value
+               elsif FA.CFG.Get_Key (V).Variant /= Final_Value
                  and then
                    FA.Atr (V).Variables_Explicitly_Used.Contains (The_Var)
                then
@@ -3041,11 +3038,6 @@ package body Flow.Analysis is
                        not Expanded_Initializes.Contains
                               (Get_Direct_Mapping_Id (Var_Used)))
 
-                    --  Skip obvious messages about initialization of constants
-
-                    or else
-                      Is_Constant (Var_Used)
-
                     --  Skip messages about initialization of internal objects,
                     --  assuming that they are created by the frontend inlining
                     --  and if they would cause access to an uninitialized
@@ -3082,25 +3074,19 @@ package body Flow.Analysis is
                      --  ... we check the in-neighbours in the DDG and see if
                      --  they define it. We record initialized / uninitialized
                      --  reads accordingly.
-                     --
+
                      for V_Def of
                        FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                      loop
                         declare
-                           Def_Key : Flow_Id renames FA.DDG.Get_Key (V_Def);
                            Def_Atr : V_Attributes renames FA.Atr (V_Def);
 
                         begin
-                           if Def_Key.Variant = Initial_Value
-                             and then
-                               Change_Variant (Def_Key, Normal_Use) = Var_Used
-                           then
+                           if V_Def = Initial_Value_Of_Var_Used then
                               --  We're using the initial value
-                              if Def_Atr.Is_Initialized then
-                                 Is_Initialized   := True;
-                              else
-                                 Is_Uninitialized := True;
-                              end if;
+                              pragma Assert (not Def_Atr.Is_Initialized);
+                              Is_Uninitialized := True;
+
                            elsif Def_Atr.Variables_Defined.Contains (Var_Used)
                              or else Def_Atr.Volatiles_Read.Contains (Var_Used)
                            then
@@ -4269,8 +4255,8 @@ package body Flow.Analysis is
                   --  and those packages can have SPARK_Mode => Off. We detect
                   --  this by checking whether the constituent is in SPARK.
 
-                  if Entity_In_SPARK (Constituent)
-                    and then Ekind (Constituent) = E_Constant
+                  if Ekind (Constituent) = E_Constant
+                    and then Entity_In_SPARK (Constituent)
                     and then not Has_Variable_Input (Constituent)
                   then
                      Error_Msg (Declaration_Node (Constituent),

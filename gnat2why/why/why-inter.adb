@@ -34,6 +34,7 @@ with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with SPARK_Xrefs;                use SPARK_Xrefs;
+with Stand;                      use Stand;
 with String_Utils;               use String_Utils;
 with Uintp;
 with Why.Atree.Accessors;        use Why.Atree.Accessors;
@@ -76,14 +77,15 @@ package body Why.Inter is
 
    function LCA (Left, Right : W_Type_Id) return W_Type_Id;
    --  Return the lowest common ancestor in base type hierarchy,
-   --  i.e. the smallest base type B such that Left <= B and right <= B.
+   --  i.e. the smallest base type B such that Left <= B and Right <= B.
    --  If Force = True, we also force B to be different from Left or Right,
    --  even in the case Left = Right.
 
    function EW_Abstract_Shared
      (N    : Node_Id;
       Kind : EW_Type) return W_Type_Id
-     with Pre => Kind in EW_Abstract | EW_Split;
+     with Pre => Is_Type (N)
+                 and then Kind in EW_Abstract | EW_Split;
    --  Build a type node from an Ada type node, either of kind Split or
    --  Abstract.
 
@@ -650,7 +652,6 @@ package body Why.Inter is
 
          when Entry_Kind
             | E_Procedure
-            | E_Subprogram_Body
          =>
             return WF_Context;
 
@@ -690,9 +691,6 @@ package body Why.Inter is
 
          when E_Loop =>
             return WF_Context;
-
-         when E_Abstract_State =>
-            return WF_Variables;
 
          when others =>
             raise Program_Error;
@@ -810,7 +808,7 @@ package body Why.Inter is
      (N    : Node_Id;
       Kind : EW_Type) return W_Type_Id is
    begin
-      if Nkind (N) in N_Entity and then Is_Standard_Boolean_Type (N) then
+      if Is_Standard_Boolean_Type (N) then
          return EW_Bool_Type;
 
       elsif N = Universal_Fixed then
@@ -822,15 +820,11 @@ package body Why.Inter is
       elsif Is_Class_Wide_Type (N) then
          return EW_Abstract_Shared (Specific_Tagged (N), Kind);
 
-      elsif Is_Type (N) and then Retysp (N) /= N then
+      elsif Retysp (N) /= N then
          return EW_Abstract_Shared (Retysp (N), Kind);
-      elsif Entity_In_SPARK (N) then
-         return New_Kind_Base_Type (N, Kind);
       else
-
-         --  This can happen for globals
-
-         return EW_Private_Type;
+         pragma Assert (Entity_In_SPARK (N));
+         return New_Kind_Base_Type (N, Kind);
       end if;
    end EW_Abstract_Shared;
 
@@ -874,6 +868,10 @@ package body Why.Inter is
          return Obj;
       end if;
    end Extract_Object_Name;
+
+   -----------------
+   -- Get_EW_Type --
+   -----------------
 
    function Get_EW_Type (T : Node_Id) return EW_Type is
       E : constant W_Type_Id := Get_EW_Term_Type (T);
@@ -1005,19 +1003,7 @@ package body Why.Inter is
 
    function Need_Conversion (Expr : W_Expr_Id) return Boolean is
    begin
-      if Get_Kind (+Expr) = W_Call then
-         declare
-            Expr2 : constant W_Call_Id := W_Call_Id (Expr);
-            Base  : constant W_Identifier_Id := Get_Name (Expr2);
-            Name  : constant W_Name_Id := Get_Name (Base);
-
-         begin
-            return Get_Name_String (Get_Symbol (Name))
-            not in To_String (WNE_Init_Allocator)
-                 | To_String (WNE_Uninit_Allocator);
-         end;
-
-      elsif Get_Kind (+Expr) = W_Identifier then
+      if Get_Kind (+Expr) = W_Identifier then
          declare
             Expr2 : constant W_Identifier_Id := W_Identifier_Id (Expr);
             Name  : constant W_Name_Id := Get_Name (Expr2);
@@ -1231,17 +1217,8 @@ package body Why.Inter is
       Rec      : Entity_Id := Empty;
       Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id
    is
-      Suffix : constant String :=
-        (if Ekind (E) in Subprogram_Kind
-                       | E_Subprogram_Body
-                       | Entry_Kind
-                       | Named_Kind
-                       | Type_Kind
-                       | Object_Kind
-                       | E_Abstract_State
-         then
-            Short_Name (E)
-         else "");
+      Suffix : constant String := Short_Name (E);
+
    begin
       --  Components names are prefixed by a constant string, and are always
       --  expressed wrt to their record.
@@ -1278,11 +1255,6 @@ package body Why.Inter is
 
       elsif Local then
          return New_Identifier (Ada_Node => E, Name => Suffix, Typ => Typ);
-
-      elsif Suffix = "" then
-         return New_Identifier (Ada_Node => E,
-                                Name     => Full_Name (E),
-                                Typ      => Typ);
 
       else
          declare
@@ -1367,15 +1339,6 @@ package body Why.Inter is
               Module   => E_Module (E));
       end if;
 
-   end To_Why_Type;
-
-   function To_Why_Type (T : String) return W_Type_Id is
-   begin
-      if T = SPARK_Xrefs.Name_Of_Heap_Variable then
-         return M_Main.Type_Of_Heap;
-      else
-         return EW_Private_Type;
-      end if;
    end To_Why_Type;
 
    ------------------

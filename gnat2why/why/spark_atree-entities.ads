@@ -326,15 +326,19 @@ package SPARK_Atree.Entities is
    -----------------------
 
    function Default_Aspect_Value (Typ : Entity_Id) return Node_Id with
-     Pre  => Is_Scalar_Type (Typ);
+     Pre => Is_Scalar_Type (Typ);
    --  Same as Einfo.Default_Aspect_Value except that it goes to the
    --  Base_Retysp.
 
    function Type_High_Bound (Typ : Entity_Id) return Node_Id with
-     Pre  => Is_Scalar_Type (Typ);
+     Pre => Is_Scalar_Type (Typ);
+
+   function Max_Size_Of_Img_Attr (Typ : Entity_Id) return Uint with
+     Pre => Is_Scalar_Type (Typ);
+   --  Return the maximal size of 'Image for type Typ
 
    function Type_Low_Bound (Typ : Entity_Id) return Node_Id with
-     Pre  => Is_Scalar_Type (Typ)
+     Pre => Is_Scalar_Type (Typ)
      or else Ekind (Typ) = E_String_Literal_Subtype;
    --  Same as Einfo.Type_Low_Bound except that it accepts string literal
    --  subtypes and returns String_Literal_Low_Bound so that it can be called

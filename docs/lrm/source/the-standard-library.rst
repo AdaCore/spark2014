@@ -188,7 +188,8 @@ Unbounded-Length String Handling (A.4.5)
 .. _tu-nk-unbounded-length-string-handling-01:
 
 1. The type String_Access and the procedure Free are not in |SPARK| as
-   they require access types and cannot be denoted in |SPARK| program text.
+   they require non-owning access types and cannot be denoted in
+   |SPARK| program text.
 
 .. _tu-nk-unbounded-length-string-handling-02:
 

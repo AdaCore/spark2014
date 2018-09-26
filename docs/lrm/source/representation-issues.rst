@@ -142,7 +142,7 @@ Unchecked Access Value Creation
 
 .. _tu-unchecked_access_value_creation-01:
 
-1. As access types are not supported in |SPARK|, neither is this attribute.
+1. The Unchecked_Access attribute is not in |SPARK|.
 
 .. _etu-unchecked_access_value_creation:
 
@@ -153,7 +153,11 @@ Storage Management
 
 .. _tu-storage_management-01:
 
-1. These features are related to access types and not in |SPARK|.
+1. Aspect specifications for the Storage_Pool and Storage_Size aspects
+are not in |SPARK|, nor are uses of the corresponding attributes.
+The predefined unit System.Storage_Pools is not in |SPARK|, nor is
+any other predefined unit that semantically depends on it. The pragma
+Default_Storage_Pool is not in SPARK.
 
 .. _etu-storage_management:
 

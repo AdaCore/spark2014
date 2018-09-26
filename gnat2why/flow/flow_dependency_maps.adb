@@ -226,7 +226,7 @@ package body Flow_Dependency_Maps is
    -----------------------
 
    function Parse_Initializes (P : Entity_Id) return Dependency_Maps.Map is
-      Initializes : constant Node_Id  := Get_Pragma (P, Pragma_Initializes);
+      Initializes : constant Node_Id := Get_Pragma (P, Pragma_Initializes);
 
       M : Dependency_Maps.Map;
 

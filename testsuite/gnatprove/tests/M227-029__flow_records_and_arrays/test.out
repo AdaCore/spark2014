@@ -70,6 +70,7 @@ untangle_tests.adb:40:16: info: initialization of "Tmp.Normal.Z" proved
 untangle_tests.adb:40:16: info: initialization of "Tmp.Vertices" proved
 untangle_tests.adb:44:04: warning: analyzing unreferenced procedure "Sieve"
 untangle_tests.adb:44:21: info: initialization of "P" proved
+untangle_tests.adb:51:46: info: cannot unroll loop (too many loop iterations)
 untangle_tests.adb:52:13: info: initialization of "P" proved
 untangle_tests.adb:53:20: info: overflow check proved (CVC4: 1 VC)
 untangle_tests.adb:53:20: info: range check proved (CVC4: 1 VC)
@@ -80,6 +81,8 @@ untangle_tests.adb:55:22: info: initialization of "P" proved
 untangle_tests.adb:56:21: info: initialization of "N" proved
 untangle_tests.adb:56:23: info: overflow check proved (CVC4: 1 VC)
 untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform"
+untangle_tests.adb:67:51: info: cannot unroll loop (too many loop iterations)
+untangle_tests.adb:68:26: info: unrolling loop
 untangle_tests.adb:69:60: medium: float overflow check might fail
 untangle_tests.adb:70:60: medium: float overflow check might fail
 untangle_tests.adb:71:60: medium: float overflow check might fail

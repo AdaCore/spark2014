@@ -1392,6 +1392,7 @@ no_higher_event_1.adb:372:29: info: initialization of "Bus_Creator_out1" proved
 no_higher_event_1.adb:372:32: info: initialization of "No_Higher_Event_Than_ALTSEL_Capture_Cond_Met" proved
 no_higher_event_1.adb:373:29: info: initialization of "Bus_Creator_out1" proved
 no_higher_event_1.adb:373:32: info: initialization of "No_Higher_Event_Than_ALTSEL_Track_Cond_Met" proved
+no_higher_event_1.adb:378:26: info: unrolling loop
 no_higher_event_1.adb:379:18: info: initialization of "O" proved
 no_higher_event_1.adb:379:21: info: initialization of "Bus_Creator_out1" proved
 no_higher_event_1.ads:19:43: info: initialization of "O" proved

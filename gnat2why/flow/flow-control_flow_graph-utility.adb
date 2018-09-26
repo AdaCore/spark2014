@@ -446,6 +446,10 @@ package body Flow.Control_Flow_Graph.Utility is
       I     : constant Flow_Id    := Change_Variant (Implicit, Normal_Use);
       A     : V_Attributes        := Null_Attributes;
       Scope : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
+
+      Implicit_Flat : constant Flow_Id_Sets.Set := Flatten_Variable (I, Scope);
+      --  Flat view of the implicit parameter
+
    begin
       A.Is_Implicit_Parameter := True;
       A.Call_Vertex           := Direct_Mapping_Id (Call_Vertex);
@@ -455,19 +459,11 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case Implicit.Variant is
          when In_View =>
-            declare
-               Implicit_Flat : constant Flow_Id_Sets.Set :=
-                 Flatten_Variable (I, Scope);
-            begin
-               pragma Assert (A.Variables_Used.Is_Empty);
-               pragma Assert (A.Variables_Explicitly_Used.Is_Empty);
-               A.Variables_Used := Implicit_Flat;
-               A.Variables_Explicitly_Used := Implicit_Flat;
-            end;
+            A.Variables_Used := Implicit_Flat;
+            A.Variables_Explicitly_Used := Implicit_Flat;
 
          when Out_View =>
-            pragma Assert (A.Variables_Defined.Is_Empty);
-            A.Variables_Defined := Flatten_Variable (I, Scope);
+            A.Variables_Defined := Implicit_Flat;
 
          when others =>
             raise Program_Error;
@@ -531,8 +527,7 @@ package body Flow.Control_Flow_Graph.Utility is
          when Initial_Value =>
 
             A.Is_Initialized := A.Mode in Mode_In | Mode_In_Out
-              or else Ekind (Entire_Var) = E_Loop_Parameter
-              or else In_Generic_Actual (Entire_Var)
+              or else Ekind (Entire_Var) in E_Loop_Parameter | E_Constant
               or else (not Is_In_Analyzed_Files (Entire_Var)
                          and then
                        Is_Initialized_At_Elaboration (Entire_Var, S));

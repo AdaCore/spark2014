@@ -207,15 +207,15 @@ level 4. More precisely, each value of ``--level`` is equivalent to directly
 setting a collection of other switches discussed above:
 
 * ``--level=0`` is equivalent to
-  ``--prover=cvc4 --proof=per_check --timeout=1 --memlimit=1000 --steps=0``
+  ``--prover=cvc4 --timeout=1 --memlimit=1000 --steps=0``
 * ``--level=1`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=per_check --timeout=1 --memlimit=1000 --steps=0``
+  ``--prover=cvc4,z3,altergo --timeout=1 --memlimit=1000 --steps=0``
 * ``--level=2`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=per_check --timeout=5 --memlimit=1000 --steps=0``
+  ``--prover=cvc4,z3,altergo --timeout=5 --memlimit=1000 --steps=0``
 * ``--level=3`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=progressive --timeout=5 --memlimit=2000 --steps=0``
+  ``--prover=cvc4,z3,altergo --timeout=20 --memlimit=2000 --steps=0``
 * ``--level=4`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=progressive --timeout=10 --memlimit=2000 --steps=0``
+  ``--prover=cvc4,z3,altergo --timeout=60 --memlimit=2000 --steps=0``
 
 If both ``--level`` is set and an underlying switch is set (``--prover``,
 ``--timeout``, or ``--proof``), the value of the latter takes precedence over
@@ -287,6 +287,14 @@ The handling of runtimes of |GNATprove| is in fact unified with that of the
 GNAT compiler. For details, see "GNAT User's Guide Supplement for Cross
 Platforms", Section 3. If you specify a target, note that |GNATprove| requires
 additional configuration, see the section :ref:`implementation_defined`.
+
+If you're using GNAT Common Code Generator to generate C code from SPARK, you
+can specify the target and runtime as follows:
+
+.. code-block:: gpr
+
+   for Target use "c";
+   for Runtime ("Ada") use "ccg";
 
 .. _implementation_defined:
 
@@ -386,22 +394,6 @@ processor configured as big-endian::
   float          6  I  32  32
   double        15  I  64  64
   long double   15  I  64  64
-
-.. _Parenthesized Arithmetic Operations:
-
-Parenthesized Arithmetic Operations
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-In Ada, non-parenthesized arithmetic operations could be re-ordered by the
-compiler, which may result in a failing computation (due to overflow checking)
-becoming a successful one, and vice-versa. By default, |GNATprove| evaluates
-all expressions left-to-right, like GNAT. When the switch ``--pedantic`` is
-used, a warning is emitted for every operation that could be re-ordered:
-
-* any operand of a binary adding operation (+,-) that is itself a binary adding
-  operation;
-* any operand of a binary multiplying operation (\*,/,mod,rem) that is itself a
-  binary multiplying operation.
 
 .. _Using CodePeer Static Analysis:
 

@@ -101,13 +101,8 @@ User-Defined Indexing
 Literals
 --------
 
-.. centered:: **Legality Rules**
+No extensions or restrictions.
 
-.. _tu-literals-01:
-
-1. The literal **null** representing an access value is not allowed.
-
-.. _etu-literals:
 
 Aggregates
 ----------
@@ -499,7 +494,20 @@ Allocators
 
 .. _tu-allocators-01:
 
-1. The use of allocators is not permitted.
+1. The designated type of the type of an uninitialized allocator
+   shall define full default initialization.
+
+.. _tu-allocators-02:
+
+2. Evaluation of an allocator is subject to the same restrictions as
+calling a volatile function (e.g., an allocator is not allowed within
+a non-volatile function). [If it seems helpful, an allocator may be
+thought of as being like a call to a volatile function which returns
+the access value designating the allocated object.]
+
+.. _tu-allocators-03:
+
+3. The type of an allocator shall not be anonymous.
 
 .. _etu-allocators:
 

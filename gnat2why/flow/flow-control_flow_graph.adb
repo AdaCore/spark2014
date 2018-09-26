@@ -1144,6 +1144,7 @@ package body Flow.Control_Flow_Graph is
             P : constant Flow_Id :=
               Change_Variant (Entire_Variable (F),
                               Corresponding_Grouping (F.Variant));
+
          begin
             Create_Record_Tree (P, Leaf_Atr, FA);
          end;
@@ -1158,8 +1159,10 @@ package body Flow.Control_Flow_Graph is
             case F.Kind is
                when Null_Value =>
                   raise Program_Error;
+
                when Magic_String | Synthetic_Null_Export =>
                   null;
+
                when Direct_Mapping | Record_Field =>
                   if F.Kind = Record_Field
                     or else F.Facet in Private_Part | Extension_Part
@@ -1169,6 +1172,7 @@ package body Flow.Control_Flow_Graph is
                         P : constant Flow_Id :=
                           Change_Variant (Parent_Record (F),
                                           Corresponding_Grouping (F.Variant));
+
                      begin
                         Create_Record_Tree (P, Leaf_Atr, FA);
                         case F.Variant is
@@ -1193,8 +1197,10 @@ package body Flow.Control_Flow_Graph is
             case F.Kind is
                when Null_Value =>
                   raise Program_Error;
+
                when Magic_String | Synthetic_Null_Export =>
                   null;
+
                when Direct_Mapping | Record_Field =>
                   --  Only proceed if we don't have this vertex yet
                   if FA.CFG.Get_Vertex (F) = Flow_Graphs.Null_Vertex then
@@ -2127,10 +2133,6 @@ package body Flow.Control_Flow_Graph is
       with Pre => Is_For_Loop (N);
       --  Obtain the entity of a for loops loop parameter
 
-      function Get_Loop_Name (N : Node_Id) return Entity_Id
-      is (Entity (Identifier (N)));
-      --  Obtain the entity of loop's label
-
       function Get_Loop_Range (N : Node_Id) return Node_Id
       with Pre => Is_For_Loop (N);
       --  Return the range given for loop
@@ -2518,7 +2520,7 @@ package body Flow.Control_Flow_Graph is
             Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
             Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
 
-            Fully_Initialized := Flow_Id_Sets.Empty_Set;
+            Fully_Initialized := Variables_Initialized_By_Loop (N);
          end if;
       end Do_For_Loop;
 
@@ -2600,7 +2602,10 @@ package body Flow.Control_Flow_Graph is
          Active_Loops      : Node_Sets.Set   := Node_Sets.Empty_Set;
          All_Loop_Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
-         Lc : constant Graph_Connections := CM (Union_Id (N));
+         Lc : constant Graph_Connections := CM (Union_Id (Statements (N)));
+         --  A slice (represented by Standard_Entry and Standard_Exits) of the
+         --  CFG for checking whether a variable is defined on all paths in
+         --  the current loop.
 
          function Get_Array_Index (N : Node_Id) return Target;
          --  Convert the target of an assignment to an array into a flow id
@@ -2608,7 +2613,7 @@ package body Flow.Control_Flow_Graph is
 
          function Fully_Defined_In_Original_Loop (T : Target) return Boolean
          with Pre => T.Valid;
-         --  Performs a mini-flow analysis on the current loop fragment to
+         --  Performs a mini-flow analysis on the current loop statements to
          --  see if T is defined on all paths (but not explicitly used).
 
          function Proc_Search (N : Node_Id) return Traverse_Result;
@@ -2651,8 +2656,7 @@ package body Flow.Control_Flow_Graph is
             --  Construct the variable we're possibly fully defining
             case Nkind (Prefix (N)) is
                when N_Identifier | N_Expanded_Name =>
-                  F := Direct_Mapping_Id
-                    (Unique_Entity (Entity (Prefix (N))));
+                  F := Direct_Mapping_Id (Entity (Prefix (N)));
                   T := Get_Type (Entity (Prefix (N)), FA.B_Scope);
 
                when N_Selected_Component =>
@@ -2663,19 +2667,76 @@ package body Flow.Control_Flow_Graph is
                   raise Program_Error;
             end case;
 
-            --  Extract indices (and make sure they are simple and
-            --  distinct).
+            --  Extract indices (and make sure they are simple and distinct)
             L := Entity_Vectors.Empty_Vector;
             declare
-               Ptr         : Node_Id := First (Expressions (N));
-               Index_Ptr   : Node_Id := First_Index (T);
+               Param_Expr  : Node_Id := First (Expressions (N)); --  LHS
+               Index_Expr  : Node_Id := First_Index (T);         --  array
                Param_Range : Node_Id;
                Index_Range : Node_Id;
+
+               Multi_Dim   : constant Boolean :=
+                 List_Length (Expressions (N)) > 1;
+               Current_Dim : Pos := 1;
+
+               function Matches_Object_Range
+                 (Param_Range : Node_Id)
+                  return Boolean;
+               --  Returns True iff the range of the loop parameter matches the
+               --  range of the assigned array, e.g.:
+               --
+               --  for J in S'Range loop
+               --     S (J) := ...;
+               --  end loop;
+               --
+               --  Note: the 'Range in code like this will be expanded into
+               --  'First and 'Last and this is what we actually detect.
+
+               --------------------------
+               -- Matches_Object_Range --
+               --------------------------
+
+               function Matches_Object_Range
+                 (Param_Range : Node_Id)
+                  return Boolean
+               is
+                  Low  : constant Node_Id := Low_Bound (Param_Range);
+                  High : constant Node_Id := High_Bound (Param_Range);
+
+                  Object : constant Entity_Id :=
+                    (if F.Kind = Direct_Mapping
+                     then Get_Direct_Mapping_Id (F)
+                     else F.Component.Last_Element);
+                  --  The object being assigned
+
+                  pragma Assert
+                    (if F.Kind = Direct_Mapping
+                     then Is_Assignable (Object)
+                     else Ekind (Object) = E_Component);
+
+               begin
+                  return Nkind (Low) = N_Attribute_Reference
+                    and then Get_Attribute_Id (Attribute_Name (Low)) =
+                             Attribute_First
+                    and then Entity (Prefix (Low)) = Object
+
+                    and then Nkind (High) = N_Attribute_Reference
+                    and then Get_Attribute_Id (Attribute_Name (High)) =
+                             Attribute_Last
+                    and then Entity (Prefix (High)) = Object
+
+                    and then
+                      (if Multi_Dim
+                       then Intval (First (Expressions (Low))) = Current_Dim
+                              and then
+                            Intval (First (Expressions (High))) = Current_Dim);
+               end Matches_Object_Range;
+
             begin
-               while Present (Ptr) loop
-                  case Nkind (Ptr) is
+               while Present (Param_Expr) loop
+                  case Nkind (Param_Expr) is
                      when N_Identifier | N_Expanded_Name =>
-                        if L.Contains (Entity (Ptr)) then
+                        if L.Contains (Entity (Param_Expr)) then
                            --  Non-distinct entry, just abort. For
                            --  example:
                            --
@@ -2685,7 +2746,7 @@ package body Flow.Control_Flow_Graph is
                            return Null_Target;
                         end if;
 
-                        if not Active_Loops.Contains (Entity (Ptr)) then
+                        if not Active_Loops.Contains (Entity (Param_Expr)) then
                            --  Not a loop variable we care about, again
                            --  we just abort. For example:
                            --
@@ -2695,26 +2756,29 @@ package body Flow.Control_Flow_Graph is
                            return Null_Target;
                         end if;
 
-                        Param_Range := Get_Range (Entity (Ptr));
-                        Index_Range := Get_Range (Index_Ptr);
+                        Param_Range := Get_Range (Entity (Param_Expr));
+                        Index_Range := Get_Range (Index_Expr);
 
-                        --  ??? Do we need to do something here for
-                        --      static_predicate?
-                        if not
-                          (Compile_Time_Compare (Low_Bound (Param_Range),
-                                                 Low_Bound (Index_Range),
-                                                 True) = EQ
-                             and then
-                           Compile_Time_Compare (High_Bound (Param_Range),
-                                                 High_Bound (Index_Range),
-                                                 True) = EQ)
+                        if (Compile_Time_Compare (Low_Bound (Param_Range),
+                                                  Low_Bound (Index_Range),
+                                                  True) = EQ
+                              and then
+                            Compile_Time_Compare (High_Bound (Param_Range),
+                                                  High_Bound (Index_Range),
+                                                  True) = EQ)
+                          or else
+                            Matches_Object_Range (Param_Range)
                         then
-                           --  The loop parameter type does not fully
-                           --  cover this index type.
+                           null;
+
+                        --  The loop parameter type does not fully cover this
+                        --  index type.
+
+                        else
                            return Null_Target;
                         end if;
 
-                        L.Append (Entity (Ptr));
+                        L.Append (Entity (Param_Expr));
 
                      when others =>
                         --  This is not a simple entity, so just abort.
@@ -2726,8 +2790,9 @@ package body Flow.Control_Flow_Graph is
                         return Null_Target;
                   end case;
 
-                  Next (Ptr);
-                  Next_Index (Index_Ptr);
+                  Next (Param_Expr);
+                  Next_Index (Index_Expr);
+                  Current_Dim := Current_Dim + 1;
                end loop;
             end;
 
@@ -2834,24 +2899,27 @@ package body Flow.Control_Flow_Graph is
          begin
             case Nkind (N) is
                when N_Loop_Statement =>
-                  declare
-                     Old_Loop : constant Node_Id := Current_Loop;
-                  begin
-                     if N = Current_Loop then
-                        return OK;
+                  if N = Current_Loop then
+                     return OK;
 
-                     elsif Is_For_Loop (N) then
+                  elsif Is_For_Loop (N) then
+                     declare
+                        Old_Loop      : constant Node_Id := Current_Loop;
+                        Loop_Variable : constant Entity_Id :=
+                          Get_Loop_Variable (N);
+
+                     begin
                         Current_Loop := N;
-                        Active_Loops.Insert (Get_Loop_Variable (N));
+                        Active_Loops.Insert (Loop_Variable);
 
                         Rec (N);
 
                         Current_Loop := Old_Loop;
-                        Active_Loops.Delete (Get_Loop_Variable (N));
+                        Active_Loops.Delete (Loop_Variable);
+                     end;
 
-                        return Skip;
-                     end if;
-                  end;
+                     return Skip;
+                  end if;
 
                when N_Assignment_Statement =>
                   declare
@@ -2896,6 +2964,11 @@ package body Flow.Control_Flow_Graph is
 
          procedure Rec (N : Node_Id) renames Rec_Inner;
 
+         --  Local variables:
+
+         Loop_Name : constant Entity_Id := Entity (Identifier (N));
+         --  The loop entity
+
       --  Start of processing for Variables_Initialized_By_Loop
 
       begin
@@ -2904,7 +2977,7 @@ package body Flow.Control_Flow_Graph is
          end if;
 
          for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-            if FA.Atr (V).Loops.Contains (Get_Loop_Name (N)) then
+            if FA.Atr (V).Loops.Contains (Loop_Name) then
                All_Loop_Vertices.Insert (V);
             end if;
          end loop;
@@ -3094,19 +3167,35 @@ package body Flow.Control_Flow_Graph is
       Ctx.Current_Loops.Delete (Loop_Id);
       Ctx.Termination_Proved := Outer_Termination;
 
-      --  Finally, we can update the loop information in Flow_Utility
+      --  Finally, we can update the loop information in Flow_Utility for proof
 
-      Add_Loop (Loop_Id);
-      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+      if not FA.Generating_Globals then
          declare
-            Atr : V_Attributes renames FA.Atr (V);
+            Loop_Writes : Flow_Id_Sets.Set;
+
          begin
-            if Atr.Loops.Contains (Loop_Id) then
-               Add_Loop_Writes (Loop_Id,
-                                Atr.Variables_Defined or Atr.Volatiles_Read);
-            end if;
+            for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+               declare
+                  Atr : V_Attributes renames FA.Atr (V);
+
+               begin
+                  if Atr.Loops.Contains (Loop_Id) then
+                     for Var of
+                       Atr.Variables_Defined.Union (Atr.Volatiles_Read)
+                     loop
+                        if not Synthetic (Var) then
+                           Loop_Writes.Include
+                             (Change_Variant (Entire_Variable (Var),
+                                              Normal_Use));
+                        end if;
+                     end loop;
+                  end if;
+               end;
+            end loop;
+
+            Add_Loop_Writes (Loop_Id, To_Proof_View (Loop_Writes));
          end;
-      end loop;
+      end if;
 
    end Do_Loop_Statement;
 
@@ -4613,8 +4702,9 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  If the type has a Default_Initial_Condition then we:
-      --    * check if the full type is as the aspect suggested
-      --      and issue a warning if not
+      --    * check if the full type is as the aspect suggested and issue a
+      --      warning if not.
+
       if Has_Own_DIC (Typ)
         or else (Is_Tagged_Type (Typ)
                  and then Has_Inherited_DIC (Typ))
@@ -4624,9 +4714,8 @@ package body Flow.Control_Flow_Graph is
          --
          --  We do not issue this warning:
          --    * during the global generation phase,
-         --    * when dealing with an internal type (this is fine since we
-         --      will get a warning on the type that comes from source
-         --      anyway).
+         --    * when dealing with an internal type (this is fine since we will
+         --      get a warning on the type that comes from source anyway).
 
          if not FA.Generating_Globals
            and then Comes_From_Source (Typ)
@@ -4957,10 +5046,13 @@ package body Flow.Control_Flow_Graph is
 
          when N_Package_Body      |
               N_Package_Body_Stub =>
+
             --  Skip bodies of generic packages and bodies of wrappers with
             --  instances of generic subprograms.
+
             declare
                E : constant Entity_Id := Unique_Defining_Entity (N);
+
             begin
                case Ekind (E) is
                   when E_Generic_Package =>

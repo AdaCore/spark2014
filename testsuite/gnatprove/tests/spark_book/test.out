@@ -23,6 +23,7 @@ aggregates.adb:17:14: info: initialization of "Approx" proved
 aggregates.adb:17:14: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
 aggregates.adb:29:24: info: initialization of "A" proved
 aggregates.adb:29:26: medium: float overflow check might fail
+aggregates.adb:29:28: info: analyzing call to "Sqrt" in context
 aggregates.adb:29:28: info: initialization of "B" proved
 average.adb:10:15: warning: assuming "Put_Line" has no effect on global items
 average.adb:10:15: warning: no Global contract available for "Put_Line"
@@ -83,7 +84,10 @@ bingo_basket.adb:12:24: info: initialization of "The_Basket" proved, in call inl
 bingo_basket.adb:12:30: info: initialization of "The_Basket" proved, in call inlined at bingo_basket.adb:27
 bingo_basket.adb:12:33: info: initialization of "Temp" proved
 bingo_basket.adb:12:33: info: initialization of "Temp" proved, in call inlined at bingo_basket.adb:27
+bingo_basket.adb:21:37: info: cannot unroll loop (too many loop iterations)
 bingo_basket.adb:22:30: info: initialization of "The_Basket" proved
+bingo_basket.adb:25:36: info: cannot unroll loop (too many loop iterations)
+bingo_basket.adb:27:10: info: analyzing call to "Swap" in context
 bingo_basket.adb:28:33: info: initialization of "Random_Index" proved
 bingo_basket.adb:36:32: info: index check proved (CVC4: 2 VC)
 bingo_basket.adb:37:30: info: range check proved (CVC4: 1 VC)
@@ -116,8 +120,10 @@ bounded_queue.ads:45:04: medium: type "Queue_Type" is not fully initialized, in 
 bounded_queue.ads:50:10: info: range check proved (CVC4: 2 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue_example.adb:10:50: info: range check proved (CVC4: 1 VC)
 bounded_queue_example.adb:14:11: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:15:43: info: unrolling loop
 bounded_queue_example.adb:16:07: medium: precondition might fail
 bounded_queue_example.adb:16:25: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:18:38: info: unrolling loop
 bounded_queue_example.adb:19:07: medium: precondition might fail
 bounded_queue_example.adb:19:25: info: initialization of private part of "My_Queue" proved
 bounded_queue_example.adb:20:07: warning: assuming "Put" has no effect on global items
@@ -128,18 +134,20 @@ bounded_queue_example.adb:21:07: warning: no Global contract available for "New_
 bounded_queue_example.adb:23:11: info: initialization of private part of "My_Queue" proved
 bounded_queue_example.adb:24:04: warning: assuming "Put_Line" has no effect on global items
 bounded_queue_example.adb:24:04: warning: no Global contract available for "Put_Line"
-bounded_queue_example.adb:24:42: low: range check might fail
+bounded_queue_example.adb:24:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_example.adb:24:65: info: initialization of private part of "My_Queue" proved
 bounded_queue_example_v1.adb:6:56: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Front" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Items" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Rear" is not initialized
+bounded_queue_example_v1.adb:11:40: info: cannot unroll loop (too many loop iterations)
 bounded_queue_example_v1.adb:12:07: medium: precondition might fail
 bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Count" proved
 bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Front" proved
 bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Items" proved
 bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Rear" proved
+bounded_queue_example_v1.adb:14:38: info: unrolling loop
 bounded_queue_example_v1.adb:15:07: medium: precondition might fail
 bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Count" proved
 bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Front" proved
@@ -158,12 +166,14 @@ bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Items" pro
 bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Rear" proved
 bounded_queue_example_v1.adb:20:04: warning: assuming "Put_Line" has no effect on global items
 bounded_queue_example_v1.adb:20:04: warning: no Global contract available for "Put_Line"
-bounded_queue_example_v1.adb:20:42: low: range check might fail
+bounded_queue_example_v1.adb:20:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v1.adb:20:59: info: initialization of "Value" proved
 bounded_queue_example_v2.adb:6:56: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v2.adb:10:11: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:11:40: info: cannot unroll loop (too many loop iterations)
 bounded_queue_example_v2.adb:12:07: medium: precondition might fail
 bounded_queue_example_v2.adb:12:25: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:14:38: info: unrolling loop
 bounded_queue_example_v2.adb:15:07: medium: precondition might fail
 bounded_queue_example_v2.adb:15:25: info: initialization of private part of "My_Queue" proved
 bounded_queue_example_v2.adb:16:07: warning: assuming "Put_Line" has no effect on global items
@@ -173,7 +183,7 @@ bounded_queue_example_v2.adb:18:11: info: initialization of private part of "My_
 bounded_queue_example_v2.adb:19:19: info: initialization of private part of "My_Queue" proved
 bounded_queue_example_v2.adb:20:04: warning: assuming "Put_Line" has no effect on global items
 bounded_queue_example_v2.adb:20:04: warning: no Global contract available for "Put_Line"
-bounded_queue_example_v2.adb:20:42: low: range check might fail
+bounded_queue_example_v2.adb:20:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v2.adb:20:59: info: initialization of "Value" proved
 bounded_queue_v1.adb:20:32: medium: array index check might fail
 bounded_queue_v1.adb:25:32: medium: array index check might fail
@@ -218,10 +228,12 @@ bounded_queue_v2.ads:39:17: medium: postcondition might fail, cannot prove Item 
 bounded_queue_v2.ads:39:24: info: precondition proved (CVC4: 1 VC)
 bounded_queue_v2.ads:45:04: medium: type "Queue_Type" is not fully initialized
 bounded_queue_v2.ads:50:10: info: range check proved (CVC4: 2 VC)
+buffers.adb:18:34: info: cannot unroll loop (too many loop iterations)
 buffers.adb:19:56: info: division check proved (CVC4: 1 VC)
 buffers.adb:20:31: info: initialization of "New_Index" proved
 buffers.adb:20:31: info: initialization of "Workspace" proved
 buffers.adb:22:17: info: initialization of "Workspace" proved
+buffers.adb:29:63: info: cannot unroll loop (too many loop iterations)
 buffers.adb:32:43: info: initialization of "Temp" proved
 buffers.adb:42:33: info: initialization of "Count" proved
 buffers.adb:42:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -245,6 +257,7 @@ buffers.adb:86:30: info: range check proved (CVC4: 1 VC)
 buffers.adb:90:16: info: initialization of "Offset" proved
 buffers.adb:93:11: info: range check proved (CVC4: 2 VC)
 buffers.adb:93:40: info: initialization of "Offset" proved
+buffers.adb:93:77: info: cannot unroll loop (too many loop iterations)
 buffers.adb:94:36: info: index check proved (CVC4: 2 VC)
 buffers.adb:94:41: info: initialization of "Workspace" proved
 buffers.adb:96:17: info: initialization of "Workspace" proved
@@ -267,6 +280,7 @@ buffers.adb:127:38: info: range check proved (CVC4: 1 VC)
 buffers.adb:129:19: info: initialization of "Characters_To_Copy" proved
 buffers.adb:132:11: info: range check proved (CVC4: 2 VC)
 buffers.adb:132:45: info: initialization of "Characters_To_Copy" proved
+buffers.adb:132:64: info: cannot unroll loop (too many loop iterations)
 buffers.adb:133:23: info: index check proved (CVC4: 2 VC)
 buffers.adb:133:23: info: overflow check proved (CVC4: 1 VC)
 buffers.adb:133:57: info: index check proved (CVC4: 2 VC)
@@ -278,6 +292,7 @@ buffers.adb:150:42: info: range check proved (CVC4: 1 VC)
 buffers.adb:151:43: info: range check proved (CVC4: 1 VC)
 buffers.adb:153:11: info: range check proved (CVC4: 2 VC)
 buffers.adb:153:45: info: initialization of "Characters_To_Copy" proved
+buffers.adb:153:64: info: cannot unroll loop (too many loop iterations)
 buffers.adb:154:40: info: index check proved (CVC4: 2 VC)
 buffers.adb:154:40: info: overflow check proved (CVC4: 1 VC)
 buffers.adb:154:51: info: initialization of "Destination" proved
@@ -411,23 +426,29 @@ control_structures.adb:160:31: medium: float overflow check might fail
 control_structures.adb:160:33: info: initialization of "X" proved
 control_structures.adb:160:35: medium: divide by zero might fail
 control_structures.adb:160:35: medium: float overflow check might fail
+control_structures.adb:163:38: info: unrolling loop
 control_structures.adb:164:26: warning: assuming "Put" has no effect on global items
 control_structures.adb:164:26: warning: no Global contract available for "Put"
+control_structures.adb:167:46: info: unrolling loop
 control_structures.adb:168:26: warning: assuming "Put" has no effect on global items
 control_structures.adb:168:26: warning: no Global contract available for "Put"
 control_structures.adb:174:08: info: range check proved (CVC4: 2 VC)
 control_structures.adb:174:31: info: initialization of "A" proved
 control_structures.adb:174:36: info: initialization of "B" proved
+control_structures.adb:174:38: info: cannot unroll loop (too many loop iterations)
 control_structures.adb:175:26: warning: assuming "Put" has no effect on global items
 control_structures.adb:175:26: warning: no Global contract available for "Put"
 control_structures.adb:178:08: info: range check proved (CVC4: 2 VC)
 control_structures.adb:178:39: info: initialization of "A" proved
 control_structures.adb:178:44: info: initialization of "B" proved
+control_structures.adb:178:46: info: cannot unroll loop (too many loop iterations)
 control_structures.adb:179:26: warning: assuming "Put" has no effect on global items
 control_structures.adb:179:26: warning: no Global contract available for "Put"
+control_structures.adb:184:07: info: analyzing call to "Calculate_Valve" in context
 control_structures.adb:184:07: info: initialization of "Temperature" proved
 control_structures.adb:186:18: info: initialization of "Valve_Setting" proved
 datebook.adb:40:40: info: initialization of "Event_Array" constituent of "State" proved
+datebook.adb:72:40: info: cannot unroll loop (too many loop iterations)
 datebook.adb:80:17: info: initialization of "Found" proved
 datebook.adb:86:54: info: initialization of "Available" proved
 datebook.adb:86:69: info: length check proved (CVC4: 1 VC)
@@ -438,6 +459,8 @@ datebook.adb:88:54: info: initialization of "Available" proved
 datebook.adb:88:68: info: range check proved (CVC4: 1 VC)
 datebook.adb:89:45: info: initialization of "Available" proved
 datebook.adb:90:45: info: initialization of "Available" proved
+datebook.adb:104:37: info: cannot unroll loop (too many loop iterations)
+datebook.adb:123:37: info: cannot unroll loop (too many loop iterations)
 datebook.adb:128:16: info: initialization of "Status" proved
 datebook.adb:133:62: info: initialization of "Date" proved
 datebook.adb:156:19: info: length check proved (CVC4: 1 VC)
@@ -459,6 +482,7 @@ datebook.adb:174:33: info: initialization of "Index" proved
 datebook.adb:182:20: info: initialization of "Index" proved
 datebook.adb:183:19: info: initialization of "Index" proved
 datebook.adb:183:25: info: range check proved (CVC4: 1 VC)
+datebook.adb:208:37: info: cannot unroll loop (too many loop iterations)
 datebook.adb:210:12: info: no contextual analysis of "Is_After" (in potentially unevaluated context)
 datebook.adb:228:32: info: initialization of "Count" proved
 datebook.adb:228:32: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -490,6 +514,8 @@ datebooks.adb:62:60: info: initialization of "Find_Result.Fresh_Index" proved
 datebooks.adb:62:74: info: range check proved (CVC4: 1 VC)
 datebooks.adb:63:60: info: initialization of "Find_Result.Fresh_Index" proved
 datebooks.adb:64:60: info: initialization of "Find_Result.Fresh_Index" proved
+datebooks.adb:73:33: info: cannot unroll loop (too many loop iterations)
+datebooks.adb:86:33: info: cannot unroll loop (too many loop iterations)
 datebooks.adb:91:16: info: initialization of "Status" proved
 datebooks.adb:96:49: info: initialization of "Date" proved
 datebooks.adb:109:19: info: length check proved (CVC4: 1 VC)
@@ -511,6 +537,7 @@ datebooks.adb:124:68: info: initialization of "I" proved
 datebooks.adb:132:20: info: initialization of "I" proved
 datebooks.adb:133:15: info: initialization of "I" proved
 datebooks.adb:133:17: info: range check proved (CVC4: 1 VC)
+datebooks.adb:151:33: info: cannot unroll loop (too many loop iterations)
 datebooks.adb:152:38: info: no contextual analysis of "Is_After" (in potentially unevaluated context)
 datebooks.adb:165:32: info: initialization of "Count" proved
 datebooks.adb:165:32: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -530,6 +557,7 @@ dates.adb:17:15: info: division check proved (CVC4: 1 VC), in call inlined at da
 dates.adb:20:14: info: initialization of "Result" proved
 dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
 dates.adb:28:08: info: postcondition proved (CVC4: 12 VC)
+dates.adb:49:10: info: analyzing call to "Is_Leap_Year" in context
 dates.adb:54:14: info: initialization of "Length" proved
 dates.adb:65:14: info: initialization of "Result" proved
 dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
@@ -539,6 +567,7 @@ dates.adb:85:53: info: range check proved (CVC4: 1 VC)
 dates.adb:99:47: info: range check proved (CVC4: 1 VC)
 dates.adb:102:54: info: range check proved (CVC4: 1 VC)
 dates.adb:105:53: info: range check proved (CVC4: 1 VC)
+dates.adb:142:10: info: analyzing call to "Is_Valid_Date" in context
 dates.adb:224:14: info: range check proved (CVC4: 2 VC)
 dates.adb:224:47: info: initialization of "Steps" proved
 dates.adb:230:35: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -629,6 +658,7 @@ enum_example.adb:38:04: warning: assuming "New_Line" has no effect on global ite
 enum_example.adb:38:04: warning: no Global contract available for "New_Line"
 enum_example.adb:40:04: warning: assuming "Put_Line" has no effect on global items
 enum_example.adb:40:04: warning: no Global contract available for "Put_Line"
+enum_example.adb:41:47: info: unrolling loop
 enum_example.adb:42:13: info: initialization of "Default_Setting" proved
 enum_example.adb:42:13: info: initialization of "Default_Width" proved
 enum_example.adb:42:13: warning: assuming "Put" has no effect on global items
@@ -637,10 +667,12 @@ enum_example.adb:43:07: warning: assuming "New_Line" has no effect on global ite
 enum_example.adb:43:07: warning: no Global contract available for "New_Line"
 enum_example.adb:45:04: warning: assuming "New_Line" has no effect on global items
 enum_example.adb:45:04: warning: no Global contract available for "New_Line"
+enum_example.adb:47:37: info: unrolling loop
 enum_example.adb:48:07: warning: assuming "Put_Line" has no effect on global items
 enum_example.adb:48:07: warning: no Global contract available for "Put_Line"
 enum_example.adb:50:04: warning: assuming "New_Line" has no effect on global items
 enum_example.adb:50:04: warning: no Global contract available for "New_Line"
+enum_example.adb:53:49: info: unrolling loop
 enum_example.adb:54:16: info: initialization of "Count" proved
 enum_example.adb:54:22: info: overflow check proved (CVC4: 6 VC)
 enum_example.adb:56:04: warning: assuming "Put" has no effect on global items
@@ -654,6 +686,7 @@ example.adb:25:15: warning: assuming "Put_Line" has no effect on global items
 example.adb:25:15: warning: no Global contract available for "Put_Line"
 example.adb:26:23: warning: assuming "Get" has no effect on global items
 example.adb:26:23: warning: no Global contract available for "Get"
+example.adb:27:04: info: analyzing call to "Bounded_Increment" in context
 example.adb:30:07: info: initialization of "Modified" proved
 example.adb:31:18: warning: assuming "Put_Line" has no effect on global items
 example.adb:31:18: warning: no Global contract available for "Put_Line"
@@ -662,6 +695,7 @@ example.adb:32:26: warning: no Global contract available for "Put"
 example.adb:32:41: info: initialization of "Value" proved
 external_test.adb:16:12: warning: unused assignment
 external_test.ads:6:20: info: initialization of "Item" proved
+generic_examples.adb:10:33: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:12:23: info: initialization of "Result" proved
 generic_examples.adb:12:30: medium: overflow check might fail
 generic_examples.adb:15:14: info: initialization of "Result" proved
@@ -671,9 +705,15 @@ generic_examples.adb:33:30: medium: overflow check might fail, in instantiation 
 generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:46
 generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
 generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
+generic_examples.adb:39:04: info: cannot unroll loop (too many loop iterations)
+generic_examples.adb:39:04: info: in instantiation at line 31
+generic_examples.adb:46:04: info: cannot unroll loop (too many loop iterations)
+generic_examples.adb:46:04: info: in instantiation at line 31
 generic_examples.adb:59:21: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
 generic_examples.adb:70:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
 generic_examples.adb:70:30: medium: overflow check might fail, in instantiation at generic_examples.adb:77
+generic_examples.adb:77:04: info: cannot unroll loop (too many loop iterations)
+generic_examples.adb:77:04: info: in instantiation at line 68
 generic_examples.adb:91:23: warning: assuming "Put" has no effect on global items
 generic_examples.adb:91:23: warning: no Global contract available for "Put"
 generic_examples.adb:91:29: info: initialization of "The_Count" proved
@@ -786,6 +826,7 @@ good_types.adb:22:13: info: initialization of "Room_Length" proved
 good_types.adb:22:25: info: float overflow check proved (Interval)
 good_types.adb:22:25: medium: range check might fail
 good_types.adb:22:31: info: float overflow check proved (Interval)
+good_types.adb:22:33: info: analyzing call to "To_Feet" in context
 good_types.adb:22:33: info: initialization of "Wall_Thickness" proved
 good_types.adb:23:11: info: initialization of "Default_Aft" proved
 good_types.adb:23:11: info: initialization of "Default_Exp" proved
@@ -829,9 +870,11 @@ hierarchical_state_demo_nested.adb:49:34: info: overflow check proved (CVC4: 1 V
 hierarchical_state_demo_nested.adb:49:43: info: division check proved (CVC4: 1 VC)
 hierarchical_state_demo_nested.ads:7:28: info: initialization of "Success" proved
 initializer_demo.adb:6:07: warning: initialization of "Sum" has no effect
+initializer_demo.adb:9:28: info: unrolling loop
 initializer_demo.adb:10:17: info: initialization of "Sum" proved
 initializer_demo.adb:10:21: medium: overflow check might fail
 initializer_demo.adb:12:14: info: initialization of "Sum" proved
+initializer_demo.adb:22:28: info: unrolling loop
 initializer_demo.adb:23:17: info: initialization of "Sum" proved
 initializer_demo.adb:23:21: medium: overflow check might fail
 initializer_demo.adb:25:23: info: initialization of "Sum" proved
@@ -851,6 +894,8 @@ interval_tree_wrapper.ads:20:71: info: implicit function contract not available 
 interval_tree_wrapper.ads:30:18: info: implicit function contract not available for proof ("Size" might not return)
 led_display.adb:24:41: info: initialization of "Value" constituent of "LED_State" proved
 lights.adb:15:14: info: initialization of "Result" proved
+list_handler.adb:8:04: info: cannot unroll loop (too many loop iterations)
+list_handler.adb:8:04: info: in instantiation at double_list.adb:35
 list_handler.adb:21:13: info: initialization of "Current" proved
 list_handler.adb:23:48: info: initialization of "Current" proved
 list_handler.adb:25:20: info: initialization of "Status" proved
@@ -888,6 +933,7 @@ operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in c
 operator_overload.adb:18:30: info: initialization of "Right_Squared" proved
 operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:30
 operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:30:10: info: analyzing call to "<=" in context
 operator_overload.adb:30:10: info: initialization of "P1.X_Coord" proved
 operator_overload.adb:30:10: info: initialization of "P1.Y_Coord" proved
 operator_overload.adb:30:10: info: initialization of "P2.X_Coord" proved
@@ -896,6 +942,7 @@ operator_overload.adb:31:07: warning: assuming "Put_Line" has no effect on globa
 operator_overload.adb:31:07: warning: no Global contract available for "Put_Line"
 operator_overload.adb:33:07: warning: assuming "Put_Line" has no effect on global items
 operator_overload.adb:33:07: warning: no Global contract available for "Put_Line"
+operator_overload.adb:37:07: info: analyzing call to "<=" in context
 operator_overload.adb:37:07: info: initialization of "P1.X_Coord" proved
 operator_overload.adb:37:07: info: initialization of "P1.Y_Coord" proved
 operator_overload.adb:37:07: info: initialization of "P2.X_Coord" proved
@@ -933,6 +980,7 @@ palindrome.adb:26:14: warning: assuming "Put_Line" has no effect on global items
 palindrome.adb:26:14: warning: no Global contract available for "Put_Line"
 palindrome.adb:29:15: warning: assuming "Get_Line" has no effect on global items
 palindrome.adb:29:15: warning: no Global contract available for "Get_Line"
+palindrome.adb:32:07: info: analyzing call to "Is_Palindrome" in context
 palindrome.adb:32:07: medium: range check might fail
 palindrome.adb:32:22: info: initialization of "Line" proved
 palindrome.adb:32:33: info: initialization of "Count" proved
@@ -942,6 +990,7 @@ palindrome.adb:35:18: warning: assuming "Put_Line" has no effect on global items
 palindrome.adb:35:18: warning: no Global contract available for "Put_Line"
 parent-public1.adb:11:20: info: initialization of "Temp" proved
 parent.adb:6:22: medium: overflow check might fail
+populate_tree.adb:10:24: info: cannot unroll loop (too many loop iterations)
 prime_search.adb:3:50: info: initialization of "Prime_Index" proved
 prime_search.adb:20:18: info: assertion proved (CVC4: 1 VC)
 prime_search.adb:21:77: info: index check proved (CVC4: 2 VC)
@@ -1014,7 +1063,7 @@ search_demo.adb:23:18: warning: assuming "Put_Line" has no effect on global item
 search_demo.adb:23:18: warning: no Global contract available for "Put_Line"
 search_demo.adb:25:18: warning: assuming "Put_Line" has no effect on global items
 search_demo.adb:25:18: warning: no Global contract available for "Put_Line"
-search_demo.adb:25:63: low: range check might fail
+search_demo.adb:25:63: info: range check proved (CVC4: 1 VC)
 search_demo.adb:25:79: info: initialization of "Result_Index" proved
 searchers.adb:18:30: info: initialization of "Low_Index" proved
 searchers.adb:18:50: info: initialization of "High_Index" proved
@@ -1542,6 +1591,7 @@ utility.adb:13:13: info: loop invariant preservation proved (CVC4: 1 VC)
 utility.adb:13:67: info: index check proved (CVC4: 2 VC)
 utility.adb:15:07: info: raise statement proved unreachable (CVC4: 1 VC)
 utility.ads:12:16: info: postcondition proved (CVC4: 1 VC)
+various.adb:7:27: info: unrolling loop
 various.adb:12:07: info: raise statement proved unreachable (CVC4: 1 VC)
 various.adb:20:21: info: assertion proved (CVC4: 1 VC)
 various.adb:20:23: medium: overflow check might fail
@@ -1553,10 +1603,12 @@ very_longs-divide.adb:20:48: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:20:64: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:29:48: medium: range check might fail
 very_longs-divide.adb:30:39: info: range check proved (CVC4: 1 VC)
+very_longs-divide.adb:42:27: info: unrolling loop
 very_longs-divide.adb:47:14: info: initialization of "Distance" proved
 very_longs-divide.adb:52:30: info: initialization of "Result.Long_Digits" proved
 very_longs-divide.adb:61:26: info: length check proved (CVC4: 1 VC)
 very_longs-divide.adb:61:29: info: length check proved (CVC4: 1 VC)
+very_longs-divide.adb:63:41: info: cannot unroll loop (too many loop iterations)
 very_longs-divide.adb:64:57: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:64:64: info: initialization of "Overflow_Mask" proved
 very_longs-divide.adb:65:29: info: index check proved (CVC4: 2 VC)
@@ -1570,6 +1622,7 @@ very_longs-divide.adb:67:26: info: initialization of "New_Overflow" proved
 very_longs-divide.adb:69:44: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:69:51: info: initialization of "Result.Long_Digits" proved
 very_longs-divide.adb:69:54: info: initialization of "Old_Overflow" proved
+very_longs-divide.adb:82:41: info: cannot unroll loop (too many loop iterations)
 very_longs-divide.adb:83:57: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:83:64: info: initialization of "Overflow_Mask" proved
 very_longs-divide.adb:84:29: info: index check proved (CVC4: 2 VC)
@@ -1578,6 +1631,7 @@ very_longs-divide.adb:85:29: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:85:54: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:85:60: info: initialization of "Old_Overflow" proved
 very_longs-divide.adb:86:26: info: initialization of "New_Overflow" proved
+very_longs-divide.adb:100:49: info: cannot unroll loop (too many loop iterations)
 very_longs-divide.adb:101:45: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:101:52: info: initialization of "Overflow_Mask" proved
 very_longs-divide.adb:102:29: info: index check proved (CVC4: 2 VC)
@@ -1605,6 +1659,7 @@ very_longs-divide.adb:137:59: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:137:64: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:147:53: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:157:11: info: range check proved (CVC4: 2 VC)
+very_longs-divide.adb:157:58: info: cannot unroll loop (dynamic loop bounds)
 very_longs-divide.adb:158:56: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:158:74: info: initialization of "Carry" proved
 very_longs-divide.adb:159:31: info: initialization of "Product" proved
@@ -1638,6 +1693,7 @@ very_longs-divide.adb:194:40: medium: range check might fail
 very_longs-divide.adb:198:31: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:198:58: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:200:14: info: range check proved (CVC4: 2 VC)
+very_longs-divide.adb:200:61: info: cannot unroll loop (dynamic loop bounds)
 very_longs-divide.adb:201:49: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:201:65: medium: array index check might fail
 very_longs-divide.adb:202:47: info: index check proved (CVC4: 2 VC)
@@ -1669,6 +1725,7 @@ very_longs-divide.adb:222:18: info: initialization of "Shift_Distance" proved
 very_longs-divide.adb:225:08: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:225:49: info: initialization of "M" proved
 very_longs-divide.adb:225:51: info: overflow check proved (CVC4: 1 VC)
+very_longs-divide.adb:225:55: info: cannot unroll loop (too many loop iterations)
 very_longs-divide.adb:227:07: info: initialization of "N" proved
 very_longs-divide.adb:227:07: info: initialization of "U.Long_Digits" proved
 very_longs-divide.adb:227:07: info: initialization of "V.Long_Digits" proved
@@ -1688,6 +1745,7 @@ very_longs-divide.adb:233:07: info: initialization of "V.Long_Digits" proved
 very_longs-divide.adb:233:10: info: range check proved (CVC4: 1 VC)
 very_longs-divide.adb:239:08: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:239:53: info: initialization of "N" proved
+very_longs-divide.adb:239:55: info: cannot unroll loop (dynamic loop bounds)
 very_longs-divide.adb:240:29: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:240:44: info: initialization of "Remainder.Long_Digits" proved
 very_longs-divide.adb:240:47: info: initialization of "U.Long_Digits" proved
@@ -1700,6 +1758,7 @@ very_longs.adb:50:28: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:50:52: info: initialization of "Carry" proved
 very_longs.adb:59:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:59:29: info: length check proved (CVC4: 1 VC)
+very_longs.adb:61:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:62:48: info: index check proved (CVC4: 2 VC)
 very_longs.adb:63:48: info: index check proved (CVC4: 2 VC)
 very_longs.adb:64:21: info: initialization of "L_Digit" proved
@@ -1713,6 +1772,7 @@ very_longs.adb:73:28: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:73:52: info: initialization of "Borrow" proved
 very_longs.adb:82:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:82:29: info: length check proved (CVC4: 1 VC)
+very_longs.adb:84:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:85:51: info: index check proved (CVC4: 2 VC)
 very_longs.adb:86:51: info: index check proved (CVC4: 2 VC)
 very_longs.adb:87:25: info: initialization of "L_Digit" proved
@@ -1726,6 +1786,7 @@ very_longs.adb:109:26: info: range check proved (CVC4: 1 VC)
 very_longs.adb:112:21: info: assertion proved (CVC4: 1 VC)
 very_longs.adb:113:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:113:29: info: length check proved (CVC4: 1 VC)
+very_longs.adb:115:45: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:116:29: info: index check proved (CVC4: 2 VC)
 very_longs.adb:116:36: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:116:45: info: initialization of "Temp" proved
@@ -1770,6 +1831,7 @@ very_longs.adb:154:19: info: initialization of "Index" proved
 very_longs.adb:154:25: info: range check proved (CVC4: 1 VC)
 very_longs.adb:155:26: info: initialization of "String_Index" proved
 very_longs.adb:155:39: info: overflow check proved (CVC4: 1 VC)
+very_longs.adb:167:44: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:168:27: info: index check proved (CVC4: 2 VC)
 very_longs.adb:168:46: info: index check proved (CVC4: 2 VC)
 very_longs.adb:172:27: info: index check proved (CVC4: 2 VC)
@@ -1792,6 +1854,7 @@ very_longs.adb:226:11: info: initialization of "Digit_Count" proved
 very_longs.adb:235:28: info: range check proved (CVC4: 1 VC)
 very_longs.adb:241:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:241:29: info: length check proved (CVC4: 1 VC)
+very_longs.adb:243:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:244:48: info: index check proved (CVC4: 2 VC)
 very_longs.adb:245:48: info: index check proved (CVC4: 2 VC)
 very_longs.adb:246:21: info: initialization of "L_Digit" proved
@@ -1805,6 +1868,7 @@ very_longs.adb:250:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:255:31: info: range check proved (CVC4: 1 VC)
 very_longs.adb:261:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:261:29: info: length check proved (CVC4: 1 VC)
+very_longs.adb:263:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:264:51: info: index check proved (CVC4: 2 VC)
 very_longs.adb:265:51: info: index check proved (CVC4: 2 VC)
 very_longs.adb:266:25: info: initialization of "L_Digit" proved
@@ -1818,6 +1882,8 @@ very_longs.adb:274:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:283:27: info: range check proved (CVC4: 1 VC)
 very_longs.adb:291:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:291:29: info: length check proved (CVC4: 1 VC)
+very_longs.adb:294:36: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:296:39: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:297:51: info: index check proved (CVC4: 2 VC)
 very_longs.adb:298:51: info: index check proved (CVC4: 2 VC)
 very_longs.adb:299:18: info: overflow check proved (CVC4: 2 VC)
@@ -1837,6 +1903,8 @@ very_longs.adb:307:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:312:36: medium: range check might fail
 very_longs.adb:320:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:320:29: info: length check proved (CVC4: 1 VC)
+very_longs.adb:323:36: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:325:39: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:326:52: info: index check proved (CVC4: 2 VC)
 very_longs.adb:327:52: info: index check proved (CVC4: 2 VC)
 very_longs.adb:328:38: info: initialization of "Result.Long_Digits" proved
@@ -1873,6 +1941,7 @@ very_longs.ads:90:68: info: index check proved (CVC4: 2 VC)
 workspaces.adb:5:07: info: range check proved (CVC4: 2 VC)
 workspaces.adb:5:48: info: length check proved (CVC4: 1 VC)
 workspaces.adb:7:26: info: division check proved (CVC4: 1 VC)
+workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC4: 2 VC)
 workspaces.adb:8:24: info: initialization of "Workspace" proved
 workspaces.adb:9:27: medium: overflow check might fail

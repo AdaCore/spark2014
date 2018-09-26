@@ -48,3 +48,4 @@ use_po_t8.adb:3:11: high: more tasks than allowed might queue on protected entry
 use_po_t8.adb:3:11: high: task "po_t8.t" is queueing
 use_po_t8.adb:3:11: high: task "use_po_t8" is queueing
 use_po_t8.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
+use_po_t8.adb:22:21: info: unrolling loop

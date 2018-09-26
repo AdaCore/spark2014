@@ -23,12 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Flow_Refinement;        use Flow_Refinement;
-with Flow_Types;             use Flow_Types;
 with Flow_Utility;           use Flow_Utility;
 with Gnat2Why.Util;          use Gnat2Why.Util;
 with Snames;                 use Snames;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
@@ -165,25 +162,18 @@ package body Why.Gen.Binders is
                                       Ref_Allowed : Boolean)
                                       return W_Expr_Array
    is
-      Scope     : constant Flow_Scope := Get_Flow_Scope (E);
-      Variables : constant Flow_Id_Sets.Set :=
-        Get_Variables
-          (N                    => E,
-           Scope                => Scope,
-           Local_Constants      => Node_Sets.Empty_Set,
-           Fold_Functions       => False,
-           Use_Computed_Globals => True,
-           Reduced              => True);
+      Variables : constant Flow_Id_Sets.Set := Get_Variables_For_Proof (E, E);
+
    begin
       pragma Assert (if Is_Static_Expression (E) then Variables.Is_Empty);
-      return Get_Args_From_Variables (To_Name_Set (Variables), Ref_Allowed);
+      return Get_Args_From_Variables (Variables, Ref_Allowed);
    end Get_Args_From_Expression;
 
    -----------------------------
    -- Get_Args_From_Variables --
    -----------------------------
 
-   function Get_Args_From_Variables (Variables   : Name_Sets.Set;
+   function Get_Args_From_Variables (Variables   : Flow_Id_Sets.Set;
                                      Ref_Allowed : Boolean)
                                      return W_Expr_Array
    is
@@ -201,18 +191,11 @@ package body Why.Gen.Binders is
                                          Compute : Boolean := False)
                                          return Item_Array
    is
-      Scope     : constant Flow_Scope := Get_Flow_Scope (E);
-      Variables : constant Flow_Id_Sets.Set :=
-        Get_Variables
-          (N                    => E,
-           Scope                => Scope,
-           Local_Constants      => Node_Sets.Empty_Set,
-           Fold_Functions       => False,
-           Use_Computed_Globals => True,
-           Reduced              => True);
+      Variables : constant Flow_Id_Sets.Set := Get_Variables_For_Proof (E, E);
+
    begin
       pragma Assert (if Is_Static_Expression (E) then Variables.Is_Empty);
-      return Get_Binders_From_Variables (To_Name_Set (Variables), Compute);
+      return Get_Binders_From_Variables (Variables, Compute);
    end Get_Binders_From_Expression;
 
    --------------------------------
@@ -220,7 +203,7 @@ package body Why.Gen.Binders is
    --------------------------------
 
    function Get_Binders_From_Variables
-     (Variables   : Name_Sets.Set;
+     (Variables   : Flow_Id_Sets.Set;
       Compute     : Boolean := False;
       Ignore_Self : Boolean := False)
       return Item_Array
@@ -228,20 +211,24 @@ package body Why.Gen.Binders is
       Binders : Item_Array (1 .. Natural (Variables.Length));
       I       : Positive := 1;
    begin
-      for V of Variables loop
+      for F of Variables loop
          declare
-            Entity  : constant Entity_Id := Find_Entity (V);
-            Use_Ent : constant Boolean := Present (Entity)
-              and then Ekind (Entity) /= E_Abstract_State
-              and then Entity_In_SPARK (Entity);
+            V       : constant Entity_Name := To_Name (F);
+            Use_Ent : constant Boolean := F.Kind = Direct_Mapping;
+            Entity  : constant Entity_Id :=
+              (if Use_Ent
+               then Get_Direct_Mapping_Id (F)
+               else Empty);
 
             C : constant Ada_Ent_To_Why.Cursor :=
-              Ada_Ent_To_Why.Find (Symbol_Table, V);
+              (if Use_Ent
+               then Ada_Ent_To_Why.Find (Symbol_Table, Entity)
+               else Ada_Ent_To_Why.Find (Symbol_Table, F.Name));
 
          begin
             --  For components of protected types, include a reference to self
 
-            if Present (Entity)
+            if Use_Ent
               and then (Is_Protected_Component_Or_Discr_Or_Part_Of (Entity)
                         or else Is_Type (Entity))
               and then not Ignore_Self
@@ -261,13 +248,13 @@ package body Why.Gen.Binders is
             --  Do nothing if the entity is not mutable or if it is a reference
             --  to a concurrent type and they are ignored.
 
-            elsif Present (Entity)
+            elsif Use_Ent
               and then (not Is_Mutable_In_Why (Entity)
                         or else Is_Type (Entity))
             then
                pragma Assert
                  (if Is_Protected_Component_Or_Discr_Or_Part_Of (Entity)
-                  or else Is_Type (Entity)
+                    or else Is_Type (Entity)
                   then Ignore_Self);
 
             --  If there is an existing binder for this entity use it
@@ -288,12 +275,13 @@ package body Why.Gen.Binders is
                Binders (I) := Mk_Item_Of_Entity (Entity);
                I := I + 1;
             else
+               pragma Assert (Is_Opaque_For_Proof (F));
+
                Binders (I) :=
                  (Regular,
                   Local => False,
                   Main  => (Ada_Node => Empty,
-                            B_Name   =>
-                              To_Why_Id (V, Local => False),
+                            B_Name   => To_Why_Id (V, Local => False),
                             B_Ent    => V,
                             Mutable  => True));
                I := I + 1;
@@ -555,23 +543,6 @@ package body Why.Gen.Binders is
                        Mutable  => False));
          end;
 
-      --  If E is not in SPARK, only declare an object of type __private for
-      --  use in effects of program functions in Why3.
-
-      elsif not Entity_In_SPARK (E) then
-         declare
-            Typ    : constant W_Type_Id := EW_Private_Type;
-            Name   : constant W_Identifier_Id :=
-              To_Why_Id (E => E, Typ => Typ, Local => Local);
-            Binder : constant Binder_Type :=
-              Binder_Type'(Ada_Node => E,
-                           B_Name   => Name,
-                           B_Ent    => Null_Entity_Name,
-                           Mutable  => True);
-         begin
-            return (Regular, Local, Binder);
-         end;
-
       --  If E is in SPARK, decide whether it should be split into multiple
       --  objects in Why3 or not.
 
@@ -704,19 +675,8 @@ package body Why.Gen.Binders is
 
       else
          declare
-            Use_Ent : constant Boolean :=
-              Ekind (E) /= E_Abstract_State
-              and then Entity_In_SPARK (E);
-            --  For state abstractions pretend there is no Entity
-
-            Typ    : constant W_Type_Id :=
-              (if Ekind (E) = E_Abstract_State then
-                 EW_Private_Type
-
-               --  For loop parameters, use mathematical integers instead of
-               --  booleans.
-
-               elsif Ekind (E) = E_Loop_Parameter
+            Typ : constant W_Type_Id :=
+              (if Ekind (E) = E_Loop_Parameter
                and then Is_Standard_Boolean_Type (Ty) then
                     EW_Int_Type
 
@@ -727,11 +687,9 @@ package body Why.Gen.Binders is
             Name   : constant W_Identifier_Id :=
               To_Why_Id (E => E, Typ => Typ, Local => Local);
             Binder : constant Binder_Type :=
-              Binder_Type'(Ada_Node => (if Use_Ent then E else Empty),
+              Binder_Type'(Ada_Node => E,
                            B_Name   => Name,
-                           B_Ent    =>
-                             (if Use_Ent then Null_Entity_Name
-                              else To_Entity_Name (E)),
+                           B_Ent    => Null_Entity_Name,
                            Mutable  => Is_Mutable_In_Why (E));
          begin
             return (Regular, Local, Binder);

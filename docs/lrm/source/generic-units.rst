@@ -29,7 +29,7 @@ Generic Instantiation
 .. _etu-generic_instantiation:
 
 [For example, a generic which takes a formal limited private type
-would be in |SPARK|. An instantiation which passes in an access type
+would be in |SPARK|. An instantiation which passes in a general access type
 as the actual type would not be in |SPARK|; another instantiation
 of the same generic which passes in, for example, Standard.Integer,
 might be in |SPARK|.]

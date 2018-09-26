@@ -975,6 +975,16 @@ package body Gnat2Why.Driver is
                   Generate_Empty_Axiom_Theory (File, E);
                end if;
 
+            --  We translate private variables of access type in the partial
+            --  declaration. This should avoid translating them twice (in the
+            --  partial and full view). The fowllowing case represents these
+            --  types because they are considered as mutable while they are
+            --  constants and may have a partial and full view. We chose the
+            --  partial view bacause the full view may not be in SPARK.
+
+            elsif Is_Full_View (E) then
+               null;
+
             else
                Translate_Variable (File, E);
                Generate_Empty_Axiom_Theory (File, E);
@@ -989,9 +999,6 @@ package body Gnat2Why.Driver is
             if Is_Translated_Subprogram (E) then
                Translate_Subprogram_Spec (File, E);
             end if;
-
-         when E_Subprogram_Body =>
-            null;
 
          --  Given to the handler for packages with an associated theory ???
 
@@ -1043,23 +1050,10 @@ package body Gnat2Why.Driver is
                                             Reads      => Reads,
                                             Writes     => Writes);
 
-            --  Union reads with writes (essentially just ignore the
-            --  variant).
-            Reads.Union (Change_Variant (Writes, In_View));
+            Reads.Union (Writes);
 
             for G of Reads loop
-               case G.Kind is
-                  when Magic_String =>
-                     Translated_Object_Names.Insert
-                       (New_Item => G.Name,
-                        Position => Unused_Name,
-                        Inserted => Inserted);
-
-                     if Inserted then
-                        Translate_External_Object (G.Name);
-                     end if;
-
-                  when Direct_Mapping =>
+               if G.Kind = Direct_Mapping then
                      declare
                         Obj : constant Entity_Id := Get_Direct_Mapping_Id (G);
 
@@ -1073,10 +1067,17 @@ package body Gnat2Why.Driver is
                            Translate_External_Object (Obj);
                         end if;
                      end;
+               else pragma Assert (Is_Opaque_For_Proof (G));
 
-                  when others =>
-                     raise Program_Error;
-               end case;
+                  Translated_Object_Names.Insert
+                    (New_Item => G.Name,
+                     Position => Unused_Name,
+                     Inserted => Inserted);
+
+                  if Inserted then
+                     Translate_External_Object (G.Name);
+                  end if;
+               end if;
             end loop;
          end;
       end if;

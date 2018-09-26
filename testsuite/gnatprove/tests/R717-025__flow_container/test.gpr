@@ -1,5 +1,0 @@
-project Test is
-   package Prove is
-      for Switches use ("--no-global-generation");
-   end Prove;
-end Test;

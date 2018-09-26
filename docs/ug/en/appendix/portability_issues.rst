@@ -3,6 +3,9 @@
 Portability Issues
 ==================
 
+Compiling with a non-|SPARK| Aware Compiler
+-------------------------------------------
+
 To execute a |SPARK| program, it is expected that users will compile
 the program (as an Ada program) using an Ada compiler.
 The SPARK language definition defines a number of implementation-defined
@@ -81,3 +84,58 @@ introduced in a later version of Ada must be avoided (unless it is
 expressed as a safely-ignored pragma). This seems worth mentioning because
 Ada 2012 constructs such as quantified expressions
 and conditional expressions are often heavily used in |SPARK| programs.
+
+Implementation-specific Decisions
+---------------------------------
+
+To make analysis as precise as possible and avoid producing too many false
+alarms, |GNATprove| makes some assumptions about the behavior of constructs
+which are listed in the reference manual of Ada as implementation specific.
+Note that |GNATprove| always adopts the same choices as the GNAT compiler, so
+these assumptions should be adequate when compiling with GNAT. However, when
+another compiler is used, it may be better to avoid these implementation
+specific constructs (see :ref:`Benefits of Using SPARK for Portability` for
+more details on how this can be achieved).
+
+.. _Parenthesized Arithmetic Operations:
+
+Parenthesized Arithmetic Operations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In Ada, non-parenthesized arithmetic operations could be re-ordered by the
+compiler, which may result in a failing computation (due to overflow checking)
+becoming a successful one, and vice-versa. By default, |GNATprove| evaluates
+all expressions left-to-right, like GNAT. When the switch ``--pedantic`` is
+used, a warning is emitted for every operation that could be re-ordered:
+
+* any operand of a binary adding operation (+,-) that is itself a binary adding
+  operation;
+* any operand of a binary multiplying operation (\*,/,mod,rem) that is itself a
+  binary multiplying operation.
+
+.. _Base Type of User-Defined Integer Types:
+
+Base Type of User-Defined Integer Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+|GNATprove| follows |GNAT Pro| in choosing as base type
+the smallest multiple-words-size integer type that contains the type
+bounds. For example, a user-defined type ranging from 1 to 100 will be given
+a base type ranging from -128 to 127 by both |GNAT Pro| and |GNATprove|. The
+choice of base types influences in which cases intermediate overflows may be
+raised during computation. The choice made in |GNATprove| is the strictest
+one among existing compilers, as far as we know, which ensures that
+|GNATprove|'s analysis detects a superset of the overflows that may occur at
+run time.
+
+Size of 'Image and 'Img attributes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To avoid spurious range checks on string operation involving occurrences of
+the ``'Img``, ``'Image``, ``'Wide_Image``, and ``'Wide_Wide_Image`` attributes,
+|GNATprove| makes an assumption about the maximal length of the returned string.
+If the attribute applies to an integer type, the bounds are the maximal size
+of the result of the attribute as specified in the language depending of the
+type's base type. Otherwise, |GNATprove| assumes that the length of such a
+string cannot exceed 255 (the maximal number of characters in a line) times 8
+(the maximal size of a Wide_Wide_Character).

@@ -12,6 +12,7 @@ test.adb:18:33: medium: loop invariant might fail in first iteration, cannot pro
 test.adb:18:37: high: "X" is not initialized
 test.adb:22:04: warning: analyzing unreferenced procedure "Test_03"
 test.adb:22:23: info: initialization of "X" proved
+test.adb:25:46: info: unrolling loop
 test.adb:28:36: info: initialization of "X" proved
 test.adb:28:36: info: loop invariant preservation proved (CVC4: 10 VC)
 test.adb:28:36: medium: loop invariant might fail in first iteration, cannot prove X = X'Loop_Entry (Wibble)
@@ -32,5 +33,6 @@ test.adb:52:10: medium: loop variant might fail
 test.adb:52:44: high: "X" is not initialized
 test.adb:56:04: warning: analyzing unreferenced procedure "Test_06"
 test.adb:56:23: info: initialization of "X" proved
+test.adb:59:38: info: unrolling loop
 test.adb:61:25: high: "X" is not initialized
 test.adb:61:25: medium: assertion might fail, cannot prove X'Loop_Entry = 0

@@ -21,10 +21,16 @@ main.adb:29:15: info: initialization of "NP" proved, in call inlined at main.adb
 main.adb:29:15: info: range check proved (CVC4: 4 VC), in call inlined at main.adb:45
 main.adb:31:07: warning: assuming "Put_Line" has no effect on global items
 main.adb:31:07: warning: no Global contract available for "Put_Line"
+main.adb:42:04: info: cannot unroll loop (too many loop iterations)
+main.adb:42:04: info: in inlined body at line 18
 main.adb:43:04: info: precondition proved (CVC4: 3 VC)
 main.adb:43:12: info: initialization of "A" proved
 main.adb:43:15: info: initialization of "Part" proved
 main.adb:43:21: info: initialization of "X" proved
+main.adb:44:04: info: cannot unroll loop (too many loop iterations)
+main.adb:44:04: info: in inlined body at line 18
+main.adb:45:04: info: cannot unroll loop (too many loop iterations)
+main.adb:45:04: info: in inlined body at line 28
 main.adb:45:04: info: range check proved (CVC4: 4 VC)
 main.adb:45:16: info: initialization of "NP" proved
 main.adb:45:25: info: initialization of "Count" proved

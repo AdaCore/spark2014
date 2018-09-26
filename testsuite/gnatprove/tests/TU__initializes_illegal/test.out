@@ -29,9 +29,9 @@ initializes_illegal_4.ads:53:07: info: initialization of "G_Var" proved
 initializes_illegal_4.ads:53:07: info: initialization of "Var" proved
 initializes_illegal_4.ads:53:24: info: initialization of "G_Var" proved
 initializes_illegal_4.ads:53:30: medium: overflow check might fail (e.g. when G_Var = 0 and G_Var2 = -2147483649 and Var = 0)
-initializes_illegal_4.ads:53:32: high: "G_Var2" must be listed in the Initializes aspect of "Pac3" (SPARK RM 7.1.5(11))
+initializes_illegal_4.ads:53:32: high: "G_Var2" must be mentioned as an input of the Initializes aspect of "Pac3" (SPARK RM 7.1.5(11))
 initializes_illegal_4.ads:53:32: info: initialization of "G_Var2" proved
-initializes_illegal_4.ads:65:22: high: "G_Var" must be listed in the Initializes aspect of "Pac4" (SPARK RM 7.1.5(11))
+initializes_illegal_4.ads:65:22: high: "G_Var" must be mentioned as an input of the Initializes aspect of "Pac4" (SPARK RM 7.1.5(11))
 initializes_illegal_4.ads:65:22: info: initialization of "G_Var" proved
 initializes_illegal_5.ads:1:14: current unit must also be private descendant of "Initializes_Illegal_5"
 initializes_illegal_5.ads:14:66: input item "Pr_Var" cannot denote a visible object or state of package "Initializes_Illegal_5"

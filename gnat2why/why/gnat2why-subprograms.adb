@@ -45,7 +45,6 @@ with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Annotate;                 use SPARK_Annotate;
 with SPARK_Definition;               use SPARK_Definition;
-with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 with SPARK_Util;                     use SPARK_Util;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Util.Types;               use SPARK_Util.Types;
@@ -355,7 +354,7 @@ package body Gnat2Why.Subprograms is
                                       Writes     => Writes);
 
       --  Union reads with writes (essentially just ignore the variant)
-      Reads.Union (Change_Variant (Writes, In_View));
+      Reads.Union (Writes);
 
       for N of Reads loop
          Add_Effect_Import (T, To_Name (N));
@@ -829,17 +828,14 @@ package body Gnat2Why.Subprograms is
                begin
                   for F of S loop
                      case F.Kind is
-                     when Direct_Mapping =>
-                        Includes.Include (Get_Direct_Mapping_Id (F));
+                        when Direct_Mapping =>
+                           Includes.Include (Get_Direct_Mapping_Id (F));
 
-                     --  Flow only gives us Entity_Names for objects that
-                     --  cannot be represented by an Entity_Id.
+                        when Magic_String =>
+                           pragma Assert (Is_Opaque_For_Proof (F));
 
-                     when Magic_String =>
-                        pragma Assert (No (Find_Entity (F.Name)));
-
-                     when others =>
-                        raise Program_Error;
+                        when others =>
+                           raise Program_Error;
                      end case;
                   end loop;
                end Include;
@@ -917,12 +913,9 @@ package body Gnat2Why.Subprograms is
                                  Includes.Include (Get_Direct_Mapping_Id (X));
 
                               when Magic_String =>
-                                 pragma Assert (No (Find_Entity (X.Name)));
+                                 pragma Assert (Is_Opaque_For_Proof (X));
 
-                              when Null_Value
-                                 | Record_Field
-                                 | Synthetic_Null_Export
-                              =>
+                              when others =>
                                  raise Program_Error;
                               end case;
                            end loop;
@@ -1041,33 +1034,25 @@ package body Gnat2Why.Subprograms is
                     Get_Direct_Mapping_Id (Write_Id);
 
                begin
-                  if not Is_Abstract_State (Entity)
-                    and then Entity_In_SPARK (Entity)
-                  then
-
-                     --  Reference to self is handled specifically
-
-                     if Is_Type (Entity) then
-                        pragma Assert (Ekind (Entity) in Protected_Kind);
-                        null;
-                     else
-                        declare
-                           Dyn_Prop : constant W_Pred_Id :=
-                             Compute_Dynamic_Invariant
-                               (Expr   =>
-                                  +Transform_Identifier (Params   => Params,
-                                                         Expr     => Entity,
-                                                         Ent      => Entity,
-                                                         Domain   => EW_Term),
-                                Ty     => Etype (Entity),
-                                Params => Params);
-                        begin
-                           Dynamic_Prop_Effects := +New_And_Expr
-                             (Left   => +Dynamic_Prop_Effects,
-                              Right  => +Dyn_Prop,
-                              Domain => EW_Pred);
-                        end;
-                     end if;
+                  if Is_Type (Entity) then
+                     pragma Assert (Is_Protected_Type (Entity));
+                  else
+                     declare
+                        Dyn_Prop : constant W_Pred_Id :=
+                          Compute_Dynamic_Invariant
+                            (Expr   =>
+                               +Transform_Identifier (Params   => Params,
+                                                      Expr     => Entity,
+                                                      Ent      => Entity,
+                                                      Domain   => EW_Term),
+                             Ty     => Etype (Entity),
+                             Params => Params);
+                     begin
+                        Dynamic_Prop_Effects := +New_And_Expr
+                          (Left   => +Dynamic_Prop_Effects,
+                           Right  => +Dyn_Prop,
+                           Domain => EW_Pred);
+                     end;
                   end if;
                end;
             end if;
@@ -1085,11 +1070,9 @@ package body Gnat2Why.Subprograms is
      (E             : Entity_Id;
       Global_Params : Boolean := False) return W_Effects_Id
    is
-      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-      Read_Names  : Name_Sets.Set;
-      Write_Names : Name_Sets.Set;
-      Eff         : constant W_Effects_Id := New_Effects;
+      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+      Eff       : constant W_Effects_Id := New_Effects;
 
       generic
          with procedure Effects_Append
@@ -1144,31 +1127,34 @@ package body Gnat2Why.Subprograms is
                                       Classwide  => True,
                                       Reads      => Read_Ids,
                                       Writes     => Write_Ids);
-      Read_Names  := Flow_Types.To_Name_Set (Read_Ids);
-      Write_Names := Flow_Types.To_Name_Set (Write_Ids);
 
-      for Name of Write_Names loop
-         declare
-            Entity : constant Entity_Id := Find_Entity (Name);
-         begin
+      for Write_Id of Write_Ids loop
+         case Write_Id.Kind is
+            when Direct_Mapping =>
+               declare
+                  Entity : constant Entity_Id :=
+                    Get_Direct_Mapping_Id (Write_Id);
 
-            --  Effects on protected components are handled by other means
+               begin
+                  --  Effects on protected types are handled by other means
 
-            if Present (Entity) and then Is_Type (Entity)
-            then
-               null;
-            elsif Present (Entity)
-              and then not Is_Abstract_State (Entity)
-              and then Entity_In_SPARK (Entity)
-            then
-               Effects_Append_Binder_To_Writes
-                 (Ada_Ent_To_Why.Element (Symbol_Table, Entity));
-            else
+                  if Is_Type (Entity) then
+                     pragma Assert (Is_Protected_Type (Entity));
+                  else
+                     Effects_Append_Binder_To_Writes
+                       (Ada_Ent_To_Why.Element (Symbol_Table, Entity));
+                  end if;
+
+               end;
+
+            when Magic_String =>
                Effects_Append_To_Writes
                  (Eff,
-                  To_Why_Id (Obj => Name, Local => False));
-            end if;
-         end;
+                  To_Why_Id (Obj => To_Name (Write_Id), Local => False));
+
+            when others =>
+               raise Program_Error;
+         end case;
       end loop;
 
       --  Add all OUT and IN OUT parameters as potential writes.
@@ -1200,28 +1186,32 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
 
-      for Name of Read_Names loop
-         declare
-            Entity : constant Entity_Id := Find_Entity (Name);
-         begin
+      for Read_Id of Read_Ids loop
+         case Read_Id.Kind is
+            when Direct_Mapping =>
+               declare
+                  Entity : constant Entity_Id :=
+                    Get_Direct_Mapping_Id (Read_Id);
 
-            --  Effects on protected components are handled by other means
+               begin
+                  --  Effects on concurrent types are handled by other means
 
-            if Present (Entity) and then Is_Type (Entity)
-            then
-               null;
-            elsif Present (Entity)
-              and then not Is_Abstract_State (Entity)
-              and then Entity_In_SPARK (Entity)
-            then
-               Effects_Append_Binder_To_Reads
-                 (Ada_Ent_To_Why.Element (Symbol_Table, Entity));
-            else
+                  if Is_Type (Entity) then
+                     pragma Assert (Is_Concurrent_Type (Entity));
+                  else
+                     Effects_Append_Binder_To_Reads
+                       (Ada_Ent_To_Why.Element (Symbol_Table, Entity));
+                  end if;
+               end;
+
+            when Magic_String =>
                Effects_Append_To_Reads
                  (Eff,
-                  To_Why_Id (Obj => Name, Local => False));
-            end if;
-         end;
+                  To_Why_Id (Obj => To_Name (Read_Id), Local => False));
+
+            when others =>
+               raise Program_Error;
+         end case;
       end loop;
 
       return +Eff;
@@ -1334,53 +1324,64 @@ package body Gnat2Why.Subprograms is
                   --  From the expansion of the LHS of an Initializes contract
                   --  we only get constants, variables and abstract states
                   --  (when the expansion stops at a SPARK_Mode => Off); these
-                  --  are known by an Entity_Id and wrapped in a Direct_Mapping
-                  --  kind of Flow_Id.
+                  --  are known by an Entity_Id but are wrapped in a
+                  --  Direct_Mapping or Magic_String kinds of Flow_Id,
+                  --  depending whether they are in SPARK.
 
                begin
                   for F of FS loop
-                     declare
-                        E : Entity_Id := Get_Direct_Mapping_Id (F);
-
-                        pragma Assert (Ekind (E) in E_Abstract_State
-                                                  | E_Constant
-                                                  | E_Variable);
-
-                     begin
-                        --  Only partial views of constants are stored in the
-                        --  symbol map.
-
-                        if Ekind (E) = E_Constant and then Is_Full_View (E)
-                        then
-                           E := Partial_View (E);
-                        end if;
-
-                        --  Only consider objects that are in SPARK. Other
-                        --  objects (and abstract states) are translated to
-                        --  a private type in Why.
-
-                        if Is_Object (E)
-                          and then Entity_In_SPARK (E)
-                          and then not Is_Part_Of_Concurrent_Object (E)
-                        then
+                     case F.Kind is
+                        when Direct_Mapping =>
                            declare
-                              Binder : constant Item_Type :=
-                                Ada_Ent_To_Why.Element (Symbol_Table, E);
-                              Expr   : constant W_Expr_Id :=
-                                Reconstruct_Item
-                                  (Binder, Ref_Allowed => Params.Ref_Allowed);
+                              E : Entity_Id := Get_Direct_Mapping_Id (F);
+
+                              pragma Assert (Ekind (E) in E_Abstract_State
+                                                        | E_Constant
+                                                        | E_Variable);
+
                            begin
-                              Inv_Pred := +New_And_Then_Expr
-                                (Left   => +Inv_Pred,
-                                 Right  => +Compute_Type_Invariant
-                                   (Expr        => +Expr,
-                                    Ty          => Etype (E),
-                                    Params      => Params,
-                                    On_Internal => True),
-                                 Domain => EW_Pred);
+                              --  Only partial views of constants are stored in
+                              --  the symbol map.
+
+                              if Ekind (E) = E_Constant
+                                and then Is_Full_View (E)
+                              then
+                                 E := Partial_View (E);
+                              end if;
+
+                              --  Only consider objects that are in SPARK.
+                              --  Other objects (and abstract states) are
+                              --  translated to a private type in Why.
+
+                              if Is_Object (E)
+                                and then not Is_Part_Of_Concurrent_Object (E)
+                              then
+                                 declare
+                                    Binder : constant Item_Type :=
+                                      Ada_Ent_To_Why.Element (Symbol_Table, E);
+                                    Expr   : constant W_Expr_Id :=
+                                      Reconstruct_Item
+                                        (Binder,
+                                         Ref_Allowed => Params.Ref_Allowed);
+                                 begin
+                                    Inv_Pred := +New_And_Then_Expr
+                                      (Left   => +Inv_Pred,
+                                       Right  => +Compute_Type_Invariant
+                                         (Expr        => +Expr,
+                                          Ty          => Etype (E),
+                                          Params      => Params,
+                                          On_Internal => True),
+                                       Domain => EW_Pred);
+                                 end;
+                              end if;
                            end;
-                        end if;
-                     end;
+
+                        when Magic_String =>
+                           pragma Assert (Is_Opaque_For_Proof (F));
+
+                        when others =>
+                           raise Program_Error;
+                     end case;
                   end loop;
                end;
             end loop;
@@ -1448,7 +1449,7 @@ package body Gnat2Why.Subprograms is
                   --  states and private variables are not considered here,
                   --  as they cannot have visible type invariants.
 
-                  if Is_Object (E) and then Entity_In_SPARK (E) then
+                  if Is_Object (E) then
                      Inv_Pred := +New_And_Then_Expr
                        (Left   => +Inv_Pred,
                         Right  => +Compute_Type_Invariant_For_Entity (E),
@@ -1456,8 +1457,8 @@ package body Gnat2Why.Subprograms is
 
                   --  Self reference of protected subprograms
 
-                  elsif Is_Type (E) then
-                     pragma Assert (Is_Concurrent_Type (E));
+                  else pragma Assert (Is_Concurrent_Type (E));
+
                      Inv_Pred := +New_And_Then_Expr
                        (Left   => +Inv_Pred,
                         Right  => +Compute_Type_Invariant
@@ -1586,7 +1587,7 @@ package body Gnat2Why.Subprograms is
                                Raw_Binders : Item_Array)
                                      return Item_Array is
       Effect_Binders : Item_Array :=
-        Compute_Binders_For_Effects (E, True);
+        Compute_Binders_For_Effects (E, Compute => True);
    begin
       Localize_Variable_Parts (Effect_Binders);
       return Raw_Binders & Effect_Binders;
@@ -1600,10 +1601,9 @@ package body Gnat2Why.Subprograms is
      (E       : Entity_Id;
       Compute : Boolean) return Item_Array
    is
-      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-      Read_Names  : Name_Sets.Set;
-      Write_Names : Name_Sets.Set;
+      Read_Ids   : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids  : Flow_Types.Flow_Id_Sets.Set;
+
    begin
       --  Collect global variables potentially read and written
 
@@ -1611,17 +1611,12 @@ package body Gnat2Why.Subprograms is
                                       Classwide  => True,
                                       Reads      => Read_Ids,
                                       Writes     => Write_Ids);
-      Read_Names  := Flow_Types.To_Name_Set (Read_Ids);
-      Write_Names := Flow_Types.To_Name_Set (Write_Ids);
-      Write_Names.Difference (Read_Names);
 
       --  Do not include binder for self reference as it is already included
       --  in binders for parameters.
 
       return Get_Binders_From_Variables
-        (Read_Names, Compute, Ignore_Self => True)
-        & Get_Binders_From_Variables
-        (Write_Names, Compute, Ignore_Self => True);
+        (Read_Ids.Union (Write_Ids), Compute, Ignore_Self => True);
    end Compute_Binders_For_Effects;
 
    -------------------------
@@ -3762,12 +3757,12 @@ package body Gnat2Why.Subprograms is
 
          Why_Body :=
            Sequence
-             ((Check_Ceiling_Protocol (Body_Params, E),
-              Transform_Declarations_For_Body (Declarations (Body_N)),
-              Transform_Statements_And_Declarations
-                (Statements
+             ((1 => Check_Ceiling_Protocol (Body_Params, E),
+               2 => Transform_Declarations_For_Body (Declarations (Body_N)),
+               3 => Transform_Statements_And_Declarations
+                 (Statements
                    (Handled_Statement_Sequence (Body_N))),
-              Raise_Stmt));
+               4 => Raise_Stmt));
 
          --  Enclose the subprogram body in a try-block, so that return
          --  statements can be translated as raising exceptions.
@@ -3778,14 +3773,11 @@ package body Gnat2Why.Subprograms is
          --  subprogram as plain assertions.
 
          Why_Body := Sequence
-           ((1 =>
-                 Transform_All_Pragmas
-               (Pre_Prags,
-                "checking of pragma precondition"),
+           ((1 => Transform_All_Pragmas
+                    (Pre_Prags, "checking of pragma precondition"),
              2 => Why_Body,
              3 => Transform_All_Pragmas
-               (Post_Prags,
-                "checking of pragma postcondition")));
+                    (Post_Prags, "checking of pragma postcondition")));
 
          Why_Body := Checking_Of_Refined_Post (Why_Body);
 
@@ -4415,8 +4407,7 @@ package body Gnat2Why.Subprograms is
                                          Reads      => D_Read_Ids,
                                          Writes     => D_Write_Ids);
 
-         return E_Read_Ids.Union (E_Write_Ids) =
-           D_Read_Ids.Union (D_Write_Ids);
+         return E_Read_Ids = D_Read_Ids and then E_Write_Ids = D_Write_Ids;
       end Same_Globals;
 
       Ty            : constant Entity_Id :=
@@ -5382,7 +5373,7 @@ package body Gnat2Why.Subprograms is
       Ref_Allowed : Boolean) return W_Expr_Array
    is
       Effect_Binders : constant Item_Array :=
-        Compute_Binders_For_Effects (E, False);
+        Compute_Binders_For_Effects (E, Compute => False);
       Logic_Binders  : constant Binder_Array :=
         To_Binder_Array (Effect_Binders);
 

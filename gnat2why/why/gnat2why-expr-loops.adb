@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
+with Debug;
 with Gnat2Why_Args;
 with Gnat2Why.Expr.Loops.Inv; use Gnat2Why.Expr.Loops.Inv;
 with Gnat2Why.Util;           use Gnat2Why.Util;
@@ -344,7 +345,8 @@ package body Gnat2Why.Expr.Loops is
    function Transform_Loop_Body_Statements
      (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id
    is
-      Body_Prog : W_Prog_Id := +Void;
+      Body_Prog : W_Statement_Sequence_Id :=
+        New_Statement_Sequence (Statements => (1 .. 1 => +Void));
    begin
       for Stmt_Or_Decl of Stmts_And_Decls loop
 
@@ -352,12 +354,12 @@ package body Gnat2Why.Expr.Loops is
 
          pragma Assert (not Is_Pragma (Stmt_Or_Decl, Pragma_Loop_Variant));
 
-         Body_Prog := Transform_Statement_Or_Declaration_In_List
-                        (Stmt_Or_Decl => Stmt_Or_Decl,
-                         Prev_Prog    => Body_Prog);
+         Transform_Statement_Or_Declaration_In_List
+           (Stmt_Or_Decl => Stmt_Or_Decl,
+            Seq          => Body_Prog);
       end loop;
 
-      return Body_Prog;
+      return +Body_Prog;
    end Transform_Loop_Body_Statements;
 
    ------------------------------
@@ -1207,10 +1209,14 @@ package body Gnat2Why.Expr.Loops is
                --  static range, which can be unrolled for every value of the
                --  loop index.
 
-               Candidate_For_Loop_Unrolling (Loop_Stmt => Stmt,
-                                             Result    => Unroll,
-                                             Low_Val   => Low_Val,
-                                             High_Val  => High_Val);
+               Candidate_For_Loop_Unrolling
+                 (Loop_Stmt   => Stmt,
+                  Output_Info =>
+                    Debug.Debug_Flag_Underscore_F
+                      and not Gnat2Why_Args.No_Loop_Unrolling,
+                  Result      => Unroll,
+                  Low_Val     => Low_Val,
+                  High_Val    => High_Val);
 
                if not Gnat2Why_Args.No_Loop_Unrolling
                  and then Unroll /= No_Unrolling

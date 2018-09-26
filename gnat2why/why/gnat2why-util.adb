@@ -33,7 +33,6 @@ with Lib;
 with Namet;                      use Namet;
 with SPARK_Annotate;
 with SPARK_Definition;           use SPARK_Definition;
-with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with String_Utils;               use String_Utils;
@@ -126,17 +125,8 @@ package body Gnat2Why.Util is
             return Cursor'(CK_Str, Ent_To_Why.No_Element,
                            C);
          else
-            declare
-               Ent      : constant Entity_Id := Find_Entity (E);
-               Uniq_Ent : constant Entity_Id := Normalize_Entity (Ent);
-            begin
-               if Present (Uniq_Ent) then
-                  return Find (M, Uniq_Ent);
-               else
-                  return Cursor'(CK_Ent, Ent_To_Why.No_Element,
-                                 Name_To_Why_Map.No_Element);
-               end if;
-            end;
+            return Cursor'(CK_Ent, Ent_To_Why.No_Element,
+                           Name_To_Why_Map.No_Element);
          end if;
       end Find;
 
@@ -865,10 +855,7 @@ package body Gnat2Why.Util is
                                                Writes         => Write_Ids,
                                                Keep_Constants => True);
 
-               --  Elements of Read_Ids have their Variant set to In_View, so
-               --  the membership test must also use this variant.
-
-               return Read_Ids.Contains (Direct_Mapping_Id (Obj, In_View));
+               return Read_Ids.Contains (Direct_Mapping_Id (Obj));
             end;
          end if;
 
@@ -944,11 +931,35 @@ package body Gnat2Why.Util is
       then
          return True;
 
-         --  We allow an in parameter or a constant of an owning access type to
-         --  provide read/write access to its designated object.
+      --  We allow an In parameter of an owning access type to
+      --  provide read/write access to its designated object as a parameter
+      --  in a procedure call.
+      --
+      --  We allow a constant of an owning access type to provide read/write
+      --  access to its designated object
 
-      elsif Is_Constant_Object (E) and then not Is_Access_Type (Etype (E)) then
-         return False;
+      elsif Is_Constant_Object (E) then
+         declare
+            E_Typ    : constant Entity_Id := Etype (E);
+            View_Typ : constant Entity_Id := Retysp (E_Typ);
+
+         begin
+            if Ekind (E) = E_In_Parameter then
+               if Is_Access_Type (View_Typ)
+                 and then Ekind (Enclosing_Unit (E)) /= E_Function
+               then
+                  return True;
+               else
+                  return False;
+               end if;
+
+            elsif Is_Access_Type (View_Typ) then
+               return True;
+
+            else
+               return False;
+            end if;
+         end;
 
       else
          return True;
@@ -999,25 +1010,6 @@ package body Gnat2Why.Util is
       Section.Theories := Why_Node_Lists.Empty_List;
       Section.Cur_Theory := Why.Types.Why_Empty;
    end Make_Empty_Why_Section;
-
-   ---------------------------
-   -- May_Need_DIC_Checking --
-   ---------------------------
-
-   function May_Need_DIC_Checking (E : Entity_Id) return Boolean is
-      DIC_Needs_To_Be_Checked : constant Boolean :=
-        Has_Own_DIC (E)
-        and then Present (DIC_Procedure (E));
-
-      DIC_Needs_To_Be_Rechecked : constant Boolean :=
-        Is_Tagged_Type (E)
-        and then Is_Full_View (E)
-        and then Present (DIC_Procedure (E))
-        and then Expression_Contains_Primitives_Calls_Of
-          (Get_Expr_From_Check_Only_Proc (DIC_Procedure (E)), E);
-   begin
-      return DIC_Needs_To_Be_Checked or DIC_Needs_To_Be_Rechecked;
-   end May_Need_DIC_Checking;
 
    -----------------------------
    -- Needs_DIC_Check_At_Decl --
@@ -1240,9 +1232,7 @@ package body Gnat2Why.Util is
       --  special private type in all other cases, represented in the AST by
       --  its type.
 
-      return (case Ekind (T) is
-                 when Type_Kind => Retysp (T),
-                 when others => T);
+      return Retysp (T);
    end Type_Of_Node;
 
    ----------------------------

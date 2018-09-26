@@ -46,8 +46,8 @@ binary_trees.adb:140:13: info: initialization of "I" proved
 binary_trees.adb:142:33: info: initialization of "ToDo" proved
 binary_trees.adb:142:33: info: loop invariant initialization proved (CVC4: 1 VC)
 binary_trees.adb:142:33: info: loop invariant preservation proved (CVC4: 1 VC)
+binary_trees.adb:142:39: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:142:39: info: initialization of "I" proved
-binary_trees.adb:142:39: medium: array index check might fail
 binary_trees.adb:146:13: info: loop invariant initialization proved (CVC4: 1 VC)
 binary_trees.adb:146:13: info: loop invariant preservation proved (CVC4: 1 VC)
 binary_trees.adb:147:18: info: initialization of "ToDo" proved
@@ -99,7 +99,7 @@ binary_trees.adb:217:52: info: initialization of "Unseen" proved
 binary_trees.adb:220:20: info: precondition proved (CVC4: 1 VC)
 binary_trees.adb:220:28: info: initialization of "Unseen" proved
 binary_trees.adb:220:36: info: initialization of "I" proved
-binary_trees.adb:220:36: medium: range check might fail
+binary_trees.adb:220:36: info: range check proved (CVC4: 1 VC)
 binary_trees.adb:226:23: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:226:23: info: initialization of "I" proved
 binary_trees.adb:227:16: info: initialization of "J" proved
@@ -1331,11 +1331,11 @@ red_black_trees.adb:252:24: info: precondition proved (CVC4: 1 VC), in call inli
 red_black_trees.adb:252:24: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:252:24: medium: loop invariant might fail after first iteration, cannot prove Nb_Blacks (T) (I).Status, in call inlined at red_black_trees.adb:416
 red_black_trees.adb:252:24: medium: loop invariant might fail after first iteration, cannot prove Nb_Blacks (T) (I).Status, in call inlined at red_black_trees.adb:471
-red_black_trees.adb:252:24: medium: loop invariant might fail in first iteration, cannot prove Nb_Blacks (T) (I).Status, in call inlined at red_black_trees.adb:416
 red_black_trees.adb:253:23: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:253:23: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:254:23: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:254:23: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
+red_black_trees.adb:255:24: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:255:24: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:255:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:255:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
@@ -1515,12 +1515,12 @@ red_black_trees.adb:394:33: info: loop invariant initialization proved (CVC4: 1 
 red_black_trees.adb:394:33: info: loop invariant preservation proved (CVC4: 1 VC)
 red_black_trees.adb:395:33: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:395:33: info: loop invariant preservation proved (CVC4: 1 VC)
-red_black_trees.adb:398:13: medium: precondition might fail
+red_black_trees.adb:398:13: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:398:33: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:398:51: info: initialization of "X" proved
 red_black_trees.adb:398:51: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:402:18: info: precondition proved (CVC4: 2 VC)
-red_black_trees.adb:402:34: medium: range check might fail
+red_black_trees.adb:402:34: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:402:52: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:402:70: info: initialization of "X" proved
 red_black_trees.adb:402:70: info: range check proved (CVC4: 1 VC)
@@ -1588,7 +1588,7 @@ red_black_trees.adb:445:59: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:450:42: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:451:27: medium: assertion might fail, cannot prove T.Color (I) = Black
 red_black_trees.adb:457:18: info: precondition proved (CVC4: 2 VC)
-red_black_trees.adb:457:34: medium: range check might fail
+red_black_trees.adb:457:34: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:457:52: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:457:70: info: initialization of "X" proved
 red_black_trees.adb:457:70: info: range check proved (CVC4: 1 VC)
@@ -1760,7 +1760,7 @@ search_trees.adb:111:47: info: initialization of "KI" proved
 search_trees.adb:112:13: info: initialization of "KJ" proved
 search_trees.adb:112:19: info: range check proved (CVC4: 1 VC)
 search_trees.adb:112:30: info: initialization of "KJ" proved
-search_trees.adb:114:19: medium: range check might fail
+search_trees.adb:114:19: info: range check proved (CVC4: 1 VC)
 search_trees.adb:114:30: info: initialization of "KI" proved
 search_trees.adb:115:19: info: range check proved (CVC4: 1 VC)
 search_trees.adb:115:30: info: initialization of "KJ" proved

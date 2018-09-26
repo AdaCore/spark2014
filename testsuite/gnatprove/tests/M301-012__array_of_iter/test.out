@@ -2,6 +2,7 @@ iter_array.adb:5:19: info: assertion proved (CVC4: 1 VC)
 iter_array.adb:5:43: info: initialization of "X" proved
 iter_array.adb:6:19: info: assertion proved (CVC4: 1 VC)
 iter_array.adb:6:32: info: initialization of "X" proved
+iter_array.adb:8:15: info: unrolling loop
 iter_array.adb:9:09: info: initialization of "X" proved
 iter_array.adb:11:19: info: assertion proved (CVC4: 1 VC)
 iter_array.adb:11:32: info: initialization of "X" proved

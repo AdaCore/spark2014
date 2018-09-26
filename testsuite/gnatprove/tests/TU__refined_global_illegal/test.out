@@ -3,7 +3,7 @@ refined_global_illegal.adb:20:14: useless refinement, declaration of subprogram 
 refined_global_illegal.adb:36:14: aspect "Refined_Global" must apply to the body of subprogram declared in a package specification
 refined_global_illegal.adb:52:43: cannot mention state "State" in global refinement
 refined_global_illegal.adb:52:43: use its constituents instead
-refined_global_illegal.adb:60:47: extra global item "Y"
+refined_global_illegal.adb:60:47: extra global item "Y" does not refine or repeat any global item at refined_global_illegal.ads:87
 refined_global_illegal.adb:68:47: duplicate global item
 refined_global_illegal.adb:76:14: global refinement of state "State" must include at least one constituent of mode "In_Out", "Input", or "Proof_In"
 refined_global_illegal.adb:84:14: global refinement of state "State" redefines the mode of its constituents

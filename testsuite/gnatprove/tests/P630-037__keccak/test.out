@@ -58,6 +58,18 @@ keccak-duplex.ads:160:30: medium: range check might fail, in instantiation at ke
 keccak-duplex.ads:160:61: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:160:66: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:161:15: info: postcondition proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
+keccak-keccak_1600.ads:45:04: info: in instantiation at keccak-keccakf.adb:216
+keccak-keccak_1600.ads:45:04: info: in instantiation at keccak-keccakf.adb:44
+keccak-keccak_1600.ads:45:04: info: unrolling loop
+keccak-keccak_1600.ads:45:04: info: unrolling loop
+keccak-keccak_1600.ads:53:04: info: cannot unroll loop (too many loop iterations)
+keccak-keccak_1600.ads:53:04: info: in instantiation at keccak-keccakf-permutation.adb:35
+keccak-keccak_1600.ads:55:04: info: cannot unroll loop (too many loop iterations)
+keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:116
+keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:55
+keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:79
+keccak-keccak_1600.ads:55:04: info: unrolling loop
+keccak-keccak_1600.ads:55:04: info: unrolling loop
 keccak-keccakf-byte_lanes.adb:42:46: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:42:51: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:42:51: info: range check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
@@ -311,19 +323,19 @@ keccak-sponge.adb:112:54: info: division check proved (CVC4: 1 VC), in instantia
 keccak-sponge.adb:112:79: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:114:57: info: initialization of "Initial_Bit_Rate" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:116:16: info: precondition proved (CVC4: 3 VC), in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:117:36: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Data = (others => 0) and Data'First = 0 and Data'Last = 2)
-keccak-sponge.adb:117:52: medium: overflow check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Data = (others => 0) and Data'First = 2147483645 and Data'Last = 2147483647 and Offset = 3)
+keccak-sponge.adb:117:36: info: range check proved (CVC4: 4 VC), in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.adb:117:52: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:117:54: info: initialization of "Offset" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:118:51: medium: overflow check might fail, in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.adb:118:51: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:118:54: info: initialization of "Offset" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:118:61: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:119:36: info: initialization of "Initial_Bit_Rate" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:122:35: info: initialization of "Offset" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:122:51: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:123:35: info: initialization of "Remaining_Bytes" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:123:51: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Ctx = (State => ?, Block => (others => 0), Bits_Absorbed => 8, Bytes_Squeezed => 0, Rate => 2, Curr_State => Absorbing) and Remaining_Bytes = 1)
+keccak-sponge.adb:123:51: info: range check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:124:35: info: initialization of "Remaining_Bits" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:124:51: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Initial_Bit_Rate = 32 and Remaining_Bits = 25)
+keccak-sponge.adb:124:51: info: range check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:124:53: info: initialization of "Initial_Bit_Rate" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:128:16: info: initialization of "Remaining_Bits" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:129:19: info: range check proved (CVC4: 4 VC), in instantiation at keccak-keccak_1600.ads:57
@@ -497,12 +509,12 @@ keccak-sponge.adb:390:40: info: overflow check proved (CVC4: 1 VC), in instantia
 keccak-sponge.adb:390:42: info: initialization of "Remaining" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:390:60: info: range check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:392:51: info: initialization of "Initial_Rate" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:394:10: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Digest'Last = 0)
-keccak-sponge.adb:394:30: medium: overflow check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Digest'First = 1 and Offset = 2147483647)
+keccak-sponge.adb:394:10: info: range check proved (CVC4: 4 VC), in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.adb:394:30: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:394:32: info: initialization of "Offset" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:395:32: medium: overflow check might fail, in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.adb:395:32: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:395:36: info: initialization of "Offset" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:395:43: medium: overflow check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Ctx = (State => ?, Block => (others => 0), Bits_Absorbed => 0, Bytes_Squeezed => 0, Rate => 199, Curr_State => Squeezing) and Offset = 2147483449)
+keccak-sponge.adb:395:43: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:396:14: info: initialization of "Digest" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:396:14: info: length check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:396:20: info: length check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57

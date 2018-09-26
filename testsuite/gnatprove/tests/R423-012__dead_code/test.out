@@ -1,5 +1,9 @@
+dead_code.adb:6:23: info: cannot unroll loop (too many loop iterations)
+dead_code.adb:14:23: info: cannot unroll loop (too many loop iterations)
 dead_code.adb:17:07: info: assertion proved (CVC4: 1 VC)
+dead_code.adb:23:23: info: cannot unroll loop (too many loop iterations)
 dead_code.adb:26:07: info: raise statement proved unreachable (CVC4: 1 VC)
+dead_code.adb:31:23: info: cannot unroll loop (too many loop iterations)
 dead_code.adb:34:07: warning: unreachable code (CVC4: 1 VC)
 dead_code.adb:40:13: info: initialization of "J" proved
 dead_code.adb:41:17: info: initialization of "J" proved

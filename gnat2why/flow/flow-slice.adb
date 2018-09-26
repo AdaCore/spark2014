@@ -345,6 +345,38 @@ package body Flow.Slice is
       -------------------------------
 
       procedure Get_Local_Definite_Writes is
+
+         function Is_Written (Comp : Flow_Id) return Boolean;
+         --  Returns True iff Comp is definitely written, according to the PDG
+
+         ----------------
+         -- Is_Written --
+         ----------------
+
+         function Is_Written (Comp : Flow_Id) return Boolean is
+            Comp_Initial : constant Flow_Graphs.Vertex_Id :=
+              FA.PDG.Get_Vertex (Change_Variant (Comp, Initial_Value));
+
+            Comp_Final   : constant Flow_Graphs.Vertex_Id :=
+              FA.PDG.Get_Vertex (Change_Variant (Comp, Final_Value));
+            --  'Initial and 'Final vertices for Comp, respectively
+
+         begin
+            --  It either can be initialized by default
+
+            if FA.Atr (Comp_Initial).Is_Initialized then
+               return True;
+
+            --  otherwise, its final value can't depend on its initial value
+
+            else
+               return
+                 not FA.PDG.Edge_Exists (Comp_Initial, Comp_Final);
+            end if;
+         end Is_Written;
+
+      --  Start of processing for Get_Local_Definite_Writes
+
       begin
          --  Detect initialized local variables
          for LV of FA.GG.Local_Variables loop
@@ -352,20 +384,15 @@ package body Flow.Slice is
             --  Abstract states with null refinements are trivially initialized
             --  but are not detected by the condition in the else branch. (???
             --  why?)
+
             if Ekind (LV) = E_Abstract_State
               and then Has_Null_Refinement (LV)
             then
                Local_Definite_Writes.Insert (LV);
 
-            --  Check if the corresponding 'Initial vertex has no
-            --  Out_Neighbours.
-
             else
-               if not
-                 (for some Comp of Flatten_Variable (LV, FA.B_Scope) =>
-                    FA.PDG.Out_Neighbour_Count
-                      (FA.PDG.Get_Vertex
-                         (Change_Variant (Comp, Initial_Value))) /= 0)
+               if (for all Comp of Flatten_Variable (LV, FA.B_Scope) =>
+                     Is_Written (Comp))
                then
                   Local_Definite_Writes.Insert (LV);
                end if;

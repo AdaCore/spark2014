@@ -113,6 +113,9 @@ Flow Analysis Limitations
    considered to participate in the derivation of another field that it does
    not really participate in.
 
+#. Initialization of multi-dimensional arrays with nested FOR loops can be only
+   detected if the array bounds are given by static expressions.
+
 Proof Limitations
 -----------------
 

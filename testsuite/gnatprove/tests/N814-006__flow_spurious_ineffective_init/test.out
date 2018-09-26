@@ -19,6 +19,8 @@ double_list.ads:9:26: info: initialization of "Count" constituent of "Internal_L
 double_list.ads:18:16: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.ads:18:16: info: postcondition proved (CVC4: 1 VC), in instantiation at list_handler.adb:11
 double_list.ads:22:29: info: initialization of "Status" proved, in instantiation at list_handler.adb:11
+list_handler.adb:11:04: info: cannot unroll loop (too many loop iterations)
+list_handler.adb:11:04: info: in instantiation at double_list.adb:35
 list_handler.adb:24:13: info: initialization of "Current" proved
 list_handler.adb:25:56: info: initialization of "Current" proved
 list_handler.adb:26:20: info: initialization of "Status" proved

@@ -13,7 +13,7 @@ refined_state_illegal.adb:59:37: cannot use "Pr_Var1" in refinement, constituent
 refined_state_illegal.adb:59:46: cannot use "Pr_Var2" in refinement, constituent is not a hidden state of package "Pac8"
 refined_state_illegal.adb:65:17: body of package "Pac9" has unused hidden states
 refined_state_illegal.adb:65:17: variable "Var1" defined at line 68
-refined_state_illegal.adb:71:33: extra global item "Var1"
+refined_state_illegal.adb:71:33: extra global item "Var1" does not refine or repeat any global item at refined_state_illegal.ads:114
 refined_state_illegal.ads:24:11: aspect "Refined_State" must apply to a package body
 refined_state_illegal.ads:33:29: state "S" requires refinement
 refined_state_illegal.ads:50:29: state "S" requires refinement

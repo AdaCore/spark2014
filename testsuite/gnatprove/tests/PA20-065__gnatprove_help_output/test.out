@@ -16,6 +16,7 @@ gnatprove basic switches:
      --cwe             Include CWE ids in message output
  -f                    Force recompilation/analysis of all units
  -h, --help            Display this usage information
+     --info            Output info messages about the analysis
  -j N                  Use N parallel processes (default: 1; N=0 will use
                        all cores of the machine)
  -k                    Do not stop analysis at the first error
@@ -112,3 +113,4 @@ gnatprove advanced switches:
    . cvc4          - [steps] Use CVC4
    . z3            - [steps] Use Z3
    . ...           - Any other prover configured in your .why3.conf file
+

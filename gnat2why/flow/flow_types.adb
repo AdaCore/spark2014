@@ -978,7 +978,7 @@ package body Flow_Types is
 
    function To_Name (F : Flow_Id) return Entity_Name is
      (case F.Kind is
-         when Direct_Mapping | Record_Field =>
+         when Direct_Mapping =>
             To_Entity_Name (F.Node),
 
          when Magic_String =>
@@ -986,19 +986,6 @@ package body Flow_Types is
 
          when others =>
             raise Program_Error);
-
-   -----------------
-   -- To_Name_Set --
-   -----------------
-
-   function To_Name_Set (S : Flow_Id_Sets.Set) return Name_Sets.Set is
-      N : Name_Sets.Set := Name_Sets.Empty_Set;
-   begin
-      for X of S loop
-         N.Include (To_Name (X));
-      end loop;
-      return N;
-   end To_Name_Set;
 
    -----------------
    -- To_Node_Set --

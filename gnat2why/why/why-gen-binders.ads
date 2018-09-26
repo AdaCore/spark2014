@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Common_Containers;      use Common_Containers;
+with Flow_Types;             use Flow_Types;
 with Namet;                  use Namet;
 with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
@@ -277,7 +278,8 @@ package Why.Gen.Binders is
      (E           : Entity_Id;
       Local       : Boolean := False;
       In_Fun_Decl : Boolean := False) return Item_Type
-     with Post => (if Mk_Item_Of_Entity'Result.Kind = Regular then
+     with Pre  => Entity_In_SPARK (E),
+          Post => (if Mk_Item_Of_Entity'Result.Kind = Regular then
                    Present (Mk_Item_Of_Entity'Result.Main.Ada_Node)
                    or else
                      Mk_Item_Of_Entity'Result.Main.B_Ent /= Null_Entity_Name);
@@ -291,23 +293,23 @@ package Why.Gen.Binders is
 
    function Get_Ada_Node_From_Item (B : Item_Type) return Node_Id;
    --  Get the Ada Node of an item.
-   --  @param B item whose Ada node we querry.
+   --  @param B item whose Ada node we query.
    --  @return the ada node that produced the binder. If the node is empty,
    --  then either B is the unit binder or it is a binder for effects only.
 
    function Get_Why_Type_From_Item (B : Item_Type) return W_Type_Id;
    --  Get the why type of an item.
-   --  @param B item whose type we querry.
+   --  @param B item whose type we query.
    --  @return the type of the expression that can be reconstructed from B.
 
    function Get_Ada_Type_From_Item (B : Item_Type) return Entity_Id;
    --  Get the ada type of an item.
-   --  @param B item whose type we querry.
+   --  @param B item whose type we query.
    --  @return the type of the ada node associated to B.
 
    function Item_Is_Mutable (B : Item_Type) return Boolean;
-   --  Chcek if an Item is Mutable.
-   --  @param B item we querry.
+   --  Check if an Item is Mutable.
+   --  @param B item we query.
    --  @return True if B is mutable
 
    function Reconstruct_Item
@@ -320,10 +322,13 @@ package Why.Gen.Binders is
    --  @return an Item representing the Entity E.
 
    function Get_Binders_From_Variables
-     (Variables   : Name_Sets.Set;
+     (Variables   : Flow_Id_Sets.Set;
       Compute     : Boolean := False;
       Ignore_Self : Boolean := False)
-      return Item_Array;
+      return Item_Array
+   with Pre => (for all V of Variables =>
+                   V.Kind in Direct_Mapping | Magic_String
+                   and then V.Variant = Normal_Use);
    --  From a set of names returned by flow analysis, compute an array of
    --  items representing the variables in Why.
    --  @param Variables a set of names returned by flow analysis
@@ -360,12 +365,12 @@ package Why.Gen.Binders is
    --  @param Ref_Allowed whether variables should be dereferenced
    --  @result An array of W_Expr_Ids for Binders
 
-   function Get_Args_From_Variables (Variables : Name_Sets.Set;
+   function Get_Args_From_Variables (Variables   : Flow_Id_Sets.Set;
                                      Ref_Allowed : Boolean)
                                      return W_Expr_Array;
    --  From a set of names returned by flow analysis, compute an array of
    --  expressions for the values of their variable parts.
-   --  @param Variables a set of names returned by flow analysis
+   --  @param Variables variables returned by flow analysis
    --  @param Ref_Allowed whether variables should be dereferenced
    --  @result An array of W_Expr_Ids used to represent the variable parts
    --  of these variables in Why.

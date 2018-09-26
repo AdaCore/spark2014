@@ -4,4 +4,5 @@ p.adb:15:16: medium: range check might fail (e.g. when X = 0)
 p.adb:17:13: medium: "Tmp3" might not be initialized
 p.adb:18:13: medium: "Tmp4" might not be initialized
 p.adb:19:13: medium: "Tmp5" might not be initialized
+p.adb:21:35: info: unrolling loop
 p.adb:22:16: info: initialization of "Tmp1" proved

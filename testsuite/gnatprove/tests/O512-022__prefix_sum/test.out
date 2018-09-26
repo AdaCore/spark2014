@@ -1,11 +1,11 @@
 prefixsum.adb:8:13: info: initialization of "Space" proved
 prefixsum.adb:10:14: info: loop invariant initialization proved (CVC4: 5 VC)
-prefixsum.adb:10:14: info: loop invariant preservation proved (CVC4: 3 VC; Z3: 3 VC)
 prefixsum.adb:10:34: info: initialization of "Space" proved
 prefixsum.adb:10:40: info: range check proved (CVC4: 1 VC)
 prefixsum.adb:15:27: info: division check proved (CVC4: 1 VC)
 prefixsum.adb:18:18: warning: unreachable branch (CVC4: 1 VC)
 prefixsum.adb:22:30: info: division check proved (CVC4: 1 VC)
+prefixsum.adb:25:18: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K-1) + A'Loop_Entry (K-2) + A'Loop_Entry (K-3)
 prefixsum.adb:25:60: info: index check proved (CVC4: 2 VC)
 prefixsum.adb:26:41: info: index check proved (CVC4: 2 VC)
 prefixsum.adb:26:62: info: index check proved (CVC4: 2 VC)
@@ -70,9 +70,9 @@ prefixsum.adb:104:16: info: initialization of "Right" proved
 prefixsum.adb:106:15: info: loop invariant initialization proved (CVC4: 4 VC)
 prefixsum.adb:107:37: info: initialization of "Right" proved
 prefixsum.adb:108:31: info: division check proved (CVC4: 1 VC)
+prefixsum.adb:109:23: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K - Space)
 prefixsum.adb:109:66: info: index check proved (CVC4: 2 VC)
 prefixsum.adb:110:34: info: division check proved (CVC4: 1 VC)
-prefixsum.adb:111:23: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K + Space)
 prefixsum.adb:111:47: info: index check proved (CVC4: 2 VC)
 prefixsum.adb:111:49: info: initialization of "Space" proved
 prefixsum.adb:117:27: info: division check proved (CVC4: 1 VC)

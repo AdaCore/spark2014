@@ -687,7 +687,7 @@ package body Configuration is
       procedure Set_Warning_Mode;
       procedure Set_Report_Mode;
 
-      procedure Set_Level_Timeout_Steps_Provers_Proof_Mode;
+      procedure Set_Level_Timeout_Steps_Provers;
       --  using the --level, --timeout, --steps and --provers switches, set the
       --  corresponding variables
 
@@ -911,7 +911,8 @@ package body Configuration is
          Set_Mode;
          Set_Warning_Mode;
          Set_Report_Mode;
-         Set_Level_Timeout_Steps_Provers_Proof_Mode;
+         Set_Level_Timeout_Steps_Provers;
+         Set_Proof_Mode;
          Set_Proof_Dir;
 
          Counterexample :=
@@ -1018,11 +1019,11 @@ package body Configuration is
          end if;
       end Sanity_Checking;
 
-      ------------------------------------------------
-      -- Set_Level_Timeout_Steps_Provers_Proof_Mode --
-      ------------------------------------------------
+      -------------------------------------
+      -- Set_Level_Timeout_Steps_Provers --
+      -------------------------------------
 
-      procedure Set_Level_Timeout_Steps_Provers_Proof_Mode is
+      procedure Set_Level_Timeout_Steps_Provers is
       begin
 
          case CL_Switches.Level is
@@ -1033,7 +1034,6 @@ package body Configuration is
             when Invalid_Level =>
 
                Provers.Append ("cvc4");
-               Proof := Per_Check;
                Steps := Default_Steps;
                Timeout := 0;
                Memlimit := 0;
@@ -1042,7 +1042,6 @@ package body Configuration is
 
             when 0 =>
                Provers.Append ("cvc4");
-               Proof := Per_Check;
                Steps := 0;
                Timeout := 1;
                Memlimit := 1000;
@@ -1051,7 +1050,6 @@ package body Configuration is
                Provers.Append ("cvc4");
                Provers.Append ("z3");
                Provers.Append ("altergo");
-               Proof := Per_Check;
                Steps := 0;
                Timeout := 1;
                Memlimit := 1000;
@@ -1060,7 +1058,6 @@ package body Configuration is
                Provers.Append ("cvc4");
                Provers.Append ("z3");
                Provers.Append ("altergo");
-               Proof := Per_Check;
                Steps := 0;
                Timeout := 5;
                Memlimit := 1000;
@@ -1069,18 +1066,16 @@ package body Configuration is
                Provers.Append ("cvc4");
                Provers.Append ("z3");
                Provers.Append ("altergo");
-               Proof := Progressive;
                Steps := 0;
-               Timeout := 5;
+               Timeout := 20;
                Memlimit := 2000;
 
             when 4 =>
                Provers.Append ("cvc4");
                Provers.Append ("z3");
                Provers.Append ("altergo");
-               Proof := Progressive;
                Steps := 0;
-               Timeout := 10;
+               Timeout := 60;
                Memlimit := 2000;
 
             when others =>
@@ -1135,14 +1130,13 @@ package body Configuration is
            (if Timeout = 0 then Constants.Max_CE_Timeout
             else Integer'Min (Timeout, Constants.Max_CE_Timeout));
 
-         Set_Proof_Mode;
          Set_Provers;
          Limit_Provers;
 
          if CL_Switches.Output_Msg_Only then
             Provers.Clear;
          end if;
-      end Set_Level_Timeout_Steps_Provers_Proof_Mode;
+      end Set_Level_Timeout_Steps_Provers;
 
       --------------
       -- Set_Mode --
@@ -1243,7 +1237,7 @@ package body Configuration is
                else "");
          begin
             if Proof_Input = "" then
-               null;
+               Proof := Per_Check;
             elsif Proof_Input = "progressive" then
                Proof := Progressive;
             elsif Proof_Input = "per_path" then
@@ -1748,6 +1742,11 @@ package body Configuration is
       Define_Switch
          (Config, CL_Switches.Memcached_Server'Access,
           Long_Switch => "--memcached-server=");
+
+      Define_Switch
+         (Config,
+          CL_Switches.Info'Access,
+          Long_Switch => "--info");
 
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");

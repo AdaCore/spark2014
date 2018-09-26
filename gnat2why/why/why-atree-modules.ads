@@ -516,8 +516,9 @@ package Why.Atree.Modules is
    Fixed_Infix_Subtr : W_Identifier_Id;
    Fixed_Infix_Mult  : W_Identifier_Id;
 
-   To_String_Id      : W_Identifier_Id;
-   Of_String_Id      : W_Identifier_Id;
+   String_Image_Module : W_Module_Id;
+   To_String_Id        : W_Identifier_Id;
+   Of_String_Id        : W_Identifier_Id;
 
    --  Other identifiers
 

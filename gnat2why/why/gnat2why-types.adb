@@ -176,14 +176,12 @@ package body Gnat2Why.Types is
          Variables : Flow_Id_Sets.Set;
 
       begin
-
          --  Get the set of variables used in E's default initialization
 
          Variables_In_Default_Init (E, Variables);
 
          declare
-            Items    : Item_Array :=
-              Get_Binders_From_Variables (To_Name_Set (Variables));
+            Items    : Item_Array := Get_Binders_From_Variables (Variables);
             Main_Arg : constant W_Identifier_Id :=
               New_Temp_Identifier (Typ       => Type_Of_Node (E),
                                    Base_Name => "expr");
@@ -247,8 +245,7 @@ package body Gnat2Why.Types is
          Variables_In_Dynamic_Invariant (E, Variables);
 
          declare
-            Items    : Item_Array :=
-              Get_Binders_From_Variables (To_Name_Set (Variables));
+            Items    : Item_Array := Get_Binders_From_Variables (Variables);
             Init_Arg : constant W_Identifier_Id :=
               New_Temp_Identifier (Typ       => EW_Bool_Type,
                                    Base_Name => "is_init");
@@ -336,8 +333,7 @@ package body Gnat2Why.Types is
          Variables_In_Dynamic_Predicate (E, Variables);
 
          declare
-            Items    : Item_Array :=
-              Get_Binders_From_Variables (To_Name_Set (Variables));
+            Items    : Item_Array := Get_Binders_From_Variables (Variables);
             Main_Arg : constant W_Identifier_Id :=
               New_Temp_Identifier (Typ => Type_Of_Node (E));
             --  Expression on which we want to assume the property
@@ -392,8 +388,7 @@ package body Gnat2Why.Types is
          Variables_In_Type_Invariant (E, Variables);
 
          declare
-            Items    : Item_Array :=
-              Get_Binders_From_Variables (To_Name_Set (Variables));
+            Items    : Item_Array := Get_Binders_From_Variables (Variables);
             Main_Arg : constant W_Identifier_Id :=
               New_Temp_Identifier (Typ => Type_Of_Node (E));
             --  Expression on which we want to assume the property
@@ -819,6 +814,21 @@ package body Gnat2Why.Types is
                & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
             Define_Scalar_Rep_Proj (File, E);
+
+            Close_Theory (File, Kind => Standalone_Theory);
+         end if;
+
+         --  Declare to_string and of_string functions used for 'Image and
+         --  'Value attributes.
+
+         if E = Standard_String then
+            Open_Theory
+              (File, String_Image_Module,
+               Comment =>
+                 "Module defining to_string/of_string functions"
+               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+            Declare_Additional_Symbols_For_String (File);
 
             Close_Theory (File, Kind => Standalone_Theory);
          end if;

@@ -146,7 +146,14 @@ package body Flow_Generated_Globals.Traversal is
 
             when N_Subprogram_Body_Stub =>
                if No (Corresponding_Spec_Of_Stub (N)) then
-                  Insert (Unique_Defining_Entity (N));
+                  declare
+                     E : constant Entity_Id := Unique_Defining_Entity (N);
+
+                  begin
+                     if not Is_Generic_Subprogram (E) then
+                        Insert (E);
+                     end if;
+                  end;
                end if;
 
             when N_Object_Declaration =>
@@ -318,19 +325,27 @@ package body Flow_Generated_Globals.Traversal is
                Traverse_Visible_And_Private_Parts (Specification (N));
 
             when N_Package_Body =>
-               Traverse_Package_Body (N);
+               if not Is_Generic_Unit (Unique_Defining_Entity (N)) then
+                  Traverse_Package_Body (N);
+               end if;
 
             when N_Package_Body_Stub =>
-               Traverse_Package_Body (Get_Body_From_Stub (N));
+               if not Is_Generic_Unit (Unique_Defining_Entity (N)) then
+                  Traverse_Package_Body (Get_Body_From_Stub (N));
+               end if;
 
             when N_Subprogram_Body =>
-               Traverse_Subprogram_Body (N);
+               if not Is_Generic_Unit (Unique_Defining_Entity (N)) then
+                  Traverse_Subprogram_Body (N);
+               end if;
 
             when N_Entry_Body =>
                Traverse_Subprogram_Body (N);
 
             when N_Subprogram_Body_Stub =>
-               Traverse_Subprogram_Body (Get_Body_From_Stub (N));
+               if not Is_Generic_Unit (Unique_Defining_Entity (N)) then
+                  Traverse_Subprogram_Body (Get_Body_From_Stub (N));
+               end if;
 
             when N_Protected_Body =>
                Traverse_Protected_Body (N);

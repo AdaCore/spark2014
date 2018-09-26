@@ -566,7 +566,7 @@
   <proof prover="0" timelimit="1"><result status="unknown" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="137"/></proof>
+  <proof prover="0"><result status="valid" steps="141"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>

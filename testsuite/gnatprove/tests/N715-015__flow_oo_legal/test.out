@@ -41,11 +41,14 @@ main.adb:63:14: info: initialization of "Uni_Student" proved, in call inlined at
 main.adb:64:14: info: initialization of "ZeroCool" proved, in call inlined at main.adb:72
 main.adb:65:14: info: initialization of "Rambo" proved, in call inlined at main.adb:72
 main.adb:66:14: info: initialization of "Dr_House" proved, in call inlined at main.adb:72
+main.adb:70:04: info: in inlined body at line 31
+main.adb:70:04: info: unrolling loop
 people.adb:4:04: info: initialization of "Today" constituent of "Date" proved
 people.adb:7:40: info: initialization of "Today" constituent of "Date" proved
 professionals.adb:37:40: low: range check might fail
-professionals.adb:45:32: low: range check might fail
-professionals.adb:48:34: low: range check might fail
+professionals.adb:45:32: info: range check proved (CVC4: 1 VC)
+professionals.adb:47:28: info: unrolling loop
+professionals.adb:48:34: info: range check proved (CVC4: 4 VC)
 professionals.adb:68:14: info: initialization of "Tmp.Number_Of_People_Killed" proved
 professionals.adb:68:14: info: initialization of "Tmp.Profession" proved
 professionals.adb:68:14: info: initialization of "Tmp.Skilled_In" proved
@@ -55,6 +58,7 @@ professionals.adb:83:14: info: initialization of "Tmp.Profession" proved
 professionals.adb:83:14: info: initialization of "Tmp.Skilled_In" proved
 professionals.adb:83:14: info: initialization of private part of "Tmp" proved
 professionals.adb:93:40: info: initialization of "Skill_Of_The_Day" constituent of "State" proved
+professionals.adb:155:28: info: unrolling loop
 professionals.adb:205:72: medium: overflow check might fail
 professionals.ads:33:14: warning: subprogram "Print" has no effect
 professionals.ads:72:25: medium: postcondition might fail, cannot prove Is_Alive (Killer)
@@ -65,6 +69,7 @@ simple_oo_with_contracts.adb:12:22: medium: assertion might fail, cannot prove G
 simple_oo_with_contracts.adb:13:16: medium: overflow check might fail
 simple_oo_with_contracts.adb:13:24: medium: overflow check might fail
 simple_oo_with_contracts.adb:19:22: medium: assertion might fail, cannot prove G3 = Par.Z1
+simple_oo_with_contracts.adb:26:24: info: cannot unroll loop (too many loop iterations)
 simple_oo_with_contracts.adb:27:25: medium: assertion might fail, cannot prove G2 /= I + Par.Z2
 simple_oo_with_contracts.adb:27:33: medium: overflow check might fail
 simple_oo_with_contracts.ads:12:34: info: initialization of "G4" proved
@@ -77,6 +82,7 @@ simple_oo_without_contracts.adb:12:22: medium: assertion might fail, cannot prov
 simple_oo_without_contracts.adb:13:16: medium: overflow check might fail
 simple_oo_without_contracts.adb:13:24: medium: overflow check might fail
 simple_oo_without_contracts.adb:19:22: medium: assertion might fail, cannot prove G3 = Par.Z1
+simple_oo_without_contracts.adb:26:24: info: cannot unroll loop (too many loop iterations)
 simple_oo_without_contracts.adb:27:25: medium: assertion might fail, cannot prove G2 /= I + Par.Z2
 simple_oo_without_contracts.adb:27:33: medium: overflow check might fail
 simple_oo_without_contracts.ads:8:14: info: initialization of "G4" proved
