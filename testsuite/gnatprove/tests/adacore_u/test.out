@@ -435,9 +435,9 @@ ints.adb:29:10: info: precondition proved (CVC4: 1 VC)
 ints.adb:34:34: medium: overflow check might fail (e.g. when Arg = (Max => -2147483639, others => ?))
 ints.adb:35:14: info: postcondition proved (CVC4: 1 VC)
 ints.adb:38:21: info: precondition proved (CVC4: 1 VC)
-ints.adb:42:08: medium: overflow check might fail [possible explanation: subprogram at line 41 should mention Arg2 and Arg1 in a precondition]
-ints.adb:42:24: medium: overflow check might fail (e.g. when Arg1 = (Min => Integer'First, Max => Integer'First, Value => Integer'First, Precision => 0) and Arg2 = (Min => Integer'First, Max => Integer'First, Value => 1, Precision => 0)) [possible explanation: subprogram at line 41 should mention Arg2 and Arg1 in a precondition]
-ints.adb:42:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => 1)) [possible explanation: subprogram at line 41 should mention Arg2 and Arg1 in a precondition]
+ints.adb:42:08: medium: overflow check might fail [possible explanation: subprogram at line 41 should mention Arg1 and Arg2 in a precondition]
+ints.adb:42:24: medium: overflow check might fail (e.g. when Arg1 = (Min => Integer'First, Max => Integer'First, Value => Integer'First, Precision => 0) and Arg2 = (Min => Integer'First, Max => Integer'First, Value => 1, Precision => 0)) [possible explanation: subprogram at line 41 should mention Arg1 and Arg2 in a precondition]
+ints.adb:42:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => 1)) [possible explanation: subprogram at line 41 should mention Arg1 and Arg2 in a precondition]
 ints.adb:46:30: info: overflow check proved (CVC4: 1 VC)
 ints.adb:64:38: medium: overflow check might fail (e.g. when Arg = (Precision => Natural'Last, others => ?)) [possible explanation: subprogram at line 62 should mention Arg in a precondition]
 ints.ads:11:40: medium: overflow check might fail (e.g. when Arg = (Max => -2147483639, others => ?))

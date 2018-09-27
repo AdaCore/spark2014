@@ -827,7 +827,7 @@ package body Flow_Error_Messages is
          Expl      : Unbounded_String;
          First_Var : Boolean := True;
       begin
-         for V of Vars loop
+         for V of To_Ordered_Flow_Id_Set (Vars) loop
             if First_Var then
                First_Var := False;
             else

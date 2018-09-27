@@ -121,8 +121,8 @@ sec_3_13_6_deceleration.ads:46:50: info: float overflow check proved (Interval)
 sec_3_13_6_deceleration.ads:46:57: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:59: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:47:22: info: range check proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail [possible explanation: subprogram at line 44 should mention V and d in a precondition]
-sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail [possible explanation: subprogram at line 44 should mention V and d in a precondition]
+sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail [possible explanation: subprogram at line 44 should mention d and V in a precondition]
+sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail [possible explanation: subprogram at line 44 should mention d and V in a precondition]
 sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Interval)
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail

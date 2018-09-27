@@ -30,9 +30,9 @@ test.adb:57:27: info: initialization of "C" proved
 test.adb:57:29: medium: divide by zero might fail [possible explanation: loop at line 56 should mention C in a loop invariant]
 test.adb:57:33: info: initialization of "D" proved
 test.adb:58:15: info: initialization of "X" proved
-test.adb:58:17: medium: overflow check might fail [possible explanation: loop at line 56 should mention X and Y and Q in a loop invariant]
+test.adb:58:17: medium: overflow check might fail [possible explanation: loop at line 56 should mention Q and X and Y in a loop invariant]
 test.adb:58:19: info: initialization of "Q" proved
-test.adb:58:21: medium: overflow check might fail [possible explanation: loop at line 56 should mention Y and Q in a loop invariant]
+test.adb:58:21: medium: overflow check might fail [possible explanation: loop at line 56 should mention Q and Y in a loop invariant]
 test.adb:58:23: info: initialization of "Y" proved
 test.adb:59:15: info: initialization of "D" proved
 test.adb:59:23: info: initialization of "R" proved
@@ -49,9 +49,9 @@ test.adb:75:17: medium: divide by zero might fail [possible explanation: loop at
 test.adb:75:17: medium: overflow check might fail [possible explanation: loop at line 74 should mention C in a loop invariant]
 test.adb:75:19: info: initialization of "D" proved
 test.adb:76:15: info: initialization of "X" proved
-test.adb:76:17: medium: overflow check might fail [possible explanation: loop at line 74 should mention Y and Q and X in a loop invariant]
+test.adb:76:17: medium: overflow check might fail [possible explanation: loop at line 74 should mention Q and X and Y in a loop invariant]
 test.adb:76:19: info: initialization of "Q" proved
-test.adb:76:21: medium: overflow check might fail [possible explanation: loop at line 74 should mention Y and Q in a loop invariant]
+test.adb:76:21: medium: overflow check might fail [possible explanation: loop at line 74 should mention Q and Y in a loop invariant]
 test.adb:76:23: info: initialization of "Y" proved
 test.adb:77:15: info: initialization of "D" proved
 test.adb:77:23: high: "R" is not initialized

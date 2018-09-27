@@ -23,18 +23,18 @@ p.adb:100:32: medium: overflow check might fail [possible explanation: subprogra
 p.adb:105:24: medium: overflow check might fail [possible explanation: subprogram at line 92 should mention A in a precondition]
 p.adb:111:19: info: initialization of "D" proved
 p.adb:112:40: info: initialization of "TestPoint" proved
-p.adb:117:14: medium: overflow check might fail [possible explanation: subprogram at line 108 should mention B and A in a precondition]
-p.adb:117:32: medium: overflow check might fail [possible explanation: subprogram at line 108 should mention B and C and A in a precondition]
+p.adb:117:14: medium: overflow check might fail [possible explanation: subprogram at line 108 should mention A and B in a precondition]
+p.adb:117:32: medium: overflow check might fail [possible explanation: subprogram at line 108 should mention A and B and C in a precondition]
 p.adb:123:14: warning: unused assignment to "TestPoint"
 p.adb:124:29: medium: overflow check might fail [possible explanation: subprogram at line 108 should mention A in a precondition]
 p.adb:130:19: info: initialization of "D" proved
-p.adb:136:14: medium: overflow check might fail [possible explanation: subprogram at line 127 should mention B and A in a precondition]
-p.adb:136:32: medium: overflow check might fail [possible explanation: subprogram at line 127 should mention B and C and A in a precondition]
+p.adb:136:14: medium: overflow check might fail [possible explanation: subprogram at line 127 should mention A and B in a precondition]
+p.adb:136:32: medium: overflow check might fail [possible explanation: subprogram at line 127 should mention A and B and C in a precondition]
 p.adb:139:16: medium: overflow check might fail [possible explanation: subprogram at line 127 should mention A in a precondition]
 p.adb:142:23: info: initialization of "Tmp" proved
 p.adb:148:20: info: initialization of "D" proved
 p.adb:153:14: medium: overflow check might fail [possible explanation: subprogram at line 145 should mention A and B in a precondition]
-p.adb:153:32: medium: overflow check might fail [possible explanation: subprogram at line 145 should mention C and A and B in a precondition]
+p.adb:153:32: medium: overflow check might fail [possible explanation: subprogram at line 145 should mention A and B and C in a precondition]
 p.adb:158:28: medium: overflow check might fail [possible explanation: subprogram at line 145 should mention A in a precondition]
 p.adb:161:28: medium: overflow check might fail [possible explanation: subprogram at line 145 should mention A in a precondition]
 p.adb:167:20: info: initialization of "X" proved

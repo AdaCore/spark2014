@@ -20,7 +20,7 @@ p2.ads:26:27: info: initialization of "Y" proved
 prot.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 prot.adb:19:35: medium: overflow check might fail [possible explanation: subprogram at line 17 should mention Visible in a precondition]
-prot.adb:19:45: medium: overflow check might fail [possible explanation: subprogram at line 17 should mention Visible and X in a precondition]
+prot.adb:19:45: medium: overflow check might fail [possible explanation: subprogram at line 17 should mention X and Visible in a precondition]
 prot.adb:25:33: medium: overflow check might fail
 prot.adb:25:37: medium: overflow check might fail
 prot.adb:25:39: info: initialization of "Hidden" constituent of "State" proved

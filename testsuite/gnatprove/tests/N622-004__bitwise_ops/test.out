@@ -220,9 +220,9 @@ aco-math-very_longs.adb:410:91: info: initialization of "Old_Overflow" proved
 aco-math-very_longs.adb:411:29: info: initialization of "New_Overflow" proved
 aco-math-very_longs.adb:417:55: info: initialization of "Q_Hat" proved
 aco-math-very_longs.adb:423:68: info: overflow check proved (CVC4: 1 VC)
-aco-math-very_longs.adb:423:72: medium: array index check might fail (e.g. when Temporary_Digit = 0) [possible explanation: subprogram at line 415 should mention N and J in a precondition]
-aco-math-very_longs.adb:423:114: medium: overflow check might fail (e.g. when J = Digit_Index_Type'Last and N = 1 and Temporary_Digit = 0) [possible explanation: subprogram at line 415 should mention N and J in a precondition]
-aco-math-very_longs.adb:423:119: medium: array index check might fail (e.g. when Temporary_Digit = 0) [possible explanation: subprogram at line 415 should mention N and J in a precondition]
+aco-math-very_longs.adb:423:72: medium: array index check might fail (e.g. when Temporary_Digit = 0) [possible explanation: subprogram at line 415 should mention J and N in a precondition]
+aco-math-very_longs.adb:423:114: medium: overflow check might fail (e.g. when J = Digit_Index_Type'Last and N = 1 and Temporary_Digit = 0) [possible explanation: subprogram at line 415 should mention J and N in a precondition]
+aco-math-very_longs.adb:423:119: medium: array index check might fail (e.g. when Temporary_Digit = 0) [possible explanation: subprogram at line 415 should mention J and N in a precondition]
 aco-math-very_longs.adb:424:19: info: initialization of "Temporary_Digit" proved
 aco-math-very_longs.adb:424:35: medium: divide by zero might fail (e.g. when Q_Hat = 0) [possible explanation: subprogram at line 415 should mention N and V in a precondition]
 aco-math-very_longs.adb:424:70: medium: array index check might fail (e.g. when N = 1 and Q_Hat = 0) [possible explanation: subprogram at line 415 should mention N in a precondition]
@@ -233,7 +233,7 @@ aco-math-very_longs.adb:431:13: info: initialization of "Q_Hat" proved
 aco-math-very_longs.adb:431:69: medium: array index check might fail (e.g. when N = 2) [possible explanation: subprogram at line 415 should mention N in a precondition]
 aco-math-very_longs.adb:431:83: info: initialization of "R_Hat" proved
 aco-math-very_longs.adb:431:125: info: overflow check proved (CVC4: 1 VC)
-aco-math-very_longs.adb:431:130: medium: array index check might fail [possible explanation: subprogram at line 415 should mention N and J in a precondition]
+aco-math-very_longs.adb:431:130: medium: array index check might fail [possible explanation: subprogram at line 415 should mention J and N in a precondition]
 aco-math-very_longs.adb:432:22: info: initialization of "Q_Hat" proved
 aco-math-very_longs.adb:433:22: info: initialization of "R_Hat" proved
 aco-math-very_longs.adb:433:63: info: index check proved (CVC4: 2 VC)

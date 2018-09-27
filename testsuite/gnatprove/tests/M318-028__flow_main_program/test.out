@@ -8,7 +8,7 @@ main2.adb:8:33: info: cannot unroll loop (too many loop iterations)
 main2.adb:9:15: info: initialization of "Temp" proved
 main2.adb:9:20: medium: overflow check might fail [possible explanation: loop at line 8 should mention Temp in a loop invariant]
 main2.adb:11:11: info: initialization of "Temp" proved
-not_main.adb:10:16: medium: overflow check might fail [possible explanation: subprogram at line 6 should mention Y and X in a precondition]
+not_main.adb:10:16: medium: overflow check might fail [possible explanation: subprogram at line 6 should mention X and Y in a precondition]
 not_main.adb:17:14: medium: overflow check might fail [possible explanation: subprogram at line 13 should mention X in a precondition]
 not_main.adb:18:14: medium: overflow check might fail [possible explanation: subprogram at line 13 should mention Y in a precondition]
 not_main.ads:5:17: warning: subprogram "Do_Nothing" has no effect

@@ -4,7 +4,7 @@ generate_initializes.ads:8:14: info: initialization of "X" constituent of "State
 generate_initializes.ads:8:14: info: initialization of "Y" constituent of "State" proved
 other.adb:14:04: high: modification of "G2" in elaboration requires Elaborate_Body on package "Other" (SPARK RM 7.7.1(5))
 other.ads:5:14: info: initialization of "G2" proved
-outer.adb:16:47: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention Visible and Hidden in a precondition]
+outer.adb:16:47: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention Hidden and Visible in a precondition]
 outer.adb:18:17: info: initialization of "Hidden" proved
 outer.adb:18:17: info: initialization of "Visible" proved
 outer.adb:24:21: info: initialization of "Tmp" proved

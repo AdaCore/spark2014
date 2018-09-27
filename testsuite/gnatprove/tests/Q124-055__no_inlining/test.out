@@ -30,8 +30,8 @@ array_arith.adb:40:12: info: initialization of "X" proved
 array_arith.adb:40:15: info: initialization of "One" proved
 array_arith.adb:41:13: info: initialization of "X" proved
 array_arith.adb:41:16: info: initialization of "One" proved
-array_arith.adb:63:19: medium: overflow check might fail (e.g. when One = Integer'Last and Y = 1) [possible explanation: subprogram at line 61 should mention One and Y in a precondition]
-array_arith.adb:63:19: medium: range check might fail [possible explanation: subprogram at line 61 should mention One and Y in a precondition]
+array_arith.adb:63:19: medium: overflow check might fail (e.g. when One = Integer'Last and Y = 1) [possible explanation: subprogram at line 61 should mention Y and One in a precondition]
+array_arith.adb:63:19: medium: range check might fail [possible explanation: subprogram at line 61 should mention Y and One in a precondition]
 array_arith.adb:66:07: high: "X" is not initialized
 array_arith.adb:66:07: info: initialization of "One" proved
 array_arith.adb:70:29: info: initialization of "Y" proved

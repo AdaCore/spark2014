@@ -80,7 +80,7 @@ depends_illegal_4.adb:15:23: medium: missing dependency "Par2 => Y"
 depends_illegal_4.adb:16:41: medium: incorrect dependency "Par3 => Y"
 depends_illegal_4.adb:17:23: medium: missing dependency "Y => Y"
 depends_illegal_4.adb:20:20: medium: overflow check might fail (e.g. when Par1 = 1 and Par2 = 0 and X = Natural'Last) [possible explanation: subprogram at line 7 should mention Par1 and X in a precondition]
-depends_illegal_4.adb:20:24: medium: overflow check might fail (e.g. when Par2 = 0) [possible explanation: subprogram at line 7 should mention Y and Par1 and X in a precondition]
+depends_illegal_4.adb:20:24: medium: overflow check might fail (e.g. when Par2 = 0) [possible explanation: subprogram at line 7 should mention Par1 and X and Y in a precondition]
 depends_illegal_4.adb:21:20: medium: overflow check might fail (e.g. when Par3 = Natural'Last and X = 1) [possible explanation: subprogram at line 7 should mention Par3 and X in a precondition]
 depends_illegal_4.adb:32:07: high: "X" must be listed in the Depends aspect of "P2" (SPARK RM 6.1.4(13))
 depends_illegal_4.adb:43:17: medium: overflow check might fail (e.g. when Par1 = 1 and X = Natural'Last) [possible explanation: subprogram at line 36 should mention Par1 and X in a precondition]

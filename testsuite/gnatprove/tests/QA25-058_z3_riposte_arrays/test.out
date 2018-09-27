@@ -1,8 +1,8 @@
 SOUNDNESS BUG at arrays.adb:178: mark @ASSERT:FAIL not found
 arrays.adb:51:18: info: postcondition proved (CVC4: 2 VC)
-arrays.adb:62:22: medium: postcondition might fail, cannot prove Contains_B'Result = S (C) (e.g. when C = 'NUL' and Contains_B'Result = True and S = ('NUL' => False, 'a' => True, others => False)) [possible explanation: subprogram at line 57 should mention S and C in a precondition]
+arrays.adb:62:22: medium: postcondition might fail, cannot prove Contains_B'Result = S (C) (e.g. when C = 'NUL' and Contains_B'Result = True and S = ('NUL' => False, 'a' => True, others => False)) [possible explanation: subprogram at line 57 should mention C and S in a precondition]
 arrays.adb:71:19: info: postcondition proved (CVC4: 2 VC)
-arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C) (e.g. when C = 'b' and Is_Id_2'Result = True and M = ('b' => 'a', others => 'a')) [possible explanation: subprogram at line 77 should mention M and C in a precondition]
+arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C) (e.g. when C = 'b' and Is_Id_2'Result = True and M = ('b' => 'a', others => 'a')) [possible explanation: subprogram at line 77 should mention C and M in a precondition]
 arrays.adb:94:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:104:22: medium: assertion might fail, cannot prove C = 'a' (e.g. when C = 'NUL') [possible explanation: precondition of subprogram at line 97 should mention C]
 arrays.adb:112:22: medium: assertion might fail, cannot prove M ('a') = 'a' (e.g. when M = ('a' => 'A', others => 'A')) [possible explanation: subprogram at line 107 should mention M in a precondition]
