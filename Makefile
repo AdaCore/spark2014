@@ -11,6 +11,13 @@
 #  . an installation of the gnatcoll library
 #  . local checked out repositories of submodules why3.
 #
+# On cygwin, we suggest you work in a folder where cygwin and windows path are
+# the same. You can achieve this by creating a folder e.g. C:\spark as a
+# working space, and mounting it in cygwin by adding the following line to
+# your /etc/fstab file:
+#
+#  c:/spark /spark ntfs binary,posix=0,noacl 0 0
+#
 # The necessary steps to correctly install gnat2why/gnatprove are
 #
 # 1) make setup
