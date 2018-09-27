@@ -1013,7 +1013,7 @@ package body Flow_Types is
       OS : Ordered_Flow_Id_Sets.Set := Ordered_Flow_Id_Sets.Empty_Set;
    begin
       for X of S loop
-         OS.Include (X);
+         OS.Insert (X);
       end loop;
       return OS;
    end To_Ordered_Flow_Id_Set;
