@@ -4,11 +4,11 @@
 # Main mode for generating SPARK User's Guide:
 #  - full for the complete documentation
 #  - core for a core subset of the documentation, suitable for translation in
-#    other languages. In that case, you also need to update files index.rst
-#    and gnatprove.rst to uncomment the lines that conditionally change the
-#    toctree for core mode. Indeed, Sphinx does not support currently
-#    conditional changes to the toctree, so leaving these lines uncommented
-#    leads to broken toctree.
+#    other languages. In that case, you also need to update files index.rst,
+#    gnatprove.rst and spark_2014.rst to uncomment the lines that conditionally
+#    change the toctree for core mode. Indeed, Sphinx does not support
+#    currently conditional changes to the toctree, so leaving these lines
+#    uncommented leads to broken toctree.
 #  - core_ja for the Japanese version of the core subset of the documentation.
 #    To build the Japanese HTML version, type
 #      MODE=core_ja make html
