@@ -1343,12 +1343,19 @@ package body Flow_Generated_Globals.Partial is
 
    begin
       for N of Nodes loop
+
          --  Filter variables declared within E and the E itself (which occurs
          --  as a global when E is a single concurrent type). Heap is never a
-         --  local variable, so it must be always kept while filtering.
+         --  local variable, so it must be always kept while filtering. Also,
+         --  frontend puts generic actuals of mode IN directly inside the
+         --  instance, but from the language point of view they act as globals
+         --  (e.g. can appear in the RHS of the generated Initializes).
+
          if Is_Heap_Variable (N)
            or else not (Is_In_Analyzed_Files (N)
-                        and then Scope_Within_Or_Same (N, E))
+                        and then Scope_Within_Or_Same (N, E)
+                        and then (if In_Generic_Actual (N)
+                                  then Scope (N) /= E))
          then
             Remote.Insert (N);
          end if;

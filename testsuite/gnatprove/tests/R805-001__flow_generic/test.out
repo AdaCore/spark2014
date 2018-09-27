@@ -1,2 +1,1 @@
 main1.adb:9:27: high: "Arg" must be mentioned as an input of the Initializes aspect of "Outer" (SPARK RM 7.1.5(11))
-main3.adb:11:29: high: constant with variable input "X2" must be mentioned as an input of the Initializes aspect of "I2" (SPARK RM 7.1.5(11)), in instantiation at main3.adb:15
