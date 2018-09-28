@@ -143,6 +143,30 @@ package body Flow_Utility is
    --  Errout.First_Node, but doesn't rely on slocs thus avoids possible
    --  problems with generic instances (as described in Safe_First_Sloc).
 
+   ----------------------------------------------------------------------
+   -- Constants with variable inputs --
+   ----------------------------------------------------------------------
+
+   function Has_Variable_Input_Internal (C : Entity_Id) return Boolean
+   with Pre => Ekind (C) = E_Constant;
+   --  To decide whether a constant has variable inputs we need to traverse its
+   --  initialization expression. This involves Get_Variables, which itself
+   --  calls Has_Variable_Input to filter "pure" constants. This might cause
+   --  repeated traversals of the AST and might be inefficient.
+   --
+   --  We solve this by deciding the actual result in this routine and
+   --  momoizing it in Has_Variable_Input.
+
+   package Entity_To_Boolean_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Boolean,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   Variable_Input_Map : Entity_To_Boolean_Maps.Map;
+   --  Map from constants to their memoized property of having variable inputs
+
    ------------------------
    -- Classwide_Pre_Post --
    ------------------------
@@ -3748,6 +3772,29 @@ package body Flow_Utility is
    ------------------------
 
    function Has_Variable_Input (C : Entity_Id) return Boolean is
+      Position : Entity_To_Boolean_Maps.Cursor;
+      Inserted : Boolean;
+      --  Position and status for inserting a dummy value. If inserting
+      --  succeeds, then compute the actual value and store it in the map; if
+      --  it fails, then return the memoized value.
+
+   begin
+      Variable_Input_Map.Insert (Key      => C,
+                                 Position => Position,
+                                 Inserted => Inserted);
+
+      if Inserted then
+         Variable_Input_Map (Position) := Has_Variable_Input_Internal (C);
+      end if;
+
+      return Variable_Input_Map (Position);
+   end Has_Variable_Input;
+
+   ---------------------------------
+   -- Has_Variable_Input_Internal --
+   ---------------------------------
+
+   function Has_Variable_Input_Internal (C : Entity_Id) return Boolean is
       E    : Entity_Id := C;
       Expr : Node_Id;
       FS   : Flow_Id_Sets.Set;
@@ -3805,7 +3852,7 @@ package body Flow_Utility is
          --  thing to do).
          return True;
       end if;
-   end Has_Variable_Input;
+   end Has_Variable_Input_Internal;
 
    ----------------
    -- Has_Bounds --
