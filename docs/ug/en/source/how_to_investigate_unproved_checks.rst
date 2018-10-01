@@ -319,7 +319,7 @@ generated for a given check, a.k.a. Verification Conditions or VCs.
 * In ``per_path`` mode, a VC is generated not only for each check at the source
   level, but for each path to the check. For example, for an assertion that
   appears after an if-statement, at least two VCs will be generated - one
-  for each path trough the if-statement. For each such VC, all provers are
+  for each path through the if-statement. For each such VC, all provers are
   attempted. Unproved VCs are then further split into their conjuncts,
   and proof is again attempted.
 * In ``progressive`` mode, first the actions described for ``per_check`` are
