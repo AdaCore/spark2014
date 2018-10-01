@@ -131,7 +131,7 @@ run time.
 Size of 'Image and 'Img attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To avoid spurious range checks on string operation involving occurrences of
+To avoid spurious range checks on string operations involving occurrences of
 the ``'Img``, ``'Image``, ``'Wide_Image``, and ``'Wide_Wide_Image`` attributes,
 |GNATprove| makes an assumption about the maximal length of the returned string.
 If the attribute applies to an integer type, the bounds are the maximal size

@@ -136,11 +136,11 @@ constrained with :ref:`Type Contracts`. Typically, 95% to 98% of run-time
 checks can be proved automatically, and the remaining checks can be either
 verified with manual provers or justified by manual analysis.
 
-|GNATprove| supports this type of combination of results in :ref:`The Analysis
-Results Summary Table`. Multiple columns display the number of checks
-automatically verified, while the column `Justified` displays the number of
-checks manually justified. The column `Unproved` should be empty for all checks
-to be verified.
+|GNATprove| supports this type of combination of results in the summary table
+of :ref:`The Analysis Results Summary File`. Multiple columns display the
+number of checks automatically verified, while the column `Justified` displays
+the number of checks manually justified. The column `Unproved` should be empty
+for all checks to be verified.
 
 With a Combination of Proof and Test
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
