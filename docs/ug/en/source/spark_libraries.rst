@@ -13,7 +13,7 @@ containers. The mathematical containers provided in the |SPARK| library are
 unbounded and may contain indefinite elements. Furthermore, to be usable in
 every context, they are neither controlled nor limited. So that these containers
 can be used safely, we have made them functional, that is, no primitives are
-provided which would allow to modify an existing container. Instead, their API
+provided which would allow modifying an existing container. Instead, their API
 features functions creating new containers from existing ones. As an example,
 functional containers provide no ``Insert`` procedure but rather a function
 ``Add`` which creates a new container with one more element than its parameter:
