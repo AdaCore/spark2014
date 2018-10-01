@@ -12492,10 +12492,14 @@ package body Gnat2Why.Expr is
                   --  the allocator is initialized because the initialization
                   --  value should be check within Transform_Expr.
 
+                  --  ??? Include_Subtypes => False or Include_Subtypes => True
+                  --  [R525-018]
+
                   Call := +Sequence
                     (Left     => Compute_Default_Check
-                       (Ty     => Directly_Designated_Type (Exp_Ty),
-                        Params => Body_Params),
+                       (Ty               => Directly_Designated_Type (Exp_Ty),
+                        Params           => Body_Params,
+                        Include_Subtypes => True),
                      Right    => +Call);
 
                --  Initialized allocator
