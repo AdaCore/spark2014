@@ -49,7 +49,7 @@ ng_v1.ads:28:17: medium: postcondition might fail, cannot prove EstimatedGroundV
 ng_v1.ads:31:23: medium: divide by zero might fail
 ng_v1.ads:32:28: medium: divide by zero might fail
 ng_v2.adb:49:09: medium: divide by zero might fail [possible explanation: precondition of subprogram at line 47 should mention CurrTime and PrevCount and ThisCount]
-ng_v2.adb:52:44: medium: precondition might fail [possible explanation: subprogram at line 51 should mention PrevTime and CurrTime and PrevCount and ThisTime and ThisCount in a precondition]
+ng_v2.adb:52:44: medium: precondition might fail [possible explanation: subprogram at line 51 should mention CurrTime and PrevCount and PrevTime and ThisCount and ThisTime in a precondition]
 ng_v2.adb:65:13: info: precondition proved (altergo: 1 VC)
 ng_v2.adb:68:36: info: initialization of "D1" proved
 ng_v2.adb:68:41: info: initialization of "D2" proved
