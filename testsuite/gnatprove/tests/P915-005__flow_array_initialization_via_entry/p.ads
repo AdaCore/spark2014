@@ -1,6 +1,6 @@
 package P is
-   type My_Integer is new Integer range 1 .. 10;
-   type Array_Type is array (Integer) of Boolean;
+
+   type Array_Type is array (Integer range <>) of Boolean;
 
    protected PO is
       entry Init_Element (A : out Boolean);
