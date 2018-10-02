@@ -2578,7 +2578,7 @@ package body Flow.Control_Flow_Graph is
          --  the current loop.
 
          function Get_Array_Index (N : Node_Id) return Target
-         with Pre => Nkind (N) = N_Indexed_Component;
+         with Pre => Present (N);
          --  Convert the target of an assignment to an array into a flow id
          --  and a list of indices.
 
@@ -2603,6 +2603,11 @@ package body Flow.Control_Flow_Graph is
             T : Entity_Id;
             L : Entity_Vectors.Vector;
          begin
+            --  First, is this really an array access?
+            if Nkind (N) /= N_Indexed_Component then
+               return Null_Target;
+            end if;
+
             --  Does the Prefix chain only contain record fields?
 
             declare
