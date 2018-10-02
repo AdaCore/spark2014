@@ -6004,31 +6004,6 @@ package body Flow.Control_Flow_Graph is
          case FA.Kind is
             when Kind_Subprogram | Kind_Task =>
                declare
-                  procedure Process (G : Flow_Id; Mode : Param_Mode);
-                  --  ??? this is just a wrapper with a workaround for a
-                  --  corner-case problem described in the body; once that
-                  --  problem is fixed, this wrapper should be removed.
-
-                  -------------
-                  -- Process --
-                  -------------
-
-                  procedure Process (G : Flow_Id; Mode : Param_Mode) is
-                  begin
-                     --  ??? if the global represents the current task then
-                     --  we already have vertices for that. When it comes to
-                     --  generated globals task types should be handled in
-                     --  similar way to packages, I think. For now this is
-                     --  just a crude hack.
-                     if G.Kind = Direct_Mapping and then
-                       Get_Direct_Mapping_Id (G) = FA.Analyzed_Entity
-                     then
-                        pragma Assert (FA.Kind = Kind_Task);
-                     else
-                        Create_Initial_And_Final_Vertices (G, Mode, FA);
-                     end if;
-                  end Process;
-
                   Globals : Global_Flow_Ids;
 
                begin
@@ -6050,19 +6025,19 @@ package body Flow.Control_Flow_Graph is
                        Change_Variant (Globals.Outputs,   Normal_Use));
 
                   for G of Globals.Proof_Ins loop
-                     Process (G, Mode_Proof);
+                     Create_Initial_And_Final_Vertices (G, Mode_Proof, FA);
                   end loop;
 
                   for G of Globals.Inputs.Difference (Globals.Outputs) loop
-                     Process (G, Mode_In);
+                     Create_Initial_And_Final_Vertices (G, Mode_In, FA);
                   end loop;
 
                   for G of Globals.Outputs.Difference (Globals.Inputs) loop
-                     Process (G, Mode_Out);
+                     Create_Initial_And_Final_Vertices (G, Mode_Out, FA);
                   end loop;
 
                   for G of Globals.Inputs.Intersection (Globals.Outputs) loop
-                     Process (G, Mode_In_Out);
+                     Create_Initial_And_Final_Vertices (G, Mode_In_Out, FA);
                   end loop;
                end;
 
