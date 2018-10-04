@@ -882,6 +882,7 @@ package body Flow.Analysis.Sanity is
 
             begin
                if Nkind (Decl) = N_Object_Declaration
+                 and then Present (Corresponding_Generic_Association (Decl))
                  and then Constant_Present (Decl)
                then
                   Check_Variable_Inputs

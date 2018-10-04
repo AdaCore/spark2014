@@ -1,6 +1,4 @@
-fake.adb:6:07: actual for formal object with mode in cannot depend on variable input "X" (SPARK RM 4.4(2)), in instantiation at fake.adb:9
 fake.adb:6:31: info: initialization of "X" proved, in instantiation at fake.adb:9
-p.adb:11:12: actual for formal object with mode in cannot depend on variable input "X" (SPARK RM 4.4(2)), in instantiation at p.adb:16
 p.adb:11:23: info: initialization of "X" proved, in instantiation at p.adb:16
 p.adb:15:26: actual for formal object with mode in cannot depend on variable input "X" (SPARK RM 4.4(2))
 p.adb:18:09: info: initialization of "X" proved
