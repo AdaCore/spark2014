@@ -1381,7 +1381,7 @@ calls.
 
 .. centered:: **Static Semantics**
 
-1. Two names that denote parts of the
+1. Two names that denote reachable elements of the
    same unsynchronized (see section :ref:`tasks-and-synchronization`)
    stand-alone object whose Constant_After_Elaboration aspect is False,
    or which denote parts of the same unsynchronized parameter, are said
@@ -1389,6 +1389,8 @@ calls.
    [This definition has the effect of exempting most synchronized objects
    from the anti-aliasing rules given below; aliasing of most synchronized
    objects via parameter passing is allowed.]
+   [The term "reachable element" is used in this definition instead of "part"
+   in order to treat deferencing like component selection.]
 
 .. centered:: **Verification Rules**
 

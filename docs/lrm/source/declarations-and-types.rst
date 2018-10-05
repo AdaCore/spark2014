@@ -23,6 +23,8 @@ A type is said to *define full default initialization* if it is
 
   * a scalar type with a specified Default_Value; or
 
+  * an access type; or
+
   * an array-of-scalar type with a specified Default_Component_Value; or
 
   * an array type whose element type defines default initialization; or
@@ -372,7 +374,7 @@ In order to reduce the complexity associated with the specification
 and verification of a program's behavior in the face of pointer-related
 aliasing, |SPARK| supports only "owning" access-to-object types (described
 below); other access types (including access-to-subprogram types and
-access discriminants) are are not in |SPARK|.
+access discriminants) are not in |SPARK|.
 
 Restrictions are imposed on the use of "owning" access objects in order
 to ensure, roughly speaking (and using terms that have not been defined yet),
@@ -407,7 +409,7 @@ to reason about.
 The single-owner model statically prevents storage leaks because
 a storage leak requires either an object with no outstanding pointers
 to it or an "orphaned" cyclic data structure (i.e., a set of multiple
-allocated objects each reachable from the any other but with
+allocated objects each reachable from any other but with
 no references to any of those objects from any object outside of the set).
 
 For purposes of flow analysis (e.g., Global and Depends aspect
@@ -427,116 +429,74 @@ The rules which accomplish all of this are described below.
 
 .. centered:: **Static Semantics**
 
-The following aspect may be specified for a
-pool-specific access-to-object type, a stand-alone object of an anonymous
-access-to-object type (including a generic formal in-mode object),
-a composite type (including a partial view of a type), or a function:
-[TBD: generic formal non-scalar types]
+An access-to-variable type is said to be an *owning* access type if
+if it is either a (named) pool-specific access type, the anonymous
+type of a stand-alone object (including a generic formal **in** mode object),
+the anonymous type of an object renaming declaration,
+or an anonymous type occuring in the profile (either as a
+parameter type or as the function result type) of a traversal function
+(defined below).
 
-Ownership
+An access-to-constant type is said to be an *observing* access type if
+if it is either a (named) pool-specific access type, the anonymous
+type of a stand-alone object (including a generic formal **in** mode object),
+the anonymous type of an object renaming declaration,
+or an anonymous type occuring in the profile (either as a
+parameter type or as the function result type) of a traversal function
+(defined below).
 
-  The Ownership aspect is of type Boolean. If directly specified,
-  the aspect_definition shall be a static expression. The Ownership
-  aspect of a type (as opposed to of a function or of an object) is
-  a type-related aspect.
-  [TBD: saying that one aspect is type-related and nonoverridable in
-  some contexts but not in others is something new. Is this ok?]
-  If not otherwise specified (either explicitly or, in the case of an
-  derived type, by inheritance) the value of the Ownership aspect of
-  an entity is determined as follows:
+Access types (named or anonymous) which are neither owning nor
+observing are not in |SPARK|.
+[Redundant: For example, named general access types, access discriminants,
+and access-to-subprogram types are not in |SPARK|.]
 
-     - For a pool-specific access type, the aspect value is False.
+User-defined storage pools are not in |SPARK|; more specifically, the package
+System.Storage_Pools, Storage_Pool aspect splecifications, and the Storage_Pool
+attribute are not in |SPARK|.
 
-     - For a standalone object of an anonymous access-to-object type,
-       the aspect value is that of the type of the initial value (or, in the
-       case of a generic formal In-mode object, the type of the default value)
-       if any such value is present; otherwise the aspect value is False.
+A composite type is also said to be an *owning* type if it has an
+access subcomponent [redundant: , regardless of whether the subcomponent's
+type is access-to-constant or access-to-variable].
 
-  -  - For a composite type, the aspect value is the disjunction (i.e., "or")
-       of the Ownership aspect values of the component types of the
-       composite type, of any partial view of the type, and,
-       in the case of a type extension, of the ancestor
-       type and any progenitor types. If this disjunction is True, then
-       any explicit Ownership aspect specification for any view of the type
-       shall specify the value True.
+Privacy is ignored in determining whether a type is an owning or
+observing type. A generic formal private type is not an owning type
+[redundant:, although the corresponding actual parameter in an instance
+of the generic might be an owning type].
+A tagged type shall not be an owning type.
+A type which is not a by-reference type shall not be an owning type.
+[Redundant: The requirement than an owning type must be a by-reference
+type is imposed in part in order to avoid problematic scenarios involving
+a parameter of an owning type passed by value in the case where the
+call propagates an exception instead of returning normally. SPARK programs
+are not supposed to raise exceptions, but this rule still seems desirable.]
 
-     - For a function, the aspect value is True if the function is a
-       dispatching operation and the aspect is True for the corresponding
-       primitive subprogram of some ancestor; otherwise the aspect value
-       is False. An explicit Ownership aspect specification for a function
-       shall be confirming if the value False is specified.
-       [TBD: somehow relax this if Extensions_Visible => False?]
+An object of an owning access type is said to be an *owning* object;
+an object of an observing access type is said to be an *observing* object.
+An object that is a part of an object of an owning or observing type, or that
+is part of a dereference of an access value is said to be a *managed* object.
 
-  For an untagged type, the Ownership aspect is non-overridable.
+In the case of a constant object of an access-to-variable type where the
+object is not a stand-alone object and not a formal parameter (e.g.,
+if the object is a subcomponent of an enclosing object or is designated
+by an access value), a dereference of the object provides a constant
+view of the designated object [redundant: , despite the fact that the
+object is of an access-to-variable type. This is
+because a subcomponent of a constant is itself a constant and a dereference
+of a subcomponent is treated, for purposes of analysis, like a
+subcomponent].
 
-  If a type has a partial view, the Ownership aspect may be specified
-  explicitly only on the partial view and, if specified True, the full
-  type shall not be an elementary type nor an untagged private or
-  derived type with Ownership aspect False; furthermore, if the Ownership
-  aspect for the full type would be True if not explicitly specified, the
-  Ownership aspect of the partial view shall be True, either by inheritance
-  from an ancestor type or by an explicit specification.
-  [TBD: interactions with generic formal types].
+A function is said to be a *traversal function* if the result type
+of the function is an anonymous access-to-object type, the function has
+at least one formal parameter, and the function's first parameter is of
+an access type [redundant:, either named or anonymous].
+The first parameter of the function is called the *traversed* parameter.
+[Redundant: We will see later that if a traversal
+function yields a non-null result, then that result is "reachable" from the
+traversed parameter in the sense that it could be obtained from the traversed
+parameter by some sequence of component selections, array indexing
+operations, and access value dereferences.]
 
-An access-to-variable type with Ownership aspect True is said to be
-an *owning* access type. Similarly, an object of an owning access type
-is called an owning access object. An access-to-constant type with
-Ownership aspect True is said to be an *observing* access type. Similarly,
-an object of an observing access type is called an observing access object.
-An object that is a part of an object of type with Ownership
-aspect True, or a part of the dereference of an owning or observing
-access object, is said to be a *managed* object.
-
-Any composite type with Ownership aspect True is defined to be a
-by-reference type (see 6.2).
-
-A function with Ownership aspect True whose result type is an anonymous
-access-to-object type is said to be a *traversal function* if it has
-has exactly one parameter of an anonymous access-to-object type with
-matching constant vs. variable access to the designated object; that
-parameter is called the *traversed* parameter.
-[TBD: use a new Traversal aspect instead of Ownership aspect here?]
-
-The Ownership aspect is also defined (although not directly specifiable)
-for anonymous access-to-object types as follows:
-
-  - for the type of a standalone object, the aspect value is that of
-    the object;
-
-  - for the result type of a function, or of the return object of a
-    function, the aspect value is True if
-    the function is a *traversal function* and False otherwise;
-
-  - for the type of a parameter, the aspect value is True if
-    the parameter is a *traversed* parameter and False otherwise;
-
-  - for the type of an object renaming, the aspect value is tat
-    of the type of the renamed object;
-
- - for all other cases, the aspect value is False.
-
-An access type (named or anonymous) whose Ownership aspect is False
-is not in |SPARK|.
-
-A name denoting an object is classified as either a *static name*,
-a *dynamic name*, or neither. The following are static names:
-
-  - a name that statically denotes an object (see 4.9);
-
-  - a selected component with prefix being a static name;
-
-  - a dereference (implicit or explicit), with prefix being a static
-    name denoting an object of an access type with Ownership aspect True;
-
-  - a name that denotes an object renaming declaration, if the
-    object_name denoting the renamed entity is a static name.
-
- Any other name that denotes an object, other than an aggregate or the
- result of a non-traversal function call (or part thereof), is a dynamic
- name. [TBD: rename of agg/call; agg/call operands for type conversions,
- qualified expressions, parenthesized expressions].
-
- A static or dynamic name has a *root object* defined as follows:
+The *root object* of a name that denotes an object is defined as follows:
   - if the name is a component_selection, an indexed_component, a slice,
     or a dereference (implicit or explicit)
     then it is the root object of the prefix of the name;
@@ -546,219 +506,21 @@ a *dynamic name*, or neither. The following are static names:
     traversed parameter;
 
   - if the name denotes an object renaming, the root object is the
-    root object of the renamed name.
+    root object of the renamed name;
+
+  - if the name is a function_call, the root object is the result object
+    of the call;
+
+  - if the name is a qualified_expression or a type conversion, the root
+    object is the root object of the operand of the name;
 
   - otherwise, the name statically denotes an object and the root
     object is the statically denoted object.
 
-Two names with the same root object are said to *statically overlap*
-if one is a static name and the other is, or has a prefix that is,
-a static name that denotes the same object as the first name.
-
-A static name that denotes a managed object can be in one of the
-following ownership states: Unrestricted, Observed, or Borrowed, or Moved.
-[TBD: Instead of nulling out the RHS of an assignment, we introduce a
-new state (i.e., Moved) and the RHS goes into that state. Right?
-Do Moved and Borrowed need to be distinct states?]
-
-A given name may take on different states at different points in the
-program. For example, within a block_statement which declares an observer
-(observers have not been defined yet), a name might have a state of Observed
-while having a state of Unrestricted immediately before and immediately
-after the block_statement. This is a compile-time notion, but there is a
-corresponding runtime notion; at a given
-point during the execution of a program, a given object may be in the
-Unrestricted, Observed, Borrowed, or Moved states (as determined by rules that
-have not yet been discussed). If (at compile-time) a name
-is in some state at some point in a program, then (at run-time) the
-named object will be in the corresponding state when execution reaches
-the given point in the program.
-
-In the Unrestricted state, no additional restrictions are imposed on the
-use of the name. In particular, if the name denotes an owning access object
-of an access-to-variable type then a deference of the name provides a
-variable view.
-
-In the Observed state, the name provides a constant view (even if the
-named object is a variable). If it denotes an owning access object then
-a dereference of the name provides a constant view [Redundant: , even if the object
-is of an access-to-variable type].
-
-In the Moved or Borrowed states, the name is unusable for either reading or
-writing.
-
-A dynamic name that denotes a managed object may also be in the
-Observed, Borrowed, or Moved states (although not in the Unrestricted state),
-but there is also a another possibility: a dynamic name's
-ownership state may be Dynamic. [Expository: This indicates that
-the value of the corresponding state at run-time is not known
-at compile-time, so that run-time checks may be necessary
-to maintain ownership-related invariants in some cases.]
-
-A static name that denotes a managed object has a default ownership state
-(described below).
-Certain constructs (described below) are said to *observe* or
-*borrow* the value of a managed object; these may change the ownership
-state (to Observed or Borrowed, respectively) of a name within a certain
-portion of the program text (described below).
-Outside of any such region, the ownership state of
-a static name that denotes a managed object is its default ownership state.
-
-The ownership state of a dynamic name that denotes a managed object
-is determined as follows:
-
-  At any point in the program text, if a name (static or dynamic) that
-  denotes a managed object has a prefix that is in the Observed or Borrowed
-  state then that name is also in the Observed or Borrowed state
-  (respectively). If a dynamic name that denotes a managed object is not in
-  the Observed or Borrowed state because of this rule, then it is in the
-  Dynamic ownership state.
-
-The default ownership state of an unprefixed static name that denotes a
-managed object is determined as follows:
-
-  - If the name denotes a constant other than an In-mode parameter of an
-    owning [TBD: access-to-variable?] type, then its default ownership
-    state is Observed;
-
-  - Otherwise, its default ownership state is Unrestricted.
-
-[Expository: For owning access-to-variable types, a dereference of a constant
-owning object usually provides a constant view of the designated
-object. This is because a component of a constant is itself a constant
-and a dereference of a subcomponent is treated, for purposes of
-flow analysis, like a subcomponent. In-mode parameters
-(but not subcomponents thereof, and not parameters of functions)
-are an exception to this.]
-[TBD: Do we want an aspect to distinguish In-mode parameters where this
-special treatment is required from those which do not? Treating elementary
-and composite parameters differently in this way seems like it will
-annoy users.]
-
-The default ownership state of a prefixed static name that denotes a
-managed object is that of its prefix.
-
-The following operations *observe* a name that denotes a managed object
-and identify a corresponding *observer*:
-
-  - An assignment operation that is used to initialize an object of an
-    anonymous access-to-constant type, where this target object (the observer)
-    is a stand-alone object, or a formal parameter or generic formal object
-    of mode in. In this case, the source expression of the assignment
-    shall be either a name denoting an object with Ownership True or
-    a call on a traversal function that returns an object of an
-    anonymous access-to-constant type. In the former case, the name
-    being observed denotes the source of the assignment; in the latter
-    case the name being observed denotes the actual traversed parameter.
-    The initialized object is the observer.
-
-  - An assignment operation that is used to initialize a constant object
-    (including a generic formal object of mode in) of a composite type
-    with Ownership aspect True. The name being observed denotes the
-    source of the assignment. The initialized object is the observer.
-
-  - A call where an actual parameter is a name denoting a managed object,
-    and the corresponding formal parameter is of mode In and composite
-    or aliased. The name being observed denotes the actual parameter.
-    The formal parameter is the observer.
-
-Such an operation is called an *obeserving operation*.
-
-In the region of program text beween the point where a name denoting a
-managed object is observed and the end of the scope of the observer, the
-ownership state of the name is Observed. While a name that denotes a managed
-object is in the Observed state it provides a constant view
-[Redundant: , even if the name denotes a variable].
-
-At the point where a static name that denotes a managed object is observed,
-every static name that denotes the same managed object, or that has such
-a static name as a prefix, is observed.
-
-The following operations *borrow* a name that denotes a managed object
-and identify a corresponding *borrower*:
-
-  - An assignment operation that is used to initialize an owning access object,
-    where this target object (the borrower) is a stand-alone variable of an
-    anonymous access-to-variable type, or a constant (including a formal
-    parameter or generic formal object of mode in) of a (named or anonymous)
-    access-to-variable type.
-
-    If the source of the assignment is a call on a traversal function that
-    returns an object of an anonymous access-to-variable type then the name
-    being borrowed denotes the actual traversed parameter. Otherwise the
-    name being borrowed denotes the source of the assignment.
-
-  - A call (or instantiation) where the (borrowed) name denotes an actual
-    parameter that is a managed object other than an owning access object,
-    and the formal parameter (the borrower) is of mode out or in out (or
-    the generic formal object is of mode in out).
-
-  - An object renaming where the (borrowed) name is the object_name denoting
-    the renamed object. In this case, the renamed object shall not be in the
-    observed or borrowed state. The newly declared name is the borrower.
-
-    At the point (both statically in the program text and dynamically in the
-    execution of the program)
-
-Such an operation is called a *borrowing operation*.
-
-In the region of program text beween the point where a name denoting a
-managed object is borrowed and the end of the scope of the borrower, the
-state of the name is Borrowed except for nested scopes wherein the
-introduction of an observer changes the state to Observed.
-While a name that denotes a managed object is in the Borrowed state it
-provides a constant view [Redundant: , even if the name denotes a variable].
-Furthermore, the only permitted read of a managed object in the Borrowed
-state is the introduction of a new observer of the object. Within the
-scope of such a new observer any director or indirect borrower
-[TBD: define direct/indirect borrower? Does it need to be stated explicitly
-that a borrower of a borrower is an indirect borrower and similarly for
-observers?] of the original name similarly enters the observed state and
-provides only a constant view.
-
-At the point where a static name that denotes a managed object is borrowed,
-every static name that denotes the same managed object, or that has such
-a static name as a prefix, is borrowed.
-
-The following operations are said to be *move* operations:
-  - An assignment operation, where the target is a variable or return object
-    (see Ada RM 6.5) having some part that is of a named type with Ownership
-    aspect True, including an Out-mode or In-Out-mode formal parameter of an
-    owning access type. [Redundant: This includes all assignments to or from
-    such a formal parameter: copy-in before the call, copy-back after the
-    call, and any assignments to the formal parameter during the call.]
-    [TBD: any issues here with class-wide assignment? Probably not - no
-    worse than having a component of a generic formal type with respect to
-    statically identifying the "having some part" property mentioned above.]
-
-  - An assignment operation where the target is part of an aggregate, and is
-    of a named type with Ownership aspect True.
-
-[Redundant: Passing a parameter by reference is not a move operation.]
-
-A move operation results in a transfer of ownership. The state of
-the source object of the assignment operation becomes Moved and
-remains in this state until the object is assigned another value.
-[TBD: this "remains in this state" wording seems like hand-waving. Is it ok?
-What rules prevent, for example, leaving a global variable in a Moved state?]
-[Roughly speaking, any access-valued parts of an object in the Moved state
-can be thought of as being "poisoned"; such a poisoned object is treated
-analogously to an uninitialized scalar object in the sense that various rules
-statically prevent the reading of such a value. Thus, an assignment like::
-
-   Pointer_1 : Some_Access_Type := new Designated_Type'(...);
-   Pointer_2 : Some_Access_Type := Pointer_1;
-
-does not violate the "single owner" rule because the move operation
-poisons Pointer_1, leaving Pointer_2 as the unique owner of the
-allocated object.]
-[TBD: Does poisoning occur if the RHS is known to be null? Presumably yes.
-For example, given::
-
-   X : Linked_List_Node := (Data => 123, Link => null);
-   Y : Linked_List_Node := X;
-
-is X.Link poisoned by the assignment to Y?]
+An object O1 is said to be a *reachable element* of an object O2 if
+   - O1 is a part of O2; or
+   - O1 is a reachable element of the object designated by
+     (the value of) an access-valued part of O2.
 
 Two names are said to be *potential aliases* when:
 
@@ -789,17 +551,6 @@ Two names are said to be *potential aliases* when:
   - at least one name denotes an object renaming declaration, and the other
     is a potential alias with the object_name denoting the renamed entity.
 
-[TBD: Given the declaration "S : String (1 .. 3);", it seems wrong that
-The names "S" and "S(1)" are not potentially aliases, but the names
-"S(1..3)" and "S(1)" are potential aliases. It seems like the latter pair
-should not be potential aliases. Perhaps we want to eliminate the
-slice/indexed case from the preceding list and then, in the next item,
-replace "is neither a slice nor an indexed component" with "is not a slice"]
-
-[Expository: In cases described later, checks are performed at
-runtime to ensure that the states of potentially overlapping
-names are consistent.]
-
 Two names N1 and N2 are said to *potentially overlap* if
   - some prefix of N1 is a potential alias of N2 (or vice versa); or
 
@@ -809,182 +560,283 @@ Two names N1 and N2 are said to *potentially overlap* if
 The prefix and the name that are potential aliases are called the
 *potentially aliased parts* of the potentially overlapping names.
 
-An operation that occurs within an expression or simple statement is
-said to *occur strictly before* a second such operation if:
+A name that denotes a managed object can be in one of the
+following ownership states: Unrestricted, Observed, or Borrowed, or Moved.
 
-  - The first occurs within an expression that is an operand of the second; or
+A given name may take on different states at different points in the
+program. For example, within a block_statement which declares an observer
+(observers have not been defined yet), a name might have a state of Observed
+while having a state of Unrestricted immediately before and immediately
+after the block_statement. [Redundant: This is a compile-time notion;
+no object-to-state mapping of any sort is maintained at runtime.]
 
-  - The first occurs within the left operand of a short-circuit control form,
-    and the second occurs within the right operand of the same
-    short-circuit control form; or
+In the Unrestricted state, no additional restrictions are imposed on the
+use of the name. In particular, if the name denotes a variable
+of an access-to-variable type then a deference of the name provides a
+variable view.
 
-  - The first occurs within the condition or selecting_expression of a
-    conditional_expression, and the second occurs within a
-    dependent_expression of the same conditional_expression; or
+In the Observed state, the name provides a constant view (even if the
+named object is a variable). If it denotes an access object then
+a dereference of the name provides a constant view [Redundant: , even if
+the object is of an access-to-variable type].
 
-   - The first operation occurs strictly before some other operation,
-     that in turn occurs strictly before the second.
+In the Moved or Borrowed states, the name is unusable for either reading or
+writing. [Redundant: In the Borrowed state, ownership of the object
+(and the associated permission to read from and possibly write to that
+object) has been temporarily transfered to an observer, so it will
+sometimes be possible to refer to the object in question via the
+observer.]
 
-The following attribute is defined for an object X of a named non-limited type
-T:
+A name that denotes a managed object has an initial ownership state
+of Unrestricted unless otherwise specified.
+Certain constructs (described below) are said to *observe*, *borrow*,
+or *move* the value of a managed object; these may change the ownership
+state (to Observed, Borrowed, or Moved respectively) of a name within a
+certain portion of the program text (described below). In the first two
+cases (i.e. observing and borrowing), the ownership state of a name
+reverts to its previous value at the end of this region of text.
 
-X’Copy
+The following operations *observe* a name that denotes a managed object
+and identify a corresponding *observer*:
 
-   [Expository: X'Copy yields a "deep" copy of X, allocating copies of
-   any allocated objects that are reachable from X.]
+  - An assignment operation that is used to initialize an access object,
+    where this target object (the observer) is a stand-alone variable of an
+    anonymous access-to-constant type, or a constant (including a formal
+    parameter or generic formal object of mode in) of a (named or anonymous)
+    access-to-variable type.
 
-   The evaluation of X’Copy yields an anonymous constant object initialized
-   by assignment from X in the same way as X'Old (see Ada RM 6.1.1) except
-   that for any part of X that is of an owning access type T and whose value
-   is not null, the corresponding part of X'Copy is initialized as follows:
+    The source expression of the assignment shall be either a name denoting
+    a part of a stand-alone object or of a parameter, or a call on a traversal
+    function whose result type is an (anonymous) access-to-constant type.
+    If the source of the assignment is a call on a traversal function then
+    the name being observed denotes the actual traversed parameter of the
+    call. Otherwise the name being observed denotes the source of the
+    assignment.
 
-     - If the designated type of T has an immutably limited part, then
-       Program_Error is raised.
+  - An assignment operation that is used to initialize a constant object
+    (including a generic formal object of mode in) of an owning composite
+    type. The name being observed denotes the
+    source of the assignment. The initialized object is the observer.
+    [Redundant: The only reason for the word "composite" in this clause
+    is so that the clauses in this definition are mutually exclusive.
+    If all of the conditions of this clause are met except
+    that the type is not composite, then the conditions of the first
+    clause have been met.]
 
-     - Otherwise, the initial value is the result of evaluating an
-       an initialized allocator of the given access type whose
-       initial value is a Copy attribute_reference whose prefix is
-       a dereference of that non-null value.
-       [For example, if X.C is of an owning access type and has a
-       non-null value, then X'Copy.C will equal the result of evaluating
-       T'(new Designated_Type'(X.C.all'Copy))].
+  - A call where an actual parameter is a name denoting a managed object,
+    and the corresponding formal parameter is of mode In and composite
+    or aliased. The name being observed denotes the actual parameter.
+    The formal parameter is the observer.
 
-   For the purposes of other language rules (e.g., for the accessibility
-   level of X'Copy), X’Copy is equivalent to a call on a function that
-   observes its formal parameter with X as the actual parameter.
+Such an operation is called an *observing operation*.
 
-   [TBD: We say "has an immutably limited part" because we want to ignore
-   limitedness in the case of a type which has a limited view but isn't
-   "really" limited. Is this the best way to express this?
-   Would some other wording better clarify the status of something like::
+In the region of program text beween the point where a name denoting a
+managed object is observed and the end of the scope of the observer, the
+ownership state of the name is Observed. While a name that denotes a managed
+object is in the Observed state it provides a constant view
+[Redundant: , even if the name denotes a variable].
 
-      package Pkg is
-        type T is limited private;
-      private
-        type T is new Integer;
-      end Pkg;
-      type T_Ref is access Pkg.T with Ownership;
-      type Vec is array (1 .. 10) of T_Ref;
-      X : Vec := ...;
-      Y : Vec := X'Copy; -- succeeds; P_E is not raised
+At the point where a name that denotes a managed object is observed,
+every name that potentially overlaps that name is observed.
 
-   ?]
-   [TBD: Do we want to replace the runtime check with a post-compilation
-   check? It can't be a compile-time check (even if we are enforcing
-   legality rules in expanded instance bodies) because of limited withs
-   and Taft-amendment types, but it could be a post-compilation (i.e.,
-   bind-time) check. This check would be slightly more conservative than
-   the runtime check in cases involving variant parts and zero-length arrays,
-   but that seems like a good thing. The definition of the post-compilation
-   check might involve a definition something like
+The following operations *borrow* a name that denotes a managed object
+and identify a corresponding *borrower*:
 
-     A type T2 is said to be *reachable* from a type T1 if
+  - An assignment operation that is used to initialize an access object,
+    where this target object (the borrower) is a stand-alone variable of an
+    anonymous access-to-variable type, or a constant (including a formal
+    parameter or generic formal object of mode in) of a (named or anonymous)
+    access-to-variable type.
 
-       - T1 has a part of type T2; or
+    The source expression of the assignment shall be either a name denoting
+    a part of a stand-alone object or of a parameter, or a call on a traversal
+    function whose result type is an (anonymous) access-to-variable type.
+    If the source of the assignment is a call on a traversal function then
+    the name being borrowed denotes the actual traversed parameter of the
+    call. Otherwise the name being borrowed denotes the source of the
+    assignment.
 
-       - T1 has a part of an owning access type and T2 is reachable from
-         the designated type of that access type.
+  - A call (or instantiation) where the (borrowed) name denotes an actual
+    parameter that is a managed object other than an owning access object,
+    and the formal parameter (the borrower) is of mode out or in out (or
+    the generic formal object is of mode in out).
 
-   and then a rule that X'Copy is illegal if an immutably limited type is
-   reachable from the type of X. Or something like that - strictly speaking
-   the use of "immutably limited" rule might not be quite right because
-   we want this rule to ignore privacy like a dynamic semantics rule.]
+  - An object renaming where the (borrowed) name is the object_name denoting
+    the renamed object. In this case, the renamed object shall not be in the
+    observed or Borrowed state. The newly declared name is the borrower.
+
+Such an operation is called a *borrowing operation*.
+
+In the region of program text beween the point where a name denoting a
+managed object is borrowed and the end of the scope of the borrower, the
+ownership state of the name is Borrowed except for within nested scopes
+wherein the introduction of an observer changes the state to Observed.
+
+An indirect borrower of a name is defined to be a borrower either of
+a borrower of the name or of an indirect borrower of the name.
+A direct borrower of a name is just another term for a borrower of
+the name, usually used together with the term "indirect borrower".
+The terms "indirect observer" and "direct observer" are defined analogously.
+
+While a name that denotes a managed object is in the Borrowed state it
+provides a constant view [Redundant: , even if the name denotes a variable].
+Furthermore, the only permitted read of a managed object in the Borrowed
+state is the introduction of a new observer of the object. Within the
+scope of such a new observer any direct or indirect borrower
+of the original name similarly enters the Observed state and provides
+only a constant view.
+
+At the point where a name that denotes a managed object is borrowed,
+every name that potentially overlaps that name is borrowed.
+
+The following operations are said to be *move* operations:
+  - An assignment operation, where the target is a variable or return object
+    (see Ada RM 6.5) of an owning type.
+    [Redundant: In the case of a formal parameter of
+    an access type of mode **in out** or **out**, this includes all
+    assignments to or from such a formal parameter: copy-in before the call,
+    copy-back after the call, and any assignments to or from the parameter
+    during the call.]
+
+  - An assignment operation where the target is part of an aggregate of
+    an owning type.
+
+[Redundant: Passing a parameter by reference is not a move operation.]
+
+A move operation results in a transfer of ownership. The state of
+the source object of the assignment operation becomes Moved and
+remains in this state until the object is assigned another value.
+
+[Redundant: Roughly speaking, any access-valued parts of an object in the
+Moved state can be thought of as being "poisoned"; such a poisoned object
+is treated analogously to an uninitialized object in the sense that various
+rules statically prevent the reading of such a value. Thus, an assignment
+like::
+
+   Pointer_1 : Some_Access_Type := new Designated_Type'(...);
+   Pointer_2 : Some_Access_Type := Pointer_1;
+
+does not violate the "single owner" rule because the move operation
+poisons Pointer_1, leaving Pointer_2 as the unique owner of the
+allocated object. Any attempt to read such a poisoned value is detected and
+rejected.
+
+Note that a name may be "poisoned" even if its value is "obviously" null.
+For example, given::
+
+   X : Linked_List_Node := (Data => 123, Link => null);
+   Y : Linked_List_Node := X;
+
+X.Link is poisoned by the assignment to Y.]
 
 .. centered:: **Legality Rules**
 
-[TBD: acknowledge in an informal note that some legality rules have already
-been given as part of the preceding definitions?]
+[Redundant: For clarity of presentation, some legality rules are stated
+in the preceding "Static Semantics" section (e.g., the rule that an
+owning type shall not be a tagged type; stating that rule earlier eliminates
+the need to say anything about about the circumstances, if any, under which
+a class-wide type might be an owning type).]
 
 ..  _tu-access_types-01:
 
-At the point where an object of an owning access type is finalized [redundant:
-(which may occur either when the object is the target of an assignment
-operation or upon exiting the scope in which the object is declared)], the
-object's state shall be Moved or Unrestricted. In the case where it is
-Unrestricted, a verification condition is generated to ensure that value of
-object is null.
-[Redundant: This rule is needed to prevent storage leaks.]
+At the point of a move operation the state of the source object (if any)
+shall be Unrestricted.
+After a move operation, the state of the source object (if any) becomes Moved.
 
 .. _tu-access_types-02:
 
-At the point of a move operation, the source object's state shall be
-Unrestricted.
+An owning object's state shall be Moved or Unrestricted at any point where
+  - the object is the target of an assignment operation; or
+  - the object is part of an actual parameter of mode **out** in a call; or
+  - the scope in which the object is declared is exited and the object
+    is neither a borrower nor an observer.
+
+[Redundant: This rule is needed to prevent storage leaks. We do not want
+an object either to be overwritten or to cease to exist while it is
+the owner of some allocated object.]
+
+[Redundant: In the case of a call, the state of an actual
+parameter of mode **in** or **in out** remains unchanged (although one
+might choose to think of it as being borrowed at the point of the
+call and then "unborrowed" when the call returns - either model
+yields the same results); the state of an actual parameter of mode
+**out** becomes Unrestricted.]
 
 .. _tu-access_types-03:
 
 If the target of an assignment operation is an object of an anonymous
-access-to-object type with Ownership True (including a parameter), then
-the source shall be neither an allocator nor a non-traversal function call.
-[Redundant: This rule is needed to avoid storage leaks and to help ensure
-that every allocator is of a named access type.]
+access-to-object type (including copy-in for a parameter), then
+the source shall be a name denoting a part of a stand-alone object,
+a part of a parameter, or a call to a traversal function.
+
+[Redundant: One consequence of this rule is that every allocator is of a
+named access type.]
 
 .. _tu-access_types-04:
 
-A return statement that applies to a traversal function that has an
-anonymous access-to-constant (respectively, access-to-variable) result type,
-shall return an access object denoted by a direct or indirect observer
-(respectively, borrower) of the traversed parameter. [Expository:
-Roughly speaking, such a traversal function always yields a result
-which is reachable from the traversed parameter.]
-[TBD: presumably such a function is also allowed to return null?]
+A declaration of a stand-alone variable of an anonymous access type shall
+have an explicit initial value.
 
 .. _tu-access_types-05:
 
-If the prefix of a name is of a type with Ownership aspect True, then the
-prefix shall denote neither a non-traversal function call, an aggregate,
-an allocator, nor a qualified expression or type conversion whose
-operand is would be forbidden as a prefix by this rule.
-[TBD: bite the bullet and introduce a new term here?]
+A return statement that applies to a traversal function that has an
+anonymous access-to-constant (respectively, access-to-variable) result type,
+shall return either the literal null or an access object denoted by a direct
+or indirect observer (respectively, borrower) of the traversed parameter.
+[Redundant: Roughly speaking, a traversal function always yields either
+null or a result which is reachable from the traversed parameter.]
 
 .. _tu-access_types-06:
 
-If an Access or Unchecked_Access attribute reference is of a type
-with the Ownership aspect True, then the prefix shall denote a managed object,
-and the attribute value shall be directly used either to initialize a
-stand-alone object of an anonymous access type, or as an actual parameter
-corresponding to an In-mode formal parameter of an anonymous access type.
-[Redundant: This is observing the prefix if the anonymous access
-type is access-to-constant, and borrowing otherwise.]
-[TBD: confirm that the preceding sentence is redundant; we are not augmenting
-definitions of "observing" and "borrowing" here.]
+If a prefix of a name is of an owning type, then the
+prefix shall denote neither a non-traversal function call, an aggregate,
+an allocator, nor any other expression whose associated object is
+(or, as in the case of a conditional expression, might be) the same as
+that of such a forbidden expression (e.g., a qualified expression or
+type conversion whose operand would be forbidden as a prefix by this
+rule).
 
 .. _tu-access_types-07:
 
-If the root of the name of the managed object denotes an object whose scope
-includes the visible part of a package, then a declaration that observes or
-borrows a managed object shall not occur within the private part or body of the
-package, nor withing a private descendant of a package, unless the
-accessibility level of the declaration is statically deeper than that of the
-package.
+If the root of the name of a managed object denotes an object whose scope
+includes any portion of the visible part of a package, then a declaration
+that observes or borrows the managed object shall not occur within the
+private part or body of the package, nor within a private descendant of
+the package, unless the accessibility level of the declaration is
+statically deeper than that of the package.
 
 .. _tu-access_types-08:
 
-In the case of a [Redundant: (explicit or implicit)] type conversion, the
-Ownership aspects of the operand type and of the target type shall be the
-same. In the case of a non-overridden inherited subprogram, the Ownership
-aspects of the inheriting type and of the corresponding ancestor type
-shall be the same. In the case of a primitive operation of
-a tagged type that overrides an inherited operation, the Ownership aspects of
-the type and of the ancestor type from which the overridden operation
-was inherited shall be the same.
-[TBD: somehow relax this if Extensions_Visible => False?]
-
-.. _tu-access_types-09:
-
 For an assignment statement where the target is a stand-alone object of an
-anonymous access-to-object type with Ownership aspect True:
+anonymous access-to-object type:
 
   - If the type of the target is an anonymous access-to-variable type
     (an owning access type), the source shall be an owning access object
-    denoted by a name that is not in the observed or borrowed state, and
+    denoted by a name that is in the Unrestricted state, and
     whose root object is the target object itself;
 
-  -If the type of the target is an anonymous access-to-constant type
-   (an observing access type), the source shall be an owning access object
-   denoted by a name that is in the observed state, and whose root object
-   is also in the observed state and not declared at a statically deeper
-   accessibility level than that of the target object.
+  - If the type of the target is an anonymous access-to-constant type
+    (an observing access type), the source shall be an owning access object
+    denoted by a name that is not in the Moved state, and whose root object
+    is not in the Moved state and is not declared at a statically deeper
+    accessibility level than that of the target object.
+    [TBD: Confirm that we really want "not in the Moved state", as opposed
+    to "in the Observed state" in this rule.]
 
+.. _tu-access_types-09:
+
+At the point of a read of an object, or of passing an object as a
+an actual parameter of mode *in* or *in out*, or of a call where the
+object is a global input of the callee, the object shall not be in the Moved or
+Borrowed state.
+
+At the point of a return statement, or at any other point where a call
+completes normally (e.g., the end of a procedure body), no outputs of
+the callee being returned from shall be in the Moved state.
+
+In the case where the input or output in question is a state abstraction,
+these rules also apply to any constituents (direct or indirect) of that
+state abstraction.
 
 .. _tu-access_types-10:
 
@@ -1002,94 +854,44 @@ observers, providing only a constant view.
 
 .. _tu-access_types-12:
 
-If the source of a "move" is a name that denotes an object with Ownership
-aspect True, other than a function call, the name shall be a variable
-[Redundant: that is not in the observed or borrowed state]; furthermore,
-there shall be no name that statically overlaps this name
-that is in the observed or borrowed state;
-[TBD: as discussed earlier, what does it mean say "there shall be no name"?
-what is the set of names to which this check is applied? This is too fuzzy.]
+At the point of a call, any name that denotes a managed object that is a global
+output of the callee (i.e., an output other than a parameter of the callee
+or a function result) shall not be in the Observed or Borrowed state.
+Similarly, any name that denotes a managed object that is a global input
+of the callee shall not be in the Moved or Borrowed state.
 
 .. _tu-access_types-13:
 
-At the point of a call, any name that denotes a managed object that is a global
-output of the callee (i.e., an output other than a parameter of the callee
-or a function result) shall not be in the observed or borrowed state.
-Similarly, any name that denotes a managed object that is a global input
-of the callee  shall not be in the borrowed state.
-[TBD: Again, what is the set of names to which this check is applied?
-This seems like a wrong way to express this idea. Perhaps we could talk
-about the state of declarations in addition to that of names. Then we could
-say something here like
+Potentially overlapping parts of a single variable shall not be passed as
+two actual parameters to the same call unless
 
-    At the point of a call, the declaration of every global output of the
-    call shall not be in the borrowed state.]
+  - both corresponding formal parameters are of mode **in** ; or
+  - at least one of the two parameters is of an elementary type
+    and is of mode **in**.
+[TBD: The definition of "potentially introduce aliasing" in the
+anti-aliasing section has been changed to include dereferencing,
+so that Foo and Foo.all potentially introduce aliasing. Given that,
+is this rule redundant?]
 
 .. _tu-access_types-14:
 
-The name of a parameter in a call shall not potentially overlap a global
-output of the callee.
-The name of a parameter in a call shall not potentially overlap a global
-input of the callee if the corresponding formal parameter is an output
-of the callee.
-[TBD: Is this rule redundant? I think so.]
-[TBD: In the original proposal, we had static checks for guaranteed
-overlap and runtime checks for potential overlap. Because SPARK globals
-are always top-level objects (as opposed to subcomponents), this
-distinction has no value. Static overlap = potential overlap if one of the
-tested names is simply the name of a type level object.]
+The prefix of an Old or Loop_Entry attribute reference shall not be
+of an owning or observing type unless the prefix is a function_call
+and the called function is not a traversal function.
+
+.. centered:: **Verification Rules**
 
 .. _tu-access_types-15:
 
-Statically overlapping parts of a single variable shall not be passed as
-two actual parameters to a single call unless
-
-  - the call is a function call; or
-  - both corresponding formal parameters are of mode **in** and both
-    formal parameter types are composite; or
-  - at least one of the two parameter types is scalar.
-
-[TBD: Say "Potentially overlapping" instead of "Statically overlapping"
-here and then eliminate the corresponding dynamic semantics rule? This would
-be more conservative but it would eliminate the need for VCs having to
-do with overlapping.]
-
-.. centered:: **Dynamic Semantics**
-
-.. _tu-access_types-16:
-
-[For managed objects denoted by a dynamic name, checks are used to ensure that
-no other name that is a potential alias is in a conflicting state.]
-
-For a dynamic name D1 that is in a Dynamic ownership state, if an operation
-(e.g., an observing operation, a borrowing operation, a move operation, or a
-call) requires that, were D1 a static, it not be in an observed (or borrowed)
-state, then for every other dynamic name D2 that is in the observed (or
-borrowed) state and potentially overlaps with D1, a check is made at the
-start of the operation that the potentially aliased parts of the names do
-not in fact denote overlapping parts of the same object.  If this check fails,
-Program_Error is raised.
-
-[TBD: It would be nice to explicitly list the operations in question, but
-the current treatment is ok at least for now. But it seems very unclear
-precisely what D2 objects are being checked. I think it would help if we
-described a possible implementation model. As it stands, this description
-seems unacceptably vague.]
-
-.. _tu-access_types-17:
-
-If potentially overlapping parts of a single variable are passed as
-two actual parameters to a single call and
-
-  - the call is not a function call; and
-
-  - corresponding formal parameters are of mode **in** and both
-    formal parameter types are composite; and
-
-  - neither of the two parameter types is a scalar type
-
-then a check is performed before the call that the actual
-parameters do not overlap; Program_Error is raised if this check fails.
+If an actual parameter in a call is of a composite owning type, then
+  - the parameter shall not potentially overlap any global output of
+    the callee; and
+  - the parameter shall not potentially overlap a global input of the callee
+    if the corresponding formal parameter is an output of the callee.
+[TBD: The definition of "potentially introduce aliasing" in the
+anti-aliasing section has been changed to include dereferencing,
+so that Foo and Foo.all potentially introduce aliasing. Given that,
+is this rule redundant?]
 
 .. _etu-access_types:
 
