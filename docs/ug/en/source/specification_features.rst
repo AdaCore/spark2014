@@ -92,7 +92,7 @@ to their qualified version, for example:
    procedure Increment_One_Of (X, Y : in out Integer) with
      Post => X + Y = Integer'(X + Y)'Old + 1;
 
-Because the compiler unconditionnally creates a copy of the expression to which
+Because the compiler unconditionally creates a copy of the expression to which
 attribute ``Old`` is applied at subprogram entry, there is a risk that this feature
 might confuse users in more complex postconditions. Take the example of a
 procedure ``Extract``, which copies the value of array ``A`` at index ``J`` into
