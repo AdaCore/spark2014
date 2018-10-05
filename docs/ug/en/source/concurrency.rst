@@ -182,7 +182,7 @@ temporary before the increment:
             Num_Accounts := Tmp + 1;
          end;
 
-But note that even with that fix, there is no guarante that ``Num_Accounts`` is
+But note that even with that fix, there is no guarantee that ``Num_Accounts`` is
 incremented by one each time an account is created. Indeed, two tasks may read
 the same value of ``Num_Accounts`` and store this value in ``Tmp`` before both
 updating it to ``Tmp + 1``. In such a case, two accounts have been created but
