@@ -812,10 +812,16 @@ package body Why.Gen.Expr is
          return Expr;
       end if;
 
+      --  A string literal gets typed with a subtype of the expected type, even
+      --  if it does not respect the associated predicate of the expected type.
+      --  As a result, do not rely on the call to Check_Needed_On_Conversion in
+      --  that case.
+
       Check_Needed :=
         (if Get_Type_Kind (From) in EW_Abstract | EW_Split
-         and then
-         Get_Type_Kind (To) in EW_Abstract | EW_Split
+           and then Get_Type_Kind (To) in EW_Abstract | EW_Split
+           and then not (Nkind (Ada_Node) = N_String_Literal
+                          and then Has_Predicates (Get_Ada_Node (+To)))
          then
             Check_Needed_On_Conversion (From => Get_Ada_Node (+From),
                                         To   => Get_Ada_Node (+To))
