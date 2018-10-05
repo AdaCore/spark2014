@@ -2604,6 +2604,8 @@ package body Flow.Control_Flow_Graph is
             L : Entity_Vectors.Vector;
          begin
             --  First, is this really an array access?
+            --  ??? We are not supporting array slices yet
+
             if Nkind (N) /= N_Indexed_Component then
                return Null_Target;
             end if;
@@ -2826,6 +2828,9 @@ package body Flow.Control_Flow_Graph is
                            Var_Defined := Get_Array_Index (Name (Var));
 
                         when N_Indexed_Component =>
+                           Var_Defined := Get_Array_Index (Var);
+
+                        when N_Slice =>
                            Var_Defined := Get_Array_Index (Var);
 
                         when others =>

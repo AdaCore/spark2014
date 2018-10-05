@@ -1,1 +1,0 @@
-ALL XFAIL array initialization via a slice (P915-005)
