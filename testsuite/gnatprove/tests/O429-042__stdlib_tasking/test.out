@@ -1,4 +1,3 @@
-ada_real_time.ads:42:04: warning: pragma "Compile_Time_Error" ignored (not yet supported)
 ada_real_time.ads:63:16: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:64:18: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:64:48: medium: overflow check might fail

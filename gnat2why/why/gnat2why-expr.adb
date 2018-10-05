@@ -14068,6 +14068,8 @@ package body Gnat2Why.Expr is
          when Pragma_Assert
             | Pragma_Assert_And_Cut
             | Pragma_Assume
+            | Pragma_Compile_Time_Error
+            | Pragma_Compile_Time_Warning
             | Pragma_Debug
             | Pragma_Loop_Invariant
          =>
@@ -14090,8 +14092,6 @@ package body Gnat2Why.Expr is
             | Pragma_Check_Name
             | Pragma_Comment
             | Pragma_Common_Object
-            | Pragma_Compile_Time_Error
-            | Pragma_Compile_Time_Warning
             | Pragma_Compiler_Unit
             | Pragma_Compiler_Unit_Warning
             | Pragma_Complete_Representation
