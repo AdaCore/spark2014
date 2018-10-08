@@ -2324,7 +2324,8 @@ package body Why.Gen.Arrays is
       Args   : W_Expr_Array;
       Params : Transformation_Params := Body_Params) return W_Expr_Id
    is
-      Dim       : constant Positive := Positive (Number_Dimensions (Ty));
+      Rep_Ty : constant Entity_Id := Retysp (Ty);
+      Dim       : constant Positive := Positive (Number_Dimensions (Rep_Ty));
       Call_Args : W_Expr_Array (1 .. 4 * Dim);
 
    begin
@@ -2332,13 +2333,13 @@ package body Why.Gen.Arrays is
       for Count in 0 .. Dim - 1 loop
          declare
             W_Typ      : constant W_Type_Id :=
-              Nth_Index_Rep_Type_No_Bool (E   => Ty,
+              Nth_Index_Rep_Type_No_Bool (E   => Rep_Ty,
                                           Dim => Count + 1);
             First_Expr : constant W_Expr_Id :=
               Insert_Simple_Conversion (Domain => Domain,
                                         Expr   => Get_Array_Attr
                                           (Domain => Domain,
-                                           Ty     => Ty,
+                                           Ty     => Rep_Ty,
                                            Attr   => Attribute_First,
                                            Dim    => Count + 1,
                                            Params => Params),
@@ -2347,7 +2348,7 @@ package body Why.Gen.Arrays is
               Insert_Simple_Conversion (Domain => Domain,
                                         Expr   => Get_Array_Attr
                                           (Domain => Domain,
-                                           Ty     => Ty,
+                                           Ty     => Rep_Ty,
                                            Attr   => Attribute_Last,
                                            Dim    => Count + 1,
                                            Params => Params),
@@ -2369,7 +2370,7 @@ package body Why.Gen.Arrays is
       end loop;
 
       return New_Call (Domain => Domain,
-                       Name   => Dynamic_Prop_Name (Ty),
+                       Name   => Dynamic_Prop_Name (Rep_Ty),
                        Args   => Call_Args,
                        Typ    => EW_Bool_Type);
    end New_Dynamic_Property;
