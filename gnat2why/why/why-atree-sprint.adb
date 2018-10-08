@@ -111,6 +111,9 @@ package body Why.Atree.Sprint is
    procedure Print_Comment (Node : W_Comment_Id);
    procedure Print_Conditional (Node : W_Conditional_Id);
    procedure Print_Connection (Node : W_Connection_Id);
+   procedure Print_Connection_List
+     (Op         : EW_Connector;
+      More_Right : W_Expr_OList);
    procedure Print_Custom_Declaration (Node : W_Custom_Declaration_Id);
    procedure Print_Deref (Node : W_Deref_Id);
    procedure Print_Effects (Node : W_Effects_Id);
@@ -503,9 +506,7 @@ package body Why.Atree.Sprint is
       More_Right : constant W_Expr_OList := Get_More_Right (Node);
    begin
       if not Is_Empty (+More_Right) then
-         for E of Get_List (Why_Node_List (More_Right)) loop
-            P (O, "( ");
-         end loop;
+         P (O, "( ");
       end if;
 
       P (O, "( ");
@@ -517,15 +518,53 @@ package body Why.Atree.Sprint is
       P (O, " )");
 
       if not Is_Empty (+More_Right) then
-         for E of Get_List (Why_Node_List (More_Right)) loop
-            P (O, " ");
-            P (O, Op);
-            P (O, " ");
-            Print_Node (+E);
-            P (O, " )");
-         end loop;
+         P (O, Op);
+         Print_Connection_List (Op, More_Right);
+         P (O, " )");
       end if;
    end Print_Connection;
+
+   procedure Print_Connection_List
+     (Op         : EW_Connector;
+      More_Right : W_Expr_OList)
+   is
+      procedure Print_Connection_List
+        (Node_List : Why_Node_Lists.List;
+         From      : in out Why_Node_Lists.Cursor;
+         Length    : Count_Type)
+      with Pre => Length >= 1
+        and then Why_Node_Lists.Has_Element (From);
+      --  Output a well balanced tree of binary operations to minimize the
+      --  depth of the expression.
+
+      procedure Print_Connection_List
+        (Node_List : Why_Node_Lists.List;
+         From      : in out Why_Node_Lists.Cursor;
+         Length    : Count_Type)
+      is
+         use Why_Node_Lists;
+      begin
+         if Length = 1 then
+            Print_Node (+Element (From));
+            Next (From);
+         else
+            P (O, "( ");
+            Print_Connection_List (Node_List, From, (Length + 1) / 2);
+            P (O, Op);
+            Print_Connection_List (Node_List, From, Length / 2);
+            P (O, " )");
+         end if;
+      end Print_Connection_List;
+
+      Node_List : Why_Node_Lists.List renames
+        Get_List (Why_Node_List (More_Right));
+      From      : Why_Node_Lists.Cursor := Node_List.First;
+   begin
+      if not Node_List.Is_Empty then
+         Print_Connection_List (Node_List, From, Node_List.Length);
+      end if;
+      pragma Assert (not Why_Node_Lists.Has_Element (From));
+   end Print_Connection_List;
 
    ------------------------------
    -- Print_Custom_Declaration --
