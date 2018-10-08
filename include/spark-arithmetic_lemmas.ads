@@ -26,6 +26,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  This unit defines signed integer lemmas in a generic way, subject to the
+--  definition of the following generic parameter:
+--    Int is a signed integer type
+--
+--  The SPARK lemma library comes with two instances of this generic unit, for
+--  32bits and 64bits signed integer types. Both instances have been completely
+--  proved, using manual proof in Coq where needed. It is recommended to use
+--  these instances instead of instantiating your own version of the generic,
+--  in order to benefit from the proofs already done on the existing instances.
+
 generic
    type Int is range <>;
 package SPARK.Arithmetic_Lemmas

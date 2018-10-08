@@ -27,6 +27,18 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  This unit defines floating-point lemmas in a generic way, subject to the
+--  definition of the following generic parameters:
+--    Fl is a floating-point type
+--    Fl_Last_Sqrt is a value whose square does not overflow the base type
+--      of Fl, which is used to bound inputs in precondition of some lemmas
+--
+--  The SPARK lemma library comes with two instances of this generic unit, for
+--  32bits and 64bits floating-point types. Both instances have been completely
+--  proved, using manual proof in Coq where needed. It is recommended to use
+--  these instances instead of instantiating your own version of the generic,
+--  in order to benefit from the proofs already done on the existing instances.
+
 generic
    type Fl is digits <>;
    Fl_Last_Sqrt : Fl;

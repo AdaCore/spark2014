@@ -27,6 +27,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  This unit defines fixed-point lemmas in a generic way, subject to the
+--  definition of the following generic parameter:
+--    Fix is an ordinary (non-decimal) fixed-point type
+--
+--  The user should instantiate the generic with a suitable fixed-point type of
+--  interest to obtain corresponding usable lemmas.
+
 generic
    type Fix is delta <>;
 package SPARK.Fixed_Point_Arithmetic_Lemmas
