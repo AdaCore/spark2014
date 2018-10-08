@@ -1254,7 +1254,7 @@ package body Flow_Utility is
    begin
       if Present (E) then
          --  We found an entity, now we make some effort to canonicalize
-         return Direct_Mapping_Id (Unique_Entity (E), View);
+         return Direct_Mapping_Id (E, View);
       else
          --  If Entity_Id is not known then fall back to the magic string
          return Magic_String_Id (Name, View);
