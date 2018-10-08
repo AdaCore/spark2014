@@ -103,7 +103,8 @@ package body Gnat2Why.Types is
          procedure Create_Axiom_For_Expr
            (Name : W_Identifier_Id;
             Bnd  : Node_Id;
-            Typ  : W_Type_Id);
+            Typ  : W_Type_Id)
+         with Pre => Nkind (Bnd) in N_Subexpr;
          --  Create a defining axiom for a logic function which can be used
          --  instead of E.
 

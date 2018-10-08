@@ -187,14 +187,15 @@ package body Why.Gen.Binders is
    -- Get_Binders_From_Expression --
    ---------------------------------
 
-   function Get_Binders_From_Expression (E       : Node_Id;
+   function Get_Binders_From_Expression (Expr    : Node_Id;
                                          Compute : Boolean := False)
                                          return Item_Array
    is
-      Variables : constant Flow_Id_Sets.Set := Get_Variables_For_Proof (E, E);
+      Variables : constant Flow_Id_Sets.Set :=
+        Get_Variables_For_Proof (Expr, Expr);
 
    begin
-      pragma Assert (if Is_Static_Expression (E) then Variables.Is_Empty);
+      pragma Assert (if Is_Static_Expression (Expr) then Variables.Is_Empty);
       return Get_Binders_From_Variables (Variables, Compute);
    end Get_Binders_From_Expression;
 

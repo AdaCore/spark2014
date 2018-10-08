@@ -339,11 +339,12 @@ package Why.Gen.Binders is
    --  Should only be put to True if only localized versions of names are used.
    --  @result An array of items used to represent these variables in Why
 
-   function Get_Binders_From_Expression (E       : Node_Id;
+   function Get_Binders_From_Expression (Expr    : Node_Id;
                                          Compute : Boolean := False)
-                                         return Item_Array;
+                                         return Item_Array
+   with Pre => Nkind (Expr) in N_Subexpr;
    --  Compute an array of items representing the variables of E in Why.
-   --  @param E Ada node for an expression
+   --  @param Expr Ada node for an expression
    --  @param Compute Should be True if we want to compute binders missing from
    --  the Symbol_Table. Only put it to True when the names are localized.
    --  @result An array of items used to represent these variables in Why

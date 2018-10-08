@@ -54,6 +54,7 @@ package SPARK_Atree is
    subtype N_Op_Shift                 is Sinfo.N_Op_Shift;
    subtype N_Raise_xxx_Error          is Sinfo.N_Raise_xxx_Error;
    subtype N_Short_Circuit            is Sinfo.N_Short_Circuit;
+   subtype N_Subexpr                  is Sinfo.N_Subexpr;
    subtype N_Subprogram_Call          is Sinfo.N_Subprogram_Call;
    subtype N_Subprogram_Instantiation is Sinfo.N_Subprogram_Instantiation;
 
