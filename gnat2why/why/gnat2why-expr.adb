@@ -7058,12 +7058,13 @@ package body Gnat2Why.Expr is
 
          if Domain = EW_Prog
            and then Present (Aggregate_Bounds (Expr))
-           and then not Is_Static_Array_Type (Etype (Expr))
+           and then not Is_Static_Array_Type (Retysp (Etype (Expr)))
          then
             declare
                Temp   : constant W_Expr_Id := New_Temp_For_Expr (R, True);
                A1, A2 : W_Prog_Id;
-               Typ    : constant Node_Id := First_Index (Etype (Etype (Expr)));
+               Typ    : constant Node_Id := First_Index
+                 (Retysp (Etype (Etype (Expr))));
                W_Typ  : constant W_Type_Id :=
                  (if Typ = Empty then EW_Int_Type else
                      Base_Why_Type_No_Bool (Typ));
@@ -7107,10 +7108,10 @@ package body Gnat2Why.Expr is
          --  Possibly check the predicate on the aggregate
 
          if Domain = EW_Prog
-           and then Has_Predicates (Etype (Expr))
+           and then Has_Predicates (Retysp (Etype (Expr)))
          then
             R := +Insert_Predicate_Check (Ada_Node => Expr,
-                                          Check_Ty => Etype (Expr),
+                                          Check_Ty => Retysp (Etype (Expr)),
                                           W_Expr   => +R);
          end if;
 
