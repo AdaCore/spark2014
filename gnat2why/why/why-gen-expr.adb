@@ -2328,7 +2328,7 @@ package body Why.Gen.Expr is
             when Attribute_First       => return +E_Symb (Ty, WNE_Attr_First);
             when Attribute_Last        => return +E_Symb (Ty, WNE_Attr_Last);
             when Attribute_Alignment      =>
-               return +E_Symb (Ty, WNE_Attr_Value_Alignment);
+               return +E_Symb (Ty, WNE_Attr_Alignment);
             when Attribute_Modulus        =>
                return +E_Symb (Ty, WNE_Attr_Modulus);
             when Attribute_Constrained    =>
@@ -2336,7 +2336,7 @@ package body Why.Gen.Expr is
             when Attribute_Size           =>
                return +E_Symb (Ty, WNE_Attr_Value_Size);
             when Attribute_Component_Size =>
-               return +E_Symb (Ty, WNE_Attr_Value_Component_Size);
+               return +E_Symb (Ty, WNE_Attr_Component_Size);
             when Attribute_Tag            =>
                return +E_Symb (Ty, WNE_Attr_Tag);
             when Attribute_Image          =>

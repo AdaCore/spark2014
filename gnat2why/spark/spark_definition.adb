@@ -2547,8 +2547,11 @@ package body SPARK_Definition is
            Attribute_Component_Size |
            Attribute_First_Bit      |
            Attribute_Last_Bit       |
+           Attribute_Object_Size    |
            Attribute_Position       |
-           Attribute_Size           =>
+           Attribute_Size           |
+           Attribute_Value_Size
+         =>
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
               and then Gnat2Why_Args.Pedantic

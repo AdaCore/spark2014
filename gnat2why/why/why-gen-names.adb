@@ -796,6 +796,8 @@ package body Why.Gen.Names is
             | WNE_Array_Elts
             | WNE_Assign_Null_Check
             | WNE_Attr_Address
+            | WNE_Attr_Alignment
+            | WNE_Attr_Component_Size
             | WNE_Attr_First_2
             | WNE_Attr_First_3
             | WNE_Attr_First_4
@@ -810,13 +812,9 @@ package body Why.Gen.Names is
             | WNE_Attr_Length_3
             | WNE_Attr_Length_4
             | WNE_Attr_Modulus
-            | WNE_Attr_Object_Alignment
-            | WNE_Attr_Object_Component_Size
             | WNE_Attr_Object_Size
             | WNE_Attr_Position
             | WNE_Attr_Value
-            | WNE_Attr_Value_Alignment
-            | WNE_Attr_Value_Component_Size
             | WNE_Attr_Value_Size
             | WNE_Bool_Eq
             | WNE_Check_Invariants_On_Call

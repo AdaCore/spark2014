@@ -9445,8 +9445,10 @@ package body Gnat2Why.Expr is
                               Typ      => EW_Abstract (Standard_String));
             end;
 
-         when Attribute_Size =>
-
+         when Attribute_Size
+            | Attribute_Value_Size
+            | Attribute_Object_Size
+         =>
             --  For arrays and records we do not know the exact value of
             --  attribute size, which is decided by the back-end when
             --  generating executable code. Instead, we generate call to an
@@ -9464,38 +9466,72 @@ package body Gnat2Why.Expr is
             --  ** Type'Object_Size in GNAT
             --  ** Esize field in GNAT AST
 
-            if Nkind (Var) in N_Has_Entity
-              and then Present (Entity (Var))
-                and then Is_Type (Entity (Var))
-            then
+            Size_Attributes : declare
+               subtype Size_Attributes is Attribute_Id with
+                 Static_Predicate => Size_Attributes in Attribute_Size
+                                                      | Attribute_Value_Size
+                                                      | Attribute_Object_Size;
 
-               T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+               function Object_Size (Typ : Entity_Id) return W_Expr_Id is
+                 (New_Call (Ada_Node => Expr,
+                            Domain   => Domain,
+                            Name     => E_Symb (Typ, WNE_Attr_Object_Size),
+                            Typ      => EW_Int_Type))
+               with Pre => Is_Type (Typ);
+               --  Return the expression corresponding to attribute Object_Size
+               --  applied to type [Typ]. [Type_Prefix] is True for a type
+               --  prefix and False for an object prefix. In the program
+               --  domain, generate checks for an object prefix with
+               --  attribute Size.
 
-            elsif Known_Object_Size (Etype (Var)) then
-               return New_Integer_Constant (Expr,
-                                            Object_Size (Etype (Var)));
-            else
-               declare
-                  Name : constant W_Identifier_Id :=
-                    E_Symb (Etype (Var), WNE_Attr_Object_Size);
-                  Arg  : W_Expr_Id :=
-                    Transform_Expr (Var, Domain, Params);
-               begin
-                  if Has_Array_Type (Etype (Var)) and then
-                    not Has_Static_Array_Type (Etype (Var)) and then
-                    not Has_Static_Array_Type (Get_Ada_Node (+Get_Type (Arg)))
-                    and then Get_Type_Kind (Get_Type (Arg)) /= EW_Split
-                  then
-                     Arg := Array_Convert_To_Base (Domain, Arg);
+               Has_Type_Prefix : constant Boolean :=
+                 Present (Entity (Var))
+                   and then Is_Type (Entity (Var));
+
+            --  Start of processing for Size_Attributes
+
+            begin
+               if Has_Type_Prefix then
+                  case Size_Attributes'(Attr_Id) is
+                     when Attribute_Size
+                        | Attribute_Value_Size
+                     =>
+                        T :=
+                          New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+
+                     when Attribute_Object_Size =>
+                        T := Object_Size (Entity (Var));
+                  end case;
+
+               --  Only attribute Size applies to an object. It is either
+               --  the specified value of Size for the object, or the same
+               --  as Typ'Object_Size for the type of the object.
+
+               else
+                  pragma Assert (Attr_Id = Attribute_Size);
+
+                  if Known_Object_Size (Etype (Var)) then
+                     T := New_Integer_Constant (Expr,
+                                                Object_Size (Etype (Var)));
+                  else
+                     T := Object_Size (Etype (Var));
                   end if;
 
-                  return New_Call (Ada_Node => Expr,
-                                   Domain   => Domain,
-                                   Name     => Name,
-                                   Args     => (1 => Arg),
-                                   Typ      => EW_Int_Type);
-               end;
-            end if;
+                  --  In the program domain, translate the object itself to
+                  --  generate any necessary checks.
+
+                  if Domain = EW_Prog then
+                     T := New_Binding
+                            (Name    =>
+                               New_Temp_Identifier (Typ => Get_Type (+T)),
+                             Domain  => Domain,
+                             Def     =>
+                               +Transform_Expr (Var, Domain, Params),
+                             Context => +T,
+                             Typ     => Get_Type (+T));
+                  end if;
+               end if;
+            end Size_Attributes;
 
          when Attribute_Value =>
             declare
@@ -9736,54 +9772,71 @@ package body Gnat2Why.Expr is
             T := +False_Term;
 
          when Attribute_Component_Size =>
-            if Nkind (Var) in N_Has_Entity
-              and then Present (Entity (Var))
-              and then Is_Type (Entity (Var))
-            then
+            declare
+               Has_Type_Prefix : constant Boolean :=
+                 Present (Entity (Var))
+                   and then Is_Type (Entity (Var));
+               Typ : constant Entity_Id :=
+                 (if Has_Type_Prefix then Entity (Var) else Etype (Var));
+            begin
+               T := New_Attribute_Expr (Typ, Domain, Attr_Id);
 
-               T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+               --  In the program domain, translate the object itself to
+               --  generate any necessary checks. Note that Component_Size may
+               --  only be specified explicitly for a type, not for an object,
+               --  so there is no reason here to call Known_Component_Size for
+               --  more precise handling of the value of the attribute.
 
-            else
-               declare
-                  Name : constant W_Identifier_Id :=
-                    E_Symb (Etype (Var), WNE_Attr_Object_Component_Size);
-                  Arg : constant W_Expr_Id :=
-                    Transform_Expr (Var, Domain, Params);
-               begin
-                  return New_Call (Ada_Node => Expr,
-                                   Domain   => Domain,
-                                   Name     => Name,
-                                   Args     => (1 => Arg),
-                                   Typ      => EW_Int_Type);
-               end;
-            end if;
+               if not Has_Type_Prefix
+                 and then Domain = EW_Prog
+               then
+                  T := New_Binding
+                         (Name    =>
+                            New_Temp_Identifier (Typ => Get_Type (+T)),
+                          Domain  => Domain,
+                          Def     =>
+                            +Transform_Expr (Var, Domain, Params),
+                          Context => +T,
+                          Typ     => Get_Type (+T));
+               end if;
+            end;
 
          when Attribute_Alignment =>
-            if Nkind (Var) in N_Has_Entity
-              and then Present (Entity (Var))
-              and then Is_Type (Entity (Var))
-            then
+            declare
+               Has_Type_Prefix : constant Boolean :=
+                 Present (Entity (Var))
+                   and then Is_Type (Entity (Var));
+               Typ : constant Entity_Id :=
+                 (if Has_Type_Prefix then Entity (Var) else Etype (Var));
+            begin
+               --  Alignment may be specified explicitly on the type or
+               --  object. When specified on the type, the frontend replaces
+               --  T'Alignment by its value. When specified on the object, the
+               --  frontend creates a subtype with a known alignment for the
+               --  object, that can be queried here.
 
-               T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+               if Known_Alignment (Typ) then
+                  T := New_Integer_Constant (Expr, Alignment (Typ));
+               else
+                  T := New_Attribute_Expr (Typ, Domain, Attr_Id);
+               end if;
 
-            elsif Known_Alignment (Etype (Var)) then
+               --  In the program domain, translate the object itself to
+               --  generate any necessary checks.
 
-               return New_Integer_Constant (Expr, Alignment (Etype (Var)));
-
-            else
-               declare
-                  Name : constant W_Identifier_Id :=
-                    E_Symb (Etype (Var), WNE_Attr_Object_Alignment);
-                  Arg  : constant W_Expr_Id :=
-                    Transform_Expr (Var, Domain, Params);
-               begin
-                  return New_Call (Ada_Node => Expr,
-                                   Domain   => Domain,
-                                   Name     => Name,
-                                   Args     => (1 => Arg),
-                                   Typ      => EW_Int_Type);
-               end;
-            end if;
+               if not Has_Type_Prefix
+                 and then Domain = EW_Prog
+               then
+                  T := New_Binding
+                         (Name    =>
+                            New_Temp_Identifier (Typ => Get_Type (+T)),
+                          Domain  => Domain,
+                          Def     =>
+                            +Transform_Expr (Var, Domain, Params),
+                          Context => +T,
+                          Typ     => Get_Type (+T));
+               end if;
+            end;
 
          when Attribute_First_Bit =>
             declare

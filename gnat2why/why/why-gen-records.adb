@@ -118,9 +118,8 @@ package body Why.Gen.Records is
    --  discriminant checks
 
    procedure Declare_Attributes
-     (P       : W_Section_Id;
-      E       : Entity_Id;
-      Ty_Name : W_Name_Id);
+     (P : W_Section_Id;
+      E : Entity_Id);
    --  Declare functions for the record attributes
 
    procedure Declare_Component_Attributes
@@ -437,7 +436,7 @@ package body Why.Gen.Records is
                   Labels      => Name_Id_Sets.Empty_Set));
          end;
 
-         Declare_Attributes (P, E, Ty_Name);
+         Declare_Attributes (P, E);
 
          return;
       end if;
@@ -499,7 +498,7 @@ package body Why.Gen.Records is
          Declare_Conversion_Check_Function (P, E, Root);
       end if;
 
-      Declare_Attributes (P, E, Ty_Name);
+      Declare_Attributes (P, E);
       Declare_Component_Attributes (P, E);
 
       --  Declare place-holder for primitive equality function
@@ -528,16 +527,9 @@ package body Why.Gen.Records is
    ------------------------
 
    procedure Declare_Attributes
-     (P       : W_Section_Id;
-      E       : Entity_Id;
-      Ty_Name : W_Name_Id)
+     (P : W_Section_Id;
+      E : Entity_Id)
    is
-      Abstr_Ty : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
-      A_Ident  : constant W_Identifier_Id :=
-        New_Identifier (Name => "a", Typ => Abstr_Ty);
-      R_Binder : constant Binder_Array :=
-        (1 => (B_Name => A_Ident,
-               others => <>));
    begin
       --  The value size is defined as a logic constant
 
@@ -549,47 +541,31 @@ package body Why.Gen.Records is
                Location    => No_Location,
                Return_Type => EW_Int_Type));
 
-      --  The object size is defined as a logic function
+      --  The object size is defined as a logic constant
 
       Emit (P,
             New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Local (E_Symb (E, WNE_Attr_Object_Size)),
-               Binders     => R_Binder,
-               Location    => No_Location,
                Labels      => Name_Id_Sets.Empty_Set,
+               Location    => No_Location,
                Return_Type => EW_Int_Type));
 
-      --  Both value size and object size are non-negative
-
-      --  The value alignement is defined as a logic constant
+      --  The alignement is defined as a logic constant
 
       Emit (P,
             New_Function_Decl
               (Domain      => EW_Term,
-               Name        => To_Local (E_Symb
-                 (E, WNE_Attr_Value_Alignment)),
+               Name        => To_Local (E_Symb (E, WNE_Attr_Alignment)),
                Labels      => Name_Id_Sets.Empty_Set,
                Location    => No_Location,
                Return_Type => EW_Int_Type));
-
-      --  The object alignment is defined as a logic function
-
-      Emit (P,
-            New_Function_Decl
-              (Domain      => EW_Term,
-               Name        => To_Local (E_Symb (E,
-                 WNE_Attr_Object_Alignment)),
-               Binders     => R_Binder,
-               Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Return_Type => EW_Int_Type));
-
-      --  Both value alignment and object alignment are non-negative
 
       declare
          Zero : constant W_Expr_Id :=
            New_Integer_Constant (Value => Uint_0);
+
+         --  Value size is non-negative
 
          Value_Size_Fun : constant W_Expr_Id :=
            New_Call (Name   => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
@@ -602,53 +578,31 @@ package body Why.Gen.Records is
                             Right  => Zero,
                             Domain => EW_Term);
 
+         --  Object size is non-negative
+
          Object_Size_Fun : constant W_Expr_Id :=
-           New_Call (Name   =>
-                       To_Local (E_Symb (E, WNE_Attr_Object_Size)),
-                     Args   => (1 => +A_Ident),
+           New_Call (Name   => To_Local (E_Symb (E, WNE_Attr_Object_Size)),
                      Domain => EW_Term,
                      Typ    => EW_Int_Type);
 
-         Object_Size_Pred : constant W_Pred_Id :=
+         Object_Size_Axiom : constant W_Pred_Id :=
            +New_Comparison (Symbol => Int_Infix_Ge,
                             Left   => Object_Size_Fun,
                             Right  => Zero,
                             Domain => EW_Term);
 
-         Object_Size_Axiom : constant W_Pred_Id :=
-           New_Universal_Quantif (Binders => R_Binder,
-                                  Pred    => Object_Size_Pred);
+         --  Alignment is non-negative
 
-         Value_Alignment_Fun : constant W_Expr_Id :=
-           New_Call (Name     => To_Local (E_Symb
-                     (E, WNE_Attr_Value_Alignment)),
+         Alignment_Fun : constant W_Expr_Id :=
+           New_Call (Name     => To_Local (E_Symb (E, WNE_Attr_Alignment)),
                      Domain   => EW_Term,
                      Typ      => EW_Int_Type);
 
-         Value_Alignment_Axiom : constant W_Pred_Id :=
+         Alignment_Axiom : constant W_Pred_Id :=
            +New_Comparison (Symbol => Int_Infix_Ge,
-                            Left   => Value_Alignment_Fun,
+                            Left   => Alignment_Fun,
                             Right  => Zero,
                             Domain => EW_Term);
-
-         Object_Alignment_Fun : constant W_Expr_Id :=
-           New_Call (Name     =>
-                       To_Local (E_Symb (E,
-                         WNE_Attr_Object_Alignment)),
-                     Args     => (1 => +A_Ident),
-                     Domain   => EW_Term,
-                     Typ      => EW_Int_Type);
-
-         Object_Alignment_Pred : constant W_Pred_Id :=
-           +New_Comparison (Symbol => Int_Infix_Ge,
-                            Left   => Object_Alignment_Fun,
-                            Right  => Zero,
-                            Domain => EW_Term);
-
-         Object_Alignment_Axiom : constant W_Pred_Id :=
-           New_Universal_Quantif (Binders => R_Binder,
-                                  Pred    => Object_Alignment_Pred);
-
       begin
          Emit (P,
                New_Axiom (Ada_Node => E,
@@ -661,13 +615,8 @@ package body Why.Gen.Records is
                           Def      => Object_Size_Axiom));
          Emit (P,
                New_Axiom (Ada_Node => E,
-                          Name     => NID ("value__alignment_axiom"),
-                          Def      => Value_Alignment_Axiom));
-
-         Emit (P,
-               New_Axiom (Ada_Node => E,
-                          Name     => NID ("object__alignment_axiom"),
-                          Def      => Object_Alignment_Axiom));
+                          Name     => NID ("alignment_axiom"),
+                          Def      => Alignment_Axiom));
       end;
    end Declare_Attributes;
 
