@@ -37,6 +37,7 @@ with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
 with Flow_Refinement;                 use Flow_Refinement;
 with Flow_Types;                      use Flow_Types;
+with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
 with Gnat2Why_Args;
 with Lib;                             use Lib;
@@ -3572,6 +3573,30 @@ package body SPARK_Definition is
             Id     : constant Entity_Id := Defining_Entity (N);
             Formal : Entity_Id := First_Formal (Id);
 
+            Contract    : Node_Id;
+            Raw_Globals : Raw_Global_Nodes;
+
+            procedure Mark_Constant_Globals (Globals : Node_Sets.Set);
+            --  Mark constant objects in the Global/Depends contract (or their
+            --  refined variant). We want to detect constants not in SPARK,
+            --  even if they only appear in the flow contracts, to handle
+            --  them as having no variable input.
+
+            ---------------------------
+            -- Mark_Constant_Globals --
+            ---------------------------
+
+            procedure Mark_Constant_Globals (Globals : Node_Sets.Set) is
+            begin
+               for Global of Globals loop
+                  if Ekind (Global) = E_Constant then
+                     Mark_Entity (Global);
+                  end if;
+               end loop;
+            end Mark_Constant_Globals;
+
+         --  Start of processing for Mark_Subprogram_Specification
+
          begin
             case Ekind (Id) is
                when E_Function =>
@@ -3590,6 +3615,29 @@ package body SPARK_Definition is
                end if;
                Next_Formal (Formal);
             end loop;
+
+            --  Parse the user-written Global/Depends, if present
+
+            Contract := Find_Contract (E, Pragma_Global);
+
+            if Present (Contract) then
+               Raw_Globals := Parse_Global_Contract (E, Contract);
+
+               --  ??? Parse_Global_Contract itself asks which constants have
+               --  variable inputs when filtering generic actual parameters of
+               --  mode IN, so this might lead to circular dependencies; this
+               --  whole constant business should be revisited...
+
+            else
+               Contract := Find_Contract (E, Pragma_Depends);
+
+               if Present (Contract) then
+                  Raw_Globals := Parse_Depends_Contract (E, Contract);
+               end if;
+            end if;
+
+            Mark_Constant_Globals (Raw_Globals.Proof_Ins);
+            Mark_Constant_Globals (Raw_Globals.Inputs);
 
          end Mark_Subprogram_Specification;
 
