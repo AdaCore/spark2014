@@ -1,0 +1,3 @@
+pragma Profile (Gnat_Extended_Ravenscar);
+pragma Partition_Elaboration_Policy (Sequential);
+
