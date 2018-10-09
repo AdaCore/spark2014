@@ -3873,10 +3873,10 @@ package body Flow_Utility is
             T := Get_Type (F.Node, Scope);
 
          when Record_Field =>
-            if F.Facet /= Normal_Part then
-               return False;
-            else
+            if F.Facet = Normal_Part then
                T := Get_Type (F.Component.Last_Element, Scope);
+            else
+               return False;
             end if;
       end case;
 
