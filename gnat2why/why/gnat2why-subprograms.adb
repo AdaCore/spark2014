@@ -4476,6 +4476,16 @@ package body Gnat2Why.Subprograms is
             --       <E>__dispatch Descendant.tag x1 ... = <Descendant.E> x1 ..
 
             if Ekind (E) = E_Function then
+
+               --  Do not generate compatibility axioms for volatile functions
+               --  as they do not have any assoaciated logic function.
+               --  ??? They could maybe be handled like procedures, using a
+               --  specific_post predicate.
+
+               if Has_Pragma_Volatile_Function (E) then
+                  return;
+               end if;
+
                declare
                   Desc_Ty      : constant W_Type_Id :=
                     Type_Of_Node (Etype (Descendant_E));

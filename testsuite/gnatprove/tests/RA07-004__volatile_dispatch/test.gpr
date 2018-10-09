@@ -1,0 +1,45 @@
+
+project Test is
+
+   package Builder is
+      for Default_Switches ("ada") use ("-m", "-s"); --  Recompile if compiler switches have changed
+      for Global_Configuration_Pragmas use "spark.adc";
+
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-fstack-check", "-gnata", "-gnato13", "-gnatwa", "-gnatVa", "-gnatyabcefhiklnptr", "-gnat2012", "-O1", "-funroll-loops", "-gnatn", "-g"); --  Include debug information
+
+
+   end Compiler;
+
+   package Ide is
+      for Vcs_Kind use "Git";
+
+      for Debugger_Command use "gdb";
+      for Gnatlist use "gnatls";
+      for Gnat use "gnat";
+
+   end Ide;
+
+
+   for Source_Dirs use (".");
+
+
+   for Languages use ("Ada");
+
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Naming is
+      for Casing use "lowercase";
+   end Naming;
+
+--   package Linker is
+--      for Default_Switches ("ada") use ("-Wl,--gc-sections," & "-lroboticscape,-lpixyusb," & "-ludev,-lusb-1.0," & "-lboost_thread,-lboost_system,-lboost_chrono");
+--   end Linker;
+
+end Test;
+
