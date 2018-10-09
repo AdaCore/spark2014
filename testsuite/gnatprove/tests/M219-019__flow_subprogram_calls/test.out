@@ -50,8 +50,8 @@ test.adb:246:15: high: "S" must be a global output of "Indirect_Update" (SPARK R
 test.adb:265:38: info: initialization of "Global_B" constituent of "State" proved
 test.adb:275:46: info: initialization of "Local_Y" proved
 test.adb:277:30: info: initialization of "Global_B" constituent of "State" proved
-test.ads:19:21: medium: missing dependency "X => X"
-test.ads:20:21: medium: missing dependency "Y => Y"
-test.ads:24:21: medium: missing dependency "X => X"
-test.ads:25:21: medium: missing dependency "Y => Y"
+test.ads:19:21: medium: missing self-dependency "X => X"
+test.ads:20:21: medium: missing self-dependency "Y => Y"
+test.ads:24:21: medium: missing self-dependency "X => X"
+test.ads:25:21: medium: missing self-dependency "Y => Y"
 test.ads:34:41: info: initialization of "Y" proved

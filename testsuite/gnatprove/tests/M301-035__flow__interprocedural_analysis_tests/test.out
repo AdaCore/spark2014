@@ -1,8 +1,8 @@
-across_compilation_units-child.ads:27:24: medium: missing dependency "X => X"
 across_compilation_units-child.ads:27:24: medium: missing dependency "X => Y"
-across_compilation_units-child.ads:29:24: medium: missing dependency "Y => Y"
+across_compilation_units-child.ads:27:24: medium: missing self-dependency "X => X"
+across_compilation_units-child.ads:29:24: medium: missing self-dependency "Y => Y"
 across_compilation_units-child.ads:30:24: medium: missing dependency "Z => X"
-across_compilation_units-child.ads:30:24: medium: missing dependency "Z => Z"
+across_compilation_units-child.ads:30:24: medium: missing self-dependency "Z => Z"
 across_compilation_units.adb:4:23: info: division check proved (CVC4: 1 VC)
 across_compilation_units.adb:4:27: info: cannot unroll loop (too many loop iterations)
 across_compilation_units.adb:5:16: info: division check proved (CVC4: 1 VC)

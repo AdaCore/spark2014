@@ -146,5 +146,5 @@ test.adb:155:09: medium: discriminant check might fail
 test.adb:170:33: info: initialization of "R.A" proved
 test.adb:170:33: info: initialization of "R.B" proved
 test.adb:170:33: info: initialization of "R.C" proved
-test.adb:183:21: medium: missing dependency "R => R"
+test.adb:183:21: medium: missing self-dependency "R => R"
 test.adb:184:29: medium: incorrect dependency "null => R"

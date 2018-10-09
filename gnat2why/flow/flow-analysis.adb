@@ -3818,17 +3818,39 @@ package body Flow.Analysis is
                               Severity => Medium_Check_Kind);
 
                         else
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Path     => Path,
-                              Msg      => "missing dependency ""% => %""",
-                              N        => Search_Depends_Contract
-                                            (FA.Analyzed_Entity,
-                                             Get_Direct_Mapping_Id (F_Out)),
-                              F1       => F_Out,
-                              F2       => Missing_Var,
-                              Tag      => Depends_Missing,
-                              Severity => Medium_Check_Kind);
+                           declare
+                              N : constant Node_Id :=
+                                Search_Depends_Contract
+                                  (FA.Analyzed_Entity,
+                                   Get_Direct_Mapping_Id (F_Out));
+
+                              Msg1 : constant String :=
+                                (if F_Out = Missing_Var
+                                 then "self-dependency "
+                                 else "dependency ");
+
+                              Msg2 : constant String :=
+                                (if F_Out = Missing_Var then
+                                   (if Has_Bounds (F_Out, FA.B_Scope)
+                                    then " (array bounds are preserved)"
+                                    elsif Contains_Discriminants (F_Out,
+                                                                  FA.B_Scope)
+                                    then " (discriminants are preserved)"
+                                    else "")
+                                 else "");
+
+                           begin
+                              Error_Msg_Flow
+                                (FA       => FA,
+                                 Path     => Path,
+                                 Msg      => "missing " & Msg1 & """% => %""" &
+                                             Msg2,
+                                 N        => N,
+                                 F1       => F_Out,
+                                 F2       => Missing_Var,
+                                 Tag      => Depends_Missing,
+                                 Severity => Medium_Check_Kind);
+                           end;
                         end if;
                      end;
                   end if;
