@@ -135,7 +135,8 @@ package Flow.Control_Flow_Graph.Utility is
                      or else Discriminants_Or_Bounds_Only
                  else
                    Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
-                     and then not Discriminants_Or_Bounds_Only),
+                     and then not Discriminants_Or_Bounds_Only)
+                and then Nkind (Actual) in N_Subexpr,
         Post =>
           not Make_Parameter_Attributes'Result.Is_Null_Node and
           not Make_Parameter_Attributes'Result.Is_Program_Node and

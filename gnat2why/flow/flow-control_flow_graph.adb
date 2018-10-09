@@ -4871,7 +4871,8 @@ package body Flow.Control_Flow_Graph is
 
       Called_Thing : constant Entity_Id := Get_Called_Entity (Callsite);
 
-      procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id);
+      procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id)
+      with Pre => Is_Formal (Formal) and then Nkind (Actual) in N_Subexpr;
 
       ----------------------
       -- Handle_Parameter --
