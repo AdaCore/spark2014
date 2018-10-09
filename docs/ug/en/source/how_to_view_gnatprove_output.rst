@@ -2,9 +2,34 @@ How to View |GNATprove| Output
 ==============================
 
 |GNATprove| produces two kinds of outputs: the one which is echoed to standard
-output or displayed in your IDE (GPS or GNATbench), and the one which is
-produced in a file ``gnatprove.out``, which lies in the ``gnatprove``
-subdirectory of the object directory of your project.
+output or displayed in your IDE (GPS or GNATbench), and a textual summary of
+the analysis results.
+
+The Analysis Report Panel
+-------------------------
+
+GPS can display an interactive view reporting the results of the analysis, with
+a count of issues per file, subprogram and severity, as well as filters to
+selectively view a subset of the issues only. This interactive view is
+displayed using the menu :menuselection:`SPARK --> Show Report`. This menu
+becomes available after the checkbox ``Display analysis report`` is checked in
+the |SPARK| section of the Preferences dialog - menu :menuselection:`Edit -->
+Preferences`, and only if |GNATprove| was run so that there are results to
+display.
+
+Here is an example of this view:
+
+.. image:: /static/analysis_report_panel.png
+
+.. _The Analysis Results Summary File:
+
+The Analysis Results Summary File
+---------------------------------
+
+|GNATprove| generates global project statistics in file ``gnatprove.out``,
+which can be displayed in GPS using the menu :menuselection:`SPARK --> Show
+Log`. The file ``gnatprove.out`` is generated in the ``gnatprove`` subdirectory
+of the object directory of the project.
 
 When switch ``--output-header`` is used, this file starts with a header
 containing extra information about the run including:
@@ -14,11 +39,6 @@ containing extra information about the run including:
 * The host for which GNATprove is configured (e.g. Windows 32 bits)
 * The full command-line of the GNATprove invocation, including project file
 * The GNATprove switches specified in the project file
-
-.. _The Analysis Results Summary Table:
-
-The Analysis Results Summary Table
-----------------------------------
 
 A summary table at the start of file ``gnatprove.out`` provides an overview of
 the verification results for all checks in the project. The table may look like
@@ -79,6 +99,13 @@ We now explain the columns of the table.
 
 * Finally, the column ``Unproved`` counts the checks which have neither been
   proved nor justified.
+
+The summary table is followed by statistics describing:
+
+* which units were analyzed (with flow analysis, proof, or both)
+* which subprograms in these units were analyzed (with flow analysis, proof, or
+  both)
+* the results of this analysis
 
 .. _Categories of Messages:
 
@@ -143,15 +170,6 @@ mode ``flow`` and for mode ``prove``.
 If switch ``--report=all``, ``--report=provers`` or ``--report=statistics`` is
 specified, |GNATprove| additionally prints on the standard output information
 messages for proved checks.
-
-|GNATprove| generates global project statistics in file ``gnatprove.out``,
-which can be displayed in GPS using the menu :menuselection:`SPARK --> Show
-Report`. The statistics describe:
-
-* which units were analyzed (with flow analysis, proof, or both)
-* which subprograms in these units were analyzed (with flow analysis, proof, or
-  both)
-* the results of this analysis
 
 Description of Messages
 -----------------------

@@ -374,7 +374,7 @@ postcondition is simply an equality between its result and an expression:
 
 In this case, |GNATprove| will introduce a check when verifying the body of
 ``Is_Positive`` to make sure that the inline annotation is correct, namely, that
-``Is_Positive (X)`` and ``X > 0`` always yeld the same result. This check
+``Is_Positive (X)`` and ``X > 0`` always yield the same result. This check
 may not be redundant with the verification of the postcondition of
 ``Is_Positive`` if the ``=`` symbol on booleans has been overridden.
 

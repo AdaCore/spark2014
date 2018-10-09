@@ -1,12 +1,12 @@
 fileio.adb:6:10: info: initialization of "Z" proved
 fileio.adb:7:10: medium: exception might be raised
-fileio.adb:9:14: medium: overflow check might fail
-fileio.adb:10:14: medium: overflow check might fail
+fileio.adb:9:14: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention X in a precondition]
+fileio.adb:10:14: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention Y in a precondition]
 fileio.adb:14:07: warning: initialization of "Z" has no effect
 fileio.adb:17:10: info: initialization of "Z" proved
 fileio.adb:18:10: medium: exception might be raised
-fileio.adb:20:14: medium: overflow check might fail
-fileio.adb:21:14: medium: overflow check might fail
+fileio.adb:20:14: medium: overflow check might fail [possible explanation: subprogram at line 13 should mention X in a precondition]
+fileio.adb:21:14: medium: overflow check might fail [possible explanation: subprogram at line 13 should mention Y in a precondition]
 fileio.adb:28:10: info: initialization of "Ch" proved
 fileio.adb:29:10: medium: exception might be raised
 fileio.adb:38:13: info: initialization of "Result" proved

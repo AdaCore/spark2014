@@ -109,7 +109,7 @@ package Flow is
    --  ??? This should be a variant record, but O325-005 and AI12-0047 make
    --      this difficult.
    type Flow_Global_Generation_Info is record
-      Globals : Node_Sets.Set;
+      Globals : Global_Set;
       --  Non-local variables and parameters other than those of the analyzed
       --  entity.
 
@@ -190,12 +190,6 @@ package Flow is
       Other_Fields : Vertex_To_Vertex_Set_Maps.Map;
       --  For a vertex corresponding to a record field this map will hold a
       --  vertex set of the other record fields; only used in phase 2.
-
-      Local_Constants : Node_Sets.Set;
-      --  All constants that have been locally declared. This is used as a
-      --  workaround to the issue of constants being ignored in general.
-      --  This field should be removed once constants, attributes, etc. are
-      --  dealt with correctly.
 
       All_Vars : Flow_Id_Sets.Set;
       --  Variables used in the body

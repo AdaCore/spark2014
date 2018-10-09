@@ -18,13 +18,13 @@ records.adb:65:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:75:15: info: precondition proved (CVC4: 2 VC)
 records.adb:80:14: info: initialization of "R.A" proved
 records.adb:80:14: info: initialization of "R.B" proved
-records.adb:86:25: medium: postcondition might fail, cannot prove Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  A.B + B.B) (e.g. when A = (A => 255, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0))
+records.adb:86:25: medium: postcondition might fail, cannot prove Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  A.B + B.B) (e.g. when A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)) [possible explanation: subprogram at line 83 should mention A and B in a precondition]
 records.adb:94:15: info: precondition proved (CVC4: 2 VC)
 records.adb:99:14: info: initialization of "R.A" proved
 records.adb:99:14: info: initialization of "R.B" proved
 records.adb:103:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:111:19: info: postcondition proved (CVC4: 2 VC)
-records.adb:119:19: medium: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 1, B => 0)) and Is_Valid_C'Result = True and Null_Pair = (A => 0, B => 0))
+records.adb:119:19: medium: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 1, B => 0)) and Is_Valid_C'Result = True and Null_Pair = (A => 0, B => 0)) [possible explanation: subprogram at line 118 should mention A in a precondition]
 records.adb:129:25: info: initialization of "Dst.Exists" proved
 records.adb:129:25: info: initialization of "Dst.The_Pair.A" proved
 records.adb:129:25: info: initialization of "Dst.The_Pair.B" proved
@@ -44,12 +44,12 @@ records.adb:152:22: info: postcondition proved (CVC4: 3 VC)
 records.adb:152:36: info: initialization of "Dst.Exists" proved
 records.adb:164:32: info: initialization of "Dst.Exists" proved
 records.adb:166:22: info: initialization of "Dst.Exists" proved
-records.adb:166:22: medium: postcondition might fail, cannot prove Dst = Src (e.g. when Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0)))
+records.adb:166:22: medium: postcondition might fail, cannot prove Dst = Src (e.g. when Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0))) [possible explanation: subprogram at line 163 should mention Src in a precondition]
 records.adb:178:22: info: postcondition proved (CVC4: 4 VC)
 records.adb:187:23: info: initialization of "Tmp" proved
-records.adb:195:43: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => ?, The_Pair => (A => 1, B => ?)))
+records.adb:195:43: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => ?, The_Pair => (A => 1, B => ?))) [possible explanation: subprogram at line 190 should mention X in a precondition]
 records.adb:201:23: info: initialization of "Tmp" proved
-records.adb:209:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 1, B => 1)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?)))
+records.adb:209:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 1, B => 1)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?))) [possible explanation: subprogram at line 204 should mention X in a precondition]
 records.adb:215:30: info: assertion proved (CVC4: 2 VC)
 records.adb:216:36: info: initialization of "Tmp" proved
 records.adb:219:10: info: assertion proved (CVC4: 2 VC)
@@ -59,17 +59,17 @@ records.adb:227:22: info: postcondition proved (CVC4: 4 VC)
 records.adb:237:26: info: initialization of "Tmp" proved
 records.adb:243:22: info: postcondition proved (CVC4: 1 VC)
 records.adb:251:23: info: initialization of "Tmp" proved
-records.adb:256:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0)))
+records.adb:256:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0))) [possible explanation: subprogram at line 254 should mention X in a precondition]
 records.adb:265:23: info: initialization of "Tmp" proved
-records.adb:270:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1)))
+records.adb:270:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1))) [possible explanation: subprogram at line 268 should mention X in a precondition]
 records.adb:280:26: info: initialization of "Tmp" proved
 records.adb:286:22: info: postcondition proved (CVC4: 4 VC)
-records.adb:300:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => ?, B => 5)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?)))
+records.adb:300:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => ?, B => 5)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?))) [possible explanation: subprogram at line 295 should mention X in a precondition]
 records.adb:309:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:316:14: info: initialization of "Tmp.Exists" proved
 records.adb:316:14: info: initialization of "Tmp.The_Pair.A" proved
 records.adb:316:14: info: initialization of "Tmp.The_Pair.B" proved
-records.adb:323:19: medium: postcondition might fail, cannot prove Update_B'Result = X'update (e.g. when N = 0 and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 1)) and X = (Exists => False, The_Pair => (A => 1, B => 1)))
+records.adb:323:19: medium: postcondition might fail, cannot prove Update_B'Result = X'update (e.g. when N = 0 and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 1)) and X = (Exists => False, The_Pair => (A => 1, B => 1))) [possible explanation: precondition of subprogram at line 319 should mention X]
 records.adb:329:27: info: range check proved (CVC4: 1 VC)
 records.adb:330:14: info: initialization of "Tmp.Exists" proved
 records.adb:330:14: info: initialization of "Tmp.The_Pair.A" proved
@@ -82,7 +82,7 @@ records.adb:366:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:376:14: info: initialization of "R.Exists" proved
 records.adb:376:14: info: initialization of "R.The_Pair.A" proved
 records.adb:376:14: info: initialization of "R.The_Pair.B" proved
-records.adb:380:19: medium: postcondition might fail, cannot prove Make_Optional_Pair_A_2'Result =  Optional_Pair'(Exists => False, The_Pair => X) (e.g. when Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0))
+records.adb:380:19: medium: postcondition might fail, cannot prove Make_Optional_Pair_A_2'Result =  Optional_Pair'(Exists => False, The_Pair => X) (e.g. when Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0)) [possible explanation: subprogram at line 379 should mention X in a precondition]
 records.adb:390:14: info: initialization of "R.Exists" proved
 records.adb:390:14: info: initialization of "R.The_Pair.A" proved
 records.adb:390:14: info: initialization of "R.The_Pair.B" proved
@@ -90,9 +90,9 @@ records.adb:394:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:402:14: info: initialization of "R.Exists" proved
 records.adb:402:14: info: initialization of "R.The_Pair.A" proved
 records.adb:402:14: info: initialization of "R.The_Pair.B" proved
-records.adb:410:22: medium: assertion might fail, cannot prove X.The_Pair.A = 0 (e.g. when X = (Exists => ?, The_Pair => (A => 1, B => ?)))
-records.adb:418:22: medium: assertion might fail, cannot prove X.The_Pair.A = X.The_Pair.B (e.g. when X = (Exists => ?, The_Pair => (A => 0, B => 1)))
-records.adb:426:22: medium: assertion might fail, cannot prove X.The_Pair.A /= X.The_Pair.B (e.g. when X = (Exists => ?, The_Pair => (A => 0, B => 0)))
+records.adb:410:22: medium: assertion might fail, cannot prove X.The_Pair.A = 0 (e.g. when X = (Exists => ?, The_Pair => (A => 1, B => ?))) [possible explanation: subprogram at line 405 should mention X in a precondition]
+records.adb:418:22: medium: assertion might fail, cannot prove X.The_Pair.A = X.The_Pair.B (e.g. when X = (Exists => ?, The_Pair => (A => 0, B => 1))) [possible explanation: subprogram at line 413 should mention X in a precondition]
+records.adb:426:22: medium: assertion might fail, cannot prove X.The_Pair.A /= X.The_Pair.B (e.g. when X = (Exists => ?, The_Pair => (A => 0, B => 0))) [possible explanation: subprogram at line 421 should mention X in a precondition]
 records.adb:429:22: info: initialization of "X.Exists" proved
 records.adb:429:22: info: initialization of "X.The_Pair.A" proved
 records.adb:429:22: info: initialization of "X.The_Pair.B" proved
@@ -100,21 +100,21 @@ records.adb:436:22: medium: assertion might fail, cannot prove not X.Exists (e.g
 records.adb:436:26: info: initialization of "X.Exists" proved
 records.adb:446:04: warning: analyzing unreferenced function "Apply_Command"
 records.adb:453:20: info: initialization of "R.A" proved
-records.adb:453:24: medium: range check might fail (e.g. when R = (A => 255, B => ?))
+records.adb:453:24: medium: range check might fail (e.g. when R = (A => Unsigned_Byte'Last, B => ?))
 records.adb:460:14: info: initialization of "R.A" proved
 records.adb:460:14: info: initialization of "R.B" proved
 records.adb:466:22: info: postcondition proved (CVC4: 1 VC)
 records.adb:474:30: info: assertion proved (CVC4: 1 VC)
-records.adb:483:22: medium: postcondition might fail, cannot prove R = R'Old'update (e.g. when R = (Exists => False, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => False, The_Pair => ?) and X = 1)
+records.adb:483:22: medium: postcondition might fail, cannot prove R = R'Old'update (e.g. when R = (Exists => False, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => False, The_Pair => ?) and X = 1) [possible explanation: subprogram at line 480 should mention R and X in a precondition]
 records.adb:491:30: info: assertion proved (CVC4: 1 VC)
 records.adb:501:19: info: postcondition proved (CVC4: 2 VC)
-records.adb:504:22: medium: assertion might fail, cannot prove R.Exists (e.g. when R = (Exists => False, The_Pair => (A => 0, B => 0)))
+records.adb:504:22: medium: assertion might fail, cannot prove R.Exists (e.g. when R = (Exists => False, The_Pair => (A => 0, B => 0))) [possible explanation: subprogram at line 498 should mention R in a precondition]
 records.adb:514:22: info: postcondition proved (CVC4: 2 VC)
 records.adb:523:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:534:22: medium: assertion might fail, cannot prove F_Of_Pair (Pair'(5, 5))
 counterexample expected for check at records.adb:86
-  trace at records.adb:83 --> A = (A => 255, B => 0) and B = (A => 0, B => 0)
-  trace at records.adb:86 --> A = (A => 255, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)
+  trace at records.adb:83 --> A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => 0)
+  trace at records.adb:86 --> A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)
   trace at records.adb:96 --> R = (A => 0, B => 0)
   trace at records.adb:99 --> Safe_Add_Pair_B'Result = (A => 0, B => 0)
 counterexample expected for check at records.adb:119
@@ -187,9 +187,9 @@ counterexample expected for check at records.adb:436
   trace at records.adb:433 --> X = (Exists => True, The_Pair => (A => 5, B => 10))
   trace at records.adb:436 --> X = (Exists => True, The_Pair => ?)
 counterexample expected for check at records.adb:453
-  trace at records.adb:446 --> P = (Data => (A => 255, B => 255), Command => Increment_A)
-  trace at records.adb:452 --> R = (A => 255, B => 255)
-  trace at records.adb:453 --> R = (A => 255, B => ?)
+  trace at records.adb:446 --> P = (Data => (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last), Command => Increment_A)
+  trace at records.adb:452 --> R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)
+  trace at records.adb:453 --> R = (A => Unsigned_Byte'Last, B => ?)
 counterexample expected for check at records.adb:483
   trace at records.adb:480 --> R = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:481 --> X = 1

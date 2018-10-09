@@ -1,1 +1,1 @@
-p_body.adb:5:18: medium: overflow check might fail (e.g. when X = 2147483647)
+p_body.adb:5:18: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 3 should mention X in a precondition]

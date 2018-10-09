@@ -61,7 +61,7 @@ the complete list).
   exception is raised, subprograms that are terminated abnormally leave their
   variables in a possibly uninitialized or inconsistent state, in which data
   invariants may be broken. This includes values of out parameters, which
-  additionnally are not copied back when passed by copy, thus introducing a
+  additionally are not copied back when passed by copy, thus introducing a
   dependency on the parameter mode chosen by the compiler.
 
 * The use of access types and allocators is not permitted. Pointers can
@@ -136,11 +136,11 @@ constrained with :ref:`Type Contracts`. Typically, 95% to 98% of run-time
 checks can be proved automatically, and the remaining checks can be either
 verified with manual provers or justified by manual analysis.
 
-|GNATprove| supports this type of combination of results in :ref:`The Analysis
-Results Summary Table`. Multiple columns display the number of checks
-automatically verified, while the column `Justified` displays the number of
-checks manually justified. The column `Unproved` should be empty for all checks
-to be verified.
+|GNATprove| supports this type of combination of results in the summary table
+of :ref:`The Analysis Results Summary File`. Multiple columns display the
+number of checks automatically verified, while the column `Justified` displays
+the number of checks manually justified. The column `Unproved` should be empty
+for all checks to be verified.
 
 With a Combination of Proof and Test
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -172,10 +172,10 @@ At the Level of Individual Run-Time Checks
 
 One way to get confidence that unproved run-time checks cannot fail during
 execution is to exercise them during testing. Test coverage information allows
-to guarantee a set of run-time checks have been executed successfully during a
+guaranteeing a set of run-time checks have been executed successfully during a
 test run. This coverage information may be gathered from the execution of a
 unit testing campaign, an integration testing campaign, or the execution of a
-dedicated testsuite focussing on exercizing the run-time checks (for example on
+dedicated testsuite focussing on exercising the run-time checks (for example on
 boundary values or random ones).
 
 This strategy is already applied in other static analysis tools, for example
@@ -187,7 +187,7 @@ Between Proof and Integration Testing
 
 Contracts can also be exercised dynamically during integration testing. In
 cases where unit testing is not required (either because proof has been applied
-to all subprograms, or because the verification context allows it), exercizing
+to all subprograms, or because the verification context allows it), exercising
 contracts during integration testing can complement proof results, by giving
 the assurance that the actual compiled program behaves as expected.
 
@@ -253,7 +253,7 @@ components are verified individually (for example by proof or test or a
 combination thereof), their combination may still fail because of unforeseen
 interactions or design problems.
 
-|SPARK| is ideally equiped to support such analysis, with its detailed
+|SPARK| is ideally equipped to support such analysis, with its detailed
 :ref:`Subprogram Contracts`:
 
 * With :ref:`Data Dependencies`, a user can specify exactly the input and
@@ -293,7 +293,7 @@ Comments can be advantageously replaced by contracts:
   components, as in new developments.
 
 Contracts are less ambiguous than comments, and can be accompanied by (or
-interspersed with) higher level comments than need not be focused on the finer
+interspersed with) higher level comments that need not be focused on the finer
 grain details of which variables must have which values, as these are already
 specified concisely and precisely in the contracts.
 
@@ -400,7 +400,7 @@ variable or constant directly. Because |GNATprove| performs an analysis based
 on contracts, all that is known at analysis time about the value returned by a
 getter function is what is available from its signature and
 contract. Typically, one may want to use :ref:`Scalar Ranges` or
-:ref:`Predicates` to constrain the return type of such getter functions, to
+:ref:`Predicates` to constrain the return subtype of such getter functions, to
 reflect the operational constraints respected by all parameterizations.
 
 This technique ensures that the results of applying |GNATprove| are valid not
@@ -1154,7 +1154,7 @@ process. Various options can be considered for the conversion process:
    * :ref:`Contract Cases` can be used to replace complex postconditions with
      implications.
 
-   * :ref:`Predicates` can be used to state invariant properties of types, so
+   * :ref:`Predicates` can be used to state invariant properties of subtypes, so
      that they need not be repeated in preconditions, postconditions, loop
      invariants, etc.
 

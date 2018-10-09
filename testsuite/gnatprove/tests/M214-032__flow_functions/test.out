@@ -6,5 +6,5 @@ test.adb:20:42: info: cannot unroll loop (too many loop iterations)
 test.adb:21:15: info: division check proved (CVC4: 1 VC)
 test.adb:28:04: warning: analyzing unreferenced function "Ext_Return_01"
 test.adb:30:07: info: initialization of "R" proved
-test.adb:31:17: medium: overflow check might fail
+test.adb:31:17: medium: overflow check might fail [possible explanation: subprogram at line 28 should mention N in a precondition]
 test.adb:44:07: medium: exception might be raised

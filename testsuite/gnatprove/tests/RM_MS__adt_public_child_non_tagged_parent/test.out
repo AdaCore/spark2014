@@ -1,3 +1,3 @@
-pairs_14-additional_14.adb:7:42: medium: overflow check might fail (e.g. when Value = (Value_One => 2147483647, Value_Two => 2147483647))
-pairs_14-additional_14.adb:8:42: medium: overflow check might fail (e.g. when Value = (Value_One => ?, Value_Two => 2147483647))
-pairs_14.adb:5:23: medium: overflow check might fail (e.g. when Value = (Value_One => -1, Value_Two => -2147483648))
+pairs_14-additional_14.adb:7:42: medium: overflow check might fail (e.g. when Value = (Value_One => Integer'Last, Value_Two => Integer'Last)) [possible explanation: subprogram at line 4 should mention Value in a precondition]
+pairs_14-additional_14.adb:8:42: medium: overflow check might fail (e.g. when Value = (Value_One => ?, Value_Two => Integer'Last)) [possible explanation: subprogram at line 4 should mention Value in a precondition]
+pairs_14.adb:5:23: medium: overflow check might fail (e.g. when Value = (Value_One => -1, Value_Two => Integer'First)) [possible explanation: subprogram at line 4 should mention Value in a precondition]

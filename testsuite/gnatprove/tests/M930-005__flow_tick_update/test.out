@@ -6,7 +6,7 @@ foo.adb:30:12: info: initialization of "Tmp.X" proved
 foo.adb:31:12: info: initialization of "Tmp.Y" proved
 foo.adb:32:12: info: initialization of "Tmp.Z" proved
 foo.adb:37:23: info: initialization of "W" proved
-foo.adb:44:21: medium: range check might fail
-foo.adb:45:21: medium: range check might fail
-foo.adb:55:38: medium: range check might fail
-foo.adb:55:48: medium: array index check might fail
+foo.adb:44:21: medium: range check might fail [possible explanation: subprogram at line 35 should mention Y in a precondition]
+foo.adb:45:21: medium: range check might fail [possible explanation: subprogram at line 35 should mention N in a precondition]
+foo.adb:55:38: medium: range check might fail [possible explanation: subprogram at line 48 should mention N in a precondition]
+foo.adb:55:48: medium: array index check might fail [possible explanation: subprogram at line 48 should mention M in a precondition]

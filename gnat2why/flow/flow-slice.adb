@@ -213,19 +213,25 @@ package body Flow.Slice is
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             F_Initial : Flow_Id renames FA.PDG.Get_Key (V_Initial);
-            Attr : V_Attributes renames FA.Atr (V_Initial);
+            Atr       : V_Attributes renames FA.Atr (V_Initial);
 
          begin
             if F_Initial.Variant = Initial_Value
-              and then Attr.Is_Import
+              and then Atr.Is_Import
               and then Is_Variable (F_Initial)
               and then not Synthetic (F_Initial)
             then
                In_Vertices.Insert (V_Initial);
                Unused_Inputs.Include (Flow_Equivalent (F_Initial));
 
+               --  ??? Maybe we don't need to special case discriminants and
+               --  bounds and subtracts those separately from the other unused
+               --  inputs. This could be refactored. Look at
+               --  Internal_Dependency as well as that could deal with those
+               --  cases.
+
                if (Is_Discriminant (F_Initial) or else Is_Bound (F_Initial))
-                 and then Attr.Mode = Mode_Out
+                 and then Atr.Mode = Mode_Out
                then
                   --  See above about suppressing "null => foo" dependency
                   --  error messages for out parameters and globals.
@@ -282,9 +288,7 @@ package body Flow.Slice is
 
    procedure Compute_Globals
      (FA                    : Flow_Analysis_Graphs;
-      Inputs_Proof          : out Node_Sets.Set;
-      Inputs                : out Node_Sets.Set;
-      Outputs               : out Node_Sets.Set;
+      Globals               : out Global_Nodes;
       Proof_Calls           : out Node_Sets.Set;
       Definite_Calls        : out Node_Sets.Set;
       Conditional_Calls     : out Node_Sets.Set;
@@ -402,6 +406,13 @@ package body Flow.Slice is
 
       Ordinary_Ins : Node_Sets.Set;
 
+      Proof_Ins : Global_Set;
+      Inputs    : Global_Set;
+      Outputs   : Global_Set;
+      --  Placeholders for the results; they are separate containers because
+      --  while we populate them we don't want to care about the predicate on
+      --  the result type.
+
    --  Start of processing for Compute_Globals
 
    begin
@@ -468,9 +479,6 @@ package body Flow.Slice is
 
       --  Classify globals into outs, ins and in_outs; also, insert "out" and
       --  "in_out" globals into Outputs, and "in" into Inputs.
-      Inputs_Proof.Clear;
-      Inputs.Clear;
-      Outputs.Clear;
 
       for G of FA.GG.Globals loop
          declare
@@ -528,7 +536,7 @@ package body Flow.Slice is
                   if Ordinary_Ins.Contains (G) then
                      Inputs.Insert (G);
                   else
-                     Inputs_Proof.Insert (G);
+                     Proof_Ins.Insert (G);
                   end if;
                else
                   --  If not written and not used, then should not be a global
@@ -537,6 +545,10 @@ package body Flow.Slice is
             end if;
          end;
       end loop;
+
+      Globals := (Proof_Ins => Proof_Ins,
+                  Inputs    => Inputs,
+                  Outputs   => Outputs);
 
       --  Only needed for packages
       if FA.Kind in Kind_Package | Kind_Package_Body then

@@ -149,7 +149,6 @@ package body Flow.Analysis.Sanity is
         (To_Ordered_Flow_Id_Set
            (Get_Variables (N,
                            Scope                        => FA.B_Scope,
-                           Local_Constants              => Node_Sets.Empty_Set,
                            Fold_Functions               => False,
                            Use_Computed_Globals         => True,
                            Expand_Synthesized_Constants => True)));
@@ -161,7 +160,6 @@ package body Flow.Analysis.Sanity is
         (To_Ordered_Flow_Id_Set
            (Get_Variables (L,
                            Scope                        => FA.B_Scope,
-                           Local_Constants              => Node_Sets.Empty_Set,
                            Fold_Functions               => False,
                            Use_Computed_Globals         => True,
                            Expand_Synthesized_Constants => True)));
@@ -1192,7 +1190,7 @@ package body Flow.Analysis.Sanity is
             when Magic_String =>
                return False;
 
-            when Direct_Mapping =>
+            when Direct_Mapping | Record_Field =>
                declare
                   --  If the subprogram is annotated with both Global and
                   --  Depends contract, it is enough to check one of the two

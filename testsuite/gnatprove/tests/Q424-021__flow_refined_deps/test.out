@@ -1,2 +1,2 @@
-state.adb:14:14: medium: overflow check might fail
+state.adb:14:14: medium: overflow check might fail [possible explanation: subprogram at line 7 should mention S and Foo.F in a precondition]
 state.ads:18:04: info: initialization of "S" constituent of "State" proved

@@ -108,11 +108,11 @@ package body Flow_Generated_Globals.Partial is
    --  Returns True iff E might be called
 
    function Scope_Truly_Within_Or_Same
-     (E, Analyzed : Entity_Id) return Boolean
+     (Inner, Outer : Entity_Id) return Boolean
    is
-     (Is_In_Analyzed_Files (E)
-      and then Scope_Within_Or_Same (E, Analyzed))
-   with Pre => Is_In_Analyzed_Files (Analyzed);
+     (Is_In_Analyzed_Files (Inner)
+      and then Scope_Within_Or_Same (Inner, Outer))
+   with Pre => Is_In_Analyzed_Files (Outer);
    --  Determines if entity E is the same as Analyzed or is "truly" within,
    --  i.e. in the same compilation unit as Analyzed and inside Analyzed. (It
    --  differs from Scope_Within_Or_Same for entities in child units). This
@@ -401,9 +401,7 @@ package body Flow_Generated_Globals.Partial is
       if FA.Is_Generative then
          Compute_Globals
            (FA,
-            Inputs_Proof          => Contr.Globals.Refined.Proof_Ins,
-            Inputs                => Contr.Globals.Refined.Inputs,
-            Outputs               => Contr.Globals.Refined.Outputs,
+            Globals               => Contr.Globals.Refined,
             Proof_Calls           => Contr.Globals.Calls.Proof_Calls,
             Definite_Calls        => Contr.Globals.Calls.Definite_Calls,
             Conditional_Calls     => Contr.Globals.Calls.Conditional_Calls,
@@ -426,7 +424,7 @@ package body Flow_Generated_Globals.Partial is
 
                --  We want to store objects from the LHSs of explicit
                --  Initializes contracts in the ALI file to know that are
-               --  claimed to be initializes even if they are only known by
+               --  claimed to be initialized even if they are only known by
                --  Entity_Name.
 
                for Clause in Parse_Initializes (E).Iterate loop
@@ -1140,39 +1138,32 @@ package body Flow_Generated_Globals.Partial is
 
       --  ??? this is probably wrong place to filter locals
       --  ### Nah, I think this is the right place.
-      if Ekind (Analyzed) in Entry_Kind
-                           | E_Function
-                           | E_Procedure
-                           | E_Task_Type
-      then
-         declare
-            C : Contract renames Contracts (Analyzed);
+      declare
+         C : Contract renames Contracts (Analyzed);
+         S : constant Entity_Id := Scope (Analyzed);
 
-            S : constant Entity_Id := Scope (Analyzed);
+      begin
+         Filter_Local (Analyzed, C.Globals.Proper);
+         Filter_Local (Analyzed, C.Globals.Refined);
 
-         begin
-            Filter_Local (Analyzed, C.Globals.Proper);
-            Filter_Local (Analyzed, C.Globals.Refined);
+         --  Protected type appear as an implicit parameter to protected
+         --  subprograms and protected entries, and as a global to things
+         --  nested in them. After resolving calls from protected
+         --  subprograms and protected entries to their nested things the
+         --  type will also appear as a global of the protected
+         --  subprogram/entry. Here we strip it. ??? Conceptually this
+         --  belongs to Filter_Local where Scope_Same_Or_Within does not
+         --  capture this.
 
-            --  Protected type appear as an implicit parameter to protected
-            --  subprograms and protected entries, and as a global to things
-            --  nested in them. After resolving calls from protected
-            --  subprograms and protected entries to their nested things the
-            --  type will also appear as a global of the protected
-            --  subprogram/entry. Here we strip it. ??? Conceptually this
-            --  belongs to Filter_Local where Scope_Same_Or_Within does not
-            --  capture this.
-
-            if Ekind (S) = E_Protected_Type then
-               C.Globals.Proper.Inputs.Exclude (S);
-               C.Globals.Proper.Outputs.Exclude (S);
-               C.Globals.Proper.Proof_Ins.Exclude (S);
-               C.Globals.Refined.Inputs.Exclude (S);
-               C.Globals.Refined.Outputs.Exclude (S);
-               C.Globals.Refined.Proof_Ins.Exclude (S);
-            end if;
-         end;
-      end if;
+         if Ekind (S) = E_Protected_Type then
+            C.Globals.Proper.Inputs.Exclude (S);
+            C.Globals.Proper.Outputs.Exclude (S);
+            C.Globals.Proper.Proof_Ins.Exclude (S);
+            C.Globals.Refined.Inputs.Exclude (S);
+            C.Globals.Refined.Outputs.Exclude (S);
+            C.Globals.Refined.Proof_Ins.Exclude (S);
+         end if;
+      end;
 
       if XXX then
          Debug_Traversal (Analyzed);
@@ -1352,12 +1343,19 @@ package body Flow_Generated_Globals.Partial is
 
    begin
       for N of Nodes loop
+
          --  Filter variables declared within E and the E itself (which occurs
          --  as a global when E is a single concurrent type). Heap is never a
-         --  local variable, so it must be always kept while filtering.
+         --  local variable, so it must be always kept while filtering. Also,
+         --  frontend puts generic actuals of mode IN directly inside the
+         --  instance, but from the language point of view they act as globals
+         --  (e.g. can appear in the RHS of the generated Initializes).
+
          if Is_Heap_Variable (N)
            or else not (Is_In_Analyzed_Files (N)
-                        and then Scope_Within_Or_Same (N, E))
+                        and then Scope_Within_Or_Same (N, E)
+                        and then (if In_Generic_Actual (N)
+                                  then Scope (N) /= E))
          then
             Remote.Insert (N);
          end if;
@@ -2095,7 +2093,6 @@ package body Flow_Generated_Globals.Partial is
               Get_Variables
                 (Expr,
                  Scope                => Get_Flow_Scope (Full),
-                 Local_Constants      => Node_Sets.Empty_Set,
                  Fold_Functions       => True,
                  Use_Computed_Globals => False);
 

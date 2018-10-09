@@ -3,7 +3,7 @@ package Shared_Ptr with
 is
    type T is private;
 
-   function Length (This : T) return Integer;
+   function Length (This : T) return Integer with Global => null;
 
    function To_String (This : T) return String with
      Pre => Length (This) > 0,

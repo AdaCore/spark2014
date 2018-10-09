@@ -1,5 +1,5 @@
 p.adb:13:35: info: overflow check proved (CVC4: 1 VC)
-p.adb:13:42: medium: overflow check might fail (e.g. when N = 2147483647)
+p.adb:13:42: medium: overflow check might fail (e.g. when N = Integer'Last)
 p.adb:21:31: info: range check proved (CVC4: 1 VC)
 p.adb:21:38: medium: range check might fail (e.g. when C = Green)
 p.adb:29:18: info: range check proved (CVC4: 1 VC)

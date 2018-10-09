@@ -143,6 +143,30 @@ package body Flow_Utility is
    --  Errout.First_Node, but doesn't rely on slocs thus avoids possible
    --  problems with generic instances (as described in Safe_First_Sloc).
 
+   ----------------------------------------------------------------------
+   -- Constants with variable inputs --
+   ----------------------------------------------------------------------
+
+   function Has_Variable_Input_Internal (C : Entity_Id) return Boolean
+   with Pre => Ekind (C) = E_Constant;
+   --  To decide whether a constant has variable inputs we need to traverse its
+   --  initialization expression. This involves Get_Variables, which itself
+   --  calls Has_Variable_Input to filter "pure" constants. This might cause
+   --  repeated traversals of the AST and might be inefficient.
+   --
+   --  We solve this by deciding the actual result in this routine and
+   --  momoizing it in Has_Variable_Input.
+
+   package Entity_To_Boolean_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Boolean,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   Variable_Input_Map : Entity_To_Boolean_Maps.Map;
+   --  Map from constants to their memoized property of having variable inputs
+
    ------------------------
    -- Classwide_Pre_Post --
    ------------------------
@@ -416,6 +440,7 @@ package body Flow_Utility is
          when Direct_Mapping =>
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
             begin
                --  Expand abstract states as much as possible while respecting
                --  the SPARK_Mode barrier.
@@ -987,6 +1012,11 @@ package body Flow_Utility is
       if Trimming_Required then
          --  Use the Refined_Global to trim the down-projected Depends
 
+         pragma Assert
+           (Present (Find_Contract (Subprogram, Pragma_Depends))
+              and then
+            No (Find_Contract (Subprogram, Pragma_Refined_Depends)));
+
          --  Collect all global Proof_Ins, Outputs and Inputs
          Get_Globals (Subprogram          => Subprogram,
                       Scope               => Scope,
@@ -1063,9 +1093,7 @@ package body Flow_Utility is
                                                    else Globals.Inputs);
 
                   begin
-                     if not Trimmed_Input.Is_Empty then
-                        Depends.Insert (O, Trimmed_Input);
-                     end if;
+                     Depends.Insert (O, Trimmed_Input);
                   end;
                end loop;
             end;
@@ -1207,6 +1235,10 @@ package body Flow_Utility is
          end;
       end if;
 
+      for RHS of Depends loop
+         Map_Generic_In_Formals (Scope, RHS);
+      end loop;
+
    end Get_Depends;
 
    -----------------
@@ -1283,7 +1315,9 @@ package body Flow_Utility is
       begin
          case The_Mode is
             when Name_Input =>
-               Globals.Inputs.Insert (E);
+               if not Is_Generic_Actual_Without_Variable_Input (E) then
+                  Globals.Inputs.Insert (E);
+               end if;
 
             when Name_In_Out =>
                Globals.Inputs.Insert (E);
@@ -1293,7 +1327,9 @@ package body Flow_Utility is
                Globals.Outputs.Insert (E);
 
             when Name_Proof_In =>
-               Globals.Proof_Ins.Insert (E);
+               if not Is_Generic_Actual_Without_Variable_Input (E) then
+                  Globals.Proof_Ins.Insert (E);
+               end if;
          end case;
       end Process;
 
@@ -1402,6 +1438,70 @@ package body Flow_Utility is
 
    end Parse_Global_Contract;
 
+   ----------------------------
+   -- Map_Generic_In_Formals --
+   ----------------------------
+
+   procedure Map_Generic_In_Formals
+     (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set)
+   is
+      Mapped : Flow_Id_Sets.Set;
+
+   begin
+      --  Iterate over Objects and either map them into anything referenced
+      --  in their generic actual parameter expression or keep as they are.
+
+      for Object of Objects loop
+         case Object.Kind is
+            when Direct_Mapping | Record_Field =>
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (Object);
+
+               begin
+                  if Ekind (E) = E_Constant
+                    and then In_Generic_Actual (E)
+                  then
+                     if Scope_Within_Or_Same (Inner => Scop.Ent,
+                                              Outer => Scope (E))
+                     then
+                        Mapped.Include (Object);
+                     else
+                        declare
+                           Inputs : constant Flow_Id_Sets.Set :=
+                             Get_Variables
+                               (Expression (Declaration_Node (E)),
+                                Scope                => Scop,
+                                Fold_Functions       => True,
+                                Use_Computed_Globals => False);
+
+                        begin
+                           --  Retain the variant of the original Object, which
+                           --  is either In_View for those coming from
+                           --  Get_Global or Normal_Use for those coming from
+                           --  other contexts.
+
+                           Mapped.Union
+                             (Change_Variant (To_Entire_Variables (Inputs),
+                                              Object.Variant));
+                        end;
+                     end if;
+                  else
+                     Mapped.Include (Object);
+                  end if;
+               end;
+
+            when Magic_String =>
+               Mapped.Include (Object);
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end loop;
+
+      Flow_Id_Sets.Move (Target => Objects,
+                         Source => Mapped);
+   end Map_Generic_In_Formals;
+
    -----------------
    -- Get_Globals --
    -----------------
@@ -1487,40 +1587,46 @@ package body Flow_Utility is
               Parse_Global_Contract (Subprogram  => Subprogram,
                                      Global_Node => Global_Node);
 
-            G_Proof : Node_Sets.Set;
-            G_In    : Node_Sets.Set;
-            G_Out   : Node_Sets.Set;
-
          begin
             ---------------------------------------------------------------
-            --  Step 2: Expand any abstract state that might be too refined
-            --  for our given scope.
+            --  Step 2: Expand any abstract state that might be too refined for
+            --  our given scope; also, convert to Flow_Ids in preparation for
+            --  the next step, where objects only known by Magic_String might
+            --  appear.
             ---------------------------------------------------------------
 
-            G_Proof := Down_Project (Raw_Globals.Proof_Ins, Scope);
-            G_In    := Down_Project (Raw_Globals.Inputs,    Scope);
-            G_Out   := Down_Project (Raw_Globals.Outputs,   Scope);
+            Globals :=
+              (Proof_Ins =>
+                 To_Flow_Id_Set (Down_Project (Raw_Globals.Proof_Ins, Scope),
+                                 In_View),
+               Inputs =>
+                 To_Flow_Id_Set (Down_Project (Raw_Globals.Inputs, Scope),
+                                 In_View),
+               Outputs =>
+                 To_Flow_Id_Set (Down_Project (Raw_Globals.Outputs, Scope),
+                                 Out_View));
 
             ---------------------------------------------------------------
-            --  Step 3: Remove generic formals without variable input
+            --  Step 3: If this query refers to Global of a subprogram that is
+            --  inside of a generic instance, then substitute generic actuals
+            --  of mode IN in that contract with objects referenced in their
+            --  corresponding generic actual parameter expressions.
             ---------------------------------------------------------------
 
-            Remove_Generic_In_Formals_Without_Variable_Input (G_Proof);
-            Remove_Generic_In_Formals_Without_Variable_Input (G_In);
+            Map_Generic_In_Formals (Scope, Globals.Proof_Ins);
+            Map_Generic_In_Formals (Scope, Globals.Inputs);
 
             ---------------------------------------------------------------
-            --  Step 4: Sanity check that none of the proof ins are
-            --  mentioned as ins.
-            ---------------------------------------------------------------
-
-            --  pragma Assert ((G_Proof and G_In) = Node_Sets.Empty_Set);
-
-            ---------------------------------------------------------------
-            --  Step 5: Trim constituents based on the Refined_Depends.
+            --  Step 4: Trim constituents based on the Refined_Depends.
             --  Only the Inputs are trimmed. Proof_Ins cannot be trimmed
             --  since they do not appear in Refined_Depends and Outputs
             --  cannot be trimmed since all constituents have to be
             --  present in the Refined_Depends.
+            --
+            --  ??? quite likely trimming should happen before mapping the
+            --  generic IN formal parameters; but the mapping happens in
+            --  Get_Depends too, so at least now we operate on the same view,
+            --  i.e. only on objects visible from the outside of generic.
             ---------------------------------------------------------------
 
             --  Check if the projected Global constituents need to be
@@ -1533,8 +1639,8 @@ package body Flow_Utility is
                          (Global_Node, Scope)
             then
                declare
-                  D_Map       : Dependency_Maps.Map;
-                  Input_Nodes : Node_Sets.Set;
+                  D_Map          : Dependency_Maps.Map;
+                  Refined_Inputs : Flow_Id_Sets.Set;
 
                begin
                   --  Read the Refined_Depends aspect
@@ -1545,23 +1651,16 @@ package body Flow_Utility is
                                Use_Computed_Globals => Use_Deduced_Globals);
 
                   --  Gather all inputs
-                  for Inputs of D_Map loop
-                     Input_Nodes.Union (To_Node_Set (Inputs));
+                  for RHS of D_Map loop
+                     Refined_Inputs.Union (RHS);
                   end loop;
 
                   --  Do the trimming
-                  G_In.Intersection (Input_Nodes);
+                  Globals.Inputs.Intersection
+                    (Change_Variant (Refined_Inputs, In_View));
                end;
             end if;
 
-            ---------------------------------------------------------------
-            --  Step 6: Convert to Flow_Id sets
-            ---------------------------------------------------------------
-
-            Globals :=
-              (Proof_Ins => To_Flow_Id_Set (G_Proof, In_View),
-               Inputs    => To_Flow_Id_Set (G_In,    In_View),
-               Outputs   => To_Flow_Id_Set (G_Out,   Out_View));
          end;
 
          Debug ("proof ins", Globals.Proof_Ins);
@@ -2032,7 +2131,6 @@ package body Flow_Utility is
 
    type Get_Variables_Context is record
       Scope                           : Flow_Scope;
-      Local_Constants                 : Node_Sets.Set;
       Fold_Functions                  : Boolean;
       Use_Computed_Globals            : Boolean;
       Reduced                         : Boolean;
@@ -2061,7 +2159,6 @@ package body Flow_Utility is
    function Get_Variables
      (N                            : Node_Id;
       Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
@@ -2072,7 +2169,6 @@ package body Flow_Utility is
    is
       Ctx : constant Get_Variables_Context :=
         (Scope                           => Scope,
-         Local_Constants                 => Local_Constants,
          Fold_Functions                  => Fold_Functions,
          Use_Computed_Globals            => Use_Computed_Globals,
          Reduced                         => Reduced,
@@ -2088,7 +2184,6 @@ package body Flow_Utility is
    function Get_Variables
      (L                            : List_Id;
       Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
@@ -2098,7 +2193,6 @@ package body Flow_Utility is
    is
       Ctx : constant Get_Variables_Context :=
         (Scope                           => Scope,
-         Local_Constants                 => Local_Constants,
          Fold_Functions                  => Fold_Functions,
          Use_Computed_Globals            => Use_Computed_Globals,
          Reduced                         => Reduced,
@@ -2166,7 +2260,6 @@ package body Flow_Utility is
       function Untangle_Record_Fields
         (N                            : Node_Id;
          Scope                        : Flow_Scope;
-         Local_Constants              : Node_Sets.Set;
          Fold_Functions               : Boolean;
          Use_Computed_Globals         : Boolean;
          Expand_Synthesized_Constants : Boolean)
@@ -2198,7 +2291,6 @@ package body Flow_Utility is
       is (Filter (Untangle_Record_Fields
            (N,
             Scope                        => Ctx.Scope,
-            Local_Constants              => Ctx.Local_Constants,
             Fold_Functions               => Ctx.Fold_Functions,
             Use_Computed_Globals         => Ctx.Use_Computed_Globals,
             Expand_Synthesized_Constants =>
@@ -2528,14 +2620,8 @@ package body Flow_Utility is
                      return Recurse (Expr);
                   end;
 
-               elsif Ctx.Local_Constants.Contains (E)
-                 or else Has_Variable_Input (E)
-               then
+               else
 
-                  --  If this constant:
-                  --    * comes from source and is in Local_Constants
-                  --    * or has variable input
-                  --  then add it.
                   --  Note that for constants of a constrained record or
                   --  concurrent type we want to detect their discriminant
                   --  constraints so we add them as well.
@@ -2876,7 +2962,6 @@ package body Flow_Utility is
       function Untangle_Record_Fields
         (N                            : Node_Id;
          Scope                        : Flow_Scope;
-         Local_Constants              : Node_Sets.Set;
          Fold_Functions               : Boolean;
          Use_Computed_Globals         : Boolean;
          Expand_Synthesized_Constants : Boolean)
@@ -2892,7 +2977,6 @@ package body Flow_Utility is
          is (Get_Variables
              (N,
               Scope                        => Scope,
-              Local_Constants              => Local_Constants,
               Fold_Functions               => Fold_Functions,
               Use_Computed_Globals         => Use_Computed_Globals,
               Reduced                      => False,
@@ -3392,7 +3476,6 @@ package body Flow_Utility is
                           Map_Type                     =>
                             Get_Type (N, Ctx.Scope),
                           Scope                        => Ctx.Scope,
-                          Local_Constants              => Ctx.Local_Constants,
                           Fold_Functions               => Ctx.Fold_Functions,
                           Use_Computed_Globals         =>
                             Ctx.Use_Computed_Globals,
@@ -3575,7 +3658,9 @@ package body Flow_Utility is
          end loop;
 
          --  And finally, we remove all local constants
-         Remove_Constants (S, Skip => Ctx.Local_Constants);
+         Remove_Constants (S);
+
+         Map_Generic_In_Formals (Ctx.Scope, S);
       end return;
    end Get_Variables_Internal;
 
@@ -3646,7 +3731,6 @@ package body Flow_Utility is
    is
       Ctx : constant Get_Variables_Context :=
         (Scope                           => Get_Flow_Scope (Scope_N),
-         Local_Constants                 => Node_Sets.Empty_Set,
          Fold_Functions                  => False,
          Use_Computed_Globals            => True,
          Reduced                         => True,
@@ -3688,6 +3772,29 @@ package body Flow_Utility is
    ------------------------
 
    function Has_Variable_Input (C : Entity_Id) return Boolean is
+      Position : Entity_To_Boolean_Maps.Cursor;
+      Inserted : Boolean;
+      --  Position and status for inserting a dummy value. If inserting
+      --  succeeds, then compute the actual value and store it in the map; if
+      --  it fails, then return the memoized value.
+
+   begin
+      Variable_Input_Map.Insert (Key      => C,
+                                 Position => Position,
+                                 Inserted => Inserted);
+
+      if Inserted then
+         Variable_Input_Map (Position) := Has_Variable_Input_Internal (C);
+      end if;
+
+      return Variable_Input_Map (Position);
+   end Has_Variable_Input;
+
+   ---------------------------------
+   -- Has_Variable_Input_Internal --
+   ---------------------------------
+
+   function Has_Variable_Input_Internal (C : Entity_Id) return Boolean is
       E    : Entity_Id := C;
       Expr : Node_Id;
       FS   : Flow_Id_Sets.Set;
@@ -3722,7 +3829,6 @@ package body Flow_Utility is
       FS := Get_Variables
         (Expr,
          Scope                => Get_Flow_Scope (E),
-         Local_Constants      => Node_Sets.Empty_Set,
          Fold_Functions       => True,
          Use_Computed_Globals => GG_Has_Been_Generated);
       --  Note that Get_Variables calls Has_Variable_Input when it finds a
@@ -3746,7 +3852,7 @@ package body Flow_Utility is
          --  thing to do).
          return True;
       end if;
-   end Has_Variable_Input;
+   end Has_Variable_Input_Internal;
 
    ----------------
    -- Has_Bounds --
@@ -4218,8 +4324,7 @@ package body Flow_Utility is
    ----------------------
 
    procedure Remove_Constants
-     (Objects : in out Flow_Id_Sets.Set;
-      Skip    :        Node_Sets.Set := Node_Sets.Empty_Set)
+     (Objects : in out Flow_Id_Sets.Set)
    is
       Constants : Flow_Id_Sets.Set;
       --  ??? list would be more efficient here, since we only Insert and
@@ -4234,7 +4339,6 @@ package body Flow_Utility is
 
                begin
                   if Ekind (E) = E_Constant
-                    and then not Skip.Contains (E)
                     and then not Has_Variable_Input (E)
                   then
                      Constants.Insert (F);
@@ -4255,26 +4359,17 @@ package body Flow_Utility is
       Objects.Difference (Constants);
    end Remove_Constants;
 
-   ------------------------------------------------------
-   -- Remove_Generic_In_Formals_Without_Variable_Input --
-   ------------------------------------------------------
+   ----------------------------------------------
+   -- Is_Generic_Actual_Without_Variable_Input --
+   ----------------------------------------------
 
-   procedure Remove_Generic_In_Formals_Without_Variable_Input
-     (Objects : in out Node_Sets.Set)
+   function Is_Generic_Actual_Without_Variable_Input
+     (E : Entity_Id)
+      return Boolean
    is
-      To_Be_Removed : Node_Sets.Set;
-   begin
-      for Obj of Objects loop
-         if Ekind (Obj) = E_Constant
-           and then In_Generic_Actual (Obj)
-           and then not Has_Variable_Input (Obj)
-         then
-            To_Be_Removed.Insert (Obj);
-         end if;
-      end loop;
-
-      Objects.Difference (To_Be_Removed);
-   end Remove_Generic_In_Formals_Without_Variable_Input;
+     (Ekind (E) = E_Constant
+      and then In_Generic_Actual (E)
+      and then not Has_Variable_Input (E));
 
    --------------------
    -- Same_Component --
@@ -4734,7 +4829,6 @@ package body Flow_Utility is
       Map_Root                     : Flow_Id;
       Map_Type                     : Entity_Id;
       Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Expand_Synthesized_Constants : Boolean;
@@ -4748,7 +4842,6 @@ package body Flow_Utility is
       is (Get_Variables
             (N,
              Scope                        => Scope,
-             Local_Constants              => Local_Constants,
              Fold_Functions               => Fold_Functions,
              Use_Computed_Globals         => Use_Computed_Globals,
              Reduced                      => False,
@@ -4768,7 +4861,6 @@ package body Flow_Utility is
                                               then Map_Type
                                               else Get_Type (N, Scope)),
              Scope                        => Scope,
-             Local_Constants              => Local_Constants,
              Fold_Functions               => Fold_Functions,
              Use_Computed_Globals         => Use_Computed_Globals,
              Expand_Synthesized_Constants => Expand_Synthesized_Constants,
@@ -5030,13 +5122,15 @@ package body Flow_Utility is
             declare
                E : constant Entity_Id := Entity (N);
 
-               Simplify : constant Boolean :=
+               Is_Pure_Constant : constant Boolean :=
                  Ekind (E) = E_Constant
-                 and then not Local_Constants.Contains (E);
-               --  We're assigning a local constant; and currently we just
-               --  use Get_Variables to "look through" it. We simply assign all
-               --  fields of the LHS to the RHS. Not as precise as it could be,
-               --  but it works for now...
+                 and then not Has_Variable_Input (E);
+               --  If we are assigning a pure constant, we don't really want to
+               --  see it (just like if we assign integer/string/... literals
+               --  then we don't want to see them in flow). However, we can't
+               --  just pretend that the RHS is an empty map; it is a map
+               --  (i.e. a certain structure) with empty elements, e.g. the
+               --  private extension part.
 
                LHS : constant Flow_Id_Sets.Set :=
                  Flatten_Variable (Map_Root, Scope);
@@ -5045,28 +5139,31 @@ package body Flow_Utility is
                  Map_Root'Update (Facet => Extension_Part);
 
                RHS : Flow_Id_Sets.Set :=
-                 (if Is_Concurrent_Component_Or_Discr (Entity (N)) then
+                 (if Is_Concurrent_Component_Or_Discr (E) then
                     Flatten_Variable
                       (Add_Component
-                         (Direct_Mapping_Id (Sinfo.Scope (Entity (N))),
-                          Entity (N)),
+                         (Direct_Mapping_Id (Sinfo.Scope (E)),
+                          E),
                        Scope)
 
-                  elsif Is_Part_Of_Concurrent_Object (Entity (N)) then
+                  elsif Is_Part_Of_Concurrent_Object (E) then
                     Flatten_Variable
                       (Add_Component
                          (Direct_Mapping_Id
-                            (Etype (Encapsulating_State (Entity (N)))),
-                          Entity (N)),
+                            (Etype (Encapsulating_State (E))),
+                          E),
                        Scope)
 
-                  else Flatten_Variable (Entity (N), Scope));
+                  else Flatten_Variable (E, Scope));
 
                To_Ext : Flow_Id_Sets.Set;
                F      : Flow_Id;
 
+               LHS_Pos : Flow_Id_Maps.Cursor;
+               Unused  : Boolean;
+
             begin
-               if Extensions_Visible (Entity (N), Scope)
+               if Extensions_Visible (E, Scope)
                  and then
                    ((Is_Class_Wide_Type (Map_Type)
                      and then not Is_Class_Wide_Type (Etype (N)))
@@ -5075,39 +5172,33 @@ package body Flow_Utility is
                   --  This is an implicit conversion to class wide, or we
                   --  for some other reason care specifically about the
                   --  extensions.
-                  RHS.Include (Direct_Mapping_Id (Entity (N),
-                                                  Facet => Extension_Part));
-                  --  RHS.Include (Direct_Mapping_Id (Entity (N),
-                  --                                  Facet => The_Tag));
+                  RHS.Insert (Direct_Mapping_Id (E,
+                                                 Facet => Extension_Part));
+                  --  RHS.Insert (Direct_Mapping_Id (E,
+                  --                                 Facet => The_Tag));
                end if;
 
-               if Simplify then
+               for Input of RHS loop
+                  F := Join (Map_Root, Input);
+                  if LHS.Contains (F) then
+                     M.Insert (F, (if Is_Pure_Constant
+                               then Flow_Id_Sets.Empty_Set
+                               else Flow_Id_Sets.To_Set (Input)));
+                  else
+                     To_Ext.Insert (Input);
+                  end if;
+               end loop;
 
-                  for Input of RHS loop
-                     M.Include (Join (Map_Root, Input), Get_Vars_Wrapper (N));
-                  end loop;
+               if not To_Ext.Is_Empty
+                 and then Is_Tagged_Type (Map_Type)
+               then
+                  --  Attempt to insert an empty set
+                  M.Insert (Key      => LHS_Ext,
+                            Position => LHS_Pos,
+                            Inserted => Unused);
 
-               else
-                  To_Ext := Flow_Id_Sets.Empty_Set;
-
-                  for Input of RHS loop
-                     F := Join (Map_Root, Input);
-                     if LHS.Contains (F) then
-                        M.Include (F, Flow_Id_Sets.To_Set (Input));
-                     else
-                        To_Ext.Include (Input);
-                     end if;
-                  end loop;
-
-                  if not To_Ext.Is_Empty
-                    and then Is_Tagged_Type (Map_Type)
-                  then
-                     if not M.Contains (LHS_Ext) then
-                        M.Include (LHS_Ext, Flow_Id_Sets.Empty_Set);
-                     end if;
-
-                     M (LHS_Ext).Union (To_Ext);
-
+                  if not Is_Pure_Constant then
+                     M (LHS_Pos).Union (To_Ext);
                   end if;
                end if;
             end;
@@ -5327,7 +5418,6 @@ package body Flow_Utility is
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;
       Scope                : Flow_Scope;
-      Local_Constants      : Node_Sets.Set;
       Use_Computed_Globals : Boolean;
       Vars_Defined         : out Flow_Id_Sets.Set;
       Vars_Used            : out Flow_Id_Sets.Set;
@@ -5345,7 +5435,6 @@ package body Flow_Utility is
       is (Get_Variables
             (N,
              Scope                => Scope,
-             Local_Constants      => Local_Constants,
              Fold_Functions       => Fold,
              Use_Computed_Globals => Use_Computed_Globals,
              Reduced              => False));

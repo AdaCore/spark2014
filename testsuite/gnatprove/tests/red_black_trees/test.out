@@ -1475,10 +1475,12 @@ red_black_trees.adb:359:07: info: initialization of "T_Old.Color" proved
 red_black_trees.adb:359:07: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:362:07: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:363:10: info: initialization of "X" proved
+red_black_trees.adb:364:10: info: analyzing call to "Prove_Same_Nb_Blacks" in context
 red_black_trees.adb:364:10: info: initialization of "T_Old.Color" proved
 red_black_trees.adb:364:10: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:367:16: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:367:19: info: initialization of "X" proved
+red_black_trees.adb:368:07: info: analyzing call to "Prove_Same_Nb_Blacks" in context
 red_black_trees.adb:368:07: info: initialization of "T_Old.Color" proved
 red_black_trees.adb:368:07: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:371:10: info: assertion proved (CVC4: 1 VC)
@@ -1535,6 +1537,7 @@ red_black_trees.adb:411:43: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:411:47: info: initialization of "Y" proved
 red_black_trees.adb:415:39: info: initialization of "Y" proved
 red_black_trees.adb:415:39: info: range check proved (CVC4: 1 VC)
+red_black_trees.adb:416:16: info: analyzing call to "Prove_Same_Nb_Blacks_Swap" in context
 red_black_trees.adb:416:16: info: initialization of "T_Old.Color" proved
 red_black_trees.adb:416:16: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:416:53: info: range check proved (CVC4: 1 VC)
@@ -1549,6 +1552,7 @@ red_black_trees.adb:425:42: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:426:19: medium: precondition might fail
 red_black_trees.adb:426:42: info: initialization of "X" proved
 red_black_trees.adb:426:42: info: range check proved (CVC4: 1 VC)
+red_black_trees.adb:427:19: info: analyzing call to "Prove_Same_Nb_Blacks_Rotate" in context
 red_black_trees.adb:427:19: info: initialization of "T_Old.Color" proved
 red_black_trees.adb:427:19: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:427:58: info: initialization of "X" proved
@@ -1575,6 +1579,7 @@ red_black_trees.adb:439:40: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:439:58: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:439:76: info: initialization of "X" proved
 red_black_trees.adb:439:76: info: range check proved (CVC4: 1 VC)
+red_black_trees.adb:440:16: info: analyzing call to "Prove_Same_Nb_Blacks_Rotate_Swap" in context
 red_black_trees.adb:440:16: info: initialization of "T_Old.Color" proved
 red_black_trees.adb:440:16: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:441:29: info: range check proved (CVC4: 1 VC)
@@ -1603,6 +1608,7 @@ red_black_trees.adb:466:43: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:466:47: info: initialization of "Y" proved
 red_black_trees.adb:470:39: info: initialization of "Y" proved
 red_black_trees.adb:470:39: info: range check proved (CVC4: 1 VC)
+red_black_trees.adb:471:16: info: analyzing call to "Prove_Same_Nb_Blacks_Swap" in context
 red_black_trees.adb:471:16: info: initialization of "T_Old.Color" proved
 red_black_trees.adb:471:16: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:471:53: info: range check proved (CVC4: 1 VC)
@@ -1617,6 +1623,7 @@ red_black_trees.adb:480:42: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:481:19: medium: precondition might fail
 red_black_trees.adb:481:43: info: initialization of "X" proved
 red_black_trees.adb:481:43: info: range check proved (CVC4: 1 VC)
+red_black_trees.adb:482:19: info: analyzing call to "Prove_Same_Nb_Blacks_Rotate" in context
 red_black_trees.adb:482:19: info: initialization of "T_Old.Color" proved
 red_black_trees.adb:482:19: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:482:58: info: initialization of "X" proved
@@ -1643,6 +1650,7 @@ red_black_trees.adb:494:39: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:494:57: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:494:75: info: initialization of "X" proved
 red_black_trees.adb:494:75: info: range check proved (CVC4: 1 VC)
+red_black_trees.adb:495:16: info: analyzing call to "Prove_Same_Nb_Blacks_Rotate_Swap" in context
 red_black_trees.adb:495:16: info: initialization of "T_Old.Color" proved
 red_black_trees.adb:495:16: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:496:29: info: range check proved (CVC4: 1 VC)
@@ -1659,6 +1667,7 @@ red_black_trees.adb:514:21: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:516:32: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:517:18: medium: assertion might fail, cannot prove T.Color (I) = Black
 red_black_trees.adb:521:16: info: precondition proved (CVC4: 1 VC)
+red_black_trees.adb:522:07: info: analyzing call to "Prove_Same_Nb_Blacks" in context
 red_black_trees.adb:522:07: info: initialization of "T_Old.Color" proved
 red_black_trees.adb:522:07: info: initialization of "T_Old.Struct" proved
 red_black_trees.ads:22:14: info: postcondition proved (CVC4: 2 VC)
@@ -1673,7 +1682,6 @@ red_black_trees.ads:29:56: info: invariant check proved (CVC4: 1 VC)
 red_black_trees.ads:30:20: medium: postcondition might fail, cannot prove Is_Add (Values (T'Old), V, Values (T))
 red_black_trees.ads:30:28: info: invariant check proved (CVC4: 1 VC)
 red_black_trees.ads:30:47: info: invariant check proved (CVC4: 1 VC)
-red_black_trees.ads:36:04: medium: type "Rbt" is not fully initialized
 red_black_trees.ads:36:09: info: invariant check proved on default value (CVC4: 1 VC)
 red_black_trees.ads:43:46: info: index check proved (CVC4: 2 VC)
 red_black_trees.ads:50:29: info: index check proved (CVC4: 2 VC)
@@ -2346,27 +2354,33 @@ search_trees.adb:880:30: info: range check proved (CVC4: 1 VC)
 search_trees.adb:880:37: info: initialization of "J" proved
 search_trees.adb:880:40: info: initialization of "D" proved
 search_trees.adb:880:43: info: range check proved (CVC4: 1 VC)
+search_trees.adb:882:07: info: analyzing call to "Prove_Extract_X" in context
 search_trees.adb:886:07: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:886:26: info: initialization of "X" proved
 search_trees.adb:886:29: info: initialization of "X" proved
 search_trees.adb:886:39: info: range check proved (CVC4: 1 VC)
+search_trees.adb:887:07: info: analyzing call to "Prove_Extract_Y" in context
 search_trees.adb:891:07: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:891:26: info: initialization of "Y" proved
 search_trees.adb:891:29: info: initialization of "Y" proved
+search_trees.adb:892:07: info: analyzing call to "Prove_Extract_YL" in context
 search_trees.adb:896:07: info: precondition proved (CVC4: 5 VC)
 search_trees.adb:896:23: info: initialization of "X" proved
 search_trees.adb:896:26: info: initialization of "X" proved
 search_trees.adb:896:36: info: initialization of "YL" proved
+search_trees.adb:897:07: info: analyzing call to "Prove_Plug_YL" in context
 search_trees.adb:901:07: info: precondition proved (CVC4: 5 VC)
 search_trees.adb:901:23: info: initialization of "Y" proved
 search_trees.adb:901:26: info: initialization of "Y" proved
 search_trees.adb:901:35: info: initialization of "X" proved
+search_trees.adb:902:07: info: analyzing call to "Prove_Plug_X" in context
 search_trees.adb:907:20: info: initialization of "Y" proved
 search_trees.adb:909:10: medium: precondition might fail
 search_trees.adb:909:27: info: range check proved (CVC4: 1 VC)
 search_trees.adb:909:34: info: initialization of "J" proved
 search_trees.adb:909:37: info: initialization of "D" proved
 search_trees.adb:909:40: info: initialization of "Y" proved
+search_trees.adb:910:10: info: analyzing call to "Prove_Plug_Y" in context
 search_trees.adb:913:07: medium: precondition might fail
 search_trees.adb:913:31: info: initialization of "T_Old.Root" proved
 search_trees.adb:913:31: info: initialization of "T_Old.Struct" proved
@@ -2628,27 +2642,33 @@ search_trees.adb:1132:30: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1132:37: info: initialization of "J" proved
 search_trees.adb:1132:40: info: initialization of "D" proved
 search_trees.adb:1132:43: info: range check proved (CVC4: 1 VC)
+search_trees.adb:1134:07: info: analyzing call to "Prove_Extract_Y" in context
 search_trees.adb:1138:07: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1138:26: info: initialization of "Y" proved
 search_trees.adb:1138:29: info: initialization of "Y" proved
 search_trees.adb:1138:38: info: range check proved (CVC4: 1 VC)
+search_trees.adb:1139:07: info: analyzing call to "Prove_Extract_X" in context
 search_trees.adb:1143:07: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1143:26: info: initialization of "X" proved
 search_trees.adb:1143:29: info: initialization of "X" proved
+search_trees.adb:1144:07: info: analyzing call to "Prove_Extract_XR" in context
 search_trees.adb:1148:07: info: precondition proved (CVC4: 5 VC)
 search_trees.adb:1148:23: info: initialization of "Y" proved
 search_trees.adb:1148:26: info: initialization of "Y" proved
 search_trees.adb:1148:35: info: initialization of "XR" proved
+search_trees.adb:1149:07: info: analyzing call to "Prove_Plug_XR" in context
 search_trees.adb:1153:07: info: precondition proved (CVC4: 5 VC)
 search_trees.adb:1153:23: info: initialization of "X" proved
 search_trees.adb:1153:26: info: initialization of "X" proved
 search_trees.adb:1153:36: info: initialization of "Y" proved
+search_trees.adb:1154:07: info: analyzing call to "Prove_Plug_Y" in context
 search_trees.adb:1159:20: info: initialization of "X" proved
 search_trees.adb:1161:10: medium: precondition might fail
 search_trees.adb:1161:27: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1161:34: info: initialization of "J" proved
 search_trees.adb:1161:37: info: initialization of "D" proved
 search_trees.adb:1161:40: info: initialization of "X" proved
+search_trees.adb:1162:10: info: analyzing call to "Prove_Plug_X" in context
 search_trees.adb:1167:15: info: invariant check proved (CVC4: 1 VC)
 search_trees.adb:1167:15: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:1167:22: info: initialization of "T_Old.Root" proved
@@ -2690,7 +2710,7 @@ search_trees.adb:1191:57: info: initialization of "Current" proved
 search_trees.adb:1191:77: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:1191:95: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1191:109: info: overflow check proved (CVC4: 1 VC)
-search_trees.adb:1192:28: medium: loop invariant might fail after first iteration, cannot prove V < T.Values (I)
+search_trees.adb:1192:28: medium: loop invariant might fail after first iteration, cannot prove V < T.Values (I) [possible explanation: subprogram at line 1175 should mention T and V in a precondition]
 search_trees.adb:1195:22: info: initialization of "Current" proved
 search_trees.adb:1196:27: info: index check proved (CVC4: 2 VC)
 search_trees.adb:1196:27: info: initialization of "Current" proved
@@ -3281,7 +3301,6 @@ search_trees.ads:305:22: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:305:22: info: precondition proved (CVC4: 2 VC)
 search_trees.ads:305:39: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:305:39: info: precondition proved (CVC4: 2 VC)
-search_trees.ads:311:04: medium: type "Search_Tree" is not fully initialized
 search_trees.ads:311:09: info: invariant check proved on default value (CVC4: 1 VC)
 search_trees.ads:319:40: info: range check proved (CVC4: 1 VC)
 search_trees.ads:320:20: info: precondition proved (CVC4: 1 VC)

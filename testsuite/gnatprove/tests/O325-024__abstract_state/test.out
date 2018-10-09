@@ -1,10 +1,10 @@
-stabilizer_pack.adb:21:22: medium: float overflow check might fail (e.g. when Asl = 0.0 and Asl_Alpha = 0.0 and Asl_Tmp = 0.0)
-stabilizer_pack.adb:21:34: medium: float overflow check might fail (e.g. when Asl_Tmp = 0.0)
-stabilizer_pack.adb:21:44: medium: float overflow check might fail (e.g. when Asl_Tmp = 0.0)
+stabilizer_pack.adb:21:22: medium: float overflow check might fail (e.g. when Asl = 0.0 and Asl_Alpha = 0.0 and Asl_Tmp = 0.0) [possible explanation: subprogram at line 17 should mention Asl and Asl_Alpha in a precondition]
+stabilizer_pack.adb:21:34: medium: float overflow check might fail (e.g. when Asl_Tmp = 0.0) [possible explanation: subprogram at line 17 should mention Asl and Asl_Alpha and Asl_Raw in a precondition]
+stabilizer_pack.adb:21:44: medium: float overflow check might fail (e.g. when Asl_Tmp = 0.0) [possible explanation: subprogram at line 17 should mention Asl_Alpha and Asl_Raw in a precondition]
 stabilizer_pack.adb:21:51: info: float overflow check proved (CVC4: 1 VC)
-stabilizer_pack.adb:22:32: medium: float overflow check might fail (e.g. when Asl_Alpha_Long = 0.0 and Asl_Long = 0.0)
-stabilizer_pack.adb:23:09: medium: float overflow check might fail
-stabilizer_pack.adb:23:19: medium: float overflow check might fail
+stabilizer_pack.adb:22:32: medium: float overflow check might fail (e.g. when Asl_Alpha_Long = 0.0 and Asl_Long = 0.0) [possible explanation: subprogram at line 17 should mention Asl_Alpha_Long and Asl_Long in a precondition]
+stabilizer_pack.adb:23:09: medium: float overflow check might fail [possible explanation: subprogram at line 17 should mention Asl_Alpha_Long and Asl_Long and Asl_Raw in a precondition]
+stabilizer_pack.adb:23:19: medium: float overflow check might fail [possible explanation: subprogram at line 17 should mention Asl_Alpha_Long and Asl_Raw in a precondition]
 stabilizer_pack.adb:23:26: info: float overflow check proved (Z3: 1 VC)
 stabilizer_pack.ads:16:04: info: initialization of "Temperature" constituent of "Asl_Variables" proved
 stabilizer_pack.ads:18:04: info: initialization of "Pressure" constituent of "Asl_Variables" proved

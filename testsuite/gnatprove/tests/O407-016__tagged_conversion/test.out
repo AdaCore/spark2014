@@ -1,27 +1,26 @@
-tagged_conv.adb:9:17: warning: subprogram "Conv_Child_To_Root_Ok" has no effect
-tagged_conv.adb:12:32: info: tag check proved (CVC4: 1 VC)
-tagged_conv.adb:17:17: warning: subprogram "Conv_Child_To_Root_Ok2" has no effect
-tagged_conv.adb:22:32: info: tag check proved (CVC4: 1 VC)
-tagged_conv.adb:27:17: warning: subprogram "Conv_Root_To_Child_Ok" has no effect
-tagged_conv.adb:35:17: warning: subprogram "Bad1" has no effect
-tagged_conv.adb:36:44: medium: tag check might fail
-tagged_conv.adb:41:17: warning: subprogram "Bad12" has no effect
-tagged_conv.adb:44:44: medium: tag check might fail
-tagged_conv.adb:49:17: warning: subprogram "Bad2" has no effect
-tagged_conv.adb:50:32: medium: tag check might fail
-tagged_conv.adb:55:17: warning: subprogram "Bad3" has no effect
-tagged_conv.adb:58:32: medium: tag check might fail
-tagged_conv.adb:63:17: warning: subprogram "Bad4" has no effect
-tagged_conv.adb:66:31: medium: tag check might fail
-tagged_conv.adb:71:17: warning: subprogram "Bad5" has no effect
-tagged_conv.adb:74:32: medium: tag check might fail
-tagged_conv.adb:79:07: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:80:07: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:81:07: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:82:07: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:83:07: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:84:07: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:85:07: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:86:07: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:87:07: info: precondition proved (CVC4: 1 VC)
-tagged_conv.ads:5:14: warning: subprogram "P" has no effect
+tagged_conv.adb:10:14: warning: subprogram "Conv_Child_To_Root_Ok" has no effect
+tagged_conv.adb:13:29: info: tag check proved (CVC4: 1 VC)
+tagged_conv.adb:18:14: warning: subprogram "Conv_Child_To_Root_Ok2" has no effect
+tagged_conv.adb:23:29: info: tag check proved (CVC4: 1 VC)
+tagged_conv.adb:28:14: warning: subprogram "Conv_Root_To_Child_Ok" has no effect
+tagged_conv.adb:36:14: warning: subprogram "Bad1" has no effect
+tagged_conv.adb:37:41: medium: tag check might fail
+tagged_conv.adb:42:14: warning: subprogram "Bad12" has no effect
+tagged_conv.adb:45:41: medium: tag check might fail
+tagged_conv.adb:50:14: warning: subprogram "Bad2" has no effect
+tagged_conv.adb:51:29: medium: tag check might fail
+tagged_conv.adb:56:14: warning: subprogram "Bad3" has no effect
+tagged_conv.adb:59:29: medium: tag check might fail
+tagged_conv.adb:64:14: warning: subprogram "Bad4" has no effect
+tagged_conv.adb:67:28: medium: tag check might fail
+tagged_conv.adb:72:14: warning: subprogram "Bad5" has no effect
+tagged_conv.adb:75:29: medium: tag check might fail
+tagged_conv.adb:80:04: info: precondition proved (CVC4: 1 VC)
+tagged_conv.adb:81:04: info: precondition proved (CVC4: 1 VC)
+tagged_conv.adb:82:04: info: precondition proved (CVC4: 1 VC)
+tagged_conv.adb:83:04: info: precondition proved (CVC4: 1 VC)
+tagged_conv.adb:84:04: info: precondition proved (CVC4: 1 VC)
+tagged_conv.adb:85:04: info: precondition proved (CVC4: 1 VC)
+tagged_conv.adb:86:04: info: precondition proved (CVC4: 1 VC)
+tagged_conv.adb:87:04: info: precondition proved (CVC4: 1 VC)
+tagged_conv.adb:88:04: info: precondition proved (CVC4: 1 VC)

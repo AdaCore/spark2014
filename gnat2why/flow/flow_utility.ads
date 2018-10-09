@@ -72,17 +72,20 @@ is
    --  Compute a suitable hash for the given record component
 
    procedure Remove_Constants
-     (Objects : in out Flow_Id_Sets.Set;
-      Skip    :        Node_Sets.Set := Node_Sets.Empty_Set);
-   --  Remove from Objects all constants (without variable input) that are not
-   --  contained in Skip.
+     (Objects : in out Flow_Id_Sets.Set)
+   with Post => Flow_Id_Sets.Is_Subset (Subset => Objects,
+                                        Of_Set => Objects'Old);
+   --  Remove from Objects all constants without variable input
    --  @param Objects are the initial flow ids
-   --  @param Skip are the nodes based on which filtering will occur
 
-   procedure Remove_Generic_In_Formals_Without_Variable_Input
-     (Objects : in out Node_Sets.Set);
-   --  Remove generic IN formals without variable input from Objects; for SPARK
-   --  RM 6.1.4(18):
+   function Is_Generic_Actual_Without_Variable_Input
+     (E : Entity_Id)
+      return Boolean;
+   --  Returns True iff E is a constant that represents a generic actual
+   --  parameter and has no variable input. Such constants are filtered from
+   --  the Global/Depends/Initializes contract right when we parse the AST,
+   --  because they are ignored both from the inside and from the outside of
+   --  the generic instance; see SPARK RM 6.1.4(18):
    --
    --    "If a global_item denotes a generic formal object of mode in, then the
    --     corresponding global_item in an instance of the generic unit may
@@ -257,14 +260,13 @@ is
      (N                  : Node_Id;
       Include_Predicates : Boolean)
       return Node_Sets.Set with
-     Pre => Present (N);
+     Pre => Nkind (N) in N_Subexpr;
    --  Collect functions called in an expression N. If Include_Predicates is
    --  True, then also include implicit calls to predicate functions.
 
    function Get_Variables
      (N                            : Node_Id;
       Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
@@ -278,10 +280,6 @@ is
                          => Is_Entire_Variable (F)));
    --  Obtain all variables used in an expression; use Scope to determine if
    --  called subprograms should provide their abstract or refined view.
-   --
-   --  Local_Constants describes a set of constants (which should all come from
-   --  source) which are treated as if they were variables; this means they are
-   --  potentially returned by this function.
    --
    --  If Fold_Functions is True, we exclude variables that a function does not
    --  use to derive its result from. For example, given the following
@@ -307,7 +305,6 @@ is
    function Get_Variables
      (L                            : List_Id;
       Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
@@ -418,7 +415,6 @@ is
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;
       Scope                : Flow_Scope;
-      Local_Constants      : Node_Sets.Set;
       Use_Computed_Globals : Boolean;
       Vars_Defined         : out Flow_Id_Sets.Set;
       Vars_Used            : out Flow_Id_Sets.Set;
@@ -462,7 +458,6 @@ is
       Map_Root                     : Flow_Id;
       Map_Type                     : Entity_Id;
       Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Expand_Synthesized_Constants : Boolean;
@@ -808,6 +803,12 @@ is
    --  partially-visible abstract states where an object in the flow graph
    --  might be represented in the contract either directly or via its abstract
    --  state.
+
+   procedure Map_Generic_In_Formals
+     (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set);
+   --  Map generic IN formal parameters, which are visible inside of generic
+   --  instances (e.g. might appear in Global and Initializes contracts) into
+   --  objects used in their corresponding generic actual parameter expression.
 
 private
    Init_Done : Boolean := False with Ghost;

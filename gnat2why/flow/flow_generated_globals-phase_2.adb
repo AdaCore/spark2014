@@ -422,7 +422,8 @@ package body Flow_Generated_Globals.Phase_2 is
    begin
       if Entity_Contract_Maps.Has_Element (C) then
          Populate_Results
-           (if Subprogram_Refinement_Is_Visible (E, S)
+           (if Ekind (E) /= E_Package
+              and then Subprogram_Refinement_Is_Visible (E, S)
             then Global_Contracts (C).Refined
             else Global_Contracts (C).Proper);
 
@@ -2043,8 +2044,11 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  We needed reads of the local variables in the package
                   --  elaboration to know which of the writes are pure outputs.
                   --  Now we remove those reads and what remains is the RHS of
-                  --  the generated Initializes contract.
+                  --  the generated Initializes contract. Similarly, we filter
+                  --  local variables from the implicit "Proof_Ins".
+
                   Update.Proper.Inputs.Difference (P.Local_Variables);
+                  Update.Proper.Proof_Ins.Difference (P.Local_Variables);
                end;
             end if;
 

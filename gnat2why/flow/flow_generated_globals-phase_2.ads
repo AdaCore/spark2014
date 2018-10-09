@@ -120,6 +120,7 @@ package Flow_Generated_Globals.Phase_2 is
    with Pre  => GG_Mode = GG_Read_Mode and then
                 Ekind (E) in E_Entry     |
                              E_Function  |
+                             E_Package   |
                              E_Procedure |
                              E_Task_Type,
         Post => GG_Mode = GG_Read_Mode;

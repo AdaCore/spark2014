@@ -19,8 +19,8 @@ p2.ads:24:30: info: initialization of "X" proved
 p2.ads:26:27: info: initialization of "Y" proved
 prot.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
-prot.adb:19:35: medium: overflow check might fail
-prot.adb:19:45: medium: overflow check might fail
+prot.adb:19:35: medium: overflow check might fail [possible explanation: subprogram at line 17 should mention Visible in a precondition]
+prot.adb:19:45: medium: overflow check might fail [possible explanation: subprogram at line 17 should mention X and Visible in a precondition]
 prot.adb:25:33: medium: overflow check might fail
 prot.adb:25:37: medium: overflow check might fail
 prot.adb:25:39: info: initialization of "Hidden" constituent of "State" proved
@@ -30,7 +30,7 @@ prot.ads:12:13: info: initialization of "Hidden" constituent of "State" proved
 q.adb:16:23: info: initialization of "Cont" proved
 q.adb:17:27: info: initialization of "Tmp" proved
 q.ads:7:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
-support.adb:5:29: medium: overflow check might fail
+support.adb:5:29: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention X in a precondition]
 support.ads:11:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 support.ads:11:14: medium: the task might terminate, which is not allowed in SPARK
 tasks.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
@@ -38,6 +38,7 @@ tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 tasks.adb:10:29: medium: overflow check might fail
 tasks.adb:17:27: medium: overflow check might fail
 tasks.ads:5:04: info: initialization of "Visible" proved
+tasks.ads:7:09: low: initialization of "Singleton_Task" must be mentioned in the Initializes contract of "Tasks" (SPARK RM 7.1.5(9))
 tasks.ads:7:09: medium: the task might terminate, which is not allowed in SPARK
 tasks.ads:9:14: medium: the task might terminate, which is not allowed in SPARK
 tasks.ads:11:14: info: initialization of "Visible" proved

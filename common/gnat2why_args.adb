@@ -60,6 +60,7 @@ package body Gnat2Why_Args is
    Proof_Warnings_Name          : constant String := "proof_warnings";
    Limit_Units_Name             : constant String := "limit_units";
    Limit_Subp_Name              : constant String := "limit_subp";
+   Limit_Region_Name            : constant String := "limit_region";
    Limit_Line_Name              : constant String := "limit_line";
    Pedantic_Name                : constant String := "pedantic";
    No_Loop_Unrolling_Name       : constant String := "no_loop_unrolling";
@@ -138,6 +139,9 @@ package body Gnat2Why_Args is
       end if;
       if Has_Field (V, Limit_Line_Name) then
          Limit_Line := Get (Get (V, Limit_Line_Name));
+      end if;
+      if Has_Field (V, Limit_Region_Name) then
+         Limit_Region := Get (Get (V, Limit_Region_Name));
       end if;
       if Has_Field (V, Why3_Args_Name) then
          declare
@@ -221,6 +225,7 @@ package body Gnat2Why_Args is
       Set_Field (Obj, Report_Mode_Name, Report_Mode_Type'Image (Report_Mode));
       Set_Field (Obj, Limit_Units_Name, Limit_Units);
       Set_Field (Obj, Limit_Subp_Name, Limit_Subp);
+      Set_Field (Obj, Limit_Region_Name, Limit_Region);
       Set_Field (Obj, Limit_Line_Name, Limit_Line);
       Set_Field (Obj, Why3_Dir_Name, Why3_Dir);
       Set_Field (Obj, CP_Dir_Name, CP_Res_Dir);

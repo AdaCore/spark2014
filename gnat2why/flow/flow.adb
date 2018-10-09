@@ -33,6 +33,7 @@ with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
+with Flow_Sanity;
 with Flow.Slice;                       use Flow.Slice;
 with Flow_Classwide;                   use Flow_Classwide;
 with Flow_Debug;                       use Flow_Debug;
@@ -1061,7 +1062,6 @@ package body Flow is
                Debug ("Body in SPARK: ", Entity_Body_In_SPARK (E));
 
             when Kind_Package | Kind_Package_Body =>
-
                if not FA.Is_Generative then
                   Debug ("skipped (package spec)");
                   if FA.Kind = Kind_Package_Body then
@@ -1072,37 +1072,6 @@ package body Flow is
                   if FA.Kind = Kind_Package_Body then
                      Debug ("Body in SPARK: ", True);
                   end if;
-               end if;
-
-               if FA.Kind = Kind_Package_Body then
-                  declare
-                     Refined_State_N : constant Node_Id :=
-                       Get_Pragma (E, Pragma_Refined_State);
-
-                     DM : Dependency_Maps.Map;
-                  begin
-                     if Present (Refined_State_N) then
-                        Write_Line ("Refinement found: yes");
-
-                        DM := Parse_Refined_State (Refined_State_N);
-
-                        for State in DM.Iterate loop
-                           Write_Line ("State       :");
-                           Indent;
-                           Print_Flow_Id (Dependency_Maps.Key (State));
-                           Outdent;
-                           Write_Line ("Constituents:");
-                           Indent;
-                           for Constituent of DM (State) loop
-                              Print_Flow_Id (Constituent);
-                           end loop;
-                           Outdent;
-                        end loop;
-
-                     else
-                        Write_Line ("Refinement found: no");
-                     end if;
-                  end;
                end if;
             end case;
          end if;
@@ -1549,6 +1518,8 @@ package body Flow is
                        "Flow analysis complete for current CU" &
                        Character'Val (8#33#) & "[0m");
       end if;
+
+      Flow_Sanity.Check_Incomplete_Globals;
 
       --  If an error was found then print all errors/warnings and return
       --  with an error status.

@@ -26,7 +26,7 @@ input.adb:270:56: info: initialization of "S" proved
 input.adb:270:59: info: index check proved (CVC4: 2 VC)
 input.adb:273:12: info: length check proved (CVC4: 1 VC)
 input.adb:273:15: info: initialization of "S" proved
-input.adb:273:17: low: range check might fail (e.g. when S'First = 1023 and S'Last = 1024 and V = (others => '!'))
+input.adb:273:17: low: range check might fail (e.g. when S'First = 1023 and S'Last = 1024 and V = (others => '!')) [possible explanation: loop at line 269 should mention S in a loop invariant]
 input.adb:273:22: info: range check proved (CVC4: 2 VC)
 input.adb:273:26: info: range check proved (CVC4: 1 VC)
 input.adb:273:34: info: overflow check proved (CVC4: 1 VC)
@@ -84,7 +84,7 @@ screen_output.adb:82:07: warning: no Global contract available for "Put"
 screen_output.adb:83:07: warning: assuming "Put" has no effect on global items
 screen_output.adb:83:07: warning: no Global contract available for "Put"
 screen_output.adb:83:46: info: range check proved (CVC4: 1 VC)
-screen_output.adb:83:53: low: range check might fail (e.g. when S = (1 => ':', others => ' ') and S'First = 1 and S'Last = 2147483645)
+screen_output.adb:83:53: low: range check might fail (e.g. when S = (1 => ':', others => ' ') and S'First = 1 and S'Last = 2147483645) [possible explanation: subprogram at line 65 should mention S and Input.Line_Num in a precondition]
 screen_output.adb:84:07: warning: assuming "New_Line" has no effect on global items
 screen_output.adb:84:07: warning: no Global contract available for "New_Line"
 screen_output.adb:93:07: warning: assuming "Put" has no effect on global items
@@ -112,7 +112,7 @@ sdc.adb:24:16: info: initialization of private part of "T" proved
 sdc.ads:24:11: medium: "input.line" might not be initialized after elaboration of main program "Sdc"
 sdc.ads:24:11: medium: "stack.tab" might not be initialized after elaboration of main program "Sdc"
 stack.adb:31:10: info: raise statement proved unreachable (CVC4: 1 VC)
-stack.adb:34:46: low: range check might fail
+stack.adb:34:46: low: range check might fail [possible explanation: precondition of subprogram at line 28 should mention V]
 stack.adb:36:20: info: range check proved (CVC4: 1 VC)
 stack.adb:37:12: info: index check proved (CVC4: 2 VC)
 stack.adb:47:10: info: raise statement proved unreachable (CVC4: 1 VC)
@@ -166,7 +166,7 @@ values-operations.adb:63:28: info: overflow check proved (CVC4: 1 VC)
 values-operations.adb:63:30: info: initialization of "V2.E" proved
 values-operations.adb:66:23: info: initialization of "V1.E" proved
 values-operations.adb:66:28: info: division check proved (CVC4: 1 VC)
-values-operations.adb:66:28: medium: overflow check might fail (e.g. when Result = 0 and V1 = (E => -2147483648) and V2 = (E => -1))
+values-operations.adb:66:28: medium: overflow check might fail (e.g. when Result = 0 and V1 = (E => Integer'First) and V2 = (E => -1))
 values-operations.adb:66:30: info: initialization of "V2.E" proved
 values-operations.adb:69:23: info: initialization of "V1.E" proved
 values-operations.adb:69:28: medium: overflow check might fail (e.g. when Result = 0 and V1 = (E => 3) and V2 = (E => -3))

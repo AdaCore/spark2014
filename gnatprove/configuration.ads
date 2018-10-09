@@ -87,6 +87,7 @@ package Configuration is
       K                    : aliased Boolean;
       Level                : aliased Integer;
       Limit_Line           : aliased GNAT.Strings.String_Access;
+      Limit_Region         : aliased GNAT.Strings.String_Access;
       Limit_Subp           : aliased GNAT.Strings.String_Access;
       List_Categories      : aliased Boolean;
       M                    : aliased Boolean;
@@ -172,6 +173,7 @@ package Configuration is
    All_Projects         : Boolean;
    IDE_Mode             : Boolean;
    Limit_Line           : GNAT.Strings.String_Access;
+   Limit_Region         : GNAT.Strings.String_Access;
    Limit_Subp           : GNAT.Strings.String_Access;
    Only_Given           : Boolean;
    CodePeer             : Boolean;

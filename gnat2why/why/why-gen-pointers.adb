@@ -118,7 +118,7 @@ package body Why.Gen.Pointers is
         To_Local (E_Symb (E, WNE_Uninit_Allocator));
 
       New_Initialized_Name : constant W_Identifier_Id :=
-         To_Local (E_Symb (E, WNE_Init_Allocator));
+        To_Local (E_Symb (E, WNE_Init_Allocator));
 
       No_Init_Ident : constant W_Identifier_Id :=
         New_Identifier (Name => "__void_param", Typ => EW_Unit_Type);
@@ -184,7 +184,7 @@ package body Why.Gen.Pointers is
       PostDefault : constant W_Pred_Id := Compute_Default_Init
         (Expr             => +Result_Value,
          Ty               => Des_Ty,
-         Include_Subtypes => True);
+         Include_Subtypes => False);
 
       Uninitialized_Post : constant W_Pred_Id :=
         (if Can_Be_Default_Initialized (Des_Ty)
@@ -196,13 +196,6 @@ package body Why.Gen.Pointers is
          else
             +Post_Null_Address);
 
-      Uninitialized_Pre : constant W_Expr_Id :=
-        New_Not (Domain   => EW_Term,
-                 Right    => +New_Identifier
-                   (Domain => EW_Prog,
-                    Name   => To_String (WNE_Null_Exclusion_Val),
-                    Module => E_Module (Etype (E))));
-
       Address_Effects : constant W_Effects_Id :=
         New_Effects (Writes => (1 => +Next_Address));
 
@@ -211,12 +204,11 @@ package body Why.Gen.Pointers is
       Emit (File,
             New_Function_Decl
               (Domain      => EW_Prog,
-               Name        => To_Program_Space (New_Uninitialized_Name),
+               Name        => New_Uninitialized_Name,
                Binders     => R_No_Init_Binder,
                Return_Type => Abstr_Ty,
                Location    => No_Location,
                Labels      => Name_Id_Sets.Empty_Set,
-               Pre         => +Uninitialized_Pre,
                Post        => Uninitialized_Post,
                Effects     => Address_Effects));
 
@@ -401,13 +393,6 @@ package body Why.Gen.Pointers is
          --  type Typ is [null_exclusion] access [subtype_indication]
          --  X : Typ := new [subtype_indication]
 
-         Null_Exclusion_Value : constant EW_Literal :=
-           (if Can_Never_Be_Null (Directly_Designated_Type (E))
-            then
-               EW_True
-            else
-               EW_False);
-
          Ty         : constant Entity_Id := Etype (E);
          Condition  : W_Pred_Id          := True_Pred;
          Top_Field  : constant W_Expr_Id := +New_Pointer_Is_Null_Access
@@ -417,6 +402,9 @@ package body Why.Gen.Pointers is
            To_String (WNE_Null_Pointer) & "__" & Def_Axiom;
 
          True_Term  : constant W_Term_Id := New_Literal (Value => EW_True);
+
+         Assign_Pointer : constant W_Identifier_Id :=
+           To_Local (E_Symb (E, WNE_Assign_Null_Check));
 
       begin
          Emit (P,
@@ -438,19 +426,6 @@ package body Why.Gen.Pointers is
                   Location    => No_Location,
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type => Abstr_Ty));
-
-         Emit (P,
-               Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => New_Identifier
-                    (Name => To_String (WNE_Null_Exclusion_Val)),
-                  Binders     => (1 .. 0 => <>),
-                  Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Bool_Type,
-                  Def         => New_Literal (Domain => EW_Term,
-                                          Value  => Null_Exclusion_Value)
-                 ));
 
          Condition := New_Call (Name => Why_Eq,
                                 Args => (1 => +Top_Field, 2 => +True_Term),
@@ -477,6 +452,13 @@ package body Why.Gen.Pointers is
                 (Name => New_Identifier (Name => Null_Access_Name),
                  Args => (1 => +A_Ident));
 
+            Assign_Pointer_Post : constant W_Pred_Id :=
+              New_Call
+                (Name => Why_Eq,
+                 Typ  => EW_Bool_Type,
+                 Args => (1 => +New_Result_Ident (Why_Empty),
+                          2 => +A_Ident));
+
          begin
             Emit (P,
                   New_Function_Decl
@@ -489,6 +471,17 @@ package body Why.Gen.Pointers is
                      Return_Type => EW_Abstract (Directly_Designated_Type (E)),
                      Pre         => Precond,
                      Post        => Post));
+
+            Emit (P,
+                  New_Function_Decl
+                    (Domain      => EW_Prog,
+                     Name        => To_Program_Space (Assign_Pointer),
+                     Binders     => A_Binder,
+                     Return_Type => Abstr_Ty,
+                     Location    => No_Location,
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Pre         => Precond,
+                     Post        => Assign_Pointer_Post));
 
          end;
       end Declare_Access_Function;

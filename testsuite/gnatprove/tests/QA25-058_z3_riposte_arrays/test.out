@@ -1,18 +1,19 @@
+SOUNDNESS BUG at arrays.adb:178: mark @ASSERT:FAIL not found
 arrays.adb:51:18: info: postcondition proved (CVC4: 2 VC)
-arrays.adb:62:22: medium: postcondition might fail, cannot prove Contains_B'Result = S (C) (e.g. when C = 'NUL' and Contains_B'Result = True and S = ('NUL' => False, 'a' => True, others => False))
+arrays.adb:62:22: medium: postcondition might fail, cannot prove Contains_B'Result = S (C) (e.g. when C = 'NUL' and Contains_B'Result = True and S = ('NUL' => False, 'a' => True, others => False)) [possible explanation: subprogram at line 57 should mention C and S in a precondition]
 arrays.adb:71:19: info: postcondition proved (CVC4: 2 VC)
-arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C) (e.g. when C = 'b' and Is_Id_2'Result = True and M = ('b' => 'a', others => 'a'))
+arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C) (e.g. when C = 'b' and Is_Id_2'Result = True and M = ('b' => 'a', others => 'a')) [possible explanation: subprogram at line 77 should mention C and M in a precondition]
 arrays.adb:94:22: info: assertion proved (CVC4: 1 VC)
-arrays.adb:104:22: medium: assertion might fail, cannot prove C = 'a' (e.g. when C = 'NUL')
-arrays.adb:112:22: medium: assertion might fail, cannot prove M ('a') = 'a' (e.g. when M = ('a' => 'A', others => 'A'))
-arrays.adb:120:22: medium: assertion might fail, cannot prove M (Elem_0) = Elem_0 (e.g. when M = (Elem_0 => Elem_2, others => Elem_2))
-arrays.adb:128:22: medium: assertion might fail, cannot prove MM ('a') (Elem_0) = Elem_1 (e.g. when MM = ('a' => (Elem_0 => Elem_0, others => Elem_0), others => (others => Elem_0)))
+arrays.adb:104:22: medium: assertion might fail, cannot prove C = 'a' (e.g. when C = 'NUL') [possible explanation: precondition of subprogram at line 97 should mention C]
+arrays.adb:112:22: medium: assertion might fail, cannot prove M ('a') = 'a' (e.g. when M = ('a' => 'A', others => 'A')) [possible explanation: subprogram at line 107 should mention M in a precondition]
+arrays.adb:120:22: medium: assertion might fail, cannot prove M (Elem_0) = Elem_0 (e.g. when M = (Elem_0 => Elem_2, others => Elem_2)) [possible explanation: subprogram at line 115 should mention M in a precondition]
+arrays.adb:128:22: medium: assertion might fail, cannot prove MM ('a') (Elem_0) = Elem_1 (e.g. when MM = ('a' => (Elem_0 => Elem_0, others => Elem_0), others => (others => Elem_0))) [possible explanation: subprogram at line 123 should mention MM in a precondition]
 arrays.adb:131:22: info: initialization of "M" proved
 arrays.adb:136:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:136:22: info: initialization of "M" proved
-arrays.adb:144:22: medium: assertion might fail, cannot prove R.Exists (e.g. when R = (A => ?, Exists => False))
+arrays.adb:144:22: medium: assertion might fail, cannot prove R.Exists (e.g. when R = (A => ?, Exists => False)) [possible explanation: subprogram at line 139 should mention R in a precondition]
 arrays.adb:146:22: info: assertion proved (CVC4: 1 VC)
-arrays.adb:148:22: medium: assertion might fail, cannot prove R.A(1) = 5 (e.g. when R = (A => (1 => 0, 3 => 5, others => 5), Exists => ?))
+arrays.adb:148:22: medium: assertion might fail, cannot prove R.A(1) = 5 (e.g. when R = (A => (1 => 0, 3 => 5, others => 5), Exists => ?)) [possible explanation: subprogram at line 139 should mention R in a precondition]
 arrays.adb:153:31: info: range check proved (CVC4: 2 VC)
 arrays.adb:154:33: info: index check proved (CVC4: 2 VC)
 arrays.adb:156:22: info: postcondition proved (CVC4: 1 VC)
@@ -22,7 +23,7 @@ arrays.adb:160:22: info: range check proved (CVC4: 1 VC)
 arrays.adb:161:16: info: index check proved (CVC4: 2 VC)
 arrays.adb:170:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:170:31: info: index check proved (CVC4: 2 VC)
-arrays.adb:178:22: medium: assertion might fail
+arrays.adb:178:22: medium: assertion might fail [possible explanation: subprogram at line 174 should mention A in a precondition]
 arrays.adb:183:19: info: postcondition proved (CVC4: 2 VC)
 arrays.adb:191:33: info: loop invariant initialization proved (CVC4: 2 VC)
 arrays.adb:191:33: info: loop invariant preservation proved (CVC4: 2 VC)
@@ -30,7 +31,7 @@ arrays.adb:191:41: info: range check proved (CVC4: 2 VC)
 arrays.adb:192:57: info: initialization of "R" proved
 arrays.adb:192:57: medium: "R" might not be initialized
 arrays.adb:194:14: info: initialization of "R" proved
-arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C) (e.g. when C = 'SOH' and I = 'SOH' and Single_Char_Set_Broken'Result = ('SOH' => True, others => False))
+arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C) (e.g. when C = 'SOH' and I = 'SOH' and Single_Char_Set_Broken'Result = ('SOH' => True, others => False)) [possible explanation: subprogram at line 197 should mention C in a precondition]
 arrays.adb:206:33: info: loop invariant initialization proved (CVC4: 2 VC)
 arrays.adb:206:33: info: loop invariant preservation proved (CVC4: 2 VC)
 arrays.adb:206:41: info: range check proved (CVC4: 2 VC)

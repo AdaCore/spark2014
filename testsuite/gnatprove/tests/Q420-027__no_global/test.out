@@ -1,0 +1,2 @@
+state.ads:14:26: "State.State" is referenced in Pre but missing from the Global
+gnatprove: error during flow analysis and proof

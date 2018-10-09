@@ -1,1 +1,1 @@
-callee.adb:4:14: medium: overflow check might fail (e.g. when A = -2147483648 and B = -1)
+callee.adb:4:14: medium: overflow check might fail (e.g. when A = Integer'First and B = -1) [possible explanation: subprogram at line 2 should mention A and B in a precondition]

@@ -48,7 +48,20 @@ missing:
 
 In particular, |GNATprove| does not look into subprogram bodies, so all the
 necessary information for calls should be explicit in the subprogram
-contracts. A focused manual review of the code and assertions can
+contracts. |GNATprove| may emit a tentative explanation for the unprovable
+property when it suspects a missing precondition, postcondition or loop
+invariant to be the cause of the unprovability. The explanation part follows
+the usual message of the form::
+
+   file:line:col: severity: check might fail
+
+with a part in square brackets such as::
+
+   [possible explanation: subprogram at line xxx should mention Var in a precondition]
+   [possible explanation: loop at line xxx should mention Var in a loop invariant]
+   [possible explanation: call at line xxx should mention Var in a postcondition]
+
+A focused manual review of the code and assertions can
 efficiently diagnose many cases of missing annotations. Even when an
 assertion is quite large, |GNATprove| precisely locates the part that it
 cannot prove, which can help figuring out the problem. It may useful to
@@ -306,7 +319,7 @@ generated for a given check, a.k.a. Verification Conditions or VCs.
 * In ``per_path`` mode, a VC is generated not only for each check at the source
   level, but for each path to the check. For example, for an assertion that
   appears after an if-statement, at least two VCs will be generated - one
-  for each path trough the if-statement. For each such VC, all provers are
+  for each path through the if-statement. For each such VC, all provers are
   attempted. Unproved VCs are then further split into their conjuncts,
   and proof is again attempted.
 * In ``progressive`` mode, first the actions described for ``per_check`` are

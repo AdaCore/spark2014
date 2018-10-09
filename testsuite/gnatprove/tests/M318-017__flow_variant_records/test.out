@@ -72,12 +72,12 @@ definite.adb:149:26: info: initialization of "X.B" proved
 definite.adb:149:26: info: initialization of "X.X" proved
 definite.adb:153:09: medium: discriminant check might fail
 definite.adb:164:09: medium: discriminant check might fail
-definite.adb:164:29: medium: range check might fail
+definite.adb:164:29: medium: range check might fail [possible explanation: subprogram at line 157 should mention I in a precondition]
 definite.adb:168:23: info: initialization of "X.A" proved
 definite.adb:168:23: info: initialization of "X.B" proved
 definite.adb:168:23: info: initialization of "X.X" proved
 definite.adb:174:09: medium: discriminant check might fail
-definite.adb:174:29: medium: range check might fail
+definite.adb:174:29: medium: range check might fail [possible explanation: subprogram at line 168 should mention I in a precondition]
 test.adb:18:04: warning: analyzing unreferenced procedure "Test_Init_01"
 test.adb:19:28: info: initialization of "R.Flag" proved
 test.adb:19:28: info: initialization of "R.X" proved

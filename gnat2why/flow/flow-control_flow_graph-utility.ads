@@ -48,11 +48,10 @@ package Flow.Control_Flow_Graph.Utility is
      (Var_Def         : Flow_Id_Sets.Set;
       Var_Use         : Flow_Id_Sets.Set;
       Object_Returned : Entity_Id;
-      Sub_Called      : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops           : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc           : Node_Or_Entity_Id := Empty)
       return V_Attributes
-   with Pre  => Present (Object_Returned),
+   with Pre  => Is_Return_Object (Object_Returned),
         Post =>
       not Make_Extended_Return_Attributes'Result.Is_Null_Node and
       Make_Extended_Return_Attributes'Result.Is_Program_Node and

@@ -113,20 +113,20 @@ procedure Do_Checks is
 
          --  subtype_indication in a slice
          --  UNCOMMENT AFTER M919-016 HAS BEEN CORRECTED
-         --  when 14 =>
-         --     declare
-         --        A : String := "hello world";
-         --        B : String := A(Positive range Zero .. 1);  -- RANGE_CHECK:FAIL
-         --     begin
-         --        null;
-         --     end;
-         --  when 15 =>
-         --     declare
-         --        A : String := "hello world";
-         --        B : String := A(Positive range Zero .. Zero - 1);  --  OK
-         --     begin
-         --        null;
-         --     end;
+         when 14 =>
+            declare
+               A : String := "hello world";
+               B : String := A(Positive range Zero .. 1);  -- RANGE_CHECK:FAIL
+            begin
+               null;
+            end;
+         when 15 =>
+            declare
+               A : String := "hello world";
+               B : String := A(Positive range Zero .. Zero - 1);  --  OK
+            begin
+               null;
+            end;
 
          --  subtype_indication in a variant
          when 16 =>

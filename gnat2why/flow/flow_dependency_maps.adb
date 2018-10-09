@@ -29,19 +29,13 @@ with Nlists;                         use Nlists;
 with Sem_Prag;                       use Sem_Prag;
 with Sinfo;                          use Sinfo;
 with SPARK_Util;                     use SPARK_Util;
-with Treepr;                         use Treepr;
-with Why;
 
 package body Flow_Dependency_Maps is
 
-   use Dependency_Maps;
-
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
-   with Pre => Get_Pragma_Id (N) in
-                 Pragma_Depends         |
-                 Pragma_Refined_Depends |
-                 Pragma_Refined_State   |
-                 Pragma_Initializes;
+   with Pre => Get_Pragma_Id (N) in Pragma_Depends
+                                  | Pragma_Refined_Depends
+                                  | Pragma_Initializes;
    --  Helper function to parse something that looks like a dependency map; in
    --  particular we can parse either a depends or an initializes aspect.
    --
@@ -131,7 +125,7 @@ package body Flow_Dependency_Maps is
                --  (Foo, Bar, Baz) => ...
                LHS := First (Expressions (LHS));
                while Present (LHS) loop
-                  Outputs.Include
+                  Outputs.Insert
                     (Direct_Mapping_Id
                        (Canonical_Entity (Entity (LHS), Context)));
                   Next (LHS);
@@ -144,12 +138,12 @@ package body Flow_Dependency_Maps is
                pragma Assert (Get_Attribute_Id (Attribute_Name (LHS)) =
                                 Attribute_Result);
 
-               Outputs.Include
+               Outputs.Insert
                  (Direct_Mapping_Id (Entity (Prefix (LHS))));
 
             when N_Identifier | N_Expanded_Name =>
                --  Foo => ...
-               Outputs.Include
+               Outputs.Insert
                  (Direct_Mapping_Id
                     (Canonical_Entity (Entity (LHS), Context)));
 
@@ -158,8 +152,7 @@ package body Flow_Dependency_Maps is
                null;
 
             when others =>
-               Print_Node_Subtree (LHS);
-               raise Why.Unexpected_Node;
+               raise Program_Error;
          end case;
 
          --  Process RHS (inputs)
@@ -169,25 +162,37 @@ package body Flow_Dependency_Maps is
             when N_Aggregate =>
                RHS := First (Expressions (RHS));
                while Present (RHS) loop
-                  Inputs.Include (Canonical_Entity (Entity (RHS), Context));
+                  declare
+                     E : constant Entity_Id :=
+                       Canonical_Entity (Entity (RHS), Context);
+
+                  begin
+                     if not Is_Generic_Actual_Without_Variable_Input (E) then
+                        Inputs.Insert (E);
+                     end if;
+                  end;
 
                   Next (RHS);
                end loop;
 
             when N_Identifier | N_Expanded_Name =>
-               Inputs.Include (Canonical_Entity (Entity (RHS), Context));
+               declare
+                  E : constant Entity_Id :=
+                    Canonical_Entity (Entity (RHS), Context);
+
+               begin
+                  if not Is_Generic_Actual_Without_Variable_Input (E) then
+                     Inputs.Insert (E);
+                  end if;
+               end;
 
             when N_Null =>
                null;
 
             when others =>
-               Print_Node_Subtree (RHS);
-               raise Why.Unexpected_Node;
+               raise Program_Error;
 
          end case;
-
-         --  Filter out generic formals without variable output
-         Remove_Generic_In_Formals_Without_Variable_Input (Inputs);
 
          --  Assemble map
 
@@ -276,14 +281,5 @@ package body Flow_Dependency_Maps is
 
       return M;
    end Parse_Initializes;
-
-   -------------------------
-   -- Parse_Refined_State --
-   -------------------------
-
-   function Parse_Refined_State
-     (N : Node_Id)
-      return Dependency_Maps.Map renames
-     Parse_Raw_Dependency_Map;
 
 end Flow_Dependency_Maps;

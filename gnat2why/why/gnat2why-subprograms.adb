@@ -2607,8 +2607,7 @@ package body Gnat2Why.Subprograms is
                 (Why_Body,
                  New_Assert
                       (Pred        =>
-                             +New_VC_Expr
-                         (E, +Check, VC_Invariant_Check, EW_Pred),
+                         +New_VC_Expr (E, +Check, VC_Invariant_Check, EW_Pred),
                        Assert_Kind => EW_Assert));
          end if;
       end;
@@ -3122,21 +3121,29 @@ package body Gnat2Why.Subprograms is
             Gen_Marker  => False,
             Ref_Allowed => True,
             Old_Allowed => True);
+         Pre_Node : constant Node_Id :=
+           Get_Location_For_Aspect (E, Pragma_Precondition);
          Pre : W_Pred_Id :=
            Get_Static_Call_Contract (Params, E, Pragma_Precondition);
          Stmt : W_Prog_Id;
-      begin
 
+      begin
          --  Need to prove precondition of Main before use. The test for
          --  entries is just to protect the call to Might_Be_Main.
 
          if not Is_Entry (E) and then Might_Be_Main (E) then
-            Stmt :=
-              New_Located_Assert
-                (Ada_Node => Get_Location_For_Aspect (E, Pragma_Precondition),
-                 Pred     => Pre,
-                 Reason   => VC_Precondition_Main,
-                 Kind     => EW_Assert);
+            if No (Pre_Node) then
+               pragma Assert (Is_True_Boolean (+Pre));
+               Stmt := +Void;
+            else
+               Stmt :=
+                 New_Located_Abstract
+                   (Ada_Node => Pre_Node,
+                    Expr     =>
+                      Assume_Initial_Condition_Of_Withed_Units (E, Params),
+                    Reason   => VC_Precondition_Main,
+                    Post     => Pre);
+            end if;
          else
             if Is_Entry (E)
               and then Entity_Body_In_SPARK (E)
@@ -3396,7 +3403,11 @@ package body Gnat2Why.Subprograms is
             --  inside, has postcondition true as non termination verification
             --  is done by the frontend, but the precondition is unchanged.
 
-            if No_Return (E) then
+            if No_Return (E) or else No (Post_N) then
+               pragma Assert (if No (Post_N) then
+                                 Is_True_Boolean
+                                (+Get_Static_Call_Contract
+                                   (Mark_Params, E, Pragma_Postcondition)));
                return True_Pred;
             else
                return

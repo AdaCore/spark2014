@@ -28,7 +28,7 @@ where_are_the_run_time_errors.adb:15:10: info: overflow check proved (CVC4: 1 VC
 where_are_the_run_time_errors.adb:15:12: info: initialization of "K" proved
 where_are_the_run_time_errors.adb:15:14: info: overflow check proved (CVC4: 1 VC)
 where_are_the_run_time_errors.adb:16:12: info: initialization of "Y" proved
-where_are_the_run_time_errors.adb:16:14: medium: overflow check might fail (e.g. when Y = 2147483647)
+where_are_the_run_time_errors.adb:16:14: medium: overflow check might fail (e.g. when Y = Integer'Last)
 where_are_the_run_time_errors.adb:17:12: info: initialization of "X" proved
 where_are_the_run_time_errors.adb:17:14: info: division check proved (CVC4: 1 VC)
 where_are_the_run_time_errors.adb:17:14: info: overflow check proved (CVC4: 1 VC)

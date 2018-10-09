@@ -1,1 +1,1 @@
-test.adb:12:14: medium: overflow check might fail
+test.adb:12:14: medium: overflow check might fail [possible explanation: subprogram at line 6 should mention T and Values.Val in a precondition]

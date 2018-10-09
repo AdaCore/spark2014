@@ -69,7 +69,7 @@ the branch gpl-2018, as follows:
 git checkout gpl-2018
 ```
 
-SPARK repository uses submodules to keep in synch with corresponding versions
+SPARK repository uses submodules to keep in sync with corresponding versions
 of Why3, Alt-Ergo, CVC4 and Z3, which generally track the main repositories for
 these tools, with minor modifications for the integration with SPARK. To
 retrieve the corresponding branch of these submodules, do:

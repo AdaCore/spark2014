@@ -21,8 +21,8 @@ a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at p.ads:15
 p.adb:26:14: info: initialization of "C.Node" proved
 p.adb:27:18: info: initialization of "Sum" proved
-p.adb:27:22: medium: overflow check might fail (e.g. when Sum = 0)
-p.adb:27:32: medium: precondition might fail (e.g. when C = (Node => 2) and Sum = 0)
+p.adb:27:22: medium: overflow check might fail (e.g. when Sum = 0) [possible explanation: loop at line 26 should mention Sum in a loop invariant]
+p.adb:27:32: medium: precondition might fail (e.g. when C = (Node => 2) and Sum = 0) [possible explanation: subprogram at line 21 should mention X in a precondition]
 p.adb:27:44: info: initialization of "C.Node" proved
 p.adb:28:19: medium: precondition might fail (e.g. when C = (Node => 2) and No_Element = (Node => 0))
 p.adb:28:29: info: initialization of "C.Node" proved

@@ -26,6 +26,7 @@
 with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
 with Snames;              use Snames;
+with SPARK_Atree;         use SPARK_Atree;
 with SPARK_Util;          use SPARK_Util;
 with Types;               use Types;
 with Uintp;               use Uintp;
@@ -185,9 +186,9 @@ package Why.Gen.Expr is
       (Ada_Node   : Node_Id;
        Expr       : W_Expr_Id;
        Reason     : VC_Kind;
-       Domain     : EW_Domain) return W_Expr_Id;
-   --  If we are not in the "term" domain, put VC and location labels on the
-   --  expression.
+       Domain     : EW_Domain) return W_Expr_Id
+   with Pre => Present (Ada_Node) and then Domain /= EW_Term;
+   --  Put VC and location labels on the expression
 
    function New_VC_Labels
      (N      : Node_Id;

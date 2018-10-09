@@ -3,7 +3,7 @@ procedure Context (X : Integer) with
 is
    generic
       V : Integer;
-   procedure Gen;
+   procedure Gen with Global => (Proof_In => V);
 
    procedure Gen is
    begin
@@ -12,7 +12,7 @@ is
 
    procedure Inst is new Gen (X);
 
-   procedure Local is
+   procedure Local with Global => (Proof_In => X) is
    begin
       Inst;
    end Local;

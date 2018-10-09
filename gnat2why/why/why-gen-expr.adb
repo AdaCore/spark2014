@@ -38,7 +38,6 @@ with Gnat2Why.Subprograms;       use Gnat2Why.Subprograms;
 with Gnat2Why_Args;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
 with Sinput;                     use Sinput;
-with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with SPARK_Util.Types;           use SPARK_Util.Types;
@@ -813,10 +812,16 @@ package body Why.Gen.Expr is
          return Expr;
       end if;
 
+      --  A string literal gets typed with a subtype of the expected type, even
+      --  if it does not respect the associated predicate of the expected type.
+      --  As a result, do not rely on the call to Check_Needed_On_Conversion in
+      --  that case.
+
       Check_Needed :=
         (if Get_Type_Kind (From) in EW_Abstract | EW_Split
-         and then
-         Get_Type_Kind (To) in EW_Abstract | EW_Split
+           and then Get_Type_Kind (To) in EW_Abstract | EW_Split
+           and then not (Nkind (Ada_Node) = N_String_Literal
+                          and then Has_Predicates (Get_Ada_Node (+To)))
          then
             Check_Needed_On_Conversion (From => Get_Ada_Node (+From),
                                         To   => Get_Ada_Node (+To))
@@ -1019,6 +1024,15 @@ package body Why.Gen.Expr is
         Need_Check and then Count_Discriminants (Des_Typ) > 0
         and then Is_Constrained (Des_Typ);
 
+      Need_Not_Null_Check : constant Boolean := Can_Never_Be_Null (R);
+
+      --  Do not generate a predicate check for an internal call to a parent
+      --  predicate function inside the definition of a predicate function.
+
+      Need_Pred_Check : constant Boolean :=
+        Has_Predicates (R)
+        and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
+
       Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
 
    begin
@@ -1039,9 +1053,24 @@ package body Why.Gen.Expr is
                                                           +Result);
          end if;
 
-         Result := +Insert_Predicate_Check (Ada_Node,
-                                            Check_Entity,
-                                            +Result);
+         if Need_Pred_Check then
+            Result := +Insert_Predicate_Check (Ada_Node,
+                                               Check_Entity,
+                                               +Result);
+         end if;
+
+         if Need_Not_Null_Check then
+            Result :=
+              +New_VC_Call
+              (Ada_Node => Ada_Node,
+               Name     => To_Program_Space
+                 (E_Symb (R, WNE_Assign_Null_Check)),
+               Progs    => (1 => +Result),
+               Domain   => EW_Prog,
+               Reason   => VC_Null_Exclusion,
+               Typ      => Get_Type (+Expr));
+         end if;
+
       end if;
 
       return Result;
@@ -3057,19 +3086,21 @@ package body Why.Gen.Expr is
        Domain   : EW_Domain;
        Typ      : W_Type_Id) return W_Expr_Id
    is
+      Call : constant W_Expr_Id :=
+        New_Call (Ada_Node => Ada_Node,
+                  Name     => Name,
+                  Args     => Progs,
+                  Domain   => Domain,
+                  Typ      => Typ);
    begin
-      return
-        +New_VC_Expr
-          (Ada_Node => Ada_Node,
-           Reason   => Reason,
-           Expr     =>
-             New_Call
-               (Ada_Node => Ada_Node,
-                Name     => Name,
-                Args     => Progs,
-                Domain   => Domain,
-                Typ      => Typ),
-           Domain  => Domain);
+      if Domain /= EW_Term then
+         return +New_VC_Expr (Ada_Node => Ada_Node,
+                              Reason   => Reason,
+                              Expr     => Call,
+                              Domain   => Domain);
+      else
+         return Call;
+      end if;
    end New_VC_Call;
 
    -----------------
@@ -3083,20 +3114,16 @@ package body Why.Gen.Expr is
        Domain   : EW_Domain) return W_Expr_Id
    is
    begin
-      if Domain /= EW_Term and then Present (Ada_Node) then
-         return
-           Insert_Cnt_Loc_Label
-             (Ada_Node => Ada_Node,
-              E        =>
-                New_Label
-                  (Ada_Node => Ada_Node,
-                   Labels   => New_VC_Labels (Ada_Node, Reason),
-                   Def      => Expr,
-                   Domain   => Domain,
-                   Typ      => Get_Type (Expr)));
-      else
-         return Expr;
-      end if;
+      return
+        Insert_Cnt_Loc_Label
+          (Ada_Node => Ada_Node,
+           E        =>
+             New_Label
+               (Ada_Node => Ada_Node,
+                Labels   => New_VC_Labels (Ada_Node, Reason),
+                Def      => Expr,
+                Domain   => Domain,
+                Typ      => Get_Type (Expr)));
    end New_VC_Expr;
 
    -------------------

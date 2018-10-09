@@ -1,2 +1,5 @@
-p.ads:10:13: high: "X" must be listed in the Global aspect of "Wrapper1" (SPARK RM 6.1.4(13))
-p.ads:11:92: warning: unused initial value of "X"
+p.ads:11:57: high: "X" must be listed in the Global aspect of "Wrapper1" (SPARK RM 6.1.4(13))
+p.ads:11:72: "X" is referenced in expression function but missing from the Global
+p.ads:12:92: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
+p.ads:16:13: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
+gnatprove: error during flow analysis and proof

@@ -12,7 +12,7 @@ outer.adb:27:10: info: initialization of "Nested_In_Spec.Nested_In_Spec_Var" con
 outer.adb:37:07: info: initialization of "Inner_2.Y" constituent of "Outer.State" proved
 outer.adb:37:10: info: initialization of "Inner_2.Z" constituent of "Outer.State" proved
 outer.adb:43:07: info: initialization of "Inner_3.W" constituent of "Outer.State" proved
-outer.adb:49:58: medium: overflow check might fail
+outer.adb:49:58: medium: overflow check might fail [possible explanation: subprogram at line 49 should mention X and Y in a precondition]
 outer.adb:59:32: info: initialization of "Nested_In_Body.Deep_State" constituent of "Inner.Inner_State" proved
 outer.adb:63:10: info: initialization of "Nested_In_Body.Deep_Var" constituent of "Inner.Inner_State" proved
 outer.adb:69:07: info: initialization of "Y" constituent of "Inner_State" proved

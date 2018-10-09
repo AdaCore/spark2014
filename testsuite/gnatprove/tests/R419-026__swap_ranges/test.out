@@ -25,14 +25,14 @@ swap_ranges.adb:18:38: info: initialization of "K" proved
 swap_ranges.adb:18:43: medium: range check might fail (e.g. when B'First = 1 and B'Last = 1)
 swap_ranges.adb:18:57: info: initialization of "L" proved
 swap_ranges.adb:20:13: info: loop invariant initialization proved (CVC4: 2 VC)
-swap_ranges.adb:23:16: medium: loop invariant might fail after first iteration, cannot prove B'Loop_Entry (L + 1 .. B'Last) = B (L + 1..B'Last) (e.g. when B = (2147483645 => 0, 2147483646 => 0, 2147483647 => 0, others => 1) and B'Last = 2147483647 and L = 2147483646)
+swap_ranges.adb:23:16: medium: loop invariant might fail after first iteration, cannot prove B'Loop_Entry (L + 1 .. B'Last) = B (L + 1..B'Last) (e.g. when B = (Positive'Last-2 => 0, Positive'Last-1 => 0, Positive'Last => 0, others => 1) and B'Last = 2147483647 and L = Positive'Last-1)
 swap_ranges.adb:23:17: info: range check proved (CVC4: 4 VC)
 swap_ranges.adb:23:32: info: initialization of "L" proved
 swap_ranges.adb:23:32: info: overflow check proved (CVC4: 1 VC)
 swap_ranges.adb:23:49: medium: range check might fail (e.g. when B'First = 3 and B'Last = 3)
 swap_ranges.adb:23:54: info: overflow check proved (CVC4: 1 VC)
 swap_ranges.adb:25:13: info: loop invariant initialization proved (CVC4: 2 VC)
-swap_ranges.adb:28:16: medium: loop invariant might fail after first iteration, cannot prove A'Loop_Entry (K + 1 .. A'Last) = A (K + 1..A'Last) (e.g. when A = (2147483645 => 0, 2147483646 => 0, 2147483647 => 0, others => 1) and A'Last = 2147483647 and K = 2147483646)
+swap_ranges.adb:28:16: medium: loop invariant might fail after first iteration, cannot prove A'Loop_Entry (K + 1 .. A'Last) = A (K + 1..A'Last) (e.g. when A = (Positive'Last-2 => 0, Positive'Last-1 => 0, Positive'Last => 0, others => 1) and A'Last = 2147483647 and K = Positive'Last-1)
 swap_ranges.adb:28:17: info: range check proved (CVC4: 4 VC)
 swap_ranges.adb:28:32: info: initialization of "K" proved
 swap_ranges.adb:28:32: info: overflow check proved (CVC4: 1 VC)

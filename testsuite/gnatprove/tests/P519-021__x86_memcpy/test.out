@@ -32,7 +32,7 @@ memcpy.adb:151:32: info: initialization of "SaveStackPtr" proved
 memcpy.adb:152:21: medium: assertion might fail, cannot prove X86.Memory(SaveStackPtr) = SaveMem(SaveStackPtr)
 memcpy.adb:152:33: info: initialization of "SaveStackPtr" proved
 memcpy.adb:152:49: info: initialization of "SaveMem" proved
-memcpy.adb:160:21: medium: assertion might fail, cannot prove X86.RBP = saved_rbp
+memcpy.adb:160:21: medium: assertion might fail, cannot prove X86.RBP = saved_rbp [possible explanation: precondition of subprogram at line 15 should mention RBP]
 memcpy.adb:160:31: info: initialization of "saved_rbp" proved
 memcpy.adb:162:35: info: initialization of "saved_rdi" proved
 memcpy.adb:162:46: info: initialization of "saved_rdx" proved
@@ -111,28 +111,28 @@ memcpy.adb:283:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:283:24: info: initialization of "tmp_register" proved
 memcpy.adb:283:39: info: initialization of "saved_rbp_72" proved
 memcpy.adb:283:51: info: division check proved (CVC4: 1 VC)
-memcpy.adb:285:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX, saved_rbp_16, saved_rbp_72)
+memcpy.adb:285:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
 memcpy.adb:285:47: info: initialization of "saved_rbp_16" proved
 memcpy.adb:285:61: info: initialization of "saved_rbp_72" proved
-memcpy.adb:286:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+1, saved_rbp_16, saved_rbp_72)
+memcpy.adb:286:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+1, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
 memcpy.adb:286:49: info: initialization of "saved_rbp_16" proved
 memcpy.adb:286:63: info: initialization of "saved_rbp_72" proved
-memcpy.adb:287:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+2, saved_rbp_16, saved_rbp_72)
+memcpy.adb:287:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+2, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
 memcpy.adb:287:49: info: initialization of "saved_rbp_16" proved
 memcpy.adb:287:63: info: initialization of "saved_rbp_72" proved
-memcpy.adb:288:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+3, saved_rbp_16, saved_rbp_72)
+memcpy.adb:288:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+3, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
 memcpy.adb:288:49: info: initialization of "saved_rbp_16" proved
 memcpy.adb:288:63: info: initialization of "saved_rbp_72" proved
-memcpy.adb:289:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+4, saved_rbp_16, saved_rbp_72)
+memcpy.adb:289:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+4, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
 memcpy.adb:289:49: info: initialization of "saved_rbp_16" proved
 memcpy.adb:289:63: info: initialization of "saved_rbp_72" proved
-memcpy.adb:290:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+5, saved_rbp_16, saved_rbp_72)
+memcpy.adb:290:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+5, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
 memcpy.adb:290:49: info: initialization of "saved_rbp_16" proved
 memcpy.adb:290:63: info: initialization of "saved_rbp_72" proved
-memcpy.adb:291:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+6, saved_rbp_16, saved_rbp_72)
+memcpy.adb:291:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+6, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
 memcpy.adb:291:49: info: initialization of "saved_rbp_16" proved
 memcpy.adb:291:63: info: initialization of "saved_rbp_72" proved
-memcpy.adb:292:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+7, saved_rbp_16, saved_rbp_72)
+memcpy.adb:292:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+7, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
 memcpy.adb:292:49: info: initialization of "saved_rbp_16" proved
 memcpy.adb:292:63: info: initialization of "saved_rbp_72" proved
 memcpy.adb:297:42: info: initialization of "RAX" proved
@@ -203,7 +203,7 @@ memcpy.adb:421:24: info: initialization of "saved_72" proved
 memcpy.adb:423:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:423:24: info: initialization of "tmp_register" proved
 memcpy.adb:423:39: info: initialization of "saved_72" proved
-memcpy.adb:426:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX, saved_32, saved_72)
+memcpy.adb:426:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX, saved_32, saved_72) [possible explanation: loop invariant at line 353 should mention RDX]
 memcpy.adb:426:47: info: initialization of "saved_32" proved
 memcpy.adb:426:57: info: initialization of "saved_72" proved
 memcpy.adb:438:26: info: initialization of "tmp_register" proved

@@ -31,12 +31,12 @@ deceleration_curve.adb:50:48: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:50:50: info: initialization of "speed" proved
 deceleration_curve.adb:51:12: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:55:47: info: initialization of "delta_speed" proved
-deceleration_curve.adb:57:15: medium: assertion might fail, cannot prove delta_speed < 0.0
+deceleration_curve.adb:57:15: medium: assertion might fail, cannot prove delta_speed < 0.0 [possible explanation: loop invariant at line 39 should mention delta_speed]
 deceleration_curve.adb:59:19: info: initialization of "speed" proved
 deceleration_curve.adb:59:25: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:59:27: info: initialization of "delta_speed" proved
 deceleration_curve.adb:61:22: info: initialization of "distance" proved
-deceleration_curve.adb:61:31: medium: overflow check might fail
+deceleration_curve.adb:61:31: medium: overflow check might fail [possible explanation: loop invariant at line 39 should mention distance]
 deceleration_curve.adb:64:14: info: initialization of "distance" proved
 deceleration_curve.adb:70:36: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:70:36: info: range check proved (CVC4: 1 VC)
@@ -49,11 +49,11 @@ deceleration_curve.adb:86:67: info: cannot unroll loop (too many loop iterations
 deceleration_curve.adb:88:13: info: initialization of "speed" proved
 deceleration_curve.adb:88:19: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:88:21: info: precondition proved (CVC4: 1 VC)
-deceleration_curve.adb:88:32: medium: float overflow check might fail
-deceleration_curve.adb:89:13: medium: float overflow check might fail
-deceleration_curve.adb:89:29: medium: float overflow check might fail
+deceleration_curve.adb:88:32: medium: float overflow check might fail [possible explanation: loop at line 86 should mention speed in a loop invariant]
+deceleration_curve.adb:89:13: medium: float overflow check might fail [possible explanation: loop at line 86 should mention location and speed in a loop invariant]
+deceleration_curve.adb:89:29: medium: float overflow check might fail [possible explanation: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:89:53: info: initialization of "location" proved
-deceleration_curve.adb:90:13: medium: float overflow check might fail
+deceleration_curve.adb:90:13: medium: float overflow check might fail [possible explanation: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:90:46: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:90:46: info: float overflow check proved (Interval)
 deceleration_curve.adb:91:13: info: initialization of "speed" proved
@@ -63,7 +63,7 @@ deceleration_curve.adb:97:42: info: initialization of "Braking_Curve.curve" prov
 deceleration_curve.adb:97:45: info: initialization of "location" proved
 deceleration_curve.adb:98:39: info: initialization of "Braking_Curve.curve" proved
 deceleration_curve.adb:98:42: info: initialization of "speed" proved
-deceleration_curve.adb:105:09: medium: precondition might fail
+deceleration_curve.adb:105:09: medium: precondition might fail [possible explanation: subprogram at line 102 should mention Braking_Curve in a precondition]
 deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations)
 deceleration_curve.adb:106:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:106:10: warning: no Global contract available for "Put"
@@ -71,7 +71,7 @@ deceleration_curve.adb:107:10: warning: assuming "Put" has no effect on global i
 deceleration_curve.adb:107:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
-deceleration_curve.adb:109:12: medium: precondition might fail
+deceleration_curve.adb:109:12: medium: precondition might fail [possible explanation: subprogram at line 102 should mention Braking_Curve in a precondition]
 deceleration_curve.adb:110:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:110:10: warning: no Global contract available for "New_Line"
 deceleration_curve.ads:28:06: info: precondition proved (CVC4: 1 VC)
@@ -93,9 +93,9 @@ example.adb:4:13: info: overflow check proved (CVC4: 1 VC)
 example.adb:5:20: info: overflow check proved (CVC4: 1 VC)
 example.ads:5:14: info: postcondition proved (CVC4: 2 VC)
 sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved (CVC4: 1 VC)
-sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail
+sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail [possible explanation: precondition of subprogram at line 29 should mention V]
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved (CVC4: 1 VC)
-sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail
+sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail [possible explanation: precondition of subprogram at line 35 should mention V]
 sec_3_13_2_monitoring_inputs.ads:184:08: info: postcondition proved (CVC4: 1 VC)
 sec_3_13_2_monitoring_inputs.ads:185:24: info: precondition proved (CVC4: 1 VC)
 sec_3_13_2_monitoring_inputs.ads:186:58: info: range check proved (CVC4: 1 VC)
@@ -114,15 +114,15 @@ sec_3_13_6_deceleration.ads:40:37: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:40:37: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:41:71: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:45:23: info: precondition proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail
+sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail [possible explanation: subprogram at line 44 should mention V in a precondition]
 sec_3_13_6_deceleration.ads:46:26: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:38: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:50: info: float overflow check proved (Interval)
 sec_3_13_6_deceleration.ads:46:57: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:59: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:47:22: info: range check proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail
-sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail
+sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail [possible explanation: subprogram at line 44 should mention d and V in a precondition]
+sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail [possible explanation: subprogram at line 44 should mention d and V in a precondition]
 sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Interval)
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail

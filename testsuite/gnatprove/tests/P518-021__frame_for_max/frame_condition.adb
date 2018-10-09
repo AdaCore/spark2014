@@ -72,7 +72,7 @@ package body Frame_Condition with SPARK_Mode is
                     (for all I in Last .. First =>
                          (for all J in I .. First =>
                               A (J).Value <= Get_Max (I))))
-           and Frame (A'Old);
+           and Frame (A'Old), Global => (Input => (First, Last), In_Out => A);
 
          procedure Update_One_Max is
             K   : Positive := First;

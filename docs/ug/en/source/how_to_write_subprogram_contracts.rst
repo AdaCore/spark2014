@@ -564,6 +564,23 @@ to be able to prove their functional postconditions, to express either specific
 constraints on their calling context, or invariants maintained throughout the
 execution.
 
+.. _Writing Contracts on Main Programs:
+
+Writing Contracts on Main Programs
+----------------------------------
+
+Parameterless procedures and parameterless functions with Integer return type,
+that are in their own compilation unit, are identified by |GNATprove| as
+potential main subprograms. These subprograms are special because they can
+serve as an entry point to the program. If a main subprogram has a
+precondition, SPARK will generate a check that this precondition holds at the
+beginning of the execution of the main program, assuming the
+``Initial_Condition`` aspects of all with'ed packages.
+
+Note that apart from this additional check, main subprograms behave like any
+other subprogram. They can be called from anywhere, and their preconditions
+need to be checked when they are called.
+
 .. _Writing Contracts on Imported Subprograms:
 
 Writing Contracts on Imported Subprograms

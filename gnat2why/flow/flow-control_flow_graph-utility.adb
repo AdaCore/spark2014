@@ -112,7 +112,6 @@ package body Flow.Control_Flow_Graph.Utility is
      (Var_Def         : Flow_Id_Sets.Set;
       Var_Use         : Flow_Id_Sets.Set;
       Object_Returned : Entity_Id;
-      Sub_Called      : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops           : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc           : Node_Or_Entity_Id := Empty)
      return V_Attributes
@@ -123,7 +122,6 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Defined         := Var_Def;
       A.Variables_Used            := Var_Use;
       A.Variables_Explicitly_Used := Var_Use;
-      A.Subprograms_Called        := Sub_Called;
       A.Loops                     := Loops;
       A.Error_Location            := E_Loc;
       A.Aux_Node                  := Object_Returned;
@@ -299,7 +297,6 @@ package body Flow.Control_Flow_Graph.Utility is
               Get_Variables
                 (Actual,
                  Scope                => Scope,
-                 Local_Constants      => FA.Local_Constants,
                  Fold_Functions       => True,
                  Use_Computed_Globals => not FA.Generating_Globals,
                  Consider_Extensions  => Ext_Relevant_To_Formal);
@@ -339,7 +336,6 @@ package body Flow.Control_Flow_Graph.Utility is
             Untangle_Assignment_Target
               (N                    => Actual,
                Scope                => Scope,
-               Local_Constants      => FA.Local_Constants,
                Use_Computed_Globals => not FA.Generating_Globals,
                Vars_Defined         => A.Variables_Defined,
                Vars_Used            => A.Variables_Explicitly_Used,
@@ -676,7 +672,6 @@ package body Flow.Control_Flow_Graph.Utility is
          A.Variables_Used := Get_Variables
            (A.Default_Init_Val,
             Scope                => Scope,
-            Local_Constants      => FA.Local_Constants,
             Fold_Functions       => False,
             Use_Computed_Globals => not FA.Generating_Globals);
          A.Variables_Explicitly_Used := A.Variables_Used;

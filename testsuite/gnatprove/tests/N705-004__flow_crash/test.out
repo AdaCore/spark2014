@@ -131,7 +131,7 @@ very_longs.adb:265:39: info: initialization of "Temp" proved
 very_longs.adb:269:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:274:42: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:274:42: info: range check proved (CVC4: 1 VC)
-very_longs.adb:274:42: medium: overflow check might fail
+very_longs.adb:274:42: medium: overflow check might fail [possible explanation: subprogram at line 273 should mention L and R in a precondition]
 very_longs.adb:282:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:282:29: info: length check proved (CVC4: 1 VC)
 very_longs.adb:285:36: info: cannot unroll loop (too many loop iterations)
@@ -220,20 +220,20 @@ very_longs.adb:413:74: info: initialization of "Old_Overflow" proved
 very_longs.adb:414:29: info: initialization of "New_Overflow" proved
 very_longs.adb:420:55: info: initialization of "Q_Hat" proved
 very_longs.adb:426:64: info: overflow check proved (CVC4: 1 VC)
-very_longs.adb:426:68: medium: array index check might fail
-very_longs.adb:426:106: medium: overflow check might fail
-very_longs.adb:426:111: medium: array index check might fail
+very_longs.adb:426:68: medium: array index check might fail [possible explanation: subprogram at line 418 should mention J and N in a precondition]
+very_longs.adb:426:106: medium: overflow check might fail [possible explanation: subprogram at line 418 should mention J and N in a precondition]
+very_longs.adb:426:111: medium: array index check might fail [possible explanation: subprogram at line 418 should mention J and N in a precondition]
 very_longs.adb:427:19: info: initialization of "Temporary_Digit" proved
-very_longs.adb:427:35: medium: divide by zero might fail
-very_longs.adb:427:66: medium: array index check might fail
+very_longs.adb:427:35: medium: divide by zero might fail [possible explanation: subprogram at line 418 should mention N and V in a precondition]
+very_longs.adb:427:66: medium: array index check might fail [possible explanation: subprogram at line 418 should mention N in a precondition]
 very_longs.adb:428:19: info: initialization of "Temporary_Digit" proved
-very_longs.adb:428:35: medium: divide by zero might fail
+very_longs.adb:428:35: medium: divide by zero might fail [possible explanation: subprogram at line 418 should mention N and V in a precondition]
 very_longs.adb:428:68: info: index check proved (CVC4: 2 VC)
 very_longs.adb:434:13: info: initialization of "Q_Hat" proved
-very_longs.adb:434:65: medium: array index check might fail
+very_longs.adb:434:65: medium: array index check might fail [possible explanation: subprogram at line 418 should mention N in a precondition]
 very_longs.adb:434:79: info: initialization of "R_Hat" proved
 very_longs.adb:434:117: info: overflow check proved (CVC4: 1 VC)
-very_longs.adb:434:122: medium: array index check might fail
+very_longs.adb:434:122: medium: array index check might fail [possible explanation: subprogram at line 418 should mention J and N in a precondition]
 very_longs.adb:435:22: info: initialization of "Q_Hat" proved
 very_longs.adb:436:22: info: initialization of "R_Hat" proved
 very_longs.adb:436:59: info: index check proved (CVC4: 2 VC)
@@ -251,8 +251,8 @@ very_longs.adb:460:59: info: index check proved (CVC4: 2 VC)
 very_longs.adb:460:77: info: initialization of "Carry" proved
 very_longs.adb:461:34: info: initialization of "Product" proved
 very_longs.adb:463:32: info: initialization of "Product" proved
-very_longs.adb:464:45: medium: overflow check might fail
-very_longs.adb:464:61: medium: array index check might fail
+very_longs.adb:464:45: medium: overflow check might fail [possible explanation: subprogram at line 447 should mention J in a precondition]
+very_longs.adb:464:61: medium: array index check might fail [possible explanation: subprogram at line 447 should mention J in a precondition]
 very_longs.adb:464:70: info: initialization of "Temporary_Digit" proved
 very_longs.adb:464:88: info: initialization of "Current_Borrow" proved
 very_longs.adb:469:29: info: overflow check proved (CVC4: 1 VC)
@@ -275,14 +275,14 @@ very_longs.adb:480:87: info: initialization of "Carry" proved
 very_longs.adb:480:96: info: initialization of "Current_Borrow" proved
 very_longs.adb:480:112: info: range check proved (CVC4: 2 VC)
 very_longs.adb:481:28: info: initialization of "Future_Borrow" proved
-very_longs.adb:492:31: medium: array index check might fail
-very_longs.adb:492:43: medium: range check might fail
+very_longs.adb:492:31: medium: array index check might fail [possible explanation: subprogram at line 484 should mention J in a precondition]
+very_longs.adb:492:43: medium: range check might fail [possible explanation: subprogram at line 484 should mention Q_Hat in a precondition]
 very_longs.adb:496:34: info: index check proved (CVC4: 2 VC)
 very_longs.adb:496:61: info: index check proved (CVC4: 2 VC)
 very_longs.adb:498:17: info: range check proved (CVC4: 2 VC)
 very_longs.adb:498:64: info: cannot unroll loop (dynamic loop bounds)
-very_longs.adb:499:52: medium: overflow check might fail
-very_longs.adb:499:68: medium: array index check might fail
+very_longs.adb:499:52: medium: overflow check might fail [possible explanation: subprogram at line 484 should mention J in a precondition]
+very_longs.adb:499:68: medium: array index check might fail [possible explanation: subprogram at line 484 should mention J in a precondition]
 very_longs.adb:499:103: info: index check proved (CVC4: 2 VC)
 very_longs.adb:499:121: info: initialization of "Carry" proved
 very_longs.adb:500:32: info: overflow check proved (CVC4: 1 VC)

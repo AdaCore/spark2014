@@ -454,6 +454,10 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--limit-line");
          Args.Append (Limit_Line.all);
       end if;
+      if Limit_Region.all /= "" then
+         Args.Append ("--limit-region");
+         Args.Append (Limit_Region.all);
+      end if;
       if Limit_Subp.all /= "" then
          Args.Append ("--limit-subp");
          Args.Append (Limit_Subp.all);
@@ -794,6 +798,8 @@ procedure Gnatprove with SPARK_Mode is
            Ada.Strings.Unbounded.To_Unbounded_String (Limit_Subp.all);
          Gnat2Why_Args.Limit_Line :=
            Ada.Strings.Unbounded.To_Unbounded_String (Limit_Line.all);
+         Gnat2Why_Args.Limit_Region :=
+           Ada.Strings.Unbounded.To_Unbounded_String (Limit_Region.all);
          Gnat2Why_Args.Why3_Args := Compute_Why3_Args;
          Gnat2Why_Args.Report_Mode := Report;
          Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);

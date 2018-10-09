@@ -127,6 +127,8 @@ Ada_2012           	      Yes
 Annotate		      Yes
 Check	 		      Yes
 Check_Policy 		      Yes
+Compile_Time_Error	      Yes		     Ignored (replaced by null statement)
+Compile_Time_Warning	      Yes		     Ignored (replaced by null statement)
 Debug			      Yes		     Ignored (replaced by null statement)
 Default_Scalar_Storage_Order  Yes
 Inline_Always      	      Yes

@@ -2420,7 +2420,8 @@ package body Why.Gen.Arrays is
         New_Call
           (Domain => Domain,
            Name   => Get_Array_Theory_1 (Typ).Singleton,
-           Args   => (1 => Elt, 2 => Pos));
+           Args   => (1 => Elt, 2 => Pos),
+           Typ    => EW_Split (Typ));
    end New_Singleton_Call;
 
    -----------------------------------
