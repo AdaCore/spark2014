@@ -1510,12 +1510,9 @@ package body Flow_Utility is
                           Scope                  : Flow_Scope;
                           Classwide              : Boolean;
                           Globals                : out Global_Flow_Ids;
-                          Consider_Discriminants : Boolean := False;
                           Use_Deduced_Globals    : Boolean := True;
                           Ignore_Depends         : Boolean := False)
    is
-      pragma Unreferenced (Consider_Discriminants);
-
       Global_Node  : constant Node_Id := Get_Contract_Node (Subprogram,
                                                             Scope,
                                                             Global_Contract);
@@ -1965,7 +1962,6 @@ package body Flow_Utility is
          Scope                  => S,
          Classwide              => Classwide,
          Globals                => Globals,
-         Consider_Discriminants => False,
          Use_Deduced_Globals    => True);
 
       --  Reset outputs
