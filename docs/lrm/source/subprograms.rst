@@ -587,17 +587,20 @@ is used purely for static analysis purposes and is not executed.
 
 .. _tu-fa-global_aspects-13:
 
-13. For a subprogram that has a ``global_specification``, an object (except
-    a constant without variable inputs) or state abstraction that is
-    declared outside the scope of the subprogram, shall only be referenced
-    within its implementation if it is a ``global_item`` in the
-    ``global_specification``.
+13. For a subprogram that has a ``global_specification``, an object (except a
+    constant without variable inputs, or a constant that is only referenced
+    within assertions) or state abstraction that is declared outside the scope
+    of the subprogram, shall only be referenced within its implementation if it
+    is a ``global_item`` in the ``global_specification``.
 
 .. _tu-fa-global_aspects-14:
 
-14. A ``global_item`` shall occur in a Global aspect of a subprogram if and
-    only if it denotes an entity (except for a constant without variable
-    inputs) that is referenced by the subprogram.
+14. A ``global_item`` shall occur in a Global aspect of a subprogram only if it
+    denotes an entity that is referenced by the subprogram, and it is neither a
+    constant without variable inputs, or a constant that is only referenced
+    within assertions. [The rationale for excluding such constants is that they
+    do not participate in the data- and information-flows specified in Global
+    and Depends aspects.]
 
 .. _tu-cbatu-global_aspects-15:
 
@@ -647,10 +650,10 @@ is used purely for static analysis purposes and is not executed.
 
 .. _tu-fa-global_aspects-17:
 
-17. An entity that is denoted by a ``global_item`` which is referenced
-    by a subprogram but is neither an input nor an output but is only
-    referenced directly, or indirectly in assertion expressions has a
-    ``mode_selector`` of Proof_In.
+17. An entity that is denoted by a ``global_item`` which is referenced by a
+    subprogram but is neither an input nor an output but is only referenced
+    directly, or indirectly in assertion expressions has a ``mode_selector`` of
+    Proof_In. [Redundant: Such an entity cannot be constant.]
 
 .. _tu-fa-global_aspects-18:
 
@@ -701,7 +704,7 @@ is used purely for static analysis purposes and is not executed.
 .. _tu-fa-global_aspects-19:
 
 19. The ``mode_selector`` of a ``global_item`` denoting a *constant with
-    variable inputs* shall be ``Input`` or ``Proof_In``.
+    variable inputs* shall be ``Input``.
 
 .. _tu-fa-global_aspects-20:
 
