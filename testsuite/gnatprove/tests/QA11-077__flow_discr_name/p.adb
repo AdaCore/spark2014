@@ -25,4 +25,6 @@ package body P is
       P.Read_Write;
       P.Read_Write;
    end;
+
+   procedure Dummy is null;
 end;
