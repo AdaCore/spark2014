@@ -119,7 +119,7 @@ package body Flow is
             end if;
             Write_Eol;
             Indent;
-            for E of S loop
+            for E of To_Ordered_Flow_Id_Set (S) loop
                Sprint_Flow_Id (E);
                Write_Eol;
             end loop;
@@ -139,15 +139,26 @@ package body Flow is
          declare
             M : constant Dependency_Maps.Map :=
               GG_Get_Initializes (FA.Spec_Entity);
+
+            Ordered_LHS : Ordered_Flow_Id_Sets.Set;
+            --  To reliably print the Initializes contract on different
+            --  operating systems we must sort the LHS items; the RHS will
+            --  be sorted in the dedicated pretty-printing routine.
+
          begin
             if not M.Is_Empty then
                Write_Str ("Initializes =>");
                Write_Eol;
                Indent;
+
                for C in M.Iterate loop
+                  Ordered_LHS.Insert (Dependency_Maps.Key (C));
+               end loop;
+
+               for LHS of Ordered_LHS loop
                   Print_Named_Flow_Id_Set
-                    (Flow_Id_To_String (Dependency_Maps.Key (C)),
-                     M (C),
+                    (Flow_Id_To_String (LHS),
+                     M (LHS),
                      True);
                end loop;
                Outdent;
