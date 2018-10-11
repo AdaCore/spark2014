@@ -60,8 +60,8 @@ attempt_3.adb:54:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:55:22: medium: assertion might fail, cannot prove Old_Speed + 1.0 <= High_Bound(N) + 1.0
 attempt_3.adb:55:32: info: float overflow check proved (CodePeer)
 attempt_3.adb:55:55: info: float overflow check proved (CodePeer)
-attempt_3.adb:56:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:56:22: info: initialization of "New_Speed" proved
+attempt_3.adb:56:22: medium: assertion might fail, cannot prove New_Speed <= High_Bound(N) + 1.0
 attempt_3.adb:56:49: info: float overflow check proved (CodePeer)
 attempt_3.adb:59:48: info: range check proved (Interval)
 attempt_3.adb:59:51: info: float overflow check proved (Interval)
