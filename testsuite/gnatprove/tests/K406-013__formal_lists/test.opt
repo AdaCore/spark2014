@@ -1,2 +1,3 @@
 NT SKIP platform diffs
+Darwin SKIP hits rlimit
 !large SKIP hits rlimit in continuous builder

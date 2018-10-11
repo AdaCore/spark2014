@@ -1,3 +1,4 @@
 !large SKIP part of large testsuite
 assertions SKIP part of large testsuite
+Darwin SKIP too long
 ALL RLIMIT 1500
