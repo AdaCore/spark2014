@@ -319,11 +319,11 @@ package body Flow_Visibility is
               (Spec_V,
                Scope_Graph.Get_Vertex
                  ((if Is_Nested (Info)
-                  then Info.Container
-                  else (Ent  => Info.Parent,
-                        Part => (if Info.Is_Private
-                                 then Private_Part
-                                 else Visible_Part)))));
+                   then Info.Container
+                   else (Ent  => Info.Parent,
+                         Part => (if Info.Is_Private
+                                  then Private_Part
+                                  else Visible_Part)))));
          end if;
 
          ----------------------------------------------------------------------
