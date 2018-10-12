@@ -397,7 +397,11 @@ package Gnat2Why.Util is
    --  In the translation to Why, use Count_Discriminants instead of
    --  Has_Discriminant to avoid counting hidden discriminants.
 
-   function Is_Initialized
+   function Is_Initialized_At_Decl (Obj : Entity_Id) return Boolean with
+     Pre => Is_Object (Obj) and then Is_Mutable_In_Why (Obj);
+   --  Returns True if Obj is always initialized at declaration
+
+   function Is_Initialized_In_Scope
      (Obj   : Entity_Id;
       Scope : Entity_Id)
       return Boolean

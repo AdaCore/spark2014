@@ -95,7 +95,7 @@ bounded_dynamic_arrays.adb:236:17: info: loop invariant initialization proved (C
 bounded_dynamic_arrays.adb:236:17: info: loop invariant preservation proved (altergo: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:237:24: info: range check proved (CVC4: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:237:52: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.adb:240:22: medium: assertion might fail, cannot prove not Contains (Within, Fragment), in instantiation at bounded_dynamic_strings.ads:5 (e.g. when Fragment = (others => 'SOH') and Fragment'First = 1 and Fragment'Last = 1 and Within = (Capacity => Natural_Index'Last, Current_Length => Natural_Index'Last, Content => (others => 'NUL')) and Within.Content'First = 1 and Within.Content'Last = 2147483647) [possible explanation: subprogram at line 221 should mention Fragment and Within in a precondition]
+bounded_dynamic_arrays.adb:240:22: info: assertion proved (Z3: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:251:29: info: index check proved (CVC4: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:254:34: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:254:34: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5

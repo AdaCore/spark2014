@@ -1312,7 +1312,7 @@ package body Gnat2Why.Expr is
                     (if Is_Object (Obj)
                      and then Is_Mutable_In_Why (Obj)
                      and then not Initialized
-                     then Is_Initialized (Obj, Scope)
+                     then Is_Initialized_In_Scope (Obj, Scope)
                      else True),
                   Top_Predicate => Top_Predicate,
                   Context       => Prop_For_Include);
@@ -3844,19 +3844,27 @@ package body Gnat2Why.Expr is
          T := True_Pred;
       end if;
 
-      --  Add possible dynamic predicate. This is only valid for initialized
-      --  data, when the top predicate should be included.
+      --  Add possible dynamic predicate. If the type defines at least partial
+      --  default initialization, the predicate is checked at default
+      --  initialization so it can be assumed to always hold. Otherwise, the
+      --  predicate is only valid for initialized data. In all cases, only
+      --  assume the predicate when the top predicate should be included.
 
       declare
-         Typ_Pred   : constant W_Pred_Id :=
+         Typ_Pred              : constant W_Pred_Id :=
            Compute_Dynamic_Predicate (Expr, Ty_Ext, Params, Use_Pred => False);
-         Check_Pred : constant W_Pred_Id :=
+         Pred_Check_At_Default : constant Boolean :=
+           Default_Initialization (Ty_Ext, Get_Flow_Scope (Ty_Ext))
+             /= No_Default_Initialization;
+         Check_Pred            : constant W_Pred_Id :=
            New_Conditional
              (Condition => +Top_Predicate,
-              Then_Part => New_Conditional (Domain    => EW_Pred,
-                                            Condition => +Initialized,
-                                            Then_Part => +Typ_Pred,
-                                            Typ       => EW_Bool_Type),
+              Then_Part =>
+                (if Pred_Check_At_Default then +Typ_Pred
+                 else New_Conditional (Domain    => EW_Pred,
+                                       Condition => +Initialized,
+                                       Then_Part => +Typ_Pred,
+                                       Typ       => EW_Bool_Type)),
               Typ       => EW_Bool_Type);
 
       begin

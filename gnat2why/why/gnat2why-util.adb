@@ -821,11 +821,21 @@ package body Gnat2Why.Util is
       Ada_Ent_To_Why.Insert (Symbol_Table, E, I);
    end Insert_Item;
 
-   --------------------
-   -- Is_Initialized --
-   --------------------
+   ----------------------------
+   -- Is_Initialized_At_Decl --
+   ----------------------------
 
-   function Is_Initialized
+   function Is_Initialized_At_Decl (Obj : Entity_Id) return Boolean is
+   begin
+      return Is_Constant_Object (Obj)
+        or else Present (Expression (Enclosing_Declaration (Obj)));
+   end Is_Initialized_At_Decl;
+
+   -----------------------------
+   -- Is_Initialized_In_Scope --
+   -----------------------------
+
+   function Is_Initialized_In_Scope
      (Obj   : Entity_Id;
       Scope : Entity_Id)
       return Boolean
@@ -869,7 +879,7 @@ package body Gnat2Why.Util is
       when others =>
          raise Program_Error;
       end case;
-   end Is_Initialized;
+   end Is_Initialized_In_Scope;
 
    -----------------------
    -- Is_Mutable_In_Why --
