@@ -44,7 +44,7 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="363"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="333"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="190"/></proof>
@@ -242,7 +242,7 @@
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="WP_parameter def.0" expl="assertion">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="325"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="295"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="163"/></proof>
