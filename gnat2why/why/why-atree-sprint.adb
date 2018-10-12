@@ -713,13 +713,13 @@ package body Why.Atree.Sprint is
                Node : constant W_Custom_Substitution_Id :=
                  W_Custom_Substitution_Id (Element (Position));
             begin
-               Result := Result & Get_Name_String (Get_From (Node));
+               Append (Result, Get_Name_String (Get_From (Node)));
             end;
 
             Position := Next (Position);
 
             if Position /= No_Element then
-               Result := Result & "|";
+               Append (Result, "|");
             end if;
          end loop;
 
