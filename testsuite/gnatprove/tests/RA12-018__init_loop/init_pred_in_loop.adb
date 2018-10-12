@@ -125,14 +125,14 @@ procedure Init_Pred_In_Loop with SPARK_Mode is
       F1 : Integer := 0;
       F2 : Integer;
    end record
-     with Predicate => My_False; -- @PREDICATE_CHECK:FAIL
+     with Predicate => My_False;
 
    procedure Test_Wrong_Partial_Init is
    begin
       loop
          pragma Loop_Invariant (True);
          declare
-            X : Wrong_Partial_Init;
+            X : Wrong_Partial_Init; -- @PREDICATE_CHECK:FAIL
          begin
             X := (1, 1);
          end;
@@ -143,14 +143,14 @@ procedure Init_Pred_In_Loop with SPARK_Mode is
       F1 : Integer := 0;
       F2 : Integer := 0;
    end record
-     with Predicate => My_False; -- @PREDICATE_CHECK:FAIL
+     with Predicate => My_False;
 
    procedure Test_Wrong_Full_Init is
    begin
       loop
          pragma Loop_Invariant (True);
          declare
-            X : Wrong_Full_Init;
+            X : Wrong_Full_Init; -- @PREDICATE_CHECK:FAIL
          begin
             X := (1, 1);
          end;
@@ -195,8 +195,8 @@ procedure Init_Pred_In_Loop with SPARK_Mode is
       end loop;
    end Test_Wrong_Scalar_3;
 
-   type Wrong_Scalar_Def_1 is new Integer
-     with Predicate => My_False, -- @PREDICATE_CHECK:FAIL
+   type Wrong_Scalar_Def is new Integer
+     with Predicate => My_False,
      Default_Value => 0;
 
    procedure Test_Wrong_Scalar_Def_1 is
@@ -204,22 +204,18 @@ procedure Init_Pred_In_Loop with SPARK_Mode is
       loop
          pragma Loop_Invariant (True);
          declare
-            X : Wrong_Scalar_Def_1;
+            X : Wrong_Scalar_Def; -- @PREDICATE_CHECK:FAIL
          begin
             X := 1;
          end;
       end loop;
    end Test_Wrong_Scalar_Def_1;
 
-   type Wrong_Scalar_Def_2 is new Integer
-     with Predicate => My_False, -- @PREDICATE_CHECK:FAIL
-     Default_Value => 0;
-
    procedure Test_Wrong_Scalar_Def_2 is
    begin
       loop
          declare
-            X : Wrong_Scalar_Def_2;
+            X : Wrong_Scalar_Def; -- @PREDICATE_CHECK:FAIL
          begin
             pragma Loop_Invariant (True);
             X := 1;
@@ -227,28 +223,16 @@ procedure Init_Pred_In_Loop with SPARK_Mode is
       end loop;
    end Test_Wrong_Scalar_Def_2;
 
-   type Wrong_Scalar_Def_3 is new Integer
-     with Predicate => My_False, -- @PREDICATE_CHECK:FAIL
-     Default_Value => 0;
-
    procedure Test_Wrong_Scalar_Def_3 is
    begin
       for I in 1 .. 3 loop
          declare
-            X : Wrong_Scalar_Def_3;
+            X : Wrong_Scalar_Def; -- @PREDICATE_CHECK:FAIL
          begin
             X := 1;
          end;
       end loop;
    end Test_Wrong_Scalar_Def_3;
-
-   type Intp is new Integer with
-     Default_Value => 0; -- predicate check might fail
-
-   type Sub_Intp_Bad is new Intp with
-     Predicate => Sub_Intp_Bad /= 0; -- predicate check might fail on default value
-
-   X : Sub_Intp_Bad;
 begin
    null;
 end Init_Pred_In_Loop;

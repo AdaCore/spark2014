@@ -1539,7 +1539,8 @@ package body Why.Gen.Expr is
       To         : W_Type_Id;
       Range_Type : Entity_Id;
       Check_Kind : Scalar_Check_Kind;
-      Lvalue     : Boolean := False) return W_Expr_Id
+      Lvalue     : Boolean := False;
+      Skip_Pred  : Boolean := False) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
@@ -1550,6 +1551,7 @@ package body Why.Gen.Expr is
           and then Present (Get_Ada_Node (+To))
           and then Has_Predicates (Get_Ada_Node (+To))
           and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
+          and then not Skip_Pred
           and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
 
       --  Current result expression

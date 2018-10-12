@@ -144,13 +144,15 @@ package Gnat2Why.Expr is
    --          and it holds for default values of type N.
 
    function Compute_Default_Check
-     (Ty               : Entity_Id;
+     (Ada_Node         : Node_Id;
+      Ty               : Entity_Id;
       Params           : Transformation_Params;
       Skip_Last_Cond   : Boolean := False;
       Include_Subtypes : Boolean := False;
       New_Components   : Boolean := False) return W_Prog_Id
    with Pre => (if not Include_Subtypes
                 then Can_Be_Default_Initialized (Retysp (Ty)));
+   --  @param Ada_Node node to which the checks should be attached
    --  @param Ty The type for which we want to check the default expression
    --  @param Params Transformation parameters
    --  @param Skip_Last_Cond Do not check the top-level

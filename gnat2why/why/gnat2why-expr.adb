@@ -1040,7 +1040,7 @@ package body Gnat2Why.Expr is
             --  Type of the fullview
 
             Default_Checks  : W_Prog_Id :=
-              Compute_Default_Check (Constrained_Ty, Body_Params);
+              Compute_Default_Check (N, Constrained_Ty, Body_Params);
               --  Checks for runtime errors in default values
 
             Init_Assumption : constant W_Pred_Id :=
@@ -2649,7 +2649,8 @@ package body Gnat2Why.Expr is
    ---------------------------
 
    function Compute_Default_Check
-     (Ty               : Entity_Id;
+     (Ada_Node         : Entity_Id;
+      Ty               : Entity_Id;
       Params           : Transformation_Params;
       Skip_Last_Cond   : Boolean := False;
       Include_Subtypes : Boolean := False;
@@ -2771,6 +2772,10 @@ package body Gnat2Why.Expr is
                     Expected_Type => Base_Why_Type (Ty_Ext),
                     Domain        => EW_Prog,
                     Params        => Params);
+
+               --  Do not check predicate of default value, it will be done
+               --  later.
+
                Range_Check  : constant W_Expr_Id :=
                  Insert_Scalar_Conversion
                    (Domain     => EW_Prog,
@@ -2778,7 +2783,8 @@ package body Gnat2Why.Expr is
                     Expr       => Default_Expr,
                     To         => Type_Of_Node (Ty_Ext),
                     Range_Type => Ty_Ext,
-                    Check_Kind => RCK_Range);
+                    Check_Kind => RCK_Range,
+                    Skip_Pred  => True);
             begin
                Checks := +Range_Check;
             end;
@@ -2836,8 +2842,9 @@ package body Gnat2Why.Expr is
 
             else
                T_Comp := +Compute_Default_Check
-                 (Ty     => Component_Type (Ty_Ext),
-                  Params => Params);
+                 (Ada_Node => Ada_Node,
+                  Ty       => Component_Type (Ty_Ext),
+                  Params   => Params);
             end if;
 
             if T_Comp /= +Void then
@@ -3001,7 +3008,8 @@ package body Gnat2Why.Expr is
                            --  Otherwise, use its Field's Etype default value
 
                            T_Comp :=
-                             +Compute_Default_Check (Etype (Field), Params);
+                             +Compute_Default_Check
+                             (Ada_Node, Etype (Field), Params);
                         end if;
 
                         if T_Comp /= +Void then
@@ -3096,25 +3104,13 @@ package body Gnat2Why.Expr is
                             Post        => Default_Init_Pred,
                             Return_Type => EW_Abstract (Ty_Ext));
 
-            --  Find the node to which the check should be attached. If a
-            --  predicate aspect applies to Ty, use that node. Otherwise (case
-            --  of a pragma or an inherited predicate) use type Ty. Note that
-            --  Compute_Default_Check is only called when an object of the type
-            --  is being default initialized. If no such object exists, the
-            --  check that the default value of the type respects the predicate
-            --  will not be generated.
-
-            Pred_Node : constant Node_Id := Find_Predicate_Aspect (Ty);
-            Check_Node : constant Node_Id :=
-              (if Present (Pred_Node) then Pred_Node else Ty);
-
             --  Generate the predicate check, specifying that it applies to the
             --  default value of a type, so that a special VC kind is used for
             --  better messages.
 
             Pred_Check : constant W_Prog_Id :=
               New_Predicate_Check
-                (Ada_Node         => Check_Node,
+                (Ada_Node         => Ada_Node,
                  Ty               => Ty,
                  W_Expr           => +Tmp_Exp,
                  On_Default_Value => True);
@@ -12559,7 +12555,8 @@ package body Gnat2Why.Expr is
 
                   Call := +Sequence
                     (Left     => Compute_Default_Check
-                       (Ty               => Directly_Designated_Type (Exp_Ty),
+                       (Ada_Node         => Expr,
+                        Ty               => Directly_Designated_Type (Exp_Ty),
                         Params           => Body_Params,
                         Include_Subtypes => True),
                      Right    => +Call);

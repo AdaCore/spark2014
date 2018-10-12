@@ -2937,7 +2937,8 @@ package body Gnat2Why.Subprograms is
                      --  Otherwise, use its Field's Etype default value
 
                      F_Check :=
-                       Compute_Default_Check (Etype (Field), Body_Params);
+                       Compute_Default_Check
+                         (Field, Etype (Field), Body_Params);
                   end if;
 
                   if F_Check /= +Void then

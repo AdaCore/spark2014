@@ -601,13 +601,14 @@ package body Gnat2Why.Types is
       --  expression of newly declared fields.
 
       Why_Body :=
-         Compute_Default_Check
-           (Ty               => Retysp (E),
-            Params           => Params,
-            Skip_Last_Cond   => True,
-            Include_Subtypes => True,
-            New_Components   =>
-              Nkind (Decl) = N_Private_Extension_Declaration);
+        Compute_Default_Check
+          (Ada_Node         => E,
+           Ty               => Retysp (E),
+           Params           => Params,
+           Skip_Last_Cond   => True,
+           Include_Subtypes => True,
+           New_Components   =>
+             Nkind (Decl) = N_Private_Extension_Declaration);
 
       --  If the type has a DIC and this DIC should be checked at
       --  declaration, check that there can be no runtime error in the DIC

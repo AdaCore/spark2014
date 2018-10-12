@@ -2,11 +2,11 @@ package Preds is
 
    type Int_OK is new Integer with
      Default_Value => 1,
-     Predicate => Int_OK /= 0;  --  @PREDICATE_CHECK:PASS
+     Predicate => Int_OK /= 0;
 
    type Int_Bad is new Integer with
      Default_Value => 0,
-     Predicate => Int_Bad /= 0;  --  @PREDICATE_CHECK:FAIL
+     Predicate => Int_Bad /= 0;
 
    procedure Create_Int_OK (X : out Int_OK);
    procedure Create_Int_Bad (X : out Int_Bad);
@@ -18,10 +18,10 @@ package Preds is
      Default_Value => 0;
 
    type Sub_Int_OK is new Int1 with
-     Predicate => Sub_Int_OK /= 0;  --  @PREDICATE_CHECK:PASS
+     Predicate => Sub_Int_OK /= 0;
 
    type Sub_Int_Bad is new Int0 with
-     Predicate => Sub_Int_Bad /= 0;  --  @PREDICATE_CHECK:FAIL
+     Predicate => Sub_Int_Bad /= 0;
 
    procedure Create_Sub_Int_OK (X : out Sub_Int_OK);
    procedure Create_Sub_Int_Bad (X : out Sub_Int_Bad);
@@ -30,21 +30,21 @@ package Preds is
      Predicate => Intp /= 0;
 
    type Sub_Intp_OK is new Intp with
-     Default_Value => 1;  --  @PREDICATE_CHECK:PASS
+     Default_Value => 1;
 
    type Sub_Intp_Bad is new Intp with
-     Default_Value => 0;  --  @PREDICATE_CHECK:FAIL
+     Default_Value => 0;
 
    procedure Create_Sub_Intp_OK (X : out Sub_Intp_OK);
    procedure Create_Sub_Intp_Bad (X : out Sub_Intp_Bad);
 
    type Arr_OK is array (1 .. 10) of Integer with
      Default_Component_Value => 1,
-     Predicate => (for all K in Arr_OK'Range => Arr_OK (K) /= 0);  --  @PREDICATE_CHECK:PASS
+     Predicate => (for all K in Arr_OK'Range => Arr_OK (K) /= 0);
 
    type Arr_Bad is array (1 .. 10) of Integer with
      Default_Component_Value => 0,
-     Predicate => (for all K in Arr_Bad'Range => Arr_Bad (K) /= 0);  --  @PREDICATE_CHECK:FAIL
+     Predicate => (for all K in Arr_Bad'Range => Arr_Bad (K) /= 0);
 
    procedure Create_Arr_OK (X : out Arr_OK);
    procedure Create_Arr_Bad (X : out Arr_Bad);
@@ -54,25 +54,25 @@ package Preds is
       X : Int_OK;
       A : Arr_OK;
    end record with
-     Predicate => Rec_OK.I /= 0 and Rec_OK.X /= 0 and (for all K in Rec_OK.A'Range => Rec_OK.A (K) /= 0);  --  @PREDICATE_CHECK:PASS
+     Predicate => Rec_OK.I /= 0 and Rec_OK.X /= 0 and (for all K in Rec_OK.A'Range => Rec_OK.A (K) /= 0);
 
    type Rec_Bad is record
       I : Integer := 0;
       X : Int_Bad;
       A : Arr_Bad;
    end record with
-     Predicate => Rec_Bad.I /= 0 and Rec_Bad.X /= 0 and (for all K in Rec_Bad.A'Range => Rec_Bad.A (K) /= 0);  --  @PREDICATE_CHECK:FAIL
+     Predicate => Rec_Bad.I /= 0 and Rec_Bad.X /= 0 and (for all K in Rec_Bad.A'Range => Rec_Bad.A (K) /= 0);
 
    procedure Create_Rec_OK (X : out Rec_OK);
    procedure Create_Rec_Bad (X : out Rec_Bad);
 
    type Rec_Int_OK is new Integer with
      Default_Value => 1,
-     Predicate => Rec_Int_OK /= 0;  --  @PREDICATE_CHECK:PASS
+     Predicate => Rec_Int_OK /= 0;
 
    type Rec_Int_Bad is new Integer with
      Default_Value => 0,
-     Predicate => Rec_Int_Bad /= 0;  --  @PREDICATE_CHECK:FAIL
+     Predicate => Rec_Int_Bad /= 0;
 
    type Rec_Wrap_OK is record
       X : Rec_Int_OK;
