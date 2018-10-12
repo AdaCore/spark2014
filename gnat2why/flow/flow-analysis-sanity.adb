@@ -1500,7 +1500,7 @@ package body Flow.Analysis.Sanity is
       --  Up project actual globals
       Up_Project (Generated_Refined_Global, Generated_Global, FA.S_Scope);
 
-      --  Detect insonsistent globals
+      --  Detect inconsistent globals
 
       Check (Generated => Generated_Global.Inputs,
              User      => User_Global.Inputs,
