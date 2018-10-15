@@ -98,6 +98,7 @@ package body Flow_Dependency_Maps is
       while Present (Row) loop
          declare
             E : constant Entity_Id := Entity (Original_Node (Row));
+
          begin
             M.Insert (Direct_Mapping_Id (Canonical_Entity (E, Context)),
                       Flow_Id_Sets.Empty_Set);

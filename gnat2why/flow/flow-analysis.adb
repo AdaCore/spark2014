@@ -3687,11 +3687,14 @@ package body Flow.Analysis is
       --  spec scope if we are checking a Depends contract.
 
    begin
+      --  If the user has not specified a dependency relation we have no work
+      --  to do.
+
       if No (FA.Depends_N) then
-         --  If the user has not specified a dependency relation we have no
-         --  work to do.
          return;
       end if;
+
+      --  Read the user-written Depends
 
       Get_Depends (Subprogram => FA.Analyzed_Entity,
                    Scope      => FA.B_Scope,
@@ -3699,8 +3702,11 @@ package body Flow.Analysis is
                    Depends    => User_Deps);
 
       --  Up-project the dependencies
+
       Up_Project (User_Deps, Projected_User_Deps, Depends_Scope);
       Up_Project (FA.Dependency_Map, Actual_Deps, Depends_Scope);
+
+      --  Debug output
 
       if Debug_Trace_Depends then
          Print_Dependency_Map ("user",   Projected_User_Deps);

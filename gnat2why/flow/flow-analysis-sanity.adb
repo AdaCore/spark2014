@@ -1468,17 +1468,14 @@ package body Flow.Analysis.Sanity is
       end if;
 
       --  Read the user-written Global or Depends
+
       if Present (FA.Global_N) then
-         Raw_Globals :=
-           Parse_Global_Contract
-             (Subprogram  => FA.Spec_Entity,
-              Global_Node => FA.Global_N);
+         Raw_Globals := Parse_Global_Contract (Subprogram  => FA.Spec_Entity,
+                                               Global_Node => FA.Global_N);
 
       elsif Present (FA.Depends_N) then
-         Raw_Globals :=
-           Parse_Depends_Contract
-             (FA.Spec_Entity,
-              FA.Depends_N);
+         Raw_Globals := Parse_Depends_Contract (Subprogram   => FA.Spec_Entity,
+                                                Depends_Node => FA.Depends_N);
 
       else
          pragma Assert (Is_Pure (FA.Spec_Entity));
@@ -1487,17 +1484,19 @@ package body Flow.Analysis.Sanity is
       --  Convert user-globals from Entity_Ids to Flow_Ids
 
       User_Global :=
-           (Proof_Ins => To_Flow_Id_Set (Raw_Globals.Proof_Ins, In_View),
-            Inputs    => To_Flow_Id_Set (Raw_Globals.Inputs,    In_View),
-            Outputs   => To_Flow_Id_Set (Raw_Globals.Outputs,   Out_View));
+        (Proof_Ins => To_Flow_Id_Set (Raw_Globals.Proof_Ins, In_View),
+         Inputs    => To_Flow_Id_Set (Raw_Globals.Inputs,    In_View),
+         Outputs   => To_Flow_Id_Set (Raw_Globals.Outputs,   Out_View));
 
-      --  Read the generated Global
+      --  Read the generated Refined_Global
+
       Get_Globals (Subprogram => FA.Analyzed_Entity,
                    Scope      => FA.B_Scope,
                    Classwide  => False,
                    Globals    => Generated_Refined_Global);
 
       --  Up project actual globals
+
       Up_Project (Generated_Refined_Global, Generated_Global, FA.S_Scope);
 
       --  Detect inconsistent globals
@@ -1579,7 +1578,6 @@ package body Flow.Analysis.Sanity is
                F        => Unused);
          end if;
       end loop;
-
    end Check_Generated_Refined_Global;
 
    -----------------------------------------------
