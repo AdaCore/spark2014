@@ -1,0 +1,3 @@
+figure[0-9]*.tex
+is_visible.aux
+is_visible.pdf
