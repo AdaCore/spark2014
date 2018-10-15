@@ -328,8 +328,8 @@ hermes-oid.adb:134:20: info: initialization of "Out_Of_Space" proved
 hermes-oid.adb:143:31: info: initialization of "Result_Index" proved
 hermes-oid.adb:143:44: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:143:46: info: initialization of "Start_Index" proved
-hermes-oid.adb:143:58: medium: overflow check might fail [possible explanation: loop invariant at line 112 should mention Start_Index]
-hermes-oid.adb:143:58: medium: range check might fail [possible explanation: loop invariant at line 112 should mention Start_Index]
+hermes-oid.adb:143:58: medium: overflow check might fail
+hermes-oid.adb:143:58: medium: range check might fail
 hermes-oid.adb:150:41: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:150:41: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:151:28: info: initialization of "Result_Index" proved

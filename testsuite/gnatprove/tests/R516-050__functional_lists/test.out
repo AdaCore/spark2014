@@ -15,8 +15,8 @@ use_lists.adb:5:14: medium: "L2" is not set
 use_lists.adb:5:14: medium: private part of "L2" is not set
 use_lists.adb:6:13: side effects of function "Has_Element" are not modeled in SPARK
 use_lists.adb:6:30: info: initialization of "Cu" proved
-use_lists.adb:8:13: medium: loop invariant might fail after first iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2) [possible explanation: subprogram at line 2 should mention L1 in a precondition]
-use_lists.adb:8:13: medium: loop invariant might fail in first iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2) [possible explanation: subprogram at line 2 should mention L1 in a precondition]
+use_lists.adb:8:13: medium: loop invariant might fail after first iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2)
+use_lists.adb:8:13: medium: loop invariant might fail in first iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2)
 use_lists.adb:8:35: side effects of function "Get_Cursor_Model" are not modeled in SPARK
 use_lists.adb:8:58: info: initialization of "Cu" proved
 use_lists.adb:8:64: info: function contract not available for proof ("Length" might not return)
@@ -26,36 +26,36 @@ use_lists.adb:10:13: info: loop invariant initialization proved (CVC4: 1 VC)
 use_lists.adb:10:40: info: function contract not available for proof ("Length" might not return)
 use_lists.adb:10:48: info: initialization of "L2" proved
 use_lists.adb:10:48: info: initialization of private part of "L2" proved
-use_lists.adb:11:18: medium: loop invariant might fail after first iteration, cannot prove Is_Incr (Get (Get_Element_Model (L1), N), Get (Get_Element_Model (L2), N)) (e.g. when N = 0) [possible explanation: subprogram at line 2 should mention L1 in a precondition]
+use_lists.adb:11:18: medium: loop invariant might fail after first iteration, cannot prove Is_Incr (Get (Get_Element_Model (L1), N), Get (Get_Element_Model (L2), N)) (e.g. when N = 0)
 use_lists.adb:11:32: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.adb:12:32: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.adb:13:13: medium: precondition might fail [possible explanation: subprogram at line 2 should mention L1 in a precondition]
+use_lists.adb:13:13: medium: precondition might fail
 use_lists.adb:13:13: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:13:26: info: initialization of "Cu" proved
 use_lists.adb:14:13: medium: precondition might fail
 use_lists.adb:14:21: info: initialization of "L2" proved
 use_lists.adb:14:21: info: initialization of private part of "L2" proved
-use_lists.adb:14:25: medium: precondition might fail [possible explanation: subprogram at line 2 should mention L1 in a precondition]
+use_lists.adb:14:25: medium: precondition might fail
 use_lists.adb:14:25: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:14:38: info: initialization of "Cu" proved
-use_lists.adb:14:42: medium: overflow check might fail [possible explanation: subprogram at line 2 should mention L1 in a precondition]
+use_lists.adb:14:42: medium: overflow check might fail
 use_lists.adb:16:13: medium: precondition might fail
 use_lists.adb:16:21: info: initialization of "L2" proved
 use_lists.adb:16:21: info: initialization of private part of "L2" proved
-use_lists.adb:16:25: medium: precondition might fail [possible explanation: subprogram at line 2 should mention L1 in a precondition]
+use_lists.adb:16:25: medium: precondition might fail
 use_lists.adb:16:25: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:16:38: info: initialization of "Cu" proved
-use_lists.adb:18:16: medium: assertion might fail, cannot prove Get (Get_Element_Model (L2), Length (L2) - 1) = Element (L1, Cu) [possible explanation: subprogram at line 2 should mention L1 in a precondition]
+use_lists.adb:18:16: medium: assertion might fail, cannot prove Get (Get_Element_Model (L2), Length (L2) - 1) = Element (L1, Cu)
 use_lists.adb:18:21: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.adb:18:45: info: function contract not available for proof ("Length" might not return)
 use_lists.adb:18:53: info: initialization of "L2" proved
 use_lists.adb:18:53: info: initialization of private part of "L2" proved
 use_lists.adb:18:57: info: range check proved (CVC4: 1 VC)
-use_lists.adb:19:18: medium: precondition might fail [possible explanation: subprogram at line 2 should mention L1 in a precondition]
+use_lists.adb:19:18: medium: precondition might fail
 use_lists.adb:19:18: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:19:31: info: initialization of "Cu" proved
-use_lists.adb:21:25: medium: assertion might fail, cannot prove Is_Incr (Element (L1, Cu), Get (Get_Element_Model (L2), Length (L2) - 1)) [possible explanation: subprogram at line 2 should mention L1 in a precondition]
-use_lists.adb:21:34: medium: precondition might fail [possible explanation: subprogram at line 2 should mention L1 in a precondition]
+use_lists.adb:21:25: medium: assertion might fail, cannot prove Is_Incr (Element (L1, Cu), Get (Get_Element_Model (L2), Length (L2) - 1))
+use_lists.adb:21:34: medium: precondition might fail
 use_lists.adb:21:34: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:21:47: info: initialization of "Cu" proved
 use_lists.adb:22:30: side effects of function "Get_Element_Model" are not modeled in SPARK

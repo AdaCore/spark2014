@@ -211,7 +211,7 @@ partition_refinement.adb:188:39: info: range check proved (CVC4: 2 VC)
 partition_refinement.adb:188:56: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:188:72: info: initialization of "P_Elem.Last" proved
 partition_refinement.adb:188:87: info: precondition proved (CVC4: 2 VC)
-partition_refinement.adb:188:87: medium: assertion might fail, cannot prove Element (P, F(K)) = P_Elem [possible explanation: loop at line 143 should mention P_Elem in a loop invariant]
+partition_refinement.adb:188:87: medium: assertion might fail, cannot prove Element (P, F(K)) = P_Elem
 partition_refinement.adb:188:101: info: index check proved (CVC4: 2 VC)
 partition_refinement.adb:188:107: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:189:31: info: assertion proved (CVC4: 2 VC)
