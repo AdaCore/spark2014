@@ -4712,7 +4712,8 @@ package body Gnat2Why.Expr is
 
                if (Aliasing and then Binders (Bind_Cnt).Main.Mutable)
                  or else Needs_Temporary_Ref
-                   (Actual, Formal, Get_Typ (Binders (Bind_Cnt).Main.B_Name))
+                   (Actual, Formal, Get_Typ (Binders (Bind_Cnt).Main.B_Name),
+                    In_Function_Call => Nkind (Ada_Call) = N_Function_Call)
                then
                   declare
                      --  Types:
