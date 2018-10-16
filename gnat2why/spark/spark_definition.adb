@@ -4171,6 +4171,12 @@ package body SPARK_Definition is
                SRM_Reference => "SPARK RM 3.7(2)");
          end if;
 
+         if Ekind (E) in E_Private_Subtype | E_Record_Subtype
+           and then Is_For_Access_Subtype (E)
+         then
+            Mark_Unsupported ("discriminant constraint on access types", E);
+         end if;
+
          --  Mark discriminants if any
 
          declare
@@ -4757,15 +4763,16 @@ package body SPARK_Definition is
 
             --  Allow access types in the special mode -gnatdF
 
-            if not Debug_Flag_FF
+            if not Debug_Flag_FF then
+               Mark_Violation ("access type", E);
 
             --  Should not handle pointers which are not safe, we do not mark
             --  access types if they are not under the SPARK mode On.
 
-              or else not SPARK_Pragma_Is (Opt.On)
-              or else not Retysp_In_SPARK (Directly_Designated_Type (E))
-            then
-               Mark_Violation ("access type", E);
+            elsif not SPARK_Pragma_Is (Opt.On) then
+               Mark_Violation ("access type without ownership", E);
+            elsif not Retysp_In_SPARK (Directly_Designated_Type (E)) then
+               Mark_Violation (E, From => Directly_Designated_Type (E));
 
                --  Private access types are not allowed for now. We mark the
                --  violation in the context of marking the type entity to be

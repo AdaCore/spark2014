@@ -178,13 +178,13 @@ package body Why.Gen.Pointers is
          Left   => +Post_Null,
          Right  => +Post_Address);
 
-      --  ??? Include_Subtypes => False or Include_Subtypes => True
-      --  [R525-018]
+      --  We should assume default init on the specific subtype when available,
+      --  see RA15-010.
 
       PostDefault : constant W_Pred_Id := Compute_Default_Init
         (Expr             => +Result_Value,
          Ty               => Des_Ty,
-         Include_Subtypes => False);
+         Include_Subtypes => True);
 
       Uninitialized_Post : constant W_Pred_Id :=
         (if Can_Be_Default_Initialized (Des_Ty)
