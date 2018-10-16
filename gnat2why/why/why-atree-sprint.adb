@@ -2005,7 +2005,7 @@ package body Why.Atree.Sprint is
       NL (O);
       PL (O, "with");
       Relative_Indent (O, 1);
-      Print_List (+Get_Handler (Node), Separator => ", ", Newline => True);
+      Print_List (+Get_Handler (Node), Separator => "| ", Newline => True);
       Relative_Indent (O, -1);
       NL (O);
       P (O, "end");

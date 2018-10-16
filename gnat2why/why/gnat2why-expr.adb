@@ -40,6 +40,7 @@ with GNAT.Source_Info;
 with Gnat2Why_Args;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
+with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Lib;                            use Lib;
@@ -9310,13 +9311,12 @@ package body Gnat2Why.Expr is
 
          when Attribute_Loop_Entry =>
             Loop_Entry : declare
+
                function Is_Loop_Stmt (N : Node_Id) return Boolean is
                  (Nkind (N) = N_Loop_Statement);
-               --  @param N any Node
-               --  @return True if N is a loop statement.
 
                function Enclosing_Loop_Stmt is new
-                  First_Parent_With_Property (Is_Loop_Stmt);
+                 First_Parent_With_Property (Is_Loop_Stmt);
 
                Arg       : constant Node_Id := First (Expressions (Expr));
                Loop_Id   : Entity_Id;
@@ -16190,6 +16190,10 @@ package body Gnat2Why.Expr is
         New_Statement_Sequence (Statements => (1 .. 1 => +Void));
 
    begin
+      if No (Cur_Stmt_Or_Decl) then
+         return +Void;
+      end if;
+
       while Present (Cur_Stmt_Or_Decl) loop
          Transform_Statement_Or_Declaration_In_List
            (Stmt_Or_Decl => Cur_Stmt_Or_Decl,
@@ -16198,7 +16202,17 @@ package body Gnat2Why.Expr is
          Nlists.Next (Cur_Stmt_Or_Decl);
       end loop;
 
-      return +Result;
+      --  If inside a loop, with the last instruction being an unconditional
+      --  exit or return statement, and provided the loop is not unrolled,
+      --  we store the Why3 expression in a map, and return instead the raise
+      --  expression that will be linked to that treatment.
+
+      declare
+         Expr : W_Prog_Id := +Result;
+      begin
+         Loops.Exits.Record_And_Replace (Stmts_And_Decls, Expr);
+         return Expr;
+      end;
    end Transform_Statements_And_Declarations;
 
    ------------------------------

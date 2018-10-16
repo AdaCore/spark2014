@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Hashed_Maps;
 with Common_Containers; use Common_Containers;
 
 package Why.Types is
@@ -47,5 +49,18 @@ package Why.Types is
    --  Returns True if N is not the empty node, False otherwise
 
    subtype Name_Id_Set is Name_Id_Sets.Set;
+
+   function Why_Node_Hash (X : Why_Node_Id) return Ada.Containers.Hash_Type is
+     (Ada.Containers.Hash_Type (X));
+
+   package Why_Node_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Why_Node_Id,
+      Element_Type    => Why_Node_Id,
+      Hash            => Why_Node_Hash,
+      Equivalent_Keys => "=");
+
+   package Why_Node_Maps_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Why_Node_Maps.Map,
+      "="          => Why_Node_Maps."=");
 
 end Why.Types;

@@ -35,6 +35,7 @@ with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
+with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Gnat2Why_Args;
 with Namet;                          use Namet;
@@ -2540,6 +2541,10 @@ package body Gnat2Why.Subprograms is
                  Ref_Allowed => True,
                  Old_Allowed => True);
 
+      --  Reset the toplevel exceptions for exit paths
+
+      Loops.Exits.Before_Start_Of_Subprogram;
+
       --  Translate initial condition of E
 
       if Present (Init_Cond) then
@@ -2698,6 +2703,10 @@ package body Gnat2Why.Subprograms is
       --  Assume values of constants
 
       Assume_Value_Of_Constants (Why_Body, E, Params);
+
+      --  Declare the toplevel exceptions for exit paths
+
+      Loops.Exits.Declare_Exceptions (File);
 
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
@@ -3667,6 +3676,10 @@ package body Gnat2Why.Subprograms is
          Ref_Allowed => True,
          Old_Allowed => True);
 
+      --  Reset the toplevel exceptions for exit paths
+
+      Loops.Exits.Before_Start_Of_Subprogram;
+
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
 
@@ -3865,6 +3878,10 @@ package body Gnat2Why.Subprograms is
 
       Assume_Value_Of_Constants (Prog, E, Contract_Params);
 
+      --  Declare the toplevel exceptions for exit paths
+
+      Loops.Exits.Declare_Exceptions (File);
+
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
       begin
@@ -3938,6 +3955,10 @@ package body Gnat2Why.Subprograms is
                  Ref_Allowed => True,
                  Old_Allowed => True);
 
+      --  Reset the toplevel exceptions for exit paths
+
+      Loops.Exits.Before_Start_Of_Subprogram;
+
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
       --  Translate declarations and statements in the task body, if there
@@ -3989,6 +4010,10 @@ package body Gnat2Why.Subprograms is
       --  Assume values of constants
 
       Assume_Value_Of_Constants (Why_Body, E, Params);
+
+      --  Declare the toplevel exceptions for exit paths
+
+      Loops.Exits.Declare_Exceptions (File);
 
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);

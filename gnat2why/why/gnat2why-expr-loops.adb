@@ -25,6 +25,7 @@
 
 with Debug;
 with Gnat2Why_Args;
+with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Expr.Loops.Inv; use Gnat2Why.Expr.Loops.Inv;
 with Gnat2Why.Util;           use Gnat2Why.Util;
 with Namet;                   use Namet;
@@ -426,6 +427,12 @@ package body Gnat2Why.Expr.Loops is
       High_Id         : W_Identifier_Id := Why_Empty;
 
    begin
+      --  Push a scope for the exit statements of the loop. This
+      --  scope is popped later by calling [Wrap_Loop] which calls
+      --  [Exits.Wrap_Loop_Body].
+
+      Exits.Before_Start_Of_Loop;
+
       --  Add the loop index to the entity table
 
       if Present (Scheme)
@@ -565,7 +572,9 @@ package body Gnat2Why.Expr.Loops is
          end loop;
 
          --  Depending on the form of the loop, put together the generated Why
-         --  nodes in a different way.
+         --  nodes in a different way. [Wrap_Loop] needs to be called on every
+         --  path, as it takes care or popping the stack of exit paths by
+         --  calling [Exits.Wrap_Loop_Body].
 
          --  Case of a simple loop
 
@@ -1688,20 +1697,24 @@ package body Gnat2Why.Expr.Loops is
    --
    --  if enter_condition then
    --    try
-   --      let loop_entry_tmps = saved_values in
-   --      let variant_tmps = ref 0 in
-   --        loop_start;
-   --        loop invariant { user_invariant }
-   --          assume { implicit_invariant };
-   --          invariant_check;
-   --          variant_update;
-   --          loop_end;
-   --          if exit_condition then
-   --            raise loop_name;
-   --          [Update_Stmt;]
-   --          loop_restart;
-   --          variant_check
-   --        end loop
+   --      [try]
+   --        let loop_entry_tmps = saved_values in
+   --        let variant_tmps = ref 0 in
+   --          loop_start;
+   --          loop invariant { user_invariant }
+   --            assume { implicit_invariant };
+   --            invariant_check;
+   --            variant_update;
+   --            loop_end;
+   --            if exit_condition then
+   --              raise loop_name;
+   --            [Update_Stmt;]
+   --            loop_restart;
+   --            variant_check
+   --          end loop
+   --      [with exit_path_1 -> path_1
+   --         | ...
+   --         | exit_path_n -> path_n]
    --    with loop_name -> void
    --  end if
    --
@@ -1712,6 +1725,11 @@ package body Gnat2Why.Expr.Loops is
    --  loop_start, but it is more efficient to put it in only one place. Both
    --  choices are logically equivalent, because the user invariant must be
    --  proved before it can be used in the loop.
+   --
+   --  The inner try-catch block is only generated if needed for handling exit
+   --  paths. In that case, the exit path inside the loop has been replaced
+   --  by raising the corresponding exception. The declaration for these
+   --  exceptions is done at subprogram level.
 
    function Wrap_Loop
      (Loop_Id            : Entity_Id;
@@ -1780,7 +1798,7 @@ package body Gnat2Why.Expr.Loops is
            Invariants   => User_Invariants,
            Loop_Content => Loop_Body);
 
-      Try_Body : constant W_Prog_Id :=
+      Try_Body : W_Prog_Id :=
         Bind_From_Mapping_In_Expr
           (Params => Body_Params,
            Map    => Map_For_Loop_Entry (Loop_Id),
@@ -1805,15 +1823,23 @@ package body Gnat2Why.Expr.Loops is
                                     else ""))),
                             4 => Loop_Stmt))));
 
-      Loop_Try : constant W_Prog_Id :=
-        New_Try_Block
-          (Prog    => Try_Body,
-           Handler => (1 => New_Handler (Name => Loop_Ident,
-                                         Def  => +Void)));
-
+      Loop_Try : W_Prog_Id;
       Warn_Dead_Code : W_Prog_Id := +Void;
 
    begin
+      --  Possibly wrap the loop body in a first try-catch block to handle exit
+      --  paths from the loop.
+
+      Exits.Wrap_Loop_Body (Try_Body);
+
+      --  Now wrap the resulting program in the main try-catch block for the
+      --  loop, catching the exception corresponding to exiting the loop.
+
+      Loop_Try := New_Try_Block
+        (Prog    => Try_Body,
+         Handler => (1 => New_Handler (Name => Loop_Ident,
+                                       Def  => +Void)));
+
       if Present (Next_Stmt)
         --  Do not issue a check for dead code if switch --proof-warnings is
         --  not set
