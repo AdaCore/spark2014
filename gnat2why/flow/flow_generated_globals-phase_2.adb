@@ -92,7 +92,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
    Current_Task : constant Entity_Name :=
      To_Entity_Name ("ada__task_identification__current_task");
-   --  This will be used when checking for calls to Current_Task
+   --  This is used to detect calls to Ada.Task_Identification.Current_Task
 
    --------------------
    -- Tasking graphs --
@@ -580,7 +580,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
          Detect_Main_Subprogram : declare
             U : constant Node_Id := Unit (GNAT_Root);
-            S : Node_Id;
+            S : Entity_Id;
 
          begin
             case Nkind (U) is
