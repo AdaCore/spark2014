@@ -339,7 +339,7 @@ step_function.ads:80:53: info: index check proved (CVC4: 2 VC)
 step_function.ads:86:06: info: postcondition proved (CVC4: 5 VC)
 step_function.ads:95:32: info: initialization of "Merge.Number_Of_Delimiters" proved
 step_function.ads:95:32: info: initialization of "Merge.Step" proved
-step_function.ads:101:04: medium: postcondition might fail, cannot prove Is_Valid(Merge)
+step_function.ads:101:04: medium: postcondition might fail
 step_function.ads:101:13: info: initialization of "Merge.Number_Of_Delimiters" proved
 step_function.ads:101:13: info: initialization of "Merge.Step" proved
 step_function.ads:106:30: info: index check proved (CVC4: 2 VC)

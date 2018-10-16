@@ -38,6 +38,7 @@ binary_trees.adb:113:36: info: loop invariant initialization proved (CVC4: 1 VC)
 binary_trees.adb:113:36: info: loop invariant preservation proved (CVC4: 1 VC)
 binary_trees.adb:113:73: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:124:07: info: initialization of "Unseen" proved
+binary_trees.adb:128:07: info: predicate check proved on default value (CVC4: 1 VC)
 binary_trees.adb:129:39: info: range check proved (CVC4: 1 VC)
 binary_trees.adb:134:19: info: initialization of "ToDo" proved
 binary_trees.adb:135:15: info: predicate check proved (CVC4: 1 VC)
@@ -90,7 +91,7 @@ binary_trees.adb:207:13: info: loop invariant preservation proved (CVC4: 1 VC)
 binary_trees.adb:208:23: info: initialization of "R" proved
 binary_trees.adb:208:49: info: initialization of "Unseen" proved
 binary_trees.adb:213:13: info: loop invariant initialization proved (CVC4: 2 VC)
-binary_trees.adb:214:15: medium: loop invariant might fail after first iteration, cannot prove Contains (Unseen, J) = (not R (J).K or ToDo (J))
+binary_trees.adb:213:13: info: loop invariant preservation proved (CVC4: 2 VC)
 binary_trees.adb:214:26: info: initialization of "Unseen" proved
 binary_trees.adb:214:44: info: initialization of "R" proved
 binary_trees.adb:214:55: info: initialization of "ToDo" proved
@@ -3309,7 +3310,6 @@ search_trees.ads:333:07: info: precondition proved (CVC4: 1 VC)
 search_trees.ads:333:25: info: range check proved (CVC4: 1 VC)
 search_trees.ads:339:08: info: range check proved (CVC4: 1 VC)
 search_trees.ads:345:07: info: precondition proved (CVC4: 1 VC)
-tree_model.ads:32:09: info: predicate check proved on default value (CVC4: 1 VC)
 tree_model.ads:41:18: info: overflow check proved (CVC4: 1 VC)
 tree_model.ads:42:49: info: precondition proved (CVC4: 2 VC)
 tree_model.ads:42:62: info: precondition proved (CVC4: 2 VC)
