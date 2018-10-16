@@ -1167,6 +1167,12 @@ package body Gnat2Why.Util is
                      and then Count_Discriminants (Ty_Ext) > 0
                      and then Has_Defaulted_Discriminants (Ty_Ext))
 
+           --  For access types with null exclusion, we know that they are not
+           --  null.
+
+           or else (Is_Access_Type (Ty_Ext)
+                    and then Can_Never_Be_Null (Ty_Ext))
+
            --  We need an invariant for type predicates
 
            or else Has_Predicates (Ty_Ext)
@@ -1211,6 +1217,9 @@ package body Gnat2Why.Util is
                   return True;
                end if;
             end loop;
+         elsif Is_Access_Type (Ty_Ext) then
+            return Type_Needs_Dynamic_Invariant
+              (Directly_Designated_Type (Ty_Ext), False);
          end if;
 
          return False;

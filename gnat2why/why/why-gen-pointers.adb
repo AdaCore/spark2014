@@ -133,13 +133,13 @@ package body Why.Gen.Pointers is
         (1 => (B_Name => Init_Ident, others => <>));
 
       Result_Null : constant W_Term_Id :=
-        New_Pointer_Is_Null_Access (E, +Result);
+        +New_Pointer_Is_Null_Access (E, +Result);
 
       Result_Address : constant W_Term_Id :=
-        New_Pointer_Address_Access (E, +Result);
+        +New_Pointer_Address_Access (E, +Result);
 
       Result_Value : constant W_Term_Id :=
-        New_Pointer_Value_Access (E, E, +Result);
+        +New_Pointer_Value_Access (E, E, +Result, EW_Term);
 
       Post_Null : constant W_Expr_Id :=
         New_Not (Domain => EW_Prog, Right => +Result_Null);
@@ -245,7 +245,7 @@ package body Why.Gen.Pointers is
       Num_Discr    : constant Natural   := Count_Discriminants (E_Des_Typ);
 
       P_Access : constant W_Term_Id :=
-        New_Pointer_Value_Access (E, E, +A_Ident, Local => True);
+        +New_Pointer_Value_Access (E, E, +A_Ident, EW_Term, Local => True);
 
       R_Access : constant W_Expr_Id :=
         New_Discriminants_Access (Ada_Node => E,
@@ -445,7 +445,7 @@ package body Why.Gen.Pointers is
                  Typ  => EW_Bool_Type,
                  Args => (1 => +New_Result_Ident (Why_Empty),
                           2 => +New_Pointer_Value_Access
-                            (E, E, +A_Ident, Local => True)));
+                            (E, E, +A_Ident, EW_Term, Local => True)));
 
             Precond : constant W_Pred_Id :=
               New_Call
@@ -566,8 +566,9 @@ package body Why.Gen.Pointers is
            (Domain => EW_Pred,
             Symbol => Why_Eq,
             Left   => +New_Pointer_Value_Access
-              (E, E, +A_Ident, Local => True),
-            Right  => +New_Pointer_Value_Access (E, E, +B_Ident, Local => True)
+              (E, E, +A_Ident, EW_Term, Local => True),
+            Right  => +New_Pointer_Value_Access
+              (E, E, +B_Ident, EW_Term, Local => True)
            );
 
       begin
@@ -745,7 +746,7 @@ package body Why.Gen.Pointers is
      (E     : Entity_Id;
       Name  : W_Expr_Id;
       Local : Boolean := False)
-      return W_Term_Id
+      return W_Expr_Id
    is
       Field : constant W_Identifier_Id :=
         (if Local
@@ -766,7 +767,7 @@ package body Why.Gen.Pointers is
      (E     : Entity_Id;
       Name  : W_Expr_Id;
       Local : Boolean := False)
-      return W_Term_Id
+      return W_Expr_Id
    is
       Field : constant W_Identifier_Id :=
         (if Local
@@ -787,9 +788,9 @@ package body Why.Gen.Pointers is
      (Ada_Node : Node_Id;
       E        : Entity_Id;
       Name     : W_Expr_Id;
-      Local    : Boolean := False;
-      Domain   : EW_Domain := EW_Term)
-      return W_Term_Id
+      Domain   : EW_Domain;
+      Local    : Boolean := False)
+      return W_Expr_Id
    is
       Field : constant W_Identifier_Id :=
         (if Local

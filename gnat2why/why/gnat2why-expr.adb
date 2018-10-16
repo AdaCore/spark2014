@@ -3398,7 +3398,7 @@ package body Gnat2Why.Expr is
       elsif Is_Access_Type (Ty_Ext) then
 
          Assumption := Pred_Of_Boolean_Term
-           (New_Pointer_Is_Null_Access (Ty_Ext, Expr));
+           (+New_Pointer_Is_Null_Access (Ty_Ext, Expr));
 
       elsif Is_Record_Type_In_Why (Ty_Ext) then
 
@@ -3836,6 +3836,9 @@ package body Gnat2Why.Expr is
                                    Domain => EW_Pred),
                                 Domain => EW_Pred);
          end if;
+      elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
+         T := New_Not (Right => New_Pointer_Is_Null_Access (E    => Ty_Ext,
+                                                            Name => +Expr));
       else
          T := True_Pred;
       end if;
@@ -3925,6 +3928,45 @@ package body Gnat2Why.Expr is
            (Left   => +T,
             Right  => +Invariant_For_Record (Expr, Ty_Ext),
             Domain => EW_Pred);
+
+      elsif Is_Access_Type (Ty_Ext) then
+
+         --  Generates:
+         --  (not <Expr>.is_null -> Dynamic_Invariant <Expr>.value)
+
+         --  ??? we can assume the value of constrained attribute if any
+
+         declare
+            Value_Dyn_Inv : constant W_Pred_Id :=
+              Compute_Dynamic_Invariant
+                (Expr             => +New_Pointer_Value_Access
+                   (Ada_Node => Empty,
+                    E        => Ty_Ext,
+                    Name     => +Expr,
+                    Domain   => EW_Term),
+                 Ty               => Directly_Designated_Type (Ty_Ext),
+                 Only_Var         => False_Term,
+                 Top_Predicate    => True_Term,
+                 Include_Type_Inv => Include_Type_Inv,
+                 Params           => Params,
+                 Use_Pred         => Use_Pred);
+
+         begin
+            if Value_Dyn_Inv /= True_Pred then
+               T := +New_And_Then_Expr
+                 (Left        => +T,
+                  Right       =>
+                    New_Conditional
+                      (Domain      => EW_Pred,
+                       Condition   =>
+                         New_Not (Domain => EW_Pred,
+                                  Right  => New_Pointer_Is_Null_Access
+                                    (E    => Ty_Ext,
+                                     Name => +Expr)),
+                       Then_Part   => +Value_Dyn_Inv),
+                  Domain      => EW_Pred);
+            end if;
+         end;
       end if;
 
       return T;
@@ -16649,6 +16691,9 @@ package body Gnat2Why.Expr is
                Variables_In_Dynamic_Invariant (Etype (Field), Variables);
             end if;
          end loop;
+      elsif Is_Access_Type (Ty_Ext) then
+         Variables_In_Dynamic_Invariant
+           (Directly_Designated_Type (Ty_Ext), Variables);
       end if;
 
       --  External type invariant of Ty_Ext and its parents if any
