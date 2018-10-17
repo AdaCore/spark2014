@@ -1353,9 +1353,9 @@ sqrt.adb:5:19: info: initialization of "Approx" proved
 sqrt.adb:5:26: medium: float overflow check might fail
 sqrt.adb:6:21: info: float overflow check proved (Interval)
 sqrt.adb:6:24: info: initialization of "Approx" proved
-sqrt.adb:6:31: medium: float overflow check might fail [possible explanation: subprogram at line 1 should mention X in a precondition]
-sqrt.adb:6:35: medium: divide by zero might fail [possible explanation: subprogram at line 1 should mention X in a precondition]
-sqrt.adb:6:35: medium: float overflow check might fail [possible explanation: subprogram at line 1 should mention X in a precondition]
+sqrt.adb:6:31: medium: float overflow check might fail
+sqrt.adb:6:35: medium: divide by zero might fail
+sqrt.adb:6:35: medium: float overflow check might fail
 sqrt.adb:8:11: info: initialization of "Approx" proved
 stacks-more.adb:4:32: medium: array index check might fail [possible explanation: subprogram at line 2 should mention Stack in a precondition]
 stacks.adb:14:30: medium: overflow check might fail [possible explanation: subprogram at line 11 should mention Stack in a precondition]
