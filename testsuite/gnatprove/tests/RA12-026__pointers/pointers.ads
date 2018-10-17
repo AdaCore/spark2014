@@ -6,7 +6,7 @@ package Pointers with SPARK_Mode is
 
    procedure Swap (X, Y : T_Ptr) with
      Pre  => X /= null and Y /= null,
-     Post => X /= null and Y /= null and X.all = Y.all'Old and Y.all = X.all'Old;
+     Post => X.all = Y.all'Old and Y.all = X.all'Old;
 
    type Index is range 1 .. 10;
    type T_Arr is array (Index) of T_Ptr

@@ -374,6 +374,15 @@ package Why.Gen.Names is
    function Content_Append (Base : W_Name_Id;
                             Typ  : W_Type_Id) return W_Identifier_Id;
 
+   function Value_Append (Base : W_Identifier_Id;
+                          Typ  : W_Type_Id) return W_Identifier_Id;
+
+   function Address_Append (Base : W_Identifier_Id;
+                            Typ  : W_Type_Id) return W_Identifier_Id;
+
+   function Is_Null_Append (Base : W_Identifier_Id;
+                            Typ  : W_Type_Id) return W_Identifier_Id;
+
    function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id;
 
    function To_String (W : Why_Name_Enum) return String;

@@ -62,6 +62,25 @@ package body Why.Gen.Names is
 
    function Convert_From (Kind : W_Type_Id) return Why_Name_Enum;
 
+   --------------------
+   -- Address_Append --
+   --------------------
+
+   function Address_Append (Base : W_Identifier_Id;
+                            Typ  : W_Type_Id) return W_Identifier_Id
+   is
+      Name : constant W_Name_Id := Get_Name (Base);
+   begin
+      return
+        Append_Num
+          (S        => Get_Name_String (Get_Symbol (Name))
+           & To_String (WNE_Pointer_Address),
+           Count    => 1,
+           Typ      => Typ,
+           Module   => Get_Module (Name),
+           Ada_Node => Get_Ada_Node (+Name));
+   end Address_Append;
+
    ----------------
    -- Append_Num --
    ----------------
@@ -516,6 +535,25 @@ package body Why.Gen.Names is
            Module   => Get_Module (Base),
            Ada_Node => Get_Ada_Node (+Base));
    end Havoc_Append;
+
+   --------------------
+   -- Is_Null_Append --
+   --------------------
+
+   function Is_Null_Append (Base : W_Identifier_Id;
+                            Typ  : W_Type_Id) return W_Identifier_Id
+   is
+      Name : constant W_Name_Id := Get_Name (Base);
+   begin
+      return
+        Append_Num
+          (S        => Get_Name_String (Get_Symbol (Name))
+           & To_String (WNE_Is_Null_Pointer),
+           Count    => 1,
+           Typ      => Typ,
+           Module   => Get_Module (Name),
+           Ada_Node => Get_Ada_Node (+Name));
+   end Is_Null_Append;
 
    -------------
    -- New_Abs --
@@ -1016,6 +1054,25 @@ package body Why.Gen.Names is
         (Get_Ada_Node (+Name), EW_Prog, Img & Suffix,
          Module => Get_Module (Get_Name (Name)));
    end To_Program_Space;
+
+   ----------------------
+   -- Value_Append --
+   ----------------------
+
+   function Value_Append (Base : W_Identifier_Id;
+                          Typ  : W_Type_Id) return W_Identifier_Id
+   is
+      Name : constant W_Name_Id := Get_Name (Base);
+   begin
+      return
+        Append_Num
+          (S        => Get_Name_String (Get_Symbol (Name))
+           & To_String (WNE_Pointer_Value),
+           Count    => 1,
+           Typ      => Typ,
+           Module   => Get_Module (Name),
+           Ada_Node => Get_Ada_Node (+Name));
+   end Value_Append;
 
    -------------------------------
    -- WNE_Array_Base_Range_Pred --

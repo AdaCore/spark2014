@@ -958,6 +958,7 @@ package body Gnat2Why.Util is
          begin
             if Ekind (E) = E_In_Parameter then
                if Is_Access_Type (E_Typ)
+                 and then not Is_Access_Constant (E_Typ)
                  and then Ekind (Enclosing_Unit (E)) /= E_Function
                then
                   return True;
@@ -965,7 +966,9 @@ package body Gnat2Why.Util is
                   return False;
                end if;
 
-            elsif Is_Access_Type (E_Typ) then
+            elsif Is_Access_Type (E_Typ)
+              and then not Is_Access_Constant (E_Typ)
+            then
                return True;
 
             else

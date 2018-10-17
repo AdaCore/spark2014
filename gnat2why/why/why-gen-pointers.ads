@@ -26,6 +26,7 @@
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with Types;                use Types;
+with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
 
@@ -100,5 +101,21 @@ package Why.Gen.Pointers is
      with Pre => Is_Access_Type (E);
    --  Return the first pointer type defined with the same designated type.
    --  This handles also subtypes.
+
+   function Pointer_From_Split_Form
+     (I           : Item_Type;
+      Ref_Allowed : Boolean)
+      return W_Expr_Id
+     with Pre => I.Kind = Pointer;
+   --  Reconstructs a complete pointer from an item in split form.
+
+   function Pointer_From_Split_Form
+     (Ada_Node : Node_Id := Empty;
+      A        : W_Expr_Array;
+      Ty       : Entity_Id)
+      return W_Expr_Id;
+   --  Reconstructs a complete pointer of type Ty from an array of expressions
+   --  representing a split form. A should contain first the value, then the
+   --  address, and is_null.
 
 end Why.Gen.Pointers;

@@ -153,12 +153,13 @@ package body Gnat2Why.Decls is
       --  for constants inserted by the compiler, as their initialization
       --  expression may not be expressible as a logical term (e.g., it may
       --  include X'Loop_Entry for a constant inserted in a block of actions).
-      --  We also check for the presence of calls to volatile functions which
-      --  we can't handle in axioms.
+      --  We also check for the presence of calls to volatile functions and
+      --  allocators which we can't handle in axioms.
 
       if Present (Expr)
         and then not Expression_Contains_Old_Or_Loop_Entry (Expr)
         and then not Contains_Volatile_Function_Call (Expr)
+        and then not Contains_Allocator (Expr)
       then
          declare
             Typ : constant W_Type_Id := Type_Of_Node (Etype (E));
@@ -463,6 +464,63 @@ package body Gnat2Why.Decls is
                         Return_Type => Ty_Last));
                end;
             end loop;
+
+         when Pointer =>
+
+            --  Generate a global ref for the value
+
+            Emit
+              (File,
+               New_Global_Ref_Declaration
+                 (Name     => To_Local (Var.Value.B_Name),
+                  Labels   => Get_Counterexample_Labels (E),
+                  Location => Safe_First_Sloc (E),
+                  Ref_Type => Get_Typ (Var.Value.B_Name)));
+
+            --  Generate a global ref for the address and is_null if the
+            --  pointer is mutable.
+
+            if Var.Mutable then
+
+               Emit
+                 (File,
+                  New_Global_Ref_Declaration
+                    (Name     => To_Local (Var.Address),
+                     Labels   => Name_Id_Sets.Empty_Set,
+                     Location => Safe_First_Sloc (E),
+                     Ref_Type => Get_Typ (Var.Address)));
+
+               Emit
+                 (File,
+                  New_Global_Ref_Declaration
+                    (Name     => To_Local (Var.Is_Null),
+                     Labels   => Name_Id_Sets.Empty_Set,
+                     Location => Safe_First_Sloc (E),
+                     Ref_Type => Get_Typ (Var.Is_Null)));
+
+            --  Otherwise generate constants
+
+            else
+               Emit
+                 (File,
+                  Why.Atree.Builders.New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Local (Var.Address),
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Binders     => (1 .. 0 => <>),
+                     Location    => Safe_First_Sloc (E),
+                     Return_Type => Get_Typ (Var.Address)));
+
+               Emit
+                 (File,
+                  Why.Atree.Builders.New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Local (Var.Is_Null),
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Binders     => (1 .. 0 => <>),
+                     Location    => Safe_First_Sloc (E),
+                     Return_Type => Get_Typ (Var.Is_Null)));
+            end if;
 
          when Regular =>
             begin

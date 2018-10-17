@@ -38,7 +38,6 @@ with Why.Atree.Accessors;        use Why.Atree.Accessors;
 with Why.Atree.Builders;         use Why.Atree.Builders;
 with Why.Atree.Modules;          use Why.Atree.Modules;
 with Why.Conversions;            use Why.Conversions;
-with Why.Gen.Binders;            use Why.Gen.Binders;
 with Why.Gen.Decl;               use Why.Gen.Decl;
 with Why.Gen.Expr;               use Why.Gen.Expr;
 with Why.Gen.Names;              use Why.Gen.Names;
@@ -661,11 +660,11 @@ package body Why.Gen.Pointers is
       Ancestor : constant Entity_Id := Root_Pointer_Type (E);
 
    begin
-      if Ancestor /= E then
+      if Ancestor /= Empty then
          return;
       end if;
 
-      Pointer_Typ_To_Root.Insert (Directly_Designated_Type (E), E);
+      Pointer_Typ_To_Root.Insert (Retysp (Directly_Designated_Type (E)), E);
 
       Open_Theory
         (P, Get_Rep_Pointer_Module (E),
@@ -815,6 +814,72 @@ package body Why.Gen.Pointers is
       end if;
    end New_Pointer_Value_Access;
 
+   -----------------------------
+   -- Pointer_From_Split_Form --
+   -----------------------------
+
+   function Pointer_From_Split_Form
+     (I           : Item_Type;
+      Ref_Allowed : Boolean)
+      return W_Expr_Id
+   is
+      E       : constant Entity_Id := I.Value.Ada_Node;
+      Ty      : constant Entity_Id := Etype (E);
+      Value   : W_Expr_Id;
+      Addr    : W_Expr_Id;
+      Is_Null : W_Expr_Id;
+
+   begin
+      if I.Value.Mutable and then Ref_Allowed then
+         Value := New_Deref
+           (E, I.Value.B_Name, Get_Typ (I.Value.B_Name));
+      else
+         Value := +I.Value.B_Name;
+      end if;
+
+      if I.Mutable and then Ref_Allowed then
+         Addr := New_Deref (E, I.Address, Get_Typ (I.Address));
+         Is_Null := New_Deref (E, I.Is_Null, Get_Typ (I.Is_Null));
+      else
+         Addr := +I.Address;
+         Is_Null := +I.Is_Null;
+      end if;
+
+      return Pointer_From_Split_Form
+        (Ada_Node => E,
+         A        => (1 => Value, 2 => Addr, 3 => Is_Null),
+         Ty       => Ty);
+   end Pointer_From_Split_Form;
+
+   function Pointer_From_Split_Form
+     (Ada_Node : Node_Id := Empty;
+      A        : W_Expr_Array;
+      Ty       : Entity_Id)
+      return W_Expr_Id
+   is
+      Value   : constant W_Expr_Id := A (1);
+      Addr    : constant W_Expr_Id := A (2);
+      Is_Null : constant W_Expr_Id := A (3);
+
+   begin
+      return New_Record_Aggregate
+        (Ada_Node     => Ada_Node,
+         Associations =>
+           (1 => New_Field_Association
+                (Domain => EW_Term,
+                 Field  => E_Symb (Ty, WNE_Pointer_Value),
+                 Value  => Value),
+            2 => New_Field_Association
+                (Domain => EW_Term,
+                 Field  => E_Symb (Ty, WNE_Pointer_Address),
+                 Value  => Addr),
+            3 => New_Field_Association
+                (Domain => EW_Term,
+                 Field  => E_Symb (Ty, WNE_Is_Null_Pointer),
+                 Value  => Is_Null)),
+         Typ          => EW_Abstract (Ty));
+   end Pointer_From_Split_Form;
+
    -----------------------
    -- Root_Pointer_Type --
    -----------------------
@@ -823,13 +888,13 @@ package body Why.Gen.Pointers is
       use Pointer_Typ_To_Roots;
 
       C : constant Pointer_Typ_To_Roots.Cursor :=
-        Pointer_Typ_To_Root.Find (Directly_Designated_Type (E));
+        Pointer_Typ_To_Root.Find (Retysp (Directly_Designated_Type (E)));
 
    begin
       if Has_Element (C) then
          return Pointer_Typ_To_Root (C);
       else
-         return E;
+         return Empty;
       end if;
    end Root_Pointer_Type;
 

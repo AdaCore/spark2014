@@ -668,6 +668,11 @@ package SPARK_Util is
    --    node whose callee is a function with pragma/aspect Volatile_Function
    --    set.
 
+   function Contains_Allocator (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff the tree starting with N contains an N_Allocator
+   --    node.
+
    function Safe_First_Sloc (N : Node_Id) return Source_Ptr
    with Post => (N = Empty) = (Safe_First_Sloc'Result = No_Location);
    --  Wrapper for First_Sloc that is safe to use for nodes coming from

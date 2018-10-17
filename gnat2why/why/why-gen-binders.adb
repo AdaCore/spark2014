@@ -33,6 +33,7 @@ with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
+with Why.Gen.Pointers;       use Why.Gen.Pointers;
 with Why.Gen.Records;        use Why.Gen.Records;
 with Why.Inter;              use Why.Inter;
 
@@ -104,6 +105,9 @@ package body Why.Gen.Binders is
          when UCArray =>
             return B.Content.Ada_Node;
 
+         when Pointer =>
+            return B.Value.Ada_Node;
+
          when Func =>
             raise Program_Error;
       end case;
@@ -116,7 +120,7 @@ package body Why.Gen.Binders is
    function Get_Ada_Type_From_Item (B : Item_Type) return Entity_Id is
    begin
       case B.Kind is
-         when Regular | UCArray | Func
+         when Regular | UCArray | Func | Pointer
             =>
             if No (Get_Ada_Node_From_Item (B)) then
                return Empty;
@@ -311,6 +315,9 @@ package body Why.Gen.Binders is
          when UCArray =>
             return Get_Typ (B.Content.B_Name);
 
+         when Pointer =>
+            return EW_Abstract (Etype (B.Value.Ada_Node));
+
          when Func =>
             return Get_Typ (B.For_Logic.B_Name);
 
@@ -336,6 +343,14 @@ package body Why.Gen.Binders is
                  | Concurrent_Self
                   =>
                   if (Keep_Local and then B.Local) or else B.Main.Mutable then
+                     Count := Count + 1;
+                  end if;
+
+               when Pointer =>
+                  pragma Assert (B.Value.Mutable);
+                  if B.Mutable or else (Keep_Local and then B.Local) then
+                     Count := Count + 3;
+                  else
                      Count := Count + 1;
                   end if;
 
@@ -395,7 +410,7 @@ package body Why.Gen.Binders is
             =>
             return B.Main.Mutable;
 
-         when UCArray | DRecord =>
+         when UCArray | DRecord | Pointer =>
             return True;
 
          when Func =>
@@ -448,6 +463,32 @@ package body Why.Gen.Binders is
                       (Ada_Node => B.Content.Ada_Node,
                        Name     => Local_Name,
                        Typ      => Get_Typ (B.Content.B_Name));
+               end;
+
+            when Pointer =>
+               declare
+                  Local_Name : constant String :=
+                    Full_Name (B.Value.Ada_Node) & Suffix;
+               begin
+                  pragma Assert (B.Value.Mutable);
+                  B.Value.B_Name :=
+                    New_Identifier
+                      (Ada_Node => B.Value.Ada_Node,
+                       Name     => Local_Name,
+                       Typ      => Get_Typ (B.Value.B_Name));
+
+                  if B.Mutable then
+                     B.Address :=
+                       New_Identifier
+                         (Ada_Node => Get_Ada_Node (+B.Address),
+                          Name     => Local_Name & "__address",
+                          Typ      => Get_Typ (B.Address));
+                     B.Is_Null :=
+                       New_Identifier
+                         (Ada_Node => Get_Ada_Node (+B.Is_Null),
+                          Name     => Local_Name & "__is_null",
+                          Typ      => Get_Typ (B.Is_Null));
+                  end if;
                end;
 
             when DRecord =>
@@ -670,6 +711,52 @@ package body Why.Gen.Binders is
                                  Count    => 1,
                                  Typ      => EW_Int_Type));
             end if;
+
+            return Result;
+         end;
+
+      --  Mutable pointers are in split form
+
+      elsif Entity_In_SPARK (Ty)
+        and then Is_Access_Type (Ty)
+        and then Is_Mutable_In_Why (E)
+        and then Ekind (E) /= E_Loop_Parameter
+      then
+         declare
+            Name    : constant W_Identifier_Id :=
+              To_Why_Id (E => E, Local => Local);
+            --  This name does not correspond to a given declaration (thus, we
+            --  don't give it a type). It is only used to prefix generic names
+            --  of elements of the pointer.
+
+            Mutable : constant Boolean := not Is_Constant_Object (E);
+            Result  : Item_Type :=
+              (Kind    => Pointer,
+               Local   => Local,
+               Mutable => Mutable,
+               others  => <>);
+
+         begin
+            Result.Value :=
+              Binder_Type'(Ada_Node => E,
+                           B_Name   =>
+                             Value_Append
+                               (Base => Name,
+                                Typ  =>
+                                  EW_Abstract
+                                    (Directly_Designated_Type (Ty))),
+                           B_Ent    => Null_Entity_Name,
+                           Mutable  => True);
+
+            Result.Address :=
+              Address_Append
+                (Base => Name,
+                 Typ  => EW_Int_Type);
+
+            Result.Is_Null :=
+              Is_Null_Append
+                (Base => Name,
+                 Typ  => EW_Bool_Type);
 
             return Result;
          end;
@@ -1199,6 +1286,9 @@ package body Why.Gen.Binders is
          when DRecord =>
             T := Record_From_Split_Form (E, Ref_Allowed);
 
+         when Pointer =>
+            T := Pointer_From_Split_Form (E, Ref_Allowed);
+
       end case;
 
       if Ref_Allowed and then Needs_Deref then
@@ -1250,6 +1340,22 @@ package body Why.Gen.Binders is
                            others => <>);
                         Count := Count + 2;
                      end loop;
+                  end if;
+
+               when Pointer =>
+                  Result (Count) := Cur.Value;
+                  Count := Count + 1;
+
+                  if Cur.Mutable or else (Keep_Local and then Cur.Local) then
+                     Result (Count) :=
+                       (B_Name  => Cur.Address,
+                        Mutable => Cur.Mutable,
+                        others  => <>);
+                     Result (Count + 1) :=
+                       (B_Name  => Cur.Is_Null,
+                        Mutable => Cur.Mutable,
+                        others  => <>);
+                     Count := Count + 2;
                   end if;
 
                when DRecord =>

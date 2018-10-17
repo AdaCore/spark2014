@@ -1099,6 +1099,15 @@ package body Gnat2Why.Subprograms is
             when UCArray =>
                Effects_Append (Eff, Binder.Content.B_Name);
 
+            when Pointer =>
+               if Binder.Mutable then
+                  Effects_Append (Eff, Binder.Value.B_Name);
+                  Effects_Append (Eff, Binder.Is_Null);
+                  Effects_Append (Eff, Binder.Address);
+               elsif Binder.Value.Mutable then
+                  Effects_Append (Eff, Binder.Value.B_Name);
+               end if;
+
             when DRecord =>
                if Binder.Fields.Present then
                   Effects_Append (Eff, Binder.Fields.Binder.B_Name);
