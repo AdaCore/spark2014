@@ -1136,8 +1136,8 @@ package body Gnat2Why.Expr is
               and then Entity_Comes_From_Source (Original_Node (FV))
               and then Number_Of_Assocs_In_Expression
                 (Expression (Decl)) <= Max_Assocs
+              and then not Contains_Volatile_Function_Call (Expression (Decl))
             then
-
                --  We do not issue checks here. Checks for this declaration
                --  will be issued when verifying its enclosing unit.
 
@@ -1181,7 +1181,7 @@ package body Gnat2Why.Expr is
          end;
 
       --  Assume the value of 'Constrained attribute for variables with
-      --  Defaulted discriminants.
+      --  defaulted discriminants.
 
       elsif Ekind (E) = E_Variable then
          declare
