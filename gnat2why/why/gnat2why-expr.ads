@@ -424,7 +424,7 @@ package Gnat2Why.Expr is
    --  @param Expr Expression on which the check is performed, for locating the
    --     VC in Why3.
    --  @param Runtime On exit, Why3 program for checking absence of run-time
-   --     errors in the pragma.
+   --     errors in the pragma, and possibly getting a program value.
    --  @param Pred On exit, Why3 proposition corresponding to the pragma.
 
    function Transform_Pragma_Check

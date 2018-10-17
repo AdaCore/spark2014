@@ -21,14 +21,14 @@ infoflow.adb:89:47: medium: "OutKeys_V2" might not be initialized
 infoflow.adb:99:28: info: division check proved (CVC4: 1 VC)
 infoflow.adb:100:36: info: initialization of "M_V1" proved
 infoflow.adb:103:34: medium: loop invariant might fail after first iteration, cannot prove H_V1 (K) = H_V1'Loop_Entry (K + M_V1)
-infoflow.adb:103:40: info: index check proved (CVC4: 2 VC)
+infoflow.adb:103:40: info: index check proved (CVC4: 4 VC)
 infoflow.adb:103:64: medium: array index check might fail
 infoflow.adb:105:34: medium: loop invariant might fail in first iteration, cannot prove H_V1 (K) = H_V1'Loop_Entry (K - M_V1)
-infoflow.adb:105:40: info: index check proved (CVC4: 2 VC)
+infoflow.adb:105:40: info: index check proved (CVC4: 4 VC)
 infoflow.adb:105:64: medium: array index check might fail
 infoflow.adb:105:66: info: initialization of "M_V1" proved
-infoflow.adb:106:42: info: index check proved (CVC4: 2 VC)
-infoflow.adb:106:64: info: index check proved (CVC4: 2 VC)
+infoflow.adb:106:42: info: index check proved (CVC4: 4 VC)
+infoflow.adb:106:64: info: index check proved (CVC4: 4 VC)
 infoflow.adb:107:27: medium: array index check might fail
 infoflow.adb:108:19: info: index check proved (CVC4: 2 VC)
 infoflow.adb:108:39: medium: array index check might fail
@@ -42,14 +42,14 @@ infoflow.adb:113:30: info: assertion proved (CVC4: 1 VC)
 infoflow.adb:121:28: info: division check proved (CVC4: 1 VC)
 infoflow.adb:122:36: info: initialization of "M_V2" proved
 infoflow.adb:125:34: medium: loop invariant might fail after first iteration, cannot prove H_V2 (K) = H_V2'Loop_Entry (K + M_V2)
-infoflow.adb:125:40: info: index check proved (CVC4: 2 VC)
+infoflow.adb:125:40: info: index check proved (CVC4: 4 VC)
 infoflow.adb:125:64: medium: array index check might fail
 infoflow.adb:127:34: medium: loop invariant might fail in first iteration, cannot prove H_V2 (K) = H_V2'Loop_Entry (K - M_V2)
-infoflow.adb:127:40: info: index check proved (CVC4: 2 VC)
+infoflow.adb:127:40: info: index check proved (CVC4: 4 VC)
 infoflow.adb:127:64: medium: array index check might fail
 infoflow.adb:127:66: info: initialization of "M_V2" proved
-infoflow.adb:128:42: info: index check proved (CVC4: 2 VC)
-infoflow.adb:128:64: info: index check proved (CVC4: 2 VC)
+infoflow.adb:128:42: info: index check proved (CVC4: 4 VC)
+infoflow.adb:128:64: info: index check proved (CVC4: 4 VC)
 infoflow.adb:129:27: medium: array index check might fail
 infoflow.adb:130:19: info: index check proved (CVC4: 2 VC)
 infoflow.adb:130:39: medium: array index check might fail
@@ -69,15 +69,15 @@ infoflow.adb:141:43: info: index check proved (CVC4: 2 VC)
 infoflow.adb:141:51: info: division check proved (CVC4: 1 VC)
 infoflow.adb:147:22: info: division check proved (CVC4: 1 VC)
 infoflow.adb:148:30: info: initialization of "M" proved
-infoflow.adb:150:48: info: index check proved (CVC4: 2 VC)
-infoflow.adb:150:69: info: index check proved (CVC4: 2 VC)
+infoflow.adb:150:48: info: index check proved (CVC4: 4 VC)
+infoflow.adb:150:69: info: index check proved (CVC4: 4 VC)
 infoflow.adb:152:34: medium: loop invariant might fail in first iteration, cannot prove H (K) = H'Loop_Entry (K - M)
-infoflow.adb:152:37: info: index check proved (CVC4: 2 VC)
-infoflow.adb:152:58: info: index check proved (CVC4: 2 VC)
+infoflow.adb:152:37: info: index check proved (CVC4: 4 VC)
+infoflow.adb:152:58: info: index check proved (CVC4: 4 VC)
 infoflow.adb:152:60: info: initialization of "M" proved
 infoflow.adb:153:36: medium: loop invariant might fail after first iteration, cannot prove H (K) = H'Loop_Entry (K)
-infoflow.adb:153:39: info: index check proved (CVC4: 2 VC)
-infoflow.adb:153:58: info: index check proved (CVC4: 2 VC)
+infoflow.adb:153:39: info: index check proved (CVC4: 4 VC)
+infoflow.adb:153:58: info: index check proved (CVC4: 4 VC)
 infoflow.adb:154:29: info: index check proved (CVC4: 2 VC)
 infoflow.adb:155:16: info: index check proved (CVC4: 2 VC)
 infoflow.adb:155:31: info: index check proved (CVC4: 2 VC)
@@ -92,8 +92,8 @@ infoflow.adb:163:07: medium: precondition might fail
 infoflow.adb:172:33: info: loop invariant initialization proved (CVC4: 1 VC)
 infoflow.adb:172:33: info: loop invariant preservation proved (CVC4: 1 VC)
 infoflow.adb:172:46: medium: "A_V1" might not be initialized
-infoflow.adb:173:33: info: index check proved (CVC4: 2 VC)
-infoflow.adb:173:44: info: index check proved (CVC4: 2 VC)
+infoflow.adb:173:33: info: index check proved (CVC4: 4 VC)
+infoflow.adb:173:44: info: index check proved (CVC4: 4 VC)
 infoflow.adb:174:16: info: index check proved (CVC4: 2 VC)
 infoflow.adb:174:31: info: index check proved (CVC4: 2 VC)
 infoflow.adb:178:10: info: assertion proved (CVC4: 1 VC)
@@ -102,12 +102,12 @@ infoflow.adb:179:18: info: index check proved (CVC4: 2 VC)
 infoflow.adb:179:29: info: index check proved (CVC4: 2 VC)
 infoflow.adb:181:22: medium: overflow check might fail
 infoflow.adb:182:33: info: loop invariant initialization proved (CVC4: 2 VC)
-infoflow.adb:182:33: info: loop invariant preservation proved (CVC4: 2 VC)
+infoflow.adb:182:33: info: loop invariant preservation proved (CVC4: 1 VC; altergo: 1 VC)
 infoflow.adb:182:47: medium: "A_V1" might not be initialized
-infoflow.adb:183:42: info: index check proved (CVC4: 2 VC)
-infoflow.adb:183:53: info: index check proved (CVC4: 2 VC)
-infoflow.adb:186:42: info: index check proved (CVC4: 2 VC)
-infoflow.adb:186:55: info: index check proved (CVC4: 2 VC)
+infoflow.adb:183:42: info: index check proved (CVC4: 4 VC)
+infoflow.adb:183:53: info: index check proved (CVC4: 4 VC)
+infoflow.adb:186:42: info: index check proved (CVC4: 4 VC)
+infoflow.adb:186:55: info: index check proved (CVC4: 4 VC)
 infoflow.adb:187:16: info: index check proved (CVC4: 2 VC)
 infoflow.adb:187:22: medium: "A_V1" might not be initialized
 infoflow.adb:187:36: info: index check proved (CVC4: 2 VC)
@@ -119,10 +119,10 @@ infoflow.adb:192:30: info: index check proved (CVC4: 2 VC)
 infoflow.adb:195:19: info: index check proved (CVC4: 2 VC)
 infoflow.adb:195:32: info: index check proved (CVC4: 2 VC)
 infoflow.adb:200:33: info: loop invariant initialization proved (CVC4: 1 VC)
-infoflow.adb:200:33: info: loop invariant preservation proved (CVC4: 1 VC)
+infoflow.adb:200:33: info: loop invariant preservation proved (altergo: 1 VC)
 infoflow.adb:200:46: medium: "A_V2" might not be initialized
-infoflow.adb:201:33: info: index check proved (CVC4: 2 VC)
-infoflow.adb:201:44: info: index check proved (CVC4: 2 VC)
+infoflow.adb:201:33: info: index check proved (CVC4: 4 VC)
+infoflow.adb:201:44: info: index check proved (CVC4: 4 VC)
 infoflow.adb:202:16: info: index check proved (CVC4: 2 VC)
 infoflow.adb:202:31: info: index check proved (CVC4: 2 VC)
 infoflow.adb:206:10: info: assertion proved (CVC4: 3 VC)
@@ -136,12 +136,12 @@ infoflow.adb:213:19: info: index check proved (CVC4: 2 VC)
 infoflow.adb:213:30: info: index check proved (CVC4: 2 VC)
 infoflow.adb:215:22: medium: overflow check might fail
 infoflow.adb:216:33: info: loop invariant initialization proved (CVC4: 2 VC)
-infoflow.adb:216:33: info: loop invariant preservation proved (CVC4: 2 VC)
+infoflow.adb:216:33: info: loop invariant preservation proved (CVC4: 1 VC; altergo: 1 VC)
 infoflow.adb:216:47: medium: "A_V2" might not be initialized
-infoflow.adb:217:42: info: index check proved (CVC4: 2 VC)
-infoflow.adb:217:53: info: index check proved (CVC4: 2 VC)
-infoflow.adb:220:42: info: index check proved (CVC4: 2 VC)
-infoflow.adb:220:55: info: index check proved (CVC4: 2 VC)
+infoflow.adb:217:42: info: index check proved (CVC4: 4 VC)
+infoflow.adb:217:53: info: index check proved (CVC4: 4 VC)
+infoflow.adb:220:42: info: index check proved (CVC4: 4 VC)
+infoflow.adb:220:55: info: index check proved (CVC4: 4 VC)
 infoflow.adb:221:16: info: index check proved (CVC4: 2 VC)
 infoflow.adb:221:22: medium: "A_V2" might not be initialized
 infoflow.adb:221:36: info: index check proved (CVC4: 2 VC)

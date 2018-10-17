@@ -497,30 +497,48 @@ package body Gnat2Why.Expr.Loops is
 
          if not Loop_Invariants.Is_Empty then
             declare
-               Count : Positive := 1;
+               Count : Natural := Integer (Loop_Invariants.Length);
 
             begin
-               --  Generate the relevant bits for the various loop invariants
+               --  Generate the relevant bits for the various loop invariants.
+               --  We consider loop invariants in reverse order, so that we can
+               --  generate a cascade of conditionals to check RTE in a loop
+               --  invariant only under the condition that previous loop
+               --  invariants hold.
 
-               for Loop_Invariant of Loop_Invariants loop
+               for Loop_Invariant of reverse Loop_Invariants loop
                   declare
                      Expr          : Node_Id;
                      One_Inv_Check : W_Prog_Id;
                      One_Invariant : W_Pred_Id;
+                     One_Inv_Var   : constant W_Identifier_Id :=
+                       New_Temp_Identifier (Typ       => EW_Bool_Type,
+                                            Base_Name => "inv");
                   begin
                      Transform_Pragma_Check (Stmt    => Loop_Invariant,
                                              Force   => False,
                                              Expr    => Expr,
                                              Runtime => One_Inv_Check,
                                              Pred    => One_Invariant);
-                     Inv_Check := Sequence (Inv_Check, One_Inv_Check);
+
+                     --  Add checking of RTE in the Nth loop invariant, and use
+                     --  it to guard the checking of RTE for (N+1)th and beyond
+                     --  loop invariants.
+
+                     Inv_Check :=
+                       New_Binding (Name    => One_Inv_Var,
+                                    Def     => +One_Inv_Check,
+                                    Context =>
+                                      +New_Ignore (Prog => Inv_Check));
+
+                     --  Add the predicate for the Nth loop invariant
 
                      Why_Invariants (Count) :=
                        +New_VC_Expr (Ada_Node => Expr,
                                      Expr     => +One_Invariant,
                                      Reason   => VC_Loop_Invariant,
                                      Domain   => EW_Pred);
-                     Count := Count + 1;
+                     Count := Count - 1;
                   end;
                end loop;
             end;
@@ -1701,16 +1719,17 @@ package body Gnat2Why.Expr.Loops is
    --        let loop_entry_tmps = saved_values in
    --        let variant_tmps = ref 0 in
    --          loop_start;
+   --          invariant_check;
    --          loop invariant { user_invariant }
    --            assume { implicit_invariant };
-   --            invariant_check;
    --            variant_update;
    --            loop_end;
    --            if exit_condition then
    --              raise loop_name;
    --            [Update_Stmt;]
    --            loop_restart;
-   --            variant_check
+   --            variant_check;
+   --            invariant_check;
    --          end loop
    --      [with exit_path_1 -> path_1
    --         | ...
@@ -1718,13 +1737,13 @@ package body Gnat2Why.Expr.Loops is
    --    with loop_name -> void
    --  end if
    --
-   --  Note that the expression that checks that the user invariant does not
-   --  raise a run-time error (invariant_check) is put inside the loop, in a
-   --  context where the user invariant and the implicit invariant are known to
-   --  hold. A naive translation would put it after the two copies of
-   --  loop_start, but it is more efficient to put it in only one place. Both
-   --  choices are logically equivalent, because the user invariant must be
-   --  proved before it can be used in the loop.
+   --  Note that the expression that checks that the user invariant does
+   --  not raise a run-time error is duplicated after [loop_start] and
+   --  [loop_restart]. An earlier design inserted it only once at the beginning
+   --  of the loop, but it led to unprovable runtime checks in some loop
+   --  invariants, because it did not benefit from the knowledge of the loop
+   --  invariant (including the implicit part) modified by the body of the
+   --  loop.
    --
    --  The inner try-catch block is only generated if needed for handling exit
    --  paths. In that case, the exit path inside the loop has been replaced
@@ -1764,15 +1783,16 @@ package body Gnat2Why.Expr.Loops is
                       & (if Sloc (Loop_Id) > 0 then
                            " of loop " & Build_Location_String (Sloc (Loop_Id))
                          else ""))),
-                   5 => +Sequence
-                     (New_Conditional
-                        (Condition => +Exit_Condition,
-                         Then_Part => New_Raise (Name => Loop_Ident)),
-                      (if Update_Stmt = Why_Empty then
-                         +Sequence (+Loop_Restart, +Variant_Check)
-                       else
-                         +Sequence (+Update_Stmt,
-                         +Sequence (+Loop_Restart, +Variant_Check))))));
+                   5 => New_Conditional
+                          (Condition => +Exit_Condition,
+                           Then_Part => New_Raise (Name => Loop_Ident)),
+                   6 => (if Update_Stmt = Why_Empty then
+                           +Void
+                         else
+                           Update_Stmt),
+                   7 => Loop_Restart,
+                   8 => Variant_Check,
+                   9 => Invariant_Check));
 
       Loop_Body : constant W_Prog_Id :=
         Sequence ((1 => New_Comment
@@ -1788,8 +1808,7 @@ package body Gnat2Why.Expr.Loops is
                              " of loop " & Build_Location_String
                             (Sloc (Loop_Id))
                           else ""))),
-                   4 => Invariant_Check,
-                   5 => Loop_Inner));
+                   4 => Loop_Inner));
 
       Loop_Stmt : constant W_Prog_Id :=
         New_While_Loop
@@ -1821,7 +1840,8 @@ package body Gnat2Why.Expr.Loops is
                                       " from " & Build_Location_String
                                      (Sloc (Loop_Id))
                                     else ""))),
-                            4 => Loop_Stmt))));
+                            4 => Invariant_Check,
+                            5 => Loop_Stmt))));
 
       Loop_Try : W_Prog_Id;
       Warn_Dead_Code : W_Prog_Id := +Void;

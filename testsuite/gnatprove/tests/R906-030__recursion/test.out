@@ -34,7 +34,7 @@ test_rec.adb:44:33: info: initialization of "CS" proved
 test_rec.adb:44:33: info: loop invariant initialization proved (CVC4: 1 VC)
 test_rec.adb:44:33: info: loop invariant preservation proved (CVC4: 1 VC)
 test_rec.adb:44:38: info: function contract not available for proof ("Sum" is recursive)
-test_rec.adb:44:43: info: range check proved (CVC4: 4 VC)
+test_rec.adb:44:43: info: range check proved (CVC4: 8 VC)
 test_rec.adb:45:33: info: loop invariant initialization proved (CVC4: 1 VC)
 test_rec.adb:45:33: info: loop invariant preservation proved (CVC4: 1 VC)
 test_rec.adb:45:38: info: initialization of "CS" proved
