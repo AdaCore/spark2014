@@ -3,7 +3,7 @@ loopinv.adb:7:12: info: initialization of "J" proved
 loopinv.adb:7:14: info: overflow check proved (CVC4: 2 VC)
 loopinv.adb:8:30: info: loop invariant initialization proved (CVC4: 1 VC)
 loopinv.adb:8:30: info: loop invariant preservation proved (CVC4: 1 VC)
-loopinv.adb:8:30: medium: precondition might fail (e.g. when J = 11)
+loopinv.adb:8:30: info: precondition proved (CVC4: 2 VC)
 loopinv.adb:8:36: info: initialization of "J" proved
 where_are_the_run_time_errors.adb:5:15: info: division check proved (CVC4: 1 VC)
 where_are_the_run_time_errors.adb:7:09: info: initialization of "K" proved
@@ -17,10 +17,10 @@ where_are_the_run_time_errors.adb:11:30: info: initialization of "Y" proved
 where_are_the_run_time_errors.adb:11:30: info: loop invariant initialization proved (CVC4: 1 VC)
 where_are_the_run_time_errors.adb:11:30: info: loop invariant preservation proved (CVC4: 1 VC)
 where_are_the_run_time_errors.adb:11:34: info: initialization of "Y" proved
-where_are_the_run_time_errors.adb:11:47: info: overflow check proved (CVC4: 1 VC)
-where_are_the_run_time_errors.adb:11:51: medium: overflow check might fail
+where_are_the_run_time_errors.adb:11:47: info: overflow check proved (CVC4: 2 VC)
+where_are_the_run_time_errors.adb:11:51: info: overflow check proved (CVC4: 2 VC)
 where_are_the_run_time_errors.adb:11:54: info: initialization of "X" proved
-where_are_the_run_time_errors.adb:11:56: info: overflow check proved (CVC4: 1 VC)
+where_are_the_run_time_errors.adb:11:56: info: overflow check proved (CVC4: 2 VC)
 where_are_the_run_time_errors.adb:12:30: info: initialization of "X" proved
 where_are_the_run_time_errors.adb:12:30: info: loop invariant initialization proved (CVC4: 1 VC)
 where_are_the_run_time_errors.adb:12:30: info: loop invariant preservation proved (CVC4: 1 VC)

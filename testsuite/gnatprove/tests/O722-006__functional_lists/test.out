@@ -29,7 +29,7 @@ use_lists.adb:10:48: info: initialization of private part of "L2" proved
 use_lists.adb:11:18: medium: loop invariant might fail after first iteration, cannot prove Is_Incr (Get (Get_Element_Model (L1), N), Get (Get_Element_Model (L2), N)) (e.g. when N = 0) [possible explanation: subprogram at line 2 should mention L1 in a precondition]
 use_lists.adb:11:32: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.adb:12:32: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.adb:13:13: medium: precondition might fail [possible explanation: subprogram at line 2 should mention L1 in a precondition]
+use_lists.adb:13:13: info: precondition proved (CVC4: 1 VC)
 use_lists.adb:13:13: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:13:26: info: initialization of "Cu" proved
 use_lists.adb:14:13: medium: precondition might fail

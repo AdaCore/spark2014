@@ -1,15 +1,15 @@
 loop_tutorial.adb:10:19: info: postcondition proved (CVC4: 2 VC)
 loop_tutorial.adb:10:32: info: overflow check proved (CVC4: 1 VC)
 loop_tutorial.adb:11:35: info: overflow check proved (CVC4: 1 VC)
-loop_tutorial.adb:11:40: medium: overflow check might fail
+loop_tutorial.adb:11:40: info: overflow check proved (CVC4: 1 VC)
 loop_tutorial.adb:11:56: info: overflow check proved (CVC4: 1 VC)
 loop_tutorial.adb:21:20: info: overflow check proved (CVC4: 1 VC)
 loop_tutorial.adb:27:33: info: initialization of "Lower" proved
 loop_tutorial.adb:27:33: info: loop invariant initialization proved (CVC4: 5 VC)
 loop_tutorial.adb:27:33: info: loop invariant preservation proved (CVC4: 5 VC)
 loop_tutorial.adb:28:37: info: initialization of "Upper" proved
-loop_tutorial.adb:30:43: medium: overflow check might fail (e.g. when Upper = 46340)
-loop_tutorial.adb:31:43: info: overflow check proved (CVC4: 1 VC)
+loop_tutorial.adb:30:43: medium: overflow check might fail (e.g. when Upper = 46341)
+loop_tutorial.adb:31:43: info: overflow check proved (CVC4: 2 VC)
 loop_tutorial.adb:33:10: info: loop variant proved (CVC4: 1 VC)
 loop_tutorial.adb:33:44: info: initialization of "Lower" proved
 loop_tutorial.adb:35:44: info: initialization of "Upper" proved

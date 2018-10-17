@@ -22,9 +22,9 @@ a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation 
 lists.adb:5:29: info: initialization of "C.Node" proved
 lists.adb:7:13: info: loop invariant initialization proved (CVC4: 1 VC)
 lists.adb:7:13: info: loop invariant preservation proved (CVC4: 1 VC)
-lists.adb:7:32: info: precondition proved (CVC4: 1 VC)
+lists.adb:7:32: info: precondition proved (CVC4: 2 VC)
 lists.adb:7:53: info: initialization of "C.Node" proved
-lists.adb:7:63: info: precondition proved (CVC4: 2 VC)
+lists.adb:7:63: info: precondition proved (CVC4: 4 VC)
 lists.adb:8:13: info: precondition proved (CVC4: 1 VC)
 lists.adb:8:25: info: initialization of "C.Node" proved
 lists.adb:9:20: info: initialization of "C.Node" proved

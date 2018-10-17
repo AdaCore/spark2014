@@ -86,8 +86,8 @@ textio-get_line.adb:189:30: info: loop invariant initialization proved (CVC4: 1 
 textio-get_line.adb:189:30: info: loop invariant preservation proved (CVC4: 1 VC)
 textio-get_line.adb:189:45: info: initialization of "Item" proved
 textio-get_line.adb:189:59: info: initialization of "Last" proved
-textio-get_line.adb:190:38: info: index check proved (CVC4: 2 VC)
-textio-get_line.adb:190:72: info: index check proved (CVC4: 2 VC)
+textio-get_line.adb:190:38: info: index check proved (CVC4: 4 VC)
+textio-get_line.adb:190:72: info: index check proved (CVC4: 4 VC)
 textio-get_line.adb:191:30: info: loop invariant initialization proved (CVC4: 1 VC)
 textio-get_line.adb:191:30: info: loop invariant preservation proved (CVC4: 1 VC)
 textio-get_line.adb:191:71: info: initialization of "Last" proved

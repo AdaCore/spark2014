@@ -38,39 +38,52 @@
 <theory name="Sum__simple_sum__subprogram_def">
  <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="WP_parameter def.0" expl="loop invariant init" proved="true">
+  <goal name="WP_parameter def.0" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.1" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="30"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="23"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="32"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="23"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.5" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" steps="30"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="75"/></proof>
   </goal>
-  <goal name="WP_parameter def.7" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="77"/></proof>
+  <goal name="WP_parameter def.7" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.8" expl="loop invariant preservation">
-  <proof prover="0"><result status="unknown" steps="8450188"/></proof>
-  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  <goal name="WP_parameter def.8" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="91"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.10" expl="postcondition">
-  <proof prover="0"><result status="unknown" steps="8450200"/></proof>
+  <goal name="WP_parameter def.11" expl="loop invariant preservation" proved="true">
+  <proof prover="0" obsolete="true"><result status="unknown" steps="8450188"/></proof>
+  <proof prover="1"><result status="valid" steps="77"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="loop invariant preservation">
+  <proof prover="0"><result status="unknown" steps="13062"/></proof>
+  <proof prover="1"><result status="unknown" steps="365013"/></proof>
+  </goal>
+  <goal name="WP_parameter def.13" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.14" expl="postcondition">
+  <proof prover="0"><result status="unknown" steps="15653"/></proof>
   <proof prover="1"><result status="unknown" steps="365017"/></proof>
   </goal>
  </transf>

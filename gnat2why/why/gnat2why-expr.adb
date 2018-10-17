@@ -14264,8 +14264,7 @@ package body Gnat2Why.Expr is
       end if;
 
       if Present (Expr) then
-         Runtime := New_Ignore
-           (Prog => +Transform_Expr (Expr, EW_Prog, Params => Params));
+         Runtime := +Transform_Expr (Expr, EW_Prog, Params => Params);
          Params.Gen_Marker := True;
          Pred := +Transform_Expr (Expr, EW_Pred, Params => Params);
          return;
@@ -14307,7 +14306,7 @@ package body Gnat2Why.Expr is
 
       if Is_Pragma_Assert_And_Cut (Prag) then
          if Check_Expr /= Why_Empty then
-            return Check_Expr;
+            return New_Ignore (Prog => Check_Expr);
          else
             return +Void;
          end if;
@@ -14359,7 +14358,7 @@ package body Gnat2Why.Expr is
       end if;
 
       if Check_Expr /= Why_Empty then
-         T := Sequence (Check_Expr, T);
+         T := Sequence (New_Ignore (Prog => Check_Expr), T);
       end if;
 
       return T;
