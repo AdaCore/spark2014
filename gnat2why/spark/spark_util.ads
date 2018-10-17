@@ -222,7 +222,7 @@ package SPARK_Util is
    --     not correspond to unique name in GNAT AST.
 
    function Full_Source_Name (E : Entity_Id) return String
-    with Pre => Present (E) and then Sloc (E) /= No_Location;
+     with Pre => Present (E) and then Sloc (E) /= No_Location;
    --  For an entity E, return its scoped name, e.g. for a subprogram
    --  nested in
    --
