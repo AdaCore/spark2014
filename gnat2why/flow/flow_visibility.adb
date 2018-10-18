@@ -248,10 +248,6 @@ package body Flow_Visibility is
                                               Part => Private_Part)));
                end if;
 
-               Connect
-                 (Body_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
-                                           Part => Body_Part)));
             else
                Connect
                  (Spec_V,
