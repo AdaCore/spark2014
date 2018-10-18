@@ -622,6 +622,9 @@ package body Flow_Visibility is
 
                if Present (Renamed_Entity (Instance_Parent)) then
                   Instance_Parent := Renamed_Entity (Instance_Parent);
+
+                  pragma Assert (Ekind (Instance_Parent) = E_Package);
+
                end if;
             end;
          else
@@ -656,6 +659,10 @@ package body Flow_Visibility is
 
       pragma Assert (if Present (Template) then Is_Generic_Unit (Template));
       --  Template, if present, is a generic unit
+
+      pragma Assert (if Present (Parent)
+                     then Ekind (Parent) in E_Package | E_Generic_Package);
+      --  Parent, if present, must be a package or a generic package
 
       -------------------------------------------------------------------------
 
