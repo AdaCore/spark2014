@@ -290,13 +290,10 @@ package body Flow_Visibility is
                --  ??? we need something similar for generic child subprograms
                --  of generic parents (i.e. the Is_Instance_Child branch above)
 
-               if not Info.Is_Package
-                 and then Is_Wrapper_Package (Scope (E))
-               then
+               if not Info.Is_Package then
                   Connect
                     (Body_V,
-                     Scope_Graph.Get_Vertex ((Ent  => Scope (E),
-                                              Part => Body_Part)));
+                     Scope_Graph.Get_Vertex (Body_Scope (Info.Container)));
                end if;
             end if;
          end if;
