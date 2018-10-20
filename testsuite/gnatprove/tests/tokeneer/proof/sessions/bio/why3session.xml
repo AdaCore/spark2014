@@ -101,7 +101,7 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="unreachable point">
-  <proof prover="2" timelimit="1"><result status="unknown" steps="260"/></proof>
+  <proof prover="2" timelimit="1"><result status="unknown" steps="460"/></proof>
   </goal>
  </transf>
  </goal>

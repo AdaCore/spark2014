@@ -912,13 +912,13 @@
   <proof prover="0"><result status="valid" steps="2212"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2292"/></proof>
+  <proof prover="0"><result status="valid" steps="2286"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="36337"/></proof>
+  <proof prover="0"><result status="valid" steps="37266"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="50192"/></proof>
+  <proof prover="0"><result status="valid" steps="52245"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1593,7 +1593,7 @@
   <proof prover="0"><result status="valid" steps="83322"/></proof>
   </goal>
   <goal name="WP_parameter def.61" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="328021"/></proof>
+  <proof prover="0"><result status="valid" steps="303952"/></proof>
   </goal>
   <goal name="WP_parameter def.62" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="3728"/></proof>

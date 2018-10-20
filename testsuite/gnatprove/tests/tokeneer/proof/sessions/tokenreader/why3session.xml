@@ -53,13 +53,13 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="unreachable point">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="384"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="572"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="188"/></proof>
+  <proof prover="0"><result status="valid" steps="381"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="200"/></proof>
+  <proof prover="0"><result status="valid" steps="392"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="30"/></proof>

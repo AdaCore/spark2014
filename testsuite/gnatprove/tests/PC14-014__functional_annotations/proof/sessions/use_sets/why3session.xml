@@ -821,13 +821,13 @@
   <proof prover="0"><result status="valid" steps="1948"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2028"/></proof>
+  <proof prover="0"><result status="valid" steps="2022"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="35673"/></proof>
+  <proof prover="0"><result status="valid" steps="35397"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="45087"/></proof>
+  <proof prover="0"><result status="valid" steps="47539"/></proof>
   </goal>
  </transf>
  </goal>

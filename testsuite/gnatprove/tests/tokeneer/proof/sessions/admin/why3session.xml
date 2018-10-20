@@ -100,26 +100,26 @@
   <goal name="WP_parameter def.1" expl="loop invariant init" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="102"/></proof>
+  <goal name="WP_parameter def.2" expl="loop invariant preservation" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="102"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <goal name="WP_parameter def.4" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="102"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="unreachable point">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="3125"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="3203"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="unreachable point">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="3099"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="3203"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="unreachable point">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="3678"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="3816"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -131,7 +131,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="120"/></proof>
+  <proof prover="0"><result status="valid" steps="70"/></proof>
   </goal>
  </transf>
  </goal>
