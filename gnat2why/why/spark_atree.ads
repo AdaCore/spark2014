@@ -571,6 +571,9 @@ package SPARK_Atree is
    function Of_Present (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Iterator_Specification;
 
+   function Package_Spec (E : Entity_Id) return Node_Id with
+     Post => Nkind (Package_Spec'Result) = N_Package_Declaration;
+
    function Parameter_Specifications (N : Node_Id) return List_Id with
      Pre => Nkind (N) in N_Entry_Declaration
                        | N_Function_Specification

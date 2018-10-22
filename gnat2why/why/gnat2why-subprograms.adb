@@ -895,15 +895,32 @@ package body Gnat2Why.Subprograms is
                   Init_Map : constant Dependency_Maps.Map :=
                     Parse_Initializes (E);
 
+                  Scop : constant Flow_Scope :=
+                    Get_Flow_Scope (Package_Spec (E));
+                  --  The scope of where the package is declared, not of the
+                  --  package itself (because from the package itself we would
+                  --  still see the constants that capture expressions of the
+                  --  generic IN parameters).
+
+                  RHS : Flow_Id_Sets.Set;
+                  --  The "inputs" of a package, i.e. RHSs of its Initializes
+                  --  contract. With the current API it needs to be a variable.
+
                begin
-                  for S of Init_Map loop
-                     for Y of S loop
+                  for Clause of Init_Map loop
+
+                     RHS := Clause;
+
+                     Map_Generic_In_Formals (Scop, RHS);
+                     --  ??? perhaps this should be moved to Parse_Initializes
+
+                     for Input of RHS loop
 
                         --  Expand Abstract_State if any
 
                         declare
                            Reads : constant Flow_Id_Sets.Set :=
-                             Expand_Abstract_State (Y,
+                             Expand_Abstract_State (Input,
                                                     Erase_Constants => False);
                         begin
 
