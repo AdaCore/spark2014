@@ -868,6 +868,7 @@ two actual parameters to the same call unless
   - both corresponding formal parameters are of mode **in** ; or
   - at least one of the two parameters is of an elementary type
     and is of mode **in**.
+
 [TBD: The definition of "potentially introduce aliasing" in the
 anti-aliasing section has been changed to include dereferencing,
 so that Foo and Foo.all potentially introduce aliasing. Given that,
@@ -888,6 +889,7 @@ If an actual parameter in a call is of a composite owning type, then
     the callee; and
   - the parameter shall not potentially overlap a global input of the callee
     if the corresponding formal parameter is an output of the callee.
+
 [TBD: The definition of "potentially introduce aliasing" in the
 anti-aliasing section has been changed to include dereferencing,
 so that Foo and Foo.all potentially introduce aliasing. Given that,
