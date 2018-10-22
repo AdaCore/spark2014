@@ -1,0 +1,2 @@
+p_gen.ads:4:18: medium: assertion might fail, cannot prove X >= 0, in instantiation at p_inst.adb:5 (e.g. when X = -1)
+p_inst.adb:3:19: warning: "Y" is not modified, could be IN
