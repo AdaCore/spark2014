@@ -6097,9 +6097,7 @@ package body Flow.Control_Flow_Graph is
                         end if;
                      end loop;
 
-                     if Present (The_Out) then
-                        Package_Writes.Insert (The_Out);
-                     end if;
+                     Package_Writes.Insert (The_Out);
                   end;
                end loop;
 
