@@ -2628,7 +2628,7 @@ package body Flow.Analysis is
          Results : Node_Sets.Set;
 
          Initializes : constant Dependency_Maps.Map :=
-           Parse_Initializes (FA.Spec_Entity);
+           Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
          --  Initializes aspect parsed into Flow_Ids
 
       begin
@@ -3563,7 +3563,8 @@ package body Flow.Analysis is
    procedure Find_Impossible_To_Initialize_State
      (FA : in out Flow_Analysis_Graphs)
    is
-      DM : constant Dependency_Maps.Map := Parse_Initializes (FA.Spec_Entity);
+      DM : constant Dependency_Maps.Map :=
+        Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
 
       Outputs_Of_Procs : Flow_Id_Sets.Set;
       --  Abstracts states that are written by procedures declared in package
@@ -4013,7 +4014,8 @@ package body Flow.Analysis is
    --------------------------------
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
-      DM : constant Dependency_Maps.Map := Parse_Initializes (FA.Spec_Entity);
+      DM : constant Dependency_Maps.Map :=
+        Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
 
       function Is_Written (Comp : Flow_Id) return Boolean;
       --  Returns True iff Comp is definitely written, according to the PDG
@@ -4044,7 +4046,10 @@ package body Flow.Analysis is
 
             begin
                return Enclosing_Pkg /= FA.Spec_Entity
-                 and then Parse_Initializes (Enclosing_Pkg).Contains (Comp);
+                 and then
+               Parse_Initializes (Enclosing_Pkg,
+                                  Get_Flow_Scope (Enclosing_Pkg)).
+                Contains (Comp);
             end;
          end if;
 
@@ -5470,7 +5475,7 @@ package body Flow.Analysis is
       --  be flagged as a potentially uninitialized read.
 
       Visible_Vars := Flow_Id_Sets.Empty_Set;
-      for C in Parse_Initializes (FA.Spec_Entity).Iterate loop
+      for C in Parse_Initializes (FA.Spec_Entity, FA.S_Scope).Iterate loop
          declare
             Var : Flow_Id renames Dependency_Maps.Key (C);
          begin

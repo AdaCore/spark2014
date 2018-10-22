@@ -4030,7 +4030,8 @@ package body Flow.Control_Flow_Graph is
 
       Pkg_Body_Declarations : constant List_Id := Declarations (Pkg_Body);
 
-      DM : Dependency_Maps.Map := Parse_Initializes (Package_Spec);
+      DM : Dependency_Maps.Map :=
+        Parse_Initializes (Package_Spec, FA.B_Scope);
       --  ??? This needs to take into account initializes from gg
 
       V : Flow_Graphs.Vertex_Id;
@@ -4080,15 +4081,6 @@ package body Flow.Control_Flow_Graph is
                   begin
                      if Present (Init_Item) then
                         Verts.Append (Union_Id (Init_Item));
-
-                        --  If the package is inside a generic instance,
-                        --  then its Initializes contract might have generic
-                        --  parameters of mode IN on the RHSs, but they are not
-                        --  visible in the current scope. Map them to objects
-                        --  in the generic actual parameter expressions, which
-                        --  are visible.
-
-                        Map_Generic_In_Formals (FA.B_Scope, The_Ins);
 
                         Add_Vertex
                           (FA,
@@ -6078,7 +6070,7 @@ package body Flow.Control_Flow_Graph is
                Inserted : Boolean;
 
                DM : constant Dependency_Maps.Map :=
-                 Parse_Initializes (FA.Spec_Entity);
+                 Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
 
             begin
                for C in DM.Iterate loop

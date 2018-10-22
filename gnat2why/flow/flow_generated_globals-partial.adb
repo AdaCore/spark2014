@@ -427,7 +427,8 @@ package body Flow_Generated_Globals.Partial is
                --  claimed to be initialized even if they are only known by
                --  Entity_Name.
 
-               for Clause in Parse_Initializes (E).Iterate loop
+               for Clause in Parse_Initializes (E, Get_Flow_Scope (E)).Iterate
+               loop
                   declare
                      LHS : constant Entity_Id :=
                        Get_Direct_Mapping_Id (Dependency_Maps.Key (Clause));

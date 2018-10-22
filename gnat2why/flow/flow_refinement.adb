@@ -860,7 +860,8 @@ package body Flow_Refinement is
 
       if Ekind (Scop) = E_Package then
          declare
-            M : constant Dependency_Maps.Map := Parse_Initializes (Scop);
+            M : constant Dependency_Maps.Map :=
+              Parse_Initializes (Scop, Get_Flow_Scope (Scop));
 
             State : constant Entity_Id := Encapsulating_State (E);
 
