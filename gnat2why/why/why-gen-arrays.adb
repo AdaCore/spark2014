@@ -120,6 +120,20 @@ package body Why.Gen.Arrays is
    --  @return The name of the theory for the logical operators on these
    --          arrays.
 
+   function New_Length_Equality
+     (L_First_E : W_Expr_Id;
+      L_Last_E  : W_Expr_Id;
+      R_First_E : W_Expr_Id;
+      R_Last_E  : W_Expr_Id;
+      Base_Ty   : W_Type_Id) return W_Pred_Id;
+   --  @param L_First_E first bound of the left array
+   --  @param L_Last_E last bound of the left array
+   --  @param R_First_E first bound of the right array
+   --  @param R_Last_E last bound of the right array
+   --  @param Base_Ty type of the bound expressions
+   --  @return and expression stating that left and right have the same length
+   --      avoiding the wraparound semantics on bitvectors.
+
    function Prepare_Indexes_Substitutions
      (Section     : W_Section_Id;
       Typ         : Entity_Id;
@@ -2406,6 +2420,219 @@ package body Why.Gen.Arrays is
    begin
       return Result;
    end New_Element_Equality;
+
+   -------------------------
+   -- New_Length_Equality --
+   -------------------------
+
+   function New_Length_Equality
+     (L_First_E : W_Expr_Id;
+      L_Last_E  : W_Expr_Id;
+      R_First_E : W_Expr_Id;
+      R_Last_E  : W_Expr_Id;
+      Base_Ty   : W_Type_Id) return W_Pred_Id
+   is
+      Le_Op     : constant W_Identifier_Id :=
+        (if Base_Ty = EW_Int_Type then Int_Infix_Le
+         elsif Why_Type_Is_BitVector (Base_Ty)
+         then MF_BVs (Base_Ty).Ule
+         else raise Program_Error);
+      Lt_Op     : constant W_Identifier_Id :=
+        (if Base_Ty = EW_Int_Type then Int_Infix_Lt
+         elsif Why_Type_Is_BitVector (Base_Ty)
+         then MF_BVs (Base_Ty).Ult
+         else raise Program_Error);
+      Sub_Op    : constant W_Identifier_Id :=
+        (if Base_Ty = EW_Int_Type then Int_Infix_Subtr
+         elsif Why_Type_Is_BitVector (Base_Ty)
+         then MF_BVs (Base_Ty).Sub
+         else raise Program_Error);
+
+   begin
+        --  (if <left_arr>.first_I <= <left_arr>.last_I then
+        --     <right_arr>.first_I <= <right_arr>.last_I
+        --     /\ <left_arr>.last_I - <left_arr>.first_I =
+        --        <right_arr>.last_I - <right_arr>.first_I
+        --   else <right_arr>.last_I < <right_arr>.first_I)
+
+      return New_Conditional
+        (Condition => New_Call
+           (Domain   => EW_Pred,
+            Name     => Le_Op,
+            Args     => (L_First_E, L_Last_E),
+            Typ      => EW_Bool_Type),
+         Then_Part => New_And_Then_Expr
+           (Left   => New_Call
+                (Domain   => EW_Pred,
+                 Name     => Le_Op,
+                 Args     => (R_First_E, R_Last_E),
+                 Typ      => EW_Bool_Type),
+            Right  => New_Comparison
+              (Symbol => Why_Eq,
+               Left   => New_Call
+                 (Domain   => EW_Pred,
+                  Name     => Sub_Op,
+                  Args     => (L_Last_E, L_First_E),
+                  Typ      => Base_Ty),
+               Right  => New_Call
+                 (Domain   => EW_Pred,
+                  Name     => Sub_Op,
+                  Args     => (R_Last_E, R_First_E),
+                  Typ      => Base_Ty),
+               Domain => EW_Pred),
+            Domain => EW_Pred),
+         Else_Part => New_Call
+           (Domain => EW_Pred,
+            Name   => Lt_Op,
+            Args   => (R_Last_E, R_First_E),
+            Typ    => Base_Ty),
+         Typ       => EW_Bool_Type);
+   end New_Length_Equality;
+
+   function New_Length_Equality
+     (Left_Arr  : W_Expr_Id;
+      Right_Arr : W_Expr_Id;
+      Dim       : Positive) return W_Pred_Id
+   is
+      L_Ty      : constant Entity_Id := Get_Ada_Node (+Get_Type (Left_Arr));
+      R_Ty      : constant Entity_Id := Get_Ada_Node (+Get_Type (Right_Arr));
+      Is_Static : constant Boolean := Has_Static_Array_Type (L_Ty)
+        and then Has_Static_Array_Type (R_Ty);
+      Result    : W_Expr_Id := +True_Pred;
+
+   begin
+      for I in 1 .. Dim loop
+
+         --  Do not issue checks for statically matching lengths
+
+         if not Is_Static
+           or else Static_Array_Length (Retysp (L_Ty), I) /=
+             Static_Array_Length (Retysp (R_Ty), I)
+         then
+            declare
+               Base_Ty   : constant W_Type_Id :=
+                Nth_Index_Rep_Type_No_Bool (L_Ty, Dim);
+               pragma Assert
+                 (Base_Ty = Nth_Index_Rep_Type_No_Bool (R_Ty, Dim));
+
+               L_First_E : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => Get_Array_Attr (Domain => EW_Term,
+                                              Expr   => Left_Arr,
+                                              Attr   => Attribute_First,
+                                              Dim    => I),
+                    To     => Base_Ty);
+               L_Last_E  : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => Get_Array_Attr (Domain => EW_Term,
+                                              Expr   => Left_Arr,
+                                              Attr   => Attribute_Last,
+                                              Dim    => I),
+                    To     => Base_Ty);
+               R_First_E : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => Get_Array_Attr (Domain => EW_Term,
+                                              Expr   => Right_Arr,
+                                              Attr   => Attribute_First,
+                                              Dim    => I),
+                    To     => Base_Ty);
+               R_Last_E  : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => Get_Array_Attr (Domain => EW_Term,
+                                              Expr   => Right_Arr,
+                                              Attr   => Attribute_Last,
+                                              Dim    => I),
+                    To     => Base_Ty);
+            begin
+               Result :=
+                 New_And_Expr
+                   (Conjuncts =>
+                      (1 => Result,
+                       2 => +New_Length_Equality
+                         (L_First_E, L_Last_E, R_First_E, R_Last_E, Base_Ty)),
+                    Domain    => EW_Pred);
+            end;
+         end if;
+      end loop;
+
+      return +Result;
+   end New_Length_Equality;
+
+   function New_Length_Equality
+     (Left_Arr : W_Expr_Id;
+      Right    : Entity_Id;
+      Dim      : Positive) return W_Pred_Id
+   is
+      L_Ty      : constant Entity_Id := Get_Ada_Node (+Get_Type (Left_Arr));
+      Is_Static : constant Boolean := Has_Static_Array_Type (L_Ty)
+        and then Has_Static_Array_Type (Right);
+      Result    : W_Expr_Id := +True_Pred;
+
+   begin
+      for I in 1 .. Dim loop
+
+         --  Do not issue checks for statically matching lengths
+
+         if not Is_Static
+           or else Static_Array_Length (Retysp (L_Ty), I) /=
+             Static_Array_Length (Retysp (Right), I)
+         then
+            declare
+               Base_Ty   : constant W_Type_Id :=
+                Nth_Index_Rep_Type_No_Bool (L_Ty, Dim);
+               pragma Assert
+                 (Base_Ty = Nth_Index_Rep_Type_No_Bool (Right, Dim));
+
+               L_First_E : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => Get_Array_Attr (Domain => EW_Term,
+                                              Expr   => Left_Arr,
+                                              Attr   => Attribute_First,
+                                              Dim    => I),
+                    To     => Base_Ty);
+               L_Last_E  : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => Get_Array_Attr (Domain => EW_Term,
+                                              Expr   => Left_Arr,
+                                              Attr   => Attribute_Last,
+                                              Dim    => I),
+                    To     => Base_Ty);
+               R_First_E : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => Get_Array_Attr (Domain => EW_Term,
+                                              Ty     => Right,
+                                              Attr   => Attribute_First,
+                                              Dim    => I),
+                    To     => Base_Ty);
+               R_Last_E  : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => Get_Array_Attr (Domain => EW_Term,
+                                              Ty     => Right,
+                                              Attr   => Attribute_Last,
+                                              Dim    => I),
+                    To     => Base_Ty);
+            begin
+               Result :=
+                 New_And_Expr
+                   (Conjuncts =>
+                      (1 => Result,
+                       2 => +New_Length_Equality
+                         (L_First_E, L_Last_E, R_First_E, R_Last_E, Base_Ty)),
+                    Domain    => EW_Pred);
+            end;
+         end if;
+      end loop;
+
+      return +Result;
+   end New_Length_Equality;
 
    ------------------------
    -- New_Singleton_Call --

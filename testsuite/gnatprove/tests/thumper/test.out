@@ -281,7 +281,7 @@ hermes-oid.adb:48:73: info: initialization of "Result.Other_Components" proved
 hermes-oid.adb:48:86: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:50:54: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:50:62: info: range check proved (CVC4: 1 VC)
-hermes-oid.adb:67:14: info: length check proved (CVC4: 1 VC)
+hermes-oid.adb:67:14: info: length check proved (CVC4: 4 VC)
 hermes-oid.adb:70:56: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:71:23: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:71:31: info: initialization of "Result" proved
@@ -296,7 +296,7 @@ hermes-oid.adb:79:34: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:79:39: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:79:39: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:79:50: info: initialization of "Result" proved
-hermes-oid.adb:103:14: info: length check proved (CVC4: 1 VC)
+hermes-oid.adb:103:14: info: length check proved (CVC4: 4 VC)
 hermes-oid.adb:107:32: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:109:17: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:109:31: info: initialization of "Result" proved

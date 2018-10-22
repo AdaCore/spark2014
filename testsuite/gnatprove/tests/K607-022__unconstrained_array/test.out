@@ -45,7 +45,7 @@ simple_unc_arrays.adb:30:82: medium: array index check might fail
 simple_unc_arrays.adb:32:54: info: index check proved (CVC4: 4 VC)
 simple_unc_arrays.adb:32:75: medium: array index check might fail
 simple_unc_arrays.adb:34:10: medium: precondition might fail (e.g. when Low = 3)
-simple_unc_arrays.adb:34:23: info: length check proved (CVC4: 1 VC)
+simple_unc_arrays.adb:34:23: info: length check proved (CVC4: 4 VC)
 simple_unc_arrays.adb:34:27: info: initialization of "Low" proved
 simple_unc_arrays.adb:34:32: info: initialization of "High" proved
 simple_unc_arrays.adb:34:32: info: range check proved (CVC4: 1 VC)
@@ -90,7 +90,7 @@ simple_unc_arrays.adb:120:25: info: overflow check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:120:39: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:121:16: info: precondition proved (CVC4: 4 VC)
 simple_unc_arrays.adb:121:28: info: initialization of "Res.V" proved
-simple_unc_arrays.adb:121:31: info: length check proved (CVC4: 1 VC)
+simple_unc_arrays.adb:121:31: info: length check proved (CVC4: 4 VC)
 simple_unc_arrays.adb:121:39: info: overflow check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:126:14: info: initialization of "Res.V" proved
 simple_unc_arrays.adb:143:35: medium: overflow check might fail (e.g. when First = 1073741823 and Last = 1073741825 and Pivot_Index = 0)
@@ -111,7 +111,7 @@ simple_unc_arrays.adb:158:34: info: range check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:161:26: info: initialization of "Left" proved
 simple_unc_arrays.adb:161:34: info: initialization of "Right" proved
 simple_unc_arrays.adb:163:16: info: precondition proved (CVC4: 4 VC)
-simple_unc_arrays.adb:163:29: info: length check proved (CVC4: 1 VC)
+simple_unc_arrays.adb:163:29: info: length check proved (CVC4: 4 VC)
 simple_unc_arrays.adb:163:33: info: initialization of "Left" proved
 simple_unc_arrays.adb:163:33: info: range check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:163:39: info: initialization of "Right" proved

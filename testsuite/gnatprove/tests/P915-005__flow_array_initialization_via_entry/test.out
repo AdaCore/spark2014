@@ -1,4 +1,4 @@
-p.adb:13:12: info: length check proved (CVC4: 1 VC)
+p.adb:13:12: info: length check proved (CVC4: 4 VC)
 p.adb:19:35: info: cannot unroll loop (too many loop iterations)
 p.adb:21:32: info: range check proved (CVC4: 4 VC)
 p.adb:21:51: medium: "My_Array" might not be initialized

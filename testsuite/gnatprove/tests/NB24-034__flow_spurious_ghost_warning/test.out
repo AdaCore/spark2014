@@ -26,8 +26,8 @@ sorters.adb:54:20: info: range check proved (CVC4: 1 VC)
 sorters.adb:57:14: info: initialization of "Min" proved
 sorters.adb:62:07: info: range check proved (CVC4: 2 VC)
 sorters.adb:67:50: info: overflow check proved (CVC4: 1 VC)
-sorters.adb:68:22: info: length check proved (CVC4: 2 VC)
-sorters.adb:68:25: info: length check proved (CVC4: 2 VC)
+sorters.adb:68:22: info: length check proved (CVC4: 8 VC)
+sorters.adb:68:25: info: length check proved (CVC4: 6 VC)
 sorters.adb:69:22: info: precondition proved (CVC4: 2 VC)
 sorters.adb:69:40: info: range check proved (CVC4: 8 VC)
 sorters.adb:71:13: info: initialization of "Smallest" proved

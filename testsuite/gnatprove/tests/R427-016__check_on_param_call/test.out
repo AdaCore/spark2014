@@ -108,27 +108,27 @@ formals_arr_split.adb:3:04: info: range check proved (CVC4: 2 VC)
 formals_arr_split.adb:5:04: info: range check proved (CVC4: 2 VC)
 formals_arr_split.adb:7:12: info: range check proved (CVC4: 2 VC)
 formals_arr_split.adb:10:17: info: initialization of "A" proved
-formals_arr_split.adb:14:09: info: length check proved (CVC4: 1 VC)
-formals_arr_split.adb:14:12: info: length check proved (CVC4: 1 VC)
+formals_arr_split.adb:14:09: info: length check proved (CVC4: 4 VC)
+formals_arr_split.adb:14:12: info: length check proved (CVC4: 4 VC)
 formals_arr_split.adb:14:15: info: range check proved (CVC4: 2 VC)
 formals_arr_split.adb:17:18: info: initialization of "A" proved
 formals_arr_split.adb:20:07: medium: length check might fail, in call inlined at formals_arr_split.adb:48 (e.g. when U = (others => 1) and V'First = 0 and V'Last = 2 and Y = 1) [possible explanation: call at line 42 should mention A (for argument V) in a postcondition]
-formals_arr_split.adb:20:09: info: length check proved (CVC4: 1 VC), in call inlined at formals_arr_split.adb:43
-formals_arr_split.adb:20:09: info: length check proved (CVC4: 1 VC), in call inlined at formals_arr_split.adb:48
-formals_arr_split.adb:20:12: info: length check proved (CVC4: 1 VC), in call inlined at formals_arr_split.adb:43
-formals_arr_split.adb:20:12: info: length check proved (CVC4: 1 VC), in call inlined at formals_arr_split.adb:48
+formals_arr_split.adb:20:09: info: length check proved (CVC4: 4 VC), in call inlined at formals_arr_split.adb:43
+formals_arr_split.adb:20:09: info: length check proved (CVC4: 4 VC), in call inlined at formals_arr_split.adb:48
+formals_arr_split.adb:20:12: info: length check proved (CVC4: 4 VC), in call inlined at formals_arr_split.adb:43
+formals_arr_split.adb:20:12: info: length check proved (CVC4: 4 VC), in call inlined at formals_arr_split.adb:48
 formals_arr_split.adb:20:15: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:43
 formals_arr_split.adb:20:15: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:48
 formals_arr_split.adb:23:18: info: initialization of "A" proved
 formals_arr_split.adb:26:07: medium: length check might fail, in call inlined at formals_arr_split.adb:54 (e.g. when V'First = 0 and V'Last = 2 and Y = 1) [possible explanation: call at line 42 should mention A (for argument V) in a postcondition]
-formals_arr_split.adb:26:09: info: length check proved (CVC4: 1 VC), in call inlined at formals_arr_split.adb:54
-formals_arr_split.adb:26:12: info: length check proved (CVC4: 1 VC), in call inlined at formals_arr_split.adb:54
+formals_arr_split.adb:26:09: info: length check proved (CVC4: 4 VC), in call inlined at formals_arr_split.adb:54
+formals_arr_split.adb:26:12: info: length check proved (CVC4: 4 VC), in call inlined at formals_arr_split.adb:54
 formals_arr_split.adb:26:15: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:54
 formals_arr_split.adb:31:11: info: index check proved (CVC4: 2 VC)
 formals_arr_split.adb:36:07: info: precondition proved (CVC4: 1 VC)
 formals_arr_split.adb:36:22: medium: range check might fail (e.g. when A'First = -1 and A'Last = 0) [possible explanation: precondition of subprogram at line 34 should mention A]
-formals_arr_split.adb:39:22: info: length check proved (CVC4: 1 VC)
-formals_arr_split.adb:40:24: info: length check proved (CVC4: 1 VC)
+formals_arr_split.adb:39:22: info: length check proved (CVC4: 4 VC)
+formals_arr_split.adb:40:24: info: length check proved (CVC4: 4 VC)
 formals_arr_split.adb:42:04: info: precondition proved (CVC4: 1 VC)
 formals_arr_split.adb:46:10: info: precondition proved (CVC4: 1 VC)
 formals_arr_split.adb:46:13: medium: length check might fail (e.g. when U'First = 0 and U'Last = 2 and X = 1)

@@ -4,11 +4,11 @@ decadriver.adb:73:32: info: initialization of "Size" proved
 decadriver.adb:74:16: info: range check proved (CVC4: 4 VC)
 decadriver.adb:74:50: info: overflow check proved (CVC4: 1 VC)
 decadriver.adb:74:61: info: initialization of "Size" proved
-decadriver.adb:75:18: info: length check proved (CVC4: 1 VC)
-decadriver.adb:75:45: info: length check proved (CVC4: 1 VC)
+decadriver.adb:75:18: info: length check proved (CVC4: 4 VC)
+decadriver.adb:75:45: info: length check proved (CVC4: 4 VC)
 decadriver.adb:75:45: info: range check proved (CVC4: 4 VC)
 decadriver.adb:75:58: info: initialization of "Size" proved
-decadriver.adb:78:22: info: length check proved (CVC4: 1 VC)
+decadriver.adb:78:22: info: length check proved (CVC4: 4 VC)
 decadriver.adb:78:49: info: range check proved (CVC4: 4 VC)
 decadriver.adb:78:67: info: range check proved (CVC4: 1 VC)
 decadriver.adb:84:34: medium: range check might fail

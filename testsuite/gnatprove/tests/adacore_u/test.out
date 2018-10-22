@@ -131,7 +131,7 @@ stacks.adb:8:22: info: range check proved (CVC4: 1 VC)
 stacks.adb:9:19: info: index check proved (CVC4: 2 VC)
 stacks.ads:8:14: info: postcondition proved (CVC4: 1 VC)
 stacks.ads:27:52: info: index check proved (CVC4: 2 VC)
-communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 'NUL') and Address'First = 1 and Address'Last = 0) [possible explanation: subprogram at line 3 should mention Address in a precondition]
+communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 'NUL') and Address'First = 1 and Address'Last = 1) [possible explanation: subprogram at line 3 should mention Address in a precondition]
 communication.adb:19:25: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 0) [possible explanation: subprogram at line 16 should mention B in a precondition]
 communication.adb:20:32: medium: overflow check might fail (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last) and B.Content'First = 1 and B.Content'Last = 2147483647) [possible explanation: subprogram at line 16 should mention B in a precondition]
 communication.adb:21:24: medium: overflow check might fail (e.g. when B = (Content => ?, First => Positive'Last, Length => 1)) [possible explanation: subprogram at line 16 should mention B in a precondition]
@@ -236,7 +236,7 @@ p_max_array.adb:15:15: info: initialization of "J" proved
 p_max_array.adb:15:17: info: overflow check proved (CVC4: 1 VC)
 p_max_array.adb:17:14: info: initialization of "R" proved
 p_max_array.adb:21:07: info: range check proved (CVC4: 2 VC)
-p_max_array.adb:21:34: info: length check proved (CVC4: 1 VC)
+p_max_array.adb:21:34: info: length check proved (CVC4: 4 VC)
 p_max_array.adb:25:33: info: initialization of "J" proved
 p_max_array.adb:25:33: info: loop invariant initialization proved (CVC4: 2 VC)
 p_max_array.adb:25:33: info: loop invariant preservation proved (CVC4: 2 VC)
@@ -299,7 +299,7 @@ p_max_array.adb:56:25: info: index check proved (CVC4: 2 VC)
 p_max_array.adb:56:25: info: initialization of "J" proved
 p_max_array.adb:58:15: info: initialization of "J" proved
 p_max_array.adb:58:17: info: overflow check proved (CVC4: 1 VC)
-p_max_array.ads:10:14: info: postcondition proved (CVC4: 1 VC; altergo: 1 VC)
+p_max_array.ads:10:14: info: postcondition proved (altergo: 2 VC)
 p_max_array.ads:11:24: info: index check proved (CVC4: 2 VC)
 p_max_array.ads:11:34: info: overflow check proved (CVC4: 1 VC)
 p_max_array.ads:11:44: info: index check proved (CVC4: 2 VC)

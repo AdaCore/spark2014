@@ -9123,14 +9123,10 @@ package body Gnat2Why.Expr is
 
       Left_Length  : constant W_Expr_Id :=
         Build_Length_Expr (Domain => EW_Term, Expr => Left_Expr, Dim => 1);
-      Right_Length : constant W_Expr_Id :=
-        Build_Length_Expr (Domain => EW_Term, Expr => Right_Expr, Dim => 1);
       Length_Check : constant W_Expr_Id :=
-        New_Call
-          (Domain => EW_Pred,
-           Name   => Why_Eq,
-           Typ    => EW_Bool_Type,
-           Args   => (+Left_Length, +Right_Length));
+        +New_Length_Equality (Left_Arr  => Left_Expr,
+                              Right_Arr => Right_Expr,
+                              Dim       => 1);
 
       Index_Type : constant W_Type_Id :=
         (if First_Index (Retysp (Left_Type)) = Empty
@@ -9391,32 +9387,17 @@ package body Gnat2Why.Expr is
 
       if Lgth_Check then
          declare
-            Check : W_Pred_Id := True_Pred;
             Lval  : constant W_Expr_Id :=
               New_Temp_For_Expr
                 (Transform_Expr (Lvalue, EW_Prog, Body_Params), True);
             Dim   : constant Positive :=
               Positive (Number_Dimensions (Get_Ada_Node (+L_Type)));
+            Check : constant W_Pred_Id := New_Length_Equality
+              (Left_Arr  => Tmp,
+               Right_Arr => Lval,
+               Dim       => Dim);
+
          begin
-            for I in 1 .. Dim loop
-               declare
-                  Input_Length    : constant W_Expr_Id :=
-                    Build_Length_Expr (EW_Term, Tmp, I);
-                  Expected_Length : constant W_Expr_Id :=
-                    Build_Length_Expr (EW_Term, Lval, I);
-               begin
-                  Check :=
-                    +New_And_Then_Expr
-                    (Domain => EW_Pred,
-                     Left   => +Check,
-                     Right  =>
-                       New_Call
-                         (Domain => EW_Pred,
-                          Name   => Why_Eq,
-                          Typ    => EW_Bool_Type,
-                          Args   => (+Input_Length, +Expected_Length)));
-               end;
-            end loop;
             T :=
               Sequence
                 (New_Located_Assert
@@ -10830,8 +10811,7 @@ package body Gnat2Why.Expr is
                Build_Length_Expr
               (Domain => Domain,
                First => Get_Array_Attr (Domain, Left_Expr, Attribute_First, 1),
-               Last => Get_Array_Attr (Domain, Left_Expr, Attribute_Last, 1),
-               Typ => EW_Int_Type));
+               Last => Get_Array_Attr (Domain, Left_Expr, Attribute_Last, 1)));
          Right_Length : constant W_Expr_Id :=
            (if Is_Component_Right
             then One_Term
@@ -10840,8 +10820,8 @@ package body Gnat2Why.Expr is
               (Domain => Domain,
                First => Get_Array_Attr
                  (Domain, Right_Expr, Attribute_First, 1),
-               Last => Get_Array_Attr (Domain, Right_Expr, Attribute_Last, 1),
-               Typ => EW_Int_Type));
+               Last => Get_Array_Attr
+                 (Domain, Right_Expr, Attribute_Last, 1)));
       begin
          return
            +New_Discrete_Substract
