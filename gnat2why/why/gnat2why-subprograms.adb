@@ -874,7 +874,7 @@ package body Gnat2Why.Subprograms is
 
             elsif Is_Task_Type (E) and then Has_Discriminants (E) then
                declare
-                  Discr : Node_Id := First_Discriminant (E);
+                  Discr : Entity_Id := First_Discriminant (E);
                begin
                   while Present (Discr) loop
                      Includes.Include (Discr);
