@@ -286,35 +286,16 @@ Default initialization expressions must not have variable inputs in |SPARK|.
 
 .. _tu-record_types-01:
 
-1. If at least one nondiscriminant component (either explicitly
-   declared or inherited) of a record type or type extension either is
-   of a type which defines full default initialization or is declared
-   by a ``component_declaration`` which includes a
-   ``default_expression``, and if that component's type has at least
-   one elementary nondiscriminant part, then the record type or type
-   extension shall define full default initialization.
-
-   [The enforcement of this rule may require looking at the
-   ``full_type_declaration`` of a ``private_type`` declaration if the
-   private type's Default_Initial_Condition aspect is not specified.]
-
-   [In the unusual case of a nondiscriminant component which has no
-   nondiscriminant scalar parts (e.g., an array of null records),
-   the preceding "at least one elementary" wording means that the component
-   is ignored for purposes of this rule.]
-
-.. _tu-record_types-02:
-
-2. [The ``default_expression`` of a ``component_declaration`` shall not
+1. [The ``default_expression`` of a ``component_declaration`` shall not
    have any variable inputs, nor shall it contain a name denoting
    the current instance of the enclosing type;
    see :ref:`expressions` for the statement of this rule.]
 
 .. _etu-record_types:
 
-[The rules in this section apply to any ``component_declaration``; this
+[The rule in this section applies to any ``component_declaration``; this
 includes the case of a ``component_declaration`` which is a
-``protected_element_declaration``. In other words, these rules also apply to
+``protected_element_declaration``. In other words, this rule also applies to
 components of a protected type.]
 
 Tagged Types and Type Extensions
