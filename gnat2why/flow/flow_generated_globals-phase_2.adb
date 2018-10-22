@@ -471,17 +471,38 @@ package body Flow_Generated_Globals.Phase_2 is
          declare
             Final : Flow_Names renames Global_Contracts (C);
 
-            RHS : constant Flow_Id_Sets.Set :=
+            Inputs : constant Flow_Id_Sets.Set :=
               To_Flow_Id_Set (Final.Proper.Inputs);
+
+            Proof_Ins : constant Flow_Id_Sets.Set :=
+              To_Flow_Id_Set (Final.Proper.Proof_Ins);
 
             DM : Dependency_Maps.Map;
 
+            use type Flow_Id_Sets.Set;
+
          begin
-            for LHS of Final.Initializes loop
-               DM.Insert
-                 (Key      => Get_Flow_Id (LHS),
-                  New_Item => RHS);
-            end loop;
+            if Final.Initializes.Is_Empty then
+               if Inputs.Is_Empty and then Proof_Ins.Is_Empty then
+                  null;
+               else
+                  DM.Insert
+                    (Key      => Null_Flow_Id,
+                     New_Item => Inputs or Proof_Ins);
+               end if;
+            else
+               for LHS of Final.Initializes loop
+                  DM.Insert
+                    (Key      => Get_Flow_Id (LHS),
+                     New_Item => Inputs);
+               end loop;
+
+               if not Proof_Ins.Is_Empty then
+                  DM.Insert
+                    (Key      => Null_Flow_Id,
+                     New_Item => Proof_Ins);
+               end if;
+            end if;
 
             return DM;
          end;

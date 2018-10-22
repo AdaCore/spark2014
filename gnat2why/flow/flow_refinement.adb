@@ -884,7 +884,9 @@ package body Flow_Refinement is
                   --  left-hand sides of its Initializes aspect might include
                   --  objects from the package body that are promoted to
                   --  implicit abstract states.
-                  pragma Assert (F.Kind in Direct_Mapping | Magic_String);
+                  pragma Assert (F.Kind in Direct_Mapping
+                                         | Magic_String
+                                         | Null_Value);
 
                   if F.Kind = Direct_Mapping
                     and then Get_Direct_Mapping_Id (F) = Target_Ent

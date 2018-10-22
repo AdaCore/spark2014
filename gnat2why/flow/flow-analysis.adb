@@ -5473,18 +5473,23 @@ package body Flow.Analysis is
       for C in Parse_Initializes (FA.Spec_Entity).Iterate loop
          declare
             Var : Flow_Id renames Dependency_Maps.Key (C);
-            Obj : constant Entity_Id := Get_Direct_Mapping_Id (Var);
-            pragma Assert (Ekind (Obj) in E_Abstract_State
-                                        | E_Variable
-                                        | E_Constant);
-
          begin
-            if Get_Flow_Scope (Declaration_Node (Obj)).Part in Visible_Part
-                                                             | Private_Part
-              and then Ekind (Obj) /= E_Constant
-              and then Is_Initialized_At_Elaboration (Obj, FA.S_Scope)
-            then
-               Visible_Vars.Insert (Var);
+            if Present (Var) then
+               declare
+                  Obj : constant Entity_Id := Get_Direct_Mapping_Id (Var);
+                  pragma Assert (Ekind (Obj) in E_Abstract_State
+                                              | E_Variable
+                                              | E_Constant);
+
+               begin
+                  if Get_Flow_Scope (Declaration_Node (Obj)).Part in
+                      Visible_Part | Private_Part
+                    and then Ekind (Obj) /= E_Constant
+                    and then Is_Initialized_At_Elaboration (Obj, FA.S_Scope)
+                  then
+                     Visible_Vars.Insert (Var);
+                  end if;
+               end;
             end if;
          end;
       end loop;

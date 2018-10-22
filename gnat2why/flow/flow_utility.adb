@@ -521,7 +521,10 @@ package body Flow_Utility is
          when Magic_String =>
             return Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
 
-         when Record_Field | Null_Value | Synthetic_Null_Export =>
+         when Null_Value =>
+            return Flow_Id_Sets.Empty_Set;
+
+         when Record_Field | Synthetic_Null_Export =>
             raise Program_Error;
       end case;
    end Expand_Abstract_State;
