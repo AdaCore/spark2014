@@ -72,7 +72,7 @@ x86.adb:725:10: info: initialization of "Mem" proved
 x86.adb:725:10: info: precondition proved (CVC4: 11 VC; altergo: 1 VC)
 x86.adb:726:10: info: precondition proved (CVC4: 4 VC)
 x86.adb:728:32: info: loop invariant initialization proved (CVC4: 1 VC)
-x86.adb:728:32: info: loop invariant preservation proved (CVC4: 1 VC)
+x86.adb:730:39: medium: loop invariant might fail after first iteration, cannot prove Memory'Loop_Entry(i) = Memory(i)
 x86.adb:731:32: info: loop invariant initialization proved (CVC4: 1 VC)
 x86.adb:731:32: info: loop invariant preservation proved (CVC4: 1 VC)
 x86.adb:732:32: info: loop invariant initialization proved (CVC4: 1 VC)
