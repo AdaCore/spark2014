@@ -442,7 +442,9 @@ type is access-to-constant or access-to-variable].
 Privacy is ignored in determining whether a type is an owning or
 observing type. A generic formal private type is not an owning type
 [redundant:, although the corresponding actual parameter in an instance
-of the generic might be an owning type].
+of the generic might be an owning type]. A consequence of this rule
+is that the actual parameter for a generic formal private type cannot be
+of access type.
 A tagged type shall not be an owning type.
 A type which is not a by-reference type shall not be an owning type.
 [Redundant: The requirement than an owning type must be a by-reference
@@ -564,9 +566,9 @@ the object is of an access-to-variable type].
 In the Moved or Borrowed states, the name is unusable for either reading or
 writing. [Redundant: In the Borrowed state, ownership of the object
 (and the associated permission to read from and possibly write to that
-object) has been temporarily transfered to an observer, so it will
+object) has been temporarily transfered to a borrower, so it will
 sometimes be possible to refer to the object in question via the
-observer.]
+borrower.]
 
 A name that denotes a managed object has an initial ownership state
 of Unrestricted unless otherwise specified.
@@ -583,8 +585,8 @@ and identify a corresponding *observer*:
   - An assignment operation that is used to initialize an access object,
     where this target object (the observer) is a stand-alone variable of an
     anonymous access-to-constant type, or a constant (including a formal
-    parameter or generic formal object of mode in) of a (named or anonymous)
-    access-to-variable type.
+    parameter or generic formal object of mode **in**) of a (named or anonymous)
+    access-to-constant type.
 
     The source expression of the assignment shall be either a name denoting
     a part of a stand-alone object or of a parameter, or a call on a traversal
@@ -595,17 +597,12 @@ and identify a corresponding *observer*:
     assignment.
 
   - An assignment operation that is used to initialize a constant object
-    (including a generic formal object of mode in) of an owning composite
+    (including a generic formal object of mode **in**) of an owning composite
     type. The name being observed denotes the
     source of the assignment. The initialized object is the observer.
-    [Redundant: The only reason for the word "composite" in this clause
-    is so that the clauses in this definition are mutually exclusive.
-    If all of the conditions of this clause are met except
-    that the type is not composite, then the conditions of the first
-    clause have been met.]
 
   - A call where an actual parameter is a name denoting a managed object,
-    and the corresponding formal parameter is of mode In and composite
+    and the corresponding formal parameter is of mode **in** and composite
     or aliased. The name being observed denotes the actual parameter.
     The formal parameter is the observer.
 
@@ -623,10 +620,10 @@ every name that potentially overlaps that name is observed.
 The following operations *borrow* a name that denotes a managed object
 and identify a corresponding *borrower*:
 
-  - An assignment operation that is used to initialize an access object,
-    where this target object (the borrower) is a stand-alone variable of an
-    anonymous access-to-variable type, or a constant (including a formal
-    parameter or generic formal object of mode in) of a (named or anonymous)
+  - An assignment operation that is used to initialize an access object, where
+    this target object (the borrower) is a stand-alone variable of an anonymous
+    access-to-variable type, or a constant (including a formal parameter or
+    generic formal object of mode **in**) of a (named or anonymous)
     access-to-variable type.
 
     The source expression of the assignment shall be either a name denoting
@@ -638,13 +635,13 @@ and identify a corresponding *borrower*:
     assignment.
 
   - A call (or instantiation) where the (borrowed) name denotes an actual
-    parameter that is a managed object other than an owning access object,
-    and the formal parameter (the borrower) is of mode out or in out (or
-    the generic formal object is of mode in out).
+    parameter that is a managed object other than an owning access object, and
+    the formal parameter (the borrower) is of mode **out** or **in out** (or
+    the generic formal object is of mode **in out**).
 
   - An object renaming where the (borrowed) name is the object_name denoting
     the renamed object. In this case, the renamed object shall not be in the
-    observed or Borrowed state. The newly declared name is the borrower.
+    Observed or Borrowed state. The newly declared name is the borrower.
 
 Such an operation is called a *borrowing operation*.
 
@@ -727,14 +724,9 @@ After a move operation, the state of the source object (if any) becomes Moved.
 .. _tu-access_types-02:
 
 An owning object's state shall be Moved or Unrestricted at any point where
-  - the object is the target of an assignment operation; or
-  - the object is part of an actual parameter of mode **out** in a call; or
-  - the scope in which the object is declared is exited and the object
-    is neither a borrower nor an observer.
 
-[Redundant: This rule is needed to prevent storage leaks. We do not want
-an object either to be overwritten or to cease to exist while it is
-the owner of some allocated object.]
+  - the object is the target of an assignment operation; or
+  - the object is part of an actual parameter of mode **out** in a call.
 
 [Redundant: In the case of a call, the state of an actual
 parameter of mode **in** or **in out** remains unchanged (although one
@@ -801,13 +793,11 @@ anonymous access-to-object type:
     denoted by a name that is not in the Moved state, and whose root object
     is not in the Moved state and is not declared at a statically deeper
     accessibility level than that of the target object.
-    [TBD: Confirm that we really want "not in the Moved state", as opposed
-    to "in the Observed state" in this rule.]
 
 .. _tu-access_types-09:
 
-At the point of a read of an object, or of passing an object as a
-an actual parameter of mode *in* or *in out*, or of a call where the
+At the point of a read of an object, or of passing an object as
+an actual parameter of mode **in** or **in out**, or of a call where the
 object is a global input of the callee, the object shall not be in the Moved or
 Borrowed state.
 
@@ -821,7 +811,7 @@ state abstraction.
 
 .. _tu-access_types-10:
 
-If state of a name that denotes a managed object is observed, then the
+If the state of a name that denotes a managed object is observed, then the
 name shall neither be moved nor borrowed and shall not be used as the
 target of an assignment.
 
@@ -843,38 +833,29 @@ of the callee shall not be in the Moved or Borrowed state.
 
 .. _tu-access_types-13:
 
-Potentially overlapping parts of a single variable shall not be passed as
-two actual parameters to the same call unless
-
-  - both corresponding formal parameters are of mode **in** ; or
-  - at least one of the two parameters is of an elementary type
-    and is of mode **in**.
-
-[TBD: The definition of "potentially introduce aliasing" in the
-anti-aliasing section has been changed to include dereferencing,
-so that Foo and Foo.all potentially introduce aliasing. Given that,
-is this rule redundant?]
-
-.. _tu-access_types-14:
-
 The prefix of an Old or Loop_Entry attribute reference shall not be
 of an owning or observing type unless the prefix is a function_call
 and the called function is not a traversal function.
 
 .. centered:: **Verification Rules**
 
-.. _tu-access_types-15:
+.. _tu-access_types-14:
 
-If an actual parameter in a call is of a composite owning type, then
-  - the parameter shall not potentially overlap any global output of
-    the callee; and
-  - the parameter shall not potentially overlap a global input of the callee
-    if the corresponding formal parameter is an output of the callee.
+An owning object and its subcomponents are said to be *erased* at any point
+where
 
-[TBD: The definition of "potentially introduce aliasing" in the
-anti-aliasing section has been changed to include dereferencing,
-so that Foo and Foo.all potentially introduce aliasing. Given that,
-is this rule redundant?]
+  - the object is the target of an assignment operation; or
+  - the object is part of an actual parameter of mode **out** in a call; or
+  - the scope in which the object is declared is exited and the object
+    is neither a borrower nor an observer.
+
+If the state of an access subcomponent of an owning object [redundant: , which
+is the object itself for an owning access object,] is Unrestricted at the point
+where it is erased, it should be null.
+
+[Redundant: This rule is needed to prevent storage leaks. We do not want
+an object either to be overwritten or to cease to exist while it is
+the owner of some allocated object.]
 
 .. _etu-access_types:
 
