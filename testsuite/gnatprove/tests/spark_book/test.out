@@ -269,7 +269,7 @@ buffers.adb:108:49: info: initialization of "Characters_To_Copy" proved
 buffers.adb:110:13: info: initialization of "Characters_To_Copy" proved
 buffers.adb:110:13: info: loop invariant initialization proved (CVC4: 2 VC)
 buffers.adb:110:13: info: loop invariant preservation proved (CVC4: 2 VC)
-buffers.adb:110:41: info: range check proved (CVC4: 1 VC)
+buffers.adb:110:41: info: range check proved (CVC4: 2 VC)
 buffers.adb:111:35: info: initialization of "Characters_To_Copy" proved
 buffers.adb:113:25: info: initialization of "Buffer" proved
 buffers.adb:113:49: info: index check proved (CVC4: 2 VC)
@@ -285,7 +285,7 @@ buffers.adb:133:23: info: index check proved (CVC4: 2 VC)
 buffers.adb:133:23: info: overflow check proved (CVC4: 1 VC)
 buffers.adb:133:57: info: index check proved (CVC4: 2 VC)
 buffers.adb:133:57: info: overflow check proved (CVC4: 1 VC)
-buffers.adb:146:19: info: length check proved (CVC4: 1 VC)
+buffers.adb:146:19: info: length check proved (CVC4: 4 VC)
 buffers.adb:147:34: info: initialization of "Characters_To_Copy" proved
 buffers.adb:150:10: info: initialization of "Characters_To_Copy" proved
 buffers.adb:150:42: info: range check proved (CVC4: 1 VC)
@@ -451,7 +451,7 @@ datebook.adb:40:40: info: initialization of "Event_Array" constituent of "State"
 datebook.adb:72:40: info: cannot unroll loop (too many loop iterations)
 datebook.adb:80:17: info: initialization of "Found" proved
 datebook.adb:86:54: info: initialization of "Available" proved
-datebook.adb:86:69: info: length check proved (CVC4: 1 VC)
+datebook.adb:86:69: info: length check proved (CVC4: 4 VC)
 datebook.adb:86:69: low: range check might fail [possible explanation: subprogram at line 55 should mention Description in a precondition]
 datebook.adb:87:21: info: range check proved (CVC4: 2 VC)
 datebook.adb:87:64: info: range check proved (CVC4: 1 VC)
@@ -463,7 +463,7 @@ datebook.adb:104:37: info: cannot unroll loop (too many loop iterations)
 datebook.adb:123:37: info: cannot unroll loop (too many loop iterations)
 datebook.adb:128:16: info: initialization of "Status" proved
 datebook.adb:133:62: info: initialization of "Date" proved
-datebook.adb:156:19: info: length check proved (CVC4: 1 VC)
+datebook.adb:156:19: info: length check proved (CVC4: 4 VC)
 datebook.adb:161:26: info: initialization of "Index" proved
 datebook.adb:162:27: info: range check proved (CVC4: 1 VC)
 datebook.adb:162:50: info: initialization of "Index" proved
@@ -472,9 +472,9 @@ datebook.adb:166:35: info: initialization of "Index" proved
 datebook.adb:169:22: info: loop invariant initialization proved (CVC4: 2 VC)
 datebook.adb:169:22: info: loop invariant preservation proved (CVC4: 2 VC)
 datebook.adb:169:35: info: initialization of "Index" proved
-datebook.adb:169:73: info: range check proved (CVC4: 1 VC)
+datebook.adb:169:73: info: range check proved (CVC4: 2 VC)
 datebook.adb:170:30: info: initialization of "Index" proved
-datebook.adb:171:43: info: range check proved (CVC4: 1 VC)
+datebook.adb:171:43: info: range check proved (CVC4: 2 VC)
 datebook.adb:173:49: info: index check proved (CVC4: 2 VC)
 datebook.adb:173:49: info: overflow check proved (CVC4: 1 VC)
 datebook.adb:173:60: info: initialization of "Description" proved
@@ -505,7 +505,7 @@ datebooks.adb:55:17: info: range check proved (CVC4: 2 VC)
 datebooks.adb:56:38: info: initialization of "Find_Result.Fresh_Index" proved
 datebooks.adb:56:38: info: loop invariant initialization proved (CVC4: 3 VC)
 datebooks.adb:56:38: info: loop invariant preservation proved (CVC4: 3 VC)
-datebooks.adb:58:40: info: overflow check proved (CVC4: 1 VC)
+datebooks.adb:58:40: info: overflow check proved (CVC4: 2 VC)
 datebooks.adb:60:65: info: index check proved (CVC4: 2 VC)
 datebooks.adb:60:65: info: overflow check proved (CVC4: 1 VC)
 datebooks.adb:60:70: info: overflow check proved (CVC4: 1 VC)
@@ -518,7 +518,7 @@ datebooks.adb:73:33: info: cannot unroll loop (too many loop iterations)
 datebooks.adb:86:33: info: cannot unroll loop (too many loop iterations)
 datebooks.adb:91:16: info: initialization of "Status" proved
 datebooks.adb:96:49: info: initialization of "Date" proved
-datebooks.adb:109:19: info: length check proved (CVC4: 1 VC)
+datebooks.adb:109:19: info: length check proved (CVC4: 4 VC)
 datebooks.adb:114:18: info: initialization of "I" proved
 datebooks.adb:115:27: info: range check proved (CVC4: 1 VC)
 datebooks.adb:115:42: info: initialization of "I" proved
@@ -527,9 +527,9 @@ datebooks.adb:118:64: info: initialization of "I" proved
 datebooks.adb:120:22: info: loop invariant initialization proved (CVC4: 2 VC)
 datebooks.adb:120:22: info: loop invariant preservation proved (CVC4: 2 VC)
 datebooks.adb:120:27: info: initialization of "I" proved
-datebooks.adb:120:61: info: range check proved (CVC4: 1 VC)
+datebooks.adb:120:61: info: range check proved (CVC4: 2 VC)
 datebooks.adb:121:26: info: initialization of "I" proved
-datebooks.adb:122:41: info: range check proved (CVC4: 1 VC)
+datebooks.adb:122:41: info: range check proved (CVC4: 2 VC)
 datebooks.adb:124:49: info: index check proved (CVC4: 2 VC)
 datebooks.adb:124:49: info: overflow check proved (CVC4: 1 VC)
 datebooks.adb:124:60: info: initialization of "Description" proved
@@ -628,7 +628,7 @@ elaboration_demo.adb:3:29: high: "Count" is not initialized in "Elaboration_Demo
 elaboration_demo.adb:3:29: warning: unused variable "Count"
 elaboration_demo.adb:4:04: info: range check proved (CVC4: 2 VC)
 elaboration_demo.adb:4:04: warning: initialization of "Line" has no effect
-elaboration_demo.adb:4:34: info: length check proved (CVC4: 1 VC)
+elaboration_demo.adb:4:34: info: length check proved (CVC4: 4 VC)
 elaboration_demo.adb:5:04: warning: initialization of "Guess" has no effect
 elaboration_demo.adb:5:26: info: float overflow check proved (CVC4: 1 VC)
 elaboration_demo.adb:5:61: info: precondition proved (CVC4: 1 VC)
@@ -1050,8 +1050,8 @@ scrabble.adb:13:25: info: predicate check proved (CVC4: 1 VC)
 scrabble.adb:19:33: info: initialization of "Total_Score" proved
 scrabble.adb:19:33: info: loop invariant initialization proved (CVC4: 1 VC)
 scrabble.adb:19:33: info: loop invariant preservation proved (CVC4: 1 VC)
-scrabble.adb:19:50: info: overflow check proved (CVC4: 1 VC)
-scrabble.adb:19:65: info: overflow check proved (CVC4: 1 VC)
+scrabble.adb:19:50: info: overflow check proved (CVC4: 2 VC)
+scrabble.adb:19:65: info: overflow check proved (CVC4: 2 VC)
 scrabble.adb:20:25: info: initialization of "Total_Score" proved
 scrabble.adb:20:37: info: overflow check proved (CVC4: 1 VC)
 scrabble.adb:20:37: info: range check proved (CVC4: 1 VC)
@@ -1154,7 +1154,7 @@ searches.adb:12:31: info: overflow check proved (CVC4: 2 VC)
 searches.adb:14:13: info: initialization of "Position" proved
 searches.adb:14:13: info: loop invariant initialization proved (CVC4: 3 VC)
 searches.adb:14:13: info: loop invariant preservation proved (CVC4: 3 VC)
-searches.adb:15:63: info: index check proved (CVC4: 2 VC)
+searches.adb:15:63: info: index check proved (CVC4: 4 VC)
 searches.adb:24:23: info: range check proved (CVC4: 1 VC)
 searches.adb:26:20: info: initialization of "Position" proved
 searches.adb:26:55: info: index check proved (CVC4: 4 VC)
@@ -1163,8 +1163,8 @@ searches.adb:27:31: info: overflow check proved (CVC4: 2 VC)
 searches.adb:29:13: info: initialization of "Position" proved
 searches.adb:29:13: info: loop invariant initialization proved (CVC4: 3 VC)
 searches.adb:29:13: info: loop invariant preservation proved (CVC4: 3 VC)
-searches.adb:29:49: info: overflow check proved (CVC4: 1 VC)
-searches.adb:30:63: info: index check proved (CVC4: 2 VC)
+searches.adb:29:49: info: overflow check proved (CVC4: 2 VC)
+searches.adb:30:63: info: index check proved (CVC4: 4 VC)
 searches.adb:32:16: info: initialization of "Position" proved
 searches.adb:33:14: info: initialization of "Found" proved
 searches.adb:34:26: info: range check proved (CVC4: 1 VC)
@@ -1312,17 +1312,17 @@ sorters.adb:47:22: info: range check proved (CVC4: 1 VC)
 sorters.adb:50:13: info: initialization of "Min" proved
 sorters.adb:50:13: info: loop invariant initialization proved (CVC4: 3 VC)
 sorters.adb:50:13: info: loop invariant preservation proved (CVC4: 3 VC)
-sorters.adb:51:50: info: overflow check proved (CVC4: 1 VC)
-sorters.adb:52:25: info: index check proved (CVC4: 2 VC)
-sorters.adb:52:43: info: index check proved (CVC4: 2 VC)
+sorters.adb:51:50: info: overflow check proved (CVC4: 2 VC)
+sorters.adb:52:25: info: index check proved (CVC4: 4 VC)
+sorters.adb:52:43: info: index check proved (CVC4: 4 VC)
 sorters.adb:54:42: info: index check proved (CVC4: 2 VC)
 sorters.adb:54:42: info: initialization of "Min" proved
 sorters.adb:55:20: info: range check proved (CVC4: 1 VC)
 sorters.adb:58:14: info: initialization of "Min" proved
 sorters.adb:63:07: info: range check proved (CVC4: 2 VC)
 sorters.adb:68:50: info: overflow check proved (CVC4: 1 VC)
-sorters.adb:69:22: info: length check proved (CVC4: 2 VC)
-sorters.adb:69:25: info: length check proved (CVC4: 2 VC)
+sorters.adb:69:22: info: length check proved (CVC4: 8 VC)
+sorters.adb:69:25: info: length check proved (CVC4: 6 VC)
 sorters.adb:70:22: info: precondition proved (CVC4: 2 VC)
 sorters.adb:70:40: info: range check proved (CVC4: 8 VC)
 sorters.adb:72:13: info: initialization of "Smallest" proved
@@ -1334,13 +1334,13 @@ sorters.adb:80:33: info: loop invariant initialization proved (CVC4: 1 VC)
 sorters.adb:80:33: info: loop invariant preservation proved (CVC4: 1 VC)
 sorters.adb:82:13: info: loop invariant initialization proved (CVC4: 1 VC)
 sorters.adb:82:13: info: loop invariant preservation proved (CVC4: 1 VC)
-sorters.adb:83:26: info: index check proved (CVC4: 2 VC)
-sorters.adb:83:46: info: index check proved (CVC4: 2 VC)
+sorters.adb:83:26: info: index check proved (CVC4: 4 VC)
+sorters.adb:83:46: info: index check proved (CVC4: 4 VC)
 sorters.adb:85:13: info: loop invariant initialization proved (CVC4: 1 VC)
 sorters.adb:86:16: medium: loop invariant might fail after first iteration, cannot prove Values (J) <= Values (J + 1)
-sorters.adb:86:24: info: index check proved (CVC4: 2 VC)
-sorters.adb:86:40: info: index check proved (CVC4: 2 VC)
-sorters.adb:86:40: info: overflow check proved (CVC4: 1 VC)
+sorters.adb:86:24: info: index check proved (CVC4: 4 VC)
+sorters.adb:86:40: info: index check proved (CVC4: 4 VC)
+sorters.adb:86:40: info: overflow check proved (CVC4: 2 VC)
 sorters.ads:18:22: info: postcondition proved (CVC4: 2 VC)
 sorters.ads:18:64: info: overflow check proved (CVC4: 1 VC)
 sorters.ads:19:33: info: index check proved (CVC4: 2 VC)
@@ -1369,22 +1369,22 @@ stacks.ads:14:04: medium: type "Stack_Type" is not fully initialized
 stacks.ads:17:10: info: range check proved (CVC4: 2 VC)
 string_examples.adb:15:09: info: initialization of "Address" proved
 string_examples.adb:15:09: medium: length check might fail
-string_examples.adb:16:09: info: length check proved (CVC4: 1 VC)
+string_examples.adb:16:09: info: length check proved (CVC4: 4 VC)
 string_examples.adb:17:12: info: initialization of "Name" proved
-string_examples.adb:17:12: info: length check proved (CVC4: 1 VC)
+string_examples.adb:17:12: info: length check proved (CVC4: 4 VC)
 string_examples.adb:19:09: info: initialization of "Name" proved
 string_examples.adb:20:09: info: initialization of "Address" proved
 string_examples.adb:20:09: info: range check proved (CVC4: 4 VC)
 string_examples.adb:21:12: info: initialization of "Name" proved
-string_examples.adb:21:17: info: length check proved (CVC4: 1 VC)
+string_examples.adb:21:17: info: length check proved (CVC4: 4 VC)
 string_examples.adb:21:17: info: range check proved (CVC4: 1 VC)
 string_examples.adb:22:19: info: initialization of "Address" proved
 string_examples.adb:22:22: info: initialization of "Name" proved
 string_examples.adb:25:01: info: range check proved (CVC4: 4 VC)
 string_examples.adb:25:12: info: initialization of "Count" proved
 string_examples.adb:25:19: info: initialization of "Name" proved
-string_examples.adb:25:19: info: length check proved (CVC4: 1 VC)
-string_examples.adb:25:22: info: length check proved (CVC4: 1 VC)
+string_examples.adb:25:19: info: length check proved (CVC4: 4 VC)
+string_examples.adb:25:22: info: length check proved (CVC4: 4 VC)
 string_examples.adb:26:01: warning: assuming "Put" has no effect on global items
 string_examples.adb:26:01: warning: no Global contract available for "Put"
 string_examples.adb:26:06: info: initialization of "Name" proved
@@ -1554,11 +1554,11 @@ temperature_buffer14.adb:59:53: info: initialization of "Next_In" constituent of
 temperature_buffer14.adb:59:62: info: initialization of "Next_Out" constituent of "Contents" proved
 temperature_buffer14.ads:30:19: info: initialization of "Item.Time_Stamp" proved
 temperature_buffer14.ads:30:19: info: initialization of "Item.Value" proved
-terminal.adb:13:14: info: length check proved (CVC4: 1 VC)
+terminal.adb:13:14: info: length check proved (CVC4: 4 VC)
 terminal.adb:17:33: info: initialization of "Count" proved
 terminal.adb:17:33: info: loop invariant initialization proved (CVC4: 1 VC)
 terminal.adb:17:33: info: loop invariant preservation proved (CVC4: 1 VC)
-terminal.adb:17:48: info: range check proved (CVC4: 1 VC)
+terminal.adb:17:48: info: range check proved (CVC4: 2 VC)
 terminal.adb:20:13: info: initialization of "Count" proved
 terminal.adb:20:27: info: range check proved (CVC4: 1 VC)
 terminal.adb:28:13: info: initialization of "Port_Status" proved
@@ -1588,7 +1588,7 @@ unused_parameter.ads:4:19: warning: unused variable "B"
 unused_parameter.ads:5:19: info: initialization of "C" proved
 utility.adb:13:13: info: loop invariant initialization proved (CVC4: 1 VC)
 utility.adb:13:13: info: loop invariant preservation proved (CVC4: 1 VC)
-utility.adb:13:67: info: index check proved (CVC4: 2 VC)
+utility.adb:13:67: info: index check proved (CVC4: 4 VC)
 utility.adb:15:07: info: raise statement proved unreachable (CVC4: 1 VC)
 utility.ads:12:16: info: postcondition proved (CVC4: 1 VC)
 various.adb:7:27: info: unrolling loop
@@ -1736,7 +1736,7 @@ very_longs.ads:18:36: info: initialization of "Valid" proved
 very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
 very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
 workspaces.adb:5:07: info: range check proved (CVC4: 2 VC)
-workspaces.adb:5:48: info: length check proved (CVC4: 1 VC)
+workspaces.adb:5:48: info: length check proved (CVC4: 4 VC)
 workspaces.adb:7:26: info: division check proved (CVC4: 1 VC)
 workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC4: 2 VC)

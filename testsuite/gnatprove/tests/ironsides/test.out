@@ -57,7 +57,7 @@ dns_table_pkg.adb:45:70: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:57:16: info: initialization of "Val" proved
 dns_table_pkg.adb:57:16: info: loop invariant initialization proved (CVC4: 3 VC)
 dns_table_pkg.adb:57:16: info: loop invariant preservation proved (CVC4: 3 VC)
-dns_table_pkg.adb:57:30: info: overflow check proved (CVC4: 1 VC)
+dns_table_pkg.adb:57:30: info: overflow check proved (CVC4: 2 VC)
 dns_table_pkg.adb:61:20: info: initialization of "Val" proved
 dns_table_pkg.adb:61:24: info: overflow check proved (CVC4: 1 VC)
 dns_table_pkg.adb:63:18: info: initialization of "Val" proved
@@ -757,9 +757,9 @@ parser_utilities.adb:667:13: info: loop invariant preservation proved (CVC4: 6 V
 parser_utilities.adb:669:13: info: initialization of "EndIdx" proved
 parser_utilities.adb:671:22: info: initialization of "EndIdx" proved
 parser_utilities.adb:672:17: info: initialization of "ContainsOnlyNumbers" proved
-parser_utilities.adb:673:25: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:674:22: info: index check proved (CVC4: 2 VC)
-parser_utilities.adb:674:39: info: index check proved (CVC4: 2 VC)
+parser_utilities.adb:673:25: info: range check proved (CVC4: 4 VC)
+parser_utilities.adb:674:22: info: index check proved (CVC4: 4 VC)
+parser_utilities.adb:674:39: info: index check proved (CVC4: 4 VC)
 parser_utilities.adb:676:12: info: initialization of "ContainsDecimalNumbers" proved
 parser_utilities.adb:679:12: info: initialization of "ContainsHexNumbers" proved
 parser_utilities.adb:683:12: info: initialization of "ContainsOnlyLetters" proved
@@ -1159,16 +1159,16 @@ process_first_line_of_record.ads:54:07: info: initialization of "RecordSuccessfu
 protected_spark_io_05.adb:32:04: low: initialization of "File_System_Standard_Input" must be mentioned in the Initializes contract of "Protected_SPARK_IO_05" (SPARK RM 7.1.5(9))
 protected_spark_io_05.adb:35:04: low: initialization of "File_System_Standard_Output" must be mentioned in the Initializes contract of "Protected_SPARK_IO_05" (SPARK RM 7.1.5(9))
 protected_spark_io_05.ads:50:23: info: range check proved (CVC4: 2 VC)
-rr_type-dnskey_record_type.ads:61:40: info: length check proved (CVC4: 1 VC)
-rr_type-nsec_record_type.ads:72:52: info: length check proved (CVC4: 1 VC)
-rr_type-rrsig_record_type.ads:68:49: info: length check proved (CVC4: 1 VC)
+rr_type-dnskey_record_type.ads:61:40: info: length check proved (CVC4: 4 VC)
+rr_type-nsec_record_type.ads:72:52: info: length check proved (CVC4: 4 VC)
+rr_type-rrsig_record_type.ads:68:49: info: length check proved (CVC4: 4 VC)
 rr_type.adb:33:13: info: initialization of "Index" proved
 rr_type.adb:35:30: info: index check proved (CVC4: 4 VC)
 rr_type.adb:38:13: info: initialization of "Index" proved
 rr_type.adb:38:13: info: loop invariant initialization proved (CVC4: 2 VC)
 rr_type.adb:38:13: info: loop invariant preservation proved (CVC4: 2 VC)
-rr_type.adb:39:22: info: range check proved (CVC4: 2 VC)
-rr_type.adb:40:21: info: index check proved (CVC4: 2 VC)
+rr_type.adb:39:22: info: range check proved (CVC4: 4 VC)
+rr_type.adb:40:21: info: index check proved (CVC4: 4 VC)
 rr_type.adb:41:19: info: initialization of "Index" proved
 rr_type.adb:41:25: info: range check proved (CVC4: 1 VC)
 rr_type.adb:43:14: info: initialization of "Index" proved
@@ -1192,8 +1192,8 @@ rr_type.adb:95:13: info: initialization of "Index" proved
 rr_type.adb:97:13: info: initialization of "Index" proved
 rr_type.adb:97:13: info: loop invariant initialization proved (CVC4: 2 VC)
 rr_type.adb:97:13: info: loop invariant preservation proved (CVC4: 2 VC)
-rr_type.adb:98:22: info: range check proved (CVC4: 2 VC)
-rr_type.adb:99:22: info: index check proved (CVC4: 2 VC)
+rr_type.adb:98:22: info: range check proved (CVC4: 4 VC)
+rr_type.adb:99:22: info: index check proved (CVC4: 4 VC)
 rr_type.adb:100:19: info: initialization of "Index" proved
 rr_type.adb:100:25: info: range check proved (CVC4: 1 VC)
 rr_type.adb:102:14: info: initialization of "Index" proved
@@ -2075,10 +2075,10 @@ zone_file_parser.adb:320:48: info: initialization of "BegIdx" proved
 zone_file_parser.adb:320:59: info: index check proved (CVC4: 2 VC)
 zone_file_parser.adb:326:19: info: loop invariant initialization proved (CVC4: 2 VC)
 zone_file_parser.adb:326:19: info: loop invariant preservation proved (CVC4: 2 VC)
-zone_file_parser.adb:326:27: info: range check proved (CVC4: 2 VC)
+zone_file_parser.adb:326:27: info: range check proved (CVC4: 4 VC)
 zone_file_parser.adb:327:21: info: initialization of "TimeString" proved
-zone_file_parser.adb:327:33: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:327:59: info: index check proved (CVC4: 2 VC)
+zone_file_parser.adb:327:33: info: index check proved (CVC4: 4 VC)
+zone_file_parser.adb:327:59: info: index check proved (CVC4: 4 VC)
 zone_file_parser.adb:328:19: info: initialization of "TimeString" proved
 zone_file_parser.adb:334:32: info: precondition proved (CVC4: 2 VC)
 zone_file_parser.adb:335:52: info: initialization of "TimeString" proved
@@ -2110,10 +2110,10 @@ zone_file_parser.adb:400:48: info: initialization of "BegIdx" proved
 zone_file_parser.adb:400:59: info: index check proved (CVC4: 2 VC)
 zone_file_parser.adb:406:19: info: loop invariant initialization proved (CVC4: 2 VC)
 zone_file_parser.adb:406:19: info: loop invariant preservation proved (CVC4: 2 VC)
-zone_file_parser.adb:406:27: info: range check proved (CVC4: 2 VC)
+zone_file_parser.adb:406:27: info: range check proved (CVC4: 4 VC)
 zone_file_parser.adb:407:21: info: initialization of "TimeString" proved
-zone_file_parser.adb:407:33: info: index check proved (CVC4: 2 VC)
-zone_file_parser.adb:407:59: info: index check proved (CVC4: 2 VC)
+zone_file_parser.adb:407:33: info: index check proved (CVC4: 4 VC)
+zone_file_parser.adb:407:59: info: index check proved (CVC4: 4 VC)
 zone_file_parser.adb:408:19: info: initialization of "TimeString" proved
 zone_file_parser.adb:414:32: info: precondition proved (CVC4: 2 VC)
 zone_file_parser.adb:415:52: info: initialization of "TimeString" proved
