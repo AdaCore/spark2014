@@ -48,8 +48,8 @@ admintoken.adb:151:41: info: initialization of "AuthCert.Valid" constituent of "
 admintoken.adb:153:44: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.adb:176:13: info: range check proved (CVC4: 4 VC)
 admintoken.adb:176:37: info: initialization of "Result" proved
-admintoken.adb:176:37: info: length check proved (CVC4: 1 VC)
-admintoken.adb:176:40: info: length check proved (CVC4: 1 VC)
+admintoken.adb:176:37: info: length check proved (CVC4: 4 VC)
+admintoken.adb:176:40: info: length check proved (CVC4: 4 VC)
 admintoken.adb:182:23: info: range check proved (CVC4: 4 VC)
 admintoken.adb:186:17: info: initialization of "Result" proved
 admintoken.adb:205:37: info: initialization of "Description" proved
@@ -166,7 +166,7 @@ auditlog.adb:229:54: info: initialization of "OK" proved
 auditlog.adb:233:22: info: initialization of "FirstTime" proved
 auditlog.adb:233:22: info: initialization of "LastTime" proved
 auditlog.adb:233:22: info: initialization of "TimeOK" proved
-auditlog.adb:290:23: info: length check proved (CVC4: 1 VC)
+auditlog.adb:290:23: info: length check proved (CVC4: 4 VC)
 auditlog.adb:290:23: info: range check proved (CVC4: 4 VC)
 auditlog.adb:290:35: info: initialization of "Offset" proved
 auditlog.adb:290:42: info: overflow check proved (CVC4: 1 VC)
@@ -203,8 +203,8 @@ auditlog.adb:408:52: info: initialization of "OK" proved
 auditlog.adb:410:26: info: initialization of "TheFile" proved
 auditlog.adb:463:10: info: range check proved (CVC4: 4 VC)
 auditlog.adb:463:68: info: initialization of "ElementText" proved
-auditlog.adb:463:68: info: length check proved (CVC4: 1 VC)
-auditlog.adb:464:22: info: length check proved (CVC4: 1 VC)
+auditlog.adb:463:68: info: length check proved (CVC4: 4 VC)
+auditlog.adb:464:22: info: length check proved (CVC4: 4 VC)
 auditlog.adb:466:17: info: initialization of "ElementText" proved
 auditlog.adb:476:14: info: initialization of "OK" proved
 auditlog.adb:482:10: info: initialization of "OK" proved
@@ -402,9 +402,9 @@ auditlog.adb:1279:46: info: initialization of "OK" proved
 auditlog.adb:1285:16: info: initialization of "ArchivedFileCount" proved
 auditlog.adb:1289:16: info: loop invariant initialization proved (CVC4: 1 VC)
 auditlog.adb:1289:16: info: loop invariant preservation proved (CVC4: 1 VC)
-auditlog.adb:1290:66: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1290:71: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1290:91: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1290:66: info: range check proved (CVC4: 2 VC)
+auditlog.adb:1290:71: info: overflow check proved (CVC4: 2 VC)
+auditlog.adb:1290:91: info: overflow check proved (CVC4: 2 VC)
 auditlog.adb:1293:57: info: initialization of "FileIndexInUsedList" proved
 auditlog.adb:1294:51: info: initialization of "FileIndex" proved
 auditlog.adb:1296:34: info: initialization of "FileIndex" proved
@@ -434,9 +434,9 @@ auditlog.adb:1383:85: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1384:50: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1400:13: info: loop invariant initialization proved (CVC4: 3 VC)
 auditlog.adb:1400:13: info: loop invariant preservation proved (CVC4: 3 VC)
-auditlog.adb:1404:63: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1404:68: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1404:88: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1404:63: info: range check proved (CVC4: 2 VC)
+auditlog.adb:1404:68: info: overflow check proved (CVC4: 2 VC)
+auditlog.adb:1404:88: info: overflow check proved (CVC4: 2 VC)
 auditlog.adb:1412:79: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1415:73: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1424:10: info: initialization of "OldAlarm" proved
@@ -472,9 +472,9 @@ bio.adb:175:41: info: range check proved (CVC4: 1 VC)
 bio.adb:176:12: info: range check proved (CVC4: 1 VC)
 bio.adb:176:57: info: range check proved (CVC4: 1 VC)
 bio.adb:182:13: info: range check proved (CVC4: 4 VC)
-bio.adb:182:42: info: length check proved (CVC4: 1 VC)
+bio.adb:182:42: info: length check proved (CVC4: 4 VC)
 bio.adb:182:45: info: initialization of "FullString" proved
-bio.adb:182:45: info: length check proved (CVC4: 1 VC)
+bio.adb:182:45: info: length check proved (CVC4: 4 VC)
 bio.adb:184:23: info: initialization of "FullString" proved
 bio.adb:184:23: info: range check proved (CVC4: 4 VC)
 bio.adb:190:22: info: analyzing call to "GetReturnCode" in context
@@ -763,9 +763,9 @@ cert-attr.adb:39:09: info: range check proved (CVC4: 1 VC)
 cert-attr.adb:40:09: info: range check proved (CVC4: 1 VC)
 cert-attr.adb:47:10: info: range check proved (CVC4: 4 VC)
 cert-attr.adb:47:43: info: initialization of "LocalUser" proved
-cert-attr.adb:47:43: info: length check proved (CVC4: 1 VC)
+cert-attr.adb:47:43: info: length check proved (CVC4: 4 VC)
 cert-attr.adb:47:46: info: initialization of "FullString" proved
-cert-attr.adb:47:46: info: length check proved (CVC4: 1 VC)
+cert-attr.adb:47:46: info: length check proved (CVC4: 4 VC)
 cert-attr.adb:49:23: info: initialization of "FullString" proved
 cert-attr.adb:49:23: info: range check proved (CVC4: 4 VC)
 cert-attr.adb:52:14: info: initialization of "LocalUser" proved
@@ -840,9 +840,9 @@ cert.adb:64:09: info: range check proved (CVC4: 1 VC)
 cert.adb:65:09: info: range check proved (CVC4: 1 VC)
 cert.adb:71:10: info: range check proved (CVC4: 4 VC)
 cert.adb:71:43: info: initialization of "LocalUser" proved
-cert.adb:71:43: info: length check proved (CVC4: 1 VC)
+cert.adb:71:43: info: length check proved (CVC4: 4 VC)
 cert.adb:71:46: info: initialization of "FullString" proved
-cert.adb:71:46: info: length check proved (CVC4: 1 VC)
+cert.adb:71:46: info: length check proved (CVC4: 4 VC)
 cert.adb:73:23: info: initialization of "FullString" proved
 cert.adb:73:23: info: range check proved (CVC4: 4 VC)
 cert.adb:76:14: info: initialization of "LocalUser" proved
@@ -861,16 +861,16 @@ certificatestore.adb:222:23: info: range check proved (CVC4: 1 VC)
 certificatestore.adb:222:31: info: range check proved (CVC4: 1 VC)
 certificatestore.adb:223:10: info: range check proved (CVC4: 4 VC)
 certificatestore.adb:223:18: info: initialization of "Length" proved
-certificatestore.adb:223:26: info: length check proved (CVC4: 1 VC)
+certificatestore.adb:223:26: info: length check proved (CVC4: 4 VC)
 certificatestore.adb:223:29: info: initialization of "Str" proved
-certificatestore.adb:223:29: info: length check proved (CVC4: 1 VC)
+certificatestore.adb:223:29: info: length check proved (CVC4: 4 VC)
 certificatestore.adb:223:29: info: range check proved (CVC4: 4 VC)
 certificatestore.adb:223:36: info: initialization of "Length" proved
 certificatestore.adb:226:10: info: range check proved (CVC4: 4 VC)
 certificatestore.adb:226:15: info: initialization of "Length" proved
 certificatestore.adb:226:42: info: initialization of "Text" proved
-certificatestore.adb:226:42: info: length check proved (CVC4: 1 VC)
-certificatestore.adb:226:45: info: length check proved (CVC4: 1 VC)
+certificatestore.adb:226:42: info: length check proved (CVC4: 4 VC)
+certificatestore.adb:226:45: info: length check proved (CVC4: 4 VC)
 certificatestore.adb:232:10: info: initialization of "Opened" proved
 certificatestore.adb:244:40: info: initialization of "RawNext" proved
 certificatestore.adb:245:40: info: initialization of "Stop" proved
@@ -1541,9 +1541,9 @@ configuration.adb:116:26: info: initialization of "Str" proved
 configuration.adb:116:26: info: range check proved (CVC4: 2 VC; Z3: 2 VC)
 configuration.adb:118:13: info: range check proved (CVC4: 4 VC)
 configuration.adb:118:38: info: initialization of "LocalText" proved
-configuration.adb:118:38: info: length check proved (CVC4: 1 VC)
+configuration.adb:118:38: info: length check proved (CVC4: 4 VC)
 configuration.adb:118:41: info: initialization of "Str" proved
-configuration.adb:118:41: info: length check proved (Z3: 1 VC)
+configuration.adb:118:41: info: length check proved (CVC4: 3 VC; Z3: 1 VC)
 configuration.adb:121:17: info: initialization of "LocalText" proved
 configuration.adb:144:10: info: initialization of "DataValid" proved
 configuration.adb:147:40: info: initialization of "TheLatchUnlockDuration" proved
@@ -1941,8 +1941,8 @@ enrolment.adb:68:66: info: range check proved (CVC4: 1 VC)
 enrolment.adb:68:74: info: range check proved (CVC4: 1 VC)
 enrolment.adb:72:13: info: range check proved (CVC4: 4 VC)
 enrolment.adb:72:40: info: initialization of "Result" proved
-enrolment.adb:72:40: info: length check proved (CVC4: 1 VC)
-enrolment.adb:72:43: info: length check proved (CVC4: 1 VC)
+enrolment.adb:72:40: info: length check proved (CVC4: 4 VC)
+enrolment.adb:72:43: info: length check proved (CVC4: 4 VC)
 enrolment.adb:74:23: info: range check proved (CVC4: 4 VC)
 enrolment.adb:76:17: info: initialization of "Result" proved
 enrolment.adb:94:35: info: initialization of "KeyAdded" proved
@@ -2035,8 +2035,8 @@ keystore.adb:101:19: info: range check proved (CVC4: 1 VC)
 keystore.adb:102:10: info: range check proved (CVC4: 4 VC)
 keystore.adb:102:32: info: range check proved (CVC4: 1 VC)
 keystore.adb:102:41: info: initialization of "Result" proved
-keystore.adb:102:41: info: length check proved (CVC4: 1 VC)
-keystore.adb:102:44: info: length check proved (CVC4: 1 VC)
+keystore.adb:102:41: info: length check proved (CVC4: 4 VC)
+keystore.adb:102:44: info: length check proved (CVC4: 4 VC)
 keystore.adb:104:20: info: range check proved (CVC4: 4 VC)
 keystore.adb:107:14: info: initialization of "Result" proved
 keystore.adb:122:22: info: initialization of "TheDigest.DigestID" proved
@@ -2060,11 +2060,11 @@ keystore.adb:206:24: info: initialization of "LoopMax" proved
 keystore.adb:208:16: info: initialization of "LoopMax" proved
 keystore.adb:208:16: info: loop invariant initialization proved (CVC4: 8 VC)
 keystore.adb:208:16: info: loop invariant preservation proved (CVC4: 8 VC)
-keystore.adb:208:56: info: division check proved (CVC4: 1 VC)
+keystore.adb:208:56: info: division check proved (CVC4: 2 VC)
 keystore.adb:209:30: info: initialization of "LoopMax" proved
 keystore.adb:211:20: info: initialization of "BytesLeft" proved
-keystore.adb:211:57: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:211:67: info: overflow check proved (CVC4: 1 VC)
+keystore.adb:211:57: info: overflow check proved (CVC4: 2 VC)
+keystore.adb:211:67: info: overflow check proved (CVC4: 2 VC)
 keystore.adb:212:20: info: initialization of "Size" proved
 keystore.adb:213:20: info: initialization of "RetValIni" proved
 keystore.adb:214:20: info: initialization of "RetValFin" proved
@@ -2310,8 +2310,8 @@ screen.adb:442:37: info: index check proved (CVC4: 2 VC)
 screen.adb:446:13: info: range check proved (CVC4: 4 VC)
 screen.adb:446:19: info: overflow check proved (CVC4: 1 VC)
 screen.adb:446:41: info: initialization of "Str" proved
-screen.adb:446:41: info: length check proved (CVC4: 1 VC)
-screen.adb:446:44: info: length check proved (CVC4: 1 VC)
+screen.adb:446:41: info: length check proved (CVC4: 4 VC)
+screen.adb:446:44: info: length check proved (CVC4: 4 VC)
 screen.adb:446:44: info: range check proved (CVC4: 4 VC)
 screen.adb:446:58: info: initialization of "ValueStr" proved
 screen.adb:446:72: info: overflow check proved (CVC4: 1 VC)
@@ -2324,28 +2324,28 @@ screen.adb:481:67: info: range check proved (CVC4: 1 VC)
 screen.adb:485:10: info: range check proved (CVC4: 4 VC)
 screen.adb:485:32: info: overflow check proved (CVC4: 1 VC)
 screen.adb:485:37: info: initialization of "Result" proved
-screen.adb:485:37: info: length check proved (CVC4: 1 VC)
-screen.adb:485:40: info: length check proved (CVC4: 1 VC)
+screen.adb:485:37: info: length check proved (CVC4: 4 VC)
+screen.adb:485:40: info: length check proved (CVC4: 4 VC)
 screen.adb:485:40: info: range check proved (CVC4: 4 VC)
 screen.adb:485:50: info: initialization of "Data" proved
 screen.adb:486:17: info: initialization of "Result" proved
 screen.adb:505:10: info: range check proved (CVC4: 4 VC)
 screen.adb:505:33: info: initialization of "Result" proved
-screen.adb:505:33: info: length check proved (CVC4: 1 VC)
+screen.adb:505:33: info: length check proved (CVC4: 4 VC)
 screen.adb:505:36: info: initialization of "Data" proved
-screen.adb:505:36: info: length check proved (CVC4: 1 VC)
+screen.adb:505:36: info: length check proved (CVC4: 4 VC)
 screen.adb:506:17: info: initialization of "Result" proved
 screen.adb:524:10: info: range check proved (CVC4: 4 VC)
 screen.adb:524:33: info: initialization of "Result" proved
-screen.adb:524:33: info: length check proved (CVC4: 1 VC)
+screen.adb:524:33: info: length check proved (CVC4: 4 VC)
 screen.adb:524:36: info: initialization of "Data" proved
-screen.adb:524:36: info: length check proved (CVC4: 1 VC)
+screen.adb:524:36: info: length check proved (CVC4: 4 VC)
 screen.adb:525:17: info: initialization of "Result" proved
 screen.adb:545:10: info: range check proved (CVC4: 4 VC)
 screen.adb:545:32: info: overflow check proved (CVC4: 1 VC)
 screen.adb:545:37: info: initialization of "Result" proved
-screen.adb:545:37: info: length check proved (CVC4: 1 VC)
-screen.adb:545:40: info: length check proved (CVC4: 1 VC)
+screen.adb:545:37: info: length check proved (CVC4: 4 VC)
+screen.adb:545:40: info: length check proved (CVC4: 4 VC)
 screen.adb:545:40: info: range check proved (CVC4: 4 VC)
 screen.adb:545:50: info: initialization of "Data" proved
 screen.adb:546:17: info: initialization of "Result" proved
@@ -2450,8 +2450,8 @@ screen.adb:763:30: info: initialization of "OK" proved
 screen.adb:794:10: info: range check proved (CVC4: 4 VC)
 screen.adb:794:32: info: overflow check proved (CVC4: 1 VC)
 screen.adb:794:37: info: initialization of "Result" proved
-screen.adb:794:37: info: length check proved (CVC4: 1 VC)
-screen.adb:794:40: info: length check proved (CVC4: 1 VC)
+screen.adb:794:37: info: length check proved (CVC4: 4 VC)
+screen.adb:794:40: info: length check proved (CVC4: 4 VC)
 screen.adb:794:40: info: range check proved (CVC4: 4 VC)
 screen.adb:794:50: info: initialization of "Data" proved
 screen.adb:795:17: info: initialization of "Result" proved
@@ -2652,9 +2652,9 @@ tismain.adb:1396:57: info: initialization of "KeyStore.State" proved
 tismain.adb:1400:15: info: initialization of "Latch.State" proved
 tismain.adb:1402:33: info: initialization of "TheAdmin" proved
 tismain.adb:1403:25: info: initialization of "AdminToken.State" proved
-tismain.adb:1408:22: info: precondition proved (CVC4: 1 VC)
-tismain.adb:1414:23: info: precondition proved (CVC4: 1 VC)
-tismain.adb:1421:22: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1408:22: info: precondition proved (CVC4: 2 VC)
+tismain.adb:1414:23: info: precondition proved (CVC4: 2 VC)
+tismain.adb:1421:22: info: precondition proved (CVC4: 2 VC)
 tismain.adb:1446:07: info: initialization of "AdminToken.State" proved
 tismain.adb:1446:07: info: initialization of "AuditLog.State" proved
 tismain.adb:1446:07: info: initialization of "CertificateStore.State" proved
@@ -2725,8 +2725,8 @@ tokenreader.adb:175:55: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:176:12: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:176:57: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:181:13: info: range check proved (CVC4: 4 VC)
-tokenreader.adb:181:43: info: length check proved (CVC4: 1 VC)
-tokenreader.adb:181:46: info: length check proved (CVC4: 1 VC)
+tokenreader.adb:181:43: info: length check proved (CVC4: 4 VC)
+tokenreader.adb:181:46: info: length check proved (CVC4: 4 VC)
 tokenreader.adb:183:23: info: range check proved (CVC4: 4 VC)
 tokenreader.adb:189:07: info: initialization of "Result" proved
 tokenreader.adb:189:07: info: initialization of "TheCodeName" proved
@@ -2742,12 +2742,12 @@ tokenreader.adb:280:46: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:283:19: info: loop invariant initialization proved (CVC4: 2 VC)
 tokenreader.adb:283:19: info: loop invariant preservation proved (CVC4: 2 VC)
 tokenreader.adb:283:46: info: initialization of "NumberReaders" proved
-tokenreader.adb:283:46: info: range check proved (CVC4: 1 VC)
+tokenreader.adb:283:46: info: range check proved (CVC4: 2 VC)
 tokenreader.adb:284:35: info: initialization of "NumberReaders" proved
 tokenreader.adb:287:22: info: loop invariant initialization proved (CVC4: 2 VC)
 tokenreader.adb:287:22: info: loop invariant preservation proved (CVC4: 2 VC)
 tokenreader.adb:287:49: info: initialization of "NumberReaders" proved
-tokenreader.adb:287:49: info: range check proved (CVC4: 1 VC)
+tokenreader.adb:287:49: info: range check proved (CVC4: 2 VC)
 tokenreader.adb:288:38: info: initialization of "NumberReaders" proved
 tokenreader.adb:290:47: info: initialization of "Readers" proved
 tokenreader.adb:291:22: info: initialization of "ReaderStatus" constituent of "State" proved
@@ -2829,9 +2829,9 @@ userentry.adb:379:24: info: precondition proved (CVC4: 1 VC)
 userentry.adb:419:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:476:15: info: range check proved (CVC4: 1 VC)
 userentry.adb:482:16: info: range check proved (CVC4: 4 VC)
-userentry.adb:482:45: info: length check proved (CVC4: 1 VC)
+userentry.adb:482:45: info: length check proved (CVC4: 4 VC)
 userentry.adb:482:48: info: initialization of "FullString" proved
-userentry.adb:482:48: info: length check proved (CVC4: 1 VC)
+userentry.adb:482:48: info: length check proved (CVC4: 4 VC)
 userentry.adb:484:26: info: initialization of "FullString" proved
 userentry.adb:484:26: info: range check proved (CVC4: 4 VC)
 userentry.adb:493:10: info: initialization of "Result" proved
