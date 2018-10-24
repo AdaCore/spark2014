@@ -563,12 +563,11 @@ named object is a variable). If it denotes an access object then
 a dereference of the name provides a constant view [redundant: , even if
 the object is of an access-to-variable type].
 
-In the Moved or Borrowed states, the name is unusable for either reading or
-writing. [Redundant: In the Borrowed state, ownership of the object
-(and the associated permission to read from and possibly write to that
-object) has been temporarily transfered to a borrower, so it will
-sometimes be possible to refer to the object in question via the
-borrower.]
+In the Moved state, the name is unusable for either reading or
+writing.
+
+In the Borrowed state, the name is unusable for writing, observing and
+borrowing (see below).
 
 A name that denotes a managed object has an initial ownership state
 of Unrestricted unless otherwise specified.
@@ -585,8 +584,8 @@ and identify a corresponding *observer*:
 - An assignment operation that is used to initialize an access object,
   where this target object (the observer) is a stand-alone variable of an
   anonymous access-to-constant type, or a constant (including a formal
-  parameter or generic formal object of mode **in**) of an anonymous
-  access-to-constant type.
+  parameter of a procedure or generic formal object of mode **in**) of an
+  anonymous access-to-constant type.
 
   The source expression of the assignment shall be either a name denoting a
   part of a stand-alone object or of a parameter, or a call on a traversal
@@ -600,9 +599,9 @@ and identify a corresponding *observer*:
   type. The name being observed denotes the source of the assignment. The
   initialized object is the observer.
 
-- A call where an actual parameter is a name denoting a managed object, and the
-  corresponding formal parameter is of mode **in** and composite or
-  aliased. The name being observed denotes the actual parameter.  The formal
+- A procedure call where an actual parameter is a name denoting a managed
+  object, and the corresponding formal parameter is of mode **in** and composite
+  or aliased. The name being observed denotes the actual parameter.  The formal
   parameter is the observer.
 
 Such an operation is called an *observing operation*.
@@ -621,8 +620,8 @@ and identify a corresponding *borrower*:
 
 - An assignment operation that is used to initialize an access object, where
   this target object (the borrower) is a stand-alone variable of an anonymous
-  access-to-variable type, or a constant (including a formal parameter or
-  generic formal object of mode **in**) of a (named or anonymous)
+  access-to-variable type, or a constant (including a formal parameter of a
+  procedure or generic formal object of mode **in**) of a (named or anonymous)
   access-to-variable type.
 
   The source expression of the assignment shall be either a name denoting a
