@@ -1929,8 +1929,7 @@ package body Flow_Utility is
       Globals : Global_Flow_Ids;
 
       S : constant Flow_Scope :=
-        Get_Flow_Scope (if Is_In_Analyzed_Files (Subprogram)
-                          and then Entity_Body_In_SPARK (Subprogram)
+        Get_Flow_Scope (if Entity_Body_In_SPARK (Subprogram)
                         then Get_Body_Entity (Subprogram)
                         else Subprogram);
 
