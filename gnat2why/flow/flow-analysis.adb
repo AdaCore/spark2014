@@ -1697,7 +1697,7 @@ package body Flow.Analysis is
                     (FA       => FA,
                      Msg      => "use of remote abstract state &" &
                                  " during elaboration of &" &
-                                 " - Elaborate_All pragma required for &",
+                                 " - Elaborate pragma required for &",
                      SRM_Ref  => "7.7.1(4)",
                      N        => V_Error_Location,
                      F1       => F,
