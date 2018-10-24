@@ -1,3 +1,4 @@
+
 Summary of SPARK analysis
 =========================
 
@@ -16,6 +17,7 @@ LSP Verification . . . . . . .
 Total . . . . . . .
 
 
+max steps used for successful proof: 0
 Analyzed 6 units
 in unit main, 1 subprograms and packages out of 1 analyzed
  Main at main.adb:7 flow analyzed (0 errors, 0 checks and 0 warnings)

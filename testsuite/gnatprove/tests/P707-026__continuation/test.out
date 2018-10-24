@@ -1,6 +1,7 @@
 pkg.ads:7:14: info: initialization of "Descriptors" constituent of "State" proved
 pkg2.adb:8:04: high: "Descriptors" constituent of "State" is not initialized in "Pkg2"
 pkg2.ads:7:14: info: initialization of "Descriptors" constituent of "State" proved
+
 Summary of SPARK analysis
 =========================
 
@@ -19,6 +20,7 @@ LSP Verification                  .          .          .          .         .  
 Total                             6    2 (33%)          .          .         .     3 (50%)    1 (17%)
 
 
+max steps used for successful proof: 0
 Analyzed 2 units
 in unit pkg, 2 subprograms and packages out of 2 analyzed
   Pkg at pkg.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
