@@ -255,14 +255,24 @@ begin
                Arguments (I) := new String'(Argument (I + 2));
             end loop;
             declare
+               Cmd : String renames Argument (2);
+
                Msg : constant String :=
-                 Get_Command_Output (Argument (2),
+                 Get_Command_Output (Cmd,
                                      Arguments,
                                      "",
                                      Status'Access,
                                      Err_To_Out => True);
             begin
-               Memcache_Client.Set (Cache, Key, Msg);
+
+               --  We don't want to cache crashes of gnatwhy3; also we know
+               --  that gnatwhy3 returns 0 in normal execution. Other processes
+               --  may return non-zero exit code and we still want to cache
+               --  them.
+
+               if Status = 0 or else Cmd /= "gnatwhy3" then
+                  Memcache_Client.Set (Cache, Key, Msg);
+               end if;
                Ada.Text_IO.Put_Line (Msg);
             end;
          end;
