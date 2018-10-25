@@ -1168,9 +1168,6 @@ package body Flow_Generated_Globals.Phase_2 is
             New_GG_Line (Line);
             Serialize (K);
             case K is
-               when EK_Error =>
-                  Corrupted_ALI_File ("parse error");
-
                when EK_End_Marker =>
                   if GG_Parsing_State = Started then
                      GG_Parsing_State := Finished;
