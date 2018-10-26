@@ -1403,7 +1403,7 @@ package body Flow_Generated_Globals.Phase_2 is
             begin
                if Line'Length >= 3 then
                   declare
-                     Header : constant String (1 .. 3) := Line (1 .. 3);
+                     Header : String renames Line (1 .. 3);
 
                   begin
                      if Header = "QQ " then
