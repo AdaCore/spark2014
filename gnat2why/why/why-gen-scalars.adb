@@ -579,9 +579,10 @@ package body Why.Gen.Scalars is
                 (Ty = EW_BitVector_64_Type
                  and then Modulus (E)
                         = UI_Expon (Uint_2, Uint_64)))
+           and then Nkind (Type_Low_Bound (E)) = N_Integer_Literal
            and then Intval (Type_Low_Bound (E)) = Uint_0
-           and then Intval (Type_High_Bound (E))
-                  = UI_Sub (Modulus (E), Uint_1)
+           and then Nkind (Type_High_Bound (E)) = N_Integer_Literal
+           and then Intval (Type_High_Bound (E)) = UI_Sub (Modulus (E), Uint_1)
          then
 
             --  In which case we know that all values are necessary in range,
