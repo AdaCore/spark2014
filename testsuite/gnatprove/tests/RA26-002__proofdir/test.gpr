@@ -1,0 +1,12 @@
+project Test is
+   type OBJ_TYPE is ("A", "B");
+   OBJ: OBJ_TYPE := external("OBJ", "A");
+
+   for Object_Dir use "obj/" & OBJ;
+   for Main use ("main.adb");
+
+   package Prove is
+      for Proof_Dir use "proofs/";
+   end Prove;
+
+end Test;
