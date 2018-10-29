@@ -590,7 +590,7 @@ and identify a corresponding *observer*:
 
     The source expression of the assignment shall be either a name denoting
     a part of a stand-alone object or of a parameter, or a call on a traversal
-    function whose result type is an (anonymous) access-to-constant type.
+    function whose result type is an (anonymous) access type.
     If the source of the assignment is a call on a traversal function then
     the name being observed denotes the actual traversed parameter of the
     call. Otherwise the name being observed denotes the source of the
