@@ -1,0 +1,5 @@
+traversal.adb:11:69: expected state "unrestricted" at least, got "observed"
+traversal.adb:11:69: insufficient permission on dereference from "X"
+traversal.adb:13:56: expected state "unrestricted" at least, got "observed"
+traversal.adb:13:56: insufficient permission for "X"
+gnatprove: error during generation of Global contracts

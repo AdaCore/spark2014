@@ -3338,6 +3338,17 @@ package body SPARK_Definition is
             return;
          end if;
 
+         --  Local borrowers of access to variable types are not supported yet
+
+         if Ekind (E) not in Formal_Kind
+           and then Ekind (E) /= E_Constant
+           and then Is_Access_Type (T)
+           and then not Is_Access_Constant (T)
+           and then Is_Anonymous_Access_Type (T)
+         then
+            Mark_Unsupported ("local borrower of an access object", E);
+         end if;
+
          if Present (Sub)
            and then not In_SPARK (Sub)
          then
@@ -3565,6 +3576,20 @@ package body SPARK_Definition is
 
             if not Retysp_In_SPARK (Etype (Id)) then
                Mark_Violation (Id, From => Etype (Id));
+            end if;
+
+            --  Traversal functions returning access to variable types are not
+            --  supported yet.
+
+            if Is_Access_Type (Etype (Id))
+              and then not Is_Access_Constant (Etype (Id))
+              and then Is_Anonymous_Access_Type (Etype (Id))
+              and then Present (First_Formal (Id))
+              and then Is_Access_Type (Etype (First_Formal (Id)))
+            then
+               Mark_Unsupported
+                 ("traversal function returning access-to-variable type",
+                  Id);
             end if;
          end Mark_Function_Specification;
 
