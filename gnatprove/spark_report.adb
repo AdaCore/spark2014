@@ -846,7 +846,7 @@ procedure SPARK_Report is
       Ada.Text_IO.Put_Line (Handle,
                             "max steps used for successful proof:" &
                               Natural'Image (Max));
-      Ada.Text_IO.New_Line;
+      Ada.Text_IO.New_Line (Handle);
    end Print_Max_Steps;
 
    -------------------
