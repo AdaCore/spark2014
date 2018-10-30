@@ -700,6 +700,16 @@ package body Gnat2Why.Expr.Loops is
                         not SPARK_Atree.Is_Variable (Over_Node)));
                --  Introduce a temporary variable for the container expression
                --  except if it is a variable.
+               W_Container_T : constant W_Expr_Id :=
+                 (if Over_Range then Why_Empty
+                  elsif SPARK_Atree.Is_Variable (Over_Node) then
+                       Insert_Simple_Conversion
+                         (Domain   => EW_Term,
+                          Expr     => Transform_Expr
+                            (Over_Node, EW_Term, Body_Params),
+                          To       => Typ_For_Cont)
+                  else W_Container);
+               --  Container expression in the term domain
 
                --  For for of loops, we need an identifier for the additional
                --  variable holding the iterator.
@@ -777,6 +787,7 @@ package body Gnat2Why.Expr.Loops is
                        Force_No_Slide => True);
                begin
                   if Domain in EW_Prog | EW_Pterm then
+                     pragma Assert (W_Container /= Why_Empty);
                      return +New_VC_Call
                        (Ada_Node => LParam_Spec,
                         Name     => W_H_Elmt,
@@ -786,12 +797,13 @@ package body Gnat2Why.Expr.Loops is
                         Domain   => Domain,
                         Typ      => EW_Bool_Type);
                   else
+                     pragma Assert (W_Container_T /= Why_Empty);
                      return New_Function_Call
                        (Ada_Node => LParam_Spec,
                         Domain   => Domain,
                         Subp     => H_Elmt,
                         Name     => W_H_Elmt,
-                        Args     => (1 => W_Container,
+                        Args     => (1 => W_Container_T,
                                      2 => Cur_Expr),
                         Typ      => EW_Bool_Type);
                   end if;
@@ -827,6 +839,7 @@ package body Gnat2Why.Expr.Loops is
                        To             => Typ_For_Iter,
                        Force_No_Slide => True);
                begin
+                  pragma Assert (W_Container /= Why_Empty);
                   return
                     +W_Not_Id'(New_Not
                                (Ada_Node => LParam_Spec,
@@ -858,6 +871,9 @@ package body Gnat2Why.Expr.Loops is
                   First      : constant Entity_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_First);
+
+                  pragma Assert (W_Container /= Why_Empty);
+
                   Call_First : constant W_Expr_Id := +New_VC_Call
                     (Ada_Node => LParam_Spec,
                      Name     =>
@@ -898,6 +914,7 @@ package body Gnat2Why.Expr.Loops is
                        Domain => Domain);
                begin
                   if Domain in EW_Prog | EW_Pterm then
+                     pragma Assert (W_Container /= Why_Empty);
                      return New_VC_Call
                        (Ada_Node => LParam_Spec,
                         Name     => W_Elmt,
@@ -908,13 +925,14 @@ package body Gnat2Why.Expr.Loops is
                         Domain   => EW_Prog,
                         Typ      => Type_Of_Node (Etype (Elmt)));
                   else
+                     pragma Assert (W_Container_T /= Why_Empty);
                      return New_Function_Call
                        (Ada_Node => LParam_Spec,
                         Domain   => Domain,
                         Subp     => Elmt,
                         Name     => W_Elmt,
                         Args     =>
-                          (1 => W_Container,
+                          (1 => W_Container_T,
                            2 => Cur_Expr),
                         Typ      => Type_Of_Node (Etype (Elmt)));
                   end if;
