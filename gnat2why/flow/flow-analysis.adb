@@ -2085,8 +2085,8 @@ package body Flow.Analysis is
                                 (if Atr.Is_Parameter
                                  then Direct_Mapping_Id
                                    (Skip_Any_Conversions
-                                        (Get_Direct_Mapping_Id
-                                             (Atr.Parameter_Actual)))
+                                      (Get_Direct_Mapping_Id
+                                         (Atr.Parameter_Actual)))
                                  else Atr.Parameter_Formal);
 
                               Printable_Target : constant Boolean :=
