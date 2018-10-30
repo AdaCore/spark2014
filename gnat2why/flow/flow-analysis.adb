@@ -1784,10 +1784,13 @@ package body Flow.Analysis is
       --  record field that has been introduced by a record split and the rest
       --  of the fields are ineffective.
 
-      function Skip_Any_Conversions (N : Node_Or_Entity_Id)
-                                     return Node_Or_Entity_Id;
+      function Skip_Any_Conversions (N : Node_Id) return Node_Id
+      with Pre  => Nkind (N) in N_Subexpr,
+           Post => Nkind (Skip_Any_Conversions'Result) in N_Subexpr;
       --  Skips any conversions (unchecked or otherwise) and jumps to the
       --  actual object.
+      --  ??? this routine actually skips only checked conversion; to have what
+      --  this comment says we can reuse Sem_Util.Unqual_Conv.
 
       ------------------------------
       -- Defines_Async_Reader_Var --
@@ -1947,10 +1950,8 @@ package body Flow.Analysis is
       -- Skip_Any_Conversions --
       --------------------------
 
-      function Skip_Any_Conversions (N : Node_Or_Entity_Id)
-                                     return Node_Or_Entity_Id
-      is
-         P : Node_Or_Entity_Id := N;
+      function Skip_Any_Conversions (N : Node_Id) return Node_Id is
+         P : Node_Id := N;
       begin
          loop
             case Nkind (P) is
