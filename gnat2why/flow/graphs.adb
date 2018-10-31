@@ -316,9 +316,9 @@ package body Graphs is
 
       Visited : Bit_Field         := Bit_Field'(others => False);
       Stack   : Vertex_Index_List := VIL.Empty_Vector;
-      Root    : V_To_V            := V_To_V'(others => 0);
+      Root    : V_To_V;
       Comp    : V_To_Comp         := V_To_Comp'(others => 0);
-      Succ    : V_To_V            := V_To_V'(others => 0);
+      Succ    : V_To_V;
       Sets    : V_To_VIS          := V_To_VIS'(others => VIS.Empty_Set);
 
       Current_Component : Component := 0;
