@@ -713,10 +713,10 @@ package body Gnat2Why.Expr.Loops is
                  (if Over_Range then Why_Empty
                   elsif SPARK_Atree.Is_Variable (Over_Node) then
                        Insert_Simple_Conversion
-                         (Domain   => EW_Term,
-                          Expr     => Transform_Expr
+                         (Domain => EW_Term,
+                          Expr   => Transform_Expr
                             (Over_Node, EW_Term, Body_Params),
-                          To       => Typ_For_Cont)
+                          To     => Typ_For_Cont)
                   else W_Container);
                --  Container expression in the term domain
 
