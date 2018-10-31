@@ -306,7 +306,7 @@ package body Graphs is
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
 
       type V_To_V is array
-        (Vertex_Id range 0 .. G.Vertices.Last_Index) of Vertex_Id;
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Valid_Vertex_Id;
 
       type V_To_VIS is array
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Vertex_Index_Set;
