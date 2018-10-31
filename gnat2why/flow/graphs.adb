@@ -343,7 +343,7 @@ package body Graphs is
             declare
                W : Valid_Vertex_Id renames Key (C);
             begin
-               Sets (Succ (V)).Include (W);
+               Sets (Succ (V)).Insert (W);
             end;
          end loop;
 
