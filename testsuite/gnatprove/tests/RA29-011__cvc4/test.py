@@ -1,4 +1,10 @@
-from test_support import Run
+from gnatpython.env import Env
+from test_support import Run, spark_install_path
+import os.path
+
+installdir = spark_install_path()
+bindir = os.path.join(installdir, 'libexec', 'spark', 'bin')
+Env().add_path(bindir)
 
 process = Run(["cvc4", "--show-config"])
 lines = process.out.splitlines()
