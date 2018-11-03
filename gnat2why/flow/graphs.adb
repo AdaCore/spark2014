@@ -314,12 +314,21 @@ package body Graphs is
       type V_To_Comp is array
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Component;
 
+      type Index is new Vertex_Id;
+      --  This type is for numbering the vertices in the order of visiting
+      --  them; note that it is distinct from the numbers that we use
+      --  everywhere else to identify vertices.
+
+      type V_To_Index is array
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Index;
+
       Visited : Bit_Field         := Bit_Field'(others => False);
       Stack   : Vertex_Index_List := VIL.Empty_Vector;
-      Root    : V_To_V;
+      Root    : V_To_Index;
       Comp    : V_To_Comp         := V_To_Comp'(others => 0);
       Succ    : V_To_V;
       Sets    : V_To_VIS          := V_To_VIS'(others => VIS.Empty_Set);
+      Counter : Index             := 0;
 
       Current_Component : Component := 0;
 
@@ -331,10 +340,13 @@ package body Graphs is
       ---------------
 
       procedure SIMPLE_TC (V : Valid_Vertex_Id) is
+         Me : constant Index := Counter + 1;
       begin
          Visited (V) := True;
 
-         Root (V) := V;
+         Root (V) := Me;
+
+         Counter := Counter + 1;
 
          Stack.Append (V);
 
@@ -355,13 +367,13 @@ package body Graphs is
                   SIMPLE_TC (W);
                end if;
                if Comp (W) = 0 then
-                  Root (V) := Vertex_Id'Min (Root (V), Root (W));
+                  Root (V) := Index'Min (Root (V), Root (W));
                end if;
                Sets (Succ (V)).Union (Sets (Succ (W)));
             end;
          end loop;
 
-         if Root (V) = V then
+         if Root (V) = Me then
             Current_Component := Current_Component + 1;
             loop
                declare
