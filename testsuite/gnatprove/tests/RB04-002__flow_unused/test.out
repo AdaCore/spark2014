@@ -1,4 +1,2 @@
-martians.ads:5:25: warning: unused variable "Unused"
-martians.ads:7:23: warning: unused variable "Unused"
 martians.ads:9:19: info: assertion proved (CVC4: 1 VC)
 martians.ads:10:19: info: assertion proved (CVC4: 1 VC)

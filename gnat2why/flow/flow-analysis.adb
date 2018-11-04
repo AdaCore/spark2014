@@ -30,6 +30,7 @@ with Rident;                      use Rident;
 with Sem_Aux;                     use Sem_Aux;
 with Sem_Type;                    use Sem_Type;
 with Sem_Util;                    use Sem_Util;
+with Sem_Warn;                    use Sem_Warn;
 with Snames;                      use Snames;
 
 with Common_Iterators;            use Common_Iterators;
@@ -1363,6 +1364,7 @@ package body Flow.Analysis is
                      if Is_Concurrent_Type (E_Typ)
                        or else Is_Empty_Record_Type (E_Typ)
                        or else Has_Pragma_Un (E)
+                       or else Has_Junk_Name (E)
                        or else Is_Param_Of_Null_Subp_Of_Generic (E)
                      then
                         null;
