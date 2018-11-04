@@ -302,9 +302,6 @@ package body Graphs is
    is
       type Component is new Natural;
 
-      type Bit_Field is array
-        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
-
       type V_To_V is array
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Valid_Vertex_Id;
 
@@ -318,13 +315,14 @@ package body Graphs is
       --  This type is for numbering the vertices in the order of visiting
       --  them; note that it is distinct from the numbers that we use
       --  everywhere else to identify vertices.
+      --
+      --  Here zero means that a vertex has not been visited yet.
 
       type V_To_Index is array
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Index;
 
-      Visited : Bit_Field         := Bit_Field'(others => False);
       Stack   : Vertex_Index_List := VIL.Empty_Vector;
-      Root    : V_To_Index;
+      Root    : V_To_Index        := V_To_Index'(others => 0);
       Comp    : V_To_Comp         := V_To_Comp'(others => 0);
       Succ    : V_To_V;
       Sets    : V_To_VIS          := V_To_VIS'(others => VIS.Empty_Set);
@@ -342,8 +340,6 @@ package body Graphs is
       procedure SIMPLE_TC (V : Valid_Vertex_Id) is
          Me : constant Index := Counter + 1;
       begin
-         Visited (V) := True;
-
          Root (V) := Me;
 
          Counter := Counter + 1;
@@ -363,7 +359,7 @@ package body Graphs is
             declare
                W : Valid_Vertex_Id renames Key (C);
             begin
-               if not Visited (W) then
+               if Root (W) = 0 then
                   SIMPLE_TC (W);
                end if;
                if Comp (W) = 0 then
@@ -394,7 +390,7 @@ package body Graphs is
 
    begin
       for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
-         if not Visited (V) then
+         if Root (V) = 0 then
             SIMPLE_TC (V);
          end if;
       end loop;
