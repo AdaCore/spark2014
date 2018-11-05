@@ -1130,8 +1130,8 @@ package body Graphs is
                   V_2 : Valid_Vertex_Id renames Key (C);
                   Atr : Edge_Attributes renames Out_Neighbours (C);
                begin
-                  R.Vertices (V_2).Out_Neighbours.Include (V_1, Atr);
-                  R.Vertices (V_1).In_Neighbours.Include (V_2);
+                  R.Vertices (V_2).Out_Neighbours.Insert (V_1, Atr);
+                  R.Vertices (V_1).In_Neighbours.Insert (V_2);
                end;
             end loop;
          end;
