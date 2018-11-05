@@ -480,10 +480,8 @@ package body Graphs is
    ------------------
 
    procedure Copy_Edges
-     (G             : in out Graph;
-      O             : Graph;
-      Edge_Selector : access function (A, B : Vertex_Id)
-                                       return Boolean := null)
+     (G : in out Graph;
+      O : Graph)
    is
    begin
       --  Sanity check the length of the two graphs.
@@ -495,11 +493,9 @@ package body Graphs is
                V_B : constant Valid_Vertex_Id := Key (C);
                Atr : constant Edge_Attributes := Element (C);
             begin
-               if Edge_Selector = null or else Edge_Selector (V_A, V_B) then
-                  G.Add_Edge (V_A, V_B, Atr.Colour);
-                  if Atr.Marked then
-                     G.Mark_Edge (V_A, V_B);
-                  end if;
+               G.Add_Edge (V_A, V_B, Atr.Colour);
+               if Atr.Marked then
+                  G.Mark_Edge (V_A, V_B);
                end if;
             end;
          end loop;
