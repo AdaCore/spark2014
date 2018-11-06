@@ -78,12 +78,12 @@ package body Graphs is
       end if;
 
       --  Add to V_1's out neighbours and edge attribute list.
-      G.Vertices (V_1).Out_Neighbours.Include
+      G.Vertices (V_1).Out_Neighbours.Insert
         (V_2, Edge_Attributes'(Marked => False,
                                Colour => Colour));
 
       --  Add to V_2's in neighbours.
-      G.Vertices (V_2).In_Neighbours.Include (V_1);
+      G.Vertices (V_2).In_Neighbours.Insert (V_1);
    end Add_Edge;
 
    procedure Add_Edge
