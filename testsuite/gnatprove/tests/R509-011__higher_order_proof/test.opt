@@ -1,3 +1,4 @@
 inverse-prover SKIP ordering issue
 32bits SKIP platform differences
 Darwin SKIP platform differences
+ALL RLIMIT 1500
