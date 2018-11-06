@@ -1,2 +1,1 @@
-main.adb:3:11: medium: "C" might not be initialized after elaboration of main program "Main"
 main.adb:5:19: info: assertion proved (CVC4: 1 VC)
