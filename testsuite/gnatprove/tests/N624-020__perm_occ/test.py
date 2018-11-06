@@ -1,2 +1,2 @@
 from test_support import *
-prove_all(no_fail=True)
+prove_all(steps=500, no_fail=True)
