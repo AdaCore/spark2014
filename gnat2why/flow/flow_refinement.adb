@@ -788,12 +788,12 @@ package body Flow_Refinement is
                      end if;
                   end loop;
 
-                  P.Include (E);
+                  P.Insert (E);
                end if;
             end;
 
          else
-            P.Include (E);
+            P.Insert (E);
          end if;
       end Expand;
 
