@@ -24,7 +24,6 @@
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Lib;                            use Lib;
 with Nlists;                         use Nlists;
 with Output;                         use Output;
 with Sem_Aux;                        use Sem_Aux;
@@ -115,13 +114,20 @@ package body Flow_Refinement is
       --  declared directly in the .adb file have all their Node_Ids belonging
       --  the body and Get_Flow_Scope would (rightly) return the body scope.
 
+      Main_Entity : constant Entity_Id := Unique_Main_Unit_Entity;
+      --  Main entity of the current compilation unit, which by its very nature
+      --  is visible from any unit that WITHs it; in other words, there always
+      --  exists some other compilation unit which can see this entity.
+
       Looking_From : constant Flow_Scope :=
-        (if Is_Child_Unit (Main_Unit_Entity)
-         then Get_Flow_Scope (Main_Unit_Entity)
-         else Null_Flow_Scope);
-      --  External scope for deciding "global" visibility of N
-      --  ??? needs more testing for nodes in child units, e.g. bodies of child
-      --  subprograms
+        (Ent  => Main_Entity,
+         Part => (if Ekind (Main_Entity) = E_Package
+                  then Private_Part
+                  else Visible_Part));
+      --  If E itself is visible from the main entity of this unit, then it can
+      --  be also seen from the other units. If the main entity is a package,
+      --  then we check visibility from its private part, because anything
+      --  declared in the private part can be seen from a private child unit.
 
    begin
       return Is_Visible (Looking_At, Looking_From);
