@@ -2546,4 +2546,17 @@ package body SPARK_Util is
       end if;
    end Is_Part_Of_Protected_Object;
 
+   -----------------------------
+   -- Unique_Main_Unit_Entity --
+   -----------------------------
+
+   function Unique_Main_Unit_Entity return Entity_Id is
+   begin
+      --  Main_Unit_Entity is not reliable, e.g. for instance-as-a-unit its
+      --  Ekind is E_Void; Cunit_Entity (Main_Unit) is more reliable, but
+      --  might point to the body entity, so Unique_Entity is required.
+
+      return Unique_Entity (Cunit_Entity (Main_Unit));
+   end Unique_Main_Unit_Entity;
+
 end SPARK_Util;

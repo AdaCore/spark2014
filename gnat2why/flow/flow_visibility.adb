@@ -30,7 +30,6 @@ with Einfo;                      use Einfo;
 with Flow_Refinement;            use Flow_Refinement;
 with Gnat2Why_Args;
 with Graphs;
-with Lib;                        use Lib;
 with Nlists;                     use Nlists;
 with Rtsfind;                    use Rtsfind;
 with Sem_Aux;                    use Sem_Aux;
@@ -776,7 +775,7 @@ package body Flow_Visibility is
       end EDI;
 
       Filename : constant String :=
-        Unique_Name (Main_Unit_Entity) & "_visibility";
+        Unique_Name (Unique_Main_Unit_Entity) & "_visibility";
 
    --  Start of processing for Print
 

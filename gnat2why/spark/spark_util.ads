@@ -691,4 +691,13 @@ package SPARK_Util is
    --  this will have to be removed as soon as we will not create graphs for
    --  type predicates.
 
+   function Unique_Main_Unit_Entity return Entity_Id
+   with Post => Ekind (Unique_Main_Unit_Entity'Result) in E_Function
+                                                        | E_Procedure
+                                                        | E_Package
+                                                        | Generic_Unit_Kind;
+   --  Wrapper for Lib.Main_Unit_Entity, which deals with library-level
+   --  instances of generic subprograms (where the Main_Unit_Entity is
+   --  has a void Ekind).
+
 end SPARK_Util;

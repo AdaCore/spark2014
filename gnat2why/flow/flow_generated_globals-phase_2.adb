@@ -3372,7 +3372,7 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Local constants
 
       Filename : constant String :=
-        Get_Name_String (Chars (Main_Unit_Entity)) & "_constants_2";
+        Unique_Name (Unique_Main_Unit_Entity) & "_constants_2";
 
    --  Start of processing for Print_Graph
 

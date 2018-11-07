@@ -1954,7 +1954,7 @@ package body Flow_Generated_Globals.Partial is
       --  Local constants
 
       Filename : constant String :=
-        Unique_Name (Main_Unit_Entity) & "_constants_1";
+        Unique_Name (Unique_Main_Unit_Entity) & "_constants_1";
       --  ??? this fails on subprogram instantiation as compilation units
 
    --  Start of processing for Print_Graph
