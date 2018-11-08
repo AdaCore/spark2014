@@ -1562,6 +1562,124 @@ package body SPARK_Util is
       return Encl_Unit in Main_Unit_Node | Library_Unit (Main_Unit_Node);
    end Is_In_Analyzed_Files;
 
+   ----------------------------------
+   -- Is_In_Statically_Dead_Branch --
+   ----------------------------------
+
+   function Is_In_Statically_Dead_Branch (N : Node_Id) return Boolean is
+      Anc : Node_Id := Parent (N);
+      Prev : Node_Id := N;
+
+      function Comes_From_Dead_Branch (If_Stmt, Stmt : Node_Id) return Boolean
+        with Pre => Nkind (If_Stmt) = N_If_Statement;
+      --  @param If_Stmt an if statement node
+      --  @param Stmt a statement node
+      --  @return True iff the if-statement contains a statically dead branch
+      --      and the statement is at the top-level of the corresponding branch
+
+      function Comes_From_This_Dead_Branch
+        (If_Stmt, Stmt : Node_Id)
+         return Boolean
+        with Pre => Nkind (If_Stmt) in N_If_Statement | N_Elsif_Part;
+      --  @param If_Stmt an if statement or els_if part
+      --  @param Stmt a statement node
+      --  @return True iff the "then" condition of the statement or part is
+      --      statically dead and contains the Stmt node
+
+      function Has_True_Condition (If_Stmt : Node_Id) return Boolean
+        with Pre => Nkind (If_Stmt) = N_If_Statement;
+      --  @param If_Stmt an if statement node
+      --  @return True iff the main condition or any of the elsif conditions is
+      --    statically true
+
+      ----------------------------
+      -- Comes_From_Dead_Branch --
+      ----------------------------
+
+      function Comes_From_Dead_Branch (If_Stmt, Stmt : Node_Id) return Boolean
+      is
+      begin
+         --  check if then branch is dead and contains our stmt
+         if Comes_From_This_Dead_Branch (If_Stmt, Stmt) then
+            return True;
+         end if;
+         --  check if any of the elsif branches is dead and contains our stmt
+         if Present (Elsif_Parts (If_Stmt)) then
+            declare
+               Elt : Node_Id := First (Elsif_Parts (If_Stmt));
+            begin
+               while Present (Elt) loop
+                  if Comes_From_This_Dead_Branch (Elt, Stmt) then
+                     return True;
+                  end if;
+                  Next (Elt);
+               end loop;
+            end;
+         end if;
+         --  check if the else branch is dead and contains our stmt
+         if List_Containing (Stmt) = Else_Statements (If_Stmt)
+           and then Has_True_Condition (If_Stmt)
+         then
+            return True;
+         end if;
+         return False;
+      end Comes_From_Dead_Branch;
+
+      ---------------------------------
+      -- Comes_From_This_Dead_Branch --
+      ---------------------------------
+
+      function Comes_From_This_Dead_Branch
+        (If_Stmt, Stmt : Node_Id)
+         return Boolean
+      is (Nkind (Condition (If_Stmt)) = N_Identifier
+           and then Entity (Condition (If_Stmt)) = Standard_False
+           and then List_Containing (Stmt) = Then_Statements (If_Stmt));
+
+      ------------------------
+      -- Has_True_Condition --
+      ------------------------
+
+      function Has_True_Condition (If_Stmt : Node_Id) return Boolean is
+      begin
+         if Nkind (Condition (If_Stmt)) = N_Identifier
+           and then Entity (Condition (If_Stmt)) = Standard_True
+         then
+            return True;
+         end if;
+         if Present (Elsif_Parts (If_Stmt)) then
+            declare
+               Elt : Node_Id := First (Elsif_Parts (If_Stmt));
+            begin
+               while Present (Elt) loop
+                  if Nkind (Condition (Elt)) = N_Identifier
+                    and then Entity (Condition (Elt)) = Standard_True
+                  then
+                     return True;
+                  end if;
+                  Next (Elt);
+               end loop;
+            end;
+         end if;
+         return False;
+      end Has_True_Condition;
+
+      subtype Subprogram_Boundary is Node_Kind
+        with Static_Predicate => Subprogram_Boundary in
+          N_Subprogram_Body | N_Protected_Body | N_Entry_Body | N_Package_Body;
+   begin
+      while Nkind (Anc) not in Subprogram_Boundary and then Present (Anc) loop
+         if Nkind (Anc) = N_If_Statement
+           and then Comes_From_Dead_Branch (Anc, Prev)
+         then
+            return True;
+         end if;
+         Prev := Anc;
+         Anc := Parent (Anc);
+      end loop;
+      return False;
+   end Is_In_Statically_Dead_Branch;
+
    ---------------------------------
    -- Is_Not_Hidden_Discriminant  --
    ---------------------------------

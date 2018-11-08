@@ -555,7 +555,9 @@ package body SPARK_Annotate is
       --  Check whether we may issue a warning on the pragma before doing it
 
       for Prag of Pragma_Set loop
-         if May_Issue_Warning_On_Node (Prag) then
+         if May_Issue_Warning_On_Node (Prag)
+           and then not Is_In_Statically_Dead_Branch (Prag)
+         then
             Error_Msg_N ("?no check message justified by this pragma", Prag);
          end if;
       end loop;

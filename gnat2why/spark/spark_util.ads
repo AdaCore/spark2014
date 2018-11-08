@@ -472,6 +472,11 @@ package SPARK_Util is
    --      Empty otherwise. This is used to get a stable name for aggregates
    --      used as definition of objects.
 
+   function Is_In_Statically_Dead_Branch (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True if the node is in a branch that is statically dead. Only
+   --      if-statements are detected for now.
+
    function May_Issue_Warning_On_Node (N : Node_Id) return Boolean;
    --  We do not issue any warnings on nodes which stem from inlining or
    --  instantiation, or in subprograms or library packages whose analysis
