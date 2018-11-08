@@ -2015,15 +2015,23 @@ package body Flow_Generated_Globals.Phase_2 is
                Caller : Entity_Name)
                return Name_Sets.Set
             is
-               Var_Scope : constant Entity_Name := Scope (Var);
             begin
-               if Scope_Within_Or_Same (Caller, Var_Scope)
-                 and then State_Comp_Map.Contains (Var)
-               then
-                  --  ??? recursive call to Down_Project
-                  return State_Comp_Map (Var);
-               else
+               if Is_Heap_Variable (Var) then
                   return Name_Sets.To_Set (Var);
+               else
+                  declare
+                     Var_Scope : constant Entity_Name := Scope (Var);
+
+                  begin
+                     if Scope_Within_Or_Same (Caller, Var_Scope)
+                       and then State_Comp_Map.Contains (Var)
+                     then
+                        --  ??? recursive call to Down_Project
+                        return State_Comp_Map (Var);
+                     else
+                        return Name_Sets.To_Set (Var);
+                     end if;
+                  end;
                end if;
             end Down_Project;
 
