@@ -322,7 +322,8 @@ package body Gnat2Why.Subprograms is
                       (Name => To_String (WNE_Attr_Tag),
                        Typ  => EW_Int_Type),
                     B_Ent    => Null_Entity_Name,
-                    Mutable  => False));
+                    Mutable  => False,
+                    Labels   => <>));
    --  Binder to be used as additional tag argument for dispatching functions
 
    function Procedure_Logic_Binders (E : Entity_Id) return Binder_Array;
@@ -4323,7 +4324,8 @@ package body Gnat2Why.Subprograms is
               Binder_Type'(Ada_Node  => Empty,
                            B_Name    => +Result_Id,
                            B_Ent     => Null_Entity_Name,
-                           Mutable   => False)
+                           Mutable   => False,
+                           Labels    => <>)
                 & Tag_B & Logic_Why_Binders;
             Tag_Comp      : constant W_Pred_Id :=
               (if Is_Tagged_Type (Retysp (Etype (E)))
@@ -4646,7 +4648,8 @@ package body Gnat2Why.Subprograms is
                                     Typ       => Typ),
                                  B_Ent    => Null_Entity_Name,
                                  Mutable  => False,
-                                 Ada_Node => Ada_Node));
+                                 Ada_Node => Ada_Node,
+                                 Labels   => <>));
 
                            Ada_Ent_To_Why.Insert (Symbol_Table,
                                                   Ada_Node,
@@ -5500,7 +5503,8 @@ package body Gnat2Why.Subprograms is
          Binder_Type'(Ada_Node  => Empty,
                       B_Name    => +Result_Id,
                       B_Ent     => Null_Entity_Name,
-                      Mutable   => False)
+                      Mutable   => False,
+                      Labels    => <>)
            & Flat_Binders;
       Func_Guard         : constant W_Pred_Id :=
         (if not Use_Guard_For_Function (E) then True_Pred
@@ -5693,7 +5697,8 @@ package body Gnat2Why.Subprograms is
               Binder_Type'(Ada_Node  => Empty,
                            B_Name    => +Result_Id,
                            B_Ent     => Null_Entity_Name,
-                           Mutable   => False)
+                           Mutable   => False,
+                           Labels    => <>)
                 & Logic_Why_Binders;
             Pred_Id           : constant W_Identifier_Id :=
               New_Identifier

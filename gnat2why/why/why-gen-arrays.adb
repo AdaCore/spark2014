@@ -504,7 +504,8 @@ package body Why.Gen.Arrays is
          Vars (I) := Binder_Type'(Ada_Node => Empty,
                                   B_Name   => Tmp,
                                   B_Ent    => Null_Entity_Name,
-                                  Mutable  => False);
+                                  Mutable  => False,
+                                  Labels   => <>);
          Indexes (I) := +Tmp;
          Range_Expr := +New_And_Expr
            (Left   => +Range_Expr,
@@ -573,12 +574,14 @@ package body Why.Gen.Arrays is
         (Ada_Node => Empty,
          B_Name   => New_Identifier (Name => "a", Typ => From_Symb.Ty),
          B_Ent    => Null_Entity_Name,
-         Mutable  => False);
+         Mutable  => False,
+         Labels   => <>);
       B_Binder   : constant Binder_Type :=
         (Ada_Node => Empty,
          B_Name   => New_Identifier (Name => "b", Typ => To_Symb.Ty),
          B_Ent    => Null_Entity_Name,
-         Mutable  => False);
+         Mutable  => False,
+         Labels   => <>);
 
       C         : Cursor;
       Not_Found : Boolean;
@@ -667,7 +670,8 @@ package body Why.Gen.Arrays is
             Indexes (I) := Binder_Type'(Ada_Node => Empty,
                                         B_Name   => Tmp,
                                         B_Ent    => Null_Entity_Name,
-                                        Mutable  => False);
+                                        Mutable  => False,
+                                        Labels   => <>);
             Next_Index (Index);
             I := I + 1;
          end loop;
@@ -976,11 +980,13 @@ package body Why.Gen.Arrays is
         (1 => Binder_Type'(Ada_Node => Empty,
                            Mutable  => False,
                            B_Ent    => Null_Entity_Name,
-                           B_Name   => Dummy_Ident),
+                           B_Name   => Dummy_Ident,
+                           Labels   => <>),
          2 => Binder_Type'(Ada_Node => Empty,
                            Mutable  => False,
                            B_Ent    => Null_Entity_Name,
-                           B_Name   => Size_Ident));
+                           B_Name   => Size_Ident,
+                           Labels   => <>));
       Str_Typ           : constant W_Type_Id := EW_Abstract (Standard_String);
       Dummy_Ident2      : constant W_Identifier_Id :=
         New_Identifier (Name => "x", Typ => Str_Typ);
@@ -1011,7 +1017,8 @@ package body Why.Gen.Arrays is
                     Ada_Node => Empty,
                     Mutable  => False,
                     B_Ent    => Null_Entity_Name,
-                    B_Name   => Dummy_Ident2)),
+                    B_Name   => Dummy_Ident2,
+                    Labels   => <>)),
                Return_Type => M_Main.String_Image_Type));
 
       --  Add axioms for:
@@ -1294,11 +1301,13 @@ package body Why.Gen.Arrays is
       Args (1) := Binder_Type'(Ada_Node => Empty,
                                B_Name   => A_Ident,
                                B_Ent    => Null_Entity_Name,
-                               Mutable  => False);
+                               Mutable  => False,
+                               Labels   => <>);
       Args (Args_Lgth + 1) := Binder_Type'(Ada_Node => Empty,
                                            B_Name   => B_Ident,
                                            B_Ent    => Null_Entity_Name,
-                                           Mutable  => False);
+                                           Mutable  => False,
+                                           Labels   => <>);
 
       --  Store a and b in their expression array
 
@@ -1326,7 +1335,8 @@ package body Why.Gen.Arrays is
               Binder_Type'(Ada_Node => Empty,
                            B_Name   => Idx,
                            B_Ent    => Null_Entity_Name,
-                           Mutable  => False);
+                           Mutable  => False,
+                           Labels   => <>);
 
             --  Store the first and last bounds of a and b in Args
 
@@ -1334,22 +1344,26 @@ package body Why.Gen.Arrays is
               Binder_Type'(Ada_Node => Empty,
                            B_Name   => A_Fst,
                            B_Ent    => Null_Entity_Name,
-                           Mutable  => False);
+                           Mutable  => False,
+                           Labels   => <>);
             Args (2 * I + 1) :=
               Binder_Type'(Ada_Node => Empty,
                            B_Name   => A_Lst,
                            B_Ent    => Null_Entity_Name,
-                           Mutable  => False);
+                           Mutable  => False,
+                           Labels   => <>);
             Args (Args_Lgth + 2 * I) :=
               Binder_Type'(Ada_Node => Empty,
                            B_Name   => B_Fst,
                            B_Ent    => Null_Entity_Name,
-                           Mutable  => False);
+                           Mutable  => False,
+                           Labels   => <>);
             Args (Args_Lgth + 2 * I + 1) :=
               Binder_Type'(Ada_Node => Empty,
                            B_Name   => B_Lst,
                            B_Ent    => Null_Entity_Name,
-                           Mutable  => False);
+                           Mutable  => False,
+                           Labels   => <>);
 
             --  Compute the expressions of the index accesses
 

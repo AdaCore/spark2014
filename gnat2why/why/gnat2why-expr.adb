@@ -7792,7 +7792,8 @@ package body Gnat2Why.Expr is
                  (Ada_Node => Empty,
                   B_Name   => Ident,
                   B_Ent    => Null_Entity_Name,
-                  Mutable  => False);
+                  Mutable  => False,
+                  Labels   => <>);
                Dyn_Prop : constant W_Pred_Id :=
                  Compute_Dynamic_Invariant
                    (Expr   => +Ident,
@@ -7865,13 +7866,15 @@ package body Gnat2Why.Expr is
                        (Ada_Node => Empty,
                         B_Name   => +F_Expr,
                         B_Ent    => Null_Entity_Name,
-                        Mutable  => False);
+                        Mutable  => False,
+                        Labels   => <>);
                      Bnd_Args (2 * Dim) := L_Expr;
                      Bnd_Params (2 * Dim) :=
                        (Ada_Node => Empty,
                         B_Name   => +L_Expr,
                         B_Ent    => Null_Entity_Name,
-                        Mutable  => False);
+                        Mutable  => False,
+                        Labels   => <>);
                   end if;
 
                   --  Add equalities to the axiom's body

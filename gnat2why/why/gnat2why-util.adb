@@ -748,6 +748,15 @@ package body Gnat2Why.Util is
       return S;
    end Get_Model_Trace_Label;
 
+   function Get_Model_Trace_Label (Name : String) return Name_Id_Sets.Set is
+      S : constant Name_Id_Sets.Set :=
+       (Name_Id_Sets.To_Set
+          (NID
+             (Model_Trace_Label & Name)));
+   begin
+      return S;
+   end Get_Model_Trace_Label;
+
    ------------------------------
    -- Get_Static_Call_Contract --
    ------------------------------

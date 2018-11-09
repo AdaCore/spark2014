@@ -1182,13 +1182,7 @@ package body Gnat2Why.Counter_Examples is
                           Get_Entity_Id (True, Comp_Name);
 
                      begin
-                        --  Special case for the constrained attribute
-
-                        if Comp = Empty
-                          and then Has_Prefix (Comp_Name, "attr__constrained")
-                        then
-                           Ptr.Attrs.Insert ("Constrained", Element (C));
-                        elsif Comp /= Empty then
+                        if Comp /= Empty then
                            declare
                               Comp_Ty  : constant Entity_Id :=
                                 Retysp (Etype (Comp));

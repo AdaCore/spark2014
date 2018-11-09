@@ -52,11 +52,14 @@ package Why.Gen.Binders is
       B_Name   : W_Identifier_Id;
       B_Ent    : Any_Entity_Name;
       Mutable  : Boolean := False;
+      Labels   : Name_Id_Sets.Set;
    end record;
    --  This record represents a variable binding B_Name. In some cases, extra
    --  information is stored concerning the Ada entity that is represented by
    --  this binder. The Ada_Node may be used for that, or the B_Ent field if no
-   --  entity node is available for the entity.
+   --  entity node is available for the entity. Labels is a set of label
+   --  associated to the binder. It is used to provide counterexample labels
+   --  to record components inside record declarations.
 
    type Binder_Array is array (Positive range <>) of Binder_Type;
 
@@ -277,7 +280,8 @@ package Why.Gen.Binders is
      ((Regular, Local => True, Main => (Ada_Node => E,
                                         B_Name   => Id,
                                         B_Ent    => Null_Entity_Name,
-                                        Mutable  => Mutable)));
+                                        Mutable  => Mutable,
+                                        Labels   => <>)));
    --  @param E entity
    --  @param Id identifier
    --  @param Mutable True iff the item is mutable

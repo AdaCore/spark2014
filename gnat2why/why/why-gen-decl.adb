@@ -27,7 +27,6 @@ with Ada.Containers.Indefinite_Ordered_Maps;
 with Common_Containers;   use Common_Containers;
 with GNATCOLL.Utils;      use GNATCOLL.Utils;
 with Namet;               use Namet;
-with SPARK_Util;          use SPARK_Util;
 with Types;               use Types;
 with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -47,7 +46,7 @@ package body Why.Gen.Decl is
      (Section       : W_Section_Id;
       Param_Ty_Name : W_Name_Id;
       Field_Id      : W_Identifier_Id;
-      SPARK_Node    : Node_Or_Entity_Id := Empty)
+      Labels        : Name_Id_Sets.Set)
    with Pre => Field_Id /= Why_Empty;
    --  Emit declaration of a projection for a Why3 record type. The projection
    --  projects values of the record type to given field of this type.
@@ -60,12 +59,7 @@ package body Why.Gen.Decl is
    --  @param Field_Id the identifier of the field to that the record is
    --      projected. Its type is the type to that the record type is projected
    --      (and must be different from Why_Empty).
-   --  @param SPARK_Node if the projection projects SPARK record to the SPARK
-   --      field, the AST node corresponding to the field, Empty otherwise.
-   --      The string "." & Node_Or_Entity_Id'Image (SPARK_Node) will be
-   --      appended to the name of the variable that is being projected. If
-   --      SPARK_Field_Name equals to Empty, nothing will be appended to the
-   --      name of the variable.
+   --  @param Labels the counterexample labels for the record field.
 
    ----------
    -- Emit --
@@ -132,8 +126,9 @@ package body Why.Gen.Decl is
            (Section       => Section,
             Param_Ty_Name => Name,
             Field_Id      => Binders (Binder).B_Name,
-            SPARK_Node    => (if SPARK_Record then Binders (Binder).Ada_Node
-                              else Empty));
+            Labels        =>
+              (if SPARK_Record then Binders (Binder).Labels
+               else Name_Id_Sets.Empty_Set));
       end loop;
    end Emit_Record_Declaration;
 
@@ -164,7 +159,7 @@ package body Why.Gen.Decl is
      (Section       : W_Section_Id;
       Param_Ty_Name : W_Name_Id;
       Field_Id      : W_Identifier_Id;
-      SPARK_Node    : Node_Or_Entity_Id := Empty)
+      Labels        : Name_Id_Sets.Set)
    is
       use Projection_Names;
 
@@ -173,7 +168,8 @@ package body Why.Gen.Decl is
         Get_Name_String (Get_Symbol (Param_Ty_Name));
 
       Proj_Name : constant String :=
-        Param_Ty_Name_Str & "_" & Source_Name (SPARK_Node);
+        Param_Ty_Name_Str & "_" &
+        Get_Name_String (Get_Symbol (Get_Name (Field_Id)));
 
       Proj_Name_Cursor : constant Cursor :=
         Projection_Names_Decls.Find (Proj_Name);
@@ -219,10 +215,7 @@ package body Why.Gen.Decl is
                                              Name => Param_Ident,
                                              Arg_Type => Param_Ty)),
             Return_Type => Get_Type (+Field_Id),
-            Labels      => (if SPARK_Node = Empty then Name_Id_Sets.Empty_Set
-                            else Get_Model_Trace_Label
-                              (E               => SPARK_Node,
-                               Is_Record_Field => True)),
+            Labels      => Labels,
             Location    => No_Location,
             Def         => Field_Access));
 

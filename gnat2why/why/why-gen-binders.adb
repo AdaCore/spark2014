@@ -67,7 +67,8 @@ package body Why.Gen.Binders is
         Binder_Type'(Ada_Node => Ty,
                      B_Name   => Concurrent_Self_Ident (Ty),
                      B_Ent    => Null_Entity_Name,
-                     Mutable  => Mutable);
+                     Mutable  => Mutable,
+                     Labels   => <>);
    end Concurrent_Self_Binder;
 
    ---------------------------
@@ -288,7 +289,8 @@ package body Why.Gen.Binders is
                   Main  => (Ada_Node => Empty,
                             B_Name   => To_Why_Id (V, Local => False),
                             B_Ent    => V,
-                            Mutable  => True));
+                            Mutable  => True,
+                            Labels   => <>));
                I := I + 1;
             end if;
          end;
@@ -560,7 +562,8 @@ package body Why.Gen.Binders is
                       To_Why_Id (E, Typ => Why_Empty),
                     B_Ent    => Null_Entity_Name,
                     Ada_Node => E,
-                    Mutable  => False));
+                    Mutable  => False,
+                    Labels   => <>));
 
       --  For functions, store both the name to be used in logic and the name
       --  to be used in programs
@@ -576,13 +579,15 @@ package body Why.Gen.Binders is
                          To_Why_Id (E, Typ => Typ, Domain => EW_Term),
                        B_Ent    => Null_Entity_Name,
                        Ada_Node => E,
-                       Mutable  => False),
+                       Mutable  => False,
+                       Labels   => <>),
                     For_Prog => Binder_Type'
                       (B_Name   =>
                          To_Why_Id (E, Typ => Typ, Domain => EW_Prog),
                        B_Ent    => Null_Entity_Name,
                        Ada_Node => E,
-                       Mutable  => False));
+                       Mutable  => False,
+                       Labels   => <>));
          end;
 
       --  If E is in SPARK, decide whether it should be split into multiple
@@ -614,7 +619,8 @@ package body Why.Gen.Binders is
               Binder_Type'(Ada_Node => E,
                            B_Name   => Name,
                            B_Ent    => Null_Entity_Name,
-                           Mutable  => Is_Mutable_In_Why (E));
+                           Mutable  => Is_Mutable_In_Why (E),
+                           Labels   => <>);
             Dim    : constant Positive := Positive (Number_Dimensions (Ty));
             Bounds : Array_Bounds;
             Index  : Node_Id := First_Index (Ty);
@@ -675,7 +681,8 @@ package body Why.Gen.Binders is
                                       Typ  =>
                                         Field_Type_For_Fields (Ty)),
                                  B_Ent    => Null_Entity_Name,
-                                 Mutable  => True));
+                                 Mutable  => True,
+                                 Labels   => <>));
             end if;
 
             if Count_Discriminants (Ty) > 0 then
@@ -689,7 +696,8 @@ package body Why.Gen.Binders is
                                       Typ  =>
                                         Field_Type_For_Discriminants (Ty)),
                                  B_Ent    => Null_Entity_Name,
-                                 Mutable  => Unconstr));
+                                 Mutable  => Unconstr,
+                                 Labels   => <>));
             end if;
 
             if Has_Defaulted_Discriminants (Ty) then
@@ -746,7 +754,8 @@ package body Why.Gen.Binders is
                                   EW_Abstract
                                     (Directly_Designated_Type (Ty))),
                            B_Ent    => Null_Entity_Name,
-                           Mutable  => True);
+                           Mutable  => True,
+                           Labels   => <>);
 
             Result.Address :=
               Address_Append
@@ -778,7 +787,8 @@ package body Why.Gen.Binders is
               Binder_Type'(Ada_Node => E,
                            B_Name   => Name,
                            B_Ent    => Null_Entity_Name,
-                           Mutable  => Is_Mutable_In_Why (E));
+                           Mutable  => Is_Mutable_In_Why (E),
+                           Labels   => <>);
          begin
             return (Regular, Local, Binder);
          end;
@@ -824,10 +834,7 @@ package body Why.Gen.Binders is
            (Ada_Node   => Binders (B).Ada_Node,
             Domain     => Domain,
             Name       => Binders (B).B_Name,
-            Labels     =>
-              Get_Model_Trace_Label
-                (E               => Binders (B).Ada_Node,
-                 Is_Record_Field => True),
+            Labels     => Binders (B).Labels,
             Arg_Type   => New_Arg_Type (Binders (B)),
             Is_Mutable => Binders (B).Mutable);
       end loop;
@@ -1412,7 +1419,8 @@ package body Why.Gen.Binders is
            New_Identifier (Name => "__void_param", Typ => EW_Unit_Type),
          B_Ent    => Null_Entity_Name,
          Mutable  => False,
-         Ada_Node => Empty);
+         Ada_Node => Empty,
+         Labels   => <>);
    end Unit_Param;
 
 end Why.Gen.Binders;

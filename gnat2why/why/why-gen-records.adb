@@ -1901,6 +1901,10 @@ package body Why.Gen.Records is
                                 Local => True,
                                 Rec   => Root,
                                 Typ   => EW_Abstract (Etype (Discr))),
+                           Labels   =>
+                             Get_Model_Trace_Label
+                               (E               => Discr,
+                                Is_Record_Field => True),
                            Ada_Node => Discr,
                            others   => <>);
                         Index := Index + 1;
@@ -1908,10 +1912,11 @@ package body Why.Gen.Records is
                         exit when No (Discr);
                      end loop;
 
-                     Emit_Record_Declaration (Section      => P,
-                                              Name         => Discr_Name,
-                                              Binders      => Binders_D,
-                                              SPARK_Record => True);
+                     Emit_Record_Declaration
+                       (Section      => P,
+                        Name         => Discr_Name,
+                        Binders      => Binders_D,
+                        SPARK_Record => True);
 
                      --  Generate a mutable record to hold elements of type
                      --  __split_discrs, as well as an havoc function for it.
@@ -1959,6 +1964,10 @@ package body Why.Gen.Records is
                           Rec   => E,
                           Local => True,
                           Typ   => W_Type_Of_Component (Field, E)),
+                     Labels   =>
+                       Get_Model_Trace_Label
+                         (E               => Field,
+                          Is_Record_Field => True),
                      Ada_Node => Field,
                      others   => <>);
                   Index := Index + 1;
@@ -2003,7 +2012,7 @@ package body Why.Gen.Records is
                                          Name       =>
                                            To_Name (WNE_Rec_Split_Fields),
                                          Is_Mutable => False)),
-                  others => <>);
+                  others   => <>);
                Index_All := Index_All + 1;
             end if;
 
@@ -2014,6 +2023,7 @@ package body Why.Gen.Records is
                  (B_Name =>
                     New_Identifier (Name => To_String (WNE_Attr_Constrained),
                                     Typ  => EW_Bool_Type),
+                  Labels => Get_Model_Trace_Label ("'Constrained"),
                   others => <>);
                Index_All := Index_All + 1;
             end if;
@@ -2029,9 +2039,10 @@ package body Why.Gen.Records is
 
             pragma Assert (Index_All = Num_All + 1);
 
-            Emit_Record_Declaration (Section => P,
-                                     Name    => Ty_Name,
-                                     Binders => Binders_A);
+            Emit_Record_Declaration (Section      => P,
+                                     Name         => Ty_Name,
+                                     Binders      => Binders_A,
+                                     SPARK_Record => True);
          end if;
       end Declare_Record_Type;
 

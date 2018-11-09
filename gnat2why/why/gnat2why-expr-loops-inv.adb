@@ -765,7 +765,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                   Vars (I) := Binder_Type'(Ada_Node => Empty,
                                            B_Name   => Tmp,
                                            B_Ent    => Null_Entity_Name,
-                                           Mutable  => False);
+                                           Mutable  => False,
+                                           Labels   => <>);
                   Indices (I) := +Tmp;
                   Range_Expr := +New_And_Expr
                     (Left   => +Range_Expr,

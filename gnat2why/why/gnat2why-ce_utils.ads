@@ -60,7 +60,4 @@ package Gnat2Why.CE_Utils is
    --  Naive computation of a Uint form a string which is the representation of
    --  an integer in base 10.
 
-   function Has_Prefix (S : String; Prefix : String) return Boolean;
-   --  Return True if Prefix is a prefix of S
-
 end Gnat2Why.CE_Utils;
