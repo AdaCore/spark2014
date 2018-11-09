@@ -3729,9 +3729,14 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
 
+      --  Only warn on statically False precondition that is not written as
+      --  "False" in the source code, so as to warn about cases where the
+      --  configuration leads to a precondition being False.
+
       for Expr of Get_Precondition_Expressions (E) loop
          if Nkind (Expr) = N_Identifier
            and then Entity (Expr) = Standard_False
+           and then Original_Node (Expr) /= Expr
          then
             Precondition_Is_Statically_False := True;
             Error_Msg_N (Msg  => "?precondition is statically False",
