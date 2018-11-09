@@ -31,6 +31,7 @@ with Sem_Aux;                use Sem_Aux;
 with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
+with Sinput;                 use Sinput;
 with SPARK_Util.Subprograms;
 with Stand;                  use Stand;
 with Tbuild;                 use Tbuild;
@@ -54,6 +55,13 @@ package body SPARK_Rewrite is
    --  Replace names in instances of generic subprograms with names of
    --  the original subprograms; we prefer the original names when outputting
    --  error messages and generating Why code.
+
+   procedure Rewrite_Wrapper_Package (N : Node_Id)
+   with Pre => Nkind (N) = N_Package_Declaration;
+   --  Wrapper packages typically have unique names with the GP suffix, except
+   --  those which themselves are compilation units, because apparently this
+   --  makes the name resolution easier (see Analyze_Instance_And_Renamings for
+   --  details). Here we add such a suffix to make their name unique.
 
    procedure Rewrite_Real_Literal (N : Node_Id);
    --  Rewrite real literals that are not sub-expressions of static expressions
@@ -210,6 +218,30 @@ package body SPARK_Rewrite is
       Set_Chars (Wrapped_Instance, Orig_Name_Id);
    end Rewrite_Subprogram_Instantiation;
 
+   -----------------------------
+   -- Rewrite_Wrapper_Package --
+   -----------------------------
+
+   procedure Rewrite_Wrapper_Package (N : Node_Id) is
+      Def_Ent : constant Entity_Id := Defining_Entity (N);
+
+   begin
+      if Is_Wrapper_Package (Def_Ent)
+        and then Is_Compilation_Unit (Def_Ent)
+      then
+         --  Add a suffix just like in Analyze_Instance_And_Renamings
+
+         Set_Chars (Def_Ent,
+                    New_External_Name
+                      (Related_Id   => Chars (Def_Ent),
+                       Suffix       => "GP",
+                       Suffix_Index => Source_Offset (Sloc (Def_Ent))));
+
+         --  ??? we could add the same suffix to package body, but apparently
+         --  there is no need for that.
+      end if;
+   end Rewrite_Wrapper_Package;
+
    ------------------------------
    -- Rewrite_Compilation_Unit --
    ------------------------------
@@ -322,6 +354,9 @@ package body SPARK_Rewrite is
 
             when N_Subprogram_Instantiation =>
                Rewrite_Subprogram_Instantiation (N);
+
+            when N_Package_Declaration =>
+               Rewrite_Wrapper_Package (N);
 
             --  Recursively call the tree rewriting procedure on subunits
 
