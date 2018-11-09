@@ -363,7 +363,7 @@ package body Gnat2Why.Decls is
                     (File,
                      New_Global_Ref_Declaration
                        (Name     => To_Local (Var.Discrs.Binder.B_Name),
-                        Labels   => Name_Id_Sets.Empty_Set,
+                        Labels   => Get_Counterexample_Labels (E),
                         Location => Safe_First_Sloc (E),
                         Ref_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                else
@@ -374,7 +374,7 @@ package body Gnat2Why.Decls is
                         Name        =>
                           To_Local (Var.Discrs.Binder.B_Name),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Name_Id_Sets.Empty_Set,
+                        Labels      => Get_Counterexample_Labels (E),
                         Location    => Safe_First_Sloc (E),
                         Return_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                end if;
@@ -390,7 +390,8 @@ package body Gnat2Why.Decls is
                     (Domain      => EW_Term,
                      Name        => To_Local (Var.Constr.Id),
                      Binders     => (1 .. 0 => <>),
-                     Labels      => Name_Id_Sets.Empty_Set,
+                     Labels      => Get_Counterexample_Labels
+                       (E, "'Constrained"),
                      Location    => Safe_First_Sloc (E),
                      Return_Type => Get_Typ (Var.Constr.Id)));
             end if;
@@ -473,7 +474,7 @@ package body Gnat2Why.Decls is
               (File,
                New_Global_Ref_Declaration
                  (Name     => To_Local (Var.Value.B_Name),
-                  Labels   => Get_Counterexample_Labels (E),
+                  Labels   => Name_Id_Sets.Empty_Set,
                   Location => Safe_First_Sloc (E),
                   Ref_Type => Get_Typ (Var.Value.B_Name)));
 

@@ -78,6 +78,26 @@ package body Gnat2Why.CE_Utils is
          return Empty;
    end Get_Entity_Id;
 
+   ----------------
+   -- Has_Prefix --
+   ----------------
+
+   function Has_Prefix (S : String; Prefix : String) return Boolean is
+      XS : Integer := S'First;
+   begin
+      if S'Length < Prefix'Length then
+         return False;
+      else
+         for I in Prefix'Range loop
+            if S (XS) /= Prefix (I) then
+               return False;
+            end if;
+            XS := XS + 1;
+         end loop;
+         return True;
+      end if;
+   end Has_Prefix;
+
    ------------------------
    -- Is_Visible_In_Type --
    ------------------------

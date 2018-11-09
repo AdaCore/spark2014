@@ -72,9 +72,9 @@ do_checks.adb:301:16: info: range check proved (CVC4: 2 VC)
 do_checks.adb:306:24: info: range check proved (CVC4: 1 VC)
 do_checks.adb:307:25: info: range check proved (CVC4: 1 VC)
 do_checks.adb:313:32: warning: "Y" is not modified, could be IN
-do_checks.adb:315:20: medium: discriminant check might fail (e.g. when X = (J => ?, Arr => (others => False))) [possible explanation: precondition of subprogram at line 313 should mention X]
+do_checks.adb:315:20: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => (others => False))) [possible explanation: precondition of subprogram at line 313 should mention X]
 do_checks.adb:315:25: medium: array index check might fail
-do_checks.adb:315:32: medium: discriminant check might fail (e.g. when Y = (J => ?, Arr => (others => False))) [possible explanation: precondition of subprogram at line 313 should mention Y]
+do_checks.adb:315:32: medium: discriminant check might fail (e.g. when Y = (J => 0, Arr => (others => False))) [possible explanation: precondition of subprogram at line 313 should mention Y]
 do_checks.adb:315:37: medium: array index check might fail
 do_checks.adb:317:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:317:30: info: discriminant check proved (CVC4: 1 VC)
@@ -123,7 +123,7 @@ do_checks.adb:397:44: info: initialization of "Y.Arr" proved
 do_checks.adb:402:26: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:404:16: info: precondition proved (CVC4: 1 VC)
 do_checks.adb:404:22: info: initialization of "X.Arr" proved
-do_checks.adb:404:22: medium: discriminant check might fail
+do_checks.adb:404:22: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => ?))
 do_checks.adb:408:29: warning: "X" is not modified, could be IN
 do_checks.adb:408:44: info: initialization of "Y.Arr" proved
 do_checks.adb:412:23: info: range check proved (CVC4: 1 VC)
@@ -136,7 +136,7 @@ do_checks.adb:421:30: warning: "X" is not modified, could be IN
 do_checks.adb:421:45: info: initialization of "Y.Arr" proved
 do_checks.adb:425:45: info: initialization of "Y.Arr" proved
 do_checks.adb:427:19: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:427:23: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 425 should mention X]
+do_checks.adb:427:23: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => ?)) [possible explanation: precondition of subprogram at line 425 should mention X]
 do_checks.adb:430:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:430:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:431:29: info: discriminant check proved (CVC4: 1 VC)
@@ -152,7 +152,7 @@ do_checks.adb:444:19: info: initialization of "X.Arr" proved
 do_checks.adb:450:29: warning: "X" is not modified, could be IN
 do_checks.adb:450:44: warning: "Y" is not modified, could be IN
 do_checks.adb:452:19: warning: statement has no effect
-do_checks.adb:452:26: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 450 should mention X]
+do_checks.adb:452:26: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => ?)) [possible explanation: precondition of subprogram at line 450 should mention X]
 do_checks.adb:456:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:456:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:457:29: info: discriminant check proved (CVC4: 1 VC)

@@ -361,6 +361,9 @@ package body Gnat2Why.Counter_Examples is
          when Cnt_Bitvector =>
             return CNT_Element.B;
 
+         when Cnt_Boolean =>
+            return To_Unbounded_String (CNT_Element.Bo);
+
          when Cnt_Unparsed =>
             return CNT_Element.U;
 
@@ -1182,9 +1185,7 @@ package body Gnat2Why.Counter_Examples is
                         --  Special case for the constrained attribute
 
                         if Comp = Empty
-                          and then Comp_Name
-                            (Comp_Name'First .. Comp_Name'First + 16) =
-                          "attr__constrained"
+                          and then Has_Prefix (Comp_Name, "attr__constrained")
                         then
                            Ptr.Attrs.Insert ("Constrained", Element (C));
                         elsif Comp /= Empty then
