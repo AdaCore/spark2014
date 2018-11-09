@@ -1,7 +1,7 @@
-with Tree_Template;
-
 package Correlator is
 
-   package Manager is new Tree_Template;
+   package Tree is
+      procedure Dummy;
+   end;
 
 end Correlator;
