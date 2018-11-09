@@ -184,5 +184,4 @@ cc1311a.adb:452:17: medium: precondition might fail
 cc1311a.adb:457:17: medium: precondition might fail
 cc1311a.adb:467:17: medium: precondition might fail
 cc1311a.adb:474:17: medium: precondition might fail
-report.ads:73:21: warning: precondition is statically False
 gnatprove: error during flow analysis and proof
