@@ -1074,7 +1074,11 @@ package body Gnat2Why.Counter_Examples is
                P_Name : constant Unbounded_String :=
                  (if Key (C) = "'Old" then Prefix else Name);
                Val    : constant CNT_Element_Ptr := Element (C);
+
             begin
+               --  Access variables are printed X.all = ... instead of
+               --  X = (all => ...).
+
                if Val /= null
                  and then Val.K = Access_Value
                  and then not Val.Is_Null
@@ -1264,6 +1268,8 @@ package body Gnat2Why.Counter_Examples is
                               Handle_CNT_Element
                                 (Ptr.Fields (Position), Element (C), Comp_Ty);
                            end;
+                        elsif Comp_Name = "'Constrained" then
+                           Ptr.Attrs.Include ("Constrained", Element (C));
                         end if;
                      end;
                      Next (C);
