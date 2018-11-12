@@ -1,0 +1,3 @@
+gnat2why: you must provide one source file
+gnatprove: error during generation of Global contracts
+one of the following is not a valid switch or source file name: gnata hello.adb
