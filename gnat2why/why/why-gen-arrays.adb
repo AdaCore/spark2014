@@ -423,31 +423,41 @@ package body Why.Gen.Arrays is
         Insert_Scalar_Conversion (Domain, Empty, First, Typ);
       Last_Rep  : constant W_Expr_Id :=
         Insert_Scalar_Conversion (Domain, Empty, Last, Typ);
-      Cond      : constant W_Expr_Id :=
-        New_Call
-          (Domain => Domain,
-           Name   => (if Typ = EW_Int_Type
-                      then Int_Infix_Le
-                      elsif Why_Type_Is_BitVector (Typ)
-                      then MF_BVs (Typ).Ule
-                      else raise Program_Error),
-           Typ    => EW_Bool_Type,
-           Args   => (+First_Rep, +Last_Rep));
-      Len       : constant W_Expr_Id :=
-        New_Discrete_Add
-          (Domain,
-           New_Discrete_Substract (Domain, Last_Rep, First_Rep),
-           New_Discrete_Constant (Value => Uint_1,
-                                  Typ   => Typ));
    begin
-      return
-        New_Conditional
-          (Domain    => Domain,
-           Condition => Cond,
-           Then_Part => Len,
-           Else_Part => New_Discrete_Constant (Value => Uint_0,
-                                               Typ   => Typ),
-           Typ       => Typ);
+      if Typ = EW_Int_Type then
+         return
+           New_Call
+             (Domain => Domain,
+              Name   => M_Integer.Length,
+              Typ    => EW_Int_Type,
+              Args   => (+First_Rep, +Last_Rep));
+      elsif Why_Type_Is_BitVector (Typ) then
+         declare
+            Cond      : constant W_Expr_Id :=
+              New_Call
+                (Domain => Domain,
+                 Name   => MF_BVs (Typ).Ule,
+                 Typ    => EW_Bool_Type,
+                 Args   => (+First_Rep, +Last_Rep));
+            Len       : constant W_Expr_Id :=
+              New_Discrete_Add
+                (Domain,
+                 New_Discrete_Substract (Domain, Last_Rep, First_Rep),
+                 New_Discrete_Constant (Value => Uint_1,
+                                        Typ   => Typ));
+         begin
+            return
+              New_Conditional
+                (Domain    => Domain,
+                 Condition => Cond,
+                 Then_Part => Len,
+                 Else_Part => New_Discrete_Constant (Value => Uint_0,
+                                                     Typ   => Typ),
+                 Typ       => Typ);
+         end;
+      else
+         raise Program_Error;
+      end if;
    end Build_Length_Expr;
 
    function Build_Length_Expr

@@ -1681,6 +1681,11 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("bool_gt"),
                         Typ    => EW_Bool_Type);
+      M_Integer.Length :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symbol => NID ("length"),
+                        Typ    => EW_Int_Type);
    end Init_Integer_Module;
 
    ---------------------------

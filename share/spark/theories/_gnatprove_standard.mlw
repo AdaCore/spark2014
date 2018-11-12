@@ -28,7 +28,7 @@ module Main
     a.int__content
   meta "model_projection" function int__ref___projection
   meta "inline : no" function int__ref___projection
-  
+
   function __fixed__ref___projection
     (a : __fixed__ref)  : __fixed =
     a.__fixed__content

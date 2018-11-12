@@ -58,6 +58,9 @@ theory Integer
     forall y:int.
         bool_ge x y = True <-> x >= y
 
+  function length (x y: int) : int =
+    if x <= y then (y-x) + 1 else 0
+
 end
 
 theory Floating_Func
