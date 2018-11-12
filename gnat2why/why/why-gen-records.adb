@@ -2023,7 +2023,7 @@ package body Why.Gen.Records is
                  (B_Name =>
                     New_Identifier (Name => To_String (WNE_Attr_Constrained),
                                     Typ  => EW_Bool_Type),
-                  Labels => Get_Model_Trace_Label ("'Constrained"),
+                  Labels => Get_Model_Trace_Label ("'" & Constrained_Label),
                   others => <>);
                Index_All := Index_All + 1;
             end if;

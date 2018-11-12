@@ -391,7 +391,7 @@ package body Gnat2Why.Decls is
                      Name        => To_Local (Var.Constr.Id),
                      Binders     => (1 .. 0 => <>),
                      Labels      => Get_Counterexample_Labels
-                       (E, "'Constrained"),
+                       (E, "'" & Constrained_Label),
                      Location    => Safe_First_Sloc (E),
                      Return_Type => Get_Typ (Var.Constr.Id)));
             end if;
@@ -449,7 +449,8 @@ package body Gnat2Why.Decls is
                         Name        => To_Local (Var.Bounds (D).First),
                         Binders     => (1 .. 0 => <>),
                         Labels      => Get_Counterexample_Labels
-                          (E, Bound_Dimension_To_Str (Var.Dim, D, "'First")),
+                          (E, Bound_Dimension_To_Str
+                               (Var.Dim, D, "'" & First_Label)),
                         Location    => Safe_First_Sloc (E),
                         Return_Type => Ty_First));
 
@@ -460,7 +461,8 @@ package body Gnat2Why.Decls is
                         Name        => To_Local (Var.Bounds (D).Last),
                         Binders     => (1 .. 0 => <>),
                         Labels      => Get_Counterexample_Labels
-                          (E, Bound_Dimension_To_Str (Var.Dim, D, "'Last")),
+                          (E, Bound_Dimension_To_Str
+                               (Var.Dim, D, "'" & Last_Label)),
                         Location    => Safe_First_Sloc (E),
                         Return_Type => Ty_Last));
                end;
@@ -475,7 +477,7 @@ package body Gnat2Why.Decls is
                New_Global_Ref_Declaration
                  (Name     => To_Local (Var.Value.B_Name),
                   Location => Safe_First_Sloc (E),
-                  Labels   => Get_Counterexample_Labels (E, "'All"),
+                  Labels   => Get_Counterexample_Labels (E, "'" & All_Label),
                   Ref_Type => Get_Typ (Var.Value.B_Name)));
 
             --  Generate a global ref for the address and is_null if the
@@ -496,7 +498,8 @@ package body Gnat2Why.Decls is
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Is_Null),
                      Location => Safe_First_Sloc (E),
-                     Labels   => Get_Counterexample_Labels (E, "'Is_Null"),
+                     Labels   => Get_Counterexample_Labels
+                       (E, "'" & Is_Null_Label),
                      Ref_Type => Get_Typ (Var.Is_Null)));
 
             --  Otherwise generate constants

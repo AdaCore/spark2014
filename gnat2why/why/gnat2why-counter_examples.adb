@@ -52,6 +52,7 @@ with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 with String_Utils;                use String_Utils;
 with Uintp;                       use Uintp;
+with Why.Gen.Names;               use Why.Gen.Names;
 
 package body Gnat2Why.Counter_Examples is
 
@@ -1268,8 +1269,8 @@ package body Gnat2Why.Counter_Examples is
                               Handle_CNT_Element
                                 (Ptr.Fields (Position), Element (C), Comp_Ty);
                            end;
-                        elsif Comp_Name = "'Constrained" then
-                           Ptr.Attrs.Include ("Constrained", Element (C));
+                        elsif Comp_Name = "'" & Constrained_Label then
+                           Ptr.Attrs.Include (Constrained_Label, Element (C));
                         end if;
                      end;
                      Next (C);
@@ -1294,7 +1295,7 @@ package body Gnat2Why.Counter_Examples is
                         Cnt_Elt   : Cntexmp_Value_Ptr renames Element (C);
 
                      begin
-                        if Comp_Name = "'All" then
+                        if Comp_Name = "'" & All_Label then
                            declare
                               Comp_Ty  : constant Entity_Id :=
                                 Retysp (Directly_Designated_Type (Ent_Ty));
@@ -1303,7 +1304,7 @@ package body Gnat2Why.Counter_Examples is
                               Handle_CNT_Element
                                 (Ptr.Ptr_Val, Cnt_Elt, Comp_Ty);
                            end;
-                        elsif Comp_Name = "'Is_Null" then
+                        elsif Comp_Name = "'" & Is_Null_Label then
                            if Cnt_Elt /= null
                              and then Cnt_Elt.T = Cnt_Boolean
                            then
@@ -1573,7 +1574,7 @@ package body Gnat2Why.Counter_Examples is
 
                               if Var_Slice_Num <
                                 String_Split.Slice_Count (Name_Parts)
-                                and then Slice (Name_Parts, 2) = "Index"
+                                and then Slice (Name_Parts, 2) = Index_Label
                               then
                                  Values.Insert
                                    (Key      => Attribute,
@@ -1593,7 +1594,7 @@ package body Gnat2Why.Counter_Examples is
 
                      --  Ignore Index attribute, it is handled in previous case
 
-                     if Part = "Index" then
+                     if Part = Index_Label then
                         pragma Assert (Var_Slice_Num = 2);
                         Is_Attribute := False;
                         Current_Cnt_Value := Current_Cnt_Value.Index;
@@ -1601,14 +1602,14 @@ package body Gnat2Why.Counter_Examples is
                      --  Fields of access types do not have node ids, they are
                      --  hanlded as special strings.
 
-                     elsif Part = "All" then
+                     elsif Part = All_Label then
                         pragma Assert (Current_Cnt_Value.K = Access_Value);
                         Is_Attribute := False;
                         Ent_Ty := Retysp (Directly_Designated_Type
                                           (Current_Cnt_Value.Ent_Ty));
                         Current_Cnt_Value.Ptr_Val := New_Item (Ent_Ty);
                         Current_Cnt_Value := Current_Cnt_Value.Ptr_Val;
-                     elsif Part = "Is_Null" then
+                     elsif Part = Is_Null_Label then
                         pragma Assert (Current_Cnt_Value.K = Access_Value);
                         if Elt.Value /= null
                           and then Elt.Value.all.T = Cnt_Boolean

@@ -15770,7 +15770,8 @@ package body Gnat2Why.Expr is
                            --  will be recognized in counterexample handling.
 
                            Append_To_Name =>
-                             (if Need_Temp_Var then "'Index" else "")),
+                             (if Need_Temp_Var then "'" & Index_Label
+                              else "")),
                       Var_Type  => W_Index_Type,
                       Pred      => Quant_Body);
             else

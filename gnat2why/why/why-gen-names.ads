@@ -147,6 +147,14 @@ package Why.Gen.Names is
    Specific_Post       : constant String := "specific_post";
    --  suffix for specific postcondition of dispatching procedures
 
+   --  Labels for counterexamples:
+   Constrained_Label : constant String := "Constrained";
+   First_Label       : constant String := "First";
+   Last_Label        : constant String := "Last";
+   Is_Null_Label     : constant String := "Is_Null";
+   All_Label         : constant String := "All";
+   Index_Label       : constant String := "Index";
+
    --  The following enumeration is used for two things:
    --    * a simple enumeration of strings, accessed using the "To_String"
    --      function below. In practice, many of these strings are used to build
