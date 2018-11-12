@@ -501,6 +501,7 @@ package body Why.Gen.Pointers is
          else
             Binders_F (1) :=
               (B_Name => To_Local (E_Symb (E, WNE_Is_Null_Pointer)),
+               Labels => Get_Model_Trace_Label ("'Is_Null"),
                others => <>);
 
             Binders_F (2) :=
@@ -509,6 +510,7 @@ package body Why.Gen.Pointers is
 
             Binders_F (3) :=
               (B_Name => To_Local (E_Symb (E, WNE_Pointer_Value)),
+               Labels => Get_Model_Trace_Label ("'All"),
                others => <>);
 
             Emit_Record_Declaration (Section => P,

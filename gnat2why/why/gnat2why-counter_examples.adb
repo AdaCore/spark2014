@@ -113,7 +113,7 @@ package body Gnat2Why.Counter_Examples is
         Element_Type => CNT_Element_Ptr);
 
    type CNT_Element_Kind is
-     (Array_Value, Record_Value, Simple_Value, Index_Value);
+     (Array_Value, Record_Value, Simple_Value, Index_Value, Access_Value);
    --  Kind for counterexample elements, see below
 
    type CNT_Element (K : CNT_Element_Kind) is record
@@ -132,12 +132,17 @@ package body Gnat2Why.Counter_Examples is
          Cnt_Nam : Unbounded_String;
          Cnt_Typ : Entity_Id;
          Index   : CNT_Element_Ptr;
+      when Access_Value  =>
+         Ptr_Val : CNT_Element_Ptr;
+         Is_Null : Boolean := False;
       end case;
    end record;
-   --  A counterexample element can be of four different kinds.
+   --  A counterexample element can be of five different kinds.
    --  * Simple_Value contains a counterexample value of a non composite type
    --  * Array_Value represents an array aggregate
    --  * Record_Value is a record aggregate
+   --  * Access_Value represents an access, with a boolean saying whether or
+   --    not it is null and a value.
    --  * Index_Value is the special case for quantified variable in a for of
    --    iteration. Indeed, in Why, this iteration is translated as iteration
    --    on another cursor type. The value for the element must be
@@ -225,6 +230,15 @@ package body Gnat2Why.Counter_Examples is
    function Print_CNT_Element_Debug (El : CNT_Element) return String;
    --  Debug function, print a CNT_Element without any processing
 
+   function Refine_Access_Value
+     (Value     : CNT_Element_Ptr;
+      Top_Level : Boolean) return Unbounded_String
+     with Pre => Value /= null and then Value.K = Access_Value;
+   --  Counterexample for pointers.
+   --  @param Value for a pointer counterexample
+   --  @param Top_Level if True, do not print the first (all => ...) context.
+   --  @result the corresponding pointer value.
+
    function Refine_Array_Components
      (Value : CNT_Element_Ptr) return Unbounded_String
      with Pre => Value /= null and then Value.K = Array_Value;
@@ -236,7 +250,14 @@ package body Gnat2Why.Counter_Examples is
                               return Unbounded_String;
    --  Refine CNT_Element assuming it is an integer
 
-   function Refine (CNT_Element : CNT_Element_Ptr) return Unbounded_String;
+   function Refine
+     (CNT_Element : CNT_Element_Ptr;
+      Top_Level   : Boolean := False) return Unbounded_String;
+   --  Create a pretty string from a counterexample element.
+   --  @param CNT_Element a counterexample element
+   --  @param Top_Level True if CNT_Element is a counterexample value for a
+   --    variable.
+   --  @result the pretty printed line.
 
    function Refine_Iterator_Value
      (Value : CNT_Element_Ptr) return Unbounded_String
@@ -262,7 +283,10 @@ package body Gnat2Why.Counter_Examples is
    -- Refine --
    ------------
 
-   function Refine (CNT_Element : CNT_Element_Ptr) return Unbounded_String is
+   function Refine
+     (CNT_Element : CNT_Element_Ptr;
+      Top_Level   : Boolean := False) return Unbounded_String
+   is
    begin
       case CNT_Element.K is
          when Array_Value =>
@@ -284,9 +308,40 @@ package body Gnat2Why.Counter_Examples is
               (CNT_Element);
          when Index_Value =>
             CNT_Element.Val_Str := Refine_Iterator_Value (CNT_Element);
+         when Access_Value =>
+            CNT_Element.Val_Str :=
+              Refine_Access_Value (CNT_Element, Top_Level);
       end case;
       return CNT_Element.Val_Str;
    end Refine;
+
+   -------------------------
+   -- Refine_Access_Value --
+   -------------------------
+
+   function Refine_Access_Value
+     (Value     : CNT_Element_Ptr;
+      Top_Level : Boolean) return Unbounded_String
+   is
+   begin
+      if Value.Is_Null then
+         Value.Val_Str := To_Unbounded_String ("null");
+
+      elsif Value.Ptr_Val = null then
+         Value.Val_Str := Dont_Display;
+
+      --  Top level values are printed in the form X.all = ...
+
+      elsif Top_Level then
+         Value.Val_Str := Refine (Value.Ptr_Val);
+
+      --  Otherwise reconstruct the value
+
+      else
+         Value.Val_Str := "(all => " & Refine (Value.Ptr_Val) & ")";
+      end if;
+      return Value.Val_Str;
+   end Refine_Access_Value;
 
    -----------------------------
    -- Refine_Array_Components --
@@ -991,7 +1046,8 @@ package body Gnat2Why.Counter_Examples is
                  ((Name & "'" & Key (C), Refine_Attribute (Element (C))));
             end loop;
 
-            --  Also insert attributes of components for records
+            --  Also insert attributes of components for records and
+            --  dereference of accesses.
 
             if Val.K = Record_Value then
                for C in Val.Fields.Iterate loop
@@ -1001,25 +1057,39 @@ package body Gnat2Why.Counter_Examples is
                         Val  => Element (C));
                   end if;
                end loop;
+            elsif Val.K = Access_Value
+              and then not Val.Is_Null
+              and then Val.Ptr_Val /= null
+            then
+               Add_Attributes
+                 (Name => Name & ".all",
+                  Val  => Val.Ptr_Val);
             end if;
          end Add_Attributes;
 
       begin
          for C in Values.Iterate loop
             declare
-               Name : constant Unbounded_String := Prefix & Key (C);
-               Val  : constant CNT_Element_Ptr := Element (C);
+               Name   : Unbounded_String := Prefix & Key (C);
+               P_Name : constant Unbounded_String :=
+                 (if Key (C) = "'Old" then Prefix else Name);
+               Val    : constant CNT_Element_Ptr := Element (C);
             begin
+               if Val /= null
+                 and then Val.K = Access_Value
+                 and then not Val.Is_Null
+               then
+                  Name := Name & ".all";
+               end if;
+
                Attributes.Append
-                 ((Name, Refine (Val)));
+                 ((Name, Refine (Val, Top_Level => True)));
 
                --  For each value also insert attributes if any. As attributes
                --  are constant, they are generally supplied for 'Old.
                --  ??? There could be a duplicate
 
-               Add_Attributes
-                 (Val  => Val,
-                  Name => (if Key (C) = "'Old" then Prefix else Name));
+               Add_Attributes (Val  => Val, Name => P_Name);
             end;
          end loop;
       end Get_CNT_Element_Value_And_Attributes;
@@ -1199,6 +1269,45 @@ package body Gnat2Why.Counter_Examples is
                      Next (C);
                   end loop;
                end;
+            when Access_Value =>
+
+               --  Counterexample should be a record
+
+               if Val.T /= Cnt_Record then
+                  return;
+               end if;
+
+               --  Store the fields inside Ptr.fields
+
+               declare
+                  C : Cntexmp_Value_Array.Cursor := Val.Fi.First;
+               begin
+                  while Has_Element (C) loop
+                     declare
+                        Comp_Name : String renames Key (C);
+                        Cnt_Elt   : Cntexmp_Value_Ptr renames Element (C);
+
+                     begin
+                        if Comp_Name = "'All" then
+                           declare
+                              Comp_Ty  : constant Entity_Id :=
+                                Retysp (Directly_Designated_Type (Ent_Ty));
+                           begin
+                              Ptr.Ptr_Val := New_Item (Comp_Ty);
+                              Handle_CNT_Element
+                                (Ptr.Ptr_Val, Cnt_Elt, Comp_Ty);
+                           end;
+                        elsif Comp_Name = "'Is_Null" then
+                           if Cnt_Elt /= null
+                             and then Cnt_Elt.T = Cnt_Boolean
+                           then
+                              Ptr.Is_Null := Cnt_Elt.Bo;
+                           end if;
+                        end if;
+                     end;
+                     Next (C);
+                  end loop;
+               end;
             when Index_Value =>
                raise Program_Error;
          end case;
@@ -1290,15 +1399,19 @@ package body Gnat2Why.Counter_Examples is
       begin
          return (if Is_Array_Type (Ty) then
                     new CNT_Element'(K      => Array_Value,
-                                   Ent_Ty => Ty,
-                                   others => <>)
+                                     Ent_Ty => Ty,
+                                     others => <>)
                  elsif Is_Record_Type_In_Why (Ty) then
                     new CNT_Element'(K      => Record_Value,
-                                   Ent_Ty => Ty,
-                                   others => <>)
-                 else new CNT_Element'(K      => Simple_Value,
                                      Ent_Ty => Ty,
-                                     others => <>));
+                                     others => <>)
+                 elsif Is_Access_Type (Ty) then
+                    new CNT_Element'(K      => Access_Value,
+                                     Ent_Ty => Ty,
+                                     others => <>)
+                 else new CNT_Element'(K      => Simple_Value,
+                                       Ent_Ty => Ty,
+                                       others => <>));
       end New_Item;
 
    --  Start of processing for Build_Variables_Info
@@ -1398,7 +1511,7 @@ package body Gnat2Why.Counter_Examples is
                       (if Is_Attribute
                        then Part
                        else Source_Name (Part_Entity));
-                  Ent_Ty    : constant Entity_Id :=
+                  Ent_Ty    : Entity_Id :=
                     (if Is_Attribute then Empty
                      else Retysp (Etype (Part_Entity)));
 
@@ -1478,6 +1591,27 @@ package body Gnat2Why.Counter_Examples is
                         pragma Assert (Var_Slice_Num = 2);
                         Is_Attribute := False;
                         Current_Cnt_Value := Current_Cnt_Value.Index;
+
+                     --  Fields of access types do not have node ids, they are
+                     --  hanlded as special strings.
+
+                     elsif Part = "All" then
+                        pragma Assert (Current_Cnt_Value.K = Access_Value);
+                        Is_Attribute := False;
+                        Ent_Ty := Retysp (Directly_Designated_Type
+                                          (Current_Cnt_Value.Ent_Ty));
+                        Current_Cnt_Value.Ptr_Val := New_Item (Ent_Ty);
+                        Current_Cnt_Value := Current_Cnt_Value.Ptr_Val;
+                     elsif Part = "Is_Null" then
+                        pragma Assert (Current_Cnt_Value.K = Access_Value);
+                        if Elt.Value /= null
+                          and then Elt.Value.all.T = Cnt_Boolean
+                        then
+                           Current_Cnt_Value.Is_Null := Elt.Value.all.Bo;
+                        end if;
+
+                     --  Regular attributes
+
                      else
                         Current_Cnt_Value.Attrs.Include
                           (Part, Elt.Value);
@@ -1494,6 +1628,12 @@ package body Gnat2Why.Counter_Examples is
                      Current_Cnt_Value :=
                        Current_Cnt_Value.Fields.Element (Part_Entity);
                   end if;
+
+                  --  If we have reached an attribute, iteration should be over
+
+                  pragma Assert
+                    (if Is_Attribute then
+                        Var_Slice_Num = String_Split.Slice_Count (Name_Parts));
 
                   --  If the last part is an attribute we are done. Else, we
                   --  need to insert the element.

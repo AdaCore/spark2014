@@ -9,7 +9,7 @@ split_pointers.adb:42:12: info: pointer dereference check proved (CVC4: 1 VC)
 split_pointers.adb:42:21: info: pointer dereference check proved (CVC4: 1 VC)
 split_pointers.adb:54:19: info: pointer dereference check proved (CVC4: 1 VC)
 split_pointers.adb:55:17: info: initialization of "Tmp" proved
-split_pointers.adb:55:21: medium: overflow check might fail (e.g. when Tmp = Integer'First) [possible explanation: precondition of subprogram at line 47 should mention Y]
+split_pointers.adb:55:21: medium: overflow check might fail (e.g. when Tmp = Integer'First and Y.all = -1) [possible explanation: precondition of subprogram at line 47 should mention Y]
 split_pointers.adb:55:25: info: pointer dereference check proved (CVC4: 1 VC)
 split_pointers.adb:57:14: info: initialization of "Tmp" proved
 split_pointers.adb:71:04: info: precondition proved (CVC4: 1 VC)

@@ -108,6 +108,7 @@ package body Why.Gen.Decl is
    -----------------------------
    -- Emit_Record_Declaration --
    -----------------------------
+
    procedure Emit_Record_Declaration
      (Section      : W_Section_Id;
       Name         : W_Name_Id;

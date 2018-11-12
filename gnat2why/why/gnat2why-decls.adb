@@ -474,8 +474,8 @@ package body Gnat2Why.Decls is
               (File,
                New_Global_Ref_Declaration
                  (Name     => To_Local (Var.Value.B_Name),
-                  Labels   => Name_Id_Sets.Empty_Set,
                   Location => Safe_First_Sloc (E),
+                  Labels   => Get_Counterexample_Labels (E, "'All"),
                   Ref_Type => Get_Typ (Var.Value.B_Name)));
 
             --  Generate a global ref for the address and is_null if the
@@ -495,8 +495,8 @@ package body Gnat2Why.Decls is
                  (File,
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Is_Null),
-                     Labels   => Name_Id_Sets.Empty_Set,
                      Location => Safe_First_Sloc (E),
+                     Labels   => Get_Counterexample_Labels (E, "'Is_Null"),
                      Ref_Type => Get_Typ (Var.Is_Null)));
 
             --  Otherwise generate constants
@@ -517,9 +517,9 @@ package body Gnat2Why.Decls is
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Local (Var.Is_Null),
-                     Labels      => Name_Id_Sets.Empty_Set,
                      Binders     => (1 .. 0 => <>),
                      Location    => Safe_First_Sloc (E),
+                     Labels      => Get_Counterexample_Labels (E, "'Is_Null"),
                      Return_Type => Get_Typ (Var.Is_Null)));
             end if;
 
