@@ -1062,13 +1062,6 @@ package body SPARK_Atree is
 
    function Of_Present (N : Node_Id) return Boolean renames Sinfo.Of_Present;
 
-   ------------------
-   -- Package_Spec --
-   ------------------
-
-   function Package_Spec (E : Entity_Id) return Node_Id renames
-     Sem_Aux.Package_Spec;
-
    ------------------------------
    -- Parameter_Specifications --
    ------------------------------

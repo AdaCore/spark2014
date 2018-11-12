@@ -2634,7 +2634,7 @@ global variables discussed later in this section.
    c. L1 does not require a body (the terminology is a little odd in this
       case because L1 has no body); or
 
-   d. L1 is preelaborable and L2's library unit is not.
+   d. L1 is preelaborable and L2's library unit is not; or
 
    e. L2 semantically depends on some library_item L3 such that the
       elaboration of the body of L1 is known to precede the
