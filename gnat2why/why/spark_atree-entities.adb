@@ -530,14 +530,9 @@ package body SPARK_Atree.Entities is
          return True;
       end if;
 
-      --  d. Withed is preelaborable and Mains's library unit is not; or
+      --  d. Withed is preelaborated and Mains's library unit is not; or
 
-      --  We only test here if Withed is preelaborated, not preelaborable, as
-      --  we do not have the information in the AST. We also do not test the
-      --  fact that Main is preelaborable, as this cannot cause any problem
-      --  for assuming the Initial_Condition of Withed.
-
-      if Is_Preelaborated (Withed) then
+      if Is_Preelaborated (Withed) and then not Is_Preelaborated (Main) then
          return True;
       end if;
 
