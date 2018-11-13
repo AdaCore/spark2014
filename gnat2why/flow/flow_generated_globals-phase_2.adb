@@ -49,6 +49,7 @@ with Flow_Generated_Globals.ALI_Serialization;
 use Flow_Generated_Globals.ALI_Serialization;
 
 with Flow_Generated_Globals.Phase_2.Read;
+with Flow_Generated_Globals.Phase_2.Visibility;
 
 package body Flow_Generated_Globals.Phase_2 is
 
@@ -238,6 +239,10 @@ package body Flow_Generated_Globals.Phase_2 is
    Comp_State_Map : Name_Maps.Map   := Name_Maps.Empty_Map;
    --  A reverse of the above mapping, i.e. constituent -> abstract_state
 
+   State_Part_Map : Name_Graphs.Map := Name_Graphs.Empty_Map;
+   --  Mapping from abstract states to their Part_Of constituents, i.e.
+   --  abstract_state -> {constituents}
+
    State_Abstractions : Name_Sets.Set := Name_Sets.Empty_Set;
    --  State abstractions that the GG knows of
 
@@ -310,13 +315,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function Is_Protected_Operation (E_Name : Entity_Name) return Boolean;
    --  Return True if E_Name refers to an entry or protected subprogram
-
-   function Scope (EN : Entity_Name) return Entity_Name;
-   --  Equivalent of Sinfo.Scope for entity names
-
-   function Scope_Within_Or_Same (Inner, Outer : Entity_Name) return Boolean;
-   --  Equivalent of Sem_Util.Scope_Within_Or_Same for entity names;
-   --  ??? see Scope_Truly_Within_Or_Same and make this one work for subunits
 
    function Is_Predefined (EN : Entity_Name) return Boolean;
    --  Returns True iff EN is a predefined entity
@@ -1198,6 +1196,25 @@ package body Flow_Generated_Globals.Phase_2 is
                      State_Abstractions.Include (State);
                   end;
 
+               when EK_Part_Of =>
+                  declare
+                     State   : Entity_Name;
+                     Part_Of : Entity_Name;
+
+                     State_Pos : Name_Graphs.Cursor;
+                     Inserted  : Boolean;
+
+                  begin
+                     Serialize (State);
+                     Serialize (Part_Of);
+
+                     State_Part_Map.Insert (Key      => State,
+                                            Position => State_Pos,
+                                            Inserted => Inserted);
+
+                     State_Part_Map (State_Pos).Include (Part_Of);
+                  end;
+
                when EK_Remote_States =>
                   Serialize (State_Abstractions);
 
@@ -1386,6 +1403,55 @@ package body Flow_Generated_Globals.Phase_2 is
                      Serialize (Direct_Calls (Caller_Pos));
                   end;
 
+               when EK_Flow_Scope =>
+                  declare
+                     use Flow_Generated_Globals.Phase_2.Visibility;
+
+                     Entity : Entity_Name;
+                     Info   : Name_Info_T;
+
+                     Present : Boolean;
+
+                     procedure Serialize is new
+                       Flow_Generated_Globals.Phase_2.Read.Serialize_Discrete
+                         (Boolean);
+
+                     procedure Serialize is new
+                       Flow_Generated_Globals.Phase_2.Read.Serialize_Discrete
+                         (Declarative_Part);
+
+                  begin
+                     Serialize (Entity);
+                     Serialize (Info.Is_Package);
+                     Serialize (Info.Is_Private);
+
+                     Serialize (Present);
+                     if Present then
+                        Serialize (Info.Instance_Parent);
+                     else
+                        Info.Instance_Parent := Null_Entity_Name;
+                     end if;
+
+                     Serialize (Present);
+                     if Present then
+                        Serialize (Info.Template);
+                     else
+                        Info.Template := Null_Entity_Name;
+                     end if;
+
+                     Serialize (Present);
+                     if Present then
+                        Serialize (Info.Container.Ent);
+                        Serialize (Info.Container.Part);
+                        Info.Parent := Null_Entity_Name;
+                     else
+                        Info.Container := (Null_Entity_Name, Null_Part);
+                        Serialize (Info.Parent);
+                     end if;
+
+                     Register_Name_Scope (Entity, Info);
+                  end;
+
             end case;
 
             Terminate_GG_Line;
@@ -1547,6 +1613,8 @@ package body Flow_Generated_Globals.Phase_2 is
            (ALI_File_Name     => ALIs.Table (Index).Afile,
             For_Current_CUnit => Index = ALIs.First);
       end loop;
+
+      Flow_Generated_Globals.Phase_2.Visibility.Connect_Name_Scopes;
 
       Volatile_Vars.Union (Async_Readers_Vars);
       Volatile_Vars.Union (Async_Writers_Vars);
@@ -2015,23 +2083,29 @@ package body Flow_Generated_Globals.Phase_2 is
                Caller : Entity_Name)
                return Name_Sets.Set
             is
+               use Flow_Generated_Globals.Phase_2.Visibility;
             begin
                if Is_Heap_Variable (Var) then
                   return Name_Sets.To_Set (Var);
                else
-                  declare
-                     Var_Scope : constant Entity_Name := Scope (Var);
+                  if State_Abstractions.Contains (Var) then
 
-                  begin
-                     if Scope_Within_Or_Same (Caller, Var_Scope)
-                       and then State_Comp_Map.Contains (Var)
-                     then
-                        --  ??? recursive call to Down_Project
+                     --  ??? recursive call to Down_Project?
+
+                     if State_Refinement_Is_Visible (Var, Caller) then
                         return State_Comp_Map (Var);
+                     elsif Part_Of_Is_Visible (Var, Caller) then
+                        if State_Part_Map.Contains (Var) then
+                           return State_Part_Map (Var);
+                        else
+                           return Name_Sets.To_Set (Var);
+                        end if;
                      else
                         return Name_Sets.To_Set (Var);
                      end if;
-                  end;
+                  else
+                     return Name_Sets.To_Set (Var);
+                  end if;
                end if;
             end Down_Project;
 
@@ -3221,44 +3295,6 @@ package body Flow_Generated_Globals.Phase_2 is
               Conditional_Calls => O_Conditional,
               Definite_Calls    => O_Definite - O_Conditional);
    end Categorize_Calls;
-
-   -----------
-   -- Scope --
-   -----------
-
-   function Scope (EN : Entity_Name) return Entity_Name is
-
-      use Ada.Strings;
-      use Ada.Strings.Fixed;
-
-      S : constant String := To_String (EN);
-      J : constant Natural := Index (Source  => S,
-                                     Pattern => "__",
-                                     From    => S'Last,
-                                     Going   => Backward);
-      --  ??? This is hackish, I know! The alternative is to try with
-      --  Find_Entity or to record hierarchy in the ALI file.
-
-   begin
-      return To_Entity_Name (S (S'First .. J - 1));
-   end Scope;
-
-   --------------------------
-   -- Scope_Within_Or_Same --
-   --------------------------
-
-   function Scope_Within_Or_Same (Inner, Outer : Entity_Name)
-                                  return Boolean
-   is
-      Inner_Name : constant String := To_String (Inner);
-      Outer_Name : constant String := To_String (Outer);
-
-   begin
-      return
-        Inner_Name'Length >= Outer_Name'Length
-          and then
-        Ada.Strings.Fixed.Head (Inner_Name, Outer_Name'Length) = Outer_Name;
-   end Scope_Within_Or_Same;
 
    -------
    -- < --

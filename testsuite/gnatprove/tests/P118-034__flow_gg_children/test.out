@@ -49,7 +49,7 @@ Generated contracts for p5
    Refined_Global =>
       In_Out =>
          G
-         a__i
+         A.State_A
 Generated contracts for p6
    Global =>
       Input =>
@@ -69,10 +69,9 @@ Generated contracts for p7
    Refined_Global =>
       In_Out =>
          G
-         a__i
+         A.State_A
 Generated contracts for child
-a~child.adb:15:07: high: "A.State_A" must be listed in the Global aspect of "P5" (SPARK RM 6.1.4(13))
-a~child.adb:29:07: high: "A.State_A" must be listed in the Global aspect of "P7" (SPARK RM 6.1.4(13))
+a~child.adb:15:07: warning: unused assignment to "G" constituent of "State_A"
 a~child.ads:4:14: info: initialization of "G" constituent of "State_A" proved
 a~child.ads:8:14: info: initialization of "J" constituent of "State_B" proved
 a~child.ads:8:14: info: initialization of "H" constituent of "State_B" proved

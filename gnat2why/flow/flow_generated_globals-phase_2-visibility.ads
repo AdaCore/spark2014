@@ -2,11 +2,12 @@
 --                                                                          --
 --                           GNAT2WHY COMPONENTS                            --
 --                                                                          --
---                     F L O W _ V I S I B I L I T Y                        --
+--       F L O W . G E N E R A T E D _ G L O B A L S . P H A S E _ 2        --
+--                            V I S I B I L I T Y                           --
 --                                                                          --
---                                S p e c                                   --
+--                                 S p e c                                  --
 --                                                                          --
---                   Copyright (C) 2018, Altran UK Limited                  --
+--                  Copyright (C) 2018, Altran UK Limited                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -21,44 +22,44 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Flow_Types; use Flow_Types;
-with Types;      use Types;
+private package Flow_Generated_Globals.Phase_2.Visibility is
 
-package Flow_Visibility is
+   type Name_Scope is record
+      Ent  : Any_Entity_Name;
+      Part : Any_Declarative_Part;
+   end record;
+   --  Just like Flow_Scope, but for Entity_Names
 
-   --  The visibility graph is created in two passes: first vertices, then
-   --  edges, because frontend doesn't provide a realiable routine that would
-   --  traverse declarations before references.
-
-   procedure Register_Flow_Scopes (Unit_Node : Node_Id);
-   --  Creates vertices in the visibility graph
-
-   procedure Connect_Flow_Scopes;
-   --  Creates edges in the visibility graph
-
-   function Is_Visible
-     (Looking_From : Flow_Scope;
-      Looking_At   : Flow_Scope)
-      return Boolean;
-   --  Returns True iff Looking_From has visibility of Looking_At
-
-   type Hierarchy_Info_T is record
+   type Name_Info_T is record
       Is_Package      : Boolean;
       Is_Private      : Boolean;
 
-      Parent          : Entity_Id;
-      Instance_Parent : Entity_Id;
-      Template        : Entity_Id;
-      Container       : Flow_Scope;
+      Parent          : Any_Entity_Name;
+      Instance_Parent : Any_Entity_Name;
+      Template        : Any_Entity_Name;
+      Container       : Name_Scope;
    end record;
-   --  A minimal description of an entity location within the code hierarchy
+   --  A minimal description of a name location within the code hierarchy
 
-   generic
-      with procedure Process (E : Entity_Id; Info : Hierarchy_Info_T);
-   procedure Iterate_Flow_Scopes;
-   --  Call Process on every registered flow scope
-   --  ??? this should be only exposed to serialization, which itself is only
-   --  exposed to Flow_Generated_Globals.Phase_1; one day the entire hierarchy
-   --  of flow packages should be revisited...
+   procedure Register_Name_Scope (E : Entity_Name; Info : Name_Info_T);
+   --  Add vertices for E to name visibility graph
 
-end Flow_Visibility;
+   procedure Connect_Name_Scopes;
+   --  Creates edges in the visibility graph
+
+   function State_Refinement_Is_Visible
+     (State  : Entity_Name;
+      Caller : Entity_Name)
+      return Boolean
+   with Pre => GG_Is_Abstract_State (State);
+
+   function Part_Of_Is_Visible
+     (State  : Entity_Name;
+      Caller : Entity_Name)
+      return Boolean
+   with Pre => GG_Is_Abstract_State (State);
+
+--     procedure Dump_Tree;
+--     --  Print the inter
+
+end Flow_Generated_Globals.Phase_2.Visibility;

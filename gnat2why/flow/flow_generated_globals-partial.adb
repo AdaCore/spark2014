@@ -32,6 +32,7 @@ with Flow_Generated_Globals.Phase_1;   use Flow_Generated_Globals.Phase_1;
 with Flow_Refinement;                  use Flow_Refinement;
 with Flow.Slice;                       use Flow.Slice;
 with Flow_Utility;                     use Flow_Utility;
+with Flow_Visibility;                  use Flow_Visibility;
 with Gnat2Why_Args;                    use Gnat2Why_Args;
 with Graphs;
 with Lib;                              use Lib;
@@ -1738,6 +1739,9 @@ package body Flow_Generated_Globals.Partial is
    ------------------------
 
    procedure Generate_Contracts (GNAT_Root : Node_Id) is
+      procedure GG_Register_Flow_Scopes is
+        new Iterate_Flow_Scopes (GG_Register_Flow_Scope);
+
    begin
       Dump_Tree;
 
@@ -1779,6 +1783,8 @@ package body Flow_Generated_Globals.Partial is
             Write_Constants_To_ALI (Constant_Graph);
          end;
       end if;
+
+      GG_Register_Flow_Scopes;
 
       GG_Write_Finalize;
 

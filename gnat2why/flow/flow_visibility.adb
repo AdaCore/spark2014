@@ -45,17 +45,6 @@ package body Flow_Visibility is
    --  Types
    ----------------------------------------------------------------------------
 
-   type Hierarchy_Info_T is record
-      Is_Package      : Boolean;
-      Is_Private      : Boolean;
-
-      Parent          : Entity_Id;
-      Instance_Parent : Entity_Id;
-      Template        : Entity_Id;
-      Container       : Flow_Scope;
-   end record;
-   --  A minimal description of an entity location within the code hierarchy
-
    package Hierarchy_Info_Maps is new
      Ada.Containers.Hashed_Maps (Key_Type        => Entity_Id,
                                  Element_Type    => Hierarchy_Info_T,
@@ -393,7 +382,7 @@ package body Flow_Visibility is
       end loop;
 
       --  Release memory to the provers
-      Hierarchy_Info.Clear;
+      --  ??? Hierarchy_Info.Clear;
 
       Close_Visibility_Graph;
 
@@ -1238,5 +1227,16 @@ package body Flow_Visibility is
    begin
       Traverse_Declaration_Or_Statement (Unit_Node);
    end Traverse_Compilation_Unit;
+
+   -------------------------
+   -- Iterate_Flow_Scopes --
+   -------------------------
+
+   procedure Iterate_Flow_Scopes is
+   begin
+      for C in Hierarchy_Info.Iterate loop
+         Process (Hierarchy_Info_Maps.Key (C), Hierarchy_Info (C));
+      end loop;
+   end Iterate_Flow_Scopes;
 
 end Flow_Visibility;

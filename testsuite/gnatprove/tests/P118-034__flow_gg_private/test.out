@@ -64,8 +64,7 @@ Generated contracts for f_6
          A.State_A
    Refined_Global =>
       Input =>
-         G
          Priv.I
-         a__h
 Generated contracts for priv
+a~priv.adb:6:14: high: "G" constituent of "State_A" must be listed in the Global aspect of "F_6" (SPARK RM 6.1.4(13))
 a~priv.adb:6:14: high: "A.State_A" must be listed in the Global aspect of "F_6" (SPARK RM 6.1.4(13))

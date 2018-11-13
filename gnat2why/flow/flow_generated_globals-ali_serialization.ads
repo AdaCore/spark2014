@@ -38,7 +38,9 @@ package Flow_Generated_Globals.ALI_Serialization is
                            EK_Protected_Instance,
                            EK_Task_Instance,
                            EK_Max_Queue_Length,
-                           EK_Direct_Calls);
+                           EK_Direct_Calls,
+                           EK_Part_Of,
+                           EK_Flow_Scope);
    --  Kinds of the information stored between gnat2why phases, where the info
    --  is written (phase 1) and read (phase 2). Almost no other types are
    --  shared between writing (which takes Entity_Ids) and reading (which gives
