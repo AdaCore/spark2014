@@ -896,6 +896,11 @@ package body Flow_Visibility is
          --  Vertices for the visible (aka. "spec"), private and body parts
 
       begin
+         if Is_Eliminated (E) then
+            --  ??? when returning early we don't need the Info constant
+            return;
+         end if;
+
          --  ??? we don't need this info (except for debug?)
 
          Hierarchy_Info.Insert (E, Info);
