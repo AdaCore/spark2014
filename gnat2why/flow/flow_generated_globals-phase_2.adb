@@ -243,6 +243,9 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Mapping from abstract states to their Part_Of constituents, i.e.
    --  abstract_state -> {constituents}
 
+   Part_State_Map : Name_Maps.Map;
+   --  A reverse of the above mapping, i.e. constituent -> abstract_state
+
    State_Abstractions : Name_Sets.Set := Name_Sets.Empty_Set;
    --  State abstractions that the GG knows of
 
@@ -1202,6 +1205,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      Part_Of : Entity_Name;
 
                      State_Pos : Name_Graphs.Cursor;
+                     Part_Pos  : Name_Maps.Cursor;
                      Inserted  : Boolean;
 
                   begin
@@ -1213,6 +1217,16 @@ package body Flow_Generated_Globals.Phase_2 is
                                             Inserted => Inserted);
 
                      State_Part_Map (State_Pos).Include (Part_Of);
+
+                     Part_State_Map.Insert (Key      => Part_Of,
+                                            New_Item => State,
+                                            Position => Part_Pos,
+                                            Inserted => Inserted);
+
+                     pragma Assert
+                       (Inserted
+                          or else
+                        Part_State_Map (Part_Pos) = State);
                   end;
 
                when EK_Remote_States =>
@@ -1912,14 +1926,7 @@ package body Flow_Generated_Globals.Phase_2 is
                          Contracts :        Entity_Contract_Maps.Map;
                          Patches   : in out Global_Patch_Lists.List)
          is
-            Folded_Entity : constant Entity_Id := Find_Entity (Folded);
-
             Original : Flow_Names renames Contracts (Folded);
-
-            Folded_Scope : constant Flow_Scope :=
-              (if Present (Folded_Entity)
-               then Get_Flow_Scope (Folded_Entity)
-               else Null_Flow_Scope);
 
             function Callee_Globals
               (Callee : Entity_Name;
@@ -2112,6 +2119,8 @@ package body Flow_Generated_Globals.Phase_2 is
             --  Local_Variables
             Update : Flow_Names;
 
+            use Flow_Generated_Globals.Phase_2.Visibility;
+
          --  Start of processing for Fold
 
          begin
@@ -2121,7 +2130,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
             --  ... and then up-project them as necessary
 
-            Up_Project (Update.Refined, Update.Proper, Folded_Scope);
+            Up_Project (Update.Refined, Update.Proper, Folded);
 
             pragma Assert (Phase_1_Info.Contains (Folded));
 
@@ -2705,6 +2714,13 @@ package body Flow_Generated_Globals.Phase_2 is
       return Boolean is
      (Initialized_Vars_And_States.Contains (EN)
         or else GG_Has_Async_Writers (EN));
+
+   -----------------------
+   -- GG_Is_Constituent --
+   -----------------------
+
+   function GG_Is_Part_Of_Constituent (EN : Entity_Name) return Boolean
+     renames Part_State_Map.Contains;
 
    --------------------
    -- GG_Is_Volatile --

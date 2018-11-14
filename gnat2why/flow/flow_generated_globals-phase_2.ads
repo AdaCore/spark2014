@@ -109,6 +109,11 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns true iff E is a constituent of some state abstraction
    --  that we loaded while reading the ALI files.
 
+   function GG_Is_Part_Of_Constituent (EN : Entity_Name) return Boolean
+   with Pre => GG_State_Constituents_Map_Is_Ready;
+   --  Returns true iff E is a Part_Of constituent of some state abstraction
+   --  that we loaded while reading the ALI files.
+
    function GG_Encapsulating_State (EN : Entity_Name) return Any_Entity_Name
    with Pre => GG_State_Constituents_Map_Is_Ready;
    --  Returns the Entity_Name of the directly encapsulating state. If one does

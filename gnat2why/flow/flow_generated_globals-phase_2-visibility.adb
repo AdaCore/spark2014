@@ -741,4 +741,82 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       return To_Entity_Name (S (S'First .. J - 1));
    end Scope;
 
+   ------------------------
+   -- Is_Fully_Contained --
+   ------------------------
+
+   function Is_Fully_Contained (State   : Entity_Name;
+                                Outputs : Name_Sets.Set)
+                                return Boolean
+   is
+     (Name_Sets.Is_Subset (Subset => Get_Constituents (State),
+                           Of_Set => Outputs));
+
+   ----------------
+   -- Up_Project --
+   ----------------
+
+   procedure Up_Project (Vars       :     Name_Sets.Set;
+                         Caller     :     Entity_Name;
+                         Projected  : out Name_Sets.Set;
+                         Partial    : out Name_Sets.Set)
+   is
+   begin
+      Projected.Clear;
+      Partial.Clear;
+
+      for Var of Vars loop
+         if GG_Is_Constituent (Var) then
+
+            --  We project depending on whether the constituent is visible (and
+            --  not its enclosing state refinement), because when projecting
+            --  to a private part of a package spec where that constituent
+            --  is declared (as a Part_Of an abstract state) we want the
+            --  constituent, which is the most precise result we can get.
+
+            declare
+               State : constant Entity_Name := GG_Encapsulating_State (Var);
+
+            begin
+               if State_Refinement_Is_Visible (State, Caller)
+                 or else (GG_Is_Part_Of_Constituent (Var)
+                          and then Part_Of_Is_Visible (State, Caller))
+               then
+                  Projected.Include (Var);
+               else
+                  Partial.Include (State);
+               end if;
+            end;
+         else
+            Projected.Include (Var);
+         end if;
+      end loop;
+   end Up_Project;
+
+   procedure Up_Project (Vars           :     Global_Names;
+                         Projected_Vars : out Global_Names;
+                         Caller         :     Entity_Name)
+   is
+      use type Name_Sets.Set;
+
+      Projected, Partial : Name_Sets.Set;
+
+   begin
+      Up_Project (Vars.Inputs, Caller, Projected, Partial);
+      Projected_Vars.Inputs := Projected or Partial;
+
+      Up_Project (Vars.Outputs, Caller, Projected, Partial);
+      for State of Partial loop
+         if not Is_Fully_Contained (State, Vars.Outputs) then
+            Projected_Vars.Inputs.Include (State);
+         end if;
+      end loop;
+      Projected_Vars.Outputs := Projected or Partial;
+
+      Up_Project (Vars.Proof_Ins, Caller, Projected, Partial);
+      Projected_Vars.Proof_Ins :=
+        (Projected or Partial) -
+        (Projected_Vars.Inputs or Projected_Vars.Outputs);
+   end Up_Project;
+
 end Flow_Generated_Globals.Phase_2.Visibility;

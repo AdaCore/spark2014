@@ -35,7 +35,6 @@ with SPARK_Util;                     use SPARK_Util;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 
 with Flow_Debug;                     use Flow_Debug;
-with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
 with Flow_Visibility;
 
@@ -396,13 +395,6 @@ package body Flow_Refinement is
       (for all C of Iter (Part_Of_Constituents (State))
        => Outputs.Contains (C)));
 
-   function Is_Fully_Contained (State   : Entity_Name;
-                                Outputs : Name_Sets.Set)
-                                return Boolean
-   is
-     (Name_Sets.Is_Subset (Subset => Get_Constituents (State),
-                           Of_Set => Outputs));
-
    function Is_Fully_Contained (State   : Flow_Id;
                                 Outputs : Flow_Id_Sets.Set)
                                 return Boolean
@@ -440,33 +432,6 @@ package body Flow_Refinement is
             else
                Partial.Include (Encapsulating_State (Var));
             end if;
-         else
-            Projected.Include (Var);
-         end if;
-      end loop;
-   end Up_Project;
-
-   procedure Up_Project (Vars         :     Name_Sets.Set;
-                         Folded_Scope :     Flow_Scope;
-                         Projected    : out Name_Sets.Set;
-                         Partial      : out Name_Sets.Set)
-   is
-   begin
-      Projected.Clear;
-      Partial.Clear;
-
-      for Var of Vars loop
-         if GG_Is_Constituent (Var) then
-            declare
-               State : constant Entity_Name := GG_Encapsulating_State (Var);
-
-            begin
-               if State_Refinement_Is_Visible (State, Folded_Scope) then
-                  Projected.Include (Var);
-               else
-                  Partial.Include (State);
-               end if;
-            end;
          else
             Projected.Include (Var);
          end if;
@@ -526,32 +491,6 @@ package body Flow_Refinement is
       use type Node_Sets.Set;
 
       Projected, Partial : Node_Sets.Set;
-
-   begin
-      Up_Project (Vars.Inputs, Scope, Projected, Partial);
-      Projected_Vars.Inputs := Projected or Partial;
-
-      Up_Project (Vars.Outputs, Scope, Projected, Partial);
-      for State of Partial loop
-         if not Is_Fully_Contained (State, Vars.Outputs) then
-            Projected_Vars.Inputs.Include (State);
-         end if;
-      end loop;
-      Projected_Vars.Outputs := Projected or Partial;
-
-      Up_Project (Vars.Proof_Ins, Scope, Projected, Partial);
-      Projected_Vars.Proof_Ins :=
-        (Projected or Partial) -
-        (Projected_Vars.Inputs or Projected_Vars.Outputs);
-   end Up_Project;
-
-   procedure Up_Project (Vars           :     Global_Names;
-                         Projected_Vars : out Global_Names;
-                         Scope          : Flow_Scope)
-   is
-      use type Name_Sets.Set;
-
-      Projected, Partial : Name_Sets.Set;
 
    begin
       Up_Project (Vars.Inputs, Scope, Projected, Partial);

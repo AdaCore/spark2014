@@ -59,6 +59,18 @@ private package Flow_Generated_Globals.Phase_2.Visibility is
       return Boolean
    with Pre => GG_Is_Abstract_State (State);
 
+   procedure Up_Project (Vars      :     Name_Sets.Set;
+                         Caller    :     Entity_Name;
+                         Projected : out Name_Sets.Set;
+                         Partial   : out Name_Sets.Set);
+   --  ??? This routine historically belongs to Flow_Refinement, but we can't
+   --  have it there and keep this a private child of Phase_2.
+   --  Note that here we only have the Caller parameter and not a full scope.
+
+   procedure Up_Project (Vars           :     Global_Names;
+                         Projected_Vars : out Global_Names;
+                         Caller         :     Entity_Name);
+
 --     procedure Dump_Tree;
 --     --  Print the inter
 
