@@ -6548,7 +6548,9 @@ package body Gnat2Why.Expr is
                      Base := Base_Why_Type (Return_Type);
                      Oper := WNE_Fixed_Point_Div;
                   else
-                     pragma Assert (Has_Signed_Integer_Type (Return_Type));
+                     pragma Assert
+                       (Has_Signed_Integer_Type (Return_Type)
+                        or else Has_Modular_Integer_Type (Return_Type));
                      Base := EW_Int_Type;
                      Oper := WNE_Fixed_Point_Div_Result_Int;
                   end if;
@@ -6624,6 +6626,14 @@ package body Gnat2Why.Expr is
                        Name     => Name,
                        Args     => (1 => L_Why, 2 => R_Why),
                        Typ      => Base);
+               end if;
+
+               if Base_Why_Type (Return_Type) /= Base then
+                  T := Insert_Checked_Conversion
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Expr     => T,
+                     To       => Base_Why_Type (Return_Type));
                end if;
             end;
 
