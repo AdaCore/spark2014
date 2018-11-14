@@ -13040,15 +13040,15 @@ package body Gnat2Why.Expr is
                Call     : W_Expr_Id;
                New_Expr : constant Node_Id := Expression (Expr);
                Exp_Ty   : constant Node_Id := Retysp (Etype (Expr));
-               Des_Ty   : constant W_Type_Id :=
-                 Type_Of_Node (Directly_Designated_Type (Exp_Ty));
+               Des_Ty   : constant Entity_Id :=
+                 Directly_Designated_Type (Exp_Ty);
 
             begin
                --  Uninitialized allocator
+               --  Subtype indication are rewritten by the frontend into the
+               --  corresponding Itype, so we only expect subtype names here.
 
-               if Nkind (New_Expr) in
-                 N_Subtype_Indication | N_Identifier
-               then
+               if Nkind (New_Expr) in N_Identifier then
                   Func_New_Uninitialized_Name :=
                     E_Symb (Etype (Expr), WNE_Uninit_Allocator);
 
@@ -13059,21 +13059,87 @@ package body Gnat2Why.Expr is
                      Args     => (1 => +Void),
                      Typ      => Get_Typ (Func_New_Uninitialized_Name));
 
-                  --  Compute the default check on the pointed type when the
-                  --  allocator is uninitialized. This check is not needed when
-                  --  the allocator is initialized because the initialization
-                  --  value should be check within Transform_Expr.
+                  --  Construct the value for the uninitialized data. We
+                  --  generate:
+                  --  Constr_ty.default_checks;
+                  --  let alloc = __new_uninitialized_allocator () in
+                  --  let value = to_des_ty
+                  --    (any constr_ty ensures
+                  --     { Constr_ty.default_initial_condition result /\
+                  --       Constr_ty.dynamic_invariant result }) in
+                  --  assume { alloc.rec__value = value };
+                  --  alloc
 
-                  --  ??? Include_Subtypes => False or Include_Subtypes => True
-                  --  [R525-018]
+                  declare
+                     Call_Ty   : constant W_Type_Id :=
+                       Get_Typ (Func_New_Uninitialized_Name);
+                     Constr_Ty : constant Entity_Id := Entity (New_Expr);
+                     pragma Assert (Default_Initialization
+                                    (Constr_Ty, Get_Flow_Scope (Constr_Ty)) =
+                                      Full_Default_Initialization);
 
-                  Call := +Sequence
-                    (Left     => Compute_Default_Check
-                       (Ada_Node         => Expr,
-                        Ty               => Directly_Designated_Type (Exp_Ty),
-                        Params           => Body_Params,
-                        Include_Subtypes => True),
-                     Right    => +Call);
+                     Value_Id  : constant W_Identifier_Id :=
+                       New_Temp_Identifier
+                         (Base_Name => "value",
+                          Typ       => EW_Abstract (Des_Ty));
+                     Alloc_Id  : constant W_Identifier_Id :=
+                       New_Temp_Identifier
+                         (Base_Name => "alloc",
+                          Typ       => Call_Ty);
+                     Res_Id    : constant W_Identifier_Id :=
+                       +New_Result_Ident (Typ => EW_Abstract (Constr_Ty));
+                     Pred      : constant W_Pred_Id :=
+                       +New_And_Expr
+                         (Left   => +Compute_Default_Init
+                            (Expr   => +Res_Id,
+                             Ty     => Constr_Ty,
+                             Params => Body_Params),
+                          Right  => +Compute_Dynamic_Invariant
+                            (Expr             => +Res_Id,
+                             Ty               => Constr_Ty,
+                             Params           => Body_Params,
+                             --  Uninitialized allocators are only allowed if
+                             --  the type defines full default init.
+                             Initialized      => True_Term,
+                             --  Also assume bounds / discriminants
+                             Only_Var         => False_Term),
+                          Domain => EW_Pred);
+                  begin
+                     pragma Assert (Is_Constrained (Constr_Ty));
+
+                     Call := +Sequence
+                       (Left  => Compute_Default_Check
+                          (Ada_Node => Expr,
+                           Ty       => Constr_Ty,
+                           Params   => Body_Params),
+                        Right   => New_Binding
+                          (Name    => Alloc_Id,
+                           Def     => Call,
+                           Context => New_Binding
+                             (Name    => Value_Id,
+                              Domain  => Domain,
+                              Def     => Insert_Checked_Conversion
+                                (Ada_Node => Expr,
+                                 Domain   => Domain,
+                                 Expr     => New_Any_Expr
+                                   (Post        => Pred,
+                                    Return_Type => Get_Typ (Res_Id)),
+                                 To       => Get_Typ (Value_Id)),
+                              Context => +Sequence
+                                (Left  => New_Assume_Statement
+                                     (Pred => +New_Comparison
+                                          (Symbol => Why_Eq,
+                                           Left   => New_Pointer_Value_Access
+                                             (Ada_Node => Expr,
+                                              E        => Exp_Ty,
+                                              Name     => +Alloc_Id,
+                                              Domain   => EW_Term),
+                                           Right  => +Value_Id,
+                                           Domain => EW_Pred)),
+                                 Right => +Alloc_Id),
+                              Typ     => Call_Ty),
+                           Typ     => Call_Ty));
+                  end;
 
                --  Initialized allocator
 
@@ -13090,7 +13156,7 @@ package body Gnat2Why.Expr is
                      Domain   => Domain,
                      Args     => (1 => +Transform_Expr
                                   (Expr          => Expression (New_Expr),
-                                   Expected_Type => Des_Ty,
+                                   Expected_Type => Type_Of_Node (Des_Ty),
                                    Domain        => Domain,
                                    Params        => Local_Params)),
                      Typ      => Get_Typ (Func_New_Initialized_Name));

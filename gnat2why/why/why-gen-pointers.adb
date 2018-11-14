@@ -27,7 +27,6 @@ with Ada.Containers;             use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Common_Containers;          use Common_Containers;
 with GNAT.Source_Info;
-with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Namet;                      use Namet;
 with Sinput;                     use Sinput;
 with SPARK_Atree;                use SPARK_Atree;
@@ -172,28 +171,10 @@ package body Why.Gen.Pointers is
                                       Domain => EW_Prog),
          Right  => +Post_Value);
 
-      Post_Null_Address : constant W_Pred_Id := +New_And_Then_Expr
+      Uninitialized_Post : constant W_Pred_Id := +New_And_Then_Expr
         (Domain => EW_Prog,
          Left   => +Post_Null,
          Right  => +Post_Address);
-
-      --  We should assume default init on the specific subtype when available,
-      --  see RA15-010.
-
-      PostDefault : constant W_Pred_Id := Compute_Default_Init
-        (Expr             => +Result_Value,
-         Ty               => Des_Ty,
-         Include_Subtypes => True);
-
-      Uninitialized_Post : constant W_Pred_Id :=
-        (if Can_Be_Default_Initialized (Des_Ty)
-         then
-            +New_And_Then_Expr (Domain => EW_Prog,
-                                Left   => +Post_Null_Address,
-                                Right  => +PostDefault)
-
-         else
-            +Post_Null_Address);
 
       Address_Effects : constant W_Effects_Id :=
         New_Effects (Writes => (1 => +Next_Address));

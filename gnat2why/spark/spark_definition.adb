@@ -1431,6 +1431,15 @@ package body SPARK_Definition is
             --  Allow allocators in the special mode -gnatdF
             if Debug_Flag_FF then
                Mark (Expression (N));
+
+               if Nkind (Expression (N)) = N_Identifier
+                 and then Default_Initialization
+                   (Entity (Expression (N)), Get_Flow_Scope (N))
+                     /= Full_Default_Initialization
+               then
+                  Mark_Violation ("uninitialized allocator without"
+                                  & " default initialization", N);
+               end if;
             else
                Mark_Violation ("allocator", N);
             end if;
