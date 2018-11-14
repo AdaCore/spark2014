@@ -178,22 +178,22 @@ partition_refinement.adb:174:50: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:175:27: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:176:42: info: loop invariant initialization proved (CVC4: 1 VC)
 partition_refinement.adb:176:42: info: loop invariant preservation proved (CVC4: 1 VC)
-partition_refinement.adb:176:50: info: range check proved (CVC4: 2 VC)
+partition_refinement.adb:176:50: info: range check proved (CVC4: 4 VC)
 partition_refinement.adb:176:67: info: initialization of "P_Prime.First" proved
-partition_refinement.adb:176:91: info: index check proved (CVC4: 2 VC)
+partition_refinement.adb:176:91: info: index check proved (CVC4: 4 VC)
 partition_refinement.adb:176:96: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:177:42: info: loop invariant initialization proved (CVC4: 1 VC)
 partition_refinement.adb:177:42: info: loop invariant preservation proved (CVC4: 1 VC)
-partition_refinement.adb:177:50: info: range check proved (CVC4: 2 VC)
+partition_refinement.adb:177:50: info: range check proved (CVC4: 4 VC)
 partition_refinement.adb:177:72: info: initialization of "P_Prime.First" proved
-partition_refinement.adb:177:95: info: index check proved (CVC4: 2 VC)
-partition_refinement.adb:177:113: info: index check proved (CVC4: 2 VC)
+partition_refinement.adb:177:95: info: index check proved (CVC4: 4 VC)
+partition_refinement.adb:177:113: info: index check proved (CVC4: 4 VC)
 partition_refinement.adb:178:42: info: loop invariant initialization proved (CVC4: 1 VC)
 partition_refinement.adb:178:42: info: loop invariant preservation proved (CVC4: 1 VC)
-partition_refinement.adb:178:50: info: range check proved (CVC4: 2 VC)
-partition_refinement.adb:178:69: info: overflow check proved (CVC4: 1 VC)
-partition_refinement.adb:178:92: info: index check proved (CVC4: 2 VC)
-partition_refinement.adb:178:110: info: index check proved (CVC4: 2 VC)
+partition_refinement.adb:178:50: info: range check proved (CVC4: 4 VC)
+partition_refinement.adb:178:69: info: overflow check proved (CVC4: 2 VC)
+partition_refinement.adb:178:92: info: index check proved (CVC4: 4 VC)
+partition_refinement.adb:178:110: info: index check proved (CVC4: 4 VC)
 partition_refinement.adb:183:31: info: assertion proved (CVC4: 1 VC)
 partition_refinement.adb:183:39: info: range check proved (CVC4: 2 VC)
 partition_refinement.adb:183:56: info: initialization of "P_Prime.First" proved
@@ -211,7 +211,7 @@ partition_refinement.adb:188:39: info: range check proved (CVC4: 2 VC)
 partition_refinement.adb:188:56: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:188:72: info: initialization of "P_Elem.Last" proved
 partition_refinement.adb:188:87: info: precondition proved (CVC4: 2 VC)
-partition_refinement.adb:188:87: medium: assertion might fail, cannot prove Element (P, F(K)) = P_Elem [possible explanation: loop at line 143 should mention P_Elem in a loop invariant]
+partition_refinement.adb:188:87: medium: assertion might fail, cannot prove Element (P, F(K)) = P_Elem
 partition_refinement.adb:188:101: info: index check proved (CVC4: 2 VC)
 partition_refinement.adb:188:107: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:189:31: info: assertion proved (CVC4: 2 VC)
@@ -305,29 +305,29 @@ partition_refinement.adb:254:33: info: loop invariant initialization proved (CVC
 partition_refinement.adb:254:33: info: loop invariant preservation proved (CVC4: 1 VC)
 partition_refinement.adb:255:33: info: loop invariant initialization proved (CVC4: 1 VC)
 partition_refinement.adb:255:33: info: loop invariant preservation proved (CVC4: 1 VC)
-partition_refinement.adb:255:33: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:255:54: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:255:72: info: precondition proved (CVC4: 1 VC)
+partition_refinement.adb:255:33: info: precondition proved (CVC4: 2 VC)
+partition_refinement.adb:255:54: info: precondition proved (CVC4: 2 VC)
+partition_refinement.adb:255:72: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:257:33: info: loop invariant initialization proved (CVC4: 1 VC)
 partition_refinement.adb:257:33: info: loop invariant preservation proved (CVC4: 1 VC)
-partition_refinement.adb:257:33: info: precondition proved (CVC4: 1 VC)
+partition_refinement.adb:257:33: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:258:33: info: loop invariant initialization proved (CVC4: 1 VC)
 partition_refinement.adb:258:33: info: loop invariant preservation proved (CVC4: 1 VC)
-partition_refinement.adb:258:33: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:258:81: info: precondition proved (CVC4: 1 VC)
+partition_refinement.adb:258:33: info: precondition proved (CVC4: 2 VC)
+partition_refinement.adb:258:81: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:260:33: info: loop invariant initialization proved (CVC4: 2 VC)
 partition_refinement.adb:260:33: info: loop invariant preservation proved (CVC4: 2 VC)
 partition_refinement.adb:261:55: medium: loop invariant might fail after first iteration, cannot prove J in Element (P, F(J)).First .. Element (P, F(J)).Last
 partition_refinement.adb:261:55: medium: loop invariant might fail in first iteration, cannot prove J in Element (P, F(J)).First .. Element (P, F(J)).Last
-partition_refinement.adb:261:60: info: precondition proved (CVC4: 2 VC)
-partition_refinement.adb:261:87: info: precondition proved (CVC4: 2 VC)
-partition_refinement.adb:262:106: info: precondition proved (CVC4: 2 VC)
-partition_refinement.adb:262:118: info: range check proved (CVC4: 1 VC)
-partition_refinement.adb:262:130: info: precondition proved (CVC4: 2 VC)
-partition_refinement.adb:262:142: info: range check proved (CVC4: 1 VC)
+partition_refinement.adb:261:60: info: precondition proved (CVC4: 4 VC)
+partition_refinement.adb:261:87: info: precondition proved (CVC4: 4 VC)
+partition_refinement.adb:262:106: info: precondition proved (CVC4: 4 VC)
+partition_refinement.adb:262:118: info: range check proved (CVC4: 2 VC)
+partition_refinement.adb:262:130: info: precondition proved (CVC4: 4 VC)
+partition_refinement.adb:262:142: info: range check proved (CVC4: 2 VC)
 partition_refinement.adb:262:153: medium: loop invariant might fail after first iteration, cannot prove F(K) = J
 partition_refinement.adb:262:153: medium: loop invariant might fail in first iteration, cannot prove F(K) = J
-partition_refinement.adb:262:155: info: index check proved (CVC4: 2 VC)
+partition_refinement.adb:262:155: info: index check proved (CVC4: 4 VC)
 partition_refinement.adb:268:07: info: precondition proved (CVC4: 7 VC)
 partition_refinement.ads:51:17: info: overflow check proved (CVC4: 1 VC)
 partition_refinement.ads:55:16: info: precondition proved (CVC4: 1 VC)

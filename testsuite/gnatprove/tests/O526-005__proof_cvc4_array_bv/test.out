@@ -1,2 +1,2 @@
 foo.adb:11:23: info: initialization of "X" proved
-foo.adb:15:09: info: length check proved (CVC4: 1 VC)
+foo.adb:15:09: info: length check proved (CVC4: 4 VC)

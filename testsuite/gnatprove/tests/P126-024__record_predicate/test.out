@@ -1,1 +1,1 @@
-inst.adb:4:10: medium: predicate check might fail on default value
+inst.adb:6:03: medium: predicate check might fail on default value

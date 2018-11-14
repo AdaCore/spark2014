@@ -654,6 +654,36 @@ package body SPARK_Util is
       end if;
    end Component_Is_Visible_In_SPARK;
 
+   ------------------------
+   -- Contains_Allocator --
+   ------------------------
+
+   function Contains_Allocator (N : Node_Id) return Boolean is
+
+      function Is_Allocator (N : Node_Id) return Traverse_Result;
+      --  Will return Abandon if we encounter an allocator
+
+      -------------
+      -- Process --
+      -------------
+
+      function Is_Allocator (N : Node_Id) return Traverse_Result
+      is
+      begin
+         if Nkind (N) = N_Allocator then
+            return Abandon;
+         else
+            return OK;
+         end if;
+      end Is_Allocator;
+
+      function Check_Allocator is new
+        Traverse_Func (Is_Allocator);
+
+   begin
+      return Check_Allocator (N) = Abandon;
+   end Contains_Allocator;
+
    -------------------------------------
    -- Contains_Volatile_Function_Call --
    -------------------------------------

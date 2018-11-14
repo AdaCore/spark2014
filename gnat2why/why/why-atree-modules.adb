@@ -2235,16 +2235,9 @@ package body Why.Atree.Modules is
                  New_Named_Type (To_Why_Type (Root));
             begin
                Insert_Symbol
-                 (E, WNE_Attr_Value_Alignment,
+                 (E, WNE_Attr_Alignment,
                   New_Identifier
-                    (Symbol => NID ("value__alignment"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => EW_Int_Type));
-               Insert_Symbol
-                 (E, WNE_Attr_Object_Alignment,
-                  New_Identifier
-                    (Symbol => NID ("object__alignment"),
+                    (Symbol => NID ("alignment"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
@@ -2368,16 +2361,9 @@ package body Why.Atree.Modules is
                Ar_Dim : constant Positive := Positive (Number_Dimensions (E));
             begin
                Insert_Symbol
-                 (E, WNE_Attr_Value_Alignment,
+                 (E, WNE_Attr_Alignment,
                   New_Identifier
-                    (Symbol => NID ("value__alignment"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => EW_Int_Type));
-               Insert_Symbol
-                 (E, WNE_Attr_Object_Alignment,
-                  New_Identifier
-                    (Symbol => NID ("object__alignment"),
+                    (Symbol => NID ("alignment"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
@@ -2396,16 +2382,9 @@ package body Why.Atree.Modules is
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
                Insert_Symbol
-                 (E, WNE_Attr_Value_Component_Size,
+                 (E, WNE_Attr_Component_Size,
                   New_Identifier
-                    (Symbol => NID ("value__component__size"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => EW_Int_Type));
-               Insert_Symbol
-                 (E, WNE_Attr_Object_Component_Size,
-                  New_Identifier
-                    (Symbol => NID ("object__component__size"),
+                    (Symbol => NID ("component__size"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
@@ -2528,8 +2507,7 @@ package body Why.Atree.Modules is
                Root           : constant Entity_Id := Root_Pointer_Type (E);
                Root_Ty        : constant W_Type_Id :=
                  New_Named_Type (To_Why_Type (Root));
-               Full_Name_Node : constant String :=
-                 (if Root = E then Full_Name (E) else Full_Name (Root));
+               Full_Name_Node : constant String := Full_Name (Root);
                Des_Ty         : constant W_Type_Id :=
                  EW_Abstract (Directly_Designated_Type (E));
 
@@ -2538,13 +2516,6 @@ package body Why.Atree.Modules is
                  (E, WNE_Rec_Rep,
                   New_Identifier
                     (Symbol => NID (To_String (WNE_Rec_Rep)),
-                     Module => M,
-                     Domain => EW_Term));
-
-               Insert_Symbol
-                 (E, WNE_Rec_Split_Fields,
-                  New_Identifier
-                    (Symbol => NID (To_String (WNE_Rec_Split_Fields)),
                      Module => M,
                      Domain => EW_Term));
 

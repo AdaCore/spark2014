@@ -4,9 +4,9 @@ semantics.adb:10:29: medium: overflow check might fail (e.g. when Formal = 10737
 semantics.adb:13:27: medium: overflow check might fail (e.g. when Formal = Integer'Last)
 semantics.adb:15:33: info: loop invariant initialization proved (CVC4: 1 VC)
 semantics.adb:15:33: info: loop invariant preservation proved (CVC4: 1 VC)
-semantics.adb:15:40: medium: overflow check might fail (e.g. when Formal = Integer'Last)
+semantics.adb:15:40: medium: overflow check might fail (e.g. when Formal = 1073741825)
 semantics.adb:16:10: info: loop variant proved (CVC4: 1 VC)
-semantics.adb:16:53: medium: overflow check might fail (e.g. when Formal = 2)
+semantics.adb:16:53: medium: overflow check might fail (e.g. when Formal = Integer'Last)
 semantics.adb:35:21: medium: overflow check might fail, in call inlined at semantics.adb:41
 semantics.adb:35:34: medium: overflow check might fail, in call inlined at semantics.adb:41
 semantics.ads:12:19: info: postcondition proved (CVC4: 1 VC)

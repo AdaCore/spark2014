@@ -941,10 +941,14 @@ package body Gnat2Why.Expr.Loops.Inv is
                               and then Is_Mutable_In_Why (N));
 
                declare
-                  Binder : constant Item_Type :=
+                  Binder      : constant Item_Type :=
                     Ada_Ent_To_Why.Element (Symbol_Table, N);
-                  Expr   : constant W_Expr_Id :=
+                  Expr        : constant W_Expr_Id :=
                     Reconstruct_Item (Binder, Ref_Allowed => True);
+                  Initialized : constant Boolean :=
+                    (if Is_Declared_In_Unit (N, Scope) then
+                          Is_Initialized_At_Decl (N)
+                     else Is_Initialized_In_Scope (N, Scope));
 
                begin
                   Dyn_Types_Inv :=
@@ -962,9 +966,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                            Ty          => Etype (N),
                            Params      => Body_Params,
                            Initialized =>
-                             (if not Is_Declared_In_Unit (N, Scope)
-                              and then Is_Initialized (N, Scope)
-                              then True_Term
+                             (if Initialized then True_Term
                               else False_Term)),
 
                         --  Unmodified fields are preserved

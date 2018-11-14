@@ -59,6 +59,7 @@ package body Flow.Interprocedural is
          declare
             F : Flow_Id      renames FA.CDG.Get_Key (V);
             A : V_Attributes renames FA.Atr (V);
+
          begin
             if A.Is_Parameter then
                --  Parameters *must* be using direct mapping for both the
@@ -188,11 +189,12 @@ package body Flow.Interprocedural is
          --     b) we don't need to rely on its refined version
 
          --  The implicit in parameter for out parameters of unconstrained
-         --  arrays and discriminated types is dealt with transparently
-         --  here. Such an input can easily be found in the graph as a
+         --  arrays and discriminated types is dealt with transparently here.
+         --  Such an input can easily be found in the graph as a
          --  Discr_Or_Bounds parameter.
          declare
             Deps : Dependency_Maps.Map;
+
          begin
             Get_Depends (Subprogram           => Called_Thing,
                          Scope                => FA.B_Scope,
@@ -201,10 +203,12 @@ package body Flow.Interprocedural is
                          Depends              => Deps,
                          Use_Computed_Globals => not FA.Generating_Globals,
                          Callsite             => N);
+
             for C in Deps.Iterate loop
                declare
                   Output : Flow_Id          renames Dependency_Maps.Key (C);
                   Inputs : Flow_Id_Sets.Set renames Deps (C);
+
                begin
                   Remove_Constants (Inputs);
 
@@ -234,15 +238,34 @@ package body Flow.Interprocedural is
             Ghost_Subprogram : constant Boolean :=
               Is_Ghost_Entity (Called_Thing);
 
+            function Is_Implicit_Input (F : Flow_Id) return Boolean;
+            --  Returns True iff F should augument the explicit input set of
+            --  a subprogram, as described in SPARK RM 6.1.5(5): "[is of] an
+            --  unconstrained array subtype, an unconstrained discriminated
+            --  subtype, a tagged type (with one exception), or a type having
+            --  a subcomponent of an unconstrained discriminated subtype".
+            --
+            --  ??? the tagged type part of the above rule is not yet detected
+
+            -----------------------
+            -- Is_Implicit_Input --
+            -----------------------
+
+            function Is_Implicit_Input (F : Flow_Id) return Boolean is
+              (Has_Bounds (F, FA.B_Scope)
+                 or else
+               (Contains_Discriminants (F, FA.B_Scope)
+                  and then
+                not Is_Constrained (Get_Type (F, FA.B_Scope))));
+
          begin
             --  Collect all the globals first
-            Get_Globals (Subprogram             => Called_Thing,
-                         Scope                  => FA.B_Scope,
-                         Classwide              =>
+            Get_Globals (Subprogram          => Called_Thing,
+                         Scope               => FA.B_Scope,
+                         Classwide           =>
                            Flow_Classwide.Is_Dispatching_Call (N),
-                         Globals                => Globals,
-                         Consider_Discriminants => True,
-                         Use_Deduced_Globals    => not FA.Generating_Globals);
+                         Globals             => Globals,
+                         Use_Deduced_Globals => not FA.Generating_Globals);
 
             Remove_Constants (Globals.Inputs);
 
@@ -260,12 +283,7 @@ package body Flow.Interprocedural is
                      Globals.Outputs.Insert (The_Out);
 
                   when E_Out_Parameter =>
-                     if Contains_Discriminants (The_In, FA.B_Scope)
-                       or else Has_Bounds (The_In, FA.B_Scope)
-                     then
-                        --  Discriminated out parameters or out parameters
-                        --  for which we need to keep track of the bounds
-                        --  also appear as an input.
+                     if Is_Implicit_Input (The_In) then
                         Globals.Inputs.Insert (The_In);
                      end if;
                      Globals.Outputs.Insert (The_Out);
@@ -326,7 +344,16 @@ package body Flow.Interprocedural is
                      Output_Is_Ghost : constant Boolean :=
                        Is_Ghost_Entity (Output);
 
+                     The_In : constant Flow_Id :=
+                       Change_Variant (Output, In_View);
+
                   begin
+                     if Is_Implicit_Input (The_In)
+                       and then not Globals.Inputs.Contains (The_In)
+                     then
+                        Globals.Inputs.Insert (The_In);
+                     end if;
+
                      for Input of Globals.Inputs loop
                         declare
                            Dependency_Allowed : constant Boolean :=
@@ -366,11 +393,12 @@ package body Flow.Interprocedural is
    begin
       FA.TDG := FA.CFG.Create;
 
-      --  Find all callsites for which Perform_IPFA is false and fill
-      --  in the dependencies.
+      --  Find all callsites for which Perform_IPFA is false and fill in the
+      --  dependencies.
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             A : V_Attributes renames FA.Atr (V);
+
          begin
             if A.Is_Callsite and not A.Perform_IPFA then
                Add_Simple_Procedure_Dependency (FA, V);

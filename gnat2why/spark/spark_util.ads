@@ -222,7 +222,7 @@ package SPARK_Util is
    --     not correspond to unique name in GNAT AST.
 
    function Full_Source_Name (E : Entity_Id) return String
-    with Pre => Present (E) and then Sloc (E) /= No_Location;
+     with Pre => Present (E) and then Sloc (E) /= No_Location;
    --  For an entity E, return its scoped name, e.g. for a subprogram
    --  nested in
    --
@@ -667,6 +667,11 @@ package SPARK_Util is
    --  @return True iff the tree starting with N contains an N_Function_Call
    --    node whose callee is a function with pragma/aspect Volatile_Function
    --    set.
+
+   function Contains_Allocator (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff the tree starting with N contains an N_Allocator
+   --    node.
 
    function Safe_First_Sloc (N : Node_Id) return Source_Ptr
    with Post => (N = Empty) = (Safe_First_Sloc'Result = No_Location);

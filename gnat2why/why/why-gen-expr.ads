@@ -364,9 +364,11 @@ package Why.Gen.Expr is
       To         : W_Type_Id;
       Range_Type : Entity_Id;
       Check_Kind : Scalar_Check_Kind;
-      Lvalue     : Boolean := False) return W_Expr_Id;
+      Lvalue     : Boolean := False;
+      Skip_Pred  : Boolean := False) return W_Expr_Id;
    --  Same as the above except that we take directly the kind of check as
    --  input.
+   --  @param Skip_Pred True if we should not check the predicate if any
 
    function Insert_Record_Conversion
      (Ada_Node   : Node_Id;

@@ -95,7 +95,7 @@ algorithm.adb:261:35: info: loop invariant initialization proved (CVC4: 4 VC)
 algorithm.adb:261:35: info: loop invariant preservation proved (CVC4: 4 VC)
 algorithm.adb:261:61: info: initialization of "iterR.Node" proved
 algorithm.adb:262:61: info: initialization of "iterL.Node" proved
-algorithm.adb:263:43: info: precondition proved (CVC4: 1 VC)
+algorithm.adb:263:43: info: precondition proved (CVC4: 2 VC)
 algorithm.adb:267:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:267:47: info: initialization of "iterR.Node" proved
 algorithm.adb:267:63: info: precondition proved (CVC4: 1 VC)
@@ -138,7 +138,7 @@ algorithm.adb:324:35: info: loop invariant initialization proved (CVC4: 4 VC)
 algorithm.adb:324:35: info: loop invariant preservation proved (CVC4: 4 VC)
 algorithm.adb:324:61: info: initialization of "riterR.Node" proved
 algorithm.adb:325:61: info: initialization of "riterL.Node" proved
-algorithm.adb:326:44: info: precondition proved (CVC4: 1 VC)
+algorithm.adb:326:44: info: precondition proved (CVC4: 2 VC)
 algorithm.adb:330:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:330:47: info: initialization of "riterR.Node" proved
 algorithm.adb:330:64: info: precondition proved (CVC4: 1 VC)

@@ -519,8 +519,6 @@ intrinsic "Shift" and "Rotate" functions.
 
 Other packages are not directly supported.
 
-The pragma ``Unchecked_Union`` is not permitted in |SPARK|.
-
 Systems Programming (Annex C)
 -----------------------------
 

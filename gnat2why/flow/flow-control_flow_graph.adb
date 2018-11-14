@@ -50,7 +50,6 @@ with Flow_Debug;                         use Flow_Debug;
 with Flow_Error_Messages;                use Flow_Error_Messages;
 with Flow_Generated_Globals;             use Flow_Generated_Globals;
 with Flow_Generated_Globals.Phase_1;     use Flow_Generated_Globals.Phase_1;
-with Flow_Generated_Globals.Phase_2;     use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
 with Flow_Utility;                       use Flow_Utility;
@@ -4031,7 +4030,8 @@ package body Flow.Control_Flow_Graph is
 
       Pkg_Body_Declarations : constant List_Id := Declarations (Pkg_Body);
 
-      DM : Dependency_Maps.Map := Parse_Initializes (Package_Spec);
+      DM : Dependency_Maps.Map :=
+        Parse_Initializes (Package_Spec, FA.B_Scope);
       --  ??? This needs to take into account initializes from gg
 
       V : Flow_Graphs.Vertex_Id;
@@ -4074,30 +4074,27 @@ package body Flow.Control_Flow_Graph is
                      The_Ins : Flow_Id_Sets.Set renames DM (C);
 
                      Init_Item : constant Node_Id :=
-                       Get_Direct_Mapping_Id (The_Out);
+                       (if Present (The_Out)
+                        then Get_Direct_Mapping_Id (The_Out)
+                        else Empty);
 
                   begin
-                     Verts.Append (Union_Id (Init_Item));
+                     if Present (Init_Item) then
+                        Verts.Append (Union_Id (Init_Item));
 
-                     --  If the package is inside a generic instance, then its
-                     --  Initializes contract might have generic parameters of
-                     --  mode IN on the RHSs, but they are not visible in the
-                     --  current scope. Map them to objects in the generic
-                     --  actual parameter expressions, which are visible.
-
-                     Map_Generic_In_Formals (FA.B_Scope, The_Ins);
-
-                     Add_Vertex
-                       (FA,
-                        The_Out,
-                        Make_Package_Initialization_Attributes
-                          (The_State => The_Out,
-                           Inputs    => The_Ins,
-                           Scope     => FA.B_Scope,
-                           Loops     => Ctx.Current_Loops,
-                           E_Loc     => Init_Item),
-                        V);
-                     CM.Insert (Union_Id (Init_Item), Trivial_Connection (V));
+                        Add_Vertex
+                          (FA,
+                           The_Out,
+                           Make_Package_Initialization_Attributes
+                             (The_State => The_Out,
+                              Inputs    => The_Ins,
+                              Scope     => FA.B_Scope,
+                              Loops     => Ctx.Current_Loops,
+                              E_Loc     => Init_Item),
+                           V);
+                        CM.Insert (Union_Id (Init_Item),
+                                   Trivial_Connection (V));
+                     end if;
                   end;
                end loop;
 
@@ -4871,7 +4868,8 @@ package body Flow.Control_Flow_Graph is
 
       Called_Thing : constant Entity_Id := Get_Called_Entity (Callsite);
 
-      procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id);
+      procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id)
+      with Pre => Is_Formal (Formal) and then Nkind (Actual) in N_Subexpr;
 
       ----------------------
       -- Handle_Parameter --
@@ -6072,9 +6070,7 @@ package body Flow.Control_Flow_Graph is
                Inserted : Boolean;
 
                DM : constant Dependency_Maps.Map :=
-                 Parse_Initializes (FA.Spec_Entity);
-
-               Globals : Global_Flow_Ids;
+                 Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
 
             begin
                for C in DM.Iterate loop
@@ -6096,44 +6092,13 @@ package body Flow.Control_Flow_Graph is
                         end if;
                      end loop;
 
+                     --  Ignore the "null => ..." clause
+
                      if Present (The_Out) then
                         Package_Writes.Insert (The_Out);
                      end if;
                   end;
                end loop;
-
-               --  As of today the Initializes can't express "Proof_Ins", i.e.
-               --  object declared outside of the package and only used in
-               --  assertion expressions in its elaboration (e.g. explicit
-               --  pragmas Assert or Default_Initial_Conditions of its object
-               --  declarations). We pick those from the generated global
-               --  contract, which has them anyway (at least when there is no
-               --  Initializes).
-
-               Flow_Generated_Globals.Phase_2.GG_Get_Globals
-                 (FA.Spec_Entity, FA.S_Scope, Globals);
-
-               for Proof_In of Globals.Proof_Ins loop
-                  Create_Initial_And_Final_Vertices
-                    (F    => Change_Variant (Proof_In, Normal_Use),
-                     Mode => Mode_Proof,
-                     FA   => FA);
-               end loop;
-
-               --  Similarly, the Initializes can't capture objects used for
-               --  the IN mode actual parameters of generic instances or in the
-               --  declaration blocks in the package body statements. We only
-               --  pick them when the (generated) Initializes contract is null,
-               --  as otherwise they would appear in the (generated) RHSs.
-
-               if DM.Is_Empty then
-                  for Input of Globals.Inputs loop
-                     Create_Initial_And_Final_Vertices
-                       (F    => Change_Variant (Input, Normal_Use),
-                        Mode => Mode_In,
-                        FA   => FA);
-                  end loop;
-               end if;
             end;
 
             --  If a Refined_State aspect exists then create initial and final

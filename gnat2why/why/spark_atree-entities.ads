@@ -607,6 +607,9 @@ package SPARK_Atree.Entities is
    function Can_Never_Be_Null (N : Node_Id) return Boolean renames
      Einfo.Can_Never_Be_Null;
 
+   function Is_Access_Constant (N : Node_Id) return Boolean renames
+     Einfo.Is_Access_Constant;
+
    -------------------------
    --  For other entities --
    -------------------------

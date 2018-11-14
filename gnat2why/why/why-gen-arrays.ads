@@ -238,6 +238,28 @@ package Why.Gen.Arrays is
    --    <left_arr>.first1 = <right_arr>.first1 /\
    --    <left_arr>.last1 = <right_arr>.last1 /\ ...
 
+   function New_Length_Equality
+     (Left_Arr  : W_Expr_Id;
+      Right_Arr : W_Expr_Id;
+      Dim       : Positive) return W_Pred_Id;
+   --  @param Left_Arr array expression whose length should be compared to
+   --  @param Right_Arr
+   --  @param Dim number of dimensions in the arrays
+   --  @return a predicate of the form:
+   --
+   --    (if <left_arr>.first1 <= <left_arr>.last1 then
+   --       <right_arr>.first1 <= <right_arr>.last1
+   --       /\ <left_arr>.last1 - <left_arr>.first1 =
+   --          <right_arr>.last1 - <right_arr>.first1
+   --     else <right_arr>.last1 < <right_arr>.first1) /\ ...
+
+   function New_Length_Equality
+     (Left_Arr : W_Expr_Id;
+      Right    : Entity_Id;
+      Dim      : Positive) return W_Pred_Id
+   with Pre => Is_Constrained (Right);
+   --  Same as above but with a constrained array type
+
    function New_Dynamic_Property
      (Domain : EW_Domain;
       Ty     : Entity_Id;
@@ -278,6 +300,7 @@ package Why.Gen.Arrays is
       return W_Expr_Id;
    --  Given the terms for first and last, build the expression
    --    if first <= last then last - first + 1 else 0
+   --  Beware that the computation may wrap around on bitvectors
    --  @param Domain domain of the transformation
    --  @param First why expression for the first index of the array
    --  @param Last why expression for the last index of the array
@@ -344,7 +367,10 @@ package Why.Gen.Arrays is
       Attr   : Attribute_Id;
       Dim    : Positive;
       Params : Transformation_Params := Body_Params;
-      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id;
+      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id
+     with Pre =>
+       Attr in Attribute_First | Attribute_Last | Attribute_Length
+       and then (Typ = EW_Int_Type or else Why_Type_Is_BitVector (Typ));
    --  Same as Get_Array_Attr, can be used when the type is already known.
    --  On unconstrained array types, return bounds used to constrain the index.
    --  @param Domain The domain of the returned expression.

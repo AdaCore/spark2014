@@ -62,6 +62,25 @@ package body Why.Gen.Names is
 
    function Convert_From (Kind : W_Type_Id) return Why_Name_Enum;
 
+   --------------------
+   -- Address_Append --
+   --------------------
+
+   function Address_Append (Base : W_Identifier_Id;
+                            Typ  : W_Type_Id) return W_Identifier_Id
+   is
+      Name : constant W_Name_Id := Get_Name (Base);
+   begin
+      return
+        Append_Num
+          (S        => Get_Name_String (Get_Symbol (Name))
+           & To_String (WNE_Pointer_Address),
+           Count    => 1,
+           Typ      => Typ,
+           Module   => Get_Module (Name),
+           Ada_Node => Get_Ada_Node (+Name));
+   end Address_Append;
+
    ----------------
    -- Append_Num --
    ----------------
@@ -517,6 +536,25 @@ package body Why.Gen.Names is
            Ada_Node => Get_Ada_Node (+Base));
    end Havoc_Append;
 
+   --------------------
+   -- Is_Null_Append --
+   --------------------
+
+   function Is_Null_Append (Base : W_Identifier_Id;
+                            Typ  : W_Type_Id) return W_Identifier_Id
+   is
+      Name : constant W_Name_Id := Get_Name (Base);
+   begin
+      return
+        Append_Num
+          (S        => Get_Name_String (Get_Symbol (Name))
+           & To_String (WNE_Is_Null_Pointer),
+           Count    => 1,
+           Typ      => Typ,
+           Module   => Get_Module (Name),
+           Ada_Node => Get_Ada_Node (+Name));
+   end Is_Null_Append;
+
    -------------
    -- New_Abs --
    -------------
@@ -796,6 +834,8 @@ package body Why.Gen.Names is
             | WNE_Array_Elts
             | WNE_Assign_Null_Check
             | WNE_Attr_Address
+            | WNE_Attr_Alignment
+            | WNE_Attr_Component_Size
             | WNE_Attr_First_2
             | WNE_Attr_First_3
             | WNE_Attr_First_4
@@ -810,13 +850,9 @@ package body Why.Gen.Names is
             | WNE_Attr_Length_3
             | WNE_Attr_Length_4
             | WNE_Attr_Modulus
-            | WNE_Attr_Object_Alignment
-            | WNE_Attr_Object_Component_Size
             | WNE_Attr_Object_Size
             | WNE_Attr_Position
             | WNE_Attr_Value
-            | WNE_Attr_Value_Alignment
-            | WNE_Attr_Value_Component_Size
             | WNE_Attr_Value_Size
             | WNE_Bool_Eq
             | WNE_Check_Invariants_On_Call
@@ -1018,6 +1054,25 @@ package body Why.Gen.Names is
         (Get_Ada_Node (+Name), EW_Prog, Img & Suffix,
          Module => Get_Module (Get_Name (Name)));
    end To_Program_Space;
+
+   ----------------------
+   -- Value_Append --
+   ----------------------
+
+   function Value_Append (Base : W_Identifier_Id;
+                          Typ  : W_Type_Id) return W_Identifier_Id
+   is
+      Name : constant W_Name_Id := Get_Name (Base);
+   begin
+      return
+        Append_Num
+          (S        => Get_Name_String (Get_Symbol (Name))
+           & To_String (WNE_Pointer_Value),
+           Count    => 1,
+           Typ      => Typ,
+           Module   => Get_Module (Name),
+           Ada_Node => Get_Ada_Node (+Name));
+   end Value_Append;
 
    -------------------------------
    -- WNE_Array_Base_Range_Pred --

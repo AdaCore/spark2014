@@ -1697,7 +1697,7 @@ package body Flow.Analysis is
                     (FA       => FA,
                      Msg      => "use of remote abstract state &" &
                                  " during elaboration of &" &
-                                 " - Elaborate_All pragma required for &",
+                                 " - Elaborate pragma required for &",
                      SRM_Ref  => "7.7.1(4)",
                      N        => V_Error_Location,
                      F1       => F,
@@ -2628,7 +2628,7 @@ package body Flow.Analysis is
          Results : Node_Sets.Set;
 
          Initializes : constant Dependency_Maps.Map :=
-           Parse_Initializes (FA.Spec_Entity);
+           Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
          --  Initializes aspect parsed into Flow_Ids
 
       begin
@@ -3563,7 +3563,8 @@ package body Flow.Analysis is
    procedure Find_Impossible_To_Initialize_State
      (FA : in out Flow_Analysis_Graphs)
    is
-      DM : constant Dependency_Maps.Map := Parse_Initializes (FA.Spec_Entity);
+      DM : constant Dependency_Maps.Map :=
+        Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
 
       Outputs_Of_Procs : Flow_Id_Sets.Set;
       --  Abstracts states that are written by procedures declared in package
@@ -3687,11 +3688,14 @@ package body Flow.Analysis is
       --  spec scope if we are checking a Depends contract.
 
    begin
+      --  If the user has not specified a dependency relation we have no work
+      --  to do.
+
       if No (FA.Depends_N) then
-         --  If the user has not specified a dependency relation we have no
-         --  work to do.
          return;
       end if;
+
+      --  Read the user-written Depends
 
       Get_Depends (Subprogram => FA.Analyzed_Entity,
                    Scope      => FA.B_Scope,
@@ -3699,8 +3703,11 @@ package body Flow.Analysis is
                    Depends    => User_Deps);
 
       --  Up-project the dependencies
+
       Up_Project (User_Deps, Projected_User_Deps, Depends_Scope);
       Up_Project (FA.Dependency_Map, Actual_Deps, Depends_Scope);
+
+      --  Debug output
 
       if Debug_Trace_Depends then
          Print_Dependency_Map ("user",   Projected_User_Deps);
@@ -3818,17 +3825,39 @@ package body Flow.Analysis is
                               Severity => Medium_Check_Kind);
 
                         else
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Path     => Path,
-                              Msg      => "missing dependency ""% => %""",
-                              N        => Search_Depends_Contract
-                                            (FA.Analyzed_Entity,
-                                             Get_Direct_Mapping_Id (F_Out)),
-                              F1       => F_Out,
-                              F2       => Missing_Var,
-                              Tag      => Depends_Missing,
-                              Severity => Medium_Check_Kind);
+                           declare
+                              N : constant Node_Id :=
+                                Search_Depends_Contract
+                                  (FA.Analyzed_Entity,
+                                   Get_Direct_Mapping_Id (F_Out));
+
+                              Msg1 : constant String :=
+                                (if F_Out = Missing_Var
+                                 then "self-dependency "
+                                 else "dependency ");
+
+                              Msg2 : constant String :=
+                                (if F_Out = Missing_Var then
+                                   (if Has_Bounds (F_Out, FA.B_Scope)
+                                    then " (array bounds are preserved)"
+                                    elsif Contains_Discriminants (F_Out,
+                                                                  FA.B_Scope)
+                                    then " (discriminants are preserved)"
+                                    else "")
+                                 else "");
+
+                           begin
+                              Error_Msg_Flow
+                                (FA       => FA,
+                                 Path     => Path,
+                                 Msg      => "missing " & Msg1 & """% => %""" &
+                                             Msg2,
+                                 N        => N,
+                                 F1       => F_Out,
+                                 F2       => Missing_Var,
+                                 Tag      => Depends_Missing,
+                                 Severity => Medium_Check_Kind);
+                           end;
                         end if;
                      end;
                   end if;
@@ -3985,7 +4014,8 @@ package body Flow.Analysis is
    --------------------------------
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
-      DM : constant Dependency_Maps.Map := Parse_Initializes (FA.Spec_Entity);
+      DM : constant Dependency_Maps.Map :=
+        Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
 
       function Is_Written (Comp : Flow_Id) return Boolean;
       --  Returns True iff Comp is definitely written, according to the PDG
@@ -4016,7 +4046,10 @@ package body Flow.Analysis is
 
             begin
                return Enclosing_Pkg /= FA.Spec_Entity
-                 and then Parse_Initializes (Enclosing_Pkg).Contains (Comp);
+                 and then
+               Parse_Initializes (Enclosing_Pkg,
+                                  Get_Flow_Scope (Enclosing_Pkg)).
+                Contains (Comp);
             end;
          end if;
 
@@ -5442,21 +5475,26 @@ package body Flow.Analysis is
       --  be flagged as a potentially uninitialized read.
 
       Visible_Vars := Flow_Id_Sets.Empty_Set;
-      for C in Parse_Initializes (FA.Spec_Entity).Iterate loop
+      for C in Parse_Initializes (FA.Spec_Entity, FA.S_Scope).Iterate loop
          declare
             Var : Flow_Id renames Dependency_Maps.Key (C);
-            Obj : constant Entity_Id := Get_Direct_Mapping_Id (Var);
-            pragma Assert (Ekind (Obj) in E_Abstract_State
-                                        | E_Variable
-                                        | E_Constant);
-
          begin
-            if Get_Flow_Scope (Declaration_Node (Obj)).Part in Visible_Part
-                                                             | Private_Part
-              and then Ekind (Obj) /= E_Constant
-              and then Is_Initialized_At_Elaboration (Obj, FA.S_Scope)
-            then
-               Visible_Vars.Insert (Var);
+            if Present (Var) then
+               declare
+                  Obj : constant Entity_Id := Get_Direct_Mapping_Id (Var);
+                  pragma Assert (Ekind (Obj) in E_Abstract_State
+                                              | E_Variable
+                                              | E_Constant);
+
+               begin
+                  if Get_Flow_Scope (Declaration_Node (Obj)).Part in
+                      Visible_Part | Private_Part
+                    and then Ekind (Obj) /= E_Constant
+                    and then Is_Initialized_At_Elaboration (Obj, FA.S_Scope)
+                  then
+                     Visible_Vars.Insert (Var);
+                  end if;
+               end;
             end if;
          end;
       end loop;

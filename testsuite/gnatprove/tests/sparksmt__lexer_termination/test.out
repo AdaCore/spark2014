@@ -94,8 +94,8 @@ lexer.adb:400:32: info: initialization of "N" proved
 lexer.adb:402:18: info: discriminant check proved (CVC4: 2 VC)
 lexer.adb:406:32: info: initialization of "N" proved
 lexer.adb:450:10: info: precondition proved (CVC4: 2 VC)
-lexer.adb:454:15: info: discriminant check proved (CVC4: 4 VC)
-lexer.adb:456:41: info: overflow check proved (CVC4: 2 VC)
+lexer.adb:454:15: info: discriminant check proved (CVC4: 2 VC)
+lexer.adb:456:41: info: overflow check proved (CVC4: 1 VC)
 lexer.adb:461:33: info: loop invariant initialization proved (CVC4: 2 VC)
 lexer.adb:461:33: info: loop invariant preservation proved (CVC4: 2 VC)
 lexer.adb:463:10: info: loop variant proved (CVC4: 1 VC)

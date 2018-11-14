@@ -26,6 +26,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  This unit defines modular integer lemmas in a generic way, subject to the
+--  definition of the following generic parameter:
+--    Uint is a modular type
+--
+--  The SPARK lemma library comes with two instances of this generic unit, for
+--  32bits and 64bits modular integer types. Both instances have been
+--  completely proved, using manual proof in Coq where needed. It is
+--  recommended to use these instances instead of instantiating your own
+--  version of the generic, in order to benefit from the proofs already done on
+--  the existing instances.
+
 generic
    type Uint is mod <>;
 package SPARK.Mod_Arithmetic_Lemmas

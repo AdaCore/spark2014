@@ -2,6 +2,6 @@ project Tetris is
    for Object_Dir use "obj";
 
    package Prove is
-      for Switches use ("-j0", "--prover=cvc4,altergo", "--timeout=20");
+      for Switches use ("--no-loop-unrolling", "-j0", "--level=2");
    end Prove;
 end Tetris;

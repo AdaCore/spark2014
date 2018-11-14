@@ -60,7 +60,8 @@ package Why.Gen.Binders is
 
    type Binder_Array is array (Positive range <>) of Binder_Type;
 
-   type Item_Enum is (Regular, UCArray, DRecord, Func, Concurrent_Self);
+   type Item_Enum is
+     (Regular, UCArray, DRecord, Pointer, Func, Concurrent_Self);
    --  See the comment of the Item_Type type below to see the meaning of this
    --  enum.
 
@@ -99,6 +100,11 @@ package Why.Gen.Binders is
             Content   : Binder_Type;
             Dim       : Positive;
             Bounds    : Array_Bounds;
+         when Pointer =>
+            Value     : Binder_Type;
+            Address   : W_Identifier_Id;
+            Is_Null   : W_Identifier_Id;
+            Mutable   : Boolean;
          when DRecord =>
             Typ       : Entity_Id;
             Fields    : Opt_Binder;
@@ -114,12 +120,15 @@ package Why.Gen.Binders is
    --  mapping
    --    Ada object  -> Why variables
    --  which is not always 1 to 1. In the common case where it is 1 to 1, the
-   --  Kind "Regular" is used. We have three other cases for now: unconstrained
+   --  Kind "Regular" is used. We have four other cases for now: unconstrained
    --  arrays, where extra objects are created to represent the bounds,
    --  functions where we need different translations when used in programs or
-   --  in assertions, and records where we can have up to four objects, a set
-   --  of fields, a set of discriminants, a 'Constrained attribute, and a 'Tag
-   --  attribute. The 'Concurrent_Self' case corresponds to the "self" object
+   --  in assertions, pointers, with disjoint parts for their value, address,
+   --  and is_null components, as well as a Mutable boolean registering whether
+   --  the pointer itself is mutable, and records where we can have up to four
+   --  objects, a set of fields, a set of discriminants, a 'Constrained
+   --  attribute, and a 'Tag attribute.
+   --  The 'Concurrent_Self' case corresponds to the "self" object
    --  used in task types, protected subprograms and entries, and can be seen
    --  as as "0 to 1" mapping. See also the general description of protected
    --  types in gnat2why.
@@ -339,11 +348,12 @@ package Why.Gen.Binders is
    --  Should only be put to True if only localized versions of names are used.
    --  @result An array of items used to represent these variables in Why
 
-   function Get_Binders_From_Expression (E       : Node_Id;
+   function Get_Binders_From_Expression (Expr    : Node_Id;
                                          Compute : Boolean := False)
-                                         return Item_Array;
+                                         return Item_Array
+   with Pre => Nkind (Expr) in N_Subexpr;
    --  Compute an array of items representing the variables of E in Why.
-   --  @param E Ada node for an expression
+   --  @param Expr Ada node for an expression
    --  @param Compute Should be True if we want to compute binders missing from
    --  the Symbol_Table. Only put it to True when the names are localized.
    --  @result An array of items used to represent these variables in Why

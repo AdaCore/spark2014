@@ -183,6 +183,8 @@ package Why.Gen.Names is
       WNE_Array_Prefix, --  Prefix of array modules
 
       WNE_Attr_Address,
+      WNE_Attr_Alignment,
+      WNE_Attr_Component_Size,
       WNE_Attr_Constrained,
       WNE_Attr_First,
       WNE_Attr_First_2,
@@ -200,12 +202,8 @@ package Why.Gen.Names is
       WNE_Attr_Length_3,
       WNE_Attr_Length_4,
       WNE_Attr_Modulus,
-      WNE_Attr_Object_Alignment,
-      WNE_Attr_Object_Component_Size,
       WNE_Attr_Object_Size,
       WNE_Attr_Position,
-      WNE_Attr_Value_Alignment,
-      WNE_Attr_Value_Component_Size,
       WNE_Attr_Value_Size,
       WNE_Attr_Tag,
 
@@ -374,6 +372,15 @@ package Why.Gen.Names is
    function Ref_Append (Base : W_Name_Id) return W_Name_Id;
 
    function Content_Append (Base : W_Name_Id;
+                            Typ  : W_Type_Id) return W_Identifier_Id;
+
+   function Value_Append (Base : W_Identifier_Id;
+                          Typ  : W_Type_Id) return W_Identifier_Id;
+
+   function Address_Append (Base : W_Identifier_Id;
+                            Typ  : W_Type_Id) return W_Identifier_Id;
+
+   function Is_Null_Append (Base : W_Identifier_Id;
                             Typ  : W_Type_Id) return W_Identifier_Id;
 
    function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id;

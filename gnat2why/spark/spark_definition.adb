@@ -37,6 +37,7 @@ with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
 with Flow_Refinement;                 use Flow_Refinement;
 with Flow_Types;                      use Flow_Types;
+with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
 with Gnat2Why_Args;
 with Lib;                             use Lib;
@@ -2546,8 +2547,11 @@ package body SPARK_Definition is
            Attribute_Component_Size |
            Attribute_First_Bit      |
            Attribute_Last_Bit       |
+           Attribute_Object_Size    |
            Attribute_Position       |
-           Attribute_Size           =>
+           Attribute_Size           |
+           Attribute_Value_Size
+         =>
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
               and then Gnat2Why_Args.Pedantic
@@ -3572,6 +3576,30 @@ package body SPARK_Definition is
             Id     : constant Entity_Id := Defining_Entity (N);
             Formal : Entity_Id := First_Formal (Id);
 
+            Contract    : Node_Id;
+            Raw_Globals : Raw_Global_Nodes;
+
+            procedure Mark_Constant_Globals (Globals : Node_Sets.Set);
+            --  Mark constant objects in the Global/Depends contract (or their
+            --  refined variant). We want to detect constants not in SPARK,
+            --  even if they only appear in the flow contracts, to handle
+            --  them as having no variable input.
+
+            ---------------------------
+            -- Mark_Constant_Globals --
+            ---------------------------
+
+            procedure Mark_Constant_Globals (Globals : Node_Sets.Set) is
+            begin
+               for Global of Globals loop
+                  if Ekind (Global) = E_Constant then
+                     Mark_Entity (Global);
+                  end if;
+               end loop;
+            end Mark_Constant_Globals;
+
+         --  Start of processing for Mark_Subprogram_Specification
+
          begin
             case Ekind (Id) is
                when E_Function =>
@@ -3590,6 +3618,29 @@ package body SPARK_Definition is
                end if;
                Next_Formal (Formal);
             end loop;
+
+            --  Parse the user-written Global/Depends, if present
+
+            Contract := Find_Contract (E, Pragma_Global);
+
+            if Present (Contract) then
+               Raw_Globals := Parse_Global_Contract (E, Contract);
+
+               --  ??? Parse_Global_Contract itself asks which constants have
+               --  variable inputs when filtering generic actual parameters of
+               --  mode IN, so this might lead to circular dependencies; this
+               --  whole constant business should be revisited...
+
+            else
+               Contract := Find_Contract (E, Pragma_Depends);
+
+               if Present (Contract) then
+                  Raw_Globals := Parse_Depends_Contract (E, Contract);
+               end if;
+            end if;
+
+            Mark_Constant_Globals (Raw_Globals.Proof_Ins);
+            Mark_Constant_Globals (Raw_Globals.Inputs);
 
          end Mark_Subprogram_Specification;
 
@@ -4118,6 +4169,12 @@ package body SPARK_Definition is
               ("discriminant on derived type",
                Parent (E),
                SRM_Reference => "SPARK RM 3.7(2)");
+         end if;
+
+         if Ekind (E) in E_Private_Subtype | E_Record_Subtype
+           and then Is_For_Access_Subtype (E)
+         then
+            Mark_Unsupported ("discriminant constraint on access types", E);
          end if;
 
          --  Mark discriminants if any
@@ -4706,15 +4763,16 @@ package body SPARK_Definition is
 
             --  Allow access types in the special mode -gnatdF
 
-            if not Debug_Flag_FF
+            if not Debug_Flag_FF then
+               Mark_Violation ("access type", E);
 
             --  Should not handle pointers which are not safe, we do not mark
             --  access types if they are not under the SPARK mode On.
 
-              or else not SPARK_Pragma_Is (Opt.On)
-              or else not Retysp_In_SPARK (Directly_Designated_Type (E))
-            then
-               Mark_Violation ("access type", E);
+            elsif not SPARK_Pragma_Is (Opt.On) then
+               Mark_Violation ("access type without ownership", E);
+            elsif not Retysp_In_SPARK (Directly_Designated_Type (E)) then
+               Mark_Violation (E, From => Directly_Designated_Type (E));
 
                --  Private access types are not allowed for now. We mark the
                --  violation in the context of marking the type entity to be

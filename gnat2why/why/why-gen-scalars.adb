@@ -818,7 +818,7 @@ package body Why.Gen.Scalars is
       --  retrieve and declare the attributes first, last, small, and modulus
 
       Define_Scalar_Attributes
-        (Section    => File,
+        (Section   => File,
          E         => E,
          Base_Type => Base_Why_Type (E));
 

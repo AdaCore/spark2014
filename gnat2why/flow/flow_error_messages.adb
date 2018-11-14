@@ -1236,11 +1236,16 @@ package body Flow_Error_Messages is
 
                         return To_String (Expl);
 
-                     --  Otherwise, continue the search only for the variables
-                     --  that are not modified in the loop.
+                     --  Otherwise, continue the search only if all the
+                     --  variables involved in the check are not modified in
+                     --  the loop. Otherwise, it's likely that the information
+                     --  provided in a loop invariant is either insufficient
+                     --  or that the problem lies with prover capabilities. On
+                     --  both cases, the explanation does not lie beyond the
+                     --  loop itself.
 
-                     else
-                        Check_Vars.Difference (Write_Vars);
+                     elsif Check_Vars.Overlap (Write_Vars) then
+                        return "";
                      end if;
                   end if;
 

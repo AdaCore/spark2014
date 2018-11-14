@@ -40,6 +40,7 @@ with GNAT.Source_Info;
 with Gnat2Why_Args;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
+with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Lib;                            use Lib;
@@ -274,10 +275,9 @@ package body Gnat2Why.Expr is
    --  not a quantifier or conjunction is a terminal node.
 
    function Needs_Temporary_Ref
-     (Actual           : Node_Id;
-      Formal           : Entity_Id;
-      Typ_Formal       : W_Type_Id;
-      In_Function_Call : Boolean := True) return Boolean;
+     (Actual     : Node_Id;
+      Formal     : Entity_Id;
+      Typ_Formal : W_Type_Id) return Boolean;
    --  True if the parameter passing needs a temporary ref to be performed
 
    function New_Assignment
@@ -948,6 +948,89 @@ package body Gnat2Why.Expr is
                      Context  => +Res);
                end;
 
+            when Pointer =>
+
+               --  For objects in access split form, we produce:
+               --  let <v_name>__assume = <init_value> in
+               --    <v> := <v_name>__assume.value;
+               --  and either:
+               --    assume (<v__addr> = <v_name>__assume.address);
+               --    assume (<v__is_null> = <v_name>__assume.is_null);
+               --  if the pointer is not mutable, or:
+               --    <v__addr> := <v_name>__assume.address;
+               --    <v__is_null> := <v_name>__assume.is_null;
+               --  otherwise.
+
+               declare
+                  Tmp_Var : constant W_Identifier_Id :=
+                    New_Identifier (Name => L_Name & "__assume",
+                                    Typ  => Why_Ty);
+                  Res     : W_Prog_Id := New_Assignment
+                    (Ada_Node => N,
+                     Name     => Binder.Value.B_Name,
+                     Labels   => Name_Id_Sets.Empty_Set,
+                     Value    =>
+                       +New_Pointer_Value_Access
+                       (Ada_Node => Empty,
+                        Domain   => EW_Term,
+                        Name     => +Tmp_Var,
+                        E        => Etype (Lvalue)),
+                     Typ      => Get_Typ (Binder.Value.B_Name));
+               begin
+                  if Binder.Mutable then
+                     Res := Sequence
+                       ((1 => Res,
+                         2 => New_Assignment
+                           (Ada_Node => N,
+                            Name     => Binder.Address,
+                            Labels   => Name_Id_Sets.Empty_Set,
+                            Value    => +New_Pointer_Address_Access
+                              (E    => Etype (Lvalue),
+                               Name => +Tmp_Var),
+                            Typ      => EW_Int_Type),
+                         3 => New_Assignment
+                           (Ada_Node => N,
+                            Name     => Binder.Is_Null,
+                            Labels   => Name_Id_Sets.Empty_Set,
+                            Value    => +New_Pointer_Is_Null_Access
+                              (E    => Etype (Lvalue),
+                               Name => +Tmp_Var),
+                            Typ      => EW_Bool_Type)));
+                  else
+                     Res := Sequence
+                       ((1 => Res,
+                         2 => New_Assume_Statement
+                           (Ada_Node => N,
+                            Pred     =>
+                              New_Call
+                                (Name => Why_Eq,
+                                 Typ  => EW_Bool_Type,
+                                 Args =>
+                                   (1 => +Binder.Address,
+                                    2 => New_Pointer_Address_Access
+                                      (E    => Etype (Lvalue),
+                                       Name => +Tmp_Var)))),
+                         3 => New_Assume_Statement
+                           (Ada_Node => N,
+                            Pred     =>
+                              New_Call
+                                (Name => Why_Eq,
+                                 Typ  => EW_Bool_Type,
+                                 Args =>
+                                   (1 => +Binder.Is_Null,
+                                    2 => New_Pointer_Is_Null_Access
+                                      (E    => Etype (Lvalue),
+                                       Name => +Tmp_Var))))));
+                  end if;
+
+                  return +New_Typed_Binding
+                    (Ada_Node => N,
+                     Domain   => EW_Prog,
+                     Name     => Tmp_Var,
+                     Def      => +Why_Expr,
+                     Context  => +Res);
+               end;
+
             when Regular
                | Concurrent_Self
             =>
@@ -1040,7 +1123,7 @@ package body Gnat2Why.Expr is
             --  Type of the fullview
 
             Default_Checks  : W_Prog_Id :=
-              Compute_Default_Check (Constrained_Ty, Body_Params);
+              Compute_Default_Check (N, Constrained_Ty, Body_Params);
               --  Checks for runtime errors in default values
 
             Init_Assumption : constant W_Pred_Id :=
@@ -1136,8 +1219,8 @@ package body Gnat2Why.Expr is
               and then Entity_Comes_From_Source (Original_Node (FV))
               and then Number_Of_Assocs_In_Expression
                 (Expression (Decl)) <= Max_Assocs
+              and then not Contains_Volatile_Function_Call (Expression (Decl))
             then
-
                --  We do not issue checks here. Checks for this declaration
                --  will be issued when verifying its enclosing unit.
 
@@ -1181,7 +1264,7 @@ package body Gnat2Why.Expr is
          end;
 
       --  Assume the value of 'Constrained attribute for variables with
-      --  Defaulted discriminants.
+      --  defaulted discriminants.
 
       elsif Ekind (E) = E_Variable then
          declare
@@ -1312,7 +1395,7 @@ package body Gnat2Why.Expr is
                     (if Is_Object (Obj)
                      and then Is_Mutable_In_Why (Obj)
                      and then not Initialized
-                     then Is_Initialized (Obj, Scope)
+                     then Is_Initialized_In_Scope (Obj, Scope)
                      else True),
                   Top_Predicate => Top_Predicate,
                   Context       => Prop_For_Include);
@@ -2128,6 +2211,9 @@ package body Gnat2Why.Expr is
          begin
             case Binders (Bind_Cnt).Kind is
                when Regular =>
+                  pragma Assert (not Is_Access_Type (Etype (Formal))
+                                 or else Is_Access_Constant (Etype (Formal))
+                                 or else Nkind (Call) = N_Function_Call);
 
                   --  If a conversion or a component indexing is needed,
                   --  it can only be done for a value. That is to say,
@@ -2147,8 +2233,7 @@ package body Gnat2Why.Expr is
                     or else
                       Needs_Temporary_Ref (Actual, Formal,
                                            Get_Typ
-                                             (Binders (Bind_Cnt).Main.B_Name),
-                                           Nkind (Call) = N_Function_Call)
+                                             (Binders (Bind_Cnt).Main.B_Name))
                   then
                      --  We should never use the Formal for the Ada_Node,
                      --  because there is no real dependency here; We only
@@ -2163,16 +2248,8 @@ package body Gnat2Why.Expr is
                      Nb_Of_Refs := Nb_Of_Refs + 1;
 
                   else
-                     --  We allow an in parameter or a constant of an owning
-                     --  access type to provide read/write access to its
-                     --  designated object in a procedure call (considered
-                     --  as borrowing). These in parameters are refs.
-
-                     if (Ekind (Formal) = E_In_Parameter
-                         and then Is_Access_Type (Etype (Formal))
-                         and then Nkind (Call) /= N_Function_Call)
-                       or else Ekind (Formal) in E_In_Out_Parameter
-                                               | E_Out_Parameter
+                     if Ekind (Formal) in E_In_Out_Parameter
+                                        | E_Out_Parameter
                      then
                         pragma Assert (not Aliasing);
 
@@ -2592,6 +2669,186 @@ package body Gnat2Why.Expr is
                      end loop;
                   end;
 
+               when Pointer =>
+
+                  declare
+                     Formal_Binder : constant Item_Type :=
+                       Binders (Bind_Cnt);
+                     Formal_Typ    : constant Entity_Id :=
+                       Etype (Binders (Bind_Cnt).Value.Ada_Node);
+                     W_Formal_Typ  : constant W_Type_Id :=
+                       EW_Abstract (Formal_Typ);
+                  begin
+
+                     --  The actual is in split form iff it is an identifier.
+                     --  If aliasing can occur, we cannot use the variables
+                     --  from the actual's split form. We need to introduce a
+                     --  temporary for it.
+
+                     if Simple_Actual and then not Aliasing then
+                        declare
+                           Actual_Binder : constant Item_Type :=
+                             Ada_Ent_To_Why.Element
+                               (Symbol_Table, Entity (Actual));
+                           Actual_Typ    : constant Entity_Id :=
+                             Etype (Actual_Binder.Value.Ada_Node);
+                        begin
+                           pragma Assert (Actual_Binder.Kind = Pointer);
+
+                           if Eq_Base (W_Formal_Typ,
+                                       EW_Abstract (Actual_Typ))
+                           then
+
+                              --  If the actual is in split form and has the
+                              --  same type as the formal, then the value
+                              --  reference can be used as is.
+
+                              Why_Args (Arg_Cnt) :=
+                                +Actual_Binder.Value.B_Name;
+
+                              Arg_Cnt := Arg_Cnt + 1;
+                           else
+
+                              --  If the formal and the actual do not have
+                              --  exactly the same type, we need a temporary
+                              --  variable to hold the result of the
+                              --  conversion.
+
+                              Nb_Of_Lets := Nb_Of_Lets + 1;
+
+                              --  And we need a new reference for Value
+
+                              Why_Args (Arg_Cnt) :=
+                                +New_Identifier
+                                (Ada_Node => Empty,
+                                 Name     => Full_Name (Formal) & "__value",
+                                 Typ      =>
+                                   Get_Typ (Formal_Binder.Value.B_Name));
+
+                              Nb_Of_Refs := Nb_Of_Refs + 1;
+
+                              Arg_Cnt := Arg_Cnt + 1;
+                           end if;
+
+                           if Actual_Binder.Mutable
+                             and then not Formal_Binder.Mutable
+                           then
+
+                              --  If the actual is mutable and not the formal,
+                              --  we need to introduce a dereference.
+
+                              Why_Args (Arg_Cnt) :=
+                                New_Deref
+                                  (Right => Actual_Binder.Address,
+                                   Typ   => Get_Typ (Actual_Binder.Address));
+
+                              Arg_Cnt := Arg_Cnt + 1;
+
+                              Why_Args (Arg_Cnt) :=
+                                New_Deref
+                                  (Right => Actual_Binder.Is_Null,
+                                   Typ   => Get_Typ (Actual_Binder.Is_Null));
+
+                              Arg_Cnt := Arg_Cnt + 1;
+
+                           else
+                              pragma Assert
+                                (Actual_Binder.Mutable =
+                                   Formal_Binder.Mutable);
+
+                              --  Otherwise, the address and is_null can be
+                              --  used as is.
+
+                              Why_Args (Arg_Cnt) :=
+                                +Actual_Binder.Address;
+
+                              Arg_Cnt := Arg_Cnt + 1;
+
+                              Why_Args (Arg_Cnt) :=
+                                +Actual_Binder.Is_Null;
+
+                              Arg_Cnt := Arg_Cnt + 1;
+                           end if;
+                        end;
+
+                     else
+                        --  We use a temporary variable to avoid recomputing
+                        --  the actual several times.
+
+                        Nb_Of_Lets := Nb_Of_Lets + 1;
+
+                        declare
+                           Tmp_Actual    : constant W_Expr_Id :=
+                             +New_Identifier
+                             (Name   => Full_Name (Formal) & "__compl",
+                              Domain => EW_Term,
+                              Typ    => W_Formal_Typ);
+                        begin
+
+                           --  We need a new reference for the value
+
+                           Why_Args (Arg_Cnt) :=
+                             +New_Identifier
+                             (Ada_Node => Empty,
+                              Name     => Full_Name (Formal) & "__value",
+                              Typ      =>
+                                Get_Typ
+                                  (Formal_Binder.Value.B_Name));
+
+                           Nb_Of_Refs := Nb_Of_Refs + 1;
+
+                           Arg_Cnt := Arg_Cnt + 1;
+
+                           if Formal_Binder.Mutable then
+
+                              --  If the formal is mutable, we need new
+                              --  references for the address and is_null.
+
+                              Why_Args (Arg_Cnt) :=
+                                +New_Identifier
+                                (Ada_Node => Empty,
+                                 Name     => Full_Name (Formal) & "__addr",
+                                 Typ      =>
+                                   Get_Typ (Formal_Binder.Address));
+
+                              Nb_Of_Refs := Nb_Of_Refs + 1;
+
+                              Arg_Cnt := Arg_Cnt + 1;
+
+                              Why_Args (Arg_Cnt) :=
+                                +New_Identifier
+                                (Ada_Node => Empty,
+                                 Name     => Full_Name (Formal) & "__is_null",
+                                 Typ      =>
+                                   Get_Typ (Formal_Binder.Is_Null));
+
+                              Nb_Of_Refs := Nb_Of_Refs + 1;
+
+                              Arg_Cnt := Arg_Cnt + 1;
+
+                           else
+
+                              --  Otherwise, address and is_null are constants,
+                              --  query the appropriate components.
+
+                              Why_Args (Arg_Cnt) :=
+                                New_Pointer_Address_Access
+                                  (E    => Formal_Typ,
+                                   Name => Tmp_Actual);
+
+                              Arg_Cnt := Arg_Cnt + 1;
+
+                              Why_Args (Arg_Cnt) :=
+                                New_Pointer_Is_Null_Access
+                                  (E    => Formal_Typ,
+                                   Name => Tmp_Actual);
+
+                              Arg_Cnt := Arg_Cnt + 1;
+                           end if;
+                        end;
+                     end if;
+                  end;
+
                when Func    =>
                   raise Program_Error;
             end case;
@@ -2649,7 +2906,8 @@ package body Gnat2Why.Expr is
    ---------------------------
 
    function Compute_Default_Check
-     (Ty               : Entity_Id;
+     (Ada_Node         : Entity_Id;
+      Ty               : Entity_Id;
       Params           : Transformation_Params;
       Skip_Last_Cond   : Boolean := False;
       Include_Subtypes : Boolean := False;
@@ -2771,6 +3029,10 @@ package body Gnat2Why.Expr is
                     Expected_Type => Base_Why_Type (Ty_Ext),
                     Domain        => EW_Prog,
                     Params        => Params);
+
+               --  Do not check predicate of default value, it will be done
+               --  later.
+
                Range_Check  : constant W_Expr_Id :=
                  Insert_Scalar_Conversion
                    (Domain     => EW_Prog,
@@ -2778,7 +3040,8 @@ package body Gnat2Why.Expr is
                     Expr       => Default_Expr,
                     To         => Type_Of_Node (Ty_Ext),
                     Range_Type => Ty_Ext,
-                    Check_Kind => RCK_Range);
+                    Check_Kind => RCK_Range,
+                    Skip_Pred  => True);
             begin
                Checks := +Range_Check;
             end;
@@ -2836,8 +3099,9 @@ package body Gnat2Why.Expr is
 
             else
                T_Comp := +Compute_Default_Check
-                 (Ty     => Component_Type (Ty_Ext),
-                  Params => Params);
+                 (Ada_Node => Ada_Node,
+                  Ty       => Component_Type (Ty_Ext),
+                  Params   => Params);
             end if;
 
             if T_Comp /= +Void then
@@ -3001,7 +3265,8 @@ package body Gnat2Why.Expr is
                            --  Otherwise, use its Field's Etype default value
 
                            T_Comp :=
-                             +Compute_Default_Check (Etype (Field), Params);
+                             +Compute_Default_Check
+                             (Ada_Node, Etype (Field), Params);
                         end if;
 
                         if T_Comp /= +Void then
@@ -3096,25 +3361,13 @@ package body Gnat2Why.Expr is
                             Post        => Default_Init_Pred,
                             Return_Type => EW_Abstract (Ty_Ext));
 
-            --  Find the node to which the check should be attached. If a
-            --  predicate aspect applies to Ty, use that node. Otherwise (case
-            --  of a pragma or an inherited predicate) use type Ty. Note that
-            --  Compute_Default_Check is only called when an object of the type
-            --  is being default initialized. If no such object exists, the
-            --  check that the default value of the type respects the predicate
-            --  will not be generated.
-
-            Pred_Node : constant Node_Id := Find_Predicate_Aspect (Ty);
-            Check_Node : constant Node_Id :=
-              (if Present (Pred_Node) then Pred_Node else Ty);
-
             --  Generate the predicate check, specifying that it applies to the
             --  default value of a type, so that a special VC kind is used for
             --  better messages.
 
             Pred_Check : constant W_Prog_Id :=
               New_Predicate_Check
-                (Ada_Node         => Check_Node,
+                (Ada_Node         => Ada_Node,
                  Ty               => Ty,
                  W_Expr           => +Tmp_Exp,
                  On_Default_Value => True);
@@ -3402,7 +3655,7 @@ package body Gnat2Why.Expr is
       elsif Is_Access_Type (Ty_Ext) then
 
          Assumption := Pred_Of_Boolean_Term
-           (New_Pointer_Is_Null_Access (Ty_Ext, Expr));
+           (+New_Pointer_Is_Null_Access (Ty_Ext, Expr));
 
       elsif Is_Record_Type_In_Why (Ty_Ext) then
 
@@ -3840,23 +4093,34 @@ package body Gnat2Why.Expr is
                                    Domain => EW_Pred),
                                 Domain => EW_Pred);
          end if;
+      elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
+         T := New_Not (Right => New_Pointer_Is_Null_Access (E    => Ty_Ext,
+                                                            Name => +Expr));
       else
          T := True_Pred;
       end if;
 
-      --  Add possible dynamic predicate. This is only valid for initialized
-      --  data, when the top predicate should be included.
+      --  Add possible dynamic predicate. If the type defines at least partial
+      --  default initialization, the predicate is checked at default
+      --  initialization so it can be assumed to always hold. Otherwise, the
+      --  predicate is only valid for initialized data. In all cases, only
+      --  assume the predicate when the top predicate should be included.
 
       declare
-         Typ_Pred   : constant W_Pred_Id :=
+         Typ_Pred              : constant W_Pred_Id :=
            Compute_Dynamic_Predicate (Expr, Ty_Ext, Params, Use_Pred => False);
-         Check_Pred : constant W_Pred_Id :=
+         Pred_Check_At_Default : constant Boolean :=
+           Default_Initialization (Ty_Ext, Get_Flow_Scope (Ty_Ext))
+             /= No_Default_Initialization;
+         Check_Pred            : constant W_Pred_Id :=
            New_Conditional
              (Condition => +Top_Predicate,
-              Then_Part => New_Conditional (Domain    => EW_Pred,
-                                            Condition => +Initialized,
-                                            Then_Part => +Typ_Pred,
-                                            Typ       => EW_Bool_Type),
+              Then_Part =>
+                (if Pred_Check_At_Default then +Typ_Pred
+                 else New_Conditional (Domain    => EW_Pred,
+                                       Condition => +Initialized,
+                                       Then_Part => +Typ_Pred,
+                                       Typ       => EW_Bool_Type)),
               Typ       => EW_Bool_Type);
 
       begin
@@ -3921,6 +4185,45 @@ package body Gnat2Why.Expr is
            (Left   => +T,
             Right  => +Invariant_For_Record (Expr, Ty_Ext),
             Domain => EW_Pred);
+
+      elsif Is_Access_Type (Ty_Ext) then
+
+         --  Generates:
+         --  (not <Expr>.is_null -> Dynamic_Invariant <Expr>.value)
+
+         --  ??? we can assume the value of constrained attribute if any
+
+         declare
+            Value_Dyn_Inv : constant W_Pred_Id :=
+              Compute_Dynamic_Invariant
+                (Expr             => +New_Pointer_Value_Access
+                   (Ada_Node => Empty,
+                    E        => Ty_Ext,
+                    Name     => +Expr,
+                    Domain   => EW_Term),
+                 Ty               => Directly_Designated_Type (Ty_Ext),
+                 Only_Var         => False_Term,
+                 Top_Predicate    => True_Term,
+                 Include_Type_Inv => Include_Type_Inv,
+                 Params           => Params,
+                 Use_Pred         => Use_Pred);
+
+         begin
+            if Value_Dyn_Inv /= True_Pred then
+               T := +New_And_Then_Expr
+                 (Left        => +T,
+                  Right       =>
+                    New_Conditional
+                      (Domain      => EW_Pred,
+                       Condition   =>
+                         New_Not (Domain => EW_Pred,
+                                  Right  => New_Pointer_Is_Null_Access
+                                    (E    => Ty_Ext,
+                                     Name => +Expr)),
+                       Then_Part   => +Value_Dyn_Inv),
+                  Domain      => EW_Pred);
+            end if;
+         end;
       end if;
 
       return T;
@@ -5188,6 +5491,200 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
+            when Pointer =>
+               declare
+                  Formal_Typ : constant Entity_Id :=
+                    Etype (Binders (Bind_Cnt).Value.Ada_Node);
+               begin
+
+                  --  If aliasing can occur, we cannot use the variables from
+                  --  the actual's split form. We need to introduce a temporary
+                  --  for it.
+
+                  if Aliasing
+                    or else not Simple_Actual
+                    or else not Eq_Base (EW_Abstract (Formal_Typ),
+                                         Type_Of_Node (Actual))
+                  then
+                     declare
+                        Formal_T                : constant W_Type_Id :=
+                          EW_Abstract (Formal_Typ);
+                        Actual_T                : constant W_Type_Id :=
+                          Type_Of_Node (Actual);
+
+                        Actual_Is_Split         : constant Boolean :=
+                          Simple_Actual and then not Aliasing;
+                        --  The actual is split if and only if it is an
+                        --  identifier.
+
+                        --  1/ Before the call (saving into temporary
+                        --     variables):
+                        -------------------------------------------------------
+
+                        Prefetch_Actual_Tmp     : constant W_Identifier_Id :=
+                          New_Identifier
+                            (Name => Full_Name (Formal) & "__compl",
+                             Typ  => Formal_T);
+                        --  Temporary variable to hold the value of the
+                        --  converted actual if it cannot be used as is.
+
+                        Prefetch_Actual          : constant W_Prog_Id :=
+                          +Transform_Expr (Actual, Formal_T, EW_Prog, Params);
+
+                        Tmp_Var_For_Value        : constant W_Identifier_Id :=
+                          New_Identifier
+                            (Ada_Node => Empty,
+                             Name     => Full_Name (Formal) & "__value",
+                             Typ      =>
+                               Get_Typ
+                                 (Binders (Bind_Cnt).Value.B_Name));
+                        --  Variable for the reference for value
+
+                        Fetch_Actual_For_Value   : constant W_Prog_Id :=
+                          +New_Pointer_Value_Access
+                          (Ada_Node => Empty,
+                           Domain   => EW_Pterm,
+                           Name     => +Prefetch_Actual_Tmp,
+                           E        => Formal_Typ);
+
+                        Needs_Ref_For_Others     : constant Boolean :=
+                          not Actual_Is_Split
+                          and then Binders (Bind_Cnt).Mutable;
+
+                        Tmp_Var_For_Addr         : constant W_Identifier_Id :=
+                          New_Identifier
+                            (Ada_Node => Empty,
+                             Name     => Full_Name (Formal) & "__addr",
+                             Typ      =>
+                               Get_Typ (Binders (Bind_Cnt).Address));
+                        --  Variable for the reference for the address
+
+                        Fetch_Actual_For_Addr    : constant W_Prog_Id :=
+                          +New_Pointer_Address_Access
+                          (Name => +Prefetch_Actual_Tmp,
+                           E    => Formal_Typ);
+
+                        Tmp_Var_For_Is_Null      : constant W_Identifier_Id :=
+                          New_Identifier
+                            (Ada_Node => Empty,
+                             Name     => Full_Name (Formal) & "__is_null",
+                             Typ      =>
+                               Get_Typ (Binders (Bind_Cnt).Is_Null));
+                        --  Variable for the reference for is_null
+
+                        Fetch_Actual_For_Is_Null : constant W_Prog_Id :=
+                          +New_Pointer_Is_Null_Access
+                          (Name => +Prefetch_Actual_Tmp,
+                           E    => Formal_Typ);
+
+                        --  2/ After the call (storing the result):
+                        -------------------------------------------
+
+                        Reconstructed_Arg       : W_Prog_Id;
+
+                     begin
+                        --  We reconstruct the argument and convert it to the
+                        --  actual type (without checks). We store the result
+                        --  in Reconstructed_Arg.
+
+                        declare
+                           Arg_Array : W_Expr_Array (1 .. 3);
+                        begin
+
+                           --  For value, use the temporary variable
+
+                           Arg_Array (1) :=
+                             New_Deref (Right => Tmp_Var_For_Value,
+                                        Typ   =>
+                                          Get_Typ (Tmp_Var_For_Value));
+
+                           if Needs_Ref_For_Others then
+
+                              --  If we have introduced temporary references
+                              --  the address and is_null, use them.
+
+                              Arg_Array (2) :=
+                                New_Deref (Right => Tmp_Var_For_Addr,
+                                           Typ   =>
+                                             Get_Typ (Tmp_Var_For_Addr));
+                              Arg_Array (3) :=
+                                New_Deref (Right => Tmp_Var_For_Is_Null,
+                                           Typ   =>
+                                             Get_Typ (Tmp_Var_For_Is_Null));
+
+                           elsif Binders (Bind_Cnt).Mutable then
+                              pragma Assert (Actual_Is_Split);
+
+                              --  The actual is split. Its components have been
+                              --  updated already, we can use them directly.
+
+                              declare
+                                 Actual_Binder : constant Item_Type :=
+                                   Ada_Ent_To_Why.Element
+                                     (Symbol_Table, Entity (Actual));
+                              begin
+
+                                 Arg_Array (2) :=
+                                   New_Deref
+                                     (Right => Actual_Binder.Address,
+                                      Typ   =>
+                                        Get_Typ (Actual_Binder.Address));
+                                 Arg_Array (3) :=
+                                   New_Deref
+                                     (Right => Actual_Binder.Is_Null,
+                                      Typ   =>
+                                        Get_Typ (Actual_Binder.Is_Null));
+                              end;
+                           else
+
+                              --  The values from the actual have not been
+                              --  modified. Take them from Prefetch_Actual_Tmp.
+
+                              Arg_Array (2) := +Fetch_Actual_For_Addr;
+                              Arg_Array (3) := +Fetch_Actual_For_Is_Null;
+                           end if;
+
+                           Reconstructed_Arg :=
+                             +Pointer_From_Split_Form
+                             (A  => Arg_Array,
+                              Ty => Formal_Typ);
+
+                           Reconstructed_Arg :=
+                             +Insert_Simple_Conversion
+                             (Domain   => EW_Pterm,
+                              Expr     => +Reconstructed_Arg,
+                              To       => Actual_T);
+                        end;
+
+                        --  Store the assignment and the required declarations
+
+                        Statement_Sequence_Append_To_Statements
+                          (Store, New_Assignment
+                             (Ada_Node => Actual,
+                              Lvalue   => Actual,
+                              Expr     => Reconstructed_Arg));
+
+                        Ref_Tmp_Vars (Ref_Index) := Tmp_Var_For_Value;
+                        Ref_Fetch (Ref_Index) := Fetch_Actual_For_Value;
+                        Ref_Index := Ref_Index + 1;
+
+                        if Needs_Ref_For_Others then
+                           Ref_Tmp_Vars (Ref_Index) := Tmp_Var_For_Addr;
+                           Ref_Fetch (Ref_Index) := Fetch_Actual_For_Addr;
+                           Ref_Index := Ref_Index + 1;
+
+                           Ref_Tmp_Vars (Ref_Index) := Tmp_Var_For_Is_Null;
+                           Ref_Fetch (Ref_Index) := Fetch_Actual_For_Is_Null;
+                           Ref_Index := Ref_Index + 1;
+                        end if;
+
+                        Let_Tmp_Vars (Let_Index) := Prefetch_Actual_Tmp;
+                        Let_Fetch (Let_Index) := Prefetch_Actual;
+                        Let_Index := Let_Index + 1;
+                     end;
+                  end if;
+               end;
+
             when Func    => raise Program_Error;
          end case;
 
@@ -5452,10 +5949,9 @@ package body Gnat2Why.Expr is
    -------------------------
 
    function Needs_Temporary_Ref
-     (Actual           : Node_Id;
-      Formal           : Entity_Id;
-      Typ_Formal       : W_Type_Id;
-      In_Function_Call : Boolean := True) return Boolean
+     (Actual     : Node_Id;
+      Formal     : Entity_Id;
+      Typ_Formal : W_Type_Id) return Boolean
    is
       Simple_Actual : constant Boolean :=
         Nkind (Actual) in N_Identifier | N_Expanded_Name
@@ -5476,14 +5972,7 @@ package body Gnat2Why.Expr is
             --  in a procedure call (considered as borrowing).
 
          when E_In_Parameter =>
-            if Is_Access_Type (Etype (Formal))
-              and then not In_Function_Call
-            then
-               return not Eq_Base (Type_Of_Node (Etype (Actual)), Typ_Formal)
-                 or else not Simple_Actual;
-            else
-               return Has_Async_Writers (Direct_Mapping_Id (Formal));
-            end if;
+            return Has_Async_Writers (Direct_Mapping_Id (Formal));
 
          when others =>
             raise Program_Error;
@@ -5761,6 +6250,51 @@ package body Gnat2Why.Expr is
                                     Ty     => Binder.Typ),
                                  Domain => EW_Pred)));
                      end if;
+                  end if;
+
+                  Result := +Binding_For_Temp (Ada_Node => Ada_Node,
+                                               Domain   => EW_Prog,
+                                               Tmp      => Tmp,
+                                               Context  => +Result);
+               end;
+
+            when Pointer =>
+               declare
+                  Binder_Typ : constant Entity_Id :=
+                    Etype (Binder.Value.Ada_Node);
+                  Tmp        : constant W_Expr_Id :=
+                    New_Temp_For_Expr (+Right_Side);
+               begin
+                  Result := New_Assignment
+                    (Ada_Node => Ada_Node,
+                     Name     => Binder.Value.B_Name,
+                     Labels   => Name_Id_Sets.Empty_Set,
+                     Value    => +New_Pointer_Value_Access
+                       (Ada_Node => Empty,
+                        Domain   => EW_Pterm,
+                        Name     => Tmp,
+                        E        => Binder_Typ),
+                     Typ      => Get_Typ (Binder.Value.B_Name));
+
+                  if Binder.Mutable then
+                     Result := Sequence
+                       ((1 => Result,
+                         2 => New_Assignment
+                          (Ada_Node => Ada_Node,
+                           Name     => Binder.Address,
+                           Labels   => Name_Id_Sets.Empty_Set,
+                           Value    => +New_Pointer_Address_Access
+                             (Name => Tmp,
+                              E    => Binder_Typ),
+                           Typ      => Get_Typ (Binder.Address)),
+                         3 => New_Assignment
+                          (Ada_Node => Ada_Node,
+                           Name     => Binder.Is_Null,
+                           Labels   => Name_Id_Sets.Empty_Set,
+                           Value    => +New_Pointer_Is_Null_Access
+                             (Name => Tmp,
+                              E    => Binder_Typ),
+                           Typ      => Get_Typ (Binder.Is_Null))));
                   end if;
 
                   Result := +Binding_For_Temp (Ada_Node => Ada_Node,
@@ -7058,12 +7592,13 @@ package body Gnat2Why.Expr is
 
          if Domain = EW_Prog
            and then Present (Aggregate_Bounds (Expr))
-           and then not Is_Static_Array_Type (Etype (Expr))
+           and then not Is_Static_Array_Type (Retysp (Etype (Expr)))
          then
             declare
                Temp   : constant W_Expr_Id := New_Temp_For_Expr (R, True);
                A1, A2 : W_Prog_Id;
-               Typ    : constant Node_Id := First_Index (Etype (Etype (Expr)));
+               Typ    : constant Node_Id := First_Index
+                 (Retysp (Etype (Etype (Expr))));
                W_Typ  : constant W_Type_Id :=
                  (if Typ = Empty then EW_Int_Type else
                      Base_Why_Type_No_Bool (Typ));
@@ -7107,10 +7642,10 @@ package body Gnat2Why.Expr is
          --  Possibly check the predicate on the aggregate
 
          if Domain = EW_Prog
-           and then Has_Predicates (Etype (Expr))
+           and then Has_Predicates (Retysp (Etype (Expr)))
          then
             R := +Insert_Predicate_Check (Ada_Node => Expr,
-                                          Check_Ty => Etype (Expr),
+                                          Check_Ty => Retysp (Etype (Expr)),
                                           W_Expr   => +R);
          end if;
 
@@ -8588,14 +9123,10 @@ package body Gnat2Why.Expr is
 
       Left_Length  : constant W_Expr_Id :=
         Build_Length_Expr (Domain => EW_Term, Expr => Left_Expr, Dim => 1);
-      Right_Length : constant W_Expr_Id :=
-        Build_Length_Expr (Domain => EW_Term, Expr => Right_Expr, Dim => 1);
       Length_Check : constant W_Expr_Id :=
-        New_Call
-          (Domain => EW_Pred,
-           Name   => Why_Eq,
-           Typ    => EW_Bool_Type,
-           Args   => (+Left_Length, +Right_Length));
+        +New_Length_Equality (Left_Arr  => Left_Expr,
+                              Right_Arr => Right_Expr,
+                              Dim       => 1);
 
       Index_Type : constant W_Type_Id :=
         (if First_Index (Retysp (Left_Type)) = Empty
@@ -8856,32 +9387,17 @@ package body Gnat2Why.Expr is
 
       if Lgth_Check then
          declare
-            Check : W_Pred_Id := True_Pred;
             Lval  : constant W_Expr_Id :=
               New_Temp_For_Expr
                 (Transform_Expr (Lvalue, EW_Prog, Body_Params), True);
             Dim   : constant Positive :=
               Positive (Number_Dimensions (Get_Ada_Node (+L_Type)));
+            Check : constant W_Pred_Id := New_Length_Equality
+              (Left_Arr  => Tmp,
+               Right_Arr => Lval,
+               Dim       => Dim);
+
          begin
-            for I in 1 .. Dim loop
-               declare
-                  Input_Length    : constant W_Expr_Id :=
-                    Build_Length_Expr (EW_Term, Tmp, I);
-                  Expected_Length : constant W_Expr_Id :=
-                    Build_Length_Expr (EW_Term, Lval, I);
-               begin
-                  Check :=
-                    +New_And_Then_Expr
-                    (Domain => EW_Pred,
-                     Left   => +Check,
-                     Right  =>
-                       New_Call
-                         (Domain => EW_Pred,
-                          Name   => Why_Eq,
-                          Typ    => EW_Bool_Type,
-                          Args   => (+Input_Length, +Expected_Length)));
-               end;
-            end loop;
             T :=
               Sequence
                 (New_Located_Assert
@@ -9262,13 +9778,12 @@ package body Gnat2Why.Expr is
 
          when Attribute_Loop_Entry =>
             Loop_Entry : declare
+
                function Is_Loop_Stmt (N : Node_Id) return Boolean is
                  (Nkind (N) = N_Loop_Statement);
-               --  @param N any Node
-               --  @return True if N is a loop statement.
 
                function Enclosing_Loop_Stmt is new
-                  First_Parent_With_Property (Is_Loop_Stmt);
+                 First_Parent_With_Property (Is_Loop_Stmt);
 
                Arg       : constant Node_Id := First (Expressions (Expr));
                Loop_Id   : Entity_Id;
@@ -9444,8 +9959,10 @@ package body Gnat2Why.Expr is
                               Typ      => EW_Abstract (Standard_String));
             end;
 
-         when Attribute_Size =>
-
+         when Attribute_Size
+            | Attribute_Value_Size
+            | Attribute_Object_Size
+         =>
             --  For arrays and records we do not know the exact value of
             --  attribute size, which is decided by the back-end when
             --  generating executable code. Instead, we generate call to an
@@ -9463,38 +9980,72 @@ package body Gnat2Why.Expr is
             --  ** Type'Object_Size in GNAT
             --  ** Esize field in GNAT AST
 
-            if Nkind (Var) in N_Has_Entity
-              and then Present (Entity (Var))
-                and then Is_Type (Entity (Var))
-            then
+            Size_Attributes : declare
+               subtype Size_Attributes is Attribute_Id with
+                 Static_Predicate => Size_Attributes in Attribute_Size
+                                                      | Attribute_Value_Size
+                                                      | Attribute_Object_Size;
 
-               T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+               function Object_Size (Typ : Entity_Id) return W_Expr_Id is
+                 (New_Call (Ada_Node => Expr,
+                            Domain   => Domain,
+                            Name     => E_Symb (Typ, WNE_Attr_Object_Size),
+                            Typ      => EW_Int_Type))
+               with Pre => Is_Type (Typ);
+               --  Return the expression corresponding to attribute Object_Size
+               --  applied to type [Typ]. [Type_Prefix] is True for a type
+               --  prefix and False for an object prefix. In the program
+               --  domain, generate checks for an object prefix with
+               --  attribute Size.
 
-            elsif Known_Object_Size (Etype (Var)) then
-               return New_Integer_Constant (Expr,
-                                            Object_Size (Etype (Var)));
-            else
-               declare
-                  Name : constant W_Identifier_Id :=
-                    E_Symb (Etype (Var), WNE_Attr_Object_Size);
-                  Arg  : W_Expr_Id :=
-                    Transform_Expr (Var, Domain, Params);
-               begin
-                  if Has_Array_Type (Etype (Var)) and then
-                    not Has_Static_Array_Type (Etype (Var)) and then
-                    not Has_Static_Array_Type (Get_Ada_Node (+Get_Type (Arg)))
-                    and then Get_Type_Kind (Get_Type (Arg)) /= EW_Split
-                  then
-                     Arg := Array_Convert_To_Base (Domain, Arg);
+               Has_Type_Prefix : constant Boolean :=
+                 Present (Entity (Var))
+                   and then Is_Type (Entity (Var));
+
+            --  Start of processing for Size_Attributes
+
+            begin
+               if Has_Type_Prefix then
+                  case Size_Attributes'(Attr_Id) is
+                     when Attribute_Size
+                        | Attribute_Value_Size
+                     =>
+                        T :=
+                          New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+
+                     when Attribute_Object_Size =>
+                        T := Object_Size (Entity (Var));
+                  end case;
+
+               --  Only attribute Size applies to an object. It is either
+               --  the specified value of Size for the object, or the same
+               --  as Typ'Object_Size for the type of the object.
+
+               else
+                  pragma Assert (Attr_Id = Attribute_Size);
+
+                  if Known_Object_Size (Etype (Var)) then
+                     T := New_Integer_Constant (Expr,
+                                                Object_Size (Etype (Var)));
+                  else
+                     T := Object_Size (Etype (Var));
                   end if;
 
-                  return New_Call (Ada_Node => Expr,
-                                   Domain   => Domain,
-                                   Name     => Name,
-                                   Args     => (1 => Arg),
-                                   Typ      => EW_Int_Type);
-               end;
-            end if;
+                  --  In the program domain, translate the object itself to
+                  --  generate any necessary checks.
+
+                  if Domain = EW_Prog then
+                     T := New_Binding
+                            (Name    =>
+                               New_Temp_Identifier (Typ => Get_Type (+T)),
+                             Domain  => Domain,
+                             Def     =>
+                               +Transform_Expr (Var, Domain, Params),
+                             Context => +T,
+                             Typ     => Get_Type (+T));
+                  end if;
+               end if;
+            end Size_Attributes;
 
          when Attribute_Value =>
             declare
@@ -9735,54 +10286,71 @@ package body Gnat2Why.Expr is
             T := +False_Term;
 
          when Attribute_Component_Size =>
-            if Nkind (Var) in N_Has_Entity
-              and then Present (Entity (Var))
-              and then Is_Type (Entity (Var))
-            then
+            declare
+               Has_Type_Prefix : constant Boolean :=
+                 Present (Entity (Var))
+                   and then Is_Type (Entity (Var));
+               Typ : constant Entity_Id :=
+                 (if Has_Type_Prefix then Entity (Var) else Etype (Var));
+            begin
+               T := New_Attribute_Expr (Typ, Domain, Attr_Id);
 
-               T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+               --  In the program domain, translate the object itself to
+               --  generate any necessary checks. Note that Component_Size may
+               --  only be specified explicitly for a type, not for an object,
+               --  so there is no reason here to call Known_Component_Size for
+               --  more precise handling of the value of the attribute.
 
-            else
-               declare
-                  Name : constant W_Identifier_Id :=
-                    E_Symb (Etype (Var), WNE_Attr_Object_Component_Size);
-                  Arg : constant W_Expr_Id :=
-                    Transform_Expr (Var, Domain, Params);
-               begin
-                  return New_Call (Ada_Node => Expr,
-                                   Domain   => Domain,
-                                   Name     => Name,
-                                   Args     => (1 => Arg),
-                                   Typ      => EW_Int_Type);
-               end;
-            end if;
+               if not Has_Type_Prefix
+                 and then Domain = EW_Prog
+               then
+                  T := New_Binding
+                         (Name    =>
+                            New_Temp_Identifier (Typ => Get_Type (+T)),
+                          Domain  => Domain,
+                          Def     =>
+                            +Transform_Expr (Var, Domain, Params),
+                          Context => +T,
+                          Typ     => Get_Type (+T));
+               end if;
+            end;
 
          when Attribute_Alignment =>
-            if Nkind (Var) in N_Has_Entity
-              and then Present (Entity (Var))
-              and then Is_Type (Entity (Var))
-            then
+            declare
+               Has_Type_Prefix : constant Boolean :=
+                 Present (Entity (Var))
+                   and then Is_Type (Entity (Var));
+               Typ : constant Entity_Id :=
+                 (if Has_Type_Prefix then Entity (Var) else Etype (Var));
+            begin
+               --  Alignment may be specified explicitly on the type or
+               --  object. When specified on the type, the frontend replaces
+               --  T'Alignment by its value. When specified on the object, the
+               --  frontend creates a subtype with a known alignment for the
+               --  object, that can be queried here.
 
-               T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+               if Known_Alignment (Typ) then
+                  T := New_Integer_Constant (Expr, Alignment (Typ));
+               else
+                  T := New_Attribute_Expr (Typ, Domain, Attr_Id);
+               end if;
 
-            elsif Known_Alignment (Etype (Var)) then
+               --  In the program domain, translate the object itself to
+               --  generate any necessary checks.
 
-               return New_Integer_Constant (Expr, Alignment (Etype (Var)));
-
-            else
-               declare
-                  Name : constant W_Identifier_Id :=
-                    E_Symb (Etype (Var), WNE_Attr_Object_Alignment);
-                  Arg  : constant W_Expr_Id :=
-                    Transform_Expr (Var, Domain, Params);
-               begin
-                  return New_Call (Ada_Node => Expr,
-                                   Domain   => Domain,
-                                   Name     => Name,
-                                   Args     => (1 => Arg),
-                                   Typ      => EW_Int_Type);
-               end;
-            end if;
+               if not Has_Type_Prefix
+                 and then Domain = EW_Prog
+               then
+                  T := New_Binding
+                         (Name    =>
+                            New_Temp_Identifier (Typ => Get_Type (+T)),
+                          Domain  => Domain,
+                          Def     =>
+                            +Transform_Expr (Var, Domain, Params),
+                          Context => +T,
+                          Typ     => Get_Type (+T));
+               end if;
+            end;
 
          when Attribute_First_Bit =>
             declare
@@ -10243,8 +10811,7 @@ package body Gnat2Why.Expr is
                Build_Length_Expr
               (Domain => Domain,
                First => Get_Array_Attr (Domain, Left_Expr, Attribute_First, 1),
-               Last => Get_Array_Attr (Domain, Left_Expr, Attribute_Last, 1),
-               Typ => EW_Int_Type));
+               Last => Get_Array_Attr (Domain, Left_Expr, Attribute_Last, 1)));
          Right_Length : constant W_Expr_Id :=
            (if Is_Component_Right
             then One_Term
@@ -10253,8 +10820,8 @@ package body Gnat2Why.Expr is
               (Domain => Domain,
                First => Get_Array_Attr
                  (Domain, Right_Expr, Attribute_First, 1),
-               Last => Get_Array_Attr (Domain, Right_Expr, Attribute_Last, 1),
-               Typ => EW_Int_Type));
+               Last => Get_Array_Attr
+                 (Domain, Right_Expr, Attribute_Last, 1)));
       begin
          return
            +New_Discrete_Substract
@@ -10961,7 +11528,7 @@ package body Gnat2Why.Expr is
                then
                   declare
                      Init_Map : constant Dependency_Maps.Map :=
-                       Parse_Initializes (E);
+                       Parse_Initializes (E, Get_Flow_Scope (E));
 
                   begin
                      for Var of GG_Get_Local_Variables (E) loop
@@ -12497,7 +13064,8 @@ package body Gnat2Why.Expr is
 
                   Call := +Sequence
                     (Left     => Compute_Default_Check
-                       (Ty               => Directly_Designated_Type (Exp_Ty),
+                       (Ada_Node         => Expr,
+                        Ty               => Directly_Designated_Type (Exp_Ty),
                         Params           => Body_Params,
                         Include_Subtypes => True),
                      Right    => +Call);
@@ -13088,6 +13656,54 @@ package body Gnat2Why.Expr is
                         begin
                            T := +Sequence  (+Havoc_Discr_Cond, +T);
                         end;
+                     end if;
+                  end if;
+
+               when Pointer =>
+                  T := Pointer_From_Split_Form (E, Params.Ref_Allowed);
+
+                  --  Havoc the references of Ent for volatiles with
+                  --  Async_Writers.
+
+                  if Has_Async_Writers (Direct_Mapping_Id (Ent))
+                    and then Domain = EW_Prog
+                  then
+                     pragma Assert (Is_Mutable_In_Why (Ent));
+                     pragma Assert (Params.Ref_Allowed);
+
+                     --  Assume dynamic invariant of the object after havoc
+
+                     declare
+                        E_Typ    : constant Entity_Id :=
+                          Etype (E.Value.Ada_Node);
+                        Dyn_Prop : constant W_Pred_Id :=
+                          Compute_Dynamic_Invariant (Expr   => +T,
+                                                     Ty     => E_Typ,
+                                                     Params => Params);
+                     begin
+                        if Dyn_Prop /= True_Pred then
+                           T := +Sequence
+                             (New_Assume_Statement (Pred => Dyn_Prop),
+                              +T);
+                        end if;
+                     end;
+
+                     --  Havoc the reference for value
+
+                     pragma Assert (E.Value.Mutable);
+
+                     T := +Sequence
+                       (New_Havoc_Call (E.Value.B_Name),
+                        +T);
+
+                     --  If the object is mutable then also havoc the address
+                     --  and is_null.
+
+                     if E.Mutable then
+                        T := +Sequence
+                          (New_Havoc_Call (E.Address), +T);
+                        T := +Sequence
+                          (New_Havoc_Call (E.Is_Null), +T);
                      end if;
                   end if;
 
@@ -14263,8 +14879,7 @@ package body Gnat2Why.Expr is
       end if;
 
       if Present (Expr) then
-         Runtime := New_Ignore
-           (Prog => +Transform_Expr (Expr, EW_Prog, Params => Params));
+         Runtime := +Transform_Expr (Expr, EW_Prog, Params => Params);
          Params.Gen_Marker := True;
          Pred := +Transform_Expr (Expr, EW_Pred, Params => Params);
          return;
@@ -14306,7 +14921,7 @@ package body Gnat2Why.Expr is
 
       if Is_Pragma_Assert_And_Cut (Prag) then
          if Check_Expr /= Why_Empty then
-            return Check_Expr;
+            return New_Ignore (Prog => Check_Expr);
          else
             return +Void;
          end if;
@@ -14358,7 +14973,7 @@ package body Gnat2Why.Expr is
       end if;
 
       if Check_Expr /= Why_Empty then
-         T := Sequence (Check_Expr, T);
+         T := Sequence (New_Ignore (Prog => Check_Expr), T);
       end if;
 
       return T;
@@ -16088,6 +16703,10 @@ package body Gnat2Why.Expr is
         New_Statement_Sequence (Statements => (1 .. 1 => +Void));
 
    begin
+      if No (Cur_Stmt_Or_Decl) then
+         return +Void;
+      end if;
+
       while Present (Cur_Stmt_Or_Decl) loop
          Transform_Statement_Or_Declaration_In_List
            (Stmt_Or_Decl => Cur_Stmt_Or_Decl,
@@ -16096,7 +16715,17 @@ package body Gnat2Why.Expr is
          Nlists.Next (Cur_Stmt_Or_Decl);
       end loop;
 
-      return +Result;
+      --  If inside a loop, with the last instruction being an unconditional
+      --  exit or return statement, and provided the loop is not unrolled,
+      --  we store the Why3 expression in a map, and return instead the raise
+      --  expression that will be linked to that treatment.
+
+      declare
+         Expr : W_Prog_Id := +Result;
+      begin
+         Loops.Exits.Record_And_Replace (Stmts_And_Decls, Expr);
+         return Expr;
+      end;
    end Transform_Statements_And_Declarations;
 
    ------------------------------
@@ -16590,6 +17219,9 @@ package body Gnat2Why.Expr is
                Variables_In_Dynamic_Invariant (Etype (Field), Variables);
             end if;
          end loop;
+      elsif Is_Access_Type (Ty_Ext) then
+         Variables_In_Dynamic_Invariant
+           (Directly_Designated_Type (Ty_Ext), Variables);
       end if;
 
       --  External type invariant of Ty_Ext and its parents if any

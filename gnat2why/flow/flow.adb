@@ -119,7 +119,7 @@ package body Flow is
             end if;
             Write_Eol;
             Indent;
-            for E of S loop
+            for E of To_Ordered_Flow_Id_Set (S) loop
                Sprint_Flow_Id (E);
                Write_Eol;
             end loop;
@@ -139,15 +139,26 @@ package body Flow is
          declare
             M : constant Dependency_Maps.Map :=
               GG_Get_Initializes (FA.Spec_Entity);
+
+            Ordered_LHS : Ordered_Flow_Id_Sets.Set;
+            --  To reliably print the Initializes contract on different
+            --  operating systems we must sort the LHS items; the RHS will
+            --  be sorted in the dedicated pretty-printing routine.
+
          begin
             if not M.Is_Empty then
                Write_Str ("Initializes =>");
                Write_Eol;
                Indent;
+
                for C in M.Iterate loop
+                  Ordered_LHS.Insert (Dependency_Maps.Key (C));
+               end loop;
+
+               for LHS of Ordered_LHS loop
                   Print_Named_Flow_Id_Set
-                    (Flow_Id_To_String (Dependency_Maps.Key (C)),
-                     M (C),
+                    (Flow_Id_To_String (LHS),
+                     M (LHS),
                      True);
                end loop;
                Outdent;
@@ -157,29 +168,34 @@ package body Flow is
          declare
             use type Flow_Id_Sets.Set;
 
-            Globals : Global_Flow_Ids;
+            procedure Print (Globals : Global_Flow_Ids);
+            --  Pretty-print the globals
 
-            procedure Print_Sets;
-            procedure Print_Sets is
-               RO : constant Flow_Id_Sets.Set :=
-                 Change_Variant (Globals.Inputs, Normal_Use) -
-                 Change_Variant (Globals.Outputs, Normal_Use);
-               RW : constant Flow_Id_Sets.Set :=
-                 Change_Variant (Globals.Inputs, Normal_Use) and
-                 Change_Variant (Globals.Outputs, Normal_Use);
-               WO : constant Flow_Id_Sets.Set :=
-                 Change_Variant (Globals.Outputs, Normal_Use) -
+            -----------
+            -- Print --
+            -----------
+
+            procedure Print (Globals : Global_Flow_Ids) is
+               Inputs : constant Flow_Id_Sets.Set :=
                  Change_Variant (Globals.Inputs, Normal_Use);
+
+               Outputs : constant Flow_Id_Sets.Set :=
+                 Change_Variant (Globals.Outputs, Normal_Use);
+
+               RO : constant Flow_Id_Sets.Set := Inputs - Outputs;
+               RW : constant Flow_Id_Sets.Set := Inputs and Outputs;
+               WO : constant Flow_Id_Sets.Set := Outputs - Inputs;
+
             begin
-               Print_Named_Flow_Id_Set ("Proof_In",
-                                        Change_Variant
-                                          (Globals.Proof_Ins,
-                                           Normal_Use),
-                                        False);
-               Print_Named_Flow_Id_Set ("Input", RO, False);
+               Print_Named_Flow_Id_Set ("Proof_In", Globals.Proof_Ins, False);
+
+               Print_Named_Flow_Id_Set ("Input",  RO, False);
                Print_Named_Flow_Id_Set ("In_Out", RW, False);
                Print_Named_Flow_Id_Set ("Output", WO, False);
-            end Print_Sets;
+            end Print;
+
+            Globals : Global_Flow_Ids;
+
          begin
             GG_Get_Globals (E       => FA.Analyzed_Entity,
                             S       => FA.S_Scope,
@@ -187,7 +203,7 @@ package body Flow is
             Write_Str ("Global =>");
             Write_Eol;
             Indent;
-            Print_Sets;
+            Print (Globals);
             Outdent;
 
             GG_Get_Globals (E       => FA.Analyzed_Entity,
@@ -196,7 +212,7 @@ package body Flow is
             Write_Str ("Refined_Global =>");
             Write_Eol;
             Indent;
-            Print_Sets;
+            Print (Globals);
             Outdent;
          end;
       end if;

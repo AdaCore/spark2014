@@ -1,5 +1,5 @@
 bounded_stacks.adb:30:12: info: discriminant check proved (CVC4: 1 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.adb:30:15: info: length check proved (CVC4: 1 VC), in instantiation at integer_stacks.ads:4
+bounded_stacks.adb:30:15: info: length check proved (CVC4: 4 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:40:28: info: overflow check proved (CVC4: 1 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:41:24: info: index check proved (CVC4: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:50:32: medium: array index check might fail, in instantiation at integer_stacks.ads:4 (e.g. when Item = 0 and This = (Top => 2, others => ?)) [possible explanation: subprogram at line 48 should mention This in a precondition]
@@ -18,6 +18,6 @@ bounded_stacks.ads:27:54: medium: overflow check might fail, in instantiation at
 bounded_stacks.ads:31:41: info: initialization of "Item" proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:33:20: info: postcondition proved (CVC4: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:48:07: info: range check proved (CVC4: 2 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.ads:48:44: info: length check proved (CVC4: 1 VC), in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:48:44: info: length check proved (CVC4: 4 VC), in instantiation at integer_stacks.ads:4
 integer_stacks.ads:4:01: info: cannot unroll loop (too many loop iterations)
 integer_stacks.ads:4:01: info: in instantiation at bounded_stacks.adb:70

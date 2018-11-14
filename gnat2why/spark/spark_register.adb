@@ -30,6 +30,7 @@ with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with SPARK_Util;             use SPARK_Util;
 with Stand;                  use Stand;
 
 package body SPARK_Register is
@@ -154,20 +155,15 @@ package body SPARK_Register is
                            end if;
                      end case;
 
-                  when E_Constant
-                     | E_Variable
-                  =>
-                     begin
-                        case Nkind (Parent (E)) is
-                           when N_Object_Declaration
-                              | N_Iterator_Specification
-                           =>
-                              Register_Entity (E);
+                  when E_Constant =>
+                     Register_Entity (Unique_Entity (E));
 
-                           when others =>
-                              null;
-                        end case;
-                     end;
+                  when E_Variable =>
+                     if Is_Quantified_Loop_Param (E) then
+                        null;
+                     else
+                        Register_Entity (E);
+                     end if;
 
                   when E_Abstract_State
                      | E_Loop_Parameter

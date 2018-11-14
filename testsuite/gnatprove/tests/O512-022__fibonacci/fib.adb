@@ -26,7 +26,7 @@ package body Fib is pragma SPARK_Mode (On);
       i := 2;
       while(n1 > 2) loop
          pragma Loop_Invariant (a1 = Fibonacci(i) and then -- @LOOP_INVARIANT_INIT:FAIL @LOOP_INVARIANT_PRESERV:FAIL
-                        b1 = Fibonacci(i - 1) and then -- @RANGE_CHECK:FAIL
+                        b1 = Fibonacci(i - 1) and then
                         i <= 23 and then
                         n1 + i - 2 = copy_n1);
          pragma Loop_Variant (Decreases => n1);
@@ -38,7 +38,7 @@ package body Fib is pragma SPARK_Mode (On);
       i := 2;
       while(n2 > 2) loop
          pragma Loop_Invariant (a2 = Fibonacci(i) and then  -- @LOOP_INVARIANT_INIT:FAIL @LOOP_INVARIANT_PRESERV:FAIL
-                        b2 = Fibonacci(i - 1) and then -- @RANGE_CHECK:FAIL
+                        b2 = Fibonacci(i - 1) and then
                         i <= 23 and then
                         n2 + i - 2 = copy_n2);
          pragma Loop_Variant (Decreases => n2);

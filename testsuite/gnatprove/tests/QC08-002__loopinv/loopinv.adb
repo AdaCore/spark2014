@@ -5,6 +5,6 @@ procedure Loopinv with SPARK_Mode is
 begin
    while J < 10 loop
       J := J + 1;
-      pragma Loop_Invariant (Cond (J)); --@PRECONDITION:FAIL
+      pragma Loop_Invariant (Cond (J));
    end loop;
 end Loopinv;

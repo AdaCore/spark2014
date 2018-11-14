@@ -52,11 +52,15 @@ package Flow_Dependency_Maps is
    function Parse_Depends (N : Node_Id) return Dependency_Maps.Map
    with Pre => Get_Pragma_Id (N) in Pragma_Depends | Pragma_Refined_Depends;
 
-   function Parse_Initializes (P : Entity_Id) return Dependency_Maps.Map
+   function Parse_Initializes
+     (P    : Entity_Id;
+      Scop : Flow_Scope)
+      return Dependency_Maps.Map
    with Pre  => Ekind (P) = E_Package,
         Post => (for all C in Parse_Initializes'Result.Iterate =>
                     Dependency_Maps.Key (C).Kind in Direct_Mapping
-                                                  | Magic_String);
+                                                  | Magic_String
+                                                  | Null_Value);
    --  Parse the Initializes aspect if it exists, or a generated one otherwise
    --
    --  When we parse the Initializes aspect we add any external state
@@ -67,7 +71,7 @@ package Flow_Dependency_Maps is
    --  is no Initializes aspect to begin with.
    --
    --  @param P package entity
-   --  @param S is the Flow_Scope at which we need to up project the results
+   --  @param Scop is the Flow_Scope at which we need to up project the results
    --  @returns the dependency map representing the initializes aspect
 
 end Flow_Dependency_Maps;

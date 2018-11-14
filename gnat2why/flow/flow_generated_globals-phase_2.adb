@@ -92,7 +92,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
    Current_Task : constant Entity_Name :=
      To_Entity_Name ("ada__task_identification__current_task");
-   --  This will be used when checking for calls to Current_Task
+   --  This is used to detect calls to Ada.Task_Identification.Current_Task
 
    --------------------
    -- Tasking graphs --
@@ -471,17 +471,38 @@ package body Flow_Generated_Globals.Phase_2 is
          declare
             Final : Flow_Names renames Global_Contracts (C);
 
-            RHS : constant Flow_Id_Sets.Set :=
+            Inputs : constant Flow_Id_Sets.Set :=
               To_Flow_Id_Set (Final.Proper.Inputs);
+
+            Proof_Ins : constant Flow_Id_Sets.Set :=
+              To_Flow_Id_Set (Final.Proper.Proof_Ins);
 
             DM : Dependency_Maps.Map;
 
+            use type Flow_Id_Sets.Set;
+
          begin
-            for LHS of Final.Initializes loop
-               DM.Insert
-                 (Key      => Get_Flow_Id (LHS),
-                  New_Item => RHS);
-            end loop;
+            if Final.Initializes.Is_Empty then
+               if Inputs.Is_Empty and then Proof_Ins.Is_Empty then
+                  null;
+               else
+                  DM.Insert
+                    (Key      => Null_Flow_Id,
+                     New_Item => Inputs or Proof_Ins);
+               end if;
+            else
+               for LHS of Final.Initializes loop
+                  DM.Insert
+                    (Key      => Get_Flow_Id (LHS),
+                     New_Item => Inputs);
+               end loop;
+
+               if not Proof_Ins.Is_Empty then
+                  DM.Insert
+                    (Key      => Null_Flow_Id,
+                     New_Item => Proof_Ins);
+               end if;
+            end if;
 
             return DM;
          end;
@@ -580,17 +601,15 @@ package body Flow_Generated_Globals.Phase_2 is
 
          Detect_Main_Subprogram : declare
             U : constant Node_Id := Unit (GNAT_Root);
-            S : Node_Id;
+            S : Entity_Id;
 
          begin
             case Nkind (U) is
             when N_Subprogram_Body =>
-               S := (if Acts_As_Spec (U)
-                     then Defining_Unit_Name (Specification (U))
-                     else Corresponding_Spec (U));
+               S := Unique_Defining_Entity (U);
 
             when N_Subprogram_Declaration =>
-               S := Defining_Unit_Name (Specification (U));
+               S := Defining_Entity (U);
 
             when N_Package_Body =>
                if Nkind (Original_Node (U)) in N_Subprogram_Instantiation then

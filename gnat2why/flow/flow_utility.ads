@@ -178,7 +178,6 @@ is
                           Scope                  : Flow_Scope;
                           Classwide              : Boolean;
                           Globals                : out Global_Flow_Ids;
-                          Consider_Discriminants : Boolean := False;
                           Use_Deduced_Globals    : Boolean := True;
                           Ignore_Depends         : Boolean := False)
    with Pre  => Ekind (Subprogram) in E_Entry     |
@@ -202,9 +201,6 @@ is
    --  This query is meaningless for derived task types (whose entities are
    --  also of an E_Task_Type kind), because derived types cannot be annotated
    --  with a Global/Depends contracts.
-   --
-   --  If Consider_Discriminants is True then an out global will include a
-   --  corresponding read if the global includes at least one discriminant.
    --
    --  If Use_Deduced_Globals is True, then we will come up with a global
    --  contract ourselves (which is not necessarily correct, but flow will

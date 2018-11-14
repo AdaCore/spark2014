@@ -1,20 +1,20 @@
 fixed_stream.adb:14:33: info: range check proved (CVC4: 1 VC)
 fixed_stream.adb:14:45: info: range check proved (CVC4: 1 VC)
 fixed_stream.adb:14:61: info: range check proved (CVC4: 1 VC)
-fixed_stream.adb:17:16: info: length check proved (CVC4: 1 VC)
+fixed_stream.adb:17:16: info: length check proved (CVC4: 4 VC)
 fixed_stream.adb:19:09: info: range check proved (CVC4: 4 VC)
 fixed_stream.adb:19:42: info: overflow check proved (CVC4: 1 VC)
 fixed_stream.adb:19:51: info: initialization of "Len" proved
 fixed_stream.adb:19:59: info: initialization of "Change" proved
-fixed_stream.adb:19:59: info: length check proved (CVC4: 1 VC)
-fixed_stream.adb:20:11: info: length check proved (CVC4: 1 VC)
+fixed_stream.adb:19:59: info: length check proved (CVC4: 4 VC)
+fixed_stream.adb:20:11: info: length check proved (CVC4: 4 VC)
 fixed_stream.adb:20:11: info: range check proved (CVC4: 4 VC)
 fixed_stream.adb:20:47: info: overflow check proved (CVC4: 1 VC)
 fixed_stream.adb:20:56: info: initialization of "Len" proved
 fixed_stream.adb:37:16: info: initialization of "This.Name" proved
 fixed_stream.adb:37:16: info: initialization of "This.Width" proved
 fixed_stream.adb:56:09: info: range check proved (CVC4: 2 VC)
-fixed_stream.adb:58:18: info: length check proved (CVC4: 1 VC)
+fixed_stream.adb:58:18: info: length check proved (CVC4: 4 VC)
 fixed_stream.adb:61:16: info: initialization of "Value" proved
 fixed_stream.adb:71:39: info: range check proved (CVC4: 1 VC)
 fixed_stream.adb:71:54: info: range check proved (CVC4: 1 VC)
@@ -47,20 +47,20 @@ fixed_stream.ads:60:21: info: index check proved (CVC4: 2 VC)
 fixed_string.adb:12:33: info: range check proved (CVC4: 1 VC)
 fixed_string.adb:12:45: info: range check proved (CVC4: 1 VC)
 fixed_string.adb:12:61: info: range check proved (CVC4: 1 VC)
-fixed_string.adb:15:16: info: length check proved (CVC4: 1 VC)
+fixed_string.adb:15:16: info: length check proved (CVC4: 4 VC)
 fixed_string.adb:17:09: info: range check proved (CVC4: 4 VC)
 fixed_string.adb:17:42: info: overflow check proved (CVC4: 1 VC)
 fixed_string.adb:17:51: info: initialization of "Len" proved
 fixed_string.adb:17:59: info: initialization of "Change" proved
-fixed_string.adb:17:59: info: length check proved (CVC4: 1 VC)
-fixed_string.adb:18:11: info: length check proved (CVC4: 1 VC)
+fixed_string.adb:17:59: info: length check proved (CVC4: 4 VC)
+fixed_string.adb:18:11: info: length check proved (CVC4: 4 VC)
 fixed_string.adb:18:11: info: range check proved (CVC4: 4 VC)
 fixed_string.adb:18:47: info: overflow check proved (CVC4: 1 VC)
 fixed_string.adb:18:56: info: initialization of "Len" proved
 fixed_string.adb:35:16: info: initialization of "This.Name" proved
 fixed_string.adb:35:16: info: initialization of "This.Width" proved
 fixed_string.adb:49:09: info: range check proved (CVC4: 2 VC)
-fixed_string.adb:49:41: info: length check proved (CVC4: 1 VC)
+fixed_string.adb:49:41: info: length check proved (CVC4: 4 VC)
 fixed_string.adb:52:16: info: initialization of "Value" proved
 fixed_string.adb:61:39: info: range check proved (CVC4: 1 VC)
 fixed_string.adb:61:54: info: range check proved (CVC4: 1 VC)
@@ -68,8 +68,8 @@ fixed_string.adb:66:09: info: range check proved (CVC4: 4 VC)
 fixed_string.adb:66:54: info: overflow check proved (CVC4: 1 VC)
 fixed_string.adb:66:63: info: initialization of "Len" proved
 fixed_string.adb:66:71: info: initialization of "Out_String" proved
-fixed_string.adb:66:71: info: length check proved (CVC4: 1 VC)
-fixed_string.adb:67:11: info: length check proved (CVC4: 1 VC)
+fixed_string.adb:66:71: info: length check proved (CVC4: 4 VC)
+fixed_string.adb:67:11: info: length check proved (CVC4: 4 VC)
 fixed_string.adb:67:11: info: range check proved (CVC4: 4 VC)
 fixed_string.adb:67:53: info: overflow check proved (CVC4: 1 VC)
 fixed_string.adb:67:62: info: initialization of "Len" proved
@@ -109,7 +109,7 @@ main_test.adb:40:26: info: range check proved (CVC4: 1 VC)
 main_test.adb:44:21: info: initialization of "Field_10" proved
 main_test.adb:44:39: info: overflow check proved (CVC4: 1 VC)
 main_test.adb:44:41: info: initialization of "Field_06" proved
-main_test.adb:46:18: info: length check proved (CVC4: 1 VC)
+main_test.adb:46:18: info: length check proved (CVC4: 4 VC)
 main_test.adb:46:21: info: initialization of "Field_10" proved
 main_test.adb:46:39: info: initialization of "Ref_String" proved
 main_test.adb:46:52: low: range check might fail
@@ -121,7 +121,7 @@ main_test.adb:50:42: info: initialization of "Total_Len" proved
 main_test.adb:53:21: info: initialization of "Stream_10" proved
 main_test.adb:53:40: info: overflow check proved (CVC4: 1 VC)
 main_test.adb:53:42: info: initialization of "Stream_06" proved
-main_test.adb:55:18: info: length check proved (CVC4: 1 VC)
+main_test.adb:55:18: info: length check proved (CVC4: 4 VC)
 main_test.adb:55:21: info: initialization of "Stream_10" proved
 main_test.adb:55:40: info: initialization of "Ref_String" proved
 main_test.adb:55:53: medium: range check might fail

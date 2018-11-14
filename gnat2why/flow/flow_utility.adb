@@ -521,7 +521,10 @@ package body Flow_Utility is
          when Magic_String =>
             return Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
 
-         when Record_Field | Null_Value | Synthetic_Null_Export =>
+         when Null_Value =>
+            return Flow_Id_Sets.Empty_Set;
+
+         when Record_Field | Synthetic_Null_Export =>
             raise Program_Error;
       end case;
    end Expand_Abstract_State;
@@ -1001,23 +1004,25 @@ package body Flow_Utility is
    begin
       ----------------------------------------------------------------------
       --  Step 2: Expand out any abstract state for which the refinement is
-      --  visible, similar to what we do for globals. During this step we
-      --  also trim the generated refined depends according to the
-      --  user-provided Refined_Global contract.
+      --  visible, similar to what we do for globals. During this step we also
+      --  trim the generated refined depends according to the user-provided
+      --  Refined_Global contract.
       ----------------------------------------------------------------------
 
       --  Initialize Depends map
+
       Depends := Dependency_Maps.Empty_Map;
 
-      if Trimming_Required then
-         --  Use the Refined_Global to trim the down-projected Depends
+      --  Use the Refined_Global to trim the down-projected Depends
 
+      if Trimming_Required then
          pragma Assert
            (Present (Find_Contract (Subprogram, Pragma_Depends))
               and then
             No (Find_Contract (Subprogram, Pragma_Refined_Depends)));
 
          --  Collect all global Proof_Ins, Outputs and Inputs
+
          Get_Globals (Subprogram          => Subprogram,
                       Scope               => Scope,
                       Classwide           => False,
@@ -1026,15 +1031,18 @@ package body Flow_Utility is
                       Ignore_Depends      => True);
 
          --  Change all variants to Normal_Use
+
          Globals :=
            (Proof_Ins => Change_Variant (Globals.Proof_Ins, Normal_Use),
             Inputs    => Change_Variant (Globals.Inputs,    Normal_Use),
             Outputs   => Change_Variant (Globals.Outputs,   Normal_Use));
 
          --  Add formal parameters
+
          for Param of Get_Formals (Subprogram) loop
             declare
                Formal_Param : constant Flow_Id := Direct_Mapping_Id (Param);
+
             begin
                case Ekind (Param) is
                   when E_In_Parameter =>
@@ -1065,6 +1073,7 @@ package body Flow_Utility is
          --  If Subprogram is a function then we need to add it to the
          --  Globals.Writes set so that Subprogram'Result can appear on the LHS
          --  of the Refined_Depends.
+
          if Ekind (Subprogram) = E_Function then
             Globals.Outputs.Insert (Direct_Mapping_Id (Subprogram));
          end if;
@@ -1099,8 +1108,9 @@ package body Flow_Utility is
             end;
          end loop;
 
+      --  Simply add the dependencies as they are
+
       else
-         --  Simply add the dependencies as they are
          for C in Contract_Relation.Iterate loop
             declare
                D_Out : constant Flow_Id_Sets.Set :=
@@ -1120,9 +1130,8 @@ package body Flow_Utility is
       end if;
 
       ----------------------------------------------------------------------
-      --  Step 3: We add all Proof_Ins of the [Refined_]Global contract to
-      --  the RHS of the "null => RHS" dependence. This is an implicit
-      --  dependency.
+      --  Step 3: We add all Proof_Ins of the [Refined_]Global contract to the
+      --  RHS of the "null => RHS" dependence. This is an implicit dependency.
       ----------------------------------------------------------------------
 
       Get_Globals (Subprogram          => Subprogram,
@@ -1133,8 +1142,10 @@ package body Flow_Utility is
                    Ignore_Depends      => True);
 
       if not Globals.Proof_Ins.Is_Empty then
+
          --  Create new dependency with "null => Globals.Proof_Ins" or extend
          --  the existing "null => ..." with Globals.Proof_Ins.
+
          declare
             Position : Dependency_Maps.Cursor;
             Unused   : Boolean;
@@ -1145,15 +1156,16 @@ package body Flow_Utility is
                             Inserted => Unused);
 
             --  Change variant of Globals.Proof_Ins to Normal_Use
+
             Depends (Position).Union
               (Change_Variant (Globals.Proof_Ins, Normal_Use));
          end;
       end if;
 
       ----------------------------------------------------------------------
-      --  Step 4: If we are dealing with a protected operation and the
-      --  Callsite is present then we need to substitute references to the
-      --  protected type with references to the protected object.
+      --  Step 4: If we are dealing with a protected operation and the Callsite
+      --  is present then we need to substitute references to the protected
+      --  type with references to the protected object.
       ----------------------------------------------------------------------
 
       if Present (Callsite)
@@ -1170,6 +1182,7 @@ package body Flow_Utility is
 
          begin
             --  Substitute reference on LHS
+
             if Depends.Contains (Direct_Mapping_Id (PO_Type)) then
                declare
                   Position : Dependency_Maps.Cursor;
@@ -1191,6 +1204,7 @@ package body Flow_Utility is
             end if;
 
             --  Substitute references on RHS
+
             for Inputs of Depends loop
                declare
                   C : constant Flow_Id_Sets.Cursor :=
@@ -1254,7 +1268,7 @@ package body Flow_Utility is
    begin
       if Present (E) then
          --  We found an entity, now we make some effort to canonicalize
-         return Direct_Mapping_Id (Unique_Entity (E), View);
+         return Direct_Mapping_Id (E, View);
       else
          --  If Entity_Id is not known then fall back to the magic string
          return Magic_String_Id (Name, View);
@@ -1510,12 +1524,9 @@ package body Flow_Utility is
                           Scope                  : Flow_Scope;
                           Classwide              : Boolean;
                           Globals                : out Global_Flow_Ids;
-                          Consider_Discriminants : Boolean := False;
                           Use_Deduced_Globals    : Boolean := True;
                           Ignore_Depends         : Boolean := False)
    is
-      pragma Unreferenced (Consider_Discriminants);
-
       Global_Node  : constant Node_Id := Get_Contract_Node (Subprogram,
                                                             Scope,
                                                             Global_Contract);
@@ -1918,8 +1929,7 @@ package body Flow_Utility is
       Globals : Global_Flow_Ids;
 
       S : constant Flow_Scope :=
-        Get_Flow_Scope (if Is_In_Analyzed_Files (Subprogram)
-                          and then Entity_Body_In_SPARK (Subprogram)
+        Get_Flow_Scope (if Entity_Body_In_SPARK (Subprogram)
                         then Get_Body_Entity (Subprogram)
                         else Subprogram);
 
@@ -1965,7 +1975,6 @@ package body Flow_Utility is
          Scope                  => S,
          Classwide              => Classwide,
          Globals                => Globals,
-         Consider_Discriminants => False,
          Use_Deduced_Globals    => True);
 
       --  Reset outputs
@@ -3873,10 +3882,10 @@ package body Flow_Utility is
             T := Get_Type (F.Node, Scope);
 
          when Record_Field =>
-            if F.Facet /= Normal_Part then
-               return False;
-            else
+            if F.Facet = Normal_Part then
                T := Get_Type (F.Component.Last_Element, Scope);
+            else
+               return False;
             end if;
       end case;
 

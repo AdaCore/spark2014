@@ -103,7 +103,8 @@ package body Gnat2Why.Types is
          procedure Create_Axiom_For_Expr
            (Name : W_Identifier_Id;
             Bnd  : Node_Id;
-            Typ  : W_Type_Id);
+            Typ  : W_Type_Id)
+         with Pre => Nkind (Bnd) in N_Subexpr;
          --  Create a defining axiom for a logic function which can be used
          --  instead of E.
 
@@ -600,13 +601,14 @@ package body Gnat2Why.Types is
       --  expression of newly declared fields.
 
       Why_Body :=
-         Compute_Default_Check
-           (Ty               => Retysp (E),
-            Params           => Params,
-            Skip_Last_Cond   => True,
-            Include_Subtypes => True,
-            New_Components   =>
-              Nkind (Decl) = N_Private_Extension_Declaration);
+        Compute_Default_Check
+          (Ada_Node         => E,
+           Ty               => Retysp (E),
+           Params           => Params,
+           Skip_Last_Cond   => True,
+           Include_Subtypes => True,
+           New_Components   =>
+             Nkind (Decl) = N_Private_Extension_Declaration);
 
       --  If the type has a DIC and this DIC should be checked at
       --  declaration, check that there can be no runtime error in the DIC

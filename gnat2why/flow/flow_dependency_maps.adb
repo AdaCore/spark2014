@@ -98,6 +98,7 @@ package body Flow_Dependency_Maps is
       while Present (Row) loop
          declare
             E : constant Entity_Id := Entity (Original_Node (Row));
+
          begin
             M.Insert (Direct_Mapping_Id (Canonical_Entity (E, Context)),
                       Flow_Id_Sets.Empty_Set);
@@ -230,7 +231,11 @@ package body Flow_Dependency_Maps is
    -- Parse_Initializes --
    -----------------------
 
-   function Parse_Initializes (P : Entity_Id) return Dependency_Maps.Map is
+   function Parse_Initializes
+     (P    : Entity_Id;
+      Scop : Flow_Scope)
+      return Dependency_Maps.Map
+   is
       Initializes : constant Node_Id := Get_Pragma (P, Pragma_Initializes);
 
       M : Dependency_Maps.Map;
@@ -278,6 +283,15 @@ package body Flow_Dependency_Maps is
             end if;
          end loop;
       end if;
+
+      --  The Initializes contract of a generic package might include generic
+      --  actual parameters of mode IN, but they are only visible from within
+      --  the instance. When looking from the outside, they must be mapped to
+      --  variables referenced in their actual expressions.
+
+      for C in M.Iterate loop
+         Map_Generic_In_Formals (Scop, M (C));
+      end loop;
 
       return M;
    end Parse_Initializes;

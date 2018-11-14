@@ -1,5 +1,5 @@
 greatest_common_divisor.adb:10:33: info: loop invariant initialization proved (CVC4: 1 VC)
-greatest_common_divisor.adb:10:33: medium: loop invariant might fail after first iteration, cannot prove Gcd (C, D) = Gcd (M, N) [possible explanation: subprogram at line 4 should mention M and N in a precondition]
+greatest_common_divisor.adb:10:33: medium: loop invariant might fail after first iteration, cannot prove Gcd (C, D) = Gcd (M, N)
 greatest_common_divisor.adb:10:38: info: initialization of "C" proved
 greatest_common_divisor.adb:10:41: info: initialization of "D" proved
 greatest_common_divisor.adb:13:20: info: initialization of "D" proved

@@ -35,6 +35,7 @@ with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
+with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Gnat2Why_Args;
 with Namet;                          use Namet;
@@ -873,7 +874,7 @@ package body Gnat2Why.Subprograms is
 
             elsif Is_Task_Type (E) and then Has_Discriminants (E) then
                declare
-                  Discr : Node_Id := First_Discriminant (E);
+                  Discr : Entity_Id := First_Discriminant (E);
                begin
                   while Present (Discr) loop
                      Includes.Include (Discr);
@@ -891,18 +892,25 @@ package body Gnat2Why.Subprograms is
                --  generated for them.
 
                declare
+                  Scop : constant Flow_Scope :=
+                    Get_Flow_Scope (Package_Spec (E));
+                  --  The scope of where the package is declared, not of the
+                  --  package itself (because from the package itself we would
+                  --  still see the constants that capture expressions of the
+                  --  generic IN parameters).
+
                   Init_Map : constant Dependency_Maps.Map :=
-                    Parse_Initializes (E);
+                    Parse_Initializes (E, Scop);
 
                begin
-                  for S of Init_Map loop
-                     for Y of S loop
+                  for RHS of Init_Map loop
+                     for Input of RHS loop
 
                         --  Expand Abstract_State if any
 
                         declare
                            Reads : constant Flow_Id_Sets.Set :=
-                             Expand_Abstract_State (Y,
+                             Expand_Abstract_State (Input,
                                                     Erase_Constants => False);
                         begin
 
@@ -1097,6 +1105,15 @@ package body Gnat2Why.Subprograms is
 
             when UCArray =>
                Effects_Append (Eff, Binder.Content.B_Name);
+
+            when Pointer =>
+               if Binder.Mutable then
+                  Effects_Append (Eff, Binder.Value.B_Name);
+                  Effects_Append (Eff, Binder.Is_Null);
+                  Effects_Append (Eff, Binder.Address);
+               elsif Binder.Value.Mutable then
+                  Effects_Append (Eff, Binder.Value.B_Name);
+               end if;
 
             when DRecord =>
                if Binder.Fields.Present then
@@ -1312,7 +1329,8 @@ package body Gnat2Why.Subprograms is
 
       if not Is_Wrapper_Package (E) then
          declare
-            Init_Map : constant Dependency_Maps.Map := Parse_Initializes (E);
+            Init_Map : constant Dependency_Maps.Map :=
+              Parse_Initializes (E, Get_Flow_Scope (E));
 
          begin
             for Cu in Init_Map.Iterate loop
@@ -2540,6 +2558,10 @@ package body Gnat2Why.Subprograms is
                  Ref_Allowed => True,
                  Old_Allowed => True);
 
+      --  Reset the toplevel exceptions for exit paths
+
+      Loops.Exits.Before_Start_Of_Subprogram;
+
       --  Translate initial condition of E
 
       if Present (Init_Cond) then
@@ -2698,6 +2720,10 @@ package body Gnat2Why.Subprograms is
       --  Assume values of constants
 
       Assume_Value_Of_Constants (Why_Body, E, Params);
+
+      --  Declare the toplevel exceptions for exit paths
+
+      Loops.Exits.Declare_Exceptions (File);
 
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
@@ -2937,7 +2963,8 @@ package body Gnat2Why.Subprograms is
                      --  Otherwise, use its Field's Etype default value
 
                      F_Check :=
-                       Compute_Default_Check (Etype (Field), Body_Params);
+                       Compute_Default_Check
+                         (Field, Etype (Field), Body_Params);
                   end if;
 
                   if F_Check /= +Void then
@@ -3666,6 +3693,10 @@ package body Gnat2Why.Subprograms is
          Ref_Allowed => True,
          Old_Allowed => True);
 
+      --  Reset the toplevel exceptions for exit paths
+
+      Loops.Exits.Before_Start_Of_Subprogram;
+
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
 
@@ -3864,6 +3895,10 @@ package body Gnat2Why.Subprograms is
 
       Assume_Value_Of_Constants (Prog, E, Contract_Params);
 
+      --  Declare the toplevel exceptions for exit paths
+
+      Loops.Exits.Declare_Exceptions (File);
+
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
       begin
@@ -3937,6 +3972,10 @@ package body Gnat2Why.Subprograms is
                  Ref_Allowed => True,
                  Old_Allowed => True);
 
+      --  Reset the toplevel exceptions for exit paths
+
+      Loops.Exits.Before_Start_Of_Subprogram;
+
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
       --  Translate declarations and statements in the task body, if there
@@ -3988,6 +4027,10 @@ package body Gnat2Why.Subprograms is
       --  Assume values of constants
 
       Assume_Value_Of_Constants (Why_Body, E, Params);
+
+      --  Declare the toplevel exceptions for exit paths
+
+      Loops.Exits.Declare_Exceptions (File);
 
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
@@ -4476,6 +4519,16 @@ package body Gnat2Why.Subprograms is
             --       <E>__dispatch Descendant.tag x1 ... = <Descendant.E> x1 ..
 
             if Ekind (E) = E_Function then
+
+               --  Do not generate compatibility axioms for volatile functions
+               --  as they do not have any assoaciated logic function.
+               --  ??? They could maybe be handled like procedures, using a
+               --  specific_post predicate.
+
+               if Has_Pragma_Volatile_Function (E) then
+                  return;
+               end if;
+
                declare
                   Desc_Ty      : constant W_Type_Id :=
                     Type_Of_Node (Etype (Descendant_E));

@@ -821,11 +821,21 @@ package body Gnat2Why.Util is
       Ada_Ent_To_Why.Insert (Symbol_Table, E, I);
    end Insert_Item;
 
-   --------------------
-   -- Is_Initialized --
-   --------------------
+   ----------------------------
+   -- Is_Initialized_At_Decl --
+   ----------------------------
 
-   function Is_Initialized
+   function Is_Initialized_At_Decl (Obj : Entity_Id) return Boolean is
+   begin
+      return Is_Constant_Object (Obj)
+        or else Present (Expression (Enclosing_Declaration (Obj)));
+   end Is_Initialized_At_Decl;
+
+   -----------------------------
+   -- Is_Initialized_In_Scope --
+   -----------------------------
+
+   function Is_Initialized_In_Scope
      (Obj   : Entity_Id;
       Scope : Entity_Id)
       return Boolean
@@ -869,7 +879,7 @@ package body Gnat2Why.Util is
       when others =>
          raise Program_Error;
       end case;
-   end Is_Initialized;
+   end Is_Initialized_In_Scope;
 
    -----------------------
    -- Is_Mutable_In_Why --
@@ -948,6 +958,7 @@ package body Gnat2Why.Util is
          begin
             if Ekind (E) = E_In_Parameter then
                if Is_Access_Type (E_Typ)
+                 and then not Is_Access_Constant (E_Typ)
                  and then Ekind (Enclosing_Unit (E)) /= E_Function
                then
                   return True;
@@ -955,7 +966,9 @@ package body Gnat2Why.Util is
                   return False;
                end if;
 
-            elsif Is_Access_Type (E_Typ) then
+            elsif Is_Access_Type (E_Typ)
+              and then not Is_Access_Constant (E_Typ)
+            then
                return True;
 
             else
@@ -1157,6 +1170,12 @@ package body Gnat2Why.Util is
                      and then Count_Discriminants (Ty_Ext) > 0
                      and then Has_Defaulted_Discriminants (Ty_Ext))
 
+           --  For access types with null exclusion, we know that they are not
+           --  null.
+
+           or else (Is_Access_Type (Ty_Ext)
+                    and then Can_Never_Be_Null (Ty_Ext))
+
            --  We need an invariant for type predicates
 
            or else Has_Predicates (Ty_Ext)
@@ -1201,6 +1220,9 @@ package body Gnat2Why.Util is
                   return True;
                end if;
             end loop;
+         elsif Is_Access_Type (Ty_Ext) then
+            return Type_Needs_Dynamic_Invariant
+              (Directly_Designated_Type (Ty_Ext), False);
          end if;
 
          return False;

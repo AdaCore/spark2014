@@ -73,7 +73,7 @@ Stream_Size  		      No		     No streams
 Synchronization		      Yes
 Type_Invariant		      Yes
 Type_Invariant'Class	      No
-Unchecked_Union		      No
+Unchecked_Union		      Yes
 Variable_Indexing	      No
 Volatile           	      Yes
 Volatile_Components 	      Yes

@@ -1,0 +1,4 @@
+for_access_subtype.ads:10:04: discriminant constraint on access types is not yet supported
+for_access_subtype.ads:10:04: subtype of "L" is not allowed in SPARK (due to discriminant constraint on access types)
+for_access_subtype.ads:10:04: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

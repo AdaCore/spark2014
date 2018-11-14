@@ -71,7 +71,7 @@ textio-get_line.adb:157:27: info: initialization of "Buf" proved
 textio-get_line.adb:157:49: info: initialization of "K" proved
 textio-get_line.adb:158:26: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:158:28: info: initialization of "K" proved
-textio-get_line.adb:173:09: info: length check proved (CVC4: 1 VC)
+textio-get_line.adb:173:09: info: length check proved (CVC4: 4 VC)
 textio-get_line.adb:174:23: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:174:23: medium: range check might fail
 textio-get_line.adb:184:19: info: overflow check proved (CVC4: 1 VC)
@@ -86,8 +86,8 @@ textio-get_line.adb:189:30: info: loop invariant initialization proved (CVC4: 1 
 textio-get_line.adb:189:30: info: loop invariant preservation proved (CVC4: 1 VC)
 textio-get_line.adb:189:45: info: initialization of "Item" proved
 textio-get_line.adb:189:59: info: initialization of "Last" proved
-textio-get_line.adb:190:38: info: index check proved (CVC4: 2 VC)
-textio-get_line.adb:190:72: info: index check proved (CVC4: 2 VC)
+textio-get_line.adb:190:38: info: index check proved (CVC4: 4 VC)
+textio-get_line.adb:190:72: info: index check proved (CVC4: 4 VC)
 textio-get_line.adb:191:30: info: loop invariant initialization proved (CVC4: 1 VC)
 textio-get_line.adb:191:30: info: loop invariant preservation proved (CVC4: 1 VC)
 textio-get_line.adb:191:71: info: initialization of "Last" proved
@@ -156,14 +156,14 @@ textio.adb:186:43: info: initialization of "Last" proved
 textio.adb:188:16: info: initialization of "Last" proved
 textio.adb:189:16: info: range check proved (CVC4: 4 VC)
 textio.adb:189:29: info: initialization of "Num" proved
-textio.adb:189:34: info: length check proved (CVC4: 1 VC)
-textio.adb:189:37: info: length check proved (CVC4: 1 VC)
+textio.adb:189:34: info: length check proved (CVC4: 4 VC)
+textio.adb:189:37: info: length check proved (CVC4: 4 VC)
 textio.adb:192:31: info: assertion proved (CVC4: 1 VC)
 textio.adb:192:31: info: initialization of "Last" proved
 textio.adb:199:19: info: range check proved (CVC4: 4 VC)
 textio.adb:199:32: info: initialization of "Num" proved
-textio.adb:199:37: info: length check proved (CVC4: 1 VC)
-textio.adb:199:40: info: length check proved (CVC4: 1 VC)
+textio.adb:199:37: info: length check proved (CVC4: 4 VC)
+textio.adb:199:40: info: length check proved (CVC4: 4 VC)
 textio.adb:202:19: info: precondition proved (CVC4: 8 VC; altergo: 1 VC)
 textio.adb:211:07: info: precondition proved (CVC4: 5 VC)
 textio.ads:6:21: warning: no procedure exists that can initialize abstract state "TextIO.Current_Input_File"

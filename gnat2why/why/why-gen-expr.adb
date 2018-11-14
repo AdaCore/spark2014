@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;
-with Ada.Containers.Hashed_Maps;
 with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
@@ -101,15 +99,6 @@ package body Why.Gen.Expr is
    --    at the left_most of the tree rooted in N
    --  @return the source_pointer of node N, taking into account "Left_Most"
    --    argument and other special cases
-
-   function Why_Node_Hash (X : Why_Node_Id) return Ada.Containers.Hash_Type is
-     (Ada.Containers.Hash_Type (X));
-
-   package Why_Node_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Why_Node_Id,
-      Element_Type    => Why_Node_Id,
-      Hash            => Why_Node_Hash,
-      Equivalent_Keys => "=");
 
    Temp_Names_Map : Why_Node_Maps.Map := Why_Node_Maps.Empty_Map;
 
@@ -455,40 +444,13 @@ package body Why.Gen.Expr is
         (Expr   : W_Expr_Id;
          To_Ent : Entity_Id) return W_Prog_Id
       is
-         Check     : W_Pred_Id := True_Pred;
-         Is_Static : constant Boolean := Has_Static_Array_Type (To_Ent)
-           and then Has_Static_Array_Type (Get_Ada_Node (+Get_Type (Expr)));
+         Check : constant W_Pred_Id :=
+           New_Length_Equality
+             (Left_Arr => Expr,
+              Right    => To_Ent,
+              Dim      => Positive (Number_Dimensions (To_Ent)));
 
       begin
-         for I in 1 .. Dim loop
-
-            --  Do not issue checks for statically matching lengths
-
-            if not Is_Static
-              or else Static_Array_Length (Retysp (To_Ent), I) /=
-                Static_Array_Length
-                  (Retysp (Get_Ada_Node (+Get_Type (Expr))), I)
-            then
-               declare
-                  Input_Length    : constant W_Expr_Id :=
-                    Build_Length_Expr (Domain, Expr, I);
-                  Expected_Length : constant W_Expr_Id :=
-                    Build_Length_Expr (Domain, To_Ent, I);
-               begin
-                  Check :=
-                    +New_And_Then_Expr
-                    (Domain => EW_Pred,
-                     Left   => +Check,
-                     Right  =>
-                       New_Call
-                         (Name   => Why_Eq,
-                          Typ    => EW_Bool_Type,
-                          Domain => Domain,
-                          Args   => (+Input_Length, +Expected_Length)));
-               end;
-            end if;
-         end loop;
-
          if Is_True_Boolean (+Check) then
             return +Void;
          else
@@ -1539,7 +1501,8 @@ package body Why.Gen.Expr is
       To         : W_Type_Id;
       Range_Type : Entity_Id;
       Check_Kind : Scalar_Check_Kind;
-      Lvalue     : Boolean := False) return W_Expr_Id
+      Lvalue     : Boolean := False;
+      Skip_Pred  : Boolean := False) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
@@ -1550,6 +1513,7 @@ package body Why.Gen.Expr is
           and then Present (Get_Ada_Node (+To))
           and then Has_Predicates (Get_Ada_Node (+To))
           and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
+          and then not Skip_Pred
           and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
 
       --  Current result expression
@@ -2328,7 +2292,7 @@ package body Why.Gen.Expr is
             when Attribute_First       => return +E_Symb (Ty, WNE_Attr_First);
             when Attribute_Last        => return +E_Symb (Ty, WNE_Attr_Last);
             when Attribute_Alignment      =>
-               return +E_Symb (Ty, WNE_Attr_Value_Alignment);
+               return +E_Symb (Ty, WNE_Attr_Alignment);
             when Attribute_Modulus        =>
                return +E_Symb (Ty, WNE_Attr_Modulus);
             when Attribute_Constrained    =>
@@ -2336,7 +2300,7 @@ package body Why.Gen.Expr is
             when Attribute_Size           =>
                return +E_Symb (Ty, WNE_Attr_Value_Size);
             when Attribute_Component_Size =>
-               return +E_Symb (Ty, WNE_Attr_Value_Component_Size);
+               return +E_Symb (Ty, WNE_Attr_Component_Size);
             when Attribute_Tag            =>
                return +E_Symb (Ty, WNE_Attr_Tag);
             when Attribute_Image          =>
