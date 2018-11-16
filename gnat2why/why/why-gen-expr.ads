@@ -35,14 +35,7 @@ with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Ids;             use Why.Ids;
 with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
-
-pragma Warnings (Off);
---  ??? "Why.Types" is directly visible as "Types", as it has "Why" as a
---  common ancestor with the current package. So it hides compilation unit
---  with the same name ("Types"). Maybe we should think of renaming it to
---  "Why.W_Types".
 with Why.Types;           use Why.Types;
-pragma Warnings (On);
 
 package Why.Gen.Expr is
 
