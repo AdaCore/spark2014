@@ -921,6 +921,7 @@ procedure Gnatprove with SPARK_Mode is
 
       Path_Val : constant String := Value ("PATH", "");
       Gpr_Val  : constant String := Value ("GPR_PROJECT_PATH", "");
+      Gpr_Tool : constant String := Value ("GPR_TOOL", "");
       Libgnat  : constant String :=
         Compose (File_System.Install.Lib, "gnat");
       Sharegpr : constant String :=
@@ -952,6 +953,12 @@ procedure Gnatprove with SPARK_Mode is
          Append (Cmd_Line, Ada.Command_Line.Argument (J));
       end loop;
       Set ("GNATPROVE_CMD_LINE", To_String (Cmd_Line));
+
+      --  Set GPR_TOOL unless already set
+
+      if Gpr_Tool = "" then
+         Ada.Environment_Variables.Set ("GPR_TOOL", "gnatprove");
+      end if;
 
    end Set_Environment;
 

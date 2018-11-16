@@ -1,0 +1,12 @@
+project Test is
+
+   Tool := External ("GPR_TOOL");
+
+   case Tool is
+      when "gnatprove" =>
+         for Source_Dirs use ("src");
+      when others =>
+         for Source_Dirs use ("src2"); -- doesn't exist, should trigger an error
+   end case;
+
+end Test;
