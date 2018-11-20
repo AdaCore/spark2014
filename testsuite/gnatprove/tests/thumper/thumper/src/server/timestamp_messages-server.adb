@@ -48,13 +48,13 @@ package body Timestamp_Messages.Server is
       Start   : in  Natural;
       Stop    : out Natural;
       Req     : out Request;
-      Status  : out Hermes.DER.Status_Type) is
+      Status  : out Hermes.DER.Status_Type) with SPARK_Mode => Off is
    begin
       raise Program_Error with "Timestamp_Messages.Server.Get_Request_Value not implemented";
    end Get_Request_Value;
 
 
-   function Put_Response_Value(Resp : Response) return Hermes.Octet_Array is
+   function Put_Response_Value(Resp : Response) return Hermes.Octet_Array with SPARK_Mode => Off is
       Dummy : Hermes.Octet_Array(1 .. 0);
    begin
       raise Program_Error with "Timestamp_Messages.Server.Put_Response_Value not implemented";

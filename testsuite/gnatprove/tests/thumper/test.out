@@ -568,3 +568,14 @@ timestamp_messages-client.ads:46:46: medium: incorrect dependency "Stop => Messa
 timestamp_messages-client.ads:46:55: medium: incorrect dependency "Resp => Start"
 timestamp_messages-client.ads:46:55: medium: incorrect dependency "Status => Start"
 timestamp_messages-client.ads:46:55: medium: incorrect dependency "Stop => Start"
+timestamp_messages-server.adb:22:45: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
+timestamp_messages-server.adb:28:46: info: range check proved (CVC4: 1 VC)
+timestamp_messages-server.adb:28:80: medium: range check might fail
+timestamp_messages-server.adb:28:89: medium: range check might fail
+timestamp_messages-server.adb:32:42: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
+timestamp_messages-server.adb:33:42: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
+timestamp_messages-server.adb:34:42: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
+timestamp_messages-server.adb:35:40: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
+timestamp_messages-server.adb:42:46: info: range check proved (CVC4: 1 VC)
+timestamp_messages-server.adb:42:73: medium: range check might fail
+timestamp_messages-server.adb:42:82: medium: range check might fail
