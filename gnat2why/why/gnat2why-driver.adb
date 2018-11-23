@@ -1092,7 +1092,8 @@ package body Gnat2Why.Driver is
 
    procedure Translate_Standard_Package is
 
-      procedure Translate_Standard_Entity (E : Entity_Id);
+      procedure Translate_Standard_Entity (E : Entity_Id)
+      with Pre => Is_Type (E);
       --  Translate and complete declaration of entity E
 
       -------------------------------
@@ -1116,7 +1117,6 @@ package body Gnat2Why.Driver is
          case Nkind (Decl) is
             when N_Full_Type_Declaration
                | N_Subtype_Declaration
-               | N_Object_Declaration
             =>
                declare
                   E : constant Entity_Id := Defining_Entity (Decl);

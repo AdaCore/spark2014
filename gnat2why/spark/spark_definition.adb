@@ -6105,7 +6105,7 @@ package body SPARK_Definition is
 
    procedure Mark_Standard_Package is
 
-      procedure Insert_All_And_SPARK (E : Entity_Id);
+      procedure Insert_All_And_SPARK (E : Entity_Id) with Pre => Is_Type (E);
 
       --------------------------
       -- Insert_All_And_SPARK --
@@ -6161,15 +6161,6 @@ package body SPARK_Definition is
             Entities_In_SPARK.Include (Etype (Standard_Entity (S)));
          end if;
       end loop;
-
-      for S in S_ASCII_Names loop
-         Insert_All_And_SPARK (Standard_Entity (S));
-      end loop;
-
-      Insert_All_And_SPARK (Standard_Void_Type);
-
-      Insert_All_And_SPARK (Standard_False);
-      Insert_All_And_SPARK (Standard_True);
 
       Insert_All_And_SPARK (Universal_Integer);
       Insert_All_And_SPARK (Universal_Real);
