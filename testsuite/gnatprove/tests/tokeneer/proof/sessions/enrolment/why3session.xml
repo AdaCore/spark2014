@@ -68,13 +68,13 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="29"/></proof>
+  <proof prover="2"><result status="valid" steps="34"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="432"/></proof>
+  <proof prover="2"><result status="valid" steps="429"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="583"/></proof>
+  <proof prover="2"><result status="valid" steps="563"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -83,10 +83,10 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="581"/></proof>
+  <proof prover="2"><result status="valid" steps="659"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="318"/></proof>
+  <proof prover="2"><result status="valid" steps="314"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -113,13 +113,13 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="638"/></proof>
+  <proof prover="2"><result status="valid" steps="699"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="638"/></proof>
+  <proof prover="2"><result status="valid" steps="693"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>

@@ -467,7 +467,7 @@
   <proof prover="0"><result status="valid" steps="56"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="112"/></proof>
+  <proof prover="0"><result status="valid" steps="111"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="VC for def" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -479,7 +479,7 @@
   <proof prover="0"><result status="valid" steps="56"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="112"/></proof>
+  <proof prover="0"><result status="valid" steps="111"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="VC for def" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -533,7 +533,7 @@
   <proof prover="0"><result status="valid" steps="79"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="142"/></proof>
+  <proof prover="0"><result status="valid" steps="141"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="VC for def" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -545,7 +545,7 @@
   <proof prover="0"><result status="valid" steps="92"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="164"/></proof>
+  <proof prover="0"><result status="valid" steps="163"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="VC for def" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
