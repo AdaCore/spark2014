@@ -305,16 +305,15 @@ Tagged Types and Type Extensions
 
 .. _tu-tagged_types-01:
 
-1.  No construct shall introduce a semantic dependence on the Ada
-    language defined package Ada.Tags.
-    [See Ada RM 10.1.1 for the definition of semantic dependence.
-    This rule implies, among other things, that any use of the Tag attribute
-    is not in |SPARK|.]
+1. No construct shall introduce a semantic dependence on the Ada language
+   defined package Ada.Tags.  [See Ada RM 10.1.1 for the definition of semantic
+   dependence.  This rule implies, among other things, that any use of the Tag
+   attribute is not in |SPARK|.]
 
 .. _tu-tagged_types-02:
 
-2.  The identifier External_Tag shall not be used as an
-    ``attribute_designator``.
+2. The identifier External_Tag shall not be used as an
+   ``attribute_designator``.
 
 .. _etu-tagged_types:
 
@@ -326,9 +325,9 @@ Type Extensions
 
 .. _tu-type_extensions-01:
 
-1.  A type extension shall not be declared within a
-    subprogram body, block statement, or generic body which does not
-    also enclose the declaration of each of its ancestor types.
+1. A type extension shall not be declared within a subprogram body, block
+   statement, or generic body which does not also enclose the declaration of
+   each of its ancestor types.
 
 .. _etu-type_extensions:
 
@@ -480,65 +479,68 @@ parameter by some sequence of component selections, array indexing
 operations, and access value dereferences.]
 
 The *root object* of a name that denotes an object is defined as follows:
-  - if the name is a component_selection, an indexed_component, a slice,
-    or a dereference (implicit or explicit)
-    then it is the root object of the prefix of the name;
 
-  - if the name denotes a call on a traversal function,
-    then it is the root object of the name denoting the actual
-    traversed parameter;
+- if the name is a component_selection, an indexed_component, a slice,
+  or a dereference (implicit or explicit)
+  then it is the root object of the prefix of the name;
 
-  - if the name denotes an object renaming, the root object is the
-    root object of the renamed name;
+- if the name denotes a call on a traversal function,
+  then it is the root object of the name denoting the actual
+  traversed parameter;
 
-  - if the name is a function_call, the root object is the result object
-    of the call;
+- if the name denotes an object renaming, the root object is the
+  root object of the renamed name;
 
-  - if the name is a qualified_expression or a type conversion, the root
-    object is the root object of the operand of the name;
+- if the name is a function_call, the root object is the result object
+  of the call;
 
-  - otherwise, the name statically denotes an object and the root
-    object is the statically denoted object.
+- if the name is a qualified_expression or a type conversion, the root
+  object is the root object of the operand of the name;
+
+- otherwise, the name statically denotes an object and the root
+  object is the statically denoted object.
 
 An object O1 is said to be a *reachable element* of an object O2 if
-   - O1 is a part of O2; or
-   - O1 is a reachable element of the object designated by
-     (the value of) an access-valued part of O2.
+
+- O1 is a part of O2; or
+- O1 is a reachable element of the object designated by
+  (the value of) an access-valued part of O2.
 
 Two names are said to be *potential aliases* when:
 
-  - both names statically denote the same entity [Redundant: , which
-    might be an object renaming declaration]; or
+- both names statically denote the same entity [Redundant: , which
+  might be an object renaming declaration]; or
 
-  - both names are selected components, they have the same selector, and
-    their prefixes are potential aliases; or
+- both names are selected components, they have the same selector, and
+  their prefixes are potential aliases; or
 
-  - both names are indexed components, their prefixes are potential
-    aliases, and if all indexing expressions are static then each
-    pair of corresponding indexing expressions have the same value; or
+- both names are indexed components, their prefixes are potential
+  aliases, and if all indexing expressions are static then each
+  pair of corresponding indexing expressions have the same value; or
 
-  - both names are slices, their prefixes are potential aliases, and
-    if both discrete_ranges are static ranges then the two
-    discrete_ranges overlap; or
+- both names are slices, their prefixes are potential aliases, and
+  if both discrete_ranges are static ranges then the two
+  discrete_ranges overlap; or
 
-  - one name is a slice and the other is an indexed component, their
-    prefixes are potential aliases, and if both the discrete_range and
-    the indexing expression are static then the value of the indexing
-    expression is within the range; or
+- one name is a slice and the other is an indexed component, their
+  prefixes are potential aliases, and if both the discrete_range and
+  the indexing expression are static then the value of the indexing
+  expression is within the range; or
 
-  - one name is a slice whose prefix is a potential alias of the other name
-    and the other name is neither a slice nor an indexed component; or
+- one name is a slice whose prefix is a potential alias of the other name
+  and the other name is neither a slice nor an indexed component; or
 
-  - both names are dereferences and their prefixes are potential aliases; or
+- both names are dereferences and their prefixes are potential aliases; or
 
-  - at least one name denotes an object renaming declaration, and the other
-    is a potential alias with the object_name denoting the renamed entity.
+- at least one name denotes an object renaming declaration, and the other
+  is a potential alias with the object_name denoting the renamed entity.
 
 Two names N1 and N2 are said to *potentially overlap* if
-  - some prefix of N1 is a potential alias of N2 (or vice versa); or
 
-  - N1 is a call on a traversal function and the actual traversed
-    parameter of the call potentially overlaps N2 (or vice versa).
+- some prefix of N1 is a potential alias of N2 (or vice versa); or
+
+- N1 is a call on a traversal function and the actual traversed
+  parameter of the call potentially overlaps N2 (or vice versa).
 
 The prefix and the name that are potential aliases are called the
 *potentially aliased parts* of the potentially overlapping names.
@@ -582,29 +584,28 @@ reverts to its previous value at the end of this region of text.
 The following operations *observe* a name that denotes a managed object
 and identify a corresponding *observer*:
 
-  - An assignment operation that is used to initialize an access object,
-    where this target object (the observer) is a stand-alone variable of an
-    anonymous access-to-constant type, or a constant (including a formal
-    parameter or generic formal object of mode **in**) of a (named or anonymous)
-    access-to-constant type.
+- An assignment operation that is used to initialize an access object,
+  where this target object (the observer) is a stand-alone variable of an
+  anonymous access-to-constant type, or a constant (including a formal
+  parameter or generic formal object of mode **in**) of a (named or anonymous)
+  access-to-constant type.
 
-    The source expression of the assignment shall be either a name denoting
-    a part of a stand-alone object or of a parameter, or a call on a traversal
-    function whose result type is an (anonymous) access type.
-    If the source of the assignment is a call on a traversal function then
-    the name being observed denotes the actual traversed parameter of the
-    call. Otherwise the name being observed denotes the source of the
-    assignment.
+  The source expression of the assignment shall be either a name denoting a
+  part of a stand-alone object or of a parameter, or a call on a traversal
+  function whose result type is an (anonymous) access type.  If the source of
+  the assignment is a call on a traversal function then the name being observed
+  denotes the actual traversed parameter of the call. Otherwise the name being
+  observed denotes the source of the assignment.
 
-  - An assignment operation that is used to initialize a constant object
-    (including a generic formal object of mode **in**) of an owning composite
-    type. The name being observed denotes the
-    source of the assignment. The initialized object is the observer.
+- An assignment operation that is used to initialize a constant object
+  (including a generic formal object of mode **in**) of an owning composite
+  type. The name being observed denotes the source of the assignment. The
+  initialized object is the observer.
 
-  - A call where an actual parameter is a name denoting a managed object,
-    and the corresponding formal parameter is of mode **in** and composite
-    or aliased. The name being observed denotes the actual parameter.
-    The formal parameter is the observer.
+- A call where an actual parameter is a name denoting a managed object, and the
+  corresponding formal parameter is of mode **in** and composite or
+  aliased. The name being observed denotes the actual parameter.  The formal
+  parameter is the observer.
 
 Such an operation is called an *observing operation*.
 
@@ -620,28 +621,27 @@ every name that potentially overlaps that name is observed.
 The following operations *borrow* a name that denotes a managed object
 and identify a corresponding *borrower*:
 
-  - An assignment operation that is used to initialize an access object, where
-    this target object (the borrower) is a stand-alone variable of an anonymous
-    access-to-variable type, or a constant (including a formal parameter or
-    generic formal object of mode **in**) of a (named or anonymous)
-    access-to-variable type.
+- An assignment operation that is used to initialize an access object, where
+  this target object (the borrower) is a stand-alone variable of an anonymous
+  access-to-variable type, or a constant (including a formal parameter or
+  generic formal object of mode **in**) of a (named or anonymous)
+  access-to-variable type.
 
-    The source expression of the assignment shall be either a name denoting
-    a part of a stand-alone object or of a parameter, or a call on a traversal
-    function whose result type is an (anonymous) access-to-variable type.
-    If the source of the assignment is a call on a traversal function then
-    the name being borrowed denotes the actual traversed parameter of the
-    call. Otherwise the name being borrowed denotes the source of the
-    assignment.
+  The source expression of the assignment shall be either a name denoting a
+  part of a stand-alone object or of a parameter, or a call on a traversal
+  function whose result type is an (anonymous) access-to-variable type.  If the
+  source of the assignment is a call on a traversal function then the name
+  being borrowed denotes the actual traversed parameter of the call. Otherwise
+  the name being borrowed denotes the source of the assignment.
 
-  - A call (or instantiation) where the (borrowed) name denotes an actual
-    parameter that is a managed object other than an owning access object, and
-    the formal parameter (the borrower) is of mode **out** or **in out** (or
-    the generic formal object is of mode **in out**).
+- A call (or instantiation) where the (borrowed) name denotes an actual
+  parameter that is a managed object other than an owning access object, and
+  the formal parameter (the borrower) is of mode **out** or **in out** (or the
+  generic formal object is of mode **in out**).
 
-  - An object renaming where the (borrowed) name is the object_name denoting
-    the renamed object. In this case, the renamed object shall not be in the
-    Observed or Borrowed state. The newly declared name is the borrower.
+- An object renaming where the (borrowed) name is the object_name denoting the
+  renamed object. In this case, the renamed object shall not be in the Observed
+  or Borrowed state. The newly declared name is the borrower.
 
 Such an operation is called a *borrowing operation*.
 
@@ -668,16 +668,17 @@ At the point where a name that denotes a managed object is borrowed,
 every name that potentially overlaps that name is borrowed.
 
 The following operations are said to be *move* operations:
-  - An assignment operation, where the target is a variable or return object
-    (see Ada RM 6.5) of an owning type.
-    [Redundant: In the case of a formal parameter of
-    an access type of mode **in out** or **out**, this includes all
-    assignments to or from such a formal parameter: copy-in before the call,
-    copy-back after the call, and any assignments to or from the parameter
-    during the call.]
 
-  - An assignment operation where the target is part of an aggregate of
-    an owning type.
+- An assignment operation, where the target is a variable or return object (see
+  Ada RM 6.5) of an owning type.
+
+  [Redundant: In the case of a formal parameter of an access type of mode **in
+  out** or **out**, this includes all assignments to or from such a formal
+  parameter: copy-in before the call, copy-back after the call, and any
+  assignments to or from the parameter during the call.]
+
+- An assignment operation where the target is part of an aggregate of an owning
+  type.
 
 [Redundant: Passing a parameter by reference is not a move operation.]
 
@@ -717,145 +718,143 @@ a class-wide type might be an owning type).]
 
 ..  _tu-access_types-01:
 
-At the point of a move operation the state of the source object (if any)
-shall be Unrestricted.
-After a move operation, the state of the source object (if any) becomes Moved.
+1. At the  point of a move  operation the state  of the source object  (if any)
+   shall be  Unrestricted.  After  a move  operation, the  state of  the source
+   object (if any) becomes Moved.
 
 .. _tu-access_types-02:
 
-An owning object's state shall be Moved or Unrestricted at any point where
+2. An owning object's state shall be Moved or Unrestricted at any point where
 
-  - the object is the target of an assignment operation; or
-  - the object is part of an actual parameter of mode **out** in a call.
+   - the object is the target of an assignment operation; or
+   - the object is part of an actual parameter of mode **out** in a call.
 
-[Redundant: In the case of a call, the state of an actual
-parameter of mode **in** or **in out** remains unchanged (although one
-might choose to think of it as being borrowed at the point of the
-call and then "unborrowed" when the call returns - either model
-yields the same results); the state of an actual parameter of mode
-**out** becomes Unrestricted.]
+   [Redundant: In the case of a call, the state of an actual parameter of mode
+   **in** or **in out** remains unchanged (although one might choose to think
+   of it as being borrowed at the point of the call and then "unborrowed" when
+   the call returns - either model yields the same results); the state of an
+   actual parameter of mode **out** becomes Unrestricted.]
 
 .. _tu-access_types-03:
 
-If the target of an assignment operation is an object of an anonymous
-access-to-object type (including copy-in for a parameter), then
-the source shall be a name denoting a part of a stand-alone object,
-a part of a parameter, or a call to a traversal function.
+3. If the target of an assignment operation is an object of an anonymous
+   access-to-object type (including copy-in for a parameter), then the source
+   shall be a name denoting a part of a stand-alone object, a part of a
+   parameter, or a call to a traversal function.
 
-[Redundant: One consequence of this rule is that every allocator is of a
-named access type.]
+   [Redundant: One consequence of this rule is that every allocator is of a
+   named access type.]
 
 .. _tu-access_types-04:
 
-A declaration of a stand-alone variable of an anonymous access type shall
-have an explicit initial value.
+4. A declaration of a stand-alone variable of an anonymous access type shall
+   have an explicit initial value.
 
 .. _tu-access_types-05:
 
-A return statement that applies to a traversal function that has an
-anonymous access-to-constant (respectively, access-to-variable) result type,
-shall return either the literal null or an access object denoted by a direct
-or indirect observer (respectively, borrower) of the traversed parameter.
-[Redundant: Roughly speaking, a traversal function always yields either
-null or a result which is reachable from the traversed parameter.]
+5. A return statement that applies to a traversal function that has an
+   anonymous access-to-constant (respectively, access-to-variable) result type,
+   shall return either the literal null or an access object denoted by a direct
+   or indirect observer (respectively, borrower) of the traversed parameter.
+   [Redundant: Roughly speaking, a traversal function always yields either null
+   or a result which is reachable from the traversed parameter.]
 
 .. _tu-access_types-06:
 
-If a prefix of a name is of an owning type, then the
-prefix shall denote neither a non-traversal function call, an aggregate,
-an allocator, nor any other expression whose associated object is
-(or, as in the case of a conditional expression, might be) the same as
-that of such a forbidden expression (e.g., a qualified expression or
-type conversion whose operand would be forbidden as a prefix by this
-rule).
+6. If a prefix of a name is of an owning type, then the prefix shall denote
+   neither a non-traversal function call, an aggregate, an allocator, nor any
+   other expression whose associated object is (or, as in the case of a
+   conditional expression, might be) the same as that of such a forbidden
+   expression (e.g., a qualified expression or type conversion whose operand
+   would be forbidden as a prefix by this rule).
 
 .. _tu-access_types-07:
 
-If the root of the name of a managed object denotes an object whose scope
-includes any portion of the visible part of a package, then a declaration
-that observes or borrows the managed object shall not occur within the
-private part or body of the package, nor within a private descendant of
-the package, unless the accessibility level of the declaration is
-statically deeper than that of the package.
+7. If the root of the name of a managed object denotes an object whose scope
+   includes any portion of the visible part of a package, then a declaration
+   that observes or borrows the managed object shall not occur within the
+   private part or body of the package, nor within a private descendant of the
+   package, unless the accessibility level of the declaration is statically
+   deeper than that of the package.
 
 .. _tu-access_types-08:
 
-For an assignment statement where the target is a stand-alone object of an
-anonymous access-to-object type:
+8. For an assignment statement where the target is a stand-alone object of an
+   anonymous access-to-object type:
 
-  - If the type of the target is an anonymous access-to-variable type
-    (an owning access type), the source shall be an owning access object
-    denoted by a name that is in the Unrestricted state, and
-    whose root object is the target object itself;
+   - If the type of the target is an anonymous access-to-variable type (an
+     owning access type), the source shall be an owning access object denoted
+     by a name that is in the Unrestricted state, and whose root object is the
+     target object itself;
 
-  - If the type of the target is an anonymous access-to-constant type
-    (an observing access type), the source shall be an owning access object
-    denoted by a name that is not in the Moved state, and whose root object
-    is not in the Moved state and is not declared at a statically deeper
-    accessibility level than that of the target object.
+   - If the type of the target is an anonymous access-to-constant type (an
+     observing access type), the source shall be an owning access object
+     denoted by a name that is not in the Moved state, and whose root object is
+     not in the Moved state and is not declared at a statically deeper
+     accessibility level than that of the target object.
 
 .. _tu-access_types-09:
 
-At the point of a read of an object, or of passing an object as
-an actual parameter of mode **in** or **in out**, or of a call where the
-object is a global input of the callee, the object shall not be in the Moved or
-Borrowed state.
+9. At the point of a read of an object, or of passing an object as an actual
+   parameter of mode **in** or **in out**, or of a call where the object is a
+   global input of the callee, the object shall not be in the Moved or Borrowed
+   state.
 
-At the point of a return statement, or at any other point where a call
-completes normally (e.g., the end of a procedure body), no outputs of
-the callee being returned from shall be in the Moved state.
+   At the point of a return statement, or at any other point where a call
+   completes normally (e.g., the end of a procedure body), no outputs of the
+   callee being returned from shall be in the Moved state.
 
-In the case where the input or output in question is a state abstraction,
-these rules also apply to any constituents (direct or indirect) of that
-state abstraction.
+   In the case where the input or output in question is a state abstraction,
+   these rules also apply to any constituents (direct or indirect) of that
+   state abstraction.
 
 .. _tu-access_types-10:
 
-If the state of a name that denotes a managed object is observed, then the
-name shall neither be moved nor borrowed and shall not be used as the
-target of an assignment.
+10. If the state of a name that denotes a managed object is observed, then the
+    name shall neither be moved nor borrowed and shall not be used as the
+    target of an assignment.
 
 .. _tu-access_types-11:
 
-If the state of a name that denotes a managed object is borrowed, the name
-shall not be moved, borrowed, or assigned, and shall not be used as a primary,
-as a prefix, or as an actual parameter except as part of being observed;
-furthermore, any existing borrowers (direct or indirect) of the name become
-observers, providing only a constant view.
+11. If the state of a name that denotes a managed object is borrowed, the name
+    shall not be moved, borrowed, or assigned, and shall not be used as a
+    primary, as a prefix, or as an actual parameter except as part of being
+    observed; furthermore, any existing borrowers (direct or indirect) of the
+    name become observers, providing only a constant view.
 
 .. _tu-access_types-12:
 
-At the point of a call, any name that denotes a managed object that is a global
-output of the callee (i.e., an output other than a parameter of the callee
-or a function result) shall not be in the Observed or Borrowed state.
-Similarly, any name that denotes a managed object that is a global input
-of the callee shall not be in the Moved or Borrowed state.
+12. At the point of a call, any name that denotes a managed object that is a
+    global output of the callee (i.e., an output other than a parameter of the
+    callee or a function result) shall not be in the Observed or Borrowed
+    state.  Similarly, any name that denotes a managed object that is a global
+    input of the callee shall not be in the Moved or Borrowed state.
 
 .. _tu-access_types-13:
 
-The prefix of an Old or Loop_Entry attribute reference shall not be
-of an owning or observing type unless the prefix is a function_call
-and the called function is not a traversal function.
+13. The prefix of an Old or Loop_Entry attribute reference shall not be of an
+    owning or observing type unless the prefix is a function_call and the
+    called function is not a traversal function.
 
 .. centered:: **Verification Rules**
 
 .. _tu-access_types-14:
 
-An owning object and its subcomponents are said to be *erased* at any point
-where
+14. An owning object and its subcomponents are said to be *erased* at any point
+    where
 
-  - the object is the target of an assignment operation; or
-  - the object is part of an actual parameter of mode **out** in a call; or
-  - the scope in which the object is declared is exited and the object
-    is neither a borrower nor an observer.
+    - the object is the target of an assignment operation; or
+    - the object is part of an actual parameter of mode **out** in a call; or
+    - the scope in which the object is declared is exited and the object is
+      neither a borrower nor an observer.
 
-If the state of an access subcomponent of an owning object [redundant: , which
-is the object itself for an owning access object,] is Unrestricted at the point
-where it is erased, it should be null.
+    If the state of an access subcomponent of an owning object [redundant: ,
+    which is the object itself for an owning access object,] is Unrestricted at
+    the point where it is erased, it should be null.
 
-[Redundant: This rule is needed to prevent storage leaks. We do not want
-an object either to be overwritten or to cease to exist while it is
-the owner of some allocated object.]
+    [Redundant: This rule is needed to prevent storage leaks. We do not want an
+    object either to be overwritten or to cease to exist while it is the owner
+    of some allocated object.]
 
 .. _etu-access_types:
 
