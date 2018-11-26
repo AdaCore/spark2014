@@ -100,7 +100,6 @@ bounded_dynamic_arrays.adb:251:29: info: index check proved (CVC4: 4 VC), in ins
 bounded_dynamic_arrays.adb:254:34: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:254:34: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:254:73: info: index check proved (CVC4: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:23:09: info: predicate check proved on default value (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:29:14: info: postcondition proved (CVC4: 3 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:34:21: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:35:14: info: postcondition proved (CVC4: 3 VC), in instantiation at bounded_dynamic_strings.ads:5

@@ -1175,7 +1175,7 @@ use_ordered_sets.ads:87:35: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:87:35: info: range check proved (Z3: 1 VC)
 use_ordered_sets.ads:87:43: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:88:12: medium: postcondition might fail, cannot prove E.Get (Elements (S), 2 * I) = E.Get (Elements (S)'Old, I) + 1
-use_ordered_sets.ads:88:13: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.ads:88:13: medium: precondition might fail
 use_ordered_sets.ads:88:35: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:88:35: info: range check proved (Z3: 1 VC)
 use_ordered_sets.ads:89:13: info: precondition proved (Z3: 2 VC)

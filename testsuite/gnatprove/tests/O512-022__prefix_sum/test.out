@@ -132,7 +132,6 @@ prefixsum_expanded.adb:52:44: info: initialization of "Space" proved
 prefixsum_expanded.adb:54:18: info: initialization of "Space" proved
 prefixsum_expanded.adb:56:16: info: initialization of "Left" proved
 prefixsum_expanded.adb:58:15: info: loop invariant initialization proved (CVC4: 5 VC; Z3: 1 VC)
-prefixsum_expanded.adb:58:15: info: loop invariant preservation proved (CVC4: 3 VC; Z3: 4 VC)
 prefixsum_expanded.adb:58:16: info: initialization of "Left" proved
 prefixsum_expanded.adb:58:26: info: division check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:58:30: info: initialization of "Space" proved
@@ -140,6 +139,7 @@ prefixsum_expanded.adb:60:56: info: range check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:62:57: info: range check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:64:26: info: division check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:70:37: info: division check proved (CVC4: 2 VC)
+prefixsum_expanded.adb:72:21: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K - Space)
 prefixsum_expanded.adb:72:64: info: index check proved (CVC4: 3 VC; Z3: 1 VC)
 prefixsum_expanded.adb:75:13: info: loop variant proved (CVC4: 1 VC)
 prefixsum_expanded.adb:75:47: info: initialization of "Left" proved
@@ -236,10 +236,10 @@ prefixsum_expanded.ads:55:08: info: postcondition proved (CVC4: 8 VC)
 prefixsum_general.adb:9:13: info: initialization of "Space" proved
 prefixsum_general.adb:10:18: info: initialization of "Space" proved
 prefixsum_general.adb:13:13: info: loop invariant initialization proved (CVC4: 8 VC)
-prefixsum_general.adb:13:13: medium: loop invariant might fail after first iteration, cannot prove A'Length mod Space = 0
 prefixsum_general.adb:13:22: info: division check proved (CVC4: 2 VC)
 prefixsum_general.adb:13:26: info: initialization of "Space" proved
 prefixsum_general.adb:17:26: info: initialization of "Left" proved
+prefixsum_general.adb:21:13: medium: loop invariant might fail after first iteration, cannot prove (Left + 1) mod Space = 0
 prefixsum_general.adb:21:24: info: division check proved (CVC4: 2 VC)
 prefixsum_general.adb:30:27: info: division check proved (CVC4: 2 VC)
 prefixsum_general.adb:31:25: info: precondition proved (CVC4: 2 VC)
