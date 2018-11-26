@@ -24,8 +24,8 @@
 
 pragma SPARK_Mode (On);
 
-with SPARK.Text_IO;
-use SPARK.Text_IO;
+with SPARK.Text_IO; use SPARK.Text_IO;
+pragma Elaborate (SPARK.Text_IO);
 
 procedure Echo_1
   with Global => (In_Out => (Standard_Input, Standard_Output, Standard_Error)),

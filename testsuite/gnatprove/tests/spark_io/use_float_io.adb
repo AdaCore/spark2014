@@ -25,7 +25,7 @@
 pragma SPARK_Mode (On);
 
 with Float_IO;      use Float_IO;
-with SPARK.Text_IO; use SPARK.Text_IO;
+with SPARK.Text_IO; use SPARK.Text_IO; pragma Elaborate (SPARK.Text_IO);
 
 procedure Use_Float_IO
   with Global => (In_Out => (Standard_Output, Standard_Error)),
