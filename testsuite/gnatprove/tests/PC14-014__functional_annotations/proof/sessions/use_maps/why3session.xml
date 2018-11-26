@@ -740,7 +740,7 @@
   <proof prover="0"><result status="valid" steps="34393"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="65217"/></proof>
+  <proof prover="0"><result status="valid" steps="65141"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1145,13 +1145,13 @@
   <proof prover="0"><result status="valid" steps="59806"/></proof>
   </goal>
   <goal name="WP_parameter def.42" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="68490"/></proof>
+  <proof prover="0"><result status="valid" steps="68522"/></proof>
   </goal>
   <goal name="WP_parameter def.43" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="74311"/></proof>
   </goal>
   <goal name="WP_parameter def.44" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="81224"/></proof>
+  <proof prover="0"><result status="valid" steps="81260"/></proof>
   </goal>
   <goal name="WP_parameter def.45" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="74611"/></proof>
@@ -1400,7 +1400,7 @@
   <proof prover="0"><result status="valid" steps="57599"/></proof>
   </goal>
   <goal name="WP_parameter def.65" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="87326"/></proof>
+  <proof prover="0"><result status="valid" steps="87329"/></proof>
   </goal>
   <goal name="WP_parameter def.66" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="83790"/></proof>
@@ -1610,7 +1610,7 @@
   <proof prover="0"><result status="valid" steps="37218"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="41160"/></proof>
+  <proof prover="0"><result status="valid" steps="41161"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="VC for def" proved="true">
   <proof prover="0"><result status="valid" steps="2686"/></proof>
@@ -1625,10 +1625,10 @@
   <proof prover="0"><result status="valid" steps="33066"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="431530"/></proof>
+  <proof prover="0"><result status="valid" steps="169838"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="89438"/></proof>
+  <proof prover="0"><result status="valid" steps="89426"/></proof>
   </goal>
  </transf>
  </goal>
