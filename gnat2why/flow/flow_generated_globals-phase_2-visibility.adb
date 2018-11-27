@@ -73,8 +73,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    --  particular, to synthesize the Initializes of a parent package with
    --  Part_Ofs its state located in its private children.
 
-   Raw_Scope_Graph : Scope_Graphs.Graph;
-
    Standard_Standard : constant Entity_Name := To_Entity_Name ("__standard");
 
    function Present (E : Any_Entity_Name) return Boolean is
@@ -85,8 +83,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    function Is_Instance       (Info : Name_Info_T) return Boolean;
    function Is_Instance_Child (Info : Name_Info_T) return Boolean;
    --  Utility routines for the hierarchy data
-
-   procedure Close_Visibility_Graph;
 
    function Body_Scope (S : Name_Scope) return Name_Scope;
 
@@ -109,24 +105,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    begin
       return (Ent => S.Ent, Part => Body_Part);
    end Body_Scope;
-
-   ----------------------------
-   -- Close_Visibility_Graph --
-   ----------------------------
-
-   procedure Close_Visibility_Graph is
-   begin
-      --  Print graph before adding transitive edges
-      if Gnat2Why_Args.Flow_Advanced_Debug then
-         Print (Scope_Graph);
-      end if;
-
-      --  Retain the original graph for the Print_Path routine
-
-      Raw_Scope_Graph := Scope_Graph;
-
-      Scope_Graph.Close;
-   end Close_Visibility_Graph;
 
    -------------------------
    -- Connect_Name_Scopes --
@@ -385,10 +363,19 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          end;
       end loop;
 
-      --  Release memory to the provers
-      --  ??? Hierarchy_Info.Clear;
+      --  At this point we could compute a transitive closure, but that appear
+      --  slower than checking a path existence (and the closure can take huge
+      --  amount of memory). This is because typically the visibility graph has
+      --  many vertices and all of them are connected to all the enclosing
+      --  scopes (up to Standard); however, the visibility paths are short.
 
-      Close_Visibility_Graph;
+      --  Print graph
+      if Gnat2Why_Args.Flow_Advanced_Debug then
+         Print (Scope_Graph);
+      end if;
+
+      --  Release memory to the provers
+      Hierarchy_Info.Clear;
 
       --  Sanity check: all vertices should be now connected to Standard
 
@@ -406,7 +393,8 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       begin
          pragma Assert
            (for all V of Scope_Graph.Get_Collection (All_Vertices) =>
-              (if V /= Standard then Scope_Graph.Edge_Exists (V, Standard)));
+              (if V /= Standard
+               then Scope_Graph.Non_Trivial_Path_Exists (V, Standard)));
       end;
 
    end Connect_Name_Scopes;
@@ -555,10 +543,10 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    procedure Print_Path (From, To : Name_Scope) is
 
       Source : constant Scope_Graphs.Vertex_Id :=
-        Raw_Scope_Graph.Get_Vertex (From);
+        Scope_Graph.Get_Vertex (From);
 
       Target : constant Scope_Graphs.Vertex_Id :=
-        Raw_Scope_Graph.Get_Vertex (To);
+        Scope_Graph.Get_Vertex (To);
 
       procedure Is_Target
         (V           : Scope_Graphs.Vertex_Id;
@@ -587,7 +575,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       ------------------
 
       procedure Print_Vertex (V : Scope_Graphs.Vertex_Id) is
-         S : constant Name_Scope := Raw_Scope_Graph.Get_Key (V);
+         S : constant Name_Scope := Scope_Graph.Get_Key (V);
       begin
          --  Print_Flow_Scope (S);
          --  ??? the above code produces no output in gdb; use Ada.Text_IO
@@ -605,7 +593,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
 
    begin
       Scope_Graphs.Shortest_Path
-        (G             => Raw_Scope_Graph,
+        (G             => Scope_Graph,
          Start         => Source,
          Allow_Trivial => True,
          Search        => Is_Target'Access,
@@ -688,18 +676,25 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    ---------------------------------
 
    function State_Refinement_Is_Visible
-     (State  : Entity_Name;
-      Caller : Entity_Name)
+     (State : Entity_Name;
+      From  : Name_Scope)
       return Boolean
    is
-      Looking_From : constant Name_Scope :=
-        (Ent => Caller, Part => Visible_Part);
-
-      Looking_At   : constant Name_Scope :=
+      Looking_At : constant Name_Scope :=
         (Ent => Scope (State), Part => Body_Part);
 
    begin
-      return Scope_Graph.Edge_Exists (Looking_From, Looking_At);
+      --  ??? The From = Looking_At is not used (because it might only happen
+      --  when Up/Down projecting an abstract state to the scope of its
+      --  package, which can only happen when it appears on the RHS of
+      --  the Initializes contract, which is not allowed). But let's
+      --  keep it for now, to be on the safe side, as I don't know
+      --  what Non_Trivial_Path_Exists says when called with the same vertices.
+
+      return From = Looking_At
+        or else Scope_Graph.Non_Trivial_Path_Exists
+          (Scope_Graph.Get_Vertex (From),
+           Scope_Graph.Get_Vertex (Looking_At));
    end State_Refinement_Is_Visible;
 
    ------------------------
@@ -707,18 +702,20 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    ------------------------
 
    function Part_Of_Is_Visible
-     (State  : Entity_Name;
-      Caller : Entity_Name)
+     (State : Entity_Name;
+      From  : Name_Scope)
       return Boolean
    is
-      Looking_From : constant Name_Scope :=
-        (Ent => Caller, Part => Visible_Part);
-
-      Looking_At   : constant Name_Scope :=
+      Looking_At : constant Name_Scope :=
         (Ent => Scope (State), Part => Private_Part);
 
    begin
-      return Scope_Graph.Edge_Exists (Looking_From, Looking_At);
+      --  ??? see the comment about about From = Looking_At
+
+      return From = Looking_At
+        or else Scope_Graph.Non_Trivial_Path_Exists
+          (Scope_Graph.Get_Vertex (From),
+           Scope_Graph.Get_Vertex (Looking_At));
    end Part_Of_Is_Visible;
 
    -----------
@@ -757,7 +754,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    ----------------
 
    procedure Up_Project (Vars       :     Name_Sets.Set;
-                         Caller     :     Entity_Name;
+                         Scope      :     Name_Scope;
                          Projected  : out Name_Sets.Set;
                          Partial    : out Name_Sets.Set)
    is
@@ -778,9 +775,9 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
                State : constant Entity_Name := GG_Encapsulating_State (Var);
 
             begin
-               if State_Refinement_Is_Visible (State, Caller)
+               if State_Refinement_Is_Visible (State, Scope)
                  or else (GG_Is_Part_Of_Constituent (Var)
-                          and then Part_Of_Is_Visible (State, Caller))
+                          and then Part_Of_Is_Visible (State, Scope))
                then
                   Projected.Include (Var);
                else
@@ -795,17 +792,17 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
 
    procedure Up_Project (Vars           :     Global_Names;
                          Projected_Vars : out Global_Names;
-                         Caller         :     Entity_Name)
+                         Scope          :     Name_Scope)
    is
       use type Name_Sets.Set;
 
       Projected, Partial : Name_Sets.Set;
 
    begin
-      Up_Project (Vars.Inputs, Caller, Projected, Partial);
+      Up_Project (Vars.Inputs, Scope, Projected, Partial);
       Projected_Vars.Inputs := Projected or Partial;
 
-      Up_Project (Vars.Outputs, Caller, Projected, Partial);
+      Up_Project (Vars.Outputs, Scope, Projected, Partial);
       for State of Partial loop
          if not Is_Fully_Contained (State, Vars.Outputs) then
             Projected_Vars.Inputs.Include (State);
@@ -813,7 +810,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       end loop;
       Projected_Vars.Outputs := Projected or Partial;
 
-      Up_Project (Vars.Proof_Ins, Caller, Projected, Partial);
+      Up_Project (Vars.Proof_Ins, Scope, Projected, Partial);
       Projected_Vars.Proof_Ins :=
         (Projected or Partial) -
         (Projected_Vars.Inputs or Projected_Vars.Outputs);

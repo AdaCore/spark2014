@@ -48,19 +48,19 @@ private package Flow_Generated_Globals.Phase_2.Visibility is
    --  Creates edges in the visibility graph
 
    function State_Refinement_Is_Visible
-     (State  : Entity_Name;
-      Caller : Entity_Name)
+     (State : Entity_Name;
+      From  : Name_Scope)
       return Boolean
    with Pre => GG_Is_Abstract_State (State);
 
    function Part_Of_Is_Visible
-     (State  : Entity_Name;
-      Caller : Entity_Name)
+     (State : Entity_Name;
+      From  : Name_Scope)
       return Boolean
    with Pre => GG_Is_Abstract_State (State);
 
    procedure Up_Project (Vars      :     Name_Sets.Set;
-                         Caller    :     Entity_Name;
+                         Scope     :     Name_Scope;
                          Projected : out Name_Sets.Set;
                          Partial   : out Name_Sets.Set);
    --  ??? This routine historically belongs to Flow_Refinement, but we can't
@@ -69,7 +69,7 @@ private package Flow_Generated_Globals.Phase_2.Visibility is
 
    procedure Up_Project (Vars           :     Global_Names;
                          Projected_Vars : out Global_Names;
-                         Caller         :     Entity_Name);
+                         Scope          :     Name_Scope);
 
 --     procedure Dump_Tree;
 --     --  Print the inter

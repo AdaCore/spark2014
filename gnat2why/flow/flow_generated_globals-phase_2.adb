@@ -2091,6 +2091,10 @@ package body Flow_Generated_Globals.Phase_2 is
                return Name_Sets.Set
             is
                use Flow_Generated_Globals.Phase_2.Visibility;
+
+               Target_Scope : constant Name_Scope :=
+                 (Ent => Caller, Part => Body_Part);
+
             begin
                if Is_Heap_Variable (Var) then
                   return Name_Sets.To_Set (Var);
@@ -2099,9 +2103,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      --  ??? recursive call to Down_Project?
 
-                     if State_Refinement_Is_Visible (Var, Caller) then
+                     if State_Refinement_Is_Visible (Var, Target_Scope) then
                         return State_Comp_Map (Var);
-                     elsif Part_Of_Is_Visible (Var, Caller) then
+                     elsif Part_Of_Is_Visible (Var, Target_Scope) then
                         if State_Part_Map.Contains (Var) then
                            return State_Part_Map (Var);
                         else
@@ -2130,7 +2134,8 @@ package body Flow_Generated_Globals.Phase_2 is
 
             --  ... and then up-project them as necessary
 
-            Up_Project (Update.Refined, Update.Proper, Folded);
+            Up_Project (Update.Refined, Update.Proper,
+                        (Ent => Folded, Part => Visible_Part));
 
             pragma Assert (Phase_1_Info.Contains (Folded));
 
