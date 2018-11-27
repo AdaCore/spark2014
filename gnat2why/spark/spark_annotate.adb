@@ -519,7 +519,9 @@ package body SPARK_Annotate is
 
       --  This entity must be a function
 
-      if Ekind (E) not in Subprogram_Kind | E_Package then
+      if Ekind (E) not in
+        Subprogram_Kind | E_Package | Generic_Subprogram_Kind
+      then
          Error_Msg_N
            ("Entity parameter of a pragma Terminating must be a subprogram or "
             & "a package",
