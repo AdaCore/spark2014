@@ -335,12 +335,12 @@ package body Gnat2Why.Expr.Loops is
 
    function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id
    is
-      Exc_Name    : constant W_Name_Id :=
+      Exc_Name   : constant W_Name_Id :=
         Loop_Exception_Name (Loop_Entity_Of_Exit_Statement (Stmt));
-      Raise_Stmt  : constant W_Prog_Id :=
-                      New_Raise
-                        (Ada_Node => Stmt,
-                         Name => Exc_Name);
+      Raise_Stmt : constant W_Prog_Id :=
+                     New_Raise
+                       (Ada_Node => Stmt,
+                        Name => Exc_Name);
    begin
       if No (Condition (Stmt)) then
          return Raise_Stmt;
@@ -449,13 +449,13 @@ package body Gnat2Why.Expr.Loops is
             Loop_Index_Type := Type_Of_Node (Loop_Param_Ent);
          end if;
 
-         Loop_Index      := To_Why_Id (E      => Loop_Param_Ent,
-                                       Domain => EW_Prog,
-                                       Typ    => Loop_Index_Type);
+         Loop_Index := To_Why_Id (E      => Loop_Param_Ent,
+                                  Domain => EW_Prog,
+                                  Typ    => Loop_Index_Type);
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
          Insert_Entity (Loop_Param_Ent, Loop_Index, Mutable => True);
 
-         Low_Id := New_Temp_Identifier (Typ => Loop_Index_Type);
+         Low_Id  := New_Temp_Identifier (Typ => Loop_Index_Type);
          High_Id := New_Temp_Identifier (Typ => Loop_Index_Type);
       end if;
 
@@ -701,10 +701,10 @@ package body Gnat2Why.Expr.Loops is
                  (if Over_Range then Why_Empty
                   else New_Temp_For_Expr
                     (Insert_Simple_Conversion
-                         (Domain   => EW_Prog,
-                          Expr     => Transform_Expr
+                         (Domain => EW_Prog,
+                          Expr   => Transform_Expr
                             (Over_Node, EW_Prog, Body_Params),
-                          To       => Typ_For_Cont),
+                          To     => Typ_For_Cont),
                      Need_Temp =>
                         not SPARK_Atree.Is_Variable (Over_Node)));
                --  Introduce a temporary variable for the container expression
@@ -754,11 +754,12 @@ package body Gnat2Why.Expr.Loops is
                --  @result Has_Element (W_Container, Iter_Deref)
 
                function Exit_Condition_For_Iterable return W_Expr_Id
-                 with
-                   Pre => not Over_Range;
+               with
+                 Pre => not Over_Range;
                --  @result not (Has_Element (W_Container, Next (Iter_Deref)))
 
-               function Init_Iter return W_Prog_Id with
+               function Init_Iter return W_Prog_Id
+               with
                  Pre => not Over_Range;
                --  @result First (W_Container)
 
@@ -784,10 +785,10 @@ package body Gnat2Why.Expr.Loops is
                       (Etype (Over_Node), Name_Has_Element);
                   W_H_Elmt : constant W_Identifier_Id :=
                     +Transform_Identifier
-                              (Params       => Body_Params,
-                               Expr         => H_Elmt,
-                               Ent          => H_Elmt,
-                               Domain       => Domain);
+                              (Params => Body_Params,
+                               Expr   => H_Elmt,
+                               Ent    => H_Elmt,
+                               Domain => Domain);
                   Cur_Expr  : constant W_Expr_Id :=
                     Insert_Simple_Conversion
                       (Domain         => EW_Term,
