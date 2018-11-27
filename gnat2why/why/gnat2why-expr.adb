@@ -3240,9 +3240,7 @@ package body Gnat2Why.Expr is
 
             if Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
                declare
-                  Checks_Seq : W_Statement_Sequence_Id :=
-                    New_Statement_Sequence (Ada_Node   => Empty,
-                                            Statements => (1 .. 1 => +Void));
+                  Checks_Seq : W_Statement_Sequence_Id := Void_Sequence;
                begin
                   for Field of Get_Component_Set (Ty_Ext) loop
                      if Component_Is_Visible_In_Type (Ty, Field)
@@ -11635,9 +11633,7 @@ package body Gnat2Why.Expr is
       return W_Prog_Id
    is
       Cur_Decl : Node_Id := First (L);
-      Result   : W_Statement_Sequence_Id :=
-        New_Statement_Sequence (Ada_Node => Empty,
-                                Statements => (1 .. 1 => +Void));
+      Result   : W_Statement_Sequence_Id := Void_Sequence;
 
    begin
       while Present (Cur_Decl) loop
@@ -11656,9 +11652,7 @@ package body Gnat2Why.Expr is
      (L : List_Id) return W_Prog_Id
    is
       Cur_Decl : Node_Id := First (L);
-      Result   : W_Statement_Sequence_Id :=
-        New_Statement_Sequence (Ada_Node => Empty,
-                                Statements => (1 .. 1 => +Void));
+      Result   : W_Statement_Sequence_Id := Void_Sequence;
 
    begin
       while Present (Cur_Decl)
@@ -11681,9 +11675,7 @@ package body Gnat2Why.Expr is
      (L : List_Id) return W_Prog_Id
    is
       Cur_Decl : Node_Id := First (L);
-      Result   : W_Statement_Sequence_Id :=
-        New_Statement_Sequence (Ada_Node => Empty,
-                                Statements => (1 .. 1 => +Void));
+      Result   : W_Statement_Sequence_Id := Void_Sequence;
 
    begin
       while Present (Cur_Decl)
@@ -16713,8 +16705,7 @@ package body Gnat2Why.Expr is
      (Stmts_And_Decls : List_Id) return W_Prog_Id
    is
       Cur_Stmt_Or_Decl : Node_Id   := Nlists.First (Stmts_And_Decls);
-      Result           : W_Statement_Sequence_Id :=
-        New_Statement_Sequence (Statements => (1 .. 1 => +Void));
+      Result           : W_Statement_Sequence_Id := Void_Sequence;
 
    begin
       if No (Cur_Stmt_Or_Decl) then
@@ -17284,6 +17275,14 @@ package body Gnat2Why.Expr is
 
       Variables.Exclude (Direct_Mapping_Id (Unique_Entity (Inv_Param)));
    end Variables_In_Type_Invariant;
+
+   -------------------
+   -- Void_Sequence --
+   -------------------
+
+   function Void_Sequence return W_Statement_Sequence_Id is
+     (New_Statement_Sequence (Ada_Node => Empty,
+                              Statements => (1 .. 1 => +Void)));
 
    -------------------------
    -- Warn_On_Dead_Branch --

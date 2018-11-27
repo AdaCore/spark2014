@@ -361,7 +361,7 @@ package body Gnat2Why.Expr.Loops is
      (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id
    is
       Body_Prog : W_Statement_Sequence_Id :=
-        New_Statement_Sequence (Statements => (1 .. 1 => +Void));
+        Void_Sequence;
    begin
       for Stmt_Or_Decl of Stmts_And_Decls loop
 
