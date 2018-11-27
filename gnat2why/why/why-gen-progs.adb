@@ -84,11 +84,15 @@ package body Why.Gen.Progs is
       Pred     : W_Pred_Id)
       return W_Prog_Id is
    begin
-      return
-        New_Assert
-          (Ada_Node    => Ada_Node,
-           Pred        => Pred,
-           Assert_Kind => EW_Assume);
+      if Is_True_Boolean (+Pred) then
+         return +Void;
+      else
+         return
+           New_Assert
+             (Ada_Node    => Ada_Node,
+              Pred        => Pred,
+              Assert_Kind => EW_Assume);
+      end if;
    end New_Assume_Statement;
 
    -------------------------
