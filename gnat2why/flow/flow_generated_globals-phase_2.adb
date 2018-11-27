@@ -1117,7 +1117,9 @@ package body Flow_Generated_Globals.Phase_2 is
                Serialize (V.Globals.Calls.Conditional_Calls,
                           "calls_conditional");
 
-               Serialize (V.Local_Variables, "local_var");
+               if V.Kind = E_Package then
+                  Serialize (V.Local_Variables, "local_var");
+               end if;
 
                if V.Kind in Entry_Kind
                           | E_Function
