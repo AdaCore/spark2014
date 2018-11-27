@@ -16656,8 +16656,8 @@ package body Gnat2Why.Expr is
                                   Def    => +Prog));
       if Cut_Assertion /= Why_Empty then
          Seq :=
-           New_Statement_Sequence
-             (Statements =>
+           +Sequence
+             (Progs =>
                 (1 => New_Located_Abstract
                    (Ada_Node => Cut_Assertion_Expr,
                     Expr     => +Seq,

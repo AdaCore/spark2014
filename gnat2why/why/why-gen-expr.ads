@@ -49,6 +49,8 @@ package Why.Gen.Expr is
    --  Check if the given program is "void" or similarly effectless (label
    --  nodes).
 
+   function Is_Void (W : W_Prog_Id) return Boolean;
+
    function Bool_True (D : EW_Domain) return W_Expr_Id is
      (New_Literal (Value => EW_True, Domain => D));
    function Bool_False (D : EW_Domain) return W_Expr_Id is
