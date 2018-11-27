@@ -206,16 +206,13 @@ package body Gnat2Why.Expr.Loops is
         (Before_Selected_Block, In_Selected_Block, Past_Selected_Block);
 
       Cur_State : State := Before_Selected_Block;
-      N         : Node_Id;
 
       use Node_Lists;
 
    --  Start of processing for Get_Loop_Variant
 
    begin
-      for Cur in Loop_Stmts.Iterate loop
-         N := Element (Cur);
-
+      for N of Loop_Stmts loop
          case Cur_State is
             when Before_Selected_Block =>
 
@@ -497,7 +494,7 @@ package body Gnat2Why.Expr.Loops is
 
          if not Loop_Invariants.Is_Empty then
             declare
-               Count : Natural := Integer (Loop_Invariants.Length);
+               Count : Natural := Natural (Loop_Invariants.Length);
 
             begin
                --  Generate the relevant bits for the various loop invariants.
