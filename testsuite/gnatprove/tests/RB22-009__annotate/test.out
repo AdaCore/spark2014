@@ -1,0 +1,2 @@
+types.ads:12:45: Entity parameter of a pragma Terminating must be a subprogram or a package
+gnatprove: error during generation of Global contracts
