@@ -396,7 +396,7 @@ For purposes of flow analysis (e.g., Global and Depends aspect
 specifications), a read or write of some part of an allocated object is
 treated like a read or write of the owner of that allocated object.
 For example, an assignment to Some_Standalone_Variable.Some_Component.all is
-treated like an assignment to Some_Standalone_Variable.Some_Component .
+treated like an assignment to Some_Standalone_Variable.Some_Component.
 Similarly, there is no explicit mention of anything related to access types
 in a Refined_State or Initializes aspect specification; allocated objects
 are treated like components of their owners and, like components, they are
@@ -431,7 +431,7 @@ observing are not in |SPARK|.
 and access-to-subprogram types are not in |SPARK|.]
 
 User-defined storage pools are not in |SPARK|; more specifically, the package
-System.Storage_Pools, Storage_Pool aspect splecifications, and the Storage_Pool
+System.Storage_Pools, Storage_Pool aspect specifications, and the Storage_Pool
 attribute are not in |SPARK|.
 
 A composite type is also said to be an *owning* type if it has an
@@ -440,7 +440,7 @@ type is access-to-constant or access-to-variable].
 
 Privacy is ignored in determining whether a type is an owning or
 observing type. A generic formal private type is not an owning type
-[redundant:, although the corresponding actual parameter in an instance
+[redundant: , although the corresponding actual parameter in an instance
 of the generic might be an owning type]. A consequence of this rule
 is that the actual parameter for a generic formal private type cannot be
 of access type.
@@ -470,7 +470,7 @@ subcomponent].
 A function is said to be a *traversal function* if the result type
 of the function is an anonymous access-to-object type, the function has
 at least one formal parameter, and the function's first parameter is of
-an access type [redundant:, either named or anonymous].
+an access type [redundant: , either named or anonymous].
 The first parameter of the function is called the *traversed* parameter.
 [Redundant: We will see later that if a traversal
 function yields a non-null result, then that result is "reachable" from the
@@ -508,7 +508,7 @@ An object O1 is said to be a *reachable element* of an object O2 if
 
 Two names are said to be *potential aliases* when:
 
-- both names statically denote the same entity [Redundant: , which
+- both names statically denote the same entity [redundant: , which
   might be an object renaming declaration]; or
 
 - both names are selected components, they have the same selector, and
@@ -546,7 +546,7 @@ The prefix and the name that are potential aliases are called the
 *potentially aliased parts* of the potentially overlapping names.
 
 A name that denotes a managed object can be in one of the
-following ownership states: Unrestricted, Observed, or Borrowed, or Moved.
+following ownership states: Unrestricted, Observed, Borrowed, or Moved.
 
 A given name may take on different states at different points in the
 program. For example, within a block_statement which declares an observer
@@ -557,12 +557,12 @@ no object-to-state mapping of any sort is maintained at runtime.]
 
 In the Unrestricted state, no additional restrictions are imposed on the
 use of the name. In particular, if the name denotes a variable
-of an access-to-variable type then a deference of the name provides a
+of an access-to-variable type then a dereference of the name provides a
 variable view.
 
 In the Observed state, the name provides a constant view (even if the
 named object is a variable). If it denotes an access object then
-a dereference of the name provides a constant view [Redundant: , even if
+a dereference of the name provides a constant view [redundant: , even if
 the object is of an access-to-variable type].
 
 In the Moved or Borrowed states, the name is unusable for either reading or
@@ -613,7 +613,7 @@ In the region of program text beween the point where a name denoting a
 managed object is observed and the end of the scope of the observer, the
 ownership state of the name is Observed. While a name that denotes a managed
 object is in the Observed state it provides a constant view
-[Redundant: , even if the name denotes a variable].
+[redundant: , even if the name denotes a variable].
 
 At the point where a name that denotes a managed object is observed,
 every name that potentially overlaps that name is observed.
@@ -657,7 +657,7 @@ the name, usually used together with the term "indirect borrower".
 The terms "indirect observer" and "direct observer" are defined analogously.
 
 While a name that denotes a managed object is in the Borrowed state it
-provides a constant view [Redundant: , even if the name denotes a variable].
+provides a constant view [redundant: , even if the name denotes a variable].
 Furthermore, the only permitted read of a managed object in the Borrowed
 state is the introduction of a new observer of the object. Within the
 scope of such a new observer any direct or indirect borrower
@@ -810,13 +810,13 @@ a class-wide type might be an owning type).]
 
 .. _tu-access_types-10:
 
-10. If the state of a name that denotes a managed object is observed, then the
+10. If the state of a name that denotes a managed object is Observed, then the
     name shall neither be moved nor borrowed and shall not be used as the
     target of an assignment.
 
 .. _tu-access_types-11:
 
-11. If the state of a name that denotes a managed object is borrowed, the name
+11. If the state of a name that denotes a managed object is Borrowed, the name
     shall not be moved, borrowed, or assigned, and shall not be used as a
     primary, as a prefix, or as an actual parameter except as part of being
     observed; furthermore, any existing borrowers (direct or indirect) of the
