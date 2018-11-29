@@ -1,0 +1,6 @@
+This test combines files from two public repositories:
+
+  https://review.coreboot.org/p/libhwbase.git
+  https://review.coreboot.org/p/libgfxinit.git
+
+but already preconfigured for the sandybridge architecture.

@@ -1,0 +1,22 @@
+pragma Restrictions (No_Allocators);
+pragma Restrictions (No_Calendar);
+pragma Restrictions (No_Dispatch);
+pragma Restrictions (No_Exception_Handlers);
+pragma Restrictions (No_Fixed_Point);
+pragma Restrictions (No_Floating_Point);
+pragma Restrictions (No_Implicit_Dynamic_Code);
+pragma Restrictions (No_Implicit_Heap_Allocations);
+pragma Restrictions (No_Implicit_Loops);
+pragma Restrictions (No_Initialize_Scalars);
+pragma Restrictions (No_Local_Allocators);
+pragma Restrictions (No_Recursion);
+pragma Restrictions (No_Streams);
+pragma Restrictions (No_Tasking);
+pragma Restrictions (No_Unchecked_Access);
+pragma Restrictions (No_Unchecked_Deallocation);
+pragma Restrictions (No_Wide_Characters);
+pragma Restrictions (Static_Storage_Size);
+pragma Assertion_Policy
+  (Debug                => Disable);
+pragma Overflow_Mode (General => Strict, Assertions => Eliminated);
+pragma SPARK_Mode (On);

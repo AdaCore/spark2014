@@ -1,0 +1,8 @@
+library project test is
+   for Library_Name use "gfxinit";
+   for Library_Dir use "lib";
+   for Source_Dirs use ("common/","common/ironlake/","libhwbase/");
+   package Builder is
+      for Global_Configuration_Pragmas use "test.adc";
+   end Builder;
+end test;
