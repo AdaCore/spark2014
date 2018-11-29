@@ -55,6 +55,6 @@ procedure Counterexamples (C : Integer) with SPARK_Mode is
 
    X : Two_Access;
 begin
-null;
---     Bad_1 (X); --@PRECONDITION:FAIL
+   null;
+   Bad_1 (X); --@PRECONDITION:FAIL
 end Counterexamples;
