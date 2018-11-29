@@ -5,6 +5,9 @@ import os
 sys.stdout = open('result1', 'w')
 gnatprove(opt=["-P", "test.gpr", "-q", "--report=all", "--level=3", "--no-counterexample"])
 
+# Cleanup
+clean()
+
 # Equivalent switches
 sys.stdout = open('result2', 'w')
 gnatprove(opt=["-P", "test.gpr", "-q", "--report=all", "--prover=cvc4,z3,altergo", "--timeout=20", "--steps=0", "--memlimit=2000", "--no-counterexample"])
