@@ -37,8 +37,8 @@ hermes-der-decode.adb:133:16: info: loop invariant preservation proved (CVC4: 2 
 hermes-der-decode.adb:133:41: info: initialization of "Result" proved
 hermes-der-decode.adb:133:53: info: overflow check proved (CVC4: 2 VC)
 hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC4: 3 VC)
+hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC4: 3 VC)
 hermes-der-decode.adb:135:56: info: initialization of "Result" proved
-hermes-der-decode.adb:135:87: medium: loop invariant might fail after first iteration, cannot prove Result < 128*256**(I - 2)
 hermes-der-decode.adb:135:99: medium: overflow check might fail
 hermes-der-decode.adb:135:103: medium: overflow check might fail
 hermes-der-decode.adb:135:108: info: range check proved (CVC4: 2 VC)

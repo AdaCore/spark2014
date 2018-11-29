@@ -22,7 +22,7 @@ package body Types is
       --    lemma Power_non_neg:
       --       forall x y. x >= 0 /\ y >= 0 -> power x y >= 0
 
-      pragma Assert (2 ** Offset > 0);
+      pragma Assert (2 ** Offset > 0);  --  @ASSERT:PASS
    end Convert_To_U13;
 
 end Types;
