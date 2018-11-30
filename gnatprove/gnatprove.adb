@@ -933,6 +933,15 @@ procedure Gnatprove with SPARK_Mode is
       --  The full command line
 
    begin
+      --  Unset various environmment variables which might confuse the compiler
+      --  or gprbuild
+
+      Clear ("ADA_INCLUDE_PATH");
+      Clear ("ADA_OBJECTS_PATH");
+      Clear ("GCC_EXEC_PREFIX");
+      Clear ("GCC_ROOT");
+      Clear ("GNAT_ROOT");
+
       --  Add <prefix>/libexec/spark/bin in front of the PATH
 
       Set ("PATH",
