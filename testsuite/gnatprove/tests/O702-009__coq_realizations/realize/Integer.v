@@ -9,12 +9,6 @@ Require int.Int.
 Definition unit := unit.
 
 (* Why3 goal *)
-Definition qtmark : Type.
-exact unit.
-
-Defined.
-
-(* Why3 goal *)
 Definition bool_eq: Z -> Z -> bool.
 exact Z.eqb.
 Defined.
@@ -60,7 +54,7 @@ intros x y.
 rewrite <- bool_eq_axiom.
 unfold bool_ne, bool_eq, negb. case ((x =? y)%Z); split; intro H; auto.
 contradict H; auto.
-Qed. 
+Qed.
 
 (* Why3 goal *)
 Lemma bool_lt_axiom :
@@ -89,3 +83,23 @@ unfold bool_ge; exact Z.geb_le.
 
 Qed.
 
+(* Why3 goal *)
+Definition length: Z -> Z -> Z.
+intros x y.
+exact (if Z_le_dec x y then ((y - x) + 1)%Z else 0%Z).
+Defined.
+
+(* Why3 goal *)
+Lemma length_def :
+forall (x:Z) (y:Z),
+ ((x <= y)%Z -> ((length x y) = ((y - x)%Z + 1%Z)%Z))
+ /\ ((~ (x <= y)%Z) -> ((length x y) = 0%Z)).
+intros x y.
+unfold length. destruct Z_le_dec; intuition.
+Qed.
+
+(* Unused content named qtmark
+exact unit.
+
+Defined.
+ *)

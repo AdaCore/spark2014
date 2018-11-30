@@ -18,6 +18,10 @@ def copy_spark_why_files():
     theories_dir = os.path.join(spark_install_path(), 'share', 'spark', 'theories')
     theory_files = glob.glob(os.path.join(theories_dir,'*.mlw'))
     theory_files += glob.glob(os.path.join(theories_dir,'*.why'))
+    # On developer computer, theories for Why3 are in this location
+    why3_theories_dir = os.path.join(spark_install_path(), 'share', 'why3', 'theories')
+    theory_files += glob.glob(os.path.join(why3_theories_dir,'*.mlw'))
+    theory_files += glob.glob(os.path.join(why3_theories_dir,'*.why'))
     curdir = os.getcwd()
     for f in theory_files:
         shutil.copyfile(f, os.path.join(curdir, os.path.basename(f)))
@@ -117,7 +121,3 @@ copy_spark_why_files()
 compile_coq_files()
 realize_theories()
 check_realizations()
-
-
-
-
