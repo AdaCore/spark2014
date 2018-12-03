@@ -38,34 +38,41 @@ Having Different Switches for Compilation and Verification
 In some cases, you may want to pass different compilation-level switches to
 GNAT and |GNATprove|, for example use warning switches only for compilation, in
 the same project file. In that case, you can use a scenario variable to specify
-different switches for compilation and verification:
+different switches for compilation and verification. We recommend to use the
+predefined ``GPR_TOOL`` variable for this purpose:
 
 .. code-block:: gpr
 
   project My_Project is
 
-    type Modes is ("Compile", "Analyze");
-    Mode : Modes := External ("MODE", "Compile");
+    Mode := External ("GPR_TOOL", "gprbuild");
 
     package Compiler is
        case Mode is
-          when "Compile" =>
+          when "gprbuild" =>
              for Switches ("Ada") use ...
-          when "Analyze" =>
+          when "gnatprove" =>
              for Switches ("Ada") use ...
        end case;
     end Compiler;
 
   end My_Project;
 
-With the above project, compilation is done using the ``Compile`` default
-mode::
+With the above project, compilation will be automatically done in ``gprbuild`` mode::
 
   gprbuild -P my_project.gpr
 
-while formal verification is done using the ``Analyze`` mode::
+while |GNATprove| automatically sets the ``GPR_TOOL`` variable to the ``gnatprove`` value::
 
-  gnatprove -P my_project.gpr -XMODE=Analyze
+  gnatprove -P my_project.gpr
+
+Other tools set the value of this variable to other values. See the
+documentation of ``gprbuild`` to know more about this.
+
+Note that before SPARK Pro 20, the ``GPR_TOOL`` was not set automatically by the
+tool. You can set it manually in this case::
+
+  gnatprove -P my_project.gpr -XGPR_TOOL=gnatprove
 
 .. _Running GNATprove from the Command Line:
 
