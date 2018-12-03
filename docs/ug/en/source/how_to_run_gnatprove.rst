@@ -722,6 +722,49 @@ manual proof.
 
 More details on how to use it are available in :ref:`Manual Proof Using GPS`.
 
+How to Speed Up a Run of |GNATprove|
+------------------------------------
+
+|GNATprove| can take some time on large programs with difficult checks to
+prove. This section describes how one can improve the running time of the
+|GNATprove| tool. Note that some of the suggested settings will decrease the
+number of proved checks or decrease usability of the tool, because spending
+more time often results in more successful proofs. You may still want to try
+some of the suggestions here to see if the time spent by |GNATprove| is really
+useful in your context.
+
+These settings will speed up |GNATprove|:
+
+* Use the ``-j`` switch to use more than one core on your machine. |GNATprove|
+  can make efficient usage of multi-processing. If your machine has more than
+  one processor or core, we strongly suggest to enable multi-processing, using
+  the ``-j`` switch. This switch should not have an impact on proof results,
+  only on running time.
+
+* Use ``--no-loop-unrolling`` to deactivate loop unrolling. Loop unrolling can
+  often avoid the use of a loop invariant, but it almost always will be more
+  costly to analyze than a loop with a loop invariant. See also :ref:`Automatic
+  Unrolling of Simple For-Loops`.
+
+* Use ``--no-inlining`` to deactivate contextual analysis of local subprograms
+  without contracts. This feature can often avoid the use of subprogram
+  contracts, but it will be more costly to analyze such subprograms in their
+  calling context than analyzing them separately. See also :ref:`Contextual
+  Analysis of Subprograms Without Contracts`.
+
+* Use ``--no-counterexample`` to deactive counterexamples. Counter-examples are
+  very useful to understand the reason for a failed proof attempt. You can
+  disable this feature if you are not working on a failed proof attempt.
+
+* Use the ``--level`` switch to use a lower level and faster presets.
+  Generally, a lower level is faster than higher levels. See also :ref:`Running
+  GNATprove from the Command Line`.
+
+* More fine-grained than the ``--level`` switch, you can directly set the
+  ``--prover``, ``--timeout`` and ``--steps`` options. Using only one prover
+  with a small timeout or a small steps limit will result in much faster
+  execution.
+
 |GNATprove| and Network File Systems or Shared Folders
 ------------------------------------------------------
 
