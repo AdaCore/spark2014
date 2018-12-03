@@ -72,7 +72,7 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   function TheTokenTry return  TokenTypes.TryT is
+   function TheTokenTry return TokenTypes.TryT is
      (TokenReader.TheTokenTry(Reader => TokenReader.Admin));
 
    ------------------------------------------------------------------

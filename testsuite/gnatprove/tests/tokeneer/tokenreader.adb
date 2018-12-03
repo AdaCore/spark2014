@@ -736,7 +736,7 @@ is
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
-   function TheTokenID (Reader : ReaderT) return  TokenTypes.TokenIDT is
+   function TheTokenID (Reader : ReaderT) return TokenTypes.TokenIDT is
      (ReaderStatus(Reader).TokenID)
      with Refined_Global => ReaderStatus;
 

@@ -284,13 +284,13 @@ private
    --
    ------------------------------------------------------------------
    function IssuerIsThisTIS (Issuer : in     CryptoTypes.IssuerT)
-                            return  Boolean
+                            return Boolean
    is
      (if PrivateKeyPresent then
          Issuer = ThisTISInfo.Owner
       else
          False)
-     with Refined_Global  => ThisTISInfo;
+     with Refined_Global => ThisTISInfo;
 
    ------------------------------------------------------------------
    -- ThisTIS
@@ -300,6 +300,6 @@ private
    --
    ------------------------------------------------------------------
    function ThisTIS return CryptoTypes.IssuerT is (ThisTISInfo.Owner)
-     with Refined_Global  => ThisTISInfo;
+     with Refined_Global => ThisTISInfo;
 
 end KeyStore;
