@@ -587,7 +587,7 @@ and identify a corresponding *observer*:
 - An assignment operation that is used to initialize an access object,
   where this target object (the observer) is a stand-alone variable of an
   anonymous access-to-constant type, or a constant (including a formal
-  parameter or generic formal object of mode **in**) of a (named or anonymous)
+  parameter or generic formal object of mode **in**) of an anonymous
   access-to-constant type.
 
   The source expression of the assignment shall be either a name denoting a
