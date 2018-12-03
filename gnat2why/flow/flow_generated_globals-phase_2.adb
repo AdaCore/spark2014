@@ -1168,9 +1168,6 @@ package body Flow_Generated_Globals.Phase_2 is
             New_GG_Line (Line);
             Serialize (K);
             case K is
-               when EK_Error =>
-                  Corrupted_ALI_File ("parse error");
-
                when EK_End_Marker =>
                   if GG_Parsing_State = Started then
                      GG_Parsing_State := Finished;
@@ -1406,7 +1403,7 @@ package body Flow_Generated_Globals.Phase_2 is
             begin
                if Line'Length >= 3 then
                   declare
-                     Header : constant String (1 .. 3) := Line (1 .. 3);
+                     Header : String renames Line (1 .. 3);
 
                   begin
                      if Header = "QQ " then

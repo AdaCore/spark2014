@@ -100,7 +100,26 @@ We now explain the columns of the table.
 * Finally, the column ``Unproved`` counts the checks which have neither been
   proved nor justified.
 
-The summary table is followed by statistics describing:
+After the summary table, a line states the maximal steps that were consumed by
+automated provers. The line may look like this::
+
+   max steps used for successful proof: 1234
+
+The use of this line is to help with reproducability of a run of |GNATprove|
+that proved all checks and properties. If the user provides the given number
+via the ``--steps`` option to |GNATprove|, and disables the time and memory
+limits, (if enabled directly or indirectly such as via the ``--level``
+switch), then |GNATprove| will again prove all checks and properties. For
+example, if a user has proved all checks in a project using an invocation of
+|GNATprove| as follows::
+
+    gnatprove -P <projectfile> --level=2
+
+then the following command will also prove all checks::
+
+    gnatprove -P <projectfile> --level=2 --timeout=0 --memlimit=0 --steps=1234
+
+The next contents in the file are statistics describing:
 
 * which units were analyzed (with flow analysis, proof, or both)
 * which subprograms in these units were analyzed (with flow analysis, proof, or

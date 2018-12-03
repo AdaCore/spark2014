@@ -221,13 +221,6 @@ package Flow_Generated_Globals is
    --
    --  Error messages related to a task object will be attached to Node.
 
-   type Object_Priority is
-      record
-         Variable : Entity_Name;
-         Priority : Priority_Value;
-      end record;
-   --  Protected object and its priority
-
 private
    Current_Mode : GG_Mode_T := GG_No_Mode with Ghost;
 

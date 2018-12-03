@@ -7,6 +7,8 @@ assume_call.adb:17:18: info: initialization of "Z" proved
 assume_call.ads:4:19: info: postcondition proved (CVC4: 1 VC)
 assume_call.ads:4:33: info: overflow check proved (CVC4: 1 VC)
 
+max steps used for successful proof: 1
+
 
 
  Assume_Call at assume_call.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)

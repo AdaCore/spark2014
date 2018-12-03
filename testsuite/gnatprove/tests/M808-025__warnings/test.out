@@ -62,6 +62,7 @@ p.adb:17:09: info: initialization of "X" proved
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
 
+
 Do not issue all compilation warnings, do not issue flow warnings and continue:
 ------------------------------------------------------------------------
 p.adb:1:14: info: initialization of "Y" proved
@@ -74,6 +75,7 @@ p.adb:17:09: info: initialization of "X" proved
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
 
+
 Do not issue any compilation warnings, issue flow warnings and continue:
 ------------------------------------------------------------------------
 p.adb:1:14: info: initialization of "Y" proved
@@ -84,6 +86,7 @@ p.adb:15:12: info: initialization of "X" proved
 p.adb:17:09: info: initialization of "X" proved
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
+
 
 Issue all compilation warnings, do not issue flow warnings and continue:
 ------------------------------------------------------------------------
@@ -98,6 +101,7 @@ p.adb:17:09: info: initialization of "X" proved
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
 
+
 Do not issue all compilation warnings, do not issue flow warnings and continue:
 -------------------------------------------------------------------------------
 p.adb:1:14: info: initialization of "Y" proved
@@ -108,6 +112,7 @@ p.adb:17:09: info: initialization of "X" proved
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
 
+
 Do not issue any compilation warnings, do not issue flow warnings and continue:
 -------------------------------------------------------------------------------
 p.adb:1:14: info: initialization of "Y" proved
@@ -116,6 +121,7 @@ p.adb:15:12: info: initialization of "X" proved
 p.adb:17:09: info: initialization of "X" proved
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
+
 Stop at compilation:
 --------------------
 p.adb:2:09: warning: type "M" is not referenced
@@ -183,6 +189,7 @@ p.adb:15:12: info: initialization of "X" proved[#4]
 p.adb:17:09: info: initialization of "X" proved[#5]
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)[#7]
 p.adb:18:19: info: initialization of "X" proved[#6]
+
 completed 1 out of 1 (100%)...
 
 Do not issue all compilation warnings, do not issue flow warnings and continue:
@@ -196,6 +203,7 @@ p.adb:15:12: info: initialization of "X" proved[#4]
 p.adb:17:09: info: initialization of "X" proved[#5]
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)[#7]
 p.adb:18:19: info: initialization of "X" proved[#6]
+
 completed 1 out of 1 (100%)...
 
 Do not issue any compilation warnings, issue flow warnings and continue:
@@ -208,6 +216,7 @@ p.adb:15:12: info: initialization of "X" proved[#4]
 p.adb:17:09: info: initialization of "X" proved[#5]
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)[#7]
 p.adb:18:19: info: initialization of "X" proved[#6]
+
 completed 1 out of 1 (100%)...
 
 Issue all compilation warnings, do not issue flow warnings and continue:
@@ -222,6 +231,7 @@ p.adb:15:12: info: initialization of "X" proved[#2]
 p.adb:17:09: info: initialization of "X" proved[#3]
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)[#5]
 p.adb:18:19: info: initialization of "X" proved[#4]
+
 completed 1 out of 1 (100%)...
 
 Do not issue all compilation warnings, do not issue flow warnings and continue:
@@ -233,6 +243,7 @@ p.adb:15:12: info: initialization of "X" proved[#2]
 p.adb:17:09: info: initialization of "X" proved[#3]
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)[#5]
 p.adb:18:19: info: initialization of "X" proved[#4]
+
 completed 1 out of 1 (100%)...
 
 Do not issue any compilation warnings, do not issue flow warnings and continue:
@@ -243,6 +254,7 @@ p.adb:15:12: info: initialization of "X" proved[#2]
 p.adb:17:09: info: initialization of "X" proved[#3]
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)[#5]
 p.adb:18:19: info: initialization of "X" proved[#4]
+
 completed 1 out of 1 (100%)...
 p.adb:1:14: info: initialization of "Y" proved
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
@@ -253,6 +265,7 @@ p.adb:15:12: info: initialization of "X" proved
 p.adb:17:09: info: initialization of "X" proved
 p.adb:18:19: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
+
 Summary of SPARK analysis
 =========================
 
@@ -271,6 +284,7 @@ LSP Verification . . . . . . .
 Total 6 5 (83%) . . 1 (17%) . .
 
 
+max steps used for successful proof: 1
 Analyzed 1 unit
 in unit p, 1 subprograms and packages out of 1 analyzed
  P at p.adb:1 flow analyzed (0 errors, 0 checks and 2 warnings) and proved (1 checks)

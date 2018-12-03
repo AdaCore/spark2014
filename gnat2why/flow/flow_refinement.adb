@@ -901,10 +901,11 @@ package body Flow_Refinement is
          return Empty;
 
       --  Otherwise, it comes from a declaration block in the package body
-      --  statements.
+      --  statements or is an arbitrarily placed internal object that comes
+      --  from inlining for proof.
 
       else
-         pragma Assert (Ekind (Scop) = E_Block);
+         pragma Assert (Ekind (Scop) = E_Block or else Is_Internal (E));
 
          return Empty;
       end if;

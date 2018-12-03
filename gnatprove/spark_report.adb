@@ -88,6 +88,9 @@ procedure SPARK_Report is
    procedure Print_Analysis_Report (Handle : Ada.Text_IO.File_Type);
    --  Print the proof report in the given file
 
+   procedure Print_Max_Steps (Handle : Ada.Text_IO.File_Type);
+   --  Print a line that summarizes the maximum required steps
+
    procedure Compute_Assumptions;
    --  Compute remaining assumptions for all subprograms and store them in
    --  database.
@@ -823,6 +826,29 @@ procedure SPARK_Report is
       end if;
    end Print_Analysis_Report;
 
+   ---------------------
+   -- Print_Max_Steps --
+   ---------------------
+
+   procedure Print_Max_Steps (Handle : Ada.Text_IO.File_Type) is
+      Map : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Max : Natural := 0;
+   begin
+      for Elt of Summary loop
+         Merge_Stat_Maps (Map, Elt.Provers.Provers);
+      end loop;
+
+      for Elt of Map loop
+         if Elt.Max_Steps > Max then
+            Max := Elt.Max_Steps;
+         end if;
+      end loop;
+      Ada.Text_IO.Put_Line (Handle,
+                            "max steps used for successful proof:" &
+                              Natural'Image (Max));
+      Ada.Text_IO.New_Line (Handle);
+   end Print_Max_Steps;
+
    -------------------
    -- Process_Stats --
    -------------------
@@ -1042,6 +1068,9 @@ begin
       Dump_Summary_Table (Handle);
       Ada.Text_IO.New_Line (Handle);
       Ada.Text_IO.New_Line (Handle);
+   end if;
+   if not No_Analysis_Done then
+      Print_Max_Steps (Handle);
    end if;
    Print_Analysis_Report (Handle);
    Close (Handle);

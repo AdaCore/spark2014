@@ -23,7 +23,7 @@
 
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 
-package Flow_Generated_Globals.Phase_2.Read is
+private package Flow_Generated_Globals.Phase_2.Read is
 
    procedure New_GG_Line (Line : String)
    with Pre => Head (Line, 3) = "GG ";
