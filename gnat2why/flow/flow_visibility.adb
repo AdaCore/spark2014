@@ -27,7 +27,6 @@ with Ada.Text_IO;
 with Common_Containers;          use Common_Containers;
 with Einfo;                      use Einfo;
 with Flow_Refinement;            use Flow_Refinement;
-with Gnat2Why_Args;
 with Graphs;
 with Nlists;                     use Nlists;
 with Rtsfind;                    use Rtsfind;
@@ -361,11 +360,17 @@ package body Flow_Visibility is
       --  enclosing scopes (up to Standard); however, the visibility paths
       --  are short and can be quickly discovered.
 
-      --  Print graph, but only if requested and only in phase 1
-      if Gnat2Why_Args.Flow_Advanced_Debug
-        and then Gnat2Why_Args.Global_Gen_Mode
-      then
-         Print (Scope_Graph);
+      --  In phase 1 we print the graph (if requested), but keep the hirarchy
+      --  info for writing it to the ALI file; in phase 2 we clear the info,
+      --  as it is no longer needed (while the graph is still needed for failed
+      --  check explanations).
+
+      if Gnat2Why_Args.Global_Gen_Mode then
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            Print (Scope_Graph);
+         end if;
+      else
+         Hierarchy_Info.Clear;
       end if;
 
       --  Sanity check: all vertices should be now connected to Standard
@@ -1221,6 +1226,10 @@ package body Flow_Visibility is
       for C in Hierarchy_Info.Iterate loop
          Process (Hierarchy_Info_Maps.Key (C), Hierarchy_Info (C));
       end loop;
+
+      --  Release data that is no longer needed
+
+      Hierarchy_Info.Clear;
    end Iterate_Flow_Scopes;
 
 end Flow_Visibility;
