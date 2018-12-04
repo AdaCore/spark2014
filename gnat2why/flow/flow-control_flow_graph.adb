@@ -1491,21 +1491,21 @@ package body Flow.Control_Flow_Graph is
 
       if not Partial and then RHS_Split_Useful (N, FA.B_Scope) then
          declare
-            M            : Flow_Id_Maps.Map;
             All_Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
             Missing      : Flow_Id_Sets.Set;
             Verts        : Vertex_Lists.List;
 
-         begin
-            M := Untangle_Record_Assignment
-              (Expression (N),
-               Map_Root                     => Map_Root,
-               Map_Type                     => LHS_Type,
-               Scope                        => FA.B_Scope,
-               Fold_Functions               => True,
-               Use_Computed_Globals         => not FA.Generating_Globals,
-               Expand_Synthesized_Constants => False);
+            M : constant Flow_Id_Maps.Map :=
+              Untangle_Record_Assignment
+                (Expression (N),
+                 Map_Root                     => Map_Root,
+                 Map_Type                     => LHS_Type,
+                 Scope                        => FA.B_Scope,
+                 Fold_Functions               => True,
+                 Use_Computed_Globals         => not FA.Generating_Globals,
+                 Expand_Synthesized_Constants => False);
 
+         begin
             Missing := Flatten_Variable (Map_Root, FA.B_Scope);
             if Is_Class_Wide_Type (LHS_Type)
               and then Map_Root.Kind = Direct_Mapping
