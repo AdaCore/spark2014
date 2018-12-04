@@ -1510,7 +1510,7 @@ package body Flow.Control_Flow_Graph is
             if Is_Class_Wide_Type (LHS_Type)
               and then Map_Root.Kind = Direct_Mapping
             then
-               Missing.Include (Map_Root'Update (Facet => Extension_Part));
+               Missing.Insert (Map_Root'Update (Facet => Extension_Part));
             end if;
 
             --  Split out the assignment over a number of vertices
