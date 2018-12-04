@@ -1,0 +1,7 @@
+p.adb:5:12: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+p.adb:5:12: violation of pragma SPARK_Mode at test.adc:1
+q.ads:12:21: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+q.ads:12:21: violation of pragma SPARK_Mode at test.adc:1
+q.ads:12:50: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+q.ads:12:50: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof
