@@ -45,20 +45,21 @@ predefined ``GPR_TOOL`` variable for this purpose:
 
   project My_Project is
 
-    Mode := External ("GPR_TOOL", "gprbuild");
+    Mode := External ("GPR_TOOL");
 
     package Compiler is
        case Mode is
-          when "gprbuild" =>
-             for Switches ("Ada") use ...
           when "gnatprove" =>
+             for Switches ("Ada") use ...
+          when others =>
              for Switches ("Ada") use ...
        end case;
     end Compiler;
 
   end My_Project;
 
-With the above project, compilation will be automatically done in ``gprbuild`` mode::
+With the above project, compilation will be automatically done in the "normal"
+mode (the "others" branch above)::
 
   gprbuild -P my_project.gpr
 
@@ -67,7 +68,7 @@ while |GNATprove| automatically sets the ``GPR_TOOL`` variable to the ``gnatprov
   gnatprove -P my_project.gpr
 
 Other tools set the value of this variable to other values. See the
-documentation of ``gprbuild`` to know more about this.
+documentation of other AdaCore tools to know more about this.
 
 Note that before SPARK Pro 20, the ``GPR_TOOL`` was not set automatically by the
 tool. You can set it manually in this case::
