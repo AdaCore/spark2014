@@ -1452,9 +1452,13 @@ package body Flow.Control_Flow_Graph is
       Partial         : Boolean;
       View_Conversion : Boolean;
       Map_Root        : Flow_Id;
-      To_Cw           : constant Boolean :=
-        Is_Class_Wide_Type (Get_Type (Name (N), FA.B_Scope)) and then
-          not Is_Class_Wide_Type (Get_Type (Expression (N), FA.B_Scope));
+
+      LHS_Type : constant Entity_Id := Get_Type (Name (N), FA.B_Scope);
+      RHS_Type : constant Entity_Id := Get_Type (Expression (N), FA.B_Scope);
+
+      To_Cw    : constant Boolean :=
+        Is_Class_Wide_Type (LHS_Type) and then
+          not Is_Class_Wide_Type (RHS_Type);
 
    begin
       --  Collect function calls appearing in the assignment statement: both
@@ -1496,14 +1500,14 @@ package body Flow.Control_Flow_Graph is
             M := Untangle_Record_Assignment
               (Expression (N),
                Map_Root                     => Map_Root,
-               Map_Type                     => Get_Type (Name (N), FA.B_Scope),
+               Map_Type                     => LHS_Type,
                Scope                        => FA.B_Scope,
                Fold_Functions               => True,
                Use_Computed_Globals         => not FA.Generating_Globals,
                Expand_Synthesized_Constants => False);
 
             Missing := Flatten_Variable (Map_Root, FA.B_Scope);
-            if Is_Class_Wide_Type (Get_Type (Name (N), FA.B_Scope))
+            if Is_Class_Wide_Type (LHS_Type)
               and then Map_Root.Kind = Direct_Mapping
             then
                Missing.Include (Map_Root'Update (Facet => Extension_Part));
@@ -1572,7 +1576,7 @@ package body Flow.Control_Flow_Graph is
             --  create a null vertex instead.
 
             if Verts.Is_Empty then
-               pragma Assert (Is_Null_Record_Type (Etype (Name (N))));
+               pragma Assert (Is_Null_Record_Type (LHS_Type));
 
                Add_Dummy_Vertex (N, FA, CM);
 
