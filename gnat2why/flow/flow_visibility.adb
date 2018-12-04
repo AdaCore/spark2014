@@ -24,7 +24,6 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
 with Einfo;                      use Einfo;
 with Flow_Refinement;            use Flow_Refinement;

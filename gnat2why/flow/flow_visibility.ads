@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;      use Atree;
 with Flow_Types; use Flow_Types;
 with Types;      use Types;
 
@@ -30,7 +31,8 @@ package Flow_Visibility is
    --  edges, because frontend doesn't provide a realiable routine that would
    --  traverse declarations before references.
 
-   procedure Register_Flow_Scopes (Unit_Node : Node_Id);
+   procedure Register_Flow_Scopes (Unit_Node : Node_Id)
+   with Pre => Present (Unit_Node);
    --  Creates vertices in the visibility graph
 
    procedure Connect_Flow_Scopes;
