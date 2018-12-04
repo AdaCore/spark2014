@@ -1447,8 +1447,7 @@ package body Flow.Control_Flow_Graph is
    is
       Funcs : Node_Sets.Set;
 
-      V     : Flow_Graphs.Vertex_Id;
-      Verts : Vertex_Lists.List;
+      V : Flow_Graphs.Vertex_Id;
 
       Partial         : Boolean;
       View_Conversion : Boolean;
@@ -1482,16 +1481,17 @@ package body Flow.Control_Flow_Graph is
             Seq                => Unused);
       end;
 
-      --  We have two likely scenarios: some kind of record assignment (in
-      --  which case we try our best to dis-entangle the record fields so
-      --  that information does not bleed all over the place) and the
-      --  default case.
+      --  We have two scenarios: some kind of record assignment (in which case
+      --  we try our best to dis-entangle the record fields so that information
+      --  does not bleed all over the place) and the default case.
 
       if not Partial and then RHS_Split_Useful (N, FA.B_Scope) then
          declare
             M            : Flow_Id_Maps.Map;
-            All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
+            All_Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
             Missing      : Flow_Id_Sets.Set;
+            Verts        : Vertex_Lists.List;
+
          begin
             M := Untangle_Record_Assignment
               (Expression (N),
@@ -1514,8 +1514,8 @@ package body Flow.Control_Flow_Graph is
                declare
                   Output : Flow_Id          renames Flow_Id_Maps.Key (C);
                   Inputs : Flow_Id_Sets.Set renames M (C);
-               begin
 
+               begin
                   Missing.Delete (Output);
 
                   Add_Vertex
@@ -1535,7 +1535,7 @@ package body Flow.Control_Flow_Graph is
 
             if not View_Conversion then
                --  There might be some fields missing, but if this is not a
-               --  view conversion (and we have already established its a
+               --  view conversion (and we have already established it is a
                --  full assignment), flow analysis must not claim any other
                --  fields are "uninitialized".
                for F of Missing loop
@@ -1567,18 +1567,33 @@ package body Flow.Control_Flow_Graph is
                   end loop;
                end;
             end if;
-         end;
 
-         if Verts.Is_Empty then
-            pragma Assert (Is_Null_Record_Type (Etype (Name (N))));
             --  Assigning null records does not produce any assignments, so we
             --  create a null vertex instead.
-            Add_Vertex (FA,
-                        Direct_Mapping_Id (N),
-                        Null_Node_Attributes,
-                        V);
-            Verts.Append (V);
-         end if;
+
+            if Verts.Is_Empty then
+               pragma Assert (Is_Null_Record_Type (Etype (Name (N))));
+
+               Add_Dummy_Vertex (N, FA, CM);
+
+            --  Otherwise, we link all the vertices we have produced and update
+            --  the connection map.
+
+            else
+               V := Flow_Graphs.Null_Vertex;
+               for W of Verts loop
+                  if V /= Flow_Graphs.Null_Vertex then
+                     Linkup (FA, V, W);
+                  end if;
+                  V := W;
+               end loop;
+
+               CM.Insert (Union_Id (N),
+                          Graph_Connections'
+                            (Standard_Entry => Verts.First_Element,
+                             Standard_Exits => To_Set (Verts.Last_Element)));
+            end if;
+         end;
 
       else
          declare
@@ -1632,25 +1647,10 @@ package body Flow.Control_Flow_Graph is
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => N),
                V);
-            Verts.Append (V);
+
+            CM.Insert (Union_Id (N), Trivial_Connection (V));
          end;
       end if;
-
-      --  Finally, we join up all the vertices we have produced and record
-      --  update the connection map. ??? record update
-
-      V := Flow_Graphs.Null_Vertex;
-      for W of Verts loop
-         if V /= Flow_Graphs.Null_Vertex then
-            Linkup (FA, V, W);
-         end if;
-         V := W;
-      end loop;
-
-      CM.Insert (Union_Id (N),
-                 Graph_Connections'
-                   (Standard_Entry => Verts.First_Element,
-                    Standard_Exits => To_Set (Verts.Last_Element)));
    end Do_Assignment_Statement;
 
    -----------------------
