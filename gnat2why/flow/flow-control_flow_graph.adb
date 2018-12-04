@@ -1568,6 +1568,18 @@ package body Flow.Control_Flow_Graph is
                end;
             end if;
          end;
+
+         if Verts.Is_Empty then
+            pragma Assert (Is_Null_Record_Type (Etype (Name (N))));
+            --  Assigning null records does not produce any assignments, so we
+            --  create a null vertex instead.
+            Add_Vertex (FA,
+                        Direct_Mapping_Id (N),
+                        Null_Node_Attributes,
+                        V);
+            Verts.Append (V);
+         end if;
+
       else
          declare
             Vars_Defined : Flow_Id_Sets.Set;
@@ -1626,17 +1638,6 @@ package body Flow.Control_Flow_Graph is
 
       --  Finally, we join up all the vertices we have produced and record
       --  update the connection map. ??? record update
-
-      if Verts.Is_Empty then
-         pragma Assert (Is_Null_Record_Type (Etype (Name (N))));
-         --  Assigning null records does not produce any assignments, so we
-         --  create a null vertex instead.
-         Add_Vertex (FA,
-                     Direct_Mapping_Id (N),
-                     Null_Node_Attributes,
-                     V);
-         Verts.Append (V);
-      end if;
 
       V := Flow_Graphs.Null_Vertex;
       for W of Verts loop
