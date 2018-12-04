@@ -366,9 +366,6 @@ package body Flow is
       pragma Assert (Nkind (N) = N_Loop_Statement);
 
       N := Iteration_Scheme (N);
-      if No (N) then
-         return Empty;
-      end if;
       pragma Assert (Nkind (N) = N_Iteration_Scheme);
 
       N := Loop_Parameter_Specification (N);
