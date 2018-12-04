@@ -1574,6 +1574,8 @@ package body Flow.Control_Flow_Graph is
             Vars_Used    : Flow_Id_Sets.Set;
             Vars_Proof   : Flow_Id_Sets.Set;
 
+            Slice_Update : Boolean;
+
          begin
             --  Work out which variables we define
             Untangle_Assignment_Target
@@ -1583,7 +1585,9 @@ package body Flow.Control_Flow_Graph is
                Vars_Defined         => Vars_Defined,
                Vars_Used            => Vars_Used,
                Vars_Proof           => Vars_Proof,
-               Partial_Definition   => Partial);
+               Partial_Definition   => Slice_Update);
+
+            pragma Assert (Partial = Slice_Update);
 
             --  Work out the variables we use. These are the ones already
             --  used by the LHS + everything on the RHS.
