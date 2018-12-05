@@ -4894,8 +4894,7 @@ package body Flow_Utility is
 
       procedure Merge (Component : Entity_Id;
                        Input     : Node_Id)
-      with Pre => Nkind (Component) in N_Entity
-                  and then Ekind (Component) in E_Component | E_Discriminant;
+      with Pre => Ekind (Component) in E_Component | E_Discriminant;
       --  Merge the assignment map for Input into our current assignment
       --  map M. For example, if the input is (X => A, Y => B) and
       --  Component is C, and Map_Root is Obj, then we include in M the

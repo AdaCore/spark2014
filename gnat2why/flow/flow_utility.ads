@@ -461,7 +461,6 @@ is
       return Flow_Id_Maps.Map
    with Pre => Ekind (Get_Type (N, Scope)) in Record_Kind | Private_Kind
                  and then Map_Root.Kind in Direct_Mapping | Record_Field
-                 and then Nkind (Map_Type) in N_Defining_Identifier
                  and then Is_Type (Map_Type);
    --  Process a record or aggregate N and return a map which can be used to
    --  work out which fields will depend on what inputs.
