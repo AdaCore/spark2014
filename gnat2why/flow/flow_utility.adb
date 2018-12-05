@@ -5102,6 +5102,8 @@ package body Flow_Utility is
                  Recurse_On (Prefix (N),
                              Direct_Mapping_Id (Etype (Prefix (N))));
 
+               Selector : constant Entity_Id := Entity (Selector_Name (N));
+
             begin
                for C in Tmp.Iterate loop
                   declare
@@ -5110,7 +5112,7 @@ package body Flow_Utility is
 
                   begin
                      if Same_Component (Output.Component.First_Element,
-                                        Entity (Selector_Name (N)))
+                                        Selector)
                      then
                         M.Insert (Join (Map_Root, Output, 1), Inputs);
                      end if;
@@ -5383,7 +5385,7 @@ package body Flow_Utility is
             | N_Unchecked_Type_Conversion
          =>
 
-            --  For these we just summarize the entire blob.
+            --  For these we just summarize the entire blob
 
             declare
                RHS : constant Flow_Id_Sets.Set := Get_Vars_Wrapper (N);
