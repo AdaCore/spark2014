@@ -5105,11 +5105,8 @@ package body Flow_Utility is
             begin
                for C in Tmp.Iterate loop
                   declare
-                     Output : Flow_Id renames
-                       Flow_Id_Maps.Key (C);
-
-                     Inputs : Flow_Id_Sets.Set renames
-                       Flow_Id_Maps.Element (C);
+                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                     Inputs : Flow_Id_Sets.Set renames Tmp (C);
 
                   begin
                      if Same_Component (Output.Component.First_Element,
