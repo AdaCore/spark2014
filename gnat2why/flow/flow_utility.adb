@@ -4952,30 +4952,28 @@ package body Flow_Utility is
             when Record_Kind =>
                if Present (Input) then
                   Tmp := Recurse_On (Input, F);
-               else
-                  Tmp := Flow_Id_Maps.Empty_Map;
-               end if;
 
-               for C in Tmp.Iterate loop
-                  declare
-                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
-                     Inputs : Flow_Id_Sets.Set renames Tmp (C);
-                  begin
-                     M.Insert (Output, Inputs);
-                  end;
-               end loop;
+                  for C in Tmp.Iterate loop
+                     declare
+                        Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                        Inputs : Flow_Id_Sets.Set renames Tmp (C);
+                     begin
+                        M.Insert (Output, Inputs);
+                     end;
+                  end loop;
+               end if;
 
             when others =>
                declare
-                  Targets : constant Flow_Id_Sets.Set :=
+                  Outputs : constant Flow_Id_Sets.Set :=
                     Flatten_Variable (F, Scope);
 
                   Inputs  : constant Flow_Id_Sets.Set :=
                     Get_Vars_Wrapper (Input);
 
                begin
-                  for Id of Targets loop
-                     M.Insert (Id, Inputs);
+                  for Output of Outputs loop
+                     M.Insert (Output, Inputs);
                   end loop;
                end;
          end case;
