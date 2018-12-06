@@ -3661,7 +3661,7 @@ package body Flow.Control_Flow_Graph is
                      Expand_Synthesized_Constants => False);
 
                   All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
-                  Untangled    : Flow_Id_Sets.Set;
+                  Missing      : Flow_Id_Sets.Set := Var_Def;
 
                begin
                   for C in M.Iterate loop
@@ -3683,7 +3683,10 @@ package body Flow.Control_Flow_Graph is
                               E_Loc      => N,
                               Print_Hint => Pretty_Print_Record_Field),
                            V);
-                        Untangled.Insert (Output);
+                        Missing.Exclude (Output);
+                        --  ??? this should be Delete, but currently we will
+                        --  crash when processing nested packages that declare
+                        --  private types and objects of that types.
 
                         Inits.Append (V);
                         All_Vertices.Insert (V);
@@ -3694,7 +3697,7 @@ package body Flow.Control_Flow_Graph is
                   --  but not by URA we flag as initialized to the empty
                   --  set; since it is not possible in SPARK to partially
                   --  initialize a variable at declaration.
-                  for F of Var_Def.Difference (Untangled) loop
+                  for F of Missing loop
                      Add_Vertex
                        (FA,
                         Make_Basic_Attributes
