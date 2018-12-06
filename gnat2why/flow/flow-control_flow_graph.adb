@@ -3668,8 +3668,8 @@ package body Flow.Control_Flow_Graph is
                      declare
                         Output : Flow_Id          renames Flow_Id_Maps.Key (C);
                         Inputs : Flow_Id_Sets.Set renames M (C);
-                     begin
 
+                     begin
                         --  ??? It might be useful to improve E_Loc to point
                         --      at the relevant bit in the aggregate.
 
