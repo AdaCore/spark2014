@@ -3638,7 +3638,7 @@ package body Flow.Control_Flow_Graph is
 
             for F of FS loop
                if Has_Bounds (F, FA.B_Scope) then
-                  Var_Def.Include (F'Update (Facet => The_Bounds));
+                  Var_Def.Insert (F'Update (Facet => The_Bounds));
                end if;
             end loop;
 
