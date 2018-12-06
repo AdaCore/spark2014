@@ -5052,7 +5052,6 @@ package body Flow_Utility is
                Input  : Node_Id;
                Target : Node_Id;
                Done   : Component_Sets.Set;
-               FS     : Flow_Id_Sets.Set;
 
             begin
                Component_Association := First (Component_Associations (N));
@@ -5078,6 +5077,7 @@ package body Flow_Utility is
                   declare
                      ORC : constant Entity_Id :=
                        Original_Record_Component (Component);
+                     FS  : Flow_Id_Sets.Set;
 
                   begin
                      if not Done.Contains (ORC) then
