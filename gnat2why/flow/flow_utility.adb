@@ -4854,7 +4854,8 @@ package body Flow_Utility is
              Fold_Functions               => Fold_Functions,
              Use_Computed_Globals         => Use_Computed_Globals,
              Reduced                      => False,
-             Expand_Synthesized_Constants => Expand_Synthesized_Constants));
+             Expand_Synthesized_Constants => Expand_Synthesized_Constants))
+      with Pre => Nkind (N) in N_Subexpr;
       --  Helpful wrapper for calling Get_Variables
 
       function Recurse_On
@@ -4874,7 +4875,9 @@ package body Flow_Utility is
              Use_Computed_Globals         => Use_Computed_Globals,
              Expand_Synthesized_Constants => Expand_Synthesized_Constants,
              Extensions_Irrelevant        => Ext_Irrelevant))
-      with Pre => (if not Extensions_Irrelevant
+      with Pre => Nkind (N) in N_Subexpr
+                    and then
+                  (if not Extensions_Irrelevant
                    then not Ext_Irrelevant);
       --  Helpful wrapper for recursing. Note that once extensions are not
       --  irrelevant its not right to start ignoring them again.
@@ -4895,7 +4898,9 @@ package body Flow_Utility is
       procedure Merge (M         : in out Flow_Id_Maps.Map;
                        Component : Entity_Id;
                        Input     : Node_Id)
-      with Pre => Ekind (Component) in E_Component | E_Discriminant;
+      with Pre => Ekind (Component) in E_Component | E_Discriminant
+                    and then
+                  (No (Input) or else Nkind (Input) in N_Subexpr);
       --  Merge the assignment map for Input into our current assignment
       --  map M. For example, if the input is (X => A, Y => B) and
       --  Component is C, and Map_Root is Obj, then we include in M the
@@ -4996,7 +5001,6 @@ package body Flow_Utility is
                Discriminants : Flow_Id_Sets.Set;
 
             begin
-
                --  Loop over the list of discriminant constraints
 
                for Discr of Iter (Discriminant_Constraint (Typ)) loop
