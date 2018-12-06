@@ -4892,7 +4892,8 @@ package body Flow_Utility is
       --  Similarly, if A = Obj.X and B = R.X'Private_Part and Offset = 1,
       --  then joining will produce Obj.X'Private_Part.
 
-      procedure Merge (Component : Entity_Id;
+      procedure Merge (M         : in out Flow_Id_Maps.Map;
+                       Component : Entity_Id;
                        Input     : Node_Id)
       with Pre => Ekind (Component) in E_Component | E_Discriminant;
       --  Merge the assignment map for Input into our current assignment
@@ -4912,8 +4913,6 @@ package body Flow_Utility is
       with Pre => Is_Type (Typ);
       --  Returns the discriminant constraints for Typ if it is a record or
       --  concurrent type with discriminants, returns the empty set otherwise.
-
-      M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
       ----------
       -- Join --
@@ -4942,7 +4941,8 @@ package body Flow_Utility is
       -- Merge --
       -----------
 
-      procedure Merge (Component : Entity_Id;
+      procedure Merge (M         : in out Flow_Id_Maps.Map;
+                       Component : Entity_Id;
                        Input     : Node_Id)
       is
          F   : constant Flow_Id := Add_Component (Map_Root, Component);
@@ -5012,6 +5012,10 @@ package body Flow_Utility is
          end if;
       end Discriminant_Constraints;
 
+      --  Local variables:
+
+      M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+
    --  Start of processing for Untangle_Record_Assignment
 
    begin
@@ -5063,7 +5067,7 @@ package body Flow_Utility is
                   end if;
                   Target := First (Choices (Component_Association));
                   while Present (Target) loop
-                     Merge (Entity (Target), Input);
+                     Merge (M, Component => Entity (Target), Input => Input);
                      Done.Insert (Original_Record_Component (Entity (Target)));
                      Next (Target);
                   end loop;
