@@ -27,8 +27,7 @@ package body Bounded_Stacks is
 
    procedure Reset (This : out Stack) is
    begin
-      This := (This.Capacity, Top => 0, others => <>);
---        This.Top := 0;
+      This.Top := 0;
    end Reset;
 
    ----------

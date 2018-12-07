@@ -3110,8 +3110,6 @@ package body SPARK_Definition is
 
    procedure Mark_Component_Association (N : Node_Id) is
    begin
-      Mark_List (Choices (N));
-
       --  We enforce SPARK RM 4.3(1) for which the box symbol, <>, shall not be
       --  used in an aggregate unless the type(s) of the corresponding
       --  component(s) define full default initialization.
@@ -3121,16 +3119,19 @@ package body SPARK_Definition is
                                             | N_Extension_Aggregate);
 
          declare
+            Scop : constant Flow_Scope := Get_Flow_Scope (N);
+            --  Visibility scope for deciding default initialization
+
             Typ : Entity_Id := Etype (Parent (N));
+            --  Type of the aggregate; ultimately this will be either an array
+            --  or a record, and we will deal with them separately.
 
             pragma Assert (Is_Record_Type (Typ)
                            or else Is_Array_Type (Typ)
                            or else Is_Private_Type (Typ));
 
          begin
-
-            --  For a private type we enforce the rule on its full view if it
-            --  is in SPARK.
+            --  For a private type we switch to its full view (if in SPARK)
 
             if Is_Private_Type (Typ)
               and then not Full_View_Not_In_SPARK (Typ)
@@ -3138,18 +3139,58 @@ package body SPARK_Definition is
                Typ := Full_View (Typ);
             end if;
 
-            pragma Assert (Is_Record_Type (Typ) or else Is_Array_Type (Typ));
+            case Ekind (Typ) is
+               when Record_Kind =>
+                  declare
+                     Choice : Node_Id := First (Choices (N));
+                     --  Iterator for the non-empty list of choices
 
-            if Default_Initialization (Typ, Get_Flow_Scope (N))
-              /= Full_Default_Initialization
-            then
-               Mark_Violation
-                 ("box notation without default initialization",
-                  N,
-                  SRM_Reference => "SPARK RM 4.3(1)");
-            end if;
+                  begin
+                     loop
+                        pragma Assert (Nkind (Choice) = N_Identifier);
+                        --  In the source code Choice can be either an
+                        --  N_Identifier or N_Others_Choice, but the latter
+                        --  is expanded by the frontend.
+
+                        if Default_Initialization (Etype (Choice), Scop) =
+                          Full_Default_Initialization
+                        then
+                           Mark (Choice);
+                        else
+                           Mark_Violation
+                             ("box notation without default initialization",
+                              Choice,
+                              SRM_Reference => "SPARK RM 4.3(1)");
+                        end if;
+
+                        Next (Choice);
+                        exit when No (Choice);
+                     end loop;
+                  end;
+
+               --  Arrays can be default-initialized either because each
+               --  component is default-initialized (e.g. due to Default_Value
+               --  aspect) or because the entire array is default-initialized
+               --  (e.g. due to Default_Component_Value aspect), but default-
+               --  initialization of a component implies the default-
+               --  initialization of the array, so we only check the latter.
+
+               when Array_Kind =>
+                  if Default_Initialization (Typ, Scop) /=
+                       Full_Default_Initialization
+                  then
+                     Mark_Violation
+                       ("box notation without default initialization",
+                        N,
+                        SRM_Reference => "SPARK RM 4.3(1)");
+                  end if;
+
+               when others =>
+                  raise Program_Error;
+            end case;
          end;
       else
+         Mark_List (Choices (N));
          Mark (Expression (N));
       end if;
    end Mark_Component_Association;

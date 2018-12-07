@@ -18,7 +18,11 @@ package Bounded_Stacks is
      Post'Class => Empty (This) and
                    not Full (This),
      Global     => null,
-     Depends    => (This =>+ null);
+     Depends    => (This =>+ null),
+     Annotate   => (GNATprove,
+                    Intentional,
+                    """This.Values"" is not set",
+                    "Because zeroing Top is sufficient");
 
    procedure Push (This : in out Stack;  Item : Element) with
      Pre'Class  => not Full (This) and
