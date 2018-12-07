@@ -959,7 +959,8 @@ package body SPARK_Definition is
    --  Mark pragma Annotate that could appear at the beginning of a declaration
    --  list of a package.
 
-   procedure Mark_Most_Underlying_Type_In_SPARK (Id : Entity_Id; N : Node_Id);
+   procedure Mark_Most_Underlying_Type_In_SPARK (Id : Entity_Id; N : Node_Id)
+   with Pre => Is_Type (Id) and then Nkind (N) in N_Subexpr;
    --  The most underlying type for type Id should be in SPARK, otherwise mark
    --  node N as not in SPARK.
 
