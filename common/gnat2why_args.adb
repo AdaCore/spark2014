@@ -70,6 +70,8 @@ package body Gnat2Why_Args is
    Why3_Dir_Name                : constant String := "why3_dir";
    CP_Dir_Name                  : constant String := "codepeer_dir";
    CWE_Name                     : constant String := "cwe";
+   No_Inlining_Name             : constant String := "no_inlining";
+   Info_Messages_Name           : constant String := "info_messages";
 
    ----------
    -- Init --
@@ -125,6 +127,8 @@ package body Gnat2Why_Args is
       Ide_Mode                := Get_Opt_Bool (V, Ide_Mode_Name);
       CWE                     := Get_Opt_Bool (V, CWE_Name);
       Limit_Units             := Get_Opt_Bool (V, Limit_Units_Name);
+      No_Inlining             := Get_Opt_Bool (V, No_Inlining_Name);
+      Info_Messages           := Get_Opt_Bool (V, Info_Messages_Name);
 
       if Has_Field (V, Report_Mode_Name) then
          Report_Mode :=
@@ -230,6 +234,8 @@ package body Gnat2Why_Args is
       Set_Field (Obj, Why3_Dir_Name, Why3_Dir);
       Set_Field (Obj, CP_Dir_Name, CP_Res_Dir);
       Set_Field (Obj, CWE_Name, CWE);
+      Set_Field (Obj, No_Inlining_Name, No_Inlining);
+      Set_Field (Obj, Info_Messages_Name, Info_Messages);
 
       declare
          A : JSON_Array := Empty_Array;

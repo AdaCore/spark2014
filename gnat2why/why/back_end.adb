@@ -26,6 +26,7 @@
 --  This is the Why target-dependent version of the Back_End package
 
 with Adabkend;
+with Debug; use Debug;
 with Elists;
 with Errout;
 with Gnat2Why.Driver;
@@ -184,6 +185,9 @@ package body Back_End is
 
          Opt.Disable_ALI_File := True;
       end if;
+
+      Debug_Flag_M := Gnat2Why_Args.No_Inlining;
+      Debug_Flag_Underscore_F := Gnat2Why_Args.Info_Messages;
    end Scan_Compiler_Arguments;
 
    -------------------------------

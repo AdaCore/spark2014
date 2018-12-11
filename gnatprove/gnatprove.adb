@@ -198,18 +198,6 @@ procedure Gnatprove with SPARK_Mode is
          Args.Prepend ("-f");
       end if;
 
-      if No_Inlining then
-         Args.Prepend ("-gnatdm");
-      end if;
-
-      --  When switch --info is passed to gnatprove, it is relayed as debug
-      --  switch -gnatd_f to instruct gnat2why to issue info messages related
-      --  to GNATprove usage.
-
-      if CL_Switches.Info then
-         Args.Prepend ("-gnatd_f");
-      end if;
-
       if All_Projects then
          Args.Prepend ("-U");
       end if;
@@ -804,6 +792,9 @@ procedure Gnatprove with SPARK_Mode is
          Gnat2Why_Args.Report_Mode := Report;
          Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
          Gnat2Why_Args.CWE := CL_Switches.CWE;
+         Gnat2Why_Args.Info_Messages := CL_Switches.Info;
+         Gnat2Why_Args.No_Inlining := No_Inlining;
+
          if CodePeer then
             Gnat2Why_Args.CP_Res_Dir :=
               To_Unbounded_String

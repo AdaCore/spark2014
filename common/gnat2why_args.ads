@@ -136,6 +136,12 @@ package Gnat2Why_Args is
    --  it is not enabled by default.
    Proof_Warnings : Boolean := False;
 
+   --  Do not inline local functions to prove their code in the calling context
+   No_Inlining : Boolean := False;
+
+   --  Issue info messages related to gnatprove usage
+   Info_Messages : Boolean := False;
+
    --  When Pedantic is True, issue warnings on features that could cause
    --  portability issues with other compilers than GNAT. For example, issue
    --  a warning when the Ada RM allows reassociation of operators in an
