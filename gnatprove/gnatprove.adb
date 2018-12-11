@@ -90,10 +90,12 @@ procedure Gnatprove with SPARK_Mode is
    type Plan_Type is array (Positive range <>) of Gnatprove_Step;
 
    procedure Call_Gprbuild
-     (Project_File : String;
-      DB_Dir       : String;
-      Args         : in out String_Lists.List;
-      Status       : out Integer);
+     (Project_File      : String;
+      Proj              : Project_Tree;
+      DB_Dir            : String;
+      Translation_Phase : Boolean;
+      Args              : in out String_Lists.List;
+      Status            : out Integer);
    --  Call gprbuild with the given arguments. DB_Dir is the directory
    --  which contains the information to configure gprbuild correctly.
 
@@ -172,76 +174,110 @@ procedure Gnatprove with SPARK_Mode is
    -------------------
 
    procedure Call_Gprbuild
-      (Project_File : String;
-       DB_Dir       : String;
-       Args         : in out String_Lists.List;
-       Status       : out Integer) is
+     (Project_File      : String;
+      Proj              : Project_Tree;
+      DB_Dir            : String;
+      Translation_Phase : Boolean;
+      Args              : in out String_Lists.List;
+      Status            : out Integer)
+   is
+      Obj_Dir  : constant String :=
+         Proj.Root_Project.Artifacts_Dir.Display_Full_Name;
+      Opt_File : constant String :=
+         Pass_Extra_Options_To_Gnat2why
+            (Translation_Phase => Translation_Phase,
+             Obj_Dir           => Obj_Dir,
+             Proj_Name         => Project_File);
+      Del_Succ : Boolean;
    begin
 
+      Args.Append ("--subdirs=" & Subdir.Display_Full_Name);
+      Args.Append ("--restricted-to-languages=ada");
+
+      if Minimal_Compile then
+         Args.Append ("-m");
+      end if;
+
+      for File of CL_Switches.File_List loop
+         Args.Append (File);
+      end loop;
+
       if Verbose then
-         Args.Prepend ("-v");
+         Args.Append ("-v");
       else
-         Args.Prepend ("-q");
-         Args.Prepend ("-ws");
-         Args.Prepend ("--no-exit-message");
+         Args.Append ("-q");
+         Args.Append ("-ws");
+         Args.Append ("--no-exit-message");
       end if;
 
       if Parallel > 1 then
-         Args.Prepend ("-j" & Image (Parallel, Min_Width => 1));
+         Args.Append ("-j" & Image (Parallel, Min_Width => 1));
       end if;
 
       if Continue_On_Error then
-         Args.Prepend ("-k");
+         Args.Append ("-k");
       end if;
 
       if Force or else Is_Manual_Prover or else CL_Switches.Replay then
-         Args.Prepend ("-f");
+         Args.Append ("-f");
       end if;
 
       if All_Projects then
-         Args.Prepend ("-U");
+         Args.Append ("-U");
       end if;
 
-      Args.Prepend ("-c");
+      Args.Append ("-c");
 
       for Var of CL_Switches.X loop
-         Args.Prepend (Var);
+         Args.Append (Var);
       end loop;
 
       if Project_File /= "" then
-         Args.Prepend (Project_File);
-         Args.Prepend ("-P");
+         Args.Append ("-P");
+         Args.Append (Project_File);
       end if;
 
-      Args.Prepend (DB_Dir);
-      Args.Prepend ("--db");
+      Args.Append ("--db");
+      Args.Append (DB_Dir);
 
       if CL_Switches.RTS /= null
         and then CL_Switches.RTS.all /= ""
       then
-         Args.Prepend ("--RTS=" & CL_Switches.RTS.all);
+         Args.Append ("--RTS=" & CL_Switches.RTS.all);
       end if;
 
       if CL_Switches.Target /= null
         and then CL_Switches.Target.all /= ""
       then
-         Args.Prepend ("--target=" & CL_Switches.Target.all);
+         Args.Append ("--target=" & CL_Switches.Target.all);
       end if;
 
       for S of CL_Switches.GPR_Project_Path loop
-         Args.Prepend (S);
-         Args.Prepend ("-aP");
+         Args.Append ("-aP");
+         Args.Append (S);
       end loop;
 
       if Debug then
-         Args.Prepend ("-dn");
+         Args.Append ("-dn");
       end if;
+
+      Args.Append ("-cargs:Ada");
+      for Arg of CL_Switches.Cargs_List loop
+         Args.Append (Arg);
+      end loop;
+
+      Args.Append ("-gnatc");       --  only generate ALI
+
+      Args.Append ("-gnates=" & Opt_File);
 
       Call_With_Status
         (Command   => "gprbuild",
          Arguments => Args,
          Status    => Status,
          Verbose   => Verbose);
+      if Status = 0 and then not Debug then
+         GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
+      end if;
    end Call_Gprbuild;
 
    -----------------------------
@@ -254,42 +290,15 @@ procedure Gnatprove with SPARK_Mode is
       Status       : out Integer)
    is
       Args     : String_Lists.List;
-      Obj_Dir  : constant String :=
-         Proj.Root_Project.Artifacts_Dir.Display_Full_Name;
-      Opt_File : constant String :=
-         Pass_Extra_Options_To_Gnat2why
-            (Translation_Phase => False,
-             Obj_Dir           => Obj_Dir,
-             Proj_Name         => Project_File);
-      Del_Succ : Boolean;
    begin
-      Args.Append ("--subdirs=" & Subdir.Display_Full_Name);
-      Args.Append ("--restricted-to-languages=ada");
       Args.Append ("--no-object-check");
       Args.Append ("--gnatprove");
-
-      for Arg of CL_Switches.Cargs_List loop
-         Args.Append (Arg);
-      end loop;
 
       --  Keep going after a compilation error in 'check' mode
 
       if Configuration.Mode = GPM_Check then
          Args.Append ("-k");
       end if;
-
-      if Minimal_Compile then
-         Args.Append ("-m");
-      end if;
-
-      for File of CL_Switches.File_List loop
-         Args.Append (File);
-      end loop;
-
-      Args.Append ("-cargs:Ada");
-      Args.Append ("-gnatc");       --  only generate ALI
-
-      Args.Append ("-gnates=" & Opt_File);
 
       declare
          Cnf_DB : constant String :=
@@ -299,13 +308,12 @@ procedure Gnatprove with SPARK_Mode is
                File_System.Install.Gpr_Frames_DB);
       begin
          Call_Gprbuild (Project_File,
+                        Proj,
                         Cnf_DB,
-                        Args,
-                        Status);
+                        Translation_Phase => False,
+                        Args              => Args,
+                        Status            => Status);
       end;
-      if Status = 0 and then not Debug then
-         GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
-      end if;
    end Compute_ALI_Information;
 
    -----------------------
@@ -539,23 +547,11 @@ procedure Gnatprove with SPARK_Mode is
       declare
          use String_Lists;
          Args     : String_Lists.List;
-         Opt_File : constant String :=
-           Pass_Extra_Options_To_Gnat2why
-             (Translation_Phase => True,
-              Obj_Dir           => Obj_Dir,
-              Proj_Name         => Project_File);
          Del_Succ : Boolean;
          pragma Unreferenced (Del_Succ);
          Id       : Process_Descriptor;
       begin
-
-         Args.Append ("--subdirs=" & Subdir.Display_Full_Name);
-         Args.Append ("--restricted-to-languages=ada");
          Args.Append ("-s");
-
-         if Minimal_Compile then
-            Args.Append ("-m");
-         end if;
 
          if IDE_Mode then
             Args.Append ("-d");
@@ -565,28 +561,15 @@ procedure Gnatprove with SPARK_Mode is
             Args.Append ("-u");
          end if;
 
-         for File of CL_Switches.File_List loop
-            Args.Append (File);
-         end loop;
-
-         Args.Append ("-cargs:Ada");
-         Args.Append ("-gnatc");              --  No object file generation
-
          --  Replay results if up-to-date. We disable this in debug mode to
          --  be able to see gnat2why output "as it happens", and not only
          --  when gnat2why is finished.
 
          if Debug then
-            Args.Prepend ("--no-complete-output");
+            Args.Append ("--no-complete-output");
          else
-            Args.Prepend ("--complete-output");
+            Args.Append ("--complete-output");
          end if;
-
-         Args.Append ("-gnates=" & Opt_File);
-
-         for Carg of CL_Switches.Cargs_List loop
-            Args.Append (Carg);
-         end loop;
 
          Id := Spawn_VC_Server (Proj.Root_Project);
 
@@ -598,13 +581,12 @@ procedure Gnatprove with SPARK_Mode is
                   File_System.Install.Gpr_Translation_DB);
          begin
             Call_Gprbuild (Project_File,
+                           Proj,
                            Cnf_DB,
-                           Args,
-                           Status);
+                           Translation_Phase => True,
+                           Args              => Args,
+                           Status            => Status);
          end;
-         if Status = 0 and then not Debug then
-            GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
-         end if;
          Close (Id);
          GNAT.OS_Lib.Delete_File (Socket_Name.all, Del_Succ);
       end;
@@ -863,11 +845,11 @@ procedure Gnatprove with SPARK_Mode is
       end if;
 
       if not Null_Or_Empty_String (CL_Switches.RTS) then
-         Args.Prepend ("--RTS=" & CL_Switches.RTS.all);
+         Args.Append ("--RTS=" & CL_Switches.RTS.all);
       end if;
 
       if not Null_Or_Empty_String (CL_Switches.Target) then
-         Args.Prepend ("--target=" & CL_Switches.Target.all);
+         Args.Append ("--target=" & CL_Switches.Target.all);
       end if;
 
       --  ??? we only limit codepeer analysis if the user has given a single
@@ -885,7 +867,7 @@ procedure Gnatprove with SPARK_Mode is
       end loop;
 
       if not Null_Or_Empty_String (CL_Switches.Subdirs) then
-         Args.Prepend ("--subdirs=" & CL_Switches.Subdirs.all);
+         Args.Append ("--subdirs=" & CL_Switches.Subdirs.all);
       end if;
 
       if not CL_Switches.GPR_Project_Path.Is_Empty then
