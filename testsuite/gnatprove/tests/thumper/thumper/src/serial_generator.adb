@@ -39,8 +39,8 @@ begin
       Seconds : Day_Duration;
       Now     : constant Time := Clock;
    begin
-
-
+      -- Split does read a global timezone info. However, it's not worth modeling fully here.
+      pragma Warnings(Off, "no Global contract available for ""Split""");
 
       Split(Now, Year, Month, Day, Seconds);
       -- Store the date/time into a 64 bit value. The precise layout is not important.
