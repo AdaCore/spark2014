@@ -480,6 +480,11 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append (Gnatwhy3_Conf);
       end if;
 
+      if CL_Switches.Why3_Debug.all /= "" then
+         Args.Append ("--debug-why3");
+         Args.Append (CL_Switches.Why3_Debug.all);
+      end if;
+
       Args.Append ("--counterexample");
       if Counterexample then
          Args.Append ("on");

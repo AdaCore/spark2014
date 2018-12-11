@@ -18,6 +18,35 @@ This part of the document is decomposed as follows:
 - drivers and theories
 - on debugging OCaml code ??? TODO too beginnerish for this document ?
 
+GNATWhy3 Debug
+==============
+
+Useful debug flags
+------------------
+
+When gnatwhy3 fails, it can be useful to give it the option
+``--debug-stack-trace`` in order to make it give the failing line and the
+backtrace:
+``gnatwhy3 <original_options> --debug-stack-trace <my_mlw_file>``
+
+Debugging from GNATprove
+------------------------
+
+A way of passing debugging flag from GNATprove to gnatwhy3 was added:
+``--why3-debug=my_why3_flag``
+
+The behavior is to add the debug flag inside the commandline of gnatwhy3 using
+gnatwhy3's option ``--debug-why3``. The possible flags are actually those of
+Why3, you can query the exhaustive list using a Why3 executable such as
+``why3ide --list-debug-flag``.
+
+The error message will be packed inside the standard GNATprove debug
+information.
+
+For example, to get the stacktrace from gnatprove in a standard test, you can
+do:
+``gnatprove -P test.gpr --why3-debug=stack_trace``
+
 Why3
 ====
 

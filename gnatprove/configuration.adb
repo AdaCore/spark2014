@@ -1741,6 +1741,10 @@ package body Configuration is
         (Config, CL_Switches.Why3_Conf'Access,
          Long_Switch => "--why3-conf=");
 
+      Define_Switch
+        (Config, CL_Switches.Why3_Debug'Access,
+         Long_Switch => "--why3-debug=");
+
       --  This switch is not documented on purpose. We provide the fake_*
       --  binaries instead of the real prover binaries. This helps when
       --  collecting benchmarks for prover developers.
