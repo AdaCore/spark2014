@@ -53,7 +53,11 @@ package Configuration is
    package CL_Switches is
 
       --  These are the variables that contain the values of the corresponding
-      --  switches of gnatprove:
+      --  switches of gnatprove. Note that these correspond exactly to the
+      --  commandline as given by the user. If some postprocessing is applied
+      --  to the switch (for example timeout, steps etc are influenced by the
+      --  level switch) another variable is introduced outside of this package.
+      --  Naming of the variable:
       --  * single letter variables correspond to single letter switches with
       --    one dash, like -j, -v
       --  * variable UU corresponds to -U
@@ -157,9 +161,9 @@ package Configuration is
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
 
    --  Attributes that are synthetized from the command line and project file.
-   --  See the Postprocess function which defines these variables.
-   --  ??? Some of the below variable are simple copies of the corresponding
-   --  command line switch, could be removed.
+   --  See the Postprocess function which defines these variables. Some
+   --  variables are only copies of command line switches, but we prefer to
+   --  use a clearer name (e.g. Continue_On_Error vs K).
 
    Verbose              : Boolean;
    Quiet                : Boolean;
@@ -167,25 +171,15 @@ package Configuration is
    Force                : Boolean;
    Minimal_Compile      : Boolean;
    Flow_Extra_Debug     : Boolean;
-   Flow_Termination     : Boolean;
-   Flow_Show_GG         : Boolean;
    Continue_On_Error    : Boolean;
    All_Projects         : Boolean;
    IDE_Mode             : Boolean;
-   Limit_Line           : GNAT.Strings.String_Access;
-   Limit_Region         : GNAT.Strings.String_Access;
-   Limit_Subp           : GNAT.Strings.String_Access;
    Only_Given           : Boolean;
    CodePeer             : Boolean;
    Counterexample       : Boolean;
-   No_Axiom_Guard       : Boolean;
-   Z3_Counterexample    : Boolean;
    No_Inlining          : Boolean;
-   No_Global_Generation : Boolean;
    Mode                 : GP_Mode;
    Warning_Mode         : Gnat2Why_Args.SPARK_Warning_Mode_Type;
-   Memcached_Server     : GNAT.Strings.String_Access;
-   --  enable caching through memcached
    Report               : Report_Mode_Type;
    Proof                : Proof_Mode;
    Lazy                 : Boolean;
@@ -193,8 +187,7 @@ package Configuration is
    Provers              : String_Lists.List;
    Timeout              : Integer;
    Steps                : Integer;
-   Memlimit            : Integer;
-   Why3_Config_File     : GNAT.Strings.String_Access;
+   Memlimit             : Integer;
    CE_Timeout           : Integer;
 
    Max_Non_Blank_Lines : constant := 6;

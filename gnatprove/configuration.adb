@@ -849,18 +849,9 @@ package body Configuration is
          Quiet             := CL_Switches.Q;
          Minimal_Compile   := CL_Switches.M;
          Flow_Extra_Debug  := CL_Switches.Flow_Debug;
-         Flow_Termination  := CL_Switches.Flow_Termination;
-         Flow_Show_GG      := CL_Switches.Flow_Show_GG;
          Continue_On_Error := CL_Switches.K;
          All_Projects      := CL_Switches.UU;
          IDE_Mode          := CL_Switches.IDE_Progress_Bar;
-         Limit_Line        := CL_Switches.Limit_Line;
-         Limit_Region      := CL_Switches.Limit_Region;
-         Limit_Subp        := CL_Switches.Limit_Subp;
-         Memcached_Server  := CL_Switches.Memcached_Server;
-         Why3_Config_File  := CL_Switches.Why3_Conf;
-         No_Axiom_Guard    := CL_Switches.No_Axiom_Guard;
-         CWE               := CL_Switches.CWE;
 
          --  Subprograms with no contracts (and a few other criteria) may be
          --  inlined, as this can help provability. In particular it helps as
@@ -883,7 +874,6 @@ package body Configuration is
 
          No_Inlining          := CL_Switches.No_Inlining or
            CL_Switches.No_Global_Generation;
-         No_Global_Generation := CL_Switches.No_Global_Generation;
 
          --  Adjust the number of parallel processes. If -j0 was used, the
          --  number of processes should be set to the actual number of
@@ -921,7 +911,6 @@ package body Configuration is
            and then File_System.Install.CVC4_Present
            and then not Is_Manual_Prover
            and then not CL_Switches.Output_Msg_Only;
-         Z3_Counterexample := CL_Switches.Z3_Counterexample;
          CodePeer := CodePeer and then Mode in GPM_Prove | GPM_All;
       end Postprocess;
 
@@ -948,16 +937,16 @@ package body Configuration is
                --  Limit_String variable, note that "Limit_Line" is
                --  stronger naturally.
 
-               if not Null_Or_Empty_String (Limit_Subp) then
-                  Limit_String := Limit_Subp;
+               if not Null_Or_Empty_String (CL_Switches.Limit_Subp) then
+                  Limit_String := CL_Switches.Limit_Subp;
                end if;
 
-               if not Null_Or_Empty_String (Limit_Region) then
-                  Limit_String := Limit_Region;
+               if not Null_Or_Empty_String (CL_Switches.Limit_Region) then
+                  Limit_String := CL_Switches.Limit_Region;
                end if;
 
-               if not Null_Or_Empty_String (Limit_Line) then
-                  Limit_String := Limit_Line;
+               if not Null_Or_Empty_String (CL_Switches.Limit_Line) then
+                  Limit_String := CL_Switches.Limit_Line;
                end if;
 
                if Limit_String /= null then

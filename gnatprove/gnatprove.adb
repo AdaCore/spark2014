@@ -324,14 +324,15 @@ procedure Gnatprove with SPARK_Mode is
 
       Args    : String_Lists.List;
       Why3_VF : constant Virtual_File :=
-        (if Why3_Config_File.all /= ""
-         then Create (Filesystem_String (Why3_Config_File.all))
+        (if CL_Switches.Why3_Conf.all /= ""
+         then Create (Filesystem_String (CL_Switches.Why3_Conf.all))
          else No_File);
       Gnatwhy3_Conf : constant String :=
         (if Why3_VF /= No_File then
            (if Is_Absolute_Path (Why3_VF)
-            then Why3_Config_File.all
-            else Compose (+Get_Current_Dir.Full_Name, Why3_Config_File.all))
+            then CL_Switches.Why3_Conf.all
+            else Compose (+Get_Current_Dir.Full_Name,
+                          CL_Switches.Why3_Conf.all))
          else "");
 
       -------------------------
@@ -395,9 +396,11 @@ procedure Gnatprove with SPARK_Mode is
       --  the first "argument" is in fact the command name itself, because in
       --  some cases we might want to change it
 
-      if Memcached_Server /= null and then Memcached_Server.all /= "" then
+      if CL_Switches.Memcached_Server /= null
+        and then CL_Switches.Memcached_Server.all /= ""
+      then
          Args.Append ("spark_memcached_wrapper");
-         Args.Append (Memcached_Server.all);
+         Args.Append (CL_Switches.Memcached_Server.all);
          Args.Append ("gnatwhy3");
       else
          Args.Append ("gnatwhy3");
@@ -446,17 +449,17 @@ procedure Gnatprove with SPARK_Mode is
       Args.Append ("-j");
       Args.Append (Image (Parallel, 1));
 
-      if Limit_Line.all /= "" then
+      if CL_Switches.Limit_Line.all /= "" then
          Args.Append ("--limit-line");
-         Args.Append (Limit_Line.all);
+         Args.Append (CL_Switches.Limit_Line.all);
       end if;
-      if Limit_Region.all /= "" then
+      if CL_Switches.Limit_Region.all /= "" then
          Args.Append ("--limit-region");
-         Args.Append (Limit_Region.all);
+         Args.Append (CL_Switches.Limit_Region.all);
       end if;
-      if Limit_Subp.all /= "" then
+      if CL_Switches.Limit_Subp.all /= "" then
          Args.Append ("--limit-subp");
-         Args.Append (Limit_Subp.all);
+         Args.Append (CL_Switches.Limit_Subp.all);
       end if;
 
       if Proof_Dir /= null then
@@ -484,7 +487,7 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("off");
       end if;
 
-      if Z3_Counterexample then
+      if CL_Switches.Z3_Counterexample then
          Args.Append ("--ce-prover");
          Args.Append ("z3_ce");
       end if;
@@ -640,8 +643,8 @@ procedure Gnatprove with SPARK_Mode is
       Args.Append (Obj_Dir_Fn);
       if CL_Switches.Assumptions then
          Args.Append ("--assumptions");
-         if Limit_Subp.all /= "" then
-            Args.Append ("--limit-subp=" & Limit_Subp.all);
+         if CL_Switches.Limit_Subp.all /= "" then
+            Args.Append ("--limit-subp=" & CL_Switches.Limit_Subp.all);
          end if;
       end if;
 
@@ -744,7 +747,7 @@ procedure Gnatprove with SPARK_Mode is
       Gnat2Why_Args.Debug_Mode := Debug;
       Gnat2Why_Args.Flow_Advanced_Debug := Flow_Extra_Debug;
       Gnat2Why_Args.Flow_Generate_Contracts :=
-        not Configuration.No_Global_Generation;
+        not CL_Switches.No_Global_Generation;
 
       --  In the translation phase, set a number of values
 
@@ -755,21 +758,24 @@ procedure Gnatprove with SPARK_Mode is
          Gnat2Why_Args.Check_All_Mode := Configuration.Mode = GPM_Check_All;
          Gnat2Why_Args.Flow_Analysis_Mode := Configuration.Mode = GPM_Flow;
          Gnat2Why_Args.Prove_Mode := Configuration.Mode = GPM_Prove;
-         Gnat2Why_Args.Flow_Termination_Proof := Flow_Termination;
-         Gnat2Why_Args.Flow_Show_GG := Flow_Show_GG;
+         Gnat2Why_Args.Flow_Termination_Proof := CL_Switches.Flow_Termination;
+         Gnat2Why_Args.Flow_Show_GG := CL_Switches.Flow_Show_GG;
          Gnat2Why_Args.Proof_Generate_Guards :=
-           not Configuration.No_Axiom_Guard;
+           not CL_Switches.No_Axiom_Guard;
          Gnat2Why_Args.Proof_Warnings := CL_Switches.Proof_Warnings;
          Gnat2Why_Args.Ide_Mode := IDE_Mode;
          Gnat2Why_Args.Pedantic := CL_Switches.Pedantic;
          Gnat2Why_Args.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
          Gnat2Why_Args.Limit_Units := CL_Switches.U;
          Gnat2Why_Args.Limit_Subp :=
-           Ada.Strings.Unbounded.To_Unbounded_String (Limit_Subp.all);
+           Ada.Strings.Unbounded.To_Unbounded_String
+             (CL_Switches.Limit_Subp.all);
          Gnat2Why_Args.Limit_Line :=
-           Ada.Strings.Unbounded.To_Unbounded_String (Limit_Line.all);
+           Ada.Strings.Unbounded.To_Unbounded_String
+             (CL_Switches.Limit_Line.all);
          Gnat2Why_Args.Limit_Region :=
-           Ada.Strings.Unbounded.To_Unbounded_String (Limit_Region.all);
+           Ada.Strings.Unbounded.To_Unbounded_String
+             (CL_Switches.Limit_Region.all);
          Gnat2Why_Args.Why3_Args := Compute_Why3_Args;
          Gnat2Why_Args.Report_Mode := Report;
          Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
@@ -979,7 +985,7 @@ procedure Gnatprove with SPARK_Mode is
       --  "error during ". See the body of procedure Execute_Step.
       case Step is
          when GS_ALI =>
-            if Configuration.No_Global_Generation then
+            if CL_Switches.No_Global_Generation then
                return "generation of program properties";
             else
                return "generation of Global contracts";
@@ -1114,11 +1120,11 @@ procedure Gnatprove with SPARK_Mode is
 
          function Add_Memcached_Wrapper (Cmd : String) return String is
          begin
-            if Memcached_Server /= null
-              and then Memcached_Server.all /= ""
+            if CL_Switches.Memcached_Server /= null
+              and then CL_Switches.Memcached_Server.all /= ""
             then
                return "spark_memcached_wrapper " &
-                 Memcached_Server.all & " " &
+                 CL_Switches.Memcached_Server.all & " " &
                  Cmd;
             else
                return Cmd;
