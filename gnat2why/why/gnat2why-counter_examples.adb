@@ -1377,7 +1377,7 @@ package body Gnat2Why.Counter_Examples is
 
          pragma Assert (Present (Container));
 
-         Container_Name : constant String := Source_Name (Container);
+         Container_Name : constant String := String_Of_Node (Container);
          Typ            : constant Entity_Id := Retysp (Etype (Container));
          Value          : constant CNT_Element_Ptr :=
            new CNT_Element'(K       => Index_Value,
