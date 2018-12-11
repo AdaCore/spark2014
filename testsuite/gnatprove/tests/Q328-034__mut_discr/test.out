@@ -135,15 +135,15 @@ tokens.adb:24:30: info: initialization of "Word_Buffer" proved
 tokens.adb:24:30: info: range check proved (CVC4: 4 VC)
 tokens.adb:24:48: info: initialization of "Word_Size" proved
 tokens.adb:32:31: info: index check proved (CVC4: 22 VC)
-tokens.adb:35:21: medium: discriminant check might fail
+tokens.adb:35:21: medium: discriminant check might fail (e.g. when V = (Kind => Op, others => ?) and V'Constrained = True)
 tokens.adb:35:64: info: initialization of "Word" proved
-tokens.adb:39:21: medium: discriminant check might fail
+tokens.adb:39:21: medium: discriminant check might fail (e.g. when V = (Kind => Val, others => ?) and V'Constrained = True)
 tokens.adb:39:73: info: initialization of "Word" proved
-tokens.adb:44:24: medium: discriminant check might fail
+tokens.adb:44:24: medium: discriminant check might fail (e.g. when V = (Kind => Op, others => ?) and V'Constrained = True)
 tokens.adb:44:67: info: initialization of "Word" proved
-tokens.adb:47:24: medium: discriminant check might fail
+tokens.adb:47:24: medium: discriminant check might fail (e.g. when V = (Kind => Val, others => ?) and V'Constrained = True)
 tokens.adb:48:67: info: initialization of "Word" proved
-tokens.adb:54:21: medium: discriminant check might fail
+tokens.adb:54:21: medium: discriminant check might fail (e.g. when V = (Kind => Val, others => ?) and V'Constrained = True)
 tokens.adb:55:65: info: initialization of "Word" proved
 tokens.adb:59:19: medium: exception might be raised
 tokens.adb:74:19: info: precondition proved (CVC4: 1 VC)

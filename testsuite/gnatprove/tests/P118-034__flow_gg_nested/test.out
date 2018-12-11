@@ -36,13 +36,6 @@ Generated contracts for state_a_in_out
       In_Out =>
          A_1
          A_2
-Generated contracts for p1
-   Global =>
-      In_Out =>
-         Helper_3.H_3
-   Refined_Global =>
-      In_Out =>
-         Helper_3.H_3
 Generated contracts for p2
    Global =>
       In_Out =>
@@ -67,6 +60,13 @@ Generated contracts for get
          H_3_A
          H_3_B
 Generated contracts for helper_3
+Generated contracts for p1
+   Global =>
+      In_Out =>
+         Helper_3.H_3
+   Refined_Global =>
+      In_Out =>
+         Helper_3.H_3
 Generated contracts for state_a_out
    Global =>
       Output =>

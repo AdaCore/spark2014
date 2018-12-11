@@ -19,9 +19,7 @@ project Thumper is
          for Source_Dirs use (".", "client", "server");
          --  For a standalone analysis of Thumper code, exclude files that
          --  require GTKAda or AWS.
-         --  Also exclude "timestamp_messages-server.adb" which causes
-         --  gnatwhy3 to loop.
-         for Excluded_Source_Files use ("thumper_client.adb", "remote_access.adb", "client_gui.adb", "client_gui.ads", "timestamp_messages-server.adb");
+         for Excluded_Source_Files use ("thumper_client.adb", "remote_access.adb", "client_gui.adb", "client_gui.ads");
    end case;
 
    for Library_Options use ("-LC:/lib/OpenSSL-Win32/lib/VC", "-llibeay32MD", "-LC:/Program Files (x86)/PostgreSQL/9.4/lib", "-llibpq");

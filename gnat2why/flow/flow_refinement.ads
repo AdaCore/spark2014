@@ -140,10 +140,6 @@ package Flow_Refinement is
    with Pre => Ekind (State) = E_Abstract_State;
    --  Returns True iff all the constituents of State are among Outputs
 
-   function Is_Fully_Contained (State   : Entity_Name;
-                                Outputs : Name_Sets.Set)
-                                return Boolean;
-
    function Is_Fully_Contained (State   : Flow_Id;
                                 Outputs : Flow_Id_Sets.Set)
                                 return Boolean
@@ -158,11 +154,6 @@ package Flow_Refinement is
    --  lost visibility we file their encapsulating state in Partial; otherwise
    --  the variable is put into Projected as is.
 
-   procedure Up_Project (Vars         :     Name_Sets.Set;
-                         Folded_Scope :     Flow_Scope;
-                         Projected    : out Name_Sets.Set;
-                         Partial      : out Name_Sets.Set);
-
    procedure Up_Project (Vars      :     Flow_Id_Sets.Set;
                          Scope     :     Flow_Scope;
                          Projected : out Flow_Id_Sets.Set;
@@ -174,10 +165,6 @@ package Flow_Refinement is
 
    procedure Up_Project (Vars           :     Global_Nodes;
                          Projected_Vars : out Global_Nodes;
-                         Scope          : Flow_Scope);
-
-   procedure Up_Project (Vars           :     Global_Names;
-                         Projected_Vars : out Global_Names;
                          Scope          : Flow_Scope);
 
    procedure Up_Project (Vars           :     Global_Flow_Ids;

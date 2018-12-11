@@ -747,6 +747,8 @@ is
      Pre => No (T) or else Is_Type (T);
    --  Similar to Is_Null_Record_Type, but also returns true if this is a null
    --  extension of a null record type (or extension).
+   --  ??? I think it should also return True for a record whose all components
+   --  are empty.
 
    type Raw_Global_Nodes is record
       Proof_Ins : Node_Sets.Set;

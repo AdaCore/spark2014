@@ -24,7 +24,6 @@
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Lib;                            use Lib;
 with Nlists;                         use Nlists;
 with Output;                         use Output;
 with Sem_Aux;                        use Sem_Aux;
@@ -36,7 +35,6 @@ with SPARK_Util;                     use SPARK_Util;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 
 with Flow_Debug;                     use Flow_Debug;
-with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
 with Flow_Visibility;
 
@@ -115,13 +113,20 @@ package body Flow_Refinement is
       --  declared directly in the .adb file have all their Node_Ids belonging
       --  the body and Get_Flow_Scope would (rightly) return the body scope.
 
+      Main_Entity : constant Entity_Id := Unique_Main_Unit_Entity;
+      --  Main entity of the current compilation unit, which by its very nature
+      --  is visible from any unit that WITHs it; in other words, there always
+      --  exists some other compilation unit which can see this entity.
+
       Looking_From : constant Flow_Scope :=
-        (if Is_Child_Unit (Main_Unit_Entity)
-         then Get_Flow_Scope (Main_Unit_Entity)
-         else Null_Flow_Scope);
-      --  External scope for deciding "global" visibility of N
-      --  ??? needs more testing for nodes in child units, e.g. bodies of child
-      --  subprograms
+        (Ent  => Main_Entity,
+         Part => (if Ekind (Main_Entity) = E_Package
+                  then Private_Part
+                  else Visible_Part));
+      --  If E itself is visible from the main entity of this unit, then it can
+      --  be also seen from the other units. If the main entity is a package,
+      --  then we check visibility from its private part, because anything
+      --  declared in the private part can be seen from a private child unit.
 
    begin
       return Is_Visible (Looking_At, Looking_From);
@@ -390,13 +395,6 @@ package body Flow_Refinement is
       (for all C of Iter (Part_Of_Constituents (State))
        => Outputs.Contains (C)));
 
-   function Is_Fully_Contained (State   : Entity_Name;
-                                Outputs : Name_Sets.Set)
-                                return Boolean
-   is
-     (Name_Sets.Is_Subset (Subset => Get_Constituents (State),
-                           Of_Set => Outputs));
-
    function Is_Fully_Contained (State   : Flow_Id;
                                 Outputs : Flow_Id_Sets.Set)
                                 return Boolean
@@ -434,33 +432,6 @@ package body Flow_Refinement is
             else
                Partial.Include (Encapsulating_State (Var));
             end if;
-         else
-            Projected.Include (Var);
-         end if;
-      end loop;
-   end Up_Project;
-
-   procedure Up_Project (Vars         :     Name_Sets.Set;
-                         Folded_Scope :     Flow_Scope;
-                         Projected    : out Name_Sets.Set;
-                         Partial      : out Name_Sets.Set)
-   is
-   begin
-      Projected.Clear;
-      Partial.Clear;
-
-      for Var of Vars loop
-         if GG_Is_Constituent (Var) then
-            declare
-               State : constant Entity_Name := GG_Encapsulating_State (Var);
-
-            begin
-               if State_Refinement_Is_Visible (State, Folded_Scope) then
-                  Projected.Include (Var);
-               else
-                  Partial.Include (State);
-               end if;
-            end;
          else
             Projected.Include (Var);
          end if;
@@ -520,32 +491,6 @@ package body Flow_Refinement is
       use type Node_Sets.Set;
 
       Projected, Partial : Node_Sets.Set;
-
-   begin
-      Up_Project (Vars.Inputs, Scope, Projected, Partial);
-      Projected_Vars.Inputs := Projected or Partial;
-
-      Up_Project (Vars.Outputs, Scope, Projected, Partial);
-      for State of Partial loop
-         if not Is_Fully_Contained (State, Vars.Outputs) then
-            Projected_Vars.Inputs.Include (State);
-         end if;
-      end loop;
-      Projected_Vars.Outputs := Projected or Partial;
-
-      Up_Project (Vars.Proof_Ins, Scope, Projected, Partial);
-      Projected_Vars.Proof_Ins :=
-        (Projected or Partial) -
-        (Projected_Vars.Inputs or Projected_Vars.Outputs);
-   end Up_Project;
-
-   procedure Up_Project (Vars           :     Global_Names;
-                         Projected_Vars : out Global_Names;
-                         Scope          : Flow_Scope)
-   is
-      use type Name_Sets.Set;
-
-      Projected, Partial : Name_Sets.Set;
 
    begin
       Up_Project (Vars.Inputs, Scope, Projected, Partial);
@@ -788,12 +733,12 @@ package body Flow_Refinement is
                      end if;
                   end loop;
 
-                  P.Include (E);
+                  P.Insert (E);
                end if;
             end;
 
          else
-            P.Include (E);
+            P.Insert (E);
          end if;
       end Expand;
 

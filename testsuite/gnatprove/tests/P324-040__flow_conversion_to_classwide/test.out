@@ -1,1 +1,0 @@
-dummy.adb:3:11: medium: "O" might not be initialized after elaboration of main program "Dummy"

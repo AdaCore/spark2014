@@ -24,13 +24,11 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
 with Einfo;                      use Einfo;
 with Flow_Refinement;            use Flow_Refinement;
 with Gnat2Why_Args;
 with Graphs;
-with Lib;                        use Lib;
 with Nlists;                     use Nlists;
 with Rtsfind;                    use Rtsfind;
 with Sem_Aux;                    use Sem_Aux;
@@ -45,17 +43,6 @@ package body Flow_Visibility is
    ----------------------------------------------------------------------------
    --  Types
    ----------------------------------------------------------------------------
-
-   type Hierarchy_Info_T is record
-      Is_Package      : Boolean;
-      Is_Private      : Boolean;
-
-      Parent          : Entity_Id;
-      Instance_Parent : Entity_Id;
-      Template        : Entity_Id;
-      Container       : Flow_Scope;
-   end record;
-   --  A minimal description of an entity location within the code hierarchy
 
    package Hierarchy_Info_Maps is new
      Ada.Containers.Hashed_Maps (Key_Type        => Entity_Id,
@@ -394,7 +381,7 @@ package body Flow_Visibility is
       end loop;
 
       --  Release memory to the provers
-      Hierarchy_Info.Clear;
+      --  ??? Hierarchy_Info.Clear;
 
       Close_Visibility_Graph;
 
@@ -776,7 +763,7 @@ package body Flow_Visibility is
       end EDI;
 
       Filename : constant String :=
-        Unique_Name (Main_Unit_Entity) & "_visibility";
+        Unique_Name (Unique_Main_Unit_Entity) & "_visibility";
 
    --  Start of processing for Print
 
@@ -897,6 +884,11 @@ package body Flow_Visibility is
          --  Vertices for the visible (aka. "spec"), private and body parts
 
       begin
+         if Is_Eliminated (E) then
+            --  ??? when returning early we don't need the Info constant
+            return;
+         end if;
+
          --  ??? we don't need this info (except for debug?)
 
          Hierarchy_Info.Insert (E, Info);
@@ -1234,5 +1226,16 @@ package body Flow_Visibility is
    begin
       Traverse_Declaration_Or_Statement (Unit_Node);
    end Traverse_Compilation_Unit;
+
+   -------------------------
+   -- Iterate_Flow_Scopes --
+   -------------------------
+
+   procedure Iterate_Flow_Scopes is
+   begin
+      for C in Hierarchy_Info.Iterate loop
+         Process (Hierarchy_Info_Maps.Key (C), Hierarchy_Info (C));
+      end loop;
+   end Iterate_Flow_Scopes;
 
 end Flow_Visibility;

@@ -215,12 +215,12 @@ package body Gnat2Why.Subprograms is
    --  effects.
 
    function Assume_Initial_Condition_Of_Withed_Units
-     (E      : Entity_Id;
+     (Main   : Entity_Id;
       Params : Transformation_Params) return W_Prog_Id
-   with Pre => Ekind (E) in Subprogram_Kind | E_Package
-     and then Is_Compilation_Unit (E);
+   with Pre => Ekind (Main) in Subprogram_Kind | E_Package | E_Package_Body
+     and then Is_Compilation_Unit (Main);
    --  Assume the Initial_Condition of every unit withed by a compilation unit.
-   --  @param E entity for a compilation unit
+   --  @param Main entity for a compilation unit
    --  @param Params the transformation parameters
    --  @result a sequence of assumptions, one for each withed unit which has an
    --          Initial_Condition.
@@ -322,7 +322,8 @@ package body Gnat2Why.Subprograms is
                       (Name => To_String (WNE_Attr_Tag),
                        Typ  => EW_Int_Type),
                     B_Ent    => Null_Entity_Name,
-                    Mutable  => False));
+                    Mutable  => False,
+                    Labels   => <>));
    --  Binder to be used as additional tag argument for dispatching functions
 
    function Procedure_Logic_Binders (E : Entity_Id) return Binder_Array;
@@ -367,48 +368,57 @@ package body Gnat2Why.Subprograms is
    ----------------------------------------------
 
    function Assume_Initial_Condition_Of_Withed_Units
-     (E      : Entity_Id;
+     (Main   : Entity_Id;
       Params : Transformation_Params) return W_Prog_Id
    is
-      CU           : constant Node_Id := Enclosing_Comp_Unit_Node (E);
+      CU           : constant Node_Id := Enclosing_Comp_Unit_Node (Main);
       Context_Item : Node_Id;
       Assumption   : W_Prog_Id := +Void;
+      Withed_Unit  : Node_Id;
+      Withed       : Entity_Id;
 
    begin
       pragma Assert (Present (CU));
 
       --  For each withed unit which is a package declaration, assume its
-      --  Initial_Condition
+      --  Initial_Condition if the elaboration of the withed unit is known
+      --  to precede the elaboration of E.
 
       Context_Item := First (Context_Items (CU));
       while Present (Context_Item) loop
          if Nkind (Context_Item) = N_With_Clause
            and then not Limited_Present (Context_Item)
-           and then Nkind (Unit (Library_Unit (Context_Item)))
-           = N_Package_Declaration
          then
-            declare
-               Package_E : constant Entity_Id :=
-                 Unique_Defining_Entity (Unit (Library_Unit (Context_Item)));
-               Init_Cond : constant Node_Id :=
-                 Get_Pragma (Package_E, Pragma_Initial_Condition);
-            begin
-               if Present (Init_Cond) then
-                  declare
-                     Expr : constant Node_Id :=
-                       Expression
-                         (First (Pragma_Argument_Associations (Init_Cond)));
-                  begin
-                     Assumption :=
-                       Sequence
-                         (Assumption,
-                          New_Assume_Statement
-                            (Pred => +Transform_Expr
-                               (Expr, EW_Bool_Type, EW_Pred, Params)));
-                  end;
-               end if;
-            end;
+            Withed_Unit := Unit (Library_Unit (Context_Item));
+            Withed := (if Present (Withed_Unit) then
+                         Unique_Defining_Entity (Withed_Unit)
+                       else Empty);
+
+            if Nkind (Withed_Unit) = N_Package_Declaration
+              and then Known_To_Precede (Withed => Withed, Main => Main)
+            then
+               declare
+                  Init_Cond : constant Node_Id :=
+                    Get_Pragma (Withed, Pragma_Initial_Condition);
+               begin
+                  if Present (Init_Cond) then
+                     declare
+                        Expr : constant Node_Id :=
+                          Expression
+                            (First (Pragma_Argument_Associations (Init_Cond)));
+                     begin
+                        Assumption :=
+                          Sequence
+                            (Assumption,
+                             New_Assume_Statement
+                               (Pred => +Transform_Expr
+                                  (Expr, EW_Bool_Type, EW_Pred, Params)));
+                     end;
+                  end if;
+               end;
+            end if;
          end if;
+
          Next (Context_Item);
       end loop;
 
@@ -2608,6 +2618,16 @@ package body Gnat2Why.Subprograms is
 
          Why_Body :=
            Transform_Declarations_Block (Declarations (Body_N), Why_Body);
+
+         --  Assume initial conditions of withed units from the body
+
+         if Is_Compilation_Unit (E) then
+            Params.Phase := Generate_VCs_For_Contract;
+            Why_Body := Sequence
+              (Assume_Initial_Condition_Of_Withed_Units
+                 (Package_Body_Entity (Body_N), Params),
+               Why_Body);
+         end if;
       end if;
 
       --  Introduce a check for the type invariant of all the variables
@@ -3729,9 +3749,14 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
 
+      --  Only warn on statically False precondition that is not written as
+      --  "False" in the source code, so as to warn about cases where the
+      --  configuration leads to a precondition being False.
+
       for Expr of Get_Precondition_Expressions (E) loop
          if Nkind (Expr) = N_Identifier
            and then Entity (Expr) = Standard_False
+           and then Original_Node (Expr) /= Expr
          then
             Precondition_Is_Statically_False := True;
             Error_Msg_N (Msg  => "?precondition is statically False",
@@ -4318,7 +4343,8 @@ package body Gnat2Why.Subprograms is
               Binder_Type'(Ada_Node  => Empty,
                            B_Name    => +Result_Id,
                            B_Ent     => Null_Entity_Name,
-                           Mutable   => False)
+                           Mutable   => False,
+                           Labels    => <>)
                 & Tag_B & Logic_Why_Binders;
             Tag_Comp      : constant W_Pred_Id :=
               (if Is_Tagged_Type (Retysp (Etype (E)))
@@ -4641,7 +4667,8 @@ package body Gnat2Why.Subprograms is
                                     Typ       => Typ),
                                  B_Ent    => Null_Entity_Name,
                                  Mutable  => False,
-                                 Ada_Node => Ada_Node));
+                                 Ada_Node => Ada_Node,
+                                 Labels   => <>));
 
                            Ada_Ent_To_Why.Insert (Symbol_Table,
                                                   Ada_Node,
@@ -5495,7 +5522,8 @@ package body Gnat2Why.Subprograms is
          Binder_Type'(Ada_Node  => Empty,
                       B_Name    => +Result_Id,
                       B_Ent     => Null_Entity_Name,
-                      Mutable   => False)
+                      Mutable   => False,
+                      Labels    => <>)
            & Flat_Binders;
       Func_Guard         : constant W_Pred_Id :=
         (if not Use_Guard_For_Function (E) then True_Pred
@@ -5688,7 +5716,8 @@ package body Gnat2Why.Subprograms is
               Binder_Type'(Ada_Node  => Empty,
                            B_Name    => +Result_Id,
                            B_Ent     => Null_Entity_Name,
-                           Mutable   => False)
+                           Mutable   => False,
+                           Labels    => <>)
                 & Logic_Why_Binders;
             Pred_Id           : constant W_Identifier_Id :=
               New_Identifier

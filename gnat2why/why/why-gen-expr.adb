@@ -92,6 +92,10 @@ package body Why.Gen.Expr is
    --  @param a list of Why nodes
    --  @return True if all elements of the list are essentially void
 
+   function Is_Void_List (L : Why_Node_List) return Boolean;
+   --  @param a list of Why nodes
+   --  @return True if all elements of the list are void
+
    function Compute_VC_Sloc (N         : Node_Id;
                              Left_Most : Boolean := False) return Source_Ptr;
    --  @param N a node where a Check is located
@@ -1928,6 +1932,29 @@ package body Why.Gen.Expr is
                   Args     => (1 => +Expr),
                   Typ      => To);
    end Insert_Single_Conversion;
+
+   -------------
+   -- Is_Void --
+   -------------
+
+   function Is_Void (W : W_Prog_Id) return Boolean is
+   begin
+      return (W = +Void
+              or else
+                (Get_Kind (+W) = W_Statement_Sequence
+                 and then
+                 Is_Void_List
+                   (Statement_Sequence_Get_Statements (+W))));
+   end Is_Void;
+
+   ------------------
+   -- Is_Void_List --
+   ------------------
+
+   function Is_Void_List (L : Why_Node_List) return Boolean is
+   begin
+      return (for all Node of Get_List (L) => Is_Void (+Node));
+   end Is_Void_List;
 
    -------------------------
    -- Is_Essentially_Void --

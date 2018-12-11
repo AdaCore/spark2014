@@ -191,3 +191,65 @@ This design was drafted by Florian in LaTeX; however, it became depracated by
 its implementation, because it missed few corner cases (e.g. generic parents
 with generic child units, which btw. are described in a dedicated section of
 the archival GNAT Book) and generic formal packages.
+
+Transitive closure algorithm
+****************************
+
+Flow analysis does several checks that involve a call graph of the entire
+partition, e.g. checks for exclusive accesses to unsynchronized objects from
+several tasks. Those checks rely on information that (as of today) is not
+captured by subprograms' contracts. Those checks are thus naturally implemented
+with a transitive closure of a call graph, which for each caller gives us all
+its callees (both direct and indirect ones).
+
+Also, transitive closure is essential for the visibility query, where we start
+with visibility links between individual declarative regions but ultimately
+need to know whether the source region can "see" the target one. Here instead
+of looking for a path in the original graph (which is expensive) we look for an
+edge in the pre-computed transitive closure (which is cheap).
+
+We need an efficient implementation of the transitive closure, as otherwise it
+would easily become the performance bottleneck. For example, it often happens
+that we process ~2000 visibility regions that come from WITHing a predefined
+generic unit, whose body itself WITHs several other units.
+
+Apparently, the most comprehensive work on transitive closure algorithms is the
+PhD thesis "Efficient Transitive Closure Computation in Large Digraphs" by
+Nuutila (1995). He starts with a straightforward but inefficient Warshall’s
+algorithm. I tried it as an oracle implementation and it was visibly slow. Its
+slightly improved variant, the Warshall’s algorithm, is still quite
+straightforward and still inefficient; I didn't try it though.
+
+Then there come algorithms based on strongly connected components; as Nuutila
+says "Most of the redundant operations in many algorithms are caused by the
+strong components of the input graph, since all vertices in a strong component
+have the same successor set" (he supports this claim with a paper reference).
+
+To get the intuition behind those algorithms, you can look at the "A transitive
+closure algorithm" by Purdom (1968) and its division into parts: (1) eliminate
+cycles, (2) order nodes in the condensed graph, (3) transitive closure and (4)
+output. Note that the code in the current Boost library (1.68) and in old but
+googlable LEDA (4.2) both have an explicit reference to "topological ordering",
+which suggests that they implement some variant of the Purdom's algorithm.
+However, both claim a running time complexity of O(|E|*|V|), while descriptions
+of the Purdom's algorithm claim it runs in O(|E|+μ|V|), where μ≤|E| is the
+number of strongly connected components of this graph.
+
+Finally, Nuutila gets into details of the Tarjan's algorithm for detecting
+strongly connected components and gives it as a VISIT procedure pseudocode.
+From that he derives a SIMPLE_TC, which actually computes the transitive
+closure. This is the algorithm that we implement. The code is dense but short.
+Nuutila claims it runs in O(|E|*|V|) "in the worst case when the successor sets
+are implemented as ordered lists or ordered binary trees". We implement them
+with the standard hashed sets, which appear to be red-black trees, but I think
+that his estimate still holds.
+
+Note that Nuutila gives improved variants of both the VISIT procedure (NEWSSC1
+and NEWSSC2) and improved variants of the SIMPLE_TC procedure (CR_TC and
+STACK_TC). I didn't investigate whether they could be "better" for us; he gives
+a comparison of various algorithms, but their complexity seems to depend on
+various coefficient that characterize graphs and on the data structures
+employed. Neither I try to reimplement or reuse the Boost and LEDA algorithms.
+
+To summarize: we seem to have an O(|E|*|V|) implementation that is on par with
+the state-of-the art libraries and so far it is good enough for us.

@@ -1,8 +1,4 @@
 c3900050.adb:18:76: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention A and Display_Count_For in a precondition]
-c3900050.ads:55:33: warning: assuming "Time_Of" has no effect on global items
-c3900050.ads:55:33: warning: no Global contract available for "Time_Of"
-c3900050.ads:57:33: warning: assuming "Time_Of" has no effect on global items
-c3900050.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900053.adb:108:38: high: "Alarm" is not initialized
 c3900053.adb:109:19: medium: precondition might fail
 c3900053.adb:112:18: high: "Alarm" is not initialized
@@ -22,10 +18,6 @@ c3900053.adb:172:31: info: initialization of "Medium_Alarm" proved
 c3900053.adb:173:19: medium: precondition might fail
 c3900053.adb:185:13: medium: precondition might fail
 c3900060.adb:18:76: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention A and Display_Count_For in a precondition]
-c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
-c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
-c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
-c3900060.ads:59:33: warning: no Global contract available for "Time_Of"
 c3900063.adb:113:38: high: private part of "Medium_Alarm" is not initialized
 c3900063.adb:113:38: info: initialization of "Medium_Alarm.Action_Officer" proved
 c3900063.adb:114:19: medium: precondition might fail
@@ -184,5 +176,4 @@ cc1311a.adb:452:17: medium: precondition might fail
 cc1311a.adb:457:17: medium: precondition might fail
 cc1311a.adb:467:17: medium: precondition might fail
 cc1311a.adb:474:17: medium: precondition might fail
-report.ads:73:21: warning: precondition is statically False
 gnatprove: error during flow analysis and proof

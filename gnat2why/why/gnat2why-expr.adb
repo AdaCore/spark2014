@@ -3240,9 +3240,7 @@ package body Gnat2Why.Expr is
 
             if Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
                declare
-                  Checks_Seq : W_Statement_Sequence_Id :=
-                    New_Statement_Sequence (Ada_Node   => Empty,
-                                            Statements => (1 .. 1 => +Void));
+                  Checks_Seq : W_Statement_Sequence_Id := Void_Sequence;
                begin
                   for Field of Get_Component_Set (Ty_Ext) loop
                      if Component_Is_Visible_In_Type (Ty, Field)
@@ -6548,7 +6546,9 @@ package body Gnat2Why.Expr is
                      Base := Base_Why_Type (Return_Type);
                      Oper := WNE_Fixed_Point_Div;
                   else
-                     pragma Assert (Has_Signed_Integer_Type (Return_Type));
+                     pragma Assert
+                       (Has_Signed_Integer_Type (Return_Type)
+                        or else Has_Modular_Integer_Type (Return_Type));
                      Base := EW_Int_Type;
                      Oper := WNE_Fixed_Point_Div_Result_Int;
                   end if;
@@ -6624,6 +6624,14 @@ package body Gnat2Why.Expr is
                        Name     => Name,
                        Args     => (1 => L_Why, 2 => R_Why),
                        Typ      => Base);
+               end if;
+
+               if Base_Why_Type (Return_Type) /= Base then
+                  T := Insert_Checked_Conversion
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Expr     => T,
+                     To       => Base_Why_Type (Return_Type));
                end if;
             end;
 
@@ -7792,7 +7800,8 @@ package body Gnat2Why.Expr is
                  (Ada_Node => Empty,
                   B_Name   => Ident,
                   B_Ent    => Null_Entity_Name,
-                  Mutable  => False);
+                  Mutable  => False,
+                  Labels   => <>);
                Dyn_Prop : constant W_Pred_Id :=
                  Compute_Dynamic_Invariant
                    (Expr   => +Ident,
@@ -7865,13 +7874,15 @@ package body Gnat2Why.Expr is
                        (Ada_Node => Empty,
                         B_Name   => +F_Expr,
                         B_Ent    => Null_Entity_Name,
-                        Mutable  => False);
+                        Mutable  => False,
+                        Labels   => <>);
                      Bnd_Args (2 * Dim) := L_Expr;
                      Bnd_Params (2 * Dim) :=
                        (Ada_Node => Empty,
                         B_Name   => +L_Expr,
                         B_Ent    => Null_Entity_Name,
-                        Mutable  => False);
+                        Mutable  => False,
+                        Labels   => <>);
                   end if;
 
                   --  Add equalities to the axiom's body
@@ -11622,9 +11633,7 @@ package body Gnat2Why.Expr is
       return W_Prog_Id
    is
       Cur_Decl : Node_Id := First (L);
-      Result   : W_Statement_Sequence_Id :=
-        New_Statement_Sequence (Ada_Node => Empty,
-                                Statements => (1 .. 1 => +Void));
+      Result   : W_Statement_Sequence_Id := Void_Sequence;
 
    begin
       while Present (Cur_Decl) loop
@@ -11643,9 +11652,7 @@ package body Gnat2Why.Expr is
      (L : List_Id) return W_Prog_Id
    is
       Cur_Decl : Node_Id := First (L);
-      Result   : W_Statement_Sequence_Id :=
-        New_Statement_Sequence (Ada_Node => Empty,
-                                Statements => (1 .. 1 => +Void));
+      Result   : W_Statement_Sequence_Id := Void_Sequence;
 
    begin
       while Present (Cur_Decl)
@@ -11668,9 +11675,7 @@ package body Gnat2Why.Expr is
      (L : List_Id) return W_Prog_Id
    is
       Cur_Decl : Node_Id := First (L);
-      Result   : W_Statement_Sequence_Id :=
-        New_Statement_Sequence (Ada_Node => Empty,
-                                Statements => (1 .. 1 => +Void));
+      Result   : W_Statement_Sequence_Id := Void_Sequence;
 
    begin
       while Present (Cur_Decl)
@@ -15767,7 +15772,8 @@ package body Gnat2Why.Expr is
                            --  will be recognized in counterexample handling.
 
                            Append_To_Name =>
-                             (if Need_Temp_Var then "'Index" else "")),
+                             (if Need_Temp_Var then "'" & Index_Label
+                              else "")),
                       Var_Type  => W_Index_Type,
                       Pred      => Quant_Body);
             else
@@ -16650,8 +16656,8 @@ package body Gnat2Why.Expr is
                                   Def    => +Prog));
       if Cut_Assertion /= Why_Empty then
          Seq :=
-           New_Statement_Sequence
-             (Statements =>
+           +Sequence
+             (Progs =>
                 (1 => New_Located_Abstract
                    (Ada_Node => Cut_Assertion_Expr,
                     Expr     => +Seq,
@@ -16699,8 +16705,7 @@ package body Gnat2Why.Expr is
      (Stmts_And_Decls : List_Id) return W_Prog_Id
    is
       Cur_Stmt_Or_Decl : Node_Id   := Nlists.First (Stmts_And_Decls);
-      Result           : W_Statement_Sequence_Id :=
-        New_Statement_Sequence (Statements => (1 .. 1 => +Void));
+      Result           : W_Statement_Sequence_Id := Void_Sequence;
 
    begin
       if No (Cur_Stmt_Or_Decl) then
@@ -17270,6 +17275,14 @@ package body Gnat2Why.Expr is
 
       Variables.Exclude (Direct_Mapping_Id (Unique_Entity (Inv_Param)));
    end Variables_In_Type_Invariant;
+
+   -------------------
+   -- Void_Sequence --
+   -------------------
+
+   function Void_Sequence return W_Statement_Sequence_Id is
+     (New_Statement_Sequence (Ada_Node => Empty,
+                              Statements => (1 .. 1 => +Void)));
 
    -------------------------
    -- Warn_On_Dead_Branch --

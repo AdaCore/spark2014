@@ -2623,9 +2623,10 @@ global variables discussed later in this section.
    the enclosing library unit and is subject to certain restrictions described
    below.]
 
-   For a given library unit L1 and a given distinct library unit's
-   spec or body L2, the elaboration of the body of L1 is said to be
-   *known to precede* the elaboration of L2 if either:
+   For a given library unit L1 and a given distinct library unit's spec or body
+   L2 depending on L1 through a chain of ``with_clauses``, the elaboration of
+   the body of L1 is said to be *known to precede* the elaboration of L2 if
+   either:
 
    a. L2 references L1 in an Elaborate or Elaborate_All pragma; or
 
@@ -2634,7 +2635,7 @@ global variables discussed later in this section.
    c. L1 does not require a body (the terminology is a little odd in this
       case because L1 has no body); or
 
-   d. L1 is preelaborable and L2's library unit is not.
+   d. L1 is preelaborated and L2's library unit is not; or
 
    e. L2 semantically depends on some library_item L3 such that the
       elaboration of the body of L1 is known to precede the

@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;      use Atree;
 with Flow_Types; use Flow_Types;
 with Types;      use Types;
 
@@ -30,7 +31,8 @@ package Flow_Visibility is
    --  edges, because frontend doesn't provide a realiable routine that would
    --  traverse declarations before references.
 
-   procedure Register_Flow_Scopes (Unit_Node : Node_Id);
+   procedure Register_Flow_Scopes (Unit_Node : Node_Id)
+   with Pre => Present (Unit_Node);
    --  Creates vertices in the visibility graph
 
    procedure Connect_Flow_Scopes;
@@ -41,5 +43,24 @@ package Flow_Visibility is
       Looking_At   : Flow_Scope)
       return Boolean;
    --  Returns True iff Looking_From has visibility of Looking_At
+
+   type Hierarchy_Info_T is record
+      Is_Package      : Boolean;
+      Is_Private      : Boolean;
+
+      Parent          : Entity_Id;
+      Instance_Parent : Entity_Id;
+      Template        : Entity_Id;
+      Container       : Flow_Scope;
+   end record;
+   --  A minimal description of an entity location within the code hierarchy
+
+   generic
+      with procedure Process (E : Entity_Id; Info : Hierarchy_Info_T);
+   procedure Iterate_Flow_Scopes;
+   --  Call Process on every registered flow scope
+   --  ??? this should be only exposed to serialization, which itself is only
+   --  exposed to Flow_Generated_Globals.Phase_1; one day the entire hierarchy
+   --  of flow packages should be revisited...
 
 end Flow_Visibility;

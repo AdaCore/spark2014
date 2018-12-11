@@ -105,7 +105,8 @@ package Common_Containers is
    subtype Entity_Name is Any_Entity_Name range 1 .. Any_Entity_Name'Last;
    --  A type that represent non-empty values of entity names
 
-   function To_Entity_Name (S : String) return Entity_Name;
+   function To_Entity_Name (S : String) return Entity_Name
+   with Pre => S /= "";
 
    function To_Entity_Name (E : Entity_Id) return Entity_Name
    with Pre => Ekind (E) not in E_Package_Body
@@ -116,7 +117,8 @@ package Common_Containers is
    --  Converts Entity_Id to Entity_Name; it should be only called for unique
    --  entities, i.e. not for body entities.
 
-   function To_String (E : Entity_Name) return String;
+   function To_String (E : Entity_Name) return String
+   with Post => To_String'Result /= "";
 
    package Name_Lists is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Entity_Name);

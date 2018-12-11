@@ -1092,7 +1092,8 @@ package body Gnat2Why.Driver is
 
    procedure Translate_Standard_Package is
 
-      procedure Translate_Standard_Entity (E : Entity_Id);
+      procedure Translate_Standard_Entity (E : Entity_Id)
+      with Pre => Is_Type (E);
       --  Translate and complete declaration of entity E
 
       -------------------------------
@@ -1106,31 +1107,18 @@ package body Gnat2Why.Driver is
          Complete_Declaration (E);
       end Translate_Standard_Entity;
 
-      Decl : Node_Id :=
-        First (Visible_Declarations (Specification (Standard_Package_Node)));
-
    --  Start of processing for Translate_Standard_Package
 
    begin
-      while Present (Decl) loop
-         case Nkind (Decl) is
-            when N_Full_Type_Declaration
-               | N_Subtype_Declaration
-               | N_Object_Declaration
-            =>
-               declare
-                  E : constant Entity_Id := Defining_Entity (Decl);
-               begin
-                  if Entity_In_SPARK (E) then
-                     Translate_Standard_Entity (E);
-                  end if;
-               end;
+      for S_Type in S_Types loop
+         declare
+            E : constant Entity_Id := Standard_Entity (S_Type);
 
-            when others =>
-               null;
-         end case;
-
-         Next (Decl);
+         begin
+            if Entity_In_SPARK (E) then
+               Translate_Standard_Entity (E);
+            end if;
+         end;
       end loop;
 
       --  The following types are not in the tree of the standard package, but

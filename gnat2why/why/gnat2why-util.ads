@@ -271,7 +271,7 @@ package Gnat2Why.Util is
    function Get_Model_Trace_Label
      (E               : Entity_Id;
       Is_Record_Field : Boolean := False;
-      Append : String := "") return Name_Id_Sets.Set;
+      Append          : String := "") return Name_Id_Sets.Set;
    --  Gets model trace label for given entity.
    --  Note that if the entity is empty or does not come from source code,
    --  return the label "model_trace:".
@@ -279,6 +279,10 @@ package Gnat2Why.Util is
    --  @param Is_Record true if the entity is record field
    --  @param Append the string that will be appended to the name of the
    --    counterexample element
+
+   function Get_Model_Trace_Label (Name : String) return Name_Id_Sets.Set;
+   --  Gets model trace label for given name. This is used for attributes.
+   --  For variables and components, use the variant above.
 
    function Compute_Spec
      (Params : Transformation_Params;

@@ -379,6 +379,7 @@ package body Gnat2Why.Util is
 
             when Record_Kind
                | Array_Kind
+               | Access_Kind
             =>
                Labels := Model_Trace;
                Labels.Include (Model_Projected);
@@ -745,6 +746,15 @@ package body Gnat2Why.Util is
                (if Ekind (E) = E_Function then "@result" else "")))));
    begin
       S.Include (NID ("name:" & Source_Name (E)));
+      return S;
+   end Get_Model_Trace_Label;
+
+   function Get_Model_Trace_Label (Name : String) return Name_Id_Sets.Set is
+      S : constant Name_Id_Sets.Set :=
+       (Name_Id_Sets.To_Set
+          (NID
+             (Model_Trace_Label & Name)));
+   begin
       return S;
    end Get_Model_Trace_Label;
 

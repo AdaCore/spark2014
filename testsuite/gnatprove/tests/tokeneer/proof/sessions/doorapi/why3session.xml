@@ -30,25 +30,25 @@
   </goal>
   <goal name="WP_parameter def.2" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="79112"/></proof>
   <proof prover="2"><result status="unknown" steps="617"/></proof>
+  <proof prover="3"><result status="unknown" steps="617"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="77642"/></proof>
   <proof prover="2"><result status="unknown" steps="626"/></proof>
-  <proof prover="3"><result status="unknown" steps="626"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="171306"/></proof>
+  <proof prover="1"><result status="unknown" steps="171311"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
+  <proof prover="3"><result status="unknown" steps="92912"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="233601"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
+  <proof prover="3"><result status="unknown" steps="103425"/></proof>
   </goal>
  </transf>
  </goal>

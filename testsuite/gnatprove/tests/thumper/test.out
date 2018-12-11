@@ -37,8 +37,8 @@ hermes-der-decode.adb:133:16: info: loop invariant preservation proved (CVC4: 2 
 hermes-der-decode.adb:133:41: info: initialization of "Result" proved
 hermes-der-decode.adb:133:53: info: overflow check proved (CVC4: 2 VC)
 hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC4: 3 VC)
+hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC4: 3 VC)
 hermes-der-decode.adb:135:56: info: initialization of "Result" proved
-hermes-der-decode.adb:135:87: medium: loop invariant might fail after first iteration, cannot prove Result < 128*256**(I - 2)
 hermes-der-decode.adb:135:99: medium: overflow check might fail
 hermes-der-decode.adb:135:103: medium: overflow check might fail
 hermes-der-decode.adb:135:108: info: range check proved (CVC4: 2 VC)
@@ -568,3 +568,14 @@ timestamp_messages-client.ads:46:46: medium: incorrect dependency "Stop => Messa
 timestamp_messages-client.ads:46:55: medium: incorrect dependency "Resp => Start"
 timestamp_messages-client.ads:46:55: medium: incorrect dependency "Status => Start"
 timestamp_messages-client.ads:46:55: medium: incorrect dependency "Stop => Start"
+timestamp_messages-server.adb:22:45: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
+timestamp_messages-server.adb:28:46: info: range check proved (CVC4: 1 VC)
+timestamp_messages-server.adb:28:80: medium: range check might fail
+timestamp_messages-server.adb:28:89: medium: range check might fail
+timestamp_messages-server.adb:32:42: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
+timestamp_messages-server.adb:33:42: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
+timestamp_messages-server.adb:34:42: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
+timestamp_messages-server.adb:35:40: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
+timestamp_messages-server.adb:42:46: info: range check proved (CVC4: 1 VC)
+timestamp_messages-server.adb:42:73: medium: range check might fail
+timestamp_messages-server.adb:42:82: medium: range check might fail

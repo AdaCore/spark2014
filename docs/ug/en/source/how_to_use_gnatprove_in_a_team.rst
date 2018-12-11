@@ -141,6 +141,10 @@ incurs a small cost (1 sec for each property thus checked). They can be enabled
 with switch ``--proof-warnings``, and their effect is controlled by switch
 ``--warnings`` and pragma ``Warnings`` as described previously.
 
+Note that GNATprove, just like GNAT, suppresses warnings about unused variables
+if their name contains any of the substrings DISCARD, DUMMY, IGNORE, JUNK,
+UNUSED, in any casing.
+
 .. _Suppressing Information Messages:
 
 Suppressing Information Messages

@@ -24,13 +24,14 @@
   </goal>
   <goal name="WP_parameter def.2" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="73679"/></proof>
+  <proof prover="1"><result status="unknown" steps="73680"/></proof>
   <proof prover="2"><result status="unknown" steps="638"/></proof>
-  <proof prover="3"><result status="unknown" steps="638"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="71800"/></proof>
   <proof prover="2"><result status="unknown" steps="647"/></proof>
+  <proof prover="3"><result status="unknown" steps="647"/></proof>
   </goal>
  </transf>
  </goal>
@@ -46,12 +47,11 @@
   </goal>
   <goal name="WP_parameter def.2" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="73808"/></proof>
   <proof prover="2"><result status="unknown" steps="671"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="74838"/></proof>
+  <proof prover="1"><result status="unknown" steps="74802"/></proof>
   <proof prover="2"><result status="unknown" steps="680"/></proof>
   <proof prover="3"><result status="unknown" steps="680"/></proof>
   </goal>

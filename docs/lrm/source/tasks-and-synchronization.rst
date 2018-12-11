@@ -281,7 +281,7 @@ are in |SPARK|.
 
   * Ada.Calendar.Clock (which is excluded by the Ravenscar profile
     but not by the Extended Ravenscar profile) references
-    Ada.Real_Time.Clock_Time;
+    Ada.Calendar.Clock_Time;
 
   * Ada.Task_Identification.Current_Task
     references Ada.Task_Identification.Tasking_State;

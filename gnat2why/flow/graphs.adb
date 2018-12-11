@@ -78,12 +78,12 @@ package body Graphs is
       end if;
 
       --  Add to V_1's out neighbours and edge attribute list.
-      G.Vertices (V_1).Out_Neighbours.Include
+      G.Vertices (V_1).Out_Neighbours.Insert
         (V_2, Edge_Attributes'(Marked => False,
                                Colour => Colour));
 
       --  Add to V_2's in neighbours.
-      G.Vertices (V_2).In_Neighbours.Include (V_1);
+      G.Vertices (V_2).In_Neighbours.Insert (V_1);
    end Add_Edge;
 
    procedure Add_Edge
@@ -302,11 +302,8 @@ package body Graphs is
    is
       type Component is new Natural;
 
-      type Bit_Field is array
-        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
-
       type V_To_V is array
-        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Vertex_Id;
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Valid_Vertex_Id;
 
       type V_To_VIS is array
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Vertex_Index_Set;
@@ -314,12 +311,22 @@ package body Graphs is
       type V_To_Comp is array
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Component;
 
-      Visited : Bit_Field         := Bit_Field'(others => False);
+      type Index is new Vertex_Id;
+      --  This type is for numbering the vertices in the order of visiting
+      --  them; note that it is distinct from the numbers that we use
+      --  everywhere else to identify vertices.
+      --
+      --  Here zero means that a vertex has not been visited yet.
+
+      type V_To_Index is array
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Index;
+
       Stack   : Vertex_Index_List := VIL.Empty_Vector;
-      Root    : V_To_V;
+      Root    : V_To_Index        := V_To_Index'(others => 0);
       Comp    : V_To_Comp         := V_To_Comp'(others => 0);
       Succ    : V_To_V;
       Sets    : V_To_VIS          := V_To_VIS'(others => VIS.Empty_Set);
+      Counter : Index             := 0;
 
       Current_Component : Component := 0;
 
@@ -331,10 +338,11 @@ package body Graphs is
       ---------------
 
       procedure SIMPLE_TC (V : Valid_Vertex_Id) is
+         Me : constant Index := Counter + 1;
       begin
-         Visited (V) := True;
+         Root (V) := Me;
 
-         Root (V) := V;
+         Counter := Counter + 1;
 
          Stack.Append (V);
 
@@ -351,17 +359,17 @@ package body Graphs is
             declare
                W : Valid_Vertex_Id renames Key (C);
             begin
-               if not Visited (W) then
+               if Root (W) = 0 then
                   SIMPLE_TC (W);
                end if;
                if Comp (W) = 0 then
-                  Root (V) := Vertex_Id'Min (Root (V), Root (W));
+                  Root (V) := Index'Min (Root (V), Root (W));
                end if;
                Sets (Succ (V)).Union (Sets (Succ (W)));
             end;
          end loop;
 
-         if Root (V) = V then
+         if Root (V) = Me then
             Current_Component := Current_Component + 1;
             loop
                declare
@@ -382,7 +390,7 @@ package body Graphs is
 
    begin
       for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
-         if not Visited (V) then
+         if Root (V) = 0 then
             SIMPLE_TC (V);
          end if;
       end loop;
@@ -472,10 +480,8 @@ package body Graphs is
    ------------------
 
    procedure Copy_Edges
-     (G             : in out Graph;
-      O             : Graph;
-      Edge_Selector : access function (A, B : Vertex_Id)
-                                       return Boolean := null)
+     (G : in out Graph;
+      O : Graph)
    is
    begin
       --  Sanity check the length of the two graphs.
@@ -487,11 +493,9 @@ package body Graphs is
                V_B : constant Valid_Vertex_Id := Key (C);
                Atr : constant Edge_Attributes := Element (C);
             begin
-               if Edge_Selector = null or else Edge_Selector (V_A, V_B) then
-                  G.Add_Edge (V_A, V_B, Atr.Colour);
-                  if Atr.Marked then
-                     G.Mark_Edge (V_A, V_B);
-                  end if;
+               G.Add_Edge (V_A, V_B, Atr.Colour);
+               if Atr.Marked then
+                  G.Mark_Edge (V_A, V_B);
                end if;
             end;
          end loop;
@@ -1122,8 +1126,8 @@ package body Graphs is
                   V_2 : Valid_Vertex_Id renames Key (C);
                   Atr : Edge_Attributes renames Out_Neighbours (C);
                begin
-                  R.Vertices (V_2).Out_Neighbours.Include (V_1, Atr);
-                  R.Vertices (V_1).In_Neighbours.Include (V_2);
+                  R.Vertices (V_2).Out_Neighbours.Insert (V_1, Atr);
+                  R.Vertices (V_1).In_Neighbours.Insert (V_2);
                end;
             end loop;
          end;

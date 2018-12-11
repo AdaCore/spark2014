@@ -499,11 +499,11 @@ Allocators
 
 .. _tu-allocators-02:
 
-2. Evaluation of an allocator is subject to the same restrictions as
-calling a volatile function (e.g., an allocator is not allowed within
-a non-volatile function). [If it seems helpful, an allocator may be
-thought of as being like a call to a volatile function which returns
-the access value designating the allocated object.]
+2. Evaluation of an allocator is subject to the same restrictions as calling a
+   volatile function (e.g., an allocator is not allowed within a non-volatile
+   function). [If it seems helpful, an allocator may be thought of as being
+   like a call to a volatile function which returns the access value
+   designating the allocated object.]
 
 .. _tu-allocators-03:
 

@@ -35,14 +35,7 @@ with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Ids;             use Why.Ids;
 with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
-
-pragma Warnings (Off);
---  ??? "Why.Types" is directly visible as "Types", as it has "Why" as a
---  common ancestor with the current package. So it hides compilation unit
---  with the same name ("Types"). Maybe we should think of renaming it to
---  "Why.W_Types".
 with Why.Types;           use Why.Types;
-pragma Warnings (On);
 
 package Why.Gen.Expr is
 
@@ -55,6 +48,8 @@ package Why.Gen.Expr is
    function Is_Essentially_Void (W : W_Prog_Id) return Boolean;
    --  Check if the given program is "void" or similarly effectless (label
    --  nodes).
+
+   function Is_Void (W : W_Prog_Id) return Boolean;
 
    function Bool_True (D : EW_Domain) return W_Expr_Id is
      (New_Literal (Value => EW_True, Domain => D));

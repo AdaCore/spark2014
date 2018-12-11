@@ -230,4 +230,6 @@ begin
    Prove_Init (Model.Available);
    pragma Assert
      (Data (Get (Model.Available, Integer (Length (Model.Available)))).Next = No_Resource);
+   pragma Assert
+     (for all R in Valid_Resource => (Contains (Model.Available, R)));
 end List_Mod_Allocator;

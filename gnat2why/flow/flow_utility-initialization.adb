@@ -358,8 +358,6 @@ package body Flow_Utility.Initialization is
             Full_V : constant Entity_Id := Full_View (Typ);
 
          begin
-            pragma Assert (Is_Visible (Typ, Scope));
-
             --  Continue analysing the full view of the private type only if it
             --  is visible from the Scope and its full view is in SPARK.
 

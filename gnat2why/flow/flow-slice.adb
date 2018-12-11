@@ -353,6 +353,32 @@ package body Flow.Slice is
          function Is_Written (Comp : Flow_Id) return Boolean;
          --  Returns True iff Comp is definitely written, according to the PDG
 
+         function Is_Empty (E : Entity_Id) return Boolean
+         with Pre => Ekind (E) in E_Abstract_State | E_Constant | E_Variable;
+         --  Returns True iff E has no components that could be "written"
+         --  according to the flow graphs, but still should appear in the
+         --  generated Initializes.
+
+         function Is_Empty (E : Entity_Id) return Boolean is
+         ((case Ekind (E) is
+              when E_Abstract_State =>
+                 Has_Null_Refinement (E),
+              --  ??? The intention is to check the Refined_State of the
+              --  currently analysed package, but see what happens here:
+              --
+              --    package Outer with Abstract_State => Outer_State is
+              --    private
+              --       package Inner with Abstract_State => Inner_State is ...
+              --       --  When analysing Outer we also peek into Inner_State's
+              --       --  refinement, which is wrong.
+              --    end Outer;
+
+              when E_Constant | E_Variable =>
+                 Is_Empty_Record_Type (Get_Type (E, FA.B_Scope)),
+
+              when others =>
+                 raise Program_Error));
+
          ----------------
          -- Is_Written --
          ----------------
@@ -389,9 +415,7 @@ package body Flow.Slice is
             --  but are not detected by the condition in the else branch. (???
             --  why?)
 
-            if Ekind (LV) = E_Abstract_State
-              and then Has_Null_Refinement (LV)
-            then
+            if Is_Empty (LV) then
                Local_Definite_Writes.Insert (LV);
 
             else

@@ -307,10 +307,8 @@ package Graphs is
    --  Complexity is O(N).
 
    procedure Copy_Edges
-     (G             : in out Graph;
-      O             : Graph;
-      Edge_Selector : access function (A, B : Vertex_Id)
-                                       return Boolean := null);
+     (G : in out Graph;
+      O : Graph);
    --  Copy all edges from graph O to graph G.
    --
    --  Complexity is O(N).

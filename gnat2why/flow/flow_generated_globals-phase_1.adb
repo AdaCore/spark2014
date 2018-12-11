@@ -68,6 +68,8 @@ package body Flow_Generated_Globals.Phase_1 is
    --  Protected objects or records/array objects that have a protected type
    --  as a field/component.
 
+   Part_Of_States : Node_Maps.Map;
+
    ----------------------------------------------------------------------
    --  Protected types information
    ----------------------------------------------------------------------
@@ -284,6 +286,19 @@ package body Flow_Generated_Globals.Phase_1 is
                   pragma Assert (not Local_Vars);
                   Remote_States.Include (E);
                end if;
+
+               if Ekind (E) in E_Abstract_State | E_Constant | E_Variable then
+                  declare
+                     Capsule : constant Entity_Id := Encapsulating_State (E);
+
+                  begin
+                     if Present (Capsule)
+                       and then Ekind (Capsule) = E_Abstract_State
+                     then
+                        Part_Of_States.Include (Key => E, New_Item => Capsule);
+                     end if;
+                  end;
+               end if;
             end if;
          end loop;
       end Process_Volatiles_And_States;
@@ -356,7 +371,9 @@ package body Flow_Generated_Globals.Phase_1 is
       Serialize (Globals.Calls.Definite_Calls,    "calls");
       Serialize (Globals.Calls.Conditional_Calls, "calls_conditional");
 
-      Serialize (Local_Variables, "local_var");
+      if Ekind (E) = E_Package then
+         Serialize (Local_Variables, "local_var");
+      end if;
 
       if Ekind (E) in Entry_Kind
                     | E_Function
@@ -670,6 +687,19 @@ package body Flow_Generated_Globals.Phase_1 is
          Register_PO_Info (PO, Etype (PO), Unique_Name (PO));
       end loop;
 
+      for C in Part_Of_States.Iterate loop
+         declare
+            Part_Of : Entity_Id renames Node_Maps.Key (C);
+            State   : Entity_Id renames Part_Of_States (C);
+
+         begin
+            New_GG_Line (EK_Part_Of);
+            Serialize (State);
+            Serialize (Part_Of);
+            Terminate_GG_Line;
+         end;
+      end loop;
+
       --  Write the finalization string
       New_GG_Line (EK_End_Marker);
       Terminate_GG_Line;
@@ -696,5 +726,41 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Store the entity of the current compilation unit
       Current_Lib_Unit := Unique_Defining_Entity (Unit (GNAT_Root));
    end GG_Write_Initialize;
+
+   ----------------------------
+   -- GG_Register_Flow_Scope --
+   ----------------------------
+
+   procedure GG_Register_Flow_Scope (E : Entity_Id; Info : Hierarchy_Info_T) is
+      procedure Serialize is new Serialize_Discrete (Boolean);
+      procedure Serialize is new Serialize_Discrete (Declarative_Part);
+
+   begin
+      New_GG_Line (EK_Flow_Scope);
+
+      Serialize (E);
+      Serialize (Info.Is_Package);
+      Serialize (Info.Is_Private);
+
+      Serialize (Present (Info.Instance_Parent));
+      if Present (Info.Instance_Parent) then
+         Serialize (Info.Instance_Parent);
+      end if;
+
+      Serialize (Present (Info.Template));
+      if Present (Info.Template) then
+         Serialize (Info.Template);
+      end if;
+
+      Serialize (Present (Info.Container.Ent));
+      if Present (Info.Container.Ent) then
+         Serialize (Info.Container.Ent);
+         Serialize (Info.Container.Part);
+      else
+         Serialize (Info.Parent);
+      end if;
+
+      Terminate_GG_Line;
+   end GG_Register_Flow_Scope;
 
 end Flow_Generated_Globals.Phase_1;

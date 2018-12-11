@@ -32,9 +32,8 @@ package Flow_Generated_Globals.Traversal is
    procedure Dump_Tree;
 
    type Nested is record
-      Subprograms : Node_Lists.List;
-      Packages    : Node_Lists.List;
-      Parent      : Entity_Id;
+      Units  : Node_Lists.List;
+      Parent : Entity_Id;
    end record with
      Iterable => (First       => First_Cursor,
                   Next        => Next_Cursor,
@@ -116,16 +115,12 @@ package Flow_Generated_Globals.Traversal is
 
 private
 
-   use type Node_Lists.Cursor;
-
    ------------------
    -- First_Cursor --
    ------------------
 
    function First_Cursor (Cont : Nested) return Node_Lists.Cursor is
-     (if Cont.Subprograms.Is_Empty
-      then Cont.Packages.First
-      else Cont.Subprograms.First);
+     (Cont.Units.First);
 
    -----------------
    -- Next_Cursor --
@@ -136,9 +131,7 @@ private
       Position : Node_Lists.Cursor)
       return Node_Lists.Cursor
    is
-     (if Position = Cont.Subprograms.Last
-      then Cont.Packages.First
-      else Node_Lists.Next (Position));
+     (Node_Lists.Next (Position));
 
    -----------------
    -- Has_Element --

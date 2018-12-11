@@ -142,7 +142,8 @@ package body Gnat2Why.External_Axioms is
                           Typ      => Type_Of_Node (Etype (E))),
                        B_Ent    => Null_Entity_Name,
                        Ada_Node => E,
-                       Mutable  => False));
+                       Mutable  => False,
+                       Labels   => <>));
 
       ---------------------
       -- Register_Entity --

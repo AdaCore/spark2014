@@ -24,7 +24,7 @@
 
 pragma SPARK_Mode (On);
 
-with SPARK.Text_IO; use SPARK.Text_IO;
+with SPARK.Text_IO; use SPARK.Text_IO; pragma Elaborate (SPARK.Text_IO);
 
 procedure Hello_World with
   Global => (In_Out => Standard_Output),

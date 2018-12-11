@@ -24,8 +24,11 @@
 ------------------------------------------------------------------------------
 
 with Atree;            use Atree;
+with Nlists;           use Nlists;
 with Opt;              use type Opt.Ada_Version_Type;
+with Sinfo;            use Sinfo;
 with Sem_Aux;
+with Sem_Ch7;          use Sem_Ch7;
 with Sem_Util;
 with Sem_Prag;
 with SPARK_Util.Types;
@@ -181,7 +184,7 @@ package body SPARK_Atree.Entities is
    -- Enclosing_Declaration --
    ---------------------------
 
-   function Enclosing_Declaration (E : Entity_Id) return Entity_Id renames
+   function Enclosing_Declaration (E : Entity_Id) return Node_Id renames
      Atree.Parent;
 
    --------------------
@@ -476,6 +479,74 @@ package body SPARK_Atree.Entities is
    function Known_Object_Size (Typ : Entity_Id) return Boolean renames
      Einfo.Known_Esize;
 
+   ----------------------
+   -- Known_To_Precede --
+   ----------------------
+
+   function Known_To_Precede (Withed, Main : Entity_Id) return Boolean is
+      Main_Unit : constant Node_Id := Enclosing_Comp_Unit_Node (Main);
+      Item      : Node_Id;
+      Elab_Id   : Entity_Id;
+
+   begin
+      --  A body can with its own spec. Ignore this case here.
+
+      if Unique_Entity (Withed) = Unique_Entity (Main) then
+         return False;
+      end if;
+
+      --  The elaboration of the body of Withed is said to be known to precede
+      --  the elaboration of Main if either:
+
+      --  a. Main references Withed in an Elaborate or Elaborate_All pragma; or
+
+      Item := First (Context_Items (Main_Unit));
+      while Present (Item) loop
+         if Nkind (Item) = N_Pragma
+           and then Pragma_Name (Item) in Name_Elaborate | Name_Elaborate_All
+         then
+            Elab_Id :=
+              Entity
+                (Expression (First (Pragma_Argument_Associations (Item))));
+
+            if Withed = Elab_Id then
+               return True;
+            end if;
+         end if;
+
+         Next (Item);
+      end loop;
+
+      --  b. Withed's Elaborate_Body aspect is True; or
+
+      if Has_Pragma_Elaborate_Body (Withed) then
+         return True;
+      end if;
+
+      --  c. Withed does not require a body (the terminology is a little odd in
+      --     this case because Withed has no body); or
+
+      if not Unit_Requires_Body (Withed) then
+         return True;
+      end if;
+
+      --  d. Withed is preelaborated and Mains's library unit is not; or
+
+      if Is_Preelaborated (Withed) and then not Is_Preelaborated (Main) then
+         return True;
+      end if;
+
+      --  e. Main semantically depends on some library_item L3 such that the
+      --     elaboration of the body of Withed is known to precede the
+      --     elaboration of L3. [See Ada RM 10.1.1 for definition of semantic
+      --     dependence.]
+
+      --  We (conservatively) do not test for this condition currently.
+
+      return False;
+
+   end Known_To_Precede;
+
    --------------------------
    -- Max_Size_Of_Img_Attr --
    --------------------------
@@ -556,6 +627,20 @@ package body SPARK_Atree.Entities is
 
    function Package_Body (Pack : Entity_Id) return Node_Id renames
      Sem_Aux.Package_Body;
+
+   -------------------------
+   -- Package_Body_Entity --
+   -------------------------
+
+   function Package_Body_Entity (Pack : Node_Id) return Entity_Id is
+      (Sem_Util.Defining_Entity (Pack));
+
+   ------------------
+   -- Package_Spec --
+   ------------------
+
+   function Package_Spec (Pack : Entity_Id) return Node_Id renames
+     Sem_Aux.Package_Spec;
 
    ------------------------
    -- Predicate_Function --

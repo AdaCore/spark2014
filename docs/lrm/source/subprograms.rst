@@ -1409,21 +1409,21 @@ calls.
 3. A procedure call shall not pass two actual parameters which potentially
    introduce aliasing unless either
 
- * both of the corresponding formal parameters are immutable; or
+   * both of the corresponding formal parameters are immutable; or
 
- * at least one of the corresponding formal parameters is immutable
-   and is of a by-copy type that is not an access type.
+   * at least one of the corresponding formal parameters is immutable and is of
+     a by-copy type that is not an access type.
 
 .. _tu-anti_aliasing-04:
 
 4. If an actual parameter in a procedure call and a ``global_item`` referenced
    by the called procedure potentially introduce aliasing, then
 
- * the corresponding formal parameter shall be immutable; and
+   * the corresponding formal parameter shall be immutable; and
 
- * if the ``global_item``'s mode is Output or In_Out, then the parameter's
-   corresponding formal parameter shall be of a by-copy type that is not an
-   access type.
+   * if the ``global_item``'s mode is Output or In_Out, then the parameter's
+     corresponding formal parameter shall be of a by-copy type that is not an
+     access type.
 
 .. _tu-anti_aliasing-05:
 

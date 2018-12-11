@@ -472,6 +472,11 @@ package SPARK_Util is
    --      Empty otherwise. This is used to get a stable name for aggregates
    --      used as definition of objects.
 
+   function Is_In_Statically_Dead_Branch (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True if the node is in a branch that is statically dead. Only
+   --      if-statements are detected for now.
+
    function May_Issue_Warning_On_Node (N : Node_Id) return Boolean;
    --  We do not issue any warnings on nodes which stem from inlining or
    --  instantiation, or in subprograms or library packages whose analysis
@@ -690,5 +695,14 @@ package SPARK_Util is
    --  ??? At the moment we are checking whether E is a predicate function but
    --  this will have to be removed as soon as we will not create graphs for
    --  type predicates.
+
+   function Unique_Main_Unit_Entity return Entity_Id
+   with Post => Ekind (Unique_Main_Unit_Entity'Result) in E_Function
+                                                        | E_Procedure
+                                                        | E_Package
+                                                        | Generic_Unit_Kind;
+   --  Wrapper for Lib.Main_Unit_Entity, which deals with library-level
+   --  instances of generic subprograms (where the Main_Unit_Entity is
+   --  has a void Ekind).
 
 end SPARK_Util;

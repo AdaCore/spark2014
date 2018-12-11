@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Aspects;
-with Einfo;
+with Einfo;                  use Einfo;
 with Exp_Util;
 with SPARK_Util;
 with SPARK_Util.Subprograms;
@@ -86,6 +86,7 @@ package SPARK_Atree.Entities is
    E_Operator                    : Entity_Kind renames Einfo.E_Operator;
    E_Out_Parameter               : Entity_Kind renames Einfo.E_Out_Parameter;
    E_Package                     : Entity_Kind renames Einfo.E_Package;
+   E_Package_Body                : Entity_Kind renames Einfo.E_Package_Body;
    E_Private_Subtype             : Entity_Kind renames Einfo.E_Private_Subtype;
    E_Procedure                   : Entity_Kind renames Einfo.E_Procedure;
    E_Protected_Type              : Entity_Kind renames Einfo.E_Protected_Type;
@@ -585,6 +586,12 @@ package SPARK_Atree.Entities is
    function Package_Body (Pack : Entity_Id) return Node_Id with
      Pre => Ekind (Pack) = E_Package;
 
+   function Package_Body_Entity (Pack : Node_Id) return Entity_Id with
+     Pre => Nkind (Pack) = N_Package_Body;
+
+   function Package_Spec (Pack : Entity_Id) return Node_Id with
+     Pre => Ekind (Pack) = E_Package;
+
    function Private_Declarations_Of_Package (Pack : Entity_Id) return List_Id
    with
      Pre => Ekind (Pack) = E_Package;
@@ -629,6 +636,12 @@ package SPARK_Atree.Entities is
                          E_Procedure    |
                          E_Task_Type
          and then Nam in Name_Priority | Name_Interrupt_Priority;
+
+   function Known_To_Precede (Withed, Main : Entity_Id) return Boolean with
+     Pre => Is_Compilation_Unit (Withed)
+       and then Is_Compilation_Unit (Main);
+   --  Computed whether library unit [Withed] precedes library unit [Main] as
+   --  defined in SPARK RM 7.7(2).
 
    function Return_Applies_To (E : Entity_Id) return Node_Id with
      Pre => Ekind (E) = Einfo.E_Return_Statement;

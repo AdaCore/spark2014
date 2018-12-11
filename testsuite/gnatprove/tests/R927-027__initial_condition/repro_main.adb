@@ -1,4 +1,4 @@
-with Repro;
+with Repro; pragma Elaborate (Repro);
 
 procedure Repro_Main
 with

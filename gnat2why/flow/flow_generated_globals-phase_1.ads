@@ -21,9 +21,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Sinfo;      use Sinfo;
-with SPARK_Util; use SPARK_Util;
 with Flow_Generated_Globals.Partial; use Flow_Generated_Globals.Partial;
+with Flow_Visibility;                use Flow_Visibility;
+with Sinfo;                          use Sinfo;
+with SPARK_Util;                     use SPARK_Util;
 
 package Flow_Generated_Globals.Phase_1 is
 
@@ -92,6 +93,11 @@ package Flow_Generated_Globals.Phase_1 is
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register an instance of a task object
+
+   procedure GG_Register_Flow_Scope (E : Entity_Id; Info : Hierarchy_Info_T)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Register information about a flow scope of E
 
    -------------
    -- Writing --

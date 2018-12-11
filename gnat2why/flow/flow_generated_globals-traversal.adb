@@ -101,13 +101,7 @@ package body Flow_Generated_Globals.Traversal is
                   P : constant Entity_Id := Parent_Scope (E);
                begin
                   if Present (Root) then
-                     case Container_Scope (Ekind (E)) is
-                        when E_Function | E_Procedure | Entry_Kind =>
-                           Scope_Map (P).Subprograms.Append (E);
-
-                        when E_Package | E_Protected_Type | E_Task_Type =>
-                           Scope_Map (P).Packages.Append (E);
-                     end case;
+                     Scope_Map (P).Units.Append (E);
                   else
                      Root := E;
                   end if;
@@ -121,9 +115,8 @@ package body Flow_Generated_Globals.Traversal is
                   end if;
 
                   Scope_Map.Insert (Key      => E,
-                                    New_Item => (Packages        => <>,
-                                                 Subprograms     => <>,
-                                                 Parent          => P));
+                                    New_Item => (Units  => <>,
+                                                 Parent => P));
                end;
             end if;
          end Insert;
@@ -217,11 +210,7 @@ package body Flow_Generated_Globals.Traversal is
    -------------
 
    function Is_Leaf (E : Entity_Id) return Boolean is
-      C : constant Nested_Scopes.Cursor := Scope_Map.Find (E);
-   begin
-      return Scope_Map (C).Packages.Is_Empty
-        and then Scope_Map (C).Subprograms.Is_Empty;
-   end Is_Leaf;
+     (Scope_Map (E).Units.Is_Empty);
 
    ------------------------------------
    -- Iterate_Constants_In_Main_Unit --

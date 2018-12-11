@@ -519,7 +519,9 @@ package body SPARK_Annotate is
 
       --  This entity must be a function
 
-      if Ekind (E) not in Subprogram_Kind | E_Package then
+      if Ekind (E) not in
+        Subprogram_Kind | E_Package | Generic_Subprogram_Kind
+      then
          Error_Msg_N
            ("Entity parameter of a pragma Terminating must be a subprogram or "
             & "a package",
@@ -555,7 +557,9 @@ package body SPARK_Annotate is
       --  Check whether we may issue a warning on the pragma before doing it
 
       for Prag of Pragma_Set loop
-         if May_Issue_Warning_On_Node (Prag) then
+         if May_Issue_Warning_On_Node (Prag)
+           and then not Is_In_Statically_Dead_Branch (Prag)
+         then
             Error_Msg_N ("?no check message justified by this pragma", Prag);
          end if;
       end loop;

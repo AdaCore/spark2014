@@ -24,7 +24,7 @@ p.adb:27:18: info: initialization of "Sum" proved
 p.adb:27:22: medium: overflow check might fail (e.g. when Sum = 0) [possible explanation: loop at line 26 should mention Sum in a loop invariant]
 p.adb:27:32: medium: precondition might fail (e.g. when C = (Node => 2) and Sum = 0)
 p.adb:27:44: info: initialization of "C.Node" proved
-p.adb:28:19: medium: precondition might fail (e.g. when C = (Node => 2) and No_Element = (Node => 0))
+p.adb:28:19: medium: precondition might fail (e.g. when C = (Node => 2))
 p.adb:28:29: info: initialization of "C.Node" proved
 p.ads:18:14: warning: subprogram "Iter_Over_Lists" has no effect
 p.ads:20:14: warning: subprogram "Quant_Over_Lists" has no effect

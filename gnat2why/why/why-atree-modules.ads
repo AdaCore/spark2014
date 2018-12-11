@@ -142,6 +142,7 @@ package Why.Atree.Modules is
       Bool_Lt : W_Identifier_Id;
       Bool_Ge : W_Identifier_Id;
       Bool_Gt : W_Identifier_Id;
+      Length  : W_Identifier_Id;
    end record;
 
    type M_Int_Power_Type is record

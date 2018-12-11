@@ -109,6 +109,11 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns true iff E is a constituent of some state abstraction
    --  that we loaded while reading the ALI files.
 
+   function GG_Is_Part_Of_Constituent (EN : Entity_Name) return Boolean
+   with Pre => GG_State_Constituents_Map_Is_Ready;
+   --  Returns true iff E is a Part_Of constituent of some state abstraction
+   --  that we loaded while reading the ALI files.
+
    function GG_Encapsulating_State (EN : Entity_Name) return Any_Entity_Name
    with Pre => GG_State_Constituents_Map_Is_Ready;
    --  Returns the Entity_Name of the directly encapsulating state. If one does
@@ -270,7 +275,8 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns True iff subprogram E calls (directly or indirectly) function
    --  Ada.Task_Identification.Current_Task.
 
-   function Get_Constituents (E : Entity_Name) return Name_Sets.Set;
+   function Get_Constituents (E : Entity_Name) return Name_Sets.Set
+   with Pre => GG_Is_Abstract_State (E);
    --  Returns the constituents for abstract state E
 
    function Is_Potentially_Nonreturning_Internal (E : Entity_Id)

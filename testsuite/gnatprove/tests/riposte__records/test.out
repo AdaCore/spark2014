@@ -24,7 +24,7 @@ records.adb:99:14: info: initialization of "R.A" proved
 records.adb:99:14: info: initialization of "R.B" proved
 records.adb:103:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:111:19: info: postcondition proved (CVC4: 2 VC)
-records.adb:119:19: medium: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 1, B => 0)) and Is_Valid_C'Result = True and Null_Pair = (A => 0, B => 0)) [possible explanation: subprogram at line 118 should mention A in a precondition]
+records.adb:119:19: medium: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 1, B => 0)) and Is_Valid_C'Result = True) [possible explanation: subprogram at line 118 should mention A in a precondition]
 records.adb:129:25: info: initialization of "Dst.Exists" proved
 records.adb:129:25: info: initialization of "Dst.The_Pair.A" proved
 records.adb:129:25: info: initialization of "Dst.The_Pair.B" proved
@@ -119,15 +119,13 @@ counterexample expected for check at records.adb:86
   trace at records.adb:99 --> Safe_Add_Pair_B'Result = (A => 0, B => 0)
 counterexample expected for check at records.adb:119
   trace at records.adb:118 --> A = (Exists => False, The_Pair => (A => 1, B => 0))
-  trace at records.adb:119 --> A = (Exists => False, The_Pair => (A => 1, B => 0)) and Is_Valid_C'Result = True and Null_Pair = (A => 0, B => 0)
+  trace at records.adb:119 --> A = (Exists => False, The_Pair => (A => 1, B => 0)) and Is_Valid_C'Result = True
   trace at records.adb:123 --> Is_Valid_C'Result = True
-  trace at records_prooffuncs.ads:16 --> Null_Pair = (A => 0, B => 0)
 counterexample expected for check at records.adb:142
   trace at records.adb:138 --> Src = (Exists => True, The_Pair => (A => 1, B => 0))
   trace at records.adb:142 --> Dst = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:145 --> Dst = (Exists => True, The_Pair => (A => 1, B => 0))
   trace at records.adb:146 --> Dst = (Exists => False, The_Pair => (A => 1, B => 0))
-  trace at records_prooffuncs.ads:16 --> Null_Pair = (A => 0, B => 0)
 counterexample expected for check at records.adb:166
   trace at records.adb:163 --> Src = (Exists => False, The_Pair => (A => 0, B => 0))
   trace at records.adb:166 --> Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0))

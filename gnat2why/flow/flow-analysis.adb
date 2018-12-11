@@ -30,6 +30,7 @@ with Rident;                      use Rident;
 with Sem_Aux;                     use Sem_Aux;
 with Sem_Type;                    use Sem_Type;
 with Sem_Util;                    use Sem_Util;
+with Sem_Warn;                    use Sem_Warn;
 with Snames;                      use Snames;
 
 with Common_Iterators;            use Common_Iterators;
@@ -1363,6 +1364,7 @@ package body Flow.Analysis is
                      if Is_Concurrent_Type (E_Typ)
                        or else Is_Empty_Record_Type (E_Typ)
                        or else Has_Pragma_Un (E)
+                       or else Has_Junk_Name (E)
                        or else Is_Param_Of_Null_Subp_Of_Generic (E)
                      then
                         null;
@@ -1782,10 +1784,13 @@ package body Flow.Analysis is
       --  record field that has been introduced by a record split and the rest
       --  of the fields are ineffective.
 
-      function Skip_Any_Conversions (N : Node_Or_Entity_Id)
-                                     return Node_Or_Entity_Id;
+      function Skip_Any_Conversions (N : Node_Id) return Node_Id
+      with Pre  => Nkind (N) in N_Subexpr,
+           Post => Nkind (Skip_Any_Conversions'Result) in N_Subexpr;
       --  Skips any conversions (unchecked or otherwise) and jumps to the
       --  actual object.
+      --  ??? this routine actually skips only checked conversion; to have what
+      --  this comment says we can reuse Sem_Util.Unqual_Conv.
 
       ------------------------------
       -- Defines_Async_Reader_Var --
@@ -1945,10 +1950,8 @@ package body Flow.Analysis is
       -- Skip_Any_Conversions --
       --------------------------
 
-      function Skip_Any_Conversions (N : Node_Or_Entity_Id)
-                                     return Node_Or_Entity_Id
-      is
-         P : Node_Or_Entity_Id := N;
+      function Skip_Any_Conversions (N : Node_Id) return Node_Id is
+         P : Node_Id := N;
       begin
          loop
             case Nkind (P) is
@@ -4288,7 +4291,7 @@ package body Flow.Analysis is
                for Constituent of Down_Project (Var, FA.B_Scope) loop
 
                   --  ??? It would be better if we wouldn't get things that are
-                  --  not in SPARK here but at the moment Doen_Project does
+                  --  not in SPARK here but at the moment Down_Project does
                   --  returns them. This need to be fixed in Down_Project.
 
                   if Is_Abstract_State (Constituent)

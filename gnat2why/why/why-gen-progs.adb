@@ -84,11 +84,15 @@ package body Why.Gen.Progs is
       Pred     : W_Pred_Id)
       return W_Prog_Id is
    begin
-      return
-        New_Assert
-          (Ada_Node    => Ada_Node,
-           Pred        => Pred,
-           Assert_Kind => EW_Assume);
+      if Is_True_Boolean (+Pred) then
+         return +Void;
+      else
+         return
+           New_Assert
+             (Ada_Node    => Ada_Node,
+              Pred        => Pred,
+              Assert_Kind => EW_Assume);
+      end if;
    end New_Assume_Statement;
 
    -------------------------
@@ -195,9 +199,9 @@ package body Why.Gen.Progs is
       --  sequence statement.
       --  If both are sequences, or both are non-sequences, we use
       --  New_Statement_Sequence.
-      if Left = +Void then
+      if Is_Void (Left) then
          return Right;
-      elsif Right = +Void then
+      elsif Is_Void (Right) then
          return Left;
       end if;
 
@@ -206,8 +210,21 @@ package body Why.Gen.Progs is
    end Sequence;
 
    function Sequence (Progs : W_Prog_Array) return W_Prog_Id is
+      Non_Void_Progs : W_Prog_Array := Progs;
+      J : Integer := Non_Void_Progs'First;
    begin
-      return New_Statement_Sequence (Statements => Progs);
+      for E of Progs loop
+         if not (Is_Void (E)) then
+            Non_Void_Progs (J) := E;
+            J := J + 1;
+         end if;
+      end loop;
+      if J <= Non_Void_Progs'First then
+         return +Void;
+      else
+         return New_Statement_Sequence
+           (Statements => (Non_Void_Progs (Non_Void_Progs'First .. J - 1)));
+      end if;
    end Sequence;
 
    ---------------------
@@ -218,7 +235,7 @@ package body Why.Gen.Progs is
                               Elt : W_Prog_Id) is
       pragma Unmodified (Seq);
    begin
-      if Elt /= +Void then
+      if not Is_Void (Elt) then
          Statement_Sequence_Append_To_Statements (Seq, Elt);
       end if;
    end Sequence_Append;

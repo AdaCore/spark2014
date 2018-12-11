@@ -92,6 +92,6 @@ cartesian.adb:72:105: info: index check proved (CVC4: 2 VC)
 cartesian.adb:74:14: info: initialization of "result" proved
 cartesian.ads:25:15: info: index check proved (CVC4: 2 VC)
 cartesian.ads:32:15: info: index check proved (CVC4: 2 VC)
-cartesian.ads:53:21: medium: postcondition might fail, cannot prove in_array(pair_type'(array1(i), array2(j)), cartesian_product'result) (e.g. when array1 = (0 => 0, 1 => 0, 2 => 0, others => 1) and array1'First = 0 and array1'Last = 0 and array2 = (0 => 0, 1 => 0, 2 => 0, others => 1) and array2'First = 0 and array2'Last = 0 and cartesian_product'First = 1 and cartesian_product'Last = 1 and cartesian_product'Result = (1 => (1 => 0, 2 => 0, others => 1), 2 => (1 => 0, 2 => 0, others => 1), 3 => (1 => 0, 2 => 0, others => 1), others => (others => 1)) and i = 0 and j = 0)
+cartesian.ads:53:21: medium: postcondition might fail, cannot prove in_array(pair_type'(array1(i), array2(j)), cartesian_product'result) (e.g. when array1 = (0 => 0, 1 => 0, 2 => 0, others => 1) and array1'First = 0 and array1'Last = 0 and array2 = (0 => 0, 1 => 0, 2 => 0, others => 1) and array2'First = 0 and array2'Last = 0 and cartesian_product'Result = (1 => (1 => 0, 2 => 0, others => 1), 2 => (1 => 0, 2 => 0, others => 1), 3 => (1 => 0, 2 => 0, others => 1), others => (others => 1)) and cartesian_product'Result'First = 1 and cartesian_product'Result'Last = 1 and i = 0 and j = 0)
 cartesian.ads:53:48: info: index check proved (CVC4: 2 VC)
 cartesian.ads:53:59: info: index check proved (CVC4: 2 VC)
