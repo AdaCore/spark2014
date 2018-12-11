@@ -104,11 +104,6 @@ package body Why.Gen.Scalars is
                              Domain => EW_Term,
                              Symbol => NID ("fxp_div_int"),
                              Typ    => N_Ty),
-           Div_Int_Res =>
-             New_Identifier (Module => Module,
-                             Domain => EW_Term,
-                             Symbol => NID ("fxp_div_result_int"),
-                             Typ    => EW_Int_Type),
            Of_Int      =>
              New_Identifier (Module => Module,
                              Domain => EW_Term,
@@ -261,7 +256,7 @@ package body Why.Gen.Scalars is
       Small_R       : constant Ureal :=
         (if Has_Fixed_Point_Type (Typ_Right) then
            Small_Value (Typ_Right)
-         elsif Has_Signed_Integer_Type (Typ_Right) then
+         elsif Has_Integer_Type (Typ_Right) then
            Ureal_1
          else raise Program_Error);
       Num_Small_R   : constant W_Term_OId :=
@@ -269,7 +264,12 @@ package body Why.Gen.Scalars is
       Den_Small_R : constant W_Term_OId :=
         New_Integer_Constant (Value => Norm_Den (Small_R));
 
-      Small_Op       : constant Ureal := Small_Value (Typ_Result);
+      Small_Op       : constant Ureal :=
+        (if Has_Fixed_Point_Type (Typ_Result) then
+           Small_Value (Typ_Result)
+         elsif Has_Integer_Type (Typ_Result) then
+           Ureal_1
+         else raise Program_Error);
       Num_Small_Op   : constant W_Term_OId :=
         New_Integer_Constant (Value => Norm_Num (Small_Op));
       Den_Small_Op : constant W_Term_OId :=
@@ -1208,7 +1208,12 @@ package body Why.Gen.Scalars is
          elsif Has_Signed_Integer_Type (Typ_Right) then
            Ureal_1
          else raise Program_Error);
-      Res_Small : constant Ureal := Small_Value (Typ_Result);
+      Res_Small : constant Ureal :=
+        (if Has_Fixed_Point_Type (Typ_Result) then
+           Small_Value (Typ_Result)
+         elsif Has_Integer_Type (Typ_Result) then
+           Ureal_1
+         else raise Program_Error);
 
       Name      : constant String :=
         To_String (WNE_Fixed_Point_Mult_Div_Prefix) & "__"

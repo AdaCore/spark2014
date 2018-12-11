@@ -6421,8 +6421,14 @@ package body Gnat2Why.Expr is
                then
                   L_Type := Base_Why_Type (Left_Type);
                   R_Type := Base_Why_Type (Right_Type);
-                  Base := Base_Why_Type (Return_Type);
                   Oper := WNE_Fixed_Point_Mult;
+
+                  if Has_Fixed_Point_Type (Return_Type) then
+                     Base := Base_Why_Type (Return_Type);
+                  else
+                     pragma Assert (Has_Integer_Type (Return_Type));
+                     Base := EW_Int_Type;
+                  end if;
 
                elsif Has_Fixed_Point_Type (Left_Type) then
                   L_Type :=  Base_Why_Type (Left_Type);
@@ -6447,7 +6453,7 @@ package body Gnat2Why.Expr is
                   Base := Base_Why_Type (Left_Type, Right_Type);
                   L_Type := Base;
                   R_Type := Base;
-                  pragma Assert (not Is_Fixed_Point_Type (Return_Type));
+                  pragma Assert (not Has_Fixed_Point_Type (Return_Type));
                end if;
 
                L_Why := Insert_Simple_Conversion
@@ -6463,7 +6469,9 @@ package body Gnat2Why.Expr is
 
                --  Construct the operation
 
-               if Is_Fixed_Point_Type (Return_Type) then
+               if Has_Fixed_Point_Type (Left_Type)
+                 or else Has_Fixed_Point_Type (Right_Type)
+               then
                   declare
                      pragma Assert (Oper /= WNE_Empty);
                      Name   : W_Identifier_Id;
@@ -6523,6 +6531,14 @@ package body Gnat2Why.Expr is
                   end;
                   T := Apply_Modulus (Op, Return_Type, T, Domain);
                end if;
+
+               if Base_Why_Type (Return_Type) /= Base then
+                  T := Insert_Checked_Conversion
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Expr     => T,
+                     To       => Base_Why_Type (Return_Type));
+               end if;
             end;
 
          when N_Op_Divide =>
@@ -6541,16 +6557,13 @@ package body Gnat2Why.Expr is
                then
                   L_Type := Base_Why_Type (Left_Type);
                   R_Type := Base_Why_Type (Right_Type);
+                  Oper   := WNE_Fixed_Point_Div;
 
                   if Has_Fixed_Point_Type (Return_Type) then
                      Base := Base_Why_Type (Return_Type);
-                     Oper := WNE_Fixed_Point_Div;
                   else
-                     pragma Assert
-                       (Has_Signed_Integer_Type (Return_Type)
-                        or else Has_Modular_Integer_Type (Return_Type));
+                     pragma Assert (Has_Integer_Type (Return_Type));
                      Base := EW_Int_Type;
-                     Oper := WNE_Fixed_Point_Div_Result_Int;
                   end if;
 
                elsif Has_Fixed_Point_Type (Left_Type) then
@@ -6584,10 +6597,6 @@ package body Gnat2Why.Expr is
                   when WNE_Fixed_Point_Div_Int =>
                      Name := Get_Fixed_Point_Theory
                        (Typ => Return_Type).Div_Int;
-
-                  when WNE_Fixed_Point_Div_Result_Int =>
-                     Name := Get_Fixed_Point_Theory
-                       (Typ => Left_Type).Div_Int_Res;
 
                   when others =>
                      Name := New_Division (Base);
@@ -12244,14 +12253,12 @@ package body Gnat2Why.Expr is
                   --  Multiplication/division between fixed-point types
                   --  requires the creation of a specific module.
 
-                  if Has_Fixed_Point_Type (Expr_Type) then
-                     Create_Fixed_Point_Mult_Div_Theory_If_Needed
-                       (Current_File => Params.File,
-                        Typ_Left     => Etype (Left),
-                        Typ_Right    => Etype (Right),
-                        Typ_Result   => Expr_Type,
-                        Expr         => Expr);
-                  end if;
+                  Create_Fixed_Point_Mult_Div_Theory_If_Needed
+                    (Current_File => Params.File,
+                     Typ_Left     => Etype (Left),
+                     Typ_Right    => Etype (Right),
+                     Typ_Result   => Expr_Type,
+                     Expr         => Expr);
 
                   L_Type := Base_Why_Type (Etype (Left));
                   R_Type := Base_Why_Type (Etype (Right));

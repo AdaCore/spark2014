@@ -2657,15 +2657,17 @@ package body SPARK_Definition is
               Has_Floating_Point_Type (E_Type);
          begin
             --  We support multiplication and division between different
-            --  fixed-point types and a different fixed-point type as result,
-            --  provided the result is in the "perfect result set" according
-            --  to Ada RM G.2.3(21).
+            --  fixed-point types provided the result is in the "perfect result
+            --  set" according to Ada RM G.2.3(21).
 
-            if L_Type_Is_Fixed and R_Type_Is_Fixed and E_Type_Is_Fixed then
+            if L_Type_Is_Fixed and R_Type_Is_Fixed then
                declare
                   L_Small : constant Ureal := Small_Value (L_Type);
                   R_Small : constant Ureal := Small_Value (R_Type);
-                  E_Small : constant Ureal := Small_Value (E_Type);
+                  E_Small : constant Ureal :=
+                    (if E_Type_Is_Fixed then Small_Value (E_Type)
+                     elsif Has_Integer_Type (E_Type) then Ureal_1
+                     else raise Program_Error);
                   Factor  : constant Ureal :=
                     (if Nkind (N) = N_Op_Multiply then
                        (L_Small * R_Small) / E_Small

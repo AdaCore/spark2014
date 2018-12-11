@@ -272,7 +272,6 @@ package Why.Gen.Names is
       --  Division operators for a fixed-point type
       WNE_Fixed_Point_Div,
       WNE_Fixed_Point_Div_Int,
-      WNE_Fixed_Point_Div_Result_Int,
       WNE_Fixed_Point_Prefix,          --  Prefix of fixed point modules
       WNE_Fixed_Point_Mult_Div_Prefix, --  Prefix of mult/div modules
 

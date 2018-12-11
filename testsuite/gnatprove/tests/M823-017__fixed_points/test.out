@@ -349,13 +349,14 @@ dynamic_fixed.adb:6:40: info: range check proved (CVC4: 10 VC)
 dynamic_fixed.adb:7:19: info: range check proved (CVC4: 10 VC)
 dynamic_fixed.adb:9:25: medium: assertion might fail, cannot prove Integer (T'Last) = I (e.g. when I = 1)
 dynamic_fixed.adb:10:25: info: assertion proved
-unsupported.adb:18:13: operation between incompatible fixed-point types is not yet supported
 unsupported.adb:19:13: operation between incompatible fixed-point types is not yet supported
-unsupported.adb:20:15: expression of type root_real is not allowed in SPARK
-unsupported.adb:20:15: value is dependent on the compiler and target
-unsupported.adb:20:15: violation of pragma SPARK_Mode at test.adc:1
-unsupported.adb:21:10: expression of type root_real is not allowed in SPARK
-unsupported.adb:21:10: value is dependent on the compiler and target
-unsupported.adb:21:10: violation of pragma SPARK_Mode at test.adc:1
-unsupported.adb:23:10: conversion between incompatible fixed-point types is not yet supported
+unsupported.adb:20:13: operation between incompatible fixed-point types is not yet supported
+unsupported.adb:21:15: expression of type root_real is not allowed in SPARK
+unsupported.adb:21:15: value is dependent on the compiler and target
+unsupported.adb:21:15: violation of pragma SPARK_Mode at test.adc:1
+unsupported.adb:22:10: expression of type root_real is not allowed in SPARK
+unsupported.adb:22:10: value is dependent on the compiler and target
+unsupported.adb:22:10: violation of pragma SPARK_Mode at test.adc:1
+unsupported.adb:24:10: conversion between incompatible fixed-point types is not yet supported
+unsupported.adb:25:22: operation between incompatible fixed-point types is not yet supported
 gnatprove: error during flow analysis and proof

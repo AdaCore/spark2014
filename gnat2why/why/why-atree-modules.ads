@@ -360,7 +360,6 @@ package Why.Atree.Modules is
       T           : W_Type_Id;
       Mult_Int    : W_Identifier_Id;
       Div_Int     : W_Identifier_Id;
-      Div_Int_Res : W_Identifier_Id;
       Of_Int      : W_Identifier_Id;
       To_Int      : W_Identifier_Id;
    end record;

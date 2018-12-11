@@ -868,7 +868,6 @@ package body Why.Gen.Names is
             | WNE_Dynamic_Property_BV_Int
             | WNE_Fixed_Point_Div
             | WNE_Fixed_Point_Div_Int
-            | WNE_Fixed_Point_Div_Result_Int
             | WNE_Fixed_Point_Mult
             | WNE_Fixed_Point_Mult_Int
             | WNE_Func_Guard

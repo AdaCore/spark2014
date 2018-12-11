@@ -114,6 +114,9 @@ package SPARK_Util.Types is
    function Has_Enumeration_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Enumeration_Kind);
 
+   function Has_Integer_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Integer_Kind);
+
    function Has_Modular_Integer_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Modular_Integer_Kind);
 
