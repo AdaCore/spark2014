@@ -1,4 +1,4 @@
-[Flow analysis categories]
+[Flow analysis check categories]
 ALIASING - aliasing between subprogram parameters - Aliasing between formal parameters or global objects.
 DEAD_CODE - dead code - A statement is never executed.
 DEFAULT_INITIALIZATION_MISMATCH - wrong Default_Initial_Condition aspect - A type is wrongly declared as initialized by default.
@@ -28,7 +28,7 @@ UNUSED_INITIAL_VALUE - initial value of an object is not used - The initial valu
 NON_VOLATILE_FUNCTION_WITH_VOLATILE_EFFECTS - volatile function wrongly declared as non-volatile - A volatile function wrongly declared as non-volatile.
 VOLATILE_FUNCTION_WITHOUT_VOLATILE_EFFECTS - non-volatile function wrongly declared as volatile - A non-volatile function wrongly declared as volatile.
 REFERENCE_TO_NON_CAE_VARIABLE - illegal reference to a global object in precondition of a protected operation - An illegal reference to global in precondition of a protected operation
-[Proof categories]
+[Proof check categories]
 VC_DIVISION_CHECK - divide by zero - Check that the second operand of the division, mod or rem operation is different from zero.
 VC_INDEX_CHECK - index check - Check that the given index is within the bounds of the array.
 VC_OVERFLOW_CHECK - overflow check - Check that the result of the given integer arithmetic operation is within the bounds of the base type.
@@ -68,3 +68,8 @@ VC_TRIVIAL_WEAKER_PRE - precondition not True while class-wide precondition is T
 VC_STRONGER_POST - postcondition stronger than class-wide postcondition - Check that the postcondition aspect of the subprogram is stronger than its class-wide postcondition.
 VC_WEAKER_CLASSWIDE_PRE - class-wide precondition weaker than overridden one - Check that the class-wide precondition aspect of the subprogram is weaker than its overridden class-wide precondition.
 VC_STRONGER_CLASSWIDE_POST - class-wide postcondition stronger than overridden one - Check that the class-wide postcondition aspect of the subprogram is stronger than its overridden class-wide postcondition.
+[Proof warnings categories]
+VC_INCONSISTENT_PRE - precondition always False - Warn if precondition is found to be always False
+VC_INCONSISTENT_POST - postcondition always False - Warn if postcondition is found to be always False
+VC_UNREACHABLE_BRANCH - unreachable branch - Warn if branch is found to be unreachable
+VC_DEAD_CODE - unreachable code - Warn if code is found to be unreachable

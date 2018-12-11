@@ -583,18 +583,28 @@ package body Configuration is
    procedure Produce_List_Categories_Output is
       use VC_Kinds;
    begin
-      Ada.Text_IO.Put_Line ("[Flow analysis categories]");
+      Ada.Text_IO.Put_Line ("[Flow analysis check categories]");
       for K in Valid_Flow_Tag_Kind loop
          Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) & " - " &
                                  Description (K));
       end loop;
-      Ada.Text_IO.Put_Line ("[Proof categories]");
+
+      Ada.Text_IO.Put_Line ("[Proof check categories]");
       for K in VC_Kind loop
          if K not in VC_Warning_Kind then
             Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) &
                                     " - " & Description (K));
          end if;
       end loop;
+
+      Ada.Text_IO.Put_Line ("[Proof warnings categories]");
+      for K in VC_Kind loop
+         if K in VC_Warning_Kind then
+            Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) &
+                                    " - " & Description (K));
+         end if;
+      end loop;
+
       --  ??? TODO GNAT front-end categories
    end Produce_List_Categories_Output;
 

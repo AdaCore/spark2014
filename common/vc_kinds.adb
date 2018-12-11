@@ -306,8 +306,14 @@ package body VC_Kinds is
             return "Check that the class-wide postcondition aspect of the " &
               "subprogram is stronger than its overridden class-wide " &
               "postcondition.";
-         when VC_Warning_Kind                     =>
-            return "";
+         when VC_Inconsistent_Pre                 =>
+            return "Warn if precondition is found to be always False";
+         when VC_Inconsistent_Post                =>
+            return "Warn if postcondition is found to be always False";
+         when VC_Unreachable_Branch               =>
+            return "Warn if branch is found to be unreachable";
+         when VC_Dead_Code                        =>
+            return "Warn if code is found to be unreachable";
       end case;
    end Description;
 
@@ -791,7 +797,14 @@ package body VC_Kinds is
                "class-wide precondition weaker than overridden one",
              when VC_Stronger_Classwide_Post =>
                "class-wide postcondition stronger than overridden one",
-             when VC_Warning_Kind => "");
+             when VC_Inconsistent_Pre =>
+               "precondition always False",
+             when VC_Inconsistent_Post =>
+               "postcondition always False",
+             when VC_Unreachable_Branch =>
+               "unreachable branch",
+             when VC_Dead_Code =>
+               "unreachable code");
    end Kind_Name;
 
    function Kind_Name (Kind : Valid_Flow_Tag_Kind) return String is
