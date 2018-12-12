@@ -2336,12 +2336,7 @@ package body Why.Gen.Records is
       --  If the type does not have any discriminants, no check is needed
       --  obviously.
 
-      --  ??? Test on the access type is a hack to test the check in case of
-      --  access subtype in which the Has_Discriminants has disappeared.
-
-      if not Has_Discriminants (Check_Ty) and then
-        not Is_Access_Type (Check_Ty)
-      then
+      if not Has_Discriminants (Check_Ty) then
          return Expr;
       end if;
 
@@ -3027,19 +3022,11 @@ package body Why.Gen.Records is
       Expr     : W_Expr_Id)
       return W_Expr_Array
    is
-
-      --  This is a hack to use this function for pointer conversion.
-      --  Should be fixed later [R525-018].
-      E_Check_Ty : constant Entity_Id :=
-        (if Is_Access_Type (Check_Ty) then
-              Directly_Designated_Type (Check_Ty)
-         else Check_Ty);
-
-      Num_Discr : constant Natural := Count_Discriminants (E_Check_Ty);
+      Num_Discr : constant Natural := Count_Discriminants (Check_Ty);
       Args      : W_Expr_Array (1 .. Num_Discr + 1);
       Count     : Natural := 1;
-      Discr     : Entity_Id := First_Discriminant (E_Check_Ty);
-      Elmt      : Elmt_Id := First_Elmt (Discriminant_Constraint (E_Check_Ty));
+      Discr     : Entity_Id := First_Discriminant (Check_Ty);
+      Elmt      : Elmt_Id := First_Elmt (Discriminant_Constraint (Check_Ty));
 
    begin
       Args (Num_Discr + 1) := +Expr;

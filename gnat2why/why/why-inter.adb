@@ -412,7 +412,7 @@ package body Why.Inter is
             then
                Typ := Etype (Typ);
             elsif Is_Access_Type (Typ) then
-               return EW_Abstract (Root_Pointer_Type (Typ));
+               return EW_Abstract (Repr_Pointer_Type (Typ));
             else
                return EW_Abstract (Typ);
             end if;

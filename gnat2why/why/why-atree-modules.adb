@@ -2229,10 +2229,7 @@ package body Why.Atree.Modules is
 
          --  Symbols for record types
 
-         elsif Is_Record_Type (E)
-           or else Full_View_Not_In_SPARK (E)
-           or else Is_Concurrent_Type (E)
-         then
+         elsif Is_Record_Type_In_Why (E) then
             declare
                Root    : constant Entity_Id :=
                  Root_Record_Type (E);
@@ -2525,21 +2522,6 @@ package body Why.Atree.Modules is
                      Domain => EW_Term));
 
                Insert_Symbol
-                 (E, WNE_To_Base,
-                  New_Identifier
-                    (Symbol => NID ("to_base"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => Root_Ty));
-               Insert_Symbol
-                 (E, WNE_Of_Base,
-                  New_Identifier
-                    (Symbol => NID ("of_base"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => Ty));
-
-               Insert_Symbol
                  (E, WNE_Null_Pointer,
                   New_Identifier
                     (Symbol => NID ("__null_pointer"),
@@ -2574,6 +2556,38 @@ package body Why.Atree.Modules is
                      Typ    => Des_Ty));
 
                Insert_Symbol
+                 (E, WNE_To_Base,
+                  New_Identifier
+                    (Symbol => NID ("to_base"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Root_Ty));
+               Insert_Symbol
+                 (E, WNE_Of_Base,
+                  New_Identifier
+                    (Symbol => NID ("of_base"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Ty));
+
+               if Root /= Repr_Pointer_Type (E) then
+                  Insert_Symbol
+                    (E, WNE_Range_Check_Fun,
+                     New_Identifier
+                       (Symbol => NID ("range_check_"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => Root_Ty));
+                  Insert_Symbol
+                    (E, WNE_Range_Pred,
+                     New_Identifier
+                       (Module => M,
+                        Domain => EW_Term,
+                        Symbol => NID ("in_range"),
+                        Typ    => EW_Bool_Type));
+               end if;
+
+               Insert_Symbol
                  (E, WNE_Init_Allocator,
                   New_Identifier
                     (Symbol => NID (To_String (WNE_Init_Allocator)),
@@ -2590,28 +2604,12 @@ package body Why.Atree.Modules is
                      Typ    => Ty));
 
                Insert_Symbol
-                 (E, WNE_Range_Check_Fun,
-                  New_Identifier
-                    (Symbol => NID ("range_check_"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => Root_Ty));
-
-               Insert_Symbol
-                 (E, WNE_Range_Pred,
-                  New_Identifier
-                    (Module => M,
-                     Domain => EW_Term,
-                     Symbol => NID ("in_range"),
-                     Typ    => EW_Bool_Type));
-
-               Insert_Symbol
                  (E, WNE_Assign_Null_Check,
                   New_Identifier
                     (Symbol => NID ("assign_null_check"),
                      Module => M,
                      Domain => EW_Term,
-                     Typ    => Root_Ty));
+                     Typ    => Ty));
             end;
          end if;
       end Insert_Type_Symbols;

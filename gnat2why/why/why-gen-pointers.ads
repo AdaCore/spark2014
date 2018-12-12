@@ -97,10 +97,13 @@ package Why.Gen.Pointers is
    --  @param Name name of the pointer to access
    --  @param Local whether we want the local or the global access
 
-   function Root_Pointer_Type (E : Entity_Id) return Entity_Id
+   function Repr_Pointer_Type (E : Entity_Id) return Entity_Id
      with Pre => Is_Access_Type (E);
    --  Return the first pointer type defined with the same designated type.
-   --  This handles also subtypes.
+
+   function Root_Pointer_Type (E : Entity_Id) return Entity_Id
+     with Pre => Is_Access_Type (E);
+   --  Return the representative of the root of E
 
    function Pointer_From_Split_Form
      (I           : Item_Type;
@@ -112,10 +115,22 @@ package Why.Gen.Pointers is
    function Pointer_From_Split_Form
      (Ada_Node : Node_Id := Empty;
       A        : W_Expr_Array;
-      Ty       : Entity_Id)
+      Ty       : Entity_Id;
+      Local    : Boolean := False)
       return W_Expr_Id;
    --  Reconstructs a complete pointer of type Ty from an array of expressions
    --  representing a split form. A should contain first the value, then the
    --  address, and is_null.
+
+   function Insert_Pointer_Subtype_Check
+     (Ada_Node : Node_Id;
+      Check_Ty : Entity_Id;
+      Expr     : W_Prog_Id)
+      return W_Prog_Id;
+   --  Insert a check that an expression is in the range of a pointer subtype
+   --  @param Ada_Node used to locate the check
+   --  @param Check_Ty pointer type
+   --  @param Expr why expression. Expr should be of type
+   --     EW_Abstract (Root_Pointer_Type (Check_Ty))
 
 end Why.Gen.Pointers;

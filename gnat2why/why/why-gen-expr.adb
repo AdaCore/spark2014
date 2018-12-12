@@ -825,11 +825,6 @@ package body Why.Gen.Expr is
                                        Need_Check => Check_Needed);
 
       elsif Is_Pointer_Conversion (From, To) then
-         --  ??? [R525-018]
-         --     type L_Ptr is access L;
-         --     L1 : L_Ptr := new L(14);
-         --     L2 : L_Ptr := new L(26);
-         --     L1 := L2
 
          T := Insert_Pointer_Conversion (Domain     => Domain,
                                          Ada_Node   => Ada_Node,
@@ -982,13 +977,9 @@ package body Why.Gen.Expr is
       L : constant Node_Id := Get_Ada_Node (+From);
       R : constant Node_Id := Get_Ada_Node (+To);
 
+      Need_Conv : constant Boolean :=
+        Repr_Pointer_Type (L) /= Repr_Pointer_Type (R);
       pragma Assert (Root_Pointer_Type (L) = Root_Pointer_Type (R));
-
-      Des_Typ : constant Node_Id := Directly_Designated_Type (R);
-
-      Need_Discr_Check : constant Boolean :=
-        Need_Check and then Count_Discriminants (Des_Typ) > 0
-        and then Is_Constrained (Des_Typ);
 
       Need_Not_Null_Check : constant Boolean := Can_Never_Be_Null (R);
 
@@ -999,29 +990,53 @@ package body Why.Gen.Expr is
         Has_Predicates (R)
         and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
 
-      Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
-
    begin
-      --  When no check needs to be inserted, do nothing
-      --  ??? should test on From = To before and then Need_Check
+      --  When neither checks nor conversions need to be inserted, return
 
-      if not Need_Check then
+      if not Need_Check and then not Need_Conv then
          return Expr;
       end if;
 
-      if Domain = EW_Prog then
+      --  Conversion goes through the root type
 
-         --  Possibly perform a discriminant check
+      if Need_Conv then
+         declare
+            To_Base : constant W_Identifier_Id :=
+              E_Symb (L, WNE_To_Base);
+            Of_Base : constant W_Identifier_Id :=
+              E_Symb (R, WNE_Of_Base);
+         begin
+            Result := New_Call
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Name     => To_Base,
+               Args     => (1 => Result),
+               Typ      => Get_Typ (To_Base));
 
-         if Need_Discr_Check then
-            Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
-                                                          Check_Entity,
-                                                          +Result);
-         end if;
+            --  Insert subtype check on root type if needed
 
+            if Need_Check and then Domain = EW_Prog then
+               Result := +Insert_Pointer_Subtype_Check (Ada_Node,
+                                                        R,
+                                                        +Result);
+            end if;
+
+            Result := New_Call
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Name     => Of_Base,
+               Args     => (1 => Result),
+               Typ      => To);
+         end;
+      end if;
+
+      --  Predicate checks and null exclusion checks are performed after the
+      --  conversion.
+
+      if Need_Check and then Domain = EW_Prog then
          if Need_Pred_Check then
             Result := +Insert_Predicate_Check (Ada_Node,
-                                               Check_Entity,
+                                               R,
                                                +Result);
          end if;
 

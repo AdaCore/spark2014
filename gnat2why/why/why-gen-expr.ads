@@ -371,7 +371,7 @@ package Why.Gen.Expr is
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
       Need_Check : Boolean := False) return W_Expr_Id;
-   --  when Discr_Check is set, a discriminant check is inserted into the
+   --  when Need_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.
 
    function Insert_Pointer_Conversion
@@ -380,8 +380,7 @@ package Why.Gen.Expr is
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
       Need_Check : Boolean := False) return W_Expr_Id;
-   --  A typical use of this function is to insert pointer conversions when
-   --  unconstrained access types.
+   --  If Need_Check is True, insert range, null exclusion and predicate checks
 
    function Insert_Cnt_Loc_Label
      (Ada_Node : Node_Id;

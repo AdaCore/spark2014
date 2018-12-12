@@ -446,7 +446,7 @@ package body Gnat2Why.Types is
 
       if Is_Access_Type (E) then
          declare
-            Ancestor   : constant Entity_Id := Root_Pointer_Type (E);
+            Ancestor   : constant Entity_Id := Repr_Pointer_Type (E);
             Name       : constant String :=
               Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
             Rep_Module : constant W_Module_Id := New_Module (File => No_Name,

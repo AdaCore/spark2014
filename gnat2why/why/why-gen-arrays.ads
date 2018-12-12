@@ -238,6 +238,13 @@ package Why.Gen.Arrays is
    --    <left_arr>.first1 = <right_arr>.first1 /\
    --    <left_arr>.last1 = <right_arr>.last1 /\ ...
 
+   function New_Bounds_Equality
+     (Left_Arr     : W_Expr_Id;
+      Right_Bounds : W_Expr_Array;
+      Dim          : Positive) return W_Pred_Id
+   with Pre => Right_Bounds'Length = Dim * 2;
+   --  same as above but with the bounds stored in an array
+
    function New_Length_Equality
      (Left_Arr  : W_Expr_Id;
       Right_Arr : W_Expr_Id;

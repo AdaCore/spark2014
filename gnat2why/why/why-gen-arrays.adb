@@ -2286,9 +2286,9 @@ package body Why.Gen.Arrays is
    -------------------------
 
    function New_Bounds_Equality
-     (Left_Arr  : W_Expr_Id;
-      Right_Arr : W_Expr_Id;
-      Dim       : Positive) return W_Pred_Id
+     (Left_Arr     : W_Expr_Id;
+      Right_Bounds : W_Expr_Array;
+      Dim          : Positive) return W_Pred_Id
    is
       Result : W_Expr_Id := +True_Pred;
    begin
@@ -2306,10 +2306,7 @@ package body Why.Gen.Arrays is
                                               Expr   => Left_Arr,
                                               Attr   => Attribute_First,
                                               Dim    => I),
-                    Right  => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Right_Arr,
-                                              Attr   => Attribute_First,
-                                              Dim    => I),
+                    Right  => Right_Bounds (2 * I - 1),
                     Domain => EW_Pred),
 
                  --  <left_arr>.last__I = <right_arr>.last__I
@@ -2320,15 +2317,30 @@ package body Why.Gen.Arrays is
                                               Expr   => Left_Arr,
                                               Attr   => Attribute_Last,
                                               Dim    => I),
-                    Right  => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Right_Arr,
-                                              Attr   => Attribute_Last,
-                                              Dim    => I),
+                    Right  => Right_Bounds (2 * I),
                     Domain => EW_Pred)),
               Domain    => EW_Pred);
       end loop;
 
       return +Result;
+   end New_Bounds_Equality;
+
+   function New_Bounds_Equality
+     (Left_Arr  : W_Expr_Id;
+      Right_Arr : W_Expr_Id;
+      Dim       : Positive) return W_Pred_Id
+   is
+      Right_Bounds : W_Expr_Array (1 .. 2 * Dim);
+      Count        : Positive := 1;
+   begin
+      for I in 1 .. Dim loop
+         Add_Attr_Arg
+           (EW_Term, Right_Bounds, Right_Arr, Attribute_First, I, Count);
+         Add_Attr_Arg
+           (EW_Term, Right_Bounds, Right_Arr, Attribute_Last,  I, Count);
+      end loop;
+
+      return New_Bounds_Equality (Left_Arr, Right_Bounds, Dim);
    end New_Bounds_Equality;
 
    ---------------------
