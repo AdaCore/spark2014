@@ -1,0 +1,6 @@
+project Bad_Global3 is
+
+  package Prove is
+    for Proof_Switches ("Ada") use ("-Pnonexisting.gpr");
+  end Prove;
+end Bad_Global3;

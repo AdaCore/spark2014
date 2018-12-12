@@ -1,0 +1,2 @@
+cvc4.adb:4:14: info: overflow check proved (altergo: 1 VC)
+z3.adb:4:14: info: overflow check proved (Z3: 1 VC)

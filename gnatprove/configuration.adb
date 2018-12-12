@@ -121,6 +121,12 @@ package body Configuration is
    --  Set_Target_Dir: if -gnateT is not set in
    --  Builder.Global_Configuration_Switches.
 
+   procedure Check_File_Part_Of_Project (Tree : Project_Tree;
+                                         Fn   : String);
+   --  raise an error if the file FN is not part of the project
+   --  @param Tree the project tree
+   --  @param FN a file name
+
    function Is_Coq_Prover return Boolean;
    --  @return True iff one alternate prover is "coq"
 
@@ -168,6 +174,29 @@ package body Configuration is
 
    procedure Display_Help;
 
+   package body Prj_Attr is
+
+      package body Prove is
+
+         --------------------
+         -- Proof_Switches --
+         --------------------
+
+         function Proof_Switches (Proj : Project_Type; Index : String)
+                                  return GNAT.Strings.String_List_Access
+         is
+            Attr_Proof_Switches : constant Attribute_Pkg_List :=
+              Build ("Prove", "Proof_Switches");
+         begin
+            if Index = "Ada" or else Index = "ada" then
+               return Prj_Attr.Prove.Proof_Switches_Ada;
+            end if;
+            return Attribute_Value (Proj, Attr_Proof_Switches, Index);
+         end Proof_Switches;
+      end Prove;
+
+   end Prj_Attr;
+
    ---------------
    -- Abort_Msg --
    ---------------
@@ -186,6 +215,25 @@ package body Configuration is
       end if;
       GNAT.OS_Lib.OS_Exit (1);
    end Abort_Msg;
+
+   --------------------------------
+   -- Check_File_Part_Of_Project --
+   --------------------------------
+
+   procedure Check_File_Part_Of_Project (Tree : Project_Tree;
+                                         Fn   : String)
+   is
+      File_VF : constant Virtual_File :=
+        Create_From_Base (Filesystem_String (Fn));
+      Info    : constant File_Info := Tree.Info (File_VF);
+   begin
+      if Project (Info) = No_Project then
+         Abort_Msg
+           ("file " & Fn & " of attribute Proof_Switches " &
+              "is not part of the project",
+            With_Help => False);
+      end if;
+   end Check_File_Part_Of_Project;
 
    -------------------------
    -- Check_gnateT_Switch --
@@ -401,30 +449,15 @@ package body Configuration is
 
          CL_Switches.File_List.Append (Switch);
 
-      --  Switches related to project loading like -X and -aP make no sense to
-      --  be specified *in* the project file. It's not easy to check, because
-      --  it would require parsing the Switches attribute in the project file
-      --  separately. Instead, we check that every -X or -aP switch found here
-      --  has already been parsed in the first pass.
+      --  We explicitly ignore project-loading switches here. They have been
+      --  taken into account in the parsing of the command line.
 
       elsif Switch'Length >= 2
         and then Switch (Switch'First + 1) = 'X'
       then
-         if not CL_Switches.X.Contains (Switch) then
-            Put_Line
-              (Standard_Error,
-               "warning: switch " & Switch & " specified in the project file" &
-                 " will be ignored. It needs to be specified on the command " &
-                 "line directly.");
-         end if;
+         null;
       elsif Switch = "-aP" then
-         if not CL_Switches.GPR_Project_Path.Contains (Parameter) then
-            Put_Line
-              (Standard_Error,
-               "warning: switch " & Switch & " specified in the project file" &
-                 " will be ignored. It needs to be specified on the command " &
-                 "line directly.");
-         end if;
+         null;
       else
          raise Invalid_Switch;
       end if;
@@ -435,6 +468,8 @@ package body Configuration is
    ----------------------
 
    function Is_Manual_Prover return Boolean is
+      Provers : constant String_Lists.List :=
+        File_Specific_Map.Element ("Ada").Provers;
    begin
       return Provers.Length = 1
         and then
@@ -447,6 +482,8 @@ package body Configuration is
    -------------------
 
    function Is_Coq_Prover return Boolean is
+      Provers : constant String_Lists.List :=
+        File_Specific_Map.Element ("Ada").Provers;
    begin
       return Case_Insensitive_Contains (Provers, "coq");
    end Is_Coq_Prover;
@@ -473,9 +510,13 @@ package body Configuration is
                  Usage    => Usage_Message,
                  Help_Msg => File_System.Install.Help_Message);
 
-      --  If no arguments have been given, print help message and exit
+      --  If no arguments have been given, print help message and exit.
+      --  Empty switches list is allowed for modes File_Specific_Only and
+      --  Global_Switches_Only.
 
-      if Com_Lin'Length = 0 then
+      if Mode in Project_Parsing | All_Switches
+        and then Com_Lin'Length = 0
+      then
          Abort_Msg ("", With_Help => True);
       end if;
 
@@ -724,7 +765,9 @@ package body Configuration is
             Long_Switch => "--timeout=");
       end if;
 
-      Define_Switch (Config, "*", Help => "list of source files");
+      if Mode in All_Switches | Project_Parsing then
+         Define_Switch (Config, "*", Help => "list of source files");
+      end if;
 
       declare
          Callback : constant Switch_Handler :=
@@ -748,7 +791,9 @@ package body Configuration is
 
    procedure Prepare_Prover_Lib is
 
-      Prover_Name : constant String :=
+      Provers        : constant String_Lists.List :=
+        File_Specific_Map.Element ("Ada").Provers;
+      Prover_Name    : constant String :=
         Ada.Characters.Handling.To_Lower (Provers.First_Element);
       Prover_Lib_Dir : constant String :=
         Compose
@@ -998,12 +1043,12 @@ package body Configuration is
    -- Prover_List --
    -----------------
 
-   function Prover_List return String is
+   function Prover_List (FS : File_Specific) return String is
       use Ada.Strings.Unbounded;
       use String_Lists;
 
       Buf : Unbounded_String := Null_Unbounded_String;
-      C : Cursor := First (Provers);
+      C : Cursor := First (FS.Provers);
    begin
       loop
          Append (Buf, Element (C));
@@ -1012,6 +1057,11 @@ package body Configuration is
          Append (Buf, ',');
       end loop;
       return To_String (Buf);
+   end Prover_List;
+
+   function Prover_List (Source_File : String) return String is
+   begin
+      return Prover_List (File_Specific_Map.Element (Source_File));
    end Prover_List;
 
    -----------------------
@@ -1028,26 +1078,32 @@ package body Configuration is
       --  read the switch variables set by CL parsing and set the gnatprove
       --  variables
 
-      procedure Set_Project_Vars;
+      procedure File_Specific_Postprocess (FS : out File_Specific);
+      --  same as Postprocess, but for the switches that can be file-specific.
+      --  For example, --level, --timeout are handled here.
+
+      procedure Set_Project_Vars (Proj : Project_Type);
       --  set the variables of the Prj_Attr package
 
       procedure Set_Mode;
       procedure Set_Warning_Mode;
       procedure Set_Report_Mode;
 
-      procedure Set_Level_Timeout_Steps_Provers;
+      procedure Set_Level_Timeout_Steps_Provers (FS : out File_Specific);
       --  using the --level, --timeout, --steps and --provers switches, set the
       --  corresponding variables
 
-      procedure Set_Proof_Mode;
+      procedure Set_Proof_Mode (FS : in out File_Specific);
       procedure Process_Limit_Switches;
-      procedure Set_Provers;
+      procedure Set_Provers
+        (Prover : GNAT.Strings.String_Access;
+         FS     : in out File_Specific);
       procedure Set_Proof_Dir;
       --  If attribute Proof_Dir is set in the project file,
       --  set global variable Proof_Dir to the full path
       --  <path-to-project-file>/<value-of-proof-dir>.
 
-      procedure Limit_Provers;
+      procedure Limit_Provers (Provers : in out String_Lists.List);
       --  This subprogram is here for SPARK Discovery. It removes cvc4/z3 from
       --  the provers list, if not found on the PATH. If that makes the list of
       --  provers become empty, alt-ergo is added as prover, so that we have at
@@ -1055,6 +1111,24 @@ package body Configuration is
 
       procedure Sanity_Checking;
       --  Check the command line flags for conflicting flags
+
+      -------------------------------
+      -- File_Specific_Postprocess --
+      -------------------------------
+
+      procedure File_Specific_Postprocess (FS : out File_Specific) is
+      begin
+         Set_Level_Timeout_Steps_Provers (FS);
+         Set_Provers (CL_Switches.Prover, FS);
+         Set_Proof_Mode (FS);
+         Limit_Provers (FS.Provers);
+         FS.No_Inlining := CL_Switches.No_Inlining;
+         FS.Info := CL_Switches.Info;
+         FS.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
+         FS.Proof_Warnings := CL_Switches.Proof_Warnings;
+         FS.No_Inlining := CL_Switches.No_Inlining or
+                           CL_Switches.No_Global_Generation;
+      end File_Specific_Postprocess;
 
       ----------
       -- Init --
@@ -1076,8 +1150,19 @@ package body Configuration is
          Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
          declare
             Sswitches : constant String :=
-                  Register_New_Attribute ("Switches", "Prove",
-                                          Is_List => True);
+              Register_New_Attribute ("Switches", "Prove",
+                                      Is_List => True);
+         begin
+            if Sswitches /= "" then
+               Abort_Msg (Sswitches, With_Help => False);
+            end if;
+         end;
+
+         declare
+            Sswitches : constant String :=
+              Register_New_Attribute ("Proof_Switches", "Prove",
+                                      Is_List => True,
+                                      Indexed => True);
          begin
             if Sswitches /= "" then
                Abort_Msg (Sswitches, With_Help => False);
@@ -1121,7 +1206,7 @@ package body Configuration is
       -- Limit_Provers --
       -------------------
 
-      procedure Limit_Provers is
+      procedure Limit_Provers (Provers : in out String_Lists.List) is
 
          procedure Remove_Prover (Name : String);
          --  Remove prover from Provers list
@@ -1217,9 +1302,6 @@ package body Configuration is
          --       global contract, which in turn would eliminate inlining
          --       anyway.
 
-         No_Inlining          := CL_Switches.No_Inlining or
-           CL_Switches.No_Global_Generation;
-
          --  Adjust the number of parallel processes. If -j0 was used, the
          --  number of processes should be set to the actual number of
          --  processors available on the machine.
@@ -1246,15 +1328,8 @@ package body Configuration is
          Set_Mode;
          Set_Warning_Mode;
          Set_Report_Mode;
-         Set_Level_Timeout_Steps_Provers;
-         Set_Proof_Mode;
          Set_Proof_Dir;
 
-         Counterexample :=
-           not CL_Switches.No_Counterexample
-           and then File_System.Install.CVC4_Present
-           and then not Is_Manual_Prover
-           and then not CL_Switches.Output_Msg_Only;
          CodePeer := CodePeer and then Mode in GPM_Prove | GPM_All;
       end Postprocess;
 
@@ -1336,7 +1411,7 @@ package body Configuration is
       -- Set_Level_Timeout_Steps_Provers --
       -------------------------------------
 
-      procedure Set_Level_Timeout_Steps_Provers is
+      procedure Set_Level_Timeout_Steps_Provers (FS : out File_Specific) is
       begin
 
          case CL_Switches.Level is
@@ -1346,50 +1421,50 @@ package body Configuration is
 
             when Invalid_Level =>
 
-               Provers.Append ("cvc4");
-               Steps := Default_Steps;
-               Timeout := 0;
-               Memlimit := 0;
+               FS.Provers.Append ("cvc4");
+               FS.Steps := Default_Steps;
+               FS.Timeout := 0;
+               FS.Memlimit := 0;
 
             --  See the UG for the meaning of the level switches
 
             when 0 =>
-               Provers.Append ("cvc4");
-               Steps := 0;
-               Timeout := 1;
-               Memlimit := 1000;
+               FS.Provers.Append ("cvc4");
+               FS.Steps := 0;
+               FS.Timeout := 1;
+               FS.Memlimit := 1000;
 
             when 1 =>
-               Provers.Append ("cvc4");
-               Provers.Append ("z3");
-               Provers.Append ("altergo");
-               Steps := 0;
-               Timeout := 1;
-               Memlimit := 1000;
+               FS.Provers.Append ("cvc4");
+               FS.Provers.Append ("z3");
+               FS.Provers.Append ("altergo");
+               FS.Steps := 0;
+               FS.Timeout := 1;
+               FS.Memlimit := 1000;
 
             when 2 =>
-               Provers.Append ("cvc4");
-               Provers.Append ("z3");
-               Provers.Append ("altergo");
-               Steps := 0;
-               Timeout := 5;
-               Memlimit := 1000;
+               FS.Provers.Append ("cvc4");
+               FS.Provers.Append ("z3");
+               FS.Provers.Append ("altergo");
+               FS.Steps := 0;
+               FS.Timeout := 5;
+               FS.Memlimit := 1000;
 
             when 3 =>
-               Provers.Append ("cvc4");
-               Provers.Append ("z3");
-               Provers.Append ("altergo");
-               Steps := 0;
-               Timeout := 20;
-               Memlimit := 2000;
+               FS.Provers.Append ("cvc4");
+               FS.Provers.Append ("z3");
+               FS.Provers.Append ("altergo");
+               FS.Steps := 0;
+               FS.Timeout := 20;
+               FS.Memlimit := 2000;
 
             when 4 =>
-               Provers.Append ("cvc4");
-               Provers.Append ("z3");
-               Provers.Append ("altergo");
-               Steps := 0;
-               Timeout := 60;
-               Memlimit := 2000;
+               FS.Provers.Append ("cvc4");
+               FS.Provers.Append ("z3");
+               FS.Provers.Append ("altergo");
+               FS.Steps := 0;
+               FS.Timeout := 60;
+               FS.Memlimit := 2000;
 
             when others =>
                Abort_Msg ("error: wrong argument for --level",
@@ -1406,8 +1481,8 @@ package body Configuration is
             null;
          else
             begin
-               Timeout := Integer'Value (CL_Switches.Timeout.all);
-               if Timeout < 0 then
+               FS.Timeout := Integer'Value (CL_Switches.Timeout.all);
+               if FS.Timeout < 0 then
                   raise Constraint_Error;
                end if;
             exception
@@ -1421,7 +1496,7 @@ package body Configuration is
          if CL_Switches.Memlimit = 0 then
             null;
          else
-            Memlimit := CL_Switches.Memlimit;
+            FS.Memlimit := CL_Switches.Memlimit;
          end if;
 
          if CL_Switches.Steps = Invalid_Steps then
@@ -1430,21 +1505,18 @@ package body Configuration is
             Abort_Msg ("error: wrong argument for --steps",
                        With_Help => False);
          else
-            Steps := CL_Switches.Steps;
+            FS.Steps := CL_Switches.Steps;
          end if;
 
          --  Timeout is fully set now, we can set CE_Timeout. Basically we cap
          --  the CE_Timeout at Constants.Max_CE_Timeout seconds.
 
-         CE_Timeout :=
-           (if Timeout = 0 then Constants.Max_CE_Timeout
-            else Integer'Min (Timeout, Constants.Max_CE_Timeout));
-
-         Set_Provers;
-         Limit_Provers;
+         FS.CE_Timeout :=
+           (if FS.Timeout = 0 then Constants.Max_CE_Timeout
+            else Integer'Min (FS.Timeout, Constants.Max_CE_Timeout));
 
          if CL_Switches.Output_Msg_Only then
-            Provers.Clear;
+            FS.Provers.Clear;
          end if;
       end Set_Level_Timeout_Steps_Provers;
 
@@ -1484,30 +1556,54 @@ package body Configuration is
       -- Set_Project_Vars --
       ----------------------
 
-      procedure Set_Project_Vars is
+      procedure Set_Project_Vars (Proj : Project_Type) is
          Glob_Comp_Switch_Attr : constant Attribute_Pkg_List :=
            Build ("Builder", "Global_Compilation_Switches");
          Proof_Dir_Attr        : constant Attribute_Pkg_String :=
            Build ("Prove", "Proof_Dir");
          Switches_Attr         : constant Attribute_Pkg_List :=
            Build ("Prove", "Switches");
+         Attr_Proof_Switches   : constant Attribute_Pkg_List :=
+           Build ("Prove", "Proof_Switches");
       begin
-         Prj_Attr.Target := new String'(Tree.Root_Project.Get_Target);
-         Prj_Attr.Runtime := new String'(Tree.Root_Project.Get_Runtime);
+         Prj_Attr.Target := new String'(Proj.Get_Target);
+         Prj_Attr.Runtime := new String'(Proj.Get_Runtime);
          Prj_Attr.Builder.Global_Compilation_Switches_Ada :=
-           (if Has_Attribute (Tree.Root_Project, Glob_Comp_Switch_Attr, "Ada")
-            then Attribute_Value (Tree.Root_Project,
+           (if Has_Attribute (Proj, Glob_Comp_Switch_Attr, "Ada")
+            then Attribute_Value (Proj,
                                   Glob_Comp_Switch_Attr, "Ada")
             else null);
          Prj_Attr.Prove.Proof_Dir :=
-           (if Has_Attribute (Tree.Root_Project, Proof_Dir_Attr)
-            then new String'(Attribute_Value (Tree.Root_Project,
+           (if Has_Attribute (Proj, Proof_Dir_Attr)
+            then new String'(Attribute_Value (Proj,
                                               Proof_Dir_Attr))
             else null);
          Prj_Attr.Prove.Switches :=
-           (if Has_Attribute (Tree.Root_Project, Switches_Attr)
-            then Attribute_Value (Tree.Root_Project, Switches_Attr)
+           (if Has_Attribute (Proj, Switches_Attr)
+            then Attribute_Value (Proj, Switches_Attr)
             else null);
+         Prj_Attr.Prove.Proof_Switches_Ada :=
+           (if Has_Attribute (Proj, Attr_Proof_Switches, "Ada")
+            then Attribute_Value (Proj, Attr_Proof_Switches, "Ada")
+            elsif Has_Attribute (Proj, Attr_Proof_Switches, "ada")
+            then Attribute_Value (Proj, Attr_Proof_Switches, "ada")
+            else null);
+         Prj_Attr.Prove.Proof_Switches_Indices :=
+           new GNAT.Strings.String_List'
+             (Attribute_Indexes (Proj, Attr_Proof_Switches,
+                                 Use_Extended => False));
+
+         if Prj_Attr.Prove.Switches /= null
+           and then Prj_Attr.Prove.Switches.all'Length > 0
+         then
+            Put_Line
+              (Standard_Error,
+               "warning: attribute ""Switches"" of package ""Prove"" of " &
+                 "your project file is deprecated");
+            Put_Line
+              (Standard_Error,
+               "warning: use ""Proof_Switches (""Ada"")"" instead");
+         end if;
       end Set_Project_Vars;
 
       -------------------
@@ -1535,13 +1631,13 @@ package body Configuration is
       -- Set_Proof_Mode --
       --------------------
 
-      procedure Set_Proof_Mode is
+      procedure Set_Proof_Mode (FS : in out File_Specific) is
          Input : String renames CL_Switches.Proof.all;
          Colon_Index : constant Natural :=
            Index (Source => Input, Pattern => ":");
 
       begin
-         Lazy := True;
+         FS.Lazy := True;
 
          declare
             Proof_Input : constant String :=
@@ -1552,20 +1648,20 @@ package body Configuration is
                else "");
          begin
             if Proof_Input = "" then
-               Proof := Per_Check;
+               FS.Proof := Per_Check;
             elsif Proof_Input = "progressive" then
-               Proof := Progressive;
+               FS.Proof := Progressive;
             elsif Proof_Input = "per_path" then
-               Proof := Per_Path;
+               FS.Proof := Per_Path;
             elsif Proof_Input = "per_check" then
-               Proof := Per_Check;
+               FS.Proof := Per_Check;
 
                --  Hidden debugging values
 
             elsif Proof_Input = "no_wp" then
-               Proof := No_WP;
+               FS.Proof := No_WP;
             elsif Proof_Input = "all_split" then
-               Proof := All_Split;
+               FS.Proof := All_Split;
             else
                Abort_Msg ("error: wrong argument for --proof",
                           With_Help => False);
@@ -1574,9 +1670,9 @@ package body Configuration is
             if Lazy_Input = "" then
                null;
             elsif Lazy_Input = "all" then
-               Lazy := False;
+               FS.Lazy := False;
             elsif Lazy_Input = "lazy" then
-               Lazy := True;
+               FS.Lazy := True;
             else
                Abort_Msg ("error: wrong argument for --proof",
                           With_Help => False);
@@ -1588,10 +1684,13 @@ package body Configuration is
       -- Set_Provers --
       -----------------
 
-      procedure Set_Provers is
+      procedure Set_Provers
+        (Prover : GNAT.Strings.String_Access;
+         FS     : in out File_Specific)
+      is
          First : Integer;
          S : constant String :=
-           (if CL_Switches.Prover /= null then CL_Switches.Prover.all else "");
+           (if Prover /= null then Prover.all else "");
 
       begin
          --  This procedure is called when the Provers list is already filled
@@ -1603,26 +1702,26 @@ package body Configuration is
 
          if S = "" then
             if CL_Switches.Replay then
-               Provers.Clear;
+               FS.Provers.Clear;
             end if;
             return;
          end if;
-         Provers.Clear;
+         FS.Provers.Clear;
          First := S'First;
          for Cur in S'Range loop
             if S (Cur) = ',' then
-               Provers.Append (S (First .. Cur - 1));
+               FS.Provers.Append (S (First .. Cur - 1));
                First := Cur + 1;
             end if;
          end loop;
          if S /= "" then
-            Provers.Append (S (First .. S'Last));
+            FS.Provers.Append (S (First .. S'Last));
          end if;
 
          --  we now check if cvc4 or z3 have explicitly been requested, but are
          --  missing from the install
 
-         for Prover of Provers loop
+         for Prover of FS.Provers loop
             if (Prover = "cvc4" and then not File_System.Install.CVC4_Present)
               or else
                 (Prover = "z3" and then not File_System.Install.Z3_Present)
@@ -1701,10 +1800,22 @@ package body Configuration is
            new String'(Ada.Command_Line.Argument (Index));
       end loop;
 
-      --  We now initialize the project environment; it may be changed by the
-      --  first parse of the command line.
+      --  The following code calls Parse_Switches several times, with varying
+      --  mode argument and different switches, for different purposes. The
+      --  same global variables are used for the result of the command line
+      --  parsing (CL_Switches.*), but we make sure that this is correct by:
+      --   - detecting invalid switches in the various attributes; (so the
+      --     parsing of a file-specific switch can't override a switch that can
+      --     only be specified globally);
+      --   - saving file-specific and global switches into separate records;
+      --   - parsing for error messages is done before the "real" parsing to
+      --     get the values of switches.
 
       Initialize (Proj_Env);
+
+      --  This call to Parse_Switches just parses project-relevant switches
+      --  (-P, -X etc) and ignores the rest.
+
       Parse_Switches (Project_Parsing, Com_Lin);
 
       if CL_Switches.Version then
@@ -1720,26 +1831,124 @@ package body Configuration is
       --  Before doing the actual second parsing, we read the project file in
 
       Tree := Init;
-      Set_Project_Vars;
+      Set_Project_Vars (Tree.Root_Project);
 
       if Clean then
          Clean_Up (Tree);
          GNAT.OS_Lib.OS_Exit (0);
       end if;
 
+      if Prj_Attr.Prove.Switches /= null
+        and then Prj_Attr.Prove.Switches.all'Length > 0
+      then
+         --  parse the Switches attribute of the project file; this is to
+         --  detect invalid switches only.
+
+         Parse_Switches (Global_Switches_Only,
+                         Prj_Attr.Prove.Switches.all);
+      end if;
+
+      if Prj_Attr.Prove.Proof_Switches_Ada /= null then
+         --  parse the Proof_Switches ("Ada") attribute of the project file;
+         --  this is to detect invalid switches only.
+
+         Parse_Switches (Global_Switches_Only,
+                         Prj_Attr.Prove.Proof_Switches_Ada.all);
+      end if;
+
       declare
-         Proj_Type : constant Project_Type := Root_Project (Tree);
+         Proj_Type      : constant Project_Type := Root_Project (Tree);
+
+         function Concat3 (A, B : String_List_Access; C : String_List)
+           return String_List;
+
+         function Concat4 (A, B, C : String_List_Access; D : String_List)
+           return String_List;
+
+         -------------
+         -- Concat3 --
+         -------------
+
+         function Concat3 (A, B : String_List_Access; C : String_List)
+                           return String_List is
+         begin
+            return (if A = null then (1 .. 0 => <>) else A.all) &
+            (if B = null then (1 .. 0 => <>) else B.all) &
+              C;
+         end Concat3;
+
+         -------------
+         -- Concat4 --
+         -------------
+
+         function Concat4 (A, B, C : String_List_Access; D : String_List)
+                           return String_List is
+         begin
+            return (if A = null then (1 .. 0 => <>) else A.all) &
+            (if B = null then (1 .. 0 => <>) else B.all) &
+            (if C = null then (1 .. 0 => <>) else C.all) &
+              D;
+         end Concat4;
+
       begin
-         if Prj_Attr.Prove.Switches /= null then
-            declare
-               All_Switches_List   : constant String_List :=
-                 Prj_Attr.Prove.Switches.all & Com_Lin;
-            begin
-               Parse_Switches (All_Switches, All_Switches_List);
-            end;
-         else
-            Parse_Switches (All_Switches, Com_Lin);
-         end if;
+
+         declare
+            FS             : File_Specific;
+            Parsed_Cmdline : constant String_List :=
+              Concat3 (Prj_Attr.Prove.Switches,
+                       Prj_Attr.Prove.Proof_Switches_Ada, Com_Lin);
+         begin
+
+            --  parse all switches that apply to all files, concatenated in the
+            --  right order (most important is last).
+
+            Parse_Switches (All_Switches, Parsed_Cmdline);
+            Postprocess;
+            File_Specific_Postprocess (FS);
+            File_Specific_Map.Insert ("Ada", FS);
+
+            --  ??? this piece of code should be in Postprocess, but it
+            --  requires the FS object to be inserted in the map already.
+
+            Counterexample :=
+              not CL_Switches.No_Counterexample
+              and then File_System.Install.CVC4_Present
+              and then not Is_Manual_Prover
+              and then not CL_Switches.Output_Msg_Only;
+         end;
+
+         for FS_Entry of Prj_Attr.Prove.Proof_Switches_Indices.all loop
+            if FS_Entry.all /= "Ada" and then FS_Entry.all /= "ada" then
+               Check_File_Part_Of_Project (Tree, FS_Entry.all);
+               declare
+                  FS             : File_Specific;
+                  FS_Switches    : constant String_List_Access :=
+                    Prj_Attr.Prove.Proof_Switches (Proj_Type, FS_Entry.all);
+                  Parsed_Cmdline : constant String_List :=
+                    Concat4 (Prj_Attr.Prove.Switches,
+                             Prj_Attr.Prove.Proof_Switches_Ada,
+                             FS_Switches, Com_Lin);
+               begin
+                  if FS_Switches /= null then
+
+                     --  parse the file switches to check if they contain
+                     --  invalid switches; this is for error reporting only.
+
+                     Parse_Switches (File_Specific_Only,
+                                     FS_Switches.all);
+                  end if;
+
+                  --  parse all switches that apply to a single file,
+                  --  *including* the global switches. File-specific switches
+                  --  are more important than the other switches in the project
+                  --  file, but less so than the command line switches.
+
+                  Parse_Switches (All_Switches, Parsed_Cmdline);
+                  File_Specific_Postprocess (FS);
+                  File_Specific_Map.Insert (FS_Entry.all, FS);
+               end;
+            end if;
+         end loop;
 
          --  Release copies of command line arguments; they were already parsed
          --  twice and are no longer needed.
@@ -1777,8 +1986,6 @@ package body Configuration is
                 else Compose (Socket_Dir, Socket_Base)));
          end;
       end;
-
-      Postprocess;
 
       if Is_Coq_Prover then
          Prepare_Prover_Lib;

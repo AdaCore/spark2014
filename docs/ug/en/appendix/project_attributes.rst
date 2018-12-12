@@ -6,16 +6,51 @@ Project Attributes
 |GNATprove| reads the package ``Prove`` in the given project file. This package
 is allowed to contain the following attributes:
 
-* ``Switches``, which defines additional command line switches that are used
-  for the invokation of |GNATprove|. As an example, the following package in
-  the project file sets the default report mode of |GNATprove| to ``all``::
+* ``Proof_Switches``, which defines additional command line switches that are used
+  for the invokation of |GNATprove|. This attribute can be used in two
+  different settings:
 
-    package Prove is
-       for Switches use ("--report=all");
-    end Prove;
+  * to define switches that should apply to all files in the project.  As an
+    example, the following package in the project file sets the default report
+    mode of |GNATprove| to ``all``::
+
+      package Prove is
+         for Proof_Switches ("Ada") use ("--report=all");
+      end Prove;
+
+  * to define switches that should apply only to one file. The following
+    example sets timeout for provers run by |GNATprove| to 10 seconds for
+    ``file.adb``::
+
+      package Prove is
+         for Proof_Switches ("file.adb") use ("--timeout=10");
+      end Prove;
 
   Switches given on the command line have priority over switches given in the
-  project file.
+  project file, and file-specific switches have priority over switches that
+  apply to all files. A special case is the ``--level`` switch: the values for
+  ``--timeout`` etc implied by the ``--level`` switch are always overridden by
+  more specific switches, regardless of where they appear. For example,
+  the timeout for the analysis of ``file.adb`` is set to 10 seconds below,
+  despite the ``--level=0`` switch (which implies a lower timeout) specified
+  for this file::
+
+    package Prove is
+       for Proof_Switches ("Ada") use ("--timeout=10");
+       for Proof_Switches ("file.adb") use ("--level=0");
+    end Prove;
+
+  The following switches cannot be used inside project files: ``-P``, ``-aP``,
+  ``--subdirs``, ``--clean``, ``--list-categories``, ``--version``.
+
+  Only the following switches are allowed for file-specific switches:
+  ``--steps``, ``--timeout``, ``--memlimit``, ``--proof``, ``--prover``,
+  ``--level``, ``--no-counterexample``, ``--no-inlining``,
+  ``--no-loop-unrolling``.
+
+* ``Switches``. This deprecated attribute is the same as ``Proof_Switches
+  ("Ada")``.
+
 
 * ``Proof_Dir``, which defines the directory where are stored the files
   concerning the state of the proof of a project. This directory contains a

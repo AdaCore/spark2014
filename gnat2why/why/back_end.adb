@@ -25,6 +25,7 @@
 
 --  This is the Why target-dependent version of the Back_End package
 
+with Ada.Directories;
 with Adabkend;
 with Debug; use Debug;
 with Elists;
@@ -33,6 +34,7 @@ with Gnat2Why.Driver;
 with Gnat2Why_Args;
 with Namet;
 with Opt;
+with Osint;
 with SPARK_Definition;
 with Stringt;
 with System;
@@ -158,9 +160,15 @@ package body Back_End is
 
       --  Read extra options for gnat2why
 
-      Gnat2Why_Args.Init
-        (if Opt.SPARK_Switches_File_Name = null then ""
-         else Opt.SPARK_Switches_File_Name.all);
+      declare
+         Args_File   : constant String :=
+           (if Opt.SPARK_Switches_File_Name = null then ""
+            else Opt.SPARK_Switches_File_Name.all);
+         Source_File : constant String :=
+           Ada.Directories.Simple_Name (Osint.Get_First_Main_File_Name);
+      begin
+         Gnat2Why_Args.Init (Args_File, Source_File);
+      end;
 
       --  gnat2why is run in two main modes:
       --    Global_Gen_Mode = True for generating ALI files with effects.

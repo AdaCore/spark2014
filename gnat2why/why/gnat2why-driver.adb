@@ -78,6 +78,7 @@ with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
 with SPARK_Xrefs;
 with Stand;                           use Stand;
+with String_Utils;                    use String_Utils;
 with Switch;                          use Switch;
 with VC_Kinds;
 with Why;                             use Why;
@@ -712,11 +713,12 @@ package body Gnat2Why.Driver is
 
    procedure Run_Gnatwhy3 is
       use Ada.Directories;
-      Status  : aliased Integer;
-      Fn      : constant String :=
+      Status    : aliased Integer;
+      Fn        : constant String :=
         Compose (Current_Directory, Why_File_Name.all);
-      Old_Dir : constant String := Current_Directory;
-      Command : constant String := Gnat2Why_Args.Why3_Args.First_Element;
+      Old_Dir   : constant String := Current_Directory;
+      Why3_Args : String_Lists.List := Gnat2Why_Args.Why3_Args;
+      Command   : constant String := Why3_Args.First_Element;
    begin
 
       --  modifying the command line and printing it for debug purposes. We
@@ -724,24 +726,24 @@ package body Gnat2Why.Driver is
       --  this corresponds to the actual command line run, and finally remove
       --  the first argument, which is the executable name.
 
-      Gnat2Why_Args.Why3_Args.Append (Fn);
+      Why3_Args.Append (Fn);
 
       if Gnat2Why_Args.Debug_Mode then
-         for Elt of Gnat2Why_Args.Why3_Args loop
+         for Elt of Why3_Args loop
             Ada.Text_IO.Put (Elt);
             Ada.Text_IO.Put (" ");
          end loop;
          Ada.Text_IO.New_Line;
       end if;
 
-      Gnat2Why_Args.Why3_Args.Delete_First (1);
+      Why3_Args.Delete_First (1);
 
       Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
 
       Parse_Why3_Results
         (GNAT.Expect.Get_Command_Output
            (Command,
-            Call.Argument_List_Of_String_List (Gnat2Why_Args.Why3_Args),
+            Call.Argument_List_Of_String_List (Why3_Args),
             Err_To_Out => False,
             Input      => "",
             Status     => Status'Access),

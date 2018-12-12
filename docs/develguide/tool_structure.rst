@@ -211,6 +211,7 @@ structure::
     obj_dirs : list of strings
     cmdline : list of strings
     switches : list of strings
+    proof_switches : map of string to list of strings
 
 Explanation for all fields:
  - obj_dirs: spark_report looks for all ``.spark`` files in each directory in
@@ -219,3 +220,5 @@ Explanation for all fields:
  - cmdline: the switches given to gnatprove on the commandline.
  - switches: the switches of the ``Switches`` attribute in the ``Prove``
    package of the project file.
+ - proof_switches: the switches for each index of the ``Proof_Switches``
+   attribute in the ``Prove`` package.

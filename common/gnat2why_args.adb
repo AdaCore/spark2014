@@ -72,16 +72,24 @@ package body Gnat2Why_Args is
    CWE_Name                     : constant String := "cwe";
    No_Inlining_Name             : constant String := "no_inlining";
    Info_Messages_Name           : constant String := "info_messages";
+   File_Specific_Name           : constant String := "file_specific";
+
+   function To_JSON (L : String_Lists.List) return JSON_Array;
+   function To_JSON (R : File_Specific) return JSON_Value;
 
    ----------
    -- Init --
    ----------
 
-   procedure Init (Filename : String) is
+   procedure Init (Args_File   : String;
+                   Source_File : String)
+   is
 
       function Get_Opt_Bool (V : JSON_Value; Field : String) return Boolean;
       --  return the boolean value of the Field [Field] of the JSON record [V].
       --  return False if the field doesn't exist.
+
+      procedure Read_File_Specific_Info (V : JSON_Value);
 
       ------------------
       -- Get_Opt_Bool --
@@ -92,6 +100,36 @@ package body Gnat2Why_Args is
          return Has_Field (V, Field) and then Get (Get (V, Field));
       end Get_Opt_Bool;
 
+      -----------------------------
+      -- Read_File_Specific_Info --
+      -----------------------------
+
+      procedure Read_File_Specific_Info (V : JSON_Value) is
+         R : JSON_Value;
+      begin
+         if Source_File /= "" and then Has_Field (V, Source_File) then
+            R := Get (V, Source_File);
+         elsif Has_Field (V, "Ada") then
+            R := Get (V, "Ada");
+         else
+            return;
+         end if;
+         Local_Proof_Warnings := Get_Opt_Bool (R, Proof_Warnings_Name);
+         Local_No_Loop_Unrolling :=
+           Get_Opt_Bool (R, No_Loop_Unrolling_Name);
+         Local_No_Inlining := Get_Opt_Bool (R, No_Inlining_Name);
+         Local_Info_Messages := Get_Opt_Bool (R, Info_Messages_Name);
+         if Has_Field (R, Why3_Args_Name) then
+            declare
+               Ar  : constant JSON_Array := Get (R, Why3_Args_Name);
+            begin
+               for Var_Index in Positive range 1 .. Length (Ar) loop
+                  Local_Why3_Args.Append (Get (Get (Ar, Var_Index)));
+               end loop;
+            end;
+         end if;
+      end Read_File_Specific_Info;
+
       File_Text : Unbounded_String := Null_Unbounded_String;
       File      : File_Type;
       V         : JSON_Value;
@@ -99,10 +137,10 @@ package body Gnat2Why_Args is
    --  Start of processing for Init
 
    begin
-      if Filename = "" then
+      if Args_File = "" then
          return;
       end if;
-      Ada.Text_IO.Open (File, In_File, Filename);
+      Ada.Text_IO.Open (File, In_File, Args_File);
 
       while not End_Of_File (File) loop
          Append (File_Text, Get_Line (File));
@@ -121,14 +159,10 @@ package body Gnat2Why_Args is
       Flow_Termination_Proof  := Get_Opt_Bool (V, Flow_Termination_Name);
       Flow_Show_GG            := Get_Opt_Bool (V, Flow_Show_GG_Name);
       Proof_Generate_Guards   := Get_Opt_Bool (V, Proof_Generate_Guards_Name);
-      Proof_Warnings          := Get_Opt_Bool (V, Proof_Warnings_Name);
       Pedantic                := Get_Opt_Bool (V, Pedantic_Name);
-      No_Loop_Unrolling       := Get_Opt_Bool (V, No_Loop_Unrolling_Name);
       Ide_Mode                := Get_Opt_Bool (V, Ide_Mode_Name);
       CWE                     := Get_Opt_Bool (V, CWE_Name);
       Limit_Units             := Get_Opt_Bool (V, Limit_Units_Name);
-      No_Inlining             := Get_Opt_Bool (V, No_Inlining_Name);
-      Info_Messages           := Get_Opt_Bool (V, Info_Messages_Name);
 
       if Has_Field (V, Report_Mode_Name) then
          Report_Mode :=
@@ -147,20 +181,14 @@ package body Gnat2Why_Args is
       if Has_Field (V, Limit_Region_Name) then
          Limit_Region := Get (Get (V, Limit_Region_Name));
       end if;
-      if Has_Field (V, Why3_Args_Name) then
-         declare
-            Ar  : constant JSON_Array := Get (V, Why3_Args_Name);
-         begin
-            for Var_Index in Positive range 1 .. Length (Ar) loop
-               Why3_Args.Append (Get (Get (Ar, Var_Index)));
-            end loop;
-         end;
-      end if;
       if Has_Field (V, Why3_Dir_Name) then
          Why3_Dir := Get (Get (V, Why3_Dir_Name));
       end if;
       if Has_Field (V, CP_Dir_Name) then
          CP_Res_Dir := Get (Get (V, CP_Dir_Name));
+      end if;
+      if Has_Field (V, File_Specific_Name) then
+         Read_File_Specific_Info (Get (V, File_Specific_Name));
       end if;
    end Init;
 
@@ -222,9 +250,7 @@ package body Gnat2Why_Args is
       Set_Field (Obj, Flow_Termination_Name, Flow_Termination_Proof);
       Set_Field (Obj, Flow_Show_GG_Name, Flow_Show_GG);
       Set_Field (Obj, Proof_Generate_Guards_Name, Proof_Generate_Guards);
-      Set_Field (Obj, Proof_Warnings_Name, Proof_Warnings);
       Set_Field (Obj, Pedantic_Name, Pedantic);
-      Set_Field (Obj, No_Loop_Unrolling_Name, No_Loop_Unrolling);
       Set_Field (Obj, Ide_Mode_Name, Ide_Mode);
       Set_Field (Obj, Report_Mode_Name, Report_Mode_Type'Image (Report_Mode));
       Set_Field (Obj, Limit_Units_Name, Limit_Units);
@@ -234,19 +260,44 @@ package body Gnat2Why_Args is
       Set_Field (Obj, Why3_Dir_Name, Why3_Dir);
       Set_Field (Obj, CP_Dir_Name, CP_Res_Dir);
       Set_Field (Obj, CWE_Name, CWE);
-      Set_Field (Obj, No_Inlining_Name, No_Inlining);
-      Set_Field (Obj, Info_Messages_Name, Info_Messages);
 
       declare
-         A : JSON_Array := Empty_Array;
+         FS : constant JSON_Value := Create_Object;
+         use File_Specific_Maps;
       begin
-         for Arg of Why3_Args loop
-            Append (A, Create (Arg));
+         for C in File_Specific_Map.Iterate loop
+            Set_Field (FS, Key (C), To_JSON (Element (C)));
          end loop;
-         Set_Field (Obj, Why3_Args_Name, A);
+         Set_Field (Obj, File_Specific_Name, FS);
       end;
 
       return Write_To_File (Obj);
    end Set;
+
+   -------------
+   -- To_JSON --
+   -------------
+
+   function To_JSON (R : File_Specific) return JSON_Value
+   is
+      Obj : constant JSON_Value := Create_Object;
+   begin
+      Set_Field (Obj, Proof_Warnings_Name, R.Proof_Warnings);
+      Set_Field (Obj, No_Loop_Unrolling_Name, R.No_Loop_Unrolling);
+      Set_Field (Obj, No_Inlining_Name, R.No_Inlining);
+      Set_Field (Obj, Info_Messages_Name, R.Info_Messages);
+      Set_Field (Obj, Why3_Args_Name, To_JSON (R.Why3_Args));
+      return Obj;
+   end To_JSON;
+
+   function To_JSON (L : String_Lists.List) return JSON_Array
+   is
+      A : JSON_Array := Empty_Array;
+   begin
+      for Arg of L loop
+         Append (A, Create (Arg));
+      end loop;
+      return A;
+   end To_JSON;
 
 end Gnat2Why_Args;

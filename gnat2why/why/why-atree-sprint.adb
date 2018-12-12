@@ -612,8 +612,9 @@ package body Why.Atree.Sprint is
 
          function Get_Proof_Dir return String is
             Index : String_Lists.Cursor;
+            L : constant String_Lists.List := Gnat2Why_Args.Why3_Args;
          begin
-            Index := String_Lists.Find (Container => Gnat2Why_Args.Why3_Args,
+            Index := String_Lists.Find (Container => L,
                                         Item => "--proof-dir");
 
             if String_Lists.Has_Element (Index) then

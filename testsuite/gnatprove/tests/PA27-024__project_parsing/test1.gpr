@@ -1,6 +1,6 @@
 project Test1 is
 
    package Prove is
-      for Switches use ("-aP=--codepeer=on");
+      for Proof_Switches ("Ada") use ("-aP=--codepeer=on");
    end Prove;
 end Test1;

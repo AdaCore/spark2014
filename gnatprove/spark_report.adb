@@ -121,7 +121,7 @@ procedure SPARK_Report is
    function Build_Switches_String (A : JSON_Array) return String;
    --  @param a JSON array of strings
    --  @return a string that concatenates all strings in the array, with spaces
-   --    as separators
+   --    as separators.
 
    procedure Process_Stats (C : Summary_Entries; Stats : JSON_Value);
    --  process the stats record for the VC and update the proof information
@@ -894,6 +894,19 @@ procedure SPARK_Report is
       function OS_String return String;
       --  Return a nice string for the OS GNATprove was compiled for
 
+      procedure Print_Switch_Entry (Name : UTF8_String; Value : JSON_Value);
+      --  Print one entry of the Proof_Switches attribute
+
+      ------------------------
+      -- Print_Switch_Entry --
+      ------------------------
+
+      procedure Print_Switch_Entry (Name : UTF8_String; Value : JSON_Value) is
+      begin
+         Put_Line ("   " & Name & ": " &
+                     Build_Switches_String (Get (Value)));
+      end Print_Switch_Entry;
+
       ---------------
       -- OS_String --
       ---------------
@@ -928,10 +941,14 @@ procedure SPARK_Report is
          Put_Line (Handle, "command line       : " &
                    Build_Switches_String (Get (Info, "cmdline")));
       end if;
-
       if Has_Field (Info, "switches") then
-         Put_Line (Handle, "gnatprove switches : " &
+         Put_Line (Handle, "Switches attribute: " &
                    Build_Switches_String (Get (Info, "switches")));
+      end if;
+      if Has_Field (Info, "proof_switches") then
+         Put_Line (Handle, " Proof_Switches attribute:");
+         Map_JSON_Object (Get (Info, "proof_switches"),
+                          Print_Switch_Entry'Access);
       end if;
    end Show_Header;
 
@@ -1048,7 +1065,7 @@ procedure SPARK_Report is
      Read_File_Into_String (Source_Directories_File);
    Info     : constant JSON_Value := Read (Contents);
 
-   --  Start of processing for SPARK_Report
+--  Start of processing for SPARK_Report
 
 begin
 

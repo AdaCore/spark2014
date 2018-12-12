@@ -19,7 +19,7 @@ project Test is
    end Compiler;
 
    package Prove is
-      for Switches use ("--level=0"); --  level 3 is required for proof
+      for Proof_Switches ("Ada") use ("--level=0"); --  level 3 is required for proof
    end Prove;
 
 end Test;

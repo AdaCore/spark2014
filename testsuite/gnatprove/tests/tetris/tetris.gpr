@@ -2,6 +2,6 @@ project Tetris is
    for Object_Dir use "obj";
 
    package Prove is
-      for Switches use ("--no-loop-unrolling", "-j0", "--level=2");
+      for Proof_Switches ("Ada") use ("--no-loop-unrolling", "-j0", "--level=2");
    end Prove;
 end Tetris;

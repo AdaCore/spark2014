@@ -1,0 +1,7 @@
+project Bad_FS3 is
+
+  package Prove is
+    for Proof_Switches ("not_existing.adb") use ("--no-inlining");
+  end Prove;
+
+end Bad_FS3;

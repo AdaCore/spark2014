@@ -202,7 +202,7 @@ project PolyORB_HI is
    -----------
 
    package Prove is
-      for Switches use
+      for Proof_Switches ("Ada") use
           ("--warnings=continue", -- Issue warnings and continue
            "--report=all"         -- Report all results of proving VCs
            );

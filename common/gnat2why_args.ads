@@ -24,6 +24,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with String_Utils;          use String_Utils;
 
@@ -132,16 +134,6 @@ package Gnat2Why_Args is
 
    Proof_Generate_Guards : Boolean := True;
 
-   --  Generate warnings by generated VCs and calling provers. As it is costly,
-   --  it is not enabled by default.
-   Proof_Warnings : Boolean := False;
-
-   --  Do not inline local functions to prove their code in the calling context
-   No_Inlining : Boolean := False;
-
-   --  Issue info messages related to gnatprove usage
-   Info_Messages : Boolean := False;
-
    --  When Pedantic is True, issue warnings on features that could cause
    --  portability issues with other compilers than GNAT. For example, issue
    --  a warning when the Ada RM allows reassociation of operators in an
@@ -154,8 +146,6 @@ package Gnat2Why_Args is
    --    A + (B + C)
 
    Pedantic : Boolean := False;
-
-   No_Loop_Unrolling : Boolean := False;  --  Prevent loop unrolling
 
    CWE : Boolean := False;  --  Issue CWE Ids in messages
 
@@ -204,17 +194,48 @@ package Gnat2Why_Args is
 
    Ide_Mode : Boolean := False;
 
-   --  The cmd line args to be passed to gnatwhy3. In fact the "gnatwhy3"
-   --  executable name is not hardcoded and is passed as a first argument
-   --  of this list.
+   type File_Specific is record
+      --  Generate warnings by generating VCs and calling provers. As it is
+      --  costly, it is not enabled by default.
+      Proof_Warnings    : Boolean := False;
 
-   Why3_Args : String_Lists.List := String_Lists.Empty_List;
+      --  Do not inline local functions to prove their code in the calling
+      --  context
+      No_Inlining       : Boolean := False;
+
+      --  Issue info messages related to gnatprove usage
+      Info_Messages     : Boolean := False;
+
+      --  The cmd line args to be passed to gnatwhy3. In fact the "gnatwhy3"
+      --  executable name is not hardcoded and is passed as a first argument
+      --  of this list.
+
+      Why3_Args         : String_Lists.List := String_Lists.Empty_List;
+
+      No_Loop_Unrolling : Boolean := False;  --  Prevent loop unrolling
+   end record;
+
+   package File_Specific_Maps is new Ada.Containers.Indefinite_Hashed_Maps
+     (Key_Type        => String,
+      Element_Type    => File_Specific,
+      Hash            => Ada.Strings.Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   File_Specific_Map : File_Specific_Maps.Map;
+
+   function Proof_Warnings return Boolean;
+   function No_Inlining return Boolean;
+   function Info_Messages return Boolean;
+   function No_Loop_Unrolling return Boolean;
+   function Why3_Args return String_Lists.List;
 
    --------------------------------
    -- Procedures of this package --
    --------------------------------
 
-   procedure Init (Filename : String);
+   procedure Init (Args_File   : String;
+                   Source_File : String);
    --  Read the extra options information and set the corresponding global
    --  variables above.
    --  @param Filename the filename to read the extra information from.
@@ -230,5 +251,19 @@ package Gnat2Why_Args is
    --  @return full name of the file that is to be passed to gnat2why using
    --    -gnates=<file>. The chosen file name will be identical for identical
    --    contents of the file.
+
+private
+
+   Local_Proof_Warnings    : Boolean := False;
+   Local_No_Inlining       : Boolean := False;
+   Local_Info_Messages     : Boolean := False;
+   Local_No_Loop_Unrolling : Boolean := False;
+   Local_Why3_Args         : String_Lists.List := String_Lists.Empty_List;
+
+   function Proof_Warnings return Boolean is (Local_Proof_Warnings);
+   function No_Inlining return Boolean is (Local_No_Inlining);
+   function Info_Messages return Boolean is (Local_Info_Messages);
+   function No_Loop_Unrolling return Boolean is (Local_No_Loop_Unrolling);
+   function Why3_Args return String_Lists.List is (Local_Why3_Args);
 
 end Gnat2Why_Args;

@@ -1,0 +1,6 @@
+project Bad_Global2 is
+
+  package Prove is
+    for Proof_Switches ("Ada") use ("--bad-switch");
+  end Prove;
+end Bad_Global2;

@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Hashed_Sets;
+with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;   use Ada.Directories;
 with Ada.Strings.Hash;
 with Call;              use Call;
@@ -146,8 +147,13 @@ package Configuration is
       end Builder;
 
       package Prove is
-         Proof_Dir : GNAT.Strings.String_Access;
-         Switches  : GNAT.Strings.String_List_Access;
+         Proof_Dir              : GNAT.Strings.String_Access;
+         Switches               : GNAT.Strings.String_List_Access;
+         Proof_Switches_Ada     : GNAT.Strings.String_List_Access;
+         Proof_Switches_Indices : GNAT.Strings.String_List_Access;
+
+         function Proof_Switches (Proj : Project_Type; Index : String)
+                                  return GNAT.Strings.String_List_Access;
       end Prove;
    end Prj_Attr;
 
@@ -180,18 +186,33 @@ package Configuration is
    Only_Given           : Boolean;
    CodePeer             : Boolean;
    Counterexample       : Boolean;
-   No_Inlining          : Boolean;
    Mode                 : GP_Mode;
    Warning_Mode         : Gnat2Why_Args.SPARK_Warning_Mode_Type;
    Report               : Report_Mode_Type;
-   Proof                : Proof_Mode;
-   Lazy                 : Boolean;
    Parallel             : Integer;
-   Provers              : String_Lists.List;
-   Timeout              : Integer;
-   Steps                : Integer;
-   Memlimit             : Integer;
-   CE_Timeout           : Integer;
+
+   type File_Specific is record
+      Proof             : Proof_Mode;
+      Lazy              : Boolean;
+      Provers           : String_Lists.List;
+      Timeout           : Integer;
+      Steps             : Integer;
+      Memlimit          : Integer;
+      CE_Timeout        : Integer;
+      No_Inlining       : Boolean;
+      Info              : Boolean;
+      No_Loop_Unrolling : Boolean;
+      Proof_Warnings    : Boolean;
+   end record;
+
+   package File_Specific_Maps is new Ada.Containers.Indefinite_Hashed_Maps
+     (Key_Type        => String,
+      Element_Type    => File_Specific,
+      Hash            => Ada.Strings.Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   File_Specific_Map : File_Specific_Maps.Map;
 
    Max_Non_Blank_Lines : constant := 6;
    --  Maximum number of consecutive non blank lines on standard output
@@ -289,7 +310,6 @@ package Configuration is
    function To_String (P : Proof_Mode) return String;
    --  transform the proof mode into a string for gnatwhy3 command line option
 
-   function Prover_List return String
-   with Pre => not Provers.Is_Empty;
-   --  return comma-separated list of provers
+   function Prover_List (Source_File : String) return String;
+   function Prover_List (FS : File_Specific) return String;
 end Configuration;

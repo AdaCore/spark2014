@@ -1,0 +1,7 @@
+project Bad_FS2 is
+
+  package Prove is
+    for Proof_Switches ("main.adb") use ("--target=ppc12");
+  end Prove;
+
+end Bad_FS2;

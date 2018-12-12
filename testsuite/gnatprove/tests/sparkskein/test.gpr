@@ -8,7 +8,7 @@ project Test is
    end Compiler;
 
    package Prove is
-      for Switches use ("--report=fail");
+      for Proof_Switches ("Ada") use ("--report=fail");
    end Prove;
 
 end Test;

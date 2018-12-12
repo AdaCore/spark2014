@@ -112,14 +112,15 @@ procedure Gnatprove with SPARK_Mode is
       Proj         : Project_Tree);
 
    procedure Generate_SPARK_Report
-     (Obj_Dir  : String;
+     (Proj     : Project_Type;
+      Obj_Dir  : String;
       Obj_Path : File_Array);
    --  Generate the SPARK report
 
    function Report_File_Is_Empty (Filename : String) return Boolean;
    --  Check if the given file is empty
 
-   function Compute_Why3_Args return String_Lists.List;
+   function Compute_Why3_Args (FS : File_Specific) return String_Lists.List;
    --  Compute the list of arguments of gnatwhy3. This list is passed first to
    --  gnat2why, which then passes it to gnatwhy3.
 
@@ -320,7 +321,8 @@ procedure Gnatprove with SPARK_Mode is
    -- Compute_Why3_Args --
    -----------------------
 
-   function Compute_Why3_Args return String_Lists.List is
+   function Compute_Why3_Args (FS : File_Specific) return String_Lists.List
+   is
 
       Args    : String_Lists.List;
       Why3_VF : constant Virtual_File :=
@@ -351,7 +353,7 @@ procedure Gnatprove with SPARK_Mode is
            (if Gnatwhy3_Conf /= "" then
               (1 => new String'("--prepare-shared"),
                2 => new String'("--prover"),
-               3 => new String'(Prover_List),
+               3 => new String'(Prover_List ("Ada")),
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all),
                6 => new String'("--why3-conf"),
@@ -359,7 +361,7 @@ procedure Gnatprove with SPARK_Mode is
             else
               (1 => new String'("--prepare-shared"),
                2 => new String'("--prover"),
-               3 => new String'(Prover_List),
+               3 => new String'(Prover_List ("Ada")),
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all)));
          Res : Boolean;
@@ -407,21 +409,21 @@ procedure Gnatprove with SPARK_Mode is
       end if;
 
       Args.Append ("--timeout");
-      Args.Append (Image (Timeout, 1));
+      Args.Append (Image (FS.Timeout, 1));
 
       Args.Append ("--steps");
-      Args.Append (Image (Steps, 1));
+      Args.Append (Image (FS.Steps, 1));
 
       Args.Append ("--memlimit");
-      Args.Append (Image (Memlimit, 1));
+      Args.Append (Image (FS.Memlimit, 1));
 
-      if not Provers.Is_Empty then
+      if not FS.Provers.Is_Empty then
          Args.Append ("--prover");
-         Args.Append (Prover_List);
+         Args.Append (Prover_List (FS));
       end if;
 
       Args.Append ("--proof");
-      Args.Append (To_String (Proof));
+      Args.Append (To_String (FS.Proof));
 
       Args.Append ("--socket");
       Args.Append (Socket_Name.all);
@@ -438,7 +440,7 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--force");
       end if;
 
-      if not Lazy then
+      if not FS.Lazy then
          Args.Append ("--prove-all");
       end if;
 
@@ -498,7 +500,7 @@ procedure Gnatprove with SPARK_Mode is
       end if;
 
       Args.Append ("--ce-timeout");
-      Args.Append (Image (CE_Timeout, 1));
+      Args.Append (Image (FS.CE_Timeout, 1));
 
       return Args;
    end Compute_Why3_Args;
@@ -605,7 +607,8 @@ procedure Gnatprove with SPARK_Mode is
    ---------------------------
 
    procedure Generate_SPARK_Report
-     (Obj_Dir  : String;
+     (Proj     : Project_Type;
+      Obj_Dir  : String;
       Obj_Path : File_Array)
    is
       Obj_Dir_Fn : constant String :=
@@ -664,6 +667,25 @@ procedure Gnatprove with SPARK_Mode is
                        Create (Prj_Attr.Prove.Switches (J).all));
             end loop;
             Set_Field (JSON_Rec, "switches", Switches_JSON);
+         end;
+      end if;
+
+      if Prj_Attr.Prove.Proof_Switches_Indices'Length > 0 then
+         declare
+            FS_Switches_JSON : constant JSON_Value := Create_Object;
+         begin
+            for J of Prj_Attr.Prove.Proof_Switches_Indices.all loop
+               declare
+                  Switch_Arr : JSON_Array;
+               begin
+                  for Elt of Prj_Attr.Prove.Proof_Switches (Proj, J.all).all
+                  loop
+                     Append (Switch_Arr, Create (Elt.all));
+                  end loop;
+                  Set_Field (FS_Switches_JSON, J.all, Switch_Arr);
+               end;
+            end loop;
+            Set_Field (JSON_Rec, "proof_switches", FS_Switches_JSON);
          end;
       end if;
 
@@ -798,10 +820,22 @@ procedure Gnatprove with SPARK_Mode is
          Gnat2Why_Args.Flow_Show_GG := CL_Switches.Flow_Show_GG;
          Gnat2Why_Args.Proof_Generate_Guards :=
            not CL_Switches.No_Axiom_Guard;
-         Gnat2Why_Args.Proof_Warnings := CL_Switches.Proof_Warnings;
+         for FSC in Configuration.File_Specific_Map.Iterate loop
+            declare
+               R  : Gnat2Why_Args.File_Specific;
+               FS : File_Specific renames File_Specific_Maps.Element (FSC);
+            begin
+               R.Proof_Warnings := FS.Proof_Warnings;
+               R.No_Loop_Unrolling := FS.No_Loop_Unrolling;
+               R.Info_Messages := FS.Info;
+               R.No_Inlining := FS.No_Inlining;
+               R.Why3_Args := Compute_Why3_Args (FS);
+               Gnat2Why_Args.File_Specific_Map.Insert
+                 (File_Specific_Maps.Key (FSC), R);
+            end;
+         end loop;
          Gnat2Why_Args.Ide_Mode := IDE_Mode;
          Gnat2Why_Args.Pedantic := CL_Switches.Pedantic;
-         Gnat2Why_Args.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
          Gnat2Why_Args.Limit_Units := CL_Switches.U;
          Gnat2Why_Args.Limit_Subp :=
            Ada.Strings.Unbounded.To_Unbounded_String
@@ -812,12 +846,9 @@ procedure Gnatprove with SPARK_Mode is
          Gnat2Why_Args.Limit_Region :=
            Ada.Strings.Unbounded.To_Unbounded_String
              (CL_Switches.Limit_Region.all);
-         Gnat2Why_Args.Why3_Args := Compute_Why3_Args;
          Gnat2Why_Args.Report_Mode := Report;
          Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
          Gnat2Why_Args.CWE := CL_Switches.CWE;
-         Gnat2Why_Args.Info_Messages := CL_Switches.Info;
-         Gnat2Why_Args.No_Inlining := No_Inlining;
 
          if CodePeer then
             Gnat2Why_Args.CP_Res_Dir :=
@@ -882,9 +913,13 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("-U");
       end if;
 
-      if Steps /= 0 then
-         Args.Append ("-steps=" & Image (Steps / 10, Min_Width => 1));
-      end if;
+      declare
+         Steps : constant Integer := File_Specific_Map.Element ("Ada").Steps;
+      begin
+         if Steps /= 0 then
+            Args.Append ("-steps=" & Image (Steps / 10, Min_Width => 1));
+         end if;
+      end;
 
       if not Null_Or_Empty_String (CL_Switches.RTS) then
          Args.Append ("--RTS=" & CL_Switches.RTS.all);
@@ -1329,7 +1364,8 @@ begin
         Object_Path (Tree.Root_Project, Recursive => True);
    begin
       Generate_SPARK_Report
-        (Tree.Root_Project.Artifacts_Dir.Display_Full_Name, Obj_Path);
+        (Tree.Root_Project,
+         Tree.Root_Project.Artifacts_Dir.Display_Full_Name, Obj_Path);
    end;
 exception
    when Invalid_Project =>
