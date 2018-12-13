@@ -449,7 +449,7 @@ package body Flow_Refinement is
 
       for Var of Vars loop
          if Is_Constituent (Var) then
-            pragma Assert (Var.Kind in Direct_Mapping | Record_Field);
+            pragma Assert (Var.Kind = Direct_Mapping);
             declare
                Projected_Entity, Partial_Entity : Node_Sets.Set;
 
