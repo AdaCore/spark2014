@@ -23,6 +23,7 @@
 
 with Elists;                      use Elists;
 with Lib;                         use Lib;
+with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Output;                      use Output;
 with Restrict;                    use Restrict;
@@ -3675,20 +3676,262 @@ package body Flow.Analysis is
 
    procedure Check_Depends_Contract (FA : in out Flow_Analysis_Graphs) is
 
-      User_Deps           : Dependency_Maps.Map;
-      Projected_User_Deps : Dependency_Maps.Map;
-      Actual_Deps         : Dependency_Maps.Map;
+      procedure Check (Generated :     Dependency_Maps.Map;
+                       User      :     Dependency_Maps.Map;
+                       Missing   : out Dependency_Maps.Map;
+                       Unused    : out Dependency_Maps.Map);
+      --  Populate Missing and Unused with respectively missing and unused
+      --  dependencies.
+
+      function Find_Out
+        (User : Dependency_Maps.Map;
+         G    : Flow_Id)
+         return Dependency_Maps.Cursor;
+      --  Returns the clause with G or with one of its encapsulating abstract
+      --  states, if they appear in the User contract; otherwise, return
+      --  No_Element.
+
+      function Find_In
+        (User : Flow_Id_Sets.Set;
+         G    : Flow_Id)
+         return Flow_Id
+      with Pre  => Present (G),
+           Post => (if Present (Find_In'Result)
+                    then User.Contains (Find_In'Result));
+      --  Returns G or one of its enclosing abstract states if they appear in
+      --  in the User contract.
+
+      function Strip_Proof_Ins
+        (Deps : Dependency_Maps.Map)
+         return Dependency_Maps.Map;
+      --  Strips global Proof_Ins from the RHS of Deps
+
+      -----------
+      -- Check --
+      -----------
+
+      procedure Check (Generated :     Dependency_Maps.Map;
+                       User      :     Dependency_Maps.Map;
+                       Missing   : out Dependency_Maps.Map;
+                       Unused    : out Dependency_Maps.Map)
+      is
+      begin
+         Missing := Dependency_Maps.Empty_Map;
+         Unused  := User;
+
+         --  Naming convention:
+         --
+         --    Prefix:
+         --       G = Generated,
+         --       U = User-written
+         --
+         --    Suffix:
+         --       Out = LHS,
+         --       Ins = RHS,
+         --       In  = RHS item
+
+         for C in Generated.Iterate loop
+            declare
+               G_Out : Flow_Id          renames Dependency_Maps.Key (C);
+               G_Ins : Flow_Id_Sets.Set renames Generated (C);
+
+               U_Pos : constant Dependency_Maps.Cursor :=
+                 Find_Out (User, G_Out);
+               --  Position of the corresponding user-dependency clause
+
+               U_Out : constant Flow_Id :=
+                 (if Dependency_Maps.Has_Element (U_Pos)
+                  then Dependency_Maps.Key (U_Pos)
+                  else Null_Flow_Id);
+
+            begin
+               if Dependency_Maps.Has_Element (U_Pos) then
+                  for G_In of G_Ins loop
+                     declare
+                        U_In : constant Flow_Id :=
+                          Find_In (User (U_Pos), G_In);
+
+                        Position : Dependency_Maps.Cursor;
+                        Inserted : Boolean;
+
+                     begin
+                        if Present (U_In) then
+                           Unused (U_Out).Exclude (U_In);
+                           --  ??? if the RHS becomes empty where do we delete
+                           --  the entire clause?
+
+                        else
+                           Missing.Insert
+                             (Key      => U_Out,
+                              Position => Position,
+                              Inserted => Inserted);
+
+                           Missing (Position).Insert (G_In);
+                        end if;
+                     end;
+                  end loop;
+               else
+                  Missing.Insert (Key      => G_Out,
+                                  New_Item => G_Ins);
+               end if;
+            end;
+         end loop;
+
+         --  For task T the "T => T" dependency is optional, so remove it from
+         --  the Missing map (if it is there). Typically the task will always
+         --  depend on itself and this dependency is optionally present in the
+         --  user contract. However, a subprogram nested in the task body with
+         --  the task itself among its globals, then the task might become
+         --  dependent on extra items. Note: as of today, this can't really
+         --  happen, because the nested subprogram body would have to either
+         --  violate its own contract or be annotated with SPARK_Mode => Off.
+
+         if Ekind (FA.Spec_Entity) = E_Task_Type then
+            declare
+               Task_Id : constant Flow_Id :=
+                 Direct_Mapping_Id (FA.Spec_Entity);
+
+               pragma Assert (Generated (Task_Id).Contains (Task_Id));
+               --  Sanity check: "T => T" dependency is always generated
+
+               Task_Pos : Dependency_Maps.Cursor := Missing.Find (Task_Id);
+
+            begin
+               if Dependency_Maps.Has_Element (Task_Pos) then
+                  Missing (Task_Pos).Exclude (Task_Id);
+
+                  --  If we get a "T => null" clause, then delete it
+
+                  if Missing (Task_Pos).Is_Empty then
+                     Missing.Delete (Task_Pos);
+                  end if;
+               end if;
+            end;
+         end if;
+      end Check;
+
+      -------------
+      -- Find_In --
+      -------------
+
+      function Find_In
+        (User : Flow_Id_Sets.Set;
+         G    : Flow_Id)
+         return Flow_Id
+      is
+      begin
+         if User.Contains (G) then
+            return G;
+         elsif Is_Constituent (G) then
+            return Find_In (User, Encapsulating_State (G));
+         else
+            return Null_Flow_Id;
+         end if;
+      end Find_In;
+
+      --------------
+      -- Find_Out --
+      --------------
+
+      function Find_Out
+        (User : Dependency_Maps.Map;
+         G    : Flow_Id)
+         return Dependency_Maps.Cursor
+      is
+         C : constant Dependency_Maps.Cursor := User.Find (G);
+      begin
+         if Dependency_Maps.Has_Element (C) then
+            return C;
+         elsif Is_Constituent (G) then
+            return Find_Out (User, Encapsulating_State (G));
+         else
+            return Dependency_Maps.No_Element;
+         end if;
+      end Find_Out;
+
+      ---------------------
+      -- Strip_Proof_Ins --
+      ---------------------
+
+      function Strip_Proof_Ins
+        (Deps : Dependency_Maps.Map)
+         return Dependency_Maps.Map
+      is
+         User_Globals  : Global_Flow_Ids;
+
+         --  Global Proof_Ins cannot appear in the RHS of a Depends contract.
+         --  We get them here because Compute_Dependency_Relation returns them
+         --  and this is used in Find_Exports_Derived_From_Proof_Ins.
+
+         Stripped : Dependency_Maps.Map;
+
+      begin
+         Get_Globals (FA.Analyzed_Entity, FA.B_Scope, False, User_Globals);
+
+         for C in Deps.Iterate loop
+            declare
+               G_Out : Flow_Id          renames Dependency_Maps.Key (C);
+               G_Ins : Flow_Id_Sets.Set renames FA.Dependency_Map (C);
+
+               Ins : Flow_Id_Sets.Set;
+
+            begin
+               for G_In of G_Ins loop
+                  if User_Globals.Proof_Ins.Contains
+                      (Change_Variant (G_In, In_View))
+                  then
+                     null;
+                  else
+                     Ins.Insert (G_In);
+                  end if;
+               end loop;
+
+               --  Keep the clause, except when it is "null => null"
+
+               if Present (G_Out) or else not Ins.Is_Empty then
+                  Stripped.Insert (Key      => G_Out,
+                                   New_Item => Ins);
+               end if;
+            end;
+         end loop;
+
+         return Stripped;
+      end Strip_Proof_Ins;
+
+      --  Local variables
+
+      User_Deps             : Dependency_Maps.Map;
+      Projected_User_Deps   : Dependency_Maps.Map;
+      Actual_Deps           : Dependency_Maps.Map;
+      Projected_Actual_Deps : Dependency_Maps.Map;
+
+      Missing_Deps        : Dependency_Maps.Map;
+      Unused_Deps         : Dependency_Maps.Map;
 
       Implicit_Param : constant Entity_Id :=
-        Get_Implicit_Formal (FA.Analyzed_Entity);
-      --  Implicit formal parameter (for task types and protected operations)
+        (if Is_Protected_Operation (FA.Spec_Entity)
+         then Get_Implicit_Formal (FA.Analyzed_Entity)
+         else Empty);
+      --  Implicit formal parameter for protected operations
+      --  ??? this implicit parameter is *not* an implicit dependency, so
+      --  it should not be involved in any suppression, see SPARK 6.1.4:
+      --
+      --  "Similarly, for purposes of the rules concerning the Global,
+      --  Refined_Global, Depends, and Refined_Depends aspects as they apply to
+      --  protected operations, the current instance of the enclosing protected
+      --  unit is considered to be a formal parameter (of mode in for a
+      --  protected function, of mode in out otherwise) and a protected
+      --  entry is considered to be a protected procedure."
+      --
+      --  And that is all what SPARK RM says abut this "implicit" parameter.
 
-      Depends_Scope : constant Flow_Scope :=
-        (if Present (FA.Refined_Depends_N)
-         then FA.B_Scope
-         else FA.S_Scope);
+      Depends_Scope : constant Flow_Scope := (if Present (FA.Refined_Depends_N)
+                                              then FA.B_Scope
+                                              else FA.S_Scope);
       --  This is body scope if we are checking a Refined_Depends contract or
       --  spec scope if we are checking a Depends contract.
+
+   --  Start of processing for Check_Depends_Contract
 
    begin
       --  If the user has not specified a dependency relation we have no work
@@ -3700,217 +3943,106 @@ package body Flow.Analysis is
 
       --  Read the user-written Depends
 
-      Get_Depends (Subprogram => FA.Analyzed_Entity,
-                   Scope      => FA.B_Scope,
-                   Classwide  => False,
-                   Depends    => User_Deps);
+      User_Deps := (if Present (FA.Refined_Depends_N)
+                    then Parse_Depends (FA.Refined_Depends_N)
+                    else Parse_Depends (FA.Depends_N));
+
+      --  Read the generated Refined_Depends
+
+      Actual_Deps := Strip_Proof_Ins (FA.Dependency_Map);
 
       --  Up-project the dependencies
 
-      Up_Project (User_Deps, Projected_User_Deps, Depends_Scope);
-      Up_Project (FA.Dependency_Map, Actual_Deps, Depends_Scope);
+      Up_Project (User_Deps,   Projected_User_Deps, Depends_Scope);
+      Up_Project (Actual_Deps, Projected_Actual_Deps, Depends_Scope);
+
+      --  Detect inconsistent dependencies
+
+      Check (Generated => Projected_Actual_Deps,
+             User      => Projected_User_Deps,
+             Missing   => Missing_Deps,
+             Unused    => Unused_Deps);
 
       --  Debug output
 
       if Debug_Trace_Depends then
-         Print_Dependency_Map ("user",   Projected_User_Deps);
-         Print_Dependency_Map ("actual", Actual_Deps);
+         Write_Line (Get_Name_String (Chars (FA.Analyzed_Entity)) & ":");
+         Print_Dependency_Map ("user",    Projected_User_Deps);
+         Print_Dependency_Map ("actual",  Actual_Deps);
+         Print_Dependency_Map ("missing", Missing_Deps);
+         Print_Dependency_Map ("unused",  Unused_Deps);
       end if;
 
-      --  If the user depends do not include something we have in the actual
-      --  depends we will raise an appropriate error. We should however also
-      --  sanity check there is nothing in the user dependencies which is *not*
-      --  in the actual dependencies.
-
-      for C in Projected_User_Deps.Iterate loop
+      for C in Unused_Deps.Iterate loop
          declare
-            F_Out : Flow_Id renames Dependency_Maps.Key (C);
+            Unused_Out : Flow_Id renames Dependency_Maps.Key (C);
+            Unused_Ins : Flow_Id_Sets.Set renames Unused_Deps (C);
 
          begin
-            if not Actual_Deps.Contains (F_Out) then
-               --  ??? check quotation in errout.ads
+            --  Detect extra LHSs in the user-written dependencies
+
+            if Present (Unused_Out)
+                and then
+                not Dependency_Maps.Has_Element
+                  (Find_Out (Projected_User_Deps, Unused_Out))
+            then
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "incorrect dependency & is not an output of &",
                   N        => Search_Depends_Contract
-                                (FA.Analyzed_Entity,
-                                 Get_Direct_Mapping_Id (F_Out)),
-                  F1       => F_Out,
+                                 (FA.Analyzed_Entity,
+                                  Get_Direct_Mapping_Id (Unused_Out)),
+                  F1       => Unused_Out,
                   F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Tag      => Depends_Null,
                   Severity => Medium_Check_Kind);
             end if;
-         end;
-      end loop;
 
-      --  We go through the actual dependencies because they are always
-      --  complete.
+            for Unused_In of Unused_Ins loop
 
-      for C in Actual_Deps.Iterate loop
-         declare
-            F_Out  : Flow_Id          renames Dependency_Maps.Key (C);
-            A_Deps : Flow_Id_Sets.Set renames Actual_Deps (C);
-            U_Deps : Flow_Id_Sets.Set;
-
-            Projected_User_Out : constant Dependency_Maps.Cursor :=
-              Projected_User_Deps.Find (F_Out);
-
-         begin
-            if Dependency_Maps.Has_Element (Projected_User_Out) then
-               --  ??? Move should be fine here
-               U_Deps := Projected_User_Deps (Projected_User_Out);
-
-            --  The null dependency is special: it may not be present in the
-            --  user dependency because null => null would be super tedious to
-            --  write.
-
-            elsif F_Out = Null_Flow_Id then
-               null;
-
-            else
-               Error_Msg_Flow
-                 (FA       => FA,
-                  Msg      => "expected to see & on the left-hand-side of" &
-                              " a dependency relation",
-                  N        => FA.Depends_N,
-                  F1       => F_Out,
-                  Tag      => Depends_Missing_Clause,
-                  Severity => Medium_Check_Kind);
-            end if;
-
-            --  Check consistency
-
-            for Missing_Var of A_Deps.Difference (U_Deps) loop
-               --  Suppress missing dependencies related to implicit concurrent
-               --  unit, i.e. null => CU.
-
-               if F_Out = Null_Flow_Id
-                 and then Missing_Var.Kind = Direct_Mapping
-                 and then Present (Implicit_Param)
-                 and then Implicit_Param = Get_Direct_Mapping_Id (Missing_Var)
-               then
-                  null;
-
-               --  Items missing from the RHS of a user dependency
-
-               else
-                  if F_Out = Null_Flow_Id then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "missing dependency ""null => %""",
-                        N        => FA.Depends_N,
-                        F1       => Missing_Var,
-                        Tag      => Depends_Null,
-                        Severity => Medium_Check_Kind);
-
-                  else
-                     declare
-                        use Flow_Id_Sets;
-
-                        Path : constant Vertex_Sets.Set :=
-                          Dependency_Path (FA      => FA,
-                                           Input   => Missing_Var,
-                                           Outputs => To_Set (F_Out));
-
-                     begin
-                        if F_Out = Direct_Mapping_Id (FA.Analyzed_Entity) then
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Path     => Path,
-                              Msg      => "missing dependency ""%'Result => " &
-                                          "%""",
-                              N        => Search_Depends_Contract
-                                            (FA.Analyzed_Entity,
-                                             FA.Analyzed_Entity),
-                              F1       => F_Out,
-                              F2       => Missing_Var,
-                              Tag      => Depends_Missing,
-                              Severity => Medium_Check_Kind);
-
-                        else
-                           declare
-                              N : constant Node_Id :=
-                                Search_Depends_Contract
-                                  (FA.Analyzed_Entity,
-                                   Get_Direct_Mapping_Id (F_Out));
-
-                              Msg1 : constant String :=
-                                (if F_Out = Missing_Var
-                                 then "self-dependency "
-                                 else "dependency ");
-
-                              Msg2 : constant String :=
-                                (if F_Out = Missing_Var then
-                                   (if Has_Bounds (F_Out, FA.B_Scope)
-                                    then " (array bounds are preserved)"
-                                    elsif Contains_Discriminants (F_Out,
-                                                                  FA.B_Scope)
-                                    then " (discriminants are preserved)"
-                                    else "")
-                                 else "");
-
-                           begin
-                              Error_Msg_Flow
-                                (FA       => FA,
-                                 Path     => Path,
-                                 Msg      => "missing " & Msg1 & """% => %""" &
-                                             Msg2,
-                                 N        => N,
-                                 F1       => F_Out,
-                                 F2       => Missing_Var,
-                                 Tag      => Depends_Missing,
-                                 Severity => Medium_Check_Kind);
-                           end;
-                        end if;
-                     end;
-                  end if;
-               end if;
-            end loop;
-
-            for Wrong_Var of U_Deps.Difference (A_Deps) loop
                --  If the RHS mentions an extra state with visible null
                --  refinement then we suppress the check as trivially void.
 
-               if Is_Dummy_Abstract_State (Wrong_Var, FA.B_Scope) then
+               if Is_Dummy_Abstract_State (Unused_In, FA.B_Scope) then
                   null;
 
                --  Suppress incorrect dependencies related to implicit
                --  concurrent units, i.e. "X => CU".
 
-               elsif F_Out.Kind = Direct_Mapping
+               elsif Unused_Out.Kind = Direct_Mapping
                  and then Present (Implicit_Param)
-                 and then Implicit_Param = Get_Direct_Mapping_Id (Wrong_Var)
-                 and then Wrong_Var.Kind = Direct_Mapping
+                 and then Unused_In.Kind = Direct_Mapping
+                 and then Implicit_Param = Get_Direct_Mapping_Id (Unused_In)
                then
                   null;
 
                --  Extra items on the RHS of a user dependency
 
-               elsif not Is_Variable (Wrong_Var) then
+               elsif not Is_Variable (Unused_In) then
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "& cannot appear in Depends",
                      N        => Search_Depends_Contract
                                    (FA.Analyzed_Entity,
-                                    Get_Direct_Mapping_Id (F_Out),
-                                    Get_Direct_Mapping_Id (Wrong_Var)),
-                     F1       => Wrong_Var,
+                                    Get_Direct_Mapping_Id (Unused_Out),
+                                    Get_Direct_Mapping_Id (Unused_In)),
+                     F1       => Unused_In,
                      Tag      => Depends_Wrong,
                      Severity => Medium_Check_Kind);
 
-               elsif F_Out = Null_Flow_Id then
+               elsif Unused_Out = Null_Flow_Id then
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "incorrect dependency ""null => %""",
                      N        => Search_Depends_Contract
                                    (FA.Analyzed_Entity,
                                     Empty,
-                                    Get_Direct_Mapping_Id (Wrong_Var)),
-                     F1       => Wrong_Var,
+                                    Get_Direct_Mapping_Id (Unused_In)),
+                     F1       => Unused_In,
                      Tag      => Depends_Wrong,
                      Severity => Medium_Check_Kind);
 
-               elsif F_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
+               elsif Unused_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
                  and then Ekind (FA.Analyzed_Entity) = E_Function
                then
                   Error_Msg_Flow
@@ -3918,10 +4050,10 @@ package body Flow.Analysis is
                      Msg      => "incorrect dependency ""%'Result => %""",
                      N        => Search_Depends_Contract
                                    (FA.Analyzed_Entity,
-                                    Get_Direct_Mapping_Id (F_Out),
-                                    Get_Direct_Mapping_Id (Wrong_Var)),
-                     F1       => F_Out,
-                     F2       => Wrong_Var,
+                                    Get_Direct_Mapping_Id (Unused_Out),
+                                    Get_Direct_Mapping_Id (Unused_In)),
+                     F1       => Unused_Out,
+                     F2       => Unused_In,
                      Tag      => Depends_Wrong,
                      Severity => Medium_Check_Kind);
 
@@ -3931,12 +4063,127 @@ package body Flow.Analysis is
                      Msg      => "incorrect dependency ""% => %""",
                      N        => Search_Depends_Contract
                                    (FA.Analyzed_Entity,
-                                    Get_Direct_Mapping_Id (F_Out),
-                                    Get_Direct_Mapping_Id (Wrong_Var)),
-                     F1       => F_Out,
-                     F2       => Wrong_Var,
+                                    Get_Direct_Mapping_Id (Unused_Out),
+                                    Get_Direct_Mapping_Id (Unused_In)),
+                     F1       => Unused_Out,
+                     F2       => Unused_In,
                      Tag      => Depends_Wrong,
                      Severity => Medium_Check_Kind);
+               end if;
+            end loop;
+         end;
+      end loop;
+
+      for C in Missing_Deps.Iterate loop
+         declare
+            Missing_Out : Flow_Id renames Dependency_Maps.Key (C);
+            Missing_Ins : Flow_Id_Sets.Set renames Missing_Deps (C);
+
+         begin
+            if not Dependency_Maps.Has_Element
+              (Find_Out (User_Deps, Missing_Out))
+            then
+               if Present (Implicit_Param)
+                 and then Missing_Out = Direct_Mapping_Id (Implicit_Param)
+               then
+                  null;
+
+               elsif Missing_Out = Null_Flow_Id then
+                  null;
+
+               else
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "expected to see & on the left-hand-side of" &
+                                 " a dependency relation",
+                     N        => FA.Depends_N,
+                     F1       => Missing_Out,
+                     Tag      => Depends_Missing_Clause,
+                     Severity => Medium_Check_Kind);
+               end if;
+            end if;
+
+            for Missing_In of Missing_Ins loop
+               if Missing_Out = Null_Flow_Id
+                 and then Missing_In.Kind = Direct_Mapping
+                 and then Present (Implicit_Param)
+                 and then Implicit_Param = Get_Direct_Mapping_Id (Missing_In)
+               then
+                  null;
+
+               --  Items missing from the RHS of a user dependency
+
+               else
+                  if Missing_Out = Null_Flow_Id then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "missing dependency ""null => %""",
+                        N        => FA.Depends_N,
+                        F1       => Missing_In,
+                        Tag      => Depends_Null,
+                        Severity => Medium_Check_Kind);
+                  else
+                     declare
+                        use Flow_Id_Sets;
+
+                        Path : constant Vertex_Sets.Set :=
+                          Dependency_Path (FA      => FA,
+                                           Input   => Missing_In,
+                                           Outputs => To_Set (Missing_Out));
+
+                     begin
+                        if Missing_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
+                        then
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Path     => Path,
+                              Msg      => "missing dependency ""%'Result => " &
+                                          "%""",
+                              N        => Search_Depends_Contract
+                                             (FA.Analyzed_Entity,
+                                              FA.Analyzed_Entity),
+                              F1       => Missing_Out,
+                              F2       => Missing_In,
+                              Tag      => Depends_Missing,
+                              Severity => Medium_Check_Kind);
+
+                        else
+                           declare
+                              N : constant Node_Id :=
+                                Search_Depends_Contract
+                                  (FA.Analyzed_Entity,
+                                   Get_Direct_Mapping_Id (Missing_Out));
+
+                              Kind : constant String :=
+                                (if Missing_Out = Missing_In
+                                 then "self-dependency "
+                                 else "dependency ");
+
+                              Hint : constant String :=
+                                (if Missing_Out = Missing_In then
+                                   (if Has_Bounds (Missing_Out, FA.B_Scope)
+                                    then " (array bounds are preserved)"
+                                    elsif Contains_Discriminants (Missing_Out,
+                                                                  FA.B_Scope)
+                                    then " (discriminants are preserved)"
+                                    else "")
+                                 else "");
+
+                           begin
+                              Error_Msg_Flow
+                                (FA       => FA,
+                                 Path     => Path,
+                                 Msg      => "missing " & Kind & """% => %""" &
+                                             Hint,
+                                 N        => N,
+                                 F1       => Missing_Out,
+                                 F2       => Missing_In,
+                                 Tag      => Depends_Missing,
+                                 Severity => Medium_Check_Kind);
+                           end;
+                        end if;
+                     end;
+                  end if;
                end if;
             end loop;
          end;

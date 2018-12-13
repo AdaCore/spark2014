@@ -197,11 +197,33 @@ package body Flow.Slice is
          declare
             F_Final : Flow_Id renames FA.PDG.Get_Key (V_Final);
 
+            function V_Initial return Flow_Graphs.Vertex_Id is
+              (FA.PDG.Get_Vertex
+                 (Change_Variant (F_Final, Initial_Value)))
+            with Pure_Function;
+            --  Returns the corresponding 'Initial vertex. We use this to
+            --  detect uninitialized outputs; otherwise they would appear in
+            --  the dependency relation as "X => null", which means that X is
+            --  initialized with a literal constant.
+            --
+            --  Note: is a function and not a constant, because we can't always
+            --  compute it; the Pure aspect avoids repeated calls.
+            --
+            --  ??? I think this should be done in Internal_Dependency, i.e. it
+            --  should distinguish between an item not being written at all and
+            --  being written with no data dependency.
+
          begin
             if F_Final.Variant = Final_Value
               and then FA.Atr (V_Final).Is_Export
               and then Is_Variable (F_Final)
               and then not Synthetic (F_Final)
+              and then not
+                (FA.PDG.In_Neighbour_Count (V_Final) = 1
+                   and then
+                 FA.PDG.Parent (V_Final) = V_Initial
+                   and then
+                 not FA.Atr (V_Initial).Is_Initialized)
             then
                Out_Vertices.Insert (V_Final);
             end if;

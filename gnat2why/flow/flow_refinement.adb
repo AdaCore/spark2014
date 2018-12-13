@@ -541,8 +541,6 @@ package body Flow_Refinement is
                          Projected_Deps : out Dependency_Maps.Map;
                          Scope          : Flow_Scope)
    is
-      use type Flow_Id_Sets.Set;
-
       LHS_Constituents : Flow_Id_Sets.Set;
       --  Constituents that are appear on the LHS of the dependency map
 
@@ -552,9 +550,104 @@ package body Flow_Refinement is
       Null_Clause : Dependency_Maps.Cursor;
       --  Position of the "null => ..." clause
 
+      Visible_Views  : Flow_Id_Sets.Set;
+      Projection_Map : Flow_Id_Surjection.Map;
+
+      function Visible_View (F : Flow_Id) return Flow_Id
+      with Pre  => Present (F),
+           Post => Present (Visible_View'Result);
+
+      ------------------
+      -- Visible_View --
+      ------------------
+
+      function Visible_View (F : Flow_Id) return Flow_Id is
+         Projected, Partial : Flow_Id_Sets.Set;
+
+      begin
+         if Is_Constituent (F) then
+            Up_Project (Flow_Id_Sets.To_Set (F), Scope, Projected, Partial);
+            pragma Assert (Partial.Length + Projected.Length = 1);
+
+            return (if Projected.Is_Empty
+                    then Partial (Partial.First)
+                    else Projected (Projected.First));
+         else
+            return F;
+         end if;
+      end Visible_View;
+
+   --  Start of processing for Up_Project
+
    begin
-      --  First collect constituents from the LHS of the dependency map; we
-      --  will use them to decide whether to add a self-dependency on their
+      --  First, up-project all items in the dependency map to their most
+      --  precise representation that is visible from Scope.
+
+      for Clause in Deps.Iterate loop
+         declare
+            LHS : Flow_Id renames Dependency_Maps.Key (Clause);
+            RHS : Flow_Id_Sets.Set renames Deps (Clause);
+
+            procedure Add_Mapping (Item : Flow_Id);
+            --  Add mappring from Item to its most precise representation
+
+            -----------------
+            -- Add_Mapping --
+            -----------------
+
+            procedure Add_Mapping (Item : Flow_Id) is
+               Repr : constant Flow_Id := Visible_View (Item);
+
+            begin
+               Projection_Map.Include (Key      => Item,
+                                       New_Item => Repr);
+
+               Visible_Views.Include (Repr);
+            end Add_Mapping;
+
+         begin
+            if Present (LHS) then
+               Add_Mapping (LHS);
+            end if;
+
+            for RHS_Item of RHS loop
+               Add_Mapping (RHS_Item);
+            end loop;
+         end;
+      end loop;
+
+      --  The most precise representation might violate SPARK RM 7.2.6(7), i.e.
+      --  we might get both a constituent and its encapsulating abstract state.
+      --  We climb the abstract state hierarchy and if get an abstract state
+      --  that appears in the contract we subsitute the target with that
+      --  abstract state.
+
+      for Mapping in Projection_Map.Iterate loop
+         declare
+            Source : Flow_Id renames Flow_Id_Surjection.Key (Mapping);
+            Target : Flow_Id renames Projection_Map (Mapping);
+
+            pragma Unreferenced (Source);
+            --  This is for debug
+
+            Repr : Flow_Id := Target;
+
+         begin
+            while Is_Constituent (Repr) loop
+               Repr := Encapsulating_State (Repr);
+               if Present (Repr) then
+                  if Visible_Views.Contains (Repr) then
+                     Target := Repr;
+                  end if;
+               else
+                  exit;
+               end if;
+            end loop;
+         end;
+      end loop;
+
+      --  Collect constituents from the LHS of the dependency map; we will
+      --  use them to decide whether to add a self-dependency on their
       --  encapsulating abstract states for states that are partially-written.
 
       for Clause in Deps.Iterate loop
@@ -568,7 +661,7 @@ package body Flow_Refinement is
          end;
       end loop;
 
-      --  Up project the dependency relation and add a self-dependency for
+      --  Up-project the dependency relation and add a self-dependency for
       --  abstract states that are partially-written.
 
       for Clause in Deps.Iterate loop
@@ -576,29 +669,22 @@ package body Flow_Refinement is
             LHS : Flow_Id          renames Dependency_Maps.Key (Clause);
             RHS : Flow_Id_Sets.Set renames Deps (Clause);
 
-            Projected, Partial : Flow_Id_Sets.Set;
-            Projected_RHS      : Flow_Id_Sets.Set;
-
+            Projected_RHS    : Flow_Id_Sets.Set;
             Projected_Clause : Dependency_Maps.Cursor;
 
             Unused : Boolean;
 
          begin
-            Up_Project (RHS, Scope, Projected, Partial);
-            Projected_RHS := Projected or Partial;
-
-            --  Reuse set-based up-projection routine with a singleton set, for
-            --  which the result is also a singleton set.
-
-            Up_Project (Flow_Id_Sets.To_Set (LHS), Scope, Projected, Partial);
-            pragma Assert (Partial.Length + Projected.Length = 1);
+            for Item of RHS loop
+               Projected_RHS.Include (Projection_Map (Item));
+            end loop;
 
             --  If the LHS was up-projected to an abstract state then the RHS
             --  require a special processing.
 
-            if Projected.Is_Empty then
+            if Present (LHS) and then LHS /= Projection_Map (LHS) then
                declare
-                  LHS_State : Flow_Id renames Partial (Partial.First);
+                  LHS_State : constant Flow_Id := Projection_Map (LHS);
 
                begin
                   --  If State represents a partial-write of an abstract state
@@ -625,7 +711,10 @@ package body Flow_Refinement is
 
             else
                declare
-                  LHS_Object : Flow_Id renames Projected (Projected.First);
+                  LHS_Object : constant Flow_Id :=
+                    (if Present (LHS)
+                     then Projection_Map (LHS)
+                     else Null_Flow_Id);
 
                begin
                   Projected_Deps.Insert (Key      => LHS_Object,
