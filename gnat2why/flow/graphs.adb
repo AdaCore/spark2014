@@ -1314,9 +1314,7 @@ package body Graphs is
    is
       C : constant VIS.Cursor := G.Vertices (V).In_Neighbours.First;
    begin
-      return (if Has_Element (C)
-              then Element (C)
-              else Null_Vertex);
+      return Element (C);
    end Parent;
 
    -----------------

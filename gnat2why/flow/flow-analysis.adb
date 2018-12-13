@@ -922,11 +922,11 @@ package body Flow.Analysis is
                Written := True;
                if FA.PDG.In_Neighbour_Count (V) = 1 then
                   declare
-                     F_Parent : Flow_Id renames
-                       FA.PDG.Get_Key (FA.PDG.Parent (V));
+                     V_Parent : constant Flow_Graphs.Vertex_Id :=
+                       FA.PDG.Parent (V);
 
-                     A_Parent : V_Attributes renames
-                       FA.Atr (FA.PDG.Parent (V));
+                     F_Parent : Flow_Id      renames FA.PDG.Get_Key (V_Parent);
+                     A_Parent : V_Attributes renames FA.Atr (V_Parent);
 
                   begin
                      if F_Parent.Variant = Initial_Value
