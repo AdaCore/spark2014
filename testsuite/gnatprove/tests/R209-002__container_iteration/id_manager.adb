@@ -10,5 +10,5 @@ is
          null;
       end loop;
    end Display;
-   
+
 end Id_Manager;

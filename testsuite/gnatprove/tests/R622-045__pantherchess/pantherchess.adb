@@ -384,7 +384,7 @@ procedure pantherchess is
    From_WB : File_Type;
 
 
-   
+
    procedure Initialize_Program is
    begin
       -------------------------
@@ -416,7 +416,7 @@ procedure pantherchess is
 
    Is_Initialized_Program : boolean := False;
    Is_Setup               : boolean := False;
-   
+
 begin  --Pantherchess
 
    -- Set Protocol for debugging Winboard connection
@@ -556,7 +556,7 @@ begin  --Pantherchess
 --           end if;
 
 --      end if;
-      
+
       Generate_Moves;
 
 --      if Protocol = No_Gui_Connection then
@@ -627,7 +627,7 @@ begin  --Pantherchess
      	   	  Number_String := Params.Params( 2 );
      	   	  Put_Line ( "pong " & To_String( Number_String ));
      	   end;
-      Flush;     	 
+      Flush;
 
       elsif To_String (Params.Command) = "usage"
         or else To_String (Params.Command) = "help" then
@@ -694,7 +694,7 @@ begin  --Pantherchess
          	  Flush;
          end if;
 
-         
+
          if Is_Setup = False then
             case This_Random_Setup is
             	 when Setup_RVBN =>
@@ -718,7 +718,7 @@ begin  --Pantherchess
                   --Flush;
                   --Is_Setup := True;
                   --Flush;
-               when Setup_RNVB =>	
+               when Setup_RNVB =>
                   Put_Line( "setup (PNBRQ................XKpnbrq................xk) 10x8+0_capablanca rnxbqkbxnr/pppppppppp/10/10/10/10/PPPPPPPPPP/RNXBQKBXNR w KQkq - 0 1");
                   Flush;
                   --Put_Line( To_WB, "setup (PNBRQ................XKpnbrq................xk) 10x8+0_capablanca rnxbqkbxnr/pppppppppp/10/10/10/10/PPPPPPPPPP/RNXBQKBXNR w KQkq - 0 1");
@@ -732,7 +732,7 @@ begin  --Pantherchess
                   --Flush;
                   --Is_Setup := True;
                   --Flush;
-               when Setup_RVNB =>	
+               when Setup_RVNB =>
                   Put_Line( "setup (PNBRQ................XKpnbrq................xk) 10x8+0_capablanca rxnbqkbnxr/pppppppppp/10/10/10/10/PPPPPPPPPP/RXNBQKBNXR w KQkq - 0 1");
                   Flush;
                   --Put_Line( To_WB, "setup (PNBRQ................XKpnbrq................xk) 10x8+0_capablanca rxnbqkbnxr/pppppppppp/10/10/10/10/PPPPPPPPPP/RXNBQKBNXR w KQkq - 0 1");
@@ -740,20 +740,20 @@ begin  --Pantherchess
                   --Is_Setup := True;
                   --Flush;
             end case;
-         	
-         	
+
+
             --Put_Line( "piece X& (0,1)(0,3)");
             Put_Line( "piece X& WH" );
             Flush;
             Put_Line( To_WB, "piece X& WH" );
             Flush;
             Is_Setup := True;
-           end if; 
+           end if;
          end if;
 	         Put_Line( "post" );
 	         Flush;
 --	         Put_Line( "go" );
-	              
+
       elsif To_String (Params.Command) = "variant" then
      	   Flush;
 
@@ -763,7 +763,7 @@ begin  --Pantherchess
 	      Forcemode   := False;
          Random_Mode := False;
 --         Put_Line( "go" );
-         
+
       elsif To_String (Params.Command) = "variant pantherchess" then
          Flush;
 
@@ -772,8 +772,8 @@ begin  --Pantherchess
          Random_Mode := False;
 --         Put_Line( "White" );
 --         Put_Line( "go" );
-         
-         
+
+
 
       elsif To_String (Params.Command) = "random" then
          Random_Mode := not Random_Mode;
@@ -786,7 +786,7 @@ begin  --Pantherchess
 
       elsif To_String (Params.Command) = "white" then
          Engine    := Black;
-         
+
       elsif To_String (Params.Command) = "black" then
          Engine := White;
 
@@ -819,8 +819,8 @@ begin  --Pantherchess
 --         Forcemode := False;
 --         Move      := Think;
         Generate_Moves;
-        Move := Think; 
-         
+        Move := Think;
+
       elsif To_String (Params.Command) = "undo" then
          Ply := Ply + 1; -- adjust undo
          Undo;
@@ -1224,7 +1224,7 @@ begin  --Pantherchess
          end if;
          Display;
       end if;
-      
+
       Generate_Moves;
 
       if Protocol = No_Gui_Connection then
@@ -1282,7 +1282,7 @@ begin  --Pantherchess
          Engine    := Side_To_Move;
          Move      := Think;
          Forcemode := False;
-         
+
 
       elsif To_String (Params.Command) = "usage"
         or else To_String (Params.Command) = "help" then
@@ -1662,9 +1662,9 @@ begin  --Pantherchess
    Close( To_WB );
    Close( From_WB );
 --   Close( Debug_BZ );
-   
+
    <<End_Of_Program>>
-   
+
    return;
 
 exception

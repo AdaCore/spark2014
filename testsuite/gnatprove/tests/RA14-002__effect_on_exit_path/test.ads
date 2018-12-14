@@ -80,7 +80,7 @@ is
    procedure os_mbx_receive (status    : out os_status_t;
                              mbx_entry : out os_mbx_entry_t)
    with
-      Pre => 
+      Pre =>
              os_ghost_mbx_are_well_formed,
       Post => os_ghost_mbx_are_well_formed;
    pragma Export (C, os_mbx_receive, "os_mbx_receive");
