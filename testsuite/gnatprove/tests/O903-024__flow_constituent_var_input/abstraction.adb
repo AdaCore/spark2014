@@ -1,6 +1,6 @@
 package body Abstraction with
    SPARK_Mode,
-   Refined_State => ((State => C))
+   Refined_State => (State => C)
 is
    C : constant Integer := 0;
 
