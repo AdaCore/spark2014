@@ -1347,7 +1347,7 @@ package body Flow_Utility is
          end case;
       end Process;
 
-      --  Local variables:
+      --  Local variables
 
       pragma Assert
         (List_Length (Pragma_Argument_Associations (Global_Node)) = 1);
@@ -3990,7 +3990,7 @@ package body Flow_Utility is
          end if;
       end Process;
 
-      --  Local variables:
+      --  Local variables
 
       S    : Node_Sets.Set;
       Ptr  : Entity_Id;
@@ -5014,7 +5014,7 @@ package body Flow_Utility is
          end if;
       end Discriminant_Constraints;
 
-      --  Local variables:
+      --  Local variables
 
       M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 

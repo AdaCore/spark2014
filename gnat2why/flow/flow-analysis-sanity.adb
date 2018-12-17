@@ -1429,7 +1429,7 @@ package body Flow.Analysis.Sanity is
          end if;
       end Find_In;
 
-      --  Local variables:
+      --  Local variables
 
       Raw_Globals : Raw_Global_Nodes;
       User_Global : Global_Flow_Ids;

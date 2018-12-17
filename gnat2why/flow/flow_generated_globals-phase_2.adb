@@ -3336,7 +3336,7 @@ package body Flow_Generated_Globals.Phase_2 is
       function Compare_Names return Boolean is
         (To_String (Left.Name) < To_String (Right.Name));
 
-      --  Local variables:
+      --  Local variables
       Has_Left_Node  : constant Boolean := Present (Left.Node);
       Has_Right_Node : constant Boolean := Present (Right.Node);
 

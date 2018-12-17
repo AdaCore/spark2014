@@ -2966,7 +2966,7 @@ package body Flow.Analysis is
          end if;
       end Might_Be_Defined_In_Other_Path;
 
-      --  Local variables:
+      --  Local variables
 
       Expanded_Initializes : constant Node_Sets.Set :=
         (if FA.Kind in Kind_Package | Kind_Package_Body

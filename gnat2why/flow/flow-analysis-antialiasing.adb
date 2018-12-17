@@ -818,7 +818,7 @@ package body Flow.Analysis.Antialiasing is
          return Results;
       end Visible_Globals;
 
-      --  Local variables:
+      --  Local variables
 
       Globals : Global_Flow_Ids;
 

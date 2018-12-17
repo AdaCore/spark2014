@@ -2544,7 +2544,7 @@ package body Flow_Generated_Globals.Partial is
             end loop;
          end Traverse_Declarations;
 
-         --  Local variables:
+         --  Local variables
 
          Pkg_Spec : constant Node_Id := Package_Specification (E);
 
