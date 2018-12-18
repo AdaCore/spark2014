@@ -125,8 +125,6 @@ package body Configuration is
    function Is_Coq_Prover return Boolean;
    --  @return True iff one alternate prover is "coq"
 
-   --  Hidden switches: --ide-progress-bar
-
    ---------------
    -- Abort_Msg --
    ---------------
