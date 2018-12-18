@@ -121,18 +121,18 @@ package Flow_Refinement is
                                          S : Flow_Scope)
                                          return Boolean
    with Pre => Ekind (E) = E_Abstract_State;
-   --  Return true iff the constituents of E are visible from S
+   --  Return True iff the constituents of E are visible from S
 
    function State_Refinement_Is_Visible (EN : Entity_Name;
                                          S  : Flow_Scope)
                                          return Boolean;
-   --  Return true iff the constituents of EN are visible from S
+   --  Return True iff the constituents of EN are visible from S
 
    function State_Refinement_Is_Visible (F : Flow_Id;
                                          S : Flow_Scope)
                                          return Boolean
    with Pre => Is_Abstract_State (F);
-   --  Return true iff the constituents of F are visible from S
+   --  Return True iff the constituents of F are visible from S
 
    function Is_Fully_Contained (State   : Entity_Id;
                                 Outputs : Node_Sets.Set)
