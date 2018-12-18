@@ -26,6 +26,7 @@
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Directories;   use Ada.Directories;
 with Ada.Strings.Hash;
+with Call;              use Call;
 with GNAT.Strings;
 with Gnat2Why_Args;     use Gnat2Why_Args;
 with GNATCOLL.Projects; use GNATCOLL.Projects;
@@ -245,6 +246,8 @@ package Configuration is
            Compose (Share_Spark_Config, "gnatprove.conf");
          Z3_Present               : Boolean;
          CVC4_Present             : Boolean;
+         Help_Message             : constant String :=
+           Read_File_Into_String (Help_Msg_File);
       end Install;
    end File_System;
 

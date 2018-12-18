@@ -30,7 +30,6 @@ with Ada.Environment_Variables;
 with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;               use Ada.Text_IO;
-with Call;                      use Call;
 with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
@@ -46,6 +45,9 @@ package body Configuration is
 
    Invalid_Steps : constant := -1;
 
+   Usage_Message : constant String := "-Pproj [switches] [-cargs switches]";
+   --  Used to print part of the help message for gnatprove
+
    Clean : aliased Boolean;
    --  Set to True when --clean was given. Triggers cleanup of GNATprove
    --  intermediate files.
@@ -54,8 +56,7 @@ package body Configuration is
    --  This is the project environment used to load the project. It may be
    --  modified before loading it, e.g. -X switches
 
-   procedure Abort_Msg (Config    : Command_Line_Configuration;
-                        Msg       : String;
+   procedure Abort_Msg (Msg       : String;
                         With_Help : Boolean)
      with No_Return;
    --  Stop the program, output the message and the help message when
@@ -87,7 +88,7 @@ package body Configuration is
    --  recognized switches are automatic, so this procedure should only be
    --  called for unknown switches and for switches in section -cargs.
 
-   procedure Prepare_Prover_Lib (Config : Command_Line_Configuration);
+   procedure Prepare_Prover_Lib;
    --  Deal with the why3 libraries manual provers might need.
    --  Copies needed sources into gnatprove and builds the library.
    --  For the moment, only Coq is handled.
@@ -111,9 +112,7 @@ package body Configuration is
    procedure Produce_List_Categories_Output;
    --  List information for all messages issued by the tool
 
-   procedure Set_CodePeer_Mode
-     (Config : Command_Line_Configuration;
-      Input  : String);
+   procedure Set_CodePeer_Mode (Input : String);
    --  Parse the --codepeer option (possibilities are "on" and "off")
 
    procedure Check_gnateT_Switch;
@@ -124,19 +123,20 @@ package body Configuration is
    function Is_Coq_Prover return Boolean;
    --  @return True iff one alternate prover is "coq"
 
+   procedure Display_Help;
+
    ---------------
    -- Abort_Msg --
    ---------------
 
-   procedure Abort_Msg (Config    : Command_Line_Configuration;
-                        Msg       : String;
+   procedure Abort_Msg (Msg       : String;
                         With_Help : Boolean) is
    begin
       if Msg /= "" then
          Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
       end if;
       if With_Help then
-         Display_Help (Config);
+         Display_Help;
       else
          Ada.Text_IO.Put_Line
            ("Try ""gnatprove --help"" for more information.");
@@ -289,6 +289,16 @@ package body Configuration is
       end if;
    end Compute_Socket_Dir;
 
+   ------------------
+   -- Display_Help --
+   ------------------
+
+   procedure Display_Help is
+   begin
+      Ada.Text_IO.Put_Line ("Usage: gnatprove " & Usage_Message);
+      Ada.Text_IO.Put_Line (File_System.Install.Help_Message);
+   end Display_Help;
+
    -------------------------------------
    -- Handle_Project_Loading_Switches --
    -------------------------------------
@@ -402,7 +412,7 @@ package body Configuration is
    -- Prepare_Prover_Lib --
    ------------------------
 
-   procedure Prepare_Prover_Lib (Config : Command_Line_Configuration) is
+   procedure Prepare_Prover_Lib is
 
       Prover_Name : constant String :=
         Ada.Characters.Handling.To_Lower (Provers.First_Element);
@@ -456,16 +466,14 @@ package body Configuration is
 
                begin
                   if Coqc_Bin = null then
-                     Abort_Msg (Config,
-                                Msg       => "coq prover not present in PATH",
+                     Abort_Msg (Msg       => "coq prover not present in PATH",
                                 With_Help => False);
                   end if;
                   GNAT.OS_Lib.Spawn (Program_Name => Coqc_Bin.all,
                                      Args         => Args,
                                      Success      => Success);
                   if not Success then
-                     Abort_Msg (Config,
-                                Msg       =>
+                     Abort_Msg (Msg       =>
                                   "error during compilations of " &
                                   Source_Dest,
                                 With_Help => False);
@@ -739,7 +747,7 @@ package body Configuration is
                                           Is_List => True);
          begin
             if Sswitches /= "" then
-               Abort_Msg (Config, Sswitches, With_Help => False);
+               Abort_Msg (Sswitches, With_Help => False);
             end if;
          end;
 
@@ -748,7 +756,7 @@ package body Configuration is
               Register_New_Attribute ("Proof_Dir", "Prove");
          begin
             if Sproof_dir /= "" then
-               Abort_Msg (Config, Sproof_dir, With_Help => False);
+               Abort_Msg (Sproof_dir, With_Help => False);
             end if;
          end;
 
@@ -771,7 +779,7 @@ package body Configuration is
                Proj_Env,
                Errors => Print_Errors'Access);
          else
-            Abort_Msg (Config, "No project file is given", With_Help => False);
+            Abort_Msg ("No project file is given", With_Help => False);
          end if;
          return Tree;
       end Init;
@@ -886,8 +894,7 @@ package body Configuration is
          if CL_Switches.J = 0 then
             Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
          elsif CL_Switches.J < 0 then
-            Abort_Msg (Config,
-                       "error: wrong argument for -j",
+            Abort_Msg ("error: wrong argument for -j",
                        With_Help => False);
          else
             Parallel := CL_Switches.J;
@@ -901,7 +908,7 @@ package body Configuration is
 
          Process_Limit_Switches;
 
-         Set_CodePeer_Mode (Config, CL_Switches.CodePeer.all);
+         Set_CodePeer_Mode (CL_Switches.CodePeer.all);
          Check_gnateT_Switch;
          Set_Mode;
          Set_Warning_Mode;
@@ -962,8 +969,7 @@ package body Configuration is
                   begin
                      if Colon_Index = 0 then
                         Abort_Msg
-                          (Config,
-                           "limit-line: incorrect line specification" &
+                          ("limit-line: incorrect line specification" &
                              " - missing ':' followed by operand",
                            With_Help => False);
                      end if;
@@ -987,8 +993,7 @@ package body Configuration is
            or else (CL_Switches.F and CL_Switches.Output_Msg_Only)
          then
             Abort_Msg
-              (Config,
-               "only one switch out of -f, --output-msg-only and --replay" &
+              ("only one switch out of -f, --output-msg-only and --replay" &
                  " should be provided to gnatprove",
                With_Help => False);
          end if;
@@ -1054,8 +1059,7 @@ package body Configuration is
                Memlimit := 2000;
 
             when others =>
-               Abort_Msg (Config,
-                          "error: wrong argument for --level",
+               Abort_Msg ("error: wrong argument for --level",
                           With_Help => False);
 
                raise Program_Error;
@@ -1075,8 +1079,7 @@ package body Configuration is
                end if;
             exception
                when Constraint_Error =>
-                  Abort_Msg (Config,
-                             "error: wrong argument for --timeout, " &
+                  Abort_Msg ("error: wrong argument for --timeout, " &
                                "must be auto or a non-negative integer",
                              With_Help => False);
             end;
@@ -1091,8 +1094,7 @@ package body Configuration is
          if CL_Switches.Steps = Invalid_Steps then
             null;
          elsif CL_Switches.Steps < 0 then
-            Abort_Msg (Config,
-                       "error: wrong argument for --steps",
+            Abort_Msg ("error: wrong argument for --steps",
                        With_Help => False);
          else
             Steps := CL_Switches.Steps;
@@ -1140,8 +1142,7 @@ package body Configuration is
          then
             Mode := GPM_All;
          else
-            Abort_Msg (Config,
-                       "error: wrong argument for --mode",
+            Abort_Msg ("error: wrong argument for --mode",
                        With_Help => False);
          end if;
       end Set_Mode;
@@ -1227,8 +1228,7 @@ package body Configuration is
             elsif Proof_Input = "all_split" then
                Proof := All_Split;
             else
-               Abort_Msg (Config,
-                          "error: wrong argument for --proof",
+               Abort_Msg ("error: wrong argument for --proof",
                           With_Help => False);
             end if;
 
@@ -1239,8 +1239,7 @@ package body Configuration is
             elsif Lazy_Input = "lazy" then
                Lazy := True;
             else
-               Abort_Msg (Config,
-                          "error: wrong argument for --proof",
+               Abort_Msg ("error: wrong argument for --proof",
                           With_Help => False);
             end if;
          end;
@@ -1289,8 +1288,7 @@ package body Configuration is
               or else
                 (Prover = "z3" and then not File_System.Install.Z3_Present)
             then
-               Abort_Msg (Config,
-                          "error: prover " & Prover &
+               Abort_Msg ("error: prover " & Prover &
                             " was selected, but it is not installed",
                           With_Help => False);
             end if;
@@ -1315,8 +1313,7 @@ package body Configuration is
          elsif CL_Switches.Report.all = "statistics" then
             Report := GPR_Statistics;
          else
-            Abort_Msg (Config,
-                       "error: wrong argument for --report",
+            Abort_Msg ("error: wrong argument for --report",
                        With_Help => False);
          end if;
       end Set_Report_Mode;
@@ -1342,8 +1339,7 @@ package body Configuration is
             Warning_Mode := Gnat2Why_Args.SW_Normal;
          else
 
-            Abort_Msg (Config,
-                       "error: wrong argument for --warnings",
+            Abort_Msg ("error: wrong argument for --warnings",
                        With_Help => False);
          end if;
       end Set_Warning_Mode;
@@ -1355,11 +1351,6 @@ package body Configuration is
       Com_Lin : String_List :=
         (1 .. Ada.Command_Line.Argument_Count => <>);
 
-      Usage_Message : constant String :=
-        "-Pproj [switches] [-cargs switches]";
-
-      Help_Message : constant String :=
-        Read_File_Into_String (File_System.Install.Help_Msg_File);
       --  Help message read from a static file
 
       use CL_Switches;
@@ -1372,17 +1363,17 @@ package body Configuration is
       Set_Usage
         (First_Config,
          Usage    => Usage_Message,
-         Help_Msg => Help_Message);
+         Help_Msg => File_System.Install.Help_Message);
 
       Set_Usage
         (Config,
          Usage    => Usage_Message,
-         Help_Msg => Help_Message);
+         Help_Msg => File_System.Install.Help_Message);
 
       --  If no arguments have been given, print help message and exit
 
       if Com_Lin'Length = 0 then
-         Abort_Msg (Config, "", With_Help => True);
+         Abort_Msg ("", With_Help => True);
       end if;
 
       --  We parse the command line *twice*. The reason is that before parsing
@@ -1833,7 +1824,7 @@ package body Configuration is
       Postprocess;
 
       if Is_Coq_Prover then
-         Prepare_Prover_Lib (Config);
+         Prepare_Prover_Lib;
       end if;
       Sanitize_File_List (Tree);
 
@@ -1843,8 +1834,7 @@ package body Configuration is
       when Invalid_Switch | Exit_From_Command_Line =>
          GNAT.OS_Lib.OS_Exit (1);
       when Invalid_Parameter =>
-         Abort_Msg (Config,
-                    "No parameter given to switch -" & Full_Switch,
+         Abort_Msg ("No parameter given to switch -" & Full_Switch,
                     With_Help => False);
    end Read_Command_Line;
 
@@ -1917,9 +1907,7 @@ package body Configuration is
    -- Set_CodePeer_Mode --
    -----------------------
 
-   procedure Set_CodePeer_Mode
-     (Config : Command_Line_Configuration;
-      Input  : String) is
+   procedure Set_CodePeer_Mode (Input : String) is
    begin
       CodePeer := False;
       if Input = "" then
@@ -1929,8 +1917,7 @@ package body Configuration is
       elsif Input = "off" then
          CodePeer := False;
       else
-         Abort_Msg (Config,
-                    "error: wrong argument for --codepeer, " &
+         Abort_Msg ("error: wrong argument for --codepeer, " &
                       "must be one of (on, off)",
                     With_Help => False);
       end if;
