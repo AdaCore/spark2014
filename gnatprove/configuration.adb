@@ -30,6 +30,7 @@ with Ada.Environment_Variables;
 with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;               use Ada.Text_IO;
+with Ada.Unchecked_Deallocation;
 with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
@@ -122,6 +123,48 @@ package body Configuration is
 
    function Is_Coq_Prover return Boolean;
    --  @return True iff one alternate prover is "coq"
+
+   --  There are more than one "command lines" in gnatprove. For example, the
+   --  project file defines switches that act as if they were appended to the
+   --  command line, and can also define switches for each file. Therefore,
+   --  there are several passes of command line parsing. The Parsing_Modes
+   --  type and the Parse_Switches procedure define the allowed switches in
+   --  each of these passes.
+   --  Overall there are these passes:
+   --    - the "real" command line is scanned to find the project file (-P) and
+   --      other switches that change project file loading (this happens in
+   --      mode Project_Parsing below);
+   --    - the "global" command line (that is the real command line plus the
+   --      switches defined in the project file) is parsed (mode All_Switches
+   --      below);
+   --    - the command line for each file is parsed (also mode All_Switches);
+   --    - the switches attributes in the project file are checked for switches
+   --      that are not allowed in this context (modes Global_Switches_Only,
+   --      File_Specific_Only).
+
+   type Parsing_Modes is
+     (Project_Parsing,
+      --  only parses switches that are related to loading of the project file
+      --  (-P, -X, etc). and some switches that exit immediately (--version,
+      --  --clean), ignores other switches.
+
+      All_Switches,
+      --  accepts all switches
+
+      Global_Switches_Only,
+      --  Global_Switches_Only only accepts switches that can be put in the
+      --  'for Switches' or 'for Proof_Switches ("Ada")' section of the project
+      --  file (for example, not switches that may impact project parsing).
+
+      File_Specific_Only
+      --  File_Specific_Only - only accept switches that can be put in the
+      --  'for Proof_Switches ("file")' section of of the project file. This
+      --  excludes most switches except --timeout, --steps, etc.
+     );
+
+   procedure Parse_Switches (Mode : Parsing_Modes; Com_Lin : String_List);
+   --  parse the command line switches according to the provided mode; set
+   --  global variables associated to the switches.
 
    procedure Display_Help;
 
@@ -408,6 +451,304 @@ package body Configuration is
       return Case_Insensitive_Contains (Provers, "coq");
    end Is_Coq_Prover;
 
+   --------------------
+   -- Parse_Switches --
+   --------------------
+
+   procedure Parse_Switches (Mode : Parsing_Modes; Com_Lin : String_List) is
+
+      procedure Free_Topmost is new Ada.Unchecked_Deallocation
+        (Object => String_List, Name => String_List_Access);
+
+      Config         : Command_Line_Configuration;
+      Parser         : Opt_Parser;
+      Com_Lin_Access : String_List_Access :=
+        new String_List'(Com_Lin);
+
+      use CL_Switches;
+
+   begin
+      Initialize_Option_Scan (Parser, Com_Lin_Access);
+      Set_Usage (Config,
+                 Usage    => Usage_Message,
+                 Help_Msg => File_System.Install.Help_Message);
+
+      --  If no arguments have been given, print help message and exit
+
+      if Com_Lin'Length = 0 then
+         Abort_Msg ("", With_Help => True);
+      end if;
+
+      if Mode in Project_Parsing | All_Switches then
+         Define_Switch
+           (Config,
+            CL_Switches.P'Access,
+            "-P:");
+         Define_Switch
+           (Config,
+            Version'Access,
+         Long_Switch => "--version");
+         Define_Switch
+           (Config,
+            List_Categories'Access,
+            Long_Switch => "--list-categories");
+         Define_Switch
+           (Config,
+            Clean'Access,
+            Long_Switch => "--clean");
+         Define_Switch (Config, "-aP=");
+         Define_Switch
+           (Config,
+            CL_Switches.Subdirs'Access,
+            Long_Switch => "--subdirs=");
+      end if;
+
+      if Mode in Project_Parsing | All_Switches | Global_Switches_Only then
+         Define_Switch
+           (Config,
+            CL_Switches.V'Access,
+            "-v", Long_Switch => "--verbose");
+      end if;
+
+      if Mode in All_Switches | Global_Switches_Only then
+         Define_Switch
+           (Config,
+            CL_Switches.Checks_As_Errors'Access,
+            Long_Switch => "--checks-as-errors");
+         Define_Switch
+           (Config,
+            CL_Switches.CWE'Access,
+            Long_Switch => "--cwe");
+         Define_Switch
+           (Config,
+            CL_Switches.D'Access,
+            "-d", Long_Switch => "--debug");
+         Define_Switch
+           (Config,
+            CL_Switches.Flow_Debug'Access,
+            Long_Switch => "--flow-debug");
+         Define_Switch
+           (Config,
+            CL_Switches.Flow_Termination'Access,
+            Long_Switch => "--flow-termination");
+         Define_Switch
+           (Config,
+            CL_Switches.Flow_Show_GG'Access,
+            Long_Switch => "--flow-show-gg");
+         Define_Switch
+           (Config,
+            CL_Switches.Dbg_Proof_Only'Access,
+            Long_Switch => "--dbg-proof-only");
+         Define_Switch
+           (Config,
+            CL_Switches.F'Access,
+            "-f");
+         Define_Switch
+           (Config, CL_Switches.J'Access,
+            Long_Switch => "-j:",
+            Initial => 1);
+         Define_Switch
+           (Config,
+            CL_Switches.K'Access,
+            "-k");
+         Define_Switch
+           (Config,
+            CL_Switches.Mode'Access,
+            Long_Switch => "--mode=");
+         Define_Switch
+           (Config,
+            CL_Switches.M'Access,
+            "-m");
+         Define_Switch
+           (Config,
+            CL_Switches.Warnings'Access,
+            Long_Switch => "--warnings=");
+         Define_Switch
+           (Config,
+            CL_Switches.CodePeer'Access,
+            Long_Switch => "--codepeer=");
+         Define_Switch
+           (Config,
+            CL_Switches.Coverage'Access,
+            Long_Switch => "--coverage");
+         Define_Switch
+           (Config,
+            CL_Switches.Debug_Save_VCs'Access,
+            Long_Switch => "--debug-save-vcs");
+         Define_Switch
+           (Config,
+            CL_Switches.IDE_Progress_Bar'Access,
+            Long_Switch => "--ide-progress-bar");
+         Define_Switch
+           (Config,
+            CL_Switches.Pedantic'Access,
+            Long_Switch => "--pedantic");
+         Define_Switch
+           (Config,
+            CL_Switches.Q'Access,
+            "-q", Long_Switch => "--quiet");
+         Define_Switch
+           (Config,
+            CL_Switches.Replay'Access,
+            Long_Switch => "--replay");
+         Define_Switch
+           (Config,
+            CL_Switches.Report'Access,
+            Long_Switch => "--report=");
+         Define_Switch
+           (Config,
+            CL_Switches.RTS'Access,
+            Long_Switch => "--RTS=");
+         Define_Switch
+           (Config,
+            CL_Switches.Subdirs'Access,
+            Long_Switch => "--subdirs=");
+         Define_Switch
+           (Config,
+            CL_Switches.Target'Access,
+            Long_Switch => "--target=");
+         Define_Switch
+           (Config,
+            CL_Switches.U'Access,
+            "-u");
+         Define_Switch
+           (Config,
+            CL_Switches.UU'Access,
+            "-U");
+         Define_Switch
+           (Config,
+            CL_Switches.Limit_Region'Access,
+            Long_Switch => "--limit-region=");
+         Define_Switch
+           (Config,
+            CL_Switches.Limit_Line'Access,
+            Long_Switch => "--limit-line=");
+         Define_Switch
+           (Config,
+            CL_Switches.Limit_Subp'Access,
+            Long_Switch => "--limit-subp=");
+         Define_Switch
+           (Config,
+            CL_Switches.No_Axiom_Guard'Access,
+            Long_Switch => "--no-axiom-guard");
+         Define_Switch
+           (Config,
+            CL_Switches.Proof_Warnings'Access,
+            Long_Switch => "--proof-warnings");
+         Define_Switch
+           (Config,
+            CL_Switches.Z3_Counterexample'Access,
+            Long_Switch => "--z3-counterexample");
+         Define_Switch
+           (Config,
+            CL_Switches.No_Global_Generation'Access,
+            Long_Switch => "--no-global-generation");
+         Define_Switch
+           (Config,
+            CL_Switches.No_Subprojects'Access,
+            Long_Switch => "--no-subprojects");
+         Define_Switch
+           (Config,
+            CL_Switches.Output_Header'Access,
+            Long_Switch => "--output-header");
+         Define_Switch
+           (Config,
+            CL_Switches.Output_Msg_Only'Access,
+            Long_Switch => "--output-msg-only");
+         Define_Switch
+           (Config, CL_Switches.Why3_Conf'Access,
+            Long_Switch => "--why3-conf=");
+         Define_Switch
+           (Config, CL_Switches.Why3_Debug'Access,
+            Long_Switch => "--why3-debug=");
+         --  This switch is not documented on purpose. We provide the fake_*
+         --  binaries instead of the real prover binaries. This helps when
+         --  collecting benchmarks for prover developers.
+         Define_Switch
+           (Config, CL_Switches.Benchmark'Access,
+            Long_Switch => "--benchmark");
+         Define_Switch
+           (Config, CL_Switches.Memcached_Server'Access,
+            Long_Switch => "--memcached-server=");
+         Define_Switch
+           (Config,
+            CL_Switches.Info'Access,
+            Long_Switch => "--info");
+         Define_Section (Config, "cargs");
+         Define_Switch (Config, "*", Section => "cargs");
+      end if;
+
+      if Mode in All_Switches | Global_Switches_Only | File_Specific_Only then
+         Define_Switch
+           (Config,
+            CL_Switches.Proof'Access,
+            Long_Switch => "--proof=");
+
+         --  If not specified on the command-line, value of steps is invalid
+         Define_Switch
+           (Config, CL_Switches.Steps'Access,
+            Long_Switch => "--steps=",
+            Initial => Invalid_Steps);
+
+         Define_Switch
+           (Config, CL_Switches.Level'Access,
+            Long_Switch => "--level=",
+            Initial => Invalid_Level);
+
+         Define_Switch
+           (Config,
+            CL_Switches.Timeout'Access,
+            Long_Switch => "--timeout=");
+
+         Define_Switch
+           (Config,
+            CL_Switches.Memlimit'Access,
+            Long_Switch => "--memlimit=");
+
+         Define_Switch
+           (Config,
+            CL_Switches.Assumptions'Access,
+            Long_Switch => "--assumptions");
+
+         Define_Switch
+           (Config,
+            CL_Switches.Prover'Access,
+            Long_Switch => "--prover=");
+
+         Define_Switch
+           (Config,
+            CL_Switches.No_Counterexample'Access,
+            Long_Switch => "--no-counterexample");
+
+         Define_Switch
+           (Config,
+            CL_Switches.No_Inlining'Access,
+            Long_Switch => "--no-inlining");
+
+         Define_Switch
+           (Config,
+            CL_Switches.No_Loop_Unrolling'Access,
+            Long_Switch => "--no-loop-unrolling");
+      end if;
+
+      Define_Switch (Config, "*", Help => "list of source files");
+
+      declare
+         Callback : constant Switch_Handler :=
+           (if Mode = Project_Parsing then
+               Handle_Project_Loading_Switches'Access
+            else Handle_Switch'Access);
+      begin
+         Getopt (Config,
+                 Callback    => Callback,
+                 Parser      => Parser,
+                 Concatenate => False);
+      end;
+
+      Free (Config);
+      Free_Topmost (Com_Lin_Access);
+   end Parse_Switches;
+
    ------------------------
    -- Prepare_Prover_Lib --
    ------------------------
@@ -685,7 +1026,6 @@ package body Configuration is
    -----------------------
 
    procedure Read_Command_Line (Tree : out Project_Tree) is
-      Config : Command_Line_Configuration;
 
       function Init return Project_Tree;
       --  Load the project file; This function requires the project file to be
@@ -1346,8 +1686,6 @@ package body Configuration is
 
       --  Local variables
 
-      First_Config : Command_Line_Configuration;
-
       Com_Lin : String_List :=
         (1 .. Ada.Command_Line.Argument_Count => <>);
 
@@ -1358,374 +1696,27 @@ package body Configuration is
    --  Start of processing for Read_Command_Line
 
    begin
-      --  Call Set_Usage for both command line configurations
-
-      Set_Usage
-        (First_Config,
-         Usage    => Usage_Message,
-         Help_Msg => File_System.Install.Help_Message);
-
-      Set_Usage
-        (Config,
-         Usage    => Usage_Message,
-         Help_Msg => File_System.Install.Help_Message);
-
-      --  If no arguments have been given, print help message and exit
-
-      if Com_Lin'Length = 0 then
-         Abort_Msg ("", With_Help => True);
-      end if;
-
-      --  We parse the command line *twice*. The reason is that before parsing
-      --  the command line, we need to load the project (e.g. because the
-      --  project also may specify extra switches), but loading the project
-      --  requires reading some specific switches such as -P and -X.
-
-      --  The first parsing only defines -P, -X and immediately terminating
-      --  switches such as --version and --clean. We also need a wildcard to
-      --  ignore the other switches.
-
-      --  Then, the project is loaded. We concatenate the extra switches to the
-      --  command line and then we reparse the whole thing.
-
-      --  As parsing the command line consumes it, we start by copying it.
 
       for Index in 1 .. Com_Lin'Last loop
          Com_Lin (Index) :=
            new String'(Ada.Command_Line.Argument (Index));
       end loop;
 
-      Define_Switch
-        (First_Config,
-         CL_Switches.P'Access,
-         "-P:");
-
-      Define_Switch
-        (First_Config,
-         Version'Access,
-         Long_Switch => "--version");
-
-      Define_Switch
-        (First_Config,
-         List_Categories'Access,
-         Long_Switch => "--list-categories");
-
-      Define_Switch
-        (First_Config,
-         CL_Switches.V'Access,
-         "-v",
-         Long_Switch => "--verbose");
-
-      Define_Switch
-         (First_Config,
-          Clean'Access,
-          Long_Switch => "--clean");
-
-      Define_Switch (First_Config, "-aP=");
-
-      Define_Switch
-        (First_Config,
-         CL_Switches.Subdirs'Access,
-         Long_Switch => "--subdirs=");
-
-      Define_Switch (First_Config, "*", Help => "list of source files");
-
       --  We now initialize the project environment; it may be changed by the
       --  first parse of the command line.
 
       Initialize (Proj_Env);
+      Parse_Switches (Project_Parsing, Com_Lin);
 
-      Getopt (First_Config,
-              Callback    => Handle_Project_Loading_Switches'Access,
-              Concatenate => False);
-
-      Free (First_Config);
-
-      if Version then
+      if CL_Switches.Version then
          Produce_Version_Output;
          GNAT.OS_Lib.OS_Exit (0);
       end if;
 
-      if List_Categories then
+      if CL_Switches.List_Categories then
          Produce_List_Categories_Output;
          GNAT.OS_Lib.OS_Exit (0);
       end if;
-
-      --  The second parsing needs the info for all switches, including the
-      --  ones that are only used by the first pass (e.g. -aP), so that they
-      --  can be properly ignored. An exception is the option -X, which is
-      --  explicitly ignored by the callback Handle_Switch
-
-      Define_Switch (Config, "-aP=");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Checks_As_Errors'Access,
-         Long_Switch => "--checks-as-errors");
-
-      Define_Switch
-        (Config,
-         CL_Switches.CWE'Access,
-         Long_Switch => "--cwe");
-
-      Define_Switch
-         (Config,
-          CL_Switches.D'Access,
-          "-d", Long_Switch => "--debug");
-
-      Define_Switch
-         (Config,
-          CL_Switches.Flow_Debug'Access,
-          Long_Switch => "--flow-debug");
-
-      Define_Switch
-         (Config,
-          CL_Switches.Flow_Termination'Access,
-          Long_Switch => "--flow-termination");
-
-      Define_Switch
-         (Config,
-          CL_Switches.Flow_Show_GG'Access,
-          Long_Switch => "--flow-show-gg");
-
-      Define_Switch
-         (Config,
-          CL_Switches.Dbg_Proof_Only'Access,
-          Long_Switch => "--dbg-proof-only");
-
-      Define_Switch
-        (Config, CL_Switches.P'Access,
-         "-P:");
-
-      Define_Switch
-        (Config,
-         CL_Switches.F'Access,
-         "-f");
-
-      Define_Switch
-        (Config, CL_Switches.J'Access,
-         Long_Switch => "-j:",
-         Initial => 1);
-
-      Define_Switch
-        (Config,
-         CL_Switches.K'Access,
-         "-k");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Mode'Access,
-         Long_Switch => "--mode=");
-
-      Define_Switch
-        (Config,
-         CL_Switches.M'Access,
-         "-m");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Warnings'Access,
-         Long_Switch => "--warnings=");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Proof'Access,
-         Long_Switch => "--proof=");
-
-      Define_Switch
-        (Config,
-         CL_Switches.CodePeer'Access,
-         Long_Switch => "--codepeer=");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Coverage'Access,
-         Long_Switch => "--coverage");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Debug_Save_VCs'Access,
-         Long_Switch => "--debug-save-vcs");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Pedantic'Access,
-         Long_Switch => "--pedantic");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Replay'Access,
-         Long_Switch => "--replay");
-
-      Define_Switch
-        (Config,
-         CL_Switches.RTS'Access,
-         Long_Switch => "--RTS=");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Subdirs'Access,
-         Long_Switch => "--subdirs=");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Target'Access,
-         Long_Switch => "--target=");
-
-      Define_Switch
-        (Config,
-         CL_Switches.IDE_Progress_Bar'Access,
-         Long_Switch => "--ide-progress-bar");
-
-      Define_Switch
-         (Config,
-          CL_Switches.Q'Access,
-          "-q", Long_Switch => "--quiet");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Report'Access,
-         Long_Switch => "--report=");
-
-      --  If not specified on the command-line, value of steps is invalid
-      Define_Switch
-         (Config, CL_Switches.Steps'Access,
-          Long_Switch => "--steps=",
-          Initial => Invalid_Steps);
-
-      Define_Switch
-         (Config, CL_Switches.Level'Access,
-          Long_Switch => "--level=",
-          Initial => Invalid_Level);
-
-      Define_Switch
-         (Config,
-          CL_Switches.Timeout'Access,
-          Long_Switch => "--timeout=");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Memlimit'Access,
-         Long_Switch => "--memlimit=");
-
-      Define_Switch
-         (Config,
-          CL_Switches.U'Access,
-          "-u");
-
-      Define_Switch
-         (Config,
-          CL_Switches.UU'Access,
-          "-U");
-
-      Define_Switch
-        (Config,
-         CL_Switches.V'Access,
-         "-v", Long_Switch => "--verbose");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Assumptions'Access,
-         Long_Switch => "--assumptions");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Limit_Region'Access,
-         Long_Switch => "--limit-region=");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Limit_Line'Access,
-         Long_Switch => "--limit-line=");
-
-      Define_Switch (Config, "*");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Limit_Subp'Access,
-         Long_Switch => "--limit-subp=");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Prover'Access,
-         Long_Switch => "--prover=");
-
-      Define_Switch
-        (Config,
-         CL_Switches.No_Axiom_Guard'Access,
-         Long_Switch => "--no-axiom-guard");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Proof_Warnings'Access,
-         Long_Switch => "--proof-warnings");
-
-      Define_Switch
-        (Config,
-         CL_Switches.No_Counterexample'Access,
-         Long_Switch => "--no-counterexample");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Z3_Counterexample'Access,
-         Long_Switch => "--z3-counterexample");
-
-      Define_Switch
-        (Config,
-         CL_Switches.No_Inlining'Access,
-         Long_Switch => "--no-inlining");
-
-      Define_Switch
-        (Config,
-         CL_Switches.No_Loop_Unrolling'Access,
-         Long_Switch => "--no-loop-unrolling");
-
-      Define_Switch
-        (Config,
-         CL_Switches.No_Global_Generation'Access,
-         Long_Switch => "--no-global-generation");
-
-      Define_Switch
-        (Config,
-         CL_Switches.No_Subprojects'Access,
-         Long_Switch => "--no-subprojects");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Output_Header'Access,
-         Long_Switch => "--output-header");
-
-      Define_Switch
-        (Config,
-         CL_Switches.Output_Msg_Only'Access,
-         Long_Switch => "--output-msg-only");
-
-      Define_Switch
-        (Config, CL_Switches.Why3_Conf'Access,
-         Long_Switch => "--why3-conf=");
-
-      Define_Switch
-        (Config, CL_Switches.Why3_Debug'Access,
-         Long_Switch => "--why3-debug=");
-
-      --  This switch is not documented on purpose. We provide the fake_*
-      --  binaries instead of the real prover binaries. This helps when
-      --  collecting benchmarks for prover developers.
-      Define_Switch
-         (Config, CL_Switches.Benchmark'Access,
-          Long_Switch => "--benchmark");
-
-      Define_Switch
-         (Config, CL_Switches.Memcached_Server'Access,
-          Long_Switch => "--memcached-server=");
-
-      Define_Switch
-         (Config,
-          CL_Switches.Info'Access,
-          Long_Switch => "--info");
-
-      Define_Section (Config, "cargs");
-      Define_Switch (Config, "*", Section => "cargs");
 
       --  Before doing the actual second parsing, we read the project file in
 
@@ -1746,19 +1737,12 @@ package body Configuration is
       begin
          if Extra_Switches /= null then
             declare
-               All_Switches        : constant String_List :=
+               All_Switches_List   : constant String_List :=
                  Extra_Switches.all & Com_Lin;
-               All_Access          : constant String_List_Access :=
-                 new String_List'(All_Switches);
-               Parser              : Opt_Parser;
                Extra_Switches_Line : Unbounded_String;
 
             begin
-               Initialize_Option_Scan (Parser, All_Access);
-               Getopt (Config,
-                       Callback => Handle_Switch'Access,
-                       Parser   => Parser,
-                       Concatenate => False);
+               Parse_Switches (All_Switches, All_Switches_List);
 
                --  Add GNATprove switches in environment for printing in header
                --  of generated file "gnatprove.out"
@@ -1778,9 +1762,7 @@ package body Configuration is
                  ("GNATPROVE_SWITCHES", To_String (Extra_Switches_Line));
             end;
          else
-            Getopt (Config,
-                    Callback => Handle_Switch'Access,
-                    Concatenate => False);
+            Parse_Switches (All_Switches, Com_Lin);
          end if;
 
          --  Release copies of command line arguments; they were already parsed
@@ -1827,8 +1809,6 @@ package body Configuration is
          Prepare_Prover_Lib;
       end if;
       Sanitize_File_List (Tree);
-
-      Free (Config);
 
    exception
       when Invalid_Switch | Exit_From_Command_Line =>
