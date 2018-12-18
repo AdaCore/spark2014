@@ -4869,40 +4869,44 @@ package body Flow.Analysis is
       ------------------
 
       function Check_Prefix (N : Node_Id) return Traverse_Result is
-         Vars : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       begin
          if Nkind (N) = N_Attribute_Reference
            and then Get_Attribute_Id (Attribute_Name (N)) = Attribute_Old
          then
-            Vars := Get_Variables
-              (N,
-               Scope                => FA.B_Scope,
-               Fold_Functions       => False,
-               Use_Computed_Globals => True);
+            declare
+               Vars : constant Flow_Id_Sets.Set :=
+                 Get_Variables
+                   (N,
+                    Scope                => FA.B_Scope,
+                    Fold_Functions       => False,
+                    Use_Computed_Globals => True);
 
-            for Var of Vars loop
-               declare
-                  Initial_V : constant Flow_Graphs.Vertex_Id :=
-                    Get_Initial_Vertex (FA.CFG, Var);
+            begin
 
-               begin
-                  if not FA.Atr (Initial_V).Is_Import then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "& is not initialized at " &
-                                    "subprogram entry",
-                        Severity => High_Check_Kind,
-                        N        => First_Variable_Use
-                                      (N        => N,
-                                       Scope    => FA.B_Scope,
-                                       Var      => Var,
-                                       Precise  => False,
-                                       Targeted => False),
-                        F1       => Var,
-                        Tag      => Uninitialized);
-                  end if;
-               end;
-            end loop;
+               for Var of Vars loop
+                  declare
+                     Initial_V : constant Flow_Graphs.Vertex_Id :=
+                       Get_Initial_Vertex (FA.CFG, Var);
+
+                  begin
+                     if not FA.Atr (Initial_V).Is_Import then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "& is not initialized " &
+                                       "at subprogram entry",
+                           Severity => High_Check_Kind,
+                           N        => First_Variable_Use
+                                         (N        => N,
+                                          Scope    => FA.B_Scope,
+                                          Var      => Var,
+                                          Precise  => False,
+                                          Targeted => False),
+                           F1       => Var,
+                           Tag      => Uninitialized);
+                     end if;
+                  end;
+               end loop;
+            end;
          end if;
 
          return OK;
