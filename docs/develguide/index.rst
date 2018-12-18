@@ -30,6 +30,7 @@ Contents:
    manual_proof
    counterexamples
    gui_ce_json
+   miscellaneous
 
 
 
