@@ -26,7 +26,6 @@
 with Ada.Characters.Handling;
 with Ada.Command_Line;
 with Ada.Containers;            use Ada.Containers;
-with Ada.Direct_IO;
 with Ada.Environment_Variables;
 with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
@@ -716,9 +715,6 @@ package body Configuration is
       procedure Sanity_Checking;
       --  Check the command line flags for conflicting flags
 
-      function Read_Help_Message return String;
-      --  Returns contents of the static help message file
-
       ----------
       -- Init --
       ----------
@@ -979,29 +975,6 @@ package body Configuration is
             end;
          end if;
       end Process_Limit_Switches;
-
-      -----------------------
-      -- Read_Help_Message --
-      -----------------------
-
-      function Read_Help_Message return String is
-         File_Name : String renames File_System.Install.Help_Msg_File;
-         File_Size : constant Natural :=
-           Natural (Ada.Directories.Size (File_Name));
-
-         subtype File_String    is String (1 .. File_Size);
-         package File_String_IO is new Ada.Direct_IO (File_String);
-
-         File     : File_String_IO.File_Type;
-         Contents : File_String;
-      begin
-         File_String_IO.Open  (File, Mode => File_String_IO.In_File,
-                               Name => File_Name);
-         File_String_IO.Read  (File, Item => Contents);
-         File_String_IO.Close (File);
-
-         return Contents;
-      end Read_Help_Message;
 
       ---------------------
       -- Sanity_Checking --
@@ -1385,7 +1358,8 @@ package body Configuration is
       Usage_Message : constant String :=
         "-Pproj [switches] [-cargs switches]";
 
-      Help_Message : constant String := Read_Help_Message;
+      Help_Message : constant String :=
+        Read_File_Into_String (File_System.Install.Help_Msg_File);
       --  Help message read from a static file
 
       use CL_Switches;

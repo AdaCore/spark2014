@@ -23,8 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Directories;
+with Ada.Direct_IO;
 with Ada.IO_Exceptions;
-with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with GNAT.Directory_Operations;
 with GNATCOLL.Utils;
@@ -202,27 +203,19 @@ package body Call is
 
    function Read_File_Into_String (Fn : String) return String
    is
-      use Ada.Strings.Unbounded;
-      U : Unbounded_String := Null_Unbounded_String;
+      File_Size : constant Natural := Natural (Ada.Directories.Size (Fn));
 
-      procedure Append_To_Buf (S : String);
+      subtype File_String    is String (1 .. File_Size);
+      package File_String_IO is new Ada.Direct_IO (File_String);
 
-      -------------------
-      -- Append_To_Buf --
-      -------------------
-
-      procedure Append_To_Buf (S : String) is
-      begin
-         Append (U, S);
-      end Append_To_Buf;
-
-      procedure Do_It is new Call.For_Line_In_File (Append_To_Buf);
-
-   --  Start of processing for Read_File_Into_String
-
+      File     : File_String_IO.File_Type;
+      Contents : File_String;
    begin
-      Do_It (Fn);
-      return To_String (U);
+      File_String_IO.Open  (File, Mode => File_String_IO.In_File, Name => Fn);
+      File_String_IO.Read  (File, Item => Contents);
+      File_String_IO.Close (File);
+
+      return Contents;
    end Read_File_Into_String;
 
 end Call;
