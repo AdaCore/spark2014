@@ -1,5 +1,7 @@
-traversal.adb:11:69: expected state "unrestricted" at least, got "observed"
-traversal.adb:11:69: insufficient permission on dereference from "X"
-traversal.adb:13:56: expected state "unrestricted" at least, got "observed"
-traversal.adb:13:56: insufficient permission for "X"
+traversal.adb:11:13: expected state "read_write" at least, got "read_only"
+traversal.adb:11:13: insufficient permission for "X" when returning from "Get_Fst"
+traversal.adb:13:13: expected state "read_write" at least, got "read_only"
+traversal.adb:13:13: insufficient permission for "X" when returning from "Id"
+walker.adb:9:19: expression not allowed as source of move
+walker.adb:12:07: anonymous access type not yet supported
 gnatprove: error during generation of Global contracts

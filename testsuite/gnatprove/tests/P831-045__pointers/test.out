@@ -1,47 +1,61 @@
-n01.adb:14:12: type declaration "AI" not allowed (Named General Access type)
-n011.adb:12:12: type declaration "AI" not allowed (Named General Access type)
-n02.adb:13:12: type declaration "AM" not allowed (Named General Access type)
-n02.adb:14:12: type declaration "AI" not allowed (Named General Access type)
-n04.adb:14:08: type declaration "Int_Acc" not allowed (Named General Access type)
-n04.adb:15:08: type declaration "Int_Cst_Acc" not allowed (Named General Access type)
-n04.adb:24:08: expected state "Unrestricted" at least, got "Observed"
-n04.adb:24:08: insufficient permission on dereference from "Z"
-n05.adb:11:08: type declaration "Int_Acc" not allowed (Named General Access type)
+n01.adb:14:12: general access type "AI" not allowed in SPARK
+n011.adb:12:12: general access type "AI" not allowed in SPARK
+n02.adb:13:12: general access type "AM" not allowed in SPARK
+n02.adb:14:12: general access type "AI" not allowed in SPARK
+n04.adb:14:08: general access type "Int_Acc" not allowed in SPARK
+n04.adb:15:08: general access type "Int_Cst_Acc" not allowed in SPARK
+n04.adb:20:13: expected state "Read_Write" at least, got "Write_Only"
+n04.adb:20:13: insufficient permission for "YY" when returning from "Z_In"
+n05.adb:11:08: general access type "Int_Acc" not allowed in SPARK
 observingcomposite.adb:24:01: statement expected
-pointers.adb:46:10: expected state "unrestricted" at least, got "observed"
+pointers.adb:46:10: expected state "write_only" at least, got "read_only"
 pointers.adb:46:10: insufficient permission on dereference from "XX"
-pointers.adb:46:20: expected state "unrestricted" at least, got "observed"
+pointers.adb:46:20: expected state "read_write" at least, got "read_only"
 pointers.adb:46:20: insufficient permission on dereference from "YY"
-pointers.adb:50:27: expected state "unrestricted" at least, got "observed"
+pointers.adb:50:27: expected state "read_write" at least, got "read_only"
 pointers.adb:50:27: insufficient permission on dereference from "XX"
-pointers.adb:52:10: expected state "unrestricted" at least, got "observed"
+pointers.adb:52:10: expected state "write_only" at least, got "read_only"
 pointers.adb:52:10: insufficient permission on dereference from "XX"
-pointers.adb:52:20: expected state "unrestricted" at least, got "observed"
+pointers.adb:52:20: expected state "read_write" at least, got "read_only"
 pointers.adb:52:20: insufficient permission on dereference from "YY"
-pointers.adb:53:10: expected state "unrestricted" at least, got "observed"
+pointers.adb:53:10: expected state "write_only" at least, got "read_only"
 pointers.adb:53:10: insufficient permission on dereference from "YY"
-pointers.adb:124:16: expected state "unrestricted" at least, got "observed"
-pointers.adb:124:16: insufficient permission on dereference from "CCXX"
-pointers.adb:128:29: expected state "unrestricted" at least, got "observed"
+pointers.adb:128:29: expected state "read_write" at least, got "read_only"
 pointers.adb:128:29: insufficient permission on dereference from "CCXX"
-pointers.adb:130:16: expected state "unrestricted" at least, got "observed"
-pointers.adb:130:16: insufficient permission on dereference from "CCXX"
-pointers.adb:131:16: expected state "unrestricted" at least, got "observed"
-pointers.adb:131:16: insufficient permission on dereference from "CCYY"
-pointers.ads:14:14: expected state "unrestricted" at least, got "moved"
+pointers.ads:8:14: expected state "read_write" at least, got "write_only"
+pointers.ads:8:14: insufficient permission for "Y" when returning from "Bad_Swap"
+pointers.ads:14:14: expected state "read_write" at least, got "write_only"
 pointers.ads:14:14: insufficient permission for "Y" when returning from "Bad_Swap"
-pointers.ads:17:14: expected state "unrestricted" at least, got "moved"
-pointers.ads:17:14: insufficient permission for "X" when returning from "Swap"
-pointers.ads:38:09: type declaration "Int_Cst_Ptr" not allowed (Named General Access type)
-pointers.ads:70:09: type declaration "Int_Cst_Ptr_Ptr" not allowed (Named General Access type)
-pointers2.ads:12:14: expected state "unrestricted" at least, got "moved"
+pointers.ads:24:14: expected state "read_write" at least, got "write_only"
+pointers.ads:24:14: insufficient permission for "Y" when returning from "Bad_Swap2"
+pointers.ads:38:09: general access type "Int_Cst_Ptr" not allowed in SPARK
+pointers.ads:40:14: expected state "read_write" at least, got "write_only"
+pointers.ads:40:14: insufficient permission for "Y" when returning from "Bad_Swap3"
+pointers.ads:46:14: expected state "read_write" at least, got "write_only"
+pointers.ads:46:14: insufficient permission for "CY" when returning from "Bad_Swap3"
+pointers.ads:56:14: expected state "read_write" at least, got "write_only"
+pointers.ads:56:14: insufficient permission for "Y" when returning from "Bad_Swap4"
+pointers.ads:70:09: general access type "Int_Cst_Ptr_Ptr" not allowed in SPARK
+pointers.ads:74:14: expected state "read_write" at least, got "write_only"
+pointers.ads:74:14: insufficient permission for "X" when returning from "Swap5"
+pointers2.adb:31:16: expected state "read_write" at least, got "write_only"
+pointers2.adb:31:16: insufficient permission for "Y"
+pointers2.adb:37:12: expected state "read_write" at least, got "write_only"
+pointers2.adb:37:12: insufficient permission for "Y"
+pointers2.ads:6:14: expected state "read_write" at least, got "write_only"
+pointers2.ads:6:14: insufficient permission for "Y" when returning from "Bad_Swap"
+pointers2.ads:12:14: expected state "read_write" at least, got "write_only"
 pointers2.ads:12:14: insufficient permission for "Y" when returning from "Bad_Swap_Global"
-pointers2.ads:15:14: expected state "unrestricted" at least, got "moved"
-pointers2.ads:15:14: insufficient permission for "X" when returning from "Swap_Global"
-simple.adb:6:09: type declaration "Int_Ptr" not allowed (Named General Access type)
-simple.adb:7:09: type declaration "Int_Cst_Ptr" not allowed (Named General Access type)
-simple.adb:8:09: type declaration "Int_Ptr_Ptr" not allowed (Named General Access type)
-simple.adb:22:06: assignment not allowed, anonymous access Object with Different Root
+pointers2.ads:18:14: expected state "read_write" at least, got "write_only"
+pointers2.ads:18:14: insufficient permission for "Y" when returning from "Bad_Borrow"
+pointers2.ads:20:14: expected state "read_write" at least, got "write_only"
+pointers2.ads:20:14: insufficient permission for "Y" when returning from "Bad_Move"
+simple.adb:6:09: general access type "Int_Ptr" not allowed in SPARK
+simple.adb:7:09: general access type "Int_Cst_Ptr" not allowed in SPARK
+simple.adb:8:09: general access type "Int_Ptr_Ptr" not allowed in SPARK
+simple.adb:12:04: anonymous access type not yet supported
+simple.adb:36:15: expected state "read_only" at least, got "no_access"
+simple.adb:36:15: insufficient permission on dereference from "B"
 test.adb:21:04: constant declaration requires initialization expression
 test.adb:74:09: assignment to "in" mode parameter not allowed
 test.adb:94:15: add "all" to type "Int_Ptr2" defined at line 9
