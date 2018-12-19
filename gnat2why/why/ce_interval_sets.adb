@@ -44,12 +44,9 @@ package body Ce_Interval_Sets is
          else
             --  Case where X overlap with something (equivalent in the sense of
             --  Sets) we now try to insert the merge of these two values.
-            declare
-               Elt : Interval renames L (Position);
-            begin
-               X := Merge_Interval (Elt, X);
-               L.Delete (Position);
-            end;
+            X := Merge_Interval (L (Position), X);
+
+            L.Delete (Position);
 
          end if;
       end loop;
