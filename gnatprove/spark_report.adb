@@ -43,7 +43,6 @@ with Assumptions;                         use Assumptions;
 with Assumptions.Search;                  use Assumptions.Search;
 with Assumption_Types;                    use Assumption_Types;
 with Call;                                use Call;
-with Configuration;
 with GNAT.Calendar.Time_IO;
 with GNAT.Directory_Operations.Iteration;
 with GNAT.OS_Lib;                         use GNAT.OS_Lib;
@@ -1052,8 +1051,9 @@ begin
 
    Create (Handle,
            Out_File,
-           Configuration.SPARK_Report_File
-             (GNAT.Directory_Operations.Dir_Name (Source_Directories_File)));
+           Ada.Directories.Compose
+             (GNAT.Directory_Operations.Dir_Name (Source_Directories_File),
+              "gnatprove.out"));
    if Assumptions then
       Compute_Assumptions;
    end if;
