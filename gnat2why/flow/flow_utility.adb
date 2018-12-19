@@ -3780,22 +3780,34 @@ package body Flow_Utility is
    ------------------------
 
    function Has_Variable_Input (C : Entity_Id) return Boolean is
-      Position : Entity_To_Boolean_Maps.Cursor;
-      Inserted : Boolean;
-      --  Position and status for inserting a dummy value. If inserting
-      --  succeeds, then compute the actual value and store it in the map; if
-      --  it fails, then return the memoized value.
-
    begin
-      Variable_Input_Map.Insert (Key      => C,
-                                 Position => Position,
-                                 Inserted => Inserted);
+      --  If the answer has already been memoized, then return it
 
-      if Inserted then
-         Variable_Input_Map (Position) := Has_Variable_Input_Internal (C);
-      end if;
+      declare
+         Position : constant Entity_To_Boolean_Maps.Cursor :=
+           Variable_Input_Map.Find (C);
+         --  This cursor must be declared in a local block, so that it
+         --  disappears before we might recursively call this routine via
+         --  Has_Variable_Input_Internal. It would be illegal to do Insert in
+         --  that recursive call while the above cursor is alive.
 
-      return Variable_Input_Map (Position);
+      begin
+         if Entity_To_Boolean_Maps.Has_Element (Position) then
+            return Variable_Input_Map (Position);
+         end if;
+      end;
+
+      --  Otherwise, compute answer and memoize it
+
+      declare
+         Answer : constant Boolean := Has_Variable_Input_Internal (C);
+
+      begin
+         Variable_Input_Map.Insert (Key      => C,
+                                    New_Item => Answer);
+
+         return Answer;
+      end;
    end Has_Variable_Input;
 
    ---------------------------------
