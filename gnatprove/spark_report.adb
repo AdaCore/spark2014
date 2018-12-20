@@ -978,6 +978,7 @@ procedure SPARK_Report is
             | VC_Ceiling_Priority_Protocol
             | VC_Task_Termination
             | VC_Raise
+            | VC_Initialization_Check
          =>
             return Runtime_Checks;
 

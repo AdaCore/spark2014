@@ -165,6 +165,7 @@ package body Gnat2Why.External_Axioms is
                     (Symbol_Table, E,
                      Item_Type'(Func,
                        Local     => False,
+                       Init      => <>,
                        For_Logic => Get_Subp_Symbol (E, Logic_Name),
                        For_Prog  => Get_Subp_Symbol (E, Name)));
                end;

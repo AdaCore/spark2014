@@ -32,6 +32,7 @@ with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Expr;           use Why.Gen.Expr;
+with Why.Gen.Init;           use Why.Gen.Init;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Gen.Pointers;       use Why.Gen.Pointers;
 with Why.Gen.Records;        use Why.Gen.Records;
@@ -247,6 +248,7 @@ package body Why.Gen.Binders is
                   Binders (I) :=
                     Item_Type'(Kind  => Concurrent_Self,
                                Local => True,
+                               Init  => <>,
                                Main  => Concurrent_Self_Binder (Prot_Ty));
                   I := I + 1;
                end;
@@ -286,6 +288,7 @@ package body Why.Gen.Binders is
                Binders (I) :=
                  (Regular,
                   Local => False,
+                  Init  => <>,
                   Main  => (Ada_Node => Empty,
                             B_Name   => To_Why_Id (V, Local => False),
                             B_Ent    => V,
@@ -340,6 +343,10 @@ package body Why.Gen.Binders is
          declare
             B : constant Item_Type := Arr (Index);
          begin
+            if B.Init.Present then
+               Count := Count + 1;
+            end if;
+
             case B.Kind is
                when Regular
                  | Concurrent_Self
@@ -438,21 +445,28 @@ package body Why.Gen.Binders is
                null;
 
             when Regular =>
-               if B.Main.Mutable then
-                  declare
-                     Local_Name : constant String :=
-                       (if Present (B.Main.Ada_Node)
-                        then Full_Name (B.Main.Ada_Node)
-                        else To_String (B.Main.B_Ent))
-                       & Suffix;
-                  begin
+               declare
+                  Local_Name : constant String :=
+                    (if Present (B.Main.Ada_Node)
+                     then Full_Name (B.Main.Ada_Node)
+                     else To_String (B.Main.B_Ent))
+                    & Suffix;
+               begin
+                  if B.Main.Mutable then
                      B.Main.B_Name :=
                        New_Identifier
                          (Ada_Node => B.Main.Ada_Node,
                           Name     => Local_Name,
                           Typ      => Get_Typ (B.Main.B_Name));
-                  end;
-               end if;
+                  end if;
+
+                  if B.Init.Present then
+                     B.Init.Id :=
+                       New_Identifier
+                         (Name => Local_Name & "__attr__init",
+                          Typ  => Get_Typ (B.Main.B_Name));
+                  end if;
+               end;
 
             when UCArray =>
                declare
@@ -465,6 +479,13 @@ package body Why.Gen.Binders is
                       (Ada_Node => B.Content.Ada_Node,
                        Name     => Local_Name,
                        Typ      => Get_Typ (B.Content.B_Name));
+
+                  if B.Init.Present then
+                     B.Init.Id :=
+                       New_Identifier
+                         (Name => Local_Name & "__attr__init",
+                          Typ  => Get_Typ (B.Main.B_Name));
+                  end if;
                end;
 
             when Pointer =>
@@ -491,6 +512,13 @@ package body Why.Gen.Binders is
                           Name     => Local_Name & "__is_null",
                           Typ      => Get_Typ (B.Is_Null));
                   end if;
+
+                  if B.Init.Present then
+                     B.Init.Id :=
+                       New_Identifier
+                         (Name => Local_Name & "__attr__init",
+                          Typ  => Get_Typ (B.Main.B_Name));
+                  end if;
                end;
 
             when DRecord =>
@@ -514,6 +542,13 @@ package body Why.Gen.Binders is
                          (Ada_Node => B.Fields.Binder.Ada_Node,
                           Name     => Local_Name & "__fields",
                           Typ      => Get_Typ (B.Fields.Binder.B_Name));
+                  end if;
+
+                  if B.Init.Present then
+                     B.Init.Id :=
+                       New_Identifier
+                         (Name => Local_Name & "__attr__init",
+                          Typ  => Get_Typ (B.Main.B_Name));
                   end if;
                end;
 
@@ -551,13 +586,29 @@ package body Why.Gen.Binders is
       Ty : constant Entity_Id :=
         (if Is_Type (Spec_Ty) then Retysp (Spec_Ty) else Spec_Ty);
 
+      function New_Init_Id (Name : W_Identifier_Id) return Opt_Id is
+        (if Is_Mutable_In_Why (E)
+         and then Needs_Init_Wrapper_Type (Ty)
+         and then
+           (Ekind (E) = E_Out_Parameter
+            or else
+              (Ekind (E) = E_Variable
+               and then Nkind (Enclosing_Declaration (E)) =
+                 N_Object_Declaration
+               and then No (Expression (Enclosing_Declaration (E)))))
+         then (Present => True, Id => Init_Append (Name))
+         else (Present => False));
+      --  We only need an initialization flag for out parameters and default
+      --  initialized variables.
+
    begin
       --  For procedures, use a regular binder
 
       if Ekind (E) = E_Procedure then
          return (Regular,
                  False,
-                 Binder_Type'
+                 Init => <>,
+                 Main => Binder_Type'
                    (B_Name   =>
                       To_Why_Id (E, Typ => Why_Empty),
                     B_Ent    => Null_Entity_Name,
@@ -574,6 +625,7 @@ package body Why.Gen.Binders is
          begin
             return (Func,
                     False,
+                    Init      => <>,
                     For_Logic => Binder_Type'
                       (B_Name   =>
                          To_Why_Id (E, Typ => Typ, Domain => EW_Term),
@@ -640,6 +692,7 @@ package body Why.Gen.Binders is
 
             return (Kind    => UCArray,
                     Local   => Local,
+                    Init    => New_Init_Id (Name),
                     Content => Binder,
                     Dim     => Dim,
                     Bounds  => Bounds);
@@ -664,6 +717,7 @@ package body Why.Gen.Binders is
             Result   : Item_Type :=
               (Kind   => DRecord,
                Local  => Local,
+               Init   => New_Init_Id (Name),
                Typ    => Ty,
                others => <>);
             Unconstr : constant Boolean :=
@@ -741,6 +795,7 @@ package body Why.Gen.Binders is
             Result  : Item_Type :=
               (Kind    => Pointer,
                Local   => Local,
+               Init    => New_Init_Id (Name),
                Mutable => Mutable,
                others  => <>);
 
@@ -790,7 +845,7 @@ package body Why.Gen.Binders is
                            Mutable  => Is_Mutable_In_Why (E),
                            Labels   => <>);
          begin
-            return (Regular, Local, Binder);
+            return (Regular, Local, New_Init_Id (Name), Binder);
          end;
       end if;
    end Mk_Item_Of_Entity;
@@ -1304,6 +1359,22 @@ package body Why.Gen.Binders is
                          Typ      => Get_Type (T));
       end if;
 
+      --  If init is present, use a split EW_Init_Wrapper type to enforce
+      --  initialization checking at use.
+
+      if Ref_Allowed and then E.Init.Present then
+         declare
+            Ent : constant Entity_Id := Get_Ada_Node_From_Item (E);
+         begin
+            T := New_Label
+              (Ada_Node => Ent,
+               Domain   => EW_Term,
+               Labels   => Name_Id_Sets.Empty_Set,
+               Def      => T,
+               Typ      => EW_Init_Wrapper (Etype (Ent), EW_Split));
+         end;
+      end if;
+
       return T;
    end Reconstruct_Item;
 
@@ -1322,6 +1393,14 @@ package body Why.Gen.Binders is
          declare
             Cur : Item_Type renames A (Index);
          begin
+            if Cur.Init.Present then
+               Result (Count) :=
+                 (B_Name  => Cur.Init.Id,
+                  Mutable => True,
+                  others  => <>);
+               Count := Count + 1;
+            end if;
+
             case Cur.Kind is
                when Regular
                   | Concurrent_Self

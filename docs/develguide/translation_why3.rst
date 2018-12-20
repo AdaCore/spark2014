@@ -2087,6 +2087,159 @@ value of the generic primitive equality function ``user_eq`` introduced for
  axiom user_eq__def_axiom :
   (forall a b : t_rec__. P__t_rec.user_eq a b = P__Oeq.oeq a b)
 
+Wrapper types for initialization by proof
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Initialization by proof is currently in a prototype stage. The idea is to relax
+additional initialization rules imposed by SPARK on some types and to verify
+initialization as precisely as possible using proof instead of flow analysis.
+This prototype was implemented to answer a user need for procedures only
+initializing parts of an object, or only initializing objects conditionally.
+Here is a motivating example:
+
+.. code-block:: ada
+
+  procedure Init_By_Proof with SPARK_Mode is
+   subtype My_Int is Integer;
+   pragma Annotate (GNATprove, Init_By_Proof, My_Int);
+
+   type Int_Array is array (Positive range <>) of My_Int;
+   --  array of potentially uninitialized integers
+
+   type Int_Array_Init is array (Positive range <>) of Integer;
+   --  array of integers with normal traitment
+
+   procedure Init_By_4 (A : out Int_Array; Error : out Boolean) with
+     Pre => A'Length = 4,
+     Post => (if not Error then A'Valid_Scalars)
+   is
+   begin
+      A := (1 .. 4 => 10);
+      Error := False;
+   end Init_By_4;
+
+   procedure Read (Buf   : out Int_Array;
+                   Size  : Natural;
+                   Error : out Boolean)
+   with Pre => Buf'Length >= Size,
+     Post => (if not Error then
+                Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars)
+   is
+      Offset    : Natural := Size mod 4;
+      Nb_Chunks : Natural := Size / 4;
+   begin
+      if Offset /= 0 then
+         Error := True;
+         return;
+      end if;
+
+      for Loop_Var in 0 .. Nb_Chunks - 1 loop
+         pragma Loop_Invariant
+           (Buf (Buf'First .. Buf'First + (Loop_Var * 4) - 1)'Valid_Scalars);
+         Init_By_4 (Buf (Buf'First + Loop_Var * 4 .. Buf'First + Loop_Var * 4 + 3), Error);
+         exit when Error;
+      end loop;
+
+   end Read;
+
+   procedure Process (Buf  : in out Int_Array;
+                      Size : Natural)
+   with Pre => Buf'Length >= Size and then
+     Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars,
+        Post => Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars
+   is
+   begin
+      for I in Buf'First .. Buf'First + (Size - 1) loop
+         pragma Loop_Invariant
+           (Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars);
+         Buf (I) := Buf (I) / 2 + 5;
+      end loop;
+   end Process;
+
+   procedure Process (Buf  : in out Int_Array_Init;
+                      Size : Natural)
+     with Pre => Buf'Length >= Size
+   is
+   begin
+      for I in Buf'First .. Buf'First + (Size - 1) loop
+         Buf (I) := Buf (I) / 2 + 5;
+      end loop;
+   end Process;
+
+   Buf    : Int_Array (1 .. 150);
+   Error : Boolean;
+   X      : Integer;
+  begin
+   Read (Buf, 100, Error);
+   if not Error then
+      X := Buf (10);
+      Process (Buf, 100);
+      declare
+         B : Int_Array_Init := Int_Array_Init (Buf (1 .. 100));
+      begin
+         Process (B, 50);
+      end;
+      X := Buf (20);
+      X := Buf (110); -- medium: "Buf" might not be initialized
+   end if;
+  end Init_By_Proof;
+
+In this example, initilization is only assumed if an ``Error`` boolean is false.
+Additionally, ``Read`` always initializes the array partially (up to ``Size``)
+and initializes the array cells four by four, which is currently out of reach
+of the very simple heuristic used by flow analysis to recognize loops which
+fully initialize an array.
+
+For now, we recognize objects for which we want to handle initialization by
+proof by supplying a ``pragma Annotate (GNATprove, Init_By_Proof, Ty)`` on their
+type ``Ty``. This pragma can only be supplied on scalar types. We then consider
+all composite types containing a type with ``Init_By_Proof`` as
+``Init_By_Proof`` too, and we enforce in marking that such composite types only
+contain components of a type with ``Init_By_Proof``. We use the existing
+attribute ``Valid_Scalars`` to express that an object is completely initialized.
+
+In our example, initialization of objects of type ``Init_Array`` is handled by
+proof whereas objects of type ``Init_Array_Init`` are handled by flow analysis.
+We see on the two versions of ``Process`` that having initialization handled
+by proof requires supplying more annotations as it relaxes assumptions on
+subprogram boundaries.
+
+Here are the basic ideas of how this prototype works:
+
+* We introduce wrapper types for types which need their own initialize flag, see
+  ``Needs_Wrapper_Type`` and ``Translate_Type``. Currently, we only do it for
+  scalar types, but later we will also need it for types with predicates. So the
+  machinery for handling types with ``Init_By_Proof`` is not reduced to scalar
+  types (for example, we consider that all kinds of binders can have an
+  initialization field in ``Insert_Ref_Context``). These types are used for
+  components of composite types.
+
+* We introduce a new field in ``Item_Type`` named Init. It optionally contains
+  an identifier for the init flag for a variable (currently it is only used for
+  scalar variables, that is, for regular binders). The flag is only present when
+  necessary, ie when the object may not be initialized (for out parameters and
+  variables initialized by default, see ``Mk_Item_Of_Entity``).
+
+* Variables with such a field are seen as having a wrapper type in split form.
+  This does not change the actual Why3 type but enforces the need of an
+  initialization check at use (see ``Transform_Identifier``).
+
+* Top-level initialization checks are introduced when converting from a wrapper
+  type to any other type (see ``Insert_Scalar_Conversion``). They can be
+  explicitly disabled (to do checks on fetch on out parameters in particular)
+  using a new parameter ``Do_Init``.
+
+* Additional initialization checks are manually inserted when translating
+  operators on composite types which imply a read of its components (equality,
+  logical operations...).
+
+* As initialization checks are introduced at every conversion, to avoid
+  introducing such a check, ``Transform_Expr`` must be called with a
+  wrapper type as an ``Expected_Type``. The version of ``Transform_Expr`` which
+  computes the expected type as an additional parameter ``No_Init`` which will
+  use a wrapper type when possible (for components and variables). It is used
+  for out parameters and attributes which do not read the value (in particular
+  ``Valid_Scalars``).
+
 Objects
 -------
 Mutable and Constant Objects

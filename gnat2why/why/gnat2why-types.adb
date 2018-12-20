@@ -46,6 +46,7 @@ with Why.Gen.Arrays;          use Why.Gen.Arrays;
 with Why.Gen.Binders;         use Why.Gen.Binders;
 with Why.Gen.Decl;            use Why.Gen.Decl;
 with Why.Gen.Expr;            use Why.Gen.Expr;
+with Why.Gen.Init;            use Why.Gen.Init;
 with Why.Gen.Names;           use Why.Gen.Names;
 with Why.Gen.Pointers;        use Why.Gen.Pointers;
 with Why.Gen.Progs;           use Why.Gen.Progs;
@@ -834,6 +835,22 @@ package body Gnat2Why.Types is
 
             Close_Theory (File, Kind => Standalone_Theory);
          end if;
+      end if;
+
+      if Needs_Init_Wrapper_Type (E) then
+         Open_Theory
+           (File, E_Init_Module (E),
+            Comment =>
+              "Module defining a wrapper to verify initialization for type "
+            & """" & Get_Name_String (Chars (E)) & """"
+            & (if SPARK_Atree.Sloc (E) > 0 then
+                 " defined at " & Build_Location_String (Sloc (E))
+              else "")
+            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+         Declare_Init_Wrapper (File, E);
+
+         Close_Theory (File, Kind => Standalone_Theory);
       end if;
    end Translate_Type;
 

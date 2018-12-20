@@ -556,6 +556,11 @@ package Why.Atree.Modules is
    --  "__rep"). Memoization may be used. Returns Empty when it is called with
    --  a node which is not an entity, and no module is known for this entity.
 
+   function E_Init_Module (E : Entity_Id) return W_Module_Id;
+   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  "__init"). Memoization may be used. Returns Empty when it is called with
+   --  a node which is not an entity, and no module is known for this entity.
+
    function Get_Module_Name (M : W_Module_Id) return String;
    --  Return the name of the module
 

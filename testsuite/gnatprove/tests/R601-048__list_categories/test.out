@@ -42,6 +42,7 @@ VC_LENGTH_CHECK - length check - Check that the given array is of the length of 
 VC_DISCRIMINANT_CHECK - discriminant check - Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required.
 VC_TAG_CHECK - tag check - Check that the tag of the given tagged object has the expected value.
 VC_CEILING_INTERRUPT - ceiling priority in Interrupt_Priority - Check that the ceiling priority specified for a protected object containing a procedure with an aspect Attach_Handler is in Interrupt_Priority.
+VC_INITIALIZATION_CHECK - use of an uninitialized variable - Check that a variable is initialized
 VC_INTERRUPT_RESERVED - interrupt is reserved - Check that the interrupt specified by Attach_Handler is not reserved.
 VC_INVARIANT_CHECK - invariant check - Check that the given value respects the applicable type invariant.
 VC_INVARIANT_CHECK_ON_DEFAULT_VALUE - invariant check on default value - Check that the default value for the type respects the applicable type invariant.

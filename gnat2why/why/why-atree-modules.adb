@@ -92,6 +92,7 @@ package body Why.Atree.Modules is
    Why_Symb_Map   : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
    Entity_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Axiom_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Init_Modules   : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Rep_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
    --------------
@@ -172,6 +173,32 @@ package body Why.Atree.Modules is
          return Why_Empty;
       end if;
    end E_Axiom_Module;
+
+   -------------------
+   -- E_Init_Module --
+   -------------------
+
+   function E_Init_Module (E : Entity_Id) return W_Module_Id is
+      use Ada_To_Why;
+      C : constant Ada_To_Why.Cursor := Init_Modules.Find (E);
+   begin
+      if Has_Element (C) then
+         return W_Module_Id (Element (C));
+      elsif Nkind (E) in N_Entity then
+         declare
+            M : constant W_Module_Id :=
+              New_Module
+                (Ada_Node => E,
+                 File     => No_Name,
+                 Name     => NID (Full_Name (E) & "__init"));
+         begin
+            Init_Modules.Insert (E, Why_Node_Id (M));
+            return M;
+         end;
+      else
+         return Why_Empty;
+      end if;
+   end E_Init_Module;
 
    ------------------
    -- E_Rep_Module --
@@ -1948,6 +1975,29 @@ package body Why.Atree.Modules is
          Ty   : constant W_Type_Id   := EW_Abstract (E);
 
       begin
+         --  Insert symbols for the initialization wrapper if any
+
+         if Needs_Init_Wrapper_Type (E) then
+            declare
+               WM  : constant W_Module_Id := E_Init_Module (E);
+            begin
+               Insert_Symbol
+                 (E, WNE_Init_Value,
+                  New_Identifier
+                    (Symbol => NID ("rec__value"),
+                     Module => WM,
+                     Domain => EW_Term,
+                     Typ    => Ty));
+               Insert_Symbol
+                 (E, WNE_Attr_Init,
+                  New_Identifier
+                    (Symbol => NID ("attr__init"),
+                     Module => WM,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type));
+            end;
+         end if;
+
          Insert_Symbol
            (E, WNE_Bool_Eq,
             New_Identifier

@@ -2605,6 +2605,18 @@ package body SPARK_Definition is
                Error_Msg_F ("?attribute Valid is assumed to return True", N);
             end if;
 
+         --  Attribute Valid_Scalars is used on types with init by proof
+
+         when Attribute_Valid_Scalars =>
+            if not Retysp_In_SPARK (Etype (P))
+              or else not Has_Init_By_Proof (Etype (P))
+            then
+               Mark_Violation
+                 ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
+                  & """ only allowed on types with initialization by proof",
+                  N);
+            end if;
+
          --  Attribute Address is only allowed at the top level of an Address
          --  aspect or attribute definition clause.
 
@@ -4448,6 +4460,15 @@ package body SPARK_Definition is
                            Mark_Violation (Comp, From => Etype (Comp));
                         end if;
 
+                        --  Initialization by proof of protected components
+                        --  is not supported yet.
+
+                        if Has_Init_By_Proof (Etype (Comp)) then
+                           Mark_Unsupported
+                             ("protected component with initialization by"
+                              & " proof", E);
+                        end if;
+
                         Next_Component (Comp);
                      end loop;
 
@@ -4460,6 +4481,17 @@ package body SPARK_Definition is
                           Iter (Part_Of_Constituents (Anonymous_Object (E)))
                         loop
                            Mark_Entity (Part);
+
+                           --  Initialization by proof of Part_Of variables
+                           --  is not supported yet.
+
+                           if Ekind (Part) in Object_Kind
+                             and then Has_Init_By_Proof (Etype (Part))
+                           then
+                              Mark_Unsupported
+                                ("Part_Of variable with initialization by"
+                                 & " proof", E);
+                           end if;
                         end loop;
                      end if;
 
@@ -4684,6 +4716,16 @@ package body SPARK_Definition is
                if Has_Default_Aspect (E) then
                   Mark (Default_Aspect_Component_Value (E));
                end if;
+
+               --  Check use of pragma Annotate Init_By_Proof
+
+               if Has_Init_By_Proof (Component_Typ)
+                 and then Has_Predicates (E)
+               then
+                  Mark_Unsupported
+                    ("component with initialization by proof in a type with"
+                     & " predicates", E);
+               end if;
             end;
 
          --  Most discrete and floating-point types are in SPARK
@@ -4804,8 +4846,10 @@ package body SPARK_Definition is
 
             if not Is_Interface (E) then
                declare
-                  Comp      : Entity_Id := First_Component (E);
-                  Comp_Type : Entity_Id;
+                  Comp              : Entity_Id := First_Component (E);
+                  Comp_Type         : Entity_Id;
+                  Init_By_Proof     : Entity_Id := Empty;
+                  Not_Init_By_Proof : Entity_Id := Empty;
 
                begin
                   while Present (Comp) loop
@@ -4823,10 +4867,38 @@ package body SPARK_Definition is
 
                         --  Mark default value of component or discriminant
                         Mark_Default_Expression (Comp);
+
+                        if Has_Init_By_Proof (Etype (Comp)) then
+                           Init_By_Proof := Comp;
+                        else
+                           Not_Init_By_Proof := Comp;
+                        end if;
                      end if;
 
                      Next_Component (Comp);
                   end loop;
+
+                  --  Check use of pragma Annotate Init_By_Proof.
+                  --  E is considered Init_By_Proof if any of its component is
+                  --  Init_By_Proof.
+
+                  if Present (Init_By_Proof) then
+                     if Is_Tagged_Type (E) then
+                        Mark_Unsupported
+                          ("component with initialization by proof in a tagged"
+                           & " type", Init_By_Proof);
+                     elsif Has_Predicates (E) then
+                        Mark_Unsupported
+                          ("component with initialization by proof in a type"
+                           & " with predicates", Init_By_Proof);
+                     elsif Present (Not_Init_By_Proof) then
+                        Mark_Unsupported
+                          ("component without initialization by proof in a"
+                           & " record with initialization by proof",
+                           Not_Init_By_Proof);
+                     end if;
+                  end if;
+
                end;
             end if;
 
@@ -4883,6 +4955,12 @@ package body SPARK_Definition is
                Mark_Violation ("access type without ownership", E);
             elsif not Retysp_In_SPARK (Directly_Designated_Type (E)) then
                Mark_Violation (E, From => Directly_Designated_Type (E));
+
+            --  We do not support initialization by proof on access types yet
+
+            elsif Has_Init_By_Proof (Directly_Designated_Type (E)) then
+               Mark_Unsupported
+                 ("access to a type with initialization by proof", E);
             end if;
 
          elsif Is_Concurrent_Type (E) then

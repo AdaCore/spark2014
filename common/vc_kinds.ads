@@ -68,6 +68,7 @@ package VC_Kinds is
       VC_Discriminant_Check,
       VC_Tag_Check,
       VC_Ceiling_Interrupt,
+      VC_Initialization_Check,
       VC_Interrupt_Reserved,
       VC_Invariant_Check,
       VC_Invariant_Check_On_Default_Value,  --  the invariant check on

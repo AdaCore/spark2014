@@ -96,6 +96,9 @@ package Why.Gen.Binders is
       --  True if the names of constant parts of the binder are local objects
       --  in Why3.
 
+      Init  : Opt_Id;
+      --  Optional init flag for types which have Init_By_Proof
+
       case Kind is
          when Regular | Concurrent_Self =>
             Main      : Binder_Type;
@@ -277,11 +280,12 @@ package Why.Gen.Binders is
       Id      : W_Identifier_Id;
       Mutable : Boolean) return Item_Type
    is
-     ((Regular, Local => True, Main => (Ada_Node => E,
-                                        B_Name   => Id,
-                                        B_Ent    => Null_Entity_Name,
-                                        Mutable  => Mutable,
-                                        Labels   => <>)));
+     ((Regular, Local => True, Init => <>,
+       Main => (Ada_Node => E,
+                B_Name   => Id,
+                B_Ent    => Null_Entity_Name,
+                Mutable  => Mutable,
+                Labels   => <>)));
    --  @param E entity
    --  @param Id identifier
    --  @param Mutable True iff the item is mutable

@@ -43,6 +43,7 @@ with Why.Atree.Modules;          use Why.Atree.Modules;
 with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Decl;               use Why.Gen.Decl;
 with Why.Gen.Expr;               use Why.Gen.Expr;
+with Why.Gen.Init;               use Why.Gen.Init;
 with Why.Gen.Names;              use Why.Gen.Names;
 with Why.Gen.Preds;              use Why.Gen.Preds;
 with Why.Gen.Progs;              use Why.Gen.Progs;
@@ -146,7 +147,8 @@ package body Why.Gen.Records is
        elsif Is_Type (Field) then
            New_Named_Type
              (Name => Get_Name (E_Symb (Field, WNE_Private_Type)))
-       else EW_Abstract (Etype (Field)));
+       elsif Ekind (Field) = E_Discriminant then EW_Abstract (Etype (Field))
+       else EW_Init_Wrapper (Etype (Field), EW_Abstract));
    --  Compute the expected Why type of a record component. If the component is
    --  a type, it stands for the invisible fields of the type and is translated
    --  as the appropriate private type. Otherwise, return the abstract type of
@@ -1402,10 +1404,12 @@ package body Why.Gen.Records is
            New_Identifier (Name => "b", Typ => Abstr_Ty);
 
          function New_Field_Equality
-           (Field_Id, Enclosing_Id : W_Identifier_Id;
+           (Is_Discr               : Boolean;
+            Field_Id, Enclosing_Id : W_Identifier_Id;
             Is_Private             : Boolean;
             Field_Type             : Entity_Id)
             return W_Pred_Id;
+         --  @param Is_Discr true if the field is a discriminant
          --  @param Field_Id why id for a component or discriminant
          --  @param Enclosing_Id why id for the appropriate top level why
          --         record field
@@ -1420,7 +1424,8 @@ package body Why.Gen.Records is
          ------------------------
 
          function New_Field_Equality
-           (Field_Id, Enclosing_Id : W_Identifier_Id;
+           (Is_Discr               : Boolean;
+            Field_Id, Enclosing_Id : W_Identifier_Id;
             Is_Private             : Boolean;
             Field_Type             : Entity_Id)
             return W_Pred_Id
@@ -1456,19 +1461,47 @@ package body Why.Gen.Records is
                                    Typ   => EW_Private_Type)));
                end;
             else
-               return +New_Ada_Equality
-                 (Typ    => Field_Type,
-                  Domain => EW_Pred,
-                  Left   =>
-                    New_Record_Access
-                      (Name  => A_Access,
-                       Field => Field_Id,
-                       Typ   => EW_Abstract (Field_Type)),
-                  Right  =>
-                    New_Record_Access
-                      (Name  => B_Access,
-                       Field => Field_Id,
-                       Typ   => EW_Abstract (Field_Type)));
+               declare
+                  A_F_Access : constant W_Expr_Id :=
+                    (if Is_Discr then
+                        New_Record_Access
+                          (Name  => A_Access,
+                           Field => Field_Id,
+                           Typ   => EW_Abstract (Field_Type))
+                     else
+                        New_Init_Wrapper_Value_Access
+                          (Ada_Node => Empty,
+                           E        => Field_Type,
+                           Name     => New_Record_Access
+                             (Name  => A_Access,
+                              Field => Field_Id,
+                              Typ   => EW_Init_Wrapper
+                                (Field_Type, EW_Abstract)),
+                           Domain   => EW_Term));
+                  B_F_Access : constant W_Expr_Id :=
+                    (if Is_Discr then
+                        New_Record_Access
+                          (Name  => B_Access,
+                           Field => Field_Id,
+                           Typ   => EW_Abstract (Field_Type))
+                     else
+                        New_Init_Wrapper_Value_Access
+                          (Ada_Node => Empty,
+                           E        => Field_Type,
+                           Name     => New_Record_Access
+                             (Name  => B_Access,
+                              Field => Field_Id,
+                              Typ   => EW_Init_Wrapper
+                                (Field_Type, EW_Abstract)),
+                           Domain   => EW_Term));
+
+               begin
+                  return +New_Ada_Equality
+                    (Typ    => Field_Type,
+                     Domain => EW_Pred,
+                     Left   => A_F_Access,
+                     Right  => B_F_Access);
+               end;
             end if;
          end New_Field_Equality;
 
@@ -1495,7 +1528,8 @@ package body Why.Gen.Records is
                            else To_Why_Id (Discr, Rec => Root));
                         Comparison : constant W_Pred_Id :=
                           New_Field_Equality
-                            (Field_Id     => Discr_Id,
+                            (Is_Discr     => True,
+                             Field_Id     => Discr_Id,
                              Enclosing_Id => Discrs_Id,
                              Is_Private   => False,
                              Field_Type   => Retysp (Etype (Discr)));
@@ -1530,7 +1564,8 @@ package body Why.Gen.Records is
                                 To_Why_Id (Comp, Local => True, Rec => E);
                               Comparison     : constant W_Pred_Id :=
                                 New_Field_Equality
-                                  (Field_Id     => Field_Id,
+                                  (Is_Discr     => False,
+                                   Field_Id     => Field_Id,
                                    Enclosing_Id => Fields_Id,
                                    Is_Private   => Is_Type (Comp),
                                    Field_Type   =>
@@ -2515,7 +2550,9 @@ package body Why.Gen.Records is
                     New_Field_Association
                       (Domain => Domain,
                        Field  => To_Why_Id (Comp, Rec => Ty),
-                       Value  => Why_Default_Value (EW_Term, Etype (Comp)));
+                       Value  => Reconstruct_Init_Wrapper
+                         (Ty    => Etype (Comp),
+                          Value => Why_Default_Value (EW_Term, Etype (Comp))));
                end if;
             end loop;
 
@@ -2655,7 +2692,9 @@ package body Why.Gen.Records is
                   (1 => New_Field_Association
                      (Domain => Domain,
                       Field  => To_Why_Id (Field, Domain, Rec => Ty),
-                      Value  => Value))),
+                      Value  => Reconstruct_Init_Wrapper
+                        (Ty    => Retysp (Etype (Field)),
+                         Value => Value)))),
            Ty       => Ty);
       T           : W_Expr_Id;
    begin

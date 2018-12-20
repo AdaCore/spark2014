@@ -345,7 +345,7 @@ package Why.Gen.Names is
 
       WNE_Empty,                   --  dummy value for Why_Name_Enum
 
-      --  Name of the program functions related to the pointer type
+      --  Names related to the pointer type
       WNE_Null_Pointer,           --  "__null_pointer"
       WNE_Null_Exclusion_Val,     --  "__null_exclusion_val"
       WNE_Is_Null_Pointer,        --  "__is_null_pointer"
@@ -353,7 +353,11 @@ package Why.Gen.Names is
       WNE_Pointer_Value,          --  "__pointer_value"
       WNE_Init_Allocator,         --  "__new_initialized_allocator"
       WNE_Uninit_Allocator,       --  "__new_uninitialized_allocator"
-      WNE_Assign_Null_Check       --  "__assign_null_check"
+      WNE_Assign_Null_Check,      --  "__assign_null_check"
+
+      --  Names related to initialization checks
+      WNE_Init_Value,             --  "rec__value"
+      WNE_Attr_Init               --  "attr__init"
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;
@@ -389,6 +393,8 @@ package Why.Gen.Names is
 
    function Is_Null_Append (Base : W_Identifier_Id;
                             Typ  : W_Type_Id) return W_Identifier_Id;
+
+   function Init_Append (Base : W_Identifier_Id) return W_Identifier_Id;
 
    function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id;
 

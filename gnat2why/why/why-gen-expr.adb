@@ -48,6 +48,7 @@ with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Arrays;             use Why.Gen.Arrays;
 with Why.Gen.Binders;            use Why.Gen.Binders;
 with Why.Gen.Names;              use Why.Gen.Names;
+with Why.Gen.Init;               use Why.Gen.Init;
 with Why.Gen.Pointers;           use Why.Gen.Pointers;
 with Why.Gen.Preds;              use Why.Gen.Preds;
 with Why.Gen.Progs;              use Why.Gen.Progs;
@@ -342,7 +343,8 @@ package body Why.Gen.Expr is
       To             : W_Type_Id;
       Need_Check     : Boolean := False;
       Force_No_Slide : Boolean := False;
-      Is_Qualif      : Boolean := False)
+      Is_Qualif      : Boolean := False;
+      Do_Init        : Boolean := True)
       return W_Expr_Id
    is
       From      : constant W_Type_Id := Get_Type (Expr);
@@ -514,13 +516,19 @@ package body Why.Gen.Expr is
       Need_Slide : constant Boolean := Needs_Slide (From_Ent, To_Ent);
       Sliding    : constant Boolean :=
         not Force_No_Slide and then Need_Slide and then not Is_Qualif;
-      Arr_Expr   : W_Expr_Id;
+      Arr_Expr   : W_Expr_Id := Expr;
       T          : W_Expr_Id;
       Pred_Check : constant Boolean :=
         Domain = EW_Prog
         and then Need_Check
         and then Has_Predicates (Get_Ada_Node (+To))
         and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
+      Init_Check : constant Boolean :=
+        Domain = EW_Prog
+        and then Do_Init
+        and then Need_Check
+        and then Has_Init_By_Proof (From_Ent)
+        and then not Has_Init_By_Proof (To_Ent);
 
    --  Beginning of processing for Insert_Array_Conversion
 
@@ -552,9 +560,17 @@ package body Why.Gen.Expr is
          end if;
       end if;
 
+      --  If we are converting to a type which does not have initialization by
+      --  proof, check that the expression is initialized.
+
+      if Init_Check then
+         Arr_Expr := Insert_Initialization_Check
+           (Ada_Node, From_Ent, Arr_Expr, Domain);
+      end if;
+
       Arr_Expr :=
         New_Temp_For_Expr
-          (Expr,
+          (Arr_Expr,
            Need_Temp => Sliding or else not Is_Static_Array_Type (From_Ent));
 
       --  1 - Put array in split form. If reconstruction is needed, also store
@@ -762,15 +778,16 @@ package body Why.Gen.Expr is
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
       To       : W_Type_Id;
-      Lvalue   : Boolean := False) return W_Expr_Id
+      Lvalue   : Boolean := False;
+      No_Init  : Boolean := False) return W_Expr_Id
    is
 
       --  When converting between Ada types, detect cases where a check is not
       --  needed.
 
-      From          : constant W_Type_Id := Get_Type (Expr);
-      Check_Needed  : Boolean;
-      T : W_Expr_Id := Expr;
+      From         : constant W_Type_Id := Get_Type (Expr);
+      Check_Needed : Boolean;
+      T            : W_Expr_Id := Expr;
 
    begin
 
@@ -822,7 +839,8 @@ package body Why.Gen.Expr is
                                        Ada_Node   => Ada_Node,
                                        Expr       => T,
                                        To         => To,
-                                       Need_Check => Check_Needed);
+                                       Need_Check => Check_Needed,
+                                       Do_Init    => not No_Init);
 
       elsif Is_Pointer_Conversion (From, To) then
 
@@ -858,7 +876,8 @@ package body Why.Gen.Expr is
                                            Expr     => T,
                                            To       => To,
                                            Do_Check => Do_Check,
-                                           Lvalue   => Lvalue);
+                                           Lvalue   => Lvalue,
+                                           Do_Init  => not No_Init);
          end;
       end if;
 
@@ -1461,7 +1480,8 @@ package body Why.Gen.Expr is
       Expr     : W_Expr_Id;
       To       : W_Type_Id;
       Do_Check : Boolean := False;
-      Lvalue   : Boolean := False) return W_Expr_Id
+      Lvalue   : Boolean := False;
+      Do_Init  : Boolean := True) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
@@ -1510,7 +1530,8 @@ package body Why.Gen.Expr is
          To          => To,
          Range_Type  => Range_Type,
          Check_Kind  => Check_Kind,
-         Lvalue      => Lvalue);
+         Lvalue      => Lvalue,
+         Do_Init     => Do_Init);
    end Insert_Scalar_Conversion;
 
    function Insert_Scalar_Conversion
@@ -1521,9 +1542,19 @@ package body Why.Gen.Expr is
       Range_Type : Entity_Id;
       Check_Kind : Scalar_Check_Kind;
       Lvalue     : Boolean := False;
+      Do_Init    : Boolean := True;
       Skip_Pred  : Boolean := False) return W_Expr_Id
    is
-      From : constant W_Type_Id := Get_Type (Expr);
+      From    : constant W_Type_Id := Get_Type (Expr);
+      To_Conc : constant W_Type_Id :=
+        (if Is_Init_Wrapper_Type (To) then EW_Abstract (Get_Ada_Node (+To))
+         else To);
+      --  Concrete type for To if To is a wrapper for initialization
+
+      Init_Domain : constant EW_Domain :=
+        (if Domain = EW_Prog and then not Do_Init then EW_Pterm
+         else Domain);
+      --  Domain for initialization checks
 
       --  Do not generate a predicate check for an internal call to a parent
       --  predicate function inside the definition of a predicate function.
@@ -1645,10 +1676,22 @@ package body Why.Gen.Expr is
       --  for a range check of a modular type, int for a range check of a
       --  discrete type).
 
+      --  0. If From is a wrapper type, access the value (this may introduce an
+      --     initialization check).
+
+      if Is_Init_Wrapper_Type (From) then
+         Result := New_Init_Wrapper_Value_Access
+           (Ada_Node => Ada_Node,
+            E        => Get_Ada_Node (+Cur),
+            Name     => Result,
+            Domain   => Init_Domain);
+         Cur := Get_Type (Result);
+      end if;
+
       --  1. If From is an abstract type, convert it to type int, __fixed,
       --     real, or bitvector_?.
 
-      if Get_Type_Kind (From) = EW_Abstract then
+      if Get_Type_Kind (Cur) = EW_Abstract then
          Cur := Base_Why_Type (From);
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
@@ -1793,21 +1836,21 @@ package body Why.Gen.Expr is
 
       --  7. If To is an abstract type, convert from int, __fixed or real to it
 
-      if Get_Type_Kind (To) = EW_Abstract then
+      if Get_Type_Kind (To_Conc) = EW_Abstract then
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
                                              From     => Cur,
-                                             To       => To,
+                                             To       => To_Conc,
                                              Expr     => Result);
 
       --  If the type is in split form, no conversion is needed. Change the
       --  Ada_Node to the expected type. We do that by adding a dummy node.
 
-      elsif Get_Type_Kind (To) = EW_Split then
+      elsif Get_Type_Kind (To_Conc) = EW_Split then
          Result := New_Label (Labels => Name_Id_Sets.Empty_Set,
                               Def    => Result,
                               Domain => Domain,
-                              Typ    => To);
+                              Typ    => To_Conc);
       end if;
 
       --  8. Perform a predicate check if needed, after the final conversion
@@ -1821,6 +1864,15 @@ package body Why.Gen.Expr is
          Result := +Insert_Predicate_Check (Ada_Node => Ada_Node,
                                             Check_Ty => Get_Ada_Node (+To),
                                             W_Expr   => +Result);
+      end if;
+
+      --  9. Reconstruct the wrapper if necessary
+
+      if Is_Init_Wrapper_Type (To) then
+         Result := Reconstruct_Init_Wrapper
+           (Ada_Node => Ada_Node,
+            Ty       => Get_Ada_Node (+To),
+            Value    => Result);
       end if;
 
       return Result;
@@ -1874,7 +1926,8 @@ package body Why.Gen.Expr is
          return Insert_Scalar_Conversion (Domain   => Domain,
                                           Ada_Node => Ada_Node,
                                           Expr     => Expr,
-                                          To       => To);
+                                          To       => To,
+                                          Do_Init  => False);
       end if;
    end Insert_Simple_Conversion;
 
@@ -3242,6 +3295,15 @@ package body Why.Gen.Expr is
          end;
       end if;
    end New_Xor_Expr;
+
+   --------------------------
+   -- Pred_Of_Boolean_Term --
+   --------------------------
+
+   function Pred_Of_Boolean_Term (W : W_Term_Id) return W_Pred_Id is
+     (New_Call (Name => Why_Eq,
+                Args => (1 => +W, 2 => +Bool_True (EW_Term)),
+                Typ  => EW_Bool_Type));
 
    ------------
    -- To_Int --

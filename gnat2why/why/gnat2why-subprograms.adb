@@ -773,7 +773,8 @@ package body Gnat2Why.Subprograms is
       --  If E has no parameters, return a singleton of unit type.
 
       if Binders'Length = 0 then
-         return (1 => (Regular, Local => True, Main => Unit_Param));
+         return (1 =>
+                   (Regular, Local => True, Init => <>, Main => Unit_Param));
       else
          return Binders;
       end if;
@@ -1669,7 +1670,7 @@ package body Gnat2Why.Subprograms is
             Prot : constant Entity_Id := Containing_Protected_Type (E);
          begin
             Result (1) :=
-              (Concurrent_Self, Local => True,
+              (Concurrent_Self, Local => True, Init => <>,
                Main => Concurrent_Self_Binder
                  (Prot, Mutable => Ekind (E) /= E_Function));
             Count := 2;
@@ -3065,6 +3066,9 @@ package body Gnat2Why.Subprograms is
       function Check_Inline_For_Proof return W_Prog_Id;
       --  Checks that the expression used for inlining is equal to the result
 
+      function Check_Init_Of_Out_Params return W_Prog_Id;
+      --  Checks initialization of out parameters at the end of the subprogram
+
       function Check_Invariants_Of_Outputs return W_Prog_Id;
       --  Checks the type invariants of global output and of out parameters if
       --  E is a boundary subprogram.
@@ -3248,12 +3252,44 @@ package body Gnat2Why.Subprograms is
                  Others_Guard_Ident => Others_Guard_Ident));
       end CC_And_RTE_Post;
 
+      ------------------------------
+      -- Check_Init_Of_Out_Params --
+      ------------------------------
+
+      function Check_Init_Of_Out_Params return W_Prog_Id is
+         Param  : Entity_Id := First_Formal (E);
+         Checks : W_Prog_Id := +Void;
+
+      begin
+         while Present (Param) loop
+            declare
+               B : constant Item_Type :=
+                 Ada_Ent_To_Why.Element (Symbol_Table, Param);
+            begin
+               if B.Init.Present then
+                  pragma Assert (Ekind (Param) = E_Out_Parameter);
+                  Checks := Sequence
+                    (Left  => Checks,
+                     Right => New_Located_Assert
+                       (Ada_Node => Param,
+                        Pred     => Pred_Of_Boolean_Term
+                          (New_Deref (Right => B.Init.Id,
+                                      Typ   => EW_Bool_Type)),
+                        Reason   => VC_Initialization_Check,
+                        Kind     => EW_Assert));
+               end if;
+            end;
+            Next_Formal (Param);
+         end loop;
+         return Checks;
+      end Check_Init_Of_Out_Params;
+
       ----------------------------
       -- Check_Inline_For_Proof --
       ----------------------------
 
       function Check_Inline_For_Proof return W_Prog_Id is
-         Value : constant Node_Id := Retrieve_Inline_Annotation (E);
+         Value  : constant Node_Id := Retrieve_Inline_Annotation (E);
          Params : constant Transformation_Params :=
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
@@ -3853,10 +3889,11 @@ package body Gnat2Why.Subprograms is
 
          Why_Body := Sequence
            ((1 => Why_Body,
-             2 => Check_Invariants_Of_Outputs,
-             3 => CC_And_RTE_Post,
-             4 => Check_Inline_For_Proof,
-             5 => Result_Var));
+             2 => Check_Init_Of_Out_Params,
+             3 => Check_Invariants_Of_Outputs,
+             4 => CC_And_RTE_Post,
+             5 => Check_Inline_For_Proof,
+             6 => Result_Var));
 
       --  Body is not in SPARK
 
@@ -4659,6 +4696,7 @@ package body Gnat2Why.Subprograms is
                            Desc_Params (I) :=
                              (Regular,
                               Local => True,
+                              Init  => <>,
                               Main  =>
                                 (B_Name   =>
                                      New_Temp_Identifier

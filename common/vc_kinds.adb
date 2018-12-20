@@ -87,6 +87,10 @@ package body VC_Kinds is
 
          when VC_Null_Pointer_Dereference  => "476",
 
+         --  CWE-457: Use of Uninitialized Variable
+
+         when VC_Initialization_Check      => "457",
+
             --  We did not find a relevant CWE for the following yet
 
          when VC_Invariant_Check
@@ -314,6 +318,8 @@ package body VC_Kinds is
             return "Warn if branch is found to be unreachable";
          when VC_Dead_Code                        =>
             return "Warn if code is found to be unreachable";
+         when VC_Initialization_Check             =>
+            return "Check that a variable is initialized";
       end case;
    end Description;
 
@@ -804,7 +810,9 @@ package body VC_Kinds is
              when VC_Unreachable_Branch =>
                "unreachable branch",
              when VC_Dead_Code =>
-               "unreachable code");
+               "unreachable code",
+             when VC_Initialization_Check =>
+               "use of an uninitialized variable");
    end Kind_Name;
 
    function Kind_Name (Kind : Valid_Flow_Tag_Kind) return String is

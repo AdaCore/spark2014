@@ -546,6 +546,18 @@ package body Gnat2Why.Decls is
             raise Program_Error;
       end case;
 
+      --  generate a global ref for the initialization flag if any
+
+      if Var.Init.Present then
+         Emit
+           (File,
+            New_Global_Ref_Declaration
+              (Name     => To_Local (Var.Init.Id),
+               Labels   => Name_Id_Sets.Empty_Set,
+               Location => Safe_First_Sloc (E),
+               Ref_Type => EW_Bool_Type));
+      end if;
+
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,

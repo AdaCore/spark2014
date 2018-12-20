@@ -104,6 +104,11 @@ package body SPARK_Annotate is
    --  Stores subprogram and package entities with a pragma Annotate
    --  (GNATprove, Terminating, E).
 
+   Init_Annotations : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Stores type entities with a pragma Annotate
+   --  (GNATprove, Init_By_Proof, E).
+
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
@@ -169,6 +174,11 @@ package body SPARK_Annotate is
    --  Check validity of a pragma Annotate (Gnatprove, Terminating, ) and
    --  insert it in the Terminate_Annotations map.
 
+   procedure Check_Init_Annotation (Arg3_Exp : Node_Id) with
+     Pre => Present (Arg3_Exp);
+   --  Check validity of a pragma Annotate (Gnatprove, Init_By_Proof, E) and
+   --  insert it in the Init_Annotations map.
+
    ---------
    -- "<" --
    ---------
@@ -177,6 +187,109 @@ package body SPARK_Annotate is
    begin
       return L.First < R.First;
    end "<";
+
+   ---------------------------
+   -- Check_Init_Annotation --
+   ---------------------------
+
+   procedure Check_Init_Annotation (Arg3_Exp : Node_Id) is
+      E : constant Entity_Id := Entity (Arg3_Exp);
+
+   begin
+      --  This entity must be a scalar type
+
+      if Ekind (E) not in Scalar_Kind then
+         Error_Msg_N
+           ("Entity parameter of a pragma Init_By_Proof must be a scalar "
+            & "type",
+            Arg3_Exp);
+         return;
+      elsif Has_Predicates (E) then
+         Error_Msg_N
+           ("Entity parameter of a pragma Init_By_Proof must not have type "
+            & "predicates",
+            Arg3_Exp);
+         return;
+      end if;
+
+      --  Go through renamings to find the appropriate entity
+
+      Init_Annotations.Include (Unique_Entity (E));
+   end Check_Init_Annotation;
+
+   -----------------------------
+   -- Check_Inline_Annotation --
+   -----------------------------
+
+   procedure Check_Inline_Annotation (Arg3_Exp : Node_Id; Prag : Node_Id) is
+      E     : Entity_Id;
+      Nodes : Common_Containers.Node_Lists.List;
+      Value : Node_Id;
+
+      use type Ada.Containers.Count_Type;
+
+   begin
+      --  The third argument must be an entity
+
+      pragma Assert (Present (Arg3_Exp) and then Present (Entity (Arg3_Exp)));
+      E := Entity (Arg3_Exp);
+
+      --  This entity must be a function
+
+      if Ekind (E) /= E_Function then
+         Error_Msg_N
+           ("Entity parameter of a pragma Inline_For_Proof must be a function",
+            Arg3_Exp);
+         return;
+      end if;
+
+      if Present (Get_Expression_Function (E))
+        and then SPARK_Definition.Entity_Body_Compatible_With_SPARK (E)
+      then
+         Value := Expression (Get_Expression_Function (E));
+      else
+
+         --  It must have a postcondition
+
+         Nodes := Find_Contracts (E, Pragma_Postcondition, False, False);
+
+         if Nodes.Length /= 1 then
+            Error_Msg_N
+              ("function with Inline_For_Proof must be an expression function"
+               & " or have a postcondition of the form F'Result = Expr", E);
+            return;
+         end if;
+
+         --  Its postcondition must be of the form F'Result = Expr
+
+         Value := Nodes.First_Element;
+
+         if Nkind (Value) = N_Op_Eq
+           and then Nkind (Left_Opnd (Value)) = N_Attribute_Reference
+           and then Get_Attribute_Id (Attribute_Name (Left_Opnd (Value))) =
+           Attribute_Result
+         then
+            Value := Right_Opnd (Value);
+         elsif Nkind (Value) = N_Function_Call
+           and then Nkind (Original_Node (Value)) = N_Op_Eq
+           and then Nkind (Left_Opnd (Original_Node (Value))) =
+           N_Attribute_Reference
+           and then Get_Attribute_Id
+             (Attribute_Name (Left_Opnd (Original_Node (Value)))) =
+           Attribute_Result
+         then
+            Value := Next_Actual (First_Actual (Value));
+         else
+            Error_Msg_N
+              ("function with Inline_For_Proof must be an expression function"
+               & " or have a postcondition of the form F'Result = Expr", E);
+            return;
+         end if;
+      end if;
+
+      Inline_Annotations.Include (E, Value);
+      Inline_Pramas.Include (E, Prag);
+   end Check_Inline_Annotation;
 
    ------------------------
    -- Check_Is_Annotated --
@@ -249,80 +362,6 @@ package body SPARK_Annotate is
          end if;
       end loop;
    end Check_Is_Annotated;
-
-   -----------------------------
-   -- Check_Inline_Annotation --
-   -----------------------------
-
-   procedure Check_Inline_Annotation (Arg3_Exp : Node_Id; Prag : Node_Id) is
-      E     : Entity_Id;
-      Nodes : Common_Containers.Node_Lists.List;
-      Value : Node_Id;
-
-      use type Ada.Containers.Count_Type;
-
-   begin
-      --  The third argument must be an entity
-
-      pragma Assert (Present (Arg3_Exp) and then Present (Entity (Arg3_Exp)));
-      E := Entity (Arg3_Exp);
-
-      --  This entity must be a function
-
-      if Ekind (E) /= E_Function then
-         Error_Msg_N
-           ("Entity parameter of a pragma Inline_For_Proof must be a function",
-            Arg3_Exp);
-         return;
-      end if;
-
-      if Present (Get_Expression_Function (E))
-        and then SPARK_Definition.Entity_Body_Compatible_With_SPARK (E)
-      then
-         Value := Expression (Get_Expression_Function (E));
-      else
-
-         --  It must have a postcondition
-
-         Nodes := Find_Contracts (E, Pragma_Postcondition, False, False);
-
-         if Nodes.Length /= 1 then
-            Error_Msg_N
-              ("Function with Inline_For_Proof must be an expression function"
-               & " or have a postcondition of the form F'Result = Expr", E);
-            return;
-         end if;
-
-         --  Its postcondition must be of the form F'Result = Expr
-
-         Value := Nodes.First_Element;
-
-         if Nkind (Value) = N_Op_Eq
-           and then Nkind (Left_Opnd (Value)) = N_Attribute_Reference
-           and then Get_Attribute_Id (Attribute_Name (Left_Opnd (Value))) =
-           Attribute_Result
-         then
-            Value := Right_Opnd (Value);
-         elsif Nkind (Value) = N_Function_Call
-           and then Nkind (Original_Node (Value)) = N_Op_Eq
-           and then Nkind (Left_Opnd (Original_Node (Value))) =
-           N_Attribute_Reference
-           and then Get_Attribute_Id
-             (Attribute_Name (Left_Opnd (Original_Node (Value)))) =
-           Attribute_Result
-         then
-            Value := Next_Actual (First_Actual (Value));
-         else
-            Error_Msg_N
-              ("Function with Inline_For_Proof must be an expression function"
-               & " or have a postcondition of the form F'Result = Expr", E);
-            return;
-         end if;
-      end if;
-
-      Inline_Annotations.Include (E, Value);
-      Inline_Pramas.Include (E, Prag);
-   end Check_Inline_Annotation;
 
    -------------------------------
    -- Check_Iterable_Annotation --
@@ -784,6 +823,14 @@ package body SPARK_Annotate is
       end if;
    end Retrieve_Iterable_Annotation;
 
+   ------------------------------
+   -- Scalar_Has_Init_By_Proof --
+   ------------------------------
+
+   function Scalar_Has_Init_By_Proof (E : Entity_Id) return Boolean is
+     (Ekind (E) in Scalar_Kind
+      and then Init_Annotations.Contains (Unique_Entity (E)));
+
    --------------------------------------------
    -- Syntax_Check_Pragma_Annotate_Gnatprove --
    --------------------------------------------
@@ -835,6 +882,12 @@ package body SPARK_Annotate is
          elsif Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) = "terminating"
          then
             Check_Terminate_Annotation (Arg3_Exp);
+            Ok := False;
+            return;
+         elsif Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) =
+           "init_by_proof"
+         then
+            Check_Init_Annotation (Arg3_Exp);
             Ok := False;
             return;
          end if;

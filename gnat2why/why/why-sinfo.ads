@@ -813,6 +813,9 @@ package Why.Sinfo is
 
       EW_Split,
 
+      --  This is a special marker for wrapper types for initialization
+
+      EW_Wrapper,
       EW_Abstract);
 
    type EW_Literal is

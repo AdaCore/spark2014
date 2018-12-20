@@ -334,6 +334,8 @@ def check_marks(strlist):
             return 'DISCRIMINANT_CHECK'
         elif 'tag check' in text:
             return 'TAG_CHECK'
+        elif 'initialization check' in text:
+            return 'INIT_BY_PROOF'
         elif 'default initial condition' in text:
             return 'DEFAULT_INITIAL_CONDITION'
         elif 'initial condition' in text:
@@ -420,7 +422,8 @@ def check_marks(strlist):
                        "WEAKER_PRE",
                        "STRONGER_POST",
                        "WEAKER_CLASSWIDE_PRE",
-                       "STRONGER_CLASSWIDE_POST")
+                       "STRONGER_CLASSWIDE_POST",
+                       "INIT_BY_PROOF")
 
     def is_negative_result(result):
         """Returns True if the given result corresponds to a negative one"""

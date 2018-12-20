@@ -165,10 +165,10 @@ package Why.Gen.Arrays is
    --  attributes.
 
    function New_Array_Access
-     (Ada_Node  : Node_Id;
-      Ar        : W_Expr_Id;
-      Index     : W_Expr_Array;
-      Domain    : EW_Domain) return W_Expr_Id;
+     (Ada_Node : Node_Id;
+      Ar       : W_Expr_Id;
+      Index    : W_Expr_Array;
+      Domain   : EW_Domain) return W_Expr_Id;
    --  Generate an expr that corresponds to an array access
 
    function Array_Convert_To_Base
@@ -348,7 +348,7 @@ package Why.Gen.Arrays is
    --  the last argument filled in by this procedure.
 
    function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id
-     with Pre => Get_Type_Kind (Get_Type (E)) = EW_Split;
+     with Pre => Get_Type_Kind (Get_Type (E)) in EW_Split | EW_Wrapper;
    --  Return the Ada entity associated to an array expression in split form.
    --  There is always one or we cannot reach to the object's bounds.
    --  @param E Why expression for which we want an ada entity.

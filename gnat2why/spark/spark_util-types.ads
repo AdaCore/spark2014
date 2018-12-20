@@ -284,6 +284,12 @@ package SPARK_Util.Types is
    --  @return True if E needs a specific module to check its default
    --     expression at declaration.
 
+   function Has_Init_By_Proof (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
+   --  @param E type
+   --  @return True if initialization of objects of type E should be checked by
+   --     proof.
+
    --------------------------------
    -- Queries related to records --
    --------------------------------

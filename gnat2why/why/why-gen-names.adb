@@ -186,8 +186,10 @@ package body Why.Gen.Names is
       To_Kind   : constant EW_Type := Get_Type_Kind (To);
    begin
       case From_Kind is
+         when EW_Wrapper => raise Program_Error;
          when EW_Builtin =>
             case To_Kind is
+               when EW_Wrapper => raise Program_Error;
                when EW_Builtin =>
 
                   --  Only certain conversions are OK
@@ -289,6 +291,7 @@ package body Why.Gen.Names is
             | EW_Split
          =>
             case To_Kind is
+               when EW_Wrapper => raise Program_Error;
                when EW_Builtin =>
                   declare
                      A : constant Node_Id := Get_Ada_Node (+From);
@@ -535,6 +538,23 @@ package body Why.Gen.Names is
            Module   => Get_Module (Base),
            Ada_Node => Get_Ada_Node (+Base));
    end Havoc_Append;
+
+   -----------------
+   -- Init_Append --
+   -----------------
+
+   function Init_Append (Base : W_Identifier_Id) return W_Identifier_Id is
+      Name : constant W_Name_Id := Get_Name (Base);
+   begin
+      return
+        Append_Num
+          (S        => Get_Name_String (Get_Symbol (Name))
+           & To_String (WNE_Attr_Init),
+           Count    => 1,
+           Typ      => EW_Bool_Type,
+           Module   => Get_Module (Name),
+           Ada_Node => Get_Ada_Node (+Name));
+   end Init_Append;
 
    --------------------
    -- Is_Null_Append --
@@ -815,6 +835,7 @@ package body Why.Gen.Names is
 
          --  these are used both by E_Symb function and by To_String
 
+         when WNE_Attr_Init          => "__attr__init",
          when WNE_Rec_Split_Discrs   => "__split_discrs",
          when WNE_Rec_Split_Fields   => "__split_fields",
          when WNE_Null_Exclusion_Val => "__null_exclusion_val",
@@ -875,6 +896,7 @@ package body Why.Gen.Names is
             | WNE_Index_Dynamic_Property_2
             | WNE_Index_Dynamic_Property_3
             | WNE_Index_Dynamic_Property_4
+            | WNE_Init_Value
             | WNE_Int_Proj
             | WNE_Of_Array
             | WNE_Of_Base

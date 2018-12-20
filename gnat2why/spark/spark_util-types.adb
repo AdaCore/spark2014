@@ -27,6 +27,7 @@ with Aspects;                    use Aspects;
 with Elists;                     use Elists;
 with Exp_Util;                   use Exp_Util;
 with Sem_Eval;                   use Sem_Eval;
+with SPARK_Annotate;             use SPARK_Annotate;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 
@@ -477,6 +478,39 @@ package body SPARK_Util.Types is
       elsif Is_Itype (E) then Predicated_Parent (E)
       else Partial_View (E));
 
+   -----------------------
+   -- Has_Init_By_Proof --
+   -----------------------
+
+   function Has_Init_By_Proof (E : Entity_Id) return Boolean is
+      Ty : constant Entity_Id := Retysp (E);
+   begin
+      case Ekind (Ty) is
+         when Scalar_Kind =>
+            return Scalar_Has_Init_By_Proof (Ty);
+         when Array_Kind =>
+            return Has_Init_By_Proof (Component_Type (Ty));
+         when Record_Kind =>
+
+            --  A record type either has alla its components with Init_By_Proof
+            --  or none. Only check the first component here.
+
+            declare
+               Comp : constant Entity_Id :=
+                 First_Component (Root_Retysp (Ty));
+            begin
+               return Present (Comp) and then Has_Init_By_Proof (Etype (Comp));
+            end;
+         when E_Private_Type .. E_Limited_Private_Subtype
+            | Concurrent_Kind
+            | Access_Kind
+          =>
+            return False;
+         when others =>
+            raise Program_Error;
+      end case;
+   end Has_Init_By_Proof;
+
    -----------------------------
    -- Has_Invariants_In_SPARK --
    -----------------------------
@@ -603,7 +637,8 @@ package body SPARK_Util.Types is
         (Ekind (E) = E_Enumeration_Subtype
          and then Etype (E) = Standard_Boolean
          and then Scalar_Range (E) = Scalar_Range (Standard_Boolean)
-         and then not Has_Predicates (E)));
+         and then not Has_Predicates (E)
+         and then not Scalar_Has_Init_By_Proof (E)));
 
    --------------------------
    -- Is_Static_Array_Type --

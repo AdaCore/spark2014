@@ -255,6 +255,7 @@ package body Gnat2Why.Error_Messages is
                | VC_Invariant_Check_On_Default_Value
                | VC_Warning_Kind
                | VC_Inline_Check
+               | VC_Initialization_Check
             =>
                return (OK => False);
          end case;
@@ -710,6 +711,8 @@ package body Gnat2Why.Error_Messages is
 
          when VC_Warning_Kind              =>
             raise Program_Error;
+         when VC_Initialization_Check      =>
+            return "initialization check might fail";
       end case;
    end Not_Proved_Message;
 
@@ -1011,6 +1014,8 @@ package body Gnat2Why.Error_Messages is
             return "unreachable branch";
          when VC_Dead_Code                 =>
             return "unreachable code";
+         when VC_Initialization_Check      =>
+            return "initialization check proved";
       end case;
    end Proved_Message;
 
