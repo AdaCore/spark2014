@@ -480,27 +480,27 @@ package body Configuration is
       end if;
 
       if Mode in Project_Parsing | All_Switches then
+         Define_Switch (Config, "-aP=");
          Define_Switch
            (Config,
-            CL_Switches.P'Access,
-            "-P:");
-         Define_Switch
-           (Config,
-            Version'Access,
-         Long_Switch => "--version");
+            Clean'Access,
+            Long_Switch => "--clean");
          Define_Switch
            (Config,
             List_Categories'Access,
             Long_Switch => "--list-categories");
          Define_Switch
            (Config,
-            Clean'Access,
-            Long_Switch => "--clean");
-         Define_Switch (Config, "-aP=");
+            CL_Switches.P'Access,
+            "-P:");
          Define_Switch
            (Config,
             CL_Switches.Subdirs'Access,
             Long_Switch => "--subdirs=");
+         Define_Switch
+           (Config,
+            Version'Access,
+         Long_Switch => "--version");
       end if;
 
       if Mode in Project_Parsing | All_Switches | Global_Switches_Only then
@@ -513,8 +513,27 @@ package body Configuration is
       if Mode in All_Switches | Global_Switches_Only then
          Define_Switch
            (Config,
+            CL_Switches.Assumptions'Access,
+            Long_Switch => "--assumptions");
+
+         --  This switch is not documented on purpose. We provide the fake_*
+         --  binaries instead of the real prover binaries. This helps when
+         --  collecting benchmarks for prover developers.
+         Define_Switch
+           (Config, CL_Switches.Benchmark'Access,
+            Long_Switch => "--benchmark");
+         Define_Switch
+           (Config,
             CL_Switches.Checks_As_Errors'Access,
             Long_Switch => "--checks-as-errors");
+         Define_Switch
+           (Config,
+            CL_Switches.CodePeer'Access,
+            Long_Switch => "--codepeer=");
+         Define_Switch
+           (Config,
+            CL_Switches.Coverage'Access,
+            Long_Switch => "--coverage");
          Define_Switch
            (Config,
             CL_Switches.CWE'Access,
@@ -523,6 +542,14 @@ package body Configuration is
            (Config,
             CL_Switches.D'Access,
             "-d", Long_Switch => "--debug");
+         Define_Switch
+           (Config,
+            CL_Switches.Dbg_Proof_Only'Access,
+            Long_Switch => "--dbg-proof-only");
+         Define_Switch
+           (Config,
+            CL_Switches.Debug_Save_VCs'Access,
+            Long_Switch => "--debug-save-vcs");
          Define_Switch
            (Config,
             CL_Switches.Flow_Debug'Access,
@@ -537,12 +564,16 @@ package body Configuration is
             Long_Switch => "--flow-show-gg");
          Define_Switch
            (Config,
-            CL_Switches.Dbg_Proof_Only'Access,
-            Long_Switch => "--dbg-proof-only");
-         Define_Switch
-           (Config,
             CL_Switches.F'Access,
             "-f");
+         Define_Switch
+           (Config,
+            CL_Switches.IDE_Progress_Bar'Access,
+            Long_Switch => "--ide-progress-bar");
+         Define_Switch
+           (Config,
+            CL_Switches.Info'Access,
+            Long_Switch => "--info");
          Define_Switch
            (Config, CL_Switches.J'Access,
             Long_Switch => "-j:",
@@ -553,6 +584,21 @@ package body Configuration is
             "-k");
          Define_Switch
            (Config,
+            CL_Switches.Limit_Line'Access,
+            Long_Switch => "--limit-line=");
+         Define_Switch
+           (Config,
+            CL_Switches.Limit_Region'Access,
+            Long_Switch => "--limit-region=");
+         Define_Switch
+           (Config,
+            CL_Switches.Limit_Subp'Access,
+            Long_Switch => "--limit-subp=");
+         Define_Switch
+           (Config, CL_Switches.Memcached_Server'Access,
+            Long_Switch => "--memcached-server=");
+         Define_Switch
+           (Config,
             CL_Switches.Mode'Access,
             Long_Switch => "--mode=");
          Define_Switch
@@ -561,28 +607,32 @@ package body Configuration is
             "-m");
          Define_Switch
            (Config,
-            CL_Switches.Warnings'Access,
-            Long_Switch => "--warnings=");
+            CL_Switches.No_Axiom_Guard'Access,
+            Long_Switch => "--no-axiom-guard");
          Define_Switch
            (Config,
-            CL_Switches.CodePeer'Access,
-            Long_Switch => "--codepeer=");
+            CL_Switches.No_Global_Generation'Access,
+            Long_Switch => "--no-global-generation");
          Define_Switch
            (Config,
-            CL_Switches.Coverage'Access,
-            Long_Switch => "--coverage");
+            CL_Switches.No_Subprojects'Access,
+            Long_Switch => "--no-subprojects");
          Define_Switch
            (Config,
-            CL_Switches.Debug_Save_VCs'Access,
-            Long_Switch => "--debug-save-vcs");
+            CL_Switches.Output_Header'Access,
+            Long_Switch => "--output-header");
          Define_Switch
            (Config,
-            CL_Switches.IDE_Progress_Bar'Access,
-            Long_Switch => "--ide-progress-bar");
+            CL_Switches.Output_Msg_Only'Access,
+            Long_Switch => "--output-msg-only");
          Define_Switch
            (Config,
             CL_Switches.Pedantic'Access,
             Long_Switch => "--pedantic");
+         Define_Switch
+           (Config,
+            CL_Switches.Proof_Warnings'Access,
+            Long_Switch => "--proof-warnings");
          Define_Switch
            (Config,
             CL_Switches.Q'Access,
@@ -617,118 +667,61 @@ package body Configuration is
             "-U");
          Define_Switch
            (Config,
-            CL_Switches.Limit_Region'Access,
-            Long_Switch => "--limit-region=");
-         Define_Switch
-           (Config,
-            CL_Switches.Limit_Line'Access,
-            Long_Switch => "--limit-line=");
-         Define_Switch
-           (Config,
-            CL_Switches.Limit_Subp'Access,
-            Long_Switch => "--limit-subp=");
-         Define_Switch
-           (Config,
-            CL_Switches.No_Axiom_Guard'Access,
-            Long_Switch => "--no-axiom-guard");
-         Define_Switch
-           (Config,
-            CL_Switches.Proof_Warnings'Access,
-            Long_Switch => "--proof-warnings");
-         Define_Switch
-           (Config,
-            CL_Switches.Z3_Counterexample'Access,
-            Long_Switch => "--z3-counterexample");
-         Define_Switch
-           (Config,
-            CL_Switches.No_Global_Generation'Access,
-            Long_Switch => "--no-global-generation");
-         Define_Switch
-           (Config,
-            CL_Switches.No_Subprojects'Access,
-            Long_Switch => "--no-subprojects");
-         Define_Switch
-           (Config,
-            CL_Switches.Output_Header'Access,
-            Long_Switch => "--output-header");
-         Define_Switch
-           (Config,
-            CL_Switches.Output_Msg_Only'Access,
-            Long_Switch => "--output-msg-only");
+            CL_Switches.Warnings'Access,
+            Long_Switch => "--warnings=");
          Define_Switch
            (Config, CL_Switches.Why3_Conf'Access,
             Long_Switch => "--why3-conf=");
          Define_Switch
            (Config, CL_Switches.Why3_Debug'Access,
             Long_Switch => "--why3-debug=");
-         --  This switch is not documented on purpose. We provide the fake_*
-         --  binaries instead of the real prover binaries. This helps when
-         --  collecting benchmarks for prover developers.
-         Define_Switch
-           (Config, CL_Switches.Benchmark'Access,
-            Long_Switch => "--benchmark");
-         Define_Switch
-           (Config, CL_Switches.Memcached_Server'Access,
-            Long_Switch => "--memcached-server=");
          Define_Switch
            (Config,
-            CL_Switches.Info'Access,
-            Long_Switch => "--info");
+            CL_Switches.Z3_Counterexample'Access,
+            Long_Switch => "--z3-counterexample");
          Define_Section (Config, "cargs");
          Define_Switch (Config, "*", Section => "cargs");
       end if;
 
       if Mode in All_Switches | Global_Switches_Only | File_Specific_Only then
          Define_Switch
+           (Config, CL_Switches.Level'Access,
+            Long_Switch => "--level=",
+            Initial => Invalid_Level);
+         Define_Switch
+           (Config,
+            CL_Switches.Memlimit'Access,
+            Long_Switch => "--memlimit=");
+         Define_Switch
+           (Config,
+            CL_Switches.No_Counterexample'Access,
+            Long_Switch => "--no-counterexample");
+         Define_Switch
+           (Config,
+            CL_Switches.No_Inlining'Access,
+            Long_Switch => "--no-inlining");
+         Define_Switch
+           (Config,
+            CL_Switches.No_Loop_Unrolling'Access,
+            Long_Switch => "--no-loop-unrolling");
+         Define_Switch
            (Config,
             CL_Switches.Proof'Access,
             Long_Switch => "--proof=");
+         Define_Switch
+           (Config,
+            CL_Switches.Prover'Access,
+            Long_Switch => "--prover=");
 
          --  If not specified on the command-line, value of steps is invalid
          Define_Switch
            (Config, CL_Switches.Steps'Access,
             Long_Switch => "--steps=",
             Initial => Invalid_Steps);
-
-         Define_Switch
-           (Config, CL_Switches.Level'Access,
-            Long_Switch => "--level=",
-            Initial => Invalid_Level);
-
          Define_Switch
            (Config,
             CL_Switches.Timeout'Access,
             Long_Switch => "--timeout=");
-
-         Define_Switch
-           (Config,
-            CL_Switches.Memlimit'Access,
-            Long_Switch => "--memlimit=");
-
-         Define_Switch
-           (Config,
-            CL_Switches.Assumptions'Access,
-            Long_Switch => "--assumptions");
-
-         Define_Switch
-           (Config,
-            CL_Switches.Prover'Access,
-            Long_Switch => "--prover=");
-
-         Define_Switch
-           (Config,
-            CL_Switches.No_Counterexample'Access,
-            Long_Switch => "--no-counterexample");
-
-         Define_Switch
-           (Config,
-            CL_Switches.No_Inlining'Access,
-            Long_Switch => "--no-inlining");
-
-         Define_Switch
-           (Config,
-            CL_Switches.No_Loop_Unrolling'Access,
-            Long_Switch => "--no-loop-unrolling");
       end if;
 
       Define_Switch (Config, "*", Help => "list of source files");
