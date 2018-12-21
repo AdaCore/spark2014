@@ -1,1 +1,1 @@
-Darwin XFAIL no effect on Darwin of --memlimit (RA11-005)
+Darwin SKIP no effect on Darwin of --memlimit (RA11-005)
