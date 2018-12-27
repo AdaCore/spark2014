@@ -2358,7 +2358,7 @@ package body Flow.Control_Flow_Graph is
 
             --  Finally we add a mark the faux exit vertex as a
             --  possible exit of this loop.
-            CM (Union_Id (N)).Standard_Exits.Include (Faux_Exit_V);
+            CM (Union_Id (N)).Standard_Exits.Insert (Faux_Exit_V);
          end if;
 
          --  Loop the loop: V -> body -> V
@@ -2398,7 +2398,7 @@ package body Flow.Control_Flow_Graph is
          --  Flow for the while loops goes into the condition and then
          --  out again.
          CM (Union_Id (N)).Standard_Entry := V;
-         CM (Union_Id (N)).Standard_Exits.Include (V);
+         CM (Union_Id (N)).Standard_Exits.Insert (V);
 
          --  Loop the loop: V -> body -> V
          Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
@@ -2441,7 +2441,7 @@ package body Flow.Control_Flow_Graph is
             --  Flow goes into and out of the loop. Note that we do
             --  NOT hook up the loop body.
             CM (Union_Id (N)).Standard_Entry := V;
-            CM (Union_Id (N)).Standard_Exits.Include (V);
+            CM (Union_Id (N)).Standard_Exits.Insert (V);
 
             Fully_Initialized := Flow_Id_Sets.Empty_Set;
 
@@ -2460,7 +2460,7 @@ package body Flow.Control_Flow_Graph is
             --  Flow goes into the first statement and out the loop vertex
             CM (Union_Id (N)).Standard_Entry :=
               CM (Union_Id (Statements (N))).Standard_Entry;
-            CM (Union_Id (N)).Standard_Exits.Include (V);
+            CM (Union_Id (N)).Standard_Exits.Insert (V);
 
             --  Loop the loop: V -> body -> V
             Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
@@ -2494,7 +2494,7 @@ package body Flow.Control_Flow_Graph is
 
             --  Flow for the conditional for loop is like a while loop
             CM (Union_Id (N)).Standard_Entry := V;
-            CM (Union_Id (N)).Standard_Exits.Include (V);
+            CM (Union_Id (N)).Standard_Exits.Insert (V);
 
             --  Loop the loop: V -> body -> V
             Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
@@ -4704,7 +4704,7 @@ package body Flow.Control_Flow_Graph is
             Linkup (FA, V_C, V);
 
             Block.Standard_Entry := V_C;
-            Block.Standard_Exits.Include (V);
+            Block.Standard_Exits.Insert (V);
          end;
       end if;
 
