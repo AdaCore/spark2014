@@ -1875,6 +1875,7 @@ package body Flow.Control_Flow_Graph is
       Ret_Object_L : constant List_Id := Return_Object_Declarations (N);
       Ret_Entity   : constant Node_Id := Return_Statement_Entity (N);
       Ret_Object   : constant Entity_Id := Get_Return_Object (N);
+      HSS          : constant Node_Id := Handled_Statement_Sequence (N);
 
    begin
       --  We create a null vertex for the extended return statement
@@ -1911,10 +1912,10 @@ package body Flow.Control_Flow_Graph is
                  Graph_Connections'(Standard_Entry => V,
                                     Standard_Exits => Empty_Set));
 
-      if Present (Handled_Statement_Sequence (N)) then
+      if Present (HSS) then
          declare
-            Statement_Sequence : constant List_Id :=
-              Statements (Handled_Statement_Sequence (N));
+            Statement_Sequence : constant List_Id := Statements (HSS);
+
          begin
             --  We process the sequence of statements
             Process_Statement_List (Statement_Sequence, FA, CM, Ctx);
