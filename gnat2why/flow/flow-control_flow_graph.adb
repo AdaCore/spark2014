@@ -1908,9 +1908,6 @@ package body Flow.Control_Flow_Graph is
             Loops           => Ctx.Current_Loops,
             E_Loc           => Ret_Entity),
          V);
-      CM.Insert (Union_Id (Ret_Entity),
-                 Graph_Connections'(Standard_Entry => V,
-                                    Standard_Exits => Empty_Set));
 
       if Present (HSS) then
          declare
