@@ -866,7 +866,8 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-   with Post => Ctx'Old.Folded_Function_Checks = Ctx.Folded_Function_Checks;
+   with Post => CM.Length = CM.Length'Old + 1 and then
+                Ctx'Old.Folded_Function_Checks = Ctx.Folded_Function_Checks;
    --  Process an arbitrary statement (this is basically a big case
    --  block which calls the various Do_XYZ procedures).
 
@@ -874,7 +875,8 @@ package body Flow.Control_Flow_Graph is
      (L   : List_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
-      Ctx : in out Context);
+      Ctx : in out Context)
+   with Post => CM.Length = CM.Length'Old + 1;
    --  This processes a list of statements and links up each statement
    --  to the its successor. The final connection map for L will map
    --  to the standard entry of the first statement and the standard
@@ -1720,6 +1722,8 @@ package body Flow.Control_Flow_Graph is
          CM (Union_Id (N)).Standard_Exits.Union
            (CM (Union_Id (Statements (Alternative))).Standard_Exits);
 
+         CM.Delete (Union_Id (Statements (Alternative)));
+
          Next (Alternative);
 
          exit when No (Alternative);
@@ -1926,6 +1930,8 @@ package body Flow.Control_Flow_Graph is
             --  statements to the standard entry of the implicit
             --  return statement.
             Linkup (FA, CM (Union_Id (Statement_Sequence)).Standard_Exits, V);
+
+            CM.Delete (Union_Id (Statement_Sequence));
          end;
       else
          --  No sequence of statements is present. We link the
@@ -1933,6 +1939,8 @@ package body Flow.Control_Flow_Graph is
          --  statement.
          Linkup (FA, CM (Union_Id (Ret_Object_L)).Standard_Exits, V);
       end if;
+
+      CM.Delete (Union_Id (Ret_Object_L));
 
       --  We link the implicit return statement to the helper end vertex
       Linkup (FA, V, FA.Helper_End_Vertex);
@@ -2004,6 +2012,8 @@ package body Flow.Control_Flow_Graph is
       CM (Union_Id (N)).Standard_Exits.Union
         (CM (Union_Id (If_Part)).Standard_Exits);
 
+      CM.Delete (Union_Id (If_Part));
+
       --  If we have elsif parts we chain them together in the obvious
       --  way:
       --
@@ -2070,6 +2080,8 @@ package body Flow.Control_Flow_Graph is
                --  Add the exits of Elsif_Body to the exits of N
                CM (Union_Id (N)).Standard_Exits.Union
                  (CM (Union_Id (Elsif_Body)).Standard_Exits);
+
+               CM.Delete (Union_Id (Elsif_Body));
             end;
 
             V_Prev := V;
@@ -2085,6 +2097,8 @@ package body Flow.Control_Flow_Graph is
          Linkup (FA, V, CM (Union_Id (Else_Part)).Standard_Entry);
          CM (Union_Id (N)).Standard_Exits.Union
            (CM (Union_Id (Else_Part)).Standard_Exits);
+
+         CM.Delete (Union_Id (Else_Part));
       else
          CM (Union_Id (N)).Standard_Exits.Insert (V);
       end if;
@@ -3126,6 +3140,8 @@ package body Flow.Control_Flow_Graph is
          raise Program_Error;
       end if;
 
+      CM.Delete (Union_Id (Statements (N)));
+
       --  Check whether the non-terminating loop is immediately in the analysed
       --  unit (and not in the package body statements of a nested package,
       --  which will be handled as a subprogram call).
@@ -4001,6 +4017,9 @@ package body Flow.Control_Flow_Graph is
                   Standard_Exits => CM.Element
                     (Union_Id (Private_Decls)).Standard_Exits));
 
+            CM.Delete (Union_Id (Visible_Decls));
+            CM.Delete (Union_Id (Private_Decls));
+
          --  We have only processed the visible declarations so we just copy
          --  the connections of N from Visible_Decls.
 
@@ -4011,6 +4030,8 @@ package body Flow.Control_Flow_Graph is
                  (Standard_Entry => V,
                   Standard_Exits => CM.Element
                     (Union_Id (Visible_Decls)).Standard_Exits));
+
+            CM.Delete (Union_Id (Visible_Decls));
          end if;
       end;
 
@@ -4131,6 +4152,8 @@ package body Flow.Control_Flow_Graph is
                        (Standard_Entry => CM.Element
                             (Union_Id (Pkg_Body_Declarations)).Standard_Entry,
                         Standard_Exits => Initializes_CM.Standard_Exits));
+
+                  CM.Delete (Union_Id (Pkg_Body_Declarations));
                else
                   --  Since we do not process any declarations all we have to
                   --  do is to connect N to the Initializes_CM.
