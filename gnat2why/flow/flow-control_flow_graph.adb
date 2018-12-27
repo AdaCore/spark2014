@@ -1914,25 +1914,20 @@ package body Flow.Control_Flow_Graph is
          V);
 
       if Present (HSS) then
-         declare
-            Statement_Sequence : constant List_Id := Statements (HSS);
+         --  We process the sequence of statements
+         Process_Statement (HSS, FA, CM, Ctx);
 
-         begin
-            --  We process the sequence of statements
-            Process_Statement_List (Statement_Sequence, FA, CM, Ctx);
-            --  We link the standard exits of Ret_Object_L to the standard
-            --  entry of the sequence of statements.
-            Linkup (FA,
-                    CM (Union_Id (Ret_Object_L)).Standard_Exits,
-                    CM (Union_Id (Statement_Sequence)).Standard_Entry);
+         --  We link the standard exits of Ret_Object_L to the standard entry
+         --  of the sequence of statements.
+         Linkup (FA,
+                 CM (Union_Id (Ret_Object_L)).Standard_Exits,
+                 CM (Union_Id (HSS)).Standard_Entry);
 
-            --  We link the standard exits of the sequence of
-            --  statements to the standard entry of the implicit
-            --  return statement.
-            Linkup (FA, CM (Union_Id (Statement_Sequence)).Standard_Exits, V);
+         --  We link the standard exits of the sequence of statements to the
+         --  standard entry of the implicit return statement.
+         Linkup (FA, CM (Union_Id (HSS)).Standard_Exits, V);
 
-            CM.Delete (Union_Id (Statement_Sequence));
-         end;
+         CM.Delete (Union_Id (HSS));
       else
          --  No sequence of statements is present. We link the
          --  standard exits of Ret_Object_L to the implicit return
