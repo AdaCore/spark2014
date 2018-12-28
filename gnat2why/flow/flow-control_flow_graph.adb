@@ -1808,6 +1808,7 @@ package body Flow.Control_Flow_Graph is
       V     : Flow_Graphs.Vertex_Id;
       L     : Node_Id := N;
       Funcs : Node_Sets.Set;
+      Cond  : constant Node_Id := Condition (N);
    begin
       --  Go up the tree until we find the loop we are exiting from
       if No (Name (N)) then
@@ -1827,7 +1828,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Conditional and unconditional exits are different. One
       --  requires an extra vertex, the other does not.
-      if No (Condition (N)) then
+      if No (Cond) then
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
                      Null_Node_Attributes,
@@ -1839,7 +1840,7 @@ package body Flow.Control_Flow_Graph is
 
       else
          Collect_Functions_And_Read_Locked_POs
-           (Condition (N),
+           (Cond,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
@@ -1849,7 +1850,7 @@ package body Flow.Control_Flow_Graph is
             Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (Var_Ex_Use => Get_Variables
-                 (Condition (N),
+                 (Cond,
                   Scope                => FA.B_Scope,
                   Fold_Functions       => True,
                   Use_Computed_Globals => not FA.Generating_Globals),
@@ -1857,7 +1858,7 @@ package body Flow.Control_Flow_Graph is
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
             V);
-         Ctx.Folded_Function_Checks.Append (Condition (N));
+         Ctx.Folded_Function_Checks.Append (Cond);
          CM.Insert (Union_Id (N),
                     Trivial_Connection (V));
       end if;
