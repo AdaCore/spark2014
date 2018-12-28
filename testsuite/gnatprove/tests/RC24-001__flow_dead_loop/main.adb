@@ -3,6 +3,7 @@ with Update;
 procedure Main (Some_Condition : Boolean; Status : out Integer) is
 begin
    Main_Block : for Unused_Loop_Var in 1 .. 1 loop
+      pragma Unreferenced (Unused_Loop_Var);
 
       if Some_Condition then
          Status := 1;

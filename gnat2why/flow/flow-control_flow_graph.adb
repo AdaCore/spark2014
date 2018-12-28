@@ -2452,6 +2452,30 @@ package body Flow.Control_Flow_Graph is
 
             Fully_Initialized := Flow_Id_Sets.Empty_Set;
 
+         elsif Compile_Time_Compare
+           (Low_Bound (R), High_Bound (R), Assume_Valid => True) = EQ
+         then
+            --  The loop is executed exactly once
+
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (N),
+               Make_Basic_Attributes
+                 (Var_Def => Flatten_Variable (LP, FA.B_Scope),
+                  Loops   => Ctx.Current_Loops,
+                  E_Loc   => N),
+               V);
+
+            --  Flow goes into loop declaration and out of the loop statements
+            CM (Union_Id (N)).Standard_Entry := V;
+            CM (Union_Id (N)).Standard_Exits.Union
+              (CM (Union_Id (Statements (N))).Standard_Exits);
+
+            --  Loop declaration is followed by the loop statements: V -> body
+            Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
+
+            Fully_Initialized := Variables_Initialized_By_Loop (N);
+
          elsif Not_Null_Range (Low_Bound (R), High_Bound (R)) then
             --  We need to make sure the loop is executed at least once
 
