@@ -5505,16 +5505,17 @@ package body Flow.Control_Flow_Graph is
    -----------------------------
 
    procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs) is
-      Dead : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         if FA.Atr (V).Is_Exceptional_Path then
-            Dead.Insert (V);
-         end if;
-      end loop;
-      for V of Dead loop
-         FA.CFG.Clear_Vertex (V);
-         FA.Atr (V) := Null_Attributes'Update (Is_Null_Node => True);
+         declare
+            Atr : V_Attributes renames FA.Atr (V);
+
+         begin
+            if Atr.Is_Exceptional_Path then
+               FA.CFG.Clear_Vertex (V);
+               Atr := Null_Attributes'Update (Is_Null_Node => True);
+            end if;
+         end;
       end loop;
 
       --  Sometimes a subprogram is entirely exceptional. In this case we
@@ -5529,8 +5530,8 @@ package body Flow.Control_Flow_Graph is
             --  annotated with No_Return.
             Error_Msg_Flow
               (FA       => FA,
-               Msg      => "all paths in & raise exceptions or do " &
-                 "not terminate normally",
+               Msg      => "all paths in & raise exceptions " &
+                           "or do not terminate normally",
                N        => FA.Analyzed_Entity,
                Severity => High_Check_Kind,
                Tag      => Missing_Return,
