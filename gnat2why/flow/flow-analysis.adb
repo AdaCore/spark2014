@@ -2217,13 +2217,13 @@ package body Flow.Analysis is
    --  Start of processing for Find_Dead_Code
 
    begin
-      --  Guilty until proven innocent.
+      --  Guilty until proven innocent
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             Atr : V_Attributes renames FA.Atr (V);
          begin
             if Atr.Is_Program_Node then
-               Dead_Code.Include (V);
+               Dead_Code.Insert (V);
             end if;
          end;
       end loop;

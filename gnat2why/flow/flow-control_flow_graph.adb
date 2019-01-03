@@ -5387,7 +5387,7 @@ package body Flow.Control_Flow_Graph is
          TV : out Flow_Graphs.Simple_Traversal_Instruction)
       is
       begin
-         Pathable.Include (V);
+         Pathable.Insert (V);
          if V = FA.End_Vertex then
             TV := Flow_Graphs.Skip_Children;
          else
@@ -5406,7 +5406,7 @@ package body Flow.Control_Flow_Graph is
          if V = FA.Start_Vertex then
             TV := Flow_Graphs.Skip_Children;
          else
-            Live.Include (V);
+            Live.Insert (V);
             TV := Flow_Graphs.Continue;
          end if;
       end Mark_Live;
@@ -5509,7 +5509,7 @@ package body Flow.Control_Flow_Graph is
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          if FA.Atr (V).Is_Exceptional_Path then
-            Dead.Include (V);
+            Dead.Insert (V);
          end if;
       end loop;
       for V of Dead loop
@@ -5565,7 +5565,7 @@ package body Flow.Control_Flow_Graph is
                            TV : out Flow_Graphs.Simple_Traversal_Instruction)
       is
       begin
-         Live.Include (V);
+         Live.Insert (V);
          if V = FA.End_Vertex then
             TV := Flow_Graphs.Skip_Children;
          else
@@ -5582,7 +5582,7 @@ package body Flow.Control_Flow_Graph is
       is
       begin
          if not Live.Contains (V) then
-            Dead.Include (V);
+            Dead.Insert (V);
             TV := Flow_Graphs.Skip_Children;
          elsif V = FA.Start_Vertex then
             TV := Flow_Graphs.Skip_Children;
@@ -5611,7 +5611,7 @@ package body Flow.Control_Flow_Graph is
                                             Flow_Graphs.Out_Neighbours)
             loop
                if Live.Contains (V) then
-                  Live_Neighbours.Include (V);
+                  Live_Neighbours.Insert (V);
                end if;
             end loop;
             for Live_V of Live_Neighbours loop
