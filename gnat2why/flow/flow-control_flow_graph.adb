@@ -1669,7 +1669,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V, V_Alter  : Flow_Graphs.Vertex_Id;
+      V_Case      : Flow_Graphs.Vertex_Id;
       Alternative : Node_Id;
       Funcs       : Node_Sets.Set;
    begin
@@ -1692,41 +1692,47 @@ package body Flow.Control_Flow_Graph is
             Sub_Called => Funcs,
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),
-         V);
+         V_Case);
       Ctx.Folded_Function_Checks.Append (Expression (N));
       CM.Insert (Union_Id (N),
-                 Graph_Connections'(Standard_Entry => V,
+                 Graph_Connections'(Standard_Entry => V_Case,
                                     Standard_Exits => Empty_Set));
 
       Alternative := First (Alternatives (N));
 
       loop
-         --  We introduce a vertex V_Alter for each
-         --  Case_Statement_Alternative and we link that to V.
-         Add_Vertex
-           (FA,
-            Direct_Mapping_Id (Alternative),
-            Make_Aux_Vertex_Attributes
-              (E_Loc     => Alternative,
-               Execution => (if Is_Empty_Others (Alternative)
-                             then Abnormal_Termination
-                             else Normal_Execution)),
-            V_Alter);
-         Linkup (FA, V, V_Alter);
+         declare
+            Stmts   : constant List_Id := Statements (Alternative);
+            V_Alter : Flow_Graphs.Vertex_Id;
 
-         --  We link V_Alter with its statements
-         Process_Statement_List (Statements (Alternative), FA, CM, Ctx);
-         Linkup (FA,
-                 V_Alter,
-                 CM (Union_Id (Statements (Alternative))).Standard_Entry);
-         CM (Union_Id (N)).Standard_Exits.Union
-           (CM (Union_Id (Statements (Alternative))).Standard_Exits);
+         begin
+            --  We introduce a vertex V_Alter for each
+            --  case_statement_alternative and we link that to V_Case.
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (Alternative),
+               Make_Aux_Vertex_Attributes
+                 (E_Loc     => Alternative,
+                  Execution => (if Is_Empty_Others (Alternative)
+                                then Abnormal_Termination
+                                else Normal_Execution)),
+               V_Alter);
+            Linkup (FA, V_Case, V_Alter);
 
-         CM.Delete (Union_Id (Statements (Alternative)));
+            --  We link V_Alter with its statements
+            Process_Statement_List (Stmts, FA, CM, Ctx);
+            Linkup (FA,
+                    V_Alter,
+                    CM (Union_Id (Stmts)).Standard_Entry);
+            CM (Union_Id (N)).Standard_Exits.Union
+              (CM (Union_Id (Stmts)).Standard_Exits);
 
-         Next (Alternative);
+            CM.Delete (Union_Id (Stmts));
 
-         exit when No (Alternative);
+            Next (Alternative);
+
+            exit when No (Alternative);
+         end;
       end loop;
    end Do_Case_Statement;
 
