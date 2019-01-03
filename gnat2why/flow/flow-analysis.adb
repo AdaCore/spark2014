@@ -2182,9 +2182,7 @@ package body Flow.Analysis is
 
       procedure Flag_Live (V  : Flow_Graphs.Vertex_Id;
                            TV : out Flow_Graphs.Simple_Traversal_Instruction);
-                           --  Flag the given node as "live".
-
-      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id) return Boolean;
+      --  Flag the given node as "live"
 
       ---------------
       -- Flag_Live --
@@ -2197,22 +2195,6 @@ package body Flow.Analysis is
          Dead_Code.Exclude (V);
          TV := Flow_Graphs.Continue;
       end Flag_Live;
-
-      -------------------
-      -- Edge_Selector --
-      -------------------
-
-      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id) return Boolean is
-      begin
-         case FA.CFG.Edge_Colour (A, B) is
-            when EC_Default =>
-               return True;
-            when EC_Abend | EC_Inf | EC_Barrier =>
-               return True;
-            when others =>
-               raise Program_Error;
-         end case;
-      end Edge_Selector;
 
    --  Start of processing for Find_Dead_Code
 
@@ -2231,8 +2213,7 @@ package body Flow.Analysis is
       --  Discover live code
       FA.CFG.DFS (Start         => FA.Start_Vertex,
                   Include_Start => True,
-                  Visitor       => Flag_Live'Access,
-                  Edge_Selector => Edge_Selector'Access);
+                  Visitor       => Flag_Live'Access);
 
       --  Anything remaining is dead
       for V of Dead_Code loop
