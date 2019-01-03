@@ -5606,13 +5606,13 @@ package body Flow.Control_Flow_Graph is
 
       for Dead_V of Dead loop
          declare
-            Live_Neighbours : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+            Live_Neighbours : Vertex_Lists.List;
          begin
             for V of FA.CFG.Get_Collection (Dead_V,
                                             Flow_Graphs.Out_Neighbours)
             loop
                if Live.Contains (V) then
-                  Live_Neighbours.Insert (V);
+                  Live_Neighbours.Append (V);
                end if;
             end loop;
             for Live_V of Live_Neighbours loop
