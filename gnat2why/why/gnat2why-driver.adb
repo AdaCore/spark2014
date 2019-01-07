@@ -417,12 +417,22 @@ package body Gnat2Why.Driver is
          --  at some point to provide proof of generics, then the special
          --  SPARK expansion in the frontend should be applied to generic
          --  units as well. We still need to create the Why files to
-         --  indicate that everything went OK. We also print a warning that
-         --  nothing has been done, if the user has specifically requested
-         --  analysis of this file.
+         --  indicate that everything went OK.
 
          if not Gnat2Why_Args.Global_Gen_Mode then
             Touch_Main_File (Base_Name);
+         end if;
+
+         --  Issue warning if analyzing specific units with -u switch, but the
+         --  main entity in the compilation unit is generic.
+
+         if Gnat2Why_Args.Limit_Units then
+            Error_Msg_N
+              ("?generic compilation unit is not analyzed",
+               GNAT_Root);
+            Error_Msg_N
+              ("\?only instantiations of the generic will be analyzed",
+               GNAT_Root);
          end if;
 
          return;

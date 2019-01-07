@@ -682,7 +682,7 @@ procedure Gnatprove with SPARK_Mode is
                      "warning: no bodies have been analyzed by GNATprove");
                   Put_Line
                     (Standard_Error,
-                     "enable analysis of a body using SPARK_Mode");
+                     "enable analysis of a non-generic body using SPARK_Mode");
                else
                   Put_Line
                     ("Summary logged in " & SPARK_Report_File (Obj_Dir));
