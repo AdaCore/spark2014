@@ -1,0 +1,5 @@
+pointers.adb:13:14: expected state "read_write" at least, got "read_only"
+pointers.adb:13:14: insufficient permission for "R"
+pointers.adb:13:19: expected state "read_write" at least, got "read_only"
+pointers.adb:13:19: insufficient permission for "R"
+gnatprove: error during generation of Global contracts

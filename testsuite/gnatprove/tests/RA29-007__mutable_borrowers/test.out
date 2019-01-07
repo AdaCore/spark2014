@@ -1,7 +1,7 @@
-traversal.adb:11:13: expected state "read_write" at least, got "read_only"
-traversal.adb:11:13: insufficient permission for "X" when returning from "Get_Fst"
-traversal.adb:13:13: expected state "read_write" at least, got "read_only"
-traversal.adb:13:13: insufficient permission for "X" when returning from "Id"
-walker.adb:9:19: expression not allowed as source of move
-walker.adb:12:07: anonymous access type not yet supported
-gnatprove: error during generation of Global contracts
+traversal.adb:11:13: traversal function returning access-to-variable type is not yet supported
+traversal.adb:13:13: traversal function returning access-to-variable type is not yet supported
+traversal.adb:18:07: local borrower of an access object is not yet supported
+traversal.adb:18:29: "Get_Fst" is not allowed in SPARK (due to traversal function returning access-to-variable type)
+traversal.adb:18:29: violation of aspect SPARK_Mode at line 1
+walker.adb:15:07: local borrower of an access object is not yet supported
+gnatprove: error during flow analysis and proof

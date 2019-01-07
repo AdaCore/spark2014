@@ -6,8 +6,11 @@ procedure Walker with SPARK_Mode is
       Snd : Int_Acc;
    end record;
 
-   X : Two_Acc := (new Integer'(1), new Integer'(2));
+   X : Two_Acc;
 begin
+   X.Fst := new Integer'(1);
+   X.Snd := new Integer'(2);
+
    declare
       Y : access Integer := X.Fst;
    begin
