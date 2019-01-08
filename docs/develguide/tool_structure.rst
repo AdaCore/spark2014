@@ -204,3 +204,18 @@ This tool is called when all gnat2why processes are finished. It reads
 all ``.spark`` files (the machine-parsable output of gnat2why) and
 produces a summary file ``gnatprove.out``.
 
+gnatprove calls spark_report with a single argument, a filename. This file
+contains some info for spark_report in JSON syntax, with the following
+structure::
+
+    obj_dirs : list of strings
+    cmdline : list of strings
+    switches : list of strings
+
+Explanation for all fields:
+ - obj_dirs: spark_report looks for all ``.spark`` files in each directory in
+   the ``obj_dirs`` list, and processes them to generate the ``gnatprove.out``
+   file.
+ - cmdline: the switches given to gnatprove on the commandline.
+ - switches: the switches of the ``Switches`` attribute in the ``Prove``
+   package of the project file.

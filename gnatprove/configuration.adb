@@ -1487,8 +1487,10 @@ package body Configuration is
       procedure Set_Project_Vars is
          Glob_Comp_Switch_Attr : constant Attribute_Pkg_List :=
            Build ("Builder", "Global_Compilation_Switches");
-         Proof_Dir_Attr : constant Attribute_Pkg_String :=
+         Proof_Dir_Attr        : constant Attribute_Pkg_String :=
            Build ("Prove", "Proof_Dir");
+         Switches_Attr         : constant Attribute_Pkg_List :=
+           Build ("Prove", "Switches");
       begin
          Prj_Attr.Target := new String'(Tree.Root_Project.Get_Target);
          Prj_Attr.Runtime := new String'(Tree.Root_Project.Get_Runtime);
@@ -1501,6 +1503,10 @@ package body Configuration is
            (if Has_Attribute (Tree.Root_Project, Proof_Dir_Attr)
             then new String'(Attribute_Value (Tree.Root_Project,
                                               Proof_Dir_Attr))
+            else null);
+         Prj_Attr.Prove.Switches :=
+           (if Has_Attribute (Tree.Root_Project, Switches_Attr)
+            then Attribute_Value (Tree.Root_Project, Switches_Attr)
             else null);
       end Set_Project_Vars;
 
@@ -1714,6 +1720,7 @@ package body Configuration is
       --  Before doing the actual second parsing, we read the project file in
 
       Tree := Init;
+      Set_Project_Vars;
 
       if Clean then
          Clean_Up (Tree);
@@ -1721,38 +1728,14 @@ package body Configuration is
       end if;
 
       declare
-         use Ada.Strings.Unbounded;
-
-         Proj_Type      : constant Project_Type := Root_Project (Tree);
-         Extra_Switches : constant String_List_Access :=
-           Attribute_Value (Proj_Type, Build ("Prove", "Switches"));
-
+         Proj_Type : constant Project_Type := Root_Project (Tree);
       begin
-         if Extra_Switches /= null then
+         if Prj_Attr.Prove.Switches /= null then
             declare
                All_Switches_List   : constant String_List :=
-                 Extra_Switches.all & Com_Lin;
-               Extra_Switches_Line : Unbounded_String;
-
+                 Prj_Attr.Prove.Switches.all & Com_Lin;
             begin
                Parse_Switches (All_Switches, All_Switches_List);
-
-               --  Add GNATprove switches in environment for printing in header
-               --  of generated file "gnatprove.out"
-               for J in Extra_Switches'Range loop
-                  if J /= Extra_Switches'First then
-                     Append (Extra_Switches_Line, " ");
-                  end if;
-                  Append (Extra_Switches_Line, Extra_Switches (J).all);
-               end loop;
-
-               if CL_Switches.V then
-                  Put_Line ("export GNATPROVE_SWITCHES="
-                            & To_String (Extra_Switches_Line));
-               end if;
-
-               Ada.Environment_Variables.Set
-                 ("GNATPROVE_SWITCHES", To_String (Extra_Switches_Line));
             end;
          else
             Parse_Switches (All_Switches, Com_Lin);
@@ -1795,7 +1778,6 @@ package body Configuration is
          end;
       end;
 
-      Set_Project_Vars;
       Postprocess;
 
       if Is_Coq_Prover then

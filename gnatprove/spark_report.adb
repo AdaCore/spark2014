@@ -118,13 +118,38 @@ procedure SPARK_Report is
    --  @param S the table line
    --  @return a string to be presented to the user
 
+   function Build_Switches_String (A : JSON_Array) return String;
+   --  @param a JSON array of strings
+   --  @return a string that concatenates all strings in the array, with spaces
+   --    as separators
+
    procedure Process_Stats (C : Summary_Entries; Stats : JSON_Value);
    --  process the stats record for the VC and update the proof information
    --  @param C the category of the VC
    --  @param Stats the stats record
 
-   procedure Show_Header (Handle : Ada.Text_IO.File_Type);
+   procedure Show_Header (Handle : Ada.Text_IO.File_Type; Info : JSON_Value);
    --  Print header at start of generated file "gnatprove.out"
+
+   ---------------------------
+   -- Build_Switches_String --
+   ---------------------------
+
+   function Build_Switches_String (A : JSON_Array) return String is
+      use Ada.Strings.Unbounded;
+      Buffer : Unbounded_String;
+      First  : Boolean := True;
+   begin
+      for I in Positive range 1 .. Length (A) loop
+         if not First then
+            Append (Buffer, " ");
+         else
+            First := False;
+         end if;
+         Append (Buffer, String'(Get (Get (A, I))));
+      end loop;
+      return To_String (Buffer);
+   end Build_Switches_String;
 
    -------------------------
    -- Compute_Assumptions --
@@ -863,27 +888,11 @@ procedure SPARK_Report is
    -- Show_Header --
    -----------------
 
-   procedure Show_Header (Handle : Ada.Text_IO.File_Type) is
+   procedure Show_Header (Handle : Ada.Text_IO.File_Type; Info : JSON_Value) is
       use Ada, Ada.Text_IO;
-
-      function Get_Env_Variable (Name : String) return String;
-      --  Return the value of environment variable Name
 
       function OS_String return String;
       --  Return a nice string for the OS GNATprove was compiled for
-
-      ----------------------
-      -- Get_Env_Variable --
-      ----------------------
-
-      function Get_Env_Variable (Name : String) return String is
-         --  Return the value of the "Name" environment variable.
-         Result : GNAT.OS_Lib.String_Access := GNAT.OS_Lib.Getenv (Name);
-         Str    : constant String := Result.all;
-      begin
-         GNAT.OS_Lib.Free (Result);
-         return Str;
-      end Get_Env_Variable;
 
       ---------------
       -- OS_String --
@@ -915,19 +924,15 @@ procedure SPARK_Report is
          "host               : " & OS_String &
            Integer'Image (Pointer_Size * 8) & " bits");
 
-      declare
-         Cmd : constant String :=
-           Get_Env_Variable ("GNATPROVE_CMD_LINE");
-         GNATprove_Switches : constant String :=
-           Get_Env_Variable ("GNATPROVE_SWITCHES");
-      begin
-         if Cmd /= "" then
-            Put_Line
-              (Handle, "command line       : " & Cmd);
-            Put_Line
-              (Handle, "gnatprove switches : " & GNATprove_Switches);
-         end if;
-      end;
+      if Has_Field (Info, "cmdline") then
+         Put_Line (Handle, "command line       : " &
+                   Build_Switches_String (Get (Info, "cmdline")));
+      end if;
+
+      if Has_Field (Info, "switches") then
+         Put_Line (Handle, "gnatprove switches : " &
+                   Build_Switches_String (Get (Info, "switches")));
+      end if;
    end Show_Header;
 
    ------------------------
@@ -1033,18 +1038,30 @@ procedure SPARK_Report is
       end case;
    end To_String;
 
-   procedure Iterate_Source_Dirs is new For_Line_In_File (Handle_Source_Dir);
-
    Source_Directories_File : constant String := Parse_Command_Line;
 
    use Ada.Text_IO;
 
-   Handle : File_Type;
+   Handle   : File_Type;
 
---  Start of processing for SPARK_Report
+   Contents : constant String :=
+     Read_File_Into_String (Source_Directories_File);
+   Info     : constant JSON_Value := Read (Contents);
+
+   --  Start of processing for SPARK_Report
 
 begin
-   Iterate_Source_Dirs (Source_Directories_File);
+
+   if Has_Field (Info, "obj_dirs") then
+      declare
+         Ar : constant JSON_Array := Get (Info, "obj_dirs");
+      begin
+         for Var_Index in Positive range 1 .. Length (Ar) loop
+            Handle_Source_Dir (Get (Get (Ar, Var_Index)));
+         end loop;
+      end;
+   end if;
+
    if No_Analysis_Done then
       Reset_All_Results;
    end if;
@@ -1059,7 +1076,7 @@ begin
    end if;
 
    if Output_Header then
-      Show_Header (Handle);
+      Show_Header (Handle, Info);
       Ada.Text_IO.New_Line (Handle);
       Ada.Text_IO.New_Line (Handle);
    end if;

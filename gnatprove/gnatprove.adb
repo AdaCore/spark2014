@@ -608,16 +608,14 @@ procedure Gnatprove with SPARK_Mode is
      (Obj_Dir  : String;
       Obj_Path : File_Array)
    is
-      Obj_Dir_File : File_Type;
-      Obj_Dir_Fn   : constant String :=
+      Obj_Dir_Fn : constant String :=
         Ada.Directories.Compose (Obj_Dir, "gnatprove.alfad");
-
-      Success      : Boolean;
-      Status       : Integer;
-      Args         : String_Lists.List;
-
+      Success    : Boolean;
+      Status     : Integer;
+      Args       : String_Lists.List;
+      JSON_Rec   : constant JSON_Value := Create_Object;
    begin
-      Create (Obj_Dir_File, Out_File, Obj_Dir_Fn);
+
       declare
          --  Protect against duplicates in Obj_Path by inserting the items into
          --  a set and only doing something if there item was really inserted.
@@ -625,9 +623,10 @@ procedure Gnatprove with SPARK_Mode is
 
          Dir_Names_Seen : Configuration.Dir_Name_Sets.Set;
 
-         Inserted : Boolean;
-         Unused   : Dir_Name_Sets.Cursor;
+         Inserted       : Boolean;
+         Unused         : Dir_Name_Sets.Cursor;
 
+         Obj_Dirs_JSON  : JSON_Array;
       begin
          for Index in Obj_Path'Range loop
             declare
@@ -638,12 +637,44 @@ procedure Gnatprove with SPARK_Mode is
                                       Inserted => Inserted);
 
                if Inserted then
-                  Put_Line (Obj_Dir_File, Full_Name);
+                  Append (Obj_Dirs_JSON, Create (Full_Name));
                end if;
             end;
          end loop;
+         Set_Field (JSON_Rec, "obj_dirs", Obj_Dirs_JSON);
       end;
-      Close (Obj_Dir_File);
+
+      declare
+         use Ada.Command_Line;
+         Cmdline_JSON : JSON_Array;
+      begin
+         Append (Cmdline_JSON, Create (Simple_Name (Command_Name)));
+         for J in 1 .. Argument_Count loop
+            Append (Cmdline_JSON, Create (Argument (J)));
+         end loop;
+         Set_Field (JSON_Rec, "cmdline", Cmdline_JSON);
+      end;
+
+      if Prj_Attr.Prove.Switches /= null then
+         declare
+            Switches_JSON : JSON_Array;
+         begin
+            for J in Prj_Attr.Prove.Switches'Range loop
+               Append (Switches_JSON,
+                       Create (Prj_Attr.Prove.Switches (J).all));
+            end loop;
+            Set_Field (JSON_Rec, "switches", Switches_JSON);
+         end;
+      end if;
+
+      declare
+         Report_Info_File : File_Type;
+         Write_Cont       : constant String := Write (JSON_Rec);
+      begin
+         Create (Report_Info_File, Out_File, Obj_Dir_Fn);
+         Put (Report_Info_File, Write_Cont);
+         Close (Report_Info_File);
+      end;
 
       Args.Append (Obj_Dir_Fn);
       if CL_Switches.Assumptions then
@@ -901,7 +932,7 @@ procedure Gnatprove with SPARK_Mode is
    ---------------------
 
    procedure Set_Environment is
-      use Ada.Environment_Variables, GNAT.OS_Lib, Ada.Strings.Unbounded;
+      use Ada.Environment_Variables, GNAT.OS_Lib;
 
       Path_Val : constant String := Value ("PATH", "");
       Gpr_Val  : constant String := Value ("GPR_PROJECT_PATH", "");
@@ -910,12 +941,6 @@ procedure Gnatprove with SPARK_Mode is
         Compose (File_System.Install.Lib, "gnat");
       Sharegpr : constant String :=
         Compose (File_System.Install.Share, "gpr");
-
-      Cmd_Line : Unbounded_String :=
-        To_Unbounded_String
-          (Ada.Directories.Simple_Name (Ada.Command_Line.Command_Name));
-      --  The full command line
-
    begin
       --  Unset various environmment variables which might confuse the compiler
       --  or gprbuild
@@ -937,15 +962,6 @@ procedure Gnatprove with SPARK_Mode is
 
       Set ("GPR_PROJECT_PATH",
            Libgnat & Path_Separator & Sharegpr & Path_Separator & Gpr_Val);
-
-      --  Add full command line in environment for printing in header of
-      --  generated file "gnatprove.out"
-
-      for J in 1 .. Ada.Command_Line.Argument_Count loop
-         Append (Cmd_Line, " ");
-         Append (Cmd_Line, Ada.Command_Line.Argument (J));
-      end loop;
-      Set ("GNATPROVE_CMD_LINE", To_String (Cmd_Line));
 
       --  Set GPR_TOOL unless already set
 

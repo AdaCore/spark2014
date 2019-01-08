@@ -147,6 +147,7 @@ package Configuration is
 
       package Prove is
          Proof_Dir : GNAT.Strings.String_Access;
+         Switches  : GNAT.Strings.String_List_Access;
       end Prove;
    end Prj_Attr;
 
