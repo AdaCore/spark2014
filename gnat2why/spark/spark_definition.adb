@@ -1432,6 +1432,9 @@ package body SPARK_Definition is
             if Debug_Flag_FF then
                Mark (Expression (N));
 
+               --  Uninitialized allocators are only allowed on types defining
+               --  full default initialization.
+
                if Nkind (Expression (N)) = N_Identifier
                  and then Default_Initialization
                    (Entity (Expression (N)), Get_Flow_Scope (N))
@@ -1439,6 +1442,12 @@ package body SPARK_Definition is
                then
                   Mark_Violation ("uninitialized allocator without"
                                   & " default initialization", N);
+               end if;
+
+               if not Is_OK_Volatile_Context (Context => Parent (N),
+                                              Obj_Ref => N)
+               then
+                  Mark_Violation ("allocators in interfering context", N);
                end if;
             else
                Mark_Violation ("allocator", N);
@@ -2818,7 +2827,8 @@ package body SPARK_Definition is
              (Is_Effectively_Volatile_Object (Actual)
               or else (Nkind (Actual) = N_Function_Call
                        and then Nkind (Name (Actual)) /= N_Explicit_Dereference
-                         and then Is_Volatile_Call (Actual)))
+                         and then Is_Volatile_Call (Actual))
+              or else Nkind (Actual) = N_Allocator)
          then
             --  An effectively volatile object may act as an actual when the
             --  corresponding formal is of a non-scalar effectively volatile
@@ -2838,10 +2848,11 @@ package body SPARK_Definition is
             else
                Mark_Violation
                  (Msg           =>
-                    "volatile " &
-                  (if Nkind (Actual) = N_Function_Call
-                     then "function call"
-                     else "object") & " as actual",
+                  (case Nkind (Actual) is
+                   when N_Function_Call => "volatile function call",
+                   when N_Allocator => "allocator",
+                   when others => "volatile object")
+                  & " as actual",
                   N             => Actual,
                   SRM_Reference => "SPARK RM 7.1.3(11)");
             end if;

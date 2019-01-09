@@ -35,13 +35,15 @@ procedure Counterexamples (C : Integer) with SPARK_Mode is
    end Bad_3;
 
    procedure Bad_4 with Pre => True is
-      A : String_Array_Access := new String_Array'(1 => new String'("world"));
+      W : String_Access := new String'("world");
+      A : String_Array_Access := new String_Array'(1 => W);
    begin
       pragma Assert (A (1) (3) /= 'r'); --@ASSERT:FAIL
    end Bad_4;
 
    procedure Bad_5 with Pre => True is
-      A : String_Array_Access := new String_Array'(1 => new String'("world"));
+      W : String_Access := new String'("world");
+      A : String_Array_Access := new String_Array'(1 => W);
    begin
       pragma Assert (A (1).all'Length < C); --@ASSERT:FAIL
    end Bad_5;
