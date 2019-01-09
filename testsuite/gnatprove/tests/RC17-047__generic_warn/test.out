@@ -1,6 +1,4 @@
 a-timoio.ads:48:04: info: initialization of "Default_Width" proved, in instantiation at init.adb:7
-a-timoio.ads:48:04: warning: initialization of "Default_Width" has no effect, in instantiation at init.adb:7
 a-timoio.ads:49:04: info: initialization of "Default_Base" proved, in instantiation at init.adb:7
 init.adb:4:17: info: initialization of "S" proved
-init.adb:13:07: warning: initialization of "X" has no effect, in instantiation at init.adb:17
 init.adb:23:16: info: initialization of "Default_Base" proved
