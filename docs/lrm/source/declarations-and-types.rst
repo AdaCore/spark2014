@@ -441,9 +441,7 @@ type is access-to-constant or access-to-variable].
 Privacy is ignored in determining whether a type is an owning or
 observing type. A generic formal private type is not an owning type
 [redundant: , although the corresponding actual parameter in an instance
-of the generic might be an owning type]. A consequence of this rule
-is that the actual parameter for a generic formal private type cannot be
-of access type.
+of the generic might be an owning type].
 A tagged type shall not be an owning type.
 A type which is not a by-reference type shall not be an owning type.
 [Redundant: The requirement than an owning type must be a by-reference
@@ -491,8 +489,8 @@ The *root object* of a name that denotes an object is defined as follows:
 - if the name denotes an object renaming, the root object is the
   root object of the renamed name;
 
-- if the name is a function_call, the root object is the result object
-  of the call;
+- if the name is a function_call, and the function called is not a traversal
+  function, the root object is the result object of the call;
 
 - if the name is a qualified_expression or a type conversion, the root
   object is the root object of the operand of the name;
