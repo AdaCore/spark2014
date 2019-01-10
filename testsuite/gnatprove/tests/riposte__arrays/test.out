@@ -1,7 +1,7 @@
 arrays.adb:51:18: info: postcondition proved (CVC4: 2 VC)
-arrays.adb:62:22: medium: postcondition might fail, cannot prove Contains_B'Result = S (C) (e.g. when C = 'NUL' and Contains_B'Result = True and S = ('a' => True, others => False)) [possible explanation: subprogram at line 57 should mention C and S in a precondition]
+arrays.adb:62:22: medium: postcondition might fail, cannot prove Contains_B'Result = S (C) (e.g. when C = 'NUL' and Contains_B'Result = True and S = ('a' => True, others => False))
 arrays.adb:71:19: info: postcondition proved (CVC4: 2 VC)
-arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C) (e.g. when C = 'NUL' and Is_Id_2'Result = True and M = (others => 'a')) [possible explanation: subprogram at line 77 should mention C and M in a precondition]
+arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C) (e.g. when C = 'NUL' and Is_Id_2'Result = True and M = (others => 'a'))
 arrays.adb:94:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:104:22: medium: assertion might fail, cannot prove C = 'a' (e.g. when C = 'NUL') [possible explanation: precondition of subprogram at line 97 should mention C]
 arrays.adb:112:22: medium: assertion might fail, cannot prove M ('a') = 'a' (e.g. when M = (others => 'A')) [possible explanation: subprogram at line 107 should mention M in a precondition]
@@ -30,7 +30,7 @@ arrays.adb:191:41: info: range check proved (CVC4: 4 VC)
 arrays.adb:192:57: info: initialization of "R" proved
 arrays.adb:192:57: medium: "R" might not be initialized
 arrays.adb:194:14: info: initialization of "R" proved
-arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C) (e.g. when C = 'SOH' and I = 'SOH' and Single_Char_Set_Broken'Result = ('SOH' => True, others => False)) [possible explanation: subprogram at line 197 should mention C in a precondition]
+arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C) (e.g. when C = 'SOH' and I = 'SOH' and Single_Char_Set_Broken'Result = ('SOH' => True, others => False))
 arrays.adb:206:33: info: loop invariant initialization proved (CVC4: 2 VC)
 arrays.adb:206:33: info: loop invariant preservation proved (CVC4: 2 VC)
 arrays.adb:206:41: info: range check proved (CVC4: 4 VC)

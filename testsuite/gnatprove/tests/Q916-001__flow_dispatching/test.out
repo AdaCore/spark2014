@@ -29,7 +29,7 @@ ints.adb:45:58: info: range check proved (CVC4: 1 VC)
 ints.adb:46:35: info: range check proved (CVC4: 1 VC)
 ints.adb:46:66: info: range check proved (CVC4: 1 VC)
 ints.adb:51:38: medium: overflow check might fail [possible explanation: subprogram at line 49 should mention Arg in a precondition]
-ints.ads:11:40: medium: overflow check might fail
+ints.ads:11:40: medium: overflow check might fail [possible explanation: subprogram at line 10 should mention Arg in a precondition]
 ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
 ints.ads:13:14: warning: subprogram "Display" has no effect
 ints.ads:16:34: medium: overflow check might fail

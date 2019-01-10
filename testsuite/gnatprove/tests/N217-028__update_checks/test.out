@@ -48,8 +48,8 @@ ar.ads:19:47: info: range check proved (CVC4: 1 VC)
 ar.ads:19:54: info: range check proved (CVC4: 1 VC)
 ar.ads:19:63: info: range check proved (CVC4: 1 VC)
 ar.ads:24:06: medium: postcondition might fail, cannot prove A = A'Old'update (e.g. when A = (1 => 1, others => 0) and A'Old = (1 => 1, others => 0) and E = ET1'Last and I = 2 and J = 1)
-ar.ads:24:26: medium: range check might fail (e.g. when I = 1)
-ar.ads:24:39: medium: range check might fail (e.g. when J = 9)
-ar.ads:24:48: medium: range check might fail (e.g. when E = 0)
-ar.ads:24:55: medium: range check might fail (e.g. when J = 10)
-ar.ads:24:64: medium: range check might fail (e.g. when E = ET1'Last)
+ar.ads:24:26: medium: range check might fail (e.g. when I = 1) [possible explanation: subprogram at line 21 should mention I in a precondition]
+ar.ads:24:39: medium: range check might fail (e.g. when J = 9) [possible explanation: subprogram at line 21 should mention J in a precondition]
+ar.ads:24:48: medium: range check might fail (e.g. when E = 0) [possible explanation: subprogram at line 21 should mention E in a precondition]
+ar.ads:24:55: medium: range check might fail (e.g. when J = 10) [possible explanation: subprogram at line 21 should mention J in a precondition]
+ar.ads:24:64: medium: range check might fail (e.g. when E = ET1'Last) [possible explanation: subprogram at line 21 should mention E in a precondition]

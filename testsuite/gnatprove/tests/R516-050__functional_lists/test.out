@@ -8,8 +8,8 @@ conts-lists.ads:515:19: info: precondition proved (CVC4: 1 VC), in instantiation
 conts-lists.ads:522:19: info: precondition proved (CVC4: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 conts-lists.ads:526:19: info: precondition proved (CVC4: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 conts.ads:145:31: warning: unused variable "E", in instantiation at conts-lists-indefinite_unbounded_spark.ads:15, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-functional_sequences.ads:15:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5
-functional_sequences.ads:15:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5
+functional_sequences.ads:15:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 13 should mention S1 in a precondition]
+functional_sequences.ads:15:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 13 should mention S1 in a precondition]
 use_lists.adb:3:22: side effects of function "First" are not modeled in SPARK
 use_lists.adb:5:14: medium: "L2" is not set
 use_lists.adb:5:14: medium: private part of "L2" is not set

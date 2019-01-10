@@ -62,7 +62,7 @@ aida-containers-formal_vectors.adb:171:51: info: range check proved (CVC4: 1 VC)
 aida-containers-formal_vectors.adb:179:54: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:24:09: medium: default initial condition might fail, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:49:20: info: postcondition proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
-aida-containers-formal_vectors.ads:101:37: medium: overflow check might fail, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:101:37: medium: overflow check might fail, in instantiation at hnco-test2.ads:8 [possible explanation: subprogram at line 95 should mention Container and New_Item in a precondition]
 aida-containers-formal_vectors.ads:184:52: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 hnco-test2.adb:7:08: medium: precondition might fail (e.g. when V = (Capacity => 10, Hidden_Vector => (Capacity => 10, others => ?)))
 hnco-test2.adb:8:08: medium: precondition might fail (e.g. when V = (Capacity => 10, Hidden_Vector => (Capacity => 10, others => ?)))
