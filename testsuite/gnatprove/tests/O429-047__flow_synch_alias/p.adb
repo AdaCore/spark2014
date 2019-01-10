@@ -1,4 +1,7 @@
 package body P is
+
+   S : Suspension_Object;
+
    procedure Safe (S1, S2 : in out Suspension_Object) is
       pragma Unreferenced (S1, S2);
       --  ??? As a limitation in flow analysis we can only suspend on
@@ -8,6 +11,14 @@ package body P is
    begin
       null;
    end;
+
+   procedure Also_Safe (S1 : in out Suspension_Object) is
+      pragma Unreferenced (S1);
+   begin
+     Ada.Synchronous_Task_Control.Suspend_Until_True (S);
+   end;
+
 begin
    Safe (SO, SO);
+   Also_Safe (S);
 end P;

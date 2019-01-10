@@ -297,6 +297,13 @@ package body Flow.Analysis.Antialiasing is
          end loop;
       end Find_Root;
 
+      --------------------------
+      -- Is_Root_Synchronized --
+      --------------------------
+
+      function Is_Root_Synchronized (N : Node_Id) return Boolean is
+        (Is_Synchronized (Get_Root_Entity (N)));
+
       -----------------------------
       -- Up_Ignoring_Conversions --
       -----------------------------
@@ -383,6 +390,10 @@ package body Flow.Analysis.Antialiasing is
          if Trace_Antialiasing then
             Write_Line ("   -> root of B is not interesting");
          end if;
+         return Impossible;
+      end if;
+
+      if Is_Root_Synchronized (Ptr_A) or else Is_Root_Synchronized (Ptr_B) then
          return Impossible;
       end if;
 
