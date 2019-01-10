@@ -1119,9 +1119,7 @@ package body Configuration is
       procedure File_Specific_Postprocess (FS : out File_Specific) is
       begin
          Set_Level_Timeout_Steps_Provers (FS);
-         Set_Provers (CL_Switches.Prover, FS);
          Set_Proof_Mode (FS);
-         Limit_Provers (FS.Provers);
          FS.No_Inlining := CL_Switches.No_Inlining;
          FS.Info := CL_Switches.Info;
          FS.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
@@ -1514,6 +1512,9 @@ package body Configuration is
          FS.CE_Timeout :=
            (if FS.Timeout = 0 then Constants.Max_CE_Timeout
             else Integer'Min (FS.Timeout, Constants.Max_CE_Timeout));
+
+         Set_Provers (CL_Switches.Prover, FS);
+         Limit_Provers (FS.Provers);
 
          if CL_Switches.Output_Msg_Only then
             FS.Provers.Clear;
