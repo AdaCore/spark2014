@@ -1,6 +1,6 @@
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:9:10: info: initialization of "J" proved
-p.adb:10:12: medium: array index check might fail (e.g. when J = 0 and Tab = (others => 1) and Tab'First = 1)
+p.adb:10:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => -1) and Tab'First = 0)
 p.adb:10:15: medium: "Tab" might not be initialized
 p.adb:10:18: info: initialization of "J" proved
 p.adb:11:12: info: initialization of "J" proved
@@ -36,7 +36,7 @@ p.adb:38:41: info: initialization of "J" proved
 p.adb:39:07: info: loop variant proved (CVC4: 1 VC)
 p.adb:39:41: info: initialization of "K" proved
 p.adb:45:10: info: initialization of "J" proved
-p.adb:46:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => -1) and Tab'First = 0)
+p.adb:46:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => 0) and Tab'First = 0)
 p.adb:46:15: medium: "Tab" might not be initialized
 p.adb:46:18: info: initialization of "J" proved
 p.adb:47:12: info: initialization of "J" proved
@@ -50,7 +50,7 @@ p.adb:49:50: info: overflow check proved (CVC4: 2 VC)
 p.adb:49:57: info: initialization of "Tab" proved
 p.adb:49:62: info: index check proved (CVC4: 4 VC)
 p.adb:55:10: info: initialization of "J" proved
-p.adb:56:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => -1) and Tab'First = 0)
+p.adb:56:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => 0) and Tab'First = 0)
 p.adb:56:15: medium: "Tab" might not be initialized
 p.adb:56:18: info: initialization of "J" proved
 p.adb:57:12: info: initialization of "J" proved
@@ -64,7 +64,7 @@ p.adb:58:62: info: index check proved (CVC4: 4 VC)
 p.adb:59:07: info: loop variant proved (CVC4: 1 VC)
 p.adb:59:41: info: initialization of "J" proved
 p.adb:66:10: info: initialization of "J" proved
-p.adb:67:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => -1) and Tab'First = 0)
+p.adb:67:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => 0) and Tab'First = 0)
 p.adb:67:15: medium: "Tab" might not be initialized
 p.adb:67:18: info: initialization of "J" proved
 p.adb:68:12: info: initialization of "J" proved

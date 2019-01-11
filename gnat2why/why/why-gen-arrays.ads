@@ -239,6 +239,12 @@ package Why.Gen.Arrays is
    --    <left_arr>.last1 = <right_arr>.last1 /\ ...
 
    function New_Bounds_Equality
+     (Left_Arr : W_Expr_Id;
+      Right_Ty : Entity_Id) return W_Pred_Id
+   with Pre => Is_Constrained (Right_Ty);
+   --  same as above but takes the bounds of a type for Right
+
+   function New_Bounds_Equality
      (Left_Arr     : W_Expr_Id;
       Right_Bounds : W_Expr_Array;
       Dim          : Positive) return W_Pred_Id

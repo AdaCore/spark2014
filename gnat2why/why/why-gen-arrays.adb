@@ -2343,6 +2343,25 @@ package body Why.Gen.Arrays is
       return New_Bounds_Equality (Left_Arr, Right_Bounds, Dim);
    end New_Bounds_Equality;
 
+   function New_Bounds_Equality
+     (Left_Arr : W_Expr_Id;
+      Right_Ty : Entity_Id) return W_Pred_Id
+   is
+      Dim          : constant Positive :=
+        Positive (Number_Dimensions (Right_Ty));
+      Right_Bounds : W_Expr_Array (1 .. 2 * Dim);
+      Count        : Positive := 1;
+   begin
+      for I in 1 .. Dim loop
+         Add_Attr_Arg
+           (EW_Term, Right_Bounds, Right_Ty, Attribute_First, I, Count);
+         Add_Attr_Arg
+           (EW_Term, Right_Bounds, Right_Ty, Attribute_Last,  I, Count);
+      end loop;
+
+      return New_Bounds_Equality (Left_Arr, Right_Bounds, Dim);
+   end New_Bounds_Equality;
+
    ---------------------
    -- New_Concat_Call --
    ---------------------

@@ -3650,6 +3650,18 @@ package body Gnat2Why.Expr is
 
          Assumption := Default_Init_For_Array (+Expr, Ty_Ext);
 
+         --  If Ty_Ext is constrained, also assume the array bounds
+
+         if Is_Constrained (Ty_Ext)
+           and then not Is_Static_Array_Type (Ty_Ext)
+         then
+            Assumption :=
+              +New_And_Expr
+                (Left   => +New_Bounds_Equality (Expr, Ty_Ext),
+                 Right  => +Assumption,
+                 Domain => EW_Pred);
+         end if;
+
       elsif Is_Access_Type (Ty_Ext) then
 
          Assumption := Pred_Of_Boolean_Term
