@@ -5,14 +5,14 @@
   total: 5  proved: 4
 
 == Goals not proved ==
-  +-- file ../add.mlw
+  +-- file [../add.mlw]
     +-- theory Add__addtwo__subprogram_def
       +-- goal WP_parameter def
         +-- transformation split_goal_wp_conj
           +-- goal WP_parameter def.0
   
 == Goals proved by only one prover ==
-  +-- file ../add.mlw
+  +-- file [../add.mlw]
     +-- theory Add__addtwo__subprogram_def
       +-- goal WP_parameter def
         +-- transformation split_goal_wp_conj
