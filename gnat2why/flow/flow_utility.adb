@@ -1971,11 +1971,11 @@ package body Flow_Utility is
       end if;
 
       Get_Globals
-        (Subprogram             => E,
-         Scope                  => S,
-         Classwide              => Classwide,
-         Globals                => Globals,
-         Use_Deduced_Globals    => True);
+        (Subprogram          => E,
+         Scope               => S,
+         Classwide           => Classwide,
+         Globals             => Globals,
+         Use_Deduced_Globals => True);
 
       --  Reset outputs
       Writes := Flow_Id_Sets.Empty_Set;
