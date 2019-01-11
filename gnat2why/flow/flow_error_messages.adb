@@ -1315,7 +1315,6 @@ package body Flow_Error_Messages is
                      --  variables and parameters.
 
                      Get_Proof_Globals (Subprogram => Proc,
-                                        Classwide  => True,
                                         Reads      => Ignore_Vars,
                                         Writes     => Write_Vars);
 
@@ -1520,7 +1519,6 @@ package body Flow_Error_Messages is
                      --  variables and parameters.
 
                      Get_Proof_Globals (Subprogram => Proc,
-                                        Classwide  => True,
                                         Reads      => Read_Vars,
                                         Writes     => Ignore_Vars);
 

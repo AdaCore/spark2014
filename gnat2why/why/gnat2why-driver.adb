@@ -1061,7 +1061,6 @@ package body Gnat2Why.Driver is
          begin
             --  Collect global variables potentially read and written
             Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                            Classwide  => True,
                                             Reads      => Reads,
                                             Writes     => Writes);
 

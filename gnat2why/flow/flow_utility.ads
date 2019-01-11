@@ -215,7 +215,6 @@ is
    --  contract to trim the Globals.
 
    procedure Get_Proof_Globals (Subprogram     :     Entity_Id;
-                                Classwide      :     Boolean;
                                 Reads          : out Flow_Id_Sets.Set;
                                 Writes         : out Flow_Id_Sets.Set;
                                 Keep_Constants :     Boolean := False)

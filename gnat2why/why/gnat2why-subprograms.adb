@@ -351,7 +351,6 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables potentially read and written
       Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Classwide  => True,
                                       Reads      => Reads,
                                       Writes     => Writes);
 
@@ -857,7 +856,6 @@ package body Gnat2Why.Subprograms is
                --  even if they are constants in Why.
 
                Flow_Utility.Get_Proof_Globals (Subprogram     => E,
-                                               Classwide      => True,
                                                Reads          => Read_Ids,
                                                Writes         => Write_Ids,
                                                Keep_Constants => True);
@@ -1041,7 +1039,6 @@ package body Gnat2Why.Subprograms is
 
       begin
          Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                         Classwide  => True,
                                          Reads      => Read_Ids,
                                          Writes     => Write_Ids);
 
@@ -1151,7 +1148,6 @@ package body Gnat2Why.Subprograms is
       --  Collect global variables potentially read and written
 
       Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Classwide  => True,
                                       Reads      => Read_Ids,
                                       Writes     => Write_Ids);
 
@@ -1565,7 +1561,6 @@ package body Gnat2Why.Subprograms is
       end if;
 
       Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Classwide  => True,
                                       Reads      => Read_Ids,
                                       Writes     => Write_Ids);
 
@@ -1636,7 +1631,6 @@ package body Gnat2Why.Subprograms is
       --  Collect global variables potentially read and written
 
       Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Classwide  => True,
                                       Reads      => Read_Ids,
                                       Writes     => Write_Ids);
 
@@ -4478,12 +4472,10 @@ package body Gnat2Why.Subprograms is
          --  Collect global variables potentially read and written
 
          Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                         Classwide  => True,
                                          Reads      => E_Read_Ids,
                                          Writes     => E_Write_Ids);
 
          Flow_Utility.Get_Proof_Globals (Subprogram => D,
-                                         Classwide  => True,
                                          Reads      => D_Read_Ids,
                                          Writes     => D_Write_Ids);
 

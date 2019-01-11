@@ -870,7 +870,6 @@ package body Gnat2Why.Util is
 
             begin
                Flow_Utility.Get_Proof_Globals (Subprogram     => Scope,
-                                               Classwide      => True,
                                                Reads          => Read_Ids,
                                                Writes         => Write_Ids,
                                                Keep_Constants => True);

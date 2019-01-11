@@ -476,7 +476,6 @@ package body SPARK_Util.Subprograms is
 
          if After_GG or else Has_User_Supplied_Globals (E) then
             Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                            Classwide  => True,
                                             Reads      => Read_Ids,
                                             Writes     => Write_Ids);
 
@@ -1251,7 +1250,6 @@ package body SPARK_Util.Subprograms is
       end if;
 
       Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Classwide  => True,
                                       Reads      => Read_Ids,
                                       Writes     => Write_Ids);
 

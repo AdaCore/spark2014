@@ -1234,7 +1234,6 @@ package body Gnat2Why.Expr.Loops.Inv is
 
       begin
          Flow_Utility.Get_Proof_Globals (Subprogram => Subp,
-                                         Classwide  => True,
                                          Reads      => Read_Ids,
                                          Writes     => Write_Ids);
 
