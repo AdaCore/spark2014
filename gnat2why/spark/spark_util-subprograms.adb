@@ -452,8 +452,7 @@ package body SPARK_Util.Subprograms is
       function Has_No_Output return Boolean is
          Formal : Entity_Id := First_Formal (E);
 
-         Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-         Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+         Globals : Global_Flow_Ids;
 
       begin
          --  Consider output parameters
@@ -475,11 +474,13 @@ package body SPARK_Util.Subprograms is
          --  supplied them.
 
          if After_GG or else Has_User_Supplied_Globals (E) then
-            Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                            Reads      => Read_Ids,
-                                            Writes     => Write_Ids);
+            Get_Globals (Subprogram          => E,
+                         Scope               => Get_Flow_Scope (E),
+                         Classwide           => True,
+                         Globals             => Globals,
+                         Use_Deduced_Globals => After_GG);
 
-            return Write_Ids.Is_Empty;
+            return Globals.Outputs.Is_Empty;
 
          --  Otherwise we don't know, return False to be on the safe side
 
