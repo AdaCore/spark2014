@@ -1381,13 +1381,14 @@ calls.
 
 .. centered:: **Static Semantics**
 
-1. Two names that denote reachable elements of the
-   same unsynchronized (see section :ref:`tasks-and-synchronization`)
-   stand-alone object whose Constant_After_Elaboration aspect is False,
-   or which denote parts of the same unsynchronized parameter, are said
-   to *potentially introduce aliasing* if they might denote overlapping
-   regions of memory, either themselves or through one of their
-   reachable elements.
+1. An object is said to be *interfering* if it is unsynchronized (see section
+   :ref:`tasks-and-synchronization`) or it is synchronized only due to being
+   *constant after elaboration* (see section :ref:`object-declarations`).
+
+   Two names that denote reachable elements of the same interfering stand-alone
+   object, or which denote parts of the same interfering parameter, are said to
+   *potentially introduce aliasing* if they might denote overlapping regions of
+   memory, either themselves or through one of their reachable elements.
    [This definition has the effect of exempting most synchronized objects
    from the anti-aliasing rules given below; aliasing of most synchronized
    objects via parameter passing is allowed.]
