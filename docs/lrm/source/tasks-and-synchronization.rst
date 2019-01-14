@@ -43,7 +43,9 @@ are in |SPARK|.
      inherited), and all of whose nondiscriminant component types
      yield synchronized objects; or
 
-   * a descendant of the type Ada.Synchronous_Task_Control.Suspension_Object.
+   * a descendant of the type Ada.Synchronous_Task_Control.Suspension_Object; or
+
+   * a private type whose completion yields synchronized objects.
 
    An object is said to be *synchronized* if it is
 
