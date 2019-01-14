@@ -1035,7 +1035,7 @@ package body Gnat2Why.Expr is
                | Concurrent_Self
             =>
                declare
-                  L_Id     : constant W_Identifier_Id :=
+                  L_Id : constant W_Identifier_Id :=
                     To_Why_Id (Lvalue, Typ => Why_Ty);
                begin
                   if Is_Mutable_In_Why (Lvalue) then

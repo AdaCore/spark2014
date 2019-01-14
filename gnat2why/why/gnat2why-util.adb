@@ -913,12 +913,8 @@ package body Gnat2Why.Util is
       --  the named notation of aggregates are not considered as references
       --  to mutable variables (e.g. in Expression_Depends_On_Variables).
 
-      elsif Ekind (E) in E_Enumeration_Literal |
-                         E_Component           |
-                         E_Discriminant        |
-                         Named_Kind            |
-                         Subprogram_Kind       |
-                         Entry_Kind
+      elsif Ekind (E) in E_Component
+                       | E_Discriminant
       then
          return False;
 

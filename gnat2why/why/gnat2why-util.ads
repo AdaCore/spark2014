@@ -420,9 +420,19 @@ package Gnat2Why.Util is
    --  @param Scope the entity of a package, entry, task, or subprogram.
 
    function Is_Mutable_In_Why (E : Entity_Id) return Boolean with
-     Pre => Nkind (E) in N_Defining_Identifier | N_Defining_Operator_Symbol;
-   --  Given an identifier, decide if it denotes a variable that is mutable in
-   --  the Why translation.
+     Pre => Ekind (E) in E_Constant
+                       | E_Component
+                       | E_Discriminant
+                       | E_Loop_Parameter
+                       | E_Protected_Type
+                       | E_Task_Type
+                       | E_Variable
+                       | Formal_Kind;
+   --  Returns True iff object E is mutable in the Why translation; E must
+   --  denote a discriminant or component, an entire object or a concurrent
+   --  type (which acts as an implicit formal parameter for protected
+   --  operations and possibly as a global for subprograms nested in
+   --  protected operations and tasks).
 
    function Is_Private_Intrinsic_Op (N : Node_Id) return Boolean with
      Pre => Nkind (N) in N_Op;

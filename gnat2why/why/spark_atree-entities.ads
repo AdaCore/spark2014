@@ -46,6 +46,7 @@ package SPARK_Atree.Entities is
    subtype Entry_Kind       is Einfo.Entry_Kind;
    subtype Fixed_Point_Kind is Einfo.Fixed_Point_Kind;
    subtype Float_Kind       is Einfo.Float_Kind;
+   subtype Formal_Kind      is Einfo.Formal_Kind;
    subtype Integer_Kind     is Einfo.Integer_Kind;
    subtype Named_Kind       is Einfo.Named_Kind;
    subtype Object_Kind      is Einfo.Object_Kind;
