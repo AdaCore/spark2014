@@ -2211,9 +2211,10 @@ package body Gnat2Why.Expr is
          begin
             case Binders (Bind_Cnt).Kind is
                when Regular =>
-                  pragma Assert (not Is_Access_Type (Etype (Formal))
-                                 or else Is_Access_Constant (Etype (Formal))
-                                 or else Nkind (Call) = N_Function_Call);
+                  pragma Assert
+                    (not Has_Access_Type (Etype (Formal))
+                     or else Is_Access_Constant (Retysp (Etype (Formal)))
+                     or else Nkind (Call) = N_Function_Call);
 
                   --  If a conversion or a component indexing is needed,
                   --  it can only be done for a value. That is to say,
@@ -10658,10 +10659,10 @@ package body Gnat2Why.Expr is
 
             if Is_Record_Type_In_Why (Left_Type) then
                pragma Assert (Op in N_Op_Eq | N_Op_Ne);
-               pragma Assert (Root_Record_Type (Left_Type) =
-                                Root_Record_Type (Right_Type));
-               pragma Assert (Root_Record_Type (Left_Type) =
-                                Root_Record_Type (Get_Ada_Node (+BT)));
+               pragma Assert (Root_Retysp (Left_Type) =
+                                Root_Retysp (Right_Type));
+               pragma Assert (Root_Retysp (Left_Type) =
+                                Root_Retysp (Get_Ada_Node (+BT)));
 
                if Is_Class_Wide_Type (Left_Type) then
 
@@ -10673,7 +10674,7 @@ package body Gnat2Why.Expr is
 
                   declare
                      Root : constant Entity_Id :=
-                       Root_Record_Type (Left_Type);
+                       Root_Retysp (Left_Type);
                      Args : constant W_Expr_Array :=
                        (1 => New_Temp_For_Expr
                           (Insert_Simple_Conversion
@@ -11945,7 +11946,7 @@ package body Gnat2Why.Expr is
 
                   if Count_Why_Top_Level_Fields (Expr_Type) = 0 then
                      return
-                       +E_Symb (Root_Record_Type (Expr_Type), WNE_Dummy);
+                       +E_Symb (Root_Retysp (Expr_Type), WNE_Dummy);
                   else
                      declare
                         Assocs : constant W_Field_Association_Array :=
@@ -14007,7 +14008,7 @@ package body Gnat2Why.Expr is
                      --  It is also the case if Ty's specific type is
                      --  constrained, see RM 3.9 (14)
 
-                     if Root_Record_Type (Spec_Ty) /= Spec_Ty and then
+                     if Root_Retysp (Spec_Ty) /= Spec_Ty and then
                        Count_Discriminants (Spec_Ty) > 0 and then
                        Is_Constrained (Spec_Ty)
                      then
@@ -14250,7 +14251,7 @@ package body Gnat2Why.Expr is
       Result    : W_Expr_Id;
       Base_Type : W_Type_Id :=
         (if Is_Record_Type_In_Why (Etype (Var)) then
-            EW_Abstract (Root_Record_Type (Etype (Var)))
+            EW_Abstract (Root_Retysp (Etype (Var)))
          else Base_Why_Type (Var));
       --  For records, checks are done on the root type.
 
@@ -16052,7 +16053,7 @@ package body Gnat2Why.Expr is
                   Discr_Assoc (Discr_Index) := New_Field_Association
                     (Domain => Domain,
                      Field  => To_Why_Id
-                       (Component, Rec => Root_Record_Type (Typ)),
+                       (Component, Rec => Root_Retysp (Typ)),
                      Value  => Expr);
                   Discr_Index := Discr_Index + 1;
                else

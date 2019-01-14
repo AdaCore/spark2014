@@ -278,7 +278,7 @@ package body Why.Gen.Records is
    ------------------------------
 
    function Count_Fields_Not_In_Root (E : Entity_Id) return Natural is
-      Root  : constant Entity_Id := Root_Record_Type (E);
+      Root  : constant Entity_Id := Root_Retysp (E);
       Count : Natural := 0;
    begin
       if Is_Record_Type (E) then
@@ -340,7 +340,7 @@ package body Why.Gen.Records is
      (P : W_Section_Id;
       E : Entity_Id)
    is
-      Root     : constant Entity_Id := Root_Record_Type (E);
+      Root     : constant Entity_Id := Root_Retysp (E);
       Is_Root  : constant Boolean   := Root = E;
       Ty_Name  : constant W_Name_Id := To_Why_Type (E, Local => True);
       Abstr_Ty : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
@@ -945,7 +945,7 @@ package body Why.Gen.Records is
       -- Local Variables --
       ---------------------
 
-      Root      : constant Entity_Id     := Root_Record_Type (E);
+      Root      : constant Entity_Id     := Root_Retysp (E);
       Is_Root   : constant Boolean       := Root = E;
       Ty_Name   : constant W_Name_Id     := To_Name (WNE_Rec_Rep);
       Abstr_Ty  : constant W_Type_Id     := New_Named_Type (Name => Ty_Name);
@@ -2236,7 +2236,7 @@ package body Why.Gen.Records is
                 Is_Mutable => False,
                 Type_Kind  => EW_Abstract,
                 Name       =>
-                   Get_Name (E_Symb (Root_Record_Type (E),
+                   Get_Name (E_Symb (Root_Retysp (E),
                                      WNE_Rec_Split_Discrs))));
 
    ---------------------------
@@ -2328,7 +2328,7 @@ package body Why.Gen.Records is
       Expr     : W_Prog_Id)
       return W_Prog_Id
    is
-      Root : constant Entity_Id := Root_Record_Type (Check_Ty);
+      Root : constant Entity_Id := Root_Retysp (Check_Ty);
    begin
       --  We make a last verification here to see whether a discriminant check
       --  is actually necessary.
@@ -2377,7 +2377,7 @@ package body Why.Gen.Records is
       Expr     : W_Prog_Id)
       return W_Prog_Id
    is
-      Root  : constant Entity_Id := Root_Record_Type (Check_Ty);
+      Root  : constant Entity_Id := Root_Retysp (Check_Ty);
       Id    : constant W_Expr_Id := New_Temp_For_Expr (+Expr);
       Call  : constant W_Expr_Id := New_Call
         (Ada_Node => Ada_Node,
@@ -2418,7 +2418,7 @@ package body Why.Gen.Records is
    is
       Rec       : constant Entity_Id :=
         (if Ekind (Field) /= E_Discriminant then Ty
-         else Root_Record_Type (Ty));
+         else Root_Retysp (Ty));
       Call_Id   : constant W_Identifier_Id := To_Why_Id (Field, Rec => Rec);
 
       Ret_Ty    : constant W_Type_Id :=
@@ -2960,7 +2960,7 @@ package body Why.Gen.Records is
       --  If E is not tagged then the root type has the same fields as E
 
       if not Is_Tagged_Type (Current) then
-         return Root_Record_Type (Current);
+         return Root_Retysp (Current);
 
       else
          --  Otherwise, we follow the Etype link until we find a type with

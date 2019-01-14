@@ -96,6 +96,9 @@ package SPARK_Util.Types is
    --  confusion, the wrapper for function Einfo.Is_Such_And_Such_Type is
    --  called Has_Such_And_Such_Type.
 
+   function Has_Access_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Access_Kind);
+
    function Has_Array_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Array_Kind);
 
@@ -319,9 +322,8 @@ package SPARK_Util.Types is
    --     field to represent invisible fields that are not derived from an
    --     ancestor.
 
-   function Root_Record_Type (E : Entity_Id) return Entity_Id;
-   --  Given a record type (or private type whose implementation is a record
-   --  type, etc.), return the root type, including traversing private types.
+   function Root_Retysp (E : Entity_Id) return Entity_Id;
+   --  Given a type, return the root type, including traversing private types.
    --  ??? Need to update comment to reflect dependence on Retysp of root by
    --  calling Full_View_Not_In_SPARK.
 

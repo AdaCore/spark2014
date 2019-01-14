@@ -32,7 +32,6 @@ with Sinput;                     use Sinput;
 with Snames;                     use Snames;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Util;                 use SPARK_Util;
-with SPARK_Util.Types;           use SPARK_Util.Types;
 with VC_Kinds;                   use VC_Kinds;
 with Why.Atree.Accessors;        use Why.Atree.Accessors;
 with Why.Atree.Builders;         use Why.Atree.Builders;
@@ -49,7 +48,8 @@ with Why.Types;                  use Why.Types;
 
 package body Why.Gen.Pointers is
 
-   procedure Declare_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id);
+   procedure Declare_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id) with
+     Pre => Is_Access_Type (E);
    --  Similar to Declare_Rep_Record_Type but for pointer types.
 
    function Get_Rep_Pointer_Module (E : Entity_Id) return W_Module_Id;
@@ -785,7 +785,7 @@ package body Why.Gen.Pointers is
    is
       Root   : constant Entity_Id := Root_Pointer_Type (Check_Ty);
       Des_Ty : constant Entity_Id :=
-        Retysp (Directly_Designated_Type (Check_Ty));
+        Retysp (Directly_Designated_Type (Retysp (Check_Ty)));
 
    begin
       if not Is_Constrained (Des_Ty) or else Is_Constrained (Root) then
@@ -912,12 +912,12 @@ package body Why.Gen.Pointers is
             Progs    => (1 => +Name),
             Domain   => EW_Prog,
             Reason   => VC_Null_Pointer_Dereference,
-            Typ      => EW_Abstract (Directly_Designated_Type (E)));
+            Typ      => EW_Abstract (Directly_Designated_Type (Retysp (E))));
       else
          return New_Record_Access (Name  => +Name,
                                    Field => Field,
                                    Typ   => EW_Abstract
-                                     (Directly_Designated_Type (E)));
+                                     (Directly_Designated_Type (Retysp (E))));
       end if;
    end New_Pointer_Value_Access;
 
@@ -931,7 +931,7 @@ package body Why.Gen.Pointers is
       return W_Expr_Array
    is
       Des_Ty : constant Entity_Id :=
-        Retysp (Directly_Designated_Type (Check_Ty));
+        Retysp (Directly_Designated_Type (Retysp (Check_Ty)));
 
       --  For now only support arrays. Use Prepare_Args_For_Subtype_Check on
       --  designated type for records.
@@ -1045,7 +1045,8 @@ package body Why.Gen.Pointers is
       use Pointer_Typ_To_Roots;
 
       C : constant Pointer_Typ_To_Roots.Cursor :=
-        Pointer_Typ_To_Root.Find (Retysp (Directly_Designated_Type (E)));
+        Pointer_Typ_To_Root.Find
+          (Retysp (Directly_Designated_Type (Retysp (E))));
 
    begin
       if Has_Element (C) then
@@ -1060,26 +1061,8 @@ package body Why.Gen.Pointers is
    -----------------------
 
    function Root_Pointer_Type (E : Entity_Id) return Entity_Id is
-      Ty   : Entity_Id := E;
-      O_Ty : Entity_Id;
-
    begin
-      loop
-
-         --  If Ty is not constrained, the root type should have the same
-         --  representative as Ty.
-
-         exit when not Is_Constrained (Ty);
-
-         O_Ty := Ty;
-         Ty := Etype (Ty);
-         pragma Assert (not Is_Private_Type (Ty));
-
-         --  We have found the root type
-
-         exit when Ty = O_Ty;
-      end loop;
-      return Repr_Pointer_Type (Ty);
+      return Repr_Pointer_Type (Root_Retysp (E));
    end Root_Pointer_Type;
 
 end Why.Gen.Pointers;

@@ -722,7 +722,7 @@ package body Gnat2Why.Types is
            Private_Kind | E_Record_Type | E_Record_Subtype | Concurrent_Kind
          then
             Create_Rep_Record_Theory_If_Needed (File, Retysp (E));
-         elsif Is_Access_Type (E) then
+         elsif Has_Access_Type (E) then
             Create_Rep_Pointer_Theory_If_Needed (File, Retysp (E));
          end if;
 

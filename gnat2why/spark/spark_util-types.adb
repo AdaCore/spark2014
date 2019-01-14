@@ -780,11 +780,11 @@ package body SPARK_Util.Types is
       return False;
    end Requires_Interrupt_Priority;
 
-   ----------------------
-   -- Root_Record_Type --
-   ----------------------
+   -----------------
+   -- Root_Retysp --
+   -----------------
 
-   function Root_Record_Type (E : Entity_Id) return Entity_Id is
+   function Root_Retysp (E : Entity_Id) return Entity_Id is
       Result   : Entity_Id := Empty;
       Ancestor : Entity_Id :=
         (if Is_Class_Wide_Type (E) then Get_Specific_Type_From_Classwide (E)
@@ -809,7 +809,7 @@ package body SPARK_Util.Types is
       end loop;
 
       return Retysp (Result);
-   end Root_Record_Type;
+   end Root_Retysp;
 
    -------------------------
    -- Static_Array_Length --

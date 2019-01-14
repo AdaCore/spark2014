@@ -1963,7 +1963,7 @@ package body SPARK_Util is
 
    function Root_Record_Component (E : Entity_Id) return Entity_Id is
       Rec_Type : constant Entity_Id := Retysp (Scope (E));
-      Root     : constant Entity_Id := Root_Record_Type (Rec_Type);
+      Root     : constant Entity_Id := Root_Retysp (Rec_Type);
 
    begin
       --  If E is the component of a root type, return it

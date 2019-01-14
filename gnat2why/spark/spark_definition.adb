@@ -1432,6 +1432,15 @@ package body SPARK_Definition is
             if Debug_Flag_FF then
                Mark (Expression (N));
 
+               --  Check that the type of the allocator is visibly an access
+               --  type.
+
+               if not Retysp_In_SPARK (Etype (N))
+                 or else not Is_Access_Type (Retysp (Etype (N)))
+               then
+                  Mark_Violation (N, Etype (N));
+               end if;
+
                --  Uninitialized allocators are only allowed on types defining
                --  full default initialization.
 
@@ -1640,9 +1649,18 @@ package body SPARK_Definition is
             end if;
 
          when N_Null =>
+
             --  Allow Null objects of access type in the special mode -gnatdF
+
             if Debug_Flag_FF then
-               null;
+
+               --  Check that the type of null is visibly an access type
+
+               if not Retysp_In_SPARK (Etype (N))
+                 or else not Is_Access_Type (Retysp (Etype (N)))
+               then
+                  Mark_Violation (N, Etype (N));
+               end if;
             else
                Mark_Violation ("null", N);
             end if;
@@ -4865,18 +4883,6 @@ package body SPARK_Definition is
                Mark_Violation ("access type without ownership", E);
             elsif not Retysp_In_SPARK (Directly_Designated_Type (E)) then
                Mark_Violation (E, From => Directly_Designated_Type (E));
-
-               --  Private access types are not allowed for now. We mark the
-               --  violation in the context of marking the type entity to be
-               --  able to check the SPARK Mode (type accepted if the full view
-               --  is under SPARK_Mode => Off) and to be sure that the full
-               --  view is set.
-
-            elsif Debug_Flag_FF
-              and SPARK_Pragma_Is (Opt.On)
-              and Is_Full_View (E)
-            then
-               Mark_Violation ("private access type", Partial_View (E));
             end if;
 
          elsif Is_Concurrent_Type (E) then

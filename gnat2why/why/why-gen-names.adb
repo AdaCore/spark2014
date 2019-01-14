@@ -337,7 +337,7 @@ package body Why.Gen.Names is
                            From_Base : constant Node_Id :=
                              (if Full_View_Not_In_SPARK (From_Node)
                               then Get_First_Ancestor_In_SPARK (From_Node)
-                              else Root_Record_Type (From_Node));
+                              else Root_Retysp (From_Node));
                         begin
                            if From_Base = From_Node then
                               return E_Symb (To_Node, WNE_Of_Base);

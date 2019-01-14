@@ -882,13 +882,13 @@ package body Why.Gen.Expr is
 
       L : constant Node_Id := Get_Ada_Node (+From);
       R : constant Node_Id := Get_Ada_Node (+To);
-      pragma Assert (Root_Record_Type (L) = Root_Record_Type (R));
+      pragma Assert (Root_Retysp (L) = Root_Retysp (R));
 
       Need_Conv : constant Boolean :=
         Oldest_Parent_With_Same_Fields (L) /=
         Oldest_Parent_With_Same_Fields (R);
 
-      Base : constant W_Type_Id := EW_Abstract (Root_Record_Type (L));
+      Base : constant W_Type_Id := EW_Abstract (Root_Retysp (L));
 
       Need_Discr_Check : constant Boolean :=
         Need_Check and then Count_Discriminants (R) > 0
@@ -2473,7 +2473,7 @@ package body Why.Gen.Expr is
                                         Ada_Node => Ty,
                                         To       =>
                                           EW_Abstract
-                                            (Root_Record_Type (Ty)),
+                                            (Root_Retysp (Ty)),
                                         Expr     => Expr);
          begin
             return New_Call

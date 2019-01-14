@@ -2232,7 +2232,7 @@ package body Why.Atree.Modules is
          elsif Is_Record_Type_In_Why (E) then
             declare
                Root    : constant Entity_Id :=
-                 Root_Record_Type (E);
+                 Root_Retysp (E);
                Root_Ty : constant W_Type_Id :=
                  New_Named_Type (To_Why_Type (Root));
             begin
@@ -2504,14 +2504,14 @@ package body Why.Atree.Modules is
 
          --  Symbols for access types
 
-         elsif Is_Access_Type (E) then
+         elsif Has_Access_Type (E) then
             declare
                Root           : constant Entity_Id := Root_Pointer_Type (E);
                Root_Ty        : constant W_Type_Id :=
                  New_Named_Type (To_Why_Type (Root));
                Full_Name_Node : constant String := Full_Name (Root);
                Des_Ty         : constant W_Type_Id :=
-                 EW_Abstract (Directly_Designated_Type (E));
+                 EW_Abstract (Directly_Designated_Type (Retysp (E)));
 
             begin
                Insert_Symbol

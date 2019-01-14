@@ -960,11 +960,7 @@ package body Gnat2Why.Util is
 
       elsif Is_Constant_Object (E) then
          declare
-            E_Typ : constant Entity_Id := Etype (E);
-
-            --  ??? Once private access types are allowed, use Retysp (E_Typ)
-            --  instead of E_Typ.
-
+            E_Typ : constant Entity_Id := Retysp (Etype (E));
          begin
             if Ekind (E) = E_In_Parameter then
                if Is_Access_Type (E_Typ)

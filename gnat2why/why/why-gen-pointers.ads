@@ -25,6 +25,7 @@
 
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Util.Types;     use SPARK_Util.Types;
 with Types;                use Types;
 with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Ids;              use Why.Ids;
@@ -33,12 +34,15 @@ with Why.Sinfo;            use Why.Sinfo;
 package Why.Gen.Pointers is
    --  This package encapsulates the encoding of access types into Why.
 
-   procedure Declare_Ada_Pointer (P : W_Section_Id; E : Entity_Id);
+   procedure Declare_Ada_Pointer (P : W_Section_Id; E : Entity_Id) with
+     Pre => Is_Access_Type (E);
    --  Emit all necessary Why3 declarations to support Ada pointers.
    --  @param P the Why section to insert the declaration
    --  @param E the type entity to translate
 
-   procedure Declare_Allocation_Function (E : Entity_Id; File : W_Section_Id);
+   procedure Declare_Allocation_Function (E : Entity_Id; File : W_Section_Id)
+   with
+     Pre => Is_Access_Type (E);
    --  Generate program functions called when allocating deep objects.
    --  The allocation function called depends on the type of the
    --  allocated object (elementary/composite) and whether it is initilized
@@ -98,11 +102,11 @@ package Why.Gen.Pointers is
    --  @param Local whether we want the local or the global access
 
    function Repr_Pointer_Type (E : Entity_Id) return Entity_Id
-     with Pre => Is_Access_Type (E);
+     with Pre => Has_Access_Type (E);
    --  Return the first pointer type defined with the same designated type.
 
    function Root_Pointer_Type (E : Entity_Id) return Entity_Id
-     with Pre => Is_Access_Type (E);
+     with Pre => Has_Access_Type (E);
    --  Return the representative of the root of E
 
    function Pointer_From_Split_Form

@@ -382,7 +382,7 @@ package SPARK_Util is
    --  Given a component or discriminant of a record (sub-)type, return the
    --  corresponding component or discriminant of the root type, if any. This
    --  is the identity when E is the component of a root type.
-   --  ??? Same update needed as for Root_Record_Type
+   --  ??? Same update needed as for Root_Retysp
 
    function Search_Component_By_Name
      (Rec  : Entity_Id;

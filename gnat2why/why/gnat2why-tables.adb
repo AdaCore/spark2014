@@ -113,7 +113,7 @@ package body Gnat2Why.Tables is
    --      Info if any.
 
    procedure Store_In_Ancestors (E : Entity_Id) with
-     Pre => Is_Tagged_Type (Root_Record_Type (E));
+     Pre => Is_Tagged_Type (Root_Retysp (E));
    --  @param E a tagged record type
    --  Store E in the descendant map of each of its ancestors
 
@@ -468,7 +468,7 @@ package body Gnat2Why.Tables is
          Init_Component_Info (E, Comp_Info (Position), Visibility => Regular);
       end if;
 
-      if Is_Tagged_Type (Root_Record_Type (E)) then
+      if Is_Tagged_Type (Root_Retysp (E)) then
          Descendants.Include (E, Node_Sets.Empty_Set);
          Store_In_Ancestors (E);
       end if;
@@ -601,7 +601,7 @@ package body Gnat2Why.Tables is
      (if Is_Type (Comp) then Comp
       elsif Is_Tagged_Type (Retysp (Scope (Comp)))
       then Retysp (Scope (Original_Record_Component (Comp)))
-      else Root_Record_Type (Scope (Comp)));
+      else Root_Retysp (Scope (Comp)));
 
    ------------------------------
    -- Search_Component_In_Info --
