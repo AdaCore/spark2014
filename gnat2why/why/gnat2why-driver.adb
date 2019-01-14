@@ -1060,9 +1060,10 @@ package body Gnat2Why.Driver is
             Writes : Flow_Types.Flow_Id_Sets.Set;
          begin
             --  Collect global variables potentially read and written
-            Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                            Reads      => Reads,
-                                            Writes     => Writes);
+            Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                            Reads           => Reads,
+                                            Writes          => Writes,
+                                            Erase_Constants => True);
 
             Reads.Union (Writes);
 

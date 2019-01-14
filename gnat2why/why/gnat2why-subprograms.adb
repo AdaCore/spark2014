@@ -350,9 +350,10 @@ package body Gnat2Why.Subprograms is
 
    begin
       --  Collect global variables potentially read and written
-      Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Reads      => Reads,
-                                      Writes     => Writes);
+      Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                      Reads           => Reads,
+                                      Writes          => Writes,
+                                      Erase_Constants => True);
 
       --  Union reads with writes (essentially just ignore the variant)
       Reads.Union (Writes);
@@ -855,10 +856,10 @@ package body Gnat2Why.Subprograms is
                --  Also get references to global constants with variable inputs
                --  even if they are constants in Why.
 
-               Flow_Utility.Get_Proof_Globals (Subprogram     => E,
-                                               Reads          => Read_Ids,
-                                               Writes         => Write_Ids,
-                                               Keep_Constants => True);
+               Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                               Reads           => Read_Ids,
+                                               Writes          => Write_Ids,
+                                               Erase_Constants => False);
 
                Include (Read_Ids);
                Include (Write_Ids);
@@ -1038,9 +1039,10 @@ package body Gnat2Why.Subprograms is
          Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
 
       begin
-         Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                         Reads      => Read_Ids,
-                                         Writes     => Write_Ids);
+         Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                         Reads           => Read_Ids,
+                                         Writes          => Write_Ids,
+                                         Erase_Constants => True);
 
          for Write_Id of Write_Ids loop
             if Write_Id.Kind = Direct_Mapping then
@@ -1147,9 +1149,10 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables potentially read and written
 
-      Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Reads      => Read_Ids,
-                                      Writes     => Write_Ids);
+      Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                      Reads           => Read_Ids,
+                                      Writes          => Write_Ids,
+                                      Erase_Constants => True);
 
       for Write_Id of Write_Ids loop
          case Write_Id.Kind is
@@ -1560,9 +1563,10 @@ package body Gnat2Why.Subprograms is
          Add_Type_Invariants_For_Params (E, For_Input, Inv_Pred);
       end if;
 
-      Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Reads      => Read_Ids,
-                                      Writes     => Write_Ids);
+      Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                      Reads           => Read_Ids,
+                                      Writes          => Write_Ids,
+                                      Erase_Constants => True);
 
       --  If For_Input is True, add the invariants of the variables read by E,
       --  otherwise add the invariants of the variables written by E.
@@ -1630,9 +1634,10 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables potentially read and written
 
-      Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Reads      => Read_Ids,
-                                      Writes     => Write_Ids);
+      Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                      Reads           => Read_Ids,
+                                      Writes          => Write_Ids,
+                                      Erase_Constants => True);
 
       --  Do not include binder for self reference as it is already included
       --  in binders for parameters.
@@ -4471,13 +4476,15 @@ package body Gnat2Why.Subprograms is
       begin
          --  Collect global variables potentially read and written
 
-         Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                         Reads      => E_Read_Ids,
-                                         Writes     => E_Write_Ids);
+         Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                         Reads           => E_Read_Ids,
+                                         Writes          => E_Write_Ids,
+                                         Erase_Constants => True);
 
-         Flow_Utility.Get_Proof_Globals (Subprogram => D,
-                                         Reads      => D_Read_Ids,
-                                         Writes     => D_Write_Ids);
+         Flow_Utility.Get_Proof_Globals (Subprogram      => D,
+                                         Reads           => D_Read_Ids,
+                                         Writes          => D_Write_Ids,
+                                         Erase_Constants => True);
 
          return E_Read_Ids = D_Read_Ids and then E_Write_Ids = D_Write_Ids;
       end Same_Globals;

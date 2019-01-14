@@ -1233,9 +1233,10 @@ package body Gnat2Why.Expr.Loops.Inv is
          Write_Ids : Flow_Types.Flow_Id_Sets.Set;
 
       begin
-         Flow_Utility.Get_Proof_Globals (Subprogram => Subp,
-                                         Reads      => Read_Ids,
-                                         Writes     => Write_Ids);
+         Flow_Utility.Get_Proof_Globals (Subprogram      => Subp,
+                                         Reads           => Read_Ids,
+                                         Writes          => Write_Ids,
+                                         Erase_Constants => True);
 
          for F of Write_Ids loop
             pragma Assert (F.Kind in Direct_Mapping | Magic_String);

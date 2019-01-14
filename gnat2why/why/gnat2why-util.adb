@@ -869,10 +869,10 @@ package body Gnat2Why.Util is
                Write_Ids : Flow_Id_Sets.Set;
 
             begin
-               Flow_Utility.Get_Proof_Globals (Subprogram     => Scope,
-                                               Reads          => Read_Ids,
-                                               Writes         => Write_Ids,
-                                               Keep_Constants => True);
+               Flow_Utility.Get_Proof_Globals (Subprogram      => Scope,
+                                               Reads           => Read_Ids,
+                                               Writes          => Write_Ids,
+                                               Erase_Constants => False);
 
                return Read_Ids.Contains (Direct_Mapping_Id (Obj));
             end;

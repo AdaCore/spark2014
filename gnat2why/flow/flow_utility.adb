@@ -1920,10 +1920,10 @@ package body Flow_Utility is
    -- Get_Proof_Globals --
    -----------------------
 
-   procedure Get_Proof_Globals (Subprogram     :     Entity_Id;
-                                Reads          : out Flow_Id_Sets.Set;
-                                Writes         : out Flow_Id_Sets.Set;
-                                Keep_Constants :     Boolean := False)
+   procedure Get_Proof_Globals (Subprogram      :     Entity_Id;
+                                Reads           : out Flow_Id_Sets.Set;
+                                Writes          : out Flow_Id_Sets.Set;
+                                Erase_Constants :     Boolean)
    is
       Globals : Global_Flow_Ids;
 
@@ -1944,7 +1944,7 @@ package body Flow_Utility is
       is
       begin
          for U of Unexpanded loop
-            Expanded.Union (Expand_Abstract_State (U, not Keep_Constants));
+            Expanded.Union (Expand_Abstract_State (U, Erase_Constants));
          end loop;
       end Expand;
 
@@ -3768,9 +3768,10 @@ package body Flow_Utility is
       Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids : Flow_Types.Flow_Id_Sets.Set;
    begin
-      Get_Proof_Globals (Subprogram => Subprogram,
-                         Reads      => Read_Ids,
-                         Writes     => Write_Ids);
+      Get_Proof_Globals (Subprogram      => Subprogram,
+                         Reads           => Read_Ids,
+                         Writes          => Write_Ids,
+                         Erase_Constants => True);
       return not Read_Ids.Is_Empty or else not Write_Ids.Is_Empty;
    end Has_Proof_Globals;
 

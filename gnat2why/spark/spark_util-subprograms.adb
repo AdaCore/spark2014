@@ -1250,9 +1250,10 @@ package body SPARK_Util.Subprograms is
          end;
       end if;
 
-      Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Reads      => Read_Ids,
-                                      Writes     => Write_Ids);
+      Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                      Reads           => Read_Ids,
+                                      Writes          => Write_Ids,
+                                      Erase_Constants => True);
 
       --  Consider invariants of the variables read by E
 

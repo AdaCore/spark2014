@@ -214,14 +214,14 @@ is
    --  If Ignore_Depends is True then we do not use the Refined_Depends
    --  contract to trim the Globals.
 
-   procedure Get_Proof_Globals (Subprogram     :     Entity_Id;
-                                Reads          : out Flow_Id_Sets.Set;
-                                Writes         : out Flow_Id_Sets.Set;
-                                Keep_Constants :     Boolean := False)
-   with Pre  => Ekind (Subprogram) in E_Entry     |
-                                      E_Function  |
-                                      E_Procedure |
-                                      E_Task_Type,
+   procedure Get_Proof_Globals (Subprogram      :     Entity_Id;
+                                Reads           : out Flow_Id_Sets.Set;
+                                Writes          : out Flow_Id_Sets.Set;
+                                Erase_Constants :     Boolean)
+   with Pre  => Ekind (Subprogram) in E_Entry
+                                    | E_Function
+                                    | E_Procedure
+                                    | E_Task_Type,
         Post => (for all G of Reads =>
                    Is_Entire_Variable (G) and then G.Variant = Normal_Use)
        and then (for all G of Writes =>

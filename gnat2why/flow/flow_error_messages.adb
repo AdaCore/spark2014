@@ -1314,9 +1314,10 @@ package body Flow_Error_Messages is
                      --  Get the variables written in the call, both global
                      --  variables and parameters.
 
-                     Get_Proof_Globals (Subprogram => Proc,
-                                        Reads      => Ignore_Vars,
-                                        Writes     => Write_Vars);
+                     Get_Proof_Globals (Subprogram      => Proc,
+                                        Reads           => Ignore_Vars,
+                                        Writes          => Write_Vars,
+                                        Erase_Constants => True);
 
                      Iterate_Call (Stmt);
 
@@ -1518,9 +1519,10 @@ package body Flow_Error_Messages is
                      --  Get the variables read in the subprogram, both global
                      --  variables and parameters.
 
-                     Get_Proof_Globals (Subprogram => Proc,
-                                        Reads      => Read_Vars,
-                                        Writes     => Ignore_Vars);
+                     Get_Proof_Globals (Subprogram      => Proc,
+                                        Reads           => Read_Vars,
+                                        Writes          => Ignore_Vars,
+                                        Erase_Constants => True);
 
                      --  Include the formal in the variables read/written in
                      --  the subprogram.
