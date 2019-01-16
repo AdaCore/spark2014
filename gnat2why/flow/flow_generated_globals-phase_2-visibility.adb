@@ -224,6 +224,18 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
                --  ??? The code for the target scope is repeated in rules
                --  Rule_Up_Spec and Rule_Down_Spec; this should be refactored.
 
+               --  Visibility of the template's private part only matters if
+               --  the template itself is a child unit, but it is safe to
+               --  connect it in any case (and detecting which generic is a
+               --  child unit would require extra info in phase 2).
+
+               if Info.Is_Package then
+                  Connect
+                    (Priv_V,
+                     Scope_Graph.Get_Vertex ((Ent  => Info.Template,
+                                              Part => Private_Part)));
+               end if;
+
                Connect
                  (Body_V,
                   Scope_Graph.Get_Vertex ((Ent  => Info.Template,
