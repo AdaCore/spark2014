@@ -1,4 +1,4 @@
-exponentiate.adb:4:16: medium: postcondition might fail, cannot prove Exponentiate'Result = Val ** Exp [possible explanation: subprogram at line 3 should mention Exp and Val in a precondition]
+exponentiate.adb:4:16: medium: postcondition might fail, cannot prove Exponentiate'Result = Val ** Exp
 exponentiate.adb:16:10: info: initialization of "Cur_Exp" proved
 exponentiate.adb:17:30: info: initialization of "Result" proved
 exponentiate.adb:17:30: info: loop invariant initialization proved (altergo: 1 VC)
