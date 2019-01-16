@@ -70,10 +70,10 @@ memcpy.adb:289:24: medium: assertion might fail, cannot prove X86.InRange64(X86.
 memcpy.adb:290:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+5, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
 memcpy.adb:291:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+6, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
 memcpy.adb:292:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+7, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:312:36: medium: assertion might fail, cannot prove X86.Memory(i) = saved_mem(i)
+memcpy.adb:309:21: info: assertion proved (CVC4: 2 VC)
 memcpy.adb:314:21: medium: assertion might fail, cannot prove saved_rbp_16 = X86.ReadMem64(X86.RBP - 16)
 memcpy.adb:315:21: medium: assertion might fail, cannot prove saved_rbp_72 = X86.ReadMem64(X86.RBP - 72)
-memcpy.adb:317:21: info: assertion proved (CVC4: 1 VC)
+memcpy.adb:317:21: medium: assertion might fail, cannot prove X86.ReadMem64(X86.RBP-8) >= X86.ReadMem64(X86.RBP - 72)/8
 memcpy.adb:317:76: info: division check proved (CVC4: 1 VC)
 memcpy.adb:319:21: medium: assertion might fail, cannot prove X86.ReadMem64(X86.RBP) = saved_rbp
 memcpy.adb:320:21: medium: assertion might fail, cannot prove X86.ReadMem64(X86.RSP+8) = saved_ra
@@ -106,7 +106,7 @@ memcpy.adb:420:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:421:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:423:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:426:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX, saved_32, saved_72) [possible explanation: loop invariant at line 353 should mention RDX]
-memcpy.adb:447:36: medium: assertion might fail, cannot prove X86.Memory(i) = saved_mem(i)
+memcpy.adb:444:21: info: assertion proved (CVC4: 2 VC)
 memcpy.adb:449:21: medium: assertion might fail, cannot prove saved_32 = X86.ReadMem64(X86.RBP - 32)
 memcpy.adb:450:21: medium: assertion might fail, cannot prove saved_72 = X86.ReadMem64(X86.RBP - 72)
 memcpy.adb:452:21: info: assertion proved (CVC4: 1 VC)
@@ -205,7 +205,7 @@ memcpy.ads:112:45: info: initialization of "SignFlag" proved
 memcpy.ads:112:59: info: initialization of "CarryFlag" proved
 memcpy.ads:112:75: info: initialization of "OverflowFlag" proved
 memcpy.ads:113:61: warning: unused initial value of "RAX"
-memcpy.ads:125:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old-32) = X86.Memory'Old(X86.RBP'Old-32)
+memcpy.ads:129:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old-32+4) = X86.Memory'Old(X86.RBP'Old-32+4)
 memcpy.ads:169:09: info: data dependencies proved
 memcpy.ads:170:52: warning: unused initial value of "SignFlag"
 memcpy.ads:170:66: warning: unused initial value of "ZeroFlag"

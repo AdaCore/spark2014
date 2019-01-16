@@ -19,11 +19,11 @@ arithmetic.adb:45:14: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:45:14: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:53:11: info: flow dependencies proved
 arithmetic.adb:56:07: info: initialization of "C" proved
-arithmetic.adb:59:22: medium: assertion might fail, cannot prove Double_A * Double_B /= C (e.g. when C = 323 and Double_A = 2 and Double_B = 2)
+arithmetic.adb:59:22: medium: assertion might fail, cannot prove Double_A * Double_B /= C (e.g. when C = 4 and Double_A = 2 and Double_B = 2)
 arithmetic.adb:59:31: medium: overflow check might fail (e.g. when Double_A = 2 and Double_B = 2)
 arithmetic.adb:65:11: info: flow dependencies proved
 arithmetic.adb:68:07: info: initialization of "C" proved
-arithmetic.adb:71:22: medium: assertion might fail, cannot prove A * B /= C (e.g. when A = 2 and B = 2 and C = 12166397)
+arithmetic.adb:71:22: medium: assertion might fail, cannot prove A * B /= C (e.g. when A = 2 and B = 2 and C = 4)
 arithmetic.adb:71:24: medium: overflow check might fail (e.g. when A = 2 and B = 2)
 arithmetic.adb:76:21: medium: overflow check might fail (e.g. when A = -1 and B = Integer'First)
 arithmetic.adb:77:19: info: postcondition proved (CVC4: 1 VC)

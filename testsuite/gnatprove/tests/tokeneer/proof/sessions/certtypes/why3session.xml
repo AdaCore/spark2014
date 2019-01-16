@@ -28,12 +28,12 @@
   <goal name="VC def.0" expl="postcondition">
   </goal>
   <goal name="VC def.1" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="94"/></proof>
+  <proof prover="2"><result status="valid" steps="96"/></proof>
   </goal>
   <goal name="VC def.2" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="14665"/></proof>
-  <proof prover="2"><result status="unknown" steps="169"/></proof>
+  <proof prover="2"><result status="unknown" steps="174"/></proof>
   <proof prover="3"><result status="unknown" steps="226"/></proof>
   </goal>
   <goal name="VC def.3" expl="postcondition">

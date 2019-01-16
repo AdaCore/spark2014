@@ -58,10 +58,10 @@
   <proof prover="0"><result status="valid" steps="38"/></proof>
   </goal>
   <goal name="VC def.4" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="287"/></proof>
+  <proof prover="0"><result status="valid" steps="301"/></proof>
   </goal>
   <goal name="VC def.5" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="290"/></proof>
+  <proof prover="0"><result status="valid" steps="309"/></proof>
   </goal>
   <goal name="VC def.6" expl="postcondition">
   </goal>
@@ -72,10 +72,10 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.9" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="367"/></proof>
+  <proof prover="0"><result status="valid" steps="366"/></proof>
   </goal>
   <goal name="VC def.10" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="309"/></proof>
+  <proof prover="0"><result status="valid" steps="323"/></proof>
   </goal>
   <goal name="VC def.11" expl="postcondition">
   </goal>
@@ -104,13 +104,13 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.20" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="416"/></proof>
+  <proof prover="0"><result status="valid" steps="413"/></proof>
   </goal>
   <goal name="VC def.21" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.22" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="404"/></proof>
+  <proof prover="0"><result status="valid" steps="401"/></proof>
   </goal>
   <goal name="VC def.23" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>

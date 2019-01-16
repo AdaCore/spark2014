@@ -53,7 +53,7 @@ names.adb:89:22: info: assertion proved (CVC4: 1 VC)
 names.adb:90:22: info: assertion proved (CVC4: 1 VC)
 names.adb:92:07: medium: precondition might fail, cannot prove Length (Container) < Capacity (Container) [possible explanation: precondition of subprogram at names.ads:9 should mention Entry_Table]
 names.adb:93:55: info: overflow check proved (CVC4: 1 VC)
-names.adb:93:55: medium: range check might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 2147483647) [possible explanation: loop at line 84 should mention Char_Table in a loop invariant]
+names.adb:93:55: medium: range check might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 2) [possible explanation: loop at line 84 should mention Char_Table in a loop invariant]
 names.adb:93:59: info: range check proved (CVC4: 1 VC)
 names.adb:94:32: info: range check proved (CVC4: 1 VC)
 names.adb:99:10: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container) (e.g. when Ptr = 2)

@@ -88,7 +88,7 @@ spark-higher_order-fold.adb:115:71: info: index check proved (CVC4: 4 VC), in in
 
 spark-higher_order-fold.adb:118:23: info: loop invariant initialization proved (CVC4: 4 VC), in instantiation at test_higher_order3.ads:28
 
-spark-higher_order-fold.adb:118:23: info: loop invariant preservation proved (CVC4: 3 VC; Z3: 1 VC), in instantiation at test_higher_order3.ads:28
+spark-higher_order-fold.adb:118:23: info: loop invariant preservation proved (CVC4: 4 VC), in instantiation at test_higher_order3.ads:28
 
 spark-higher_order-fold.adb:118:37: info: precondition proved (CVC4: 6 VC), in instantiation at test_higher_order3.ads:28
 

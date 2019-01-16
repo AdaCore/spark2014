@@ -143,7 +143,7 @@ bits_manipulation-functions.adb:113:12: info: postcondition proved (CVC4: 1 VC),
 bits_manipulation-functions.adb:118:14: info: postcondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:118:14: info: postcondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:118:14: info: postcondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:118:14: info: postcondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:118:14: medium: postcondition might fail, cannot prove Shift_Right (Value , MSB_Index_Slow_Inline_Always'Result) = 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:120:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:120:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:120:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44

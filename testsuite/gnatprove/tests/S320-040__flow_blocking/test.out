@@ -4,8 +4,8 @@ a-ngelfu.ads:117:66: info: float overflow check proved (Interval), in instantiat
 a-ngelfu.ads:117:66: info: float overflow check proved (Interval), in instantiation at p.adb:7
 a-ngelfu.ads:126:32: info: division check proved (CVC4: 1 VC), in instantiation at p.adb:16
 a-ngelfu.ads:126:32: info: division check proved (CVC4: 1 VC), in instantiation at p.adb:7
-a-ngelfu.ads:127:36: medium: divide by zero might fail, in instantiation at p.adb:16
-a-ngelfu.ads:127:36: medium: divide by zero might fail, in instantiation at p.adb:7
+a-ngelfu.ads:127:36: info: division check proved (CVC4: 1 VC), in instantiation at p.adb:16
+a-ngelfu.ads:127:36: info: division check proved (CVC4: 1 VC), in instantiation at p.adb:7
 a-ngelfu.ads:127:64: info: float overflow check proved (Interval), in instantiation at p.adb:16
 a-ngelfu.ads:127:64: info: float overflow check proved (Interval), in instantiation at p.adb:7
 a-tiflio.ads:57:40: info: precondition proved (CVC4: 1 VC), in instantiation at p.adb:28

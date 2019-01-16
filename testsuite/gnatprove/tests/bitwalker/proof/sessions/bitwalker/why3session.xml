@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="5">
+<why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="5000" memlimit="0"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="4450000" memlimit="0"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="190000" memlimit="0"/>
@@ -34,12 +34,12 @@
   <goal name="VC def.6" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="10334"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.7" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="11811"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
@@ -53,47 +53,47 @@
   </goal>
   <goal name="VC def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="16541"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.3" expl="postcondition">
   </goal>
   <goal name="VC def.4" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1320"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1320"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.6" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="16692"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.7" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="17349"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.8" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="17103"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.9" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1372"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.10" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1372"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.11" expl="postcondition">
   </goal>
   <goal name="VC def.12" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="17460"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.13" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="17472"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
@@ -106,7 +106,7 @@
   <goal name="VC def.1" expl="postcondition">
   </goal>
   <goal name="VC def.2" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="69613"/></proof>
+  <proof prover="2"><result status="valid" steps="69335"/></proof>
   </goal>
   <goal name="VC def.3" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -114,7 +114,7 @@
   <goal name="VC def.4" expl="postcondition">
   </goal>
   <goal name="VC def.5" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="66356"/></proof>
+  <proof prover="2"><result status="valid" steps="65499"/></proof>
   </goal>
   <goal name="VC def.6" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -132,13 +132,13 @@
   <goal name="VC def.11" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="131417"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.12" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="131417"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
-  <proof prover="3"><result status="unknown" steps="4851"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="3"><result status="unknown" steps="4746"/></proof>
   </goal>
   <goal name="VC def.13" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -149,12 +149,12 @@
   </goal>
   <goal name="VC def.16" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="368"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.17" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="681"/></proof>
   <proof prover="1"><result status="unknown" steps="4450092"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.18" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -164,17 +164,17 @@
   <goal name="VC def.20" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="4450092"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
-  <proof prover="3"><result status="unknown" steps="128217"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="3"><result status="unknown" steps="103573"/></proof>
   </goal>
   <goal name="VC def.21" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="4450092"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.22" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1601"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.23" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -192,12 +192,12 @@
   <goal name="VC def.28" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="1197"/></proof>
   <proof prover="1"><result status="unknown" steps="4450092"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.29" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="1162"/></proof>
   <proof prover="1"><result status="unknown" steps="4450092"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.30" expl="postcondition" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -205,12 +205,12 @@
   <goal name="VC def.31" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="677"/></proof>
   <proof prover="1"><result status="unknown" steps="4450092"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.32" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="677"/></proof>
   <proof prover="1"><result status="unknown" steps="4450092"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
@@ -224,7 +224,7 @@
   </goal>
   <goal name="VC def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="19635"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.3" expl="postcondition">
   </goal>
@@ -232,7 +232,7 @@
   </goal>
   <goal name="VC def.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="19627"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.6" expl="postcondition">
   </goal>
@@ -240,17 +240,17 @@
   </goal>
   <goal name="VC def.8" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="19639"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.9" expl="postcondition">
   </goal>
   <goal name="VC def.10" expl="check" proved="true">
   <proof prover="1"><result status="valid" steps="19812"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.11" expl="check" proved="true">
   <proof prover="1"><result status="valid" steps="19808"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.12" expl="postcondition">
   </goal>
@@ -258,15 +258,15 @@
   </goal>
   <goal name="VC def.14" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="19657"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.15" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="19725"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.16" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="19208"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.17" expl="postcondition">
   </goal>
@@ -276,33 +276,33 @@
   </goal>
   <goal name="VC def.20" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="19822"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.21" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1802"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.22" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="19961"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.23" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1834"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.24" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="20092"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.25" expl="postcondition">
   </goal>
   <goal name="VC def.26" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="20358"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.27" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1796"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.28" expl="postcondition">
   </goal>
@@ -312,70 +312,70 @@
   </goal>
   <goal name="VC def.31" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" steps="19831"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.32" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" steps="19831"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.33" expl="loop invariant init" proved="true">
   <proof prover="0"><result status="valid" steps="922"/></proof>
   <proof prover="1"><result status="unknown" steps="48198"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.34" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="21335"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.35" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1880"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.36" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="20746"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.37" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="21999"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.38" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="21175"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.39" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="21145"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.40" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="23717"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.41" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2042"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.42" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="24501"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.43" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2074"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.44" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="25902"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.45" expl="postcondition">
   </goal>
   <goal name="VC def.46" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="23408"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.47" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2036"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.48" expl="postcondition">
   </goal>
@@ -385,15 +385,15 @@
   </goal>
   <goal name="VC def.51" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="30736"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.52" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="29909"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.53" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="26185"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.54" expl="postcondition">
   </goal>
@@ -401,37 +401,37 @@
   </goal>
   <goal name="VC def.56" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="22495"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.57" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="2120"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.58" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2136"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.59" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="23905"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.60" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2168"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.61" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="26309"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.62" expl="postcondition">
   </goal>
   <goal name="VC def.63" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="23956"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.64" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2188"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.65" expl="postcondition">
   </goal>
@@ -439,21 +439,21 @@
   </goal>
   <goal name="VC def.67" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="38558"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.68" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="39763"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.69" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="61499"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.70" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="2126"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
@@ -477,13 +477,13 @@
   <goal name="VC def.5" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="86892"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="3"><result status="unknown" steps="190036"/></proof>
   </goal>
   <goal name="VC def.6" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="4450092"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
@@ -505,7 +505,7 @@
   <goal name="VC def.4" expl="postcondition">
   </goal>
   <goal name="VC def.5" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="6356"/></proof>
+  <proof prover="2"><result status="valid" steps="6147"/></proof>
   </goal>
   <goal name="VC def.6" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -513,7 +513,7 @@
   <goal name="VC def.7" expl="postcondition">
   </goal>
   <goal name="VC def.8" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="4695"/></proof>
+  <proof prover="2"><result status="valid" steps="4897"/></proof>
   </goal>
   <goal name="VC def.9" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -528,13 +528,13 @@
   <goal name="VC def.13" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="14641"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.14" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="14641"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
-  <proof prover="3"><result status="unknown" steps="2186"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="3"><result status="unknown" steps="2111"/></proof>
   </goal>
   <goal name="VC def.15" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -547,13 +547,13 @@
   <goal name="VC def.18" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="14591"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
-  <proof prover="3"><result status="unknown" steps="1855"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.19" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="14475"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="3"><result status="unknown" steps="1889"/></proof>
   </goal>
   <goal name="VC def.20" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -565,7 +565,7 @@
   </goal>
   <goal name="VC def.23" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1713"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.24" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -575,12 +575,12 @@
   <goal name="VC def.26" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="1286"/></proof>
   <proof prover="1"><result status="unknown" steps="15468"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.27" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="1245"/></proof>
   <proof prover="1"><result status="unknown" steps="15474"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.28" expl="postcondition" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -588,12 +588,12 @@
   <goal name="VC def.29" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="679"/></proof>
   <proof prover="1"><result status="unknown" steps="14769"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.30" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="679"/></proof>
   <proof prover="1"><result status="unknown" steps="20911"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
@@ -607,7 +607,7 @@
   </goal>
   <goal name="VC def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="17210"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.3" expl="postcondition">
   </goal>
@@ -615,89 +615,89 @@
   </goal>
   <goal name="VC def.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1318"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.6" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1318"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.7" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="17162"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.8" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="17972"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.9" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="17535"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.10" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1392"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.11" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="1392"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.12" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="1392"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.13" expl="postcondition">
   </goal>
   <goal name="VC def.14" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="18925"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.15" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="19285"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.16" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="20135"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.17" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="20064"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.18" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="20625"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.19" expl="postcondition">
   </goal>
   <goal name="VC def.20" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="19845"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.21" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="20205"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.22" expl="postcondition">
   </goal>
   <goal name="VC def.23" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="22568"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.24" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="22568"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.25" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="1426"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.26" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="18958"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.27" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="18952"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
@@ -711,7 +711,7 @@
   </goal>
   <goal name="VC def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="17833"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.3" expl="postcondition">
   </goal>
@@ -723,15 +723,15 @@
   </goal>
   <goal name="VC def.7" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="18080"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.8" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="18262"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.9" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="18052"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.10" expl="precondition">
   </goal>
@@ -747,41 +747,41 @@
   </goal>
   <goal name="VC def.16" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="25529"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.17" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="33371"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.18" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="26316"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.19" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="33997"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.20" expl="postcondition">
   </goal>
   <goal name="VC def.21" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="24619"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.22" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1590"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.23" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="24713"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.24" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="24941"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.25" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="25017"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.26" expl="postcondition">
   </goal>
@@ -789,31 +789,31 @@
   </goal>
   <goal name="VC def.28" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="22792"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.29" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="25493"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.30" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="25811"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.31" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="33618"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.32" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5879"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.33" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="26608"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.34" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="34254"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.35" expl="postcondition">
   </goal>
@@ -827,113 +827,113 @@
   </goal>
   <goal name="VC def.40" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" steps="1546"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.41" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" steps="5523"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.42" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" steps="1592"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.43" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" steps="1592"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.44" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" steps="24605"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.45" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" steps="24605"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.46" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" steps="1660"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.47" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" steps="1660"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.48" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="27043"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.49" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="28031"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.50" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="26441"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.51" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="49095"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.52" expl="postcondition">
   </goal>
   <goal name="VC def.53" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1856"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.54" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="57162"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.55" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="36051"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.56" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1982"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.57" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="38470"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.58" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="61969"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.59" expl="postcondition">
   </goal>
   <goal name="VC def.60" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="6846"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.61" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="6849"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.62" expl="postcondition">
   </goal>
   <goal name="VC def.63" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="32615"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.64" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="49974"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.65" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2106"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.66" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="52516"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.67" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="49037"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.68" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="52541"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.69" expl="postcondition">
   </goal>
@@ -941,61 +941,61 @@
   </goal>
   <goal name="VC def.71" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="6911"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.72" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="37479"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.73" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="57178"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.74" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="57118"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.75" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="57118"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.76" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="46145"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.77" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="55397"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.78" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="46948"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.79" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="55941"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.80" expl="postcondition">
   </goal>
   <goal name="VC def.81" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="70222"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.82" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2146"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.83" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="46271"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.84" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="46385"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.85" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="56265"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.86" expl="postcondition">
   </goal>
@@ -1003,31 +1003,31 @@
   </goal>
   <goal name="VC def.88" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="33519"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.89" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="46319"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.90" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="46479"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.91" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="55454"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.92" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="7598"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.93" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="47269"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.94" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="56675"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.95" expl="postcondition">
   </goal>
@@ -1041,47 +1041,47 @@
   </goal>
   <goal name="VC def.100" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="44714"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.101" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="44767"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.102" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="46673"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.103" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="46673"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.104" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="156391"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.105" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="119004"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.106" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="63461"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.107" expl="loop invariant preservation" proved="true">
   <proof prover="1"><result status="valid" steps="63347"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.108" expl="postcondition">
   </goal>
   <goal name="VC def.109" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="24692"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.110" expl="postcondition">
   </goal>
   <goal name="VC def.111" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="25258"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.112" expl="precondition">
   </goal>
@@ -1089,47 +1089,47 @@
   </goal>
   <goal name="VC def.114" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="30354"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.115" expl="precondition">
   </goal>
   <goal name="VC def.116" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="33076"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.117" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="36879"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.118" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="33765"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.119" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="37778"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.120" expl="postcondition">
   </goal>
   <goal name="VC def.121" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="34216"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.122" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2572"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.123" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="36536"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.124" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="35662"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.125" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="49546"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.126" expl="postcondition">
   </goal>
@@ -1137,31 +1137,31 @@
   </goal>
   <goal name="VC def.128" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="32225"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.129" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="34564"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.130" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="35015"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.131" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="37699"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.132" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="9021"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.133" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="35753"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.134" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="38327"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.135" expl="postcondition">
   </goal>
@@ -1169,79 +1169,79 @@
   </goal>
   <goal name="VC def.137" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="35491"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.138" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="35489"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.139" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="20906"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.140" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="56308"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.141" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="7160"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.142" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="30272"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.143" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="29411"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.144" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="7158"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.145" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="54797"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.146" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="29488"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.147" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="47274"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.148" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="47274"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.149" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="2216"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.150" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="81170"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.151" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="70862"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.152" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="2216"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.153" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="77769"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.154" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="77769"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.155" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="2216"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1251,11 +1251,11 @@
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="10610"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.1" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="380"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.2" expl="postcondition">
   </goal>
@@ -1263,23 +1263,23 @@
   </goal>
   <goal name="VC def.4" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="10957"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="11261"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.6" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="414"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.7" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1491"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.8" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="424"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.9" expl="postcondition">
   </goal>
@@ -1287,48 +1287,48 @@
   </goal>
   <goal name="VC def.11" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="11250"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.12" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="1012"/></proof>
   <proof prover="1"><result status="unknown" steps="4450140"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.13" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="674"/></proof>
   <proof prover="1"><result status="unknown" steps="4450146"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.14" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="677"/></proof>
   <proof prover="1"><result status="unknown" steps="4450152"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.15" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="442"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.16" expl="postcondition">
   </goal>
   <goal name="VC def.17" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="733"/></proof>
   <proof prover="1"><result status="unknown" steps="4450160"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.18" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="468"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.19" expl="postcondition">
   </goal>
   <goal name="VC def.20" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="709"/></proof>
   <proof prover="1"><result status="unknown" steps="4450164"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.21" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1764"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.22" expl="precondition">
   </goal>
@@ -1337,31 +1337,31 @@
   <goal name="VC def.24" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="4450164"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
-  <proof prover="3"><result status="unknown" steps="190014"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="3"><result status="unknown" steps="190030"/></proof>
   </goal>
   <goal name="VC def.25" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1485"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.26" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1495"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.27" expl="postcondition">
   </goal>
   <goal name="VC def.28" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="404"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.29" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="665"/></proof>
   <proof prover="1"><result status="unknown" steps="4450140"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.30" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1536"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.31" expl="precondition">
   </goal>
@@ -1369,11 +1369,11 @@
   </goal>
   <goal name="VC def.33" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="422"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.34" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="148054"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1383,7 +1383,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1288"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.1" expl="precondition">
   </goal>
@@ -1391,11 +1391,11 @@
   </goal>
   <goal name="VC def.3" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="10745"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.4" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1346"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.5" expl="precondition">
   </goal>
@@ -1403,53 +1403,53 @@
   </goal>
   <goal name="VC def.7" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="238986"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.8" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="390"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.9" expl="postcondition">
   </goal>
   <goal name="VC def.10" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="4450144"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.11" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="80919"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.12" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="114210"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.13" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="430"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.14" expl="postcondition">
   </goal>
   <goal name="VC def.15" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="726"/></proof>
   <proof prover="1"><result status="unknown" steps="4450164"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.16" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="11973"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.17" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="498"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.18" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1739"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.19" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="508"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.20" expl="postcondition">
   </goal>
@@ -1458,20 +1458,20 @@
   <goal name="VC def.22" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="1866"/></proof>
   <proof prover="1"><result status="unknown" steps="4450164"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.23" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="1248"/></proof>
   <proof prover="1"><result status="unknown" steps="4450164"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.24" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="12394"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.25" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="522"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.26" expl="postcondition">
   </goal>
@@ -1479,12 +1479,12 @@
   </goal>
   <goal name="VC def.28" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="500"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.29" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="736"/></proof>
   <proof prover="1"><result status="unknown" steps="4450164"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1498,13 +1498,13 @@
   </goal>
   <goal name="VC def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="20505"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.3" expl="postcondition">
   </goal>
   <goal name="VC def.4" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="21222"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.5" expl="postcondition">
   </goal>
@@ -1512,83 +1512,83 @@
   </goal>
   <goal name="VC def.7" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="21830"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.8" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="21322"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.9" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="21373"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.10" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="22831"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.11" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2096"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.12" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2098"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.13" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="26447"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.14" expl="postcondition">
   </goal>
   <goal name="VC def.15" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2134"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.16" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2144"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.17" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="23064"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.18" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2130"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.19" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2132"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.20" expl="postcondition">
   </goal>
   <goal name="VC def.21" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="7745"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.22" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="33365"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.23" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="31798"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.24" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="44182"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.25" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="8061"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.26" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="31287"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.27" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="44723"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.28" expl="postcondition">
   </goal>
@@ -1596,33 +1596,33 @@
   </goal>
   <goal name="VC def.30" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="40908"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.31" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="40886"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.32" expl="postcondition">
   </goal>
   <goal name="VC def.33" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="33350"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.34" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="31145"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.35" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="34415"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.36" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="31939"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.37" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="35194"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.38" expl="postcondition">
   </goal>
@@ -1630,15 +1630,15 @@
   </goal>
   <goal name="VC def.40" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="2468"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.41" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="37438"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.42" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="37438"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
@@ -1652,13 +1652,13 @@
   </goal>
   <goal name="VC def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="20354"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.3" expl="postcondition">
   </goal>
   <goal name="VC def.4" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="21103"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.5" expl="precondition">
   </goal>
@@ -1666,81 +1666,81 @@
   </goal>
   <goal name="VC def.7" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1820"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.8" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1822"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.9" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1824"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.10" expl="postcondition">
   </goal>
   <goal name="VC def.11" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1866"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.12" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="20801"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.13" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="20816"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.14" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1862"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.15" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="1864"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.16" expl="postcondition">
   </goal>
   <goal name="VC def.17" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="21881"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.18" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="28016"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.19" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="23156"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.20" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="23233"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.21" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="30500"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.22" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="2328"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.23" expl="postcondition">
   </goal>
   <goal name="VC def.24" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="2330"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="VC def.25" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="4450816"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
-  <proof prover="3"><result status="unknown" steps="32393"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="3"><result status="unknown" steps="33080"/></proof>
   </goal>
   <goal name="VC def.26" expl="postcondition">
   </goal>
   <goal name="VC def.27" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="2332"/></proof>
-  <proof prover="2"><result status="highfailure" steps="5"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>

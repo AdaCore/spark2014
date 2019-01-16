@@ -22,11 +22,11 @@ arrays_in_records.adb:118:11: info: flow dependencies proved
 arrays_in_records.adb:119:22: medium: postcondition might fail, cannot prove A.First_Array(I) = 42 (e.g. when A = (Counter => 100, First_Array => (0 => 23, others => Value'Last), Second_Array => (others => Value'Last)) and I = 0)
 arrays_in_records.adb:126:22: info: assertion proved (CVC4: 1 VC)
 arrays_in_records.adb:132:11: info: flow dependencies proved
-arrays_in_records.adb:133:22: medium: postcondition might fail, cannot prove A.First_Array(17) /= 23 (e.g. when A = (Counter => 0, First_Array => (17 => 23, others => 42), Second_Array => (17 => 23, others => 42)))
+arrays_in_records.adb:133:22: medium: postcondition might fail, cannot prove A.First_Array(17) /= 23 (e.g. when A = (Counter => 0, First_Array => (5 => 42, others => 23), Second_Array => (5 => 42, others => 23)))
 arrays_in_records.adb:142:11: info: flow dependencies proved
 arrays_in_records.adb:144:22: medium: postcondition might fail, cannot prove A.First_Array(I) /= 23 (e.g. when A = (Counter => 0, First_Array => (0 => 42, others => 23), Second_Array => (0 => 42, others => 23)) and I = 1)
 arrays_in_records.adb:155:11: info: flow dependencies proved
-arrays_in_records.adb:156:22: medium: postcondition might fail, cannot prove A.First_Array(17) /= 23 (e.g. when A = (Counter => 100, First_Array => (17 => 23, 5 => 42, others => Value'Last), Second_Array => (17 => 23, 5 => 42, others => Value'Last)))
+arrays_in_records.adb:156:22: medium: postcondition might fail, cannot prove A.First_Array(17) /= 23 (e.g. when A = (Counter => 100, First_Array => (17 => 23, 23 => Value'Last, others => 42), Second_Array => (17 => 23, 23 => Value'Last, others => 42)))
 arrays_in_records.adb:163:22: info: assertion proved (CVC4: 1 VC)
 arrays_in_records.adb:169:11: info: flow dependencies proved
 arrays_in_records.adb:171:22: medium: postcondition might fail, cannot prove A.First_Array(I) /= 23 (e.g. when A = (Counter => 100, First_Array => (0 => 42, 1 => 23, others => Value'Last), Second_Array => (0 => 42, others => Value'Last)) and I = 1)

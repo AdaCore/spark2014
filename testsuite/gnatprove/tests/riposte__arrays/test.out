@@ -59,7 +59,7 @@ arrays.adb:242:07: info: initialization of "A" proved
 arrays.adb:245:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:249:11: info: flow dependencies proved
 arrays.adb:251:07: info: initialization of "A" proved
-arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5) (e.g. when A = (1 => 0, others => 1))
+arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5)
 counterexample expected for check at arrays.adb:62
   trace at arrays.adb:57 --> S = ('a' => True, others => False)
   trace at arrays.adb:58 --> C = 'NUL'
@@ -94,6 +94,6 @@ counterexample expected for check at arrays.adb:148
 counterexample expected for check at arrays.adb:199
   trace at arrays.adb:197 --> C = 'SOH'
   trace at arrays.adb:199 --> C = 'SOH' and I = 'SOH'
-  trace at arrays.adb:203 --> R = (others => True) and X = 'LC_Y_Diaeresis'
-  trace at arrays.adb:204 --> R = (others => False)
-  trace at arrays.adb:209 --> R = (others => True) and Single_Char_Set_Broken'Result = (others => True)
+  trace at arrays.adb:203 --> R = ('SOH' => True, others => False) and X = 'LC_Y_Diaeresis'
+  trace at arrays.adb:204 --> R = ('NUL' => False, 'SOH' => False, others => True)
+  trace at arrays.adb:209 --> R = ('SOH' => True, others => False) and Single_Char_Set_Broken'Result = ('SOH' => True, others => False)

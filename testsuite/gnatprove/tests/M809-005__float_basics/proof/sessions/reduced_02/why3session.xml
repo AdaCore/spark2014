@@ -15,7 +15,7 @@
   <goal name="VC def.0" expl="postcondition">
   </goal>
   <goal name="VC def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="4607"/></proof>
+  <proof prover="0"><result status="valid" steps="4432"/></proof>
   </goal>
   <goal name="VC def.2" expl="postcondition">
   </goal>

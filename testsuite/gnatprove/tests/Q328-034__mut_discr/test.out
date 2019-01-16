@@ -36,7 +36,7 @@ instructions.adb:54:13: medium: exception might be raised
 screen_output.adb:54:46: info: range check proved (CVC4: 1 VC)
 screen_output.adb:77:29: info: cannot unroll loop (too many loop iterations)
 screen_output.adb:83:46: info: range check proved (CVC4: 1 VC)
-screen_output.adb:83:53: low: range check might fail (e.g. when S = (1 => ' ', others => ':') and S'First = 1 and S'Last = 2147483645) [possible explanation: subprogram at screen_output.ads:18 should mention S and Input.Line_Num in a precondition]
+screen_output.adb:83:53: low: range check might fail (e.g. when S = (2 => ' ', others => ':') and S'First = 1 and S'Last = 2147483644) [possible explanation: subprogram at screen_output.ads:18 should mention S and Input.Line_Num in a precondition]
 sdc.adb:11:04: info: initialization of "File" proved
 sdc.adb:12:04: info: initialization of "T" proved
 sdc.adb:16:07: warning: assuming "Argument_Count" has no effect on global items
@@ -77,7 +77,7 @@ tokens.adb:54:21: medium: discriminant check might fail (e.g. when V = (Kind => 
 tokens.adb:59:19: medium: exception might be raised
 tokens.adb:74:19: info: precondition proved (CVC4: 1 VC)
 tokens.adb:74:30: info: discriminant check proved (CVC4: 1 VC)
-tokens.adb:77:30: medium: precondition might fail, cannot prove Size >= 2 (e.g. when Last = 1)
+tokens.adb:77:30: medium: precondition might fail, cannot prove Size >= 2 (e.g. when Last = 0)
 tokens.adb:77:41: info: discriminant check proved (CVC4: 1 VC)
 tokens.adb:80:36: info: discriminant check proved (CVC4: 1 VC)
 tokens.ads:19:20: info: initialization of "V" proved

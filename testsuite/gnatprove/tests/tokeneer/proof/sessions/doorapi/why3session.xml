@@ -32,13 +32,13 @@
   <goal name="VC def.3" expl="postcondition">
   </goal>
   <goal name="VC def.4" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="479"/></proof>
+  <proof prover="2"><result status="valid" steps="565"/></proof>
   </goal>
   <goal name="VC def.5" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="479"/></proof>
+  <proof prover="2"><result status="valid" steps="565"/></proof>
   </goal>
   <goal name="VC def.6" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="552"/></proof>
+  <proof prover="2"><result status="valid" steps="638"/></proof>
   </goal>
   <goal name="VC def.7" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
@@ -50,10 +50,10 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.10" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="747"/></proof>
+  <proof prover="2"><result status="valid" steps="837"/></proof>
   </goal>
   <goal name="VC def.11" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="582"/></proof>
+  <proof prover="2"><result status="valid" steps="668"/></proof>
   </goal>
   <goal name="VC def.12" expl="precondition">
   </goal>
@@ -66,16 +66,16 @@
   <goal name="VC def.16" expl="precondition">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="unknown" steps="2932484"/></proof>
-  <proof prover="2"><result status="unknown" steps="4679"/></proof>
-  <proof prover="3"><result status="timeout" steps="117626"/></proof>
+  <proof prover="2"><result status="unknown" steps="4840"/></proof>
+  <proof prover="3"><result status="unknown" steps="4079"/></proof>
   </goal>
   <goal name="VC def.17" expl="precondition">
   </goal>
   <goal name="VC def.18" expl="precondition">
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="unknown" steps="4855274"/></proof>
-  <proof prover="2"><result status="unknown" steps="6489"/></proof>
-  <proof prover="3"><result status="timeout" steps="139174"/></proof>
+  <proof prover="2"><result status="unknown" steps="6670"/></proof>
+  <proof prover="3"><result status="unknown" steps="5722"/></proof>
   </goal>
   <goal name="VC def.19" expl="postcondition">
   </goal>

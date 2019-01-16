@@ -17,4 +17,4 @@ contract_cases_illegal_2.ads:32:51: info: initialization of "C" proved
 contract_cases_illegal_2.ads:33:11: info: disjoint contract cases proved (CVC4: 1 VC)
 contract_cases_illegal_2.ads:33:11: medium: contract cases might not be complete
 contract_cases_illegal_2.ads:33:36: medium: contract case might fail (e.g. when B = 0 and C = -1)
-contract_cases_illegal_2.ads:34:36: medium: contract case might fail (e.g. when A = 1 and C = 0)
+contract_cases_illegal_2.ads:34:36: medium: contract case might fail (e.g. when A = 0 and C = -1)

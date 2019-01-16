@@ -83,7 +83,7 @@
   <goal name="VC def.4" expl="precondition">
   </goal>
   <goal name="VC def.5" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="138"/></proof>
+  <proof prover="0"><result status="valid" steps="130"/></proof>
   </goal>
   <goal name="VC def.6" expl="precondition">
   </goal>

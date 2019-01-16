@@ -26,5 +26,5 @@ pck.adb:58:37: info: overflow check proved (CVC4: 1 VC)
 pck.adb:58:51: info: division check proved (CVC4: 1 VC)
 pck.adb:58:56: info: division check proved (CVC4: 1 VC)
 pck.adb:58:56: info: range check proved (CVC4: 1 VC)
-pck.adb:61:11: info: assertion proved (CVC4: 1 VC)
+pck.adb:61:11: medium: assertion might fail, cannot prove Result_Lo <= Uint_64 (Natural'Last) * 2 ** 32 - Result_Hi
 pck.adb:70:24: info: overflow check proved (CVC4: 1 VC)

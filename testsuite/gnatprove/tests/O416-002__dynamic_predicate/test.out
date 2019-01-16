@@ -98,7 +98,7 @@ dynamic_preds_array.adb:90:29: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:90:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [possible explanation: subprogram at dynamic_preds_array.ads:34 should mention Above in a precondition]
 dynamic_preds_array.adb:93:20: medium: "Result" might not be initialized
 dynamic_preds_array.adb:93:30: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:93:30: medium: overflow check might fail (e.g. when Result = (1 => Even'Last-1, others => Even'Last))
+dynamic_preds_array.adb:93:30: medium: overflow check might fail (e.g. when Result = (others => Even'Last-1))
 dynamic_preds_array.adb:95:14: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:101:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:102:29: info: overflow check proved (CVC4: 1 VC)
@@ -106,7 +106,7 @@ dynamic_preds_array.adb:102:29: medium: predicate check might fail [possible exp
 dynamic_preds_array.adb:104:29: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:104:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [possible explanation: subprogram at dynamic_preds_array.ads:35 should mention Above in a precondition]
 dynamic_preds_array.adb:107:30: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:107:30: medium: overflow check might fail (e.g. when Result = (2 => 0, others => Even'Last-3))
+dynamic_preds_array.adb:107:30: medium: overflow check might fail (e.g. when Result = (1 => Even'Last-3, others => 0))
 dynamic_preds_array.adb:109:14: medium: predicate check might fail (e.g. when Result = (2 => 4, others => 0))
 dynamic_preds_array.adb:115:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:116:10: medium: predicate check might fail
