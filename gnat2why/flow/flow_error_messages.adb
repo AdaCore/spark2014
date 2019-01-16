@@ -998,7 +998,7 @@ package body Flow_Error_Messages is
          return Flow_Id_Sets.Set
       is
          Expr_Vars : constant Flow_Id_Sets.Set :=
-           To_Entire_Variables (Get_Variables_For_Proof (Expr, Context));
+           Get_Variables_For_Proof (Expr, Context);
          Mapped_Vars : Flow_Id_Sets.Set;
 
          use type Flow_Id_Sets.Set;
@@ -1034,7 +1034,7 @@ package body Flow_Error_Messages is
             end;
 
          else
-            Vars := To_Entire_Variables (Get_Variables_For_Proof (N, N));
+            Vars := Get_Variables_For_Proof (N, N);
          end if;
 
          return Vars;

@@ -535,7 +535,9 @@ is
    --  use Add_Loop and Add_Loop_Write, and enables the use of Get_Loop_Writes.
 
    function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
-   with Pre => Ekind (E) = E_Loop;
+   with Pre => Ekind (E) = E_Loop,
+        Post => (for all F of Get_Loop_Writes'Result =>
+                   Is_Entire_Variable (F) and then F.Variant = Normal_Use);
    --  Returns variables a given loop *may* write to, including variables
    --  declared locally in the loop. Note that if a function returns inside a
    --  loop, the name of the function will be "written to" and will be returned
