@@ -1,0 +1,24 @@
+p.adb:6:07: warning: statement has no effect
+p.ads:3:48: info: initialization of "Y" proved
+p.ads:4:48: info: initialization of "Y" proved
+q.adb:6:07: warning: statement has no effect
+q.adb:18:07: warning: statement has no effect
+q.adb:30:07: warning: statement has no effect
+q.adb:42:07: warning: statement has no effect
+q.adb:54:07: warning: statement has no effect
+q.adb:66:07: warning: statement has no effect
+q.adb:78:07: warning: statement has no effect
+q.adb:90:07: warning: statement has no effect
+q.adb:102:07: warning: statement has no effect
+q.ads:10:49: info: initialization of "Y" proved
+q.ads:11:49: info: initialization of "Y" proved
+q.ads:12:49: info: initialization of "Y" proved
+q.ads:13:49: info: initialization of "Y" proved
+q.ads:14:49: info: initialization of "Y" proved
+q.ads:15:49: info: initialization of "Y" proved
+q.ads:17:49: info: initialization of "Y" proved
+q.ads:18:49: info: initialization of "Y" proved
+q.ads:20:36: warning: unused initial value of "E"
+q.ads:20:49: info: initialization of "Y" proved
+q.ads:20:71: medium: missing dependency "null => E"
+q.ads:20:92: medium: incorrect dependency "Y => E"
