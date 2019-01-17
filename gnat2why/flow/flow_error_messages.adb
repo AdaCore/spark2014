@@ -1361,8 +1361,7 @@ package body Flow_Error_Messages is
                      --  Get the variables written in the loop
 
                      Write_Vars :=
-                       To_Entire_Variables
-                         (Get_Loop_Writes (Entity (Identifier (Stmt))));
+                       Get_Loop_Writes (Entity (Identifier (Stmt)));
                      Pragmas :=
                        Gnat2Why.Expr.Loops.Get_Loop_Invariant (Stmt);
 
