@@ -1046,21 +1046,10 @@ package body Flow_Error_Messages is
 
       function Has_Attribute_Result (N : Node_Id) return Boolean is
 
-         function Is_Function_Result (N : Node_Id) return Traverse_Result;
-         --  Sets Result_Seen to True if Func'Result seen in N
-
-         ------------------------
-         -- Is_Function_Result --
-         ------------------------
-
          function Is_Function_Result (N : Node_Id) return Traverse_Result is
-         begin
-            if Is_Attribute_Result (N) then
-               return Abandon;
-            else
-               return OK;
-            end if;
-         end Is_Function_Result;
+           (if Is_Attribute_Result (N)
+            then Abandon
+            else OK);
 
          function Check_Function_Result is
            new Traverse_Func (Is_Function_Result);
