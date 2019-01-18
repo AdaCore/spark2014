@@ -1052,9 +1052,7 @@ package body Gnat2Why.Subprograms is
                     Get_Direct_Mapping_Id (Write_Id);
 
                begin
-                  if Is_Type (Entity) then
-                     pragma Assert (Is_Protected_Type (Entity));
-                  else
+                  if not Is_Concurrent_Type (Entity) then
                      declare
                         Dyn_Prop : constant W_Pred_Id :=
                           Compute_Dynamic_Invariant
@@ -1163,11 +1161,9 @@ package body Gnat2Why.Subprograms is
                     Get_Direct_Mapping_Id (Write_Id);
 
                begin
-                  --  Effects on protected types are handled by other means
+                  --  Effects on concurrent types are handled by other means
 
-                  if Is_Type (Entity) then
-                     pragma Assert (Is_Protected_Type (Entity));
-                  else
+                  if not Is_Concurrent_Type (Entity) then
                      Effects_Append_Binder_To_Writes
                        (Ada_Ent_To_Why.Element (Symbol_Table, Entity));
                   end if;
@@ -1223,9 +1219,7 @@ package body Gnat2Why.Subprograms is
                begin
                   --  Effects on concurrent types are handled by other means
 
-                  if Is_Type (Entity) then
-                     pragma Assert (Is_Concurrent_Type (Entity));
-                  else
+                  if not Is_Concurrent_Type (Entity) then
                      Effects_Append_Binder_To_Reads
                        (Ada_Ent_To_Why.Element (Symbol_Table, Entity));
                   end if;
