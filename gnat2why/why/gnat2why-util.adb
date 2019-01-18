@@ -793,13 +793,9 @@ package body Gnat2Why.Util is
       Body_Prefix : constant String := Unit_Name;
    begin
       Why_File_Name := new String'(Body_Prefix & Why_File_Suffix);
-      for Kind in W_Section_Id'First ..
-                  W_Section_Id'Pred (W_Section_Id'Last)
-      loop
+      for Kind in W_Section_Id loop
          Make_Empty_Why_Section (Kind => Kind, Section => Why_Sections (Kind));
       end loop;
-      Make_Empty_Why_Section
-        (Kind => WF_Main, Section => Why_Sections (WF_Main));
    end Init_Why_Sections;
 
    -------------------
