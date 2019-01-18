@@ -282,11 +282,6 @@ package Configuration is
    --  The name of the directory in which all work takes place. A directory can
    --  be prepended to this default value by using the --subdirs switch.
 
-   Main_Subdir : GNAT.Strings.String_Access := null;
-   --  The name of the main sub-directory "gnatprove" in which files are
-   --  generated. This is the same as
-   --  <obj-dir-for-the-main-project>/Subdir_Name
-
    Proof_Dir : GNAT.Strings.String_Access := null;
    --  The name of the directory in which will be stored Why3 session file and
    --  manual proof files (Attribute of gpr package Prove).

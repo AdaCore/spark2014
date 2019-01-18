@@ -800,7 +800,7 @@ package body Configuration is
           (Compose (File_System.Install.Share_Why3, "libs"),
            Name => Prover_Name);
       Prover_Obj_Dir : constant String := Compose
-        (Compose (Main_Subdir.all, "why3_libs"), Name => Prover_Name);
+        (Compose (Subdir.Display_Full_Name, "why3_libs"), Name => Prover_Name);
 
       procedure Compile_Lib (Dir, File : String);
       --  compile a Coq library
@@ -1954,10 +1954,6 @@ package body Configuration is
          --  Release copies of command line arguments; they were already parsed
          --  twice and are no longer needed.
          Free (Com_Lin);
-
-         --  After the call to Init, the object directory includes the
-         --  sub-directory "gnatprove" set through Set_Object_Subdir.
-         Main_Subdir := new String'(Proj_Type.Artifacts_Dir.Display_Full_Name);
 
          --  Setting the socket name used by the why3server. This name has
          --  to comply to several constraints:

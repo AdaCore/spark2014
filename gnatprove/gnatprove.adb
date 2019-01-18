@@ -369,7 +369,7 @@ procedure Gnatprove with SPARK_Mode is
          Gnatwhy3 : constant String :=
            Compose (File_System.Install.Libexec_Spark_Bin, "gnatwhy3");
       begin
-         Set_Directory  (Main_Subdir.all);
+         Set_Directory  (Subdir.Display_Full_Name);
          if Verbose then
             Ada.Text_IO.Put (Gnatwhy3 & " ");
             for Arg of Args loop
