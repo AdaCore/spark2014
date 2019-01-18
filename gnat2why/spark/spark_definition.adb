@@ -4868,7 +4868,7 @@ package body SPARK_Definition is
                         --  Mark default value of component or discriminant
                         Mark_Default_Expression (Comp);
 
-                        if Has_Init_By_Proof (Etype (Comp)) then
+                        if Has_Init_By_Proof (Comp_Type) then
                            Init_By_Proof := Comp;
                         else
                            Not_Init_By_Proof := Comp;

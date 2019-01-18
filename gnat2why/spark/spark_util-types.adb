@@ -492,13 +492,19 @@ package body SPARK_Util.Types is
             return Has_Init_By_Proof (Component_Type (Ty));
          when Record_Kind =>
 
-            --  A record type either has alla its components with Init_By_Proof
-            --  or none. Only check the first component here.
+            --  A record type either has all its components with Init_By_Proof
+            --  or none. Only check the first component that is visible in
+            --  SPARK.
 
             declare
-               Comp : constant Entity_Id :=
+               Comp : Entity_Id :=
                  First_Component (Root_Retysp (Ty));
             begin
+               while Present (Comp) loop
+                  exit when Component_Is_Visible_In_SPARK (Comp);
+                  Next_Component (Comp);
+               end loop;
+
                return Present (Comp) and then Has_Init_By_Proof (Etype (Comp));
             end;
          when E_Private_Type .. E_Limited_Private_Subtype
