@@ -4,10 +4,10 @@ arrays.adb:62:22: medium: postcondition might fail, cannot prove Contains_B'Resu
 arrays.adb:71:19: info: postcondition proved (CVC4: 2 VC)
 arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C) (e.g. when C = 'b' and Is_Id_2'Result = True and M = ('b' => 'a', others => 'a'))
 arrays.adb:94:22: info: assertion proved (CVC4: 1 VC)
-arrays.adb:104:22: medium: assertion might fail, cannot prove C = 'a' (e.g. when C = 'NUL') [possible explanation: precondition of subprogram at line 97 should mention C]
+arrays.adb:104:22: medium: assertion might fail, cannot prove C = 'a' [possible explanation: precondition of subprogram at line 97 should mention C]
 arrays.adb:112:22: medium: assertion might fail, cannot prove M ('a') = 'a' (e.g. when M = ('a' => 'A', others => 'A')) [possible explanation: subprogram at line 107 should mention M in a precondition]
 arrays.adb:120:22: medium: assertion might fail, cannot prove M (Elem_0) = Elem_0 (e.g. when M = (Elem_0 => Elem_2, others => Elem_2)) [possible explanation: subprogram at line 115 should mention M in a precondition]
-arrays.adb:128:22: medium: assertion might fail, cannot prove MM ('a') (Elem_0) = Elem_1 (e.g. when MM = ('a' => (Elem_0 => Elem_0, others => Elem_0), others => (others => Elem_0))) [possible explanation: subprogram at line 123 should mention MM in a precondition]
+arrays.adb:128:22: medium: assertion might fail, cannot prove MM ('a') (Elem_0) = Elem_1 [possible explanation: subprogram at line 123 should mention MM in a precondition]
 arrays.adb:131:22: info: initialization of "M" proved
 arrays.adb:136:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:136:22: info: initialization of "M" proved
@@ -39,15 +39,15 @@ arrays.adb:207:57: info: initialization of "R" proved
 arrays.adb:207:57: medium: "R" might not be initialized
 arrays.adb:209:14: info: initialization of "R" proved
 arrays.adb:218:22: info: initialization of "A" proved
-arrays.adb:218:22: medium: assertion might fail, cannot prove A ('A') (e.g. when A = ('A' => False, others => False))
+arrays.adb:218:22: medium: assertion might fail, cannot prove A ('A')
 arrays.adb:227:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:227:22: info: initialization of "A" proved
 arrays.adb:236:22: info: initialization of "A" proved
-arrays.adb:236:22: medium: assertion might fail, cannot prove A ('A') (e.g. when A = ('A' => False, others => False))
+arrays.adb:236:22: medium: assertion might fail, cannot prove A ('A')
 arrays.adb:245:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:245:22: info: initialization of "A" proved
 arrays.adb:254:22: info: initialization of "A" proved
-arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5) (e.g. when A = (1 => 0, others => 0))
+arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5)
 counterexample expected for check at arrays.adb:62
   trace at arrays.adb:57 --> S = ('NUL' => False, 'a' => True, others => False)
   trace at arrays.adb:58 --> C = 'NUL'
@@ -58,11 +58,7 @@ counterexample expected for check at arrays.adb:80
   trace at arrays.adb:78 --> C = 'b'
   trace at arrays.adb:80 --> C = 'b' and Is_Id_2'Result = True and M = ('b' => 'a', others => 'a')
   trace at arrays.adb:83 --> Is_Id_2'Result = True
-counterexample expected for check at arrays.adb:104
-  trace at arrays.adb:97 --> M = ('NUL' => 'NUL', others => 'NUL')
-  trace at arrays.adb:98 --> C = 'NUL'
-  trace at arrays.adb:103 --> C = 'NUL'
-  trace at arrays.adb:104 --> C = 'NUL'
+MISSING COUNTEREXAMPLE at arrays.adb:104
 counterexample expected for check at arrays.adb:112
   trace at arrays.adb:107 --> M = (others => 'A')
   trace at arrays.adb:111 --> M = ('a' => 'A', others => 'A')
@@ -86,12 +82,6 @@ counterexample expected for check at arrays.adb:199
   trace at arrays.adb:203 --> R = ('SOH' => True, others => False) and X = 'LC_Y_Diaeresis'
   trace at arrays.adb:204 --> R = ('NUL' => False, others => False)
   trace at arrays.adb:209 --> Single_Char_Set_Broken'Result = ('SOH' => True, others => False)
-counterexample expected for check at arrays.adb:218
-  trace at arrays.adb:217 --> A = ('A' => False, others => False)
-  trace at arrays.adb:218 --> A = ('A' => False, others => False)
-counterexample expected for check at arrays.adb:236
-  trace at arrays.adb:235 --> A = ('A' => False, others => False)
-  trace at arrays.adb:236 --> A = ('A' => False, others => False)
-counterexample expected for check at arrays.adb:254
-  trace at arrays.adb:253 --> A = (1 => 0, others => 0)
-  trace at arrays.adb:254 --> A = (1 => 0, others => 0)
+MISSING COUNTEREXAMPLE at arrays.adb:218
+MISSING COUNTEREXAMPLE at arrays.adb:236
+MISSING COUNTEREXAMPLE at arrays.adb:254

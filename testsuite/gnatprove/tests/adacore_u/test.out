@@ -121,7 +121,7 @@ p.ads:11:14: info: initialization of "Data1" proved
 p.ads:11:14: info: initialization of "Data2" proved
 p.ads:11:14: info: initialization of "Size" proved
 p.ads:14:06: info: disjoint contract cases proved (CVC4: 1 VC)
-p.ads:14:06: medium: contract cases might not be complete (e.g. when X = 0)
+p.ads:14:06: medium: contract cases might not be complete
 p.ads:14:41: info: contract case proved (CVC4: 2 VC)
 p.ads:15:43: info: contract case proved (CVC4: 2 VC)
 p.ads:16:34: info: contract case proved (CVC4: 2 VC)
@@ -172,11 +172,11 @@ data_package.adb:11:17: info: initialization of "Data.Field_3" proved
 data_package.ads:6:04: info: initialization of "Data_1" proved
 data_package.ads:7:04: info: initialization of "Data_2" proved
 data_package.ads:8:04: info: initialization of "Data_3" proved
-stack.adb:9:21: medium: array index check might fail (e.g. when E = 0 and Top = 0) [possible explanation: subprogram at line 7 should mention Top in a precondition]
+stack.adb:9:21: medium: array index check might fail [possible explanation: subprogram at line 7 should mention Top in a precondition]
 stack.adb:10:18: info: range check proved (CVC4: 1 VC)
 stack.adb:14:18: medium: range check might fail (e.g. when Top = Length_Type'Last) [possible explanation: subprogram at line 12 should mention Top in a precondition]
 stack.adb:15:16: info: index check proved (CVC4: 2 VC)
-stack.adb:24:23: medium: array index check might fail (e.g. when B_Top = 0 and E = 0) [possible explanation: subprogram at line 18 should mention B_Top in a precondition]
+stack.adb:24:23: medium: array index check might fail [possible explanation: subprogram at line 18 should mention B_Top in a precondition]
 stack.adb:25:22: info: range check proved (CVC4: 1 VC)
 stack.adb:32:22: medium: range check might fail (e.g. when B_Top = Length_Type'Last) [possible explanation: subprogram at line 27 should mention B_Top in a precondition]
 stack.adb:33:18: info: index check proved (CVC4: 2 VC)
@@ -405,11 +405,11 @@ ring_buffer.ads:43:60: info: initialization of "E" proved
 ring_buffer.ads:49:24: info: postcondition proved (CVC4: 1 VC)
 ring_buffer.ads:51:26: info: contract case proved (CVC4: 2 VC)
 ring_buffer.ads:52:26: info: contract case proved (CVC4: 3 VC)
-protected_complex.adb:7:24: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+protected_complex.adb:7:24: from profile "Gnat_Extended_Ravenscar" at /export/kwai.a/gnatmail/sandbox/wave-ms/x86_64-linux/spark2014-test/tmp/test/tmp-test-adacore_u-29139/src/Concurrency/spark.adc:1
 protected_complex.adb:7:24: violation of restriction "Pure_Barriers"
-rendezvous.adb:3:04: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+rendezvous.adb:3:04: from profile "Gnat_Extended_Ravenscar" at /export/kwai.a/gnatmail/sandbox/wave-ms/x86_64-linux/spark2014-test/tmp/test/tmp-test-adacore_u-29139/src/Concurrency/spark.adc:1
 rendezvous.adb:3:04: violation of restriction "No_Task_Hierarchy"
-rendezvous.adb:4:07: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+rendezvous.adb:4:07: from profile "Gnat_Extended_Ravenscar" at /export/kwai.a/gnatmail/sandbox/wave-ms/x86_64-linux/spark2014-test/tmp/test/tmp-test-adacore_u-29139/src/Concurrency/spark.adc:1
 rendezvous.adb:4:07: violation of restriction "Max_Task_Entries = 0"
 gnatprove: error during generation of Global contracts
 abstract_ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)
@@ -428,7 +428,7 @@ distributed_file_system.ads:12:20: info: class-wide precondition is weaker than 
 distributed_file_system.ads:13:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 distributed_file_system.ads:16:20: info: class-wide precondition is weaker than overridden one (CVC4: 1 VC)
 distributed_file_system.ads:17:20: info: class-wide postcondition is stronger than overridden one (CVC4: 2 VC)
-distributed_file_system.ads:20:20: medium: class-wide precondition might be stronger than overridden one (e.g. when F = (Filename => (others => 'NUL'), Cursor => 0, Status => Closed, In_Synch => False))
+distributed_file_system.ads:20:20: medium: class-wide precondition might be stronger than overridden one
 distributed_file_system.ads:21:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)
 ints.adb:29:10: info: precondition proved (CVC4: 1 VC)
@@ -493,7 +493,7 @@ use_file_system.adb:14:04: info: initialization of extension of "F" proved
 use_file_system.adb:14:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:15:04: info: initialization of "F" proved
 use_file_system.adb:15:04: info: initialization of extension of "F" proved
-use_file_system.adb:15:05: medium: precondition might fail (e.g. when F = (Filename => (others => 'NUL'), Cursor => 0, Status => Closed))
+use_file_system.adb:15:05: medium: precondition might fail
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9

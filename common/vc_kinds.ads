@@ -411,12 +411,19 @@ package VC_Kinds is
        (Element_Type => Unbounded_String,
         "="          => "=");
 
+   type CNT_Unbounded_String is record
+      Nul : Boolean;
+      Str : Unbounded_String;
+   end record;
+   --  Pair of a string for a counterexample value, and boolean Nul to denote
+   --  that the string is actually for a "nul" value.
+
    type Cntexample_Elt is record
       Kind    : CEE_Kind;
       Name    : Unbounded_String;
       Labels  : S_String_List.List;
       Value   : Cntexmp_Value_Ptr;
-      Val_Str : Unbounded_String;
+      Val_Str : CNT_Unbounded_String;
    end record;
 
    package Cntexample_Elt_Maps is new

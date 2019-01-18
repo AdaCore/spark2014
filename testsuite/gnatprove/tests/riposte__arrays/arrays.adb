@@ -101,7 +101,7 @@ is
    is
    begin
       C := M (C);
-      pragma Assert (C = 'a');  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (C = Character'Val(0));  --  @ASSERT:FAIL @COUNTEREXAMPLE
    end Test_Id_2;
 
    procedure Test_A (M : in out Char_Map)
@@ -175,7 +175,7 @@ is
      with Depends => (null => A)
    is
    begin
-      pragma Assert (for some B in Boolean => A (B) > 0);  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (for some B in Boolean => A (B) > 0);  --  @ASSERT:FAIL
       null;
    end Test_L;
 
@@ -215,7 +215,7 @@ is
       A : Char_Set;
    begin
       A := Single_Char_Set ('D');
-      pragma Assert (A ('A'));  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (A ('A'));  --  @ASSERT:FAIL
    end Use_Array_From_Function_A;
 
    procedure Use_Array_From_Function_B
@@ -233,7 +233,7 @@ is
       A : Char_Set;
    begin
       A := Single_Char_Set_Broken ('D');
-      pragma Assert (A ('A'));  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (A ('A'));  --  @ASSERT:FAIL
    end Use_Array_From_Function_C;
 
    procedure Use_Array_From_Function_D
@@ -251,7 +251,7 @@ is
       A : Int_Array;
    begin
       A := Int_Array'(others => 0);
-      pragma Assert (A = Random_Array (5));  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (A = Random_Array (5));  --  @ASSERT:FAIL
    end Use_Array_From_Function_E;
 
    pragma Warnings (On, "* has no effect");

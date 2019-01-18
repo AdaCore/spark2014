@@ -1,3 +1,3 @@
 bar.adb:4:38: info: unrolling loop
-bar.ads:4:55: medium: predicate check might fail (e.g. when X = False) [possible explanation: subprogram at line 4 should mention X in a precondition]
+bar.ads:4:55: medium: predicate check might fail [possible explanation: subprogram at line 4 should mention X in a precondition]
 bar.ads:5:14: warning: subprogram "P" has no effect

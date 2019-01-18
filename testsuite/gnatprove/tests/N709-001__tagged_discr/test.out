@@ -2,7 +2,7 @@ classwide.ads:35:22: info: initialization of "V.X" proved
 classwide.ads:35:22: info: initialization of "V.Y" proved
 classwide.ads:35:22: info: initialization of "V.Z" proved
 classwide.ads:35:22: info: initialization of extension of "V" proved
-classwide.ads:36:14: medium: postcondition might fail, cannot prove C_Is_Zero (V) (e.g. when V = (Z => False, X => 0, Y => 0.0))
+classwide.ads:36:14: medium: postcondition might fail, cannot prove C_Is_Zero (V)
 classwide.ads:36:25: info: initialization of "V.X" proved
 classwide.ads:36:25: info: initialization of "V.Y" proved
 classwide.ads:36:25: info: initialization of "V.Z" proved
@@ -18,7 +18,7 @@ classwide.ads:40:25: info: initialization of "V.Y" proved
 classwide.ads:40:25: info: initialization of "V.Z" proved
 classwide.ads:44:22: warning: unused initial value of "V"
 classwide.ads:45:14: info: postcondition proved (CVC4: 1 VC)
-classwide.ads:49:14: medium: postcondition might fail, cannot prove C_Is_Zero (V) (e.g. when V = (Z => False, X => 0, Y => 0.0))
+classwide.ads:49:14: medium: postcondition might fail, cannot prove C_Is_Zero (V)
 classwide.ads:53:14: info: postcondition proved (CVC4: 1 VC)
 classwide.ads:70:22: warning: unused initial value of "V"
 classwide.ads:71:14: info: postcondition proved (CVC4: 1 VC)

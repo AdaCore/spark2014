@@ -1,4 +1,4 @@
 old.ads:9:14: warning: subprogram "Nothing" has no effect
 old.ads:10:20: info: postcondition proved (CVC4: 1 VC)
 old.ads:12:14: warning: subprogram "Range_Expr" has no effect
-old.ads:13:20: medium: postcondition might fail, cannot prove boolean'(X in 1..10)'Old (e.g. when X = 0)
+old.ads:13:20: medium: postcondition might fail, cannot prove boolean'(X in 1..10)'Old

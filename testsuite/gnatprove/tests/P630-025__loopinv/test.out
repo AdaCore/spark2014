@@ -244,7 +244,7 @@ decadriver.ads:210:27: info: initialization of "Result" proved
 decadriver.ads:222:07: warning: no check message justified by this pragma
 decadriver.ads:242:19: info: ceiling priority in Interrupt_Priority proved (CVC4: 2 VC)
 decadriver.ads:281:07: warning: no check message justified by this pragma
-decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode (e.g. when Config = (Channel => 0, PRF => PRF_16MHz, Tx_Preamble_Length => PLEN_64, Tx_PAC => PAC_8, Tx_Preamble_Code => 0, Rx_Preamble_Code => 0, Use_Nonstandard_SFD => False, Data_Rate => Data_Rate_110k, PHR_Mode => Standard_Frames, SFD_Timeout => 0, Enable_Smart_Power => False))
+decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode
 decadriver.ads:294:07: warning: no check message justified by this pragma
 decadriver.ads:318:07: warning: no check message justified by this pragma
 decadriver.ads:331:17: info: ceiling priority protocol is respected (CVC4: 1 VC)

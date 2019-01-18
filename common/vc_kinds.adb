@@ -555,7 +555,8 @@ package body VC_Kinds is
                         Labels      =>
                           From_JSON_Labels (Get (Get (V, "labels"))),
                         Value       => Cnt_Value,
-                        Val_Str     => Null_Unbounded_String);
+                        Val_Str     => (Nul => False,
+                                        Str => Null_Unbounded_String));
    end From_JSON;
 
    function From_JSON (V : JSON_Value) return Cntexample_Elt_Lists.List is
@@ -981,7 +982,7 @@ package body VC_Kinds is
       Obj : constant JSON_Value := Create_Object;
    begin
       Set_Field (Obj, "name", C.Name);
-      Set_Field (Obj, "value", C.Val_Str);
+      Set_Field (Obj, "value", C.Val_Str.Str);
       Set_Field (Obj, "kind", To_JSON (C.Kind));
       return Obj;
    end To_JSON;

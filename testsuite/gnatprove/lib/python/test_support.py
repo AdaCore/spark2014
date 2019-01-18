@@ -37,14 +37,15 @@ os.chdir(TESTDIR)
 #  - the text (group 5)
 #
 #  In particular, we separate out the extra_text which starts with a comma or
-#  an opening parenthesis, that introduce additional information about the part
-#  of a property that cannot be proved (", cannot prove bla") or that give
-#  counterexample values ("(e.g. when bla)"), as including these in the text of
-#  the message can lead to bad identification of the message category when a
+#  an opening parenthesis/bracket, that introduce additional information about
+#  the part of a property that cannot be proved (", cannot prove bla"), that
+#  give counterexample values ("(e.g. when bla)"), or that give an explanation
+#  ("[possible explanation: bla]") as including these in the text of the
+#  message can lead to bad identification of the message category when a
 #  variable name coincides with some substrings that are searched in text.
 
 is_msg = re.compile(r"([\w-]*\.ad.?):(\d*):\d*:" +
-                    r" (info|warning|low|medium|high)?(: )?([^(,]*)(.*)?$")
+                    r" (info|warning|low|medium|high)?(: )?([^(,[]*)(.*)?$")
 is_mark = re.compile(r"@(\w*):(\w*)")
 
 

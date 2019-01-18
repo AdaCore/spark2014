@@ -8,7 +8,7 @@ psu_monitoring.adb:98:75: info: range check proved (Interval)
 psu_monitoring.adb:100:75: info: float overflow check proved (Interval)
 psu_monitoring.adb:100:75: medium: range check might fail (e.g. when expanded_lower_threshold = 0.0 and monitor = (config => (monitoring_mode => threshold_based, maximum_deviation => 0.0, others => ?), timer => ?, current_state => reset, next_state => reset)) [possible explanation: subprogram at line 83 should mention monitor in a precondition]
 psu_monitoring.adb:104:75: info: float overflow check proved (Interval)
-psu_monitoring.adb:104:75: medium: range check might fail (e.g. when monitor = (config => (monitoring_mode => mean_based, mean => 0.0, maximum_deviation => 0.0, lower_threshold => 0.0, upper_threshold => 0.0, settling_tolerance_expansion => 0.0, others => ?), timer => ?, current_state => reset, next_state => reset)) [possible explanation: subprogram at line 83 should mention monitor in a precondition]
+psu_monitoring.adb:104:75: medium: range check might fail [possible explanation: subprogram at line 83 should mention monitor in a precondition]
 psu_monitoring.adb:106:75: info: division check proved (CVC4: 1 VC)
 psu_monitoring.adb:106:75: info: float overflow check proved (Interval)
 psu_monitoring.adb:106:75: info: range check proved (Interval)

@@ -6,7 +6,7 @@ private_a.adb:23:22: info: initialization of "Dst" proved
 private_a.adb:23:22: medium: postcondition might fail, cannot prove Dst = Complex.Create (N, 0) (e.g. when Dst = (R => -1, I => 0) and N = 0)
 private_a.adb:30:30: info: initialization of "Dst" proved
 private_a.adb:32:22: info: initialization of "Dst" proved
-private_a.adb:32:22: medium: postcondition might fail, cannot prove Dst = Complex.Create (0, 0) (e.g. when Dst = (R => 0, I => 0))
+private_a.adb:32:22: medium: postcondition might fail, cannot prove Dst = Complex.Create (0, 0)
 private_a.adb:40:22: info: postcondition proved (CVC4: 1 VC)
 private_a.adb:45:12: info: precondition proved (CVC4: 1 VC)
 private_a.adb:45:19: info: initialization of "S" proved

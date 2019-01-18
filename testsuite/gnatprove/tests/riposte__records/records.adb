@@ -423,7 +423,7 @@ is
    is
    begin
       X.The_Pair.A := X.The_Pair.B;
-      pragma Assert (X.The_Pair.A /= X.The_Pair.B);  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (X.The_Pair.A /= X.The_Pair.B);  --  @ASSERT:FAIL
    end Test_E;
 
    procedure Test_F (X: out Optional_Pair)
@@ -501,7 +501,7 @@ is
      with Post => Field_Suppression_On_Computation_Is_Insufficient'Result = True  --  @POSTCONDITION:PASS
    is
    begin
-      pragma Assert (R.Exists);  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (R.Exists);  --  @ASSERT:FAIL
 
       return R.Exists;
    end Field_Suppression_On_Computation_Is_Insufficient;

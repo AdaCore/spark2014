@@ -1,3 +1,3 @@
 arrays.adb:6:04: warning: analyzing unreferenced procedure "Test_L"
 arrays.adb:6:14: warning: subprogram "Test_L" has no effect
-arrays.adb:9:22: medium: assertion might fail (e.g. when A = (others => 0)) [possible explanation: subprogram at line 6 should mention A in a precondition]
+arrays.adb:9:22: medium: assertion might fail [possible explanation: subprogram at line 6 should mention A in a precondition]

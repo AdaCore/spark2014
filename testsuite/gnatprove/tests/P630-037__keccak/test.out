@@ -111,9 +111,9 @@ keccak-keccakf-byte_lanes.adb:76:65: info: range check proved (CVC4: 1 VC), in i
 keccak-keccakf-byte_lanes.adb:79:17: info: range check proved (CVC4: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:79:41: info: initialization of "Remaining_Bytes" proved, in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:80:24: info: initialization of "Word" proved, in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:80:69: medium: overflow check might fail, in instantiation at keccak-keccak_1600.ads:55 (e.g. when Data = (others => 0) and Data'First = 0 and Data'Last = 0 and Offset = 0)
+keccak-keccakf-byte_lanes.adb:80:69: medium: overflow check might fail, in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:80:71: info: initialization of "Offset" proved, in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:80:78: medium: array index check might fail, in instantiation at keccak-keccak_1600.ads:55 (e.g. when Data = (others => 0) and Data'First = 0 and Data'Last = 0)
+keccak-keccakf-byte_lanes.adb:80:78: medium: array index check might fail, in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:80:78: medium: overflow check might fail, in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:80:86: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:80:86: info: range check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55

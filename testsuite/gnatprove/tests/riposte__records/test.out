@@ -92,7 +92,7 @@ records.adb:402:14: info: initialization of "R.The_Pair.A" proved
 records.adb:402:14: info: initialization of "R.The_Pair.B" proved
 records.adb:410:22: medium: assertion might fail, cannot prove X.The_Pair.A = 0 (e.g. when X = (Exists => ?, The_Pair => (A => 1, B => ?))) [possible explanation: subprogram at line 405 should mention X in a precondition]
 records.adb:418:22: medium: assertion might fail, cannot prove X.The_Pair.A = X.The_Pair.B (e.g. when X = (Exists => ?, The_Pair => (A => 0, B => 1))) [possible explanation: subprogram at line 413 should mention X in a precondition]
-records.adb:426:22: medium: assertion might fail, cannot prove X.The_Pair.A /= X.The_Pair.B (e.g. when X = (Exists => ?, The_Pair => (A => 0, B => 0))) [possible explanation: subprogram at line 421 should mention X in a precondition]
+records.adb:426:22: medium: assertion might fail, cannot prove X.The_Pair.A /= X.The_Pair.B [possible explanation: subprogram at line 421 should mention X in a precondition]
 records.adb:429:22: info: initialization of "X.Exists" proved
 records.adb:429:22: info: initialization of "X.The_Pair.A" proved
 records.adb:429:22: info: initialization of "X.The_Pair.B" proved
@@ -108,7 +108,7 @@ records.adb:474:30: info: assertion proved (CVC4: 1 VC)
 records.adb:483:22: medium: postcondition might fail, cannot prove R = R'Old'update (e.g. when R = (Exists => False, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => False, The_Pair => ?) and X = 1)
 records.adb:491:30: info: assertion proved (CVC4: 1 VC)
 records.adb:501:19: info: postcondition proved (CVC4: 2 VC)
-records.adb:504:22: medium: assertion might fail, cannot prove R.Exists (e.g. when R = (Exists => False, The_Pair => (A => 0, B => 0))) [possible explanation: subprogram at line 498 should mention R in a precondition]
+records.adb:504:22: medium: assertion might fail, cannot prove R.Exists [possible explanation: subprogram at line 498 should mention R in a precondition]
 records.adb:514:22: info: postcondition proved (CVC4: 2 VC)
 records.adb:523:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:534:22: medium: assertion might fail, cannot prove F_Of_Pair (Pair'(5, 5))
@@ -177,10 +177,6 @@ counterexample expected for check at records.adb:418
   trace at records.adb:413 --> X = (Exists => False, The_Pair => (A => 0, B => 1))
   trace at records.adb:417 --> X = (Exists => False, The_Pair => (A => 0, B => 1))
   trace at records.adb:418 --> X = (Exists => ?, The_Pair => (A => 0, B => 1))
-counterexample expected for check at records.adb:426
-  trace at records.adb:421 --> X = (Exists => False, The_Pair => (A => 0, B => 0))
-  trace at records.adb:425 --> X = (Exists => False, The_Pair => (A => 0, B => 0))
-  trace at records.adb:426 --> X = (Exists => ?, The_Pair => (A => 0, B => 0))
 counterexample expected for check at records.adb:436
   trace at records.adb:433 --> X = (Exists => True, The_Pair => (A => 5, B => 10))
   trace at records.adb:436 --> X = (Exists => True, The_Pair => ?)
@@ -195,7 +191,3 @@ counterexample expected for check at records.adb:483
   trace at records.adb:488 --> R_Old = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:490 --> R = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:494 --> R = (Exists => False, The_Pair => (A => 1, B => 0))
-counterexample expected for check at records.adb:504
-  trace at records.adb:499 --> R = (Exists => False, The_Pair => (A => 0, B => 0))
-  trace at records.adb:504 --> R = (Exists => False, The_Pair => (A => 0, B => 0))
-  trace at records.adb:506 --> Field_Suppression_On_Computation_Is_Insufficient'Result = False

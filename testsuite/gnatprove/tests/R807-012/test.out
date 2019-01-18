@@ -94,7 +94,7 @@ area_math.adb:278:56: info: index check proved (CVC4: 4 VC)
 area_math.adb:278:75: info: index check proved (CVC4: 4 VC)
 area_math.adb:278:75: info: overflow check proved (CVC4: 2 VC)
 area_math.adb:278:88: medium: loop invariant might fail after first iteration, cannot prove Result.To (Result.Size) < E.To (I + 1) + 1 (e.g. when E = (Max => 0, Size => 0, From => (others => 0), To => (others => 0)) and E.From'First = 0 and E.From'Last = 0 and E.To'First = 0 and E.To'Last = 0 and I = 0 and Result = (Max => ?, Size => 0, From => (others => 0), To => (others => 0)) and Result.From'First = 0 and Result.From'Last = 0 and Result.To'First = 0 and Result.To'Last = 0)
-area_math.adb:278:88: medium: loop invariant might fail in first iteration, cannot prove Result.To (Result.Size) < E.To (I + 1) + 1 (e.g. when E = (Max => 0, Size => 0, From => (others => 0), To => (others => 0)) and E.From'First = 0 and E.From'Last = 0 and E.To'First = 0 and E.To'Last = 0 and I = 0 and Result = (Max => ?, Size => 0, From => (others => 0), To => (others => 0)) and Result.From'First = 0 and Result.From'Last = 0 and Result.To'First = 0 and Result.To'Last = 0)
+area_math.adb:278:88: medium: loop invariant might fail in first iteration, cannot prove Result.To (Result.Size) < E.To (I + 1) + 1
 area_math.adb:278:105: info: index check proved (CVC4: 4 VC)
 area_math.adb:278:122: info: index check proved (CVC4: 4 VC)
 area_math.adb:278:122: info: overflow check proved (CVC4: 2 VC)

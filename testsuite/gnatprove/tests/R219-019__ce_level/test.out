@@ -1,1 +1,1 @@
-rng.ads:12:19: medium: range check might fail (e.g. when buf = (others => 0) and buf'First = 0 and buf'Last = 0)
+rng.ads:12:19: medium: range check might fail

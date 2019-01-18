@@ -1,1 +1,1 @@
-minimal.adb:12:19: medium: assertion might fail, cannot prove C2.Present (e.g. when C2 = (Present => False, Field => ?))
+minimal.adb:12:19: medium: assertion might fail, cannot prove C2.Present

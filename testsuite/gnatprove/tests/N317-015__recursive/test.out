@@ -3,4 +3,4 @@ no_inlining.adb:13:20: info: no contextual analysis of call to recursive subprog
 no_inlining.adb:15:17: info: initialization of "Tmp" proved
 no_inlining.ads:5:30: info: initialization of "Res" proved
 no_inlining.ads:6:14: info: initialization of "Res" proved
-no_inlining.ads:6:14: medium: postcondition might fail, cannot prove Res = true (e.g. when Res = False)
+no_inlining.ads:6:14: medium: postcondition might fail, cannot prove Res = true
