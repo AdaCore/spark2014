@@ -121,13 +121,13 @@ the formal verification tools to determine whether or not a given construct
 is in |SPARK|.
 
 A SPARK_Mode pragma or aspect specification shall only apply to a
-(section of a) library-level package, generic package, subprogram, or
-generic subprogram. If a generic unit contains a SPARK_Mode pragma or
-aspect specification, then this rule also applies to the corresponding
-pragma or aspect specification which implicitly occurs within any
-instance of the generic unit. Except in one case described later
-in this section, this means that instances of such a generic shall only
-be declared at library level.
+(section of a) package, generic package, subprogram, or
+generic subprogram.
+
+A SPARK_Mode of On shall only apply to a (section of a) library-level entity,
+except for the case of SPARK_Mode specifications occurring within generic
+instances. A SPARK_Mode of On applying to a non-library-level entity within a
+generic instance has no effect.
 
 The SPARK_Mode aspect value of an arbitrary section of an arbitrary
 Ada entity or construct is then defined to be the following value
@@ -182,30 +182,18 @@ visible part has a SPARK_Mode of On but whose private part has a SPARK_Mode
 of Off; a package whose visible part has a SPARK_Mode of Auto may also be
 referenced).
 
-Similarly, code where SPARK_Mode is On shall, with some exceptions,
-not enclose code where SPARK_Mode is Off unless the non-SPARK code is
-part of the "completion"
-(using that term imprecisely, because we are including the private
-part of a package as part of its "completion" here) of a SPARK declaration.
-One major exception to this general rule is the (permitted) case of
-a library-level package (or generic package) visible part or private part
-having a SPARK_Mode of On which immediately encloses a declaration for which
-the initial section is explicitly specified to have SPARK_Mode of Off.
-There are also exceptions to this rule (described below) for protected units.
-
 Code where SPARK_Mode is Off shall not enclose code where Spark_Mode is On.
 However, if an instance of a generic unit is enclosed
 by code where SPARK_Mode is Off and if any SPARK_Mode specifications occur
 within the generic unit, then the corresponding SPARK_Mode specifications
 occurring within the instance have no semantic effect. [In particular,
 such an ignored SPARK_Mode specification could not violate the preceding
-"Off shall not enclose On" rule because the Spark_Mode of the
+"Off shall not enclose On" rule because the SPARK_Mode of the
 entire instance is Off. Similarly, such an ignored SPARK_Mode specification
 could not violate the preceding rule that a SPARK_Mode specification
 shall only apply to a (section of a) library-level entity.]
 
-For purposes of both the "Off shall not enclose On" rule and the
-"On shall not enclose non-completion Off" rules just described, the
+For purposes of the "Off shall not enclose On" rule just described, the
 initial section of a child unit is considered to occur immediately
 within either the visible part (for a public child unit) or the private
 part (for a private child unit) of the parent unit. In addition, the private
@@ -219,9 +207,7 @@ a SPARK_Mode configuration pragma which applies only to the specification
 of the rules given above for determining the SPARK_Mode of the first
 section of a child unit.]
 
-All of the above notwithstanding, the interactions between SPARK_Mode
-and protected units follow a slightly different model, not so closely tied
-to syntactic enclosure. Roughly speaking, the rules for a protected
+The rules for a protected
 unit follow from the rules given for other constructs after notionally
 rewriting the protected unit as a package.
 
@@ -260,13 +246,8 @@ a lot like
         end record;
    end Pkg;
 
-which would be legal. The point is that a protected type which is
-in |SPARK| can have protected operation whose declaration is not in |SPARK|
-despite the fact that this violates the usual "On shall not enclose
-non-completion Off" rule. The declaration of the |SPARK| type no longer
-encloses the non-|SPARK| subprogram declaration after this notional rewriting,
-so this case is not considered to be a violation. [No such notional rewriting
-is needed for task units because task entries are not in |SPARK|.]
+which is legal. The point is that a protected type which is
+in |SPARK| can have protected operation whose declaration is not in |SPARK|.
 
 SPARK_Mode is an implementation-defined Ada aspect; it is not (strictly
 speaking) part of the |SPARK| language. It is used to notionally transform
@@ -283,4 +264,3 @@ simplest solution is to specify in your project file::
 and provide a file `spark.adc` which contains::
 
    pragma SPARK_Mode;
-
