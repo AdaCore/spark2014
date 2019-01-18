@@ -1267,16 +1267,14 @@ package body SPARK_Util.Subprograms is
          if F.Kind = Direct_Mapping then
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
             begin
-               --  Global variables accessed by the subprogram
-               if (Is_Object (E)
-                   and then Entity_In_SPARK (E)
-                   and then Invariant_Check_Needed (Etype (E)))
+               --  Global variables accessed by the subprogram are either
+               --  objects or concurrent types.
 
-                  --  Self reference of protected subprograms
-
-                   or else (Is_Type (E) and then Invariant_Check_Needed (E))
-
+               if Invariant_Check_Needed ((if Is_Type (E)
+                                           then E
+                                           else Etype (E)))
                then
                   return True;
                end if;
