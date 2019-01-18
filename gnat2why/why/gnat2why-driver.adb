@@ -158,11 +158,10 @@ package body Gnat2Why.Driver is
    Timing : Time_Token;
    --  Timing of various gnat2why phases
 
-   Translated_Object_Entities : Node_Sets.Set;
-   Translated_Object_Names    : Name_Sets.Set;
-   --  Object entities that have been actually translated to Why; needed to
-   --  avoid repeated declarations in Why for objects appearing in the Global
-   --  contracts (where such repetitions are fine).
+   Translated_Object_Names : Name_Sets.Set;
+   --  Objects not in SPARK but still translated to Why; we get them from the
+   --  Global contracts (where repetitions are fine) and keep track of them to
+   --  translate each of them exactly once.
 
    --------------------------
    -- Complete_Declaration --
@@ -883,7 +882,6 @@ package body Gnat2Why.Driver is
 
       --  Clear global data that is no longer be needed to leave more memory
       --  for solvers.
-      Translated_Object_Entities.Clear;
       Translated_Object_Names.Clear;
    end Translate_CUnit;
 
@@ -944,12 +942,6 @@ package body Gnat2Why.Driver is
                Translate_Type (File, E);
             end if;
 
-            --  Concurrent types may appear as globals in subprograms nested in
-            --  them.
-            if Ekind (E) in E_Protected_Type | E_Task_Type then
-               Translated_Object_Entities.Insert (E);
-            end if;
-
          when Object_Kind =>
 
             --  Ignore discriminals, i.e. objects that occur for discriminants
@@ -958,11 +950,6 @@ package body Gnat2Why.Driver is
             if Is_Discriminal (E) then
                return;
             end if;
-
-            --  Fill the set of translated object entities and do not generate
-            --  a dummy declaration for those.
-
-            Translated_Object_Entities.Insert (E);
 
             --  Variables that are part of a protected object are not
             --  translated separately.
@@ -1068,21 +1055,8 @@ package body Gnat2Why.Driver is
             Reads.Union (Writes);
 
             for G of Reads loop
-               if G.Kind = Direct_Mapping then
-                     declare
-                        Obj : constant Entity_Id := Get_Direct_Mapping_Id (G);
-
-                     begin
-                        Translated_Object_Entities.Insert
-                          (New_Item => Obj,
-                           Position => Unused_Node,
-                           Inserted => Inserted);
-
-                        if Inserted then
-                           Translate_External_Object (Obj);
-                        end if;
-                     end;
-               else pragma Assert (Is_Opaque_For_Proof (G));
+               if G.Kind = Magic_String then
+                  pragma Assert (Is_Opaque_For_Proof (G));
 
                   Translated_Object_Names.Insert
                     (New_Item => G.Name,

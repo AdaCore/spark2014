@@ -47,17 +47,10 @@ package Gnat2Why.Decls is
    --  object.
 
    procedure Translate_External_Object (E : Entity_Name);
-   --  For a "magic string" generate a dummy declaration module which contains
-   --  the type and the variable declaration.
-
-   procedure Translate_External_Object (E : Entity_Id)
-   with Pre => Entity_In_SPARK (E);
-   --  Generate Why declarations for an entity E that is only known to proof
-   --  as a generated Global of some subprogram. The declaration looks same as
-   --  for external objects represented by Entity_Name, just with more precise
-   --  tracability comments, e.g. sloc and preserved casing.
-
-   --  The entity is either a variable which is not in SPARK, or an abstract
+   --  Generate Why declarations for an object E that is only known to proof
+   --  as a generated Global of some subprogram.
+   --
+   --  This object is either a variable which is not in SPARK, or an abstract
    --  state which represents its hidden constituents. It is never a constant,
    --  because those in SPARK are translated elsewhere and those not in SPARK
    --  do not appear in Global for they are considered as without variable

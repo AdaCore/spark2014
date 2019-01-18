@@ -257,38 +257,6 @@ package body Gnat2Why.Decls is
                     Kind => Standalone_Theory);
    end Translate_External_Object;
 
-   procedure Translate_External_Object (E : Entity_Id)
-   is
-      File : constant W_Section_Id := WF_Variables;
---      Var : constant Item_Type := Mk_Item_Of_Entity (E);
---   ??? this doesn't seem to be needed
-
-   begin
-      Open_Theory (File, E_Module (E),
-                   Comment =>
-                     "Module declaring the external object "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & " defined at " & Build_Location_String (Sloc (E))
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      --  We generate a global ref.
-      --  Do not set a location as counterexample values for external objects
-      --  are not meaningful.
-
-      Emit
-        (File,
-         New_Global_Ref_Declaration
-           (Name     => To_Why_Id (E, Local => True),
-            Labels   => Name_Id_Sets.Empty_Set,
-            Location => No_Location,
-            Ref_Type => EW_Private_Type));
-
---      Insert_Item (E, Var);
-
-      Close_Theory (File,
-                    Kind => Standalone_Theory);
-   end Translate_External_Object;
-
    ---------------------------
    -- Translate_Loop_Entity --
    ---------------------------
