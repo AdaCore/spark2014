@@ -130,11 +130,6 @@ package Gnat2Why.Subprograms is
    --  Return Why binders for the parameters of subprogram E.
    --  If Domain is EW_Term also generates binders for E's read effects.
 
-   procedure Add_Dependencies_For_Effects
-     (T : W_Section_Id;
-      E : Entity_Id);
-   --  Adds imports for the globals of a subprogram E in the current theory
-
    procedure Update_Symbol_Table_For_Inherited_Contracts (E : Entity_Id);
    --  The inherited precondition and postcondition for E is expressed wrt the
    --  overridden's subprogram parameters. Make sure these are mapped in the

@@ -337,32 +337,6 @@ package body Gnat2Why.Subprograms is
    --  Emit compatibility axioms between the dispatching version of E and each
    --  visible overriding / inherited versions of E.
 
-   ----------------------------------
-   -- Add_Dependencies_For_Effects --
-   ----------------------------------
-
-   procedure Add_Dependencies_For_Effects
-     (T : W_Section_Id;
-      E : Entity_Id)
-   is
-      Reads  : Flow_Types.Flow_Id_Sets.Set;
-      Writes : Flow_Types.Flow_Id_Sets.Set;
-
-   begin
-      --  Collect global variables potentially read and written
-      Flow_Utility.Get_Proof_Globals (Subprogram      => E,
-                                      Reads           => Reads,
-                                      Writes          => Writes,
-                                      Erase_Constants => True);
-
-      --  Union reads with writes (essentially just ignore the variant)
-      Reads.Union (Writes);
-
-      for N of Reads loop
-         Add_Effect_Import (T, To_Name (N));
-      end loop;
-   end Add_Dependencies_For_Effects;
-
    ----------------------------------------------
    -- Assume_Initial_Condition_Of_Withed_Units --
    ----------------------------------------------
@@ -4903,8 +4877,6 @@ package body Gnat2Why.Subprograms is
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Add_Dependencies_For_Effects (File, E);
-
       declare
          Use_Result_Name : constant Boolean := Ekind (E) = E_Function;
          --  Store the result identifier in Result_Name
@@ -5583,8 +5555,6 @@ package body Gnat2Why.Subprograms is
                           else "")
                    & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Add_Dependencies_For_Effects (File, E);
-
       --  Store an appropriate value for the result identifier in Result_Name.
 
       Result_Name := New_Result_Ident (Type_Of_Node (Etype (E)));
@@ -5766,8 +5736,6 @@ package body Gnat2Why.Subprograms is
                 (E, Logic_Func_Binders, Why_Type, Params);
          begin
             --  Generate a logic function
-
-            Add_Dependencies_For_Effects (File, E);
 
             Emit
               (File,
