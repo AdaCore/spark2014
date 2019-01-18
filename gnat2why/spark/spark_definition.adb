@@ -4486,11 +4486,12 @@ package body SPARK_Definition is
                            --  is not supported yet.
 
                            if Ekind (Part) in Object_Kind
+                             and then Retysp_In_SPARK (Etype (Part))
                              and then Has_Init_By_Proof (Etype (Part))
                            then
                               Mark_Unsupported
                                 ("Part_Of variable with initialization by"
-                                 & " proof", E);
+                                 & " proof", Part);
                            end if;
                         end loop;
                      end if;
