@@ -800,7 +800,8 @@ package body Configuration is
           (Compose (File_System.Install.Share_Why3, "libs"),
            Name => Prover_Name);
       Prover_Obj_Dir : constant String := Compose
-        (Compose (Subdir.Display_Full_Name, "why3_libs"), Name => Prover_Name);
+        (Compose (Phase2_Subdir.Display_Full_Name, "why3_libs"),
+         Name => Prover_Name);
 
       procedure Compile_Lib (Dir, File : String);
       --  compile a Coq library
@@ -1138,13 +1139,16 @@ package body Configuration is
 
       begin
          if not Null_Or_Empty_String (CL_Switches.Subdirs) then
-            Subdir := Filesystem_String (CL_Switches.Subdirs.all) / Subdir;
+            Phase2_Subdir := Filesystem_String (CL_Switches.Subdirs.all) /
+              Phase2_Subdir;
+
          end if;
 
          Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
          Free (GNAT_Version);
          Set_Object_Subdir (Proj_Env.all,
-                            Filesystem_String (Subdir.Display_Full_Name));
+                            Filesystem_String
+                              (Phase2_Subdir.Display_Full_Name));
          Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
          declare
             Sswitches : constant String :=

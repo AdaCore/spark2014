@@ -36,7 +36,7 @@ gnatprove needs to parse the project file to be able to fully interpret
 switches, because the project file may also contain extra switches to
 be passed to gnatprove. But some command line switches influence the
 way the project is parsed. To break out of this circular dependency,
-the command line is parsed twice:
+the command line is parsed several times:
 
  - Once only the actual command line (as in ``Ada.Command_Line``) is
    parsed for some switches that would terminate immediately such as
@@ -45,6 +45,8 @@ the command line is parsed twice:
  - Then the actual command line is concatenated with the extra switches
    in the project file (if any), and the result is parsed again, now
    looking at all switches.
+ - The previous step is repeated for all file-specific switches specified in
+   the project file.
 
 Inside ``configuration.adb``, there is a package ``CL_Switches`` that
 represents command line switches (via command line or project file),
@@ -60,7 +62,7 @@ Generating Globals
 
 Processing of the SPARK source files happens in two phases:
   - in the first phase, information about global side effects of all
-    relevant files is collected;
+    relevant files is collected; this information is stored in ALI files.
   - in the second phase, the above information is used to translate
     the SPARK code into Why.
 
@@ -69,7 +71,7 @@ but the options are different so that the tool knows in which mode to
 operate.
 
 Using gprbuild
---------------
+==============
 
 In fact, gnatprove doesn't know on which files to run ``gnat2why``
 nor where to find the source files. It is best to delegate this task
@@ -85,7 +87,7 @@ holds back the output of ``gnat2why`` until the tool has finished
 completely. This can create some confusion in a debugging context.
 
 Passing options to gnat2why
----------------------------
+===========================
 
 Because gnat2why is essentially a modified gcc and shares e.g. command
 line parsing, it's not easy to add switches so that gnatprove can pass
@@ -96,6 +98,21 @@ the reading and writing of that file.
 
 The switch ``Global_Gen_Mode`` dictates if gnat2why is in Global
 generation mode (first phase) or in translation mode (second phase).
+
+Copying ALI files
+=================
+
+We call gprbuild twice using different settings. Gprbuild has some mechanisms
+to avoid rerunning the compiler (gnat2why in our case), this includes
+timestamps, the ``--complete-output`` mechanism, and rerunning when switches
+have changes (``-s`` switch). Calling gprbuild twice with the same object
+directory would partly break these mechanisms. Therefore we change the object
+dir between those phases, adding the subdir ``phase1`` to the object dir of
+``phase2``.
+
+So that phase 2 can find the ALI files that have been produced in phase 1, we
+copy them from ``<phase2objdir>/phase1`` to ``<phase2objdir>``, after having
+run phase 1 and before running phase 2.
 
 Running the Why3server
 ======================

@@ -55,9 +55,7 @@
 --    . specifying the mode "ALI_Closure" as Dependency_Kind in the first phase
 --      of GNATprove
 --    . calling GPRbuild with the "-s" switch to take into account changes of
---      compilation options. Note that this switch is only relevant in phase 2,
---      because in phase 1 these options are mostly irrelevant (and also
---      option -s would not work because we also pass --no-object-check).
+--      compilation options.
 --    . calling GPRbuild with the "--complete-output" switch to replay the
 --      stored output (both on stdout and stderr) of a previous run on some
 --      unit, when this unit output is up-to-date. This allows to get the same
@@ -110,6 +108,10 @@ procedure Gnatprove with SPARK_Mode is
       Step         : Positive;
       Project_File : String;
       Proj         : Project_Tree);
+
+   procedure Copy_ALI_Files (Proj : Project_Tree);
+   --  To be called between phase 1 and phase2. Copies the ALI files from the
+   --  subdir of the first phase to the one for the second phase.
 
    procedure Generate_SPARK_Report
      (Proj     : Project_Type;
@@ -192,12 +194,13 @@ procedure Gnatprove with SPARK_Mode is
       Del_Succ : Boolean;
    begin
 
-      Args.Append ("--subdirs=" & Subdir.Display_Full_Name);
       Args.Append ("--restricted-to-languages=ada");
 
       if Minimal_Compile then
          Args.Append ("-m");
       end if;
+
+      Args.Append ("-s");
 
       for File of CL_Switches.File_List loop
          Args.Append (File);
@@ -292,6 +295,11 @@ procedure Gnatprove with SPARK_Mode is
    is
       Args     : String_Lists.List;
    begin
+      declare
+         Subd : constant Virtual_File := Phase2_Subdir / Phase1_Subdir;
+      begin
+         Args.Append ("--subdirs=" & Subd.Display_Full_Name);
+      end;
       Args.Append ("--no-object-check");
       Args.Append ("--gnatprove");
 
@@ -369,7 +377,7 @@ procedure Gnatprove with SPARK_Mode is
          Gnatwhy3 : constant String :=
            Compose (File_System.Install.Libexec_Spark_Bin, "gnatwhy3");
       begin
-         Set_Directory  (Subdir.Display_Full_Name);
+         Set_Directory  (Phase2_Subdir.Display_Full_Name);
          if Verbose then
             Ada.Text_IO.Put (Gnatwhy3 & " ");
             for Arg of Args loop
@@ -505,6 +513,81 @@ procedure Gnatprove with SPARK_Mode is
       return Args;
    end Compute_Why3_Args;
 
+   --------------------
+   -- Copy_ALI_Files --
+   --------------------
+
+   procedure Copy_ALI_Files (Proj : Project_Tree) is
+
+      procedure Copy_ALI (Source_Dir : Virtual_File);
+      --  Copy the ALI files from Source_Dir/Phase1 to Source_Dir
+
+      --------------
+      -- Copy_ALI --
+      --------------
+
+      procedure Copy_ALI (Source_Dir : Virtual_File) is
+
+         procedure Copy_File (Directory_Entry : Directory_Entry_Type);
+         --  copy the file in Argument to Source_Dir
+
+         ---------------
+         -- Copy_File --
+         ---------------
+
+         procedure Copy_File (Directory_Entry : Directory_Entry_Type) is
+            use GNAT.OS_Lib;
+            Success : Boolean;
+            pragma Unreferenced (Success);
+         begin
+            Copy_File (Full_Name (Directory_Entry),
+                       Source_Dir.Display_Full_Name,
+                       Success,
+                       Mode => Overwrite,
+                       Preserve => Full);
+         end Copy_File;
+
+         Phase1_Dir : constant Virtual_File := Source_Dir / Phase1_Subdir;
+
+      --  Start of processing for Copy_ALI
+
+      begin
+         if Is_Directory (Phase1_Dir) then
+            Search
+              (Phase1_Dir.Display_Full_Name,
+               Pattern => "*.ali",
+               Filter => (Ordinary_File => True, others => False),
+               Process => Copy_File'Access);
+         end if;
+      end Copy_ALI;
+
+      Iter : Project_Iterator := Start (Proj.Root_Project);
+
+   --  Start of processing for Copy_ALI_Files
+
+   begin
+      while Current (Iter) /= No_Project loop
+         declare
+            Art_Dir : Virtual_File renames Current (Iter).Artifacts_Dir;
+            Lib_Dir : Virtual_File
+            renames Current (Iter).Library_Ali_Directory;
+         begin
+            if Art_Dir /= No_File then
+               Copy_ALI (Art_Dir);
+            end if;
+
+            --  In the case of library projects, there is a separate dir where
+            --  ALI files are copied at the end. As the first phase was done
+            --  with a different subdir, we need to copy those files as well.
+
+            if Lib_Dir /= No_File and then Art_Dir /= Lib_Dir then
+               Copy_ALI (Lib_Dir);
+            end if;
+            Next (Iter);
+         end;
+      end loop;
+   end Copy_ALI_Files;
+
    ------------------
    -- Execute_Step --
    ------------------
@@ -531,6 +614,7 @@ procedure Gnatprove with SPARK_Mode is
             Run_CodePeer (Project_File, Proj, Status);
 
          when GS_Gnat2Why =>
+            Copy_ALI_Files (Proj);
             Flow_Analysis_And_Proof (Project_File, Proj, Status);
 
       end case;
@@ -561,7 +645,7 @@ procedure Gnatprove with SPARK_Mode is
          pragma Unreferenced (Del_Succ);
          Id       : Process_Descriptor;
       begin
-         Args.Append ("-s");
+         Args.Append ("--subdirs=" & Phase2_Subdir.Display_Full_Name);
 
          if IDE_Mode then
             Args.Append ("-d");

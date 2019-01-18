@@ -278,9 +278,16 @@ package Configuration is
 
    Default_Steps : constant Natural := 100;
 
-   Subdir : Virtual_File := Create ("gnatprove");
-   --  The name of the directory in which all work takes place. A directory can
-   --  be prepended to this default value by using the --subdirs switch.
+   Phase1_Subdir : Virtual_File := Create ("phase1");
+   Phase2_Subdir : Virtual_File := Create ("gnatprove");
+   --  The subdir names for the storage of intermediate files (ALI, why3 files,
+   --  etc). This is the subdir of the object dir, which might be further
+   --  modified via the --subdirs switch. Overall, phase 2 will store files in
+   --    <objdir>/<subdirs>/gnatprove
+   --  and phase 1 will store files in
+   --    <objdir>/<subdirs>/gnatprove/phase1
+   --  The fact that the phase 1 dir is a subdir of phase2 makes copying files
+   --  easier later on, and makes cleaning up easier as well.
 
    Proof_Dir : GNAT.Strings.String_Access := null;
    --  The name of the directory in which will be stored Why3 session file and

@@ -1,0 +1,6 @@
+lib.ads:5:14: warning: subprogram "Empty" has no effect
+main.adb:2:11: medium: "X" might not be initialized after elaboration of main program "Main"
+main.adb:6:19: info: assertion proved (CVC4: 1 VC)
+lib.ads:5:14: info: initialization of "X" proved
+main.adb:2:11: medium: "X" might not be initialized after elaboration of main program "Main"
+main.adb:6:19: medium: assertion might fail, cannot prove Lib.X = A (e.g. when A = 1 and X = 0) [possible explanation: call at line 5 should mention X in a postcondition]
