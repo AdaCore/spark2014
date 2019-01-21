@@ -2249,17 +2249,17 @@ package body Flow_Generated_Globals.Partial is
       --  Initialize the workset with constants from the generated globals
       --  ??? better to initialize this when globals are picked from the AST
 
-      for Contr of Contracts loop
-         Seed (Pick_Constants (Contr.Globals.Refined.Proof_Ins));
-         Seed (Pick_Constants (Contr.Globals.Refined.Inputs));
-      end loop;
-
       Seed_Exposed_Constants;
 
       --  However, it is also our responsibility to record calls in the
       --  initialization expressions of constants exposed from the current
       --  compilation unit, i.e. declared in the visible and private parts
       --  of .ads packages.
+
+      for Contr of Contracts loop
+         Seed (Pick_Constants (Contr.Globals.Refined.Proof_Ins));
+         Seed (Pick_Constants (Contr.Globals.Refined.Inputs));
+      end loop;
 
       --  Grow graph
 
