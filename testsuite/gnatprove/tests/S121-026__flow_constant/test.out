@@ -1,0 +1,2 @@
+soc.ads:7:04: low: initialization of constant without variable input "Base" must be mentioned in the Initializes contract of "soc" (SPARK RM 7.1.5(9))
+soc.ads:8:04: info: initialization of "Periph" proved
