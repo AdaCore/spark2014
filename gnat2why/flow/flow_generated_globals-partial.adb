@@ -2128,6 +2128,7 @@ package body Flow_Generated_Globals.Partial is
             --  Get_Variables. For subprograms in predefined units with no
             --  Global contract we assume Global => null, similarly as we do in
             --  Mark_Call.
+            --  ??? this code is duplicated in Has_Variable_Input_Internal
 
             for F of Get_Functions (Expr, Include_Predicates => False) loop
                if not Has_User_Supplied_Globals (F)

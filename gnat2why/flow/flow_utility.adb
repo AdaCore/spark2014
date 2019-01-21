@@ -28,6 +28,7 @@ with Ada.Strings.Maps;
 with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 
 with Errout;                          use Errout;
+with Lib;                             use Lib;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Output;                          use Output;
@@ -3817,7 +3818,7 @@ package body Flow_Utility is
    function Has_Variable_Input_Internal (C : Entity_Id) return Boolean is
       E    : Entity_Id := C;
       Expr : Node_Id;
-      FS   : Flow_Id_Sets.Set;
+      Vars : Flow_Id_Sets.Set;
 
    begin
       --  This routine is mirrored in Direct_Inputs_Of_Constant; any change
@@ -3846,7 +3847,7 @@ package body Flow_Utility is
          return False;
       end if;
 
-      FS := Get_Variables
+      Vars := Get_Variables
         (Expr,
          Scope                => Get_Flow_Scope (E),
          Fold_Functions       => True,
@@ -3855,23 +3856,32 @@ package body Flow_Utility is
       --  constant. This means that there might be some mutual recursion here
       --  (but this should be fine).
 
-      if not FS.Is_Empty then
-         --  If any variable was found then return True
+      if Vars.Is_Empty then
+
+         --  With Global contracts in place, Get_Variables result is trusted
+
+         if GG_Has_Been_Generated then
+            return False;
+
+         --  Without Global contracts we conservatively assume that any
+         --  unannotated function might read a variable.
+
+         else
+            --  ??? this code is duplicated in Direct_Inputs_Of_Constant
+
+            return
+              (for some F of Get_Functions (Expr, Include_Predicates => False)
+                 => not Has_User_Supplied_Globals (F)
+                     and then
+                    not In_Predefined_Unit (F));
+         end if;
+
+      --  If any variable was found then return True
+
+      else
          return True;
       end if;
 
-      if GG_Has_Been_Generated
-        or else Get_Functions (Expr, Include_Predicates => False).Is_Empty
-      then
-         --  If we reach this point then the constant does not have variable
-         --  input.
-         return False;
-      else
-         --  Globals have not yet been computed. If we find any function calls
-         --  we consider the constant to have variable inputs (this is the safe
-         --  thing to do).
-         return True;
-      end if;
    end Has_Variable_Input_Internal;
 
    ----------------
