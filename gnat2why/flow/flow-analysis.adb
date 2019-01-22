@@ -4975,8 +4975,8 @@ package body Flow.Analysis is
         Ekind (FA.Spec_Entity) = E_Package;
 
       procedure Check_Subprogram (E : Entity_Id);
-      --  Inspects globals of subprogram E to detect violations of
-      --  SRM 6.1.4(20).
+      --  Inspects globals of subprogram E to detect violations of SPARK RM
+      --  6.1.4(20).
 
       ----------------------
       -- Check_Subprogram --
@@ -5036,7 +5036,7 @@ package body Flow.Analysis is
                       Classwide  => False,
                       Globals    => Globals);
 
-         --  Check that the elaboration of a library level package does not
+         --  Check that the elaboration of a library-level package does not
          --  call a subprogram or entry having an Input or Proof_In global
          --  marked as constant after elaboration.
 
