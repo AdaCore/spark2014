@@ -437,98 +437,102 @@ package body Flow_Utility is
       return Flow_Id_Sets.Set
    is
    begin
-      case F.Kind is
-         when Direct_Mapping =>
-            declare
-               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+      --  Abstract state is expanded as much as possible using refinement
+      --  recorded in the ALI file.
+      --  ??? if only Part_Of constituents are recorded but not Refined_State,
+      --  we probably still should expand into those constituents + an abstract
+      --  state for those which have not been seen.
 
-            begin
-               --  Expand abstract states as much as possible while respecting
-               --  the SPARK_Mode barrier.
-               if Ekind (E) = E_Abstract_State then
-                  declare
-                     Pkg : constant Entity_Id := Scope (E);
-                     --  Package
-                     pragma Assert (Ekind (Pkg) = E_Package);
+      if Is_Abstract_State (F) then
+         declare
+            State : constant Entity_Name :=
+              (if F.Kind = Direct_Mapping
+               then To_Entity_Name (F.Node)
+               else F.Name);
 
-                     Result : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+            Expanded : Flow_Id_Sets.Set;
 
-                  begin
-                     --  Use the Refined_State aspect, if visible
-                     if Entity_Body_In_SPARK (Pkg) then
+         begin
+            if (F.Kind = Magic_String
+                and then Refinement_Exists (State))
+              or else
+               (F.Kind = Direct_Mapping
+                and then GG_Is_Abstract_State (State)
+                and then Refinement_Exists (State))
+            then
+               for C of Get_Constituents (State) loop
+                  Expanded.Union
+                    (Expand_Abstract_State (Get_Flow_Id (C), Erase_Constants));
+               end loop;
+            else
+               Expanded := Flow_Id_Sets.To_Set (Magic_String_Id (State));
+            end if;
 
-                        --  At this point we know whether the state has a null
-                        --  refinement; if it does, then we ignore it.
-                        if Has_Null_Refinement (E) then
-                           return Flow_Id_Sets.Empty_Set;
-                        else
-                           for C of Iter (Refinement_Constituents (E)) loop
-                              Result.Union
-                                (Expand_Abstract_State
-                                   (Direct_Mapping_Id (C),
-                                    Erase_Constants));
-                           end loop;
+            return Expanded;
+         end;
 
-                           return Result;
-                        end if;
+      --  Other objects are merely converted to the proof view convention
 
-                     --  Pick the Part_Of constituents from the private part
-                     --  of the package and private child packages, but only if
-                     --  they are visible (which is equivalent to being marked
-                     --  as in-SPARK).
+      else
+         case F.Kind is
+            when Direct_Mapping =>
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
-                     else
-                        for C of Iter (Part_Of_Constituents (E)) loop
-                           Result.Union
-                             (Expand_Abstract_State
-                                (Direct_Mapping_Id (C),
-                                 Erase_Constants));
-                        end loop;
+               begin
+                  --  Entities translated as constants in Why3 should not
+                  --  be considered as effects for proof. This includes in
+                  --  particular formal parameters of mode IN.
 
-                     --  There might be more constituents in the package body,
-                     --  but we can't see them. The state itself will represent
-                     --  them.
+                  if Erase_Constants
+                    and then not Gnat2Why.Util.Is_Mutable_In_Why (E)
+                  then
+                     return Flow_Id_Sets.Empty_Set;
 
-                        Result.Insert
-                          (Magic_String_Id (To_Entity_Name (E)));
+                  --  Otherwise the effect is significant for proof, keep it
 
-                        return Result;
-                     end if;
-                  end;
+                  else
+                     --  Entities in SPARK are represented by Entity_Id; those
+                     --  not in SPARK are represented by Entity_Name, because
+                     --  they behave as "blobs".
 
-               --  Entities translated as constants in Why3 should not be
-               --  considered as effects for proof. This includes in particular
-               --  formal parameters of mode IN.
+                     return Flow_Id_Sets.To_Set
+                       (if Entity_In_SPARK (E)
+                        then Change_Variant (F, Normal_Use)
+                        else Magic_String_Id (To_Entity_Name (E)));
+                  end if;
+               end;
 
-               elsif Erase_Constants
-                 and then not Gnat2Why.Util.Is_Mutable_In_Why (E)
-               then
-                  return Flow_Id_Sets.Empty_Set;
+            when Magic_String =>
+               return Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
 
-               --  Otherwise the effect is significant for proof, keep it
+            when Null_Value =>
+               return Flow_Id_Sets.Empty_Set;
 
-               else
-                  --  Entities in SPARK are represented by Entity_Id; those not
-                  --  in SPARK are represented by Entity_Name, because they
-                  --  behave as "blobs".
-
-                  return Flow_Id_Sets.To_Set
-                    (if Entity_In_SPARK (E)
-                     then Change_Variant (F, Normal_Use)
-                     else Magic_String_Id (To_Entity_Name (E)));
-               end if;
-            end;
-
-         when Magic_String =>
-            return Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
-
-         when Null_Value =>
-            return Flow_Id_Sets.Empty_Set;
-
-         when Record_Field | Synthetic_Null_Export =>
-            raise Program_Error;
-      end case;
+            when others =>
+               raise Program_Error;
+         end case;
+      end if;
    end Expand_Abstract_State;
+
+   ----------------------------
+   -- Expand_Abstract_States --
+   ----------------------------
+
+   function Expand_Abstract_States
+     (Vars : Flow_Id_Sets.Set)
+         return Flow_Id_Sets.Set
+   is
+      Expanded : Flow_Id_Sets.Set;
+
+   begin
+      for Var of Vars loop
+         Expanded.Union
+           (Expand_Abstract_State (Var, Erase_Constants => False));
+      end loop;
+
+      return Expanded;
+   end Expand_Abstract_States;
 
    ------------------------
    -- Extensions_Visible --
@@ -1924,14 +1928,18 @@ package body Flow_Utility is
    procedure Get_Proof_Globals (Subprogram      :     Entity_Id;
                                 Reads           : out Flow_Id_Sets.Set;
                                 Writes          : out Flow_Id_Sets.Set;
-                                Erase_Constants :     Boolean)
+                                Erase_Constants :     Boolean;
+                                Scop            :     Flow_Scope :=
+                                  Null_Flow_Scope)
    is
       Globals : Global_Flow_Ids;
 
       S : constant Flow_Scope :=
-        Get_Flow_Scope (if Entity_Body_In_SPARK (Subprogram)
-                        then Get_Body_Entity (Subprogram)
-                        else Subprogram);
+        (if Present (Scop)
+         then Scop
+         else Get_Flow_Scope ((if Entity_Body_In_SPARK (Subprogram)
+                               then Get_Body_Entity (Subprogram)
+                               else Subprogram)));
 
       procedure Expand (Unexpanded :        Flow_Id_Sets.Set;
                         Expanded   : in out Flow_Id_Sets.Set);
@@ -3690,46 +3698,6 @@ package body Flow_Utility is
       end return;
    end Get_Variables_Internal;
 
-   -------------------
-   -- To_Proof_View --
-   -------------------
-
-   function To_Proof_View
-     (Objects : Flow_Id_Sets.Set)
-      return Flow_Id_Sets.Set
-   is
-      Converted : Flow_Id_Sets.Set;
-      --  Flow represents globals known by Entity_Id but not in SPARK as
-      --  Direct_Mapping; for proof they are represented as Magic_String.
-
-   begin
-      for Object of Objects loop
-         case Object.Kind is
-            when Direct_Mapping =>
-               declare
-                  E : constant Entity_Id := Get_Direct_Mapping_Id (Object);
-
-               begin
-                  if Ekind (E) = E_Abstract_State
-                    or else not Entity_In_SPARK (E)
-                  then
-                     Converted.Insert (Magic_String_Id (To_Entity_Name (E)));
-                  else
-                     Converted.Insert (Object);
-                  end if;
-               end;
-
-            when Magic_String =>
-               Converted.Insert (Object);
-
-            when others =>
-               raise Program_Error;
-         end case;
-      end loop;
-
-      return Converted;
-   end To_Proof_View;
-
    -----------------------------
    -- Get_Variables_For_Proof --
    -----------------------------
@@ -3749,7 +3717,9 @@ package body Flow_Utility is
          Quantified_Variables_Introduced => Node_Sets.Empty_Set);
 
    begin
-      return To_Proof_View (Get_Variables_Internal (Expr_N, Ctx));
+      return
+        Expand_Abstract_States
+          (Get_Variables_Internal (Expr_N, Ctx));
    end Get_Variables_For_Proof;
 
    -----------------
@@ -3773,6 +3743,7 @@ package body Flow_Utility is
                          Reads           => Read_Ids,
                          Writes          => Write_Ids,
                          Erase_Constants => True);
+
       return not Read_Ids.Is_Empty or else not Write_Ids.Is_Empty;
    end Has_Proof_Globals;
 

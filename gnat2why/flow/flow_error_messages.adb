@@ -32,6 +32,7 @@ with Common_Containers;         use Common_Containers;
 with Einfo;                     use Einfo;
 with Errout;                    use Errout;
 with Erroutc;                   use Erroutc;
+with Flow_Refinement;           use Flow_Refinement;
 with Flow_Utility;              use Flow_Utility;
 with Gnat2Why.Counter_Examples; use Gnat2Why.Counter_Examples;
 with Gnat2Why.Expr.Loops;
@@ -1392,7 +1393,9 @@ package body Flow_Error_Messages is
                      Get_Proof_Globals (Subprogram      => Proc,
                                         Reads           => Ignore_Vars,
                                         Writes          => Write_Vars,
-                                        Erase_Constants => True);
+                                        Erase_Constants => True,
+                                        Scop            =>
+                                          Get_Flow_Scope (Stmt));
 
                      Iterate_Call (Stmt);
 
@@ -1596,7 +1599,9 @@ package body Flow_Error_Messages is
                      Get_Proof_Globals (Subprogram      => Proc,
                                         Reads           => Read_Vars,
                                         Writes          => Ignore_Vars,
-                                        Erase_Constants => True);
+                                        Erase_Constants => True,
+                                        Scop            =>
+                                          (Ent => Proc, Part => Body_Part));
 
                      --  Include the formal in the variables read/written in
                      --  the subprogram.

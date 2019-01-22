@@ -217,7 +217,9 @@ is
    procedure Get_Proof_Globals (Subprogram      :     Entity_Id;
                                 Reads           : out Flow_Id_Sets.Set;
                                 Writes          : out Flow_Id_Sets.Set;
-                                Erase_Constants :     Boolean)
+                                Erase_Constants :     Boolean;
+                                Scop            :     Flow_Scope :=
+                                  Null_Flow_Scope)
    with Pre  => Ekind (Subprogram) in E_Entry
                                     | E_Function
                                     | E_Procedure
@@ -233,6 +235,12 @@ is
    --  Globals even if they are constants in Why. For subprograms nested in
    --  protected types, which may have an effect on the components of the
    --  protected type, the protected type itself is returned as a global.
+   --
+   --  If the Scop paramter is present, then visibility of Refined_Global will
+   --  be respected; this is needed when the result will be used together with
+   --  the result of Get_Loop_Writes, which itself respects visibility (by the
+   --  way it is implemented). Otherwise, return Refined_Global iff subprogram
+   --  body is in SPARK and Global if only spec is in SPARK.
 
    function Is_Opaque_For_Proof (F : Flow_Id) return Boolean
    with Pre => F.Kind = Magic_String, Ghost;
@@ -371,6 +379,13 @@ is
    --  If F represents abstract state, return the set of all its components.
    --  Otherwise return F. Additionally, remove formal in parameters from the
    --  set if Erase_Constants is true.
+
+   function Expand_Abstract_States
+     (Vars : Flow_Id_Sets.Set)
+      return Flow_Id_Sets.Set;
+   --  Recursively expands abstract states in Vars to their constituents, so
+   --  that all flow-to-proof queries provide consistent view of abstract
+   --  states and their constituent.
 
    subtype Valid_Assignment_Kinds is Node_Kind
      with Static_Predicate =>
@@ -542,24 +557,6 @@ is
    --  declared locally in the loop. Note that if a function returns inside a
    --  loop, the name of the function will be "written to" and will be returned
    --  here.
-
-   function To_Proof_View
-     (Objects : Flow_Id_Sets.Set)
-      return Flow_Id_Sets.Set
-   with Pre  => (for all Object of Objects =>
-                    Is_Entire_Variable (Object)
-                      and then
-                    Object.Variant = Normal_Use),
-        Post => To_Proof_View'Result.Length = Objects.Length
-                   and then
-                (for all Object of To_Proof_View'Result =>
-                    Object.Kind = Direct_Mapping
-                      or else
-                    Is_Opaque_For_Proof (Object));
-   --  Convert abstract states and entities not in SPARK; for flow they might
-   --  be represented with Entity_Id (which helps to deal with visibility),
-   --  but for proof they are opaque and thus are represented with Magic_String
-   --  (just like hidden globals).
 
    function Get_Type
      (F     : Flow_Id;

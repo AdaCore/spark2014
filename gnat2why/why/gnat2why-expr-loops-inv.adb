@@ -26,6 +26,7 @@
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 with Common_Containers;
+with Flow_Refinement;        use Flow_Refinement;
 with Flow_Utility;           use Flow_Utility;
 with Nlists;                 use Nlists;
 with Gnat2Why.Tables;        use Gnat2Why.Tables;
@@ -1236,7 +1237,9 @@ package body Gnat2Why.Expr.Loops.Inv is
          Flow_Utility.Get_Proof_Globals (Subprogram      => Subp,
                                          Reads           => Read_Ids,
                                          Writes          => Write_Ids,
-                                         Erase_Constants => True);
+                                         Erase_Constants => True,
+                                         Scop            =>
+                                           Get_Flow_Scope (Call));
 
          for F of Write_Ids loop
             pragma Assert (F.Kind in Direct_Mapping | Magic_String);

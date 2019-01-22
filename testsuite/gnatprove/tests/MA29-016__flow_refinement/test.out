@@ -4,7 +4,7 @@ fruit-priv_child.adb:21:42: info: overflow check proved (CVC4: 1 VC)
 fruit-priv_child.adb:22:45: info: overflow check proved (CVC4: 1 VC)
 fruit-priv_child.adb:34:18: info: initialization of "Fruit_Salads" proved
 fruit-priv_child.adb:34:31: info: range check proved (CVC4: 1 VC)
-fruit-priv_child.adb:34:31: medium: overflow check might fail [possible explanation: call at line 33 should mention Apples and Oranges and Price_Of_Apple and Price_Of_Orange and Fruit_Salads_Made (for argument Fruit_Salads) and Extra_Cost and Fruit.Fruits in a postcondition]
+fruit-priv_child.adb:34:31: medium: overflow check might fail [possible explanation: call at line 33 should mention Apples and Oranges and Price_Of_Apple and Price_Of_Orange and Fruit_Salads_Made (for argument Fruit_Salads) and Extra_Cost in a postcondition]
 fruit-priv_child.adb:36:18: info: initialization of "Money" proved
 fruit-priv_child.adb:36:24: info: range check proved (CVC4: 1 VC)
 fruit-priv_child.adb:36:24: medium: overflow check might fail [possible explanation: call at line 33 should mention Apples and Price_Of_Apple in a postcondition]
@@ -16,17 +16,17 @@ fruit-priv_child.adb:37:34: medium: overflow check might fail [possible explanat
 fruit-priv_child.adb:41:18: info: initialization of "Money" proved
 fruit-priv_child.ads:21:46: info: initialization of "Profit" proved
 fruit-priv_child.ads:25:04: info: initialization of "Extra_Cost" constituent of "Price_Related_Stuff" proved
-fruit-pub_child.adb:20:30: medium: divide by zero might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Apples_In_Fruit_Salad and Fruit.Apples and Fruit.Fruits and Fruit.Oranges and Fruit.Priv_Child.Price_Related_Stuff in a precondition]
-fruit-pub_child.adb:21:33: medium: divide by zero might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Oranges_In_Fruit_Salad and Fruit.Apples and Fruit.Fruits and Fruit.Oranges and Fruit.Priv_Child.Price_Related_Stuff in a precondition]
-fruit-pub_child.adb:23:30: medium: divide by zero might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Apples_In_Fruit_Salad and Fruit.Apples and Fruit.Fruits and Fruit.Oranges and Fruit.Priv_Child.Price_Related_Stuff in a precondition]
-fruit-pub_child.adb:23:30: medium: range check might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Apples_In_Fruit_Salad and Fruit.Apples and Fruit.Fruits and Fruit.Oranges and Fruit.Priv_Child.Price_Related_Stuff in a precondition]
-fruit-pub_child.adb:25:31: medium: divide by zero might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Oranges_In_Fruit_Salad and Fruit.Apples and Fruit.Fruits and Fruit.Oranges and Fruit.Priv_Child.Price_Related_Stuff in a precondition]
-fruit-pub_child.adb:25:31: medium: range check might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Oranges_In_Fruit_Salad and Fruit.Apples and Fruit.Fruits and Fruit.Oranges and Fruit.Priv_Child.Price_Related_Stuff in a precondition]
+fruit-pub_child.adb:20:30: medium: divide by zero might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Apples_In_Fruit_Salad and Fruit.Apples and Fruit.Oranges and Fruit.Priv_Child.Extra_Cost in a precondition]
+fruit-pub_child.adb:21:33: medium: divide by zero might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Oranges_In_Fruit_Salad and Fruit.Apples and Fruit.Oranges and Fruit.Priv_Child.Extra_Cost in a precondition]
+fruit-pub_child.adb:23:30: medium: divide by zero might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Apples_In_Fruit_Salad and Fruit.Apples and Fruit.Oranges and Fruit.Priv_Child.Extra_Cost in a precondition]
+fruit-pub_child.adb:23:30: medium: range check might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Apples_In_Fruit_Salad and Fruit.Apples and Fruit.Oranges and Fruit.Priv_Child.Extra_Cost in a precondition]
+fruit-pub_child.adb:25:31: medium: divide by zero might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Oranges_In_Fruit_Salad and Fruit.Apples and Fruit.Oranges and Fruit.Priv_Child.Extra_Cost in a precondition]
+fruit-pub_child.adb:25:31: medium: range check might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Oranges_In_Fruit_Salad and Fruit.Apples and Fruit.Oranges and Fruit.Priv_Child.Extra_Cost in a precondition]
 fruit-pub_child.adb:27:07: info: precondition proved (CVC4: 1 VC)
 fruit-pub_child.adb:27:23: info: initialization of "Fruit_Salads_Made" proved
 fruit-pub_child.adb:27:41: info: overflow check proved (CVC4: 1 VC)
 fruit-pub_child.adb:27:41: info: range check proved (CVC4: 1 VC)
-fruit-pub_child.adb:28:07: medium: precondition might fail [possible explanation: call at line 27 should mention Fruit.Fruits in a postcondition]
+fruit-pub_child.adb:28:07: medium: precondition might fail [possible explanation: call at line 27 should mention Price_Of_Apple and Price_Of_Orange and Fruit.Apples and Fruit.Oranges and Fruit.Priv_Child.Extra_Cost in a postcondition]
 fruit-pub_child.adb:28:24: info: initialization of "Fruit_Salads_Made" proved
 fruit-pub_child.adb:28:42: info: overflow check proved (CVC4: 1 VC)
 fruit-pub_child.adb:28:42: info: range check proved (CVC4: 1 VC)
@@ -64,7 +64,7 @@ levels.adb:44:27: medium: "X0" constituent of "Abs_0" must be a Proof_In as it i
 levels.adb:45:27: medium: refined postcondition might fail
 levels.adb:45:42: medium: overflow check might fail
 levels.adb:52:23: info: initialization of "A" proved
-levels.adb:66:15: medium: overflow check might fail [possible explanation: subprogram at line 59 should mention X0 in a precondition]
+levels.adb:66:15: medium: overflow check might fail [possible explanation: subprogram at line 59 should mention X2 and Y2 and X1 and Y1 and X0 in a precondition]
 levels.adb:67:14: medium: overflow check might fail [possible explanation: subprogram at line 59 should mention Y and X0 in a precondition]
 levels.adb:70:23: info: initialization of "A" proved
 levels.adb:71:24: low: unused global "Y0" constituent of "Abs_0"
@@ -78,7 +78,7 @@ levels.adb:127:25: medium: refined postcondition might fail
 levels.adb:127:44: medium: overflow check might fail
 levels.adb:127:61: medium: overflow check might fail
 levels.adb:130:18: medium: overflow check might fail [possible explanation: subprogram at line 125 should mention X1 and X0 in a precondition]
-levels.adb:130:23: medium: overflow check might fail [possible explanation: subprogram at line 125 should mention X1 and X0 in a precondition]
+levels.adb:130:23: medium: overflow check might fail [possible explanation: subprogram at line 125 should mention X2 and Y2 and X1 and X0 in a precondition]
 levels.adb:139:24: info: initialization of "Tmp" proved
 levels.adb:140:15: info: initialization of "X" proved
 levels.adb:140:17: medium: overflow check might fail [possible explanation: call at line 139 should mention Y (for argument Tmp) and X (for argument X) in a postcondition]
@@ -87,7 +87,7 @@ levels.adb:147:25: info: initialization of "A" proved
 levels.adb:147:25: medium: refined postcondition might fail
 levels.adb:147:44: medium: overflow check might fail
 levels.adb:147:70: medium: overflow check might fail
-levels.adb:157:17: medium: overflow check might fail [possible explanation: subprogram at line 153 should mention X0 in a precondition]
+levels.adb:157:17: medium: overflow check might fail [possible explanation: subprogram at line 153 should mention X2 and Y2 and X1 and Y1 and X0 in a precondition]
 levels.ads:2:26: warning: no procedure exists that can initialize abstract state "Levels.Abs_0"
 levels.ads:11:56: medium: overflow check might fail [possible explanation: subprogram at line 11 should mention X0 in a precondition]
 levels.ads:16:21: info: postcondition proved (CVC4: 1 VC)

@@ -3267,7 +3267,8 @@ package body Flow.Control_Flow_Graph is
                end;
             end loop;
 
-            Add_Loop_Writes (Loop_Id, To_Proof_View (Loop_Writes));
+            Add_Loop_Writes
+              (Loop_Id, Expand_Abstract_States (Loop_Writes));
          end;
       end if;
 

@@ -10,7 +10,7 @@ p.adb:11:17: info: initialization of "GN" constituent of "Nested_State" proved
 p.adb:21:19: medium: overflow check might fail [possible explanation: subprogram at line 19 should mention GN in a precondition]
 p.adb:21:25: medium: overflow check might fail (e.g. when GN = Integer'Last) [possible explanation: subprogram at line 19 should mention GN in a precondition]
 p.adb:21:30: medium: overflow check might fail [possible explanation: subprogram at line 19 should mention GN in a precondition]
-p.adb:33:22: medium: assertion might fail, cannot prove G = Nest(Nest.foo) [possible explanation: subprogram at line 30 should mention G in a precondition]
+p.adb:33:22: medium: assertion might fail, cannot prove G = Nest(Nest.foo) [possible explanation: subprogram at line 30 should mention G and GN in a precondition]
 p.adb:34:16: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1) [possible explanation: subprogram at line 30 should mention X and Y in a precondition]
 p.ads:2:26: warning: no procedure exists that can initialize abstract state "P.State"
 p.ads:6:14: info: initialization of "Nest.Nested_State" constituent of "P.State" proved
