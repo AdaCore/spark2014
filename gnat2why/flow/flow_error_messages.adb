@@ -825,9 +825,11 @@ package body Flow_Error_Messages is
       --  Extract all the entire variables corresponding to flow ids in the
       --  expression [Expr].
 
-      function Get_Variables_From_Node (N : Node_Id) return Flow_Id_Sets.Set;
-      --  Return the set of flow ids to consider for the check associated to
-      --  node N.
+      function Get_Variables_From_Node
+        (N   : Node_Id;
+         Tag : VC_Kind) return Flow_Id_Sets.Set;
+      --  Return the set of flow ids to consider for the check of kind Tag
+      --  associated to node N.
 
       function Has_Attribute_Result (N : Node_Id) return Boolean;
       --  Return whether N refers to some attribute Func'Result
@@ -1017,10 +1019,74 @@ package body Flow_Error_Messages is
       -- Get_Variables_From_Node --
       -----------------------------
 
-      function Get_Variables_From_Node (N : Node_Id) return Flow_Id_Sets.Set is
+      function Get_Variables_From_Node
+        (N   : Node_Id;
+         Tag : VC_Kind) return Flow_Id_Sets.Set
+      is
          Vars : Flow_Id_Sets.Set;
       begin
-         if Nkind (N) = N_Assignment_Statement then
+         --  For a precondition check on a call, retrieve the precondition of
+         --  the called subprogram as source for the explanation, and translate
+         --  back variables mentioned in the precondition into actuals.
+
+         if Tag = VC_Precondition
+           and then Nkind (N) in N_Subprogram_Call
+         then
+            Handle_Precondition_Check : declare
+               Subp : constant Entity_Id := SPARK_Atree.Get_Called_Entity (N);
+               Prag : constant Node_Id :=
+                 Get_Pragma (Subp, Pragma_Precondition);
+               Pre  : constant Node_Id :=
+                 (if Present (Prag) then
+                    Expression (First (Pragma_Argument_Associations (Prag)))
+                  else Empty);
+
+               Formal_To_Actual : Flow_Id_Surjection.Map;
+
+               procedure Treat_Param
+                 (Formal : Entity_Id; Actual : Node_Id);
+               --  Fill the mapping formal->actual
+
+               procedure Treat_Param
+                 (Formal : Entity_Id; Actual : Node_Id)
+               is
+                  Var : Entity_Id;
+                  Id  : Flow_Id;
+               begin
+                  if Ekind (Formal) in E_In_Parameter
+                                     | E_In_Out_Parameter
+                  then
+                     Var := SPARK_Atree.Get_Enclosing_Object (Actual);
+
+                     --  We only insert into the mapping when the actual is
+                     --  rooted in a variable. A more elaborate solution would
+                     --  consist in computing all the variables involved in the
+                     --  actual expression.
+
+                     if Present (Var) then
+                        Id := Direct_Mapping_Id (Var);
+
+                        --  Store the mapping formal->actual for possibly
+                        --  replacing the formal by the actual when the
+                        --  formal is mentioned in the precondition.
+
+                        Formal_To_Actual.Insert
+                          (Direct_Mapping_Id (Formal), Id);
+                     end if;
+                  end if;
+               end Treat_Param;
+
+               procedure Iterate_Call is new
+                 SPARK_Atree.Iterate_Call_Parameters (Treat_Param);
+
+            begin
+               if Present (Pre) then
+                  Iterate_Call (N);
+                  Vars := Get_Variables_From_Expr (Pre, Pre, Formal_To_Actual);
+               end if;
+            end Handle_Precondition_Check;
+
+         elsif Nkind (N) = N_Assignment_Statement then
             declare
                --  If the target of the assignment has a pointer dereference,
                --  it does not have an enclosing object. Possibly change that
@@ -1033,7 +1099,17 @@ package body Flow_Error_Messages is
                end if;
             end;
 
+         --  As Get_Variables_For_Proof only apply to expressions, we do not
+         --  try to get an explanation for other cases of procedure calls,
+         --  i.e. when the check is not a precondition.
+
+         elsif Nkind (N) = N_Procedure_Call_Statement then
+            null;
+
          else
+            pragma Assert (Nkind (N) in N_Subexpr
+                           and then Nkind (N) /= N_Procedure_Call_Statement);
+
             Vars := Get_Variables_For_Proof (N, N);
          end if;
 
@@ -1131,13 +1207,13 @@ package body Flow_Error_Messages is
 
    begin
       --  Only attempt explanation when the node associated to the unproved
-      --  check is an expression or an assignment. We have to deal specially
-      --  with procedure calls as N_Procedure_Call_Statement is in N_Subexpr
-      --  (to allow node kinds for function calls and procedure calls to define
-      --  a subtype).
+      --  check is an expression, an assignment or a procedure call (which are
+      --  part of N_Subexpr). When it's a procedure call, only handle the case
+      --  where the VC is a precondition check.
 
       if Nkind (N) not in N_Subexpr | N_Assignment_Statement
-        or else Nkind (N) = N_Procedure_Call_Statement
+        and then (if Nkind (N) = N_Procedure_Call_Statement
+                  then Tag = VC_Precondition)
       then
          return "";
 
@@ -1150,7 +1226,7 @@ package body Flow_Error_Messages is
 
       else
          declare
-            Check_Vars  : Flow_Id_Sets.Set := Get_Variables_From_Node (N);
+            Check_Vars  : Flow_Id_Sets.Set := Get_Variables_From_Node (N, Tag);
             --  Retrieve variables from the node associated to the failed
             --  proof. This set can be reduced during our traversal back in the
             --  control-flow graph, as we bump into assignments that provide a
@@ -1193,9 +1269,19 @@ package body Flow_Error_Messages is
                Check_Vars.Difference (Internal_Vars);
             end;
 
+            --  Nothing to propagate if the set of checked variables is empty
+
+            if Check_Vars.Is_Empty then
+               return "";
+            end if;
+
             --  Start looking for an explanation
 
-            Stmt := Enclosing_Stmt_Or_Prag_Or_Decl (N);
+            if Nkind (N) = N_Procedure_Call_Statement then
+               Stmt := N;
+            else
+               Stmt := Enclosing_Stmt_Or_Prag_Or_Decl (N);
+            end if;
 
             if No (Stmt) then
                return "";

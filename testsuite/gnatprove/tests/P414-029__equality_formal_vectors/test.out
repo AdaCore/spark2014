@@ -52,11 +52,11 @@ names.adb:78:20: medium: precondition might fail [possible explanation: loop at 
 names.adb:78:42: info: initialization of "Ptr" proved
 names.adb:78:42: info: range check proved (CVC4: 1 VC)
 names.adb:82:21: info: cannot unroll loop (too many loop iterations)
-names.adb:83:10: medium: precondition might fail
+names.adb:83:10: medium: precondition might fail [possible explanation: loop at line 82 should mention Char_Table in a loop invariant]
 names.adb:86:22: info: assertion proved (CVC4: 1 VC)
 names.adb:87:22: info: assertion proved (CVC4: 1 VC)
 names.adb:88:22: info: assertion proved (CVC4: 1 VC)
-names.adb:90:07: medium: precondition might fail
+names.adb:90:07: medium: precondition might fail [possible explanation: precondition of subprogram at line 55 should mention Entry_Table]
 names.adb:91:55: info: overflow check proved (CVC4: 1 VC)
 names.adb:91:55: medium: range check might fail [possible explanation: loop at line 82 should mention Char_Table in a loop invariant]
 names.adb:91:59: info: range check proved (CVC4: 1 VC)

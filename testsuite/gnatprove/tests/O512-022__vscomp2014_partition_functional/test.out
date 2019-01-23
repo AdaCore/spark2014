@@ -154,7 +154,7 @@ partition_refinement.adb:152:43: info: initialization of "P_Elem.Last" proved
 partition_refinement.adb:154:28: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:154:43: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:154:56: info: range check proved (CVC4: 1 VC)
-partition_refinement.adb:157:13: medium: precondition might fail
+partition_refinement.adb:157:13: medium: precondition might fail [possible explanation: loop at line 143 should mention P in a loop invariant]
 partition_refinement.adb:157:36: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:157:36: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:157:36: info: initialization of "P_Elem.Last" proved

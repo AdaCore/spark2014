@@ -150,7 +150,7 @@ sorting.adb:147:39: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:147:41: info: initialization of "L" proved
 sorting.adb:147:44: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:147:46: info: initialization of "I" proved
-sorting.adb:148:10: medium: precondition might fail
+sorting.adb:148:10: medium: precondition might fail [possible explanation: loop invariant at line 133 should mention K]
 sorting.adb:148:31: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:148:33: info: initialization of "I" proved
 sorting.adb:148:36: info: initialization of "L" proved

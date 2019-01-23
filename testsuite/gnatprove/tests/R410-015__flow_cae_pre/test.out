@@ -1,1 +1,1 @@
-p.adb:17:10: medium: precondition might fail
+p.adb:17:10: medium: precondition might fail [possible explanation: subprogram at line 15 should mention X in a precondition]

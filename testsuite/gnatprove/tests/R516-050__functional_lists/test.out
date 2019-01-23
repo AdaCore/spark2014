@@ -255,11 +255,15 @@ use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:37
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:38
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:38
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:39
+use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:51
+use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:64
 use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:80
 use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:81
 use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:83
 use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:84
 use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:85
+use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
+use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
 use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
 use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
 use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
