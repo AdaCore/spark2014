@@ -13,7 +13,8 @@ package Parse is pragma SPARK_Mode (On);
    end record;
 
    procedure Parse_Header(Query : Network_DNS_Query;
-                          Result : out Parse_Result_T);
+                          Result : out Parse_Result_T)
+                          with Pre => not Result'Constrained;
    -- The functional behaviour is not specified in the Post. Would be cumbersome
    -- to do. Would it bring additional assurance?
 end;
