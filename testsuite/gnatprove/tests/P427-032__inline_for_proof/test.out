@@ -6,7 +6,7 @@ inline_for_proof.ads:11:14: info: postcondition proved (CVC4: 1 VC)
 inline_for_proof.ads:11:41: info: index check proved (CVC4: 2 VC)
 inline_for_proof.ads:11:52: info: index check proved (CVC4: 2 VC)
 inline_for_proof.ads:15:14: warning: subprogram "P" has no effect
-inline_for_proof.ads:17:14: info: postcondition proved (altergo: 1 VC)
+inline_for_proof.ads:17:14: info: postcondition proved (Z3: 1 VC)
 inline_for_proof.ads:18:43: info: precondition proved (CVC4: 2 VC)
 inline_for_proof.ads:18:56: info: precondition proved (CVC4: 2 VC)
 inline_for_proof.ads:22:14: info: postcondition proved (CVC4: 1 VC)
