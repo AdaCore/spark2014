@@ -541,7 +541,9 @@ package Gnat2Why.Util is
 
    function Get_Graph_Closure
      (Map  : Node_Graphs.Map;
-      From : Node_Sets.Set) return Node_Sets.Set;
+      From : Node_Sets.Set) return Node_Sets.Set
+   with Post => Node_Sets.Is_Subset (Subset => From,
+                                     Of_Set => Get_Graph_Closure'Result);
    --  @param Map the graph
    --  @param From the node to start from
    --  @return the set of nodes reachable from the node From in the graph Map

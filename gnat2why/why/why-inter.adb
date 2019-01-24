@@ -569,12 +569,9 @@ package body Why.Inter is
 
          when VC_Generation_Theory =>
             Add_Definition_Imports;
-            declare
-               NS : Node_Sets.Set := Compute_Ada_Node_Set (S);
-            begin
-               NS.Union (Get_Graph_Closure (Entity_Dependencies, NS));
-               Add_Axiom_Imports (NS);
-            end;
+            Add_Axiom_Imports
+              (Get_Graph_Closure (Map  => Entity_Dependencies,
+                                  From => Compute_Ada_Node_Set (S)));
       end case;
 
       Why_Sections (P).Theories.Append (+Why_Sections (P).Cur_Theory);
