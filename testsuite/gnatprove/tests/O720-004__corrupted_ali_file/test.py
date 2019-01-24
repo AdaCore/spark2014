@@ -4,7 +4,8 @@ import time
 
 #this test corrupts an ALI file and checks that gnatprove detects the issue.
 
-target_ali = os.path.join("gnatprove", "test.ali")
+target_ali = os.path.join("gnatprove", "phase1", "test.ali")
+target_ali2 = os.path.join("gnatprove", "test.ali")
 
 def truncate_four_lines(a):
     with open(a,"r") as f:
@@ -15,6 +16,5 @@ def truncate_four_lines(a):
             f.write(line)
 
 prove_all()
-sleep(4)
 truncate_four_lines(target_ali)
 prove_all()

@@ -4,9 +4,9 @@ from test_support import *
 prove_all(opt=["-u", "foo.adb"])
 
 # Then we transform it into something that looks like 15.0.2
-with open(os.path.join("gnatprove", "foo.ali"), "r") as src:
+with open(os.path.join("gnatprove", "phase1", "foo.ali"), "r") as src:
     lines = src.read().splitlines()
-with open(os.path.join("gnatprove", "foo.ali"), "w") as dst:
+with open(os.path.join("gnatprove", "phase1", "foo.ali"), "w") as dst:
     for l in lines:
         if l.startswith("QQ SPARKVERSION"):
             break
