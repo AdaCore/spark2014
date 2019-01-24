@@ -1105,7 +1105,7 @@ package body Flow_Error_Messages is
          --  i.e. when the check is not a precondition.
 
          elsif Nkind (N) = N_Procedure_Call_Statement then
-            null;
+            pragma Assert (Tag /= VC_Precondition);
 
          else
             pragma Assert (Nkind (N) in N_Subexpr
