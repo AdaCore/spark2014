@@ -127,7 +127,8 @@ package Why.Inter is
    function Loop_Exception_Name
      (E     : Entity_Id;
       Local : Boolean := False)
-      return W_Name_Id;
+      return W_Name_Id
+   with Pre => Ekind (E) = E_Loop;
    --  Transform a loop entity into a name for a Why exception
 
    --  A given subprogram declaration in SPARK may be translated into multiple
