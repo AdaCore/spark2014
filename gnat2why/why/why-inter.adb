@@ -267,19 +267,6 @@ package body Why.Inter is
       return SS.S;
    end Compute_Module_Set;
 
-   --------------------------
-   -- Add_Extra_Dependency --
-   --------------------------
-
-   procedure Add_Extra_Dependency
-     (Defined_Entity : Entity_Id;
-      New_Dependency : Entity_Id) is
-   begin
-      Add_To_Graph (Map  => Entity_Dependencies,
-                    From => Defined_Entity,
-                    To   => New_Dependency);
-   end Add_Extra_Dependency;
-
    ------------------------
    -- Add_Use_For_Entity --
    ------------------------

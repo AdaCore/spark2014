@@ -69,11 +69,6 @@ package Why.Inter is
    --  defined by the current theory, which is used to complete the graph
    --  of dependencies for this entity.
 
-   procedure Add_Extra_Dependency
-     (Defined_Entity : Entity_Id;
-      New_Dependency : Entity_Id);
-   --  Add an extra dependency New_Dependency for entity Defined_Entity
-
    procedure Discard_Theory (P : W_Section_Id);
    --  Remove the current theory from P
 
