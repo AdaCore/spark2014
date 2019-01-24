@@ -143,6 +143,10 @@ package body VC_Kinds is
          when Unused
             | Unused_Initial_Value          => "563",
 
+         --  CWE-1164: Irrelevant Code
+
+         when Ineffective                   => "1164",
+
          when Aliasing
             | Depends_Null
             | Depends_Missing
@@ -154,7 +158,6 @@ package body VC_Kinds is
             | Hidden_Unexposed_State
             | Illegal_Update
             | Impossible_To_Initialize_State
-            | Ineffective
             | Initializes_Wrong
             | Inout_Only_Read
             | Missing_Return
