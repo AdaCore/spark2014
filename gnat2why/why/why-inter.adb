@@ -432,11 +432,26 @@ package body Why.Inter is
       S : constant Why_Node_Sets.Set :=
         Compute_Module_Set (+(Why_Sections (P).Cur_Theory));
 
-      function Is_Relevant_Node_For_Imports
-        (N             : Node_Id;
-         Filter_Entity : Node_Id := Empty) return Boolean;
-      --  Returns True if N is relevant for theory imports. Filter_Entity is a
-      --  node that should not be considered in these imports.
+      function Is_Relevant_For_Imports
+        (N : Node_Or_Entity_Id)
+         return Boolean
+      with Pre => (if Present (N)
+                   then (if Nkind (N) in N_Entity
+                         then Ekind (N) /= E_Void
+                           and then
+                             (if Is_Full_View (N)
+                              then Present (Partial_View (N)))
+                           and then
+                             (if Ekind (N) = E_Loop_Parameter
+                              then not Is_Quantified_Loop_Param (N))
+                         else Nkind (N) = N_Aggregate
+                           and then Is_Array_Type (Etype (N))));
+      --  Returns True if N is relevant for theory imports
+      --
+      --  We need to consider entities and some non-entities such as string
+      --  literals. We do *not* consider its Full_View. Loop parameters are a
+      --  bit special, we want to deal with them only if they are from loop,
+      --  but not from a quantifier.
 
       procedure Add_Definition_Imports
         (Filter_Module : W_Module_Id := Why_Empty);
@@ -479,30 +494,14 @@ package body Why.Inter is
          end loop;
       end Add_Definition_Imports;
 
-      ----------------------------------
-      -- Is_Relevant_Node_For_Imports --
-      ----------------------------------
+      -----------------------------
+      -- Is_Relevant_For_Imports --
+      -----------------------------
 
-      --  Here we need to consider entities and some non-entities such as
-      --  string literals. We do *not* consider the Filter_Entity, nor its
-      --  Full_View. Loop parameters are a bit special, we want to deal with
-      --  them only if they are from loop, but not from a quantifier.
-
-      function Is_Relevant_Node_For_Imports
-        (N             : Node_Id;
-         Filter_Entity : Node_Id := Empty) return Boolean is
-      begin
-         return N /= Filter_Entity
-           and then
-             (if Nkind (N) in N_Entity then Ekind (N) /= E_Void)
-           and then
-             (if Nkind (N) in N_Entity and then Is_Full_View (N) then
-                Partial_View (N) /= Filter_Entity)
-           and then
-             (if Nkind (N) in N_Entity
-                and then Ekind (N) = E_Loop_Parameter
-              then not Is_Quantified_Loop_Param (N));
-      end Is_Relevant_Node_For_Imports;
+      function Is_Relevant_For_Imports
+        (N : Node_Or_Entity_Id)
+         return Boolean
+         renames Present;
 
       -------------------------
       -- Record_Dependencies --
@@ -511,7 +510,7 @@ package body Why.Inter is
       procedure Record_Dependencies (Defined_Entity : Entity_Id) is
       begin
          for M of S loop
-            if Is_Relevant_Node_For_Imports (Get_Ada_Node (M)) then
+            if Is_Relevant_For_Imports (Get_Ada_Node (M)) then
                Add_To_Graph (Entity_Dependencies,
                              Defined_Entity,
                              Get_Ada_Node (M));
