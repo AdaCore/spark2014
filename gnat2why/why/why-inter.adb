@@ -581,15 +581,6 @@ package body Why.Inter is
       Why_Sections (P).Cur_Theory := Why_Empty;
    end Close_Theory;
 
-   --------------------
-   -- Discard_Theory --
-   --------------------
-
-   procedure Discard_Theory (P : W_Section_Id) is
-   begin
-      Why_Sections (P).Cur_Theory := Why_Empty;
-   end Discard_Theory;
-
    ---------------------
    -- Dispatch_Entity --
    ---------------------

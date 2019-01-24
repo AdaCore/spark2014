@@ -71,9 +71,6 @@ package Why.Inter is
    --  defined by the current theory, which is used to complete the graph
    --  of dependencies for this entity.
 
-   procedure Discard_Theory (P : W_Section_Id);
-   --  Remove the current theory from P
-
    procedure Open_Theory
      (P       : W_Section_Id;
       Module  : W_Module_Id;
