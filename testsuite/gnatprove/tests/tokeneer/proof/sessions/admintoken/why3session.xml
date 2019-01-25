@@ -3,7 +3,12 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
 <prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
-<file name="../../../gnatprove/admintoken.mlw">
+<file >
+<path name=".."/>
+<path name=".."/>
+<path name=".."/>
+<path name="gnatprove"/>
+<path name="admintoken.mlw"/>
 <theory name="Admintoken__package_def" proved="true">
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
@@ -65,10 +70,10 @@
   <proof prover="0"><result status="valid" steps="30"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="unreachable point">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="677"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="628"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="unreachable point">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="791"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="760"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -77,7 +82,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="22"/></proof>
+  <proof prover="0"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="20"/></proof>
@@ -233,13 +238,13 @@
  <goal name="WP_parameter def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="98"/></proof>
+  <proof prover="0"><result status="valid" steps="95"/></proof>
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="84"/></proof>
+  <proof prover="0"><result status="valid" steps="64"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="61"/></proof>
+  <proof prover="0"><result status="valid" steps="59"/></proof>
   </goal>
  </transf>
  </goal>
