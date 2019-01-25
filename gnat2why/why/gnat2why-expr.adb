@@ -1471,8 +1471,7 @@ package body Gnat2Why.Expr is
       Assumes : W_Prog_Id := +Void;
    begin
       for N of Include loop
-         if Present (N)
-           and then Nkind (N) in N_Entity
+         if Nkind (N) in N_Entity
            and then
              ((Ekind (N) = E_Constant
                and then not Has_Variable_Input (N)

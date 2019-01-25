@@ -28,7 +28,6 @@ with Flow_Types;                 use Flow_Types;
 with Namet;                      use Namet;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Snames;                     use Snames;
-with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;

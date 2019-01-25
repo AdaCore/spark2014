@@ -26,6 +26,7 @@
 with Ada.Containers.Ordered_Sets;
 with Common_Containers;    use Common_Containers;
 with Gnat2Why.Util;        use Gnat2Why.Util;
+with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util.Types;     use SPARK_Util.Types;
 with Types;                use Types;
@@ -58,7 +59,8 @@ package Why.Inter is
    --  For a given Why node, compute the required modules, to be included to
    --  make this Why node a valid node.
 
-   function Compute_Ada_Node_Set (W : Why_Node_Id) return Node_Sets.Set;
+   function Compute_Ada_Node_Set (W : Why_Node_Id) return Node_Sets.Set
+   with Post => (for all N of Compute_Ada_Node_Set'Result => Present (N));
 
    procedure Close_Theory
      (P              : W_Section_Id;
