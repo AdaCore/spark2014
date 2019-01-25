@@ -1184,7 +1184,7 @@ my_ordered_sets.adb:78:35: info: initialization of private part of "L" proved
 my_ordered_sets.adb:81:21: info: initialization of private part of "L" proved
 my_ordered_sets.adb:82:20: info: initialization of private part of "L" proved
 my_ordered_sets.adb:84:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:85:07: medium: precondition might fail
+my_ordered_sets.adb:85:07: medium: precondition might fail [possible explanation: call at line 82 should mention Container (for argument L) in a postcondition]
 my_ordered_sets.adb:85:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:85:18: info: initialization of "C.Node" proved
 my_ordered_sets.adb:86:22: info: assertion proved (Z3: 1 VC)
