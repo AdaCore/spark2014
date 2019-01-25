@@ -1,0 +1,2 @@
+main.adb:7:41: medium: precondition might fail (e.g. when Terminated = False) [possible explanation: subprogram at line 3 should mention Ada.Task_Identification.Tasking_State in a precondition]
+main.adb:8:41: medium: precondition might fail [possible explanation: subprogram at line 3 should mention Ada.Task_Identification.Tasking_State in a precondition]
