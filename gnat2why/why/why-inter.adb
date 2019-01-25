@@ -510,11 +510,16 @@ package body Why.Inter is
       procedure Record_Dependencies (Defined_Entity : Entity_Id) is
       begin
          for M of S loop
-            if Is_Relevant_For_Imports (Get_Ada_Node (M)) then
-               Add_To_Graph (Entity_Dependencies,
-                             Defined_Entity,
-                             Get_Ada_Node (M));
-            end if;
+            declare
+               Ada_Node : constant Node_Id := Get_Ada_Node (M);
+
+            begin
+               if Is_Relevant_For_Imports (Ada_Node) then
+                  Add_To_Graph (Entity_Dependencies,
+                                Defined_Entity,
+                                Ada_Node);
+               end if;
+            end;
          end loop;
       end Record_Dependencies;
 
