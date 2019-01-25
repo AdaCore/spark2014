@@ -8,7 +8,7 @@ package Amortized_Queue is pragma SPARK_Mode (On);
    subtype Val is Integer range -2 ** 31 .. 2 ** 31 - 1;
 
    package My_Vectors is new Ada.Containers.Formal_Vectors
-     (Index, Val, True);
+     (Index, Val);
    use My_Vectors;
 
    function "&" (Left, Right : Vector) return Vector with

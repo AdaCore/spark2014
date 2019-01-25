@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Vectors;
+with Ada.Containers.Formal_Indefinite_Vectors;
 
 generic
    Capacity : Ada.Containers.Count_Type;
@@ -22,9 +22,11 @@ package Aida.Strings.Generic_Immutable_Unbounded_String with SPARK_Mode is
 
 private
 
-   package Char_Vectors is new Ada.Containers.Formal_Vectors (Index_Type   => Positive,
-                                                              Element_Type => Character,
-                                                              Bounded      => False);
+   package Char_Vectors is new Ada.Containers.Formal_Indefinite_Vectors
+     (Index_Type                   => Positive,
+      Element_Type                 => Character,
+      Bounded                      => False,
+      Max_Size_In_Storage_Elements => Character'Size);
 
    type T is limited
       record

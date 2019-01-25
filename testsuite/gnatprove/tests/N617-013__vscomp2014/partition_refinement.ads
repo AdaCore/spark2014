@@ -19,8 +19,7 @@ is
    type Partition_Index is range 0 .. 10_000;
    package Partitions is new
      Formal_Vectors (Index_Type   => Partition_Index,
-                     Element_Type => Interval,
-                     Bounded      => True);
+                     Element_Type => Interval);
    subtype Partition is Partitions.Vector;
    use Partitions;
 

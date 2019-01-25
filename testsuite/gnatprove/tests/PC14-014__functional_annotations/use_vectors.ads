@@ -1,5 +1,5 @@
 pragma Ada_2012;
-with Ada.Containers.Formal_Vectors;
+with Ada.Containers.Formal_Indefinite_Vectors;
 with Ada.Containers; use Ada.Containers;
 
 package Use_Vectors with SPARK_Mode is
@@ -20,10 +20,11 @@ package Use_Vectors with SPARK_Mode is
    subtype Index_Type is Integer range Fst .. Lst;
 
    type Element_Type is new Integer;
-   package My_Vectors is new Ada.Containers.Formal_Vectors
+   package My_Vectors is new Ada.Containers.Formal_Indefinite_Vectors
        (Index_Type   => Index_Type,
         Element_Type => Element_Type,
-        Bounded      => False);
+        Bounded      => False,
+        Max_Size_In_Storage_Elements => Element_Type'Size);
 
    use My_Vectors;
    use My_Vectors.Formal_Model;

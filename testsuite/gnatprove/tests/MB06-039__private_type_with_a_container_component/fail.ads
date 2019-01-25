@@ -11,7 +11,7 @@ private
 
    Max : constant := 3;
    subtype T is integer range 1 .. Max;
-   package My_Lists is new Ada.Containers.Formal_Vectors (T, Integer, True);
+   package My_Lists is new Ada.Containers.Formal_Vectors (T, Integer);
    subtype List is My_Lists.Vector (Max);
 
    type X is record

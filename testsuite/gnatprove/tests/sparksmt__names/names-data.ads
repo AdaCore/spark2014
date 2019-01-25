@@ -22,7 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;                use Ada.Containers;
-with Ada.Containers.Formal_Vectors;
+with Ada.Containers.Formal_Indefinite_Vectors;
 
 private package Names.Data with
    SPARK_Mode
@@ -51,10 +51,11 @@ is
    function Eq (A, B : Character) return Boolean is (A = B);
    --  Workaround for P414-029
 
-   package Char_Tables is new Ada.Containers.Formal_Vectors
+   package Char_Tables is new Ada.Containers.Formal_Indefinite_Vectors
      (Index_Type   => Char_Table_Index,
       Element_Type => Character,
-      Bounded      => False);
+      Bounded      => False,
+      Max_Size_In_Storage_Elements => Character'Size);
 
    ------------------
    -- Entry_Tables --
@@ -64,14 +65,16 @@ is
       Table_Index : Char_Table_Index;
       Length      : Positive;
       Next_Hash   : Name_Id;
-   end record;
+   end record
+     with Size => 96;
 
    function Eq (A, B : Name_Entry) return Boolean is (A = B);
    --  Workaround for P414-029
 
-   package Entry_Tables is new Ada.Containers.Formal_Vectors
+   package Entry_Tables is new Ada.Containers.Formal_Indefinite_Vectors
      (Index_Type   => Valid_Name_Id,
       Element_Type => Name_Entry,
-      Bounded      => False);
+      Bounded      => False,
+      Max_Size_In_Storage_Elements => Name_Entry'Size);
 
 end Names.Data;

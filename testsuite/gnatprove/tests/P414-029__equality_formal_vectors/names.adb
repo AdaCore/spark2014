@@ -1,7 +1,7 @@
 with Ada.Containers;   use Ada.Containers;
 with Ada.Strings.Hash;
 
-with Ada.Containers.Formal_Vectors;
+with Ada.Containers.Formal_Indefinite_Vectors;
 
 package body Names with
    SPARK_Mode
@@ -24,10 +24,11 @@ is
 
    type Char_Table_Index is range 0 .. 2 ** 31 - 2;
 
-   package Char_Tables is new Ada.Containers.Formal_Vectors
+   package Char_Tables is new Ada.Containers.Formal_Indefinite_Vectors
      (Index_Type   => Char_Table_Index,
       Element_Type => Character,
-      Bounded      => False);
+      Bounded      => False,
+      Max_Size_In_Storage_Elements => Character'Size);
    use Char_Tables;
 
    Char_Table  : Char_Tables.Vector (1024);
@@ -40,10 +41,11 @@ is
       Next_Hash   : Name_Id;
    end record;
 
-   package Entry_Tables is new Ada.Containers.Formal_Vectors
+   package Entry_Tables is new Ada.Containers.Formal_Indefinite_Vectors
      (Index_Type   => Valid_Name_Id,
       Element_Type => Name_Entry,
-      Bounded      => False);
+      Bounded      => False,
+      Max_Size_In_Storage_Elements => Name_Entry'Size);
    use Entry_Tables;
 
    Entry_Table : Entry_Tables.Vector (128);

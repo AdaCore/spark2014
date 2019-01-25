@@ -7,7 +7,7 @@ package P is pragma SPARK_Mode (On);
    type Index_Type is new Integer range 1 .. 100;
 
    package My_Vectors is new Ada.Containers.Formal_Vectors
-     (Index_Type, Element_Type, True);
+     (Index_Type, Element_Type);
    use My_Vectors; use Formal_Model;
 
    procedure Nearly_Identity_1 (L : in out Vector; I : Extended_Index) with
