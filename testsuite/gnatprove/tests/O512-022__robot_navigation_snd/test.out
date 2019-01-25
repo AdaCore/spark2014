@@ -23,7 +23,7 @@ algorithm.adb:84:07: info: cannot unroll loop (too many loop iterations)
 algorithm.adb:87:44: info: function contract not available for proof ("alDiff" might not return)
 algorithm.adb:92:65: info: division check proved (CVC4: 1 VC)
 algorithm.adb:92:65: info: float overflow check proved (Interval)
-algorithm.adb:108:44: medium: precondition might fail [possible explanation: subprogram at line 73 should mention forwardLength and width in a precondition]
+algorithm.adb:108:44: medium: precondition might fail
 algorithm.adb:108:64: info: division check proved (CVC4: 1 VC)
 algorithm.adb:108:64: info: float overflow check proved (Interval)
 algorithm.adb:109:49: medium: divide by zero might fail [possible explanation: loop at line 84 should mention deltaAngle in a loop invariant]

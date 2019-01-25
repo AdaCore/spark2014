@@ -175,7 +175,7 @@ floating_point.adb:327:20: info: float overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:327:24: info: float overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:328:22: info: initialization of "Res" proved
 floating_point.adb:328:22: medium: assertion might fail, cannot prove Res
-floating_point.adb:338:14: medium: precondition might fail [possible explanation: subprogram at line 331 should mention X and Y in a precondition]
+floating_point.adb:338:14: medium: precondition might fail
 floating_point.adb:338:22: info: float overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:338:26: info: float overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:338:30: info: float overflow check proved (Z3_noquant: 1 VC)

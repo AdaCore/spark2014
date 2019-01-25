@@ -1721,7 +1721,7 @@ tcp_dns_package.ads:45:23: info: range check proved (CVC4: 2 VC)
 udp_dns_package.ads:47:23: info: range check proved (CVC4: 2 VC)
 zone_file_io.adb:50:07: warning: initialization of "CurrentLine" has no effect
 zone_file_io.adb:52:07: warning: initialization of "LastPos" has no effect
-zone_file_io.adb:107:20: medium: precondition might fail
+zone_file_io.adb:107:20: medium: precondition might fail [possible explanation: subprogram at line 46 should mention ZoneFile in a precondition]
 zone_file_io.adb:111:20: info: initialization of "LineCount" proved
 zone_file_io.adb:113:13: info: initialization of "Success" proved
 zone_file_io.adb:114:23: info: initialization of "LastPos" proved
@@ -1956,7 +1956,7 @@ zone_file_io.adb:399:20: info: initialization of "HaveSOARecord" proved
 zone_file_io.adb:399:38: info: initialization of "RRCtr" proved
 zone_file_io.adb:401:23: warning: statement has no effect
 zone_file_io.adb:402:20: info: initialization of "LineTooLong" proved
-zone_file_io.adb:404:26: medium: precondition might fail
+zone_file_io.adb:404:26: medium: precondition might fail [possible explanation: loop at line 113 should mention ZoneFile in a loop invariant]
 zone_file_io.adb:409:16: info: initialization of "LastPos" proved
 zone_file_io.adb:410:20: info: range check proved (CVC4: 2 VC)
 zone_file_io.adb:410:39: info: initialization of "LastPos" proved
