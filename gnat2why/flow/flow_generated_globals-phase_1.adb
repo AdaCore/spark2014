@@ -311,7 +311,8 @@ package body Flow_Generated_Globals.Phase_1 is
       begin
          for E of Objects loop
             if not Is_Heap_Variable (E)
-                 and then Is_Ghost_Entity (E)
+              and then Is_Library_Level_Entity (E)
+              and then Is_Ghost_Entity (E)
             then
                Ghost_Entities.Include (E);
             end if;
