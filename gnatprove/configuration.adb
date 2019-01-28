@@ -224,7 +224,7 @@ package body Configuration is
                                          Fn   : String)
    is
       File_VF : constant Virtual_File :=
-        Create_From_Base (Filesystem_String (Fn));
+        Tree.Create (Filesystem_String (Fn));
       Info    : constant File_Info := Tree.Info (File_VF);
    begin
       if Project (Info) = No_Project then
@@ -2011,7 +2011,7 @@ package body Configuration is
       for Cursor in CL_Switches.File_List.Iterate loop
          declare
             File_VF : constant Virtual_File :=
-              Create_From_Base (Filesystem_String (Element (Cursor)));
+              Tree.Create (Filesystem_String (Element (Cursor)));
             Info    : constant File_Info := Tree.Info (File_VF);
          begin
             case Unit_Part (Info) is
@@ -2050,10 +2050,10 @@ package body Configuration is
                        (if Find_Dot = 0 then Sep_Name
                         else Sep_Name (Sep_Name'First .. Find_Dot - 1));
                      Other_VF : constant Virtual_File :=
-                       Create_From_Base (Ptype.File_From_Unit
-                                           (U_Name,
-                                            Unit_Body,
-                                            "Ada"));
+                       Tree.Create (Ptype.File_From_Unit
+                                    (U_Name,
+                                       Unit_Body,
+                                       "Ada"));
                   begin
                      if Is_Regular_File (Other_VF) then
                         CL_Switches.File_List.Replace_Element
