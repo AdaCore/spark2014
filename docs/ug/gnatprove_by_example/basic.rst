@@ -29,7 +29,8 @@ check failure on ``X + 1``:
 
 The counterexample displayed tells us that ``Increment`` could be called on
 value ``Integer'Last`` for parameter ``X``, which would cause the increment to
-raise a run-time error. One way to eliminate this vulnerability is to add a
+raise a run-time error. As suggested by the possible explanation in the message
+issued by |GNATprove|, one way to eliminate this vulnerability is to add a
 precondition to ``Increment`` specifying that ``X`` should be less than
 ``Integer'Last`` when calling the procedure:
 
@@ -100,7 +101,8 @@ by the call to ``Increment_Guarded`` on line 15, and the contract of
 ``Increment_Guarded`` does not say anything about the possible values of ``X``
 on exit.
 
-Thus, a postcondition like the one on ``Increment_Full`` is needed so that
+As suggested by the possible explanation in the message issued by |GNATprove|,
+a postcondition like the one on ``Increment_Full`` is needed so that
 |GNATprove| can check the second call to increment ``X``. As expected,
 |GNATprove| proves that both calls to ``Increment_Full`` on lines 19 and 20
 satisfy their precondition.
