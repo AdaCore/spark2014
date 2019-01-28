@@ -311,7 +311,7 @@ package body Gnat2Why.Decls is
          when DRecord =>
             if Var.Fields.Present then
 
-               --  generate a global ref for the fields
+               --  Generate a global ref for the fields
 
                Emit
                  (File,
@@ -324,7 +324,7 @@ package body Gnat2Why.Decls is
 
             if Var.Discrs.Present then
 
-               --  generate a global ref or constant for the fields
+               --  Generate a global ref or constant for the fields
 
                if Var.Discrs.Binder.Mutable then
                   Emit
@@ -350,7 +350,7 @@ package body Gnat2Why.Decls is
 
             if Var.Constr.Present then
 
-               --  generate a constant for 'Constrained attribute
+               --  Generate a constant for 'Constrained attribute
 
                Emit
                  (File,
@@ -366,7 +366,7 @@ package body Gnat2Why.Decls is
 
             if Var.Tag.Present then
 
-               --  generate a constant for 'Tag attribute
+               --  Generate a constant for 'Tag attribute
 
                Emit
                  (File,
@@ -381,7 +381,7 @@ package body Gnat2Why.Decls is
 
          when UCArray =>
 
-            --  generate a global ref for the content
+            --  Generate a global ref for the content
 
             Emit
               (File,
@@ -408,7 +408,7 @@ package body Gnat2Why.Decls is
                     Get_Typ (Var.Bounds (D).Last);
 
                begin
-                  --  generate constants for bounds
+                  --  Generate constants for bounds
 
                   Emit
                     (File,
