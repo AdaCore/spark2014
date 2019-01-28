@@ -49,6 +49,7 @@ with Restrict;                        use Restrict;
 with Rident;                          use Rident;
 with Rtsfind;                         use Rtsfind;
 with Sem_Aux;                         use Sem_Aux;
+with Sem_Disp;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
 with Sem_Util;                        use Sem_Util;
@@ -4011,9 +4012,9 @@ package body SPARK_Definition is
          if Is_Dispatching_Operation (E) then
             declare
                Inherit_Subp_No_Intf : constant Subprogram_List :=
-                 Inherited_Subprograms (E, No_Interfaces => True);
+                 Sem_Disp.Inherited_Subprograms (E, No_Interfaces => True);
                Inherit_Subp_Intf : constant Subprogram_List :=
-                 Inherited_Subprograms (E, Interfaces_Only => True);
+                 Sem_Disp.Inherited_Subprograms (E, Interfaces_Only => True);
             begin
                --  Ok to inherit a subprogram only from non-interfaces
 
@@ -4055,6 +4056,9 @@ package body SPARK_Definition is
          with Pre => Is_Type (E);
          --  Return True iff E is declared in a private part with
          --  SPARK_Mode => Off.
+
+         function Is_Controlled (E : Entity_Id) return Boolean;
+         --  Return True if E is in Ada.Finalization
 
          function Is_Synchronous_Barrier (E : Entity_Id) return Boolean;
          --  Return True if E is Ada.Synchronous_Barriers.Synchronous_Barrier
@@ -4154,6 +4158,27 @@ package body SPARK_Definition is
             end if;
          end Mark_Default_Expression;
 
+         -------------------
+         -- Is_Controlled --
+         -------------------
+
+         function Is_Controlled (E : Entity_Id) return Boolean is
+            S_Ptr : Entity_Id := Scope (E);
+            --  Scope pointer
+         begin
+            if Chars (S_Ptr) /= Name_Finalization then
+               return False;
+            end if;
+
+            S_Ptr := Scope (S_Ptr);
+
+            if Chars (S_Ptr) /= Name_Ada then
+               return False;
+            end if;
+
+            return Scope (S_Ptr) = Standard_Standard;
+         end Is_Controlled;
+
          --------------------------------
          -- Is_Private_Entity_Mode_Off --
          --------------------------------
@@ -4212,6 +4237,12 @@ package body SPARK_Definition is
          --  we do not want them in SPARK.
          if Is_Synchronous_Barrier (E) then
             Mark_Violation ("synchronous barriers", E);
+         end if;
+
+         --  Controlled types are not allowed in SPARK
+
+         if Is_Controlled (E) then
+            Mark_Violation ("controlled types", E);
          end if;
 
          --  The base type or original type should be marked before the current

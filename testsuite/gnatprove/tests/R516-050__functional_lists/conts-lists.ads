@@ -8,7 +8,7 @@
 pragma Ada_2012;
 with Ada.Finalization; use Ada.Finalization;
 
-package Conts.Lists with SPARK_Mode is
+package Conts.Lists is
 
    type Controlled_Base_List is abstract new Controlled with null record;
    type Limited_Base_List is abstract tagged limited null record;
