@@ -1529,16 +1529,16 @@ package body Why.Gen.Arrays is
             Eq_Name  : constant W_Identifier_Id := To_Local (Symbols.Bool_Eq);
             Def      : W_Pred_Id :=
               +New_Ada_Equality
-              (Typ              => C_Type,
-               Domain           => EW_Pred,
-               Left             =>
+              (Typ    => C_Type,
+               Domain => EW_Pred,
+               Left   =>
                  New_Init_Wrapper_Value_Access
                    (Ada_Node => Empty,
                     E        => C_Type,
                     Name     => New_Call
                       (Empty, EW_Term, Get_Name, A_Indexes, W_Ty),
                     Domain   => EW_Term),
-               Right            =>
+               Right  =>
                  New_Init_Wrapper_Value_Access
                    (Ada_Node => Empty,
                     E        => C_Type,
