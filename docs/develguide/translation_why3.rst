@@ -429,34 +429,34 @@ functions and coerce and range axioms. For example, let us consider the
 following type:
 
 .. code-block:: ada
-		
+
    type My_Fixed is delta 3.0 / 1000.0 range 0.0 .. 3.0;
 
 Here are the axioms and declarations generated in Why for it. Like for
 integer types, we only give here the relevant declarations and
 to_rep and of_rep functions are separated in a different module:
-   
+
 .. code-block:: whyml
 
- type my_fixed 
- 
- function num_small 
+ type my_fixed
+
+ function num_small
    : Main.__fixed =
   1
- 
- function den_small 
+
+ function den_small
    : Main.__fixed =
   512
- 
- function first 
+
+ function first
    : Main.__fixed =
   0
- 
- function last 
+
+ function last
    : Main.__fixed =
   1536
- 
- predicate in_range 
+
+ predicate in_range
    (x : Main.__fixed)  =
   ( (first <= x) /\ (x <= last) )
 
@@ -482,11 +482,11 @@ small. As an example, here is the module introduced for fixed point types of
 small 1 / 512 like My_Fixed above:
 
 .. code-block:: whyml
-		
+
  module Fixed_Point__1_512
 
    function num_small : int = 1
- 
+
    function den_small : int = 512
 
    (* multiplication between a fixed-point value and an integer *)
@@ -534,7 +534,7 @@ small 1 / 512 like My_Fixed above:
   ...
 
   end
-  
+
 Note that, in the Why generated code, the type system is not used to ensure that
 we always use the correct operation for fixed point types.
 
@@ -942,7 +942,7 @@ operator on each element of the arrays are given through axioms. As an example,
 consider the array type ``Bool_Array`` defined as follows:
 
 .. code-block:: ada
-		
+
    type Bool_Array is array (Positive range <>) of Boolean;
 
 Here is the axiom generated for the operator xor on ``Bool_Array``:
@@ -972,13 +972,13 @@ types. The defining axioms for logical operations on such type therefore need
 to introduce conversions. For example, for the following type:
 
 .. code-block:: ada
-		
+
    subtype Only_True is Boolean range True .. True;
 
 we generate:
 
 .. code-block:: whyml
-		
+
    module Array__Int__P__only_true__Bool_Op
     use bool.Bool
     use "_gnatprove_standard".Boolean
@@ -1831,7 +1831,7 @@ translated as variables in Why. As a result, the predicate of type
 index at the current iteration:
 
 .. code-block:: whyml
- 
+
  predicate dynamic_predicate (x : int) (L_1__i : int) = 1 <= x <= L_1__i
 
 Default initialization
@@ -1850,7 +1850,7 @@ still generated as variables of this type can be left uninitialized, but it does
 not give any information on the value of its parameter:
 
 .. code-block:: whyml
- 
+
  predicate default_initial_assumption (x : int) (skip_top_level : bool) =
   true
 
@@ -2083,7 +2083,7 @@ value of the generic primitive equality function ``user_eq`` introduced for
 ``T`` (see the section about Record Equality for usage of ``user_eq``):
 
 .. code-block:: whyml
-		
+
  axiom user_eq__def_axiom :
   (forall a b : t_rec__. P__t_rec.user_eq a b = P__Oeq.oeq a b)
 
@@ -2103,13 +2103,13 @@ Here is a motivating example:
    pragma Annotate (GNATprove, Init_By_Proof, My_Int);
 
    type Int_Array is array (Positive range <>) of My_Int;
-   --  array of potentially uninitialized integers
+   --  Array of potentially uninitialized integers
 
    type Int_Array_Init is array (Positive range <>) of Integer;
-   --  array of integers with normal traitment
+   --  Array of integers with normal treatment
 
    procedure Init_By_4 (A : out Int_Array; Error : out Boolean) with
-     Pre => A'Length = 4,
+     Pre  => A'Length = 4,
      Post => (if not Error then A'Valid_Scalars)
    is
    begin
@@ -2120,9 +2120,9 @@ Here is a motivating example:
    procedure Read (Buf   : out Int_Array;
                    Size  : Natural;
                    Error : out Boolean)
-   with Pre => Buf'Length >= Size,
-     Post => (if not Error then
-                Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars)
+   with Pre  => Buf'Length >= Size,
+        Post => (if not Error then
+                 Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars)
    is
       Offset    : Natural := Size mod 4;
       Nb_Chunks : Natural := Size / 4;
@@ -2143,8 +2143,8 @@ Here is a motivating example:
 
    procedure Process (Buf  : in out Int_Array;
                       Size : Natural)
-   with Pre => Buf'Length >= Size and then
-     Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars,
+   with Pre  => Buf'Length >= Size and then
+                Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars,
         Post => Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars
    is
    begin
@@ -2165,9 +2165,9 @@ Here is a motivating example:
       end loop;
    end Process;
 
-   Buf    : Int_Array (1 .. 150);
+   Buf   : Int_Array (1 .. 150);
    Error : Boolean;
-   X      : Integer;
+   X     : Integer;
   begin
    Read (Buf, 100, Error);
    if not Error then
@@ -2183,11 +2183,11 @@ Here is a motivating example:
    end if;
   end Init_By_Proof;
 
-In this example, initilization is only assumed if an ``Error`` boolean is false.
-Additionally, ``Read`` always initializes the array partially (up to ``Size``)
-and initializes the array cells four by four, which is currently out of reach
-of the very simple heuristic used by flow analysis to recognize loops which
-fully initialize an array.
+In this example, initilization is only assumed if an ``Error`` boolean is
+false.  Additionally, ``Read`` always initializes the array partially (up to
+``Size``) and initializes the array components four by four, which is currently
+out of reach of the very simple heuristic used by flow analysis to recognize
+loops which fully initialize an array.
 
 For now, we recognize objects for which we want to handle initialization by
 proof by supplying a ``pragma Annotate (GNATprove, Init_By_Proof, Ty)`` on their
@@ -2294,7 +2294,7 @@ declaration returning an object of a reference type. If we remove the
 .. code-block:: whyml
 
  module P__b
-  val b : bool__ref 
+  val b : bool__ref
  end
 
 No axiom is generated for the value of a variable. The value will be provided
@@ -2370,7 +2370,7 @@ types, as functions returning the corresponding abstract type:
 The type of ``A1`` is statically constrained. It will be translated as a Why3
 map, the bounds being declared directly inside the module for the Ada type of
 ``A1``:
-   
+
 .. code-block:: whyml
 
  function a1 : Array__Int__Standard__natural.map
@@ -2378,7 +2378,7 @@ map, the bounds being declared directly inside the module for the Ada type of
 The type of ``A2`` is unconstrained. It will be translated using the abstract
 type introduced for ``Nat_Array`` from which both the bounds and the
 underlying map can be queried:
-   
+
 .. code-block:: whyml
 
  function a2 : P__nat_array.nat_array
@@ -2392,7 +2392,7 @@ Let us now consider mutable arrays:
 
 Since the bounds of statically constrained array types are translated
 separately, we simply need a global reference for the content of ``A1``:
-   
+
 .. code-block:: whyml
 
  val a1 : Array__Int__Standard__natural.map__ref
@@ -2401,13 +2401,13 @@ For unconstrained or dynamically constrained array types, mutable objects are
 split into different parts, the bounds, which are constant, and the mutable
 content. For one-dimensional arrays, this results in the declaration of three
 Why3 objects:
-   
+
 .. code-block:: whyml
 
- val a2 : Array__Int__Standard__natural.map__ref 
- 
+ val a2 : Array__Int__Standard__natural.map__ref
+
  function a2__first : Standard__integer.integer
- 
+
  function a2__last : Standard__integer.integer
 
 A draw back of this approach is that array variables need to be
@@ -2456,8 +2456,8 @@ the regular components and a constant for the tag attribute:
 
 .. code-block:: whyml
 
- val t2__split_fields : P__tagged_rec.__split_fields__ref 
- 
+ val t2__split_fields : P__tagged_rec.__split_fields__ref
+
  function t2__attr__tag : int
 
 Let us now consider a record type with mutable discriminants:
@@ -2480,10 +2480,10 @@ parts are mutable. However, its constrained attribute is not:
 
 .. code-block:: whyml
 
- val o1__split_fields : P__option.__split_fields__ref 
- 
- val o1__split_discrs : P__option.__split_discrs__ref 
- 
+ val o1__split_fields : P__option.__split_fields__ref
+
+ val o1__split_discrs : P__option.__split_discrs__ref
+
  function o1__attr__constrained : bool
 
 If the discriminant of ``Option`` is fixed in its Ada type, the discriminant
@@ -2495,10 +2495,10 @@ part will be declared as a constant:
 
 .. code-block:: whyml
 
- val o2__split_field : P__To2S.__split_fields__ref 
- 
+ val o2__split_field : P__To2S.__split_fields__ref
+
  function o2__split_discrs : P__option.__split_discrs
- 
+
  function o2__attr__constrained : bool
 
 Effect-Only Objects
@@ -2528,7 +2528,7 @@ A global reference is introduced in Why for the abstract state of
  module Withed_unit__state
    use import "_gnatprove_standard".Main
 
-   val state  : __private__ref 
+   val state  : __private__ref
  end
 
  val p (__void_param : unit) : unit
@@ -2560,7 +2560,7 @@ predefined ``__private`` type:
  module P__nested__v
    use import "_gnatprove_standard".Main
 
-   val v  : __private__ref 
+   val v  : __private__ref
  end
 
  val p (__void_param : unit) : unit
