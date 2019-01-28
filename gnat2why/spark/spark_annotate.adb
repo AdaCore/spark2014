@@ -198,7 +198,7 @@ package body SPARK_Annotate is
    begin
       --  This entity must be a scalar type
 
-      if Ekind (E) not in Scalar_Kind then
+      if not Is_Scalar_Type (E) then
          Error_Msg_N
            ("Entity parameter of a pragma Init_By_Proof must be a scalar "
             & "type",

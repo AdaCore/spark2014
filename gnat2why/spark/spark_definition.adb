@@ -4516,7 +4516,7 @@ package body SPARK_Definition is
                            --  Initialization by proof of Part_Of variables
                            --  is not supported yet.
 
-                           if Ekind (Part) in Object_Kind
+                           if Is_Object (Part)
                              and then Retysp_In_SPARK (Etype (Part))
                              and then Has_Init_By_Proof (Etype (Part))
                            then
