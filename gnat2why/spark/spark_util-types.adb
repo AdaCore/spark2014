@@ -485,7 +485,7 @@ package body SPARK_Util.Types is
    function Has_Init_By_Proof (E : Entity_Id) return Boolean is
       Ty : constant Entity_Id := Retysp (E);
    begin
-      case Ekind (Ty) is
+      case Type_Kind'(Ekind (Ty)) is
          when Scalar_Kind =>
             return Scalar_Has_Init_By_Proof (Ty);
          when Array_Kind =>
@@ -507,12 +507,19 @@ package body SPARK_Util.Types is
 
                return Present (Comp) and then Has_Init_By_Proof (Etype (Comp));
             end;
-         when E_Private_Type .. E_Limited_Private_Subtype
+         when E_Private_Type
+            | E_Private_Subtype
+            | E_Limited_Private_Type
+            | E_Limited_Private_Subtype
             | Concurrent_Kind
             | Access_Kind
           =>
             return False;
-         when others =>
+
+         when Incomplete_Kind
+            | E_Exception_Type
+            | E_Subprogram_Type
+         =>
             raise Program_Error;
       end case;
    end Has_Init_By_Proof;
