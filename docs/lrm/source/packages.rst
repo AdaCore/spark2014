@@ -1,4 +1,4 @@
-﻿Packages
+Packages
 ========
 
 .. centered:: **Verification Rules**
