@@ -1,5 +1,5 @@
 package body Pairs_05
-is   
+is
 
    function Sum (Value : in Pair) return Integer
    is

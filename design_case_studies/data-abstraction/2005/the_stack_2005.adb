@@ -47,10 +47,10 @@ is
       X := S (Pointer);
       Pointer := Pointer - 1;
    end Pop;
-   
+
    procedure Swap (X: in Integer)
    --# global in     Pointer;
-   --#        in out S;  
+   --#        in out S;
    is
    begin
       S (Pointer) := X;

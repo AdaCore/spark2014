@@ -1,4 +1,4 @@
-package body Linear_Search 
+package body Linear_Search
   with SPARK_Mode
 is
 

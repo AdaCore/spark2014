@@ -1,6 +1,6 @@
 project Test is
 
-   for Source_Dirs use (".", "../../../testsuite/gnatprove/tests/binary_search", "../../../testsuite/gnatprove/tests/M213-042__flow_error_messages", 
+   for Source_Dirs use (".", "../../../testsuite/gnatprove/tests/binary_search", "../../../testsuite/gnatprove/tests/M213-042__flow_error_messages",
       "../../../testsuite/gnatprove/tests/RM_MS__the_stack_with_conditions");
    for Main use ("cc_main.adb", "main.adb", "main.adb");
 

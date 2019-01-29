@@ -57,7 +57,7 @@ is
          end Convert_To_Reading;
 
       end Conversion;
-   
+
    begin
        A := Val1.Read;
        B := Val2.Read;

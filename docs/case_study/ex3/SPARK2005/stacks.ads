@@ -1,7 +1,7 @@
 package Stacks is
 
    type Stack is limited private;
-   
+
    function EmptyStack(S : in Stack) return Boolean;
 
    function FullStack(S : in Stack) return Boolean;

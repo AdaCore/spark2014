@@ -1,5 +1,5 @@
 package body Problem_4 with SPARK_Mode => On is
-   
+
    -------------------
    -- Same_Elements --
    -------------------
@@ -7,12 +7,12 @@ package body Problem_4 with SPARK_Mode => On is
    function Same_Elements (Left, Right : List_Type) return Boolean is
 
       function Count (List : List_Type; Element : Integer) return Natural is
-         C : Natural := 0;   
+         C : Natural := 0;
       begin
          for I in List'Range loop
             if List (I) = Element then
                C := C + 1;
-            end if; 
+            end if;
          end loop;
          return C;
       end Count;
@@ -22,7 +22,7 @@ package body Problem_4 with SPARK_Mode => On is
         (for all I in Left'Range =>
            Count (Left, Left (I)) = Count (Right, Left (I)));
    end Same_Elements;
-   
+
    ----------
    -- Swap --
    ----------
@@ -34,6 +34,6 @@ package body Problem_4 with SPARK_Mode => On is
       Temp     := List (I);
       List (I) := List (J);
       List (J) := Temp;
-   end Swap;   
-   
+   end Swap;
+
 end Problem_4;

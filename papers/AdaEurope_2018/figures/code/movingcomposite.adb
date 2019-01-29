@@ -9,14 +9,14 @@ type Int_Ptr is access Integer;
 type Rec is record
   X, Y : Int_Ptr;
 end record;
-  
+
 R : Rec := (...);
 S : Rec := (...);
- 
+
 S := R;
 (...)
 end movingcomposite;
-	
+
 
 
   --XR : Int_Ptr := new Integer;

@@ -15,7 +15,7 @@ end Swap;
 
 X : Int_Ptr := new Integer'(7);
 Y : Int_Ptr := new Integer'(11);
-  
+
 Swap(X, Y);
   (...)
 end move_ex1;

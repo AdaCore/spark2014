@@ -834,7 +834,7 @@ is
      (UsedLogFiles.Length = LogFileCountT'Last - 1 and then
       NumberLogEntries =
         LogEntryCountT(UsedLogFiles.Length)*MaxLogFileEntries);
-   
+
    procedure TruncateLog( Description : out AuditTypes.DescriptionT)
      --# global in out NumberLogEntries;
      --#        in out AuditSystemFault;
@@ -915,7 +915,7 @@ is
       NumberLogEntries =
         LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries +
         LogFileEntries(CurrentLogFile));
-   
+
    procedure AddElementToLogFileWithTruncateChecks
      ( ElementID    : in     AuditTypes.ElementT;
        Severity     : in     AuditTypes.SeverityT;
@@ -1337,7 +1337,7 @@ is
       --#             (UsedLogFiles.List(N) in LogFileIndexT)) ;
       pragma Assert_And_Cut
         (UsedLogFiles.Length in LogFileCountT and then
-         UsedLogFiles.LastI in LogFileIndexT and then 
+         UsedLogFiles.LastI in LogFileIndexT and then
          (for all N in LogFileIndexT =>
            (LogFileEntries(N) in FileEntryCountT)) and then
          (for all N in LogFileIndexT =>

@@ -24,7 +24,7 @@ is
          pragma Loop_Invariant (Left in A'Range and Right in A'Range);
          pragma Loop_Invariant (Left = A'First or else A (Left - 1) < I);
          pragma Loop_Invariant (Right = A'Last or else I < A (Right + 1));
-         
+
          Med := Left + (Right - Left) / 2;
 
          if A (Med) < I then
@@ -36,7 +36,7 @@ is
          end if;
       end loop;
       pragma Assert (for all Index in A'Range => A (Index) /= I);
-      
+
       return No_Index;
    end Search;
 

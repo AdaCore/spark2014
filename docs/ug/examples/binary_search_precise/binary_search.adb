@@ -27,7 +27,7 @@ is
          pragma Loop_Invariant
            (for all Index in A'Range =>
               (if Index > Right then I < A (Index)));
-         
+
          Med := Left + (Right - Left) / 2;
 
          if A (Med) < I then

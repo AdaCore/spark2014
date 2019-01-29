@@ -24,7 +24,7 @@ is
 
    procedure Pop(X: out Integer);
    --# global in out State;
-   
+
    procedure Swap(X: in Integer);
    --# global in out State;
 

@@ -4,7 +4,7 @@ package body Sort
 is
 
    -----------------------------------------------------------------------------
-   
+
    procedure Swap (Values : in out Nat_Array;
                    X      : in     Positive;
                    Y      : in     Positive)
@@ -24,11 +24,11 @@ is
       --  Ghost variables
       Init   : constant Nat_Array (Values'Range) := Values with Ghost;
       Interm : Nat_Array (Values'Range) with Ghost;
-      
+
       --  Ghost procedure
       procedure Prove_Perm with Ghost,
         Pre  => X in Values'Range and then Y in Values'Range and then
-        Is_Set (Init, X, Init (Y), Interm) 
+        Is_Set (Init, X, Init (Y), Interm)
         and then Is_Set (Interm, Y, Init (X), Values),
         Post => Is_Perm (Init, Values)
       is

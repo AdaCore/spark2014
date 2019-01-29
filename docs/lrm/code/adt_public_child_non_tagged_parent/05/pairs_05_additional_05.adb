@@ -1,5 +1,5 @@
 package body Pairs_05.Additional_05
-is   
+is
 
    procedure Increment (Value: in out Pairs_05.Pair) is
    begin
