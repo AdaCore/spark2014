@@ -28,10 +28,10 @@ with Outputs; use Outputs;
 package Xtree_Accessors is
    --  This package provides generators for Why node accessors
 
-   procedure Print_Accessor_Declarations  (O : in out Output_Record);
+   procedure Print_Accessor_Declarations (O : in out Output_Record);
    --  Print accessor declarations for Why nodes
 
-   procedure Print_Accessor_Bodies  (O : in out Output_Record);
+   procedure Print_Accessor_Bodies (O : in out Output_Record);
    --  Print accessor bodies for Why nodes
 
 end Xtree_Accessors;

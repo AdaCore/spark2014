@@ -131,7 +131,7 @@ package body SPARK_Atree is
    -- Condition --
    ---------------
 
-   function Condition  (N : Node_Id) return Node_Id renames
+   function Condition (N : Node_Id) return Node_Id renames
      Sinfo.Condition;
 
    -----------------------
@@ -808,7 +808,7 @@ package body SPARK_Atree is
    -- Inherited_Discriminant --
    ----------------------------
 
-   function Inherited_Discriminant  (N : Node_Id) return Boolean renames
+   function Inherited_Discriminant (N : Node_Id) return Boolean renames
      Sinfo.Inherited_Discriminant;
 
    ------------
@@ -1098,7 +1098,7 @@ package body SPARK_Atree is
    -- Return_Object_Declarations --
    --------------------------------
 
-   function Return_Object_Declarations  (N : Node_Id) return List_Id renames
+   function Return_Object_Declarations (N : Node_Id) return List_Id renames
      Sinfo.Return_Object_Declarations;
 
    -----------------------------

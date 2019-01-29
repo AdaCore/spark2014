@@ -1104,8 +1104,8 @@ package body Flow.Analysis is
       -- Components_Are_Entire_Variables --
       -------------------------------------
 
-      function Components_Are_Entire_Variables  (Set : Flow_Id_Sets.Set)
-                                                 return Boolean
+      function Components_Are_Entire_Variables (Set : Flow_Id_Sets.Set)
+                                                return Boolean
       is
          (for all Component of Set => Is_Entire_Variable (Component));
 
@@ -4189,15 +4189,15 @@ package body Flow.Analysis is
 
          for Output of Globals.Outputs loop
             if not Is_Ghost_Entity (Output) then
-               Error_Msg_Flow  (FA       => FA,
-                                Msg      => "ghost procedure & cannot have " &
-                                            "non-ghost global output &",
-                                N        => FA.Analyzed_Entity,
-                                F1       => Direct_Mapping_Id
-                                              (FA.Analyzed_Entity),
-                                F2       => Output,
-                                Severity => Medium_Check_Kind,
-                                SRM_Ref  => "6.9(20)");
+               Error_Msg_Flow (FA       => FA,
+                               Msg      => "ghost procedure & cannot have " &
+                                           "non-ghost global output &",
+                               N        => FA.Analyzed_Entity,
+                               F1       => Direct_Mapping_Id
+                                             (FA.Analyzed_Entity),
+                               F2       => Output,
+                               Severity => Medium_Check_Kind,
+                               SRM_Ref  => "6.9(20)");
             end if;
          end loop;
       end if;

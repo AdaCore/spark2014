@@ -28,10 +28,10 @@ with Outputs; use Outputs;
 package Xtree_Mutators is
    --  This package provides generators for Why node mutators
 
-   procedure Print_Mutator_Declarations  (O : in out Output_Record);
+   procedure Print_Mutator_Declarations (O : in out Output_Record);
    --  Print mutator declarations for Why nodes
 
-   procedure Print_Mutator_Bodies  (O : in out Output_Record);
+   procedure Print_Mutator_Bodies (O : in out Output_Record);
    --  Print mutator bodies for Why nodes
 
 end Xtree_Mutators;

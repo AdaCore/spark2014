@@ -164,7 +164,7 @@ package body Xtree_Mutators is
    -- Print_Mutator_Bodies --
    --------------------------
 
-   procedure Print_Mutator_Bodies  (O : in out Output_Record) is
+   procedure Print_Mutator_Bodies (O : in out Output_Record) is
       First : Boolean := True;
    begin
       for J in Valid_Kind'Range loop
@@ -186,7 +186,7 @@ package body Xtree_Mutators is
    -- Print_Mutator_Declarations --
    --------------------------------
 
-   procedure Print_Mutator_Declarations  (O : in out Output_Record)
+   procedure Print_Mutator_Declarations (O : in out Output_Record)
    is
       First : Boolean := True;
    begin

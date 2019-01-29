@@ -836,8 +836,8 @@ package body Gnat2Why.Error_Messages is
       -- Parse_Why3_Prove_Result --
       -----------------------------
 
-      function Parse_Why3_Prove_Result  (V : JSON_Value)
-                                         return Why3_Prove_Result is
+      function Parse_Why3_Prove_Result (V : JSON_Value)
+                                        return Why3_Prove_Result is
       begin
          return Why3_Prove_Result'
            (Id         => VC_Id (Integer'(Get (Get (V, "id")))),

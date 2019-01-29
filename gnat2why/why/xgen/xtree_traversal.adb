@@ -435,7 +435,7 @@ package body Xtree_Traversal is
    -- Print_Traverse_Body --
    -------------------------
 
-   procedure Print_Traverse_Body  (O : in out Output_Record) is
+   procedure Print_Traverse_Body (O : in out Output_Record) is
    begin
       Return_If_Control (O, Terminate_Immediately);
       NL (O);

@@ -316,7 +316,7 @@ package Xtree_Tables is
    function Maybe_Null (FI : Field_Info) return Boolean;
    --  True if this field may be null or empty
 
-   function Is_Why_Id  (FI : Field_Info) return Boolean;
+   function Is_Why_Id (FI : Field_Info) return Boolean;
    --  True if the type of this field is a subtype of Why_Node_Id
    --  or a subtype of Why_Node_List.
 

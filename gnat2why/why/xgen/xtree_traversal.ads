@@ -28,7 +28,7 @@ with Outputs; use Outputs;
 package Xtree_Traversal is
    --  This package provides generators for Why node accessors
 
-   procedure Print_Traversal_Op_Declarations  (O : in out Output_Record);
+   procedure Print_Traversal_Op_Declarations (O : in out Output_Record);
    --  Print kind-specific traversal operations
 
    procedure Print_Traverse_Body (O : in out Output_Record);

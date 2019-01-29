@@ -1184,9 +1184,9 @@ package body Flow.Control_Flow_Graph is
                                       FA.CFG.Get_Vertex (F));
 
                            when Final_Value =>
-                              Linkup  (FA,
-                                       FA.CFG.Get_Vertex (F),
-                                       FA.CFG.Get_Vertex (P));
+                              Linkup (FA,
+                                      FA.CFG.Get_Vertex (F),
+                                      FA.CFG.Get_Vertex (P));
 
                            when others =>
                               raise Program_Error;

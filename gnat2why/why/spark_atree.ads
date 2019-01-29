@@ -285,7 +285,7 @@ package SPARK_Atree is
    --  Return the subtype indication associated to the component type of an
    --  array type declaration.
 
-   function Condition  (N : Node_Id) return Node_Id with
+   function Condition (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Elsif_Part
                        | N_Exit_Statement
                        | N_If_Statement
@@ -483,7 +483,7 @@ package SPARK_Atree is
                        | N_Loop_Statement
                        | N_Record_Representation_Clause;
 
-   function Inherited_Discriminant  (N : Node_Id) return Boolean with
+   function Inherited_Discriminant (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Component_Association;
 
    function Intval (N : Node_Id) return Uint with
@@ -594,7 +594,7 @@ package SPARK_Atree is
    function Reason (N : Node_Id) return Uint with
      Pre => Nkind (N) in N_Raise_xxx_Error;
 
-   function Return_Object_Declarations  (N : Node_Id) return List_Id with
+   function Return_Object_Declarations (N : Node_Id) return List_Id with
      Pre => Nkind (N) = N_Extended_Return_Statement;
 
    function Return_Statement_Entity (N : Node_Id) return Entity_Id with

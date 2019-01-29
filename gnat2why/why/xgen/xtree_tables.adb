@@ -254,7 +254,7 @@ package body Xtree_Tables is
    -- Is_Why_Id --
    ---------------
 
-   function Is_Why_Id  (FI : Field_Info) return Boolean is
+   function Is_Why_Id (FI : Field_Info) return Boolean is
    begin
       return FI.Is_Why_Id;
    end Is_Why_Id;

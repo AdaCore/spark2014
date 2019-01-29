@@ -14182,7 +14182,7 @@ package body Gnat2Why.Expr is
                                    Right    => +E.Constr.Id),
                                 Then_Part   => +Havoc_Discr);
                         begin
-                           T := +Sequence  (+Havoc_Discr_Cond, +T);
+                           T := +Sequence (+Havoc_Discr_Cond, +T);
                         end;
                      end if;
                   end if;

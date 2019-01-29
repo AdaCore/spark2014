@@ -123,7 +123,7 @@ package body Xtree_Accessors is
    -- Print_Accessor_Declarations --
    ---------------------------------
 
-   procedure Print_Accessor_Declarations  (O : in out Output_Record)
+   procedure Print_Accessor_Declarations (O : in out Output_Record)
    is
       use Node_Lists;
 

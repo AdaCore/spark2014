@@ -690,7 +690,7 @@ package body Why.Atree.Sprint is
          begin
             File_String_IO.Open (File, Mode => File_String_IO.In_File,
                                  Name => File_Name);
-            File_String_IO.Read  (File, Item => Contents);
+            File_String_IO.Read (File, Item => Contents);
             File_String_IO.Close (File);
             return Contents;
          end;
