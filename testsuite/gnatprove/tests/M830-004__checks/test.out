@@ -3,39 +3,39 @@ do_checks.adb:6:14: warning: subprogram "Do_Length_Check" has no effect
 do_checks.adb:7:14: warning: subprogram "Do_Discriminant_Check" has no effect
 do_checks.adb:17:24: medium: range check might fail
 do_checks.adb:23:24: info: range check proved (CVC4: 2 VC)
-do_checks.adb:23:57: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 11 should mention Zero]
+do_checks.adb:23:57: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:31:16: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:38:16: info: range check proved (CVC4: 2 VC)
-do_checks.adb:38:48: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 11 should mention Zero]
+do_checks.adb:38:48: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:47:21: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:53:21: info: range check proved (CVC4: 2 VC)
 do_checks.adb:61:16: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:67:16: info: range check proved (CVC4: 2 VC)
-do_checks.adb:67:61: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 11 should mention Zero]
+do_checks.adb:67:61: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:74:17: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:74:47: info: cannot unroll loop (too many loop iterations)
 do_checks.adb:78:17: info: range check proved (CVC4: 2 VC)
-do_checks.adb:78:50: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 11 should mention Zero]
+do_checks.adb:78:50: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:78:54: info: cannot unroll loop (too many loop iterations)
 do_checks.adb:86:19: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:94:19: info: range check proved (CVC4: 2 VC)
-do_checks.adb:94:51: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 11 should mention Zero]
+do_checks.adb:94:51: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:103:16: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:109:16: info: range check proved (CVC4: 2 VC)
-do_checks.adb:109:65: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 11 should mention Zero]
+do_checks.adb:109:65: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:119:30: info: initialization of "A" proved
-do_checks.adb:119:30: medium: range check might fail (e.g. when A'First = 1 and B'First = 11 and B'Last = 11 and Zero = 0) [possible explanation: precondition of subprogram at line 11 should mention Zero]
+do_checks.adb:119:30: medium: range check might fail (e.g. when A'First = 1 and B'First = 11 and B'Last = 11 and Zero = 0) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:126:30: info: initialization of "A" proved
 do_checks.adb:126:30: info: range check proved (CVC4: 4 VC)
-do_checks.adb:126:60: medium: overflow check might fail (e.g. when B'First = 1 and B'Last = 1 and Zero = Integer'First) [possible explanation: precondition of subprogram at line 11 should mention Zero]
+do_checks.adb:126:60: medium: overflow check might fail (e.g. when B'First = 1 and B'Last = 1 and Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:137:25: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:150:25: info: range check proved (CVC4: 2 VC)
-do_checks.adb:150:57: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 11 should mention Zero]
-do_checks.adb:162:39: medium: length check might fail [possible explanation: precondition of subprogram at line 11 should mention Zero]
+do_checks.adb:150:57: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
+do_checks.adb:162:39: medium: length check might fail [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:162:40: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:168:38: info: length check proved (CVC4: 4 VC)
 do_checks.adb:168:39: info: range check proved (CVC4: 2 VC)
-do_checks.adb:168:67: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 11 should mention Zero]
+do_checks.adb:168:67: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:211:32: warning: "Y" is not modified, could be IN
 do_checks.adb:213:21: info: length check proved (CVC4: 4 VC)
 do_checks.adb:213:26: medium: length check might fail (e.g. when X'First = 0 and X'Last = 0 and Y'First = 1 and Y'Last = 0) [possible explanation: precondition of subprogram at line 211 should mention X and Y]

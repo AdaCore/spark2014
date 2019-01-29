@@ -33,7 +33,7 @@ globals.ads:40:14: info: invariant check proved (CVC4: 1 VC)
 inside_out.adb:3:27: info: initialization of "X" proved
 inside_out.adb:16:07: medium: invariant check might fail, in call inlined at inside_out.adb:58 (e.g. when X = 0)
 inside_out.adb:20:08: info: implicit function contract not available for proof ("Get" is recursive)
-inside_out.adb:20:08: medium: invariant check might fail [possible explanation: subprogram at line 19 should mention X and Mode in a precondition]
+inside_out.adb:20:08: medium: invariant check might fail [possible explanation: subprogram at line 7 should mention X and Mode in a precondition]
 inside_out.adb:30:15: info: overflow check proved (CVC4: 1 VC)
 inside_out.adb:45:13: info: analyzing call to "Body_Create" in context
 inside_out.adb:56:13: medium: invariant check might fail

@@ -1,8 +1,8 @@
-ar.adb:9:24: medium: range check might fail (e.g. when A = (others => 0) and I = 1) [possible explanation: subprogram at line 6 should mention I in a precondition]
-ar.adb:9:37: medium: range check might fail (e.g. when A = (others => 0) and J = 9) [possible explanation: subprogram at line 6 should mention J in a precondition]
-ar.adb:9:46: medium: range check might fail (e.g. when A = (others => 0) and E = 0) [possible explanation: subprogram at line 6 should mention E in a precondition]
-ar.adb:9:53: medium: range check might fail (e.g. when A = (others => 0) and J = 10) [possible explanation: subprogram at line 6 should mention J in a precondition]
-ar.adb:9:62: medium: range check might fail (e.g. when A = (others => 0) and E = ET1'Last) [possible explanation: subprogram at line 6 should mention E in a precondition]
+ar.adb:9:24: medium: range check might fail (e.g. when A = (others => 0) and I = 1) [possible explanation: subprogram at ar.ads:16 should mention I in a precondition]
+ar.adb:9:37: medium: range check might fail (e.g. when A = (others => 0) and J = 9) [possible explanation: subprogram at ar.ads:16 should mention J in a precondition]
+ar.adb:9:46: medium: range check might fail (e.g. when A = (others => 0) and E = 0) [possible explanation: subprogram at ar.ads:16 should mention E in a precondition]
+ar.adb:9:53: medium: range check might fail (e.g. when A = (others => 0) and J = 10) [possible explanation: subprogram at ar.ads:16 should mention J in a precondition]
+ar.adb:9:62: medium: range check might fail (e.g. when A = (others => 0) and E = ET1'Last) [possible explanation: subprogram at ar.ads:16 should mention E in a precondition]
 ar.adb:19:27: info: range check proved (CVC4: 1 VC)
 ar.adb:19:40: info: range check proved (CVC4: 1 VC)
 ar.adb:19:49: info: range check proved (CVC4: 1 VC)

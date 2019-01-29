@@ -1,2 +1,2 @@
-pack.adb:6:35: medium: range check might fail (e.g. when Glob'First = 2) [possible explanation: subprogram at line 5 should mention Glob in a precondition]
+pack.adb:6:35: medium: range check might fail (e.g. when Glob'First = 2) [possible explanation: subprogram at pack.ads:2 should mention Glob in a precondition]
 pack.ads:2:14: warning: subprogram "A2" has no effect

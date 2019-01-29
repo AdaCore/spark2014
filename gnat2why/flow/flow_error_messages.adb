@@ -50,6 +50,7 @@ with SPARK_Atree;
 with SPARK_Util;                use SPARK_Util;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 with Stringt;                   use Stringt;
+with String_Utils;
 
 package body Flow_Error_Messages is
 
@@ -783,6 +784,10 @@ package body Flow_Error_Messages is
       --  Return part of the explanation listing the variables in [Vars], using
       --  [Map] for the translation from actuals to formals in a call.
 
+      function Get_Line_Number (N : Node_Id; Flag : Source_Ptr) return String;
+      --  Return a string describing the location Flag wrt the origin of the
+      --  message on node N.
+
       function Get_Loop_Condition_Or_Variable
         (Stmt : Node_Id) return Node_Or_Entity_Id
       with
@@ -792,6 +797,12 @@ package body Flow_Error_Messages is
             Ekind (Get_Loop_Condition_Or_Variable'Result) = E_Loop_Parameter;
       --  Get the loop condition for a WHILE loop or the loop variable for a
       --  FOR loop. Return Empty for a plain loop.
+
+      function Get_Pre_Post
+        (Proc    : Entity_Id;
+         Prag_Id : Pragma_Id) return Node_Lists.List;
+      --  Return the list of expressions mentioned in a precondition or a
+      --  postcondition, including the class-wide ones.
 
       function Get_Previous_Explain_Node (N : Node_Id) return Node_Id with
         Pre  => Is_Stmt_Or_Prag_Or_Decl (N),
@@ -920,6 +931,42 @@ package body Flow_Error_Messages is
          return Expl;
       end Explain_Variables;
 
+      ---------------------
+      -- Get_Line_Number --
+      ---------------------
+
+      --  This function was inspired by Erroutc.Set_Msg_Insertion_Line_Number
+      --  to decide when to refer to the filename in the location.
+
+      function Get_Line_Number (N : Node_Id; Flag : Source_Ptr) return String
+      is
+         Loc         : constant Source_Ptr := Sloc (N);
+         Sindex_Loc  : constant Source_File_Index :=
+           Get_Source_File_Index (Loc);
+         Sindex_Flag : constant Source_File_Index :=
+           Get_Source_File_Index (Flag);
+         Fname       : File_Name_Type;
+         Line        : constant String :=
+           String_Utils.Trimi (Get_Physical_Line_Number (Flag)'Img, ' ');
+
+      begin
+         --  Use "at file-name:line-num" if reference is to other than the
+         --  source file in which the unproved check message is placed.
+         --  Note that we check full file names, rather than just the source
+         --  indexes, to deal with generic instantiations from the current
+         --  file.
+
+         if Full_File_Name (Sindex_Loc) /= Full_File_Name (Sindex_Flag) then
+            Fname := Reference_Name (Get_Source_File_Index (Flag));
+            return "at " & Get_Name_String (Fname) & ":" & Line;
+
+         --  If in current file, use text "at line line-num"
+
+         else
+            return "at line " & Line;
+         end if;
+      end Get_Line_Number;
+
       ------------------------------------
       -- Get_Loop_Condition_Or_Variable --
       ------------------------------------
@@ -949,6 +996,23 @@ package body Flow_Error_Messages is
             return Defining_Identifier (Iterator_Specification (Scheme));
          end if;
       end Get_Loop_Condition_Or_Variable;
+
+      ------------------
+      -- Get_Pre_Post --
+      ------------------
+
+      function Get_Pre_Post
+        (Proc    : Entity_Id;
+         Prag_Id : Pragma_Id) return Node_Lists.List
+      is
+         Prag       : Node_Lists.List :=
+           Find_Contracts (Proc, Prag_Id);
+         Class_Prag : constant Node_Lists.List :=
+           Find_Contracts (Proc, Prag_Id, Classwide => True);
+      begin
+         SPARK_Util.Append (To => Prag, Elmts => Class_Prag);
+         return Prag;
+      end Get_Pre_Post;
 
       -------------------------------
       -- Get_Previous_Explain_Node --
@@ -1233,6 +1297,11 @@ package body Flow_Error_Messages is
             --  control-flow graph, as we bump into assignments that provide a
             --  value to some variables.
 
+            Restarted_Search : Boolean := False;
+            --  Flag set to True if the search was restarted from the last
+            --  statement of the subprogram. This is done for checks inside
+            --  postconditions.
+
             Stmt        : Node_Id;
             Vars        : Flow_Id_Sets.Set;
             Ignore_Vars : Flow_Id_Sets.Set;
@@ -1402,7 +1471,7 @@ package body Flow_Error_Messages is
                      --  Retrieve those variables mentioned in a postcondition
 
                      Info_Vars.Clear;
-                     Pragmas := Find_Contracts (Proc, Pragma_Postcondition);
+                     Pragmas := Get_Pre_Post (Proc, Pragma_Postcondition);
                      for Expr of Pragmas loop
                         Info_Vars.Union (Get_Variables_From_Expr
                                           (Expr, N, Formal_To_Actual));
@@ -1421,15 +1490,13 @@ package body Flow_Error_Messages is
                         Expl := Explain_Variables (Vars, Actual_To_Formal);
 
                         if Pragmas.Is_Empty then
-                           Expl := "call at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Stmt))'Img
+                           Expl := "call "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl
                              & " in a postcondition";
                         else
-                           Expl := "postcondition of call at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Stmt))'Img
+                           Expl := "postcondition of call "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl;
                         end if;
 
@@ -1514,14 +1581,14 @@ package body Flow_Error_Messages is
                         Expl := Explain_Variables (Vars);
 
                         if Pragmas.Is_Empty then
-                           Expl := "loop at line"
-                             & Get_Physical_Line_Number (Sloc (Stmt))'Img
+                           Expl := "loop "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl
                              & " in a loop invariant";
                         else
-                           Expl := "loop invariant at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Pragmas.First_Element))'Img
+                           Expl := "loop invariant "
+                             & Get_Line_Number
+                                 (N, Sloc (Pragmas.First_Element))
                              & " should mention " & Expl;
                         end if;
 
@@ -1560,9 +1627,58 @@ package body Flow_Error_Messages is
                           or else
                             Get_Pragma (Proc, Get_Pragma_Id (Prag_N)) /= Prag_N
                         then
+                           --  Retrieve the next explanation node to continue
+                           --  the search.
+
+                           Stmt := Get_Previous_Explain_Node (Stmt);
+
                            goto SEARCH;
                         end if;
                      end if;
+
+                     --  If we're looking for an explanation for a check inside
+                     --  a postcondition attached to that subprogram, restart
+                     --  the search from the last statement of the subprogram
+                     --  body.
+
+                     if not Restarted_Search
+                       and then Present (Prag_N)
+                       and then Get_Pragma_Id (Prag_N) in
+                                  Pragma_Post
+                                | Pragma_Postcondition
+                                | Pragma_Post_Class
+                                | Pragma_Refined_Post
+                     then
+                        declare
+                           Body_N : constant Node_Id := Get_Body (Proc);
+                        begin
+                           if Present (Body_N) then
+                              Stmt := Last (Statements
+                                        (Handled_Statement_Sequence (Body_N)));
+
+                              --  Retrieve the next explanation node to restart
+                              --  the search.
+
+                              if Nkind (Stmt) not in Explain_Node_Kind then
+                                 Stmt := Get_Previous_Explain_Node (Stmt);
+                              end if;
+
+                              Restarted_Search := True;
+                              goto SEARCH;
+                           end if;
+                        end;
+                     end if;
+
+                     --  Report the missing precondition on the spec of the
+                     --  subprogram if any.
+
+                     declare
+                        Subp_Spec : constant Node_Id := Subprogram_Spec (Proc);
+                     begin
+                        if Present (Subp_Spec) then
+                           Stmt := Subp_Spec;
+                        end if;
+                     end;
 
                      --  Do not try to explain unproved postcondition checks
                      --  by missing information in the precondition, as it's
@@ -1639,9 +1755,9 @@ package body Flow_Error_Messages is
                      --  Retrieve those variables mentioned in a precondition
 
                      Info_Vars.Clear;
-                     Pragmas := Find_Contracts (Proc, Pragma_Precondition);
+                     Pragmas := Get_Pre_Post (Proc, Pragma_Precondition);
                      for Expr of Pragmas loop
-                        Info_Vars := Get_Variables_From_Expr (Expr, N);
+                        Info_Vars.Union (Get_Variables_From_Expr (Expr, N));
                      end loop;
 
                      --  Compute variables that are both relevant for proving
@@ -1664,22 +1780,19 @@ package body Flow_Error_Messages is
                         Expl := Explain_Variables (Vars);
 
                         if Is_Predicate_Function (Proc) then
-                           Expl := "predicate at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Stmt))'Img
+                           Expl := "predicate "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl
                              & " in a guard G as in (if G then Condition)";
 
                         elsif Pragmas.Is_Empty then
-                           Expl := "subprogram at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Stmt))'Img
+                           Expl := "subprogram "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl
                              & " in a precondition";
                         else
-                           Expl := "precondition of subprogram at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Stmt))'Img
+                           Expl := "precondition of subprogram "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl;
                         end if;
 
@@ -1689,15 +1802,13 @@ package body Flow_Error_Messages is
                         Expl := Explain_Output_Variables (Out_Vars);
 
                         if Pragmas.Is_Empty then
-                           Expl := "subprogram at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Stmt))'Img
+                           Expl := "subprogram "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl
                              & " in a precondition";
                         else
-                           Expl := "precondition of subprogram at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Stmt))'Img
+                           Expl := "precondition of subprogram "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl;
                         end if;
 
@@ -1713,9 +1824,10 @@ package body Flow_Error_Messages is
                   end;
                end case;
 
+               Stmt := Get_Previous_Explain_Node (Stmt);
+
             << SEARCH >>
 
-               Stmt := Get_Previous_Explain_Node (Stmt);
             end loop;
 
             --  No explanation was found

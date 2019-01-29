@@ -1,4 +1,4 @@
-prot.adb:10:25: medium: overflow check might fail [possible explanation: subprogram at line 8 should mention Visible in a precondition]
+prot.adb:10:25: medium: overflow check might fail [possible explanation: subprogram at prot.ads:7 should mention Visible in a precondition]
 prot.adb:15:33: medium: overflow check might fail
 prot.adb:15:37: medium: overflow check might fail
 prot.adb:25:29: medium: overflow check might fail

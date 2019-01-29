@@ -169,7 +169,7 @@ simple_unc_arrays.ads:85:67: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:85:67: info: overflow check proved (CVC4: 1 VC)
 simple_unc_arrays.ads:88:26: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:88:53: info: index check proved (CVC4: 2 VC)
-simple_unc_arrays.ads:96:51: medium: postcondition might fail, cannot prove A.V (J) <= A.V (J+1) (e.g. when A = (Last => ?, V => (1 => 0, others => -1)) and A'Old = (Last => 2, V => ?) and J = 1)
+simple_unc_arrays.ads:96:51: medium: postcondition might fail, cannot prove A.V (J) <= A.V (J+1) (e.g. when A = (Last => ?, V => (1 => 0, others => -1)) and A'Old = (Last => 2, V => ?) and J = 1) [possible explanation: call at simple_unc_arrays.adb:184 should mention A in a postcondition]
 simple_unc_arrays.ads:96:56: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:96:68: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:96:68: info: overflow check proved (CVC4: 1 VC)

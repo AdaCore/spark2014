@@ -7,8 +7,8 @@ test.adb:26:33: high: "G" is not an input in the Global contract of subprogram "
 test.adb:26:33: high: "G" is not initialized
 test.adb:26:33: high: either make "G" an input in the Global contract or initialize it before use
 test.adb:26:33: low: unused global "G"
-test.adb:33:14: medium: overflow check might fail [possible explanation: subprogram at line 30 should mention X in a precondition]
+test.adb:33:14: medium: overflow check might fail [possible explanation: subprogram at line 25 should mention X in a precondition]
 test.adb:37:32: low: unused global "G"
-test.adb:44:14: medium: overflow check might fail [possible explanation: subprogram at line 41 should mention X in a precondition]
+test.adb:44:14: medium: overflow check might fail [possible explanation: subprogram at line 36 should mention X in a precondition]
 test.adb:47:14: low: unused global "G"
-test.adb:54:14: medium: overflow check might fail [possible explanation: subprogram at line 51 should mention X in a precondition]
+test.adb:54:14: medium: overflow check might fail [possible explanation: subprogram at line 47 should mention X in a precondition]

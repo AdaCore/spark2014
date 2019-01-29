@@ -10,21 +10,21 @@ assign_all_arr_incr.adb:5:22: medium: overflow check might fail [CWE 190] (e.g. 
 assign_all_arr_incr_unk.adb:4:21: info: cannot unroll loop (too many loop iterations)
 assign_all_arr_incr_unk.adb:5:22: medium: overflow check might fail [CWE 190] (e.g. when J = -1 and X = (-1 => Integer'First, others => -1)) [possible explanation: loop at line 4 should mention X in a loop invariant]
 assign_arr.adb:4:13: medium: "X" might not be initialized [CWE 457]
-assign_arr.adb:4:18: medium: overflow check might fail [CWE 190] (e.g. when X = (others => 0) and Y = Integer'Last) [possible explanation: subprogram at line 2 should mention Y in a precondition]
+assign_arr.adb:4:18: medium: overflow check might fail [CWE 190] (e.g. when X = (others => 0) and Y = Integer'Last) [possible explanation: subprogram at assign_arr.ads:3 should mention Y in a precondition]
 assign_arr.adb:5:13: info: initialization of "X" proved
-assign_arr.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at line 2 should mention Y in a precondition]
+assign_arr.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at assign_arr.ads:3 should mention Y in a precondition]
 assign_arr.ads:3:22: info: initialization of "X" proved
 assign_arr_unk.adb:4:10: medium: array index check might fail [CWE 120] (e.g. when X = (others => 0) and X'First = 2)
 assign_arr_unk.adb:4:13: medium: "X" might not be initialized [CWE 457]
-assign_arr_unk.adb:4:18: medium: overflow check might fail [CWE 190] (e.g. when X = (others => 1) and Y = Integer'Last) [possible explanation: subprogram at line 2 should mention Y in a precondition]
+assign_arr_unk.adb:4:18: medium: overflow check might fail [CWE 190] (e.g. when X = (others => 1) and Y = Integer'Last) [possible explanation: subprogram at assign_arr_unk.ads:3 should mention Y in a precondition]
 assign_arr_unk.adb:5:10: medium: array index check might fail [CWE 120] (e.g. when X'Last = 1)
 assign_arr_unk.adb:5:13: info: initialization of "X" proved
-assign_arr_unk.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at line 2 should mention Y in a precondition]
+assign_arr_unk.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at assign_arr_unk.ads:3 should mention Y in a precondition]
 assign_arr_unk.ads:3:22: info: initialization of "X" proved
 assign_pos.adb:1:23: info: initialization of "X" proved
 assign_pos.adb:3:11: medium: overflow check might fail [CWE 190] (e.g. when Y = Positive'Last) [possible explanation: subprogram at line 1 should mention Y in a precondition]
-assign_rec.adb:4:16: medium: overflow check might fail [CWE 190] (e.g. when X = (C => 0, D => (A => 0, B => 0)) and Y = Integer'Last) [possible explanation: subprogram at line 2 should mention Y in a precondition]
-assign_rec.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at line 2 should mention Y in a precondition]
+assign_rec.adb:4:16: medium: overflow check might fail [CWE 190] (e.g. when X = (C => 0, D => (A => 0, B => 0)) and Y = Integer'Last) [possible explanation: subprogram at assign_rec.ads:9 should mention Y in a precondition]
+assign_rec.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at assign_rec.ads:9 should mention Y in a precondition]
 assign_rec.ads:9:22: high: "X.D.A" is not initialized in "Assign" [CWE 457]
 assign_rec.ads:9:22: info: initialization of "X.C" proved
 assign_rec.ads:9:22: info: initialization of "X.D.B" proved
@@ -84,9 +84,9 @@ call_unknown_rel.adb:5:19: info: initialization of "X" proved
 call_unknown_rel.adb:5:19: medium: assertion might fail, cannot prove X < 2 * Y + 1 (e.g. when X = -1 and Y = -1) [possible explanation: call at line 4 should mention X (for argument X) in a postcondition]
 call_unknown_rel.adb:5:25: medium: overflow check might fail [CWE 190] (e.g. when Y = -1073741825) [possible explanation: subprogram at line 2 should mention Y in a precondition]
 call_unknown_rel.adb:5:29: info: overflow check proved (CVC4: 1 VC)
-case_assign.adb:6:19: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [possible explanation: subprogram at line 2 should mention Y in a precondition]
-case_assign.adb:8:19: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at line 2 should mention Y in a precondition]
-case_assign.adb:10:19: medium: overflow check might fail [CWE 190] (e.g. when Y = -1073741825) [possible explanation: subprogram at line 2 should mention Y in a precondition]
+case_assign.adb:6:19: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [possible explanation: subprogram at case_assign.ads:3 should mention Y in a precondition]
+case_assign.adb:8:19: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at case_assign.ads:3 should mention Y in a precondition]
+case_assign.adb:10:19: medium: overflow check might fail [CWE 190] (e.g. when Y = -1073741825) [possible explanation: subprogram at case_assign.ads:3 should mention Y in a precondition]
 case_assign.ads:3:21: info: initialization of "X" proved
 concat.adb:2:34: medium: "Z" might not be initialized in "Concat" [CWE 457]
 concat.adb:5:21: info: cannot unroll loop (too many loop iterations)

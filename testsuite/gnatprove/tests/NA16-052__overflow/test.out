@@ -1,1 +1,1 @@
-t1q1a.adb:7:14: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 5 should mention X in a precondition]
+t1q1a.adb:7:14: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at t1q1a.ads:5 should mention X in a precondition]

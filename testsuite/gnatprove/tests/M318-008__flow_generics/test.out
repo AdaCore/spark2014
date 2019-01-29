@@ -2,7 +2,7 @@ test.adb:12:15: info: initialization of "Temp" proved, in instantiation at test.
 test.adb:12:15: info: initialization of "Temp" proved, in instantiation at test.adb:16
 test.adb:18:04: warning: analyzing unreferenced procedure "Call_Both"
 test.adb:35:16: info: index check proved (CVC4: 2 VC), in instantiation at test.adb:42
-test.adb:35:28: medium: overflow check might fail, in instantiation at test.adb:42 [possible explanation: precondition of subprogram at line 31 should mention A and B]
+test.adb:35:28: medium: overflow check might fail, in instantiation at test.adb:42 [possible explanation: precondition of subprogram at test.ads:21 should mention A and B]
 test.adb:35:35: medium: overflow check might fail, in instantiation at test.adb:42
 test.adb:35:45: info: index check proved (CVC4: 2 VC), in instantiation at test.adb:42
 test.adb:35:45: info: overflow check proved (CVC4: 1 VC), in instantiation at test.adb:42
@@ -49,5 +49,5 @@ test.adb:200:25: info: range check proved (CVC4: 1 VC)
 test.adb:201:07: info: precondition proved (CVC4: 2 VC)
 test.adb:201:22: info: range check proved (CVC4: 1 VC)
 test.adb:201:37: info: range check proved (CVC4: 1 VC)
-test.ads:65:28: medium: postcondition might fail, cannot prove not Is_Empty (Inventory (I)), in instantiation at test.adb:179
+test.ads:65:28: medium: postcondition might fail, cannot prove not Is_Empty (Inventory (I)), in instantiation at test.adb:179 [possible explanation: loop at test.adb:145 should mention Inventory in a loop invariant]
 test.ads:65:53: info: index check proved (CVC4: 2 VC), in instantiation at test.adb:179

@@ -364,46 +364,46 @@ sensfusion6_pack.adb:199:42: info: initialization of "Norm_Ay" proved, in call i
 sensfusion6_pack.adb:199:50: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:199:52: info: initialization of "Half_Vx" proved
 sensfusion6_pack.adb:199:52: info: initialization of "Half_Vx" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:203:42: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Integral_FBx and Two_Ki in a precondition]
-sensfusion6_pack.adb:203:51: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Two_Ki in a precondition]
+sensfusion6_pack.adb:203:42: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Integral_FBx and Two_Ki in a precondition]
+sensfusion6_pack.adb:203:51: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Ki in a precondition]
 sensfusion6_pack.adb:203:53: info: initialization of "Half_Ex" proved
 sensfusion6_pack.adb:203:53: info: initialization of "Half_Ex" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:203:61: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Two_Ki in a precondition]
-sensfusion6_pack.adb:204:42: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Integral_FBy and Two_Ki in a precondition]
-sensfusion6_pack.adb:204:51: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Two_Ki in a precondition]
+sensfusion6_pack.adb:203:61: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Ki in a precondition]
+sensfusion6_pack.adb:204:42: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Integral_FBy and Two_Ki in a precondition]
+sensfusion6_pack.adb:204:51: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Ki in a precondition]
 sensfusion6_pack.adb:204:53: info: initialization of "Half_Ey" proved
 sensfusion6_pack.adb:204:53: info: initialization of "Half_Ey" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:204:61: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Two_Ki in a precondition]
-sensfusion6_pack.adb:205:42: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Integral_FBz and Two_Ki in a precondition]
-sensfusion6_pack.adb:205:51: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Two_Ki in a precondition]
+sensfusion6_pack.adb:204:61: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Ki in a precondition]
+sensfusion6_pack.adb:205:42: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Integral_FBz and Two_Ki in a precondition]
+sensfusion6_pack.adb:205:51: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Ki in a precondition]
 sensfusion6_pack.adb:205:53: info: initialization of "Half_Ez" proved
 sensfusion6_pack.adb:205:53: info: initialization of "Half_Ez" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:205:61: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Two_Ki in a precondition]
+sensfusion6_pack.adb:205:61: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Ki in a precondition]
 sensfusion6_pack.adb:206:23: info: initialization of "Rad_Gx" proved
 sensfusion6_pack.adb:206:23: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:206:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Integral_FBx in a precondition]
+sensfusion6_pack.adb:206:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Integral_FBx in a precondition]
 sensfusion6_pack.adb:207:23: info: initialization of "Rad_Gy" proved
 sensfusion6_pack.adb:207:23: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:207:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Integral_FBy in a precondition]
+sensfusion6_pack.adb:207:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Integral_FBy in a precondition]
 sensfusion6_pack.adb:208:23: info: initialization of "Rad_Gz" proved
 sensfusion6_pack.adb:208:23: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:208:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Integral_FBz in a precondition]
+sensfusion6_pack.adb:208:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Integral_FBz in a precondition]
 sensfusion6_pack.adb:216:20: info: initialization of "Rad_Gx" proved
 sensfusion6_pack.adb:216:20: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:216:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Two_Kp in a precondition]
-sensfusion6_pack.adb:216:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Two_Kp in a precondition]
+sensfusion6_pack.adb:216:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
+sensfusion6_pack.adb:216:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
 sensfusion6_pack.adb:216:38: info: initialization of "Half_Ex" proved
 sensfusion6_pack.adb:216:38: info: initialization of "Half_Ex" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:217:20: info: initialization of "Rad_Gy" proved
 sensfusion6_pack.adb:217:20: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:217:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Two_Kp in a precondition]
-sensfusion6_pack.adb:217:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Two_Kp in a precondition]
+sensfusion6_pack.adb:217:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
+sensfusion6_pack.adb:217:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
 sensfusion6_pack.adb:217:38: info: initialization of "Half_Ey" proved
 sensfusion6_pack.adb:217:38: info: initialization of "Half_Ey" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:218:20: info: initialization of "Rad_Gz" proved
 sensfusion6_pack.adb:218:20: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:218:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Two_Kp in a precondition]
-sensfusion6_pack.adb:218:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Two_Kp in a precondition]
+sensfusion6_pack.adb:218:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
+sensfusion6_pack.adb:218:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
 sensfusion6_pack.adb:218:38: info: initialization of "Half_Ez" proved
 sensfusion6_pack.adb:218:38: info: initialization of "Half_Ez" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:222:17: info: initialization of "Rad_Gx" proved
@@ -418,7 +418,7 @@ sensfusion6_pack.adb:224:17: info: initialization of "Rad_Gz" proved
 sensfusion6_pack.adb:224:17: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:224:24: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:224:31: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:226:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Q0 and Q3 in a precondition]
+sensfusion6_pack.adb:226:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q0 and Q3 in a precondition]
 sensfusion6_pack.adb:226:24: info: initialization of "Qb" proved
 sensfusion6_pack.adb:226:24: info: initialization of "Qb" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:226:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
@@ -430,11 +430,11 @@ sensfusion6_pack.adb:226:38: info: initialization of "Qc" proved, in call inline
 sensfusion6_pack.adb:226:41: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:226:43: info: initialization of "Rad_Gy" proved
 sensfusion6_pack.adb:226:43: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:226:50: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Q3 in a precondition]
-sensfusion6_pack.adb:226:55: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Q3 in a precondition]
+sensfusion6_pack.adb:226:50: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
+sensfusion6_pack.adb:226:55: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
 sensfusion6_pack.adb:226:57: info: initialization of "Rad_Gz" proved
 sensfusion6_pack.adb:226:57: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:227:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Q1 and Q3 in a precondition]
+sensfusion6_pack.adb:227:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q1 and Q3 in a precondition]
 sensfusion6_pack.adb:227:23: info: initialization of "Qa" proved
 sensfusion6_pack.adb:227:23: info: initialization of "Qa" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:227:26: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
@@ -446,11 +446,11 @@ sensfusion6_pack.adb:227:37: info: initialization of "Qc" proved, in call inline
 sensfusion6_pack.adb:227:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:227:42: info: initialization of "Rad_Gz" proved
 sensfusion6_pack.adb:227:42: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:227:49: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Q3 in a precondition]
-sensfusion6_pack.adb:227:54: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Q3 in a precondition]
+sensfusion6_pack.adb:227:49: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
+sensfusion6_pack.adb:227:54: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
 sensfusion6_pack.adb:227:56: info: initialization of "Rad_Gy" proved
 sensfusion6_pack.adb:227:56: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:228:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Q2 and Q3 in a precondition]
+sensfusion6_pack.adb:228:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q2 and Q3 in a precondition]
 sensfusion6_pack.adb:228:23: info: initialization of "Qa" proved
 sensfusion6_pack.adb:228:23: info: initialization of "Qa" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:228:26: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
@@ -462,11 +462,11 @@ sensfusion6_pack.adb:228:37: info: initialization of "Qb" proved, in call inline
 sensfusion6_pack.adb:228:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:228:42: info: initialization of "Rad_Gz" proved
 sensfusion6_pack.adb:228:42: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:228:49: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Q3 in a precondition]
-sensfusion6_pack.adb:228:54: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Q3 in a precondition]
+sensfusion6_pack.adb:228:49: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
+sensfusion6_pack.adb:228:54: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
 sensfusion6_pack.adb:228:56: info: initialization of "Rad_Gx" proved
 sensfusion6_pack.adb:228:56: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:229:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at line 248 should mention Q3 in a precondition]
+sensfusion6_pack.adb:229:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
 sensfusion6_pack.adb:229:23: info: initialization of "Qa" proved
 sensfusion6_pack.adb:229:23: info: initialization of "Qa" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:229:26: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258

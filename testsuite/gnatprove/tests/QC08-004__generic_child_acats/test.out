@@ -7,10 +7,10 @@ main.adb:38:19: info: initialization of "My_Literal" proved
 main.adb:38:32: info: initialization of "Complex_One" proved
 main.adb:40:18: info: initialization of "Complex_Two" proved
 main.adb:43:18: medium: precondition might fail
-parent-child.adb:7:27: medium: overflow check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at line 3 should mention Left and Right in a precondition]
-parent-child.adb:7:27: medium: range check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at line 3 should mention Left and Right in a precondition]
-parent-child.adb:7:51: medium: overflow check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at line 3 should mention Left and Right in a precondition]
-parent-child.adb:7:51: medium: range check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at line 3 should mention Left and Right in a precondition]
+parent-child.adb:7:27: medium: overflow check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
+parent-child.adb:7:27: medium: range check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
+parent-child.adb:7:51: medium: overflow check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
+parent-child.adb:7:51: medium: range check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
 parent.adb:20:21: info: overflow check proved (CVC4: 1 VC), in instantiation at main.adb:11
 parent.adb:21:20: info: initialization of "Result.Imag" proved, in instantiation at main.adb:11
 parent.adb:21:20: info: initialization of "Result.Real" proved, in instantiation at main.adb:11

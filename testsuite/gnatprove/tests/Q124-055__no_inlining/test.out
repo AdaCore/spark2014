@@ -8,8 +8,8 @@ array_arith.adb:18:12: info: initialization of "X" proved
 array_arith.adb:19:12: info: initialization of "X" proved
 array_arith.adb:20:12: info: initialization of "X" proved
 array_arith.adb:21:13: info: initialization of "X" proved
-array_arith.adb:29:19: medium: overflow check might fail (e.g. when One = Integer'Last and Y = 1) [possible explanation: subprogram at line 27 should mention Y and One in a precondition]
-array_arith.adb:29:19: medium: range check might fail [possible explanation: subprogram at line 27 should mention Y and One in a precondition]
+array_arith.adb:29:19: medium: overflow check might fail (e.g. when One = Integer'Last and Y = 1) [possible explanation: subprogram at line 26 should mention Y and One in a precondition]
+array_arith.adb:29:19: medium: range check might fail [possible explanation: subprogram at line 26 should mention Y and One in a precondition]
 array_arith.adb:32:12: medium: "X" might not be initialized
 array_arith.adb:32:15: info: initialization of "One" proved
 array_arith.adb:33:12: info: initialization of "X" proved
@@ -30,8 +30,8 @@ array_arith.adb:40:12: info: initialization of "X" proved
 array_arith.adb:40:15: info: initialization of "One" proved
 array_arith.adb:41:13: info: initialization of "X" proved
 array_arith.adb:41:16: info: initialization of "One" proved
-array_arith.adb:63:19: medium: overflow check might fail (e.g. when One = Integer'Last and Y = 1) [possible explanation: subprogram at line 61 should mention Y and One in a precondition]
-array_arith.adb:63:19: medium: range check might fail [possible explanation: subprogram at line 61 should mention Y and One in a precondition]
+array_arith.adb:63:19: medium: overflow check might fail (e.g. when One = Integer'Last and Y = 1) [possible explanation: subprogram at line 46 should mention Y and One in a precondition]
+array_arith.adb:63:19: medium: range check might fail [possible explanation: subprogram at line 46 should mention Y and One in a precondition]
 array_arith.adb:66:07: high: "X" is not initialized
 array_arith.adb:66:07: info: initialization of "One" proved
 array_arith.adb:70:29: info: initialization of "Y" proved
@@ -53,10 +53,10 @@ array_arith.ads:12:35: info: initialization of "X" proved
 array_arith.ads:12:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 9 and X = (others => 0))
 array_arith.ads:14:21: info: initialization of "X" proved
 array_arith.ads:15:35: info: initialization of "X" proved
-array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 1 and X = (others => 0))
+array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 1 and X = (others => 0)) [possible explanation: call at array_arith.adb:66 should mention X in a postcondition]
 array_arith.ads:17:20: info: initialization of "X" proved
 array_arith.ads:18:35: info: initialization of "X" proved
-array_arith.ads:18:35: medium: postcondition might fail, cannot prove X(J) = 0 (e.g. when J = 9 and X = (9 => 1, others => 0))
+array_arith.ads:18:35: medium: postcondition might fail, cannot prove X(J) = 0 (e.g. when J = 9 and X = (9 => 1, others => 0)) [possible explanation: call at array_arith.adb:85 should mention Y (for argument X) in a postcondition]
 ident.adb:6:42: info: initialization of "Y" proved
 ident.adb:43:25: info: initialization of "X" proved
 ident.adb:44:22: info: initialization of "Res" proved
@@ -82,10 +82,10 @@ ident.adb:55:22: medium: assertion might fail, cannot prove Y = 9 [possible expl
 ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
 ident.ads:9:45: info: initialization of "Y" proved
-incr_expr_fun.adb:4:62: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 4 should mention X in a precondition]
-incr_expr_fun.adb:6:63: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 6 should mention X in a precondition]
+incr_expr_fun.adb:4:62: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at incr_expr_fun.ads:11 should mention X in a precondition]
+incr_expr_fun.adb:6:63: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at incr_expr_fun.ads:22 should mention X in a precondition]
 incr_expr_fun.adb:8:58: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 8 should mention X in a precondition]
-incr_expr_fun.adb:11:63: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 11 should mention X in a precondition]
+incr_expr_fun.adb:11:63: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 10 should mention X in a precondition]
 incr_expr_fun.adb:16:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:16:32: info: initialization of "X" proved
 incr_expr_fun.adb:16:39: info: overflow check proved (CVC4: 1 VC)
@@ -114,8 +114,8 @@ incr_expr_fun.adb:24:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:24:38: info: initialization of "X" proved
 incr_expr_fun.adb:24:45: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.ads:4:57: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 4 should mention X in a precondition]
-incr_expr_fun.ads:7:61: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 7 should mention X in a precondition]
+incr_expr_fun.ads:7:61: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 6 should mention X in a precondition]
 incr_expr_fun.ads:13:14: warning: subprogram "Test" has no effect
-incr_expr_fun.ads:15:62: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 15 should mention X in a precondition]
+incr_expr_fun.ads:15:62: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 9 should mention X in a precondition]
 incr_expr_fun.ads:17:58: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 17 should mention X in a precondition]
-incr_expr_fun.ads:20:63: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 20 should mention X in a precondition]
+incr_expr_fun.ads:20:63: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 19 should mention X in a precondition]

@@ -1,1 +1,1 @@
-pack.adb:6:14: medium: overflow check might fail, in call inlined at pack.adb:12 (e.g. when X = Integer'Last) [possible explanation: subprogram at line 10 should mention X in a precondition]
+pack.adb:6:14: medium: overflow check might fail, in call inlined at pack.adb:12 (e.g. when X = Integer'Last) [possible explanation: subprogram at pack.ads:4 should mention X in a precondition]

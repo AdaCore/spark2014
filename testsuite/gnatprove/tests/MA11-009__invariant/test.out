@@ -7,14 +7,14 @@ kmp.adb:14:17: info: initialization of "J" proved
 kmp.adb:14:17: info: loop invariant initialization proved (CVC4: 3 VC)
 kmp.adb:14:17: medium: loop invariant might fail after first iteration, cannot prove J in P'range
 kmp.adb:14:34: info: initialization of "I" proved
-kmp.adb:16:17: medium: loop invariant might fail after first iteration, cannot prove P (I - J .. J) = P (0..J - 1) [possible explanation: precondition of subprogram at line 5 should mention P]
-kmp.adb:16:17: medium: loop invariant might fail in first iteration, cannot prove P (I - J .. J) = P (0..J - 1) [possible explanation: precondition of subprogram at line 5 should mention P]
-kmp.adb:16:17: medium: range check might fail [possible explanation: precondition of subprogram at line 5 should mention P]
+kmp.adb:16:17: medium: loop invariant might fail after first iteration, cannot prove P (I - J .. J) = P (0..J - 1) [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]
+kmp.adb:16:17: medium: loop invariant might fail in first iteration, cannot prove P (I - J .. J) = P (0..J - 1) [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]
+kmp.adb:16:17: medium: range check might fail [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]
 kmp.adb:16:20: info: initialization of "I" proved
 kmp.adb:16:22: medium: overflow check might fail
 kmp.adb:16:24: info: initialization of "J" proved
 kmp.adb:16:29: info: initialization of "J" proved
-kmp.adb:16:34: medium: range check might fail [possible explanation: precondition of subprogram at line 5 should mention P]
+kmp.adb:16:34: medium: range check might fail [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]
 kmp.adb:16:42: info: initialization of "J" proved
 kmp.adb:16:44: medium: overflow check might fail
 kmp.adb:17:19: info: initialization of "I" proved

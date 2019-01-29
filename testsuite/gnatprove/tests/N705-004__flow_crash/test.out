@@ -2,7 +2,7 @@ very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
 very_longs.adb:51:52: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:51:76: info: initialization of "Carry" proved
-very_longs.adb:55:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length
+very_longs.adb:55:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length [possible explanation: loop at line 63 should mention Result in a loop invariant]
 very_longs.adb:61:26: info: length check proved (CVC4: 4 VC)
 very_longs.adb:61:29: info: length check proved (CVC4: 4 VC)
 very_longs.adb:63:36: info: cannot unroll loop (too many loop iterations)
@@ -17,7 +17,7 @@ very_longs.adb:68:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:68:50: info: initialization of "Sum" proved
 very_longs.adb:74:58: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:74:82: info: initialization of "Borrow" proved
-very_longs.adb:78:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length
+very_longs.adb:78:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length [possible explanation: loop at line 86 should mention Result in a loop invariant]
 very_longs.adb:84:26: info: length check proved (CVC4: 4 VC)
 very_longs.adb:84:29: info: length check proved (CVC4: 4 VC)
 very_longs.adb:86:36: info: cannot unroll loop (too many loop iterations)
@@ -131,7 +131,7 @@ very_longs.adb:265:39: info: initialization of "Temp" proved
 very_longs.adb:269:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:274:42: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:274:42: info: range check proved (CVC4: 1 VC)
-very_longs.adb:274:42: medium: overflow check might fail [possible explanation: subprogram at line 273 should mention L and R in a precondition]
+very_longs.adb:274:42: medium: overflow check might fail [possible explanation: subprogram at very_longs.ads:59 should mention L and R in a precondition]
 very_longs.adb:282:26: info: length check proved (CVC4: 4 VC)
 very_longs.adb:282:29: info: length check proved (CVC4: 4 VC)
 very_longs.adb:285:36: info: cannot unroll loop (too many loop iterations)
