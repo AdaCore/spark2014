@@ -347,6 +347,8 @@ Interface Types
 
 No extensions or restrictions.
 
+.. _access-types:
+
 Access Types
 ------------
 
@@ -539,6 +541,11 @@ Two names N1 and N2 are said to *potentially overlap* if
 
 - N1 is a call on a traversal function and the actual traversed
   parameter of the call potentially overlaps N2 (or vice versa).
+
+[Note that for a given name N which denotes an object of an access
+type, the names N and N.all potentially overlap. Access value dereferencing
+is treated, for purposes of this definition, like record component selection
+or array indexing.]
 
 The prefix and the name that are potential aliases are called the
 *potentially aliased parts* of the potentially overlapping names.
@@ -744,8 +751,9 @@ a class-wide type might be an owning type).]
 
 .. _tu-access_types-04:
 
-4. A declaration of a stand-alone variable of an anonymous access type shall
-   have an explicit initial value.
+4. A declaration of a stand-alone object of an anonymous access type shall
+   have an explicit initial value and shall occur (directly or indirectly)
+   within a subprogram body, an entry body, or a block statement.
 
 .. _tu-access_types-05:
 
@@ -837,21 +845,19 @@ a class-wide type might be an owning type).]
 
 .. _tu-access_types-14:
 
-14. An owning object and its subcomponents are said to be *erased* at any point
-    where
+14. When an owning access object other than a borrower, an observer,
+    or an object in the Moved state is finalized, or when such an object
+    is passed as a part of an actual parameter of mode **out**, its value
+    shall be null.
 
-    - the object is the target of an assignment operation; or
-    - the object is part of an actual parameter of mode **out** in a call; or
-    - the scope in which the object is declared is exited and the object is
-      neither a borrower nor an observer.
+    [Redundant: This rule disallows storage leaks. Without this rule,
+    it would be possible to "lose" the last reference to an allocated
+    object.]
 
-    If the state of an access subcomponent of an owning object [redundant: ,
-    which is the object itself for an owning access object,] is Unrestricted at
-    the point where it is erased, it should be null.
-
-    [Redundant: This rule is needed to prevent storage leaks. We do not want an
-    object either to be overwritten or to cease to exist while it is the owner
-    of some allocated object.]
+    [Redundant: This rule applies to any finalization associated with a
+    call to an instance of Ada.Unchecked_Deallocation. For details, see
+    the Ada RM 13.11.2 rule "Free(X), ... first performs finalization of
+    the object designated by X".]
 
 .. _etu-access_types:
 

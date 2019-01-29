@@ -5,8 +5,17 @@ Packages
 
 .. _tu-fa-packages-01:
 
-1. In |SPARK| the elaboration of a package shall only update, directly or
-   indirectly, variables declared immediately within the package.
+1. The elaboration of a package shall not update, directly or
+   indirectly, a reachable element of a variable that is not declared
+   immediately within the package. [Roughly speaking, this means that
+   the outputs of the notional spec and body elaboration subprograms
+   shall all be objects declared immediately within the package.]
+
+.. _tu-fa-packages-02:
+
+2. The elaboration of a package declaration or body shall not leave any
+   object in the Moved state unless the object was already in the Moved
+   state at the start of that elaboration.
 
 .. _etu-packages:
 

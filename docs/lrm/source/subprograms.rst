@@ -29,10 +29,6 @@ a slice or the result object of a function call) or a formal parameter of
 a subprogram. In particular, a component of a protected unit is not
 an *entire object*.
 
-One object is *reachable* from a second object if the two are the
-same object or if the first is designated by an access-valued part
-of an object that is reachable from the second object.
-
 .. centered:: **Static Semantics**
 
 1. The *exit* value of a global item or parameter of a subprogram is its
@@ -42,8 +38,9 @@ of an object that is reachable from the second object.
    value at the call of the subprogram.
 
 3. An *output* of a subprogram is a global item or parameter whose final value,
-   or the final value of any object that is reachable from it,
-   may be updated by a successful call to the subprogram.  The result of a
+   or the final value of any of its reachable elements, may be updated by a
+   successful call to the subprogram. [See :ref:`access-types` for the
+   definition of "reachable element".] The result of a
    function is also an output.  A global item or parameter which is an external
    state with the property Async_Readers => True, and for which intermediate
    values are written during an execution leading to a successful call, is also
@@ -54,7 +51,8 @@ of an object that is reachable from the second object.
    to a call to a subprogram marked ``No_Return``.]
 
 4. An *input* of a subprogram is a global item or parameter whose
-   initial value may be used in determining the exit value of an
+   initial value (or that of any of its reachable elements)
+   may be used in determining the exit value of an
    output of the subprogram.  For a global item or parameter which is
    an external state with Async_Writers => True, each successive value
    read from the external state is also an input of the subprogram
@@ -1385,15 +1383,12 @@ calls.
    :ref:`tasks-and-synchronization`) or it is synchronized only due to being
    *constant after elaboration* (see section :ref:`object-declarations`).
 
-   Two names that denote reachable elements of the same interfering stand-alone
-   object, or which denote parts of the same interfering parameter, are said to
-   *potentially introduce aliasing* if they might denote overlapping regions of
-   memory, either themselves or through one of their reachable elements.
+   Two names that potentially overlap (see section :ref:`access-types`)
+   and which each denotes an interfering object are said to
+   *potentially introduce aliasing via parameter passing*.
    [This definition has the effect of exempting most synchronized objects
    from the anti-aliasing rules given below; aliasing of most synchronized
    objects via parameter passing is allowed.]
-   [The term "reachable element" is used in this definition instead of "part"
-   in order to treat deferencing like component selection.]
 
 2. A formal parameter is said to be *immutable* in the following cases:
 
@@ -1408,7 +1403,7 @@ calls.
 .. _tu-anti_aliasing-03:
 
 3. A procedure call shall not pass two actual parameters which potentially
-   introduce aliasing unless either
+   introduce aliasing via parameter passing unless either
 
    * both of the corresponding formal parameters are immutable; or
 
@@ -1418,7 +1413,8 @@ calls.
 .. _tu-anti_aliasing-04:
 
 4. If an actual parameter in a procedure call and a ``global_item`` referenced
-   by the called procedure potentially introduce aliasing, then
+   by the called procedure potentially introduce aliasing via parameter
+   passing, then 
 
    * the corresponding formal parameter shall be immutable; and
 
