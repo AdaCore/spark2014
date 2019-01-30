@@ -292,6 +292,26 @@ package body Flow_Refinement is
             --  such cases we jump to the entity of the aspect.
 
             when N_Pragma =>
+               --  Pretend that pre- and postconditions are attached to the
+               --  body; this makes no difference for flow analysis (which
+               --  relies on the FA.S_Scope and FA.B_Scope that are set before
+               --  analysing any subprogram), but is needed for proof (which
+               --  simply calls Get_Flow_Scope as needed).
+
+               if Get_Pragma_Id (Context) in Pragma_Contract_Cases
+                                           | Pragma_Initial_Condition
+                                           | Pragma_Precondition
+                                           | Pragma_Postcondition
+               then
+                  if From_Aspect_Specification (Context) then
+                     return (Ent  => Entity (Corresponding_Aspect (Context)),
+                             Part => Body_Part);
+                  else
+                     return (Ent  => Unique_Defining_Entity (Parent (Context)),
+                             Part => Body_Part);
+                  end if;
+               end if;
+
                Prev_Context := Context;
 
                if From_Aspect_Specification (Context) then
