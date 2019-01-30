@@ -651,8 +651,7 @@ Such an operation is called a *borrowing operation*.
 
 In the region of program text beween the point where a name denoting a
 managed object is borrowed and the end of the scope of the borrower, the
-ownership state of the name is Borrowed except for within nested scopes
-wherein the introduction of an observer changes the state to Observed.
+ownership state of the name is Borrowed.
 
 An indirect borrower of a name is defined to be a borrower either of
 a borrower of the name or of an indirect borrower of the name.
@@ -815,17 +814,13 @@ a class-wide type might be an owning type).]
 
 .. _tu-access_types-10:
 
-10. If the state of a name that denotes a managed object is Observed, then the
-    name shall neither be moved nor borrowed and shall not be used as the
-    target of an assignment.
+10. If the state of a name that denotes a managed object is Observed, the name
+    shall not be moved, borrowed, or assigned.
 
 .. _tu-access_types-11:
 
 11. If the state of a name that denotes a managed object is Borrowed, the name
-    shall not be moved, borrowed, or assigned, and shall not be used as a
-    primary, as a prefix, or as an actual parameter except as part of being
-    observed; furthermore, any existing borrowers (direct or indirect) of the
-    name become observers, providing only a constant view.
+    shall not be moved, borrowed, observed, or assigned.
 
 .. _tu-access_types-12:
 
