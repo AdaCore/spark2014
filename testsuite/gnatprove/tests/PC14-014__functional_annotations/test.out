@@ -29,6 +29,38 @@ a-cfhase.ads:965:44: info: overflow check proved (Z3: 1 VC), in instantiation at
 a-cfhase.ads:1001:49: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
 a-cfhase.ads:1074:20: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
 a-cfhase.ads:1089:20: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfinve.ads:59:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:60:29: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:61:71: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:63:56: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:69:27: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:70:27: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:70:50: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:72:20: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:72:43: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:73:22: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:73:46: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:73:46: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:79:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:315:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:318:37: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:357:73: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:390:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:393:37: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:425:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:471:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:495:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:536:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:601:28: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:601:57: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:601:57: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:729:23: info: precondition proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:731:38: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:732:38: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:765:14: info: precondition proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:767:39: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:768:70: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:769:35: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
 a-cforma.ads:743:39: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
 a-cforma.ads:752:17: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
 a-cforma.ads:787:42: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
@@ -61,85 +93,53 @@ a-cforse.ads:1366:20: info: precondition proved (Z3: 1 VC), in instantiation at 
 a-cforse.ads:1381:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_sets.ads:7
 a-cforse.ads:1415:47: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_sets.ads:7
 a-cforse.ads:1430:40: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cofove.ads:54:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:55:29: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:56:71: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:58:56: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:64:27: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:65:27: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:65:50: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:67:20: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:67:43: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:68:22: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:68:46: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:68:46: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:74:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:310:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:313:37: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:352:73: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:385:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:388:37: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:420:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:466:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:490:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:531:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:596:28: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:596:57: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:596:57: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:724:23: info: precondition proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:726:38: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:727:38: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:760:14: info: precondition proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:762:39: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:763:70: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:764:35: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
 a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at use_sets.ads:10
 a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at use_ordered_sets.ads:7
 a-cofuse.ads:244:26: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at use_sets.ads:10
 a-cofuse.ads:244:26: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:44:12: info: range check proved (Z3: 2 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-a-cofuve.ads:45:33: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
+a-cofuve.ads:44:12: info: range check proved (Z3: 2 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
+a-cofuve.ads:45:33: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-a-cofuve.ads:231:25: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-a-cofuve.ads:235:27: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-a-cofuve.ads:235:51: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
+a-cofuve.ads:231:25: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
+a-cofuve.ads:235:27: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
+a-cofuve.ads:235:51: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-a-cofuve.ads:236:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-a-cofuve.ads:236:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
+a-cofuve.ads:236:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
+a-cofuve.ads:236:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
 use_lists.adb:8:29: info: initialization of "Cu.Node" proved
 use_lists.adb:10:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:10:13: info: loop invariant preservation proved (Z3: 1 VC)
@@ -1468,59 +1468,59 @@ use_vectors.ads:16:36: info: range check proved (Z3: 1 VC)
 use_vectors.ads:17:12: info: range check proved (Z3: 2 VC)
 use_vectors.ads:18:35: info: range check proved (Z3: 1 VC)
 use_vectors.ads:20:12: info: range check proved (Z3: 2 VC)
-use_vectors.ads:34:75: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:37:14: info: postcondition proved (Z3: 2 VC)
-use_vectors.ads:39:24: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:39:37: info: range check proved (Z3: 1 VC)
-use_vectors.ads:39:41: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:39:54: info: range check proved (Z3: 1 VC)
-use_vectors.ads:44:14: info: postcondition proved (Z3: 2 VC)
-use_vectors.ads:46:24: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:46:48: info: range check proved (Z3: 1 VC)
+use_vectors.ads:35:75: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:38:14: info: postcondition proved (Z3: 2 VC)
+use_vectors.ads:40:24: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:40:37: info: range check proved (Z3: 1 VC)
+use_vectors.ads:40:41: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:40:54: info: range check proved (Z3: 1 VC)
+use_vectors.ads:45:14: info: postcondition proved (Z3: 2 VC)
 use_vectors.ads:47:24: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:47:36: info: range check proved (Z3: 1 VC)
-use_vectors.ads:51:27: info: division check proved (Z3: 1 VC)
-use_vectors.ads:52:14: info: postcondition proved (Z3: 3 VC)
-use_vectors.ads:52:29: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:54:08: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:54:20: info: range check proved (Z3: 1 VC)
-use_vectors.ads:54:25: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:54:49: info: range check proved (Z3: 1 VC)
-use_vectors.ads:55:12: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:55:26: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:55:26: info: range check proved (Z3: 1 VC)
+use_vectors.ads:47:48: info: range check proved (Z3: 1 VC)
+use_vectors.ads:48:24: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:48:36: info: range check proved (Z3: 1 VC)
+use_vectors.ads:52:27: info: division check proved (Z3: 1 VC)
+use_vectors.ads:53:14: info: postcondition proved (Z3: 3 VC)
+use_vectors.ads:53:29: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:55:08: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:55:20: info: range check proved (Z3: 1 VC)
+use_vectors.ads:55:25: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:55:49: info: range check proved (Z3: 1 VC)
 use_vectors.ads:56:12: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:56:36: info: range check proved (Z3: 1 VC)
-use_vectors.ads:66:11: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:66:23: info: range check proved (Z3: 1 VC)
-use_vectors.ads:66:32: info: contract case proved (Z3: 2 VC)
-use_vectors.ads:67:47: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:68:16: info: contract case proved (Z3: 5 VC)
-use_vectors.ads:69:18: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:69:37: info: range check proved (Z3: 1 VC)
-use_vectors.ads:70:67: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:71:19: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:71:31: info: range check proved (Z3: 1 VC)
-use_vectors.ads:78:14: info: postcondition proved (Z3: 2 VC)
-use_vectors.ads:80:21: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:80:33: info: range check proved (Z3: 1 VC)
+use_vectors.ads:56:26: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:56:26: info: range check proved (Z3: 1 VC)
+use_vectors.ads:57:12: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:57:36: info: range check proved (Z3: 1 VC)
+use_vectors.ads:67:11: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:67:23: info: range check proved (Z3: 1 VC)
+use_vectors.ads:67:32: info: contract case proved (Z3: 2 VC)
+use_vectors.ads:68:47: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:69:16: info: contract case proved (Z3: 5 VC)
+use_vectors.ads:70:18: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:70:37: info: range check proved (Z3: 1 VC)
+use_vectors.ads:71:67: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:72:19: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:72:31: info: range check proved (Z3: 1 VC)
+use_vectors.ads:79:14: info: postcondition proved (Z3: 2 VC)
 use_vectors.ads:81:21: info: precondition proved (Z3: 2 VC)
 use_vectors.ads:81:33: info: range check proved (Z3: 1 VC)
-use_vectors.ads:81:38: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:81:62: info: range check proved (Z3: 1 VC)
-use_vectors.ads:90:14: info: postcondition proved (Z3: 4 VC)
-use_vectors.ads:90:42: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:91:46: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:92:09: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:92:21: info: range check proved (Z3: 1 VC)
-use_vectors.ads:92:26: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:92:50: info: range check proved (Z3: 1 VC)
-use_vectors.ads:93:31: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:93:46: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:93:58: info: range check proved (Z3: 1 VC)
-use_vectors.ads:94:26: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:95:15: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:95:27: info: range check proved (Z3: 1 VC)
-use_vectors.ads:95:32: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:95:58: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:95:58: info: range check proved (Z3: 1 VC)
+use_vectors.ads:82:21: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:82:33: info: range check proved (Z3: 1 VC)
+use_vectors.ads:82:38: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:82:62: info: range check proved (Z3: 1 VC)
+use_vectors.ads:91:14: info: postcondition proved (Z3: 4 VC)
+use_vectors.ads:91:42: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:92:46: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:93:09: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:93:21: info: range check proved (Z3: 1 VC)
+use_vectors.ads:93:26: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:93:50: info: range check proved (Z3: 1 VC)
+use_vectors.ads:94:31: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:94:46: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:94:58: info: range check proved (Z3: 1 VC)
+use_vectors.ads:95:26: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:96:15: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:96:27: info: range check proved (Z3: 1 VC)
+use_vectors.ads:96:32: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:96:58: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:96:58: info: range check proved (Z3: 1 VC)
