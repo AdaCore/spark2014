@@ -483,8 +483,11 @@ package body Flow_Utility is
                   --  Entities translated as constants in Why3 should not
                   --  be considered as effects for proof. This includes in
                   --  particular formal parameters of mode IN.
+                  --  ??? For now, do not consider entities not in SPARK as
+                  --  constants.
 
                   if Erase_Constants
+                    and then Entity_In_SPARK (E)
                     and then not Gnat2Why.Util.Is_Mutable_In_Why (E)
                   then
                      return Flow_Id_Sets.Empty_Set;
