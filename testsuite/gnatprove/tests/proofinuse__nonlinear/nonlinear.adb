@@ -15,6 +15,7 @@ is
    begin
       pragma Assume (X <= Y);
       pragma Assume (Y < Z);
+      pragma Assume (Y < 2 ** 16);
       Res := (X * Y) / Z;
       pragma Assert (Res <= X);
    end Unsigned_Scale;
@@ -36,7 +37,7 @@ is
    begin
       pragma Assume (X in -10 .. -1 and Y in 1 .. 10);
       Res := X * Y + 1;
-      pragma Assert (Res in -99 .. -Y);
+      pragma Assert (Res in -99 .. -Y + 1);
    end Mult;
 
    procedure Mult_Protect (X, Y, Z : Natural_32; Res : out Integer_32) is
@@ -45,12 +46,5 @@ is
       Res := X * Y;
       pragma Assert (Res <= Z);
    end Mult_Protect;
-
-   procedure Round (X, Y, Z : Positive_32; Res : out Natural_32) is
-   begin
-      pragma Assume (Y <= Z);
-      Res := (X * Y) / Z;
-      pragma Assert (Res <= X);
-   end Round;
 
 end Nonlinear;
