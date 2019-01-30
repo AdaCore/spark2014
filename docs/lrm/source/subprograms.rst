@@ -29,6 +29,12 @@ a slice or the result object of a function call) or a formal parameter of
 a subprogram. In particular, a component of a protected unit is not
 an *entire object*.
 
+An object O1 is said to be a *reachable element* of an object O2 if
+
+- O1 is a part of O2; or
+- O1 is a reachable element of the object designated by
+  (the value of) an access-valued part of O2.
+
 .. centered:: **Static Semantics**
 
 1. The *exit* value of a global item or parameter of a subprogram is its
@@ -39,8 +45,7 @@ an *entire object*.
 
 3. An *output* of a subprogram is a global item or parameter whose final value,
    or the final value of any of its reachable elements, may be updated by a
-   successful call to the subprogram. [See :ref:`access-types` for the
-   definition of "reachable element".] The result of a
+   successful call to the subprogram. The result of a
    function is also an output.  A global item or parameter which is an external
    state with the property Async_Readers => True, and for which intermediate
    values are written during an execution leading to a successful call, is also
@@ -1414,7 +1419,7 @@ calls.
 
 4. If an actual parameter in a procedure call and a ``global_item`` referenced
    by the called procedure potentially introduce aliasing via parameter
-   passing, then 
+   passing, then
 
    * the corresponding formal parameter shall be immutable; and
 

@@ -500,12 +500,6 @@ The *root object* of a name that denotes an object is defined as follows:
 - otherwise, the name statically denotes an object and the root
   object is the statically denoted object.
 
-An object O1 is said to be a *reachable element* of an object O2 if
-
-- O1 is a part of O2; or
-- O1 is a reachable element of the object designated by
-  (the value of) an access-valued part of O2.
-
 Two names are said to be *potential aliases* when:
 
 - both names statically denote the same entity [redundant: , which
