@@ -1,0 +1,2 @@
+p.adb:1:14: warning: SPARK_Mode not applied to this compilation unit
+p.adb:1:14: warning: only enclosed declarations with SPARK_Mode will be analyzed
