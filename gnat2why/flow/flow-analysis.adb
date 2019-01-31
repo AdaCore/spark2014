@@ -3033,10 +3033,7 @@ package body Flow.Analysis is
                              and then Var_Used.Facet = Normal_Part
                              and then
                              Is_Empty_Record_Type
-                               (Get_Type
-                                  (Var_Used,
-                                   Get_Flow_Scope
-                                     (Get_Direct_Mapping_Id (Var_Used)))))))
+                               (Get_Type (Var_Used, FA.B_Scope)))))
 
                   then
                      --  ... we either do nothing because it is safe, or...
@@ -4278,9 +4275,7 @@ package body Flow.Analysis is
             begin
                return Enclosing_Pkg /= FA.Spec_Entity
                  and then
-               Parse_Initializes (Enclosing_Pkg,
-                                  Get_Flow_Scope (Enclosing_Pkg)).
-                Contains (Comp);
+               Parse_Initializes (Enclosing_Pkg, FA.B_Scope).Contains (Comp);
             end;
          end if;
 
