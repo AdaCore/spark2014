@@ -3,10 +3,6 @@ package body Engine with
 is
    Dummy : Boolean := True;
 
-   ---------------
-   -- Has_Piece --
-   ---------------
-
    function Has_No_Piece return Boolean is (Dummy);
 
 end Engine;
