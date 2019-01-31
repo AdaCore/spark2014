@@ -5676,7 +5676,7 @@ package body Flow.Analysis is
          --  Only check nodes in the body
 
          if Present (F)
-           and then F.Kind in Direct_Mapping | Record_Field
+           and then F.Kind = Direct_Mapping
            and then Get_Flow_Scope (F.Node).Part = Body_Part
          then
             for Var of Visible_Vars loop
@@ -5704,7 +5704,6 @@ package body Flow.Analysis is
       --  we said so or because flow thinks so), since otherwise their use will
       --  be flagged as a potentially uninitialized read.
 
-      Visible_Vars := Flow_Id_Sets.Empty_Set;
       for C in Parse_Initializes (FA.Spec_Entity, FA.S_Scope).Iterate loop
          declare
             Var : Flow_Id renames Dependency_Maps.Key (C);
