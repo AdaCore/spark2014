@@ -168,7 +168,7 @@ algorithm.adb:356:81: info: initialization of "riterL.Node" proved
 algorithm.adb:361:27: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:361:49: info: initialization of "riterL.Node" proved
 algorithm.adb:381:15: info: range check proved (CVC4: 2 VC)
-algorithm.adb:381:71: medium: range check might fail [possible explanation: precondition of subprogram at line 374 should mention This]
+algorithm.adb:381:71: medium: range check might fail [possible explanation: precondition of subprogram at algorithm.ads:91 should mention This]
 algorithm.adb:395:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:397:39: info: initialization of "iR.Node" proved
 algorithm.adb:398:33: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -238,13 +238,13 @@ algorithm.adb:515:42: info: initialization of "Best_Valley_IDS.other.Node" prove
 algorithm.adb:515:57: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:537:33: info: loop invariant initialization proved (CVC4: 1 VC)
 algorithm.adb:537:33: info: loop invariant preservation proved (CVC4: 1 VC)
-algorithm.adb:538:52: medium: float overflow check might fail [possible explanation: precondition of subprogram at line 522 should mention This]
+algorithm.adb:538:52: medium: float overflow check might fail [possible explanation: precondition of subprogram at algorithm.ads:98 should mention This]
 algorithm.adb:539:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:539:25: info: range check proved (CVC4: 1 VC)
 algorithm.adb:539:44: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:539:70: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:539:98: info: division check proved (CVC4: 1 VC)
-algorithm.adb:539:98: medium: float overflow check might fail [possible explanation: precondition of subprogram at line 522 should mention This]
+algorithm.adb:539:98: medium: float overflow check might fail [possible explanation: precondition of subprogram at algorithm.ads:98 should mention This]
 algorithm.adb:542:29: info: initialization of "deltaAreaSum" proved
 algorithm.adb:542:42: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:542:42: info: range check proved (Interval)
