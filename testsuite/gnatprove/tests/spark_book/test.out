@@ -452,7 +452,7 @@ datebook.adb:72:40: info: cannot unroll loop (too many loop iterations)
 datebook.adb:80:17: info: initialization of "Found" proved
 datebook.adb:86:54: info: initialization of "Available" proved
 datebook.adb:86:69: info: length check proved (CVC4: 4 VC)
-datebook.adb:86:69: low: range check might fail [possible explanation: subprogram at line 55 should mention Description in a precondition]
+datebook.adb:86:69: low: range check might fail [possible explanation: subprogram at datebook.ads:33 should mention Description in a precondition]
 datebook.adb:87:21: info: range check proved (CVC4: 2 VC)
 datebook.adb:87:64: info: range check proved (CVC4: 1 VC)
 datebook.adb:88:54: info: initialization of "Available" proved
@@ -872,15 +872,15 @@ hierarchical_state_demo_nested.ads:7:28: info: initialization of "Success" prove
 initializer_demo.adb:6:07: warning: initialization of "Sum" has no effect
 initializer_demo.adb:9:28: info: unrolling loop
 initializer_demo.adb:10:17: info: initialization of "Sum" proved
-initializer_demo.adb:10:21: medium: overflow check might fail [possible explanation: subprogram at line 5 should mention A in a precondition]
+initializer_demo.adb:10:21: medium: overflow check might fail [possible explanation: subprogram at initializer_demo.ads:8 should mention A in a precondition]
 initializer_demo.adb:12:14: info: initialization of "Sum" proved
 initializer_demo.adb:22:28: info: unrolling loop
 initializer_demo.adb:23:17: info: initialization of "Sum" proved
-initializer_demo.adb:23:21: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention A in a precondition]
+initializer_demo.adb:23:21: medium: overflow check might fail [possible explanation: subprogram at initializer_demo.ads:14 should mention A in a precondition]
 initializer_demo.adb:25:23: info: initialization of "Sum" proved
 initializer_demo.adb:35:19: info: overflow check proved (CVC4: 1 VC)
 initializer_demo.adb:35:21: info: initialization of "Offset.X" proved
-initializer_demo.adb:35:35: medium: overflow check might fail [possible explanation: subprogram at line 29 should mention P in a precondition]
+initializer_demo.adb:35:35: medium: overflow check might fail [possible explanation: subprogram at initializer_demo.ads:22 should mention P in a precondition]
 initializer_demo.adb:35:37: info: initialization of "Offset.Y" proved
 initializer_demo.ads:12:28: info: range check proved (CVC4: 1 VC)
 interval.ads:6:13: info: invariant check proved (CVC4: 1 VC)
@@ -951,7 +951,7 @@ operator_overload.adb:38:07: warning: assuming "Put_Line" has no effect on globa
 operator_overload.adb:38:07: warning: no Global contract available for "Put_Line"
 operator_overload.adb:40:07: warning: assuming "Put_Line" has no effect on global items
 operator_overload.adb:40:07: warning: no Global contract available for "Put_Line"
-overflow.adb:7:15: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention A and B in a precondition]
+overflow.adb:7:15: medium: overflow check might fail [possible explanation: subprogram at overflow.ads:3 should mention A and B in a precondition]
 overflow.adb:7:20: info: division check proved (CVC4: 1 VC)
 overflow.ads:5:19: info: initialization of "C" proved
 palindrome.adb:9:22: info: initialization of "Line" proved, in call inlined at palindrome.adb:32
@@ -989,7 +989,7 @@ palindrome.adb:33:18: warning: no Global contract available for "Put_Line"
 palindrome.adb:35:18: warning: assuming "Put_Line" has no effect on global items
 palindrome.adb:35:18: warning: no Global contract available for "Put_Line"
 parent-public1.adb:11:20: info: initialization of "Temp" proved
-parent.adb:6:22: medium: overflow check might fail [possible explanation: subprogram at line 4 should mention Value in a precondition]
+parent.adb:6:22: medium: overflow check might fail [possible explanation: subprogram at parent.ads:3 should mention Value in a precondition]
 populate_tree.adb:10:24: info: cannot unroll loop (too many loop iterations)
 prime_search.adb:3:50: info: initialization of "Prime_Index" proved
 prime_search.adb:20:18: info: assertion proved (CVC4: 1 VC)
@@ -1008,7 +1008,7 @@ raster_graphics.adb:18:24: info: overflow check proved (CVC4: 1 VC)
 raster_graphics.adb:18:26: info: initialization of "Delta_Y" proved
 raster_graphics.adb:18:33: info: overflow check proved (CVC4: 1 VC)
 raster_graphics.adb:27:10: info: initialization of "Status" proved
-raster_graphics.adb:31:41: medium: overflow check might fail [possible explanation: subprogram at line 4 should mention Line_Count in a precondition]
+raster_graphics.adb:31:41: medium: overflow check might fail [possible explanation: subprogram at raster_graphics.ads:18 should mention Line_Count in a precondition]
 raster_graphics.ads:21:29: info: initialization of "Status" proved
 region_checks.ads:8:08: info: complete contract cases proved (CVC4: 1 VC)
 region_checks.ads:8:08: info: disjoint contract cases proved (CVC4: 1 VC)
@@ -1183,9 +1183,9 @@ searches.ads:29:22: info: initialization of "Position" proved
 searches.ads:30:24: info: initialization of "Found" proved
 searches.ads:30:45: info: index check proved (CVC4: 2 VC)
 searches.ads:33:57: info: index check proved (CVC4: 2 VC)
-serial_numbers.adb:8:34: medium: overflow check might fail [possible explanation: subprogram at line 5 should mention Next_Number in a precondition]
+serial_numbers.adb:8:34: medium: overflow check might fail [possible explanation: subprogram at serial_numbers.ads:3 should mention Next_Number in a precondition]
 serial_numbers.ads:3:24: info: initialization of "Number" proved
-serial_numbers2.adb:8:34: medium: overflow check might fail [possible explanation: subprogram at line 5 should mention Next_Number in a precondition]
+serial_numbers2.adb:8:34: medium: overflow check might fail [possible explanation: subprogram at serial_numbers2.ads:3 should mention Next_Number in a precondition]
 serial_numbers2.ads:3:24: info: initialization of "Number" proved
 shapes.adb:12:34: info: overflow check proved (CVC4: 1 VC)
 shapes.adb:12:34: info: range check proved (CVC4: 1 VC)
@@ -1357,10 +1357,10 @@ sqrt.adb:6:31: medium: float overflow check might fail
 sqrt.adb:6:35: medium: divide by zero might fail
 sqrt.adb:6:35: medium: float overflow check might fail
 sqrt.adb:8:11: info: initialization of "Approx" proved
-stacks-more.adb:4:32: medium: array index check might fail [possible explanation: subprogram at line 2 should mention Stack in a precondition]
-stacks.adb:14:30: medium: overflow check might fail [possible explanation: subprogram at line 11 should mention Stack in a precondition]
-stacks.adb:15:25: medium: array index check might fail [possible explanation: subprogram at line 11 should mention Stack in a precondition]
-stacks.adb:21:33: medium: array index check might fail [possible explanation: subprogram at line 18 should mention Stack in a precondition]
+stacks-more.adb:4:32: medium: array index check might fail [possible explanation: subprogram at stacks-more.ads:2 should mention Stack in a precondition]
+stacks.adb:14:30: medium: overflow check might fail [possible explanation: subprogram at stacks.ads:8 should mention Stack in a precondition]
+stacks.adb:15:25: medium: array index check might fail [possible explanation: subprogram at stacks.ads:8 should mention Stack in a precondition]
+stacks.adb:21:33: medium: array index check might fail [possible explanation: subprogram at stacks.ads:10 should mention Stack in a precondition]
 stacks.adb:22:30: info: range check proved (CVC4: 1 VC)
 stacks.ads:6:21: info: initialization of "Stack.Top" proved
 stacks.ads:6:21: medium: "Stack.Items" is not set in "Clear"
@@ -1396,10 +1396,10 @@ strings.adb:20:21: info: initialization of "Current" proved
 strings.adb:22:28: info: initialization of "Current" proved
 strings.adb:39:34: info: range check proved (CVC4: 1 VC)
 strings.adb:43:13: info: initialization of "Equals_Found" proved
-strings.adb:44:23: medium: range check might fail [possible explanation: subprogram at line 29 should mention Text in a precondition]
+strings.adb:44:23: medium: range check might fail [possible explanation: subprogram at strings.ads:15 should mention Text in a precondition]
 strings.adb:44:43: info: initialization of "Equals_Position" proved
-strings.adb:45:32: medium: precondition might fail [possible explanation: subprogram at line 29 should mention Text in a precondition]
-strings.adb:45:40: medium: range check might fail [possible explanation: subprogram at line 29 should mention Text in a precondition]
+strings.adb:45:32: medium: precondition might fail [possible explanation: subprogram at strings.ads:15 should mention Text in a precondition]
+strings.adb:45:40: medium: range check might fail [possible explanation: subprogram at strings.ads:15 should mention Text in a precondition]
 strings.adb:45:46: info: initialization of "Equals_Position" proved
 strings.adb:45:62: medium: overflow check might fail [possible explanation: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.ads:8:22: info: initialization of "Found" proved
@@ -1574,7 +1574,7 @@ terminal.ads:7:24: info: initialization of "Buffer" proved
 terminal.ads:8:24: info: initialization of "Count" proved
 terminal.ads:9:24: info: initialization of "Status" proved
 ticktock.adb:6:04: info: initialization of "Clock_Value" constituent of "TickTock_State" proved
-ticktock.adb:14:34: medium: overflow check might fail [possible explanation: subprogram at line 8 should mention Clock_Value in a precondition]
+ticktock.adb:14:34: medium: overflow check might fail [possible explanation: subprogram at ticktock.ads:7 should mention Clock_Value in a precondition]
 transitive.adb:16:19: info: postcondition proved (CVC4: 1 VC)
 transitive.adb:20:37: info: division check proved (CVC4: 1 VC)
 transitive.adb:21:14: info: division check proved (CVC4: 1 VC)
@@ -1582,7 +1582,7 @@ transitive.adb:31:33: info: loop invariant initialization proved (CVC4: 1 VC)
 transitive.adb:31:33: info: loop invariant preservation proved (CVC4: 1 VC)
 transitive.adb:38:56: info: initialization of "X_Last" proved
 transitive.ads:10:19: info: postcondition proved (CVC4: 1 VC)
-unused_parameter.adb:7:15: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention A in a precondition]
+unused_parameter.adb:7:15: medium: overflow check might fail [possible explanation: subprogram at unused_parameter.ads:3 should mention A in a precondition]
 unused_parameter.adb:7:20: info: division check proved (CVC4: 1 VC)
 unused_parameter.ads:4:19: warning: unused variable "B"
 unused_parameter.ads:5:19: info: initialization of "C" proved
@@ -1594,7 +1594,7 @@ utility.ads:12:16: info: postcondition proved (CVC4: 1 VC)
 various.adb:7:27: info: unrolling loop
 various.adb:12:07: info: raise statement proved unreachable (CVC4: 1 VC)
 various.adb:20:21: info: assertion proved (CVC4: 1 VC)
-various.adb:20:23: medium: overflow check might fail [possible explanation: subprogram at line 18 should mention X and Y in a precondition]
+various.adb:20:23: medium: overflow check might fail [possible explanation: subprogram at various.ads:12 should mention X and Y in a precondition]
 various.adb:20:26: info: division check proved (CVC4: 1 VC)
 various.adb:21:13: info: division check proved (CVC4: 1 VC)
 very_longs-divide.adb:47:14: info: initialization of "Distance" proved
@@ -1741,7 +1741,7 @@ workspaces.adb:7:26: info: division check proved (CVC4: 1 VC)
 workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC4: 2 VC)
 workspaces.adb:8:24: info: initialization of "Workspace" proved
-workspaces.adb:9:27: medium: overflow check might fail [possible explanation: subprogram at line 4 should mention Size in a precondition]
+workspaces.adb:9:27: medium: overflow check might fail [possible explanation: subprogram at workspaces.ads:4 should mention Size in a precondition]
 workspaces.adb:9:32: info: index check proved (CVC4: 2 VC)
 workspaces.adb:9:37: info: initialization of "Workspace" proved
 workspaces.adb:11:14: info: initialization of "Workspace" proved

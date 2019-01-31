@@ -84,7 +84,7 @@ x86.adb:734:32: info: loop invariant preservation proved (CVC4: 1 VC)
 x86.adb:735:32: info: loop invariant initialization proved (CVC4: 1 VC)
 x86.adb:735:32: info: loop invariant preservation proved (CVC4: 1 VC)
 x86.adb:738:32: info: loop invariant initialization proved (CVC4: 1 VC)
-x86.adb:739:34: medium: loop invariant might fail after first iteration, cannot prove ReadMem64(RDI'Loop_Entry+(i*8)) = RAX [possible explanation: precondition of subprogram at line 640 should mention RAX]
+x86.adb:739:34: medium: loop invariant might fail after first iteration, cannot prove ReadMem64(RDI'Loop_Entry+(i*8)) = RAX [possible explanation: precondition of subprogram at x86.ads:717 should mention RAX]
 x86.adb:746:22: info: assertion proved (CVC4: 1 VC; Z3: 1 VC)
 x86.adb:759:10: info: loop variant proved (CVC4: 1 VC)
 x86.adb:764:24: info: initialization of "Val1" proved

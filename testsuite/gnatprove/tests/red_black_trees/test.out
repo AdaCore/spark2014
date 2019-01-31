@@ -2711,7 +2711,7 @@ search_trees.adb:1191:57: info: initialization of "Current" proved
 search_trees.adb:1191:77: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1191:95: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1191:109: info: overflow check proved (CVC4: 2 VC)
-search_trees.adb:1192:28: medium: loop invariant might fail after first iteration, cannot prove V < T.Values (I) [possible explanation: subprogram at line 1175 should mention T and V in a precondition]
+search_trees.adb:1192:28: medium: loop invariant might fail after first iteration, cannot prove V < T.Values (I) [possible explanation: subprogram at search_trees.ads:42 should mention T and V in a precondition]
 search_trees.adb:1195:22: info: initialization of "Current" proved
 search_trees.adb:1196:27: info: index check proved (CVC4: 2 VC)
 search_trees.adb:1196:27: info: initialization of "Current" proved
@@ -2897,7 +2897,7 @@ search_trees.adb:1405:60: info: initialization of "Current" proved
 search_trees.adb:1405:80: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1405:98: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1405:112: info: overflow check proved (CVC4: 2 VC)
-search_trees.adb:1406:31: medium: loop invariant might fail after first iteration, cannot prove V < T.Values (I) [possible explanation: precondition of subprogram at line 1221 should mention V]
+search_trees.adb:1406:31: medium: loop invariant might fail after first iteration, cannot prove V < T.Values (I) [possible explanation: precondition of subprogram at search_trees.ads:45 should mention V]
 search_trees.adb:1409:25: info: initialization of "Current" proved
 search_trees.adb:1410:30: info: index check proved (CVC4: 2 VC)
 search_trees.adb:1410:30: info: initialization of "Previous" proved
