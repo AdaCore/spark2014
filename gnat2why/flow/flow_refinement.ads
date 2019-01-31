@@ -165,15 +165,15 @@ package Flow_Refinement is
 
    procedure Up_Project (Vars           :     Global_Nodes;
                          Projected_Vars : out Global_Nodes;
-                         Scope          : Flow_Scope);
+                         Scope          :     Flow_Scope);
 
    procedure Up_Project (Vars           :     Global_Flow_Ids;
                          Projected_Vars : out Global_Flow_Ids;
-                         Scope          : Flow_Scope);
+                         Scope          :     Flow_Scope);
 
    procedure Up_Project (Deps           :     Dependency_Maps.Map;
                          Projected_Deps : out Dependency_Maps.Map;
-                         Scope          : Flow_Scope);
+                         Scope          :     Flow_Scope);
    --  Up projects constituents that are mentioned in Refined to their
    --  encapsulating state abstractions visible from Scope; for example:
    --

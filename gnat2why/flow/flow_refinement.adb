@@ -589,7 +589,7 @@ package body Flow_Refinement is
             RHS : Flow_Id_Sets.Set renames Deps (Clause);
 
             procedure Add_Mapping (Item : Flow_Id);
-            --  Add mappring from Item to its most precise representation
+            --  Add mapping from Item to its most precise representation
 
             -----------------
             -- Add_Mapping --
