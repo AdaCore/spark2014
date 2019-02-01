@@ -564,8 +564,8 @@ named object is a variable). If it denotes an access object then
 a dereference of the name provides a constant view [redundant: , even if
 the object is of an access-to-variable type].
 
-In the Moved state, the name is unusable for either reading or
-writing.
+In the Moved state, the name is unusable for reading
+(although the name itself can be assigned to).
 
 In the Borrowed state, the name is unusable for writing, observing and
 borrowing (see below).
@@ -614,7 +614,7 @@ object is in the Observed state it provides a constant view
 [redundant: , even if the name denotes a variable].
 
 At the point where a name that denotes a managed object is observed,
-every name that potentially overlaps that name is observed.
+every name of a reachable element of the object is observed.
 
 The following operations *borrow* a name that denotes a managed object
 and identify a corresponding *borrower*:
@@ -662,7 +662,7 @@ of the original name similarly enters the Observed state and provides
 only a constant view.
 
 At the point where a name that denotes a managed object is borrowed,
-every name that potentially overlaps that name is borrowed.
+every name of a reachable element of the object is borrowed.
 
 The following operations are said to be *move* operations:
 
@@ -715,9 +715,10 @@ a class-wide type might be an owning type).]
 
 ..  _tu-access_types-01:
 
-1. At the  point of a move  operation the state  of the source object  (if any)
-   shall be  Unrestricted.  After  a move  operation, the  state of  the source
-   object (if any) becomes Moved.
+1. At the point of a move operation the state of the source object (if any) and
+   all of its reachable elements shall be Unrestricted. After a move operation,
+   the state of any access parts of the source object (if there is one) becomes
+   Moved.
 
 .. _tu-access_types-02:
 
@@ -791,12 +792,15 @@ a class-wide type might be an owning type).]
      not in the Moved state and is not declared at a statically deeper
      accessibility level than that of the target object.
 
+?. An the point of a dereference of an object, the object shall not be in the
+   Moved or Borrowed state.
+
 .. _tu-access_types-09:
 
 9. At the point of a read of an object, or of passing an object as an actual
    parameter of mode **in** or **in out**, or of a call where the object is a
-   global input of the callee, the object shall not be in the Moved or Borrowed
-   state.
+   global input of the callee, neither the object nor any of its reachable
+   elements shall be in the Moved or Borrowed state.
 
    At the point of a return statement, or at any other point where a call
    completes normally (e.g., the end of a procedure body), no outputs of the
