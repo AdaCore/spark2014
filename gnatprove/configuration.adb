@@ -387,7 +387,7 @@ package body Configuration is
    procedure Display_Help is
    begin
       Ada.Text_IO.Put_Line ("Usage: gnatprove " & Usage_Message);
-      Ada.Text_IO.Put_Line (File_System.Install.Help_Message);
+      Ada.Text_IO.Put_Line (SPARK_Install.Help_Message);
    end Display_Help;
 
    -------------------------------------
@@ -508,7 +508,7 @@ package body Configuration is
       Initialize_Option_Scan (Parser, Com_Lin_Access);
       Set_Usage (Config,
                  Usage    => Usage_Message,
-                 Help_Msg => File_System.Install.Help_Message);
+                 Help_Msg => SPARK_Install.Help_Message);
 
       --  If no arguments have been given, print help message and exit.
       --  Empty switches list is allowed for modes File_Specific_Only and
@@ -797,7 +797,7 @@ package body Configuration is
         Ada.Characters.Handling.To_Lower (Provers.First_Element);
       Prover_Lib_Dir : constant String :=
         Compose
-          (Compose (File_System.Install.Share_Why3, "libs"),
+          (Compose (SPARK_Install.Share_Why3, "libs"),
            Name => Prover_Name);
       Prover_Obj_Dir : constant String := Compose
         (Compose (Phase2_Subdir.Display_Full_Name, "why3_libs"),
@@ -999,7 +999,7 @@ package body Configuration is
 
    procedure Produce_Version_Output is
       Gnatwhy3 : constant String :=
-        Compose (File_System.Install.Libexec_Spark_Bin, "gnatwhy3");
+        Compose (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
       Alt_Ergo : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("alt-ergo");
       CVC4 : String_Access :=
@@ -1231,10 +1231,10 @@ package body Configuration is
       --  Start of processing for Limit_Prover
 
       begin
-         if not File_System.Install.CVC4_Present then
+         if not SPARK_Install.CVC4_Present then
             Remove_Prover ("cvc4");
          end if;
-         if not File_System.Install.Z3_Present then
+         if not SPARK_Install.Z3_Present then
             Remove_Prover ("z3");
          end if;
 
@@ -1272,8 +1272,8 @@ package body Configuration is
       begin
          Sanity_Checking;
 
-         File_System.Install.Z3_Present   := On_Path ("z3");
-         File_System.Install.CVC4_Present := On_Path ("cvc4");
+         SPARK_Install.Z3_Present   := On_Path ("z3");
+         SPARK_Install.CVC4_Present := On_Path ("cvc4");
 
          Verbose           := CL_Switches.V;
          Force             := CL_Switches.F;
@@ -1727,9 +1727,9 @@ package body Configuration is
          --  missing from the install
 
          for Prover of FS.Provers loop
-            if (Prover = "cvc4" and then not File_System.Install.CVC4_Present)
+            if (Prover = "cvc4" and then not SPARK_Install.CVC4_Present)
               or else
-                (Prover = "z3" and then not File_System.Install.Z3_Present)
+                (Prover = "z3" and then not SPARK_Install.Z3_Present)
             then
                Abort_Msg ("error: prover " & Prover &
                             " was selected, but it is not installed",
@@ -1917,7 +1917,7 @@ package body Configuration is
 
             Counterexample :=
               not CL_Switches.No_Counterexample
-              and then File_System.Install.CVC4_Present
+              and then SPARK_Install.CVC4_Present
               and then not Is_Manual_Prover
               and then not CL_Switches.Output_Msg_Only;
          end;

@@ -217,8 +217,7 @@ package Configuration is
    Max_Non_Blank_Lines : constant := 6;
    --  Maximum number of consecutive non blank lines on standard output
 
-   package File_System is
-      package Install is
+   package SPARK_Install is
          use GNAT.Strings;
 
          --  Here we set the various paths that are needed during a run of
@@ -270,8 +269,7 @@ package Configuration is
          CVC4_Present             : Boolean;
          Help_Message             : constant String :=
            Read_File_Into_String (Help_Msg_File);
-      end Install;
-   end File_System;
+   end SPARK_Install;
 
    Label_Length : constant := 26;
    --  Maximum length of label in report. Other characters are discarded

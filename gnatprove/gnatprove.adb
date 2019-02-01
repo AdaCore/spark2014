@@ -312,9 +312,9 @@ procedure Gnatprove with SPARK_Mode is
       declare
          Cnf_DB : constant String :=
            (if CL_Switches.Coverage then
-               File_System.Install.Gpr_Frames_Cov_DB
+               SPARK_Install.Gpr_Frames_Cov_DB
             else
-               File_System.Install.Gpr_Frames_DB);
+               SPARK_Install.Gpr_Frames_DB);
       begin
          Call_Gprbuild (Project_File,
                         Proj,
@@ -375,7 +375,7 @@ procedure Gnatprove with SPARK_Mode is
          Res : Boolean;
          Old_Dir  : constant String := Current_Directory;
          Gnatwhy3 : constant String :=
-           Compose (File_System.Install.Libexec_Spark_Bin, "gnatwhy3");
+           Compose (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
       begin
          Set_Directory (Phase2_Subdir.Display_Full_Name);
          if Verbose then
@@ -670,9 +670,9 @@ procedure Gnatprove with SPARK_Mode is
          declare
             Cnf_DB : constant String :=
               (if CL_Switches.Coverage then
-                  File_System.Install.Gpr_Gnat2why_Cov_DB
+                  SPARK_Install.Gpr_Gnat2why_Cov_DB
                else
-                  File_System.Install.Gpr_Translation_DB);
+                  SPARK_Install.Gpr_Translation_DB);
          begin
             Call_Gprbuild (Project_File,
                            Proj,
@@ -1057,9 +1057,9 @@ procedure Gnatprove with SPARK_Mode is
       Gpr_Val  : constant String := Value ("GPR_PROJECT_PATH", "");
       Gpr_Tool : constant String := Value ("GPR_TOOL", "");
       Libgnat  : constant String :=
-        Compose (File_System.Install.Lib, "gnat");
+        Compose (SPARK_Install.Lib, "gnat");
       Sharegpr : constant String :=
-        Compose (File_System.Install.Share, "gpr");
+        Compose (SPARK_Install.Share, "gpr");
    begin
       --  Unset various environmment variables which might confuse the compiler
       --  or gprbuild
@@ -1073,7 +1073,7 @@ procedure Gnatprove with SPARK_Mode is
       --  Add <prefix>/libexec/spark/bin in front of the PATH
 
       Set ("PATH",
-           File_System.Install.Libexec_Spark_Bin & Path_Separator & Path_Val);
+           SPARK_Install.Libexec_Spark_Bin & Path_Separator & Path_Val);
 
       --  Add <prefix>/lib/gnat & <prefix>/share/gpr in GPR_PROJECT_PATH
       --  so that project files installed with GNAT (not with SPARK)
@@ -1199,7 +1199,7 @@ procedure Gnatprove with SPARK_Mode is
       --  the binary, and "args" the arguments that need to be provided.
 
       Config : constant JSON_Value :=
-        Read (Read_File_Into_String (File_System.Install.Gnatprove_Conf));
+        Read (Read_File_Into_String (SPARK_Install.Gnatprove_Conf));
       File : File_Type;
 
       procedure Start_Section (Name : String);
