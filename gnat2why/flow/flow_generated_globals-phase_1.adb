@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Elists;                  use Elists;
 with Lib.Util;                use Lib.Util;
 with Namet;                   use Namet;
 with Osint.C;                 use Osint.C;
@@ -289,13 +290,16 @@ package body Flow_Generated_Globals.Phase_1 is
 
                if Ekind (E) in E_Abstract_State | E_Constant | E_Variable then
                   declare
-                     Capsule : constant Entity_Id := Encapsulating_State (E);
+                     State : constant Entity_Id := Encapsulating_State (E);
+                     --  This is either an abstract state, a single concurrent
+                     --  object or an Empty entity.
 
                   begin
-                     if Present (Capsule)
-                       and then Ekind (Capsule) = E_Abstract_State
+                     if Present (State)
+                       and then Ekind (State) = E_Abstract_State
+                       and then Contains (Part_Of_Constituents (State), E)
                      then
-                        Part_Of_States.Include (Key => E, New_Item => Capsule);
+                        Part_Of_States.Include (Key => E, New_Item => State);
                      end if;
                   end;
                end if;
@@ -405,6 +409,10 @@ package body Flow_Generated_Globals.Phase_1 is
          --  disjoint, so it is more efficient to process them separately
          --  instead of doing an expensive union to have a single procedure
          --  call.
+
+         Process_Volatiles_And_States (Globals.Refined.Proof_Ins);
+         Process_Volatiles_And_States (Globals.Refined.Inputs);
+         Process_Volatiles_And_States (Globals.Refined.Outputs);
 
          Process_Volatiles_And_States (Globals.Proper.Proof_Ins);
          Process_Volatiles_And_States (Globals.Proper.Inputs);

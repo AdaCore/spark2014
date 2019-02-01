@@ -1120,8 +1120,12 @@ package body Flow is
               E_Task_Type |
               E_Function  |
               E_Procedure =>
-            FA.B_Scope := Get_Flow_Scope (Get_Body_Entity (E));
-            FA.S_Scope := Get_Flow_Scope (E);
+            --  For subprograms without explicit specs Get_Flow_Scope always
+            --  return the Body_Part; however, Visible_Part for the spec scope
+            --  is still fine and enables some sanity-checking assertions.
+
+            FA.B_Scope := (Ent => E, Part => Body_Part);
+            FA.S_Scope := (Ent => E, Part => Visible_Part);
 
             Append (FA.Base_Filename, "subprogram_");
 

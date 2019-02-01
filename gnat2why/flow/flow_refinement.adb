@@ -385,23 +385,24 @@ package body Flow_Refinement is
    ------------------------
 
    function Is_Fully_Contained (State   : Entity_Id;
-                                Outputs : Node_Sets.Set)
+                                Outputs : Node_Sets.Set;
+                                Scop    : Flow_Scope)
                                 return Boolean
    is
-      --  ??? Respect SPARK_Mode barrier, see Expand_Abstract_State
-     ((for all C of Iter (Refinement_Constituents (State))
-       => Outputs.Contains (C))
-        and then
-      (for all C of Iter (Part_Of_Constituents (State))
-       => Outputs.Contains (C)));
+   begin
+      return Node_Sets.Is_Subset (Subset =>
+                                    Down_Project (State, Body_Scope (Scop)),
+                                  Of_Set => Outputs);
+   end Is_Fully_Contained;
 
    function Is_Fully_Contained (State   : Flow_Id;
-                                Outputs : Flow_Id_Sets.Set)
+                                Outputs : Flow_Id_Sets.Set;
+                                Scop    : Flow_Scope)
                                 return Boolean
    is
      (case State.Kind is
          when Direct_Mapping =>
-            Is_Fully_Contained (State.Node, To_Node_Set (Outputs)),
+            Is_Fully_Contained (State.Node, To_Node_Set (Outputs), Scop),
          when others =>
             raise Program_Error);
 
@@ -498,7 +499,7 @@ package body Flow_Refinement is
 
       Up_Project (Vars.Outputs, Scope, Projected, Partial);
       for State of Partial loop
-         if not Is_Fully_Contained (State, Vars.Outputs) then
+         if not Is_Fully_Contained (State, Vars.Outputs, Scope) then
             Projected_Vars.Inputs.Include (State);
          end if;
       end loop;
@@ -524,7 +525,7 @@ package body Flow_Refinement is
 
       Up_Project (Vars.Outputs, Scope, Projected, Partial);
       for State of Partial loop
-         if not Is_Fully_Contained (State, Vars.Outputs) then
+         if not Is_Fully_Contained (State, Vars.Outputs, Scope) then
             Projected_Vars.Inputs.Include (Change_Variant (State, In_View));
          end if;
       end loop;
@@ -693,7 +694,9 @@ package body Flow_Refinement is
                   --  constituents behave as if they would be updated with
                   --  their old values.
 
-                  if not Is_Fully_Contained (LHS_State, LHS_Constituents) then
+                  if not Is_Fully_Contained (LHS_State, LHS_Constituents,
+                                             Scope)
+                  then
                      Projected_RHS.Include (LHS_State);
                   end if;
 

@@ -3,6 +3,7 @@ extra.adb:8:07: medium: "B" needs to be a constituent of some state abstraction
 extra.ads:1:54: warning: no procedure exists that can initialize abstract state "Extra.S"
 p-priv_child.ads:2:04: indicator Part_Of is required in this context: constant with variable input "C" is declared in the visible part of the private child "Priv_Child" (SPARK RM 7.2.6(3))
 p-priv_child.ads:4:14: warning: subprogram "Foo" has no effect
+p.ads:2:26: warning: no procedure exists that can initialize abstract state "P.State"
 p.ads:7:04: indicator Part_Of is required in this context: constant with variable input "A" is declared in the private part of package "P" (SPARK RM 7.2.6(2))
 p.ads:7:28: info: initialization of "V" proved
 p.ads:8:28: info: initialization of "V" proved

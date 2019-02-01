@@ -1383,7 +1383,11 @@ package body Flow_Generated_Globals.Partial is
                    Contracts :        Entity_Contract_Maps.Map;
                    Patches   : in out Global_Patch_Lists.List)
    is
-      Folded_Scope : constant Flow_Scope := Get_Flow_Scope (Folded);
+      Folded_Scope : constant Flow_Scope :=
+        (Ent => Folded, Part => Visible_Part);
+      --  Just like in Flow_Analyse_Entity, we explicitly use the Visible_Part,
+      --  because for subprograms without explicit spec Get_Flow_Scope always
+      --  returns the Body_Part.
 
       Full_Contract : Contract renames Contracts (Folded);
 
@@ -1631,7 +1635,8 @@ package body Flow_Generated_Globals.Partial is
                            Projected, Partial);
 
                for State of Partial loop
-                  if Is_Fully_Contained (State, Update.Initializes.Refined)
+                  if Is_Fully_Contained (State, Update.Initializes.Refined,
+                                         Folded_Scope)
                   then
                      Projected.Include (State);
                   end if;

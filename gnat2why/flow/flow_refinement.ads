@@ -135,13 +135,15 @@ package Flow_Refinement is
    --  Return True iff the constituents of F are visible from S
 
    function Is_Fully_Contained (State   : Entity_Id;
-                                Outputs : Node_Sets.Set)
+                                Outputs : Node_Sets.Set;
+                                Scop    : Flow_Scope)
                                 return Boolean
    with Pre => Ekind (State) = E_Abstract_State;
    --  Returns True iff all the constituents of State are among Outputs
 
    function Is_Fully_Contained (State   : Flow_Id;
-                                Outputs : Flow_Id_Sets.Set)
+                                Outputs : Flow_Id_Sets.Set;
+                                Scop    : Flow_Scope)
                                 return Boolean
    with Pre => Is_Abstract_State (State);
 
