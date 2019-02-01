@@ -38,6 +38,7 @@ with Gnat2Why.Counter_Examples; use Gnat2Why.Counter_Examples;
 with Gnat2Why.Expr.Loops;
 with Gnat2Why_Args;             use Gnat2Why_Args;
 with GNATCOLL.Utils;            use GNATCOLL.Utils;
+with Lib.Xref;
 with Namet;                     use Namet;
 with Nlists;                    use Nlists;
 with Sem_Aux;                   use Sem_Aux;
@@ -1268,9 +1269,23 @@ package body Flow_Error_Messages is
          return Find_Post_State (N) = Abandon;
       end Has_Post_State;
 
+      --  Local variables
+
+      Enclosing_Subp : Entity_Id :=
+        Lib.Xref.SPARK_Specific.Enclosing_Subprogram_Or_Library_Package (N);
+      --  Approximate search for the enclosing subprogram or library package.
+      --  It is fine to use this function here even if not always correct, as
+      --  it's only used for adding or not an explanation.
+
    --  Start of processing for Get_Explanation
 
    begin
+      --  Adjust the enclosing subprogram entity
+
+      if Present (Enclosing_Subp) then
+         Enclosing_Subp := Unique_Entity (Enclosing_Subp);
+      end if;
+
       --  Only attempt explanation when the node associated to the unproved
       --  check is an expression, an assignment or a procedure call (which are
       --  part of N_Subexpr). When it's a procedure call, only handle the case
@@ -1279,6 +1294,17 @@ package body Flow_Error_Messages is
       if Nkind (N) not in N_Subexpr | N_Assignment_Statement
         and then (if Nkind (N) = N_Procedure_Call_Statement
                   then Tag = VC_Precondition)
+      then
+         return "";
+
+      --  Do not attempt to generate an explanation for a check inside a
+      --  DIC procedure or an invariant procedure, as these are generated
+      --  procedures on which the user can put no precondition.
+
+      elsif Present (Enclosing_Subp)
+        and then Is_Subprogram (Enclosing_Subp)
+        and then (Is_DIC_Procedure (Enclosing_Subp)
+                   or else Is_Invariant_Procedure (Enclosing_Subp))
       then
          return "";
 

@@ -184,7 +184,10 @@ is
                                       E_Function  |
                                       E_Procedure |
                                       E_Task_Type
-                and then not Is_Derived_Type (Subprogram),
+                and then not Is_Derived_Type (Subprogram)
+                and then (if Ekind (Subprogram) = E_Procedure
+                          then not Is_DIC_Procedure (Subprogram)
+                            and then not Is_Invariant_Procedure (Subprogram)),
         Post => (for all G of Globals.Proof_Ins =>
                    Is_Entire_Variable (G) and then G.Variant = In_View)
        and then (for all G of Globals.Inputs =>

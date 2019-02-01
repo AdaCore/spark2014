@@ -317,13 +317,16 @@ package Flow is
      (E                  : Entity_Id;
       Generating_Globals : Boolean)
       return Flow_Analysis_Graphs
-   with Pre => Ekind (E) in E_Function       |
-                            E_Procedure      |
-                            E_Task_Type      |
-                            E_Protected_Type |
-                            E_Entry          |
-                            E_Package        |
-                            E_Package_Body;
+   with Pre => Ekind (E) in E_Function
+                          | E_Procedure
+                          | E_Task_Type
+                          | E_Protected_Type
+                          | E_Entry
+                          | E_Package
+                          | E_Package_Body
+               and then (if Ekind (E) = E_Procedure
+                         then not Is_DIC_Procedure (E)
+                            and then not Is_Invariant_Procedure (E));
    --  Flow analyse entity E. Do nothing for entities with no body or not in
    --  SPARK 2014.
 
