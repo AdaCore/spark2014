@@ -1734,6 +1734,32 @@ package body Flow.Control_Flow_Graph is
             exit when No (Alternative);
          end;
       end loop;
+
+      --  We handle case statements with one alternative differently to case
+      --  statements with more than one alternative.
+      --  If there is just one case_statement_alternative then we introduce a
+      --  control dependency on objects referenced in the selecting_expression.
+      if List_Length (Alternatives (N)) = 1 then
+         declare
+            V_Dummy : Flow_Graphs.Vertex_Id;
+
+         begin
+
+            --  Even though this is not an entry barrier, we use Barrier for
+            --  our execution type to draw a special edge.
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (Expression (N)),
+               Make_Aux_Vertex_Attributes
+                 (E_Loc     => N,
+                  Execution => Barrier),
+               V_Dummy);
+            Linkup (FA, V_Case, V_Dummy);
+
+            CM (Union_Id (N)).Standard_Exits.Insert (V_Dummy);
+
+         end;
+      end if;
    end Do_Case_Statement;
 
    ------------------------
