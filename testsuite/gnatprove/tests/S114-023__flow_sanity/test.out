@@ -1,2 +1,2 @@
-test.ads:12:07: "State_Valid" constituent of "Valid" is referenced in Pre but missing from the Global
+test.ads:12:07: "Test.Valid" is referenced in Pre but missing from the Global
 gnatprove: error during flow analysis and proof

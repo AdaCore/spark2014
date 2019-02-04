@@ -541,6 +541,13 @@ package body Flow_Generated_Globals.Phase_2 is
       return Local_Variables;
    end GG_Get_Local_Variables;
 
+   --------------------
+   -- GG_Has_Globals --
+   --------------------
+
+   function GG_Has_Globals (E : Entity_Id) return Boolean is
+     (Global_Contracts.Contains (To_Entity_Name (E)));
+
    -------------------
    -- Is_Predefined --
    -------------------

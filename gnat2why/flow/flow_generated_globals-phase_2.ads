@@ -367,4 +367,8 @@ package Flow_Generated_Globals.Phase_2 is
    --    protected components
    --  @return priorities of protected object components
 
+   function GG_Has_Globals (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
+   --  Return True iff the Global contract of E was recorded in phase 1
+
 end Flow_Generated_Globals.Phase_2;
