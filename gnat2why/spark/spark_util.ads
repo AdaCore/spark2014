@@ -177,15 +177,14 @@ package SPARK_Util is
    --  @return entity of the enclosing generic instance package, if any
 
    function Enclosing_Unit (E : Entity_Id) return Entity_Id with
-     Post => (if Present (Enclosing_Unit'Result)
-              then Ekind (Enclosing_Unit'Result) in E_Function
-                                                  | E_Procedure
-                                                  | Entry_Kind
-                                                  | E_Protected_Type
-                                                  | E_Task_Type
-                                                  | E_Package);
-   --  Returns the entity of the package, subprogram, entry, protected object,
-   --  or task enclosing E, if any. Returns Empty otherwise.
+     Post => Ekind (Enclosing_Unit'Result) in E_Function
+                                            | E_Procedure
+                                            | Entry_Kind
+                                            | E_Protected_Type
+                                            | E_Task_Type
+                                            | E_Package;
+   --  Returns the entity of the package, subprogram, entry, protected type,
+   --  or task type enclosing E.
 
    function Directly_Enclosing_Subprogram_Or_Entry
      (E : Entity_Id) return Entity_Id;

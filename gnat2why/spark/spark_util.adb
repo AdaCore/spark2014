@@ -789,10 +789,9 @@ package body SPARK_Util is
 
    function Enclosing_Unit (E : Entity_Id) return Entity_Id is
       S : Entity_Id := Scope (E);
-      --  Start with unique entity to avoid bodies
 
    begin
-      while Present (S) loop
+      loop
          if Ekind (S) in Entry_Kind
                        | E_Function
                        | E_Procedure
@@ -811,8 +810,6 @@ package body SPARK_Util is
             S := Scope (S);
          end if;
       end loop;
-
-      return Empty;
    end Enclosing_Unit;
 
    -------------------------------
