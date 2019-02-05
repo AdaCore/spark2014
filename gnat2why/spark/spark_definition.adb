@@ -2974,7 +2974,7 @@ package body SPARK_Definition is
          end;
       end if;
 
-      if Ekind (E) in E_Function
+      if Ekind (E) = E_Function
         and then not Is_OK_Volatile_Context (Context => Parent (N),
                                              Obj_Ref => N)
         and then Is_Volatile_Call (N)
@@ -6867,7 +6867,7 @@ package body SPARK_Definition is
       pragma Assert (Is_Intrinsic_Subprogram (E)
                        and then Ekind (E) in E_Function | E_Operator);
 
-      if Ekind (E) in E_Function
+      if Ekind (E) = E_Function
         and then not In_SPARK (E)
       then
          Mark_Violation (N, From => E);

@@ -748,7 +748,7 @@ package body SPARK_Util is
                           | E_Procedure
          then
             return S;
-         elsif Ekind (S) in E_Package then
+         elsif Ekind (S) = E_Package then
             S := Scope (S);
          else
             return Empty;
@@ -1806,7 +1806,7 @@ package body SPARK_Util is
       --  protected types, e.g. in pragma Priority) or as E_Discriminant
       --  (everywhere else).
       return Ekind (E) in E_Component | E_Discriminant | E_In_Parameter
-        and then Ekind (Scope (E)) in E_Protected_Type;
+        and then Ekind (Scope (E)) = E_Protected_Type;
    end Is_Protected_Component_Or_Discr;
 
    ------------------------------

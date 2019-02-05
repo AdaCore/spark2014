@@ -12286,7 +12286,7 @@ package body Gnat2Why.Expr is
 
         and then
           not (Nkind (Expr) in N_Identifier | N_Expanded_Name
-              and then Ekind (Entity (Expr)) in E_Enumeration_Literal
+              and then Ekind (Entity (Expr)) = E_Enumeration_Literal
               and then Entity (Expr) in Standard_True | Standard_False)
 
         --  Calls to predicate functions

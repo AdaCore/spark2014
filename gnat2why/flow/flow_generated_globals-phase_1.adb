@@ -359,7 +359,7 @@ package body Flow_Generated_Globals.Phase_1 is
       if Ekind (E) in E_Function | E_Procedure then
          Serialize (Is_Protected);
       end if;
-      if Ekind (E) in E_Package then
+      if Ekind (E) = E_Package then
          Serialize (Is_Library_Level);
       end if;
       Serialize (Origin);

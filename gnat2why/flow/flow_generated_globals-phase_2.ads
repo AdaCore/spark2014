@@ -154,7 +154,7 @@ package Flow_Generated_Globals.Phase_2 is
 
    function GG_Get_Local_Variables (E : Entity_Id) return Node_Sets.Set
    with Pre  => GG_Has_Been_Generated and then
-                Ekind (E) in E_Package and then
+                Ekind (E) = E_Package and then
                 Is_In_Analyzed_Files (E),
         Post => (for all Var of GG_Get_Local_Variables'Result =>
                     Ekind (Var) in E_Abstract_State | E_Constant | E_Variable
