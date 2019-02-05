@@ -126,6 +126,14 @@ package Why.Gen.Pointers is
    --  representing a split form. A should contain first the value, then the
    --  address, and is_null.
 
+   function Prepare_Args_For_Access_Subtype_Check
+     (Check_Ty : Entity_Id;
+      Expr     : W_Expr_Id)
+      return W_Expr_Array;
+   --  Given a pointer type, compute the argument array that can be used
+   --  together with its subtype check predicate of program function. The
+   --  last argument is actually the given expression itself.
+
    function Insert_Pointer_Subtype_Check
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;

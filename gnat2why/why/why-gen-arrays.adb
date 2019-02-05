@@ -2398,7 +2398,8 @@ package body Why.Gen.Arrays is
    function New_Bounds_Equality
      (Left_Arr     : W_Expr_Id;
       Right_Bounds : W_Expr_Array;
-      Dim          : Positive) return W_Pred_Id
+      Dim          : Positive;
+      Domain       : EW_Domain := EW_Pred) return W_Expr_Id
    is
       Result : W_Expr_Id := +True_Pred;
    begin
@@ -2417,7 +2418,7 @@ package body Why.Gen.Arrays is
                                               Attr   => Attribute_First,
                                               Dim    => I),
                     Right  => Right_Bounds (2 * I - 1),
-                    Domain => EW_Pred),
+                    Domain => Domain),
 
                  --  <left_arr>.last__I = <right_arr>.last__I
 
@@ -2428,8 +2429,8 @@ package body Why.Gen.Arrays is
                                               Attr   => Attribute_Last,
                                               Dim    => I),
                     Right  => Right_Bounds (2 * I),
-                    Domain => EW_Pred)),
-              Domain    => EW_Pred);
+                    Domain => Domain)),
+              Domain    => Domain);
       end loop;
 
       return +Result;
@@ -2450,12 +2451,13 @@ package body Why.Gen.Arrays is
            (EW_Term, Right_Bounds, Right_Arr, Attribute_Last,  I, Count);
       end loop;
 
-      return New_Bounds_Equality (Left_Arr, Right_Bounds, Dim);
+      return +New_Bounds_Equality (Left_Arr, Right_Bounds, Dim);
    end New_Bounds_Equality;
 
    function New_Bounds_Equality
      (Left_Arr : W_Expr_Id;
-      Right_Ty : Entity_Id) return W_Pred_Id
+      Right_Ty : Entity_Id;
+      Domain   : EW_Domain := EW_Pred) return W_Expr_Id
    is
       Dim          : constant Positive :=
         Positive (Number_Dimensions (Right_Ty));
@@ -2469,7 +2471,7 @@ package body Why.Gen.Arrays is
            (EW_Term, Right_Bounds, Right_Ty, Attribute_Last,  I, Count);
       end loop;
 
-      return New_Bounds_Equality (Left_Arr, Right_Bounds, Dim);
+      return New_Bounds_Equality (Left_Arr, Right_Bounds, Dim, Domain);
    end New_Bounds_Equality;
 
    ---------------------

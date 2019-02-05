@@ -55,14 +55,6 @@ package body Why.Gen.Pointers is
    function Get_Rep_Pointer_Module (E : Entity_Id) return W_Module_Id;
    --  Return the name of a record's representative module.
 
-   function Prepare_Args_For_Subtype_Check
-     (Check_Ty : Entity_Id;
-      Expr     : W_Expr_Id)
-      return W_Expr_Array;
-   --  Given a pointer type, compute the argument array that can be used
-   --  together with its subtype check predicate of program function. The
-   --  last argument is actually the given expression itself.
-
    package Pointer_Typ_To_Roots is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
       Element_Type    => Node_Id,
@@ -795,7 +787,8 @@ package body Why.Gen.Pointers is
            +New_VC_Call
              (Ada_Node => Ada_Node,
               Name     => E_Symb (Check_Ty, WNE_Range_Check_Fun),
-              Progs    => Prepare_Args_For_Subtype_Check (Check_Ty, +Expr),
+              Progs    =>
+                Prepare_Args_For_Access_Subtype_Check (Check_Ty, +Expr),
               Reason   => VC_Range_Check,
               Domain   => EW_Prog,
               Typ      => Get_Type (+Expr));
@@ -921,11 +914,11 @@ package body Why.Gen.Pointers is
       end if;
    end New_Pointer_Value_Access;
 
-   ------------------------------------
-   -- Prepare_Args_For_Subtype_Check --
-   ------------------------------------
+   -------------------------------------------
+   -- Prepare_Args_For_Access_Subtype_Check --
+   -------------------------------------------
 
-   function Prepare_Args_For_Subtype_Check
+   function Prepare_Args_For_Access_Subtype_Check
      (Check_Ty : Entity_Id;
       Expr     : W_Expr_Id)
       return W_Expr_Array
@@ -957,7 +950,7 @@ package body Why.Gen.Pointers is
                            Dim    => Count);
       end loop;
       return Args;
-   end Prepare_Args_For_Subtype_Check;
+   end Prepare_Args_For_Access_Subtype_Check;
 
    -----------------------------
    -- Pointer_From_Split_Form --

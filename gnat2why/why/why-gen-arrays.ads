@@ -240,14 +240,16 @@ package Why.Gen.Arrays is
 
    function New_Bounds_Equality
      (Left_Arr : W_Expr_Id;
-      Right_Ty : Entity_Id) return W_Pred_Id
+      Right_Ty : Entity_Id;
+      Domain   : EW_Domain := EW_Pred) return W_Expr_Id
    with Pre => Is_Constrained (Right_Ty);
    --  same as above but takes the bounds of a type for Right
 
    function New_Bounds_Equality
      (Left_Arr     : W_Expr_Id;
       Right_Bounds : W_Expr_Array;
-      Dim          : Positive) return W_Pred_Id
+      Dim          : Positive;
+      Domain       : EW_Domain := EW_Pred) return W_Expr_Id
    with Pre => Right_Bounds'Length = Dim * 2;
    --  same as above but with the bounds stored in an array
 

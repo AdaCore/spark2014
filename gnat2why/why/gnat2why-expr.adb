@@ -14604,46 +14604,30 @@ package body Gnat2Why.Expr is
                         --  bounds.
 
                         else
-                           declare
-                              Dim : constant Positive :=
-                                Positive (Number_Dimensions (Ty));
-                              Eqs : W_Expr_Array (1 .. 2 * Dim);
-                           begin
-                              for I in 1 .. Dim loop
-                                 Eqs (I * 2 - 1) := New_Comparison
-                                   (Symbol => Why_Eq,
-                                    Left   => Get_Array_Attr
-                                      (Domain => EW_Term,
-                                       Expr   => Var,
-                                       Attr   => Attribute_First,
-                                       Dim    => I),
-                                    Right  => Get_Array_Attr
-                                      (Domain => EW_Term,
-                                       Attr   => Attribute_First,
-                                       Dim    => I,
-                                       Ty     => Ty),
-                                    Domain => Domain);
-                                 Eqs (I * 2) := New_Comparison
-                                   (Symbol => Why_Eq,
-                                    Left   => Get_Array_Attr
-                                      (Domain => EW_Term,
-                                       Expr   => Var,
-                                       Attr   => Attribute_Last,
-                                       Dim    => I),
-                                    Right  => Get_Array_Attr
-                                      (Domain => EW_Term,
-                                       Attr   => Attribute_Last,
-                                       Dim    => I,
-                                       Ty     => Ty),
-                                    Domain => Domain);
-                              end loop;
-                              Result := New_And_Expr (Eqs, Domain);
-                           end;
+                           Result := +New_Bounds_Equality (Var, Ty, Domain);
                         end if;
                      end;
                   else
                      Result := True_Expr;
                   end if;
+
+               --  For a constrained access type whose root is not constrained,
+               --  use the range predicate.
+
+               elsif Is_Access_Type (Ty) then
+                  if not Is_Constrained (Root_Retysp (Ty))
+                    and then Is_Constrained (Ty)
+                  then
+                     Result := New_Call
+                       (Domain => Domain,
+                        Name   => E_Symb (Ty, WNE_Range_Pred),
+                        Args   =>
+                          Prepare_Args_For_Access_Subtype_Check (Ty, Var),
+                        Typ    => EW_Bool_Type);
+                  else
+                     Result := True_Expr;
+                  end if;
+
                else
                   pragma Assert (Is_Scalar_Type (Ty));
                   if Type_Is_Modeled_As_Base (Ty) then
