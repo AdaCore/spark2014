@@ -799,12 +799,13 @@ package body SPARK_Util is
                        | E_Package
                        | E_Protected_Type
                        | E_Task_Type
-                       | Generic_Unit_Kind
          then
             --  We have found the enclosing unit, return it
 
             return S;
          else
+            pragma Assert (not Is_Generic_Unit (S));
+
             --  Go to the enclosing scope
 
             S := Scope (S);

@@ -183,8 +183,7 @@ package SPARK_Util is
                                                   | Entry_Kind
                                                   | E_Protected_Type
                                                   | E_Task_Type
-                                                  | E_Package
-                                                  | Generic_Unit_Kind);
+                                                  | E_Package);
    --  Returns the entity of the package, subprogram, entry, protected object,
    --  or task enclosing E, if any. Returns Empty otherwise.
 
