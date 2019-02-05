@@ -41,7 +41,6 @@ with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util;                  use SPARK_Util;
-with SPARK_Util.Types;            use SPARK_Util.Types;
 with VC_Kinds;                    use VC_Kinds;
 
 with Flow.Analysis.Antialiasing;
@@ -3035,15 +3034,6 @@ package body Flow.Analysis is
                              and then
                              Is_Empty_Record_Type
                                (Get_Type (Var_Used, FA.B_Scope)))))
-
-                    --  Ignore objects whose type is annotated as Init_By_Proof
-
-                    or else
-                      (Var_Used.Kind in Direct_Mapping | Record_Field
-                       and then Ekind (Get_Direct_Mapping_Id (Var_Used)) /=
-                                  E_Abstract_State
-                       and then Has_Init_By_Proof (Get_Type (Var_Used,
-                                                             FA.B_Scope)))
 
                   then
                      --  ... we either do nothing because it is safe, or...
