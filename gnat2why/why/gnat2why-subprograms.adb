@@ -988,7 +988,7 @@ package body Gnat2Why.Subprograms is
                  Compute_Dynamic_Invariant
                    (Expr             =>
                       +Transform_Identifier
-                      (Params =>  Params,
+                      (Params => Params,
                        Expr   =>
                          Get_Ada_Node_From_Item (Func_Why_Binders (I)),
                        Ent    =>

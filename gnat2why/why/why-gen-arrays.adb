@@ -1542,7 +1542,7 @@ package body Why.Gen.Arrays is
                  New_Init_Wrapper_Value_Access
                    (Ada_Node => Empty,
                     E        => C_Type,
-                    Name     =>  New_Call
+                    Name     => New_Call
                       (Empty, EW_Term, Get_Name, B_Indexes, W_Ty),
                     Domain   => EW_Term));
          begin
@@ -1743,7 +1743,7 @@ package body Why.Gen.Arrays is
                      Location    => No_Location,
                      Return_Type => Typ,
                      Def         => New_Discrete_Constant
-                       (Value =>  Value,
+                       (Value => Value,
                         Typ   => Typ)));
          Subst (Cursor) :=
            New_Clone_Substitution

@@ -12532,7 +12532,7 @@ package body Gnat2Why.Expr is
          when N_Op_Compare =>
 
             T := Transform_Comparison
-              (Expr   =>  Expr,
+              (Expr   => Expr,
                Domain => Domain,
                Params => Local_Params);
 
