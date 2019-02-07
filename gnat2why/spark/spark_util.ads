@@ -291,10 +291,12 @@ package SPARK_Util is
    --  @return concurrent type
 
    function Has_Volatile (E : Checked_Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Abstract_State
-                          | E_Protected_Type
-                          | E_Task_Type
-                          | Object_Kind;
+   with Pre  => Ekind (E) in E_Abstract_State
+                           | E_Protected_Type
+                           | E_Task_Type
+                           | Object_Kind,
+        Post => (if Ekind (E) in E_Protected_Type | E_Task_Type
+                 then not Has_Volatile'Result);
    --  @param E an abstract state or object (including concurrent types, which
    --     might be implicit parameters and globals)
    --  @return True iff E is an external state or a volatile object

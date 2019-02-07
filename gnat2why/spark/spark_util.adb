@@ -1227,15 +1227,7 @@ package body SPARK_Util is
                                    return Boolean
    is
    begin
-      --  Tasks are considered to have Async_Readers and Async_Writers
-      if Ekind (Etype (E)) in Task_Kind then
-         return P in Pragma_Async_Readers | Pragma_Async_Writers;
-      end if;
-
-      --  ??? how about arrays and records with protected or task components?
-
-      --  Q: Why restrict the property of volatility for IN and OUT
-      --  parameters???
+      --  Q: Why restrict the property of volatility for IN and OUT parameters?
       --
       --  A: See SRM 7.1.3. In short when passing a volatile through a
       --  parameter we present a 'worst case but sane' view of the volatile,
