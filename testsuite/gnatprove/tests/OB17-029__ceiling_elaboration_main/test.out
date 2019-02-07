@@ -1,6 +1,4 @@
-x.adb:5:15: warning: assuming "Put_Line" has no effect on global items
-x.adb:5:15: warning: no Global contract available for "Put_Line"
+x.adb:5:15: high: cannot write "Text_IO.File_System" during elaboration of "X" (SPARK RM 7.7.1(6))
 x.ads:2:14: warning: subprogram "Dummy" has no effect
-y.adb:5:15: warning: assuming "Put_Line" has no effect on global items
-y.adb:5:15: warning: no Global contract available for "Put_Line"
+y.adb:5:15: high: cannot write "Text_IO.File_System" during elaboration of "Y" (SPARK RM 7.7.1(6))
 y.ads:2:14: warning: subprogram "Dummy" has no effect

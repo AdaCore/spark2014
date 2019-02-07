@@ -41,74 +41,23 @@ instructions.adb:19:28: info: unrolling loop
 instructions.adb:31:07: medium: exception might be raised
 instructions.adb:50:58: info: precondition proved (CVC4: 1 VC)
 instructions.adb:54:13: medium: exception might be raised
-screen_output.adb:25:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:25:07: warning: no Global contract available for "Put"
-screen_output.adb:26:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:26:07: warning: no Global contract available for "Put"
-screen_output.adb:28:10: warning: assuming "New_Line" has no effect on global items
-screen_output.adb:28:10: warning: no Global contract available for "New_Line"
-screen_output.adb:42:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:42:07: warning: no Global contract available for "Put"
-screen_output.adb:43:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:43:07: warning: no Global contract available for "Put"
-screen_output.adb:44:07: warning: assuming "New_Line" has no effect on global items
-screen_output.adb:44:07: warning: no Global contract available for "New_Line"
-screen_output.adb:53:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:53:07: warning: no Global contract available for "Put"
-screen_output.adb:54:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:54:07: warning: no Global contract available for "Put"
 screen_output.adb:54:46: info: range check proved (CVC4: 1 VC)
-screen_output.adb:55:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:55:07: warning: no Global contract available for "Put"
-screen_output.adb:56:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:56:07: warning: no Global contract available for "Put"
-screen_output.adb:57:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:57:07: warning: no Global contract available for "Put"
-screen_output.adb:58:07: warning: assuming "New_Line" has no effect on global items
-screen_output.adb:58:07: warning: no Global contract available for "New_Line"
 screen_output.adb:69:10: info: initialization of "Pos" proved
-screen_output.adb:73:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:73:07: warning: no Global contract available for "Put"
-screen_output.adb:74:07: warning: assuming "Put_Line" has no effect on global items
-screen_output.adb:74:07: warning: no Global contract available for "Put_Line"
-screen_output.adb:76:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:76:07: warning: no Global contract available for "Put"
 screen_output.adb:77:21: info: initialization of "Pos" proved
 screen_output.adb:77:29: info: cannot unroll loop (too many loop iterations)
-screen_output.adb:78:10: warning: assuming "Put" has no effect on global items
-screen_output.adb:78:10: warning: no Global contract available for "Put"
-screen_output.adb:81:07: warning: assuming "Put_Line" has no effect on global items
-screen_output.adb:81:07: warning: no Global contract available for "Put_Line"
-screen_output.adb:82:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:82:07: warning: no Global contract available for "Put"
-screen_output.adb:83:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:83:07: warning: no Global contract available for "Put"
 screen_output.adb:83:46: info: range check proved (CVC4: 1 VC)
 screen_output.adb:83:53: low: range check might fail (e.g. when S = (1 => ':', others => ' ') and S'First = 1 and S'Last = 2147483645) [possible explanation: subprogram at screen_output.ads:18 should mention S and Input.Line_Num in a precondition]
-screen_output.adb:84:07: warning: assuming "New_Line" has no effect on global items
-screen_output.adb:84:07: warning: no Global contract available for "New_Line"
-screen_output.adb:93:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:93:07: warning: no Global contract available for "Put"
-screen_output.adb:94:07: warning: assuming "Skip_Line" has no effect on global items
-screen_output.adb:94:07: warning: no Global contract available for "Skip_Line"
-screen_output.ads:7:14: warning: subprogram "Msg" has no effect
-screen_output.ads:11:14: warning: subprogram "Debug_Msg" has no effect
-screen_output.ads:15:14: warning: subprogram "Error_Msg" has no effect
-screen_output.ads:18:14: warning: subprogram "Syntax_Error" has no effect
-screen_output.ads:25:14: warning: subprogram "Pause" has no effect
+sdc.adb:11:04: info: initialization of "File" proved
 sdc.adb:16:07: warning: assuming "Argument_Count" has no effect on global items
 sdc.adb:16:07: warning: no Global contract available for "Argument_Count"
-sdc.adb:17:07: warning: assuming "Open" has no effect on global items
-sdc.adb:17:07: warning: no Global contract available for "Open"
+sdc.adb:17:07: info: precondition proved (CVC4: 1 VC)
 sdc.adb:17:13: info: initialization of "File" proved
 sdc.adb:17:28: info: precondition proved (CVC4: 1 VC)
 sdc.adb:17:28: warning: assuming "Argument" has no effect on global items
 sdc.adb:17:28: warning: no Global contract available for "Argument"
-sdc.adb:19:07: warning: assuming "Set_Input" has no effect on global items
-sdc.adb:19:07: warning: no Global contract available for "Set_Input"
-sdc.adb:19:18: info: initialization of "File" proved
-sdc.adb:24:07: medium: precondition might fail, cannot prove not Stack(Stack.full) (e.g. when Last = 200) [possible explanation: call at line 23 should mention V (for argument T) in a postcondition]
-sdc.adb:24:16: info: initialization of private part of "T" proved
+sdc.adb:18:23: info: initialization of "File" proved
+sdc.adb:23:07: medium: precondition might fail, cannot prove not Stack(Stack.full) (e.g. when Last = 200) [possible explanation: call at line 22 should mention V (for argument T) in a postcondition]
+sdc.adb:23:16: info: initialization of private part of "T" proved
 sdc.ads:24:11: medium: "input.line" might not be initialized after elaboration of main program "Sdc"
 sdc.ads:24:11: medium: "stack.tab" might not be initialized after elaboration of main program "Sdc"
 stack.adb:31:10: info: raise statement proved unreachable (CVC4: 1 VC)
@@ -129,7 +78,6 @@ stack.ads:24:19: info: initialization of "V.E" proved
 stack.ads:26:14: info: postcondition proved (CVC4: 1 VC)
 stack.ads:26:30: info: overflow check proved (CVC4: 1 VC)
 stack.ads:35:14: info: initialization of "Last" proved
-stack.ads:43:14: warning: subprogram "View" has no effect
 tokens.adb:21:15: info: precondition proved (CVC4: 1 VC)
 tokens.adb:24:30: info: initialization of "Word_Buffer" proved
 tokens.adb:24:30: info: range check proved (CVC4: 4 VC)

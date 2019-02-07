@@ -11,10 +11,6 @@ a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation 
 go.adb:13:19: info: initialization of "M" proved
 go.adb:13:22: info: initialization of "S" proved
 go.adb:13:22: info: length check proved (CVC4: 4 VC)
-go.adb:14:07: warning: assuming "Put_Line" has no effect on global items
-go.adb:14:07: warning: no Global contract available for "Put_Line"
-go.adb:16:07: warning: assuming "Put_Line" has no effect on global items
-go.adb:16:07: warning: no Global contract available for "Put_Line"
 p.adb:6:22: medium: private part of "Map.X" is not set
 p.ads:12:21: info: initialization of private part of "Map.X" proved
 p.ads:31:19: info: range check proved (CVC4: 1 VC)

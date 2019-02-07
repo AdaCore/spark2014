@@ -1,2 +1,0 @@
-print.adb:5:04: warning: assuming "Put_Line" has no effect on global items
-print.adb:5:04: warning: no Global contract available for "Put_Line"

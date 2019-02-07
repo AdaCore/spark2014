@@ -1,3 +1,1 @@
 po.adb:17:10: high: call to potentially blocking predefined subprogram "Put_Line" in protected operation "Bar"
-po.adb:17:10: warning: assuming "Put_Line" has no effect on global items
-po.adb:17:10: warning: no Global contract available for "Put_Line"
