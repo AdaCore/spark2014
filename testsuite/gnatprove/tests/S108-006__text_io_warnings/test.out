@@ -1,0 +1,173 @@
+a-tiinio.ads:48:04: info: initialization of "Default_Width" proved, in instantiation at text_io_warnings.adb:9
+a-tiinio.ads:49:04: info: initialization of "Default_Base" proved, in instantiation at text_io_warnings.adb:9
+a-tiinio.ads:56:40: info: precondition proved (CVC4: 1 VC), in instantiation at text_io_warnings.adb:9
+a-tiinio.ads:74:40: info: precondition proved (CVC4: 1 VC), in instantiation at text_io_warnings.adb:9
+a-tiinio.ads:76:08: info: precondition proved (CVC4: 2 VC), in instantiation at text_io_warnings.adb:9
+a-tiinio.ads:77:12: info: precondition proved (CVC4: 2 VC), in instantiation at text_io_warnings.adb:9
+text_io_warnings.adb:5:10: info: precondition of main program proved (CVC4: 2 VC)
+text_io_warnings.adb:7:04: info: initialization of "Source" proved
+text_io_warnings.adb:14:04: info: initialization of "Target" proved
+text_io_warnings.adb:21:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:21:10: info: initialization of "Source" proved
+text_io_warnings.adb:22:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:22:13: info: initialization of "Source" proved
+text_io_warnings.adb:24:07: info: precondition proved (CVC4: 4 VC)
+text_io_warnings.adb:24:12: info: initialization of "Source" proved
+text_io_warnings.adb:25:14: info: initialization of "Sum" proved
+text_io_warnings.adb:25:18: info: overflow check proved (CVC4: 2 VC)
+text_io_warnings.adb:25:28: info: initialization of "Int_Get" proved
+text_io_warnings.adb:26:30: info: initialization of "Sum" proved
+text_io_warnings.adb:26:30: info: loop invariant initialization proved (CVC4: 2 VC)
+text_io_warnings.adb:26:30: info: loop invariant preservation proved (CVC4: 2 VC)
+text_io_warnings.adb:26:38: info: overflow check proved (CVC4: 2 VC)
+text_io_warnings.adb:26:49: info: overflow check proved (CVC4: 2 VC)
+text_io_warnings.adb:28:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:28:11: info: initialization of "Source" proved
+text_io_warnings.adb:29:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:29:13: info: initialization of "Source" proved
+text_io_warnings.adb:30:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:30:21: info: initialization of "Source" proved
+text_io_warnings.adb:31:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:31:13: info: initialization of "Source" proved
+text_io_warnings.adb:32:04: medium: precondition might fail [possible explanation: call at line 31 should mention Ada.Text_Io.File_System in a postcondition]
+text_io_warnings.adb:32:13: info: initialization of "Source" proved
+text_io_warnings.adb:33:07: info: initialization of "Sum" proved
+text_io_warnings.adb:34:07: info: initialization of "Default_Base" proved
+text_io_warnings.adb:34:07: info: initialization of "Default_Width" proved
+text_io_warnings.adb:34:07: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:34:12: info: initialization of "Source" proved
+text_io_warnings.adb:34:28: info: initialization of "Sum" proved
+text_io_warnings.adb:34:28: info: range check proved (CVC4: 1 VC)
+text_io_warnings.adb:36:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:36:14: info: initialization of "Source" proved
+text_io_warnings.adb:37:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:37:11: info: initialization of "Source" proved
+text_io_warnings.adb:40:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:40:12: info: initialization of "Target" proved
+text_io_warnings.adb:41:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:41:13: info: initialization of "Target" proved
+text_io_warnings.adb:42:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:42:10: info: initialization of "Source" proved
+text_io_warnings.adb:43:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:43:13: info: initialization of "Source" proved
+text_io_warnings.adb:44:19: info: assertion proved (CVC4: 1 VC)
+text_io_warnings.adb:44:19: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:44:25: info: initialization of "Target" proved
+text_io_warnings.adb:45:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:45:14: info: initialization of "Target" proved
+text_io_warnings.adb:45:22: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:45:28: info: initialization of "Target" proved
+text_io_warnings.adb:46:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:46:14: info: initialization of "Target" proved
+text_io_warnings.adb:46:22: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:46:28: info: initialization of "Target" proved
+text_io_warnings.adb:47:19: info: assertion proved (CVC4: 1 VC)
+text_io_warnings.adb:47:28: info: initialization of "Target" proved
+text_io_warnings.adb:49:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:49:11: info: initialization of "Target" proved
+text_io_warnings.adb:52:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:52:21: info: initialization of "Target" proved
+text_io_warnings.adb:53:19: info: assertion proved (CVC4: 1 VC)
+text_io_warnings.adb:53:19: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:53:32: info: initialization of "Target" proved
+text_io_warnings.adb:55:19: info: assertion proved (CVC4: 1 VC)
+text_io_warnings.adb:57:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:57:21: info: initialization of "Target" proved
+text_io_warnings.adb:58:19: info: assertion proved (CVC4: 1 VC)
+text_io_warnings.adb:58:19: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:58:32: info: initialization of "Target" proved
+text_io_warnings.adb:60:19: info: assertion proved (CVC4: 1 VC)
+text_io_warnings.adb:62:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:62:14: info: initialization of "Target" proved
+text_io_warnings.adb:65:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:65:15: info: initialization of "Source" proved
+text_io_warnings.adb:68:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:68:14: info: initialization of "Target" proved
+text_io_warnings.adb:68:37: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:68:50: info: initialization of "Source" proved
+text_io_warnings.adb:71:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:71:14: info: initialization of "Target" proved
+text_io_warnings.adb:74:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:74:15: info: initialization of "Source" proved
+text_io_warnings.adb:77:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:77:14: info: initialization of "Target" proved
+text_io_warnings.adb:77:37: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:77:50: info: initialization of "Source" proved
+text_io_warnings.adb:80:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:80:14: info: initialization of "Target" proved
+text_io_warnings.adb:80:37: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:80:50: info: initialization of "Source" proved
+text_io_warnings.adb:83:04: medium: precondition might fail
+text_io_warnings.adb:83:13: info: initialization of "Target" proved
+text_io_warnings.adb:84:04: medium: precondition might fail [possible explanation: call at line 83 should mention Ada.Text_Io.File_System in a postcondition]
+text_io_warnings.adb:86:04: medium: precondition might fail
+text_io_warnings.adb:86:14: info: initialization of "Target" proved
+text_io_warnings.adb:87:04: medium: precondition might fail [possible explanation: call at line 86 should mention Ada.Text_Io.File_System in a postcondition]
+text_io_warnings.adb:89:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:89:14: info: initialization of "Target" proved
+text_io_warnings.adb:89:35: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:89:40: info: initialization of "Target" proved
+text_io_warnings.adb:91:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:91:14: info: initialization of "Target" proved
+text_io_warnings.adb:91:35: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:91:41: info: initialization of "Target" proved
+text_io_warnings.adb:93:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:93:14: info: initialization of "Target" proved
+text_io_warnings.adb:93:35: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:93:41: info: initialization of "Target" proved
+text_io_warnings.adb:96:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:96:11: info: initialization of "Source" proved
+text_io_warnings.adb:97:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:97:11: info: initialization of "Target" proved
+text_io_warnings.adb:99:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:99:09: info: initialization of "Source" proved
+text_io_warnings.adb:100:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:100:09: info: initialization of "Target" proved
+text_io_warnings.adb:100:17: info: initialization of "Ch" proved
+text_io_warnings.adb:102:09: info: initialization of "Ch" proved
+text_io_warnings.adb:104:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:104:16: info: initialization of "Source" proved
+text_io_warnings.adb:105:11: info: initialization of "Bool" proved
+text_io_warnings.adb:106:07: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:106:12: info: initialization of "Target" proved
+text_io_warnings.adb:106:20: info: initialization of "Ch" proved
+text_io_warnings.adb:109:11: info: initialization of "Bool" proved
+text_io_warnings.adb:110:07: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:110:12: info: initialization of "Target" proved
+text_io_warnings.adb:110:20: info: initialization of "Ch" proved
+text_io_warnings.adb:112:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:112:19: info: initialization of "Source" proved
+text_io_warnings.adb:113:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:113:09: info: initialization of "Target" proved
+text_io_warnings.adb:113:17: info: initialization of "Ch" proved
+text_io_warnings.adb:115:09: info: initialization of "Ch" proved
+text_io_warnings.adb:116:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:116:19: info: initialization of "Source" proved
+text_io_warnings.adb:117:07: info: initialization of "Bool" proved
+text_io_warnings.adb:118:07: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:118:12: info: initialization of "Target" proved
+text_io_warnings.adb:118:20: info: initialization of "Ch" proved
+text_io_warnings.adb:121:07: info: initialization of "Bool" proved
+text_io_warnings.adb:122:12: info: initialization of "Ch" proved
+text_io_warnings.adb:125:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:125:09: info: initialization of "Source" proved
+text_io_warnings.adb:126:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:126:09: info: initialization of "Target" proved
+text_io_warnings.adb:126:17: info: initialization of "Str" proved
+text_io_warnings.adb:128:09: info: initialization of "Str" proved
+text_io_warnings.adb:130:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:130:14: info: initialization of "Source" proved
+text_io_warnings.adb:131:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:131:14: info: initialization of "Target" proved
+text_io_warnings.adb:131:22: info: initialization of "A_Line" proved
+text_io_warnings.adb:131:22: info: range check proved (CVC4: 4 VC)
+text_io_warnings.adb:131:32: info: initialization of "Nat" proved
+text_io_warnings.adb:133:14: info: initialization of "A_Line" proved
+text_io_warnings.adb:133:14: info: range check proved (CVC4: 4 VC)
+text_io_warnings.adb:133:24: info: initialization of "Nat" proved
+text_io_warnings.adb:135:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:135:12: info: initialization of "Source" proved
+text_io_warnings.adb:135:12: warning: unused assignment to "Source"
+text_io_warnings.adb:136:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:136:11: info: initialization of "Target" proved
+text_io_warnings.adb:136:11: warning: unused assignment to "Target"

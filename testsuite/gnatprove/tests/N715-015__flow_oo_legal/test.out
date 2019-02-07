@@ -45,22 +45,17 @@ main.adb:70:04: info: in inlined body at line 31
 main.adb:70:04: info: unrolling loop
 people.adb:4:04: info: initialization of "Today" constituent of "Date" proved
 people.adb:7:40: info: initialization of "Today" constituent of "Date" proved
-professionals.adb:37:40: low: range check might fail [possible explanation: subprogram at professionals.ads:33 should mention This in a precondition]
-professionals.adb:45:32: info: range check proved (CVC4: 1 VC)
-professionals.adb:47:28: info: unrolling loop
-professionals.adb:48:34: info: range check proved (CVC4: 4 VC)
-professionals.adb:68:14: info: initialization of "Tmp.Number_Of_People_Killed" proved
-professionals.adb:68:14: info: initialization of "Tmp.Profession" proved
-professionals.adb:68:14: info: initialization of "Tmp.Skilled_In" proved
-professionals.adb:68:14: info: initialization of private part of "Tmp" proved
-professionals.adb:83:14: info: initialization of "Tmp.Number_Of_People_Killed" proved
-professionals.adb:83:14: info: initialization of "Tmp.Profession" proved
-professionals.adb:83:14: info: initialization of "Tmp.Skilled_In" proved
-professionals.adb:83:14: info: initialization of private part of "Tmp" proved
-professionals.adb:93:40: info: initialization of "Skill_Of_The_Day" constituent of "State" proved
-professionals.adb:155:28: info: unrolling loop
-professionals.adb:205:72: medium: overflow check might fail
-professionals.ads:33:14: warning: subprogram "Print" has no effect
+professionals.adb:69:14: info: initialization of "Tmp.Number_Of_People_Killed" proved
+professionals.adb:69:14: info: initialization of "Tmp.Profession" proved
+professionals.adb:69:14: info: initialization of "Tmp.Skilled_In" proved
+professionals.adb:69:14: info: initialization of private part of "Tmp" proved
+professionals.adb:84:14: info: initialization of "Tmp.Number_Of_People_Killed" proved
+professionals.adb:84:14: info: initialization of "Tmp.Profession" proved
+professionals.adb:84:14: info: initialization of "Tmp.Skilled_In" proved
+professionals.adb:84:14: info: initialization of private part of "Tmp" proved
+professionals.adb:94:40: info: initialization of "Skill_Of_The_Day" constituent of "State" proved
+professionals.adb:156:28: info: unrolling loop
+professionals.adb:206:72: medium: overflow check might fail
 professionals.ads:72:25: medium: postcondition might fail, cannot prove Is_Alive (Killer)
 simple_oo_with_contracts.adb:4:22: medium: assertion might fail, cannot prove G1 = G2 [possible explanation: subprogram at simple_oo_with_contracts.ads:8 should mention G1 and G2 in a precondition]
 simple_oo_with_contracts.adb:5:16: medium: overflow check might fail [possible explanation: subprogram at simple_oo_with_contracts.ads:8 should mention G2 and G3 in a precondition]
