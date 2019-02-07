@@ -3437,9 +3437,8 @@ package body Flow.Analysis is
                      E : constant Entity_Id := Defining_Entity (N);
 
                   begin
-                     if ((Ekind (E) = E_Constant
-                          and then Has_Variable_Input (E))
-                         or else Ekind (E) = E_Variable)
+                     if (Ekind (E) = E_Variable
+                         or else Has_Variable_Input (E))
                        and then not Is_Internal (E)
                        and then not Is_Part_Of_Concurrent_Object (E)
                      then
