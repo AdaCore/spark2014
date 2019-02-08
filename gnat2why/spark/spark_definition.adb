@@ -4970,7 +4970,7 @@ package body SPARK_Definition is
             --  etype. In this case, the whole type has fullview not in SPARK.
 
             if Full_View_Not_In_SPARK (Etype (E)) then
-               Full_Views_Not_In_SPARK.Insert (E, Etype (E));
+               Full_Views_Not_In_SPARK.Insert (E, Retysp (Etype (E)));
             end if;
 
          elsif Is_Access_Type (E) then
@@ -5060,7 +5060,7 @@ package body SPARK_Definition is
                   --  not in SPARK.
 
                   if Full_View_Not_In_SPARK (Etype (E)) then
-                     Full_Views_Not_In_SPARK.Include (E, Etype (E));
+                     Full_Views_Not_In_SPARK.Include (E, Retysp (Etype (E)));
                   end if;
                end if;
 
