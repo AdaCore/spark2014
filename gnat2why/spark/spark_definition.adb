@@ -1363,6 +1363,12 @@ package body SPARK_Definition is
    begin
       Current_Error_Node := N;
 
+      --  The type may be absent on kinds of nodes that should have types,
+      --  in very special cases, like the fake aggregate node in a 'Update
+      --  attribute_reference, and the fake identifier node for an abstract
+      --  state. So we also check that the type is explicitly present and that
+      --  it is indeed a type (and not Standard_Void_Type).
+
       if Nkind (N) in N_Has_Etype
         and then Present (Etype (N))
         and then Is_Type (Etype (N))
@@ -1395,11 +1401,6 @@ package body SPARK_Definition is
          --  violation on the expression. As we prefer to have the error
          --  located on the expression, we mark the type of the node after
          --  the expression.
-
-         --  The type may be absent on kinds of nodes that should have types,
-         --  in very special cases, like the fake aggregate node in a 'Update
-         --  attribute_reference, and the fake identifier node for an abstract
-         --  state. So we also check that the type is explicitly present.
 
          elsif not Retysp_In_SPARK (Etype (N)) then
             Mark_Violation (N, From => Etype (N));
